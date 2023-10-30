@@ -90,15 +90,19 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
           props.closeModal();
         });
     } else {
-      const amendmentAction = values.explosives_permit_amendment_guid
-        ? props.updateExplosivesPermitAmendment
-        : props.createExplosivesPermitAmendment;
-
-      return amendmentAction(payload).then(() => {
+      return props.updateExplosivesPermitAmendment(payload).then(() => {
         props.fetchExplosivesPermits(mineGuid);
         props.closeModal();
       });
     }
+  };
+
+  const handleCreateNewAmendment = (values) => {
+    console.log("values when we save them", values);
+    return props.createExplosivesPermitAmendment(values).then(() => {
+      props.fetchExplosivesPermits(mineGuid);
+      props.closeModal();
+    });
   };
 
   const handleOpenAddExplosivesPermitModal = (event, permitTab, record = null) => {
@@ -126,7 +130,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
     props.openModal({
       props: {
         title: "Amend Explosives Storage and Use Permit",
-        onSubmit: (values) => handleUpdateExplosivesPermit(values, true),
+        onSubmit: (values) => handleCreateNewAmendment(values),
         initialValues: record,
         isAmendment: true,
         mineGuid,

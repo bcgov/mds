@@ -152,28 +152,32 @@ class ExplosivesPermitAmendmentListResource(Resource, UserMixin):
             raise NotFound('Mine not found')
 
         data = self.parser.parse_args()
-
-        explosives_permit = ExplosivesPermit.find_by_explosives_permit_guid(data.get('explosives_permit_guid'))
+        explosives_permit_guid = data.get('explosives_permit_guid')
+        explosives_permit = ExplosivesPermit.find_by_explosives_permit_guid(explosives_permit_guid)
         if explosives_permit is None:
-            raise NotFound('Explosives Permit not found')
+            raise NotFound(f'Explosives Permit not found with id {explosives_permit_guid}')
 
         # fields that are not allowed to be changed in an amendment
         static_fields = ['explosives_permit_id', 'explosives_permit_guid', 'permit_guid', 'issue_date']
-        explosives_permit.issue_date = datetime.combine(explosives_permit.issue_date, datetime.time())
+        explosives_permit.issue_date = datetime.datetime.combine(explosives_permit.issue_date, datetime.time())
         for field in static_fields:
             old_value = str(getattr(explosives_permit, field))
             new_value = str(data.get(field))
-            current_app.logger.info(f'TYPES: old: {type(getattr(explosives_permit, field))}, new: {type(data.get(field))}')
             if new_value != old_value:
-                current_app.logger.info(f'VALUES: old: {old_value}, new: {new_value}')
                 raise BadRequest(f'Cannot amend Explosives Permit property {field}')
 
         # consider: documents, is_closed, closing previous one, how does that work with expiry date?
             # check if there's a previous amendment, and if so
+        # DOCUMENTS
+        documents = []
+        for doc in data.get('documents', []):
+            doc['explosives_permit_amendment_document_type_code'] = doc['explosives_permit_document_type_code']
+            documents.append(doc)
 
         explosives_permit_amendment = ExplosivesPermitAmendment.create(mine,
             data.get('permit_guid'),
             data.get('explosives_permit_id'),
+            explosives_permit_guid,
             data.get('application_date'),
             data.get('originating_system'),
             data.get('latitude'), 
@@ -189,7 +193,7 @@ class ExplosivesPermitAmendmentListResource(Resource, UserMixin):
             data.get('closed_timestamp'),
             data.get('explosive_magazines', []),
             data.get('detonator_magazines', []),
-            data.get('documents', []),
+            documents,
             data.get('now_application_guid'))
         explosives_permit_amendment.save()
 

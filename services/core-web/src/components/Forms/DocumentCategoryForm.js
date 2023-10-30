@@ -20,6 +20,7 @@ const propTypes = {
   categories: CustomPropTypes.options.isRequired,
   isProcessed: PropTypes.bool.isRequired,
   mineGuid: PropTypes.string.isRequired,
+  esupGuid: PropTypes.string,
   change: PropTypes.func.isRequired,
   arrayPush: PropTypes.func.isRequired,
   infoText: PropTypes.string,
@@ -27,6 +28,7 @@ const propTypes = {
 
 const defaultProps = {
   documents: [],
+  esupGuid: "",
 };
 
 export class DocumentCategoryForm extends Component {

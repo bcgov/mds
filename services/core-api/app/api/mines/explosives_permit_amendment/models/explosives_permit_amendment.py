@@ -4,10 +4,12 @@ from pytz import timezone
 
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import Sequence
+from sqlalchemy.ext.hybrid import hybrid_property
 
 from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.mines.explosives_permit.models.explosives_permit import ExplosivesPermit
 from app.api.mines.explosives_permit.models.explosives_permit_document_type import ExplosivesPermitDocumentType
+from app.api.parties.party.models.party import Party
 
 from app.api.mines.explosives_permit_amendment.models.explosives_permit_amendment_document_xref import \
     ExplosivesPermitAmendmentDocumentXref
@@ -31,6 +33,9 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
 
     explosives_permit_id = db.Column(
         db.Integer, db.ForeignKey('explosives_permit.explosives_permit_id'), nullable=False)
+
+    explosives_permit_guid = db.Column(
+        db.Integer, db.ForeignKey('explosives_permit.explosives_permit_guid'), nullable=False)
 
     explosives_permit = db.relationship(
         'ExplosivesPermit',
@@ -63,6 +68,13 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
     def __repr__(self):
         return f'<{self.__class__.__name__} {self.explosives_permit_amendment_id}>'
 
+    @hybrid_property
+    def issuing_inspector_name(self):
+        if self.issuing_inspector_party_guid:
+            party = Party.find_by_party_guid(self.issuing_inspector_party_guid)
+            return party.name
+        return None
+
     @classmethod
     def get_next_application_number(cls):
         now = datetime.now(timezone('US/Pacific'))
@@ -78,6 +90,7 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
                mine,
                permit_guid,
                explosives_permit_id,
+               explosives_permit_guid,
                application_date,
                originating_system,
                latitude,
@@ -121,6 +134,7 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
         explosives_permit_amendment = cls(
             permit_guid=permit_guid,
             explosives_permit_id=explosives_permit_id,
+            explosives_permit_guid=explosives_permit_guid,
             application_status=application_status,
             application_number=application_number,
             received_timestamp=received_timestamp,

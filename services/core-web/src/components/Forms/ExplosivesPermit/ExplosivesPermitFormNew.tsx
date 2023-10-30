@@ -509,6 +509,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
           <DocumentCategoryForm
             categories={props.documentTypeDropdownOptions}
             mineGuid={props.mineGuid}
+            esupGuid={props.formValues?.explosives_permit_guid}
             isProcessed={disabled}
             infoText="Please upload any documents that support this explosives storage and use permit. Documents uploaded here will be viewable by Minespace users."
           />
