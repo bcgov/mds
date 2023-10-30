@@ -24,6 +24,7 @@ import tailingsReducerObject from "./reducers/tailingsReducer";
 import userReducerObject from "./reducers/userReducer";
 import varianceReducerObject from "./reducers/varianceReducer";
 import workInformationReducerObject from "./reducers/workInformationReducer";
+import verifiableCredentialReducerObject from "./reducers/verifiableCredentialReducer";
 
 export const complianceReducer = complianceReducerObject;
 export const authenticationReducer = authenticationReducerObject;
@@ -50,3 +51,4 @@ export const noticeOfDepartureReducer = noticeOfDepartureReducerObject;
 export const activityReducer = activityReducerObject;
 export const tailingsReducer = tailingsReducerObject;
 export const damReducer = damReducerObject;
+export const verifiableCredentialReducer = verifiableCredentialReducerObject;

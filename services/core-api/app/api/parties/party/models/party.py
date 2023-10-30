@@ -1,4 +1,5 @@
 from datetime import datetime
+from flask import current_app
 import re
 
 from sqlalchemy import func, case, and_
@@ -68,6 +69,15 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
         uselist=False,
         remote_side=[party_guid],
         foreign_keys=[organization_guid])
+    
+    digital_wallet_invitations = db.relationship(
+        'PartyVerifiableCredentialConnection',
+        lazy='select',
+        uselist=True,
+        order_by='desc(PartyVerifiableCredentialConnection.update_timestamp)',)
+
+
+
 
     @hybrid_property
     def name(self):
@@ -104,6 +114,18 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
             x.party_business_role_code for x in self.business_role_appts
             if (not x.end_date or x.end_date > datetime.utcnow().date())
         ]
+
+    @hybrid_property
+    def digital_wallet_connection_status(self):
+        dwi = list(set([i.connection_state for i in self.digital_wallet_invitations if i.connection_state]))
+        dwi.sort() 
+        if dwi:
+            if "completed" in dwi or "active" in dwi:
+                return "active"
+            else:       
+                return dwi[0]
+        else:
+            return None
 
     def __repr__(self):
         return '<Party %r>' % self.party_guid

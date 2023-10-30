@@ -164,7 +164,7 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
       ...permitAmendmentLike(parentPermit),
       issue_date: parentPermit.issue_date,
       expiry_date: parentPermit.expiry_date,
-      status: parentPermit.is_closed ? "Closed" : "Open",
+      is_closed: parentPermit.is_closed ? "Closed" : "Open",
     });
     return permitHistory
       .map((amendment, index) => {
@@ -241,7 +241,9 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
             <Row gutter={6}>
               <Col span={24}>
                 <Typography.Paragraph strong>Issuing Inspector</Typography.Paragraph>
-                <Typography.Paragraph>{currentPermit.issuing_inspector_name}</Typography.Paragraph>
+                <Typography.Paragraph>
+                  {currentPermit.issuing_inspector_name || parentPermit.issuing_inspector_name}
+                </Typography.Paragraph>
               </Col>
             </Row>
           </>
@@ -262,15 +264,11 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
           <Row gutter={6}>
             <Col span={12}>
               <Typography.Paragraph strong>Mine Manager</Typography.Paragraph>
-              <Typography.Paragraph>
-                {currentPermit.mine_manager_mine_party_appt_id}
-              </Typography.Paragraph>
+              <Typography.Paragraph>{currentPermit.mine_manager_name}</Typography.Paragraph>
             </Col>
             <Col span={12}>
               <Typography.Paragraph strong>Permittee</Typography.Paragraph>
-              <Typography.Paragraph>
-                {currentPermit.permittee_mine_party_appt_id}
-              </Typography.Paragraph>
+              <Typography.Paragraph>{currentPermit.permittee_name}</Typography.Paragraph>
             </Col>
           </Row>
           <Typography.Paragraph strong>Application Date</Typography.Paragraph>
@@ -292,27 +290,42 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
           </Row>
           <ExplosivesPermitMap pin={[currentPermit.latitude, currentPermit.longitude]} />
           <br />
-          {supportingDocs.length > 0 && (
-            <Row>
+          {(supportingDocs.length > 0 || generatedDocs.length > 0) && (
+            <div>
               <Typography.Title level={4} className="purple">
                 Supporting Documents
               </Typography.Title>
-              <Typography.Paragraph strong>Permit Documents</Typography.Paragraph>
-              <Typography.Paragraph>
-                These documents were generated when this version of the permit was created. These
-                documents will be viewable by Minespace users
-              </Typography.Paragraph>
-              <Table dataSource={generatedDocs} pagination={false} columns={generatedDocColumns} />
-              <Typography.Paragraph strong>Uploaded Documents</Typography.Paragraph>
-              <Typography.Paragraph>
-                Documents uploaded here will be viewable by Minespace users
-              </Typography.Paragraph>
-              <Table
-                dataSource={supportingDocs}
-                pagination={false}
-                columns={supportingDocColumns}
-              />
-            </Row>
+              {generatedDocs.length > 0 && (
+                <div>
+                  <Typography.Paragraph strong>Permit Documents</Typography.Paragraph>
+                  <Typography.Paragraph>
+                    These documents were generated when this version of the permit was created.
+                    These documents will be viewable by Minespace users
+                  </Typography.Paragraph>
+                  <Table
+                    dataSource={generatedDocs}
+                    pagination={false}
+                    columns={generatedDocColumns}
+                  />
+                </div>
+              )}
+
+              {supportingDocs.length > 0 && (
+                <div>
+                  <Typography.Paragraph strong className="margin-large--top">
+                    Uploaded Documents
+                  </Typography.Paragraph>
+                  <Typography.Paragraph>
+                    Documents uploaded here will be viewable by Minespace users
+                  </Typography.Paragraph>
+                  <Table
+                    dataSource={supportingDocs}
+                    pagination={false}
+                    columns={supportingDocColumns}
+                  />
+                </div>
+              )}
+            </div>
           )}
         </Col>
         <Col md={12} sm={24} className="border--left--layout">

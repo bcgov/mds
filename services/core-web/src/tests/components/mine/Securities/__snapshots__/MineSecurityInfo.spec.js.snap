@@ -31,7 +31,6 @@ exports[`MineSecurityInfo renders properly 1`] = `
               <span>
                 Total Security Held
                 <CoreTooltip
-                  iconColor="#5e46a1"
                   title="Total Security Held: This is the total amount of all active bonds held on this mine record. If the mine is on a payment schedule, it shows only what has been paid to date. It includes any interest earned."
                 />
               </span>
@@ -44,7 +43,6 @@ exports[`MineSecurityInfo renders properly 1`] = `
               <span>
                 Total Active Bonds
                 <CoreTooltip
-                  iconColor="#5e46a1"
                   title="Total Active Bonds: This is the number of active bonds held by the Ministry for all the permits on this mine record. It does not include bonds that have been released or confiscated."
                 />
               </span>

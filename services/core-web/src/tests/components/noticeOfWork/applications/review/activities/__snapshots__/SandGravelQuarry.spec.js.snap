@@ -19,7 +19,6 @@ exports[`SandGravelQuarry renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
-          style={Object {}}
         />
       </div>
       <Fields
@@ -51,7 +50,6 @@ exports[`SandGravelQuarry renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
-          style={Object {}}
         />
       </div>
       <Fields
@@ -87,7 +85,6 @@ exports[`SandGravelQuarry renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
-          style={Object {}}
         />
       </div>
       <Field
@@ -116,7 +113,6 @@ exports[`SandGravelQuarry renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
-          style={Object {}}
         />
       </div>
       <Field
@@ -137,7 +133,6 @@ exports[`SandGravelQuarry renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
-          style={Object {}}
         />
       </div>
       <Field
@@ -162,7 +157,6 @@ exports[`SandGravelQuarry renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
-          style={Object {}}
         />
       </div>
       <Field
@@ -183,7 +177,6 @@ exports[`SandGravelQuarry renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
-          style={Object {}}
         />
       </div>
       <Field
@@ -208,7 +201,6 @@ exports[`SandGravelQuarry renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
-          style={Object {}}
         />
       </div>
       <Field
@@ -229,7 +221,6 @@ exports[`SandGravelQuarry renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
-          style={Object {}}
         />
       </div>
       <Field
@@ -254,7 +245,6 @@ exports[`SandGravelQuarry renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
-          style={Object {}}
         />
       </div>
       <Fields
@@ -286,7 +276,6 @@ exports[`SandGravelQuarry renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
-          style={Object {}}
         />
       </div>
       <Fields
@@ -402,7 +391,6 @@ exports[`SandGravelQuarry renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
-          style={Object {}}
         />
       </div>
       <Field
@@ -436,7 +424,6 @@ exports[`SandGravelQuarry renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
-          style={Object {}}
         />
       </div>
       <Field
@@ -462,7 +449,6 @@ exports[`SandGravelQuarry renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
-          style={Object {}}
         />
       </div>
       <Field
@@ -497,7 +483,6 @@ exports[`SandGravelQuarry renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
-          style={Object {}}
         />
       </div>
       <Field
@@ -523,7 +508,6 @@ exports[`SandGravelQuarry renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
-          style={Object {}}
         />
       </div>
       <Field
@@ -544,7 +528,6 @@ exports[`SandGravelQuarry renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
-          style={Object {}}
         />
       </div>
       <Fields
@@ -585,7 +568,6 @@ exports[`SandGravelQuarry renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
-          style={Object {}}
         />
       </div>
       <Fields
@@ -726,7 +708,6 @@ exports[`SandGravelQuarry renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
-          style={Object {}}
         />
       </div>
       <Field
@@ -760,7 +741,6 @@ exports[`SandGravelQuarry renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
-          style={Object {}}
         />
       </div>
       <Fields
@@ -792,7 +772,6 @@ exports[`SandGravelQuarry renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
-          style={Object {}}
         />
       </div>
       <Fields
@@ -824,7 +803,6 @@ exports[`SandGravelQuarry renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
-          style={Object {}}
         />
       </div>
       <Field
@@ -850,7 +828,6 @@ exports[`SandGravelQuarry renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
-          style={Object {}}
         />
       </div>
       <Field
@@ -876,7 +853,6 @@ exports[`SandGravelQuarry renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
-          style={Object {}}
         />
       </div>
       <Field
@@ -902,7 +878,6 @@ exports[`SandGravelQuarry renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
-          style={Object {}}
         />
       </div>
       <Field

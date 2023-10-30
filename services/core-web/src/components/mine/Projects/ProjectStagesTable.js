@@ -43,7 +43,7 @@ export class ProjectStagesTable extends Component {
           label = text;
         } else {
           label =
-            record.key && record.stage_status?.toUpperCase() === "SUB"
+            record.key && record.stage_status
               ? `[${record.stage_status_hash[text]}]` || "N/A"
               : "[Not submitted]";
         }

@@ -229,10 +229,11 @@
 }
 
 .info-tooltip {
-  padding-bottom: 5px;
   width: 25px;
   height: 25px;
   color: $violet;
+  display: flex;
+  align-items: center;
 }
 
 .fee-determination--block {
