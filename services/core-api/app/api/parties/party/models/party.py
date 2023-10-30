@@ -157,7 +157,6 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
             'postnominal_letters': self.postnominal_letters,
             'idir_username': self.idir_username,
             'organization_guid': str(self.organization_guid) if self.organization_guid else None,
-            'job_title_code': self.job_title_code,
         }
 
         if self.party_type_code == 'PER':
@@ -174,13 +173,6 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
             context.update({
                 'organization': self.organization.json()
             })
-
-        if "digital_wallet_connection" in relationships:
-            if self.active_digital_wallet_connection:
-                result = self.active_digital_wallet_connection.json()
-            else:
-                result = {}
-            context.update({'digital_wallet_connection':result})
 
         return context
         
