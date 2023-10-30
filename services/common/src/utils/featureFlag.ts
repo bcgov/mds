@@ -9,6 +9,7 @@ export enum Feature {
   ESUP_PERMIT_AMENDMENT = "esup_permit_amendment",
   FLAGSMITH = "flagsmith",
   TSF_V2 = "tsf_v2",
+  VERIFIABLE_CREDENTIALS = "verifiable_credentials",
 }
 
 export const initializeFlagsmith = async (flagsmithUrl, flagsmithKey) => {

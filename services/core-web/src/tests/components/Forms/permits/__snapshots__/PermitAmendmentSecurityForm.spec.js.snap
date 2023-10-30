@@ -18,7 +18,6 @@ exports[`PermitAmendmentSecurityForm renders properly 1`] = `
       >
         Security Not Required
         <CoreTooltip
-          iconColor="#5e46a1"
           title="This only applies if a prior security is held covering this application and no increase is required, or another agency holds the bond."
         />
       </div>
@@ -81,7 +80,6 @@ exports[`PermitAmendmentSecurityForm renders properly 1`] = `
       >
         Assessed Liability Adjustment
         <CoreTooltip
-          iconColor="#5e46a1"
           title="Amount assessed for this application will be added to the total assessed liability amount on the permit."
         />
       </div>
@@ -111,7 +109,6 @@ exports[`PermitAmendmentSecurityForm renders properly 1`] = `
       >
         Security Received
         <CoreTooltip
-          iconColor="#5e46a1"
           title="Do not mark as received until the security amount is paid in full."
         />
       </div>

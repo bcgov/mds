@@ -37,7 +37,11 @@ export class Permits extends Component {
             </Typography.Text>
             &nbsp;associated with this mine.
           </Typography.Paragraph>
-          <PermitsTable isLoaded={this.state.isLoaded} permits={this.props.permits} />
+          <PermitsTable
+            isLoaded={this.state.isLoaded}
+            permits={this.props.permits}
+            majorMineInd={this.props.mine.major_mine_ind}
+          />
         </Col>
       </Row>
     );

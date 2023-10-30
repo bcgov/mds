@@ -22,7 +22,6 @@ exports[`EMLIContactsTable renders properly 1`] = `
         "title": <span>
           General Contact
           <CoreTooltip
-            iconColor="#5e46a1"
             title="General Contacts will be shown on MineSpace in addition to the Regional Contacts."
           />
         </span>,

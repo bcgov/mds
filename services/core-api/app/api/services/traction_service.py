@@ -52,7 +52,7 @@ class TractionService():
             "handshake_protocols": [
                 "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/didexchange/1.0"
             ],
-            "my_label": f"Invitation to {str(party.party_guid)}",
+            "my_label": f"BC Mines - Chief Permitting Officer {Config.ENVIRONMENT_NAME}",
             "use_public_did": False
         }
 

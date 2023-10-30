@@ -149,7 +149,7 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
     });
     permitHistory.unshift({
       ...permitAmendmentLike(parentPermit),
-      status: parentPermit.is_closed ? "Closed" : "Open",
+      is_closed: parentPermit.is_closed ? "Closed" : "Open",
     });
     return permitHistory
       .map((amendment, index) => {
@@ -222,7 +222,9 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
             <Row gutter={6}>
               <Col span={24}>
                 <Typography.Paragraph strong>Issuing Inspector</Typography.Paragraph>
-                <Typography.Paragraph>{currentPermit.issuing_inspector_name}</Typography.Paragraph>
+                <Typography.Paragraph>
+                  {currentPermit.issuing_inspector_name || parentPermit.issuing_inspector_name}
+                </Typography.Paragraph>
               </Col>
             </Row>
           </>
@@ -243,15 +245,11 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
           <Row gutter={6}>
             <Col span={12}>
               <Typography.Paragraph strong>Mine Manager</Typography.Paragraph>
-              <Typography.Paragraph>
-                {currentPermit.mine_manager_mine_party_appt_id}
-              </Typography.Paragraph>
+              <Typography.Paragraph>{currentPermit.mine_manager_name}</Typography.Paragraph>
             </Col>
             <Col span={12}>
               <Typography.Paragraph strong>Permittee</Typography.Paragraph>
-              <Typography.Paragraph>
-                {currentPermit.permittee_mine_party_appt_id}
-              </Typography.Paragraph>
+              <Typography.Paragraph>{currentPermit.permittee_name}</Typography.Paragraph>
             </Col>
           </Row>
           <Typography.Paragraph strong>Application Date</Typography.Paragraph>
@@ -273,43 +271,51 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
           </Row>
           <ExplosivesPermitMap pin={[currentPermit.latitude, currentPermit.longitude]} />
           <br />
-          {supportingDocs.length > 0 && (
+          {(supportingDocs.length > 0 || generatedDocs.length > 0) && (
             <Row>
               <Typography.Title level={3} className="purple">
                 Supporting Documents
               </Typography.Title>
-              <Col span={24}>
-                <Typography.Title level={4} className="dark-grey">
-                  Permit Documents
-                </Typography.Title>
-                <Typography.Paragraph>
-                  These documents were generated when this version of the permit was created. These
-                  documents will be viewable by Minespace users
-                </Typography.Paragraph>
-              </Col>
-              <Col span={24}>
-                <Table
-                  dataSource={generatedDocs}
-                  pagination={false}
-                  columns={generatedDocColumns}
-                />
-              </Col>
-              <Col span={24}>
-                <br />
-                <Typography.Title level={4} className="dark-grey">
-                  Uploaded Documents
-                </Typography.Title>
-                <Typography.Paragraph>
-                  Documents uploaded here will be viewable by Minespace users
-                </Typography.Paragraph>
-              </Col>
-              <Col span={24}>
-                <Table
-                  dataSource={supportingDocs}
-                  pagination={false}
-                  columns={supportingDocColumns}
-                />
-              </Col>
+              {generatedDocs.length > 0 && (
+                <>
+                  <Col span={24}>
+                    <Typography.Title level={4} className="dark-grey">
+                      Permit Documents
+                    </Typography.Title>
+                    <Typography.Paragraph>
+                      These documents were generated when this version of the permit was created.
+                      These documents will be viewable by Minespace users
+                    </Typography.Paragraph>
+                  </Col>
+                  <Col span={24}>
+                    <Table
+                      dataSource={generatedDocs}
+                      pagination={false}
+                      columns={generatedDocColumns}
+                    />
+                  </Col>
+                </>
+              )}
+              {supportingDocs.length > 0 && (
+                <>
+                  <Col span={24}>
+                    <br />
+                    <Typography.Title level={4} className="dark-grey">
+                      Uploaded Documents
+                    </Typography.Title>
+                    <Typography.Paragraph>
+                      Documents uploaded here will be viewable by Minespace users
+                    </Typography.Paragraph>
+                  </Col>
+                  <Col span={24}>
+                    <Table
+                      dataSource={supportingDocs}
+                      pagination={false}
+                      columns={supportingDocColumns}
+                    />
+                  </Col>
+                </>
+              )}
             </Row>
           )}
         </Col>

@@ -203,7 +203,6 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
         explosivesPermit: record,
         parentPermit: { explosives_permit_amendments: [], ...parentPermit },
         openAmendModal: handleOpenAmendExplosivesPermitModal,
-        openModal: props.openModal,
         closeModal: props.closeModal,
         handleOpenExplosivesPermitCloseModal,
       },

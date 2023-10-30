@@ -183,7 +183,6 @@ exports[`ReviewApplicationFeeContent renders properly 1`] = `
       <h4>
         Permit Application Fee Assessment
         <CoreTooltip
-          iconColor="#5e46a1"
           title="The application fee collected for this application was based on the term of application and tonnage. If the tonnage field needs to be altered and the application fee should be increased, you must reject this application. See Fee Chart for reference."
         />
       </h4>
@@ -201,7 +200,6 @@ exports[`ReviewApplicationFeeContent renders properly 1`] = `
     >
       Proposed Start Date
       <CoreTooltip
-        iconColor="#5e46a1"
         title="Altering this field requires the applicant to pay a different application fee than was previously paid. If this field is to be altered, the applicant must re-apply for a Notice of Work. You set the actual Start and End dates when you process the permit."
       />
     </div>
@@ -221,7 +219,6 @@ exports[`ReviewApplicationFeeContent renders properly 1`] = `
     >
       Proposed Authorization End Date
       <CoreTooltip
-        iconColor="#5e46a1"
         title="Altering this field requires the applicant to pay a different application fee than was previously paid. If this field is to be altered, the applicant must re-apply for a Notice of Work. You set the actual Start and End dates when you process the permit."
       />
     </div>
@@ -241,7 +238,6 @@ exports[`ReviewApplicationFeeContent renders properly 1`] = `
     >
       Proposed Term of Application
       <CoreTooltip
-        iconColor="#5e46a1"
         title="This field is calculated based on the proposed start and end dates. If this field is to be altered, the applicant must re-apply for a Notice of Work."
       />
     </div>
@@ -256,7 +252,6 @@ exports[`ReviewApplicationFeeContent renders properly 1`] = `
     >
       Proposed Annual Maximum Tonnage
       <CoreTooltip
-        iconColor="#5e46a1"
         title="The proposed annual maximum tonnage as submitted in the application. This cannot be changed."
       />
     </div>
@@ -276,7 +271,6 @@ exports[`ReviewApplicationFeeContent renders properly 1`] = `
     >
       Actual Annual Maximum Tonnage
       <CoreTooltip
-        iconColor="#5e46a1"
         title="This is to be used if the Proposed Maximum Annual Tonnage Extracted amount changes during Technical Review. Please enter the new total for the Maximum Annual Tonnage Extracted that the proponent is proposing. Changing this amount may affect the amount of the Permit Fee assessed. If the amount is over the fee threshold of the next fee amount, the application will need to be rejected and the applicant will need to reapply."
       />
     </div>

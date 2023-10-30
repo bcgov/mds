@@ -36,7 +36,6 @@ exports[`MineReclamationInvoiceTable renders properly 1`] = `
         "title": <div>
           Balance
           <CoreTooltip
-            iconColor="#5e46a1"
             title="Balance: This is the current amount of money available from the confiscated bonds. If this amount is negative, it means invoices have exceeded the confiscated bonds."
           />
         </div>,

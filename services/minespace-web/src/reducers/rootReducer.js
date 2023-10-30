@@ -20,6 +20,7 @@ import {
   tailingsReducer,
   varianceReducer,
   workInformationReducer,
+  verifiableCredentialReducer,
 } from "@common/reducers";
 
 import authenticationReducer from "@/reducers/authenticationReducer";
@@ -58,6 +59,7 @@ export const reducerObject = {
   ...minespaceReducer,
   ...noticeOfDepartureReducer,
   ...tailingsReducer,
+  ...verifiableCredentialReducer,
   ...damReducer,
   [reducerTypes.AUTHENTICATION]: authenticationReducer,
   [reducerTypes.USER_MINE_INFO]: userMineReducer,

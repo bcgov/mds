@@ -16,7 +16,9 @@ from app.api.mines.explosives_permit_amendment.models.explosives_permit_amendmen
 from app.api.mines.explosives_permit_amendment.models.explosives_permit_amendment_magazine import \
     ExplosivesPermitAmendmentMagazine
 from app.api.utils.models_mixins import Base, SoftDeleteMixin, AuditMixin, PermitMixin
-from sqlalchemy import func
+from sqlalchemy import func, and_
+from sqlalchemy.sql import update
+from app.api.utils.include.user_info import User
 
 from app.extensions import db
 
@@ -84,6 +86,31 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
         sequence = Sequence('explosives_permit_application_number_sequence')
         next_value = sequence.next_value()
         return func.concat(next_value, f'-{year}-{month}')
+
+    @classmethod
+    def update_amendment_status_by_explosives_permit_id(cls, explosives_permit_id, is_closed_status, amendment_guid_to_exclude = None):
+
+        and_clause = None
+
+        if amendment_guid_to_exclude is not None:
+            and_clause = and_(
+                cls.explosives_permit_id == explosives_permit_id,
+                cls.is_closed != is_closed_status,
+                cls.explosives_permit_amendment_guid != amendment_guid_to_exclude
+            )
+        else:
+            and_clause = and_(
+                cls.explosives_permit_id == explosives_permit_id,
+                cls.is_closed != is_closed_status,
+            )
+
+        update_stmt = update(cls)\
+            .where(and_clause)\
+            .values(is_closed = is_closed_status)
+
+        update_result = db.session.execute(update_stmt)
+        db.session.commit()
+        return update_result.rowcount
 
     @classmethod
     def create(cls,
