@@ -224,6 +224,7 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
                explosive_magazines=[],
                detonator_magazines=[],
                documents=[],
+               generate_documents=False,
                add_to_session=True):
 
         # Update simple properties.
@@ -356,8 +357,9 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
                         token, True, False, False)
 
                 permit_number = ExplosivesPermit.find_permit_number_by_explosives_permit_id(explosives_permit_id)
-                create_permit_enclosed_letter()
-                create_issued_permit()
+                if generate_documents:
+                    create_permit_enclosed_letter()
+                    create_issued_permit()
 
         self.application_status = application_status
 

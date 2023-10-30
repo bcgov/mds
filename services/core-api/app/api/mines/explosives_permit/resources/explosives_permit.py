@@ -150,6 +150,12 @@ class ExplosivesPermitResource(Resource, UserMixin):
         store_missing=False,
         required=False,
     )
+    parser.add_argument(
+        'generate_documents',
+        type=inputs.boolean,
+        store_missing=False,
+        required=False,
+    )
 
     @api.doc(
         description='Get an Explosives Permit.',
@@ -189,6 +195,9 @@ class ExplosivesPermitResource(Resource, UserMixin):
         if letter_body is None:
             letter_body = ""
 
+        current_app.logger.debug('generate_documents')
+        current_app.logger.debug(data.get('generate_documents'))
+
         explosives_permit.update(
             data.get('permit_guid'), data.get('now_application_guid'),
             data.get('issuing_inspector_party_guid'), data.get('mine_manager_mine_party_appt_id'),
@@ -200,7 +209,10 @@ class ExplosivesPermitResource(Resource, UserMixin):
             letter_date,
             letter_body,
             data.get('explosive_magazines', []),
-            data.get('detonator_magazines', []), data.get('documents', []))
+            data.get('detonator_magazines', []),
+            data.get('documents', []),
+            data.get('generate_documents', False)
+        )
         
 
         explosives_permit.save()

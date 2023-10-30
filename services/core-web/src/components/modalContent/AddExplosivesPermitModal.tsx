@@ -14,6 +14,7 @@ interface ExplosivesPermitModalProps {
   inspectors: IGroupedDropdownList[];
   closeModal: () => void;
   isProcessed: boolean;
+  isAmendment: boolean;
 }
 
 export const AddExplosivesPermitModal: FC<ExplosivesPermitModalProps> = (props) => (

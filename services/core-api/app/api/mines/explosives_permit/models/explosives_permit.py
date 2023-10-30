@@ -79,7 +79,7 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
     def update(self, permit_guid, now_application_guid, issuing_inspector_party_guid, mine_manager_mine_party_appt_id,
                permittee_mine_party_appt_id, application_status, issue_date, expiry_date, decision_reason, is_closed,
                closed_reason, closed_timestamp, latitude, longitude, application_date, description, letter_date,
-               letter_body, explosive_magazines=[], detonator_magazines=[], documents=[], add_to_session=True):
+               letter_body, explosive_magazines=[], detonator_magazines=[], documents=[], generate_documents=False, add_to_session=True):
 
         # Update simple properties.
         self.permit_guid = permit_guid
@@ -205,11 +205,11 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
                 if self.application_status == 'REC' and application_status == 'APP':
                     self.permit_number = ExplosivesPermit.get_next_permit_number()
 
-                # If the permit documents have not already been generated, generate them.
-                if not self.mine_documents:
+                current_app.logger.debug(f'generate_documents: {generate_documents}')
+
+                if generate_documents:
                     create_permit_enclosed_letter()
                     create_issued_permit()
-
 
             self.application_status = application_status
 

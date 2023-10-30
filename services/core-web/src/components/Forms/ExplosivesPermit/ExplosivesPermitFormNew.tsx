@@ -48,6 +48,7 @@ interface ExplosivesPermitFormProps {
   initialValues: any;
   mineGuid: string;
   isProcessed: boolean;
+  isAmendment: boolean;
   documentTypeDropdownOptions: IOption[];
   isPermitTab: boolean;
   inspectors: IGroupedDropdownList[];
@@ -72,6 +73,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
   initialValues = {},
   mines_permit_guid = null,
   isProcessed = false,
+  isAmendment = false,
   ...props
 }) => {
   const [generatedDocs, setGeneratedDocs] = useState([]);
@@ -487,6 +489,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
               mineGuid={props.mineGuid}
               isProcessed={disabled}
               infoText="Please upload any documents that support this explosives storage and use permit. Documents uploaded here will be viewable by Minespace users."
+              isAmendment={isAmendment}
             />
           </Col>
           <Col md={12} sm={24} className="border--left--layout">

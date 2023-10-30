@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { connect } from "react-redux";
 import { remove } from "lodash";
 import { bindActionCreators } from "redux";
@@ -18,6 +18,7 @@ interface DocumentCategoryFormProps {
   categories: IOption[];
   isProcessed: boolean;
   mineGuid: string;
+  isAmendment: boolean;
   change: (form: string, field: string, value: any) => void;
   arrayPush: (form: string, field: string, value: any) => void;
   infoText: string;
@@ -29,6 +30,7 @@ export const DocumentCategoryForm: FC<DocumentCategoryFormProps> = ({
   isProcessed,
   mineGuid,
   infoText,
+  isAmendment,
   ...props
 }) => {
   // File upload handlers
@@ -56,11 +58,18 @@ export const DocumentCategoryForm: FC<DocumentCategoryFormProps> = ({
     );
   };
 
+  useEffect(() => {
+    console.log("isAmendment", isAmendment);
+  }, [isAmendment]);
+
   const DocumentCategories = ({ fields }) => {
     return (
       <>
         {fields.map((field, index) => {
           const documentExists = fields.get(index) && fields.get(index).mine_document_guid;
+          const fieldId = isAmendment
+            ? `${field}explosives_permit_amendment_document_type_code`
+            : `${field}explosives_permit_document_type_code`;
           return (
             <div className="padding-sm margin-small" key={index}>
               <Row gutter={16}>
@@ -79,8 +88,8 @@ export const DocumentCategoryForm: FC<DocumentCategoryFormProps> = ({
                 <Col span={10}>
                   <Form.Item>
                     <Field
-                      id={`${field}explosives_permit_document_type_code`}
-                      name={`${field}explosives_permit_document_type_code`}
+                      id={fieldId}
+                      name={fieldId}
                       placeholder="Select a Document Category"
                       label="Document Category*"
                       component={renderConfig.SELECT}
