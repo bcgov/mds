@@ -1,6 +1,7 @@
 from flask_restplus import Resource, inputs
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import NotFound, BadRequest
 from decimal import Decimal
+import datetime
 
 from app.api.mines.explosives_permit.response_models import EXPLOSIVES_PERMIT_AMENDMENT_MODEL
 from app.api.mines.explosives_permit_amendment.models.explosives_permit_amendment import ExplosivesPermitAmendment
@@ -9,7 +10,7 @@ from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.utils.access_decorators import requires_role_edit_explosives_permit
 from app.api.mines.mine.models.mine import Mine
-
+from app.api.mines.explosives_permit.models.explosives_permit import ExplosivesPermit
 
 
 class ExplosivesPermitAmendmentListResource(Resource, UserMixin):
@@ -32,6 +33,12 @@ class ExplosivesPermitAmendmentListResource(Resource, UserMixin):
         type=str,
         store_missing=False,
         required=False,
+    )
+    parser.add_argument(
+        'explosives_permit_guid',
+        type=str,
+        store_missing=False,
+        required=True,
     )
     parser.add_argument(
         'originating_system',
@@ -145,13 +152,34 @@ class ExplosivesPermitAmendmentListResource(Resource, UserMixin):
             raise NotFound('Mine not found')
 
         data = self.parser.parse_args()
+
+        explosives_permit = ExplosivesPermit.find_by_explosives_permit_guid(data.get('explosives_permit_guid'))
+        if explosives_permit is None:
+            raise NotFound('Explosives Permit not found')
+
+        # fields that are not allowed to be changed in an amendment
+        static_fields = ['explosives_permit_id', 'explosives_permit_guid', 'permit_guid', 'issue_date']
+        explosives_permit.issue_date = datetime.combine(explosives_permit.issue_date, datetime.time())
+        for field in static_fields:
+            old_value = str(getattr(explosives_permit, field))
+            new_value = str(data.get(field))
+            current_app.logger.info(f'TYPES: old: {type(getattr(explosives_permit, field))}, new: {type(data.get(field))}')
+            if new_value != old_value:
+                current_app.logger.info(f'VALUES: old: {old_value}, new: {new_value}')
+                raise BadRequest(f'Cannot amend Explosives Permit property {field}')
+
+        # consider: documents, is_closed, closing previous one, how does that work with expiry date?
+            # check if there's a previous amendment, and if so
+
         explosives_permit_amendment = ExplosivesPermitAmendment.create(mine,
             data.get('permit_guid'),
             data.get('explosives_permit_id'),
             data.get('application_date'),
             data.get('originating_system'),
-            data.get('latitude'), data.get('longitude'),
-            data.get('description'), data.get('issue_date'),
+            data.get('latitude'), 
+            data.get('longitude'),
+            data.get('description'), 
+            data.get('issue_date'),
             data.get('expiry_date'),
             data.get('issuing_inspector_party_guid'),
             data.get('mine_manager_mine_party_appt_id'),

@@ -165,7 +165,7 @@ class ExplosivesPermitAmendmentResource(Resource, UserMixin):
         return explosives_permit_amendment
 
     @api.doc(
-        description='Update an Explosives Permit.',
+        description='Update an Explosives Permit Amendment.',
         params={
             'mine_guid': 'The GUID of the mine the Explosives Permit belongs to.',
             'explosives_permit_amendment_guid': 'The GUID of the Explosives Permit Amendment to update.'

@@ -305,7 +305,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
                       label="Issue Date*"
                       component={renderConfig.DATE}
                       validate={[required, dateNotInFuture]}
-                      disabled={disabled}
+                      disabled={disabled || isAmendment}
                     />
                   </Form.Item>
                 </Col>
@@ -351,7 +351,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
                     label="Explosives Permit Number*"
                     component={renderConfig.FIELD}
                     validate={[required]}
-                    disabled={disabled}
+                    disabled={disabled || isAmendment}
                   />
                 </Form.Item>
               </Col>
@@ -366,7 +366,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
                   component={renderConfig.SELECT}
                   data={permitDropdown}
                   validate={[required, validateSelectOptions(permitDropdown, true)]}
-                  disabled={disabled}
+                  disabled={disabled || isAmendment}
                 />
               </Form.Item>
             </Col>
