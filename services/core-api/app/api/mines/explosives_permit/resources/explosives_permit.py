@@ -195,9 +195,6 @@ class ExplosivesPermitResource(Resource, UserMixin):
         if letter_body is None:
             letter_body = ""
 
-        current_app.logger.debug('generate_documents')
-        current_app.logger.debug(data.get('generate_documents'))
-
         explosives_permit.update(
             data.get('permit_guid'), data.get('now_application_guid'),
             data.get('issuing_inspector_party_guid'), data.get('mine_manager_mine_party_appt_id'),
