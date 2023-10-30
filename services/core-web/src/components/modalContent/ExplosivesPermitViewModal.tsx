@@ -157,7 +157,7 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
         ...permit,
         issue_date: permit.issue_date,
         expiry_date: permit.expiry_date,
-        status: permit.is_closed ? "Closed" : "Open",
+        is_closed: permit.is_closed ? "Closed" : "Open",
       };
     });
     permitHistory.unshift({
