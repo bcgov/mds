@@ -205,8 +205,6 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
                 if self.application_status == 'REC' and application_status == 'APP':
                     self.permit_number = ExplosivesPermit.get_next_permit_number()
 
-                current_app.logger.debug(f'generate_documents: {generate_documents}')
-
                 if generate_documents:
                     create_permit_enclosed_letter()
                     create_issued_permit()
