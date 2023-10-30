@@ -58,10 +58,6 @@ export const DocumentCategoryForm: FC<DocumentCategoryFormProps> = ({
     );
   };
 
-  useEffect(() => {
-    console.log("isAmendment", isAmendment);
-  }, [isAmendment]);
-
   const DocumentCategories = ({ fields }) => {
     return (
       <>
