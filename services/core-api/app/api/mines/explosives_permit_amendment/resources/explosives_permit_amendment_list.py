@@ -166,8 +166,6 @@ class ExplosivesPermitAmendmentListResource(Resource, UserMixin):
             if new_value != old_value:
                 raise BadRequest(f'Cannot amend Explosives Permit property {field}')
 
-        # consider: documents, is_closed, closing previous one, how does that work with expiry date?
-            # check if there's a previous amendment, and if so
         # DOCUMENTS
         documents = []
         for doc in data.get('documents', []):

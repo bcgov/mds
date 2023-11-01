@@ -74,3 +74,13 @@
     border-bottom: 0;
   }
 }
+
+// buttons within tables
+td.ant-table-cell {
+  vertical-align: middle;
+
+  button {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}

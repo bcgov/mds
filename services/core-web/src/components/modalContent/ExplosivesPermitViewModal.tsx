@@ -61,7 +61,7 @@ export const supportingDocColumns = [
 ];
 
 interface ExplosivesPermitViewModalProps {
-  explosivesPermit: IExplosivesPermit;
+  explosivesPermit: IExplosivesPermitAmendment;
   parentPermit: IExplosivesPermit;
   closeModal: () => void;
   openAmendModal?: (event, record: IExplosivesPermit) => void;
@@ -81,7 +81,7 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
 
   const [generatedDocs, setGeneratedDocs] = useState([]);
   const [supportingDocs, setSupportingDocs] = useState([]);
-  const [currentPermit, setCurrentPermit] = useState<IExplosivesPermit>(explosivesPermit);
+  const [currentPermit, setCurrentPermit] = useState<IExplosivesPermitAmendment>(explosivesPermit);
   const [openDiffModal, setOpenDiffModal] = useState(false);
 
   const permitHistoryColumns = [
@@ -97,12 +97,7 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
       key: "expiry_date",
       render: (text) => <div>{formatDate(text)}</div>,
     },
-    {
-      title: "Status",
-      dataIndex: "is_closed",
-      key: "is_closed",
-      render: (text) => <div>{text}</div>,
-    },
+    renderCategoryColumn("is_closed", "Status", { true: "Closed", false: "Open" }),
     {
       title: "Amendment",
       key: "amendment_order",
@@ -113,24 +108,19 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
       title: "",
       key: "action",
       render: (record) => {
-        const recordGuid = record.explosives_permit_guid || record.explosives_permit_amendment_guid;
-
-        const currentPermitAsAmendment = permitAmendmentLike(currentPermit);
-
-        if (
-          recordGuid === currentPermitAsAmendment?.explosives_permit_guid ||
-          recordGuid === currentPermitAsAmendment?.explosives_permit_amendment_guid
-        )
+        const amendmentId = record.explosives_permit_amendment_id;
+        if (amendmentId === currentPermit?.explosives_permit_amendment_id) {
           return null;
+        }
         return (
           <Button
             type="ghost"
             onClick={() => {
               const permit =
                 parentPermit.explosives_permit_amendments.find(
-                  (amendment) => amendment.explosives_permit_amendment_guid === recordGuid
+                  (amendment) => amendment.explosives_permit_amendment_id === amendmentId
                 ) || parentPermit;
-              setCurrentPermit(permit);
+              setCurrentPermit(permit as IExplosivesPermitAmendment);
             }}
           >
             View
@@ -141,16 +131,11 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
   ];
 
   const transformPermitHistoryData = () => {
-    const permitHistory: any[] = parentPermit.explosives_permit_amendments?.map((permit) => {
-      return {
-        ...permit,
-        is_closed: permit.is_closed ? "Closed" : "Open",
-      };
-    });
-    permitHistory.unshift({
-      ...permitAmendmentLike(parentPermit),
-      is_closed: parentPermit.is_closed ? "Closed" : "Open",
-    });
+    const permitHistory: any[] = [
+      permitAmendmentLike(parentPermit),
+      ...parentPermit.explosives_permit_amendments,
+    ];
+
     return permitHistory
       .map((amendment, index) => {
         return { ...amendment, amendment_order: index };
@@ -411,6 +396,7 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
               </Col>
             </Row>
             <Table
+              rowKey={(rec) => rec.explosives_permit_amendment_guid ?? rec.explosives_permit_guid}
               dataSource={transformPermitHistoryData()}
               pagination={false}
               columns={permitHistoryColumns}
@@ -420,7 +406,7 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
       </Row>
       <Row className="flex-between form-button-container-row">
         <Button
-          onClick={(event) => props.openAmendModal(event, parentPermit)}
+          onClick={(event) => props.openAmendModal(event, explosivesPermit)}
           className="full-mobile"
           type="ghost"
         >
