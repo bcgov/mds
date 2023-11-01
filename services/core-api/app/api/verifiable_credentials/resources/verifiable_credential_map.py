@@ -53,14 +53,17 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
         # https://github.com/bcgov/bc-vcpedia/blob/main/credentials/credential-bc-mines-act-permit.md#261-schema-definition
         credential_attrs={}
 
+        mine_commodity_code_list = [mtd.mine_commodity_code for mtd in permit_amendment.mine.mine_type[0].mine_type_detail if mtd.mine_commodity_code]
+        mine_disturbance_code_list = [mtd.mine_disturbance_code for mtd in permit_amendment.mine.mine_type[0].mine_type_detail if mtd.mine_disturbance_code]
+
         credential_attrs["permit_no"] = permit_amendment.permit_no
         credential_attrs["permit_status_code"] = permit_amendment.permit.permit_status_code
         credential_attrs["mine_party_appt"] = permit_amendment.permit.current_permittee
         credential_attrs["mine_operation_status_code"] = permit_amendment.mine.mine_status[0].mine_status_xref.mine_operation_status_code
         credential_attrs["mine_operation_status_reason_code"] = permit_amendment.mine.mine_status[0].mine_status_xref.mine_operation_status_reason_code
         credential_attrs["mine_operation_status_sub_reason_code"] =  permit_amendment.mine.mine_status[0].mine_status_xref.mine_operation_status_sub_reason_code
-        credential_attrs["mine_commodity_code"] = permit_amendment.mine.mine_type[0].mine_type_detail[0].mine_commodity_code
-        credential_attrs["mine_disturbance_code"] = ", ".join([mtd.mine_disturbance_code for mtd in permit_amendment.mine.mine_type[0].mine_type_detail])
+        credential_attrs["mine_commodity_code"] =  ", ".join(mine_commodity_code_list) if mine_commodity_code_list else ""
+        credential_attrs["mine_disturbance_code"] = ", ".join(mine_disturbance_code_list) if mine_disturbance_code_list else "" 
         credential_attrs["mine_no"] = permit_amendment.mine.mine_no
         credential_attrs["issue_date"] = permit_amendment.issue_date
         credential_attrs["latitude"] = permit_amendment.mine.latitude
