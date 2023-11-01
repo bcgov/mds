@@ -21,10 +21,21 @@ class PartyVerifiableCredentialConnection(AuditMixin, Base):
     def __repr__(self):
         return '<PartyVerifiableCredentialConnection party_guid=%r, connection_state=%r>' % (self.party_guid, self.connection_state)
 
+    def json(self):
+        return {
+            "connection_id":self.connection_id,
+            "connection_state":self.connection_state,
+            "update_timestamp": self.update_timestamp,
+        }
+
     @classmethod
     def find_by_party_guid(cls, party_guid) -> "PartyVerifiableCredentialConnection":
         return cls.query.filter_by(party_guid=party_guid).all()
         
+    @classmethod
+    def find_active_by_party_guid(cls, party_guid) -> "PartyVerifiableCredentialConnection":
+        return cls.query.filter_by(party_guid=party_guid, connection_state="active").one_or_none()
+    
     @classmethod
     def find_by_invitation_id(cls, invitation_id) -> "PartyVerifiableCredentialConnection":
         return cls.query.filter_by(invitation_id=invitation_id).one_or_none()
@@ -32,3 +43,8 @@ class PartyVerifiableCredentialConnection(AuditMixin, Base):
     @classmethod
     def find_by_connection_id(cls, connection_id) -> "PartyVerifiableCredentialConnection":
         return cls.query.filter_by(connection_id=connection_id).one_or_none()
+    
+    @classmethod
+    def find_active_by_invitation_id(cls, invitation_id) -> "PartyVerifiableCredentialConnection":
+        return cls.query.filter_by(invitation_id=invitation_id, connection_state="active").one_or_none()
+    

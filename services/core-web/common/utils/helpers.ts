@@ -112,6 +112,16 @@ export const formatPostalCode = (code) => code && code.replace(/.{3}$/, " $&");
 export const formatTitleString = (input) =>
   input.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
 
+export const formatSnakeCaseToSentenceCase = (text: string | null) => {
+  if (!text || !text.length) {
+    return "";
+  }
+  const words = text
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.substring(1).toLowerCase());
+  return words.join(" ");
+};
+
 export const currencyMask = createNumberMask({
   prefix: "$",
   suffix: "",
