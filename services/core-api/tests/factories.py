@@ -1441,6 +1441,7 @@ class ExplosivesPermitAmendmentFactory(BaseFactory):
     mine_manager_mine_party_appt_id = factory.SelfAttribute('mine_manager.mine_party_appt_id')
     permittee_mine_party_appt_id = factory.SelfAttribute('permittee.mine_party_appt_id')
     explosives_permit_id = factory.SelfAttribute('explosives_permit.explosives_permit_id')
+    explosives_permit_guid = factory.SelfAttribute('explosives_permit.explosives_permit_guid')
 
     originating_system = 'Core'
     application_number = factory.Faker('sentence', nb_words=1)
