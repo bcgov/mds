@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import React from "react";
 // reusable messages for error handling, validations, null-screens, etc.
 export const ERROR = "Error.";
@@ -288,4 +289,9 @@ export const PARTY_APPOINTMENT_STATUS = {
   pending: "Pending",
   active: "Active",
   inactive: "Inactive",
+};
+
+export const ESUP_DOCUMENT_GENERATED_TYPES = {
+  LET: "Explosives Storage and Use Permit",
+  PER: "Permit Enclosed Letter",
 };

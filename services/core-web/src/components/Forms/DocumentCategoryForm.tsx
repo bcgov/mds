@@ -18,6 +18,7 @@ interface DocumentCategoryFormProps {
   categories: IOption[];
   isProcessed: boolean;
   mineGuid: string;
+  esupGuid: string;
   isAmendment: boolean;
   change: (form: string, field: string, value: any) => void;
   arrayPush: (form: string, field: string, value: any) => void;
@@ -29,6 +30,7 @@ export const DocumentCategoryForm: FC<DocumentCategoryFormProps> = ({
   categories,
   isProcessed,
   mineGuid,
+  esupGuid,
   infoText,
   isAmendment,
   ...props
@@ -136,6 +138,7 @@ export const DocumentCategoryForm: FC<DocumentCategoryFormProps> = ({
           onFileLoad={onFileLoad}
           onRemoveFile={onRemoveFile}
           mineGuid={mineGuid}
+          esupGuid={esupGuid}
           component={ExplosivesPermitFileUpload}
           allowMultiple
         />

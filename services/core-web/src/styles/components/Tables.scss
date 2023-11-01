@@ -157,3 +157,12 @@ $pagination-widths: $pagination-width-1, $pagination-width-2, $pagination-width-
     padding-left: 0;
   }
 }
+
+// buttons within tables
+td.ant-table-cell {
+  vertical-align: middle;
+  button {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}

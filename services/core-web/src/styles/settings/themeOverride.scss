@@ -141,13 +141,13 @@
 .ant-btn-secondary, .ant-btn-default {
   position: inherit;
   margin: 10px;
-  padding: 0 11px;
+  padding: 0 16px;
   color: $secondary-btn-color;
   border: 1px solid $secondary-btn-color;
 
   &:hover {
     color: $secondary-btn-color-hover;
-    border: 1px solid $secondary-btn-border-color-hover;
+    border-color: $secondary-btn-border-color-hover;
   }
 
   span {
@@ -233,17 +233,24 @@
   font-weight: $light;
   color: $pure-white;
   background-color: $primary-btn-color;
+  border-color: $primary-btn-color;
 
-  &:hover {
+  &:hover, &:focus {
     color: $pure-white;
     background-color: $primary-btn-color-hover;
-    border: 1px solid $primary-btn-border-color-hover;
+    border-color: $primary-btn-border-color-hover;
   }
+}
 
-  &:focus {
-    color: $pure-white;
-    background-color: $primary-btn-color-hover;
-    border: 1px solid $primary-btn-border-color-hover;
+.ant-btn-ghost {
+  color: $primary-btn-color;
+  border: 2px solid $primary-btn-color;
+  background-color: $pure-white;
+
+  &:hover, &:active {
+    background-color: $transparent-violet;
+    color: $hover-violet;
+    border-color: $hover-violet;
   }
 }
 
@@ -460,6 +467,35 @@
 
 .ant-alert+.ant-alert {
   margin-top: 14px;
+}
+
+.ant-alert-grey {
+  background-color: $lightest-grey;
+  border: 1px solid $medium-grey;
+
+  span>svg {
+    fill: #6b6363;
+    background-color: #f4f0f0;
+  }
+
+  .ant-alert-content .ant-alert-description div {
+    position: relative;
+
+    button.ant-btn {
+      position: absolute;
+      right: 0;
+      top: -75%;
+
+      border-width: 2px;
+      background-color: transparent;
+
+      &:focus,
+      &:hover {
+        background-color: white;
+        ;
+      }
+    }
+  }
 }
 
 // FORMS

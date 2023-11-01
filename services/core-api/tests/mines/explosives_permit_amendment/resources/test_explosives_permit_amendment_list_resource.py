@@ -6,9 +6,10 @@ def test_post_explosives_permit_amendment_application(test_client, db_session, a
     mine, permit = create_mine_and_permit()
     mine_manager = MinePartyAppointmentFactory(mine=mine)
     permittee = MinePartyAppointmentFactory(mine=mine)
-    explosives_permit = ExplosivesPermitFactory()
+    explosives_permit = ExplosivesPermitFactory(mines_act_permit=permit)
     data = {
         'explosives_permit_id': explosives_permit.explosives_permit_id,
+        'explosives_permit_guid': explosives_permit.explosives_permit_guid,
         'originating_system':
         'Core',
         'permit_guid':
@@ -64,6 +65,7 @@ def test_post_explosives_permit_amendment_application(test_client, db_session, a
 
     post_data = json.loads(post_resp.data.decode())
     assert post_data['explosives_permit_id'] != None
+    assert post_data['explosives_permit_guid'] == str(explosives_permit.explosives_permit_guid)
     assert post_data['mine_guid'] == str(mine.mine_guid)
     assert post_data['permit_guid'] == data['permit_guid']
     assert post_data['application_status'] == 'REC'

@@ -11,6 +11,7 @@ const propTypes = {
   onFileLoad: PropTypes.func.isRequired,
   onRemoveFile: PropTypes.func.isRequired,
   mineGuid: PropTypes.string.isRequired,
+  esupGuid: PropTypes.string.isRequired,
 };
 
 export const ExplosivesPermitFileUpload = (props) => {
@@ -20,7 +21,7 @@ export const ExplosivesPermitFileUpload = (props) => {
         id="fileUpload"
         name="fileUpload"
         component={FileUpload}
-        uploadUrl={EXPLOSIVES_PERMIT_DOCUMENTS(props.mineGuid)}
+        uploadUrl={EXPLOSIVES_PERMIT_DOCUMENTS(props.mineGuid, props.esupGuid)}
         acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
         onFileLoad={props.onFileLoad}
         onRemoveFile={props.onRemoveFile}
