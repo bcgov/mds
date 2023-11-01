@@ -134,7 +134,8 @@ PARTY = api.model(
         'signature': fields.String,
         'now_party_appt': fields.Nested(NOW_PARTY_APPOINTMENT),
         'organization_guid': fields.String,
-        'organization': fields.Nested(ORGANIZATION, skip_none=True)
+        'organization': fields.Nested(ORGANIZATION, skip_none=True),
+        "digital_wallet_connection_status": fields.String
     })
 
 PAGINATED_LIST = api.model(
