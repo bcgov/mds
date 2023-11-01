@@ -1431,7 +1431,7 @@ class ExplosivesPermitAmendmentFactory(BaseFactory):
         issuing_inspector = factory.SubFactory(PartyBusinessRoleFactory)
         mine_manager = factory.SubFactory(MinePartyAppointmentFactory)
         permittee = factory.SubFactory(MinePartyAppointmentFactory)
-        explosives_permit = factory.SubFactory(ExplosivesPermitFactory)
+        explosives_permit = factory.SubFactory(ExplosivesPermitFactory, mines_act_permit=mines_act_permit)
 
     explosives_permit_amendment_guid = GUID
 
