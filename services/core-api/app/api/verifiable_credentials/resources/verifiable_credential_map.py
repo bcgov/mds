@@ -43,6 +43,11 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
         if not (permit_amendment):
             raise BadRequest(f"permit_amendment not found")
+        
+        existing_cred_exch = PartyVerifiableCredentialMinesActPermit.find_by_permit_amendment_guid(permit_amendment_guid=permit_amendment_guid)
+        if existing_cred_exch:
+            raise BadRequest(f"This permit_amendment has already been offered, cred_exch_id={existing_cred_exch.cred_exch_id}, cred_exch_state={existing_cred_exch.cred_exch_state}")
+
 
         # collect information
         # https://github.com/bcgov/bc-vcpedia/blob/main/credentials/credential-bc-mines-act-permit.md#261-schema-definition
@@ -55,7 +60,7 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
         credential_attrs["mine_operation_status_reason_code"] = permit_amendment.mine.mine_status[0].mine_status_xref.mine_operation_status_reason_code
         credential_attrs["mine_operation_status_sub_reason_code"] =  permit_amendment.mine.mine_status[0].mine_status_xref.mine_operation_status_sub_reason_code
         credential_attrs["mine_commodity_code"] = permit_amendment.mine.mine_type[0].mine_type_detail[0].mine_commodity_code
-        credential_attrs["mine_disturbance_code"] = permit_amendment.mine.mine_type[0].mine_type_detail[0].mine_disturbance_code
+        credential_attrs["mine_disturbance_code"] = ", ".join([mtd.mine_disturbance_code for mtd in permit_amendment.mine.mine_type[0].mine_type_detail])
         credential_attrs["mine_no"] = permit_amendment.mine.mine_no
         credential_attrs["issue_date"] = permit_amendment.issue_date
         credential_attrs["latitude"] = permit_amendment.mine.latitude
@@ -79,7 +84,7 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
             current_app.logger.warning(vc_conn)
             current_app.logger.warning("returning credentials_attributes")
             return attributes
-        else:    # raise BadRequest(f"not a active connection")
+        else:   
             traction_svc = TractionService()
             response = traction_svc.offer_mines_act_permit(active_connections[0].connection_id, attributes)
             map_vc = PartyVerifiableCredentialMinesActPermit(cred_exch_id = response["credential_exchange_id"],party_guid = party_guid, permit_amendment_guid=permit_amendment_guid)

@@ -12,6 +12,7 @@ from app.extensions import db
 
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
+from app.api.verifiable_credentials.models.credentials import PartyVerifiableCredentialMinesActPermit
 
 from . import permit_amendment_status_code, permit_amendment_type_code
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
@@ -85,6 +86,12 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         uselist=False,
         foreign_keys=[now_application_guid])
 
+    vc_credential_exch = db.relationship(
+        'PartyVerifiableCredentialMinesActPermit',
+        lazy='selectin',
+        uselist=False)
+    
+
     @hybrid_property
     def issuing_inspector_name(self):
         title = "Inspector of Mines"
@@ -127,6 +134,15 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
             parent_permit_condition_id=None,
             deleted_ind=False).count()
         return permit_conditions > 0
+
+    
+    @hybrid_property
+    def vc_credential_exch_state(self):
+        if self.vc_credential_exch:
+            return self.vc_credential_exch.cred_exch_state
+        else:
+            return None
+
 
     def __repr__(self):
         return '<PermitAmendment %r, %r>' % (self.mine_guid, self.permit_id)
