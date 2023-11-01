@@ -106,7 +106,6 @@ EXPLOSIVES_PERMIT_MODEL = api.model(
         'mines_permit_number': fields.String(attribute='mines_act_permit.permit_no'),
         'now_number': fields.String(attribute='now_application_identity.now_number'),
         'closed_by': fields.String,
-        'now_number': fields.String(attribute='now_application_identity.now_number'),
         'explosives_permit_amendments': fields.List(fields.Nested(EXPLOSIVES_PERMIT_AMENDMENT_MODEL))
     })
 

@@ -3,6 +3,7 @@ from datetime import datetime
 
 from werkzeug.exceptions import NotFound
 from flask_restplus import Resource, inputs
+from flask import current_app
 
 from app.api.mines.explosives_permit.response_models import EXPLOSIVES_PERMIT_AMENDMENT_MODEL
 from app.api.mines.mine.models.mine import Mine
@@ -148,6 +149,12 @@ class ExplosivesPermitAmendmentResource(Resource, UserMixin):
         store_missing=False,
         required=False,
     )
+    parser.add_argument(
+        'generate_documents',
+        type=inputs.boolean,
+        store_missing=False,
+        required=False,
+    )
 
     @api.doc(
         description='Get an Explosives Permit Amendment.',
@@ -178,7 +185,8 @@ class ExplosivesPermitAmendmentResource(Resource, UserMixin):
             raise NotFound('Explosives Permit Amendment not found')
 
         data = self.parser.parse_args()
-
+        current_app.logger.debug('DOCUMENTS')
+        current_app.logger.debug(data.get('documents', []))
         explosives_permit_amendment.update(
             data.get('explosives_permit_id'),
             data.get('permit_guid'), data.get('now_application_guid'),
@@ -190,7 +198,10 @@ class ExplosivesPermitAmendmentResource(Resource, UserMixin):
             data.get('description'),data.get('letter_date'),
             data.get('letter_body'),
             data.get('explosive_magazines', []),
-            data.get('detonator_magazines', []), data.get('documents', []))
+            data.get('detonator_magazines', []),
+            data.get('documents', []),
+            data.get('generate_documents', [])
+        )
 
         explosives_permit_amendment.save()
         return explosives_permit_amendment

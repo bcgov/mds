@@ -58,9 +58,19 @@ export const CreateInvitationForm: FC<CreateInvitationFormProps &
     invitation.invitation_url?.length > 0;
   return (
     <Form layout="vertical">
-      <p>Current Connection Status: {connectionState}</p>
+      <p>
+        <b>Current Connection Status: {connectionState}</b>
+      </p>
       {connectionState !== "active" && (
         <div>
+          <p>
+            {" "}
+            By generating this invitation, you choose to connect your organization’s digital wallet
+            to the digital wallet of the Chief Permitting Officer of B.C. Once connected, your
+            organization will have the option to receive permit(s) in the form of digital
+            credentials. This is a one-time action that applies to all major mine permits.
+          </p>
+          <br />
           <Button disabled={disableGenerateButton} onClick={getInvitation}>
             Generate Invitation for {partyName}.
           </Button>
@@ -78,7 +88,6 @@ export const CreateInvitationForm: FC<CreateInvitationFormProps &
                   secure connection for the purposes of recieving Mines Act Permits
                 </b>
               </p>
-              <br />
               <Button type="primary" onClick={copyTextToClipboard}>
                 Copy to Clipboard
               </Button>
@@ -92,6 +101,20 @@ export const CreateInvitationForm: FC<CreateInvitationFormProps &
           )}
         </Skeleton>
       )}
+      <br />
+      <br />
+      <p>
+        <b>Note:</b>
+      </p>
+      <p>
+        <b>Digital Wallet:</b> A digital version of a physical wallet that enables organizations to
+        send and receive digital credentials.{" "}
+      </p>
+      <p>
+        <b>Digital Credential:</b> A digital version of a physical credential, such as your mine
+        permit. Digital credentials are cryptographically protected and verified in real-time,
+        ensuring a high degree of privacy and security regardless of where information is shared.{" "}
+      </p>
       <Popconfirm
         placement="topRight"
         title="Are you sure?"
