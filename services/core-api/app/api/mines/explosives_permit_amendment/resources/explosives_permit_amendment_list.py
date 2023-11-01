@@ -185,7 +185,7 @@ class ExplosivesPermitAmendmentListResource(Resource, UserMixin):
             data.get('closed_timestamp'),
             data.get('explosive_magazines', []),
             data.get('detonator_magazines', []),
-            data.get('documents', [])
+            data.get('documents', []),
             data.get('now_application_guid'))
         explosives_permit_amendment.save()
 

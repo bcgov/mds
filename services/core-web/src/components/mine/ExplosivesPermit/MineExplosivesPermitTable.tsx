@@ -129,7 +129,9 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
         const isProcessed = record.application_status !== "REC";
         const hasDocuments =
           record.documents?.filter((doc) =>
-            ["LET", "PER"].includes(doc.explosives_permit_document_type_code)
+            Object.keys(ESUP_DOCUMENT_GENERATED_TYPES).includes(
+              doc.explosives_permit_document_type_code
+            )
           )?.length > 0;
         const isCoreSource = record.originating_system === "Core";
 

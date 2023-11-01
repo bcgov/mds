@@ -98,7 +98,6 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
   };
 
   const handleCreateNewAmendment = (values) => {
-    console.log("values when we save them", values);
     return props.createExplosivesPermitAmendment(values).then(() => {
       props.fetchExplosivesPermits(mineGuid);
       props.closeModal();
