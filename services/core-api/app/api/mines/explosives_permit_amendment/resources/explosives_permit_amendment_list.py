@@ -1,5 +1,5 @@
 from flask_restplus import Resource, inputs
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import NotFound, BadRequest
 from decimal import Decimal
 
 from app.api.mines.explosives_permit.response_models import EXPLOSIVES_PERMIT_AMENDMENT_MODEL
@@ -32,6 +32,12 @@ class ExplosivesPermitAmendmentListResource(Resource, UserMixin):
         type=str,
         store_missing=False,
         required=False,
+    )
+    parser.add_argument(
+        'explosives_permit_guid',
+        type=str,
+        store_missing=False,
+        required=True,
     )
     parser.add_argument(
         'originating_system',
@@ -145,13 +151,29 @@ class ExplosivesPermitAmendmentListResource(Resource, UserMixin):
             raise NotFound('Mine not found')
 
         data = self.parser.parse_args()
+        explosives_permit_guid = data.get('explosives_permit_guid')
+        explosives_permit = ExplosivesPermit.find_by_explosives_permit_guid(explosives_permit_guid)
+        if explosives_permit is None:
+            raise NotFound(f'Explosives Permit not found with id {explosives_permit_guid}')
+
+        # fields that are not allowed to be changed in an amendment
+        static_fields = ['explosives_permit_id', 'explosives_permit_guid', 'permit_guid']
+        for field in static_fields:
+            old_value = str(getattr(explosives_permit, field))
+            new_value = str(data.get(field))
+            if new_value != old_value:
+                raise BadRequest(f'Cannot amend Explosives Permit property {field}')
+
         explosives_permit_amendment = ExplosivesPermitAmendment.create(mine,
             data.get('permit_guid'),
             data.get('explosives_permit_id'),
+            explosives_permit_guid,
             data.get('application_date'),
             data.get('originating_system'),
-            data.get('latitude'), data.get('longitude'),
-            data.get('description'), data.get('issue_date'),
+            data.get('latitude'), 
+            data.get('longitude'),
+            data.get('description'), 
+            data.get('issue_date'),
             data.get('expiry_date'),
             data.get('issuing_inspector_party_guid'),
             data.get('mine_manager_mine_party_appt_id'),

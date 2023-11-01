@@ -2,10 +2,9 @@ import "@ant-design/compatible/assets/index.css";
 
 import { Alert, Button, Col, Row, Table, Typography } from "antd";
 import {
+  ESUP_DOCUMENT_GENERATED_TYPES,
   IExplosivesPermit,
   IExplosivesPermitAmendment,
-  IExplosivesPermitDocument,
-  IMine,
 } from "@mds/common";
 import React, { FC, useEffect, useState } from "react";
 import { connect } from "react-redux";
@@ -16,25 +15,16 @@ import { bindActionCreators } from "redux";
 import { openDocument } from "@/components/syncfusion/DocumentViewer";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import ExplosivesPermitDiffModal from "@common/components/explosivesPermits/ExplosivesPermitDiffModal";
-
-export const getGeneratedDocCategory = (doc: IExplosivesPermitDocument) => {
-  switch (doc.explosives_permit_document_type_code) {
-    case "LET":
-      return "Permit Enclosed Letter";
-    case "PER":
-      return "Explosives Storage and Use Permit";
-    default:
-      return "";
-  }
-};
+import { renderCategoryColumn } from "../common/CoreTableCommonColumns";
 
 export const generatedDocColumns = [
-  {
-    title: "Category",
-    dataIndex: "explosives_permit_document_type_code",
-    key: "explosives_permit_document_type_code",
-    render: (text, record) => <div title="Category">{getGeneratedDocCategory(record)}</div>,
-  },
+  renderCategoryColumn(
+    "explosives_permit_document_type_code",
+    "Category",
+    ESUP_DOCUMENT_GENERATED_TYPES,
+    true,
+    ""
+  ),
   {
     title: "File Name",
     dataIndex: "document_name",
@@ -71,11 +61,10 @@ export const supportingDocColumns = [
 ];
 
 interface ExplosivesPermitViewModalProps {
-  explosivesPermit: IExplosivesPermit;
+  explosivesPermit: IExplosivesPermitAmendment;
   parentPermit: IExplosivesPermit;
-  mine: IMine;
-  title: string;
   closeModal: () => void;
+  openAmendModal?: (event, record: IExplosivesPermit) => void;
   openDocument: (document_manager_guid: string, mine_document_guid: string) => void;
   handleOpenExplosivesPermitCloseModal: (event, record: IExplosivesPermit) => void;
 }
@@ -87,12 +76,12 @@ const permitAmendmentLike = (permit: IExplosivesPermit): IExplosivesPermitAmendm
 });
 
 export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (props) => {
-  const { explosivesPermit, parentPermit, mine, title } = props;
+  const { explosivesPermit, parentPermit } = props;
   const amendmentsCount = parentPermit?.explosives_permit_amendments?.length || 0;
 
   const [generatedDocs, setGeneratedDocs] = useState([]);
   const [supportingDocs, setSupportingDocs] = useState([]);
-  const [currentPermit, setCurrentPermit] = useState<IExplosivesPermit>(explosivesPermit);
+  const [currentPermit, setCurrentPermit] = useState<IExplosivesPermitAmendment>(explosivesPermit);
   const [openDiffModal, setOpenDiffModal] = useState(false);
 
   const permitHistoryColumns = [
@@ -108,12 +97,7 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
       key: "expiry_date",
       render: (text) => <div>{formatDate(text)}</div>,
     },
-    {
-      title: "Status",
-      dataIndex: "is_closed",
-      key: "is_closed",
-      render: (text) => <div>{text}</div>,
-    },
+    renderCategoryColumn("is_closed", "Status", { true: "Closed", false: "Open" }),
     {
       title: "Amendment",
       key: "amendment_order",
@@ -123,25 +107,20 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
     {
       title: "",
       key: "action",
-      render: (text, record) => {
-        const recordGuid = record.explosives_permit_guid || record.explosives_permit_amendment_guid;
-
-        const currentPermitAsAmendment = permitAmendmentLike(currentPermit);
-
-        if (
-          recordGuid === currentPermitAsAmendment?.explosives_permit_guid ||
-          recordGuid === currentPermitAsAmendment?.explosives_permit_amendment_guid
-        )
+      render: (record) => {
+        const amendmentId = record.explosives_permit_amendment_id;
+        if (amendmentId === currentPermit?.explosives_permit_amendment_id) {
           return null;
+        }
         return (
           <Button
             type="ghost"
             onClick={() => {
               const permit =
                 parentPermit.explosives_permit_amendments.find(
-                  (amendment) => amendment.explosives_permit_amendment_guid === recordGuid
+                  (amendment) => amendment.explosives_permit_amendment_id === amendmentId
                 ) || parentPermit;
-              setCurrentPermit(permit);
+              setCurrentPermit(permit as IExplosivesPermitAmendment);
             }}
           >
             View
@@ -152,20 +131,11 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
   ];
 
   const transformPermitHistoryData = () => {
-    const permitHistory = parentPermit.explosives_permit_amendments?.map((permit) => {
-      return {
-        ...permit,
-        issue_date: permit.issue_date,
-        expiry_date: permit.expiry_date,
-        is_closed: permit.is_closed ? "Closed" : "Open",
-      };
-    });
-    permitHistory.unshift({
-      ...permitAmendmentLike(parentPermit),
-      issue_date: parentPermit.issue_date,
-      expiry_date: parentPermit.expiry_date,
-      is_closed: parentPermit.is_closed ? "Closed" : "Open",
-    });
+    const permitHistory: any[] = [
+      permitAmendmentLike(parentPermit),
+      ...parentPermit.explosives_permit_amendments,
+    ];
+
     return permitHistory
       .map((amendment, index) => {
         return { ...amendment, amendment_order: index };
@@ -175,7 +145,7 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
 
   useEffect(() => {
     if (currentPermit) {
-      const generatedTypes = ["LET", "PER"];
+      const generatedTypes = Object.keys(ESUP_DOCUMENT_GENERATED_TYPES);
       const allDocs = [
         ...parentPermit?.documents,
         ...parentPermit?.explosives_permit_amendments
@@ -194,39 +164,35 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
   return (
     <div>
       {amendmentsCount > 0 && (
-        <Alert
-          className="esup-alert"
-          message={`This Permit Contains ${amendmentsCount} Amended Version${
-            amendmentsCount > 1 ? "s" : ""
-          }`}
-          description={
-            <div>
-              <Typography.Text>Click View History to See all past versions</Typography.Text>
+        <>
+          <Alert
+            className="ant-alert-grey bullet"
+            message={`This Permit Contains ${amendmentsCount} Amended Version${
+              amendmentsCount > 1 ? "s" : ""
+            }`}
+            description={
+              <div>
+                <Typography.Text>Click View History to See all past versions</Typography.Text>
 
-              <Button
-                type="primary"
-                className="margin-large--left esup-history-button"
-                onClick={() => setOpenDiffModal(true)}
-              >
-                View History
-              </Button>
-            </div>
-          }
-          type="info"
-          showIcon
-        />
+                <Button className="margin-large--left" onClick={() => setOpenDiffModal(true)}>
+                  View History
+                </Button>
+              </div>
+            }
+            type="info"
+            showIcon
+          />
+          <br />
+        </>
       )}
-      <Typography.Title level={3} className="margin-large--bottom">
+      <Typography.Title level={2} className="margin-large--bottom">
         Explosive Storage and Use Permit
       </Typography.Title>
       <Row gutter={48}>
         <Col md={12} sm={24}>
-          <Typography.Title level={4} className="purple">
+          <Typography.Title level={3} className="purple">
             Explosives Permit Details
           </Typography.Title>
-          <Typography.Paragraph>
-            Select the location and one or more incident types for this submission.
-          </Typography.Paragraph>
           <>
             <Row gutter={6}>
               <Col span={12}>
@@ -275,7 +241,7 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
           <Typography.Paragraph>{currentPermit.application_date}</Typography.Paragraph>
           <Typography.Paragraph strong>Other Information</Typography.Paragraph>
           <Typography.Paragraph>{currentPermit.description}</Typography.Paragraph>
-          <Typography.Title level={4} className="purple">
+          <Typography.Title level={3} className="purple">
             Storage Details
           </Typography.Title>
           <Row gutter={6}>
@@ -291,46 +257,56 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
           <ExplosivesPermitMap pin={[currentPermit.latitude, currentPermit.longitude]} />
           <br />
           {(supportingDocs.length > 0 || generatedDocs.length > 0) && (
-            <div>
-              <Typography.Title level={4} className="purple">
+            <Row>
+              <Typography.Title level={3} className="purple">
                 Supporting Documents
               </Typography.Title>
               {generatedDocs.length > 0 && (
-                <div>
-                  <Typography.Paragraph strong>Permit Documents</Typography.Paragraph>
-                  <Typography.Paragraph>
-                    These documents were generated when this version of the permit was created.
-                    These documents will be viewable by Minespace users
-                  </Typography.Paragraph>
-                  <Table
-                    dataSource={generatedDocs}
-                    pagination={false}
-                    columns={generatedDocColumns}
-                  />
-                </div>
+                <>
+                  <Col span={24}>
+                    <Typography.Title level={4} className="dark-grey">
+                      Permit Documents
+                    </Typography.Title>
+                    <Typography.Paragraph>
+                      These documents were generated when this version of the permit was created.
+                      These documents will be viewable by Minespace users
+                    </Typography.Paragraph>
+                  </Col>
+                  <Col span={24}>
+                    <Table
+                      dataSource={generatedDocs}
+                      pagination={false}
+                      columns={generatedDocColumns}
+                    />
+                  </Col>
+                </>
               )}
-
               {supportingDocs.length > 0 && (
-                <div>
-                  <Typography.Paragraph strong className="margin-large--top">
-                    Uploaded Documents
-                  </Typography.Paragraph>
-                  <Typography.Paragraph>
-                    Documents uploaded here will be viewable by Minespace users
-                  </Typography.Paragraph>
-                  <Table
-                    dataSource={supportingDocs}
-                    pagination={false}
-                    columns={supportingDocColumns}
-                  />
-                </div>
+                <>
+                  <Col span={24}>
+                    <br />
+                    <Typography.Title level={4} className="dark-grey">
+                      Uploaded Documents
+                    </Typography.Title>
+                    <Typography.Paragraph>
+                      Documents uploaded here will be viewable by Minespace users
+                    </Typography.Paragraph>
+                  </Col>
+                  <Col span={24}>
+                    <Table
+                      dataSource={supportingDocs}
+                      pagination={false}
+                      columns={supportingDocColumns}
+                    />
+                  </Col>
+                </>
               )}
-            </div>
+            </Row>
           )}
         </Col>
         <Col md={12} sm={24} className="border--left--layout">
           <>
-            <Typography.Title level={4} className="purple">
+            <Typography.Title level={3} className="purple">
               Permit Status
             </Typography.Title>
             <Row>
@@ -381,7 +357,7 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
                 </Col>
               </Row>
             )}
-            <Typography.Title level={4} className="purple margin-large--top">
+            <Typography.Title level={3} className="purple margin-large--top">
               Explosives Magazines
             </Typography.Title>
             {currentPermit?.explosive_magazines?.length > 0 &&
@@ -392,7 +368,7 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
                   magazine={magazine}
                 />
               ))}
-            <Typography.Title level={4} className="purple">
+            <Typography.Title level={3} className="purple">
               Detonator Magazines
             </Typography.Title>
             {currentPermit?.detonator_magazines?.length > 0 &&
@@ -405,14 +381,14 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
               ))}
             <Row align="middle" justify="space-between">
               <Col>
-                <Typography.Title level={4} className="purple margin-none">
+                <Typography.Title level={3} className="purple margin-none">
                   Permit History
                 </Typography.Title>
               </Col>
               <Col>
                 <Button
-                  type="primary"
-                  className="margin-large--left esup-history-button"
+                  type="ghost"
+                  className="margin-large--left"
                   onClick={() => setOpenDiffModal(true)}
                 >
                   View History
@@ -420,6 +396,7 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
               </Col>
             </Row>
             <Table
+              rowKey={(rec) => rec.explosives_permit_amendment_guid ?? rec.explosives_permit_guid}
               dataSource={transformPermitHistoryData()}
               pagination={false}
               columns={permitHistoryColumns}
@@ -427,11 +404,18 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
           </>
         </Col>
       </Row>
-      <div className="right center-mobile" style={{ paddingTop: "14px" }}>
-        <Button onClick={props.closeModal} className="full-mobile">
+      <Row className="flex-between form-button-container-row">
+        <Button
+          onClick={(event) => props.openAmendModal(event, explosivesPermit)}
+          className="full-mobile"
+          type="ghost"
+        >
+          Create Amendment
+        </Button>
+        <Button onClick={props.closeModal} className="full-mobile" type="primary">
           Close
         </Button>
-      </div>
+      </Row>
       <ExplosivesPermitDiffModal
         open={openDiffModal}
         onCancel={() => setOpenDiffModal(false)}

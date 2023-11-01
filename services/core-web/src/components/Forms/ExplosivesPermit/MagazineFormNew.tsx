@@ -240,6 +240,7 @@ class MagazineForm extends Component<FormProps> {
             ))}
             <Button
               className="add-magazine-button"
+              type="ghost"
               onClick={(event) => this.addField(event, fields)}
               disabled={this.props.isProcessed}
               icon={<PlusOutlined style={{ color: COLOR.violet }} />}
@@ -275,6 +276,7 @@ class MagazineForm extends Component<FormProps> {
             ))}
             <Button
               className="add-magazine-button"
+              type="ghost"
               onClick={(event) => this.addField(event, fields)}
               disabled={this.props.isProcessed}
               icon={<PlusOutlined style={{ color: COLOR.violet }} />}
@@ -290,12 +292,12 @@ class MagazineForm extends Component<FormProps> {
   render() {
     return (
       <div>
-        <Typography.Title level={4} className="purple">
+        <Typography.Title level={3} className="purple">
           Explosives Magazines
         </Typography.Title>
         <FieldArray props={{}} name="explosive_magazines" component={this.renderExplosive} />
         <Divider style={{ backgroundColor: COLOR.violet }} />
-        <Typography.Title level={4} className="purple">
+        <Typography.Title level={3} className="purple">
           Detonator Magazines
         </Typography.Title>
         <FieldArray props={{}} name="detonator_magazines" component={this.renderDetonator} />

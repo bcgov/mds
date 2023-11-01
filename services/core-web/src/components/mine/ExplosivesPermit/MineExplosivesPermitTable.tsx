@@ -20,6 +20,7 @@ import {
   IExplosivesPermit,
   IExplosivesPermitAmendment,
   IExplosivesPermitDocument,
+  ESUP_DOCUMENT_GENERATED_TYPES,
   isFeatureEnabled,
 } from "@mds/common";
 import { ColumnType } from "antd/lib/table";
@@ -61,6 +62,7 @@ interface MineExplosivesPermitTableProps {
   ) => void;
   handleOpenViewMagazineModal: (event, record: IExplosivesPermit, type: string) => void;
   handleOpenViewExplosivesPermitModal: (event, record: IExplosivesPermit) => void;
+  handleOpenAmendExplosivesPermitModal: (event, record: IExplosivesPermit) => void;
 }
 
 type MineExplosivesTableItem = IExplosivesPermit & {
@@ -127,7 +129,9 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
         const isProcessed = record.application_status !== "REC";
         const hasDocuments =
           record.documents?.filter((doc) =>
-            ["LET", "PER"].includes(doc.explosives_permit_document_type_code)
+            Object.keys(ESUP_DOCUMENT_GENERATED_TYPES).includes(
+              doc.explosives_permit_document_type_code
+            )
           )?.length > 0;
         const isCoreSource = record.originating_system === "Core";
 
@@ -151,9 +155,9 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
               },
               {
                 key: "edit",
-                label: "Edit Permit",
+                label: "Create Amendment",
                 clickFunction: (event, record) =>
-                  props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record),
+                  props.handleOpenAmendExplosivesPermitModal(event, record),
                 icon: editIcon,
               },
             ]

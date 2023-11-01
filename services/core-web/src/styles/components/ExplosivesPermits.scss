@@ -1,8 +1,5 @@
 .close-permit-button,
 .add-magazine-button {
-  text-align: center;
-  border: $violet 2px solid;
-  color: $violet !important;
   display: flex;
   margin-right: 24px;
   justify-content: center;
@@ -20,41 +17,10 @@
 
 .magazine-collapse,
 .magazine-collapse > div {
-  background-color: rgb(242, 242, 242);
+  background-color: #f2f2f2;
   align-items: center !important;
 }
 
-.esup-alert {
-  background-color: $lightest-grey;
-  border: 1px solid $medium-grey;
-  margin-bottom: 56px;
-}
-
-.esup-alert .ant-alert-content .ant-alert-description div {
-  position: relative;
-}
-
-.esup-history-button {
-  background-color: transparent;
-  color: black !important;
-  border: 2px solid $violet;
-}
-
-.esup-history-button:focus {
-  background-color: white;
-}
-
-.esup-alert .ant-alert-content .ant-alert-description div button {
-  position: absolute;
-  right: 0;
-  top: -75%;
-}
-
-.esup-history-button:hover {
-  background-color: white;
-}
-
-.esup-alert > span > svg {
-  fill: #6b6363;
-  background-color: #f4f0f0;
+.form-button-container-row {
+  padding-top: 48px;
 }
