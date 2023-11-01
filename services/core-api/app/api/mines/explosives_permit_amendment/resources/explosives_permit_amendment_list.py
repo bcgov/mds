@@ -166,12 +166,6 @@ class ExplosivesPermitAmendmentListResource(Resource, UserMixin):
             if new_value != old_value:
                 raise BadRequest(f'Cannot amend Explosives Permit property {field}')
 
-        # DOCUMENTS
-        documents = []
-        for doc in data.get('documents', []):
-            doc['explosives_permit_amendment_document_type_code'] = doc['explosives_permit_document_type_code']
-            documents.append(doc)
-
         explosives_permit_amendment = ExplosivesPermitAmendment.create(mine,
             data.get('permit_guid'),
             data.get('explosives_permit_id'),
@@ -191,7 +185,7 @@ class ExplosivesPermitAmendmentListResource(Resource, UserMixin):
             data.get('closed_timestamp'),
             data.get('explosive_magazines', []),
             data.get('detonator_magazines', []),
-            documents,
+            data.get('documents', [])
             data.get('now_application_guid'))
         explosives_permit_amendment.save()
 

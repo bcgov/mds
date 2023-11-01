@@ -39,7 +39,7 @@ export const createExplosivesPermitAmendment = (
 };
 
 export const updateExplosivesPermitAmendment = (
-  payload: Partial<IExplosivesPermitAmendment>
+  payload: Partial<IExplosivesPermitAmendment>,
   generate_documents = false
 ): AppThunk<Promise<AxiosResponse<IExplosivesPermitAmendment>>> => (
   dispatch
@@ -51,7 +51,7 @@ export const updateExplosivesPermitAmendment = (
     .put(
       ENVIRONMENT.apiUrl +
         API.EXPLOSIVES_PERMIT_AMENDMENT(mine_guid, explosives_permit_amendment_guid),
-      payload,
+      { ...payload, generate_documents },
 
       createRequestHeader()
     )
