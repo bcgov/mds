@@ -37,7 +37,7 @@ class VerifiableCredentialWebhookResource(Resource, UserMixin):
         elif topic == CREDENTIAL_OFFER:
             cred_exch_id = webhook_body["credential_exchange_id"]
             cred_exch_record = PartyVerifiableCredentialMinesActPermit.query.unbound_unsafe().filter_by(cred_exch_id=cred_exch_id).first()
-            assert cred_exch_record, f"issue_credential.credential_exchange_id={invitation_id} not found"
+            assert cred_exch_record, f"issue_credential.credential_exchange_id={cred_exch_id} not found"
             new_state = webhook_body["state"]
             if new_state != cred_exch_record.cred_exch_state:
                 cred_exch_record.cred_exch_state=new_state
