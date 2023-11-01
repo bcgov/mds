@@ -1,7 +1,6 @@
 from flask_restplus import Resource, inputs
 from werkzeug.exceptions import NotFound, BadRequest
 from decimal import Decimal
-import datetime
 
 from app.api.mines.explosives_permit.response_models import EXPLOSIVES_PERMIT_AMENDMENT_MODEL
 from app.api.mines.explosives_permit_amendment.models.explosives_permit_amendment import ExplosivesPermitAmendment
@@ -158,8 +157,7 @@ class ExplosivesPermitAmendmentListResource(Resource, UserMixin):
             raise NotFound(f'Explosives Permit not found with id {explosives_permit_guid}')
 
         # fields that are not allowed to be changed in an amendment
-        static_fields = ['explosives_permit_id', 'explosives_permit_guid', 'permit_guid', 'issue_date']
-        explosives_permit.issue_date = datetime.datetime.combine(explosives_permit.issue_date, datetime.time())
+        static_fields = ['explosives_permit_id', 'explosives_permit_guid', 'permit_guid']
         for field in static_fields:
             old_value = str(getattr(explosives_permit, field))
             new_value = str(data.get(field))
