@@ -24,3 +24,7 @@ class PartyVerifiableCredentialMinesActPermit(AuditMixin, Base):
     @classmethod
     def find_by_party_guid(cls, party_guid) -> "PartyVerifiableCredentialMinesActPermit":
         return cls.query.filter_by(party_guid=party_guid).all()
+    
+    @classmethod
+    def find_by_permit_amendment_guid(cls, permit_amendment_guid) -> "PartyVerifiableCredentialMinesActPermit":
+        return cls.query.filter_by(permit_amendment_guid=permit_amendment_guid).one_or_none()

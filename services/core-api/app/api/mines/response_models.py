@@ -207,6 +207,7 @@ PERMIT_AMENDMENT_SHORT_MODEL = api.model(
         'permit_conditions_last_updated_by': fields.String,
         'permit_conditions_last_updated_date': fields.DateTime,
         'has_permit_conditions': fields.Boolean,
+        'vc_credential_exch_state': fields.String,
         'is_generated_in_core': fields.Boolean,
     })
 
@@ -273,6 +274,8 @@ PERMIT_AMENDMENT_MODEL = api.model(
         'permit_conditions_last_updated_date':
             fields.DateTime,
         'has_permit_conditions':
+            fields.String,
+        'vc_credential_exch_state':
             fields.Boolean,
         'conditions':
             fields.List(PermitCondition),
