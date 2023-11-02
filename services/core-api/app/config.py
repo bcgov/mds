@@ -17,10 +17,15 @@ class CustomFormatter(logging.Formatter):
     def format(self, record):
         KEY_CLOAK_CLIENT_ID = None
         def get_key_cloak_client_id():
-            # Check if the request is a valid HTTP request
-            if requests:
-                from app.extensions import getJwtManager
-                return getJwtManager().audience
+            try:
+                # Check if the request is a valid HTTP request
+                if requests:
+                    from app.extensions import getJwtManager
+                    if getJwtManager().audience:
+                        return getJwtManager().audience
+            except Exception as e:
+                # Handle the exception here (e.g., log it)
+                print(f"An error occurred: {e}")
 
             return None
 
