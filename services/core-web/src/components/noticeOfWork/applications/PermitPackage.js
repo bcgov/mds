@@ -170,7 +170,7 @@ export class PermitPackage extends Component {
           setCompressionModalVisible={(state) => this.setState({ isCompressionModal: state })}
           isCompressionModalVisible={this.state.isCompressionModal}
           compressionInProgress={(state) => this.setState({ isCompressionInProgress: state })}
-          showArchiveDownloadWarning={false}
+          showDownloadWarning={false}
         />
         <Button
           type="secondary"

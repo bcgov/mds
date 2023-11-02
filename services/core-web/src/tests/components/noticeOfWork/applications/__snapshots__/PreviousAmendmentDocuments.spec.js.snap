@@ -8,7 +8,7 @@ exports[`PermitPackage renders properly 1`] = `
     isCompressionModalVisible={false}
     rows={Array []}
     setCompressionModalVisible={[Function]}
-    showArchiveDownloadWarning={false}
+    showDownloadWarning={false}
   />
   <Button
     className="full-mobile"

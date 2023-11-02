@@ -366,7 +366,7 @@ export const DocumentTable: FC<DocumentTableProps> = ({
         setCompressionModalVisible={setCompressionModal}
         isCompressionModalVisible={isCompressionModal}
         compressionInProgress={setCompressionInProgress}
-        showArchiveDownloadWarning={true}
+        showDownloadWarning={showVersionHistory || canArchiveDocuments}
       />
       {renderBulkActions()}
       {<CoreTable {...coreTableProps} />}

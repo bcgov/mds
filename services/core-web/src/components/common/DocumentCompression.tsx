@@ -21,7 +21,7 @@ interface DocumentCompressionProps {
   documentsCompression: ActionCreator<typeof documentsCompression>;
   pollDocumentsCompressionProgress: ActionCreator<typeof pollDocumentsCompressionProgress>;
   startFilesCompression: () => void;
-  showArchiveDownloadWarning: boolean;
+  showDownloadWarning: boolean;
 }
 
 export const DocumentCompression: FC<DocumentCompressionProps> = (props) => {
@@ -121,14 +121,14 @@ export const DocumentCompression: FC<DocumentCompressionProps> = (props) => {
   };
 
   useEffect(() => {
-    if (!props.showArchiveDownloadWarning && props.isCompressionModalVisible) {
+    if (!props.showDownloadWarning && props.isCompressionModalVisible) {
       startFilesCompression();
     }
   }, [props.isCompressionModalVisible]);
 
   return (
     <div>
-      {props.showArchiveDownloadWarning && (
+      {props.showDownloadWarning && (
         <DocumentCompressionWarningModal
           isModalVisible={props.isCompressionModalVisible}
           filesCompression={startFilesCompression}

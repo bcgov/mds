@@ -162,7 +162,7 @@ export class ManageDocumentsTab extends Component {
             rows={this.state.documents}
             setCompressionModalVisible={(state) => this.setState({ isCompressionModal: state })}
             isCompressionModalVisible={this.state.isCompressionModal}
-            showArchiveDownloadWarning={false}
+            showDownloadWarning={false}
           />
           <NOWApplicationManageDocuments
             mineGuid={this.props.noticeOfWork.mine_guid}

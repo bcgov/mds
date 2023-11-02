@@ -431,7 +431,7 @@ exports[`ManageDocumentsTab renders properly 1`] = `
       isCompressionModalVisible={false}
       rows={Array []}
       setCompressionModalVisible={[Function]}
-      showArchiveDownloadWarning={false}
+      showDownloadWarning={false}
     />
     <NOWApplicationManageDocuments
       handleSaveNOWEdit={[Function]}
