@@ -2,8 +2,17 @@
 
 exports[`PermitPackage renders properly 1`] = `
 <div>
+  <Connect(DocumentCompression)
+    compressionInProgress={[Function]}
+    documentType="all"
+    isCompressionModalVisible={false}
+    rows={Array []}
+    setCompressionModalVisible={[Function]}
+    showArchiveDownloadWarning={false}
+  />
   <Button
     className="full-mobile"
+    disabled={false}
     onClick={[Function]}
     type="secondary"
   >

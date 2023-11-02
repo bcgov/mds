@@ -1,49 +1,19 @@
 import React, { useState } from "react";
-import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { DownloadOutlined } from "@ant-design/icons";
-import { Button, Progress, Popconfirm } from "antd";
-import { getDocumentDownloadState } from "@common/selectors/noticeOfWorkSelectors";
+import { Button, Popconfirm } from "antd";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications/NOWSubmissionDocuments";
-import { COLOR } from "@/constants/styles";
-import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   nowDocuments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   noticeOfWorkGuid: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  cancelDownload: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  documentDownloadState: CustomPropTypes.documentDownloadState,
-};
-
-const defaultProps = {
-  documentDownloadState: {
-    downloading: false,
-    currentFile: 0,
-    totalFiles: 0,
-  },
 };
 
 export const ManageDocumentsDownloadPackageModal = (props) => {
   const [selectedDocumentRows, setSelectedDocumentRows] = useState(props.nowDocuments);
-
-  return props.documentDownloadState.downloading ? (
-    <div className="inline-flex flex-flow-column horizontal-center">
-      <h4>Downloading Selected Files...</h4>
-      <Progress
-        className="padding-md--top padding-lg--bottom"
-        strokeColor={COLOR.violet}
-        type="circle"
-        percent={Math.round(
-          (props.documentDownloadState.currentFile / props.documentDownloadState.totalFiles) * 100
-        )}
-      />
-      <Button className="full-mobile" type="secondary" onClick={() => props.cancelDownload()}>
-        Cancel
-      </Button>
-    </div>
-  ) : (
+  return (
     <>
       <div>
         <h4>All NoW Documents</h4>
@@ -105,11 +75,6 @@ export const ManageDocumentsDownloadPackageModal = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  documentDownloadState: getDocumentDownloadState(state),
-});
-
 ManageDocumentsDownloadPackageModal.propTypes = propTypes;
-ManageDocumentsDownloadPackageModal.defaultProps = defaultProps;
 
-export default connect(mapStateToProps)(ManageDocumentsDownloadPackageModal);
+export default ManageDocumentsDownloadPackageModal;

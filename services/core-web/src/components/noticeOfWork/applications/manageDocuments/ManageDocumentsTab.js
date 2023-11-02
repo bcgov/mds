@@ -3,14 +3,12 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { getFormValues } from "redux-form";
-import { Button, notification } from "antd";
+import { Button } from "antd";
 import { openModal, closeModal } from "@common/actions/modalActions";
-import { getDocumentDownloadToken } from "@common/utils/actionlessNetworkCalls";
 import {
   updateNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
   fetchNoticeOfWorkApplicationReviews,
-  setNoticeOfWorkApplicationDocumentDownloadState,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
 import {
   getNoticeOfWork,
@@ -25,7 +23,8 @@ import { modalConfig } from "@/components/modalContent/config";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import NOWTabHeader from "@/components/noticeOfWork/applications/NOWTabHeader";
 import NOWApplicationManageDocuments from "@/components/noticeOfWork/applications/manageDocuments/NOWApplicationManageDocuments";
-import { waitFor, downloadDocument } from "@/components/common/downloads/helpers";
+import DocumentCompression from "@/components/common/DocumentCompression";
+import { MineDocument } from "@mds/common/models/documents/document";
 
 /**
  * @class ManageDocumentsTab- contains all information relating to the documents on a Notice of Work Application.
@@ -41,7 +40,6 @@ const propTypes = {
   inspectors: CustomPropTypes.groupOptions.isRequired,
   formValues: CustomPropTypes.importedNOWApplication.isRequired,
   noticeOfWorkReviews: PropTypes.arrayOf(CustomPropTypes.NOWApplicationReview).isRequired,
-  setNoticeOfWorkApplicationDocumentDownloadState: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
@@ -49,7 +47,8 @@ const propTypes = {
 export class ManageDocumentsTab extends Component {
   state = {
     isInspectorsLoaded: true,
-    cancelDownload: false,
+    isCompressionModal: false,
+    documents: [],
   };
 
   componentDidMount = () =>
@@ -68,10 +67,6 @@ export class ManageDocumentsTab extends Component {
       });
   };
 
-  cancelDownload = () => {
-    this.setState({ cancelDownload: true });
-  };
-
   gatherNowDocuments = () => {
     // Gather different types of documents(generated, uploaded, imported)
     const nowDocs = this.props.noticeOfWork.documents;
@@ -88,68 +83,33 @@ export class ManageDocumentsTab extends Component {
   };
 
   downloadDocumentPackage = (selectedDocumentRows) => {
-    const docURLS = [];
+    const mineGuid = this.props.noticeOfWork?.mine_guid;
     const nowDocs = this.gatherNowDocuments()
-      .map((doc) => ({
-        // NoW Imported Submission documents have a different structure
-        key: doc.is_imported_submission
-          ? doc.mine_document_guid
-          : doc.mine_document.mine_document_guid,
-        documentManagerGuid: doc.is_imported_submission
-          ? doc.document_manager_guid
-          : doc.mine_document.document_manager_guid,
-        filename: doc.is_imported_submission ? doc.filename : doc.mine_document.document_name,
-      }))
-      .filter((doc) => selectedDocumentRows.includes(doc.key));
+      .map(
+        (doc) =>
+          new MineDocument({
+            mine_document_guid: doc.is_imported_submission
+              ? doc.mine_document_guid
+              : doc.mine_document.mine_document_guid,
+            document_manager_guid: doc.is_imported_submission
+              ? doc.document_manager_guid
+              : doc.mine_document.document_manager_guid,
+            document_name: doc.is_imported_submission
+              ? doc.filename
+              : doc.mine_document.document_name,
+            mine_guid: mineGuid,
+          })
+      )
+      .filter((doc) => selectedDocumentRows.includes(doc.mine_document_guid));
 
     const totalFiles = nowDocs.length;
     if (totalFiles === 0) {
       return;
     }
 
-    nowDocs.forEach((doc) =>
-      getDocumentDownloadToken(doc.documentManagerGuid, doc.filename, docURLS)
-    );
-
-    let currentFile = 0;
-    waitFor(() => docURLS.length === totalFiles).then(async () => {
-      // eslint-disable-next-line no-restricted-syntax
-      for (const url of docURLS) {
-        if (this.state.cancelDownload) {
-          this.setState({ cancelDownload: false });
-          this.props.closeModal();
-          this.props.setNoticeOfWorkApplicationDocumentDownloadState({
-            downloading: false,
-            currentFile: 0,
-            totalFiles: 1,
-          });
-          downloadDocument(url);
-          // eslint-disable-next-line
-          await new Promise((resolve) => setTimeout(resolve, 2000));
-        }
-
-        currentFile += 1;
-        this.props.setNoticeOfWorkApplicationDocumentDownloadState({
-          downloading: true,
-          currentFile,
-          totalFiles,
-        });
-        downloadDocument(url);
-        // eslint-disable-next-line
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-      }
-      // dispatch toast message
-      notification.success({
-        message: `Successfully Downloaded: ${totalFiles} files.`,
-        duration: 10,
-      });
-
-      this.props.setNoticeOfWorkApplicationDocumentDownloadState({
-        downloading: false,
-        currentFile: 1,
-        totalFiles: 1,
-      });
-      this.props.closeModal();
+    this.setState({
+      isCompressionModal: true,
+      documents: nowDocs,
     });
   };
 
@@ -161,7 +121,6 @@ export class ManageDocumentsTab extends Component {
         noticeOfWorkGuid: this.props.noticeOfWork.now_application_guid,
         nowDocuments: this.gatherNowDocuments(),
         onSubmit: this.downloadDocumentPackage,
-        cancelDownload: this.cancelDownload,
         title: "Download NoW Documents",
         closeModal: this.props.closeModal,
         afterClose: () => {},
@@ -198,6 +157,13 @@ export class ManageDocumentsTab extends Component {
             this.props.fixedTop ? "side-menu--content with-fixed-top" : "side-menu--content"
           }
         >
+          <DocumentCompression
+            documentType={"all"}
+            rows={this.state.documents}
+            setCompressionModalVisible={(state) => this.setState({ isCompressionModal: state })}
+            isCompressionModalVisible={this.state.isCompressionModal}
+            showArchiveDownloadWarning={false}
+          />
           <NOWApplicationManageDocuments
             mineGuid={this.props.noticeOfWork.mine_guid}
             noticeOfWork={this.props.noticeOfWork}
@@ -230,7 +196,6 @@ const mapDispatchToProps = (dispatch) =>
       updateNoticeOfWorkApplication,
       fetchImportedNoticeOfWorkApplication,
       fetchNoticeOfWorkApplicationReviews,
-      setNoticeOfWorkApplicationDocumentDownloadState,
     },
     dispatch
   );

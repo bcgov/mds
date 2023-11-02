@@ -426,6 +426,13 @@ exports[`ManageDocumentsTab renders properly 1`] = `
   <div
     className="side-menu--content"
   >
+    <Connect(DocumentCompression)
+      documentType="all"
+      isCompressionModalVisible={false}
+      rows={Array []}
+      setCompressionModalVisible={[Function]}
+      showArchiveDownloadWarning={false}
+    />
     <NOWApplicationManageDocuments
       handleSaveNOWEdit={[Function]}
       importNowSubmissionDocumentsJob={false}
