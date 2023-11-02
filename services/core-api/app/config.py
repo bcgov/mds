@@ -1,12 +1,51 @@
+import logging
 import os
 
-from logging.handlers import SysLogHandler
 from dotenv import load_dotenv, find_dotenv
 from celery.schedules import crontab
+from opentelemetry import trace
+import requests
+
 
 ENV_FILE = find_dotenv()
 if ENV_FILE:
     load_dotenv(ENV_FILE)
+
+
+
+class CustomFormatter(logging.Formatter):
+    def format(self, record):
+        KEY_CLOAK_CLIENT_ID = None
+        def get_key_cloak_client_id():
+            # Check if the request is a valid HTTP request
+            if requests:
+                from app.extensions import getJwtManager
+                return getJwtManager().audience
+
+            return None
+
+        def get_traceid_from_telemetry():
+            current_span = trace.get_current_span()
+            if current_span:
+                traceid = current_span.get_span_context().trace_id
+                return traceid
+            return None
+
+        # Get the traceid from the telemetry
+        traceid = get_traceid_from_telemetry()
+
+        # Add the traceid to the log message
+        record.traceid = traceid
+        if get_key_cloak_client_id() and not KEY_CLOAK_CLIENT_ID:
+            KEY_CLOAK_CLIENT_ID = get_key_cloak_client_id()
+
+        # Call the parent formatter to format the log message
+        formatted_message = super().format(record)
+
+        # Add the traceid to the formatted log message
+        formatted_message = f'{formatted_message} TraceID: {traceid} | ClientId: {KEY_CLOAK_CLIENT_ID}'
+
+        return formatted_message
 
 
 class Config(object):
@@ -18,6 +57,7 @@ class Config(object):
         'version': 1,
         'formatters': {
             'default': {
+                '()': CustomFormatter,
                 'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s',
             }
         },
