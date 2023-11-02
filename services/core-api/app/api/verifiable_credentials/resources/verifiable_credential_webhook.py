@@ -34,8 +34,6 @@ class VerifiableCredentialWebhookResource(Resource, UserMixin):
                 vc_conn.save()
                 current_app.logger.info(f"Updated party_vc_conn connection_id={vc_conn.connection_id} with state={new_state}")
                 # 'completed' or 'active' should both be considered successful
-                 
-
         elif topic == OUT_OF_BAND:
                 current_app.logger.info(f"out-of-band message invi_msg_id={webhook_body['invi_msg_id']}, state={webhook_body['state']}")
         elif topic == CREDENTIAL_OFFER:
