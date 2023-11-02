@@ -26,6 +26,7 @@ class VerifiableCredentialWebhookResource(Resource, UserMixin):
         if topic == CONNECTIONS:
             invitation_id = webhook_body['invitation_msg_id']
             vc_conn = PartyVerifiableCredentialConnection.query.unbound_unsafe().filter_by(invitation_id=invitation_id).first()
+            vc_conn.connection_id = webhook_body["connection_id"]
             assert vc_conn, f"connection.invitation_msg_id={invitation_id} not found"
             new_state = webhook_body["state"]
             if new_state != vc_conn.connection_state:
