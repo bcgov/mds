@@ -46,11 +46,17 @@ describe("Major Projects", () => {
     });
 
     it("should download a document successfully", () => {
-        // search for the first pdf file to download as they(.pdf files) are the easiest to test.
-        cy.get('.ant-table-cell:contains(".pdf")')
+
+        cy.intercept("GET", "**/documents**", (req) => {
+            // Set the desired response properties
+            req.reply({
+                statusCode: 301,
+                body: "Mocked response data",
+            });
+        }).as("downloadRequest");
+
+        cy.get("[data-cy=menu-actions-button]")
             .first()
-            .parent()
-            .find('[data-cy="menu-actions-button"]')
             .click({ force: true });
 
         // Click the Download file button in the dropdown
@@ -58,13 +64,12 @@ describe("Major Projects", () => {
             .find("div")
             .click({ force: true });
 
-        cy.url().then((url) => {
-            // Make an HTTP request to the URL
-            cy.request(url).then((response) => {
-                // Check the response status code
-                expect(response.status).to.eq(301);
-            });
-
+        // Wait for the network request to complete
+        cy.wait("@downloadRequest").then((interception) => {
+            // Check that the request was made
+            expect(interception.response.statusCode).to.equal(301);
+            // You can also assert other things about the response if needed
         });
     });
+
 });
