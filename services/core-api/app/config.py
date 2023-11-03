@@ -48,7 +48,7 @@ class CustomFormatter(logging.Formatter):
         formatted_message = super().format(record)
 
         # Add the traceid to the formatted log message
-        formatted_message = f'{formatted_message} TraceID: {traceid} | ClientId: {KEY_CLOAK_CLIENT_ID}'
+        formatted_message = f'{formatted_message} [trace_id={traceid} client={KEY_CLOAK_CLIENT_ID}]: {record.message}'
 
         return formatted_message
 
@@ -63,7 +63,7 @@ class Config(object):
         'formatters': {
             'default': {
                 '()': CustomFormatter,
-                'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s',
+                'format': '%(asctime)s %(levelname)s [%(name)s] [%(filename)s:%(lineno)d]',
             }
         },
         'handlers': {
