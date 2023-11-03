@@ -92,7 +92,11 @@ Traction Tenant ID:
 - Test: `cecfcac5-2945-460b-a43b-756c4fe6c017`
 - Prod: `7455e995-aacc-4797-a25f-e1f4a2bcdbb8`
 
-\*\*Wallet ID and Wallet Key are considered the Admin login for the wallets, they are not stored here but should be stored in a permanent and secure location like a password manager.
+Traction Api Keys:
+
+- These are not stored here, API keys can be destroyed and replaced if compromised, unlike the Wallet Key, which is immutable.
+
+**Wallet ID and Wallet Key are considered the Admin login for the wallets, they are not stored here but should be stored in a permanent and secure location like a password manager.**
 
 Traction Tenant API:
 
@@ -104,17 +108,13 @@ Traction Tenant API:
 
 Traction is configured to call the Core-api with HTTP requests when protocol events happen. Should these need to be reviewed or changed, navigate to the Tenant UI of the environment you want to view/change and navigate to `/tenant/settings` through the upper right wallet avatar.
 
-## IMPORTANT NOTE:
+### IMPORTANT NOTE:
 
 Traction supports a webhook_key attribute to access protected endpoints, however the MDS webhook urls are currently unprotected, meaning malicious requests could cause issues. This should be reviewed and rectified immediately [MDS-5601](https://bcmines.atlassian.net/browse/MDS-5601)
 
 ### Core-api Environment Variables
 
-Example Environment Variables
-
-These values could be used for local development, however you will not receive webhooks back from Traction unless you create a public tunnel (like NRGROK) and set tractions with that webhook url.
-
-These connnect to Dev Traction.
+Example Environment Variables these connnect to Dev Traction.
 
 ```
 TRACTION_HOST=https://traction-tenant-proxy-dev.apps.silver.devops.gov.bc.ca
@@ -122,3 +122,5 @@ TRACTION_TENANT_ID=fb4090f1-bd27-45a8-9839-d58abdf54e76
 TRACTION_WALLET_API_KEY=c664c4c9ad6e4cfe9010f83aea8504e5
 CRED_DEF_ID_MINES_ACT_PERMIT=S7S2wzcF2giKuwxdeLBk69:3:CL:115414:mds-dev-revok
 ```
+
+These values could be used for local development, however you will not receive webhooks back from Traction unless you create a public tunnel (like NRGROK) and set tractions with that webhook url.
