@@ -8,6 +8,8 @@ export interface IPermit {
   permit_no: string;
   permit_status_code: string;
   current_permittee: string;
+  current_permittee_digital_wallet_connection_state: string | null;
+  current_permittee_guid: string;
   project_id: string;
   permit_amendments: IPermitAmendment[];
   remaining_static_liability: number;

@@ -1,16 +1,17 @@
 import React, { ReactNode } from "react";
 import Highlight from "react-highlighter";
 import { dateSorter, formatDate, nullableStringSorter } from "@common/utils/helpers";
+import { EMPTY_FIELD } from "@common/constants/strings";
 import { ColumnType } from "antd/lib/table";
 import { Button, Dropdown } from "antd";
-import { CARAT } from "@/constants/assets";
+import { CaretDownOutlined } from "@ant-design/icons";
 import { generateActionMenuItems } from "./ActionMenu";
 
 export const renderTextColumn = (
   dataIndex: string,
   title: string,
   sortable = false,
-  placeHolder = "",
+  placeHolder = EMPTY_FIELD,
   width?: number
 ): ColumnType<any> => {
   return {
@@ -28,7 +29,7 @@ export const renderDateColumn = (
   title = "Date",
   sortable = false,
   format: (date: any) => string | null = null,
-  placeHolder = ""
+  placeHolder = EMPTY_FIELD
 ) => {
   const formatFunction = format ?? formatDate;
   return {
@@ -45,7 +46,7 @@ export const renderCategoryColumn = (
   title: string,
   categoryMap: any,
   sortable = false,
-  placeHolder = ""
+  placeHolder = EMPTY_FIELD
 ) => {
   return {
     title,
@@ -82,7 +83,7 @@ export interface ITableAction {
 
 export const renderActionsColumn = (
   actions: ITableAction[],
-  recordActionsFilter: (record, actions) => ITableAction[],
+  recordActionsFilter?: (record, actions) => ITableAction[],
   isRowSelected = false,
   text = "Actions",
   dropdownAltText = "Menu"
@@ -100,12 +101,7 @@ export const renderActionsColumn = (
               {/* // TODO: change button classname to something generic */}
               <Button data-cy="menu-actions-button" className="permit-table-button">
                 {text}
-                <img
-                  className="padding-sm--right icon-svg-filter"
-                  src={CARAT}
-                  alt={dropdownAltText}
-                  style={{ paddingLeft: "5px" }}
-                />
+                <CaretDownOutlined alt={dropdownAltText} />
               </Button>
             </Dropdown>
           )}

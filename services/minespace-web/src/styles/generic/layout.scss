@@ -124,6 +124,10 @@
   &--left {
     padding-left: $default-padding-lg;
   }
+  &--y {
+    padding-top: $default-padding-lg;
+    padding-bottom: $default-padding-lg;
+  }
   padding: $default-padding-lg;
 
   &--sides {
@@ -238,6 +242,10 @@
 
 .red {
   color: $gov-red;
+}
+
+.light-grey-background {
+  background-color: $light-grey;
 }
 
 .content {
