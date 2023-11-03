@@ -116,6 +116,7 @@ export const IssuePermitDigitalCredential: FC<IssuePermitDigitalCredentialProps>
       {content.issueButton[contentKey] && (
         <Button
           type="primary"
+          //   @ts-ignore TODO: ts-ignore only needed for testing with hardcoded value
           disabled={contentKey !== "issueReady"}
           className="margin-large--bottom"
         >
