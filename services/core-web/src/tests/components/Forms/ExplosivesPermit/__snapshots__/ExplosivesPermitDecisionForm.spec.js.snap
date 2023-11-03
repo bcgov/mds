@@ -81,7 +81,6 @@ exports[`ExplosivesPermitDecisionForm renders properly 1`] = `
       <Button
         className="full-mobile"
         disabled={false}
-        type="secondary"
       >
         Cancel
       </Button>
@@ -91,7 +90,6 @@ exports[`ExplosivesPermitDecisionForm renders properly 1`] = `
       disabled={false}
       loading={false}
       onClick={[Function]}
-      type="secondary"
     >
       Preview Letter
     </Button>
@@ -100,7 +98,6 @@ exports[`ExplosivesPermitDecisionForm renders properly 1`] = `
       disabled={false}
       loading={false}
       onClick={[Function]}
-      type="secondary"
     >
       Preview Permit Certificate
     </Button>

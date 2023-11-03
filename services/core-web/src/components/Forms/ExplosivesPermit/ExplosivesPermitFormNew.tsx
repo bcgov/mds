@@ -538,19 +538,11 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
         </Col>
       </Row>
       <Row className="flex-between form-button-container-row">
-        <Popconfirm
-          placement="topRight"
-          title="Are you sure you want to cancel?"
-          onConfirm={props.closeModal}
-          okText="Yes"
-          cancelText="No"
-        >
-          <Button className="full-mobile" type="ghost">
-            Cancel
-          </Button>
-        </Popconfirm>
+        <Button onClick={() => setParentView(true)} className="full-mobile" type="ghost">
+          Back
+        </Button>
         <Button type="primary" className="full-mobile" htmlType="submit" loading={props.submitting}>
-          Submit
+          {isHistoric ? "Submit" : "Finish And Generate Certificate"}
         </Button>
       </Row>
     </Form>
