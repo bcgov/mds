@@ -274,9 +274,9 @@ PERMIT_AMENDMENT_MODEL = api.model(
         'permit_conditions_last_updated_date':
             fields.DateTime,
         'has_permit_conditions':
-            fields.String,
-        'vc_credential_exch_state':
             fields.Boolean,
+        'vc_credential_exch_state':
+            fields.String,
         'conditions':
             fields.List(PermitCondition),
         'is_generated_in_core':

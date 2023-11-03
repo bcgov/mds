@@ -7,7 +7,10 @@ import {
   fetchExplosivesPermits,
   updateExplosivesPermit,
 } from "@common/actionCreators/explosivesPermitActionCreator";
-import { updateExplosivesPermitAmendment } from "@common/actionCreators/explosivesPermitAmendmentActionCreator";
+import {
+  createExplosivesPermitAmendment,
+  updateExplosivesPermitAmendment,
+} from "@common/actionCreators/explosivesPermitAmendmentActionCreator";
 import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
 import { getExplosivesPermits } from "@common/selectors/explosivesPermitSelectors";
 import {
@@ -36,6 +39,7 @@ interface ExplosivesPermitProps {
   inspectors: IGroupedDropdownList[];
   updateExplosivesPermit: ActionCreator<typeof updateExplosivesPermit>;
   createExplosivesPermit: ActionCreator<typeof createExplosivesPermit>;
+  createExplosivesPermitAmendment: ActionCreator<typeof createExplosivesPermitAmendment>;
   updateExplosivesPermitAmendment: ActionCreator<typeof updateExplosivesPermitAmendment>;
   openModal: (value: any) => void;
   closeModal: () => void;
@@ -74,11 +78,11 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
     });
   };
 
-  const handleUpdateExplosivesPermit = (values) => {
+  const handleUpdateExplosivesPermit = (values, isAmendment = false) => {
     const payload = {
       ...values,
     };
-    if (values.explosives_permit_guid) {
+    if (!isAmendment) {
       return props
         .updateExplosivesPermit(mineGuid, values.explosives_permit_guid, payload)
         .then(() => {
@@ -86,13 +90,18 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
           props.closeModal();
         });
     } else {
-      return props
-        .updateExplosivesPermitAmendment(mineGuid, values.explosives_permit_amendment_guid, payload)
-        .then(() => {
-          props.fetchExplosivesPermits(mineGuid);
-          props.closeModal();
-        });
+      return props.updateExplosivesPermitAmendment(payload).then(() => {
+        props.fetchExplosivesPermits(mineGuid);
+        props.closeModal();
+      });
     }
+  };
+
+  const handleCreateNewAmendment = (values) => {
+    return props.createExplosivesPermitAmendment(values).then(() => {
+      props.fetchExplosivesPermits(mineGuid);
+      props.closeModal();
+    });
   };
 
   const handleOpenAddExplosivesPermitModal = (event, permitTab, record = null) => {
@@ -110,6 +119,25 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
         isPermitTab: permitTab,
         inspectors,
         isAmendment: !!record?.explosives_permit_amendment_guid,
+      },
+      content: modalConfig.EXPLOSIVES_PERMIT_MODAL,
+      width: "75vw",
+    });
+  };
+
+  const handleOpenAmendExplosivesPermitModal = (event, record: IExplosivesPermit = null) => {
+    event.preventDefault();
+    props.openModal({
+      props: {
+        title: "Amend Explosives Storage and Use Permit",
+        onSubmit: (values) => handleCreateNewAmendment(values),
+        initialValues: record,
+        isAmendment: true,
+        mineGuid,
+        isProcessed: false,
+        documentTypeDropdownOptions: explosivesPermitDocumentTypeDropdownOptions,
+        isPermitTab: true,
+        inspectors,
       },
       content: modalConfig.EXPLOSIVES_PERMIT_MODAL,
       width: "75vw",
@@ -166,7 +194,6 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
 
   const handleOpenViewExplosivesPermitModal = (event, record) => {
     event.preventDefault();
-    const mine = mines[mineGuid];
     const parentPermit = explosivesPermits.find(
       ({ explosives_permit_id }) => explosives_permit_id === record.explosives_permit_id
     );
@@ -175,7 +202,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
         title: "View Explosives Storage & Use Permit",
         explosivesPermit: record,
         parentPermit: { explosives_permit_amendments: [], ...parentPermit },
-        mine,
+        openAmendModal: handleOpenAmendExplosivesPermitModal,
         closeModal: props.closeModal,
         handleOpenExplosivesPermitCloseModal,
       },
@@ -271,6 +298,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
         explosivesPermitDocumentTypeOptionsHash={props.explosivesPermitDocumentTypeOptionsHash}
         handleOpenExplosivesPermitStatusModal={handleOpenExplosivesPermitStatusModal}
         handleDeleteExplosivesPermit={handleDeleteExplosivesPermit}
+        handleOpenAmendExplosivesPermitModal={handleOpenAmendExplosivesPermitModal}
       />
     </div>
   );
@@ -296,6 +324,7 @@ const mapDispatchToProps = (dispatch) =>
       openModal,
       closeModal,
       fetchExplosivesPermits,
+      createExplosivesPermitAmendment,
       updateExplosivesPermit,
       updateExplosivesPermitAmendment,
       fetchExplosivesPermitDocumentContextTemplate,

@@ -1431,7 +1431,7 @@ class ExplosivesPermitAmendmentFactory(BaseFactory):
         issuing_inspector = factory.SubFactory(PartyBusinessRoleFactory)
         mine_manager = factory.SubFactory(MinePartyAppointmentFactory)
         permittee = factory.SubFactory(MinePartyAppointmentFactory)
-        explosives_permit = factory.SubFactory(ExplosivesPermitFactory)
+        explosives_permit = factory.SubFactory(ExplosivesPermitFactory, mines_act_permit=mines_act_permit)
 
     explosives_permit_amendment_guid = GUID
 
@@ -1441,6 +1441,7 @@ class ExplosivesPermitAmendmentFactory(BaseFactory):
     mine_manager_mine_party_appt_id = factory.SelfAttribute('mine_manager.mine_party_appt_id')
     permittee_mine_party_appt_id = factory.SelfAttribute('permittee.mine_party_appt_id')
     explosives_permit_id = factory.SelfAttribute('explosives_permit.explosives_permit_id')
+    explosives_permit_guid = factory.SelfAttribute('explosives_permit.explosives_permit_guid')
 
     originating_system = 'Core'
     application_number = factory.Faker('sentence', nb_words=1)

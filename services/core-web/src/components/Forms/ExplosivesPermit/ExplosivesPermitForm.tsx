@@ -12,9 +12,7 @@ import {
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm, Alert, Typography, Radio } from "antd";
-import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 import {
-  USER_ROLES,
   IOption,
   IGroupedDropdownList,
   IPermit,
@@ -45,7 +43,6 @@ import * as FORM from "@/constants/forms";
 import ExplosivesPermitMap from "@/components/maps/ExplosivesPermitMap";
 import DocumentCategoryForm from "@/components/Forms/DocumentCategoryForm";
 import MagazineForm from "@/components/Forms/ExplosivesPermit/MagazineForm";
-import * as Permission from "@/constants/permissions";
 
 import { Feature } from "@mds/common";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
@@ -58,7 +55,6 @@ interface StateProps {
   partyRelationships: IPermitPartyRelationship[];
   allPartyRelationships: IPermitPartyRelationship[];
   noticeOfWorkApplications: IimportedNOWApplication[];
-  userRoles: string[];
   submitting: boolean;
   handleSubmit: any;
 }
@@ -123,11 +119,7 @@ export const ExplosivesPermitForm: FC<ExplosivesPermitFormProps &
   const [isHistoric, setIsHistoric] = useState<boolean>(
     !initialValues?.explosives_permit_id && props.isPermitTab
   );
-  const isESUP = props.userRoles.includes(USER_ROLES[Permission.EDIT_EXPLOSIVES_PERMITS]);
-  // eslint-disable-next-line no-unused-vars
-  const hasEditPermission = isESUP;
-  // TODO: See MDS-5201- editing currently disabled
-  const disabled = isProcessed; // isProcessed && !hasEditPermission;
+  const disabled = isProcessed;
 
   const [radioSelection, setRadioSelection] = useState<number>(props.isPermitTab ? 1 : 2);
   const [parentView, setParentView] = useState<boolean>(true);
@@ -182,7 +174,8 @@ export const ExplosivesPermitForm: FC<ExplosivesPermitFormProps &
           Open the permit that you want to amend from the applications page of the mine in CORE.
         </li>
         <li>
-          Click on the “Amend Permit” button at the top right corner of the permit details page.
+          Click on the “Create Amendment” button at the bottom left corner of the permit details
+          page.
         </li>
         <li>Fill out the amendment form with the required information and documents.</li>
         <li>Complete the amendment and issue the permit.</li>
@@ -534,7 +527,6 @@ const mapStateToProps = (state) => ({
   partyRelationships: getPartyRelationships(state),
   allPartyRelationships: getAllPartyRelationships(state),
   noticeOfWorkApplications: getNoticeOfWorkList(state),
-  userRoles: getUserAccessData(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

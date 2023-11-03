@@ -80,15 +80,6 @@ class TractionService():
             "trace": True
         }
 
-        # TODO STORE LOCAL RECORD THAT THIS CREDENTIAL WAS OFFERED/ISSUED
-
-        current_app.logger.warning("CREDENTIAL TO BE ISSUED")
-        current_app.logger.warning(payload)
         cred_offer_resp = requests.post(traction_offer_credential, json=payload,headers=self.get_headers())
-
-        current_app.logger.warning("CREDENTIAL_OFFER response")
-        resp = cred_offer_resp.json()
-        current_app.logger.warning(resp)
-
 
         return cred_offer_resp.json()

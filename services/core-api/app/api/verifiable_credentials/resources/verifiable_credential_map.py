@@ -53,21 +53,24 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
         # https://github.com/bcgov/bc-vcpedia/blob/main/credentials/credential-bc-mines-act-permit.md#261-schema-definition
         credential_attrs={}
 
+        mine_commodity_code_list = [mtd.mine_commodity_code for mtd in permit_amendment.mine.mine_type[0].mine_type_detail if mtd.mine_commodity_code]
+        mine_disturbance_code_list = [mtd.mine_disturbance_code for mtd in permit_amendment.mine.mine_type[0].mine_type_detail if mtd.mine_disturbance_code]
+
         credential_attrs["permit_no"] = permit_amendment.permit_no
         credential_attrs["permit_status_code"] = permit_amendment.permit.permit_status_code
         credential_attrs["mine_party_appt"] = permit_amendment.permit.current_permittee
         credential_attrs["mine_operation_status_code"] = permit_amendment.mine.mine_status[0].mine_status_xref.mine_operation_status_code
         credential_attrs["mine_operation_status_reason_code"] = permit_amendment.mine.mine_status[0].mine_status_xref.mine_operation_status_reason_code
         credential_attrs["mine_operation_status_sub_reason_code"] =  permit_amendment.mine.mine_status[0].mine_status_xref.mine_operation_status_sub_reason_code
-        credential_attrs["mine_commodity_code"] = permit_amendment.mine.mine_type[0].mine_type_detail[0].mine_commodity_code
-        credential_attrs["mine_disturbance_code"] = ", ".join([mtd.mine_disturbance_code for mtd in permit_amendment.mine.mine_type[0].mine_type_detail])
+        credential_attrs["mine_commodity_code"] =  ", ".join(mine_commodity_code_list) if mine_commodity_code_list else ""
+        credential_attrs["mine_disturbance_code"] = ", ".join(mine_disturbance_code_list) if mine_disturbance_code_list else "" 
         credential_attrs["mine_no"] = permit_amendment.mine.mine_no
         credential_attrs["issue_date"] = permit_amendment.issue_date
         credential_attrs["latitude"] = permit_amendment.mine.latitude
         credential_attrs["longitude"] = permit_amendment.mine.longitude
         credential_attrs["bond_total"] = permit_amendment.permit.active_bond_total
-        credential_attrs["tsf_operation_count"] = len([tsf for tsf in permit_amendment.mine.mine_tailings_storage_facilities if tsf.tsf_operating_status_code == "OPT"])
-        credential_attrs["tsf_care_and_maintainence_count"] = len([tsf for tsf in permit_amendment.mine.mine_tailings_storage_facilities if tsf.tsf_operating_status_code == "CAM"])
+        credential_attrs["tsf_operating_count"] = len([tsf for tsf in permit_amendment.mine.mine_tailings_storage_facilities if tsf.tsf_operating_status_code == "OPT"])
+        credential_attrs["tsf_care_and_maintenance_count"] = len([tsf for tsf in permit_amendment.mine.mine_tailings_storage_facilities if tsf.tsf_operating_status_code == "CAM"])
 
         # offer credential
         attributes = [{
@@ -78,8 +81,8 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
 
         
         vc_conn = PartyVerifiableCredentialConnection.find_by_party_guid(party_guid)
-        active_connections = [con for con in vc_conn if con.connection_state == "active"]
-        if not active_connections[0]:
+        active_connections = [con for con in vc_conn if con.connection_state in ["active","completed"]] 
+        if not active_connections:
             current_app.logger.error("NO ACTIVE CONNECTION")
             current_app.logger.warning(vc_conn)
             current_app.logger.warning("returning credentials_attributes")
