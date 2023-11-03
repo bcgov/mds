@@ -47,7 +47,7 @@ class CustomFormatter(logging.Formatter):
         # Call the parent formatter to format the log message
         formatted_message = super().format(record)
 
-        # Add the traceid to the formatted log message
+        # Add the traceid, keycloak client id and message to the formatted log message
         formatted_message = f'{formatted_message} [trace_id={traceid} client={KEY_CLOAK_CLIENT_ID}]: {record.message}'
 
         return formatted_message
