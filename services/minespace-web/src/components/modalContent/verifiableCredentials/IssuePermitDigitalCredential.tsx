@@ -89,7 +89,7 @@ export const IssuePermitDigitalCredential: FC<IssuePermitDigitalCredentialProps>
     },
   };
 
-  const contentKey = "noWallet";
+  const contentKey = "issueReady";
 
   // switch to modal that generates connection
   const generateWalletConnection = (event) => {
@@ -103,7 +103,6 @@ export const IssuePermitDigitalCredential: FC<IssuePermitDigitalCredentialProps>
 
   return (
     <div>
-      hi tara here is {connectionState}
       <Typography.Paragraph>
         <Alert
           message={content.alertTitle[contentKey]}
@@ -125,6 +124,7 @@ export const IssuePermitDigitalCredential: FC<IssuePermitDigitalCredentialProps>
       )}
       {content.credentialStatusText[contentKey]}
       <Row className="padding-lg--y" style={{ justifyContent: "flex-end", gap: "1.5em" }}>
+        {/* @ts-ignore TODO: ts-ignore only needed for testing with hardcoded value */}
         {contentKey === "noWallet" ? (
           <>
             <Button onClick={closeModal}>Cancel</Button>
