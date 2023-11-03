@@ -1,12 +1,56 @@
+import logging
 import os
 
-from logging.handlers import SysLogHandler
 from dotenv import load_dotenv, find_dotenv
 from celery.schedules import crontab
+from opentelemetry import trace
+import requests
+
 
 ENV_FILE = find_dotenv()
 if ENV_FILE:
     load_dotenv(ENV_FILE)
+
+
+
+class CustomFormatter(logging.Formatter):
+    def format(self, record):
+        KEY_CLOAK_CLIENT_ID = None
+        def get_key_cloak_client_id():
+            try:
+                # Check if the request is a valid HTTP request
+                if requests:
+                    from app.extensions import getJwtManager
+                    if getJwtManager().audience:
+                        return getJwtManager().audience
+            except Exception as e:
+                # Handle the exception here (e.g., log it)
+                print(f"An error occurred: {e}")
+
+            return None
+
+        def get_traceid_from_telemetry():
+            current_span = trace.get_current_span()
+            if current_span:
+                traceid = current_span.get_span_context().trace_id
+                return traceid
+            return None
+
+        # Get the traceid from the telemetry
+        traceid = get_traceid_from_telemetry()
+
+        # Add the traceid to the log message
+        record.traceid = traceid
+        if get_key_cloak_client_id() and not KEY_CLOAK_CLIENT_ID:
+            KEY_CLOAK_CLIENT_ID = get_key_cloak_client_id()
+
+        # Call the parent formatter to format the log message
+        formatted_message = super().format(record)
+
+        # Add the traceid, keycloak client id and message to the formatted log message
+        formatted_message = f'{formatted_message} [trace_id={traceid} client={KEY_CLOAK_CLIENT_ID}]: {record.message}'
+
+        return formatted_message
 
 
 class Config(object):
@@ -18,7 +62,8 @@ class Config(object):
         'version': 1,
         'formatters': {
             'default': {
-                'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s',
+                '()': CustomFormatter,
+                'format': '%(asctime)s %(levelname)s [%(name)s] [%(filename)s:%(lineno)d]',
             }
         },
         'handlers': {
