@@ -66,15 +66,67 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
   explosivesPermitDocumentTypeDropdownOptions,
   ...props
 }) => {
+  const handleIssueExplosivesPermit = (values, record) => {
+    const payload = { ...record, ...values, application_status: "APP" };
+    return props
+      .updateExplosivesPermit(mineGuid, record.explosives_permit_guid, payload, true)
+      .then(() => {
+        props.fetchExplosivesPermits(mineGuid);
+        props.closeModal();
+      });
+  };
+
+  const handleDocumentPreview = (documentTypeCode, values, record) => {
+    const payload = {
+      explosives_permit_guid: record.explosives_permit_guid,
+      template_data: values,
+    };
+    return props.generateExplosivesPermitDocument(
+      documentTypeCode,
+      payload,
+      "Successfully generated preview of Explosives Permit document",
+      true
+    );
+  };
+
+  const handleOpenExplosivesPermitDecisionModal = (event, record: IExplosivesPermit) => {
+    event?.preventDefault();
+    props
+      .fetchExplosivesPermitDocumentContextTemplate("LET", record.explosives_permit_guid)
+      .then((documentContextTemplate) => {
+        const initialValues = {};
+        documentContextTemplate.document_template.form_spec.forEach(
+          (item) => (initialValues[item.id] = item["context-value"])
+        );
+        props.openModal({
+          props: {
+            initialValues,
+            documentType: documentContextTemplate,
+            inspectors,
+            onSubmit: (values) => handleIssueExplosivesPermit(values, record),
+            previewDocument: (documentTypeCode, values) =>
+              handleDocumentPreview(documentTypeCode, values, record),
+            title: "Issue Explosives Storage & Use Permit",
+          },
+          width: "75vw",
+          content: modalConfig.EXPLOSIVES_PERMIT_DECISION_MODAL,
+        });
+      });
+  };
+
   const handleAddExplosivesPermit = (values) => {
     const system = values.permit_tab ? "MMS" : "Core";
     const payload = {
       originating_system: system,
       ...values,
     };
-    return props.createExplosivesPermit(mineGuid, payload).then(() => {
+    return props.createExplosivesPermit(mineGuid, payload).then((newPermit) => {
       props.fetchExplosivesPermits(mineGuid);
-      props.closeModal();
+      if (system === "Core") {
+        handleOpenExplosivesPermitDecisionModal(null, newPermit.data);
+      } else {
+        props.closeModal();
+      }
     });
   };
 
@@ -212,59 +264,11 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
     });
   };
 
-  const handleIssueExplosivesPermit = (values, record) => {
-    const payload = { ...record, ...values, application_status: "APP" };
-    return props
-      .updateExplosivesPermit(mineGuid, record.explosives_permit_guid, payload, true)
-      .then(() => {
-        props.fetchExplosivesPermits(mineGuid);
-        props.closeModal();
-      });
-  };
-
   const handleDeleteExplosivesPermit = (event, record) => {
     event.preventDefault();
     return props.deleteExplosivesPermit(mineGuid, record.explosives_permit_guid).then(() => {
       props.fetchExplosivesPermits(mineGuid);
     });
-  };
-
-  const handleDocumentPreview = (documentTypeCode, values, record) => {
-    const payload = {
-      explosives_permit_guid: record.explosives_permit_guid,
-      template_data: values,
-    };
-    return props.generateExplosivesPermitDocument(
-      documentTypeCode,
-      payload,
-      "Successfully generated preview of Explosives Permit document",
-      true
-    );
-  };
-
-  const handleOpenExplosivesPermitDecisionModal = (event, record) => {
-    event.preventDefault();
-    props
-      .fetchExplosivesPermitDocumentContextTemplate("LET", record.explosives_permit_guid)
-      .then((documentContextTemplate) => {
-        const initialValues = {};
-        documentContextTemplate.document_template.form_spec.forEach(
-          (item) => (initialValues[item.id] = item["context-value"])
-        );
-        props.openModal({
-          props: {
-            initialValues,
-            documentType: documentContextTemplate,
-            inspectors,
-            onSubmit: (values) => handleIssueExplosivesPermit(values, record),
-            previewDocument: (documentTypeCode, values) =>
-              handleDocumentPreview(documentTypeCode, values, record),
-            title: "Issue Explosives Storage & Use Permit",
-          },
-          width: "75vw",
-          content: modalConfig.EXPLOSIVES_PERMIT_DECISION_MODAL,
-        });
-      });
   };
 
   const title = isPermitTab
