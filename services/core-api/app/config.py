@@ -20,7 +20,7 @@ class CustomFormatter(logging.Formatter):
         def get_key_cloak_client_id():
             try:
                 # Check if the request is a valid HTTP request
-                if current_app and current_app.config.get("REQUEST_CONTEXT"):
+                if current_app and hasattr(current_app, 'extensions'):
                     from app.extensions import getJwtManager
                     if getJwtManager().audience:
                         return getJwtManager().audience
