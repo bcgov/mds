@@ -1,8 +1,8 @@
 import React, { FC } from "react";
 import { connect } from "react-redux";
-import { Feature, IPermit, isFeatureEnabled } from "@mds/common/index";
+import { Feature, IPermit, VC_CRED_ISSUE_STATES, isFeatureEnabled } from "@mds/common/index";
 import { openModal, closeModal } from "@common/actions/modalActions";
-import { formatSnakeCaseToSentenceCase, truncateFilename } from "@common/utils/helpers";
+import { truncateFilename } from "@common/utils/helpers";
 import { getDropdownPermitStatusOptions } from "@common/selectors/staticContentSelectors";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import LinkButton from "@/components/common/LinkButton";
@@ -52,19 +52,17 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
     // )
   ) {
     const colourMap = {
-      "not-active": "#D8292F",
-      pending: "#F1C21B",
-      active: "#45A776",
+      "Not Active": "#D8292F",
+      Pending: "#F1C21B",
+      Active: "#45A776",
     };
-
     const issuanceStateColumn = {
       title: "Issuance State",
       key: "current_permittee_digital_wallet_connection_state",
-      dataIndex: "wallet_status",
-      // dataIndex: "current_permittee_digital_wallet_connection_state",
+      dataIndex: "current_permittee_digital_wallet_connection_state",
       render: (text) => {
-        const colour = colourMap[text] ?? "transparent";
-        const badgeText = text ? formatSnakeCaseToSentenceCase(text) : "N/A";
+        const badgeText = text ? VC_CRED_ISSUE_STATES[text] : "N/A";
+        const colour = colourMap[badgeText] ?? "transparent";
         return <Badge color={colour} text={badgeText} />;
       },
     };
@@ -74,8 +72,10 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
       props.openModal({
         props: {
           title: "Issue Permit as Digital Credential",
-          connectionState:
-            permit.current_permittee_digital_wallet_connection_state ?? permit.wallet_status,
+          issuanceState: null, //permit.lastAmendedVC,
+          connectionState: "active",
+          // permit.current_permittee_digital_wallet_connection_state,
+          permitAmendmentGuid: permit.lastAmendedGuid,
           permit: permit,
           mineName: props.mineName,
           openVCWalletInvitationModal: props.openVCWalletInvitationModal,
@@ -115,17 +115,19 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
     const latestAmendment = filteredAmendments[0];
     const firstAmendment = filteredAmendments[filteredAmendments.length - 1];
 
-    const items = [null, "not-active", "active", "pending"];
+    const items = Object.keys(VC_CRED_ISSUE_STATES);
     const option = items[Math.floor(Math.random() * items.length)];
     console.log(option);
     return {
       ...permit,
-      // TODO: This is for local testing purposes, REMOVE
-      wallet_status: option, // permit.current_permittee_digital_wallet_connection_state
+      // TODO: This is for local testing purposes, REMOVE FOLLOWING LINE
+      current_permittee_digital_wallet_connection_state: option,
       majorMineInd: majorMineInd,
       authorizationEndDate: latestAmendment?.authorization_end_date,
       firstIssued: firstAmendment?.issue_date,
       lastAmended: latestAmendment?.issue_date,
+      lastAmendedVC: latestAmendment?.vc_credential_exch_state,
+      lastAmendedGuid: latestAmendment?.permit_amendment_guid,
       permit_amendments: filteredAmendments,
     };
   };

@@ -1,14 +1,13 @@
 import React, { FC, useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { Row, Col, Typography, Button } from "antd";
+import { Row, Col, Typography, Button, Badge } from "antd";
 
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import { openModal } from "@common/actions/modalActions";
 import { getPermits } from "@common/selectors/permitSelectors";
 import PermitsTable from "@/components/dashboard/mine/permits/PermitsTable";
-import { Feature, IMine, IPermit, isFeatureEnabled } from "@mds/common";
+import { Feature, IMine, IPermit, VC_CONNECTION_STATES, isFeatureEnabled } from "@mds/common";
 import { ActionCreator } from "@/interfaces/actionCreator";
-import { formatSnakeCaseToSentenceCase } from "@common/utils/helpers";
 import modalConfig from "@/components/modalContent/config";
 
 interface PermitsProps {
@@ -48,6 +47,10 @@ export const Permits: FC<PermitsProps> = ({ mine, permits, ...props }) => {
 
   const DigitalWalletSection = () => {
     // only open permits
+    // TODO: DELETE THIS STUFF (items + options)
+    const items = Object.keys(VC_CONNECTION_STATES);
+    const option = items[Math.floor(Math.random() * items.length)];
+
     const permittees: any[] = [];
     permits
       .filter((p) => p.permit_status_code === "O")
@@ -58,11 +61,16 @@ export const Permits: FC<PermitsProps> = ({ mine, permits, ...props }) => {
             name: permit.current_permittee,
             isActive: permit.current_permittee_digital_wallet_connection_state === "active",
             current_permittee_guid: permit.current_permittee_guid,
-            status: permit.current_permittee_digital_wallet_connection_state,
+            status: option, //permit.current_permittee_digital_wallet_connection_state,
           };
           permittees.push(permittee);
         }
       });
+    const colourMap = {
+      Inactive: "#D8292F",
+      Pending: "#F1C21B",
+      Active: "#45A776",
+    };
     return (
       <>
         <div className="light-grey-background padding-md">
@@ -89,7 +97,12 @@ export const Permits: FC<PermitsProps> = ({ mine, permits, ...props }) => {
             key={permittee.current_permittee_guid}
           >
             <Col>{permittee.name}</Col>
-            <Col>{formatSnakeCaseToSentenceCase(permittee.status ?? "Inactive")}</Col>
+            <Col>
+              <Badge
+                color={colourMap[VC_CONNECTION_STATES[permittee.status]]}
+                text={VC_CONNECTION_STATES[permittee.status]}
+              />
+            </Col>
             <Col>
               {permittee.isActive ? (
                 <Button disabled type="primary">

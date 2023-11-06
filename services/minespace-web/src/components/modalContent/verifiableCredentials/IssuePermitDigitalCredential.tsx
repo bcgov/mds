@@ -1,27 +1,36 @@
-import { CheckCircleOutlined, ClockCircleOutlined } from "@ant-design/icons";
-import { IPermit } from "@mds/common";
-import { Alert, Button, Row, Typography } from "antd";
 import React, { FC } from "react";
+import { connect } from "react-redux";
+import { Alert, Button, Row, Typography } from "antd";
+import { CheckCircleOutlined, ClockCircleOutlined } from "@ant-design/icons";
+import { ActionCreator } from "@/interfaces/actionCreator";
+import { issueVCDigitalCredForPermit } from "@common/actionCreators/verifiableCredentialActionCreator";
+import { IPermit, VC_CONNECTION_STATES, VC_CRED_ISSUE_STATES } from "@mds/common";
 
 interface IssuePermitDigitalCredentialProps {
   closeModal: () => void;
   permit: IPermit;
   mineName: string;
+  issuanceState: string;
   connectionState: string;
+  permitAmendmentGuid: string;
   openVCWalletInvitationModal: (
     event,
     partyGuid: string,
     partyName: string,
     connectionState: string
   ) => void;
+  issueVCDigitalCredForPermit: ActionCreator<typeof issueVCDigitalCredForPermit>;
 }
 
 export const IssuePermitDigitalCredential: FC<IssuePermitDigitalCredentialProps> = ({
   permit,
   mineName,
-  connectionState = "",
+  issuanceState,
+  connectionState,
+  permitAmendmentGuid,
   closeModal,
   openVCWalletInvitationModal,
+  ...props
 }) => {
   const {
     permit_no,
@@ -29,6 +38,37 @@ export const IssuePermitDigitalCredential: FC<IssuePermitDigitalCredentialProps>
     current_permittee_digital_wallet_connection_state,
     current_permittee_guid,
   } = permit;
+
+  const hasWallet = VC_CONNECTION_STATES[connectionState] === VC_CONNECTION_STATES.active;
+  let contentKey = "noWallet";
+  if (hasWallet) {
+    switch (VC_CRED_ISSUE_STATES[issuanceState]) {
+      case VC_CRED_ISSUE_STATES.credential_acked:
+        contentKey = "active";
+        break;
+      case VC_CRED_ISSUE_STATES.cred_offer:
+        contentKey = "pending";
+        break;
+      default:
+        contentKey = "issueReady";
+    }
+  }
+
+  // switch to modal that generates connection
+  const generateWalletConnection = (event) => {
+    openVCWalletInvitationModal(
+      event,
+      current_permittee_guid,
+      current_permittee,
+      current_permittee_digital_wallet_connection_state
+    );
+  };
+
+  const issueVC = () => {
+    props.issueVCDigitalCredForPermit(current_permittee_guid, permitAmendmentGuid).then((resp) => {
+      console.log(resp);
+    });
+  };
 
   const content = {
     alertTitle: {
@@ -41,7 +81,7 @@ export const IssuePermitDigitalCredential: FC<IssuePermitDigitalCredentialProps>
     },
     alertMessage: {
       noWallet:
-        "Digital wallets must be connected in order to send and receive digital credentials. Please establish a digital wallet connection by clicking on the &apos;Generate Digital Wallet Connection&apos; button below.",
+        "Digital wallets must be connected in order to send and receive digital credentials. Please establish a digital wallet connection by clicking on the 'Generate Digital Wallet Connection' button below.",
       issueReady: `Receive your permit as a digital credential by clicking the button below. A request will be sent to the Chief Permitting Officer of B.C. who will then issue your permit as a digital credential for you to review, accept, and store in the digital wallet of ${mineName}.`,
       pending: `Please review and verify this digital credential in the digital wallet of ${mineName}. If all data is accurate, accept the credential for it to be stored in your digital wallet.`,
       active: `Please review the details in the digital wallet of ${mineName}.`,
@@ -61,8 +101,8 @@ export const IssuePermitDigitalCredential: FC<IssuePermitDigitalCredentialProps>
           </Typography.Paragraph>
         </>
       ),
-      pending: "",
-      active: "",
+      // pending: "",
+      // active: "",
     },
     issueButton: {
       issueReady: `Issue Digital Credential for permit ${permit_no}`,
@@ -89,18 +129,6 @@ export const IssuePermitDigitalCredential: FC<IssuePermitDigitalCredentialProps>
     },
   };
 
-  const contentKey = "issueReady";
-
-  // switch to modal that generates connection
-  const generateWalletConnection = (event) => {
-    openVCWalletInvitationModal(
-      event,
-      current_permittee_guid,
-      current_permittee,
-      current_permittee_digital_wallet_connection_state
-    );
-  };
-
   return (
     <div>
       <Typography.Paragraph>
@@ -115,8 +143,8 @@ export const IssuePermitDigitalCredential: FC<IssuePermitDigitalCredentialProps>
       {content.issueButton[contentKey] && (
         <Button
           type="primary"
-          //   @ts-ignore TODO: ts-ignore only needed for testing with hardcoded value
           disabled={contentKey !== "issueReady"}
+          onClick={issueVC}
           className="margin-large--bottom"
         >
           {content.issueButton[contentKey]}
@@ -124,7 +152,6 @@ export const IssuePermitDigitalCredential: FC<IssuePermitDigitalCredentialProps>
       )}
       {content.credentialStatusText[contentKey]}
       <Row className="padding-lg--y" style={{ justifyContent: "flex-end", gap: "1.5em" }}>
-        {/* @ts-ignore TODO: ts-ignore only needed for testing with hardcoded value */}
         {contentKey === "noWallet" ? (
           <>
             <Button onClick={closeModal}>Cancel</Button>
@@ -140,4 +167,7 @@ export const IssuePermitDigitalCredential: FC<IssuePermitDigitalCredentialProps>
   );
 };
 
-export default IssuePermitDigitalCredential;
+const mapDispatchToProps = {
+  issueVCDigitalCredForPermit,
+};
+export default connect(null, mapDispatchToProps)(IssuePermitDigitalCredential);

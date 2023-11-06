@@ -86,7 +86,7 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
             current_app.logger.error("NO ACTIVE CONNECTION")
             current_app.logger.warning(vc_conn)
             current_app.logger.warning("returning credentials_attributes")
-            return attributes
+            raise BadRequest("Party does not have an active Digital Wallet connection")
         else:   
             traction_svc = TractionService()
             response = traction_svc.offer_mines_act_permit(active_connections[0].connection_id, attributes)
