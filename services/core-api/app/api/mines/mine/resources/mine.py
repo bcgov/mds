@@ -4,6 +4,9 @@ from decimal import Decimal
 from datetime import datetime
 from flask import request
 from sqlalchemy.sql.sqltypes import Integer
+from sqlalchemy import select, func, and_
+from sqlalchemy.orm import aliased
+from app.extensions import db, api
 from flask_restplus import Resource, reqparse, inputs
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
 from werkzeug.exceptions import BadRequest, NotFound
@@ -261,9 +264,21 @@ class MineListResource(Resource, UserMixin):
             status_subreason_filter = MineStatusXref.mine_operation_status_sub_reason_code.in_(
                 status_filter_term)
             all_status_filter = status_filter | status_reason_filter | status_subreason_filter
-            status_query = Mine.query \
-                .join(MineStatus) \
-                .join(MineStatusXref) \
+
+            mine_status_alias = aliased(MineStatus)
+            sub_query_latest_ts = select([mine_status_alias.mine_guid,
+                                          func.max(mine_status_alias.update_timestamp).label('latest_timestamp')])\
+                .group_by(mine_status_alias.mine_guid)\
+                .alias()
+
+            # Join the subquery with the main query
+            status_query = db.session.query(Mine)\
+                .join(sub_query_latest_ts, Mine.mine_guid == sub_query_latest_ts.c.mine_guid)\
+                .join(MineStatus,
+                        and_(
+                            Mine.mine_guid == MineStatus.mine_guid,
+                            MineStatus.update_timestamp == sub_query_latest_ts.c.latest_timestamp))\
+                .join(MineStatusXref)\
                 .filter(all_status_filter, MineStatus.active_ind == True)
             mines_query = mines_query.intersect(status_query)
 

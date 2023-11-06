@@ -216,6 +216,13 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
             return self.mine_work_informations[0].work_status
         return "Unknown"
 
+    @hybrid_property
+    def latest_mine_status(self):
+        if self.mine_status:
+            latest_status = max(self.mine_status, key=lambda x: x.update_timestamp)
+            return latest_status
+        return None
+
     @work_status.expression
     def work_status(cls):
         return func.coalesce(
