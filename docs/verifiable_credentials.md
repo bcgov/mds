@@ -1,12 +1,4 @@
-# What are verify credentials
-
-Verifiable Credentials (VC's) are digital documents provided by **ISSUERS** that **HOLDERS** can use to prove information to **VERIFIERS**, see more information [here](https://digital.gov.bc.ca/digital-trust/about/what-are-digital-credentials/).
-
-They are secure, tamper-proof, non-transferable, and cryptographically verifiable, providing many benefits over any existing process of verifying physical documents.
-
-Physical Example: For a verifier to prove that a mines act permit (in the form of a PDF) being presented by a company should be trusted, they either need to take the document at face values, trusting embedded assest like an image of a seal or signature, OR they would need to contact the mining offices to ask for manual verification.
-
-## VC's in Core
+# VC's in Core
 
 The core-api is integrated with [Traction](https://github.com/bcgov/traction). Traction is a multi-tenant solution to provide [Hyperledger Aries](https://www.hyperledger.org/projects/aries) wallets to BC Goverment offices that want to interact with Verifiable Credentials.
 
@@ -14,7 +6,13 @@ The Core-api is enabled to create out-of-band messages([spec](https://github.com
 
 The Core-api is enable to send credential-offer messages to connected wallets as way of initating the [issue-credential](https://github.com/hyperledger/aries-rfcs/tree/main/features/0036-issue-credential) protocol.
 
+## Governance Documentation
+
+The Mines Act Permit VC has public [governance documentation](https://github.com/bcgov/bc-vcpedia/blob/main/credentials/credential-bc-mines-act-permit.md) that should be kept up-to-date with any technical or process changes.
+
 ### Connection Establishment
+
+This is abbreviated from the governance documentation above which will supercede this if unclear or out-of-date.
 
 Happy Path UX Flow
 
@@ -32,6 +30,8 @@ Current Limitations:
 - This may be needed for POC testing purposes, or if a company made a new corporate wallet.
 
 ### Credential Issuance
+
+This is abbreviated from the governance documentation above which will supercede this if unclear or out-of-date.
 
 Happy Path UX Flow
 
