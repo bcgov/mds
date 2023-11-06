@@ -87,17 +87,17 @@ export const Permits: FC<PermitsProps> = ({ mine, permits, ...props }) => {
 
         {permittees.map((permittee) => (
           <Row
-            style={{ maxWidth: 690, padding: "16px 8px", gap: "32px" }}
+            style={{ maxWidth: 690, padding: "16px 8px" }}
             key={permittee.current_permittee_guid}
           >
-            <Col>{permittee.name}</Col>
-            <Col>
+            <Col span={8}>{permittee.name}</Col>
+            <Col span={6}>
               <Badge
                 color={colourMap[VC_CONNECTION_STATES[permittee.status]]}
                 text={VC_CONNECTION_STATES[permittee.status]}
               />
             </Col>
-            <Col>
+            <Col span={10}>
               {VC_CONNECTION_STATES[permittee.status] === VC_CONNECTION_STATES.active ? (
                 <Button disabled type="primary">
                   Digital Wallet Connection: Active
