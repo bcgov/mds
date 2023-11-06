@@ -29,7 +29,6 @@ interface PermitsTableProps {
   isLoaded: boolean;
   permits: IPermit[];
   majorMineInd: boolean;
-  mineName: string;
   openModal: (value: any) => void;
   openVCWalletInvitationModal: (
     event,
@@ -83,7 +82,6 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
           connectionState: permit.current_permittee_digital_wallet_connection_state,
           permitAmendmentGuid: permit.lastAmendedGuid,
           permit: permit,
-          mineName: props.mineName,
           openVCWalletInvitationModal: props.openVCWalletInvitationModal,
         },
         content: IssuePermitDigitalCredential,

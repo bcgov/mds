@@ -145,7 +145,6 @@ export const Permits: FC<PermitsProps> = ({ mine, permits, ...props }) => {
           isLoaded={isLoaded}
           permits={permits}
           majorMineInd={mine.major_mine_ind}
-          mineName={mine.mine_name}
           openVCWalletInvitationModal={openVCWalletInvitationModal}
         />
       </Col>
