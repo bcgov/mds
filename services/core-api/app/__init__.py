@@ -1,4 +1,5 @@
 import datetime
+
 import requests
 import os
 from logging.config import dictConfig
@@ -6,6 +7,8 @@ from logging.config import dictConfig
 from flask import Flask, request, current_app
 from flask_cors import CORS
 from flask_restplus import Resource, apidoc
+from opentelemetry.instrumentation.flask import FlaskInstrumentor
+from opentelemetry.instrumentation.logging import LoggingInstrumentor
 from sqlalchemy.exc import SQLAlchemyError
 from app.flask_jwt_oidc_local.exceptions import AuthError
 from werkzeug.exceptions import Forbidden
@@ -44,12 +47,18 @@ from sqlalchemy.sql import text
 from app.tasks.celery import celery
 from app.tasks.celery_health_check import HealthCheckProbe
 
+from opentelemetry import trace
+from opentelemetry.sdk.trace import TracerProvider
 
 def create_app(test_config=None):
     """Create and configure an instance of the Flask application."""
     if test_config is None:
         dictConfig(Config.LOGGING_DICT_CONFIG)
     app = Flask(__name__)
+
+    trace.set_tracer_provider(TracerProvider())
+
+    FlaskInstrumentor().instrument_app(app)
 
     if test_config is None:
         # load the instance config, if it exists, when not testing

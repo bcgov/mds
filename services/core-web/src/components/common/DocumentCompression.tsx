@@ -1,8 +1,8 @@
-import React, { FC, useState, useRef } from "react";
+import React, { FC, useState, useRef, useEffect } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { notification } from "antd";
-import DocumentCompressionModal from "../modalContent/DocumentCompressionModal";
+import DocumentCompressionWarningModal from "../modalContent/DocumentCompressionWarningModal";
 import DocumentCompressedDownloadModal from "../modalContent/DocumentCompressedDownloadModal";
 import CompressionNotificationProgressBar from "./CompressionNotificationProgressBar";
 import {
@@ -21,6 +21,7 @@ interface DocumentCompressionProps {
   documentsCompression: ActionCreator<typeof documentsCompression>;
   pollDocumentsCompressionProgress: ActionCreator<typeof pollDocumentsCompressionProgress>;
   startFilesCompression: () => void;
+  showDownloadWarning: boolean;
 }
 
 export const DocumentCompression: FC<DocumentCompressionProps> = (props) => {
@@ -64,7 +65,7 @@ export const DocumentCompression: FC<DocumentCompressionProps> = (props) => {
       .filter((row) => row.is_latest_version && !row.is_archived)
       .map((filteredRows) => filteredRows.document_manager_guid);
 
-    setEntityTitle(props.rows[0].entity_title);
+    setEntityTitle(props.rows[0].entity_title || "");
     if (documentManagerGuids.length === 0) {
       setTimeout(() => {
         const description =
@@ -119,13 +120,21 @@ export const DocumentCompression: FC<DocumentCompressionProps> = (props) => {
     }
   };
 
+  useEffect(() => {
+    if (!props.showDownloadWarning && props.isCompressionModalVisible) {
+      startFilesCompression();
+    }
+  }, [props.isCompressionModalVisible]);
+
   return (
     <div>
-      <DocumentCompressionModal
-        isModalVisible={props.isCompressionModalVisible}
-        filesCompression={startFilesCompression}
-        setModalVisible={props.setCompressionModalVisible}
-      />
+      {props.showDownloadWarning && (
+        <DocumentCompressionWarningModal
+          isModalVisible={props.isCompressionModalVisible}
+          filesCompression={startFilesCompression}
+          setModalVisible={props.setCompressionModalVisible}
+        />
+      )}
       {isProgressBarVisible && (
         <CompressionNotificationProgressBar
           compressionProgress={compressionProgress}

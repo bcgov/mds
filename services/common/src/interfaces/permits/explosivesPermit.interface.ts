@@ -101,3 +101,11 @@ export interface IDocumentTemplate {
   document_template_code: string;
   form_spec: IDocumentTemplateField[];
 }
+
+export interface IExplosivesPermitDocumentType {
+  explosives_permit_document_type_code: string;
+  description: string;
+  active_ind: boolean;
+  display_order: number;
+  document_template: IDocumentTemplate;
+}

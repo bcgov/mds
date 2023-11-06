@@ -9,7 +9,7 @@ exports[`CompressionNotificationProgressBar renders properly 1`] = `
   strokeLinecap="square"
   style={
     Object {
-      "top": "-10px",
+      "top": "-11px",
     }
   }
   trailColor="#d9d9d9"
