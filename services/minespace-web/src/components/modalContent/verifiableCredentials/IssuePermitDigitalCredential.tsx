@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { connect } from "react-redux";
 import { Alert, Button, Row, Typography } from "antd";
 import { CheckCircleOutlined, ClockCircleOutlined } from "@ant-design/icons";
@@ -39,6 +39,8 @@ export const IssuePermitDigitalCredential: FC<IssuePermitDigitalCredentialProps>
     current_permittee_guid,
   } = permit;
 
+  const [loading, setLoading] = useState(false);
+
   const hasWallet = VC_CONNECTION_STATES[connectionState] === VC_CONNECTION_STATES.active;
   let contentKey = "noWallet";
   if (hasWallet) {
@@ -65,8 +67,10 @@ export const IssuePermitDigitalCredential: FC<IssuePermitDigitalCredentialProps>
   };
 
   const issueVC = () => {
-    props.issueVCDigitalCredForPermit(current_permittee_guid, permitAmendmentGuid).then((resp) => {
-      console.log(resp);
+    setLoading(true);
+    props.issueVCDigitalCredForPermit(current_permittee_guid, permitAmendmentGuid).then(() => {
+      setLoading(false);
+      closeModal();
     });
   };
 
@@ -101,8 +105,6 @@ export const IssuePermitDigitalCredential: FC<IssuePermitDigitalCredentialProps>
           </Typography.Paragraph>
         </>
       ),
-      // pending: "",
-      // active: "",
     },
     issueButton: {
       issueReady: `Issue Digital Credential for permit ${permit_no}`,
@@ -111,20 +113,20 @@ export const IssuePermitDigitalCredential: FC<IssuePermitDigitalCredentialProps>
     },
     credentialStatusText: {
       pending: (
-        <>
-          <ClockCircleOutlined />
+        <div>
+          <ClockCircleOutlined style={{ marginRight: "10px", fontSize: "24px" }} />
           <Typography.Text>
             Credential has been offered. Please check your wallet to accept this credential offer.
           </Typography.Text>
-        </>
+        </div>
       ),
       active: (
-        <>
-          <CheckCircleOutlined />
+        <div>
+          <CheckCircleOutlined style={{ marginRight: "10px", fontSize: "24px" }} />
           <Typography.Text>
             Credential has been accepted. You can view it in your digital wallet.
           </Typography.Text>
-        </>
+        </div>
       ),
     },
   };
@@ -146,6 +148,7 @@ export const IssuePermitDigitalCredential: FC<IssuePermitDigitalCredentialProps>
           disabled={contentKey !== "issueReady"}
           onClick={issueVC}
           className="margin-large--bottom"
+          loading={loading}
         >
           {content.issueButton[contentKey]}
         </Button>

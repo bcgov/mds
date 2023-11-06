@@ -46,22 +46,16 @@ export const Permits: FC<PermitsProps> = ({ mine, permits, ...props }) => {
   };
 
   const DigitalWalletSection = () => {
-    // only open permits
-    // TODO: DELETE THIS STUFF (items + options)
-    const items = Object.keys(VC_CONNECTION_STATES);
-    const option = items[Math.floor(Math.random() * items.length)];
-
+    // list of permittees from open permits with no duplicates
     const permittees: any[] = [];
     permits
       .filter((p) => p.permit_status_code === "O")
       .forEach((permit) => {
-        // no duplicates
         if (!permittees.find((p) => p.current_permittee_guid === permit.current_permittee_guid)) {
           const permittee = {
             name: permit.current_permittee,
-            isActive: permit.current_permittee_digital_wallet_connection_state === "active",
             current_permittee_guid: permit.current_permittee_guid,
-            status: option, //permit.current_permittee_digital_wallet_connection_state,
+            status: permit.current_permittee_digital_wallet_connection_state,
           };
           permittees.push(permittee);
         }
@@ -104,7 +98,7 @@ export const Permits: FC<PermitsProps> = ({ mine, permits, ...props }) => {
               />
             </Col>
             <Col>
-              {permittee.isActive ? (
+              {VC_CONNECTION_STATES[permittee.status] === VC_CONNECTION_STATES.active ? (
                 <Button disabled type="primary">
                   Digital Wallet Connection: Active
                 </Button>
