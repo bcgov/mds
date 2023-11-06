@@ -13,7 +13,7 @@ describe("Major Projects", () => {
         cy.get('a[data-cy="project-description-view-link"]', { timeout: 5000 }).click();
     });
 
-    it("should upload a document successfully", () => {
+    it("should upload and download a document successfully", () => {
 
         const fileName = 'dummy.pdf';
 
@@ -22,10 +22,10 @@ describe("Major Projects", () => {
         });
 
         cy.fixture(fileName).then((fileContent) => {
-            const apiUrlRegex = /.*\/(api\/)?projects\/.*\/project-summaries\/.*\/documents\?mine_guid=.*$/;
+            // const apiUrlRegex = /.*\/(api\/)?projects\/.*\/project-summaries\/.*\/documents\?mine_guid=.*$/;
 
             // Intercept the POST request and stub the response
-            cy.intercept('POST', apiUrlRegex, {
+            cy.intercept('POST', /.*\/(api\/)?projects\/.*\/project-summaries\/.*\/documents\?mine_guid=.*$/, {
                 statusCode: 200,
                 body: { message: "file uploaded successfully" }, // Stubbed response
             }).as('uploadRequest');
@@ -41,12 +41,10 @@ describe("Major Projects", () => {
                 // Assert that the response body contains the expected message
                 expect(interception.response.body.message).to.equal("file uploaded successfully");
             });
+
         });
 
-    });
-
-    it("should download a document successfully", () => {
-
+        // Intercept the GET request and stub the response
         cy.intercept("GET", "**/documents**", (req) => {
             // Set the desired response properties
             req.reply({
@@ -66,9 +64,10 @@ describe("Major Projects", () => {
 
         // Wait for the network request to complete
         cy.wait("@downloadRequest").then((interception) => {
-            // Check that the request was made successfully
+            // Check that the download request was made successfully
             expect(interception.response.statusCode).to.equal(301);
         });
+
     });
 
 });
