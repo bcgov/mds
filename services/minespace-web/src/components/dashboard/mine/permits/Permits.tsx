@@ -36,7 +36,7 @@ export const Permits: FC<PermitsProps> = ({ mine, permits, ...props }) => {
     event.preventDefault();
     props.openModal({
       props: {
-        title: "Digital Wallet Connection Invitation",
+        title: "Generate Digital Wallet Connection Invitation",
         partyGuid: partyGuid,
         partyName: partyName,
         connectionState: connectionState,
@@ -46,22 +46,16 @@ export const Permits: FC<PermitsProps> = ({ mine, permits, ...props }) => {
   };
 
   const DigitalWalletSection = () => {
-    // only open permits
-    // TODO: DELETE THIS STUFF (items + options)
-    const items = Object.keys(VC_CONNECTION_STATES);
-    const option = items[Math.floor(Math.random() * items.length)];
-
+    // list of permittees from open permits with no duplicates
     const permittees: any[] = [];
     permits
       .filter((p) => p.permit_status_code === "O")
       .forEach((permit) => {
-        // no duplicates
         if (!permittees.find((p) => p.current_permittee_guid === permit.current_permittee_guid)) {
           const permittee = {
             name: permit.current_permittee,
-            isActive: permit.current_permittee_digital_wallet_connection_state === "active",
             current_permittee_guid: permit.current_permittee_guid,
-            status: option, //permit.current_permittee_digital_wallet_connection_state,
+            status: permit.current_permittee_digital_wallet_connection_state,
           };
           permittees.push(permittee);
         }
@@ -93,18 +87,18 @@ export const Permits: FC<PermitsProps> = ({ mine, permits, ...props }) => {
 
         {permittees.map((permittee) => (
           <Row
-            style={{ maxWidth: 690, padding: "16px 8px", gap: "32px" }}
+            style={{ maxWidth: 690, padding: "16px 8px" }}
             key={permittee.current_permittee_guid}
           >
-            <Col>{permittee.name}</Col>
-            <Col>
+            <Col span={8}>{permittee.name}</Col>
+            <Col span={6}>
               <Badge
                 color={colourMap[VC_CONNECTION_STATES[permittee.status]]}
                 text={VC_CONNECTION_STATES[permittee.status]}
               />
             </Col>
-            <Col>
-              {permittee.isActive ? (
+            <Col span={10}>
+              {VC_CONNECTION_STATES[permittee.status] === VC_CONNECTION_STATES.active ? (
                 <Button disabled type="primary">
                   Digital Wallet Connection: Active
                 </Button>
@@ -143,7 +137,7 @@ export const Permits: FC<PermitsProps> = ({ mine, permits, ...props }) => {
                 Major mines operators in B.C. can now use digital credentials to prove that they
                 hold a valid Mines Act Permit from the Government of B.C.
               </Typography.Text>
-              <DigitalWalletSection />
+              {isFeatureEnabled(Feature.VERIFIABLE_CREDENTIALS) && <DigitalWalletSection />}
             </>
           )}
         </Typography.Paragraph>
@@ -151,7 +145,6 @@ export const Permits: FC<PermitsProps> = ({ mine, permits, ...props }) => {
           isLoaded={isLoaded}
           permits={permits}
           majorMineInd={mine.major_mine_ind}
-          mineName={mine.mine_name}
           openVCWalletInvitationModal={openVCWalletInvitationModal}
         />
       </Col>

@@ -3,6 +3,7 @@ import {
   IPermitAmendmentDocument,
   INoWImportedApplicationDocument,
   IPermitCondition,
+  VC_CRED_ISSUE_STATES,
 } from "@mds/common/index";
 
 export interface IPermitAmendment {
@@ -31,4 +32,5 @@ export interface IPermitAmendment {
   conditions: IPermitCondition[];
   is_generated_in_core: boolean;
   preamble_text: string;
+  vc_credential_exch_state: VC_CRED_ISSUE_STATES;
 }

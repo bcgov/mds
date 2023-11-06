@@ -1,6 +1,12 @@
 import React, { FC } from "react";
 import { connect } from "react-redux";
-import { Feature, IPermit, VC_CRED_ISSUE_STATES, isFeatureEnabled } from "@mds/common/index";
+import {
+  Feature,
+  IPermit,
+  VC_CONNECTION_STATES,
+  VC_CRED_ISSUE_STATES,
+  isFeatureEnabled,
+} from "@mds/common/index";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { truncateFilename } from "@common/utils/helpers";
 import { getDropdownPermitStatusOptions } from "@common/selectors/staticContentSelectors";
@@ -22,9 +28,7 @@ const draftAmendment = "DFT";
 interface PermitsTableProps {
   isLoaded: boolean;
   permits: IPermit[];
-  //permitStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   majorMineInd: boolean;
-  mineName: string;
   openModal: (value: any) => void;
   openVCWalletInvitationModal: (
     event,
@@ -46,10 +50,12 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
 
   if (
     isFeatureEnabled(Feature.VERIFIABLE_CREDENTIALS) &&
-    props.majorMineInd
-    //   && props.permits.some((p) =>
-    //   p.current_permittee_digital_wallet_connection_state
-    // )
+    props.majorMineInd &&
+    props.permits.some((p) => {
+      // look for *any* active wallet connections to show the issuance column/action
+      const walletStatus = p.current_permittee_digital_wallet_connection_state;
+      return VC_CONNECTION_STATES[walletStatus] === VC_CONNECTION_STATES.active;
+    })
   ) {
     const colourMap = {
       "Not Active": "#D8292F",
@@ -58,8 +64,8 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
     };
     const issuanceStateColumn = {
       title: "Issuance State",
-      key: "current_permittee_digital_wallet_connection_state",
-      dataIndex: "current_permittee_digital_wallet_connection_state",
+      key: "lastAmendedVC",
+      dataIndex: "lastAmendedVC",
       render: (text) => {
         const badgeText = text ? VC_CRED_ISSUE_STATES[text] : "N/A";
         const colour = colourMap[badgeText] ?? "transparent";
@@ -72,12 +78,10 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
       props.openModal({
         props: {
           title: "Issue Permit as Digital Credential",
-          issuanceState: null, //permit.lastAmendedVC,
-          connectionState: "active",
-          // permit.current_permittee_digital_wallet_connection_state,
+          issuanceState: permit.lastAmendedVC,
+          connectionState: permit.current_permittee_digital_wallet_connection_state,
           permitAmendmentGuid: permit.lastAmendedGuid,
           permit: permit,
-          mineName: props.mineName,
           openVCWalletInvitationModal: props.openVCWalletInvitationModal,
         },
         content: IssuePermitDigitalCredential,
@@ -115,13 +119,8 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
     const latestAmendment = filteredAmendments[0];
     const firstAmendment = filteredAmendments[filteredAmendments.length - 1];
 
-    const items = Object.keys(VC_CRED_ISSUE_STATES);
-    const option = items[Math.floor(Math.random() * items.length)];
-    console.log(option);
     return {
       ...permit,
-      // TODO: This is for local testing purposes, REMOVE FOLLOWING LINE
-      current_permittee_digital_wallet_connection_state: option,
       majorMineInd: majorMineInd,
       authorizationEndDate: latestAmendment?.authorization_end_date,
       firstIssued: firstAmendment?.issue_date,

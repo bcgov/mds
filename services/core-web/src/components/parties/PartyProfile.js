@@ -38,6 +38,7 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import CustomPropTypes from "@/customPropTypes";
 import Address from "@/components/common/Address";
 import CoreTable from "@/components/common/CoreTable";
+import { Feature, VC_CONNECTION_STATES, isFeatureEnabled } from "@mds/common";
 
 /**
  * @class PartyProfile - profile view for personnel/companies
@@ -311,10 +312,12 @@ export class PartyProfile extends Component {
                 <p>No Signature Provided</p>
               )}
             </div>
-            <div className="padding-md--top">
-              Digital Wallet Connection Status:{" "}
-              {formatSnakeCaseToSentenceCase(party?.digital_wallet_connection_status ?? "None")}
-            </div>
+            {isFeatureEnabled(Feature.VERIFIABLE_CREDENTIALS) && (
+              <div className="padding-md--top">
+                Digital Wallet Connection Status:{" "}
+                {VC_CONNECTION_STATES[party?.digital_wallet_connection_status]}
+              </div>
+            )}
           </div>
           <div className="profile__content">
             <Tabs

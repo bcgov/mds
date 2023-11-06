@@ -76,16 +76,14 @@ export const CreateInvitationForm: FC<CreateInvitationFormProps &
           </>
         }
       />
-      <p>
-        <b>Current Connection Status: {friendlyConnectionState}</b>
-      </p>
       {friendlyConnectionState !== VC_CONNECTION_STATES.active && (
         <div>
           <p>
             By generating this invitation, you choose to connect your organization’s digital wallet
             to the digital wallet of the Chief Permitting Officer of B.C. Once connected, your
-            organization will have the option to receive permit(s) in the form of digital
-            credentials. This is a one-time action that applies to all major mine permits.
+            organization will have the option to receive digital credentials to prove they hold a
+            valid Mines Act Permit from the Government of B.C. This is a one-time action that
+            applies to all major mine permits.
           </p>
           <br />
           <Button disabled={disableGenerateButton} onClick={getInvitation} type="primary">
