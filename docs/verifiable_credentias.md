@@ -124,3 +124,7 @@ CRED_DEF_ID_MINES_ACT_PERMIT=S7S2wzcF2giKuwxdeLBk69:3:CL:115414:mds-dev-revok
 ```
 
 These values could be used for local development, however you will not receive webhooks back from Traction unless you create a public tunnel (like NRGROK) and set tractions with that webhook url.
+
+## Race Conditions
+
+Webhook processing may be inconsistent, causing messages to be processed incorrectly. Some protection should be added to ensure that if a message state is going to send a protocol backwards, it should be ignored. Discussions are ongoing with Traction to see if the webhook can provide some timing data to help this processing.
