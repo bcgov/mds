@@ -36,7 +36,7 @@ export const Permits: FC<PermitsProps> = ({ mine, permits, ...props }) => {
     event.preventDefault();
     props.openModal({
       props: {
-        title: "Digital Wallet Connection Invitation",
+        title: "Generate Digital Wallet Connection Invitation",
         partyGuid: partyGuid,
         partyName: partyName,
         connectionState: connectionState,
@@ -137,7 +137,7 @@ export const Permits: FC<PermitsProps> = ({ mine, permits, ...props }) => {
                 Major mines operators in B.C. can now use digital credentials to prove that they
                 hold a valid Mines Act Permit from the Government of B.C.
               </Typography.Text>
-              <DigitalWalletSection />
+              {isFeatureEnabled(Feature.VERIFIABLE_CREDENTIALS) && <DigitalWalletSection />}
             </>
           )}
         </Typography.Paragraph>

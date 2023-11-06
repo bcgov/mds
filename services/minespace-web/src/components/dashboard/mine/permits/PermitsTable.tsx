@@ -53,7 +53,6 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
     isFeatureEnabled(Feature.VERIFIABLE_CREDENTIALS) &&
     props.majorMineInd &&
     props.permits.some((p) => {
-      return true;
       // look for *any* active wallet connections to show the issuance column/action
       const walletStatus = p.current_permittee_digital_wallet_connection_state;
       return VC_CONNECTION_STATES[walletStatus] === VC_CONNECTION_STATES.active;
@@ -66,8 +65,8 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
     };
     const issuanceStateColumn = {
       title: "Issuance State",
-      key: "current_permittee_digital_wallet_connection_state",
-      dataIndex: "current_permittee_digital_wallet_connection_state",
+      key: "lastAmendedVC",
+      dataIndex: "lastAmendedVC",
       render: (text) => {
         const badgeText = text ? VC_CRED_ISSUE_STATES[text] : "N/A";
         const colour = colourMap[badgeText] ?? "transparent";

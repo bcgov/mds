@@ -1,6 +1,7 @@
 import { IPermitBond } from "@mds/common/interfaces/permits/permitBond.interface";
 import { IMineType } from "@mds/common/interfaces/mineType.interface";
 import { IPermitAmendment } from "@mds/common/interfaces/permits/permitAmendment.interface";
+import { VC_CONNECTION_STATES } from "../..";
 
 export interface IPermit {
   permit_id: string;
@@ -8,7 +9,7 @@ export interface IPermit {
   permit_no: string;
   permit_status_code: string;
   current_permittee: string;
-  current_permittee_digital_wallet_connection_state: string | null;
+  current_permittee_digital_wallet_connection_state: VC_CONNECTION_STATES;
   current_permittee_guid: string;
   project_id: string;
   permit_amendments: IPermitAmendment[];
