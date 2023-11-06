@@ -3,6 +3,7 @@ import os
 
 from dotenv import load_dotenv, find_dotenv
 from celery.schedules import crontab
+from flask import current_app
 from opentelemetry import trace
 import requests
 
@@ -19,7 +20,7 @@ class CustomFormatter(logging.Formatter):
         def get_key_cloak_client_id():
             try:
                 # Check if the request is a valid HTTP request
-                if requests:
+                if current_app and hasattr(current_app, 'extensions'):
                     from app.extensions import getJwtManager
                     if getJwtManager().audience:
                         return getJwtManager().audience
