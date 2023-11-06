@@ -66,9 +66,8 @@ describe("Major Projects", () => {
 
         // Wait for the network request to complete
         cy.wait("@downloadRequest").then((interception) => {
-            // Check that the request was made
+            // Check that the request was made successfully
             expect(interception.response.statusCode).to.equal(301);
-            // You can also assert other things about the response if needed
         });
     });
 
