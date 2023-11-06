@@ -68,6 +68,9 @@ export const DocumentCategoryForm: FC<DocumentCategoryFormProps> = ({
           const fieldId = isAmendment
             ? `${field}explosives_permit_amendment_document_type_code`
             : `${field}explosives_permit_document_type_code`;
+          if (documentExists && isAmendment) {
+            fields.remove(index);
+          }
           return (
             <div className="padding-sm margin-small" key={index}>
               <Row gutter={16}>
