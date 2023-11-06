@@ -65,26 +65,34 @@ export const Permits: FC<PermitsProps> = ({ mine, permits, ...props }) => {
       Pending: "#F1C21B",
       Active: "#45A776",
     };
+
+    const showDigitalWalletInfo = permittees.some(
+      (p) => VC_CONNECTION_STATES[p.status] !== VC_CONNECTION_STATES.active
+    );
     return (
       <>
-        <div className="light-grey-background padding-md">
-          <Typography.Title level={5}>Generate your digital wallet connection</Typography.Title>
-          <Typography.Paragraph>
-            A digital wallet is a digital version of a physical wallet that enables organizations to
-            store, send and receive digital credentials. Digital credentials are cryptographically
-            protected to prevent the data from being altered and are exchanged with digital wallets.
-            Digital credentials enable mines to share data, certifications, and credentials with
-            investors, purchasers, regulators and more securely and in seconds.{" "}
-            <a
-              href="https://digital.gov.bc.ca/learning/case-studies/energy-mines-digital-trust-pilot/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learn more
-            </a>
-          </Typography.Paragraph>
-        </div>
+        {showDigitalWalletInfo && (
+          <div className="light-grey-background padding-md">
+            <Typography.Title level={5}>Generate your digital wallet connection</Typography.Title>
+            <Typography.Paragraph>
+              A digital wallet is a digital version of a physical wallet that enables organizations
+              to store, send and receive digital credentials. Digital credentials are
+              cryptographically protected to prevent the data from being altered and are exchanged
+              with digital wallets. Digital credentials enable mines to share data, certifications,
+              and credentials with investors, purchasers, regulators and more securely and in
+              seconds.{" "}
+              <a
+                href="https://digital.gov.bc.ca/learning/case-studies/energy-mines-digital-trust-pilot/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Learn more
+              </a>
+            </Typography.Paragraph>
+          </div>
+        )}
 
+        <Typography.Title level={5}>Permittee Digital Wallet Connection Status</Typography.Title>
         {permittees.map((permittee) => (
           <Row
             style={{ maxWidth: 690, padding: "16px 8px" }}
