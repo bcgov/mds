@@ -113,7 +113,7 @@ const renderDeleteButtonForPermitAmendments = (record) => {
         okText={isLinkedToNowApplication ? "Ok" : "Delete"}
         cancelText="Cancel"
         onConfirm={
-          isLinkedToNowApplication ? () => {} : () => record.handleDeletePermitAmendment(record)
+          isLinkedToNowApplication ? () => { } : () => record.handleDeletePermitAmendment(record)
         }
       >
         <div className="custom-menu-item">
@@ -358,7 +358,7 @@ const columns: ColumnsType<MinePermitTableItem> = [
           onConfirm={
             isDeletionAllowed
               ? () => record.handleDeletePermit((record.permit as IPermit).permit_guid)
-              : () => {}
+              : () => { }
           }
           okText={isDeletionAllowed ? "Delete" : "Ok"}
           cancelText="Cancel"
