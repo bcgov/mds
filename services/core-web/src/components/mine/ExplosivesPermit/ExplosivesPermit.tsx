@@ -165,7 +165,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
         onSubmit: record ? handleUpdateExplosivesPermit : handleAddExplosivesPermit,
         title: "Add Permit",
         initialValues,
-        documents: record.documents,
+        documents: record?.documents ?? [],
         mineGuid,
         isProcessed,
         documentTypeDropdownOptions: explosivesPermitDocumentTypeDropdownOptions,
