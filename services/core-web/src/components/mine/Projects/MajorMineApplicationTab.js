@@ -284,6 +284,7 @@ export class MajorMineApplicationTab extends Component {
             rows={documents}
             setCompressionModalVisible={(state) => this.setState({ isCompressionModal: state })}
             isCompressionModalVisible={this.state.isCompressionModal}
+            showDownloadWarning={true}
           />
           <Button
             style={{ float: "right" }}

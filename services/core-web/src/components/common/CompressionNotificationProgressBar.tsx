@@ -17,7 +17,7 @@ export const CompressionNotificationProgressBar: FC<CompressionNotificationProgr
     trailColor="#d9d9d9"
     className="compressionProgressBar"
     style={{
-      top: `${props.notificationTopPosition - 10}px`,
+      top: `${props.notificationTopPosition - 11}px`,
     }}
   />
 );

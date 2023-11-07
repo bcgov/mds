@@ -2,9 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { FormSection } from "redux-form";
 import { connect } from "react-redux";
-import { Button, Progress } from "antd";
-import { getDocumentDownloadState, getNOWProgress } from "@common/selectors/noticeOfWorkSelectors";
-import { COLOR } from "@/constants/styles";
+import { getNOWProgress } from "@common/selectors/noticeOfWorkSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import PermitPackage from "@/components/noticeOfWork/applications/PermitPackage";
 import NOWDocuments from "@/components/noticeOfWork/applications/NOWDocuments";
@@ -18,7 +16,6 @@ const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
-  documentDownloadState: CustomPropTypes.documentDownloadState.isRequired,
   progress: PropTypes.objectOf(PropTypes.string).isRequired,
   adminView: PropTypes.bool,
   showPreambleFileMetadata: PropTypes.bool,
@@ -37,14 +34,6 @@ const defaultProps = {
 };
 
 export class FinalPermitDocuments extends Component {
-  state = {
-    cancelDownload: false,
-  };
-
-  cancelDownload = () => {
-    this.setState({ cancelDownload: true });
-  };
-
   render() {
     const permitDocuments = this.props.noticeOfWork.documents.filter(
       ({ is_final_package }) => is_final_package
@@ -122,24 +111,7 @@ export class FinalPermitDocuments extends Component {
       );
     }
 
-    return this.props.documentDownloadState.downloading ? (
-      <div className="inline-flex flex-flow-column horizontal-center">
-        <h4>Downloading Selected Files...</h4>
-        <Progress
-          className="padding-md--top padding-lg--bottom"
-          strokeColor={COLOR.violet}
-          type="circle"
-          percent={Math.round(
-            (this.props.documentDownloadState.currentFile /
-              this.props.documentDownloadState.totalFiles) *
-              100
-          )}
-        />
-        <Button className="full-mobile" type="secondary" onClick={() => this.cancelDownload()}>
-          Cancel
-        </Button>
-      </div>
-    ) : (
+    return (
       <div>
         <div className="inline-flex between">
           <div>
@@ -185,7 +157,6 @@ export class FinalPermitDocuments extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  documentDownloadState: getDocumentDownloadState(state),
   progress: getNOWProgress(state),
 });
 

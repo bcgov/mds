@@ -37,7 +37,7 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
         db.Integer, db.ForeignKey('explosives_permit.explosives_permit_id'), nullable=False)
 
     explosives_permit_guid = db.Column(
-        db.Integer, db.ForeignKey('explosives_permit.explosives_permit_guid'), nullable=False)
+        UUID(as_uuid=True), db.ForeignKey('explosives_permit.explosives_permit_guid'), nullable=False)
 
     explosives_permit = db.relationship(
         'ExplosivesPermit',
