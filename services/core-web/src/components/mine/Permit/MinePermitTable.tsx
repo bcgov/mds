@@ -190,6 +190,12 @@ const renderPermitNo = (permit) => {
     : permit.permit_no;
 };
 
+const colourMap = {
+  "Not Active": "#D8292F",
+  Pending: "#F1C21B",
+  Active: "#45A776",
+};
+
 const columns: ColumnsType<MinePermitTableItem> = [
   {
     title: "Permit No.",
@@ -220,6 +226,16 @@ const columns: ColumnsType<MinePermitTableItem> = [
     dataIndex: "lastAmended",
     key: "lastAmended",
     render: (text) => <div title="Last Amended">{text}</div>,
+  },
+  {
+    title: "VC Issuance State",
+    dataIndex: "lastAmendedVC",
+    key: "lastAmendedVC",
+    render: (text) => {
+      const badgeText = text ? VC_CRED_ISSUE_STATES[text] : "N/A";
+      const colour = colourMap[badgeText] ?? "transparent";
+      return <Badge color={colour} text={badgeText} />;
+    },
   },
   {
     title: "",
