@@ -46,7 +46,7 @@ export const IssuePermitDigitalCredential: FC<IssuePermitDigitalCredentialProps>
       case VC_CRED_ISSUE_STATES.credential_acked:
         contentKey = "active";
         break;
-      case VC_CRED_ISSUE_STATES.cred_offer:
+      case VC_CRED_ISSUE_STATES.offer_sent:
         contentKey = "pending";
         break;
       default:
