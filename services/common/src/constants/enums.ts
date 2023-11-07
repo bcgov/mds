@@ -129,7 +129,7 @@ export enum VC_CONNECTION_STATES {
 // issue state of the permit digital credential
 export enum VC_CRED_ISSUE_STATES {
   null = "Not Active",
-  cred_offer = "Pending",
+  offer_sent = "Pending",
   credential_issued = "Pending",
   credential_acked = "Active",
   deleted = "Active",
