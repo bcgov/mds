@@ -8,6 +8,43 @@ import CustomAxios from "../customAxios";
 import { AppThunk } from "@/store/appThunk.type";
 import { IVCInvitation } from "@mds/common";
 import { AxiosResponse } from "axios";
+import { notification } from "antd";
+
+export const issueVCDigitalCredForPermit = (
+  partyGuid: string,
+  permitAmendmentGuid: string
+): AppThunk<Promise<AxiosResponse<IVCInvitation>>> => (
+  dispatch
+): Promise<AxiosResponse<IVCInvitation>> => {
+  const payload = {
+    party_guid: partyGuid,
+    permit_amendment_guid: permitAmendmentGuid,
+  };
+
+  dispatch(showLoading("modal"));
+  dispatch(request(reducerTypes.ISSUE_VC));
+  return CustomAxios()
+    .post(
+      `${ENVIRONMENT.apiUrl}/verifiable-credentials/mines-act-permits`,
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: "Credential has been offered.",
+        description: "Please check your wallet to accept this credential offer.",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.ISSUE_VC));
+      dispatch(hideLoading("modal"));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.ISSUE_VC));
+      dispatch(hideLoading("modal"));
+      throw new Error(err);
+    });
+};
 
 export const createVCWalletInvitation = (
   partyGuid: string
