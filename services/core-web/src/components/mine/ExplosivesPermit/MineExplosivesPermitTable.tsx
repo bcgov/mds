@@ -653,7 +653,7 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
           ? {
               rowExpandable: (record: IExplosivesPermit) =>
                 record.explosives_permit_amendments?.length > 1,
-              recordDescription: "document details",
+              recordDescription: "amendment details",
               getDataSource: (record: IExplosivesPermit) => {
                 const totalAmendments = record.explosives_permit_amendments.length;
                 return record.explosives_permit_amendments.map((amendment) => {
