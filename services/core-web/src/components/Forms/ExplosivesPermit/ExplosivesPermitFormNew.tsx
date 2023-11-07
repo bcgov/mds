@@ -13,6 +13,7 @@ import {
   IOption,
   IGroupedDropdownList,
   ESUP_DOCUMENT_GENERATED_TYPES,
+  IExplosivesPermitDocument,
 } from "@mds/common";
 import { getNoticeOfWorkList } from "@common/selectors/noticeOfWorkSelectors";
 import {
@@ -50,11 +51,11 @@ interface ExplosivesPermitFormProps {
   isPermitTab: boolean;
   isAmendment?: boolean;
   inspectors: IGroupedDropdownList[];
+  documents: IExplosivesPermitDocument[];
 }
 
 interface StateProps {
   permits: IPermit[];
-  documents: any[];
   mines_permit_guid: string;
   formValues: IExplosivesPermit;
   partyRelationships: IPermitPartyRelationship[];
@@ -71,6 +72,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
   mines_permit_guid = null,
   isProcessed = false,
   isAmendment = false,
+  documents,
   ...props
 }) => {
   const [generatedDocs, setGeneratedDocs] = useState([]);
@@ -86,20 +88,18 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
   );
 
   useEffect(() => {
-    if (initialValues.documents) {
+    if (documents) {
       const generatedTypes = Object.keys(ESUP_DOCUMENT_GENERATED_TYPES);
       setGeneratedDocs(
-        initialValues.documents.filter((doc) =>
-          generatedTypes.includes(doc.explosives_permit_document_type_code)
-        )
+        documents.filter((doc) => generatedTypes.includes(doc.explosives_permit_document_type_code))
       );
       setSupportingDocs(
-        initialValues.documents.filter(
+        documents.filter(
           (doc) => !generatedTypes.includes(doc.explosives_permit_document_type_code)
         )
       );
     }
-  }, [initialValues]);
+  }, [documents]);
 
   const dropdown = (array) =>
     array.length > 0
@@ -554,7 +554,6 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
 const selector = formValueSelector(FORM.EXPLOSIVES_PERMIT_NEW);
 const mapStateToProps = (state) => ({
   permits: getPermits(state),
-  documents: selector(state, "documents"),
   mines_permit_guid: selector(state, "permit_guid"),
   formValues: getFormValues(FORM.EXPLOSIVES_PERMIT_NEW)(state),
   partyRelationships: getPartyRelationships(state),
