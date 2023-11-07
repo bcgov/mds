@@ -426,6 +426,7 @@ class PermitDocumentMixin(object):
     document_manager_guid = association_proxy('mine_document', 'document_manager_guid')
     document_name = association_proxy('mine_document', 'document_name')
     upload_date = association_proxy('mine_document', 'upload_date')
+    create_user = association_proxy('mine_document', 'create_user')
 
 class PermitMagazineMixin(object):
     type_no = db.Column(db.String, nullable=False)
