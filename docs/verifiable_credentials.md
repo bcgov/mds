@@ -112,6 +112,8 @@ Traction is configured to call the Core-api with HTTP requests when protocol eve
 
 Traction supports a webhook_key attribute to access protected endpoints, however the MDS webhook urls are currently unprotected, meaning malicious requests could cause issues. This should be reviewed and rectified immediately [MDS-5601](https://bcmines.atlassian.net/browse/MDS-5601)
 
+[PR for 5601](https://github.com/bcgov/mds/pull/2791)
+
 ### Core-api Environment Variables
 
 Example Environment Variables these connnect to Dev Traction.

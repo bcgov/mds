@@ -23,17 +23,24 @@ class VerifiableCredentialWebhookResource(Resource, UserMixin):
         User._test_mode = True  #webhook handling has no row level auth
         webhook_body = request.get_json()
         current_app.logger.debug(f"TRACTION WEBHOOK <topic={topic}>: {webhook_body}")
+        current_app.logger.debug(f"TRACTION WEBHOOK {request.__dict__}")
         if topic == CONNECTIONS:
             invitation_id = webhook_body['invitation_msg_id']
             vc_conn = PartyVerifiableCredentialConnection.query.unbound_unsafe().filter_by(invitation_id=invitation_id).first()
             assert vc_conn, f"connection.invitation_msg_id={invitation_id} not found. webhook_body={webhook_body}"
             vc_conn.connection_id = webhook_body["connection_id"]
             new_state = webhook_body["state"]
-            if new_state != vc_conn.connection_state:
+            if new_state != vc_conn.connection_state and vc_conn.connection != 'completed':
+                # 'completed' is the final succesful state.
                 vc_conn.connection_state=new_state
                 vc_conn.save()
                 current_app.logger.info(f"Updated party_vc_conn connection_id={vc_conn.connection_id} with state={new_state}")
-                # 'completed' or 'active' should both be considered successful
+            if new_state == "deleted":
+                # if deleted in the wallet (either in traction, or by the other agent)
+                vc_conn.connection_state=new_state
+                vc_conn.save()
+                current_app.logger.info(f"party_vc_conn connection_id={vc_conn.connection_id} was deleted")
+                 
         elif topic == OUT_OF_BAND:
                 current_app.logger.info(f"out-of-band message invi_msg_id={webhook_body['invi_msg_id']}, state={webhook_body['state']}")
         elif topic == CREDENTIAL_OFFER:
@@ -41,12 +48,13 @@ class VerifiableCredentialWebhookResource(Resource, UserMixin):
             cred_exch_record = PartyVerifiableCredentialMinesActPermit.query.unbound_unsafe().filter_by(cred_exch_id=cred_exch_id).first()
             assert cred_exch_record, f"issue_credential.credential_exchange_id={cred_exch_id} not found. webhook_body={webhook_body}"
             new_state = webhook_body["state"]
-            if new_state != cred_exch_record.cred_exch_state:
+            if new_state != cred_exch_record.cred_exch_state and cred_exch_record.cred_exch_state != "deleted":
+                # 'deleted' or 'credential_acked' should both be considered successful
+                # 'deleted' is the final state, do not update 
                 cred_exch_record.cred_exch_state=new_state
                 cred_exch_record.save()
                 current_app.logger.info(f"Updated cred_exch_record cred_exch_id={cred_exch_id} with state={new_state}")
-                # 'deleted' or 'credential_acked' should both be considered successful
         elif topic == PING:
                 current_app.logger.info(f"TrustPing received={request.get_json()}")
         else:
-            current_app.logger.info(f"unknown topic '{topic}'")
+            current_app.logger.info(f"unknown topic '{topic}', webhook_body={webhook_body}")
