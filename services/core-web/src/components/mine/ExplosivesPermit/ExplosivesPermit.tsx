@@ -115,7 +115,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
   };
 
   const handleAddExplosivesPermit = (values) => {
-    const system = values.permit_tab ? "MMS" : "Core";
+    const system = values.is_historic ? "MMS" : "Core";
     const payload = {
       originating_system: system,
       ...values,
@@ -157,7 +157,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
   };
 
   const handleOpenAddExplosivesPermitModal = (event, permitTab, record = null) => {
-    const initialValues = record || { permit_tab: permitTab };
+    const initialValues = record || {};
     const isProcessed = record !== null && record?.application_status !== "REC";
     event.preventDefault();
     props.openModal({
