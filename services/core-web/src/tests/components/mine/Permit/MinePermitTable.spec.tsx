@@ -6,6 +6,14 @@ import * as MOCK from "@/tests/mocks/dataMocks";
 const dispatchProps: any = {};
 const props: any = {};
 
+jest.mock("@mds/common/providers/featureFlags/useFeatureFlag", () => ({
+  useFeatureFlag: () => ({
+    isFeatureEnabled: {
+      verifiable_credentials: true,
+    },
+  }),
+}));
+
 const setupDispatchProps = () => {
   dispatchProps.openEditPermitModal = jest.fn();
   dispatchProps.openAddPermitAmendmentModal = jest.fn();
