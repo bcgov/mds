@@ -18,6 +18,8 @@ const HOST = process.env.HOST || "0.0.0.0";
 const PORT = process.env.PORT || 3020;
 const ASSET_PATH = process.env.ASSET_PATH || "/";
 const BUILD_DIR = process.env.BUILD_DIR || "build";
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const MomentTimezoneDataPlugin = require('moment-timezone-data-webpack-plugin');
 
 const smp = new SpeedMeasurePlugin({
   disable: !process.env.MEASURE_SPEED,
@@ -79,10 +81,28 @@ const commonConfig = merge([
       new webpack.ProvidePlugin({
         REQUEST_HEADER: path.resolve(__dirname, "common/utils/RequestHeaders.js"),
       }),
+      new BundleAnalyzerPlugin({
+        analyzerMode: 'static',
+        generateStatsFile: false,
+        statsOptions: { source: false }
+      }),
+      new webpack.IgnorePlugin({
+        resourceRegExp: /^\.\/locale$/,
+        contextRegExp: /moment$/,
+      }),
+      new MomentTimezoneDataPlugin({
+        startYear: 1900,
+        endYear: 2300,
+        matchCountries: ['CA', 'US']
+      }),
     ],
     resolve: {
       extensions: [".tsx", ".ts", ".js"],
-      alias: { ...PATH_ALIASES, "react-dom": "@hot-loader/react-dom" },
+      alias: {
+        ...PATH_ALIASES,
+        "react-dom": "@hot-loader/react-dom",
+        lodash: 'lodash-es'
+      },
     },
   },
   parts.setEnvironmentVariable(envFile),
@@ -186,9 +206,14 @@ const prodConfig = merge([
   parts.bundleOptimization({
     options: {
       cacheGroups: {
-        commons: {
-          test: /[\\/]node_modules[\\/]/,
+        defaultVendors: {
+          test: /[\\/]node_modules[\\/](?!\@syncfusion*)/,
           name: "vendor",
+          chunks: "all",
+        },
+        syncfusion: {
+          test: /[\\/]node_modules\/\@syncfusion*/,
+          name: "syncfusion",
           chunks: "all",
         },
       },

@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 // eslint-disable-next-line
 import { hot } from "react-hot-loader";
-import { LoadingOutlined } from "@ant-design/icons";
+import LoadingOutlined from "@ant-design/icons/LoadingOutlined";
 import { Layout, BackTop, Row, Col, Spin } from "antd";
 import { loadBulkStaticContent } from "@mds/common/redux/actionCreators/staticContentActionCreator";
 import { getStaticContentLoadingIsComplete } from "@mds/common/redux/selectors/staticContentSelectors";

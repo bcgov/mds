@@ -5,7 +5,8 @@ import { ColumnType } from "antd/lib/table";
 import { renderDateColumn, renderTextColumn } from "./CoreTableCommonColumns";
 import { MineDocument } from "@mds/common/models/documents/document";
 import { nullableStringSorter } from "@common/utils/helpers";
-import { ClockCircleOutlined, DeleteOutlined } from "@ant-design/icons";
+import ClockCircleOutlined from "@ant-design/icons/ClockCircleOutlined";
+import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
 import DocumentLink from "./DocumentLink";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 

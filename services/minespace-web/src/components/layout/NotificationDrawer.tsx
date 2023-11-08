@@ -1,6 +1,6 @@
 import React, { FC, RefObject, useEffect, useRef, useState } from "react";
 import { Badge, Button, Col, Row, Tabs, Typography } from "antd";
-import { BellOutlined } from "@ant-design/icons";
+import BellOutlined from "@ant-design/icons/BellOutlined";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import {

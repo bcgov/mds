@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Link } from "react-router-dom";
 import { Row, Col, Typography, Tabs } from "antd";
-import { ArrowLeftOutlined } from "@ant-design/icons";
+import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import PropTypes from "prop-types";
 import { Feature } from "@mds/common";
 import { getMines } from "@mds/common/redux/selectors/mineSelectors";
@@ -118,9 +118,9 @@ export class ProjectPage extends Component {
       const url =
         irtStatus === "APV"
           ? router.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
-              this.props.project.project_guid,
-              this.props.project.information_requirements_table?.irt_guid
-            )
+            this.props.project.project_guid,
+            this.props.project.information_requirements_table?.irt_guid
+          )
           : `/projects/${this.props.match.params?.projectGuid}/information-requirements-table/entry`;
       const urlState = irtStatus === "APV" ? { state: { current: 2 } } : {};
       return this.props.history.push({ pathname: url, ...urlState });

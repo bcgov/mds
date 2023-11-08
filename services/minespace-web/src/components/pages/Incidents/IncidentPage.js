@@ -14,7 +14,7 @@ import {
   touch,
 } from "redux-form";
 import { Col, Row, Steps, Typography } from "antd";
-import { ArrowLeftOutlined } from "@ant-design/icons";
+import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import PropTypes from "prop-types";
 import { getMineIncident } from "@mds/common/redux/reducers/incidentReducer";
 import {

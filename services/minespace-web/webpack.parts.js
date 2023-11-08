@@ -10,6 +10,7 @@ const TerserPlugin = require("terser-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
+const { EsbuildPlugin } = require('esbuild-loader');
 
 const { WebpackManifestPlugin } = require("webpack-manifest-plugin");
 
@@ -66,6 +67,18 @@ exports.loadJS = ({ include, exclude } = {}) => ({
           /// Treat .js files as `.jsx` files
           loader: 'jsx',
           target: 'es2016'
+        }
+      },
+      {
+        test: /\.[[j]sx?$/,
+        exclude,
+
+        loader: 'babel-loader',
+        options: {
+          plugins: [['babel-plugin-import', {
+            "libraryName": "antd",
+            "style": true,   // or 'css'          
+          }]]
         }
       },
     ],
@@ -416,11 +429,8 @@ exports.bundleOptimization = ({ options, cssOptions } = {}) => ({
   optimization: {
     splitChunks: options,
     minimizer: [
-      new TerserPlugin({
-        parallel: true,
-        terserOptions: {
-          compress: false,
-        },
+      new EsbuildPlugin({
+        target: 'es2016'
       }),
       new CssMinimizerPlugin({
         minimizerOptions: {

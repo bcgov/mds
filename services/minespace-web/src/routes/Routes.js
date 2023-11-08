@@ -1,7 +1,7 @@
 import { Button, Result, Typography } from "antd";
 import { Link, Route, Switch } from "react-router-dom";
 
-import { ExclamationCircleOutlined } from "@ant-design/icons";
+import ExclamationCircleOutlined from "@ant-design/icons/ExclamationCircleOutlined";
 import React from "react";
 import AuthenticationGuard from "@/HOC/AuthenticationGuard";
 import * as routes from "@/constants/routes";

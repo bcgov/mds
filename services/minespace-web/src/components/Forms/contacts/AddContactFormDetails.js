@@ -9,7 +9,7 @@ import { compose, bindActionCreators } from "redux";
 import { Field, reduxForm, initialize, isDirty, reset, getFormValues, change } from "redux-form";
 import { connect } from "react-redux";
 import { Col, Row, Typography, Popconfirm, Button, Divider } from "antd";
-import { Form } from "@ant-design/compatible";
+import Form from "@ant-design/compatible/Form";
 import { debounce } from "lodash";
 import { getPartyRelationshipTypesList } from "@mds/common/redux/selectors/staticContentSelectors";
 

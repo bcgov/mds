@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { EnvironmentOutlined } from "@ant-design/icons";
+import EnvironmentOutlined from "@ant-design/icons/EnvironmentOutlined";
 import { Row, Col, Divider, Typography } from "antd";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
@@ -86,18 +86,18 @@ export class MinesPage extends Component {
                 </Col>
               </Row>
             )) || (
-              <Row>
-                <Col span={24}>
-                  <Typography.Paragraph>
-                    You are not authorized to manage information for any mines. Please contact&nbsp;
-                    <a className="underline" href={Strings.MDS_EMAIL}>
-                      {Strings.MDS_EMAIL}
-                    </a>
-                    &nbsp;for assistance.
-                  </Typography.Paragraph>
-                </Col>
-              </Row>
-            )}
+                <Row>
+                  <Col span={24}>
+                    <Typography.Paragraph>
+                      You are not authorized to manage information for any mines. Please contact&nbsp;
+                      <a className="underline" href={Strings.MDS_EMAIL}>
+                        {Strings.MDS_EMAIL}
+                      </a>
+                      &nbsp;for assistance.
+                    </Typography.Paragraph>
+                  </Col>
+                </Row>
+              )}
           </Col>
         </Row>
       )) || <Loading />
