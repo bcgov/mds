@@ -123,6 +123,7 @@ TRACTION_HOST=https://traction-tenant-proxy-dev.apps.silver.devops.gov.bc.ca
 TRACTION_TENANT_ID=fb4090f1-bd27-45a8-9839-d58abdf54e76
 TRACTION_WALLET_API_KEY=c664c4c9ad6e4cfe9010f83aea8504e5
 CRED_DEF_ID_MINES_ACT_PERMIT=S7S2wzcF2giKuwxdeLBk69:3:CL:115414:mds-dev-revok
+TRACTION_WEBHOOK_X_API_KEY=1263835957285d576a09466f2d5f6142
 ```
 
 These values could be used for local development, however you will not receive webhooks back from Traction unless you create a public tunnel (like NRGROK) and set tractions with that webhook url.
