@@ -4,7 +4,8 @@ import { withRouter, Link, RouteComponentProps } from "react-router-dom";
 import { Menu, Dropdown, Button, Popconfirm } from "antd";
 import { PlusOutlined, SafetyCertificateOutlined, ReadOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
-import { Feature, VC_CRED_ISSUE_STATES, isFeatureEnabled } from "@mds/common/index";
+import { Feature, VC_CRED_ISSUE_STATES } from "@mds/common/index";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { formatDate } from "@common/utils/helpers";
 import { getPartyRelationships } from "@common/selectors/partiesSelectors";
 import {
@@ -29,6 +30,7 @@ import { ColumnsType } from "antd/lib/table";
  */
 
 const draftAmendment = "DFT";
+const { isFeatureEnabled } = useFeatureFlag();
 
 interface MinePermitTableProps {
   permits?: IPermit[];
@@ -113,7 +115,7 @@ const renderDeleteButtonForPermitAmendments = (record) => {
         okText={isLinkedToNowApplication ? "Ok" : "Delete"}
         cancelText="Cancel"
         onConfirm={
-          isLinkedToNowApplication ? () => { } : () => record.handleDeletePermitAmendment(record)
+          isLinkedToNowApplication ? () => {} : () => record.handleDeletePermitAmendment(record)
         }
       >
         <div className="custom-menu-item">
@@ -358,7 +360,7 @@ const columns: ColumnsType<MinePermitTableItem> = [
           onConfirm={
             isDeletionAllowed
               ? () => record.handleDeletePermit((record.permit as IPermit).permit_guid)
-              : () => { }
+              : () => {}
           }
           okText={isDeletionAllowed ? "Delete" : "Ok"}
           cancelText="Cancel"
