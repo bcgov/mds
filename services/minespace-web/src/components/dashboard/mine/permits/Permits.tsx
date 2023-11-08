@@ -122,7 +122,7 @@ export const Permits: FC<PermitsProps> = ({ mine, permits, ...props }) => {
                     )
                   }
                 >
-                  Generate Digital Wallet Connection
+                  Generate Connection Invitation
                 </Button>
               )}
             </Col>
