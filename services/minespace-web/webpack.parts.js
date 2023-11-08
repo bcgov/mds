@@ -68,19 +68,7 @@ exports.loadJS = ({ include, exclude } = {}) => ({
           loader: 'jsx',
           target: 'es2016'
         }
-      },
-      {
-        test: /\.[[j]sx?$/,
-        exclude,
-
-        loader: 'babel-loader',
-        options: {
-          plugins: [['babel-plugin-import', {
-            "libraryName": "antd",
-            "style": true,   // or 'css'          
-          }]]
-        }
-      },
+      }
     ],
   },
 });
@@ -427,6 +415,9 @@ exports.generateSourceMaps = ({ type } = {}) => ({
 
 exports.bundleOptimization = ({ options, cssOptions } = {}) => ({
   optimization: {
+    runtimeChunk: {
+      name: 'manifest'
+    },
     splitChunks: options,
     minimizer: [
       new EsbuildPlugin({

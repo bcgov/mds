@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Form from "@ant-design/compatible/Form";
+import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Select } from "antd";
 import LoadingOutlined from "@ant-design/icons/LoadingOutlined";
