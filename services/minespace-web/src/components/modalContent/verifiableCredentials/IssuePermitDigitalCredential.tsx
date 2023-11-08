@@ -75,17 +75,16 @@ export const IssuePermitDigitalCredential: FC<IssuePermitDigitalCredentialProps>
   const content = {
     alertTitle: {
       noWallet:
-        "Your digital wallet needs to be set up before you can add this permit to your digital wallet.",
+        "Your digital wallet needs to be set up before you can add this credential to your digital wallet.",
       issueReady: `Issue Digital Credential for ${current_permittee}.`,
-      pending:
-        "The digital credential for this permit has already been offered to your digital wallet.",
+      pending: "This digital credential has already been offered.",
       active: "This digital credential has been accepted.",
     },
     alertMessage: {
       noWallet:
         "Digital wallets must be connected in order to send and receive digital credentials. Please establish a digital wallet connection by clicking on the 'Generate Digital Wallet Connection' button below.",
-      issueReady: `Receive your permit as a digital credential by clicking the button below. The digital credential will be offered from the Chief Permitting Officer of B.C. for you to review, accept, and store in the digital wallet of ${current_permittee}.`,
-      pending: `Please review and verify this digital credential in the digital wallet of ${current_permittee}. If all data is accurate, accept the credential for it to be stored in your digital wallet.`,
+      issueReady: `Receive your digital credential by clicking the button below. The digital credential will be offered from the Chief Permitting Officer of B.C. for you to review, accept, and store in the digital wallet of ${current_permittee}.`,
+      pending: `Please review this digital credential in the digital wallet of ${current_permittee}. If all data is accurate, accept the credential for it to be stored in your digital wallet.`,
       active: `Please review the details in the digital wallet of ${current_permittee}.`,
     },
     modalBody: {
@@ -105,7 +104,7 @@ export const IssuePermitDigitalCredential: FC<IssuePermitDigitalCredentialProps>
     },
     issueButton: {
       issueReady: `Issue Digital Credential for Permit ${permit_no}`,
-      pending: `Digital Credential for Permit ${permit_no} has been issued`,
+      pending: `Digital Credential for Permit ${permit_no} has been offered`,
       active: `Digital Credential for Permit ${permit_no} accepted`,
     },
     credentialStatusText: {
