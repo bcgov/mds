@@ -77,7 +77,7 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
       event.preventDefault();
       props.openModal({
         props: {
-          title: "Issue Permit as Digital Credential",
+          title: "Issue Digital Credential",
           issuanceState: permit.lastAmendedVC,
           connectionState: permit.current_permittee_digital_wallet_connection_state,
           permitAmendmentGuid: permit.lastAmendedGuid,

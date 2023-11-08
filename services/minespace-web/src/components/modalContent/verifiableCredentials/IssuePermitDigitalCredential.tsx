@@ -76,7 +76,7 @@ export const IssuePermitDigitalCredential: FC<IssuePermitDigitalCredentialProps>
     alertTitle: {
       noWallet:
         "Your digital wallet needs to be set up before you can add this permit to your digital wallet.",
-      issueReady: "Option to Issue Permit as a Digital Credential.",
+      issueReady: `Issue Digital Credential for ${current_permittee}.`,
       pending:
         "The digital credential for this permit has already been offered to your digital wallet.",
       active: "This digital credential has been accepted.",
@@ -84,7 +84,7 @@ export const IssuePermitDigitalCredential: FC<IssuePermitDigitalCredentialProps>
     alertMessage: {
       noWallet:
         "Digital wallets must be connected in order to send and receive digital credentials. Please establish a digital wallet connection by clicking on the 'Generate Digital Wallet Connection' button below.",
-      issueReady: `Receive your permit as a digital credential by clicking the button below. A request will be sent to the Chief Permitting Officer of B.C. who will then issue your permit as a digital credential for you to review, accept, and store in the digital wallet of ${current_permittee}.`,
+      issueReady: `Receive your permit as a digital credential by clicking the button below. The digital credential will be offered from the Chief Permitting Officer of B.C. for you to review, accept, and store in the digital wallet of ${current_permittee}.`,
       pending: `Please review and verify this digital credential in the digital wallet of ${current_permittee}. If all data is accurate, accept the credential for it to be stored in your digital wallet.`,
       active: `Please review the details in the digital wallet of ${current_permittee}.`,
     },
@@ -93,10 +93,9 @@ export const IssuePermitDigitalCredential: FC<IssuePermitDigitalCredentialProps>
       issueReady: (
         <>
           <Typography.Paragraph>
-            By generating this request, you are requesting your permit to be sent as a digital
-            credential. Please monitor the digital wallet of {current_permittee} to review and
-            accept any incoming offers being sent from the Chief Permitting Officer of B.C.&apos;s
-            digital wallet.
+            By generating this request, you are requesting your digital credential. Please monitor
+            the digital wallet of {current_permittee} to review and accept any incoming offers from
+            the Chief Permitting Officer of B.C.&apos;s digital wallet.
           </Typography.Paragraph>
           <Typography.Paragraph strong>
             Click below to add permit {permit_no} to the digital wallet of {current_permittee}
@@ -105,9 +104,9 @@ export const IssuePermitDigitalCredential: FC<IssuePermitDigitalCredentialProps>
       ),
     },
     issueButton: {
-      issueReady: `Issue Digital Credential for permit ${permit_no}`,
-      pending: `Digital Credential for permit ${permit_no} has been issued`,
-      active: `Digital Credential for permit ${permit_no} accepted`,
+      issueReady: `Issue Digital Credential for Permit ${permit_no}`,
+      pending: `Digital Credential for Permit ${permit_no} has been issued`,
+      active: `Digital Credential for Permit ${permit_no} accepted`,
     },
     credentialStatusText: {
       pending: (
