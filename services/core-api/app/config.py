@@ -249,7 +249,7 @@ class Config(object):
     TRACTION_HOST = os.environ.get("TRACTION_HOST","https://traction-tenant-proxy-dev.apps.silver.devops.gov.bc.ca")
     TRACTION_TENANT_ID = os.environ.get("TRACTION_TENANT_ID","GET_TENANT_ID_FROM_TRACTION")
     TRACTION_WALLET_API_KEY = os.environ.get("TRACTION_WALLET_API_KEY","GET_WALLET_API_KEY_FROM_TRACTION")
-
+    TRACTION_WEBHOOK_X_API_KEY = os.environ.get("TRACTION_WEBHOOK_X_API_KEY","NO_X_API_KEY")
     CRED_DEF_ID_MINES_ACT_PERMIT = os.environ.get("CRED_DEF_ID_MINES_ACT_PERMIT","CRED_DEF_ID_MINES_ACT_PERMIT")
 
 class TestConfig(Config):

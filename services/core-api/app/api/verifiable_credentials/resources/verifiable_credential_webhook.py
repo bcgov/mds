@@ -1,8 +1,9 @@
-import enum
 from flask import current_app, request
+from werkzeug.exceptions import Forbidden
 from flask_restplus import Resource
 from app.api.utils.include.user_info import User
 
+from app.config import Config
 from app.extensions import api
 
 from app.api.utils.resources_mixins import UserMixin
@@ -20,6 +21,10 @@ PING = "ping"
 class VerifiableCredentialWebhookResource(Resource, UserMixin):
     @api.doc(description='Endpoint to recieve webhooks from Traction.', params={})
     def post(self, topic):
+        #custom auth for traction
+        if request.headers.get("x-api-key") != Config.TRACTION_WEBHOOK_X_API_KEY:
+             return Forbidden("bad x-api-key")
+
         User._test_mode = True  #webhook handling has no row level auth
         webhook_body = request.get_json()
         current_app.logger.debug(f"TRACTION WEBHOOK <topic={topic}>: {webhook_body}")
