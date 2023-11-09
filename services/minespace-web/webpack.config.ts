@@ -20,6 +20,7 @@ const ASSET_PATH = process.env.ASSET_PATH || "/";
 const BUILD_DIR = process.env.BUILD_DIR || "build";
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const MomentTimezoneDataPlugin = require('moment-timezone-data-webpack-plugin');
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 // const smp = new SpeedMeasurePlugin({
 //   disable: !process.env.MEASURE_SPEED,
@@ -37,7 +38,7 @@ const PATHS = {
 };
 
 const BUILD_FILE_NAMES = {
-  css: "style/[name].css",
+  css: "style/[name].[contenthash:4].css",
   bundle: "js/bundle.[chunkhash:4].js",
   vendor: "js/[id].[chunkhash:4].js",
   assets: "assets/[name].[hash:4].[ext]",

@@ -25,6 +25,7 @@ app.use(
   })
 );
 
+
 const staticServe = expressStaticGzip(`${__dirname}/${BUILD_DIR}`, {
   enableBrotli: true,
   maxAge: "1y",
@@ -73,4 +74,6 @@ app.use(`${BASE_PATH}*`, staticServe);
 app.use(`/`, staticServe);
 app.use(`*`, staticServe);
 
-app.listen(PORT, "0.0.0.0", () => console.log("Server running"));
+const server = app.listen(PORT, "0.0.0.0", () => console.log("Server running"));
+server.keepAliveTimeout = 10;
+server.headersTimeout = 15;

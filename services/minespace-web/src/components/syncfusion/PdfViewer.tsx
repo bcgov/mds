@@ -18,7 +18,6 @@ import {
   AjaxRequestSettingsModel,
 } from "@syncfusion/ej2-react-pdfviewer";
 
-
 interface PdfViewerProps {
   pdfViewerServiceUrl: string;
   documentPath: string;
