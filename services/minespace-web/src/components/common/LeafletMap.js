@@ -3,9 +3,9 @@ import L from "leaflet";
 import PropTypes from "prop-types";
 
 import "leaflet.markercluster";
-// import "leaflet/dist/leaflet.css";
-// import "leaflet.markercluster/dist/MarkerCluster.css";
-// import "leaflet.markercluster/dist/MarkerCluster.Default.css";
+import "leaflet/dist/leaflet.css";
+import "leaflet.markercluster/dist/MarkerCluster.css";
+import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 
 import * as Strings from "@mds/common/constants/strings";
 import { Validate } from "@common/utils/Validate";
@@ -32,11 +32,11 @@ class LeafletMap extends Component {
   // if mine does not have a location, set a default to center the map
   latLong =
     this.props.mine &&
-      this.props.mine.mine_location &&
-      this.props.mine.mine_location.latitude &&
-      this.props.mine.mine_location.longitude
+    this.props.mine.mine_location &&
+    this.props.mine.mine_location.latitude &&
+    this.props.mine.mine_location.longitude
       ? // only add mine Pin if location exists
-      [this.props.mine.mine_location.latitude, this.props.mine.mine_location.longitude]
+        [this.props.mine.mine_location.latitude, this.props.mine.mine_location.longitude]
       : [Number(Strings.DEFAULT_LAT), Number(Strings.DEFAULT_LONG)];
 
   componentDidMount() {
