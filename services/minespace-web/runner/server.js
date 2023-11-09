@@ -75,5 +75,5 @@ app.use(`/`, staticServe);
 app.use(`*`, staticServe);
 
 const server = app.listen(PORT, "0.0.0.0", () => console.log("Server running"));
-server.keepAliveTimeout = 10;
-server.headersTimeout = 15;
+server.keepAliveTimeout = 15 * 1000;
+server.headersTimeout = 20 * 1000;
