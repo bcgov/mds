@@ -642,6 +642,7 @@ const transformChildRowData = (
 
 export const MinePermitTable: React.FC<RouteComponentProps & MinePermitTableProps> = (props) => {
   const { isFeatureEnabled } = useFeatureFlag();
+  const permitColumns = [...columns];
 
   if (isFeatureEnabled(Feature.VERIFIABLE_CREDENTIALS)) {
     const colourMap = {
@@ -661,7 +662,7 @@ export const MinePermitTable: React.FC<RouteComponentProps & MinePermitTableProp
       },
     };
 
-    columns.splice(5, 0, issuanceColumn);
+    permitColumns.splice(5, 0, issuanceColumn);
   }
 
   const amendmentHistory = (permit) => {
@@ -701,7 +702,7 @@ export const MinePermitTable: React.FC<RouteComponentProps & MinePermitTableProp
     <CoreTable
       condition={props.isLoaded}
       dataSource={rowData}
-      columns={columns}
+      columns={permitColumns}
       classPrefix="permits"
       expandProps={{
         rowKey: "permit_amendment_guid",
