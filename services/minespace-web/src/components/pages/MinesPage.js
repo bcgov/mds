@@ -12,7 +12,7 @@ import CustomPropTypes from "@/customPropTypes";
 import Loading from "@/components/common/Loading";
 import * as routes from "@/constants/routes";
 import * as Strings from "@/constants/strings";
-import Map from "@/components/common/Map";
+// import Map from "@/components/common/Map";
 import UnauthenticatedNotice from "../common/UnauthenticatedNotice";
 import { detectDevelopmentEnvironment } from "@mds/common";
 
@@ -73,10 +73,10 @@ export class MinesPage extends Component {
                 </Col>
                 <Col xl={12} lg={10} sm={0}>
                   <div style={{ height: "400px", marginTop: "-32px" }}>
-                    <Map
+                    {/* <Map
                       controls={false}
                       additionalPins={mines.map((mine) => [mine.latitude, mine.longitude])}
-                    />
+                    /> */}
                   </div>
                   <Typography.Paragraph style={{ paddingTop: "16px" }}>
                     Don&apos;t see the mine you&apos;re looking for? Contact&nbsp;
@@ -86,18 +86,18 @@ export class MinesPage extends Component {
                 </Col>
               </Row>
             )) || (
-                <Row>
-                  <Col span={24}>
-                    <Typography.Paragraph>
-                      You are not authorized to manage information for any mines. Please contact&nbsp;
-                      <a className="underline" href={Strings.MDS_EMAIL}>
-                        {Strings.MDS_EMAIL}
-                      </a>
-                      &nbsp;for assistance.
-                    </Typography.Paragraph>
-                  </Col>
-                </Row>
-              )}
+              <Row>
+                <Col span={24}>
+                  <Typography.Paragraph>
+                    You are not authorized to manage information for any mines. Please contact&nbsp;
+                    <a className="underline" href={Strings.MDS_EMAIL}>
+                      {Strings.MDS_EMAIL}
+                    </a>
+                    &nbsp;for assistance.
+                  </Typography.Paragraph>
+                </Col>
+              </Row>
+            )}
           </Col>
         </Row>
       )) || <Loading />

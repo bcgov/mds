@@ -19,8 +19,8 @@ const HOST = process.env.HOST || "0.0.0.0";
 const PORT = process.env.PORT || 3020;
 const ASSET_PATH = process.env.ASSET_PATH || "/";
 const BUILD_DIR = process.env.BUILD_DIR || "build";
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const MomentTimezoneDataPlugin = require('moment-timezone-data-webpack-plugin');
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const MomentTimezoneDataPlugin = require("moment-timezone-data-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 // const smp = new SpeedMeasurePlugin({
@@ -68,7 +68,13 @@ if (dotenv.parsed) {
   });
 }
 
-threadLoader.warmup({}, ["style-loader", "css-loader", "sass-loader", "less-loader", "postcss-loader"]);
+threadLoader.warmup({}, [
+  "style-loader",
+  "css-loader",
+  "sass-loader",
+  "less-loader",
+  "postcss-loader",
+]);
 
 const commonConfig = merge([
   {
@@ -94,7 +100,7 @@ const commonConfig = merge([
       new MomentTimezoneDataPlugin({
         startYear: 1900,
         endYear: 2300,
-        matchCountries: ['CA', 'US']
+        matchCountries: ["CA", "US"],
       }),
       new MiniCssExtractPlugin(),
     ],
@@ -103,7 +109,7 @@ const commonConfig = merge([
       alias: {
         ...PATH_ALIASES,
         // "react-dom": "@hot-loader/react-dom",
-        lodash: 'lodash-es'
+        lodash: "lodash-es",
       },
     },
   },
@@ -136,7 +142,6 @@ const commonConfig = merge([
 const devConfig = merge([
   {
     plugins: [new ForkTsCheckerWebpackPlugin()],
-
   },
   {
     output: {
@@ -211,12 +216,13 @@ const prodConfig = merge([
   }),
   parts.bundleOptimization({
     options: {
+      maxSize: 2000000,
       cacheGroups: {
         defaultVendors: {
           test: /[\\/]node_modules[\\/](?!\@syncfusion*)/,
           name: "vendor",
           chunks: "all",
-          priority: -5
+          priority: -5,
           // maxSize: 2048 * 1000
         },
         syncfusion: {
@@ -229,8 +235,8 @@ const prodConfig = merge([
           test: /[\\/]node_modules\/leaflet*/,
           name: "leaflet",
           chunks: "all",
-          priority: 10
-        }
+          priority: 10,
+        },
       },
     },
     cssOptions: {
@@ -243,22 +249,27 @@ const prodConfig = merge([
   // parts.extractManifest(),
   parts.copy(PATHS.public, path.join(PATHS.build, "public")),
   {
-    plugins: [new HtmlCriticalWebpackPlugin({
-      base: PATHS.build,
-      src: 'index.html',
-      dest: 'index.html',
-      inline: true,
-      minify: true,
-      extract: true,
-      width: 375,
-      height: 565,
-      penthouse: {
-        blockJSRequests: false,
-      }
-
-    }),
-    ]
-  }
+    plugins: [
+      new HtmlCriticalWebpackPlugin({
+        base: PATHS.build,
+        src: "index.html",
+        dest: "index.html",
+        inline: true,
+        minify: true,
+        extract: true,
+        width: 375,
+        height: 565,
+        penthouse: {
+          blockJSRequests: false,
+        },
+      }),
+      new BundleAnalyzerPlugin({
+        analyzerMode: "static",
+        generateStatsFile: false,
+        statsOptions: { source: false },
+      }),
+    ],
+  },
 ]);
 
 module.exports = () => {
