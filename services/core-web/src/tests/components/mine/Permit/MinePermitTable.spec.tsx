@@ -7,11 +7,7 @@ const dispatchProps: any = {};
 const props: any = {};
 
 jest.mock("@mds/common/providers/featureFlags/useFeatureFlag", () => ({
-  useFeatureFlag: () => ({
-    isFeatureEnabled: {
-      verifiable_credentials: true,
-    },
-  }),
+  isFeatureEnabled: () => true,
 }));
 
 const setupDispatchProps = () => {
