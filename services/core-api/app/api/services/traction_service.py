@@ -69,7 +69,6 @@ class TractionService():
 
         payload = {
             "auto_issue": True,
-            "auto_remove": True,
             "comment": "VC to provide proof of a permit and some basic details",
             "connection_id": str(connection_id),
             "cred_def_id": Config.CRED_DEF_ID_MINES_ACT_PERMIT,
