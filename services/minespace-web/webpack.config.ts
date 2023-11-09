@@ -6,7 +6,7 @@ const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const { merge } = require("webpack-merge");
 const path = require("path");
 const dotenv = require("dotenv").config({ path: `${__dirname}/.env` });
-const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
+// const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
 const threadLoader = require("thread-loader");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
@@ -21,9 +21,9 @@ const BUILD_DIR = process.env.BUILD_DIR || "build";
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const MomentTimezoneDataPlugin = require('moment-timezone-data-webpack-plugin');
 
-const smp = new SpeedMeasurePlugin({
-  disable: !process.env.MEASURE_SPEED,
-});
+// const smp = new SpeedMeasurePlugin({
+//   disable: !process.env.MEASURE_SPEED,
+// });
 
 const PATHS = {
   src: path.join(__dirname, "src"),
@@ -37,7 +37,7 @@ const PATHS = {
 };
 
 const BUILD_FILE_NAMES = {
-  css: "style/[name].[contenthash:4].css",
+  css: "style/[name].css",
   bundle: "js/bundle.[chunkhash:4].js",
   vendor: "js/[id].[chunkhash:4].js",
   assets: "assets/[name].[hash:4].[ext]",
@@ -66,11 +66,10 @@ if (dotenv.parsed) {
   });
 }
 
-threadLoader.warmup({}, ["style-loader", "css-loader", "sass-loader", MiniCssExtractPlugin.loader]);
+threadLoader.warmup({}, ["style-loader", "css-loader", "sass-loader", "less-loader", "postcss-loader"]);
 
 const commonConfig = merge([
   {
-    devtool: "inline-source-map",
     entry: {
       main: PATHS.entry,
     },
@@ -95,12 +94,13 @@ const commonConfig = merge([
         endYear: 2300,
         matchCountries: ['CA', 'US']
       }),
+      new MiniCssExtractPlugin()
     ],
     resolve: {
       extensions: [".tsx", ".ts", ".js"],
       alias: {
         ...PATH_ALIASES,
-        "react-dom": "@hot-loader/react-dom",
+        // "react-dom": "@hot-loader/react-dom",
         lodash: 'lodash-es'
       },
     },
@@ -134,6 +134,7 @@ const commonConfig = merge([
 const devConfig = merge([
   {
     plugins: [new ForkTsCheckerWebpackPlugin()],
+
   },
   {
     output: {
@@ -177,6 +178,9 @@ const prodConfig = merge([
     },
   },
   parts.clean(),
+  parts.generateSourceMaps({
+    type: "source-map",
+  }),
   parts.extractCSS({
     filename: BUILD_FILE_NAMES.css,
     include: undefined,
@@ -210,12 +214,21 @@ const prodConfig = merge([
           test: /[\\/]node_modules[\\/](?!\@syncfusion*)/,
           name: "vendor",
           chunks: "all",
+          priority: -5
+          // maxSize: 2048 * 1000
         },
         syncfusion: {
           test: /[\\/]node_modules\/\@syncfusion*/,
           name: "syncfusion",
           chunks: "all",
+          priority: 10,
         },
+        leaflet: {
+          test: /[\\/]node_modules\/leaflet*/,
+          name: "leaflet",
+          chunks: "all",
+          priority: 10
+        }
       },
     },
     cssOptions: {
@@ -225,7 +238,7 @@ const prodConfig = merge([
       },
     },
   }),
-  parts.extractManifest(),
+  // parts.extractManifest(),
   parts.copy(PATHS.public, path.join(PATHS.build, "public")),
 ]);
 
@@ -236,6 +249,8 @@ module.exports = () => {
   }
 
   if (mode === DEVELOPMENT) {
-    return smp.wrap(merge(commonConfig, devConfig, { mode }));
+    const conf = merge(commonConfig, devConfig, { mode });
+
+    return process.env.MEASURE_SPEED ? conf : conf;
   }
 };

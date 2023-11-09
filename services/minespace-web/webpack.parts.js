@@ -419,6 +419,7 @@ exports.bundleOptimization = ({ options, cssOptions } = {}) => ({
       name: 'manifest'
     },
     splitChunks: options,
+    minimize: true,
     minimizer: [
       new EsbuildPlugin({
         target: 'es2016'
