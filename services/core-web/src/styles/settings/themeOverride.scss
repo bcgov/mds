@@ -507,6 +507,10 @@
   margin-bottom: 10px;
 }
 
+.ant-form-item-label {
+  overflow: inherit;
+}
+
 .ant-form-item-label label:after {
   content: none;
 }

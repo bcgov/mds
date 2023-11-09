@@ -324,17 +324,15 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
                   />
                 </Col>
                 <Col span={12}>
-                  <Form.Item>
-                    <Field
-                      id="expiry_date"
-                      name="expiry_date"
-                      label="Expiry Date"
-                      required
-                      component={renderConfig.NEW_DATE}
-                      validate={[required]}
-                      disabled={disabled}
-                    />
-                  </Form.Item>
+                  <Field
+                    id="expiry_date"
+                    name="expiry_date"
+                    label="Expiry Date"
+                    required
+                    component={renderConfig.NEW_DATE}
+                    validate={[required]}
+                    disabled={disabled}
+                  />
                 </Col>
               </Row>
               <Row gutter={6}>
