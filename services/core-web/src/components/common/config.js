@@ -16,25 +16,34 @@ import RenderGroupedSelect from "./RenderGroupedSelect";
 import RenderMineSelect from "./RenderMineSelect";
 import RenderLabel from "./RenderLabel";
 import RenderFileUpload from "./RenderFileUpload";
+import RenderFieldNew from "./RenderFieldNew";
+import RenderDateNew from "./RenderDateNew";
+import RenderGroupedSelectNew from "./RenderGroupedSelectNew";
+import RenderSelectNew from "./RenderSelectNew";
+import RenderAutoSizeFieldNew from "./RenderAutoSizeFieldNew";
 
 // This file is anticipated to have multiple exports
-// eslint-disable-next-line import/prefer-default-export
 export const renderConfig = {
   CHECKBOX: RenderCheckbox,
   GROUP_CHECK_BOX: RenderGroupCheckbox,
   AUTOCOMPLETE: RenderAutocomplete,
   AUTO_SIZE_FIELD: RenderAutoSizeField,
+  NEW_AUTO_SIZE_FIELD: RenderAutoSizeFieldNew,
   CASCADER: RenderCascader,
   DATE: RenderDate,
+  NEW_DATE: RenderDateNew,
   TIME: RenderTime,
   YEAR: RenderYear,
   FIELD: RenderField,
+  NEW_FIELD: RenderFieldNew,
   SCROLL_FIELD: RenderScrollField,
   SELECT: RenderSelect,
+  NEW_SELECT: RenderSelectNew,
   LARGE_SELECT: RenderLargeSelect,
   MULTI_SELECT: RenderMultiSelect,
   RADIO: RenderRadioButtons,
   GROUPED_SELECT: RenderGroupedSelect,
+  NEW_GROUPED_SELECT: RenderGroupedSelectNew,
   MINE_SELECT: RenderMineSelect,
   LABEL: RenderLabel,
   FILE_UPLOAD: RenderFileUpload,

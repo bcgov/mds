@@ -21,13 +21,10 @@ import { COLOR } from "@/constants/styles";
 
 export type FormProps = {
   isProcessed: boolean;
+  view: boolean;
 };
 
 class MagazineForm extends Component<FormProps> {
-  static propTypes = {
-    isProcessed: PropTypes.bool.isRequired,
-  };
-
   state = {
     activeKeys: [],
   };
@@ -53,23 +50,25 @@ class MagazineForm extends Component<FormProps> {
           </Typography.Text>
         }
       />
-      <div onClick={(event) => event.stopPropagation()}>
-        <Popconfirm
-          placement="topRight"
-          title={`Are you sure you want to remove Role ${index + 1}?`}
-          onConfirm={this.removeField(index, fields)}
-          okText="Yes"
-          cancelText="No"
-        >
-          <Button ghost disabled={this.props.isProcessed}>
-            <img
-              className={this.props.isProcessed ? "disabled-icon" : ""}
-              src={TRASHCAN}
-              alt="Remove Activity"
-            />
-          </Button>
-        </Popconfirm>
-      </div>
+      {!this.props.view && (
+        <div onClick={(event) => event.stopPropagation()}>
+          <Popconfirm
+            placement="topRight"
+            title={`Are you sure you want to remove Role ${index + 1}?`}
+            onConfirm={this.removeField(index, fields)}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button ghost disabled={this.props.isProcessed}>
+              <img
+                className={this.props.isProcessed ? "disabled-icon" : ""}
+                src={TRASHCAN}
+                alt="Remove Activity"
+              />
+            </Button>
+          </Popconfirm>
+        </div>
+      )}
     </div>
   );
 
@@ -81,20 +80,22 @@ class MagazineForm extends Component<FormProps> {
         <Row gutter={16}>
           <Col span={12}>
             <Field
-              label="Type No. *"
+              label="Type No."
               id={`${field}type_no`}
               name={`${field}type_no`}
-              component={renderConfig.FIELD}
+              component={renderConfig.NEW_FIELD}
+              required
               validate={[required]}
               disabled={this.props.isProcessed}
             />
           </Col>
           <Col span={12}>
             <Field
-              label="Tag No. *"
+              label="Tag No."
               id={`${field}tag_no`}
               name={`${field}tag_no`}
-              component={renderConfig.FIELD}
+              component={renderConfig.NEW_FIELD}
+              required
               validate={[required]}
               disabled={this.props.isProcessed}
             />
@@ -103,20 +104,22 @@ class MagazineForm extends Component<FormProps> {
         <Row gutter={16}>
           <Col span={12}>
             <Field
-              label="Construction *"
+              label="Construction"
               id={`${field}construction`}
               name={`${field}construction`}
-              component={renderConfig.FIELD}
+              component={renderConfig.NEW_FIELD}
+              required
               validate={[required]}
               disabled={this.props.isProcessed}
             />
           </Col>
           <Col span={12}>
             <Field
-              label={`Quantity ${unit}*`}
+              label={`Quantity ${unit}`}
               id={`${field}quantity`}
               name={`${field}quantity`}
-              component={renderConfig.FIELD}
+              component={renderConfig.NEW_FIELD}
+              required
               validate={[positiveNumber, required]}
               disabled={this.props.isProcessed}
             />
@@ -126,21 +129,23 @@ class MagazineForm extends Component<FormProps> {
         <Row gutter={16}>
           <Col span={12}>
             <Field
-              label="Latitude *"
+              label="Latitude"
               id={`${field}latitude`}
               name={`${field}latitude`}
-              component={renderConfig.FIELD}
+              component={renderConfig.NEW_FIELD}
+              required
               validate={[number, maxLength(10), lat, required]}
               disabled={this.props.isProcessed}
             />
           </Col>
           <Col span={12}>
             <Field
-              label="Longitude *"
+              label="Longitude"
               id={`${field}longitude`}
               name={`${field}longitude`}
+              required
               validate={[number, maxLength(12), lon, lonNegative, required]}
-              component={renderConfig.FIELD}
+              component={renderConfig.NEW_FIELD}
               disabled={this.props.isProcessed}
             />
           </Col>
@@ -149,10 +154,11 @@ class MagazineForm extends Component<FormProps> {
           <Row gutter={16}>
             <Col span={24}>
               <Field
-                label="Type of Detonator*"
+                label="Type of Detonator"
                 id={`${field}detonator_type`}
                 name={`${field}detonator_type`}
-                component={renderConfig.AUTO_SIZE_FIELD}
+                component={renderConfig.NEW_AUTO_SIZE_FIELD}
+                required
                 validate={[required]}
                 disabled={this.props.isProcessed}
               />
@@ -162,20 +168,22 @@ class MagazineForm extends Component<FormProps> {
         <Row gutter={16}>
           <Col span={24}>
             <Field
-              label="Distance from Road or Work Area (m)*"
+              label="Distance from Road or Work Area (m)"
               id={`${field}distance_road`}
               name={`${field}distance_road`}
-              component={renderConfig.FIELD}
+              component={renderConfig.NEW_FIELD}
+              required
               validate={[positiveNumber, required]}
               disabled={this.props.isProcessed}
             />
           </Col>
           <Col span={24}>
             <Field
-              label="Distance from Dwelling or Flammable Material Storage Area (m)*"
+              label="Distance from Dwelling or Flammable Material Storage Area (m)"
               id={`${field}distance_dwelling`}
               name={`${field}distance_dwelling`}
-              component={renderConfig.FIELD}
+              component={renderConfig.NEW_FIELD}
+              required
               validate={[positiveNumber, required]}
               disabled={this.props.isProcessed}
             />
@@ -184,30 +192,33 @@ class MagazineForm extends Component<FormProps> {
         <Row gutter={16}>
           <Col span={8}>
             <Field
-              label="Length (m)*"
+              label="Length (m)"
               id={`${field}length`}
               name={`${field}length`}
-              component={renderConfig.FIELD}
+              component={renderConfig.NEW_FIELD}
+              required
               validate={[positiveNumber, required]}
               disabled={this.props.isProcessed}
             />
           </Col>
           <Col span={8}>
             <Field
-              label="Width (m)*"
+              label="Width (m)"
               id={`${field}width`}
               name={`${field}width`}
-              component={renderConfig.FIELD}
+              component={renderConfig.NEW_FIELD}
+              required
               validate={[positiveNumber, required]}
               disabled={this.props.isProcessed}
             />
           </Col>
           <Col span={8}>
             <Field
-              label="Height (m)*"
+              label="Height (m)"
               id={`${field}height`}
               name={`${field}height`}
-              component={renderConfig.FIELD}
+              component={renderConfig.NEW_FIELD}
+              required
               validate={[positiveNumber, required]}
               disabled={this.props.isProcessed}
             />
@@ -224,7 +235,7 @@ class MagazineForm extends Component<FormProps> {
           <Col md={24}>
             {fields.map((field, index) => (
               <Collapse
-                key={field.id}
+                key={field}
                 defaultActiveKey={this.state.activeKeys}
                 className="magazine-collapse margin-large--bottom"
                 onChange={(key) => this.setState({ activeKeys: Array.isArray(key) ? key : [key] })}
@@ -232,21 +243,23 @@ class MagazineForm extends Component<FormProps> {
                 <Collapse.Panel
                   header={this.panelHeader(index, fields, "EXP")}
                   className="magazine-collapse"
-                  key={`${field.id}EXP`}
+                  key={`${field}EXP`}
                 >
                   {this.renderInputs(field, "EXP")}
                 </Collapse.Panel>
               </Collapse>
             ))}
-            <Button
-              className="add-magazine-button"
-              type="ghost"
-              onClick={(event) => this.addField(event, fields)}
-              disabled={this.props.isProcessed}
-              icon={<PlusOutlined style={{ color: COLOR.violet }} />}
-            >
-              {fields.length > 0 ? "Add Another Magazine" : "Add Magazine"}
-            </Button>
+            {!this.props.view && (
+              <Button
+                className="add-magazine-button"
+                type="ghost"
+                onClick={(event) => this.addField(event, fields)}
+                disabled={this.props.isProcessed}
+                icon={<PlusOutlined style={{ color: COLOR.violet }} />}
+              >
+                {fields.length > 0 ? "Add Another Magazine" : "Add Magazine"}
+              </Button>
+            )}
           </Col>
         </Row>
       </div>
@@ -262,27 +275,29 @@ class MagazineForm extends Component<FormProps> {
               <Collapse
                 defaultActiveKey={this.state.activeKeys}
                 onChange={(key) => this.setState({ activeKeys: Array.isArray(key) ? key : [key] })}
-                key={field.id}
+                key={field}
                 className="magazine-collapse margin-large--bottom"
               >
                 <Collapse.Panel
                   className="magazine-collapse"
                   header={this.panelHeader(index, fields, "DET")}
-                  key={`${field.id}DET`}
+                  key={`${field}DET`}
                 >
                   {this.renderInputs(field, "DET")}
                 </Collapse.Panel>
               </Collapse>
             ))}
-            <Button
-              className="add-magazine-button"
-              type="ghost"
-              onClick={(event) => this.addField(event, fields)}
-              disabled={this.props.isProcessed}
-              icon={<PlusOutlined style={{ color: COLOR.violet }} />}
-            >
-              {fields.length > 0 ? "Add Another Magazine" : "Add Magazine"}
-            </Button>
+            {!this.props.view && (
+              <Button
+                className="add-magazine-button"
+                type="ghost"
+                onClick={(event) => this.addField(event, fields)}
+                disabled={this.props.isProcessed}
+                icon={<PlusOutlined style={{ color: COLOR.violet }} />}
+              >
+                {fields.length > 0 ? "Add Another Magazine" : "Add Magazine"}
+              </Button>
+            )}
           </Col>
         </Row>
       </div>
