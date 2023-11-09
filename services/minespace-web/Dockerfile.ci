@@ -11,6 +11,9 @@ COPY . .
 
 ENV NODE_OPTIONS="--max-old-space-size=6144"
 
+RUN apt-get update
+RUN apt-get install libxtst6
+
 RUN yarn config set 'npmScopes["fortawesome"].npmAuthIdent' "$ARTIFACTORY_TOKEN"
 RUN yarn config set 'npmScopes["fortawesome"].npmAlwaysAuth' true
 RUN yarn config set 'npmScopes["fortawesome"].npmRegistryServer' "https://artifacts.developer.gov.bc.ca/artifactory/api/npm/m4c2-mds/"
