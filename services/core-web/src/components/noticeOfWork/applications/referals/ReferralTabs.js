@@ -230,7 +230,7 @@ export class ReferralTabs extends Component {
                   <NOWSideMenu tabSection="referral" />
                   <a
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     href={Strings.E_REFERRALS_URL}
                     alt="E-Referrals"
                   >

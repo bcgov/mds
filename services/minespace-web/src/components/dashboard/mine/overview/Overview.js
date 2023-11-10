@@ -127,7 +127,7 @@ export const Overview = (props) => (
             </Card>
           </Col>
         )) || [
-          <Col span={24}>
+          <Col span={24} key="regional">
             <Card title="Regional Ministry Contacts">
               {props.EMLIcontactInfo.filter(({ is_general_contact }) => !is_general_contact).map(
                 (contact) => (
@@ -136,7 +136,7 @@ export const Overview = (props) => (
               )}
             </Card>
           </Col>,
-          <Col span={24}>
+          <Col span={24} key="general">
             <Card title="General Ministry Contacts">
               {props.EMLIcontactInfo.filter(({ is_general_contact }) => is_general_contact).map(
                 (contact) => (
