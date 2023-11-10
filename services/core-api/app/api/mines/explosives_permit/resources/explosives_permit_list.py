@@ -9,7 +9,9 @@ from app.api.utils.access_decorators import requires_any_of, VIEW_ALL, MINESPACE
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.explosives_permit.response_models import EXPLOSIVES_PERMIT_MODEL
 from app.api.mines.explosives_permit.models.explosives_permit import ExplosivesPermit
-
+from sqlalchemy import exc
+from app.api.mines.exceptions.mine_exceptions import MineException, InvalidInputData
+from flask import current_app
 
 class ExplosivesPermitListResource(Resource, UserMixin):
 
@@ -156,24 +158,40 @@ class ExplosivesPermitListResource(Resource, UserMixin):
         if mine is None:
             raise NotFound('Mine not found')
 
-        data = self.parser.parse_args()
-        explosives_permit = ExplosivesPermit.create(mine, data.get('permit_guid'),
-                                                    data.get('application_date'),
-                                                    data.get('originating_system'),
-                                                    data.get('latitude'), data.get('longitude'),
-                                                    data.get('description'), data.get('issue_date'),
-                                                    data.get('expiry_date'),
-                                                    data.get('permit_number'),
-                                                    data.get('issuing_inspector_party_guid'),
-                                                    data.get('mine_manager_mine_party_appt_id'),
-                                                    data.get('permittee_mine_party_appt_id'),
-                                                    data.get('is_closed'),
-                                                    data.get('closed_reason'),
-                                                    data.get('closed_timestamp'),
-                                                    data.get('explosive_magazines', []),
-                                                    data.get('detonator_magazines', []),
-                                                    data.get('documents', []),
-                                                    data.get('now_application_guid'))
-        explosives_permit.save()
+        try:
+            data = self.parser.parse_args()
+            explosives_permit = ExplosivesPermit.create(mine, data.get('permit_guid'),
+                                                        data.get('application_date'),
+                                                        data.get('originating_system'),
+                                                        data.get('latitude'), data.get('longitude'),
+                                                        data.get('description'), data.get('issue_date'),
+                                                        data.get('expiry_date'),
+                                                        data.get('permit_number'),
+                                                        data.get('issuing_inspector_party_guid'),
+                                                        data.get('mine_manager_mine_party_appt_id'),
+                                                        data.get('permittee_mine_party_appt_id'),
+                                                        data.get('is_closed'),
+                                                        data.get('closed_reason'),
+                                                        data.get('closed_timestamp'),
+                                                        data.get('explosive_magazines', []),
+                                                        data.get('detonator_magazines', []),
+                                                        data.get('documents', []),
+                                                        data.get('now_application_guid'))
+            explosives_permit.save()
 
-        return explosives_permit, 201
+        except exc.IntegrityError as intgErr:
+            current_app.logger.error(intgErr)
+            is_duplicate_permit_number = \
+                "duplicate key value violates unique constraint \"explosives_permit_permit_number_key\"" \
+                in str(intgErr.__cause__)
+            if is_duplicate_permit_number:
+                raise InvalidInputData("Provided permit number already exist", detailed_error = intgErr)
+            else:
+                raise intgErr
+
+        except Exception as e:
+            current_app.logger.error(e)
+            raise MineException("Unexpected error occurred, when creating the esup", detailed_error = e)
+
+        else:
+            return explosives_permit, 201

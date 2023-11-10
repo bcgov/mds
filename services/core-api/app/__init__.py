@@ -36,6 +36,7 @@ from app.api.notice_of_departure.namespace import api as notice_of_departure_api
 from app.api.activity.namespace import api as activity_api
 from app.api.dams.namespace import api as dams_api
 from app.api.verifiable_credentials.namespace import api as verifiable_credential_api
+from app.api.commons.namespace import api as commons_api
 
 from app.commands import register_commands
 from app.config import Config
@@ -46,6 +47,7 @@ from app.api.utils.feature_flag import Feature, is_feature_enabled
 from sqlalchemy.sql import text
 from app.tasks.celery import celery
 from app.tasks.celery_health_check import HealthCheckProbe
+from app.api.exception.mds_exceptions import MDSCoreAPIException
 
 from opentelemetry import trace
 from opentelemetry.sdk.trace import TracerProvider
@@ -174,6 +176,7 @@ def register_routes(app):
     root_api_namespace.add_namespace(notice_of_departure_api)
     root_api_namespace.add_namespace(activity_api)
     root_api_namespace.add_namespace(dams_api)
+    root_api_namespace.add_namespace(commons_api)
     if is_feature_enabled(Feature.TRACTION_VERIFIABLE_CREDENTIALS):
         root_api_namespace.add_namespace(verifiable_credential_api)
 
@@ -323,7 +326,15 @@ def register_routes(app):
     @root_api_namespace.errorhandler(Exception)
     def default_error_handler(error):
         app.logger.error(str(error))
-        return {
-            'status': getattr(error, 'code', 500),
-            'message': str(error),
-        }, getattr(error, 'code', 500)
+        if isinstance(error, MDSCoreAPIException):
+            return {
+                "status": getattr(error, "code", 500),
+                "message": str(getattr(error, "message", "")),
+                "detailed_error": str(getattr(error, "detailed_error", "")),
+            }, getattr(error, 'code', 500)
+        else:
+            return {
+                "status": getattr(error, "code", 500),
+                "message": str(error),
+                "detailed_error": str(getattr(error, "detailed_error", "Not provided")),
+            }, getattr(error, 'code', 500)
