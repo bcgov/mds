@@ -1,5 +1,5 @@
-import { activityReducer } from "@common/reducers/activityReducer";
-import { storeActivities } from "@common/actions/activityActions";
+import { activityReducer } from "@mds/common/redux/reducers/activityReducer";
+import { storeActivities } from "@mds/common/redux/actions/activityActions";
 
 const getBaseExpectedValue = () => ({
   activities: [],

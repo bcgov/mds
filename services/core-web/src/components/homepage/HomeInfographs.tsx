@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { fetchMetabaseDashboard } from "@common/actionCreators/reportingActionCreator";
+import { fetchMetabaseDashboard } from "@mds/common/redux/actionCreators/reportingActionCreator";
 
 import { Row, Col, Typography } from "antd";
 

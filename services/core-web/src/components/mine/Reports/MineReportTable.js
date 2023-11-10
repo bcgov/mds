@@ -12,7 +12,7 @@ import {
   getMineReportCategoryOptionsHash,
   getMineReportStatusOptionsHash,
   getMineReportDefinitionHash,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import { Link } from "react-router-dom";
 import { Badge } from "antd";
 import CustomPropTypes from "@/customPropTypes";

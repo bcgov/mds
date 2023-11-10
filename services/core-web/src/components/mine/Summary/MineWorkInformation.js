@@ -4,15 +4,15 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Row, Col, Divider, Button, Descriptions, List, Popconfirm, Typography, Badge } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import { openModal, closeModal } from "@common/actions/modalActions";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import {
   fetchMineWorkInformations,
   createMineWorkInformation,
   updateMineWorkInformation,
   deleteMineWorkInformation,
-} from "@common/actionCreators/workInformationActionCreator";
+} from "@mds/common/redux/actionCreators/workInformationActionCreator";
 import * as Strings from "@common/constants/strings";
-import { getMineWorkInformations } from "@common/selectors/workInformationSelectors";
+import { getMineWorkInformations } from "@mds/common/redux/selectors/workInformationSelectors";
 import AddButton from "@/components/common/buttons/AddButton";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";

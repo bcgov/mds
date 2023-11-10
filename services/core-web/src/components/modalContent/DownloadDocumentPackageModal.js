@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { DownloadOutlined } from "@ant-design/icons";
 import { Button, Progress, Popconfirm } from "antd";
-import { getDocumentDownloadState } from "@common/selectors/noticeOfWorkSelectors";
+import { getDocumentDownloadState } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications/NOWSubmissionDocuments";
 import { COLOR } from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";

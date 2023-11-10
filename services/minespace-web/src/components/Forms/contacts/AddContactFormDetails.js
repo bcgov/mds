@@ -3,15 +3,15 @@ import {
   createParty,
   updateParty,
   fetchParties,
-} from "@common/actionCreators/partiesActionCreator";
-import { getParties } from "@common/selectors/partiesSelectors";
+} from "@mds/common/redux/actionCreators/partiesActionCreator";
+import { getParties } from "@mds/common/redux/selectors/partiesSelectors";
 import { compose, bindActionCreators } from "redux";
 import { Field, reduxForm, initialize, isDirty, reset, getFormValues, change } from "redux-form";
 import { connect } from "react-redux";
 import { Col, Row, Typography, Popconfirm, Button, Divider } from "antd";
 import { Form } from "@ant-design/compatible";
 import { debounce } from "lodash";
-import { getPartyRelationshipTypesList } from "@common/selectors/staticContentSelectors";
+import { getPartyRelationshipTypesList } from "@mds/common/redux/selectors/staticContentSelectors";
 
 import {
   required,

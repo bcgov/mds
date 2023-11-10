@@ -4,19 +4,19 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { getFormValues } from "redux-form";
 import { Button } from "antd";
-import { openModal, closeModal } from "@common/actions/modalActions";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import {
   updateNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
   fetchNoticeOfWorkApplicationReviews,
-} from "@common/actionCreators/noticeOfWorkActionCreator";
+} from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
 import {
   getNoticeOfWork,
   getImportNowSubmissionDocumentsJob,
   getNoticeOfWorkReviews,
-} from "@common/selectors/noticeOfWorkSelectors";
-import { getGeneratableNoticeOfWorkApplicationDocumentTypeOptions } from "@common/selectors/staticContentSelectors";
-import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
+} from "@mds/common/redux/selectors/noticeOfWorkSelectors";
+import { getGeneratableNoticeOfWorkApplicationDocumentTypeOptions } from "@mds/common/redux/selectors/staticContentSelectors";
+import { getDropdownInspectors } from "@mds/common/redux/selectors/partiesSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
 import { modalConfig } from "@/components/modalContent/config";

@@ -6,24 +6,24 @@ import { connect } from "react-redux";
 import { getFormValues } from "redux-form";
 import { formatDate } from "@common/utils/helpers";
 import { DownOutlined } from "@ant-design/icons";
-import { openModal, closeModal } from "@common/actions/modalActions";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import { modalConfig } from "@/components/modalContent/config";
 import {
   updateNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
-} from "@common/actionCreators/noticeOfWorkActionCreator";
-import { getDraftPermitAmendmentForNOW } from "@common/selectors/permitSelectors";
+} from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
+import { getDraftPermitAmendmentForNOW } from "@mds/common/redux/selectors/permitSelectors";
 import {
   getNoticeOfWork,
   getImportNowSubmissionDocumentsJob,
-} from "@common/selectors/noticeOfWorkSelectors";
+} from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import {
   generateNoticeOfWorkApplicationDocument,
   fetchNoticeOfWorkApplicationContextTemplate,
 } from "@/actionCreators/documentActionCreator";
 import { getDocumentContextTemplate } from "@/reducers/documentReducer";
-import { getGeneratableNoticeOfWorkApplicationDocumentTypeOptions } from "@common/selectors/staticContentSelectors";
-import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
+import { getGeneratableNoticeOfWorkApplicationDocumentTypeOptions } from "@mds/common/redux/selectors/staticContentSelectors";
+import { getDropdownInspectors } from "@mds/common/redux/selectors/partiesSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
 import * as FORM from "@/constants/forms";

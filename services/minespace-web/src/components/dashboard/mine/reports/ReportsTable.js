@@ -8,7 +8,7 @@ import {
   formatComplianceCodeValueOrLabel,
 } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import { getMineReportDefinitionHash } from "@common/selectors/staticContentSelectors";
+import { getMineReportDefinitionHash } from "@mds/common/redux/selectors/staticContentSelectors";
 import { formatDate } from "@/utils/helpers";
 import * as Strings from "@/constants/strings";
 import { EDIT_PENCIL } from "@/constants/assets";

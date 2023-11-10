@@ -5,7 +5,7 @@ import { Button, Divider } from "antd";
 import {
   getPermitConditionCategoryOptions,
   getPermitConditionTypeOptions,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import ConditionLayerOne from "@/components/Forms/permits/conditions/ConditionLayerOne";
 import NullScreen from "@/components/common/NullScreen";
 

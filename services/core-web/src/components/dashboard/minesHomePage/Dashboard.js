@@ -5,19 +5,19 @@ import { Element, scroller } from "react-scroll";
 import PropTypes from "prop-types";
 import { Tabs, Col, Divider, notification, Card } from "antd";
 import queryString from "query-string";
-import { openModal, closeModal } from "@common/actions/modalActions";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import {
   fetchMineRecords,
   createMineRecord,
   createMineTypes,
   fetchMineRecordsForMap,
   fetchMineRecordById,
-} from "@common/actionCreators/mineActionCreator";
+} from "@mds/common/redux/actionCreators/mineActionCreator";
 import {
   getMines,
   getMinesPageData,
   getTransformedMineTypes,
-} from "@common/selectors/mineSelectors";
+} from "@mds/common/redux/selectors/mineSelectors";
 import {
   getMineRegionHash,
   getMineTenureTypesHash,
@@ -27,7 +27,7 @@ import {
   getMineRegionDropdownOptions,
   getMineTenureTypeDropdownOptions,
   getDropdownCommodityOptions,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import * as Strings from "@common/constants/strings";
 import { PageTracker } from "@common/utils/trackers";
 import ResponsivePagination from "@/components/common/ResponsivePagination";

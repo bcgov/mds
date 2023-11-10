@@ -1,10 +1,10 @@
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
-import * as genericActions from "@common/actions/genericActions";
+import * as genericActions from "@mds/common/redux/actions/genericActions";
 import { ENVIRONMENT } from "@mds/common";
 import * as API from "@common/constants/API";
 import * as MOCK from "@/tests/mocks/dataMocks";
-import { fetchMineEpicInformation } from "@common/actionCreators/externalAuthorizationActionCreator";
+import { fetchMineEpicInformation } from "@mds/common/redux/actionCreators/externalAuthorizationActionCreator";
 
 const dispatch = jest.fn();
 const requestSpy = jest.spyOn(genericActions, "request");

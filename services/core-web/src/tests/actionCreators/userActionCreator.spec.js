@@ -1,7 +1,7 @@
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
-import { fetchCoreUsers } from "@common/actionCreators/userActionCreator";
-import * as genericActions from "@common/actions/genericActions";
+import { fetchCoreUsers } from "@mds/common/redux/actionCreators/userActionCreator";
+import * as genericActions from "@mds/common/redux/actions/genericActions";
 import { ENVIRONMENT } from "@mds/common";
 import * as API from "@common/constants/API";
 import * as MOCK from "@/tests/mocks/dataMocks";

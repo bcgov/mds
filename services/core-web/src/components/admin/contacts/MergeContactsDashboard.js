@@ -11,12 +11,12 @@ import NullScreen from "@/components/common/NullScreen";
 import {
   getPartyRelationshipTypeHash,
   getPartyRelationshipTypesList,
-} from "@common/selectors/staticContentSelectors";
-import { mergeParties } from "@common/actionCreators/partiesActionCreator";
+} from "@mds/common/redux/selectors/staticContentSelectors";
+import { mergeParties } from "@mds/common/redux/actionCreators/partiesActionCreator";
 import Address from "@/components/common/Address";
 import * as Strings from "@common/constants/strings";
 import * as routes from "@/constants/routes";
-import { openModal, closeModal } from "@common/actions/modalActions";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import { modalConfig } from "@/components/modalContent/config";
 import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";

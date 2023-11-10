@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
-import { error, request, success } from "@common/actions/genericActions";
+import { error, request, success } from "@mds/common/redux/actions/genericActions";
 import { ENVIRONMENT } from "@mds/common";
 import { createRequestHeader } from "@common/utils/RequestHeaders";
 import CustomAxios from "@common/customAxios";

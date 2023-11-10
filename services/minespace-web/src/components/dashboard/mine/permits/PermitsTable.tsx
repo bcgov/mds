@@ -7,9 +7,9 @@ import {
   VC_CRED_ISSUE_STATES,
   isFeatureEnabled,
 } from "@mds/common/index";
-import { openModal, closeModal } from "@common/actions/modalActions";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import { truncateFilename } from "@common/utils/helpers";
-import { getDropdownPermitStatusOptions } from "@common/selectors/staticContentSelectors";
+import { getDropdownPermitStatusOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import LinkButton from "@/components/common/LinkButton";
 import * as Strings from "@/constants/strings";

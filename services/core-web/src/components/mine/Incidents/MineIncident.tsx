@@ -6,14 +6,14 @@ import { Link, withRouter, useParams, useLocation, matchPath } from "react-route
 import { change, submit, getFormSyncErrors, getFormValues, touch, isDirty } from "redux-form";
 import { Tag } from "antd";
 import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
-import { getMineIncident } from "@common/reducers/incidentReducer";
+import { getMineIncident } from "@mds/common/redux/reducers/incidentReducer";
 import {
   createMineIncident,
   fetchMineIncident,
   updateMineIncident,
   removeDocumentFromMineIncident,
-} from "@common/actionCreators/incidentActionCreator";
-import { clearMineIncident } from "@common/actions/incidentActions";
+} from "@mds/common/redux/actionCreators/incidentActionCreator";
+import { clearMineIncident } from "@mds/common/redux/actions/incidentActions";
 import * as Strings from "@common/constants/strings";
 import * as FORM from "@/constants/forms";
 import Loading from "@/components/common/Loading";

@@ -7,7 +7,7 @@ import { Button, Divider, Popconfirm } from "antd";
 import { Form } from "@ant-design/compatible";
 import CustomPropTypes from "@/customPropTypes";
 
-import { clearAllSearchResults } from "@common/actionCreators/searchActionCreator";
+import { clearAllSearchResults } from "@mds/common/redux/actionCreators/searchActionCreator";
 import PropTypes from "prop-types";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";

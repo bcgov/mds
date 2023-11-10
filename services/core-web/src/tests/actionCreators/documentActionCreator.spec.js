@@ -1,6 +1,6 @@
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
-import * as genericActions from "@common/actions/genericActions";
+import * as genericActions from "@mds/common/redux/actions/genericActions";
 import { ENVIRONMENT } from "@mds/common";
 import * as COMMON_API from "@common/constants/API";
 import * as API from "@/constants/API";

@@ -6,20 +6,20 @@ import {
   deleteExplosivesPermit,
   fetchExplosivesPermits,
   updateExplosivesPermit,
-} from "@common/actionCreators/explosivesPermitActionCreator";
+} from "@mds/common/redux/actionCreators/explosivesPermitActionCreator";
 import {
   createExplosivesPermitAmendment,
   updateExplosivesPermitAmendment,
-} from "@common/actionCreators/explosivesPermitAmendmentActionCreator";
-import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
-import { getExplosivesPermits } from "@common/selectors/explosivesPermitSelectors";
+} from "@mds/common/redux/actionCreators/explosivesPermitAmendmentActionCreator";
+import { getDropdownInspectors } from "@mds/common/redux/selectors/partiesSelectors";
+import { getExplosivesPermits } from "@mds/common/redux/selectors/explosivesPermitSelectors";
 import {
   getExplosivesPermitDocumentTypeDropdownOptions,
   getExplosivesPermitDocumentTypeOptionsHash,
   getExplosivesPermitStatusOptionsHash,
-} from "@common/selectors/staticContentSelectors";
-import { closeModal, openModal } from "@common/actions/modalActions";
-import { getMineGuid, getMines } from "@common/selectors/mineSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
+import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
+import { getMineGuid, getMines } from "@mds/common/redux/selectors/mineSelectors";
 import { getDocumentContextTemplate } from "@/reducers/documentReducer";
 import {
   fetchExplosivesPermitDocumentContextTemplate,

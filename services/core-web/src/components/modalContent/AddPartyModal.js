@@ -4,14 +4,14 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { getFormValues, submit, reset, change } from "redux-form";
 import { Row, Col, Steps, Button, Popconfirm } from "antd";
-import { createParty, addPartyRelationship } from "@common/actionCreators/partiesActionCreator";
-import { fetchMineNameList } from "@common/actionCreators/mineActionCreator";
-import { getMineNames } from "@common/selectors/mineSelectors";
+import { createParty, addPartyRelationship } from "@mds/common/redux/actionCreators/partiesActionCreator";
+import { fetchMineNameList } from "@mds/common/redux/actionCreators/mineActionCreator";
+import { getMineNames } from "@mds/common/redux/selectors/mineSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
 import AddFullPartyForm from "@/components/Forms/parties/AddFullPartyForm";
 import AddRolesForm from "@/components/Forms/parties/AddRolesForm";
-import { getDropdownProvinceOptions } from "@common/selectors/staticContentSelectors";
+import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 
 const propTypes = {
   fetchData: PropTypes.func.isRequired,

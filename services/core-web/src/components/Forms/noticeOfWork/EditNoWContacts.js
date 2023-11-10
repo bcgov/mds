@@ -11,9 +11,9 @@ import { FieldArray, Field, change } from "redux-form";
 
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { getAddPartyFormState } from "@common/selectors/partiesSelectors";
-import { getPartyRelationshipTypesList } from "@common/selectors/staticContentSelectors";
-import { openModal, closeModal } from "@common/actions/modalActions";
+import { getAddPartyFormState } from "@mds/common/redux/selectors/partiesSelectors";
+import { getPartyRelationshipTypesList } from "@mds/common/redux/selectors/staticContentSelectors";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
 import { required, validateSelectOptions } from "@common/utils/Validate";

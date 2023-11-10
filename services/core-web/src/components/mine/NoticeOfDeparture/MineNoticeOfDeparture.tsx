@@ -2,18 +2,18 @@ import React, { useEffect, useState } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Divider } from "antd";
-import { closeModal, openModal } from "@common/actions/modalActions";
+import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import {
   fetchDetailedNoticeOfDeparture,
   fetchNoticesOfDeparture,
   updateNoticeOfDeparture,
-} from "@common/actionCreators/noticeOfDepartureActionCreator";
-import { getMineGuid, getMines } from "@common/selectors/mineSelectors";
-import { getNoticesOfDeparture } from "@common/selectors/noticeOfDepartureSelectors";
-import { fetchPermits } from "@common/actionCreators/permitActionCreator";
+} from "@mds/common/redux/actionCreators/noticeOfDepartureActionCreator";
+import { getMineGuid, getMines } from "@mds/common/redux/selectors/mineSelectors";
+import { getNoticesOfDeparture } from "@mds/common/redux/selectors/noticeOfDepartureSelectors";
+import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { useLocation } from "react-router-dom";
 import { IMine, INoticeOfDeparture, USER_ROLES } from "@mds/common";
-import { getUserAccessData } from "@common/selectors/authenticationSelectors";
+import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import { modalConfig } from "@/components/modalContent/config";
 import { MINE_NOTICES_OF_DEPARTURE } from "@/constants/routes";
 import MineNoticeOfDepartureTable from "./MineNoticeOfDepartureTable";

@@ -20,7 +20,7 @@ import {
   validateSelectOptions,
   wholeNumber,
 } from "@common/utils/Validate";
-import { getCurrentMineTypes } from "@common/selectors/mineSelectors";
+import { getCurrentMineTypes } from "@mds/common/redux/selectors/mineSelectors";
 import {
   getConditionalDisturbanceOptionsHash,
   getConditionalCommodityOptions,
@@ -32,7 +32,7 @@ import {
   getMineTenureTypesHash,
   getExemptionFeeStatusDropDownOptions,
   getGovernmentAgencyDropdownOptions,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import * as Strings from "@common/constants/strings";
 import * as FORM from "@/constants/forms";
 import * as Styles from "@/constants/styles";

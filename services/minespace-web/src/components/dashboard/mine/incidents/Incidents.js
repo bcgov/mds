@@ -6,13 +6,13 @@ import { bindActionCreators } from "redux";
 import { Button, Col, Row, Typography } from "antd";
 import { PlusCircleFilled } from "@ant-design/icons";
 import PropTypes from "prop-types";
-import { closeModal, openModal } from "@common/actions/modalActions";
-import { createMineIncident, fetchIncidents } from "@common/actionCreators/incidentActionCreator";
+import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
+import { createMineIncident, fetchIncidents } from "@mds/common/redux/actionCreators/incidentActionCreator";
 import {
   getDropdownIncidentCategoryCodeOptions,
   getDropdownIncidentDeterminationOptions,
-} from "@common/selectors/staticContentSelectors";
-import { getIncidentPageData, getIncidents } from "@common/selectors/incidentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
+import { getIncidentPageData, getIncidents } from "@mds/common/redux/selectors/incidentSelectors";
 import { DEFAULT_PAGE, DEFAULT_PER_PAGE } from "@mds/common";
 import CustomPropTypes from "@/customPropTypes";
 import * as routes from "@/constants/routes";

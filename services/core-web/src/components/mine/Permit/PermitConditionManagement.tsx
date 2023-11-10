@@ -4,20 +4,20 @@ import { connect } from "react-redux";
 import { Divider, Collapse, Button, Row, Col } from "antd";
 import { flattenObject, formatDate } from "@common/utils/helpers";
 import { ReadOutlined, ArrowLeftOutlined } from "@ant-design/icons";
-import { openModal, closeModal } from "@common/actions/modalActions";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import {
   getPermitConditionCategoryOptions,
   getPermitConditionTypeOptions,
-} from "@common/selectors/staticContentSelectors";
-import { getPermitConditions, getEditingConditionFlag } from "@common/selectors/permitSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
+import { getPermitConditions, getEditingConditionFlag } from "@mds/common/redux/selectors/permitSelectors";
 import {
   fetchPermitConditions,
   deletePermitCondition,
   updatePermitCondition,
   setEditingConditionFlag,
   getPermitAmendment,
-} from "@common/actionCreators/permitActionCreator";
-import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
+} from "@mds/common/redux/actionCreators/permitActionCreator";
+import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { maxBy } from "lodash";
 import AddCondition from "@/components/Forms/permits/conditions/AddCondition";
 import ConditionLayerOne from "@/components/Forms/permits/conditions/ConditionLayerOne";

@@ -1,4 +1,4 @@
-import { projectReducer } from "@common/reducers/projectReducer";
+import { projectReducer } from "@mds/common/redux/reducers/projectReducer";
 import {
   storeProjectSummaries,
   storeProjectSummary,
@@ -6,7 +6,7 @@ import {
   storeInformationRequirementsTable,
   storeMajorMinesApplication,
   storeProjectDecisionPackage,
-} from "@common/actions/projectActions";
+} from "@mds/common/redux/actions/projectActions";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const baseExpectedValue = {

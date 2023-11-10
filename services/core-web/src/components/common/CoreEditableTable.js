@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { PropTypes } from "prop-types";
 import { isEmpty } from "lodash";
-import { getNoticeOfWorkUnitTypeOptionsHash } from "@common/selectors/staticContentSelectors";
+import { getNoticeOfWorkUnitTypeOptionsHash } from "@mds/common/redux/selectors/staticContentSelectors";
 import { Field, FieldArray } from "redux-form";
 import { Button } from "antd";
 import * as Strings from "@common/constants/strings";

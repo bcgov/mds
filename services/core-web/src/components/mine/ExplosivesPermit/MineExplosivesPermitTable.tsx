@@ -35,11 +35,10 @@ import ActionMenu, {
   deleteConfirmWrapper,
   generateActionMenuItems,
 } from "@/components/common/ActionMenu";
-import { userHasRole } from "@common/reducers/authenticationReducer";
+import { userHasRole } from "@mds/common/redux/reducers/authenticationReducer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFiles } from "@fortawesome/pro-light-svg-icons";
 import { COLOR } from "@/constants/styles";
-import { EMPTY_FIELD } from "@common/constants/strings";
 import { ColumnsType } from "antd/es/table";
 
 interface amendmentsWithTotal extends IExplosivesPermitAmendment {

@@ -11,11 +11,11 @@ import {
   updateMineReport,
   createMineReport,
   deleteMineReport,
-} from "@common/actionCreators/reportActionCreator";
-import { changeModalTitle, openModal, closeModal } from "@common/actions/modalActions";
-import { getMineReports } from "@common/selectors/reportSelectors";
-import { getMineReportDefinitionOptions } from "@common/selectors/staticContentSelectors";
-import { getMines, getMineGuid } from "@common/selectors/mineSelectors";
+} from "@mds/common/redux/actionCreators/reportActionCreator";
+import { changeModalTitle, openModal, closeModal } from "@mds/common/redux/actions/modalActions";
+import { getMineReports } from "@mds/common/redux/selectors/reportSelectors";
+import { getMineReportDefinitionOptions } from "@mds/common/redux/selectors/staticContentSelectors";
+import { getMines, getMineGuid } from "@mds/common/redux/selectors/mineSelectors";
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";

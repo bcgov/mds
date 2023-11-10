@@ -15,8 +15,8 @@ import {
 import {
   patchPermitNumber,
   fetchDraftPermitByNOW,
-} from "@common/actionCreators/permitActionCreator";
-import { getNoticeOfWork, getNOWProgress } from "@common/selectors/noticeOfWorkSelectors";
+} from "@mds/common/redux/actionCreators/permitActionCreator";
+import { getNoticeOfWork, getNOWProgress } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import { connect } from "react-redux";
 import {
   formatDate,
@@ -29,17 +29,17 @@ import {
   getDropdownNoticeOfWorkApplicationStatusCodes,
   getNoticeOfWorkApplicationStatusOptionsHash,
   getNoticeOfWorkApplicationTypeOptions,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import {
   updateNoticeOfWorkStatus,
   fetchApplicationDelay,
   fetchImportedNoticeOfWorkApplication,
-} from "@common/actionCreators/noticeOfWorkActionCreator";
-import { openModal, closeModal } from "@common/actions/modalActions";
+} from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import {
   getDraftPermitForNOW,
   getDraftPermitAmendmentForNOW,
-} from "@common/selectors/permitSelectors";
+} from "@mds/common/redux/selectors/permitSelectors";
 import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";
 import { getDocumentContextTemplate } from "@/reducers/documentReducer";
 import {

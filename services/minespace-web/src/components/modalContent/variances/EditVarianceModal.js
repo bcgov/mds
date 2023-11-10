@@ -6,8 +6,8 @@ import {
   fetchVarianceById,
   removeDocumentFromVariance,
   fetchVariancesByMine,
-} from "@common/actionCreators/varianceActionCreator";
-import { getVariance } from "@common/selectors/varianceSelectors";
+} from "@mds/common/redux/actionCreators/varianceActionCreator";
+import { getVariance } from "@mds/common/redux/selectors/varianceSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import EditVarianceForm from "@/components/Forms/variances/EditVarianceForm";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";

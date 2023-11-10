@@ -7,7 +7,7 @@ import {
 import {
   getITRBExemptionStatusCodeOptionsHash,
   getTSFOperatingStatusCodeOptionsHash,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import { useHistory, useParams } from "react-router-dom";
 
 import PropTypes from "prop-types";
@@ -15,8 +15,8 @@ import React from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { getHighestConsequence } from "@common/utils/helpers";
-import { storeDam } from "@common/actions/damActions";
-import { storeTsf } from "@common/actions/tailingsActions";
+import { storeDam } from "@mds/common/redux/actions/damActions";
+import { storeTsf } from "@mds/common/redux/actions/tailingsActions";
 import { EDIT_PENCIL } from "@/constants/assets";
 import { EDIT_DAM } from "@/constants/routes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";

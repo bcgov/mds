@@ -1,6 +1,6 @@
-import { getMinespaceUsers } from "@common/selectors/minespaceSelector";
-import { minespaceReducer } from "@common/reducers/minespaceReducer";
-import { storeMinespaceUserList } from "@common/actions/minespaceActions";
+import { getMinespaceUsers } from "@mds/common/redux/selectors/minespaceSelector";
+import { minespaceReducer } from "@mds/common/redux/reducers/minespaceReducer";
+import { storeMinespaceUserList } from "@mds/common/redux/actions/minespaceActions";
 import { MINESPACE } from "@common/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
 

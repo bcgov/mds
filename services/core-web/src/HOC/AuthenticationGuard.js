@@ -4,8 +4,8 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { useKeycloak } from "@react-keycloak/web";
 import hoistNonReactStatics from "hoist-non-react-statics";
-import { isAuthenticated, getUserAccessData } from "@common/selectors/authenticationSelectors";
-import { authenticateUser, storeUserAccessData } from "@common/actions/authenticationActions";
+import { isAuthenticated, getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
+import { authenticateUser, storeUserAccessData } from "@mds/common/redux/actions/authenticationActions";
 import { USER_ROLES } from "@mds/common";
 import NullScreen from "@/components/common/NullScreen";
 

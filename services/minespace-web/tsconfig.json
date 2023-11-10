@@ -25,6 +25,6 @@
       "types"
     ] /* List of folders to include type definitions from. */
   },
-  "include": ["src/**/*", "common/**/*", "tsconfig.json", "../../.eslintrc.js"],
+  "include": ["src/**/*", "common/**/*", "tsconfig.json", "../../.eslintrc.js", "../common/src/@Types/**/*"],
   "exclude": ["node_modules", "src/**/*.test.ts", "src/**/*.test.tsx"]
 }

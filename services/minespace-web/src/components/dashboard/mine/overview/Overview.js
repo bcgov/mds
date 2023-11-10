@@ -3,15 +3,15 @@ import { connect } from "react-redux";
 import moment from "moment";
 import PropTypes from "prop-types";
 import { Row, Col, Card, Descriptions, Typography } from "antd";
-import { getPartyRelationships } from "@common/selectors/partiesSelectors";
+import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
 import {
   getMineRegionHash,
   getDisturbanceOptionHash,
   getCommodityOptionHash,
   getEMLIContactTypesHash,
-} from "@common/selectors/staticContentSelectors";
-import { getTransformedMineTypes } from "@common/selectors/mineSelectors";
-import { getEMLIContactsByRegion } from "@common/selectors/minespaceSelector";
+} from "@mds/common/redux/selectors/staticContentSelectors";
+import { getTransformedMineTypes } from "@mds/common/redux/selectors/mineSelectors";
+import { getEMLIContactsByRegion } from "@mds/common/redux/selectors/minespaceSelector";
 import WorkerInfoEmployee from "@/components/dashboard/mine/overview/WorkerInfoEmployee";
 import { getUserInfo } from "@/selectors/authenticationSelectors";
 import CustomPropTypes from "@/customPropTypes";

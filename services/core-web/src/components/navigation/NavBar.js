@@ -7,12 +7,12 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import MediaQuery from "react-responsive";
 import { includes } from "lodash";
-import { getUserInfo } from "@common/selectors/authenticationSelectors";
-import { fetchMineVerifiedStatuses } from "@common/actionCreators/mineActionCreator";
+import { getUserInfo } from "@mds/common/redux/selectors/authenticationSelectors";
+import { fetchMineVerifiedStatuses } from "@mds/common/redux/actionCreators/mineActionCreator";
 import {
   getCurrentUserVerifiedMines,
   getCurrentUserUnverifiedMines,
-} from "@common/reducers/mineReducer";
+} from "@mds/common/redux/reducers/mineReducer";
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";

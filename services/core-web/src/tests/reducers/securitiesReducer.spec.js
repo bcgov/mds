@@ -1,5 +1,5 @@
-import { securitiesReducer } from "@common/reducers/securitiesReducer";
-import { storeMineBonds, storeMineReclamationInvoices } from "@common/actions/securitiesActions";
+import { securitiesReducer } from "@mds/common/redux/reducers/securitiesReducer";
+import { storeMineBonds, storeMineReclamationInvoices } from "@mds/common/redux/actions/securitiesActions";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const baseExpectedValue = {

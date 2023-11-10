@@ -26,7 +26,7 @@ import {
 import { normalizePhone, normalizeDatetime, formatDate } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import { INCIDENT_CONTACT_METHOD_OPTIONS } from "@mds/common";
-import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
+import { getDropdownInspectors } from "@mds/common/redux/selectors/partiesSelectors";
 import {
   getDropdownIncidentCategoryCodeOptions,
   getDropdownIncidentDeterminationOptions,
@@ -34,7 +34,7 @@ import {
   getDangerousOccurrenceSubparagraphOptions,
   getDropdownIncidentStatusCodeOptions,
   getIncidentStatusCodeHash,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
 import DocumentTable from "@/components/common/DocumentTable";
 import {

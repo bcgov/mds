@@ -13,14 +13,14 @@ import {
   getProjectSummaryPermitTypesHash,
   getProjectSummaryAuthorizationTypesArray,
   getDropdownProjectSummaryStatusCodes,
-} from "@common/selectors/staticContentSelectors";
-import { getMineDocuments, getMines } from "@common/selectors/mineSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
+import { getMineDocuments, getMines } from "@mds/common/redux/selectors/mineSelectors";
 import {
   getProjectSummary,
   getFormattedProjectSummary,
   getProject,
-} from "@common/selectors/projectSelectors";
-import { fetchMineDocuments } from "@common/actionCreators/mineActionCreator";
+} from "@mds/common/redux/selectors/projectSelectors";
+import { fetchMineDocuments } from "@mds/common/redux/actionCreators/mineActionCreator";
 
 import {
   createProjectSummary,
@@ -29,9 +29,9 @@ import {
   updateProjectSummary,
   removeDocumentFromProjectSummary,
   updateProject,
-} from "@common/actionCreators/projectActionCreator";
-import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
-import { clearProjectSummary } from "@common/actions/projectActions";
+} from "@mds/common/redux/actionCreators/projectActionCreator";
+import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
+import { clearProjectSummary } from "@mds/common/redux/actions/projectActions";
 import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";

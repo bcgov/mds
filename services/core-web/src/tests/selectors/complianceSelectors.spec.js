@@ -1,6 +1,6 @@
-import { getMineComplianceInfo } from "@common/selectors/complianceSelectors";
-import { complianceReducer } from "@common/reducers/complianceReducer";
-import { storeMineComplianceInfo } from "@common/actions/complianceActions";
+import { getMineComplianceInfo } from "@mds/common/redux/selectors/complianceSelectors";
+import { complianceReducer } from "@mds/common/redux/reducers/complianceReducer";
+import { storeMineComplianceInfo } from "@mds/common/redux/actions/complianceActions";
 import { COMPLIANCE } from "@common/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
 

@@ -3,7 +3,7 @@ import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
 import { number, required } from "@common/utils/Validate";
 import RenderField from "@/components/common/RenderField";
-import { getDropdownNoticeOfWorkUnitTypeOptions } from "@common/selectors/staticContentSelectors";
+import { getDropdownNoticeOfWorkUnitTypeOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderSelect from "@/components/common/RenderSelect";
 import CustomPropTypes from "@/customPropTypes";

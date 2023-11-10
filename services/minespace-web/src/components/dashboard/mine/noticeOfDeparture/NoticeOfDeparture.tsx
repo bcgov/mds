@@ -1,15 +1,15 @@
 import React, { FC, useEffect, useState } from "react";
 import { Button, Col, Row, Typography } from "antd";
 import { PlusCircleFilled } from "@ant-design/icons";
-import { closeModal, openModal } from "@common/actions/modalActions";
+import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import {
   addDocumentToNoticeOfDeparture,
   createNoticeOfDeparture,
   fetchDetailedNoticeOfDeparture,
   fetchNoticesOfDeparture,
   updateNoticeOfDeparture,
-} from "@common/actionCreators/noticeOfDepartureActionCreator";
-import { getNoticesOfDeparture } from "@common/selectors/noticeOfDepartureSelectors";
+} from "@mds/common/redux/actionCreators/noticeOfDepartureActionCreator";
+import { getNoticesOfDeparture } from "@mds/common/redux/selectors/noticeOfDepartureSelectors";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { useLocation, useParams } from "react-router-dom";
@@ -21,8 +21,8 @@ import {
   NodStatusSaveEnum,
 } from "@mds/common";
 
-import { getPermits } from "@common/selectors/permitSelectors";
-import { fetchPermits } from "@common/actionCreators/permitActionCreator";
+import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
+import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import {
   NOTICE_OF_DEPARTURE_STATUS_VALUES,
   NOTICE_OF_DEPARTURE_TYPE_VALUES,

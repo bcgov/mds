@@ -3,9 +3,9 @@ import { Tabs } from "antd";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { kebabCase, isEmpty } from "lodash";
-import { getNoticeOfWork } from "@common/selectors/noticeOfWorkSelectors";
-import { getMines } from "@common/selectors/mineSelectors";
-import { getGeneratableNoticeOfWorkApplicationDocumentTypeOptions } from "@common/selectors/staticContentSelectors";
+import { getNoticeOfWork } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
+import { getMines } from "@mds/common/redux/selectors/mineSelectors";
+import { getGeneratableNoticeOfWorkApplicationDocumentTypeOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getDocumentContextTemplate } from "@/reducers/documentReducer";
 import * as routes from "@/constants/routes";
 import DraftPermitTab from "@/components/noticeOfWork/applications/permitGeneration/DraftPermitTab";
@@ -18,7 +18,7 @@ import AdministrativeTab from "@/components/noticeOfWork/applications/administra
 import ManageDocumentsTab from "@/components/noticeOfWork/applications/manageDocuments/ManageDocumentsTab";
 import ProcessPermit from "@/components/noticeOfWork/applications/process/ProcessPermit";
 import ApplicationGuard from "@/HOC/ApplicationGuard";
-import { getDraftPermitForNOW } from "@common/selectors/permitSelectors";
+import { getDraftPermitForNOW } from "@mds/common/redux/selectors/permitSelectors";
 
 /**
  * @class NoticeOfWorkApplication- contains all information regarding a CORE notice of work application

@@ -9,8 +9,8 @@ import {
   getNoticeOfWork,
   getApplicationDelay,
   getNOWProgress,
-} from "@common/selectors/noticeOfWorkSelectors";
-import { getDelayTypeOptionsHash } from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/noticeOfWorkSelectors";
+import { getDelayTypeOptionsHash } from "@mds/common/redux/selectors/staticContentSelectors";
 import { COLOR } from "@/constants/styles";
 
 /**

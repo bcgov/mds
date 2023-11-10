@@ -2,7 +2,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import hoistNonReactStatics from "hoist-non-react-statics";
-import { getUserAccessData } from "@common/selectors/authenticationSelectors";
+import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import { USER_ROLES } from "@mds/common";
 import { detectDevelopmentEnvironment, detectProdEnvironment } from "@mds/common";
 import NullScreen from "@/components/common/NullScreen";

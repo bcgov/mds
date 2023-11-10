@@ -17,8 +17,8 @@ import {
   fetchNoticesOfDeparture,
   removeFileFromDocumentManager,
   updateNoticeOfDeparture,
-} from "@common/actionCreators/noticeOfDepartureActionCreator";
-import { getNoticeOfDeparture } from "@common/selectors/noticeOfDepartureSelectors";
+} from "@mds/common/redux/actionCreators/noticeOfDepartureActionCreator";
+import { getNoticeOfDeparture } from "@mds/common/redux/selectors/noticeOfDepartureSelectors";
 import { Field, FieldArray, InjectedFormProps, reduxForm } from "redux-form";
 import {
   email,
@@ -34,7 +34,7 @@ import {
   INoticeOfDeparture,
   USER_ROLES,
 } from "@mds/common";
-import { getUserAccessData } from "@common/selectors/authenticationSelectors";
+import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import CoreTable from "@/components/common/CoreTable";
 import { renderDateColumn, renderTextColumn } from "../common/CoreTableCommonColumns";
 import * as FORM from "@/constants/forms";

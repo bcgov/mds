@@ -7,8 +7,8 @@ import {
   fetchDetailedNoticeOfDeparture,
   updateNoticeOfDeparture,
   removeFileFromDocumentManager,
-} from "@common/actionCreators/noticeOfDepartureActionCreator";
-import * as genericActions from "@common/actions/genericActions";
+} from "@mds/common/redux/actionCreators/noticeOfDepartureActionCreator";
+import * as genericActions from "@mds/common/redux/actions/genericActions";
 import { ENVIRONMENT } from "@mds/common";
 import * as MOCK from "@/tests/mocks/dataMocks";
 import {

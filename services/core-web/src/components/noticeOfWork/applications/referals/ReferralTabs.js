@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { ExportOutlined } from "@ant-design/icons";
-import { openModal, closeModal } from "@common/actions/modalActions";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import { modalConfig } from "@/components/modalContent/config";
 import NOWTabHeader from "@/components/noticeOfWork/applications/NOWTabHeader";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
@@ -18,16 +18,16 @@ import {
   setNoticeOfWorkApplicationDocumentDownloadState,
   updateNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
-} from "@common/actionCreators/noticeOfWorkActionCreator";
+} from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
 import {
   getNoticeOfWork,
   getImportNowSubmissionDocumentsJob,
   getNoticeOfWorkReviews,
-} from "@common/selectors/noticeOfWorkSelectors";
+} from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import {
   getDropdownNoticeOfWorkApplicationReviewTypeOptions,
   getNoticeOfWorkApplicationApplicationReviewTypeHash,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import Consultation from "@/components/noticeOfWork/applications/referals/Consultation";
 import PublicComment from "@/components/noticeOfWork/applications/referals/PublicComment";
 import Referral from "@/components/noticeOfWork/applications/referals/Referrals";

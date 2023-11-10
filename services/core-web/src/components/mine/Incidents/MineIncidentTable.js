@@ -11,7 +11,7 @@ import {
   getIncidentCategoryCodeHash,
   getHSRCMComplianceCodesHash,
   getDropdownIncidentStatusCodeOptions,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import { dateSorter, optionsFilterLabelAndValue, formatDateTimeTz } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import { serverSidePaginationOptions, parseServerSideSearchOptions } from "@mds/common";

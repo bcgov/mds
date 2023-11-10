@@ -7,7 +7,7 @@ import {
   getBondTypeOptionsHash,
   getBondStatusOptionsHash,
   getBondDocumentTypeOptionsHash,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import * as Strings from "@common/constants/strings";
 import DocumentTable from "@/components/common/DocumentTable";
 import CustomPropTypes from "@/customPropTypes";

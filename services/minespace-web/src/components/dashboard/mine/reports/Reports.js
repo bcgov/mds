@@ -9,10 +9,10 @@ import {
   createMineReport,
   fetchMineReports,
   updateMineReport,
-} from "@common/actionCreators/reportActionCreator";
-import { openModal, closeModal } from "@common/actions/modalActions";
-import { getMineReports } from "@common/selectors/reportSelectors";
-import { getMineReportDefinitionOptions } from "@common/reducers/staticContentReducer";
+} from "@mds/common/redux/actionCreators/reportActionCreator";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
+import { getMineReports } from "@mds/common/redux/selectors/reportSelectors";
+import { getMineReportDefinitionOptions } from "@mds/common/redux/reducers/staticContentReducer";
 import CustomPropTypes from "@/customPropTypes";
 import ReportsTable from "@/components/dashboard/mine/reports/ReportsTable";
 import TableSummaryCard from "@/components/common/TableSummaryCard";

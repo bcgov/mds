@@ -2,13 +2,13 @@ import {
   getNoticeOfWorkList,
   getNoticeOfWork,
   getOriginalNoticeOfWork,
-} from "@common/selectors/noticeOfWorkSelectors";
-import { noticeOfWorkReducer } from "@common/reducers/noticeOfWorkReducer";
+} from "@mds/common/redux/selectors/noticeOfWorkSelectors";
+import { noticeOfWorkReducer } from "@mds/common/redux/reducers/noticeOfWorkReducer";
 import {
   storeNoticeOfWorkApplications,
   storeNoticeOfWorkApplication,
   storeOriginalNoticeOfWorkApplication,
-} from "@common/actions/noticeOfWorkActions";
+} from "@mds/common/redux/actions/noticeOfWorkActions";
 import { NOTICE_OF_WORK } from "@common/constants/reducerTypes";
 import * as MOCKS from "@/tests/mocks/noticeOfWorkMocks";
 

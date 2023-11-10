@@ -11,8 +11,8 @@ import {
   fetchEMLIContactsByRegion,
   fetchEMLIContacts,
   updateMinespaceUserMines,
-} from "@common/actionCreators/minespaceActionCreator";
-import * as genericActions from "@common/actions/genericActions";
+} from "@mds/common/redux/actionCreators/minespaceActionCreator";
+import * as genericActions from "@mds/common/redux/actions/genericActions";
 import { ENVIRONMENT } from "@mds/common";
 import * as API from "@common/constants/API";
 import * as MOCK from "@/tests/mocks/dataMocks";

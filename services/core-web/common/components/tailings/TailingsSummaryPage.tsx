@@ -5,15 +5,15 @@ import {
   addDocumentToRelationship,
   addPartyRelationship,
   fetchPartyRelationships,
-} from "@common/actionCreators/partiesActionCreator";
+} from "@mds/common/redux/actionCreators/partiesActionCreator";
 
 import { bindActionCreators, compose } from "redux";
-import { clearTsf, storeTsf } from "@common/actions/tailingsActions";
+import { clearTsf, storeTsf } from "@mds/common/redux/actions/tailingsActions";
 import {
   createTailingsStorageFacility,
   fetchMineRecordById,
   updateTailingsStorageFacility,
-} from "@common/actionCreators/mineActionCreator";
+} from "@mds/common/redux/actionCreators/mineActionCreator";
 import { flattenObject } from "@common/utils/helpers";
 import {
   FormErrors,
@@ -31,9 +31,9 @@ import BasicInformation from "@common/components/tailings/BasicInformation";
 import Step from "@common/components/Step";
 import SteppedForm from "@common/components/SteppedForm";
 import { connect } from "react-redux";
-import { fetchPermits } from "@common/actionCreators/permitActionCreator";
-import { getMines } from "@common/selectors/mineSelectors";
-import { getTsf } from "@common/selectors/tailingsSelectors";
+import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
+import { getMines } from "@mds/common/redux/selectors/mineSelectors";
+import { getTsf } from "@mds/common/redux/selectors/tailingsSelectors";
 import EngineerOfRecord from "@common/components/tailings/EngineerOfRecord";
 import TailingsContext from "@common/components/tailings/TailingsContext";
 import QualifiedPerson from "@common/components/tailings/QualifiedPerson";
@@ -42,7 +42,7 @@ import {
   getEngineersOfRecord,
   getEngineersOfRecordOptions,
   getQualifiedPersons,
-} from "@common/selectors/partiesSelectors";
+} from "@mds/common/redux/selectors/partiesSelectors";
 import {
   ICreateTailingsStorageFacility,
   IMine,

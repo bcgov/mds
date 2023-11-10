@@ -3,9 +3,9 @@ import {
   getPartyIds,
   getPartyPageData,
   getLastCreatedParty,
-} from "@common/selectors/partiesSelectors";
-import { partiesReducer } from "@common/reducers/partiesReducer";
-import { storeParties, storeLastCreatedParty } from "@common/actions/partyActions";
+} from "@mds/common/redux/selectors/partiesSelectors";
+import { partiesReducer } from "@mds/common/redux/reducers/partiesReducer";
+import { storeParties, storeLastCreatedParty } from "@mds/common/redux/actions/partyActions";
 import { PARTIES } from "@common/constants/reducerTypes";
 
 describe("partiesSelectors", () => {

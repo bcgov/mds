@@ -4,7 +4,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { Button, Col, Descriptions, Row, Tooltip, Typography } from "antd";
-import { fetchMineRecordById, updateMineRecord } from "@common/actionCreators/mineActionCreator";
+import { fetchMineRecordById, updateMineRecord } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { EDIT_PENCIL } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
 import EditWorkerInformationForm from "@/components/Forms/mines/EditWorkerInformationForm";

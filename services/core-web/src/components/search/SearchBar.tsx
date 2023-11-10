@@ -9,9 +9,9 @@ import { Input, InputProps, Button } from "antd";
 import {
   fetchSearchBarResults,
   clearSearchBarResults,
-} from "@common/actionCreators/searchActionCreator";
+} from "@mds/common/redux/actionCreators/searchActionCreator";
 import * as router from "@/constants/routes";
-import { getSearchBarResults } from "@common/reducers/searchReducer";
+import { getSearchBarResults } from "@mds/common/redux/reducers/searchReducer";
 
 import { SearchOutlined } from "@ant-design/icons";
 import { useKey } from "@/App";

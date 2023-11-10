@@ -1,6 +1,6 @@
-import { getVariances, getVariance } from "@common/selectors/varianceSelectors";
-import { varianceReducer } from "@common/reducers/varianceReducer";
-import { storeVariances, storeVariance } from "@common/actions/varianceActions";
+import { getVariances, getVariance } from "@mds/common/redux/selectors/varianceSelectors";
+import { varianceReducer } from "@mds/common/redux/reducers/varianceReducer";
+import { storeVariances, storeVariance } from "@mds/common/redux/actions/varianceActions";
 import { VARIANCES } from "@common/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
 

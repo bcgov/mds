@@ -9,8 +9,8 @@ import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { IVCInvitation, LOADING_STATUS, VC_CONNECTION_STATES } from "@mds/common";
 import { ActionCreator } from "@/interfaces/actionCreator";
-import { getVCWalletConnectionInvitation } from "@common/selectors/verifiableCredentialSelectors";
-import { createVCWalletInvitation } from "@common/actionCreators/verifiableCredentialActionCreator";
+import { getVCWalletConnectionInvitation } from "@mds/common/redux/selectors/verifiableCredentialSelectors";
+import { createVCWalletInvitation } from "@mds/common/redux/actionCreators/verifiableCredentialActionCreator";
 
 interface CreateInvitationFormProps {
   closeModal: () => void;

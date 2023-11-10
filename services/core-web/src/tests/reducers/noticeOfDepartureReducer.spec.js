@@ -1,9 +1,9 @@
 import * as Mocks from "@/tests/mocks/dataMocks";
-import { noticeOfDepartureReducer } from "@common/reducers/noticeOfDepartureReducer";
+import { noticeOfDepartureReducer } from "@mds/common/redux/reducers/noticeOfDepartureReducer";
 import {
   storeNoticesOfDeparture,
   storeNoticeOfDeparture,
-} from "@common/actions/noticeOfDepartureActions";
+} from "@mds/common/redux/actions/noticeOfDepartureActions";
 
 const baseExpectedValue = {
   nods: [],

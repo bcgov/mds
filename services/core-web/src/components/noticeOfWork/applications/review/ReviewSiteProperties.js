@@ -18,7 +18,7 @@ import {
   getMineRegionDropdownOptions,
   getMineTenureTypeDropdownOptions,
   getMineTenureTypesHash,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
 /**
  * @constant ReviewSiteProperties renders edit/view for the NoW Application review step

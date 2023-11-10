@@ -13,7 +13,7 @@ import { ENVIRONMENT } from "@mds/common";
 import { APPLICATION_OCTET_STREAM } from "@common/constants/fileTypes";
 import { createRequestHeader } from "@common/utils/RequestHeaders";
 import { bindActionCreators } from "redux";
-import { pollDocumentUploadStatus } from "@common/actionCreators/documentActionCreator";
+import { pollDocumentUploadStatus } from "@mds/common/redux/actionCreators/documentActionCreator";
 import { connect } from "react-redux";
 
 registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);

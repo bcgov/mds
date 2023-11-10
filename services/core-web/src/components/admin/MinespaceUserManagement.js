@@ -4,18 +4,18 @@ import { bindActionCreators, compose } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Divider } from "antd";
-import { getMineNames } from "@common/selectors/mineSelectors";
-import { getMinespaceUsers, getMinespaceUserEmailHash } from "@common/selectors/minespaceSelector";
-import { fetchMineNameList } from "@common/actionCreators/mineActionCreator";
+import { getMineNames } from "@mds/common/redux/selectors/mineSelectors";
+import { getMinespaceUsers, getMinespaceUserEmailHash } from "@mds/common/redux/selectors/minespaceSelector";
+import { fetchMineNameList } from "@mds/common/redux/actionCreators/mineActionCreator";
 import {
   createMinespaceUser,
   fetchMinespaceUsers,
   deleteMinespaceUser,
   fetchMinespaceUserMines,
   updateMinespaceUserMines,
-} from "@common/actionCreators/minespaceActionCreator";
-import { getMinespaceUserMines } from "@common/reducers/minespaceReducer";
-import { openModal, closeModal } from "@common/actions/modalActions";
+} from "@mds/common/redux/actionCreators/minespaceActionCreator";
+import { getMinespaceUserMines } from "@mds/common/redux/reducers/minespaceReducer";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import CustomPropTypes from "@/customPropTypes";
 import NewMinespaceUser from "@/components/admin/NewMinespaceUser";
 import MinespaceUserList from "@/components/admin/MinespaceUserList";

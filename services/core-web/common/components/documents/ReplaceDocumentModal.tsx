@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import { ActionCreator } from "@/interfaces/actionCreator";
 import { HttpRequest, HttpResponse } from "tus-js-client";
 import { IMAGE, DOCUMENT, EXCEL, SPATIAL } from "@common/constants/fileTypes";
-import { postNewDocumentVersion } from "@common/actionCreators/documentActionCreator";
+import { postNewDocumentVersion } from "@mds/common/redux/actionCreators/documentActionCreator";
 import { IMineDocumentVersion } from "@mds/common";
 import { FilePondFile } from "filepond";
 

@@ -12,10 +12,10 @@ import { getHighestConsequence } from "@common/utils/helpers";
 import {
   getITRBExemptionStatusCodeOptionsHash,
   getTSFOperatingStatusCodeOptionsHash,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import { bindActionCreators } from "redux";
-import { storeDam } from "@common/actions/damActions";
-import { storeTsf } from "@common/actions/tailingsActions";
+import { storeDam } from "@mds/common/redux/actions/damActions";
+import { storeTsf } from "@mds/common/redux/actions/tailingsActions";
 import CoreTable from "@/components/common/CoreTable";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";

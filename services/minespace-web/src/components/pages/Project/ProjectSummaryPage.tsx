@@ -13,24 +13,24 @@ import {
 } from "redux-form";
 import { Row, Col, Typography, Divider } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
-import { getMines } from "@common/selectors/mineSelectors";
+import { getMines } from "@mds/common/redux/selectors/mineSelectors";
 import {
   getProjectSummary,
   getFormattedProjectSummary,
   getProject,
-} from "@common/selectors/projectSelectors";
+} from "@mds/common/redux/selectors/projectSelectors";
 import {
   getProjectSummaryDocumentTypesHash,
   getProjectSummaryAuthorizationTypesArray,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import {
   createProjectSummary,
   updateProjectSummary,
   fetchProjectById,
   updateProject,
-} from "@common/actionCreators/projectActionCreator";
-import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
-import { clearProjectSummary } from "@common/actions/projectActions";
+} from "@mds/common/redux/actionCreators/projectActionCreator";
+import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
+import { clearProjectSummary } from "@mds/common/redux/actions/projectActions";
 import * as FORM from "@/constants/forms";
 import Loading from "@/components/common/Loading";
 import {

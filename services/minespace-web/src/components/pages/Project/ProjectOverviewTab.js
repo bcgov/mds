@@ -2,19 +2,19 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Row, Col, Typography, Descriptions, Card } from "antd";
 import PropTypes from "prop-types";
-import { getEMLIContactsByRegion } from "@common/selectors/minespaceSelector";
+import { getEMLIContactsByRegion } from "@mds/common/redux/selectors/minespaceSelector";
 import {
   getProjectSummaryDocumentTypesHash,
   getProjectSummaryStatusCodesHash,
   getInformationRequirementsTableStatusCodesHash,
   getMajorMinesApplicationStatusCodesHash,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import {
   getProjectSummary,
   getProject,
   getInformationRequirementsTable,
   getMajorMinesApplication,
-} from "@common/selectors/projectSelectors";
+} from "@mds/common/redux/selectors/projectSelectors";
 import * as Strings from "@/constants/strings";
 import { formatDate } from "@/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";

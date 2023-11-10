@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { connect } from "react-redux";
 import { formatDate } from "@common/utils/helpers";
-import { getMineTenureTypesHash } from "@common/selectors/staticContentSelectors";
+import { getMineTenureTypesHash } from "@mds/common/redux/selectors/staticContentSelectors";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
 import { IPermit, IPermitPartyRelationship } from "@mds/common";
 

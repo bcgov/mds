@@ -2,13 +2,13 @@ import {
   isAuthenticated,
   getUserAccessData,
   getUserInfo,
-} from "@common/selectors/authenticationSelectors";
-import { authenticationReducer } from "@common/reducers/authenticationReducer";
+} from "@mds/common/redux/selectors/authenticationSelectors";
+import { authenticationReducer } from "@mds/common/redux/reducers/authenticationReducer";
 import {
   authenticateUser,
   logoutUser,
   storeUserAccessData,
-} from "@common/actions/authenticationActions";
+} from "@mds/common/redux/actions/authenticationActions";
 import { AUTHENTICATION } from "@common/constants/reducerTypes";
 
 const mockData = {

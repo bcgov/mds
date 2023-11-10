@@ -76,6 +76,9 @@ const commonConfig = merge([
       new HtmlWebpackPlugin({
         template: PATHS.template,
       }),
+      new webpack.ProvidePlugin({
+        REQUEST_HEADER: path.resolve(__dirname, "common/utils/RequestHeaders.js"),
+      }),
     ],
     resolve: {
       extensions: [".tsx", ".ts", ".js"],

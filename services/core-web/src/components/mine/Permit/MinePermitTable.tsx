@@ -6,11 +6,11 @@ import { PlusOutlined, SafetyCertificateOutlined, ReadOutlined } from "@ant-desi
 import { connect } from "react-redux";
 import { Feature, VC_CRED_ISSUE_STATES, isFeatureEnabled } from "@mds/common/index";
 import { formatDate } from "@common/utils/helpers";
-import { getPartyRelationships } from "@common/selectors/partiesSelectors";
+import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
 import {
   getDropdownPermitStatusOptionsHash,
   getPermitAmendmentTypeOptionsHash,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import * as Strings from "@common/constants/strings";
 import { isEmpty } from "lodash";
 import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";

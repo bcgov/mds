@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Descriptions } from "antd";
 import { formatDate } from "@common/utils/helpers";
-import { getDelayTypeOptionsHash } from "@common/selectors/staticContentSelectors";
+import { getDelayTypeOptionsHash } from "@mds/common/redux/selectors/staticContentSelectors";
 
 const propTypes = {
   applicationDelay: PropTypes.objectOf(PropTypes.string).isRequired,

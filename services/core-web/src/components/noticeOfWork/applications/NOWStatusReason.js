@@ -4,8 +4,8 @@ import CustomPropTypes from "@/customPropTypes";
 import PropTypes from "prop-types";
 import { Descriptions } from "antd";
 import { formatDate } from "@common/utils/helpers";
-import { getNoticeOfWorkApplicationStatusOptionsHash } from "@common/selectors/staticContentSelectors";
-import { getNoticeOfWork } from "@common/selectors/noticeOfWorkSelectors";
+import { getNoticeOfWorkApplicationStatusOptionsHash } from "@mds/common/redux/selectors/staticContentSelectors";
+import { getNoticeOfWork } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import * as Strings from "@common/constants/strings";
 
 const propTypes = {

@@ -8,14 +8,14 @@ import * as Strings from "@common/constants/strings";
 import {
   removeDocumentFromMajorMineApplication,
   fetchProjectById,
-} from "@common/actionCreators/projectActionCreator";
+} from "@mds/common/redux/actionCreators/projectActionCreator";
 import DocumentTable from "@/components/common/DocumentTable";
 import { documentNameColumn, uploadDateColumn } from "@/components/common/DocumentColumns";
 import CustomPropTypes from "@/customPropTypes";
 import MajorMineApplicationCallout from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationCallout";
 import { MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES } from "@/components/pages/Project/MajorMineApplicationPage";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
-import { getMineDocuments } from "@common/selectors/mineSelectors";
+import { getMineDocuments } from "@mds/common/redux/selectors/mineSelectors";
 import { MajorMineApplicationDocument } from "@mds/common/models/documents/document";
 import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
 

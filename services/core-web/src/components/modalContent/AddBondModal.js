@@ -9,7 +9,7 @@ import {
   getBondDocumentTypeDropDownOptions,
   getBondDocumentTypeOptionsHash,
   getBondStatusOptionsHash,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
 import BondForm from "@/components/Forms/Securities/BondForm";
 import CustomPropTypes from "@/customPropTypes";

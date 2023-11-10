@@ -1,8 +1,8 @@
 import * as MOCK from "@/tests/mocks/dataMocks";
-import * as genericActions from "@common/actions/genericActions";
+import * as genericActions from "@mds/common/redux/actions/genericActions";
 
 import { DAM, DAMS } from "@common/constants/API";
-import { createDam, fetchDam } from "@common/actionCreators/damActionCreator";
+import { createDam, fetchDam } from "@mds/common/redux/actionCreators/damActionCreator";
 
 import { ENVIRONMENT } from "@mds/common";
 import MockAdapter from "axios-mock-adapter";

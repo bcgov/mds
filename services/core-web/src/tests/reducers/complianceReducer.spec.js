@@ -1,5 +1,5 @@
-import { complianceReducer } from "@common/reducers/complianceReducer";
-import { storeMineComplianceInfo } from "@common/actions/complianceActions";
+import { complianceReducer } from "@mds/common/redux/reducers/complianceReducer";
+import { storeMineComplianceInfo } from "@mds/common/redux/actions/complianceActions";
 
 const baseExpectedValue = {
   mineComplianceInfo: {},

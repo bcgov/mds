@@ -8,7 +8,7 @@ import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Alert } from "antd";
 import { required } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
-import { getDropdownMajorMinesApplicationStatusCodes } from "@common/selectors/staticContentSelectors";
+import { getDropdownMajorMinesApplicationStatusCodes } from "@mds/common/redux/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 

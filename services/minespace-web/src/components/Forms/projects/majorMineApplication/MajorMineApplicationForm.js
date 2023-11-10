@@ -22,8 +22,8 @@ import { documentNameColumn, uploadDateColumn } from "@/components/common/Docume
 import DocumentTable from "@/components/common/DocumentTable";
 import customPropTypes from "@/customPropTypes";
 import MajorMineApplicationFileUpload from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationFileUpload";
-import { fetchMineDocuments } from "@common/actionCreators/mineActionCreator";
-import { getMineDocuments } from "@common/selectors/mineSelectors";
+import { fetchMineDocuments } from "@mds/common/redux/actionCreators/mineActionCreator";
+import { getMineDocuments } from "@mds/common/redux/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 import { MajorMineApplicationDocument } from "@mds/common/models/documents/document";
 import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";

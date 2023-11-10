@@ -13,7 +13,7 @@ import {
   getConditionalCommodityOptions,
   getMineTenureTypeDropdownOptions,
   getExemptionFeeStatusDropDownOptions,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import { determineExemptionFeeStatus } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";

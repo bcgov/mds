@@ -3,7 +3,7 @@ import { Action, bindActionCreators, Dispatch } from "redux";
 import { connect } from "react-redux";
 import { getFormValues, getFormSyncErrors } from "redux-form";
 import { Alert, Button, Col, Row, Menu, Dropdown, Popconfirm } from "antd";
-import { openModal, closeModal } from "@common/actions/modalActions";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import { formatDate } from "@common/utils/helpers";
 import { DownOutlined } from "@ant-design/icons";
 import moment from "moment";

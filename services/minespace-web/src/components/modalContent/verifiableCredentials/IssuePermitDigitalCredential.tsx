@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Alert, Button, Row, Typography } from "antd";
 import { CheckCircleOutlined, ClockCircleOutlined } from "@ant-design/icons";
 import { ActionCreator } from "@/interfaces/actionCreator";
-import { issueVCDigitalCredForPermit } from "@common/actionCreators/verifiableCredentialActionCreator";
+import { issueVCDigitalCredForPermit } from "@mds/common/redux/actionCreators/verifiableCredentialActionCreator";
 import { IPermit, VC_CONNECTION_STATES, VC_CRED_ISSUE_STATES } from "@mds/common";
 
 interface IssuePermitDigitalCredentialProps {

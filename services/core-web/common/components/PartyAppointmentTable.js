@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import {
   updatePartyRelationship,
   fetchPartyRelationships,
-} from "@common/actionCreators/partiesActionCreator";
+} from "@mds/common/redux/actionCreators/partiesActionCreator";
 import { MINISTRY_ACKNOWLEDGED_STATUS, PARTY_APPOINTMENT_STATUS } from "@mds/common";
 import TailingsContext from "./tailings/TailingsContext";
 import DocumentLink from "@/components/common/DocumentLink";

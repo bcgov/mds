@@ -6,12 +6,12 @@ import { connect } from "react-redux";
 import {
   fetchActivities,
   markActivitiesAsRead,
-} from "@common/actionCreators/activityActionCreator";
+} from "@mds/common/redux/actionCreators/activityActionCreator";
 import { formatDateTimeUserTz } from "@common/utils/helpers";
-import { getActivities } from "@common/selectors/activitySelectors";
-import { getUserInfo } from "@common/selectors/authenticationSelectors";
+import { getActivities } from "@mds/common/redux/selectors/activitySelectors";
+import { getUserInfo } from "@mds/common/redux/selectors/authenticationSelectors";
 import { useHistory } from "react-router-dom";
-import { storeActivities } from "@common/actions/activityActions";
+import { storeActivities } from "@mds/common/redux/actions/activityActions";
 import {
   INFORMATION_REQUIREMENTS_TABLE,
   MINE_TAILINGS_DETAILS,

@@ -10,18 +10,18 @@ import { get, isNull, isUndefined } from "lodash";
 import {
   fetchImportedNoticeOfWorkApplication,
   updateNoticeOfWorkApplication,
-} from "@common/actionCreators/noticeOfWorkActionCreator";
-import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
+} from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
+import { getDropdownInspectors } from "@mds/common/redux/selectors/partiesSelectors";
 import {
   getNoticeOfWork,
   getOriginalNoticeOfWork,
   getImportNowSubmissionDocumentsJob,
   getNOWReclamationSummary,
-} from "@common/selectors/noticeOfWorkSelectors";
+} from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import {
   getGeneratableNoticeOfWorkApplicationDocumentTypeOptions,
   getNoticeOfWorkApplicationStatusOptionsHash,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import { flattenObject } from "@common/utils/helpers";
 import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
 import * as Strings from "@common/constants/strings";

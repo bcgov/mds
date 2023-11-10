@@ -3,7 +3,7 @@ import { Button, Popconfirm } from "antd";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
 import { formatDate, truncateFilename } from "@common/utils/helpers";
-import { getNoticeOfWorkApplicationApplicationReviewTypeHash } from "@common/selectors/staticContentSelectors";
+import { getNoticeOfWorkApplicationApplicationReviewTypeHash } from "@mds/common/redux/selectors/staticContentSelectors";
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";

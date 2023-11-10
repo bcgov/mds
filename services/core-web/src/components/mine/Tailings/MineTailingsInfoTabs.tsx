@@ -6,21 +6,21 @@ import {
   deleteMineReport,
   fetchMineReports,
   updateMineReport,
-} from "@common/actionCreators/reportActionCreator";
+} from "@mds/common/redux/actionCreators/reportActionCreator";
 import {
   createTailingsStorageFacility,
   fetchMineRecordById,
   updateTailingsStorageFacility,
-} from "@common/actionCreators/mineActionCreator";
+} from "@mds/common/redux/actionCreators/mineActionCreator";
 import {
   getConsequenceClassificationStatusCodeOptionsHash,
   getITRBExemptionStatusCodeOptionsHash,
   getTSFOperatingStatusCodeOptionsHash,
-} from "@common/selectors/staticContentSelectors";
-import { getMineReports } from "@common/selectors/reportSelectors";
-import { getMineGuid, getMines } from "@common/selectors/mineSelectors";
-import { closeModal, openModal } from "@common/actions/modalActions";
-import { getMineReportDefinitionOptions } from "@common/reducers/staticContentReducer";
+} from "@mds/common/redux/selectors/staticContentSelectors";
+import { getMineReports } from "@mds/common/redux/selectors/reportSelectors";
+import { getMineGuid, getMines } from "@mds/common/redux/selectors/mineSelectors";
+import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
+import { getMineReportDefinitionOptions } from "@mds/common/redux/reducers/staticContentReducer";
 import * as Strings from "@common/constants/strings";
 import DamsPage from "@common/components/tailings/dam/DamsPage";
 import MineReportTable from "@/components/mine/Reports/MineReportTable";
