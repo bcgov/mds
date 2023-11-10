@@ -52,6 +52,11 @@ class VerifiableCredentialWebhookResource(Resource, UserMixin):
                 # 'deleted' or 'credential_acked' should both be considered successful
                 # 'deleted' is the final state, do not update 
                 cred_exch_record.cred_exch_state=new_state
+                if new_state == "credential_acked":
+                    current_app.logger.info(f"cred_acked, save revokation details {webhook_body}")
+                    cred_exch_record.rev_reg_id = webhook_body["revoc_reg_id"]
+                    cred_exch_record.cred_rev_id = webhook_body["revocation_id"]
+
                 cred_exch_record.save()
                 current_app.logger.info(f"Updated cred_exch_record cred_exch_id={cred_exch_id} with state={new_state}")
         elif topic == PING:

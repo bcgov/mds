@@ -115,7 +115,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
   };
 
   const handleAddExplosivesPermit = (values) => {
-    const system = values.permit_tab ? "MMS" : "Core";
+    const system = values.is_historic ? "MMS" : "Core";
     const payload = {
       originating_system: system,
       ...values,
@@ -157,7 +157,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
   };
 
   const handleOpenAddExplosivesPermitModal = (event, permitTab, record = null) => {
-    const initialValues = record || { permit_tab: permitTab };
+    const initialValues = record || {};
     const isProcessed = record !== null && record?.application_status !== "REC";
     event.preventDefault();
     props.openModal({
@@ -165,6 +165,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
         onSubmit: record ? handleUpdateExplosivesPermit : handleAddExplosivesPermit,
         title: "Add Permit",
         initialValues,
+        documents: record?.documents ?? [],
         mineGuid,
         isProcessed,
         documentTypeDropdownOptions: explosivesPermitDocumentTypeDropdownOptions,
@@ -179,11 +180,22 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
 
   const handleOpenAmendExplosivesPermitModal = (event, record: IExplosivesPermit = null) => {
     event.preventDefault();
+
+    // Get all documents for the parent permit and all amendments
+    const parentPermit = explosivesPermits.find(
+      ({ explosives_permit_id }) => explosives_permit_id === record.explosives_permit_id
+    );
+    const allDocs = [
+      ...parentPermit.documents,
+      ...parentPermit?.explosives_permit_amendments?.map((amendment) => amendment.documents),
+    ].flat();
+
     props.openModal({
       props: {
         title: "Amend Explosives Storage and Use Permit",
         onSubmit: (values) => handleCreateNewAmendment(values),
         initialValues: record,
+        documents: allDocs,
         isAmendment: true,
         mineGuid,
         isProcessed: false,

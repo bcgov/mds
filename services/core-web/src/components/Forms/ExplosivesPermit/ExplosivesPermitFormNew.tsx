@@ -1,7 +1,14 @@
 import React, { FC, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { Field, formValueSelector, getFormValues, InjectedFormProps, reduxForm } from "redux-form";
+import {
+  Field,
+  formValueSelector,
+  getFormValues,
+  InjectedFormProps,
+  reduxForm,
+  change,
+} from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Alert, Button, Col, Popconfirm, Row, Table, Typography, Radio } from "antd";
@@ -13,6 +20,7 @@ import {
   IOption,
   IGroupedDropdownList,
   ESUP_DOCUMENT_GENERATED_TYPES,
+  IExplosivesPermitDocument,
 } from "@mds/common";
 import { getNoticeOfWorkList } from "@common/selectors/noticeOfWorkSelectors";
 import {
@@ -50,11 +58,12 @@ interface ExplosivesPermitFormProps {
   isPermitTab: boolean;
   isAmendment?: boolean;
   inspectors: IGroupedDropdownList[];
+  documents: IExplosivesPermitDocument[];
+  dispatch: any;
 }
 
 interface StateProps {
   permits: IPermit[];
-  documents: any[];
   mines_permit_guid: string;
   formValues: IExplosivesPermit;
   partyRelationships: IPermitPartyRelationship[];
@@ -71,6 +80,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
   mines_permit_guid = null,
   isProcessed = false,
   isAmendment = false,
+  documents,
   ...props
 }) => {
   const [generatedDocs, setGeneratedDocs] = useState([]);
@@ -86,20 +96,18 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
   );
 
   useEffect(() => {
-    if (initialValues.documents) {
+    if (documents) {
       const generatedTypes = Object.keys(ESUP_DOCUMENT_GENERATED_TYPES);
       setGeneratedDocs(
-        initialValues.documents.filter((doc) =>
-          generatedTypes.includes(doc.explosives_permit_document_type_code)
-        )
+        documents.filter((doc) => generatedTypes.includes(doc.explosives_permit_document_type_code))
       );
       setSupportingDocs(
-        initialValues.documents.filter(
+        documents.filter(
           (doc) => !generatedTypes.includes(doc.explosives_permit_document_type_code)
         )
       );
     }
-  }, [initialValues]);
+  }, [documents]);
 
   const dropdown = (array) =>
     array.length > 0
@@ -120,15 +128,21 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
     "now_application_guid"
   );
 
-  const [isHistoric, setIsHistoric] = useState<boolean>(
-    !initialValues?.explosives_permit_id && props.isPermitTab
-  );
+  const [isHistoric, setIsHistoric] = useState<boolean>(!initialValues?.explosives_permit_id);
 
   const disabled = isProcessed;
 
   const [radioSelection, setRadioSelection] = useState<number>(props.isPermitTab ? 1 : 2);
   const [parentView, setParentView] = useState<boolean>(!isAmendment);
   const [isAmendSelected, setIsAmend] = useState<boolean>(false);
+
+  useEffect(() => {
+    props.dispatch(change(FORM.EXPLOSIVES_PERMIT_NEW, "is_historic", isHistoric));
+  }, [isHistoric]);
+
+  useEffect(() => {
+    setIsHistoric(radioSelection === 1);
+  }, []);
 
   const handleRadioChange = (e) => {
     setRadioSelection(e.target.value);
@@ -294,7 +308,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
           <Typography.Title level={3} className="purple">
             Explosives Permit Details
           </Typography.Title>
-          {props.isPermitTab && (
+          {isHistoric && (
             <>
               <Row gutter={6}>
                 <Col span={12}>
@@ -341,7 +355,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
             </>
           )}
           <Row gutter={6}>
-            {props.isPermitTab && (
+            {isHistoric && (
               <Col span={12}>
                 <Form.Item>
                   <Field
@@ -356,7 +370,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
                 </Form.Item>
               </Col>
             )}
-            <Col span={props.isPermitTab ? 12 : 24}>
+            <Col span={isHistoric ? 12 : 24}>
               <Form.Item>
                 <Field
                   id="permit_guid"
@@ -389,11 +403,11 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
                 <Field
                   id="mine_manager_mine_party_appt_id"
                   name="mine_manager_mine_party_appt_id"
-                  label={props.isPermitTab ? "Mine Manager" : "Mine Manager*"}
+                  label={isHistoric ? "Mine Manager" : "Mine Manager*"}
                   placeholder="Select Mine Manager"
                   partyLabel="Mine Manager"
                   validate={
-                    props.isPermitTab
+                    isHistoric
                       ? [validateSelectOptions(mineManagersDropdown, true)]
                       : [required, validateSelectOptions(mineManagersDropdown, true)]
                   }
@@ -554,7 +568,6 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
 const selector = formValueSelector(FORM.EXPLOSIVES_PERMIT_NEW);
 const mapStateToProps = (state) => ({
   permits: getPermits(state),
-  documents: selector(state, "documents"),
   mines_permit_guid: selector(state, "permit_guid"),
   formValues: getFormValues(FORM.EXPLOSIVES_PERMIT_NEW)(state),
   partyRelationships: getPartyRelationships(state),
@@ -563,7 +576,7 @@ const mapStateToProps = (state) => ({
 });
 
 export default compose(
-  connect(mapStateToProps, null),
+  connect(mapStateToProps),
   reduxForm({
     form: FORM.EXPLOSIVES_PERMIT_NEW,
     touchOnBlur: true,

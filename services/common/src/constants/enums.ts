@@ -115,3 +115,22 @@ export enum LOADING_STATUS {
   success,
   error,
 }
+
+// connection to permittee wallet
+export enum VC_CONNECTION_STATES {
+  null = "Inactive",
+  invitation = "Pending",
+  request = "Pending",
+  response = "Pending",
+  active = "Active",
+  completed = "Active",
+}
+
+// issue state of the permit digital credential
+export enum VC_CRED_ISSUE_STATES {
+  null = "Not Active",
+  offer_sent = "Pending",
+  credential_issued = "Pending",
+  credential_acked = "Active",
+  deleted = "Active",
+}

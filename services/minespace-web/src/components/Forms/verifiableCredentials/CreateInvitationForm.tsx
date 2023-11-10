@@ -4,10 +4,10 @@ import { compose } from "redux";
 import { reduxForm, InjectedFormProps } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Button, Popconfirm, Skeleton } from "antd";
+import { Alert, Button, Popconfirm, Skeleton, Typography } from "antd";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
-import { IVCInvitation, LOADING_STATUS } from "@mds/common";
+import { IVCInvitation, LOADING_STATUS, VC_CONNECTION_STATES } from "@mds/common";
 import { ActionCreator } from "@/interfaces/actionCreator";
 import { getVCWalletConnectionInvitation } from "@common/selectors/verifiableCredentialSelectors";
 import { createVCWalletInvitation } from "@common/actionCreators/verifiableCredentialActionCreator";
@@ -39,6 +39,8 @@ export const CreateInvitationForm: FC<CreateInvitationFormProps &
   const isPreLoaded = invitation.invitation_url ? LOADING_STATUS.success : LOADING_STATUS.none;
   const [loading, setLoading] = useState(isPreLoaded);
 
+  const friendlyConnectionState = VC_CONNECTION_STATES[connectionState];
+
   const getInvitation = () => {
     setLoading(LOADING_STATUS.sent);
     props
@@ -52,27 +54,40 @@ export const CreateInvitationForm: FC<CreateInvitationFormProps &
   };
 
   const disableGenerateButton: boolean =
-    connectionState === "active" ||
-    props.submitting ||
-    loading === LOADING_STATUS.sent ||
-    invitation.invitation_url?.length > 0;
+    props.submitting || loading === LOADING_STATUS.sent || invitation.invitation_url?.length > 0;
   return (
     <Form layout="vertical">
-      <p>
-        <b>Current Connection Status: {connectionState}</b>
-      </p>
-      {connectionState !== "active" && (
+      <Alert
+        type="info"
+        message="Key Terms"
+        showIcon
+        description={
+          <>
+            <Typography.Paragraph>
+              <Typography.Text strong>Digital Wallet: </Typography.Text>A digital version of a
+              physical wallet that enables organizations to send and receive digital credentials.
+            </Typography.Paragraph>
+            <Typography.Paragraph>
+              <Typography.Text strong>Digital Credential: </Typography.Text>A digital version of a
+              physical credential, such as your mine permit. Digital credentials are
+              cryptographically protected and verified in real-time, ensuring a high degree of
+              privacy and security regardless of where information is shared.
+            </Typography.Paragraph>
+          </>
+        }
+      />
+      {friendlyConnectionState !== VC_CONNECTION_STATES.active && (
         <div>
           <p>
-            {" "}
             By generating this invitation, you choose to connect your organization’s digital wallet
             to the digital wallet of the Chief Permitting Officer of B.C. Once connected, your
-            organization will have the option to receive permit(s) in the form of digital
-            credentials. This is a one-time action that applies to all major mine permits.
+            organization will have the option to receive digital credentials to prove they hold a
+            valid Mines Act Permit from the Government of B.C. This is a one-time action that
+            applies to all major mine permits.
           </p>
           <br />
-          <Button disabled={disableGenerateButton} onClick={getInvitation}>
-            Generate Invitation for {partyName}.
+          <Button disabled={disableGenerateButton} onClick={getInvitation} type="primary">
+            Generate Invitation for {partyName}
           </Button>
           <br />
         </div>
@@ -82,12 +97,10 @@ export const CreateInvitationForm: FC<CreateInvitationFormProps &
         <Skeleton loading={loading === LOADING_STATUS.sent}>
           {loading === LOADING_STATUS.success && (
             <>
-              <p>
-                <b>
-                  Accept this invitation url using the digital wallet of {partyName}. to establish a
-                  secure connection for the purposes of recieving Mines Act Permits
-                </b>
-              </p>
+              <Typography.Paragraph strong>
+                Copy this invitation URL into the digital wallet of {partyName} to establish a
+                secure connection for the purpose of receiving digital credentials.
+              </Typography.Paragraph>
               <Button type="primary" onClick={copyTextToClipboard}>
                 Copy to Clipboard
               </Button>
@@ -101,30 +114,18 @@ export const CreateInvitationForm: FC<CreateInvitationFormProps &
           )}
         </Skeleton>
       )}
-      <br />
-      <br />
-      <p>
-        <b>Note:</b>
-      </p>
-      <p>
-        <b>Digital Wallet:</b> A digital version of a physical wallet that enables organizations to
-        send and receive digital credentials.{" "}
-      </p>
-      <p>
-        <b>Digital Credential:</b> A digital version of a physical credential, such as your mine
-        permit. Digital credentials are cryptographically protected and verified in real-time,
-        ensuring a high degree of privacy and security regardless of where information is shared.{" "}
-      </p>
-      <Popconfirm
-        placement="topRight"
-        title="Are you sure?"
-        onConfirm={closeModal}
-        okText="Yes"
-        cancelText="No"
-        disabled={props.submitting}
-      >
-        <Button disabled={props.submitting}>Close</Button>
-      </Popconfirm>
+      <div style={{ textAlign: "right" }}>
+        <Popconfirm
+          placement="topRight"
+          title="Are you sure?"
+          onConfirm={closeModal}
+          okText="Yes"
+          cancelText="No"
+          disabled={props.submitting}
+        >
+          <Button disabled={props.submitting}>Close</Button>
+        </Popconfirm>
+      </div>
     </Form>
   );
 };
