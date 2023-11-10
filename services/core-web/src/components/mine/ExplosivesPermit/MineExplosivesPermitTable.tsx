@@ -127,7 +127,6 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
       render: (record) => {
         const isApproved = record.application_status === "APP";
         const isProcessed = record.application_status !== "REC";
-        const hasAmendments = record.explosives_permit_amendments?.length > 1;
         const hasDocuments =
           record.documents?.filter((doc) =>
             Object.keys(ESUP_DOCUMENT_GENERATED_TYPES).includes(
@@ -144,31 +143,24 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
             icon: viewIcon,
           },
         ];
-
-        const editDocumentMenu: ITableAction[] = [
-          {
-            key: "0",
-            label: "Edit Documents",
-            clickFunction: (event, record) =>
-              props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record),
-            icon: editIcon,
-          },
-        ];
-
-        const createAmendmentMenu: ITableAction[] = [
-          {
-            key: "edit",
-            label: "Create Amendment",
-            clickFunction: (event, record) =>
-              props.handleOpenAmendExplosivesPermitModal(event, record),
-            icon: editIcon,
-          },
-        ];
-
         const approvedMenu: ITableAction[] = isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT)
-          ? hasAmendments
-            ? [...viewOnlyMenu, ...editDocumentMenu, ...createAmendmentMenu]
-            : [...viewOnlyMenu, ...createAmendmentMenu]
+          ? [
+              ...viewOnlyMenu,
+              {
+                key: "0",
+                label: "Edit Documents_151",
+                clickFunction: (event, record) =>
+                  props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record),
+                icon: editIcon,
+              },
+              {
+                key: "edit",
+                label: "Create Amendment",
+                clickFunction: (event, record) =>
+                  props.handleOpenAmendExplosivesPermitModal(event, record),
+                icon: editIcon,
+              },
+            ]
           : [
               {
                 key: "0",
