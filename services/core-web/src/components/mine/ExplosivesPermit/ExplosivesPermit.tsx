@@ -157,12 +157,15 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
   };
 
   const handleOpenAddExplosivesPermitModal = (event, permitTab, record = null) => {
+    const hasAmendments = record?.explosives_permit_amendments?.length > 1;
     const initialValues = record || { permit_tab: permitTab };
     const isProcessed = record !== null && record?.application_status !== "REC";
     event.preventDefault();
     props.openModal({
       props: {
-        onSubmit: record ? handleUpdateExplosivesPermit : handleAddExplosivesPermit,
+        onSubmit: (values) => {
+          record ? handleUpdateExplosivesPermit(values, hasAmendments) : handleAddExplosivesPermit(values)
+        },
         title: "Add Permit",
         initialValues,
         documents: record?.documents ?? [],
