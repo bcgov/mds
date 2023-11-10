@@ -313,7 +313,7 @@ export const CREATE_MINE_INCIDENT = {
 
 export const MINE_INSPECTIONS = {
   route: "/mine-dashboard/:id/oversight/inspections-and-audits",
-  dynamicRoute: (id, filterParams) =>
+  dynamicRoute: (id, filterParams?) =>
     `/mine-dashboard/${id}/oversight/inspections-and-audits?${queryString.stringify(filterParams)}`,
   component: MineComplianceInfo,
 };

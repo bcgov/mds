@@ -269,7 +269,6 @@ exports[`MineSummary renders properly 1`] = `
     </Row>
     <Row
       gutter={16}
-      type="flex"
     >
       <Col
         key="1628847c-060b-45f2-990f-815877174801"
@@ -379,7 +378,6 @@ exports[`MineSummary renders properly 1`] = `
             <ForwardRef
               align="middle"
               justify="center"
-              type="flex"
             >
               <div
                 className="center"
@@ -413,7 +411,6 @@ exports[`MineSummary renders properly 1`] = `
             <ForwardRef
               align="middle"
               justify="center"
-              type="flex"
             >
               <img
                 alt="Open Orders"
@@ -455,7 +452,6 @@ exports[`MineSummary renders properly 1`] = `
             <ForwardRef
               align="middle"
               justify="center"
-              type="flex"
             >
               <img
                 alt="Overdue Orders"

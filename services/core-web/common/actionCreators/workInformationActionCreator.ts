@@ -7,8 +7,16 @@ import * as workInformationActions from "../actions/workInformationActions";
 import * as API from "../constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
+import { AxiosResponse } from "axios";
+import { AppThunk } from "@/store/appThunk.type";
+import { IMineWorkInformation } from "@mds/common";
 
-export const createMineWorkInformation = (mineGuid, payload) => (dispatch) => {
+export const createMineWorkInformation = (
+  mineGuid: string,
+  payload: Partial<IMineWorkInformation>
+): AppThunk<Promise<AxiosResponse<IMineWorkInformation>>> => (
+  dispatch
+): Promise<AxiosResponse<IMineWorkInformation>> => {
   dispatch(request(reducerTypes.CREATE_MINE_WORK_INFORMATION));
   dispatch(showLoading("modal"));
   return CustomAxios()
@@ -17,7 +25,7 @@ export const createMineWorkInformation = (mineGuid, payload) => (dispatch) => {
       payload,
       createRequestHeader()
     )
-    .then((response) => {
+    .then((response: AxiosResponse<IMineWorkInformation>) => {
       notification.success({
         message: "Successfully created work information.",
         duration: 10,
@@ -32,12 +40,16 @@ export const createMineWorkInformation = (mineGuid, payload) => (dispatch) => {
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const fetchMineWorkInformations = (mineGuid) => (dispatch) => {
+export const fetchMineWorkInformations = (
+  mineGuid: string
+): AppThunk<Promise<AxiosResponse<IMineWorkInformation>>> => (
+  dispatch
+): Promise<AxiosResponse<IMineWorkInformation>> => {
   dispatch(request(reducerTypes.GET_MINE_WORK_INFORMATIONS));
   dispatch(showLoading());
   return CustomAxios()
     .get(`${ENVIRONMENT.apiUrl}${API.MINE_WORK_INFORMATIONS(mineGuid)}`, createRequestHeader())
-    .then((response) => {
+    .then((response: AxiosResponse<IMineWorkInformation>) => {
       dispatch(success(reducerTypes.GET_MINE_WORK_INFORMATIONS));
       dispatch(workInformationActions.storeMineWorkInformations(response.data));
       return response;
@@ -49,9 +61,13 @@ export const fetchMineWorkInformations = (mineGuid) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const updateMineWorkInformation = (mineGuid, mineWorkInformationGuid, payload) => (
+export const updateMineWorkInformation = (
+  mineGuid: string,
+  mineWorkInformationGuid: string,
+  payload: Partial<IMineWorkInformation>
+): AppThunk<Promise<AxiosResponse<IMineWorkInformation>>> => (
   dispatch
-) => {
+): Promise<AxiosResponse<IMineWorkInformation>> => {
   dispatch(request(reducerTypes.UPDATE_MINE_WORK_INFORMATION));
   dispatch(showLoading("modal"));
   return CustomAxios()
@@ -60,7 +76,7 @@ export const updateMineWorkInformation = (mineGuid, mineWorkInformationGuid, pay
       payload,
       createRequestHeader()
     )
-    .then((response) => {
+    .then((response: AxiosResponse<IMineWorkInformation>) => {
       notification.success({
         message: "Successfully updated work information.",
         duration: 10,
@@ -75,7 +91,10 @@ export const updateMineWorkInformation = (mineGuid, mineWorkInformationGuid, pay
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const deleteMineWorkInformation = (mineGuid, mineWorkInformationGuid) => (dispatch) => {
+export const deleteMineWorkInformation = (
+  mineGuid: string,
+  mineWorkInformationGuid: string
+): AppThunk<Promise<AxiosResponse<string>>> => (dispatch): Promise<AxiosResponse<string>> => {
   dispatch(request(reducerTypes.DELETE_MINE_WORK_INFORMATION));
   dispatch(showLoading());
   return CustomAxios()
@@ -83,7 +102,7 @@ export const deleteMineWorkInformation = (mineGuid, mineWorkInformationGuid) => 
       `${ENVIRONMENT.apiUrl}${API.MINE_WORK_INFORMATION(mineGuid, mineWorkInformationGuid)}`,
       createRequestHeader()
     )
-    .then((response) => {
+    .then((response: AxiosResponse<string>) => {
       notification.success({
         message: "Successfully deleted work information.",
         duration: 10,
