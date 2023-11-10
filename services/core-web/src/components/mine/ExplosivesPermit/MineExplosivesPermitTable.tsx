@@ -148,7 +148,7 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
               ...viewOnlyMenu,
               {
                 key: "0",
-                label: "Edit Documents_151",
+                label: "Edit Documents",
                 clickFunction: (event, record) =>
                   props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record),
                 icon: editIcon,
