@@ -1,5 +1,5 @@
-import * as ActionTypes from "../constants/actionTypes";
-import { AUTHENTICATION } from "../constants/reducerTypes";
+import * as ActionTypes from "@mds/common/constants/actionTypes";
+import { AUTHENTICATION } from "@mds/common/constants/reducerTypes";
 import { IUserInfo } from "@mds/common/interfaces";
 import { USER_ROLES } from "@mds/common/constants";
 import { RootState } from "@mds/common/redux/rootState";
