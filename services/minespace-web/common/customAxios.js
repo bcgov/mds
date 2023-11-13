@@ -1,8 +1,9 @@
 import axios from "axios";
 import { notification } from "antd";
-import * as String from "./constants/strings";
+import * as String from "@mds/common/constants/strings";
 
 // https://stackoverflow.com/questions/39696007/axios-with-promise-prototype-finally-doesnt-work
+// @ts-ignore
 const promiseFinally = require("promise.prototype.finally");
 
 promiseFinally.shim();
