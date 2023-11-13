@@ -9,7 +9,10 @@ import {
   getPermitConditionCategoryOptions,
   getPermitConditionTypeOptions,
 } from "@mds/common/redux/selectors/staticContentSelectors";
-import { getPermitConditions, getEditingConditionFlag } from "@mds/common/redux/selectors/permitSelectors";
+import {
+  getPermitConditions,
+  getEditingConditionFlag,
+} from "@mds/common/redux/selectors/permitSelectors";
 import {
   fetchPermitConditions,
   deletePermitCondition,
@@ -26,7 +29,7 @@ import { COLOR } from "@/constants/styles";
 import { Link } from "react-router-dom";
 import * as route from "@/constants/routes";
 import { IOption, IPermitAmendment } from "@mds/common";
-import { ActionCreator } from "@mds/common/interfaces/actionCreator"
+import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 
 interface PermitConditionManagementProps {
   openModal: (arg1: any) => void;

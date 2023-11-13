@@ -34,7 +34,7 @@ import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import { SMALL_PIN, SMALL_PIN_SELECTED } from "@/constants/assets";
 import TailingsSummaryPageWrapper from "./TailingsSummaryPageWrapper";
 import { IMine, IMineReport } from "@mds/common";
-import { ActionCreator } from "@mds/common/interfaces/actionCreator"
+import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 
 /**
  * @class  MineTailingsInfoTabs - all tenure information related to the mine.

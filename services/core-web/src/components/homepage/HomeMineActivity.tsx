@@ -6,13 +6,16 @@ import { Row, Col, Typography, Divider, Skeleton } from "antd";
 import { EnvironmentOutlined, BookOutlined } from "@ant-design/icons";
 import { fetchSubscribedMinesByUser } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { fetchGlobalMineAlerts } from "@/actionCreators/mineAlertActionCreator";
-import { getSubscribedMines, getSubscribedMinesLoaded } from "@mds/common/redux/selectors/mineSelectors";
+import {
+  getSubscribedMines,
+  getSubscribedMinesLoaded,
+} from "@mds/common/redux/selectors/mineSelectors";
 import { getGlobalMineAlerts } from "@/selectors/mineAlertSelectors";
 import { formatDateTime } from "@common/utils/helpers";
 import { IMine, IMineAlert } from "@mds/common";
 import * as routes from "@/constants/routes";
 import { RootState } from "@/App";
-import { ActionCreator } from "@mds/common/interfaces/actionCreator"
+import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import * as router from "@/constants/routes";
 
 interface HomeMineActivityProps {

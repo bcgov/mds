@@ -21,7 +21,7 @@ import {
   VIEW_MINE_INCIDENT,
   PROJECT_DOCUMENT_MANAGEMENT,
 } from "@/constants/routes";
-import { ActionCreator } from "@mds/common/interfaces/actionCreator"
+import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { IActivity } from "@mds/common";
 
 interface INotificationDrawerProps {

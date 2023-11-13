@@ -14,7 +14,10 @@ import {
   deletePermitAmendment,
 } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { fetchPartyRelationships } from "@mds/common/redux/actionCreators/partiesActionCreator";
-import { fetchMineRecordById, createMineTypes } from "@mds/common/redux/actionCreators/mineActionCreator";
+import {
+  fetchMineRecordById,
+  createMineTypes,
+} from "@mds/common/redux/actionCreators/mineActionCreator";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { getMines, getMineGuid } from "@mds/common/redux/selectors/mineSelectors";
@@ -28,7 +31,7 @@ import { modalConfig } from "@/components/modalContent/config";
 import { getExplosivesPermits } from "@mds/common/redux/selectors/explosivesPermitSelectors";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import { IPermit, IMine, IPermitPartyRelationship, IExplosivesPermit } from "@mds/common";
-import { ActionCreator } from "@mds/common/interfaces/actionCreator"
+import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 /**
  * @class  MinePermitInfo - contains all permit information
  */

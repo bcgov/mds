@@ -30,7 +30,7 @@ import * as Permission from "@/constants/permissions";
 import AddButton from "@/components/common/buttons/AddButton";
 import MineExplosivesPermitTable from "@/components/mine/ExplosivesPermit/MineExplosivesPermitTable";
 import { modalConfig } from "@/components/modalContent/config";
-import { ActionCreator } from "@mds/common/interfaces/actionCreator"
+import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { IExplosivesPermit, IGroupedDropdownList, IMine, IOption } from "@mds/common";
 
 interface ExplosivesPermitProps {

@@ -7,7 +7,7 @@ import FileUpload from "@/components/common/FileUpload";
 import { NEW_VERSION_DOCUMENTS } from "@mds/common/constants/API";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { ActionCreator } from "@mds/common/interfaces/actionCreator"
+import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { HttpRequest, HttpResponse } from "tus-js-client";
 import { IMAGE, DOCUMENT, EXCEL, SPATIAL } from "@mds/common/constants/fileTypes";
 import { postNewDocumentVersion } from "@mds/common/redux/actionCreators/documentActionCreator";

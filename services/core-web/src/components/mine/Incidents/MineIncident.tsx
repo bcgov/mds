@@ -21,7 +21,7 @@ import IncidentForm from "@/components/Forms/incidents/IncidentForm";
 import ScrollSideMenu from "@/components/common/ScrollSideMenu";
 import * as routes from "@/constants/routes";
 import { IMineIncident } from "@mds/common";
-import { ActionCreator } from "@mds/common/interfaces/actionCreator"
+import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 
 export interface MineIncidentProps {
   incident: IMineIncident;
