@@ -12,7 +12,7 @@ import {
   fetchInspectors,
   fetchProjectLeads,
 } from "@mds/common/redux/actionCreators/staticContentActionCreator";
-import { detectIE, detectTestEnvironment, detectDevelopmentEnvironment } from "@mds/common";
+import { detectIE, detectTestEnvironment, detectDevelopmentEnvironment } from "@mds/common/utils";
 import DashboardRoutes from "@/routes/DashboardRoutes";
 import { AuthenticationGuard } from "@/HOC/AuthenticationGuard";
 import WarningBanner, { WARNING_TYPES } from "@/components/common/WarningBanner";

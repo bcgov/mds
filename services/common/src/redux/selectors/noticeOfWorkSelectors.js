@@ -1,7 +1,7 @@
 import { isEmpty, isNil } from "lodash";
 import { createSelector } from "reselect";
 import moment from "moment";
-import { getDurationTextInDays } from "@common/utils/helpers";
+import { getDurationTextInDays } from "@mds/common/redux/utils/helpers";
 import * as noticeOfWorkReducer from "../reducers/noticeOfWorkReducer";
 import {
   getDropdownNoticeOfWorkActivityTypeOptions,

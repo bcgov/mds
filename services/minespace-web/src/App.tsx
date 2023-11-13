@@ -20,7 +20,7 @@ import WarningBanner from "@/components/common/WarningBanner";
 
 import Routes from "./routes/Routes";
 import configureStore from "./store/configureStore";
-import { detectIE } from "@/utils/environmentUtils";
+import { detectIE } from "@mds/common";
 
 export const store = configureStore();
 
