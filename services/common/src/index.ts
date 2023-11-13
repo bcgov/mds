@@ -1,3 +1,3 @@
-export * from "@mds/common/constants";
+export * from "./constants";
 export * from "./interfaces";
 export * from "./utils";
