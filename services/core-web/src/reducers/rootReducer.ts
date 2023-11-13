@@ -5,13 +5,12 @@ import networkReducer from "./networkReducer";
 import { sharedReducer } from "@mds/common/redux/reducers/rootReducerShared";
 import * as reducerTypes from "@mds/common/constants/reducerTypes";
 import documentReducer from "./documentReducer";
-import * as coreReducerTypes from "@common/constants/reducerTypes";
 
 const coreReducer = {
   ...sharedReducer,
   ...mineAlertReducer,
   ...documentReducer,
-  [coreReducerTypes.GET_GLOBAL_ALERTS]: createReducer(networkReducer, coreReducerTypes.GET_GLOBAL_ALERTS),
+  [reducerTypes.GET_GLOBAL_ALERTS]: createReducer(networkReducer, reducerTypes.GET_GLOBAL_ALERTS),
   [reducerTypes.CREATE_PARTY]: createReducer(networkReducer, reducerTypes.CREATE_PARTY),
   [reducerTypes.UPDATE_PARTY]: createReducer(networkReducer, reducerTypes.UPDATE_PARTY),
   [reducerTypes.GET_PARTIES]: createReducer(networkReducer, reducerTypes.GET_PARTIES),
