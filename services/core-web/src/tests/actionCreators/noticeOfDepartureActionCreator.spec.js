@@ -16,7 +16,7 @@ import {
   NOTICES_OF_DEPARTURE_DOCUMENTS,
   NOTICES_OF_DEPARTURE,
   NOTICES_OF_DEPARTURE_DOCUMENT,
-} from "../../../common/constants/API";
+} from "@mds/common/constants/API";
 
 const dispatch = jest.fn();
 const requestSpy = jest.spyOn(genericActions, "request");
