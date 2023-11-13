@@ -1,5 +1,5 @@
-import * as actionTypes from "../constants/actionTypes";
-import { PROJECTS } from "../constants/reducerTypes";
+import * as actionTypes from "@mds/common/constants/actionTypes";
+import { PROJECTS } from "@mds/common/constants/reducerTypes";
 
 const initialState = {
   projects: [],

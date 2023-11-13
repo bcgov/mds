@@ -1,4 +1,4 @@
-import * as ActionTypes from "../constants/actionTypes";
+import * as ActionTypes from "@mds/common/constants/actionTypes";
 
 export const authenticateUser = (userInfo = {}) => ({
   type: ActionTypes.AUTHENTICATE_USER,

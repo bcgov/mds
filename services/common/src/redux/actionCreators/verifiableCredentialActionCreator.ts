@@ -1,6 +1,6 @@
 import { ENVIRONMENT } from "@mds/common";
 import { request, success, error } from "../actions/genericActions";
-import * as reducerTypes from "../constants/reducerTypes";
+import * as reducerTypes from "@mds/common/constants/reducerTypes";
 import * as verfiableCredentialActions from "../actions/verfiableCredentialActions";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import { showLoading, hideLoading } from "react-redux-loading-bar";

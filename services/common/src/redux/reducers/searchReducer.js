@@ -1,5 +1,5 @@
-import * as actionTypes from "../constants/actionTypes";
-import { SEARCH } from "../constants/reducerTypes";
+import * as actionTypes from "@mds/common/constants/actionTypes";
+import { SEARCH } from "@mds/common/constants/reducerTypes";
 
 /**
  * @file mineReducer.js

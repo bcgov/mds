@@ -3,8 +3,8 @@ import { notification } from "antd";
 import { ENVIRONMENT } from "@mds/common";
 import { request, success, error } from "../actions/genericActions";
 import * as securitiesActions from "../actions/securitiesActions";
-import * as reducerTypes from "../constants/reducerTypes";
-import * as API from "../constants/API";
+import * as reducerTypes from "@mds/common/constants/reducerTypes";
+import * as API from "@mds/common/constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
 

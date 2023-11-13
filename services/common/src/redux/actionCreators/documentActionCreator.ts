@@ -1,7 +1,7 @@
 import { AppThunk } from "@mds/common/interfaces/appThunk.type";
 import { AxiosResponse } from "axios";
 
-import * as reducerTypes from "../constants/reducerTypes";
+import * as reducerTypes from "@mds/common/constants/reducerTypes";
 import { hideLoading, showLoading } from "react-redux-loading-bar";
 
 import { notification } from "antd";

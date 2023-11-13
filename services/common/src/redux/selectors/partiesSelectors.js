@@ -1,7 +1,7 @@
 import { createSelector } from "reselect";
 import moment from "moment";
 import * as partiesReducer from "../reducers/partiesReducer";
-import { PARTIES } from "../constants/reducerTypes";
+import { PARTIES } from "@mds/common/constants/reducerTypes";
 import { createLabelHash, createDropDownList } from "../utils/helpers";
 
 export const {

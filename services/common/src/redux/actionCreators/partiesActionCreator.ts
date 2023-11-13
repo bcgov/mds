@@ -3,10 +3,10 @@ import { showLoading, hideLoading } from "react-redux-loading-bar";
 import queryString from "query-string";
 import { ENVIRONMENT, IUpdatePartyAppointment, removeNullValues } from "@mds/common";
 import { request, success, error } from "../actions/genericActions";
-import * as reducerTypes from "../constants/reducerTypes";
+import * as reducerTypes from "@mds/common/constants/reducerTypes";
 import * as partyActions from "../actions/partyActions";
-import * as Strings from "../constants/strings";
-import * as API from "../constants/API";
+import * as Strings from "@mds/common/constants/strings";
+import * as API from "@mds/common/constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
 import {

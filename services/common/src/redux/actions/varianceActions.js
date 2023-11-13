@@ -1,4 +1,4 @@
-import * as actionTypes from "../constants/actionTypes";
+import * as actionTypes from "@mds/common/constants/actionTypes";
 
 export const storeVariances = (payload) => ({
   type: actionTypes.STORE_VARIANCES,

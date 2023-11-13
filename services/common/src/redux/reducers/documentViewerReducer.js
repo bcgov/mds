@@ -1,5 +1,5 @@
-import * as actionTypes from "../constants/actionTypes";
-import { DOCUMENT_VIEWER } from "../constants/reducerTypes";
+import * as actionTypes from "@mds/common/constants/actionTypes";
+import { DOCUMENT_VIEWER } from "@mds/common/constants/reducerTypes";
 
 const initialState = {
   isDocumentViewerOpen: false,

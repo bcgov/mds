@@ -1,4 +1,4 @@
-import * as ActionTypes from "../constants/actionTypes";
+import * as ActionTypes from "@mds/common/constants/actionTypes";
 
 // eslint-disable-next-line import/prefer-default-export
 export const storeBulkStaticContent = (payload) => ({

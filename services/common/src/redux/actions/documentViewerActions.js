@@ -1,4 +1,4 @@
-import * as actionTypes from "../constants/actionTypes";
+import * as actionTypes from "@mds/common/constants/actionTypes";
 
 export const openDocumentViewer = (payload) => ({
   type: actionTypes.OPEN_DOCUMENT_VIEWER,

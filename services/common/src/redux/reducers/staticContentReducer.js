@@ -1,5 +1,5 @@
-import * as actionTypes from "../constants/actionTypes";
-import { STATIC_CONTENT } from "../constants/reducerTypes";
+import * as actionTypes from "@mds/common/constants/actionTypes";
+import { STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
 
 /**
  * @file staticContentReducer.js

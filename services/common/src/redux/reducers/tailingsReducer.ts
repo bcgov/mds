@@ -1,5 +1,5 @@
-import { TAILINGS } from "../constants/reducerTypes";
-import * as actionTypes from "../constants/actionTypes";
+import { TAILINGS } from "@mds/common/constants/reducerTypes";
+import * as actionTypes from "@mds/common/constants/actionTypes";
 import { ITailingsStorageFacility } from "@mds/common";
 import { RootState } from "@mds/common/redux/rootState";
 

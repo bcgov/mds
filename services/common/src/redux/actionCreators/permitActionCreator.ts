@@ -12,10 +12,10 @@ import {
   IStandardPermitCondition,
 } from "@mds/common";
 import { request, success, error, IDispatchError } from "../actions/genericActions";
-import * as reducerTypes from "../constants/reducerTypes";
+import * as reducerTypes from "@mds/common/constants/reducerTypes";
 import * as permitActions from "../actions/permitActions";
-import * as String from "../constants/strings";
-import * as API from "../constants/API";
+import * as String from "@mds/common/constants/strings";
+import * as API from "@mds/common/constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
 import { AxiosResponse } from "axios";

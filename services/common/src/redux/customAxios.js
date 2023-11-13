@@ -1,6 +1,6 @@
 import axios from "axios";
 import { notification } from "antd";
-import * as String from "./constants/strings";
+import * as String from "@mds/common/constants/strings";
 
 // https://stackoverflow.com/questions/39696007/axios-with-promise-prototype-finally-doesnt-work
 // eslint-disable-next-line @typescript-eslint/no-var-requires

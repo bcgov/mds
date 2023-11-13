@@ -1,8 +1,8 @@
 import { hideLoading, showLoading } from "react-redux-loading-bar";
 import { notification } from "antd";
 import { ENVIRONMENT } from "@mds/common";
-import { CREATE_DAM, GET_DAM, UPDATE_DAM } from "../constants/reducerTypes";
-import { DAM, DAMS } from "../constants/API";
+import { CREATE_DAM, GET_DAM, UPDATE_DAM } from "@mds/common/constants/reducerTypes";
+import { DAM, DAMS } from "@mds/common/constants/API";
 import { error, request, success } from "../actions/genericActions";
 
 import CustomAxios from "../customAxios";

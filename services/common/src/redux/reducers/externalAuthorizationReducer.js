@@ -1,5 +1,5 @@
-import * as actionTypes from "../constants/actionTypes";
-import { EXTERNAL_AUTHS } from "../constants/reducerTypes";
+import * as actionTypes from "@mds/common/constants/actionTypes";
+import { EXTERNAL_AUTHS } from "@mds/common/constants/reducerTypes";
 
 /**
  * @file externalAuthorizationReducer.js

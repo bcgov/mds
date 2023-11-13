@@ -1,6 +1,6 @@
 import { RootState } from "@mds/common/redux/rootState";
-import * as actionTypes from "../constants/actionTypes";
-import { MINES } from "../constants/reducerTypes";
+import * as actionTypes from "@mds/common/constants/actionTypes";
+import { MINES } from "@mds/common/constants/reducerTypes";
 import { createItemMap, createItemIdsArray } from "../utils/helpers";
 import { IMine, IMineComment, IMineDocument, ItemMap } from "@mds/common";
 /**

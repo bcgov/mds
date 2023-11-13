@@ -4,7 +4,7 @@
  * Contains actions relevant to opening/closing Modals.
  */
 
-import * as actionTypes from "../constants/actionTypes";
+import * as actionTypes from "@mds/common/constants/actionTypes";
 
 export const openModal = (payload: unknown) => ({
   type: actionTypes.OPEN_MODAL,

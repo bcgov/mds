@@ -1,5 +1,5 @@
-import * as actionTypes from "../constants/actionTypes";
-import { SECURITIES } from "../constants/reducerTypes";
+import * as actionTypes from "@mds/common/constants/actionTypes";
+import { SECURITIES } from "@mds/common/constants/reducerTypes";
 
 const initialState = {
   bonds: [],

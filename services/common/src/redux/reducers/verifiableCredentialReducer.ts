@@ -1,5 +1,5 @@
-import * as actionTypes from "../constants/actionTypes";
-import { VERIFIABLE_CREDENTIALS } from "../constants/reducerTypes";
+import * as actionTypes from "@mds/common/constants/actionTypes";
+import { VERIFIABLE_CREDENTIALS } from "@mds/common/constants/reducerTypes";
 import { RootState } from "@mds/common/redux/rootState";
 import { IVCInvitation, LOADING_STATUS } from "@mds/common";
 

@@ -1,6 +1,6 @@
 import { INoticeOfDeparture } from "@mds/common";
-import * as actionTypes from "../constants/actionTypes";
-import { NOTICES_OF_DEPARTURE } from "../constants/reducerTypes";
+import * as actionTypes from "@mds/common/constants/actionTypes";
+import { NOTICES_OF_DEPARTURE } from "@mds/common/constants/reducerTypes";
 import { RootState } from "@mds/common/redux/rootState";
 
 interface NoDState {

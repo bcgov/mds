@@ -1,4 +1,4 @@
-import * as actionTypes from "../constants/actionTypes";
+import * as actionTypes from "@mds/common/constants/actionTypes";
 
 // This file is anticipated to have multiple exports
 // eslint-disable-next-line import/prefer-default-export

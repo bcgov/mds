@@ -8,14 +8,14 @@ import {
   GET_DETAILED_NOTICE_OF_DEPARTURE,
   GET_NOTICES_OF_DEPARTURE,
   UPDATE_NOTICE_OF_DEPARTURE,
-} from "../constants/reducerTypes";
+} from "@mds/common/constants/reducerTypes";
 import CustomAxios from "../customAxios";
 import {
   NOTICE_OF_DEPARTURE,
   NOTICES_OF_DEPARTURE,
   NOTICES_OF_DEPARTURE_DOCUMENT,
   NOTICES_OF_DEPARTURE_DOCUMENTS,
-} from "../constants/API";
+} from "@mds/common/constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import {
   storeNoticeOfDeparture,

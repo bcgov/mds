@@ -1,4 +1,4 @@
-import * as ActionTypes from "../constants/actionTypes";
+import * as ActionTypes from "@mds/common/constants/actionTypes";
 
 export const storeSearchOrgBookResults = (payload) => ({
   type: ActionTypes.STORE_ORGBOOK_SEARCH_RESULTS,

@@ -1,4 +1,4 @@
-import { REQUEST, SUCCESS, ERROR } from "../constants/actionTypes";
+import { REQUEST, SUCCESS, ERROR } from "@mds/common/constants/actionTypes";
 
 const initialState = {
   isFetching: false,

@@ -10,7 +10,7 @@ import {
   NRIS_DOCUMENT_FILE_GET_URL,
   NRIS_DOCUMENT_TOKEN_GET_URL,
   MINE,
-} from "../constants/API";
+} from "@mds/common/constants/API";
 
 export const getMineWithoutStore = (mine_guid) => {
   return CustomAxios().get(`${ENVIRONMENT.apiUrl}${MINE}/${mine_guid}`, createRequestHeader());
