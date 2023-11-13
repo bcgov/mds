@@ -10,7 +10,7 @@ import { isEmpty } from "lodash";
 import CustomPropTypes from "@/customPropTypes";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import DocumentLink from "@/components/common/DocumentLink";
 import { modalConfig } from "@/components/modalContent/config";
 import * as Permission from "@/constants/permissions";

@@ -9,7 +9,7 @@ import {
   logoutUser,
   storeUserAccessData,
 } from "@mds/common/redux/actions/authenticationActions";
-import { AUTHENTICATION } from "@common/constants/reducerTypes";
+import { AUTHENTICATION } from "@mds/common/constants/reducerTypes";
 
 const mockData = {
   userAccessData: ["role1"],

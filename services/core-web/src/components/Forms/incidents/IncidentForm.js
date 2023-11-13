@@ -24,7 +24,7 @@ import {
   dateTimezoneRequired,
 } from "@common/utils/Validate";
 import { normalizePhone, normalizeDatetime, formatDate } from "@common/utils/helpers";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import { INCIDENT_CONTACT_METHOD_OPTIONS } from "@mds/common";
 import { getDropdownInspectors } from "@mds/common/redux/selectors/partiesSelectors";
 import {

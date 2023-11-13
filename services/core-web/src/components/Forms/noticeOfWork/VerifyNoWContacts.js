@@ -27,7 +27,7 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import { getSearchResults, getSearchSubsetResults } from "@mds/common/redux/selectors/searchSelectors";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 
 import Address from "@/components/common/Address";
 import AddButton from "@/components/common/buttons/AddButton";

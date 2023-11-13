@@ -21,7 +21,7 @@ import {
   editNoticeOfWorkDocument,
   sortNoticeOfWorkDocuments,
 } from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import DocumentLink from "@/components/common/DocumentLink";
 import AddButton from "@/components/common/buttons/AddButton";
 import { modalConfig } from "@/components/modalContent/config";

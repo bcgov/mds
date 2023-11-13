@@ -28,7 +28,7 @@ import { modalConfig } from "@/components/modalContent/config";
 import { getExplosivesPermits } from "@mds/common/redux/selectors/explosivesPermitSelectors";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import { IPermit, IMine, IPermitPartyRelationship, IExplosivesPermit } from "@mds/common";
-import { ActionCreator } from "@/interfaces/actionCreator";
+import { ActionCreator } from "@mds/common/interfaces/actionCreator"
 /**
  * @class  MinePermitInfo - contains all permit information
  */

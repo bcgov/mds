@@ -23,7 +23,7 @@ import {
   getDropdownPermitAmendmentTypeOptions,
   getDropdownNoticeOfWorkApplicationTypeOptions,
 } from "@mds/common/redux/selectors/staticContentSelectors";
-import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";
+import { PERMIT_AMENDMENT_TYPES } from "@mds/common/constants/strings";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 
 const propTypes = {

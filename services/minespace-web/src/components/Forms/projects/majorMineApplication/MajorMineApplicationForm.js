@@ -12,7 +12,7 @@ import { required } from "@common/utils/Validate";
 import {
   MAJOR_MINES_APPLICATION_DOCUMENT_TYPE,
   MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE,
-} from "@common/constants/strings";
+} from "@mds/common/constants/strings";
 import { resetForm } from "@common/utils/helpers";
 import { DOCUMENT, MODERN_EXCEL, SPATIAL } from "@mds/common";
 import * as routes from "@/constants/routes";
@@ -27,7 +27,7 @@ import { getMineDocuments } from "@mds/common/redux/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 import { MajorMineApplicationDocument } from "@mds/common/models/documents/document";
 import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 
 const propTypes = {
   project: customPropTypes.project.isRequired,

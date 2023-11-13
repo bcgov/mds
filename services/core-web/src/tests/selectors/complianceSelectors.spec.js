@@ -1,7 +1,7 @@
 import { getMineComplianceInfo } from "@mds/common/redux/selectors/complianceSelectors";
 import { complianceReducer } from "@mds/common/redux/reducers/complianceReducer";
 import { storeMineComplianceInfo } from "@mds/common/redux/actions/complianceActions";
-import { COMPLIANCE } from "@common/constants/reducerTypes";
+import { COMPLIANCE } from "@mds/common/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
 
 const mockResponse = Mock.COMPLIANCE;

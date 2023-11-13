@@ -21,7 +21,7 @@ import {
   deleteVariance,
   addDocumentToVariance,
 } from "@mds/common/redux/actionCreators/varianceActionCreator";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import { PageTracker } from "@common/utils/trackers";
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";

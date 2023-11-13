@@ -3,7 +3,7 @@ import { useLocation, useHistory } from "react-router-dom";
 import { Action, bindActionCreators, Dispatch } from "redux";
 import { connect } from "react-redux";
 import queryString from "query-string";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import {
   getMineRegionHash,
   getMineRegionDropdownOptions,

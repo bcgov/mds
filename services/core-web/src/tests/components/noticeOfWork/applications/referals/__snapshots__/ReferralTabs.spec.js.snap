@@ -422,7 +422,7 @@ exports[`ReferralTabs renders properly 1`] = `
       <a
         alt="E-Referrals"
         href="https://j200.gov.bc.ca/int/ereferral/Default.aspx?PosseMenuName=EIMain"
-        rel="noreferrer"
+        rel="noopener noreferrer"
         target="_blank"
       >
         <ForwardRef(ExportOutlined)

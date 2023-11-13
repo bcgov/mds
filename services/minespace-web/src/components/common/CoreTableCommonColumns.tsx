@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import Highlight from "react-highlighter";
 import { dateSorter, formatDate, nullableStringSorter } from "@common/utils/helpers";
-import { EMPTY_FIELD } from "@common/constants/strings";
+import { EMPTY_FIELD } from "@mds/common/constants/strings";
 import { ColumnType } from "antd/lib/table";
 import { Button, Dropdown } from "antd";
 import { CaretDownOutlined } from "@ant-design/icons";

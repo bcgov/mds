@@ -9,7 +9,7 @@ import "@ant-design/compatible/assets/index.css";
 import { Button, Popconfirm, Row, Col } from "antd";
 import { required, validateSelectOptions } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
-import * as String from "@common/constants/strings";
+import * as String from "@mds/common/constants/strings";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";

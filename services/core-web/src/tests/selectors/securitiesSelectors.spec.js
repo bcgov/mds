@@ -5,7 +5,7 @@ import {
 } from "@mds/common/redux/selectors/securitiesSelectors";
 import { securitiesReducer } from "@mds/common/redux/reducers/securitiesReducer";
 import { storeMineBonds, storeMineReclamationInvoices } from "@mds/common/redux/actions/securitiesActions";
-import { SECURITIES } from "@common/constants/reducerTypes";
+import { SECURITIES } from "@mds/common/constants/reducerTypes";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const mockState = {

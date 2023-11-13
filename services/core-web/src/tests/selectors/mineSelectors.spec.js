@@ -20,7 +20,7 @@ import {
   storeMineDocuments,
   storeMineComments,
 } from "@mds/common/redux/actions/mineActions";
-import { MINES } from "@common/constants/reducerTypes";
+import { MINES } from "@mds/common/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
 
 const mockResponse = Mock.MINE_RESPONSE;

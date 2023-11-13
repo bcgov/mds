@@ -41,7 +41,7 @@ import {
 } from "@/constants/routes";
 import ProjectSummaryForm from "@/components/Forms/projects/projectSummary/ProjectSummaryForm";
 import { IMine, IProjectSummary, IProject } from "@mds/common";
-import { ActionCreator } from "@/interfaces/actionCreator";
+import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 
 interface ProjectSummaryPageProps {
   mines: Partial<IMine>[];

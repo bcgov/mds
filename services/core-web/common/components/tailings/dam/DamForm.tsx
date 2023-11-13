@@ -2,7 +2,7 @@ import {
   CONSEQUENCE_CLASSIFICATION_STATUS_CODE,
   DAM_OPERATING_STATUS,
   DAM_TYPES,
-} from "@common/constants/strings";
+} from "@mds/common/constants/strings";
 import { Col, Popconfirm, Row, Typography } from "antd";
 import {
   decimalPlaces,

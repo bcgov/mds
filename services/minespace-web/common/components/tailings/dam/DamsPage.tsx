@@ -19,7 +19,7 @@ import { EDIT_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
 import DamForm from "./DamForm";
 import { ADD_EDIT_DAM } from "@/constants/forms";
 import { IDam, ITailingsStorageFacility } from "@mds/common";
-import { ActionCreator } from "@/interfaces/actionCreator";
+import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { RootState } from "@/App";
 import { Feature } from "@mds/common";
 import FeatureFlagGuard from "@/components/common/featureFlag.guard";

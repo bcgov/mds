@@ -12,7 +12,7 @@ import {
 } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { ENVIRONMENT } from "@mds/common";
-import * as API from "@common/constants/API";
+import * as API from "@mds/common/constants/API";
 import { cleanFilePondFile } from "@common/utils/helpers";
 import { getProject, getRequirements } from "@mds/common/redux/selectors/projectSelectors";
 import { clearInformationRequirementsTable } from "@mds/common/redux/actions/projectActions";

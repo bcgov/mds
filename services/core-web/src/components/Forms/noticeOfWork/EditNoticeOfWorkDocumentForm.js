@@ -9,7 +9,7 @@ import { Button, Col, Row, Popconfirm } from "antd";
 import { required, maxLength, validateSelectOptions } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import { getDropdownNoticeOfWorkApplicationDocumentTypeOptions } from "@mds/common/redux/selectors/staticContentSelectors";
-import { NOTICE_OF_WORK_DOCUMENT } from "@common/constants/API";
+import { NOTICE_OF_WORK_DOCUMENT } from "@mds/common/constants/API";
 import { DOCUMENT, EXCEL, IMAGE, SPATIAL } from "@/constants/fileTypes";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";

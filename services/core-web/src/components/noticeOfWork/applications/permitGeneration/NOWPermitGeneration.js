@@ -26,7 +26,7 @@ import {
   getDraftPermitAmendmentForNOW,
   getPermits,
 } from "@mds/common/redux/selectors/permitSelectors";
-import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";
+import { PERMIT_AMENDMENT_TYPES } from "@mds/common/constants/strings";
 import { getNOWProgress } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import { modalConfig } from "@/components/modalContent/config";
 import * as FORM from "@/constants/forms";

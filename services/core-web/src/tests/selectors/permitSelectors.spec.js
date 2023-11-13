@@ -1,7 +1,7 @@
 import { getEditingConditionFlag, getEditingPreambleFlag } from "@mds/common/redux/selectors/permitSelectors";
 import { permitReducer } from "@mds/common/redux/reducers/permitReducer";
 import { storeEditingConditionFlag, storeEditingPreambleFlag } from "@mds/common/redux/actions/permitActions";
-import { PERMITS } from "@common/constants/reducerTypes";
+import { PERMITS } from "@mds/common/constants/reducerTypes";
 
 const mockFlagsResponse = false;
 

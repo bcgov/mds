@@ -14,7 +14,7 @@ import {
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { mergeParties } from "@mds/common/redux/actionCreators/partiesActionCreator";
 import Address from "@/components/common/Address";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import * as routes from "@/constants/routes";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import { modalConfig } from "@/components/modalContent/config";

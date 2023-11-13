@@ -20,7 +20,7 @@ import { required, validateSelectOptions } from "@common/utils/Validate";
 import { TRASHCAN, PROFILE_NOCIRCLE, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import { Link } from "react-router-dom";

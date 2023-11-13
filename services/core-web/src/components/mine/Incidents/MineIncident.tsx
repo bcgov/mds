@@ -14,14 +14,14 @@ import {
   removeDocumentFromMineIncident,
 } from "@mds/common/redux/actionCreators/incidentActionCreator";
 import { clearMineIncident } from "@mds/common/redux/actions/incidentActions";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import * as FORM from "@/constants/forms";
 import Loading from "@/components/common/Loading";
 import IncidentForm from "@/components/Forms/incidents/IncidentForm";
 import ScrollSideMenu from "@/components/common/ScrollSideMenu";
 import * as routes from "@/constants/routes";
 import { IMineIncident } from "@mds/common";
-import { ActionCreator } from "@/interfaces/actionCreator";
+import { ActionCreator } from "@mds/common/interfaces/actionCreator"
 
 export interface MineIncidentProps {
   incident: IMineIncident;

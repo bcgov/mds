@@ -4,7 +4,7 @@ import { Field, reduxForm } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import { Col, Divider, Row, Typography } from "antd";
 import { required, maxLength, wholeNumber, dateNotInFuture } from "@common/utils/Validate";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import IncidentFileUpload from "./IncidentFileUpload";

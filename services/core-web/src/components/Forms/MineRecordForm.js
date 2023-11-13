@@ -33,7 +33,7 @@ import {
   getExemptionFeeStatusDropDownOptions,
   getGovernmentAgencyDropdownOptions,
 } from "@mds/common/redux/selectors/staticContentSelectors";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import * as FORM from "@/constants/forms";
 import * as Styles from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";

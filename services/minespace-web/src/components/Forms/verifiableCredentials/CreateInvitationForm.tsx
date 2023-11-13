@@ -8,7 +8,7 @@ import { Alert, Button, Popconfirm, Skeleton, Typography } from "antd";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { IVCInvitation, LOADING_STATUS, VC_CONNECTION_STATES } from "@mds/common";
-import { ActionCreator } from "@/interfaces/actionCreator";
+import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { getVCWalletConnectionInvitation } from "@mds/common/redux/selectors/verifiableCredentialSelectors";
 import { createVCWalletInvitation } from "@mds/common/redux/actionCreators/verifiableCredentialActionCreator";
 

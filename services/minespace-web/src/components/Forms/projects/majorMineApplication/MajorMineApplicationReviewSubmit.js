@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { Checkbox, Row, Col, Typography, Descriptions, Card, Input } from "antd";
 import PropTypes from "prop-types";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import {
   removeDocumentFromMajorMineApplication,
   fetchProjectById,

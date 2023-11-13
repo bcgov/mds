@@ -3,7 +3,7 @@ import {
   CONSEQUENCE_CLASSIFICATION_CODE_HASH,
   DAM_OPERATING_STATUS_HASH,
   EMPTY_FIELD,
-} from "@common/constants/strings";
+} from "@mds/common/constants/strings";
 import {
   getITRBExemptionStatusCodeOptionsHash,
   getTSFOperatingStatusCodeOptionsHash,

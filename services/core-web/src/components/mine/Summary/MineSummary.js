@@ -10,7 +10,7 @@ import { getPartyRelationshipTypes } from "@mds/common/redux/selectors/staticCon
 import { getMineComplianceInfo } from "@mds/common/redux/selectors/complianceSelectors";
 import { getMines } from "@mds/common/redux/selectors/mineSelectors";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
-import * as String from "@common/constants/strings";
+import * as String from "@mds/common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import { Contact } from "@/components/mine/ContactInfo/PartyRelationships/Contact";
 import * as router from "@/constants/routes";

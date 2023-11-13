@@ -23,7 +23,7 @@ import {
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getVarianceApplications, getApprovedVariances } from "@mds/common/redux/selectors/varianceSelectors";
 import { getDropdownInspectors, getInspectorsHash } from "@mds/common/redux/selectors/partiesSelectors";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import MineVarianceTable from "./MineVarianceTable";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";

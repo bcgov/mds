@@ -20,8 +20,8 @@ import {
   REVIEW_INFORMATION_REQUIREMENTS_TABLE,
   REVIEW_MAJOR_MINE_APPLICATION,
 } from "@/constants/routes";
-import { ActionCreator } from "@mds/core-web/src/interfaces/actionCreator";
 import { IActivity } from "@mds/common";
+import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 
 interface INotificationDrawerProps {
   fetchActivities: ActionCreator<typeof fetchActivities>;

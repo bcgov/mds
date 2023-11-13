@@ -11,7 +11,7 @@ import {
   updateMineWorkInformation,
   deleteMineWorkInformation,
 } from "@mds/common/redux/actionCreators/workInformationActionCreator";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import { getMineWorkInformations } from "@mds/common/redux/selectors/workInformationSelectors";
 import AddButton from "@/components/common/buttons/AddButton";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";

@@ -11,7 +11,7 @@ import {
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getProjectLeads } from "@mds/common/redux/selectors/partiesSelectors";
 import { formatDate } from "@common/utils/helpers";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import { getProject } from "@mds/common/redux/selectors/projectSelectors";
 import * as routes from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";

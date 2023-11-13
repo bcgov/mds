@@ -5,7 +5,7 @@ import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button } from "antd";
 import { concat, reject } from "lodash";
-import { MINE_REPORT_DOCUMENT } from "@common/constants/API";
+import { MINE_REPORT_DOCUMENT } from "@mds/common/constants/API";
 import FileUpload from "@/components/common/FileUpload";
 import LinkButton from "@/components/common/buttons/LinkButton";
 import { UploadedDocumentsTable } from "@/components/common/UploadedDocumentTable";

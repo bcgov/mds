@@ -1,7 +1,7 @@
 import { getVariances, getVariance } from "@mds/common/redux/selectors/varianceSelectors";
 import { varianceReducer } from "@mds/common/redux/reducers/varianceReducer";
 import { storeVariances, storeVariance } from "@mds/common/redux/actions/varianceActions";
-import { VARIANCES } from "@common/constants/reducerTypes";
+import { VARIANCES } from "@mds/common/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
 
 const mockState = {

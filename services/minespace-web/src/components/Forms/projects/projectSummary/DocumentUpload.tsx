@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { remove } from "lodash";
 import { Col, Form, Row, Typography } from "antd";
 import { bindActionCreators } from "redux";
-import { DOCUMENT, EXCEL, IMAGE } from "@common/constants/fileTypes";
+import { DOCUMENT, EXCEL, IMAGE } from "@mds/common/constants/fileTypes";
 import CustomPropTypes from "@/customPropTypes";
 import DocumentTable from "@/components/common/DocumentTable";
 import { documentNameColumn, uploadDateColumn } from "@/components/common/DocumentColumns";
@@ -17,7 +17,7 @@ import { MineDocument } from "@mds/common/models/documents/document";
 import { IMineDocument } from "@mds/common";
 import { RootState } from "@/App";
 import { postNewDocumentVersion } from "@mds/common/redux/actionCreators/documentActionCreator";
-import { ActionCreator } from "@/interfaces/actionCreator";
+import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 
 const propTypes = {
   initialValues: CustomPropTypes.projectSummary.isRequired,

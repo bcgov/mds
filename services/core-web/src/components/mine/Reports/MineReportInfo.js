@@ -16,7 +16,7 @@ import { changeModalTitle, openModal, closeModal } from "@mds/common/redux/actio
 import { getMineReports } from "@mds/common/redux/selectors/reportSelectors";
 import { getMineReportDefinitionOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getMines, getMineGuid } from "@mds/common/redux/selectors/mineSelectors";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";

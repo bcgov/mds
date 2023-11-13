@@ -12,7 +12,7 @@ import {
   DEFAULT_TIMEZONE,
   BC_TIMEZONE_NAMES,
   CANADA_TIMEZONE_MAP,
-} from "@common/constants/strings";
+} from "@mds/common/constants/strings";
 
 const propTypes = {
   input: PropTypes.objectOf(PropTypes.any).isRequired,

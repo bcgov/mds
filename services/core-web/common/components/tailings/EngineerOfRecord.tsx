@@ -4,7 +4,7 @@ import React, { FC, useContext, useEffect, useState } from "react";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import { IDocument, IMine, IMinePartyAppt, IParty, PARTY_APPOINTMENT_STATUS } from "@mds/common";
 
-import { MINE_PARTY_APPOINTMENT_DOCUMENTS } from "@common/constants/API";
+import { MINE_PARTY_APPOINTMENT_DOCUMENTS } from "@mds/common/constants/API";
 import { PlusCircleFilled } from "@ant-design/icons";
 import { bindActionCreators } from "redux";
 import { connect, useSelector } from "react-redux";
@@ -17,7 +17,7 @@ import {
   validateDateRanges,
 } from "@common/utils/Validate";
 import { formatDateTime, truncateFilename } from "@common/utils/helpers";
-import { PDF } from "@common/constants/fileTypes";
+import { PDF } from "@mds/common/constants/fileTypes";
 
 import moment from "moment";
 import { isNumber } from "lodash";

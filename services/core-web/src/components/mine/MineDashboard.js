@@ -35,7 +35,7 @@ import { formatDate } from "@common/utils/helpers";
 import { storeVariances } from "@mds/common/redux/actions/varianceActions";
 import { storePermits } from "@mds/common/redux/actions/permitActions";
 import { storeMine } from "@mds/common/redux/actions/mineActions";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import { fetchMineNoticeOfWorkApplications } from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
 import { fetchExplosivesPermits } from "@mds/common/redux/actionCreators/explosivesPermitActionCreator";
 import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";

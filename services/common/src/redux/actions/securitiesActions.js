@@ -1,4 +1,4 @@
-import * as ActionTypes from "@common/constants/actionTypes";
+import * as ActionTypes from "@mds/common/constants/actionTypes";
 
 export const storeMineBonds = (payload) => ({
   type: ActionTypes.STORE_MINE_BONDS,

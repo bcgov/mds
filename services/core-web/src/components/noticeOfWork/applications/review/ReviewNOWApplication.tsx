@@ -27,7 +27,7 @@ import {
   max,
   wholeNumber,
 } from "@common/utils/Validate";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import { USER_ROLES } from "@mds/common";
 import { getNoticeOfWorkEditableTypes } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import RenderField from "@/components/common/RenderField";

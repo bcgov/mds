@@ -5,7 +5,7 @@ import { error, request, success } from "@mds/common/redux/actions/genericAction
 import { ENVIRONMENT } from "@mds/common";
 import { createRequestHeader } from "@common/utils/RequestHeaders";
 import CustomAxios from "@common/customAxios";
-import * as COMMON_API from "@common/constants/API";
+import * as COMMON_API from "@mds/common/constants/API";
 import * as API from "@/constants/API";
 import * as reducerTypes from "@/constants/reducerTypes";
 import * as documentActions from "@/actions/documentActions";

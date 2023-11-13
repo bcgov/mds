@@ -2,7 +2,7 @@ import { Button, Col, Row, Space, Typography } from "antd";
 import {
   CONSEQUENCE_CLASSIFICATION_CODE_HASH,
   DAM_OPERATING_STATUS_HASH,
-} from "@common/constants/strings";
+} from "@mds/common/constants/strings";
 import { bindActionCreators, compose } from "redux";
 
 import { PlusCircleFilled } from "@ant-design/icons";

@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { Badge, Button, Col, Dropdown, Popconfirm, Row, Tooltip, Typography } from "antd";
 import { DeleteOutlined, EditOutlined, EyeOutlined, WarningOutlined } from "@ant-design/icons";
 import { dateSorter, formatDate } from "@common/utils/helpers";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import CoreTable from "@/components/common/CoreTable";
 import {
   getExplosivesPermitBadgeStatusType,

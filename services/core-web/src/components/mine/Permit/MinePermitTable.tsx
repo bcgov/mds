@@ -11,9 +11,9 @@ import {
   getDropdownPermitStatusOptionsHash,
   getPermitAmendmentTypeOptionsHash,
 } from "@mds/common/redux/selectors/staticContentSelectors";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import { isEmpty } from "lodash";
-import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";
+import { PERMIT_AMENDMENT_TYPES } from "@mds/common/constants/strings";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import { EDIT_OUTLINE_VIOLET, EDIT, CARAT, TRASHCAN } from "@/constants/assets";

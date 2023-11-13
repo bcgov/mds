@@ -8,7 +8,7 @@ import {
   getHSRCMComplianceCodesHash,
   getVarianceDocumentCategoryOptionsHash,
 } from "@mds/common/redux/selectors/staticContentSelectors";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import { VarianceDetails } from "../mine/Variances/VarianceDetails";
 

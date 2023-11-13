@@ -27,7 +27,7 @@ import {
   getPartyBusinessRoleOptionsHash,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { formatDate, dateSorter, formatSnakeCaseToSentenceCase } from "@common/utils/helpers";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import { EDIT } from "@/constants/assets";
 import { modalConfig } from "@/components/modalContent/config";
 import Loading from "@/components/common/Loading";

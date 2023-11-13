@@ -28,7 +28,7 @@ import {
   getMineTenureTypeDropdownOptions,
   getDropdownCommodityOptions,
 } from "@mds/common/redux/selectors/staticContentSelectors";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import { PageTracker } from "@common/utils/trackers";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
 import CustomPropTypes from "@/customPropTypes";

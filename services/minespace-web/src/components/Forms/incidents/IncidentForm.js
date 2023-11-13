@@ -22,7 +22,7 @@ import {
   requiredNotUndefined,
 } from "@common/utils/Validate";
 import { normalizePhone, normalizeDatetime } from "@common/utils/helpers";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import { getDropdownInspectors } from "@mds/common/redux/selectors/partiesSelectors";
 import {
   getDropdownIncidentStatusCodeOptions,

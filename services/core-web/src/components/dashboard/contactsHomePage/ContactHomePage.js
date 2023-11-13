@@ -12,7 +12,7 @@ import {
   getPartyRelationshipTypesList,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getParties, getPartyPageData } from "@mds/common/redux/selectors/partiesSelectors";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
 import * as Permission from "@/constants/permissions";

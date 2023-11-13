@@ -12,7 +12,7 @@ import { formatDateTime } from "@common/utils/helpers";
 import { IMine, IMineAlert } from "@mds/common";
 import * as routes from "@/constants/routes";
 import { RootState } from "@/App";
-import { ActionCreator } from "@/interfaces/actionCreator";
+import { ActionCreator } from "@mds/common/interfaces/actionCreator"
 import * as router from "@/constants/routes";
 
 interface HomeMineActivityProps {

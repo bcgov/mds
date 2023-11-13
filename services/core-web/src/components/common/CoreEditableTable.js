@@ -5,7 +5,7 @@ import { isEmpty } from "lodash";
 import { getNoticeOfWorkUnitTypeOptionsHash } from "@mds/common/redux/selectors/staticContentSelectors";
 import { Field, FieldArray } from "redux-form";
 import { Button } from "antd";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import { TRASHCAN } from "@/constants/assets";
 import "@ant-design/compatible/assets/index.css";
 

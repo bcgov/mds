@@ -9,7 +9,7 @@ import {
   NOTICE_OF_DEPARTURE_STATUS,
   NOTICE_OF_DEPARTURE_STATUS_VALUES,
   NOTICE_OF_DEPARTURE_TYPE,
-} from "@common/constants/strings";
+} from "@mds/common/constants/strings";
 import { formatDate, normalizePhone, resetForm } from "@common/utils/helpers";
 import {
   addDocumentToNoticeOfDeparture,

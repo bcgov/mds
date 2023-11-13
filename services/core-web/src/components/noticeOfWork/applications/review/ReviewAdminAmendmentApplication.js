@@ -34,7 +34,7 @@ import RenderMultiSelect from "@/components/common/RenderMultiSelect";
 import RenderDate from "@/components/common/RenderDate";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { isEmpty } from "lodash";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import ReviewNOWContacts from "./ReviewNOWContacts";
 
 /**

@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import * as String from "@common/constants/strings";
+import * as String from "@mds/common/constants/strings";
 import { ContactHomePage } from "@/components/dashboard/contactsHomePage/ContactHomePage";
 import * as MOCK from "@/tests/mocks/dataMocks";
 import * as router from "@/constants/routes";

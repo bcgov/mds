@@ -3,7 +3,7 @@ import { Badge, Button } from "antd";
 import { Link, withRouter } from "react-router-dom";
 import { EyeOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 import { getApplicationStatusType } from "@/constants/theme";

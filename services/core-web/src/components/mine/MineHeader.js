@@ -24,7 +24,7 @@ import {
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getCurrentMineTypes, getTransformedMineTypes } from "@mds/common/redux/selectors/mineSelectors";
 import { getUserInfo } from "@mds/common/redux/selectors/authenticationSelectors";
-import * as String from "@common/constants/strings";
+import * as String from "@mds/common/constants/strings";
 import MineHeaderMapLeaflet from "@/components/maps/MineHeaderMapLeaflet";
 import { EDIT_OUTLINE_VIOLET, EDIT, OPEN_NEW_TAB } from "@/constants/assets";
 import * as route from "@/constants/routes";

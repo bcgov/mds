@@ -16,7 +16,7 @@ import { createDropDownList, sortListObjectsByPropertyLocaleCompare } from "@com
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 
 const propTypes = {

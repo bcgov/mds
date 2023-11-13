@@ -10,7 +10,7 @@ import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import * as tus from "tus-js-client";
 import { ENVIRONMENT } from "@mds/common";
-import { APPLICATION_OCTET_STREAM } from "@common/constants/fileTypes";
+import { APPLICATION_OCTET_STREAM } from "@mds/common/constants/fileTypes";
 import { createRequestHeader } from "@common/utils/RequestHeaders";
 import { bindActionCreators } from "redux";
 import { pollDocumentUploadStatus } from "@mds/common/redux/actionCreators/documentActionCreator";

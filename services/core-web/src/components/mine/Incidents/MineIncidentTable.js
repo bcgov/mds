@@ -13,7 +13,7 @@ import {
   getDropdownIncidentStatusCodeOptions,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { dateSorter, optionsFilterLabelAndValue, formatDateTimeTz } from "@common/utils/helpers";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import { serverSidePaginationOptions, parseServerSideSearchOptions } from "@mds/common";
 import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";

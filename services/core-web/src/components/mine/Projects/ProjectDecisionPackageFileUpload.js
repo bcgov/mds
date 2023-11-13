@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Field } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { PROJECT_DECISION_PACKAGE_DOCUMENTS } from "@common/constants/API";
+import { PROJECT_DECISION_PACKAGE_DOCUMENTS } from "@mds/common/constants/API";
 import FileUpload from "@/components/common/FileUpload";
 import { DOCUMENT, EXCEL, IMAGE, SPATIAL } from "@/constants/fileTypes";
 

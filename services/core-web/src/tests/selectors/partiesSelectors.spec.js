@@ -6,7 +6,7 @@ import {
 } from "@mds/common/redux/selectors/partiesSelectors";
 import { partiesReducer } from "@mds/common/redux/reducers/partiesReducer";
 import { storeParties, storeLastCreatedParty } from "@mds/common/redux/actions/partyActions";
-import { PARTIES } from "@common/constants/reducerTypes";
+import { PARTIES } from "@mds/common/constants/reducerTypes";
 
 describe("partiesSelectors", () => {
   const listInput = {

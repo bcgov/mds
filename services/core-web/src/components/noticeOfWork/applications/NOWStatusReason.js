@@ -6,7 +6,7 @@ import { Descriptions } from "antd";
 import { formatDate } from "@common/utils/helpers";
 import { getNoticeOfWorkApplicationStatusOptionsHash } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getNoticeOfWork } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,

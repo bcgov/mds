@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { uniqBy } from "lodash";
 import PropTypes from "prop-types";
 import { destroy } from "redux-form";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import queryString from "query-string";
 import { fetchProjects } from "@mds/common/redux/actionCreators/projectActionCreator";
 import {

@@ -10,7 +10,7 @@ import {
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getInspectorsHash } from "@mds/common/redux/selectors/partiesSelectors";
 import { formatDate } from "@common/utils/helpers";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";

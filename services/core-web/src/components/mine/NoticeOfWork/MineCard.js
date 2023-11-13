@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Badge, Row, Col } from "antd";
 import { connect } from "react-redux";
 import { getMineRegionHash } from "@mds/common/redux/selectors/staticContentSelectors";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import MineHeaderMapLeaflet from "@/components/maps/MineHeaderMapLeaflet";
 import CustomPropTypes from "@/customPropTypes";
 import * as Styles from "@/constants/styles";

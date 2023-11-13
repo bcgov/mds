@@ -13,7 +13,7 @@ import {
   getCurrentUserVerifiedMines,
   getCurrentUserUnverifiedMines,
 } from "@mds/common/redux/reducers/mineReducer";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 import * as Permission from "@/constants/permissions";

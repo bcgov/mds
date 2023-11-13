@@ -15,7 +15,7 @@ import { getPartyRelationshipTypesList } from "@mds/common/redux/selectors/stati
 
 import { getMines } from "@mds/common/redux/selectors/mineSelectors";
 import { formatDate } from "@common/utils/helpers";
-import * as String from "@common/constants/strings";
+import * as String from "@mds/common/constants/strings";
 import Loading from "@/components/common/Loading";
 import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";

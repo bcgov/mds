@@ -9,7 +9,7 @@ import {
   storeMineIncidentNotes,
 } from "@mds/common/redux/actions/incidentActions";
 import { incidentReducer } from "@mds/common/redux/reducers/incidentReducer";
-import { INCIDENTS } from "@common/constants/reducerTypes";
+import { INCIDENTS } from "@mds/common/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
 
 const mockState = {

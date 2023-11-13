@@ -15,9 +15,9 @@ import {
   NOD_TYPE_FIELD_VALUE,
   NOTICE_OF_DEPARTURE_DOCUMENT_TYPE,
   NOTICE_OF_DEPARTURE_STATUS_VALUES,
-} from "@common/constants/strings";
+} from "@mds/common/constants/strings";
 import { getNoticeOfDeparture } from "@mds/common/redux/reducers/noticeOfDepartureReducer";
-import { DOCUMENT, EXCEL, SPATIAL } from "@common/constants/fileTypes";
+import { DOCUMENT, EXCEL, SPATIAL } from "@mds/common/constants/fileTypes";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import NoticeOfDepartureFileUpload from "@/components/Forms/noticeOfDeparture/NoticeOfDepartureFileUpload";

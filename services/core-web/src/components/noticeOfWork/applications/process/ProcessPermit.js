@@ -40,7 +40,7 @@ import {
   getDraftPermitForNOW,
   getDraftPermitAmendmentForNOW,
 } from "@mds/common/redux/selectors/permitSelectors";
-import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";
+import { PERMIT_AMENDMENT_TYPES } from "@mds/common/constants/strings";
 import { getDocumentContextTemplate } from "@/reducers/documentReducer";
 import {
   generateNoticeOfWorkApplicationDocument,

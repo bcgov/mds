@@ -51,7 +51,7 @@ import {
 } from "@mds/common";
 import { Feature } from "@mds/common";
 import FeatureFlagGuard from "@/components/common/featureFlag.guard";
-import { ActionCreator } from "@/interfaces/actionCreator";
+import { ActionCreator } from "@mds/common/interfaces/actionCreator"
 
 interface TailingsSummaryPageProps {
   form: string;

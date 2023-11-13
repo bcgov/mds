@@ -8,7 +8,7 @@ import { modalConfig } from "@/components/modalContent/config";
 import NOWTabHeader from "@/components/noticeOfWork/applications/NOWTabHeader";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import CustomPropTypes from "@/customPropTypes";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import {
   createNoticeOfWorkApplicationReview,
   fetchNoticeOfWorkApplicationReviews,

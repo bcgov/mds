@@ -25,7 +25,7 @@ import {
   updateMineIncident,
   deleteMineIncident,
 } from "@mds/common/redux/actionCreators/incidentActionCreator";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import { PageTracker } from "@common/utils/trackers";
 import CustomPropTypes from "@/customPropTypes";
 import { IncidentsTable } from "./IncidentsTable";

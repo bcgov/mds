@@ -26,11 +26,11 @@ import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreat
 import {
   NOTICE_OF_DEPARTURE_STATUS_VALUES,
   NOTICE_OF_DEPARTURE_TYPE_VALUES,
-} from "@common/constants/strings";
+} from "@mds/common/constants/strings";
 import NoticeOfDepartureTable from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureTable";
 import { modalConfig } from "@/components/modalContent/config";
 import { MINE_DASHBOARD } from "@/constants/routes";
-import { ActionCreator } from "@/interfaces/actionCreator";
+import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 
 interface NoticeOfDepartureProps {
   mine: IMine;

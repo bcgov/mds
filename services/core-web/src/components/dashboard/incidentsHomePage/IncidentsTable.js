@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import MineIncidentTable from "@/components/mine/Incidents/MineIncidentTable";
 
