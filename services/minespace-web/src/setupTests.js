@@ -1,9 +1,12 @@
 import Enzyme from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
+import path from "path";
 
 require("jest-localstorage-mock");
 
 Enzyme.configure({ adapter: new Adapter() });
+
+global.REQUEST_HEADER = require(path.resolve(__dirname, "../common/utils/RequestHeaders.js"));
 
 global.requestAnimationFrame = (callback) => {
   setTimeout(callback, 0);

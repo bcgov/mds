@@ -3,6 +3,7 @@ import { notification } from "antd";
 import * as String from "./constants/strings";
 
 // https://stackoverflow.com/questions/39696007/axios-with-promise-prototype-finally-doesnt-work
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const promiseFinally = require("promise.prototype.finally");
 
 promiseFinally.shim();
@@ -14,6 +15,7 @@ const formatErrorMessage = (errorMessage) => {
   return errorMessage.replace("(psycopg2.", "(DatabaseError.");
 };
 
+// @ts-ignore
 const CustomAxios = ({ errorToastMessage, suppressErrorNotification = false } = {}) => {
   const instance = axios.create();
 
@@ -26,6 +28,7 @@ const CustomAxios = ({ errorToastMessage, suppressErrorNotification = false } = 
 
       const status = error.response ? error.response.status : null;
       if (status === UNAUTHORIZED || status === MAINTENANCE) {
+        // @ts-ignore
         window.location.reload(false);
       } else if (
         (errorToastMessage === "default" || errorToastMessage === undefined) &&

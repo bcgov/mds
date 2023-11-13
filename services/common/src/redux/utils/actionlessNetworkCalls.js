@@ -44,6 +44,7 @@ export const downloadNrisDocument = (externalId, inspectionId, fileName) => {
       if (fileName.toLowerCase().includes(".pdf")) {
         window.open(url, "_blank");
       } else {
+        // @ts-ignore
         window.location = url;
       }
     });
@@ -77,6 +78,7 @@ export const downloadNowDocument = (id, applicationGuid, fileName) => {
       if (fileName.toLowerCase().includes(".pdf")) {
         window.open(url, "_blank");
       } else {
+        // @ts-ignore
         window.location = url;
       }
     });
@@ -104,6 +106,7 @@ export const downloadFileFromDocumentManager = (props) => {
       if (document_name.toLowerCase().includes(".pdf")) {
         window.open(url, "_blank");
       } else {
+        // @ts-ignore
         window.location = url;
       }
     });
