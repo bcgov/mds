@@ -1,27 +1,33 @@
 import React, { FC, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Row, Col, Typography, Button, Badge } from "antd";
-
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
+import { fetchExplosivesPermits } from "@mds/common/redux/actionCreators/explosivesPermitActionCreator";
 import { openModal } from "@mds/common/redux/actions/modalActions";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
+import { getExplosivesPermits } from "@mds/common/redux/selectors/explosivesPermitSelectors";
 import PermitsTable from "@/components/dashboard/mine/permits/PermitsTable";
-import { Feature, IMine, IPermit, VC_CONNECTION_STATES, isFeatureEnabled } from "@mds/common";
+import { Feature, IExplosivesPermit, IMine, IPermit, VC_CONNECTION_STATES, isFeatureEnabled } from "@mds/common";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import modalConfig from "@/components/modalContent/config";
 
 interface PermitsProps {
   mine: IMine;
   permits: IPermit[];
+  explosivesPermits: IExplosivesPermit[];
   fetchPermits: ActionCreator<typeof fetchPermits>;
+  fetchExplosivesPermits: ActionCreator<typeof fetchExplosivesPermits>;
   openModal: (payload) => any;
 }
-export const Permits: FC<PermitsProps> = ({ mine, permits, ...props }) => {
+export const Permits: FC<PermitsProps> = ({ mine, permits, explosivesPermits, ...props }) => {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   useEffect(() => {
     if (!isLoaded) {
-      props.fetchPermits(mine.mine_guid).then(() => {
+      Promise.all([
+        props.fetchPermits(mine.mine_guid),
+        props.fetchExplosivesPermits(mine.mine_guid),
+      ]).then(() => {
         setIsLoaded(true);
       });
     }
@@ -162,10 +168,12 @@ export const Permits: FC<PermitsProps> = ({ mine, permits, ...props }) => {
 
 const mapStateToProps = (state) => ({
   permits: getPermits(state),
+  explosivesPermits: getExplosivesPermits(state),
 });
 
 const mapDispatchToProps = {
   fetchPermits,
+  fetchExplosivesPermits,
   openModal,
 };
 
