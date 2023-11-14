@@ -44,7 +44,6 @@ class VerifiableCredentialWebhookResource(Resource, UserMixin):
             if new_state != cred_exch_record.cred_exch_state:
                 cred_exch_record.cred_exch_state=new_state
                 if new_state == "credential_acked":
-                    current_app.logger.info(f"cred_acked, save revokation details {webhook_body}")
                     cred_exch_record.rev_reg_id = webhook_body["revoc_reg_id"]
                     cred_exch_record.cred_rev_id = webhook_body["revocation_id"]
 

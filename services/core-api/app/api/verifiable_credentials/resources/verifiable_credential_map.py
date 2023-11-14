@@ -74,7 +74,8 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
 
         # offer credential
         attributes = [{
-            "mime-type":"text/plain",
+            # "mime-type":"text/plain",
+            # NB Orbit does not expect this removing for now
             "name":str(attr),
             "value":str(val),
         } for attr,val in credential_attrs.items()]
