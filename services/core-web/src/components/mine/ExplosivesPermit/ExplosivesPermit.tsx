@@ -32,6 +32,7 @@ import MineExplosivesPermitTable from "@/components/mine/ExplosivesPermit/MineEx
 import { modalConfig } from "@/components/modalContent/config";
 import { ActionCreator } from "@/interfaces/actionCreator";
 import { IExplosivesPermit, IGroupedDropdownList, IMine, IOption } from "@mds/common";
+import { formatDate } from "@common/utils/helpers";
 
 interface ExplosivesPermitProps {
   isPermitTab: boolean;
@@ -76,7 +77,13 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
       });
   };
 
-  const handleDocumentPreview = (documentTypeCode, values, record) => {
+  const handleDocumentPreview = (documentTypeCode, values: any, record) => {
+    if (record.explosives_permit_amendments && record.explosives_permit_amendments.length > 0) {
+      values.amendment = `Amendment ${record.explosives_permit_amendments.length}`;
+      values.amendment_text = `(Amendment ${
+        record.explosives_permit_amendments.length
+      }) issued ${formatDate(values.issue_date)}`;
+    }
     const payload = {
       explosives_permit_guid: record.explosives_permit_guid,
       template_data: values,
