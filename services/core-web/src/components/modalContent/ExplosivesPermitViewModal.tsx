@@ -102,9 +102,7 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
       title: "Amendment",
       key: "amendment_order",
       dataIndex: "amendment_order",
-      render: (text) => {
-        return <div>{text}</div>;
-      },
+      render: (text) => <div>{text}</div>,
     },
     {
       title: "",
