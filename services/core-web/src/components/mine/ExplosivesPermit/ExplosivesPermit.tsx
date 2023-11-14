@@ -79,10 +79,9 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
 
   const handleDocumentPreview = (documentTypeCode, values: any, record) => {
     if (record.explosives_permit_amendments && record.explosives_permit_amendments.length > 0) {
-      values.amendment = `Amendment ${record.explosives_permit_amendments.length}`;
-      values.amendment_text = `(Amendment ${
-        record.explosives_permit_amendments.length
-      }) issued ${formatDate(values.issue_date)}`;
+      const amendmentValue = `Amendment ${record.explosives_permit_amendments.length}`;
+      values.amendment = amendmentValue;
+      values.amendment_text = `(${amendmentValue}) issued ${formatDate(values.issue_date)}`;
     }
     const payload = {
       explosives_permit_guid: record.explosives_permit_guid,
