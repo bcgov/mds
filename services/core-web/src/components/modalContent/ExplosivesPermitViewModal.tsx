@@ -102,7 +102,9 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
       title: "Amendment",
       key: "amendment_order",
       dataIndex: "amendment_order",
-      render: (text) => <div>{text}</div>,
+      render: (text) => {
+        return <div>{text}</div>;
+      },
     },
     {
       title: "",
@@ -133,12 +135,14 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
   const transformPermitHistoryData = () => {
     const permitHistory: any[] = [
       permitAmendmentLike(parentPermit),
-      ...parentPermit.explosives_permit_amendments,
+      ...parentPermit?.explosives_permit_amendments?.sort(
+        (a, b) => a.explosives_permit_amendment_id - b.explosives_permit_amendment_id
+      ),
     ];
 
     return permitHistory
       .map((amendment, index) => {
-        return { ...amendment, amendment_order: index };
+        return { ...amendment, amendment_order: index + 1 };
       })
       .reverse();
   };
