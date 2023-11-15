@@ -604,7 +604,7 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
       title: "Amendment",
       key: "explosives_permit_amendment_id",
       render: (_, record, index) => {
-        const amendmentIndex = record.totalAmendments - index;
+        const amendmentIndex = record.totalAmendments - 1 - index;
         return <Typography.Text>{amendmentIndex}</Typography.Text>;
       },
     },
