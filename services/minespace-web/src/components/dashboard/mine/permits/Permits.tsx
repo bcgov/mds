@@ -144,10 +144,12 @@ export const Permits: FC<PermitsProps> = ({ mine, permits, explosivesPermits, ..
         <Typography.Title level={4}>Permits</Typography.Title>
 
         <Typography.Paragraph>
-          The below table displays all of the permit applications associated with this mine.
+          The below table displays all of the <strong>permit applications</strong> associated with
+          this mine.
           {mine.major_mine_ind && isFeatureEnabled(Feature.VERIFIABLE_CREDENTIALS) && (
             <>
               <Typography.Text>
+                {" "}
                 Major mines operators in B.C. can now use digital credentials to prove that they
                 hold a valid Mines Act Permit from the Government of B.C.
               </Typography.Text>
@@ -158,6 +160,7 @@ export const Permits: FC<PermitsProps> = ({ mine, permits, explosivesPermits, ..
         <PermitsTable
           isLoaded={isLoaded}
           permits={permits}
+          explosivesPermits={explosivesPermits}
           majorMineInd={mine.major_mine_ind}
           openVCWalletInvitationModal={openVCWalletInvitationModal}
         />

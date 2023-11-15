@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import { connect } from "react-redux";
 import {
   Feature,
+  IExplosivesPermit,
   IPermit,
   VC_CONNECTION_STATES,
   VC_CRED_ISSUE_STATES,
@@ -28,6 +29,7 @@ const draftAmendment = "DFT";
 interface PermitsTableProps {
   isLoaded: boolean;
   permits: IPermit[];
+  explosivesPermits: IExplosivesPermit[];
   majorMineInd: boolean;
   openModal: (value: any) => void;
   openVCWalletInvitationModal: (
@@ -42,8 +44,9 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
   const columns = [
     renderTextColumn("permit_no", "Permit No.", true),
     renderTextColumn("current_permittee", "Permittee"),
+    renderTextColumn("permit_type", "Permit Type", true),
     renderCategoryColumn("permit_status_code", "Permit Status", { C: "Closed", O: "Open" }, true),
-    renderDateColumn("authorizationEndDate", "Authorization End Date", true),
+    renderDateColumn("authorization_end_date", "Authorization End Date", true),
     renderDateColumn("firstIssued", "First Issued", true),
     renderDateColumn("lastAmended", "Last Amended", true),
   ];
@@ -112,26 +115,7 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
     return finalAppPackageCore.concat(finalAppPackageImported);
   };
 
-  const transformRowData = (permit, majorMineInd) => {
-    const filteredAmendments = permit.permit_amendments.filter(
-      (a) => a.permit_amendment_status_code !== draftAmendment
-    );
-    const latestAmendment = filteredAmendments[0];
-    const firstAmendment = filteredAmendments[filteredAmendments.length - 1];
-
-    return {
-      ...permit,
-      majorMineInd: majorMineInd,
-      authorizationEndDate: latestAmendment?.authorization_end_date,
-      firstIssued: firstAmendment?.issue_date,
-      lastAmended: latestAmendment?.issue_date,
-      lastAmendedVC: latestAmendment?.vc_credential_exch_state,
-      lastAmendedGuid: latestAmendment?.permit_amendment_guid,
-      permit_amendments: filteredAmendments,
-    };
-  };
-
-  const transformExpandedRowData = (amendment, amendmentNumber) => ({
+  const transformExpandedPermitRowData = (amendment, amendmentNumber) => ({
     ...amendment,
     amendmentNumber,
     maps: amendment.now_application_documents?.filter(
@@ -140,14 +124,69 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
     permitPackage: finalApplicationPackage(amendment),
   });
 
-  const rowData = props.permits.map((permit) => transformRowData(permit, props.majorMineInd));
+  const transformRowData = (permit) => {
+    const filteredAmendments = permit.permit_amendments.filter(
+      (a) => a.permit_amendment_status_code !== draftAmendment
+    );
+    const latestAmendment = filteredAmendments[0];
+    const firstAmendment = filteredAmendments[filteredAmendments.length - 1];
 
-  const getExpandedRowData = (permit) =>
-    permit.permit_amendments
-      ? permit.permit_amendments.map((amendment, index) =>
-          transformExpandedRowData(amendment, permit.permit_amendments.length - index)
-        )
-      : [];
+    return {
+      ...permit,
+      permit_type: "Mines Act Permit",
+      majorMineInd: props.majorMineInd,
+      authorization_end_date: latestAmendment?.authorization_end_date,
+      firstIssued: firstAmendment?.issue_date,
+      lastAmended: latestAmendment?.issue_date,
+      lastAmendedVC: latestAmendment?.vc_credential_exch_state,
+      lastAmendedGuid: latestAmendment?.permit_amendment_guid,
+      permit_amendments: filteredAmendments.map((amendment, index) =>
+        transformExpandedPermitRowData(amendment, permit.permit_amendments.length - index)
+      ),
+    };
+  };
+
+  const transformEsupData = (esup) => {
+    const transformEsupAmendment = (amendment, index = 0) => {
+      return {
+        permit_no: amendment.permit_number,
+        amendmentNumber: index + 1, //amendment.explosives_permit_amendment_id ?? 'first', //index + 1,
+        permit_amendment_guid:
+          amendment.explosives_permit_amendment_guid ?? esup.explosives_permit_guid,
+        current_permittee: amendment.permittee_name,
+        permit_status_code: amendment.is_closed ? "C" : "O",
+        issue_date: amendment.issue_date,
+        description: amendment.description,
+        authorization_end_date: amendment.expiry_date,
+        related_documents: amendment.documents,
+        permit_type: "Explosive Storage and Use",
+      };
+    };
+
+    let lastAmended = esup.issue_date;
+    if (esup?.explosives_permit_amendments.length > 0) {
+      const lastAmendment =
+        esup.explosives_permit_amendments[esup.explosives_permit_amendments.length - 1];
+      lastAmended = lastAmendment.issue_date;
+    }
+    // esup amendments don't initially include 1st record as amendment
+    const firstAmendment = transformEsupAmendment(esup);
+    const permit_amendments = esup.explosives_permit_amendments
+      .map((a, i) => transformEsupAmendment(a, i + 1))
+      .toReversed();
+    permit_amendments.push(firstAmendment);
+
+    return {
+      ...firstAmendment,
+      firstIssued: esup.issue_date,
+      lastAmended: lastAmended,
+      permit_amendments: permit_amendments,
+    };
+  };
+
+  const esupRowData = props.explosivesPermits.map((esup) => transformEsupData(esup));
+  const permitRowData = props.permits.map((permit) => transformRowData(permit));
+  const rowData = [...esupRowData, ...permitRowData];
 
   const expandedColumns = [
     renderTextColumn("amendmentNumber", "Amendment No."),
@@ -166,7 +205,6 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
               <LinkButton
                 key={file.mine_document.document_manager_guid}
                 onClick={() => downloadFileFromDocumentManager(file.mine_document)}
-                // @ts-ignore (compiler is wrong, title is a global attribute available on <a>)
                 title={file.mine_document.document_name}
               >
                 <p className="wrapped-text">{truncateFilename(file.mine_document.document_name)}</p>
@@ -188,7 +226,6 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
               <LinkButton
                 key={file.document_manager_guid}
                 onClick={() => downloadFileFromDocumentManager(file)}
-                // @ts-ignore
                 title={file.document_name}
               >
                 <p className="wrapped-text">{truncateFilename(file.document_name)}</p>
@@ -208,7 +245,7 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
       rowKey="permit_no"
       emptyText="This mine has no permit data."
       expandProps={{
-        getDataSource: getExpandedRowData,
+        getDataSource: (record) => record.permit_amendments,
         subTableColumns: expandedColumns,
         rowKey: "permit_amendment_guid",
       }}
