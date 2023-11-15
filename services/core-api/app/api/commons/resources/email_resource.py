@@ -20,6 +20,6 @@ class EmailResource(Resource, UserMixin):
             EmailService.send_email(title, recipients, body)
             
         except Exception as e:
-            raise MDSCoreAPIException("Error in sending email", e)
+            raise MDSCoreAPIException("Error in sending email", detailed_error = e)
 
         return True, 201
