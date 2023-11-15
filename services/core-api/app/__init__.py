@@ -47,7 +47,7 @@ from app.api.utils.feature_flag import Feature, is_feature_enabled
 from sqlalchemy.sql import text
 from app.tasks.celery import celery
 from app.tasks.celery_health_check import HealthCheckProbe
-from app.api.exception.mds_exceptions import MDSCoreAPIException
+from app.api.exception.mds_core_api_exceptions import MDSCoreAPIException
 
 from opentelemetry import trace
 from opentelemetry.sdk.trace import TracerProvider

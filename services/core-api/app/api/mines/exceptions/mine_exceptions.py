@@ -1,5 +1,5 @@
 import json
-from app.api.exception.mds_exceptions import MDSCoreAPIException
+from app.api.exception.mds_core_api_exceptions import MDSCoreAPIException
 
 class MineException(MDSCoreAPIException):
     """A Custom Exception for MINE API Module Erros"""

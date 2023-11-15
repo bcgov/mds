@@ -4,7 +4,7 @@ from flask import request
 
 from app.api.utils.access_decorators import (requires_any_of, VIEW_ALL)
 from app.api.utils.resources_mixins import UserMixin
-from app.api.exception.mds_exceptions import MDSCoreAPIException
+from app.api.exception.mds_core_api_exceptions import MDSCoreAPIException
 
 class EmailResource(Resource, UserMixin):
 
