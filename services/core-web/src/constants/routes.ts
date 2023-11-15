@@ -491,10 +491,10 @@ export const VIEW_MINESPACE = (mineGuid) => {
 };
 
 const ORGBOOK_URL = "https://orgbook.gov.bc.ca";
-export const ORGBOOK_ENTITY_URL = (sourceId) => `${ORGBOOK_URL}/en/organization/${sourceId}`;
+export const ORGBOOK_ENTITY_URL = (sourceId) => `${ORGBOOK_URL}/entity/${sourceId}`;
 export const ORGBOOK_CREDENTIAL_URL = (sourceId, credentialId) =>
-  `${ORGBOOK_URL}/en/organization/${sourceId}/cred/${credentialId}`;
-
+  `${ORGBOOK_URL}/entity/${sourceId}/cred/${credentialId}`;
+//orgbook.gov.bc.ca/entity/BC0755294/credential/5331532
 export const ADD_DAM = {
   route:
     "/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/new/",
