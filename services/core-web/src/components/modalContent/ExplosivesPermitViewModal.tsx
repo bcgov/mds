@@ -140,7 +140,7 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
 
     return permitHistory
       .map((amendment, index) => {
-        return { ...amendment, amendment_order: index + 1 };
+        return { ...amendment, amendment_order: index };
       })
       .reverse();
   };
