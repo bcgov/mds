@@ -3,11 +3,14 @@ import { AUTHENTICATION } from "@mds/common/constants/reducerTypes";
 import { IUserInfo } from "@mds/common/interfaces";
 import { USER_ROLES } from "@mds/common/constants";
 import { RootState } from "@mds/common/redux/rootState";
+import * as ReducerTypes from "@mds/minespace-web/src/constants/reducerTypes";
 
 interface IAuthenticationReducerState {
   isAuthenticated: boolean;
-  userAccessData: string[];
   userInfo: IUserInfo;
+  redirect: boolean;
+  userAccessData: string[];
+  isProponent: boolean;
 }
 
 /**
@@ -18,6 +21,8 @@ const initialState: IAuthenticationReducerState = {
   isAuthenticated: false,
   userAccessData: [],
   userInfo: {} as IUserInfo,
+  redirect: false,
+  isProponent: undefined,
 };
 
 const getUserName = (tokenParsed) => {
@@ -49,6 +54,11 @@ export const authenticationReducer = (state = initialState, action) => {
         ...state,
         userAccessData: action.payload.roles,
       };
+    case ActionTypes.STORE_IS_PROPONENT:
+      return {
+        ...state,
+        isProponent: action.payload.data,
+      };
     case ActionTypes.LOGOUT:
       return {
         ...state,
@@ -69,5 +79,7 @@ export const getUserAccessData = (state: RootState) => state[AUTHENTICATION].use
 export const getUserInfo = (state: RootState) => state[AUTHENTICATION].userInfo;
 export const userHasRole = (state: RootState, role: string) =>
   state[AUTHENTICATION].userAccessData.includes(USER_ROLES[role]);
+export const getRedirect = (state) => state[ReducerTypes.AUTHENTICATION].redirect;
+export const isProponent = (state) => state[ReducerTypes.AUTHENTICATION].isProponent;
 
 export default authenticationReducerObject;

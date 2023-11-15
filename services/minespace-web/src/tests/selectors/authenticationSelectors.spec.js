@@ -1,4 +1,8 @@
-import { isAuthenticated, getUserInfo, getRedirect } from "@/selectors/authenticationSelectors";
+import {
+  isAuthenticated,
+  getUserInfo,
+  getRedirect,
+} from "@mds/common/redux/selectors/authenticationSelectors";
 import authenticationReducer from "@/reducers/authenticationReducer";
 import { authenticateUser, logoutUser } from "@/actions/authenticationActions";
 import { AUTHENTICATION } from "@/constants/reducerTypes";

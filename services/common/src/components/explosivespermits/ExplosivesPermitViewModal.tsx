@@ -8,13 +8,15 @@ import {
 } from "@mds/common";
 import React, { FC, useEffect, useState } from "react";
 import { connect } from "react-redux";
-import ExplosivesPermitMap from "@/components/maps/ExplosivesPermitMap";
-import { formatDate } from "@common/utils/helpers";
-import Magazine from "@/components/mine/ExplosivesPermit/Magazine";
+
 import { bindActionCreators } from "redux";
-import { openDocument } from "@/components/syncfusion/DocumentViewer";
-import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import ExplosivesPermitDiffModal from "@common/components/explosivesPermits/ExplosivesPermitDiffModal";
+
+import ExplosivesPermitDiffModal from "@mds/common/components/explosivespermits/ExplosivesPermitDiffModal";
+import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls";
+import { formatDate } from "@mds/common/redux/utils/helpers";
+import ExplosivesPermitMap from "@mds/common/components/explosivespermits/ExplosivesPermitMap";
+import Magazine from "@mds/common/components/explosivespermits/Magazine";
+import { openDocument } from "@mds/common/components/syncfusion/DocumentViewer";
 import { renderCategoryColumn, renderTextColumn } from "../common/CoreTableCommonColumns";
 
 export const generatedDocColumns = [

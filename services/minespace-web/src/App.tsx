@@ -10,7 +10,7 @@ import { loadBulkStaticContent } from "@mds/common/redux/actionCreators/staticCo
 import { getStaticContentLoadingIsComplete } from "@mds/common/redux/selectors/staticContentSelectors";
 import MediaQuery from "react-responsive";
 import * as PropTypes from "prop-types";
-import { isAuthenticated } from "@/selectors/authenticationSelectors";
+import { isAuthenticated } from "@mds/common/redux/selectors/authenticationSelectors";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import ModalWrapper from "@/components/common/wrappers/ModalWrapper";

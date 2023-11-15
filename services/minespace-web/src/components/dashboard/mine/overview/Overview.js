@@ -13,7 +13,7 @@ import {
 import { getTransformedMineTypes } from "@mds/common/redux/selectors/mineSelectors";
 import { getEMLIContactsByRegion } from "@mds/common/redux/selectors/minespaceSelector";
 import WorkerInfoEmployee from "@/components/dashboard/mine/overview/WorkerInfoEmployee";
-import { getUserInfo } from "@/selectors/authenticationSelectors";
+import { getUserInfo } from "@mds/common/redux/selectors/authenticationSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import ContactCard from "@/components/common/ContactCard";
 import MinistryContactItem from "@/components/dashboard/mine/overview/MinistryContactItem";
