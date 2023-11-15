@@ -187,7 +187,7 @@ class ExplosivesPermitListResource(Resource, UserMixin):
             if is_duplicate_permit_number:
                 raise InvalidInputData("Provided permit number already exist", detailed_error = intgErr)
             else:
-                raise intgErr
+                raise MineException("Unexpected error occurred, when creating the esup", detailed_error = intgErr)
 
         except Exception as e:
             current_app.logger.error(e)
