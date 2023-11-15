@@ -4,7 +4,7 @@ import { getFormValues } from "redux-form";
 import { concat, reject } from "lodash";
 import { Alert, Checkbox, Steps, Button, Popconfirm } from "antd";
 import PropTypes from "prop-types";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import * as FORM from "@/constants/forms";
 import AddIncidentReportingForm from "@/components/Forms/incidents/AddIncidentReportingForm";
 import AddIncidentDetailForm from "@/components/Forms/incidents/AddIncidentDetailForm";

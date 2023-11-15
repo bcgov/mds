@@ -14,7 +14,7 @@ import "vendor/leaflet/leaflet-measure/leaflet-measure.css";
 import "vendor/leaflet/mouse-coordinates/leaflet.mousecoordinate";
 import "vendor/leaflet/grouped-layer-control/leaflet.groupedlayercontrol.min";
 import { FIRST_NATIONS_LAYER_URL } from "@mds/common";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import { SMALL_PIN, SMALL_PIN_SELECTED } from "@/constants/assets";
 import LeafletPopup from "@/components/maps/LeafletPopup";

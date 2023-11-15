@@ -5,15 +5,15 @@ import { withRouter } from "react-router-dom";
 import { destroy } from "redux-form";
 import PropTypes from "prop-types";
 import { Divider } from "antd";
-import { closeModal, openModal } from "@common/actions/modalActions";
+import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import {
   createMineIncident,
   deleteMineIncident,
   fetchMineIncidents,
   updateMineIncident,
-} from "@common/actionCreators/incidentActionCreator";
-import { getIncidentPageData, getIncidents } from "@common/selectors/incidentSelectors";
-import { getMineGuid, getMines } from "@common/selectors/mineSelectors";
+} from "@mds/common/redux/actionCreators/incidentActionCreator";
+import { getIncidentPageData, getIncidents } from "@mds/common/redux/selectors/incidentSelectors";
+import { getMineGuid, getMines } from "@mds/common/redux/selectors/mineSelectors";
 import {
   getDangerousOccurrenceSubparagraphOptions,
   getDropdownIncidentCategoryCodeOptions,
@@ -21,8 +21,8 @@ import {
   getDropdownIncidentFollowupActionOptions,
   getDropdownIncidentStatusCodeOptions,
   getIncidentFollowupActionOptions,
-} from "@common/selectors/staticContentSelectors";
-import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
+import { getDropdownInspectors } from "@mds/common/redux/selectors/partiesSelectors";
 import { DEFAULT_PER_PAGE, DEFAULT_PAGE } from "@mds/common";
 import * as ROUTES from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";

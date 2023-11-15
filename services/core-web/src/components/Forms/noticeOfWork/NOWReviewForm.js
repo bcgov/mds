@@ -20,8 +20,8 @@ import CustomPropTypes from "@/customPropTypes";
 import {
   getDropdownNoticeOfWorkApplicationDocumentTypeOptions,
   getNoticeOfWorkApplicationDocumentTypeOptionsHash,
-} from "@common/selectors/staticContentSelectors";
-import { NOTICE_OF_WORK_DOCUMENT } from "@common/constants/API";
+} from "@mds/common/redux/selectors/staticContentSelectors";
+import { NOTICE_OF_WORK_DOCUMENT } from "@mds/common/constants/API";
 import FileUpload from "@/components/common/FileUpload";
 import UploadedDocumentsTable from "@/components/common/UploadedDocumentTable";
 import {

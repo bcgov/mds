@@ -1,5 +1,5 @@
-import { tailingsReducer } from "@common/reducers/tailingsReducer";
-import { storeTsf, clearTsf } from "@common/actions/tailingsActions";
+import { tailingsReducer } from "@mds/common/redux/reducers/tailingsReducer";
+import { storeTsf, clearTsf } from "@mds/common/redux/actions/tailingsActions";
 import { TAILINGS_STORAGE_FACILITY } from "@/tests/mocks/dataMocks";
 
 const baseExpectedValue = {

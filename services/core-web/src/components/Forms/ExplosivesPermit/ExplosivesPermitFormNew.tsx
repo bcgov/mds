@@ -22,7 +22,7 @@ import {
   ESUP_DOCUMENT_GENERATED_TYPES,
   IExplosivesPermitDocument,
 } from "@mds/common";
-import { getNoticeOfWorkList } from "@common/selectors/noticeOfWorkSelectors";
+import { getNoticeOfWorkList } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import {
   dateNotInFuture,
   lat,
@@ -37,8 +37,8 @@ import { createDropDownList, formatDate, resetForm } from "@common/utils/helpers
 import {
   getAllPartyRelationships,
   getPartyRelationships,
-} from "@common/selectors/partiesSelectors";
-import { getPermits } from "@common/selectors/permitSelectors";
+} from "@mds/common/redux/selectors/partiesSelectors";
+import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import ExplosivesPermitMap from "@/components/maps/ExplosivesPermitMap";

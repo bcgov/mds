@@ -21,13 +21,13 @@ import {
 } from "@syncfusion/ej2-react-pdfviewer";
 import { createRequestHeader } from "@common/utils/RequestHeaders";
 import { Modal } from "antd";
-import { closeDocumentViewer, openDocumentViewer } from "@common/actions/documentViewerActions";
+import { closeDocumentViewer, openDocumentViewer } from "@mds/common/redux/actions/documentViewerActions";
 import {
   getDocumentPath,
   getDocumentName,
   getIsDocumentViewerOpen,
   getProps,
-} from "@common/selectors/documentViewerSelectors";
+} from "@mds/common/redux/selectors/documentViewerSelectors";
 
 import { getDocument, downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 

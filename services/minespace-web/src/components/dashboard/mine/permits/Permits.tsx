@@ -2,12 +2,12 @@ import React, { FC, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Row, Col, Typography, Button, Badge } from "antd";
 
-import { fetchPermits } from "@common/actionCreators/permitActionCreator";
-import { openModal } from "@common/actions/modalActions";
-import { getPermits } from "@common/selectors/permitSelectors";
+import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
+import { openModal } from "@mds/common/redux/actions/modalActions";
+import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import PermitsTable from "@/components/dashboard/mine/permits/PermitsTable";
 import { Feature, IMine, IPermit, VC_CONNECTION_STATES, isFeatureEnabled } from "@mds/common";
-import { ActionCreator } from "@/interfaces/actionCreator";
+import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import modalConfig from "@/components/modalContent/config";
 
 interface PermitsProps {

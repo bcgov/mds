@@ -4,7 +4,7 @@ import ReactDOMServer from "react-dom/server";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
 import { startCase, camelCase } from "lodash";
-import { getUserAccessData } from "@common/selectors/authenticationSelectors";
+import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import { USER_ROLES } from "@mds/common";
 import { detectDevelopmentEnvironment, detectProdEnvironment } from "@mds/common";
 import { Tooltip } from "antd";

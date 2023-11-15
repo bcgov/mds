@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import { Divider } from "antd";
-import { getMines, getMineGuid } from "@common/selectors/mineSelectors";
+import { getMines, getMineGuid } from "@mds/common/redux/selectors/mineSelectors";
 import AmazonS3Provider from "@/components/syncfusion/AmazonS3Provider";
 
 /**

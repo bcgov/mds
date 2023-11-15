@@ -16,14 +16,14 @@ import { Button, Row, Col, Popconfirm, Steps, Typography } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { flattenObject } from "@common/utils/helpers";
-import { getProject } from "@common/reducers/projectReducer";
+import { getProject } from "@mds/common/redux/reducers/projectReducer";
 import {
   fetchProjectById,
   createMajorMineApplication,
   updateMajorMineApplication,
-} from "@common/actionCreators/projectActionCreator";
-import { clearMajorMinesApplication } from "@common/actions/projectActions";
-import { getMajorMinesApplicationDocumentTypesHash } from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/actionCreators/projectActionCreator";
+import { clearMajorMinesApplication } from "@mds/common/redux/actions/projectActions";
+import { getMajorMinesApplicationDocumentTypesHash } from "@mds/common/redux/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
 import LinkButton from "@/components/common/LinkButton";
 import customPropTypes from "@/customPropTypes";
@@ -32,7 +32,7 @@ import { MajorMineApplicationGetStarted } from "@/components/Forms/projects/majo
 import MajorMineApplicationReviewSubmit from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationReviewSubmit";
 import MajorMineApplicationCallout from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationCallout";
 import * as routes from "@/constants/routes";
-import { fetchMineDocuments } from "@common/actionCreators/mineActionCreator";
+import { fetchMineDocuments } from "@mds/common/redux/actionCreators/mineActionCreator";
 
 const propTypes = {
   project: customPropTypes.project.isRequired,

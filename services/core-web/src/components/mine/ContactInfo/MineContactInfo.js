@@ -4,10 +4,10 @@ import { Divider } from "antd";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { debounce } from "lodash";
-import { openModal, closeModal } from "@common/actions/modalActions";
-import { createParty, fetchParties } from "@common/actionCreators/partiesActionCreator";
-import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
-import { getMines, getMineGuid } from "@common/selectors/mineSelectors";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
+import { createParty, fetchParties } from "@mds/common/redux/actionCreators/partiesActionCreator";
+import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
+import { getMines, getMineGuid } from "@mds/common/redux/selectors/mineSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import ViewPartyRelationships from "./ViewPartyRelationships";
 

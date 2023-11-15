@@ -10,12 +10,12 @@ import { connect } from "react-redux";
 import {
   fetchImportedNoticeOfWorkApplication,
   updateNoticeOfWorkApplication,
-} from "@common/actionCreators/noticeOfWorkActionCreator";
-import { createPermit, createPermitAmendment } from "@common/actionCreators/permitActionCreator";
+} from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
+import { createPermit, createPermitAmendment } from "@mds/common/redux/actionCreators/permitActionCreator";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import * as FORM from "@/constants/forms";
-import { getPermits } from "@common/selectors/permitSelectors";
+import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import PreDraftPermitForm from "@/components/Forms/permits/PreDraftPermitForm";
 import { validateIfApplicationTypeCorrespondsToPermitNumber } from "@common/utils/Validate";

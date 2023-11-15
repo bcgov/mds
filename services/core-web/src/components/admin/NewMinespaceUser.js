@@ -1,10 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getMineNames } from "@common/selectors/mineSelectors";
+import { getMineNames } from "@mds/common/redux/selectors/mineSelectors";
 
 import { bindActionCreators } from "redux";
-import { fetchMineNameList } from "@common/actionCreators/mineActionCreator";
+import { fetchMineNameList } from "@mds/common/redux/actionCreators/mineActionCreator";
 import CustomPropTypes from "@/customPropTypes";
 import AddMinespaceUser from "@/components/Forms/AddMinespaceUser";
 import { nullableStringSorter } from "@common/utils/helpers";

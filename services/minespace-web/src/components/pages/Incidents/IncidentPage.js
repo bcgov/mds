@@ -16,16 +16,16 @@ import {
 import { Col, Row, Steps, Typography } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
-import { getMineIncident } from "@common/reducers/incidentReducer";
+import { getMineIncident } from "@mds/common/redux/reducers/incidentReducer";
 import {
   createMineIncident,
   fetchMineIncident,
   removeDocumentFromMineIncident,
   updateMineIncident,
-} from "@common/actionCreators/incidentActionCreator";
-import { fetchInspectors } from "@common/actionCreators/staticContentActionCreator";
-import { clearMineIncident } from "@common/actions/incidentActions";
-import { closeModal, openModal } from "@common/actions/modalActions";
+} from "@mds/common/redux/actionCreators/incidentActionCreator";
+import { fetchInspectors } from "@mds/common/redux/actionCreators/staticContentActionCreator";
+import { clearMineIncident } from "@mds/common/redux/actions/incidentActions";
+import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import * as FORM from "@/constants/forms";
 import Loading from "@/components/common/Loading";
 import customPropTypes from "@/customPropTypes";

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Tabs } from "antd";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { getNoticeOfWork } from "@common/selectors/noticeOfWorkSelectors";
+import { getNoticeOfWork } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import ApplicationTab from "@/components/noticeOfWork/applications/review/ApplicationTab";
 import CustomPropTypes from "@/customPropTypes";
 import NoticeOfWorkPageHeader from "@/components/noticeOfWork/applications/NoticeOfWorkPageHeader";

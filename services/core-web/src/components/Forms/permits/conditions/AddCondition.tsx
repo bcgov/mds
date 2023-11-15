@@ -7,7 +7,7 @@ import { withRouter, RouteComponentProps } from "react-router-dom";
 import {
   getEditingConditionFlag,
   getDraftPermitAmendmentForNOW,
-} from "@common/selectors/permitSelectors";
+} from "@mds/common/redux/selectors/permitSelectors";
 import {
   setEditingConditionFlag,
   createPermitCondition,
@@ -15,12 +15,12 @@ import {
   fetchDraftPermitByNOW,
   createStandardPermitCondition,
   fetchStandardPermitConditions,
-} from "@common/actionCreators/permitActionCreator";
+} from "@mds/common/redux/actionCreators/permitActionCreator";
 import AddButton from "@/components/common/buttons/AddButton";
 import Condition from "@/components/Forms/permits/conditions/Condition";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import * as Permission from "@/constants/permissions";
-import { ActionCreator } from "@/interfaces/actionCreator";
+import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { IDraftPermitAmendment } from "@mds/common";
 
 interface AddCondtionProps {

@@ -6,13 +6,13 @@ import { ArrowUpOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import MediaQuery from "react-responsive";
 import LoadingBar from "react-redux-loading-bar";
-import { getStaticContentLoadingIsComplete } from "@common/selectors/staticContentSelectors";
+import { getStaticContentLoadingIsComplete } from "@mds/common/redux/selectors/staticContentSelectors";
 import {
   loadBulkStaticContent,
   fetchInspectors,
   fetchProjectLeads,
-} from "@common/actionCreators/staticContentActionCreator";
-import { detectIE, detectTestEnvironment, detectDevelopmentEnvironment } from "@mds/common";
+} from "@mds/common/redux/actionCreators/staticContentActionCreator";
+import { detectIE, detectTestEnvironment, detectDevelopmentEnvironment } from "@mds/common/utils";
 import DashboardRoutes from "@/routes/DashboardRoutes";
 import { AuthenticationGuard } from "@/HOC/AuthenticationGuard";
 import WarningBanner, { WARNING_TYPES } from "@/components/common/WarningBanner";

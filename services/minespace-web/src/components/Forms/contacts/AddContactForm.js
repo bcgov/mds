@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { uniqBy } from "lodash";
-import { getPartyRelationships } from "@common/selectors/partiesSelectors";
+import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
 import PropTypes from "prop-types";
 import AddContactFormDetails from "./AddContactFormDetails";
 

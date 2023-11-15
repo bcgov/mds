@@ -10,9 +10,9 @@ import { connect } from "react-redux";
 import {
   fetchPartyById,
   createPartyOrgBookEntity,
-} from "@common/actionCreators/partiesActionCreator";
-import { searchOrgBook, fetchOrgBookCredential } from "@common/actionCreators/orgbookActionCreator";
-import { getSearchOrgBookResults, getOrgBookCredential } from "@common/selectors/orgbookSelectors";
+} from "@mds/common/redux/actionCreators/partiesActionCreator";
+import { searchOrgBook, fetchOrgBookCredential } from "@mds/common/redux/actionCreators/orgbookActionCreator";
+import { getSearchOrgBookResults, getOrgBookCredential } from "@mds/common/redux/selectors/orgbookSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import { ORGBOOK_ENTITY_URL } from "@/constants/routes";
 

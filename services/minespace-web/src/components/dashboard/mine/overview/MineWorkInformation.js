@@ -10,8 +10,8 @@ import {
   fetchMineWorkInformations,
   createMineWorkInformation,
   updateMineWorkInformation,
-} from "@common/actionCreators/workInformationActionCreator";
-import { getMineWorkInformations } from "@common/selectors/workInformationSelectors";
+} from "@mds/common/redux/actionCreators/workInformationActionCreator";
+import { getMineWorkInformations } from "@mds/common/redux/selectors/workInformationSelectors";
 import { formatDateTime } from "@common/utils/helpers";
 import { EDIT_PENCIL } from "@/constants/assets";
 import AddMineWorkInformationForm from "@/components/Forms/AddMineWorkInformationForm";

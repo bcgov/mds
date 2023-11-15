@@ -4,10 +4,10 @@ import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
 import { Radio } from "antd";
 import { isEmpty } from "lodash";
-import { createParty } from "@common/actionCreators/partiesActionCreator";
-import { getAddPartyFormState } from "@common/selectors/partiesSelectors";
+import { createParty } from "@mds/common/redux/actionCreators/partiesActionCreator";
+import { getAddPartyFormState } from "@mds/common/redux/selectors/partiesSelectors";
 import AddQuickPartyForm from "@/components/Forms/parties/AddQuickPartyForm";
-import { getDropdownProvinceOptions } from "@common/selectors/staticContentSelectors";
+import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {

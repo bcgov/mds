@@ -1,7 +1,10 @@
 import Enzyme from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
+import path from "path";
 
 require("jest-localstorage-mock");
+
+global.REQUEST_HEADER = require(path.resolve(__dirname, "../common/utils/RequestHeaders.js"));
 
 Enzyme.configure({ adapter: new Adapter() });
 

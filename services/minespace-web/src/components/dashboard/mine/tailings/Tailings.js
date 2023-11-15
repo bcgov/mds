@@ -3,15 +3,15 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Row, Col, Typography, Button } from "antd";
 import PropTypes from "prop-types";
-import { openModal, closeModal } from "@common/actions/modalActions";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import {
   fetchMineRecordById,
   updateTailingsStorageFacility,
-} from "@common/actionCreators/mineActionCreator";
+} from "@mds/common/redux/actionCreators/mineActionCreator";
 import { PlusCircleFilled } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
 import { resetForm } from "@common/utils/helpers";
-import { storeTsf, clearTsf } from "@common/actions/tailingsActions";
+import { storeTsf, clearTsf } from "@mds/common/redux/actions/tailingsActions";
 import CustomPropTypes from "@/customPropTypes";
 import { modalConfig } from "@/components/modalContent/config";
 import { EDIT_TAILINGS_STORAGE_FACILITY, ADD_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";

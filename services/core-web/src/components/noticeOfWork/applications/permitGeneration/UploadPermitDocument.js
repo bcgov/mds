@@ -6,13 +6,13 @@ import { Button } from "antd";
 import { isEmpty } from "lodash";
 import DocumentLink from "@/components/common/DocumentLink";
 import { modalConfig } from "@/components/modalContent/config";
-import { openModal, closeModal } from "@common/actions/modalActions";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import { truncateFilename } from "@common/utils/helpers";
 import {
   updatePermitAmendment,
   removePermitAmendmentDocument,
   fetchDraftPermitByNOW,
-} from "@common/actionCreators/permitActionCreator";
+} from "@mds/common/redux/actionCreators/permitActionCreator";
 import { PERMIT, CLOUD_CHECK_MARK } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";

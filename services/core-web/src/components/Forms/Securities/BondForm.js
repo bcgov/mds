@@ -17,7 +17,7 @@ import {
   validateSelectOptions,
 } from "@common/utils/Validate";
 import { resetForm, upperCase, currencyMask } from "@common/utils/helpers";
-import { BOND_DOCUMENTS } from "@common/constants/API";
+import { BOND_DOCUMENTS } from "@mds/common/constants/API";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderDate from "@/components/common/RenderDate";

@@ -1,5 +1,5 @@
-import { explosivesPermitReducer } from "@common/reducers/explosivesPermitReducer";
-import { storeExplosivesPermits } from "@common/actions/explosivesPermitActions";
+import { explosivesPermitReducer } from "@mds/common/redux/reducers/explosivesPermitReducer";
+import { storeExplosivesPermits } from "@mds/common/redux/actions/explosivesPermitActions";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const baseExpectedValue = {

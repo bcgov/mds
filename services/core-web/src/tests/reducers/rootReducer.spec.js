@@ -1,6 +1,6 @@
 import { createStore } from "redux";
-import { authenticateUser } from "@common/actions/authenticationActions";
-import * as reducerTypes from "@common/constants/reducerTypes";
+import { authenticateUser } from "@mds/common/redux/actions/authenticationActions";
+import * as reducerTypes from "@mds/common/constants/reducerTypes";
 import { rootReducer, reducerObject } from "@/reducers/rootReducer";
 
 describe("Store", () => {
@@ -11,7 +11,11 @@ describe("Store", () => {
     store.dispatch(action);
 
     const actual = store.getState()[reducerTypes.AUTHENTICATION];
-    const expected = { isAuthenticated: true, userInfo: {} };
+    const expected = {
+      isAuthenticated: true,
+      userInfo: { preferred_username: undefined },
+      userAccessData: [],
+    };
 
     expect(actual).toEqual(expected);
   });

@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getMineIncidentNotes } from "@common/selectors/incidentSelectors";
+import { getMineIncidentNotes } from "@mds/common/redux/selectors/incidentSelectors";
 import {
   createMineIncidentNote,
   fetchMineIncidentNotes,
-} from "@common/actionCreators/incidentActionCreator";
+} from "@mds/common/redux/actionCreators/incidentActionCreator";
 import MinistryCommentPanel from "@/components/common/comments/MinistryCommentPanel";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";

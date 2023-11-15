@@ -9,7 +9,7 @@ import { useKeycloak } from "@react-keycloak/web";
 import { KEYCLOAK } from "@mds/common";
 import { isAuthenticated } from "@/selectors/authenticationSelectors";
 import { authenticateUser } from "@/actionCreators/authenticationActionCreator";
-import { storeUserAccessData } from "@common/actions/authenticationActions";
+import { storeUserAccessData } from "@mds/common/redux/actions/authenticationActions";
 import UnauthenticatedNotice from "@/components/common/UnauthenticatedNotice";
 import Loading from "@/components/common/Loading";
 import * as route from "@/constants/routes";

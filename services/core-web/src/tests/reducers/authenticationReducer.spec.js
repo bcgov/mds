@@ -1,9 +1,9 @@
-import { authenticationReducer } from "@common/reducers/authenticationReducer";
+import { authenticationReducer } from "@mds/common/redux/reducers/authenticationReducer";
 import {
   authenticateUser,
   logoutUser,
   storeUserAccessData,
-} from "@common/actions/authenticationActions";
+} from "@mds/common/redux/actions/authenticationActions";
 
 const baseExpectedValue = {
   isAuthenticated: false,

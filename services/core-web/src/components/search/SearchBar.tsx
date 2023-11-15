@@ -9,16 +9,16 @@ import { Input, InputProps, Button } from "antd";
 import {
   fetchSearchBarResults,
   clearSearchBarResults,
-} from "@common/actionCreators/searchActionCreator";
+} from "@mds/common/redux/actionCreators/searchActionCreator";
 import * as router from "@/constants/routes";
-import { getSearchBarResults } from "@common/reducers/searchReducer";
+import { getSearchBarResults } from "@mds/common/redux/reducers/searchReducer";
 
 import { SearchOutlined } from "@ant-design/icons";
 import { useKey } from "@/App";
 import { ISearchResult } from "@mds/common/interfaces/search/searchResult.interface";
 import { SearchBarDropdown } from "@/components/search/SearchBarDropdown";
 import { throttle } from "lodash";
-import { ActionCreator } from "@/interfaces/actionCreator";
+import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 
 // any attribute that can be passed to antd Input can be passed in here without being explicitly named
 interface SearchBarProps extends InputProps {

@@ -3,12 +3,12 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-import { getMineReportComments } from "@common/selectors/reportSelectors";
+import { getMineReportComments } from "@mds/common/redux/selectors/reportSelectors";
 import {
   fetchMineReportComments,
   createMineReportComment,
   deleteMineReportComment,
-} from "@common/actionCreators/reportCommentActionCreator";
+} from "@mds/common/redux/actionCreators/reportCommentActionCreator";
 import CommentPanel from "@/components/common/comments/CommentPanel";
 import FormItemLabel from "@/components/common/FormItemLabel";
 

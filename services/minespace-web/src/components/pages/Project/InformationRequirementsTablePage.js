@@ -12,17 +12,17 @@ import {
 } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { ENVIRONMENT } from "@mds/common";
-import * as API from "@common/constants/API";
+import * as API from "@mds/common/constants/API";
 import { cleanFilePondFile } from "@common/utils/helpers";
-import { getProject, getRequirements } from "@common/selectors/projectSelectors";
-import { clearInformationRequirementsTable } from "@common/actions/projectActions";
+import { getProject, getRequirements } from "@mds/common/redux/selectors/projectSelectors";
+import { clearInformationRequirementsTable } from "@mds/common/redux/actions/projectActions";
 import {
   fetchProjectById,
   fetchRequirements,
   updateInformationRequirementsTable,
-} from "@common/actionCreators/projectActionCreator";
-import { closeModal, openModal } from "@common/actions/modalActions";
-import { getInformationRequirementsTableDocumentTypesHash } from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/actionCreators/projectActionCreator";
+import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
+import { getInformationRequirementsTableDocumentTypesHash } from "@mds/common/redux/selectors/staticContentSelectors";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";

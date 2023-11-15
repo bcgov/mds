@@ -3,7 +3,7 @@ import { Divider } from "antd";
 import PropTypes from "prop-types";
 import Highlight from "react-highlighter";
 import { Link } from "react-router-dom";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import * as router from "@/constants/routes";
 import { nullableStringSorter } from "@common/utils/helpers";
 import { renderHighlightedTextColumn, renderTextColumn } from "../common/CoreTableCommonColumns";

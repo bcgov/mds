@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { FormSection } from "redux-form";
 import { connect } from "react-redux";
-import { getNOWProgress } from "@common/selectors/noticeOfWorkSelectors";
+import { getNOWProgress } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import PermitPackage from "@/components/noticeOfWork/applications/PermitPackage";
 import NOWDocuments from "@/components/noticeOfWork/applications/NOWDocuments";

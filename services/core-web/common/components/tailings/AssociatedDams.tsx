@@ -2,15 +2,15 @@ import { Button, Col, Row, Space, Typography } from "antd";
 import {
   CONSEQUENCE_CLASSIFICATION_CODE_HASH,
   DAM_OPERATING_STATUS_HASH,
-} from "@common/constants/strings";
+} from "@mds/common/constants/strings";
 import { bindActionCreators, compose } from "redux";
 
 import { PlusCircleFilled } from "@ant-design/icons";
 import React, { FC } from "react";
 import { connect } from "react-redux";
-import { getTsf } from "@common/reducers/tailingsReducer";
+import { getTsf } from "@mds/common/redux/reducers/tailingsReducer";
 import moment from "moment";
-import { storeDam } from "@common/actions/damActions";
+import { storeDam } from "@mds/common/redux/actions/damActions";
 import { useHistory } from "react-router-dom";
 import { EditIcon } from "@/assets/icons";
 import { ADD_DAM, EDIT_DAM } from "@/constants/routes";

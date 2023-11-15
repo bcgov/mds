@@ -8,7 +8,7 @@ import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Descriptions, Popconfirm } from "antd";
 import { required, dateNotAfterOther, dateNotBeforeOther, maxLength } from "@common/utils/Validate";
 import { resetForm, formatDate } from "@common/utils/helpers";
-import { getEditingPreambleFlag } from "@common/selectors/permitSelectors";
+import { getEditingPreambleFlag } from "@mds/common/redux/selectors/permitSelectors";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";

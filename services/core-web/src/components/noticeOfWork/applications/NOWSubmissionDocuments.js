@@ -10,12 +10,12 @@ import { isEmpty } from "lodash";
 import CustomPropTypes from "@/customPropTypes";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import DocumentLink from "@/components/common/DocumentLink";
 import { modalConfig } from "@/components/modalContent/config";
 import * as Permission from "@/constants/permissions";
-import { openModal, closeModal } from "@common/actions/modalActions";
-import { getNoticeOfWork } from "@common/selectors/noticeOfWorkSelectors";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
+import { getNoticeOfWork } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import {
   createNoticeOfWorkApplicationImportSubmissionDocumentsJob,
   fetchImportNoticeOfWorkSubmissionDocumentsJob,
@@ -23,11 +23,11 @@ import {
   updateNoticeOfWorkApplication,
   deleteNoticeOfWorkApplicationDocument,
   editNoticeOfWorkDocument,
-} from "@common/actionCreators/noticeOfWorkActionCreator";
+} from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
 import {
   getNoticeOfWorkApplicationDocumentTypeOptionsHash,
   getDropdownNoticeOfWorkApplicationDocumentTypeOptions,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import AddButton from "@/components/common/buttons/AddButton";
 import ReferralConsultationPackage from "@/components/noticeOfWork/applications/referals/ReferralConsultationPackage";

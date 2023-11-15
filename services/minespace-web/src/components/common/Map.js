@@ -7,7 +7,7 @@ import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import { Validate } from "@common/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
 import { SMALL_PIN } from "@/constants/assets";

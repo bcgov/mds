@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field } from "redux-form";
-import { INFORMATION_REQUIREMENTS_TABLE_DOCUMENTS } from "@common/constants/API";
+import { INFORMATION_REQUIREMENTS_TABLE_DOCUMENTS } from "@mds/common/constants/API";
 import FileUpload from "@/components/common/FileUpload";
 
 const propTypes = {

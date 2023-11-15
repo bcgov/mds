@@ -23,7 +23,7 @@ import {
   getConditionalCommodityOptions,
   getMineTenureTypeDropdownOptions,
   getExemptionFeeStatusDropDownOptions,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import { renderConfig } from "@/components/common/config";
 import PartySelectField from "@/components/common/PartySelectField";
 import * as FORM from "@/constants/forms";

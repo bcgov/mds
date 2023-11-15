@@ -2,10 +2,10 @@ import {
   getBonds,
   getBondTotals,
   getReclamationInvoices,
-} from "@common/selectors/securitiesSelectors";
-import { securitiesReducer } from "@common/reducers/securitiesReducer";
-import { storeMineBonds, storeMineReclamationInvoices } from "@common/actions/securitiesActions";
-import { SECURITIES } from "@common/constants/reducerTypes";
+} from "@mds/common/redux/selectors/securitiesSelectors";
+import { securitiesReducer } from "@mds/common/redux/reducers/securitiesReducer";
+import { storeMineBonds, storeMineReclamationInvoices } from "@mds/common/redux/actions/securitiesActions";
+import { SECURITIES } from "@mds/common/constants/reducerTypes";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const mockState = {

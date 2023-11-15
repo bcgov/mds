@@ -9,7 +9,7 @@ import {
   optionsFilterLabelAndValue,
   optionsFilterLabelOnly,
 } from "@common/utils/helpers";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import * as router from "@/constants/routes";
 import CoreTable from "@/components/common/CoreTable";
 import { getApplicationStatusType } from "@/constants/theme";

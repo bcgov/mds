@@ -16,18 +16,18 @@ import {
   fetchPartyById,
   updateParty,
   deleteParty,
-} from "@common/actionCreators/partiesActionCreator";
-import { fetchMineBasicInfoList } from "@common/actionCreators/mineActionCreator";
-import { openModal, closeModal } from "@common/actions/modalActions";
-import { getParties } from "@common/selectors/partiesSelectors";
-import { getMineBasicInfoListHash } from "@common/selectors/mineSelectors";
+} from "@mds/common/redux/actionCreators/partiesActionCreator";
+import { fetchMineBasicInfoList } from "@mds/common/redux/actionCreators/mineActionCreator";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
+import { getParties } from "@mds/common/redux/selectors/partiesSelectors";
+import { getMineBasicInfoListHash } from "@mds/common/redux/selectors/mineSelectors";
 import {
   getDropdownProvinceOptions,
   getPartyRelationshipTypeHash,
   getPartyBusinessRoleOptionsHash,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import { formatDate, dateSorter, formatSnakeCaseToSentenceCase } from "@common/utils/helpers";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import { EDIT } from "@/constants/assets";
 import { modalConfig } from "@/components/modalContent/config";
 import Loading from "@/components/common/Loading";

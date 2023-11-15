@@ -1,5 +1,5 @@
 import queryString from "query-string";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import { isEmpty } from "lodash";
 import { getEnvironment } from "@mds/common";
 import Home from "@/components/Home";

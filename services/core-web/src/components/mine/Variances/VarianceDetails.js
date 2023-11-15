@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { formatDate } from "@common/utils/helpers";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 
 import DocumentTable from "@/components/common/DocumentTable";

@@ -13,8 +13,8 @@ import {
   getMineRegionHash,
   getNoticeOfWorkApplicationPermitTypeOptionsHash,
   getNoticeOfWorkApplicationTypeOptionsHash,
-} from "@common/selectors/staticContentSelectors";
-import { getUserAccessData } from "@common/selectors/authenticationSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
+import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import {
   required,
   lat,
@@ -27,9 +27,9 @@ import {
   max,
   wholeNumber,
 } from "@common/utils/Validate";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import { USER_ROLES } from "@mds/common";
-import { getNoticeOfWorkEditableTypes } from "@common/selectors/noticeOfWorkSelectors";
+import { getNoticeOfWorkEditableTypes } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import RenderField from "@/components/common/RenderField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";

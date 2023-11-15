@@ -18,7 +18,7 @@ import {
 import {
   getMineRegionDropdownOptions,
   getDropdownEMLIContactTypes,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import { resetForm, normalizePhone } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";

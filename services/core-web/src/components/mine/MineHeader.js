@@ -5,14 +5,14 @@ import { Link } from "react-router-dom";
 import { uniqBy } from "lodash";
 import PropTypes from "prop-types";
 import { Menu, Divider, Button, Dropdown, Tag, Popover } from "antd";
-import { openModal, closeModal } from "@common/actions/modalActions";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import {
   updateMineRecord,
   createMineTypes,
   removeMineType,
   fetchMineRecordById,
   createTailingsStorageFacility,
-} from "@common/actionCreators/mineActionCreator";
+} from "@mds/common/redux/actionCreators/mineActionCreator";
 import { formatDate } from "@common/utils/helpers";
 import {
   getMineRegionHash,
@@ -21,10 +21,10 @@ import {
   getCommodityOptionHash,
   getExemptionFeeStatusOptionsHash,
   getGovernmentAgencyHash,
-} from "@common/selectors/staticContentSelectors";
-import { getCurrentMineTypes, getTransformedMineTypes } from "@common/selectors/mineSelectors";
-import { getUserInfo } from "@common/selectors/authenticationSelectors";
-import * as String from "@common/constants/strings";
+} from "@mds/common/redux/selectors/staticContentSelectors";
+import { getCurrentMineTypes, getTransformedMineTypes } from "@mds/common/redux/selectors/mineSelectors";
+import { getUserInfo } from "@mds/common/redux/selectors/authenticationSelectors";
+import * as String from "@mds/common/constants/strings";
 import MineHeaderMapLeaflet from "@/components/maps/MineHeaderMapLeaflet";
 import { EDIT_OUTLINE_VIOLET, EDIT, OPEN_NEW_TAB } from "@/constants/assets";
 import * as route from "@/constants/routes";

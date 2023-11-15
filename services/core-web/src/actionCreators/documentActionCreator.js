@@ -1,11 +1,11 @@
 /* eslint-disable */
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
-import { error, request, success } from "@common/actions/genericActions";
+import { error, request, success } from "@mds/common/redux/actions/genericActions";
 import { ENVIRONMENT } from "@mds/common";
 import { createRequestHeader } from "@common/utils/RequestHeaders";
 import CustomAxios from "@common/customAxios";
-import * as COMMON_API from "@common/constants/API";
+import * as COMMON_API from "@mds/common/constants/API";
 import * as API from "@/constants/API";
 import * as reducerTypes from "@/constants/reducerTypes";
 import * as documentActions from "@/actions/documentActions";

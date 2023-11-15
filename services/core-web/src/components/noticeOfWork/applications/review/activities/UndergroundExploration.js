@@ -8,7 +8,7 @@ import {
   getDropdownNoticeOfWorkUndergroundExplorationTypeOptions,
   getDropdownNoticeOfWorkUnitTypeOptions,
   getNoticeOfWorkUndergroundExplorationTypeOptionsHash,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import {
   numberWithUnitCode,
   required,

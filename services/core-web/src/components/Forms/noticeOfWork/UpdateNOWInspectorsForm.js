@@ -6,7 +6,7 @@ import "@ant-design/compatible/assets/index.css";
 import PropTypes from "prop-types";
 import { required } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
-import { MDS_EMAIL } from "@common/constants/strings";
+import { MDS_EMAIL } from "@mds/common/constants/strings";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";

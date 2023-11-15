@@ -8,9 +8,9 @@ import {
 } from "./DocumentColumns";
 import { renderTextColumn, renderActionsColumn, ITableAction } from "./CoreTableCommonColumns";
 import { some } from "lodash";
-import { closeModal, openModal } from "@common/actions/modalActions";
+import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import DocumentCompression from "./DocumentCompression";
-import { archiveMineDocuments } from "@common/actionCreators/mineActionCreator";
+import { archiveMineDocuments } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { modalConfig } from "@/components/modalContent/config";
@@ -27,7 +27,7 @@ import {
 } from "@ant-design/icons";
 import { openDocument } from "../syncfusion/DocumentViewer";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import { getUserAccessData } from "@common/selectors/authenticationSelectors";
+import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import { Dropdown, Button, MenuProps } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";

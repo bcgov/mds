@@ -20,7 +20,7 @@ import {
   IPermitPartyRelationship,
   IExplosivesPermit,
 } from "@mds/common";
-import { getNoticeOfWorkList } from "@common/selectors/noticeOfWorkSelectors";
+import { getNoticeOfWorkList } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import {
   required,
   validateSelectOptions,
@@ -36,8 +36,8 @@ import { resetForm, createDropDownList, formatDate } from "@common/utils/helpers
 import {
   getPartyRelationships,
   getAllPartyRelationships,
-} from "@common/selectors/partiesSelectors";
-import { getPermits } from "@common/selectors/permitSelectors";
+} from "@mds/common/redux/selectors/partiesSelectors";
+import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import ExplosivesPermitMap from "@/components/maps/ExplosivesPermitMap";
