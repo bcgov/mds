@@ -210,7 +210,13 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
 
   const esupRowData = props.explosivesPermits.map((esup) => transformEsupData(esup));
   const permitRowData = props.permits.map((permit) => transformRowData(permit));
-  const rowData = [...esupRowData, ...permitRowData];
+
+  let rowData: any[];
+  if (isFeatureEnabled(Feature.MINESPACE_ESUPS)) {
+    rowData = [...esupRowData, ...permitRowData];
+  } else {
+    rowData = permitRowData;
+  }
 
   const expandedColumns = [
     renderTextColumn("amendmentNumber", "Amendment No."),
