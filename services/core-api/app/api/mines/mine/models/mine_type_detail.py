@@ -2,6 +2,7 @@ import uuid
 
 from datetime import datetime
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.schema import FetchedValue
 from app.api.utils.models_mixins import AuditMixin, Base
 from app.extensions import db
@@ -20,6 +21,12 @@ class MineTypeDetail(AuditMixin, Base):
         db.String(3), db.ForeignKey('mine_disturbance_code.mine_disturbance_code'))
     mine_commodity_code = db.Column(
         db.String(2), db.ForeignKey('mine_commodity_code.mine_commodity_code'))
+    
+    mine_disturbance = db.relationship('MineDisturbanceCode', lazy='select')
+    mine_commodity = db.relationship('MineCommodityCode', lazy='select')
+
+    mine_disturbance_literal = association_proxy('mine_disturbance', 'description')
+    mine_commodity_literal = association_proxy('mine_commodity', 'description')
 
     active_ind = db.Column(db.Boolean, nullable=False, default=True)
 
