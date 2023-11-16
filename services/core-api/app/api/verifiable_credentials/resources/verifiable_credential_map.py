@@ -58,13 +58,13 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
         mine_status_xref = permit_amendment.mine.mine_status[0].mine_status_xref
 
         credential_attrs["permit_no"] = permit_amendment.permit_no
-        credential_attrs["permit_status_code"] = permit_amendment.permit.permit_status_code_description
+        credential_attrs["permit_status"] = permit_amendment.permit.permit_status_code_description
         credential_attrs["mine_party_appt"] = permit_amendment.permit.current_permittee
-        credential_attrs["mine_operation_status_code"] = mine_status_xref.mine_operation_status.description
-        credential_attrs["mine_operation_status_reason_code"] = mine_status_xref.mine_operation_status_reason.description if mine_status_xref.mine_operation_status_reason else None
-        credential_attrs["mine_operation_status_sub_reason_code"] = mine_status_xref.mine_operation_status_sub_reason.description if mine_status_xref.mine_operation_status_sub_reason else None
-        credential_attrs["mine_disturbance_code"] = ", ".join(mine_disturbance_list) if mine_disturbance_list else "" 
-        credential_attrs["mine_commodity_code"] =  ", ".join(mine_commodity_list) if mine_commodity_list else ""
+        credential_attrs["mine_operation_status"] = mine_status_xref.mine_operation_status.description
+        credential_attrs["mine_operation_status_reason"] = mine_status_xref.mine_operation_status_reason.description if mine_status_xref.mine_operation_status_reason else None
+        credential_attrs["mine_operation_status_sub_reason"] = mine_status_xref.mine_operation_status_sub_reason.description if mine_status_xref.mine_operation_status_sub_reason else None
+        credential_attrs["mine_disturbance"] = ", ".join(mine_disturbance_list) if mine_disturbance_list else None
+        credential_attrs["mine_commodity"] =  ", ".join(mine_commodity_list) if mine_commodity_list else None
         credential_attrs["mine_no"] = permit_amendment.mine.mine_no
         credential_attrs["issue_date"] = permit_amendment.issue_date
         credential_attrs["latitude"] = permit_amendment.mine.latitude
