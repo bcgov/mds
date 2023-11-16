@@ -51,6 +51,7 @@ interface MineExplosivesPermitTableProps {
   handleOpenExplosivesPermitDecisionModal: (event, record: IExplosivesPermit) => void;
   handleOpenExplosivesPermitStatusModal: (event, record: IExplosivesPermit) => void;
   handleDeleteExplosivesPermit: (event, record: IExplosivesPermit) => void;
+  handleOpenEditExplosivesPermitModal: (event, record: IExplosivesPermit) => void;
   isPermitTab: boolean;
   explosivesPermitDocumentTypeOptionsHash: any;
   explosivesPermitStatusOptionsHash: any;
@@ -116,6 +117,43 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
     <EyeOutlined className="padding-sm icon-lg icon-svg-filter" />
   );
 
+  const viewPermitAction: ITableAction = {
+    key: "view",
+    label: "View",
+    clickFunction: handleOpenViewExplosivesPermitModal,
+    icon: viewIcon,
+  };
+
+  const editPermitFunction = isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT)
+    ? (event, permitRecord) =>
+        props.handleOpenAddExplosivesPermitModal(event, isPermitTab, permitRecord)
+    : (event, permitRecord) => props.handleOpenEditExplosivesPermitModal(event, permitRecord);
+
+  const editDocumentAction: ITableAction = {
+    key: "edit_documents",
+    label: "Edit Documents",
+    clickFunction: editPermitFunction,
+    icon: editIcon,
+  };
+  const editPermitAction: ITableAction = {
+    key: "edit",
+    label: "Edit",
+    clickFunction: editPermitFunction,
+    icon: editIcon,
+  };
+  const processPermitAction: ITableAction = {
+    key: "process",
+    label: "Process",
+    clickFunction: props.handleOpenExplosivesPermitDecisionModal,
+    icon: editIcon,
+  };
+  const amendPermitAction: ITableAction = {
+    key: "amend",
+    label: "Create Amendment",
+    clickFunction: props.handleOpenAmendExplosivesPermitModal,
+    icon: editIcon,
+  };
+
   const actionsColumn = (
     type?: "permit" | "amendment"
   ): ColumnType<MineExplosivesTableItem | amendmentsWithTotal> => {
@@ -134,104 +172,17 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
           )?.length > 0;
         const isCoreSource = record.originating_system === "Core";
 
-        const viewOnlyMenu: ITableAction[] = [
-          {
-            key: "view",
-            label: "View",
-            clickFunction: (event) => handleOpenViewExplosivesPermitModal(event, record),
-            icon: viewIcon,
-          },
-        ];
         const approvedMenu: ITableAction[] = isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT)
-          ? [
-              ...viewOnlyMenu,
-              {
-                key: "0",
-                label: "Edit Documents",
-                clickFunction: (event, record) =>
-                  props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record),
-                icon: editIcon,
-              },
-              {
-                key: "edit",
-                label: "Create Amendment",
-                clickFunction: (event, record) =>
-                  props.handleOpenAmendExplosivesPermitModal(event, record),
-                icon: editIcon,
-              },
-            ]
-          : [
-              {
-                key: "0",
-                label: "Edit Documents",
-                clickFunction: (event, record) =>
-                  props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record),
-                icon: editIcon,
-              },
-              {
-                key: "edit",
-                label: "Edit Permit",
-                clickFunction: (event, record) =>
-                  props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record),
-                icon: editIcon,
-              },
-            ];
+          ? [viewPermitAction, editDocumentAction, amendPermitAction]
+          : [editDocumentAction, editPermitAction];
         const menu: ITableAction[] = isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT)
           ? [
-              ...(!isProcessed
-                ? [
-                    ...viewOnlyMenu,
-                    {
-                      key: "process",
-                      label: "Process",
-                      clickFunction: (event) =>
-                        props.handleOpenExplosivesPermitDecisionModal(event, record),
-                      icon: editIcon,
-                    },
-                    {
-                      key: "edit",
-                      label: "Edit",
-                      clickFunction: (event) =>
-                        props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record),
-                      icon: editIcon,
-                    },
-                  ]
+              ...(!isProcessed //ie: is draft
+                ? [viewPermitAction, processPermitAction, editPermitAction]
                 : []),
-              {
-                key: "0",
-                label: "Edit Documents",
-                clickFunction: (event) =>
-                  props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record),
-                icon: editIcon,
-              },
+              editDocumentAction,
             ]
-          : [
-              ...(!isProcessed
-                ? [
-                    {
-                      key: "process",
-                      label: "Process",
-                      clickFunction: (event) =>
-                        props.handleOpenExplosivesPermitDecisionModal(event, record),
-                      icon: editIcon,
-                    },
-                    {
-                      key: "edit",
-                      label: "Edit",
-                      clickFunction: (event) =>
-                        props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record),
-                      icon: editIcon,
-                    },
-                  ]
-                : []),
-              {
-                key: "0",
-                label: "Edit Documents",
-                clickFunction: (event) =>
-                  props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record),
-                icon: editIcon,
-              },
-            ];
+          : [...(!isProcessed ? [processPermitAction, editPermitAction] : []), editDocumentAction];
         const deleteAction: ITableAction = {
           key: "delete",
           label: "Delete",
@@ -277,7 +228,7 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
                 {isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT) ? (
                   <ActionMenu
                     record={record}
-                    actionItems={type === "amendment" ? viewOnlyMenu : currentMenu}
+                    actionItems={type === "amendment" ? [viewPermitAction] : currentMenu}
                     category="ESUP"
                   />
                 ) : (

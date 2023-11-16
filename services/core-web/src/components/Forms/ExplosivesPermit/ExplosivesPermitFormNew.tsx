@@ -57,6 +57,7 @@ interface ExplosivesPermitFormProps {
   documentTypeDropdownOptions: IOption[];
   isPermitTab: boolean;
   isAmendment?: boolean;
+  hideDecisionModal?: boolean;
   inspectors: IGroupedDropdownList[];
   documents: IExplosivesPermitDocument[];
   dispatch: any;
@@ -80,6 +81,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
   mines_permit_guid = null,
   isProcessed = false,
   isAmendment = false,
+  hideDecisionModal = false,
   documents,
   ...props
 }) => {
@@ -133,7 +135,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
   const disabled = isProcessed;
 
   const [radioSelection, setRadioSelection] = useState<number>(props.isPermitTab ? 1 : 2);
-  const [parentView, setParentView] = useState<boolean>(!isAmendment);
+  const [parentView, setParentView] = useState<boolean>(hideDecisionModal || !isAmendment);
   const [isAmendSelected, setIsAmend] = useState<boolean>(false);
 
   useEffect(() => {

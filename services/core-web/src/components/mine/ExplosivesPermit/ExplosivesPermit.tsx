@@ -219,6 +219,33 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
     });
   };
 
+  const handleOpenEditExplosivesPermitModal = (event, record = null) => {
+    const initialValues = record || {};
+    const hasAmendments = record?.explosives_permit_amendments?.length > 1;
+    const isProcessed = record !== null && record?.application_status !== "REC";
+    event.preventDefault();
+
+    props.openModal({
+      props: {
+        onSubmit: (values) =>
+          record
+            ? handleUpdateExplosivesPermit(values, hasAmendments)
+            : console.log("WE DIDN'T EXPECT THIS", values),
+        title: "Title goes here",
+        initialValues,
+        documents: record?.documents ?? [],
+        mineGuid,
+        hideDecisionModal: true,
+        isProcessed,
+        documentTypeDropdownOptions: explosivesPermitDocumentTypeDropdownOptions,
+        inspectors,
+        isAmendment: !!record?.explosives_permit_amendment_guid,
+      },
+      content: modalConfig.EXPLOSIVES_PERMIT_MODAL,
+      width: "75vw",
+    });
+  };
+
   const handleOpenAmendExplosivesPermitModal = (event, record: IExplosivesPermit = null) => {
     event.preventDefault();
 
@@ -349,6 +376,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
         isPermitTab={isPermitTab}
         handleOpenExplosivesPermitDecisionModal={handleOpenExplosivesPermitDecisionModal}
         handleOpenAddExplosivesPermitModal={handleOpenAddExplosivesPermitModal}
+        handleOpenEditExplosivesPermitModal={handleOpenEditExplosivesPermitModal}
         handleOpenViewMagazineModal={handleOpenViewMagazineModal}
         handleOpenViewExplosivesPermitModal={handleOpenViewExplosivesPermitModal}
         explosivesPermitStatusOptionsHash={props.explosivesPermitStatusOptionsHash}
