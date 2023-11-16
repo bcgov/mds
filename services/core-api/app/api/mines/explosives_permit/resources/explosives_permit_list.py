@@ -10,7 +10,7 @@ from app.api.mines.mine.models.mine import Mine
 from app.api.mines.explosives_permit.response_models import EXPLOSIVES_PERMIT_MODEL
 from app.api.mines.explosives_permit.models.explosives_permit import ExplosivesPermit
 from sqlalchemy import exc
-from app.api.mines.exceptions.mine_exceptions import MineException, InvalidInputData
+from app.api.mines.exceptions.mine_exceptions import MineException, InvalidInputDataException
 from flask import current_app
 
 class ExplosivesPermitListResource(Resource, UserMixin):
@@ -185,7 +185,7 @@ class ExplosivesPermitListResource(Resource, UserMixin):
                 "duplicate key value violates unique constraint \"explosives_permit_permit_number_key\"" \
                 in str(intgErr.__cause__)
             if is_duplicate_permit_number:
-                raise InvalidInputData("Provided permit number already exist", detailed_error = intgErr)
+                raise InvalidInputDataException("A record already exists with the provided \"Explosives Permit Number\".", detailed_error = intgErr)
             else:
                 raise MineException("Unexpected error occurred, when creating the esup", detailed_error = intgErr)
 

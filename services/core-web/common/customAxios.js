@@ -37,9 +37,9 @@ const CustomAxios = ({ errorToastMessage, suppressErrorNotification = false } = 
     let date = new Date()
     const reported_date = `${date} ${date.getHours()}:${date.getMinutes()}`;
     const email_title = "[MDS_ERROR] [TO_ADMIN] - " + reported_date + " - " + business_message;
-    const email_body = `<p>Reported by: ${user_name}</P><br/>
-      <p>Reported date: ${reported_date}</P><br/>
-      <p>Business error: ${business_message}</P><br/>
+    const email_body = `<p>Business error: ${business_message}</P>
+      <p>Reported date: ${reported_date}</P>
+      <p>Reported by: ${user_name}</P>
       <p>Detailed error: ${detailed_error}</P><br/>
       <p>To create a Jira ticket,
       <a href="https://bcmines.atlassian.net/jira/software/c/projects/MDS/boards/34/backlog">

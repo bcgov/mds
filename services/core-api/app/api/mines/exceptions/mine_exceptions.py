@@ -11,7 +11,7 @@ class MineException(MDSCoreAPIException):
         super().__init__(message, **kwargs)
         self.code = int(kwargs.get("status_code", 500))
 
-class InvalidInputData(MineException):
+class InvalidInputDataException(MineException):
     """Exception for invalid data in the input params/body"""
 
     description = (
