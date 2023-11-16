@@ -8,7 +8,10 @@ import { formatDate } from "@common/utils/helpers";
 import CoreTable from "@/components/common/CoreTable";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
-import { renderCategoryColumn, renderTextColumn } from "@/components/common/CoreTableCommonColumns";
+import {
+  renderCategoryColumn,
+  renderTextColumn,
+} from "@mds/common/components/common/CoreTableCommonColumns";
 
 const propTypes = {
   projects: PropTypes.arrayOf(CustomPropTypes.project).isRequired,

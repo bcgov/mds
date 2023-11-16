@@ -6,7 +6,11 @@ import {
   uploadDateColumn,
   uploadedByColumn,
 } from "./DocumentColumns";
-import { renderTextColumn, renderActionsColumn, ITableAction } from "./CoreTableCommonColumns";
+import {
+  renderTextColumn,
+  renderActionsColumn,
+  ITableAction,
+} from "@mds/common/components/common/CoreTableCommonColumns";
 import { some } from "lodash";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import DocumentCompression from "./DocumentCompression";

@@ -8,7 +8,7 @@ import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import { SUCCESS_CHECKMARK } from "@/constants/assets";
 import CoreTable from "@/components/common/CoreTable";
-import { renderTextColumn } from "@/components/common/CoreTableCommonColumns";
+import { renderTextColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 
 /**
  * @class ContactList - paginated list of contacts

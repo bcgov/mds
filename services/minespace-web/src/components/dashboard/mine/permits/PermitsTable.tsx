@@ -23,7 +23,7 @@ import {
   renderCategoryColumn,
   renderDateColumn,
   renderTextColumn,
-} from "@/components/common/CoreTableCommonColumns";
+} from "@mds/common/components/common/CoreTableCommonColumns";
 import IssuePermitDigitalCredential from "@/components/modalContent/verifiableCredentials/IssuePermitDigitalCredential";
 import { SortOrder } from "antd/lib/table/interface";
 

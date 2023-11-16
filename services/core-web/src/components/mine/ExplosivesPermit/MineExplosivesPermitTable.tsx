@@ -29,12 +29,12 @@ import {
   ITableAction,
   renderDateColumn,
   renderTextColumn,
-} from "@/components/common/CoreTableCommonColumns";
+} from "@mds/common/components/common/CoreTableCommonColumns";
 import VioletEditIcon from "@/assets/icons/violet-edit";
 import ActionMenu, {
   deleteConfirmWrapper,
   generateActionMenuItems,
-} from "@/components/common/ActionMenu";
+} from "@mds/common/components/common/ActionMenu";
 import { userHasRole } from "@mds/common/redux/reducers/authenticationReducer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFiles } from "@fortawesome/pro-light-svg-icons";

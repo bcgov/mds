@@ -26,7 +26,7 @@ import { fetchMineDocuments } from "@mds/common/redux/actionCreators/mineActionC
 import { getMineDocuments } from "@mds/common/redux/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 import { MajorMineApplicationDocument } from "@mds/common/models/documents/document";
-import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
+import { renderCategoryColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import * as Strings from "@mds/common/constants/strings";
 
 const propTypes = {

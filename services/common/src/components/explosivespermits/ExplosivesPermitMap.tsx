@@ -10,7 +10,7 @@ import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 
 import * as Strings from "@mds/common/constants/strings";
 import { Validate } from "@mds/common/redux/utils/Validate";
-import { SMALL_PIN_SELECTED } from "@mds/core-web/src/constants/assets";
+import { ReactComponent as SMALL_PIN_SELECTED } from "@mds/common/assets/images/small-pin-selected.svg";
 
 /**
  * @class ExplosivesPermitMap.js is a Leaflet Map component.

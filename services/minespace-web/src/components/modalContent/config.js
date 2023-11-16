@@ -17,6 +17,7 @@ import ArchiveDocumentModal from "@common/components/documents/ArchiveDocumentMo
 import DeleteDocumentModal from "@mds/common/components/documents/DeleteDocumentModal";
 import ReplaceDocumentModal from "@common/components/documents/ReplaceDocumentModal";
 import CreateInvitationModal from "@/components/modalContent/verifiableCredentials/createInvitationModal";
+import ExplosivesPermitViewModal from "@mds/common/components/explosivespermits/ExplosivesPermitViewModal";
 
 export const modalConfig = {
   ADD_REPORT: AddReportModal,
@@ -38,6 +39,7 @@ export const modalConfig = {
   VIEW_FILE_HISTORY: ViewFileHistoryModal,
   UPLOAD_INCIDENT_DOCUMENT: UploadIncidentDocumentModal,
   VC_WALLET_INVITATION: CreateInvitationModal,
+  VIEW_EXPLOSIVES_PERMIT: ExplosivesPermitViewModal,
 };
 
 export default modalConfig;

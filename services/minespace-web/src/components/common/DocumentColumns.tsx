@@ -2,7 +2,10 @@ import React, { ReactNode } from "react";
 import * as Strings from "@mds/common/constants/strings";
 import { Button, Popconfirm, Tag, Tooltip } from "antd";
 import { ColumnType } from "antd/lib/table";
-import { renderDateColumn, renderTextColumn } from "./CoreTableCommonColumns";
+import {
+  renderDateColumn,
+  renderTextColumn,
+} from "@mds/common/components/common/CoreTableCommonColumns";
 import { MineDocument } from "@mds/common/models/documents/document";
 import { nullableStringSorter } from "@common/utils/helpers";
 import ClockCircleOutlined from "@ant-design/icons/ClockCircleOutlined";
