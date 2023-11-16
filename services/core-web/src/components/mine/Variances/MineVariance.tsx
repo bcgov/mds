@@ -51,7 +51,6 @@ interface MineVarianceProps {
   varianceStatusOptionsHash: any;
 }
 
-// export class MineVariance extends Component {
 export const MineVariance: FC<MineVarianceProps> = (props) => {
   const [isLoaded, setisLoaded] = useState(false);
 
