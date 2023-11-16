@@ -83,14 +83,14 @@ class Config(object):
                 'formatter': 'default',
             }
         },
+        'root': {
+            'level': FLASK_LOGGING_LEVEL,
+            'handlers': ['file', 'console']
+        },
         'loggers': {
-            '': {
-                'level': FLASK_LOGGING_LEVEL,
-                'handlers': ['file', 'console']
-            },
             'werkzeug': {
-                'level': 'ERROR',  # Set the level to ERROR to disable logging
-                'propagate': False  # Prevent the log messages from being propagated to the root logger
+                'level': 'CRITICAL',
+                'propagate': False
             }
         }
     }
