@@ -3,7 +3,9 @@ import { connect } from "react-redux";
 import {
   Feature,
   IExplosivesPermit,
+  IExplosivesPermitAmendment,
   IPermit,
+  IPermitAmendment,
   VC_CONNECTION_STATES,
   VC_CRED_ISSUE_STATES,
   isFeatureEnabled,
@@ -115,7 +117,7 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
     return finalAppPackageCore.concat(finalAppPackageImported);
   };
 
-  const transformExpandedPermitRowData = (amendment, amendmentNumber) => ({
+  const transformExpandedPermitRowData = (amendment: IPermitAmendment, amendmentNumber) => ({
     ...amendment,
     amendmentNumber,
     maps: amendment.now_application_documents?.filter(
@@ -146,13 +148,14 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
     };
   };
 
-  const transformEsupData = (esup) => {
-    const transformEsupAmendment = (amendment, index = 0) => {
+  const transformEsupData = (esup: IExplosivesPermit) => {
+    const transformEsupAmendment = (
+      amendment: IExplosivesPermitAmendment | IExplosivesPermit,
+      index = 0
+    ) => {
       return {
         permit_no: amendment.permit_number,
         amendmentNumber: index + 1, //amendment.explosives_permit_amendment_id ?? 'first', //index + 1,
-        permit_amendment_guid:
-          amendment.explosives_permit_amendment_guid ?? esup.explosives_permit_guid,
         current_permittee: amendment.permittee_name,
         permit_status_code: amendment.is_closed ? "C" : "O",
         issue_date: amendment.issue_date,
@@ -164,20 +167,23 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
     };
 
     let lastAmended = esup.issue_date;
+    let isClosed = esup.is_closed;
     if (esup?.explosives_permit_amendments.length > 0) {
       const lastAmendment =
         esup.explosives_permit_amendments[esup.explosives_permit_amendments.length - 1];
       lastAmended = lastAmendment.issue_date;
+      isClosed = lastAmendment.is_closed;
     }
     // esup amendments don't initially include 1st record as amendment
     const firstAmendment = transformEsupAmendment(esup);
-    const permit_amendments = esup.explosives_permit_amendments
+    const permit_amendments: any[] = esup.explosives_permit_amendments
       .map((a, i) => transformEsupAmendment(a, i + 1))
-      .toReversed();
+      .reverse();
     permit_amendments.push(firstAmendment);
 
     return {
       ...firstAmendment,
+      permit_status_code: isClosed ? "C" : "O",
       firstIssued: esup.issue_date,
       lastAmended: lastAmended,
       permit_amendments: permit_amendments,
@@ -247,7 +253,8 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
       expandProps={{
         getDataSource: (record) => record.permit_amendments,
         subTableColumns: expandedColumns,
-        rowKey: "permit_amendment_guid",
+        rowKey: "amendmentNumber",
+        recordDescription: "amendment history",
       }}
     />
   );
