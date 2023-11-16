@@ -15,6 +15,18 @@ from app.api.mines.explosives_permit_amendment.models.explosives_permit_amendmen
 class ExplosivesPermitAmendmentResource(Resource, UserMixin):
     parser = CustomReqparser()
     parser.add_argument(
+        'amendment',
+        type=str,
+        store_missing=False,
+        required=False,
+    )
+    parser.add_argument(
+        'amendment_with_date',
+        type=str,
+        store_missing=False,
+        required=False,
+    )
+    parser.add_argument(
         'explosives_permit_id',
         type=str,
         store_missing=False,
@@ -155,6 +167,12 @@ class ExplosivesPermitAmendmentResource(Resource, UserMixin):
         store_missing=False,
         required=False,
     )
+    parser.add_argument(
+        'issue_date',
+        type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
+        store_missing=False,
+        required=False,
+    )
 
     @api.doc(
         description='Get an Explosives Permit Amendment.',
@@ -188,6 +206,8 @@ class ExplosivesPermitAmendmentResource(Resource, UserMixin):
         current_app.logger.debug('DOCUMENTS')
         current_app.logger.debug(data.get('documents', []))
         explosives_permit_amendment.update(
+            data.get('amendment'),
+            data.get('amendment_with_date'),
             data.get('explosives_permit_id'),
             data.get('permit_guid'), data.get('now_application_guid'),
             data.get('issuing_inspector_party_guid'), data.get('mine_manager_mine_party_appt_id'),
@@ -197,10 +217,11 @@ class ExplosivesPermitAmendmentResource(Resource, UserMixin):
             data.get('latitude'), data.get('longitude'), data.get('application_date'),
             data.get('description'),data.get('letter_date'),
             data.get('letter_body'),
+            data.get('issue_date'),
             data.get('explosive_magazines', []),
             data.get('detonator_magazines', []),
             data.get('documents', []),
-            data.get('generate_documents', [])
+            data.get('generate_documents', False)
         )
 
         explosives_permit_amendment.save()

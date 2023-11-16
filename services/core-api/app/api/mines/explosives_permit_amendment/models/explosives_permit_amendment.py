@@ -217,6 +217,8 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
             explosives_permit_amendment_guid=explosives_permit_amendment_guid, deleted_ind=False).one_or_none()
 
     def update(self,
+               amendment,
+               amendment_with_date,
                explosives_permit_id,
                permit_guid,
                now_application_guid,
@@ -235,6 +237,7 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
                description,
                letter_date,
                letter_body,
+               issue_date,
                explosive_magazines=[],
                detonator_magazines=[],
                documents=[],
@@ -252,6 +255,7 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
         self.expiry_date = expiry_date
         self.latitude = latitude
         self.longitude = longitude
+        self.issue_date = issue_date
 
         # Check for permit closed changes.
         self.is_closed = is_closed
@@ -340,7 +344,9 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
                         mine.region.regional_contact_office.mailing_address_line_1,
                         'rc_office_mailing_address_line_2':
                         mine.region.regional_contact_office.mailing_address_line_2,
-                        'is_draft': False
+                        'is_draft': False,
+                        'amendment': amendment,
+                        'amendment_with_date': amendment_with_date
                     }
                     explosives_permit_amendment_document_type = ExplosivesPermitDocumentType.get_with_context(
                         'LET', self.explosives_permit_amendment_guid)
@@ -356,7 +362,7 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
                         token, True, False, False)
 
                 def create_issued_permit():
-                    template_data = {'is_draft': False}
+                    template_data = {'is_draft': False, 'amendment': amendment}
                     explosives_permit_amendment_document_type = ExplosivesPermitDocumentType.get_with_context(
                         'PER', self.explosives_permit_amendment_guid)
                     template_data = explosives_permit_amendment_document_type.transform_template_data(

@@ -34,9 +34,10 @@ import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { IExplosivesPermit, IGroupedDropdownList, IMine, IOption } from "@mds/common";
 import { formatDate } from "@common/utils/helpers";
 
-interface ExplosivesPermitAmendmentValues {
+interface IExplosivesPermitAmendmentData {
   amendment?: string;
   amendment_with_date?: string;
+  explosives_permit_amendment_guid?: string;
 }
 interface ExplosivesPermitProps {
   isPermitTab: boolean;
@@ -71,29 +72,51 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
   explosivesPermitDocumentTypeDropdownOptions,
   ...props
 }) => {
-  const handleIssueExplosivesPermit = (values, record) => {
-    const payload = { ...record, ...values, application_status: "APP" };
-    return props
-      .updateExplosivesPermit(mineGuid, record.explosives_permit_guid, payload, true)
-      .then(() => {
-        props.fetchExplosivesPermits(mineGuid);
-        props.closeModal();
-      });
-  };
-
-  const getAmendmentValue = (record, issueDate: string) => {
-    const result: ExplosivesPermitAmendmentValues = {};
-    if (record.explosives_permit_amendments && record.explosives_permit_amendments.length > 0) {
-      const amendmentValue = `Amendment ${record.explosives_permit_amendments.length}`;
+  const getAmendmentData = (record, issueDate: string) => {
+    const result: IExplosivesPermitAmendmentData = {};
+    if (record.explosives_permit_amendments && record.explosives_permit_amendments.length > 1) {
+      const amendmentValue = `Amendment ${record.explosives_permit_amendments.length - 1}`;
+      result.explosives_permit_amendment_guid =
+        record.explosives_permit_amendments[0].explosives_permit_amendment_guid;
       result.amendment = amendmentValue;
       result.amendment_with_date = `(${amendmentValue}) issued ${formatDate(issueDate)}`;
     }
     return result;
   };
 
+  const handleIssueExplosivesPermit = async (values, record) => {
+    const { issue_date, explosives_permit_guid } = record;
+    const {
+      updateExplosivesPermit,
+      updateExplosivesPermitAmendment,
+      fetchExplosivesPermits,
+      closeModal,
+    } = props;
+
+    const amendmentData = getAmendmentData(record, issue_date);
+    const { explosives_permit_amendment_guid, amendment, amendment_with_date } = amendmentData;
+
+    const updatedValues = explosives_permit_amendment_guid
+      ? { ...values, ...amendmentData }
+      : values;
+
+    const payload = { ...record, ...updatedValues, application_status: "APP" };
+
+    if (amendment && amendment_with_date) {
+      await updateExplosivesPermitAmendment(payload, true);
+    } else {
+      await updateExplosivesPermit(mineGuid, explosives_permit_guid, payload, true);
+    }
+
+    fetchExplosivesPermits(mineGuid);
+    closeModal();
+  };
+
   const handleDocumentPreview = (documentTypeCode, values: any, record) => {
-    const amendmentValues = getAmendmentValue(record, values.issue_date);
-    values = { ...values, ...amendmentValues };
+    const amendmentData = getAmendmentData(record, values.issue_date);
+    if (amendmentData.amendment && amendmentData.amendment_with_date) {
+      values = { ...values, ...amendmentData };
+    }
     const payload = {
       explosives_permit_guid: record.explosives_permit_guid,
       template_data: values,
@@ -147,14 +170,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
     });
   };
 
-  const handleUpdateExplosivesPermit = (
-    values,
-    isAmendment = false,
-    record: IExplosivesPermit | null = null
-  ) => {
-    const amendmentValues = getAmendmentValue(record, values.issue_date);
-    values = { ...values, ...amendmentValues };
-    console.log("values", values);
+  const handleUpdateExplosivesPermit = (values, isAmendment = false) => {
     const payload = {
       ...values,
     };
@@ -185,18 +201,13 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
     const hasAmendments = record?.explosives_permit_amendments?.length > 1;
     const isProcessed = record !== null && record?.application_status !== "REC";
     event.preventDefault();
-
-    const onSubmitHandler = (values: any) => {
-      if (record) {
-        handleUpdateExplosivesPermit(values, hasAmendments, record);
-      } else {
-        handleAddExplosivesPermit(values);
-      }
-    };
-
     props.openModal({
       props: {
-        onSubmit: onSubmitHandler,
+        onSubmit: (values) => {
+          return record
+            ? handleUpdateExplosivesPermit(values, hasAmendments)
+            : handleAddExplosivesPermit(values);
+        },
         title: "Add Permit",
         initialValues,
         documents: record?.documents ?? [],
