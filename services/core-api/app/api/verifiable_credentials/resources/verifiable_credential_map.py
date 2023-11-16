@@ -59,7 +59,7 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
 
         credential_attrs["permit_no"] = permit_amendment.permit_no
         credential_attrs["permit_status"] = permit_amendment.permit.permit_status_code_description
-        credential_attrs["mine_party_appt"] = permit_amendment.permit.current_permittee
+        credential_attrs["permittee_name"] = permit_amendment.permit.current_permittee
         credential_attrs["mine_operation_status"] = mine_status_xref.mine_operation_status.description
         credential_attrs["mine_operation_status_reason"] = mine_status_xref.mine_operation_status_reason.description if mine_status_xref.mine_operation_status_reason else None
         credential_attrs["mine_operation_status_sub_reason"] = mine_status_xref.mine_operation_status_sub_reason.description if mine_status_xref.mine_operation_status_sub_reason else None
