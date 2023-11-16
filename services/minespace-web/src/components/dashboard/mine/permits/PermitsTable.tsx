@@ -29,6 +29,11 @@ import { SortOrder } from "antd/lib/table/interface";
 
 const draftAmendment = "DFT";
 
+const permitTypes = {
+  ESUP: "Explosive Storage and Use",
+  Permit: "Mines Act Permit",
+};
+
 interface PermitsTableProps {
   isLoaded: boolean;
   permits: IPermit[];
@@ -104,7 +109,14 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
         clickFunction: openIssuanceModal,
       },
     ];
-    const actionColumn = renderActionsColumn(actions);
+
+    const filterActions = (record, actionList) => {
+      if (record.permit_type !== permitTypes.Permit) {
+        return actionList.filter((a) => a.key !== "vc_issue");
+      }
+      return actionList;
+    };
+    const actionColumn = renderActionsColumn(actions, filterActions);
     columns.splice(3, 0, issuanceStateColumn);
     columns.push(actionColumn);
   }
@@ -140,7 +152,7 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
     return {
       ...permit,
       key: permit.permit_guid,
-      permit_type: "Mines Act Permit",
+      permit_type: permitTypes.Permit,
       majorMineInd: props.majorMineInd,
       authorization_end_date: latestAmendment?.authorization_end_date,
       firstIssued: firstAmendment?.issue_date,
@@ -167,7 +179,7 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
         description: amendment.description,
         authorization_end_date: amendment.expiry_date,
         related_documents: amendment.documents,
-        permit_type: "Explosive Storage and Use",
+        permit_type: permitTypes.ESUP,
       };
     };
 
