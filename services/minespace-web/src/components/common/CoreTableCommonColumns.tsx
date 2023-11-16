@@ -4,7 +4,7 @@ import { dateSorter, formatDate, nullableStringSorter } from "@common/utils/help
 import { EMPTY_FIELD } from "@mds/common/constants/strings";
 import { ColumnType } from "antd/lib/table";
 import { Button, Dropdown } from "antd";
-import { CaretDownOutlined } from "@ant-design/icons";
+import CaretDownOutlined from "@ant-design/icons/CaretDownOutlined";
 import { generateActionMenuItems } from "./ActionMenu";
 
 export const renderTextColumn = (

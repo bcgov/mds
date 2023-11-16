@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Row, Col, Typography, Button } from "antd";
-import { PlusCircleFilled } from "@ant-design/icons";
+import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import moment from "moment";
 import PropTypes from "prop-types";
 import { getMines } from "@mds/common/redux/selectors/mineSelectors";

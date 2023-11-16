@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Row } from "antd";
-import { EyeOutlined } from "@ant-design/icons";
+import EyeOutlined from "@ant-design/icons/EyeOutlined";
 import { NOTICE_OF_DEPARTURE_STATUS, NOTICE_OF_DEPARTURE_TYPE } from "@mds/common/constants/strings";
 import { EDITABLE_NOTICE_OF_DEPARTURE_STATUS, EMPTY_FIELD } from "@/constants/strings";
 

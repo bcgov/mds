@@ -5,7 +5,7 @@ import {
 } from "@mds/common/constants/strings";
 import { bindActionCreators, compose } from "redux";
 
-import { PlusCircleFilled } from "@ant-design/icons";
+import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import React, { FC } from "react";
 import { connect } from "react-redux";
 import { getTsf } from "@mds/common/redux/reducers/tailingsReducer";

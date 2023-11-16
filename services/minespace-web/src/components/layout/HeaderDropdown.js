@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
-import { CaretDownOutlined } from "@ant-design/icons";
+import CaretDownOutlined from "@ant-design/icons/CaretDownOutlined";
 import { Menu, Dropdown, Button, Divider } from "antd";
 import MediaQuery from "react-responsive";
 import PropTypes from "prop-types";

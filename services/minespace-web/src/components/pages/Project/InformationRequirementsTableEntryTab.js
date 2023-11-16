@@ -1,7 +1,7 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import { Row, Col, Typography, Steps, Button, Empty } from "antd";
-import { ExclamationCircleOutlined } from "@ant-design/icons";
+import ExclamationCircleOutlined from "@ant-design/icons/ExclamationCircleOutlined";
 import PropTypes from "prop-types";
 import * as routes from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
@@ -30,17 +30,17 @@ export const InformationRequirementsTableEntryTab = (props) => {
       label: irtExists ? "Resume" : "Start",
       link: irtExists
         ? () =>
-            props.history.push({
-              pathname: `${routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
-                projectGuid,
-                irtGuid
-              )}`,
-              state: { current: 2 },
-            })
+          props.history.push({
+            pathname: `${routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+              projectGuid,
+              irtGuid
+            )}`,
+            state: { current: 2 },
+          })
         : () =>
-            props.history.push(
-              `${routes.ADD_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(projectGuid)}`
-            ),
+          props.history.push(
+            `${routes.ADD_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(projectGuid)}`
+          ),
     };
     let content = null;
 
