@@ -5,7 +5,7 @@ import { bindActionCreators, compose } from "redux";
 import { createDam, updateDam } from "@mds/common/redux/actionCreators/damActionCreator";
 import { getFormSyncErrors, getFormValues, InjectedFormProps, reduxForm, submit } from "redux-form";
 
-import { ArrowLeftOutlined } from "@ant-design/icons";
+import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import Step from "@common/components/Step";
 import SteppedForm from "@common/components/SteppedForm";
 import { connect } from "react-redux";

@@ -26,7 +26,7 @@ import {
   touch,
 } from "redux-form";
 
-import { ArrowLeftOutlined } from "@ant-design/icons";
+import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import BasicInformation from "@common/components/tailings/BasicInformation";
 import Step from "@common/components/Step";
 import SteppedForm from "@common/components/SteppedForm";
