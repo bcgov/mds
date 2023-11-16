@@ -25,6 +25,7 @@ import {
   renderTextColumn,
 } from "@/components/common/CoreTableCommonColumns";
 import IssuePermitDigitalCredential from "@/components/modalContent/verifiableCredentials/IssuePermitDigitalCredential";
+import { SortOrder } from "antd/lib/table/interface";
 
 const draftAmendment = "DFT";
 
@@ -50,7 +51,10 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
     renderCategoryColumn("permit_status_code", "Permit Status", { C: "Closed", O: "Open" }, true),
     renderDateColumn("authorization_end_date", "Authorization End Date", true),
     renderDateColumn("firstIssued", "First Issued", true),
-    renderDateColumn("lastAmended", "Last Amended", true),
+    {
+      ...renderDateColumn("lastAmended", "Last Amended", true),
+      defaultSortOrder: "descend" as SortOrder,
+    },
   ];
 
   if (
@@ -135,6 +139,7 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
 
     return {
       ...permit,
+      key: permit.permit_guid,
       permit_type: "Mines Act Permit",
       majorMineInd: props.majorMineInd,
       authorization_end_date: latestAmendment?.authorization_end_date,
@@ -155,7 +160,7 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
     ) => {
       return {
         permit_no: amendment.permit_number,
-        amendmentNumber: index + 1, //amendment.explosives_permit_amendment_id ?? 'first', //index + 1,
+        amendmentNumber: index + 1,
         current_permittee: amendment.permittee_name,
         permit_status_code: amendment.is_closed ? "C" : "O",
         issue_date: amendment.issue_date,
@@ -183,6 +188,7 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
 
     return {
       ...firstAmendment,
+      key: esup.explosives_permit_guid,
       permit_status_code: isClosed ? "C" : "O",
       firstIssued: esup.issue_date,
       lastAmended: lastAmended,
@@ -248,7 +254,6 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
       loading={!props.isLoaded}
       columns={columns}
       dataSource={rowData}
-      rowKey="permit_no"
       emptyText="This mine has no permit data."
       expandProps={{
         getDataSource: (record) => record.permit_amendments,
