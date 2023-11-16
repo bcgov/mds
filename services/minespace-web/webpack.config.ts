@@ -6,7 +6,7 @@ const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const { merge } = require("webpack-merge");
 const path = require("path");
 const dotenv = require("dotenv").config({ path: `${__dirname}/.env` });
-// const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
+const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
 const threadLoader = require("thread-loader");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlCriticalWebpackPlugin = require("html-critical-webpack-plugin");
@@ -23,9 +23,9 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPl
 const MomentTimezoneDataPlugin = require("moment-timezone-data-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
-// const smp = new SpeedMeasurePlugin({
-//   disable: !process.env.MEASURE_SPEED,
-// });
+const smp = new SpeedMeasurePlugin({
+  disable: !process.env.MEASURE_SPEED,
+});
 
 const PATHS = {
   src: path.join(__dirname, "src"),
@@ -88,15 +88,13 @@ const commonConfig = merge([
       new webpack.ProvidePlugin({
         REQUEST_HEADER: path.resolve(__dirname, "common/utils/RequestHeaders.js"),
       }),
-      new BundleAnalyzerPlugin({
-        analyzerMode: 'static',
-        generateStatsFile: false,
-        statsOptions: { source: false }
-      }),
+      // Prevent moment locales to be bundled with the app
+      // to reduce app size
       new webpack.IgnorePlugin({
         resourceRegExp: /^\.\/locale$/,
         contextRegExp: /moment$/,
       }),
+      // Explicitly load timezone data for Canada and US
       new MomentTimezoneDataPlugin({
         startYear: 1900,
         endYear: 2300,
@@ -108,7 +106,12 @@ const commonConfig = merge([
       extensions: [".tsx", ".ts", ".js"],
       alias: {
         ...PATH_ALIASES,
-        // "react-dom": "@hot-loader/react-dom",
+        ...(process.env.NODE_ENV === "development"
+          ? {
+              "react-dom": "@hot-loader/react-dom",
+            }
+          : {}),
+        // Use lodash-es that supports proper tree-shaking
         lodash: "lodash-es",
       },
     },
@@ -223,7 +226,6 @@ const prodConfig = merge([
           name: "vendor",
           chunks: "all",
           priority: -5,
-          // maxSize: 2048 * 1000
         },
         syncfusion: {
           test: /[\\/]node_modules\/\@syncfusion*/,
@@ -246,7 +248,7 @@ const prodConfig = merge([
       },
     },
   }),
-  // parts.extractManifest(),
+  parts.extractManifest(),
   parts.copy(PATHS.public, path.join(PATHS.build, "public")),
   {
     plugins: [
@@ -265,7 +267,7 @@ const prodConfig = merge([
       }),
       new BundleAnalyzerPlugin({
         analyzerMode: "static",
-        generateStatsFile: false,
+        generateStatsFile: true,
         statsOptions: { source: false },
       }),
     ],
@@ -281,6 +283,6 @@ module.exports = () => {
   if (mode === DEVELOPMENT) {
     const conf = merge(commonConfig, devConfig, { mode });
 
-    return process.env.MEASURE_SPEED ? conf : conf;
+    return process.env.MEASURE_SPEED ? smp.wrap(conf) : conf;
   }
 };
