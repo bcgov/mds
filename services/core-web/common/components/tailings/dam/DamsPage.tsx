@@ -5,7 +5,7 @@ import { bindActionCreators, compose } from "redux";
 import { createDam, updateDam } from "@mds/common/redux/actionCreators/damActionCreator";
 import { getFormSyncErrors, getFormValues, InjectedFormProps, reduxForm, submit } from "redux-form";
 
-import { ArrowLeftOutlined } from "@ant-design/icons";
+import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import Step from "@common/components/Step";
 import SteppedForm from "@common/components/SteppedForm";
 import { connect } from "react-redux";
@@ -102,9 +102,8 @@ const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
         </Col>
         <Col span={24}>
           <Popconfirm
-            title={`Are you sure you want to cancel ${
-              tailingsStorageFacilityGuid ? "updating this" : "creating a new"
-            } dam?
+            title={`Are you sure you want to cancel ${tailingsStorageFacilityGuid ? "updating this" : "creating a new"
+              } dam?
             All unsaved data on this page will be lost.`}
             onConfirm={handleBack}
             cancelText="No"
@@ -122,13 +121,12 @@ const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
       <SteppedForm
         errors={[]}
         handleSaveData={handleSave}
-        handleTabChange={() => {}}
+        handleTabChange={() => { }}
         activeTab="basic-dam-information"
         submitText="Save and Return to Associated Dams"
         handleCancel={handleBack}
-        cancelConfirmMessage={`Are you sure you want to cancel ${
-          tailingsStorageFacilityGuid ? "updating this" : "creating a new"
-        } dam?
+        cancelConfirmMessage={`Are you sure you want to cancel ${tailingsStorageFacilityGuid ? "updating this" : "creating a new"
+          } dam?
         All unsaved data on this page will be lost.`}
       >
         {[

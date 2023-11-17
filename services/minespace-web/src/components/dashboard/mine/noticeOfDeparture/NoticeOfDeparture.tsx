@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import { Button, Col, Row, Typography } from "antd";
-import { PlusCircleFilled } from "@ant-design/icons";
+import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import {
   addDocumentToNoticeOfDeparture,

@@ -10,6 +10,7 @@ const TerserPlugin = require("terser-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
+const { EsbuildPlugin } = require("esbuild-loader");
 
 const { WebpackManifestPlugin } = require("webpack-manifest-plugin");
 
@@ -18,13 +19,13 @@ const postCSSLoader = {
   options: {
     postcssOptions: {
       plugins: () => [autoprefixer],
-    }
+    },
   },
 };
 
 exports.devServer = ({ host, port } = {}) => ({
   cache: {
-    type: 'filesystem'
+    type: "filesystem",
   },
   stats: "errors-only",
   devServer: {
@@ -40,7 +41,7 @@ exports.devServer = ({ host, port } = {}) => ({
         errors: false,
         warnings: false,
       },
-    }
+    },
   },
 });
 
@@ -51,22 +52,22 @@ exports.loadJS = ({ include, exclude } = {}) => ({
         test: /\.[[t]sx?$/,
         include,
         exclude,
-        loader: 'esbuild-loader',
+        loader: "esbuild-loader",
         options: {
-          target: 'es2016'
-        }
+          target: "es2016",
+        },
       },
       {
         test: /\.[[j]sx?$/,
         include,
         exclude,
 
-        loader: 'esbuild-loader',
+        loader: "esbuild-loader",
         options: {
           /// Treat .js files as `.jsx` files
-          loader: 'jsx',
-          target: 'es2016'
-        }
+          loader: "jsx",
+          target: "es2016",
+        },
       },
     ],
   },
@@ -80,10 +81,10 @@ exports.loadTS = ({ include, exclude } = {}) => ({
         include,
         exclude,
 
-        loader: 'esbuild-loader',
+        loader: "esbuild-loader",
         options: {
-          target: 'es2016'
-        }
+          target: "es2016",
+        },
       },
     ],
   },
@@ -414,22 +415,20 @@ exports.generateSourceMaps = ({ type } = {}) => ({
 
 exports.bundleOptimization = ({ options, cssOptions } = {}) => ({
   optimization: {
+    runtimeChunk: {
+      name: "manifest",
+    },
     splitChunks: options,
+    minimize: true,
     minimizer: [
-      new TerserPlugin({
-        parallel: true,
-        terserOptions: {
-          compress: false,
-        },
+      new EsbuildPlugin({
+        target: "es2016",
       }),
       new CssMinimizerPlugin({
         minimizerOptions: {
-          preset: [
-            'default',
-            cssOptions
-          ]
-        }
-      })
+          preset: ["default", cssOptions],
+        },
+      }),
     ],
   },
 });
@@ -465,7 +464,9 @@ exports.clean = () => ({
 });
 
 exports.copy = (from, to) => ({
-  plugins: [new CopyWebpackPlugin({ patterns: [{ from, to, globOptions: { ignore: ["*.html"] } }] })],
+  plugins: [
+    new CopyWebpackPlugin({ patterns: [{ from, to, globOptions: { ignore: ["**/index.html"] } }] }),
+  ],
 });
 
 exports.extractManifest = () => ({

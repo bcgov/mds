@@ -18,7 +18,11 @@ export const renderTextColumn = (
     title,
     dataIndex,
     key: dataIndex,
-    render: (text: string) => <div title={title}>{text ?? placeHolder}</div>,
+    render: (text: string) => (
+      <div title={title} className={`${dataIndex}-column`}>
+        {text ?? placeHolder}
+      </div>
+    ),
     ...(width !== undefined ? { width } : null),
     ...(sortable ? { sorter: nullableStringSorter(dataIndex) } : null),
   };

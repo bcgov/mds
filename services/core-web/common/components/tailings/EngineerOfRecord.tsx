@@ -5,7 +5,7 @@ import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import { IDocument, IMine, IMinePartyAppt, IParty, PARTY_APPOINTMENT_STATUS } from "@mds/common";
 
 import { MINE_PARTY_APPOINTMENT_DOCUMENTS } from "@mds/common/constants/API";
-import { PlusCircleFilled } from "@ant-design/icons";
+import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import { bindActionCreators } from "redux";
 import { connect, useSelector } from "react-redux";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";

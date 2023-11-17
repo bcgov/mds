@@ -58,6 +58,10 @@ class Config(object):
     # Environment config
     FLASK_LOGGING_LEVEL = os.environ.get('FLASK_LOGGING_LEVEL',
                                          'INFO')                # ['DEBUG','INFO','WARN','ERROR','CRITICAL']
+    WERKZEUG_LOGGING_LEVEL = os.environ.get('WERKZEUG_LOGGING_LEVEL',
+                                         'CRITICAL')  # ['DEBUG','INFO','WARN','ERROR','CRITICAL']
+    DISPLAY_WERKZEUG_LOG = os.environ.get('DISPLAY_WERKZEUG_LOG',
+                                            False)
 
     LOGGING_DICT_CONFIG = {
         'version': 1,
@@ -86,6 +90,12 @@ class Config(object):
         'root': {
             'level': FLASK_LOGGING_LEVEL,
             'handlers': ['file', 'console']
+        },
+        'loggers': {
+            'werkzeug': {
+                'level': WERKZEUG_LOGGING_LEVEL,
+                'propagate': DISPLAY_WERKZEUG_LOG
+            }
         }
     }
 

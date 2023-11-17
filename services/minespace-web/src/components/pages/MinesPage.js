@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { EnvironmentOutlined } from "@ant-design/icons";
+import EnvironmentOutlined from "@ant-design/icons/EnvironmentOutlined";
 import { Row, Col, Divider, Typography } from "antd";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";

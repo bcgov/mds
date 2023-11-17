@@ -4,7 +4,7 @@ import { dateSorter, formatDate, nullableStringSorter } from "@common/utils/help
 import { EMPTY_FIELD } from "@mds/common/constants/strings";
 import { ColumnType } from "antd/lib/table";
 import { Button, Dropdown } from "antd";
-import { CaretDownOutlined } from "@ant-design/icons";
+import CaretDownOutlined from "@ant-design/icons/CaretDownOutlined";
 import { generateActionMenuItems } from "./ActionMenu";
 
 export const renderTextColumn = (
@@ -18,7 +18,11 @@ export const renderTextColumn = (
     title,
     dataIndex,
     key: dataIndex,
-    render: (text: string) => <div title={title}>{text ?? placeHolder}</div>,
+    render: (text: string) => (
+      <div title={title} className={`${dataIndex}-column`}>
+        {text ?? placeHolder}
+      </div>
+    ),
     ...(width !== undefined ? { width } : null),
     ...(sortable ? { sorter: nullableStringSorter(dataIndex) } : null),
   };

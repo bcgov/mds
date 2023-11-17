@@ -13,7 +13,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { SMALL_PIN } from "@/constants/assets";
 
 /**
- * @class Map.js is a Leaflet Map component.
+ * @class LeafletMap.js is a Leaflet Map component.
  */
 
 const propTypes = {
@@ -28,7 +28,7 @@ const defaultProps = {
   controls: true,
 };
 
-class Map extends Component {
+class LeafletMap extends Component {
   // if mine does not have a location, set a default to center the map
   latLong =
     this.props.mine &&
@@ -120,7 +120,7 @@ class Map extends Component {
   }
 }
 
-Map.propTypes = propTypes;
-Map.defaultProps = defaultProps;
+LeafletMap.propTypes = propTypes;
+LeafletMap.defaultProps = defaultProps;
 
-export default Map;
+export default LeafletMap;
