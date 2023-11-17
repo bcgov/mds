@@ -3,7 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { isEmpty } from "lodash";
-import { InfoCircleOutlined } from "@ant-design/icons";
+import InfoCircleOutlined from "@ant-design/icons/InfoCircleOutlined";
 import { Row, Col, Button, Descriptions, Typography, Badge, Tooltip } from "antd";
 
 import {

@@ -4,7 +4,7 @@ import { destroy } from "redux-form";
 import { withRouter } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import { Button, Col, Row, Typography } from "antd";
-import { PlusCircleFilled } from "@ant-design/icons";
+import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import PropTypes from "prop-types";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import { createMineIncident, fetchIncidents } from "@mds/common/redux/actionCreators/incidentActionCreator";

@@ -12,7 +12,7 @@ import {
   touch,
 } from "redux-form";
 import { Row, Col, Typography, Divider } from "antd";
-import { ArrowLeftOutlined } from "@ant-design/icons";
+import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import { getMines } from "@mds/common/redux/selectors/mineSelectors";
 import {
   getProjectSummary,

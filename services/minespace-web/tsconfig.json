@@ -5,11 +5,20 @@
     "jsx": "react",
     "outDir": "build" /* Redirect output structure to the directory. */,
     "paths": {
-      "@common/*": ["common/*"],
-      "@mds/common": ["../common/src"],
-      "@mds/common/*": ["../common/src/*"],
-      "@/*": ["src/*"]
+      "@common/*": [
+        "common/*"
+      ],
+      "@mds/common": [
+        "../common/src"
+      ],
+      "@mds/common/*": [
+        "../common/src/*"
+      ],
+      "@/*": [
+        "src/*"
+      ]
     },
+    "module": "ESNext",
     "moduleResolution": "node",
     "sourceMap": true,
     "allowJs": true /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */,
@@ -25,6 +34,16 @@
       "types"
     ] /* List of folders to include type definitions from. */
   },
-  "include": ["src/**/*", "common/**/*", "tsconfig.json", "../../.eslintrc.js", "../common/src/@Types/**/*"],
-  "exclude": ["node_modules", "src/**/*.test.ts", "src/**/*.test.tsx"]
+  "include": [
+    "src/**/*",
+    "common/**/*",
+    "tsconfig.json",
+    "../../.eslintrc.js",
+    "../common/src/@Types/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx"
+  ]
 }

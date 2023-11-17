@@ -4,7 +4,7 @@ import React, { FC, useContext, useEffect, useState } from "react";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
 
-import { PlusCircleFilled } from "@ant-design/icons";
+import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import { bindActionCreators } from "redux";
 import { connect, useSelector } from "react-redux";
 import {

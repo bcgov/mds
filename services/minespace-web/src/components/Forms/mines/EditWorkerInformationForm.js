@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { InfoCircleOutlined } from "@ant-design/icons";
+import InfoCircleOutlined from "@ant-design/icons/InfoCircleOutlined";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Popconfirm, Row, Tooltip, Typography, Descriptions } from "antd";

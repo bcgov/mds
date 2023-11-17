@@ -1,5 +1,5 @@
 import React from "react";
-import { StopOutlined } from "@ant-design/icons";
+import StopOutlined from "@ant-design/icons/StopOutlined";
 import { Result, Row, Col, Typography } from "antd";
 import * as Strings from "@/constants/strings";
 

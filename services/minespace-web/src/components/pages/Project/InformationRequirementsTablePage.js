@@ -3,13 +3,11 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Link, withRouter } from "react-router-dom";
 import { Row, Col, Button, Typography, Steps, Popconfirm } from "antd";
-import {
-  ArrowLeftOutlined,
-  CheckCircleOutlined,
-  CloseCircleOutlined,
-  DownloadOutlined,
-  HourglassOutlined,
-} from "@ant-design/icons";
+import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
+import CheckCircleOutlined from "@ant-design/icons/CheckCircleOutlined";
+import CloseCircleOutlined from "@ant-design/icons/CloseCircleOutlined";
+import DownloadOutlined from "@ant-design/icons/DownloadOutlined";
+import HourglassOutlined from "@ant-design/icons/HourglassOutlined";
 import PropTypes from "prop-types";
 import { ENVIRONMENT } from "@mds/common";
 import * as API from "@mds/common/constants/API";
@@ -81,194 +79,194 @@ const StepForms = (
   downloadIRTTemplate,
   openViewFileHistoryModal
 ) => [
-  {
-    title: "Download Template",
-    content: (
-      <IRTDownloadTemplate
-        downloadIRTTemplate={() =>
-          downloadIRTTemplate(
-            ENVIRONMENT.apiUrl + API.INFORMATION_REQUIREMENTS_TABLE_TEMPLATE_DOWNLOAD
-          )
-        }
-      />
-    ),
-    buttons: [
-      null,
-      <Button id="step1-next" type="primary" onClick={() => next()}>
-        Continue to Import
-      </Button>,
-    ],
-  },
-  {
-    title: "Import File",
-    content: (
-      <IRTFileImport
-        projectGuid={props.project.project_guid}
-        informationRequirementsTableDocumentTypesHash={
-          props.informationRequirementsTableDocumentTypesHash
-        }
-        importIsSuccessful={importIsSuccessful}
-        downloadIRTTemplate={downloadIRTTemplate}
-      />
-    ),
-    buttons: [
-      <>
-        <Button
-          id="step-back"
-          type="tertiary"
-          className="full-mobile"
-          style={{ marginRight: "12px" }}
-          onClick={() => prev()}
-          disabled={state.submitting}
-        >
-          Back
-        </Button>
-        <Button
-          id="step2-next"
-          type="primary"
-          onClick={() => {
-            props.history.push({
-              pathname: `${routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
-                props.project?.project_guid,
-                props.project?.information_requirements_table?.irt_guid
-              )}`,
-              state: { current: 2 },
-            });
-          }}
-          disabled={
-            !state.uploadedSuccessfully && !props.project?.information_requirements_table?.irt_guid
+    {
+      title: "Download Template",
+      content: (
+        <IRTDownloadTemplate
+          downloadIRTTemplate={() =>
+            downloadIRTTemplate(
+              ENVIRONMENT.apiUrl + API.INFORMATION_REQUIREMENTS_TABLE_TEMPLATE_DOWNLOAD
+            )
           }
-        >
-          Continue to Review
-        </Button>
-      </>,
-    ],
-  },
-  {
-    title: "Review & Submit",
-    content: (
-      <>
-        {props.project?.information_requirements_table?.status_code === "DFT" ? (
-          <>
-            <Typography.Title level={4}>Review IRT before submission</Typography.Title>
-            <Typography.Paragraph>
-              Review imported data before submission. Check the requirements and comments fields
-              that are required for the project.
-            </Typography.Paragraph>
-          </>
-        ) : null}
-
-        <InformationRequirementsTableForm
-          project={props.project}
-          informationRequirementsTable={props.project?.information_requirements_table}
-          requirements={props.requirements}
-          tab={props.match?.params?.tab}
-          sideMenuOptions={tabs}
-          isEditMode={state.isEditMode}
-          handleTabChange={handleTabChange}
         />
-      </>
-    ),
-    buttons: [
-      <>
-        {props.project.information_requirements_table?.status_code === "DFT" ? (
-          <>
-            <Button
-              id="step-back"
-              type="tertiary"
-              className="full-mobile"
-              style={{ marginRight: "24px" }}
-              onClick={() => {
-                props.history.push({
-                  pathname: `${routes.ADD_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
-                    props.project.project_guid
-                  )}`,
-                  state: { current: 1 },
-                });
-              }}
-              disabled={props.project?.information_requirements_table?.status_code === "APV"}
-            >
-              Back
-            </Button>
-            <Link
-              to={routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
-                props.project?.project_guid,
-                props.project?.information_requirements_table?.irt_guid
-              )}
-            >
-              <AuthorizationWrapper>
-                <Popconfirm
-                  placement="topRight"
-                  title="Are you sure you want to submit your final IRT, no changes could be made after submitting?"
-                  onConfirm={() =>
-                    handleIRTUpdate(
-                      {
-                        status_code: "SUB",
-                      },
-                      "Successfully submitted final IRT."
-                    )
-                  }
-                  okText="Yes"
-                  cancelText="No"
-                >
-                  <Button id="submit_irt" type="primary">
-                    Submit IRT
-                  </Button>
-                </Popconfirm>
-              </AuthorizationWrapper>
-            </Link>
-          </>
-        ) : (
-          <>
-            {props.project.information_requirements_table?.status_code !== "APV" &&
-              props.project.information_requirements_table?.status_code !== "UNR" && (
-                <Button
-                  type="secondary"
-                  htmlType="submit"
-                  style={{ marginRight: "24px" }}
-                  onClick={() => {
-                    props.history.push({
-                      pathname: `${routes.RESUBMIT_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
-                        props.project?.project_guid,
-                        props.project?.information_requirements_table?.irt_guid
-                      )}`,
-                      state: { current: 1 },
-                    });
-                  }}
-                  disabled={state.submitting}
-                >
-                  Resubmit IRT
-                </Button>
-              )}
-            <Button
-              type="ghost"
-              style={{ border: "none", marginRight: "12px" }}
-              className="full-mobile"
-              onClick={() =>
-                downloadIRTTemplate(
-                  ENVIRONMENT.apiUrl + API.INFORMATION_REQUIREMENTS_TABLE_TEMPLATE_DOWNLOAD
-                )
-              }
-            >
-              <DownloadOutlined />
-              Download IRT template
-            </Button>
+      ),
+      buttons: [
+        null,
+        <Button id="step1-next" type="primary" onClick={() => next()}>
+          Continue to Import
+        </Button>,
+      ],
+    },
+    {
+      title: "Import File",
+      content: (
+        <IRTFileImport
+          projectGuid={props.project.project_guid}
+          informationRequirementsTableDocumentTypesHash={
+            props.informationRequirementsTableDocumentTypesHash
+          }
+          importIsSuccessful={importIsSuccessful}
+          downloadIRTTemplate={downloadIRTTemplate}
+        />
+      ),
+      buttons: [
+        <>
+          <Button
+            id="step-back"
+            type="tertiary"
+            className="full-mobile"
+            style={{ marginRight: "12px" }}
+            onClick={() => prev()}
+            disabled={state.submitting}
+          >
+            Back
+          </Button>
+          <Button
+            id="step2-next"
+            type="primary"
+            onClick={() => {
+              props.history.push({
+                pathname: `${routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+                  props.project?.project_guid,
+                  props.project?.information_requirements_table?.irt_guid
+                )}`,
+                state: { current: 2 },
+              });
+            }}
+            disabled={
+              !state.uploadedSuccessfully && !props.project?.information_requirements_table?.irt_guid
+            }
+          >
+            Continue to Review
+          </Button>
+        </>,
+      ],
+    },
+    {
+      title: "Review & Submit",
+      content: (
+        <>
+          {props.project?.information_requirements_table?.status_code === "DFT" ? (
+            <>
+              <Typography.Title level={4}>Review IRT before submission</Typography.Title>
+              <Typography.Paragraph>
+                Review imported data before submission. Check the requirements and comments fields
+                that are required for the project.
+              </Typography.Paragraph>
+            </>
+          ) : null}
 
-            <Button
-              type="ghost"
-              style={{ border: "none" }}
-              className="full-mobile"
-              onClick={(event) => openViewFileHistoryModal(event)}
-            >
-              <HourglassOutlined />
-              File History
-            </Button>
-          </>
-        )}
-      </>,
-    ],
-  },
-];
+          <InformationRequirementsTableForm
+            project={props.project}
+            informationRequirementsTable={props.project?.information_requirements_table}
+            requirements={props.requirements}
+            tab={props.match?.params?.tab}
+            sideMenuOptions={tabs}
+            isEditMode={state.isEditMode}
+            handleTabChange={handleTabChange}
+          />
+        </>
+      ),
+      buttons: [
+        <>
+          {props.project.information_requirements_table?.status_code === "DFT" ? (
+            <>
+              <Button
+                id="step-back"
+                type="tertiary"
+                className="full-mobile"
+                style={{ marginRight: "24px" }}
+                onClick={() => {
+                  props.history.push({
+                    pathname: `${routes.ADD_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+                      props.project.project_guid
+                    )}`,
+                    state: { current: 1 },
+                  });
+                }}
+                disabled={props.project?.information_requirements_table?.status_code === "APV"}
+              >
+                Back
+              </Button>
+              <Link
+                to={routes.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+                  props.project?.project_guid,
+                  props.project?.information_requirements_table?.irt_guid
+                )}
+              >
+                <AuthorizationWrapper>
+                  <Popconfirm
+                    placement="topRight"
+                    title="Are you sure you want to submit your final IRT, no changes could be made after submitting?"
+                    onConfirm={() =>
+                      handleIRTUpdate(
+                        {
+                          status_code: "SUB",
+                        },
+                        "Successfully submitted final IRT."
+                      )
+                    }
+                    okText="Yes"
+                    cancelText="No"
+                  >
+                    <Button id="submit_irt" type="primary">
+                      Submit IRT
+                    </Button>
+                  </Popconfirm>
+                </AuthorizationWrapper>
+              </Link>
+            </>
+          ) : (
+            <>
+              {props.project.information_requirements_table?.status_code !== "APV" &&
+                props.project.information_requirements_table?.status_code !== "UNR" && (
+                  <Button
+                    type="secondary"
+                    htmlType="submit"
+                    style={{ marginRight: "24px" }}
+                    onClick={() => {
+                      props.history.push({
+                        pathname: `${routes.RESUBMIT_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+                          props.project?.project_guid,
+                          props.project?.information_requirements_table?.irt_guid
+                        )}`,
+                        state: { current: 1 },
+                      });
+                    }}
+                    disabled={state.submitting}
+                  >
+                    Resubmit IRT
+                  </Button>
+                )}
+              <Button
+                type="ghost"
+                style={{ border: "none", marginRight: "12px" }}
+                className="full-mobile"
+                onClick={() =>
+                  downloadIRTTemplate(
+                    ENVIRONMENT.apiUrl + API.INFORMATION_REQUIREMENTS_TABLE_TEMPLATE_DOWNLOAD
+                  )
+                }
+              >
+                <DownloadOutlined />
+                Download IRT template
+              </Button>
+
+              <Button
+                type="ghost"
+                style={{ border: "none" }}
+                className="full-mobile"
+                onClick={(event) => openViewFileHistoryModal(event)}
+              >
+                <HourglassOutlined />
+                File History
+              </Button>
+            </>
+          )}
+        </>,
+      ],
+    },
+  ];
 
 export class InformationRequirementsTablePage extends Component {
   state = {

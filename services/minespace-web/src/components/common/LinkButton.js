@@ -4,9 +4,9 @@ import PropTypes from "prop-types";
 const propTypes = {
   onClick: PropTypes.func.isRequired,
   tabIndex: PropTypes.number,
-  // eslint-disable-next-line  react/forbid-prop-types
   children: PropTypes.any,
   disabled: PropTypes.bool,
+  title: PropTypes.string,
 };
 
 const defaultProps = {

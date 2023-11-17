@@ -8,7 +8,7 @@ import {
   fetchMineRecordById,
   updateTailingsStorageFacility,
 } from "@mds/common/redux/actionCreators/mineActionCreator";
-import { PlusCircleFilled } from "@ant-design/icons";
+import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import { useHistory } from "react-router-dom";
 import { resetForm } from "@common/utils/helpers";
 import { storeTsf, clearTsf } from "@mds/common/redux/actions/tailingsActions";
