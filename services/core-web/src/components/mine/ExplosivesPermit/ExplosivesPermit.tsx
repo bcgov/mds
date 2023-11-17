@@ -31,9 +31,10 @@ import AddButton from "@/components/common/buttons/AddButton";
 import MineExplosivesPermitTable from "@/components/mine/ExplosivesPermit/MineExplosivesPermitTable";
 import { modalConfig } from "@/components/modalContent/config";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
-import { IExplosivesPermit, IGroupedDropdownList, IMine, IOption } from "@mds/common";
+import { Feature, IExplosivesPermit, IGroupedDropdownList, IMine, IOption } from "@mds/common";
 import { formatDate } from "@common/utils/helpers";
 import { EsupFormMode } from "@/components/Forms/ExplosivesPermit/ExplosivesPermitFormNew";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 
 interface IExplosivesPermitAmendmentData {
   amendment_count?: number;
@@ -76,6 +77,8 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
   closeModal,
   ...props
 }) => {
+  const { isFeatureEnabled } = useFeatureFlag();
+
   const getAmendmentData = (record) => {
     const result: IExplosivesPermitAmendmentData = {};
     if (record.explosives_permit_amendments && record.explosives_permit_amendments.length > 1) {
@@ -84,7 +87,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
         record.explosives_permit_amendments[0].explosives_permit_amendment_guid;
     }
     return result;
-  };
+  };  
 
   const handleIssueExplosivesPermit = async (values, record) => {
     const { explosives_permit_guid } = record;
@@ -199,13 +202,16 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
     props.openModal({
       props: {
         onSubmit: (values) => {
-          return record
+
+          // after feature flag removed, this will ONLY be used for new records and can be simplified. ("Add" button on table)
+          return record && !isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT)
             ? handleUpdateExplosivesPermit(values, hasAmendments)
             : handleAddExplosivesPermit(values);
         },
         title: "Add Permit",
         initialValues,
         documents: record?.documents ?? [],
+        formMode: EsupFormMode.select_type_modal,
         mineGuid,
         isProcessed,
         documentTypeDropdownOptions: explosivesPermitDocumentTypeDropdownOptions,
@@ -219,7 +225,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
   };
 
   const handleOpenEditExplosivesPermitModal = (event, record = null, actionKey) => {
-    // I think this might  be the only actual use of this function? Until we add draft. :D
+    // I think this might  be the only use of this function? Until we add draft. :D
     const formMode = actionKey === "edit_documents" ? EsupFormMode.edit_document : undefined;
     const initialValues = record || {};
     const hasAmendments = record?.explosives_permit_amendments?.length > 1;

@@ -49,7 +49,7 @@ import {
 } from "@/components/modalContent/ExplosivesPermitViewModal";
 
 export enum EsupFormMode {
-  decision_modal,
+  select_type_modal,
   create_new,
   create_historic,
   amend,
@@ -87,7 +87,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
   InjectedFormProps<any>> = ({
   initialValues = {},
   mines_permit_guid = null,
-  formMode = EsupFormMode.decision_modal,
+  formMode = EsupFormMode.select_type_modal,
   // isProcessed = false,
   // isAmendment = false,
   documents,
@@ -120,13 +120,13 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
   }, [documents]);
 
   useEffect(() => {
-    if (currentFormMode === EsupFormMode.decision_modal) {
+    if (currentFormMode === EsupFormMode.select_type_modal) {
       props.dispatch(change(FORM.EXPLOSIVES_PERMIT_NEW, "is_historic", isHistoric));
     }
   }, [isHistoric]);
 
   useEffect(() => {
-    if (currentFormMode === EsupFormMode.decision_modal) {
+    if (currentFormMode === EsupFormMode.select_type_modal) {
       setIsHistoric(radioSelection === EsupFormMode.create_historic);
       setIsAmendSelected(radioSelection === EsupFormMode.amend);
     }
@@ -173,7 +173,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
     currentFormMode
   );
   const disabled = formMode === EsupFormMode.edit_document;
-  const showBackButton = formMode === EsupFormMode.decision_modal;
+  const showBackButton = formMode === EsupFormMode.select_type_modal;
   const isAmendment = formMode === EsupFormMode.amend;
 
   const descriptionListElement = (
@@ -612,7 +612,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
       <Row className="flex-between form-button-container-row">
         {showBackButton && (
           <Button
-            onClick={() => setCurrentFormMode(EsupFormMode.decision_modal)}
+            onClick={() => setCurrentFormMode(EsupFormMode.select_type_modal)}
             className="full-mobile"
             type="ghost"
           >
@@ -632,7 +632,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
     </Form>
   );
 
-  return currentFormMode === EsupFormMode.decision_modal ? selectPermitTypeForm : permitForm;
+  return currentFormMode === EsupFormMode.select_type_modal ? selectPermitTypeForm : permitForm;
 };
 
 const selector = formValueSelector(FORM.EXPLOSIVES_PERMIT_NEW);
