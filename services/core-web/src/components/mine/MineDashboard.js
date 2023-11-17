@@ -10,7 +10,7 @@ import {
   CloseOutlined,
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
-import { fetchPermits } from "@common/actionCreators/permitActionCreator";
+import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import {
   fetchMineRecordById,
   updateMineRecord,
@@ -21,24 +21,24 @@ import {
   subscribe,
   setMineVerifiedStatus,
   fetchMineVerifiedStatuses,
-} from "@common/actionCreators/mineActionCreator";
+} from "@mds/common/redux/actionCreators/mineActionCreator";
 import {
   fetchPartyRelationships,
   fetchAllPartyRelationships,
-} from "@common/actionCreators/partiesActionCreator";
-import { fetchVariancesByMine } from "@common/actionCreators/varianceActionCreator";
-import { fetchNoticesOfDeparture } from "@common/actionCreators/noticeOfDepartureActionCreator";
-import { fetchMineComplianceInfo } from "@common/actionCreators/complianceActionCreator";
-import { getUserInfo } from "@common/selectors/authenticationSelectors";
-import { getMines, getIsUserSubscribed } from "@common/selectors/mineSelectors";
+} from "@mds/common/redux/actionCreators/partiesActionCreator";
+import { fetchVariancesByMine } from "@mds/common/redux/actionCreators/varianceActionCreator";
+import { fetchNoticesOfDeparture } from "@mds/common/redux/actionCreators/noticeOfDepartureActionCreator";
+import { fetchMineComplianceInfo } from "@mds/common/redux/actionCreators/complianceActionCreator";
+import { getUserInfo } from "@mds/common/redux/selectors/authenticationSelectors";
+import { getMines, getIsUserSubscribed } from "@mds/common/redux/selectors/mineSelectors";
 import { formatDate } from "@common/utils/helpers";
-import { storeVariances } from "@common/actions/varianceActions";
-import { storePermits } from "@common/actions/permitActions";
-import { storeMine } from "@common/actions/mineActions";
-import * as Strings from "@common/constants/strings";
-import { fetchMineNoticeOfWorkApplications } from "@common/actionCreators/noticeOfWorkActionCreator";
-import { fetchExplosivesPermits } from "@common/actionCreators/explosivesPermitActionCreator";
-import { getPartyRelationships } from "@common/selectors/partiesSelectors";
+import { storeVariances } from "@mds/common/redux/actions/varianceActions";
+import { storePermits } from "@mds/common/redux/actions/permitActions";
+import { storeMine } from "@mds/common/redux/actions/mineActions";
+import * as Strings from "@mds/common/constants/strings";
+import { fetchMineNoticeOfWorkApplications } from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
+import { fetchExplosivesPermits } from "@mds/common/redux/actionCreators/explosivesPermitActionCreator";
+import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
 import MineNavigation from "@/components/mine/MineNavigation";
 import Loading from "@/components/common/Loading";
 import CustomPropTypes from "@/customPropTypes";

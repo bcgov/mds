@@ -6,7 +6,7 @@ import {
   NOTICE_OF_DEPARTURE_DOCUMENT_TYPE,
   NOTICE_OF_DEPARTURE_STATUS,
   NOTICE_OF_DEPARTURE_TYPE,
-} from "@common/constants/strings";
+} from "@mds/common/constants/strings";
 import LinkButton from "@/components/common/LinkButton";
 import { formatDate } from "@/utils/helpers";
 import NoticeOfDepartureCallout from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDepartureCallout";

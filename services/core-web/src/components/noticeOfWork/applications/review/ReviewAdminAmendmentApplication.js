@@ -13,8 +13,8 @@ import {
   getNoticeOfWorkApplicationPermitTypeOptionsHash,
   getApplicationReasonCodeDropdownOptions,
   getApplicationSourceTypeCodeDropdownOptions,
-} from "@common/selectors/staticContentSelectors";
-import { getUserAccessData } from "@common/selectors/authenticationSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
+import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import {
   required,
   lat,
@@ -32,9 +32,9 @@ import { CoreTooltip } from "@/components/common/CoreTooltip";
 import NOWDocuments from "@/components/noticeOfWork/applications/NOWDocuments";
 import RenderMultiSelect from "@/components/common/RenderMultiSelect";
 import RenderDate from "@/components/common/RenderDate";
-import { getPermits } from "@common/selectors/permitSelectors";
+import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { isEmpty } from "lodash";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import ReviewNOWContacts from "./ReviewNOWContacts";
 
 /**

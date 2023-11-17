@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { Button, notification } from "antd";
 
 import { useKeycloak } from "@react-keycloak/web";
-import { logoutUser } from "@common/actions/authenticationActions";
+import { logoutUser } from "@mds/common/redux/actions/authenticationActions";
 import * as router from "@/constants/routes";
 
 import { LOGO_PURPLE } from "@/constants/assets";

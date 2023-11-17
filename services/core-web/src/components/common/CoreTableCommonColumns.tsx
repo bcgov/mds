@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import Highlight from "react-highlighter";
 import { dateSorter, formatDate, nullableStringSorter } from "@common/utils/helpers";
-import { EMPTY_FIELD } from "@common/constants/strings";
+import { EMPTY_FIELD } from "@mds/common/constants/strings";
 import { ColumnType } from "antd/lib/table";
 import { Button, Dropdown } from "antd";
 import { CaretDownOutlined } from "@ant-design/icons";
@@ -18,7 +18,11 @@ export const renderTextColumn = (
     title,
     dataIndex,
     key: dataIndex,
-    render: (text: string) => <div title={title}>{text ?? placeHolder}</div>,
+    render: (text: string) => (
+      <div title={title} className={`${dataIndex}-column`}>
+        {text ?? placeHolder}
+      </div>
+    ),
     ...(width !== undefined ? { width } : null),
     ...(sortable ? { sorter: nullableStringSorter(dataIndex) } : null),
   };

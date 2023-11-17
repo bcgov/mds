@@ -22,7 +22,7 @@ import {
   ESUP_DOCUMENT_GENERATED_TYPES,
   IExplosivesPermitDocument,
 } from "@mds/common";
-import { getNoticeOfWorkList } from "@common/selectors/noticeOfWorkSelectors";
+import { getNoticeOfWorkList } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import {
   dateNotInFuture,
   lat,
@@ -37,8 +37,8 @@ import { createDropDownList, formatDate, resetForm } from "@common/utils/helpers
 import {
   getAllPartyRelationships,
   getPartyRelationships,
-} from "@common/selectors/partiesSelectors";
-import { getPermits } from "@common/selectors/permitSelectors";
+} from "@mds/common/redux/selectors/partiesSelectors";
+import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import ExplosivesPermitMap from "@/components/maps/ExplosivesPermitMap";
@@ -265,10 +265,25 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
     alertDescription: (
       <ul>
         <li>
-          To add information from a <strong>previously created permit</strong>, go to the permits
-          page and add an existing permit
+          To add information from a <strong>previously created permit</strong>, go to the{" "}
+          <u>permits page</u> and add an existing permit
         </li>
-        <li>To amend an explosives storage and use permit, open it and create an ammendment</li>
+        <li>To amend an explosives storage and use permit, open it and create an amendment</li>
+      </ul>
+    ),
+    modalTitle: "Create Explosives Storage and Use Permit",
+  };
+
+  const newHistoricPermitText = {
+    alertTitle:
+      "You are creating a record of a previously issued explosives storage and use permit",
+    alertDescription: (
+      <ul>
+        <li>
+          To create a <strong>new permit</strong>, go to the <u>permit applications page</u> and
+          create a new permit
+        </li>
+        <li>To amend an explosives storage and use permit, open it and create an amendment</li>
       </ul>
     ),
     modalTitle: "Create Explosives Storage and Use Permit",
@@ -287,7 +302,17 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
     modalTitle: "Amend Explosives Storage and Use Permit",
   };
 
-  const dynamicText = isAmendment ? amendPermitText : newPermitText;
+  const renderDynamicText = () => {
+    if (isAmendment) {
+      return amendPermitText;
+    } else if (isHistoric) {
+      return newHistoricPermitText;
+    } else {
+      return newPermitText;
+    }
+  };
+
+  const dynamicText = renderDynamicText();
 
   const permitForm = (
     <Form layout="vertical" onSubmit={props.handleSubmit}>

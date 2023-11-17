@@ -1,4 +1,4 @@
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import { IOption } from "@mds/common";
 
 import { memoize } from "lodash";

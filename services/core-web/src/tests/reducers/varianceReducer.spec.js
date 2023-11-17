@@ -1,5 +1,5 @@
-import { varianceReducer } from "@common/reducers/varianceReducer";
-import { storeVariances, storeVariance } from "@common/actions/varianceActions";
+import { varianceReducer } from "@mds/common/redux/reducers/varianceReducer";
+import { storeVariances, storeVariance } from "@mds/common/redux/actions/varianceActions";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const baseExpectedValue = {

@@ -1,10 +1,10 @@
-import { incidentReducer } from "@common/reducers/incidentReducer";
+import { incidentReducer } from "@mds/common/redux/reducers/incidentReducer";
 import {
   storeIncidents,
   storeMineIncidents,
   storeMineIncidentNotes,
   storeMineIncident,
-} from "@common/actions/incidentActions";
+} from "@mds/common/redux/actions/incidentActions";
 import * as Mocks from "@/tests/mocks/dataMocks";
 
 const baseExpectedValue = {

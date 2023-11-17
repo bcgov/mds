@@ -11,8 +11,8 @@ import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetwork
 import {
   getIncidentDeterminationHash,
   getIncidentStatusCodeHash,
-} from "@common/selectors/staticContentSelectors";
-import { openModal, closeModal } from "@common/actions/modalActions";
+} from "@mds/common/redux/selectors/staticContentSelectors";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import { serverSidePaginationOptions, parseServerSideSearchOptions } from "@mds/common";
 import LinkButton from "@/components/common/LinkButton";
 import * as routes from "@/constants/routes";

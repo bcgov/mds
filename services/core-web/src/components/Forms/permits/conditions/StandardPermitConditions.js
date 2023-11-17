@@ -7,21 +7,21 @@ import { withRouter } from "react-router-dom";
 import { flattenObject } from "@common/utils/helpers";
 import { ReadOutlined } from "@ant-design/icons";
 import VariableConditionMenu from "@/components/Forms/permits/conditions/VariableConditionMenu";
-import { openModal, closeModal } from "@common/actions/modalActions";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import {
   getPermitConditionCategoryOptions,
   getPermitConditionTypeOptions,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import {
   getStandardPermitConditions,
   getEditingConditionFlag,
-} from "@common/selectors/permitSelectors";
+} from "@mds/common/redux/selectors/permitSelectors";
 import {
   setEditingConditionFlag,
   updateStandardPermitCondition,
   deleteStandardPermitCondition,
   fetchStandardPermitConditions,
-} from "@common/actionCreators/permitActionCreator";
+} from "@mds/common/redux/actionCreators/permitActionCreator";
 import { maxBy } from "lodash";
 import AddCondition from "@/components/Forms/permits/conditions/AddCondition";
 import ConditionLayerOne from "@/components/Forms/permits/conditions/ConditionLayerOne";

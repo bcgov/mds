@@ -3,15 +3,15 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { isEmpty } from "lodash";
-import { InfoCircleOutlined } from "@ant-design/icons";
+import InfoCircleOutlined from "@ant-design/icons/InfoCircleOutlined";
 import { Row, Col, Button, Descriptions, Typography, Badge, Tooltip } from "antd";
 
 import {
   fetchMineWorkInformations,
   createMineWorkInformation,
   updateMineWorkInformation,
-} from "@common/actionCreators/workInformationActionCreator";
-import { getMineWorkInformations } from "@common/selectors/workInformationSelectors";
+} from "@mds/common/redux/actionCreators/workInformationActionCreator";
+import { getMineWorkInformations } from "@mds/common/redux/selectors/workInformationSelectors";
 import { formatDateTime } from "@common/utils/helpers";
 import { EDIT_PENCIL } from "@/constants/assets";
 import AddMineWorkInformationForm from "@/components/Forms/AddMineWorkInformationForm";

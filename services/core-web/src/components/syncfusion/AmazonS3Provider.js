@@ -13,7 +13,7 @@ import {
   ContextMenu,
 } from "@syncfusion/ej2-react-filemanager";
 import { createRequestHeader } from "@common/utils/RequestHeaders";
-import { openDocumentViewer } from "@common/actions/documentViewerActions";
+import { openDocumentViewer } from "@mds/common/redux/actions/documentViewerActions";
 import { isDocumentOpenable } from "@/components/syncfusion/DocumentViewer";
 import keycloak from "@/keycloak";
 

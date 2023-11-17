@@ -6,20 +6,20 @@ import {
   deleteExplosivesPermit,
   fetchExplosivesPermits,
   updateExplosivesPermit,
-} from "@common/actionCreators/explosivesPermitActionCreator";
+} from "@mds/common/redux/actionCreators/explosivesPermitActionCreator";
 import {
   createExplosivesPermitAmendment,
   updateExplosivesPermitAmendment,
-} from "@common/actionCreators/explosivesPermitAmendmentActionCreator";
-import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
-import { getExplosivesPermits } from "@common/selectors/explosivesPermitSelectors";
+} from "@mds/common/redux/actionCreators/explosivesPermitAmendmentActionCreator";
+import { getDropdownInspectors } from "@mds/common/redux/selectors/partiesSelectors";
+import { getExplosivesPermits } from "@mds/common/redux/selectors/explosivesPermitSelectors";
 import {
   getExplosivesPermitDocumentTypeDropdownOptions,
   getExplosivesPermitDocumentTypeOptionsHash,
   getExplosivesPermitStatusOptionsHash,
-} from "@common/selectors/staticContentSelectors";
-import { closeModal, openModal } from "@common/actions/modalActions";
-import { getMineGuid, getMines } from "@common/selectors/mineSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
+import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
+import { getMineGuid, getMines } from "@mds/common/redux/selectors/mineSelectors";
 import { getDocumentContextTemplate } from "@/reducers/documentReducer";
 import {
   fetchExplosivesPermitDocumentContextTemplate,
@@ -30,8 +30,9 @@ import * as Permission from "@/constants/permissions";
 import AddButton from "@/components/common/buttons/AddButton";
 import MineExplosivesPermitTable from "@/components/mine/ExplosivesPermit/MineExplosivesPermitTable";
 import { modalConfig } from "@/components/modalContent/config";
-import { ActionCreator } from "@/interfaces/actionCreator";
+import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { IExplosivesPermit, IGroupedDropdownList, IMine, IOption } from "@mds/common";
+import { formatDate } from "@common/utils/helpers";
 
 interface ExplosivesPermitProps {
   isPermitTab: boolean;
@@ -76,7 +77,12 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
       });
   };
 
-  const handleDocumentPreview = (documentTypeCode, values, record) => {
+  const handleDocumentPreview = (documentTypeCode, values: any, record) => {
+    if (record.explosives_permit_amendments && record.explosives_permit_amendments.length > 0) {
+      const amendmentValue = `Amendment ${record.explosives_permit_amendments.length}`;
+      values.amendment = amendmentValue;
+      values.amendment_with_date = `(${amendmentValue}) issued ${formatDate(values.issue_date)}`;
+    }
     const payload = {
       explosives_permit_guid: record.explosives_permit_guid,
       template_data: values,
@@ -158,11 +164,14 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
 
   const handleOpenAddExplosivesPermitModal = (event, permitTab, record = null) => {
     const initialValues = record || {};
+    const hasAmendments = record?.explosives_permit_amendments?.length > 1;
     const isProcessed = record !== null && record?.application_status !== "REC";
     event.preventDefault();
     props.openModal({
       props: {
-        onSubmit: record ? handleUpdateExplosivesPermit : handleAddExplosivesPermit,
+        onSubmit: (values) => {
+          record ? handleUpdateExplosivesPermit(values, hasAmendments) : handleAddExplosivesPermit(values)
+        },
         title: "Add Permit",
         initialValues,
         documents: record?.documents ?? [],

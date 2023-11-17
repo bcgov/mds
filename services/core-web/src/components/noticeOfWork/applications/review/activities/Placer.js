@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { Row, Col } from "antd";
 import { currencyMask } from "@common/utils/helpers";
 import { maxLength, number, required, numberWithUnitCode } from "@common/utils/Validate";
-import { getDropdownNoticeOfWorkUnitTypeOptions } from "@common/selectors/staticContentSelectors";
+import { getDropdownNoticeOfWorkUnitTypeOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import RenderFieldWithDropdown from "@/components/common/RenderFieldWithDropdown";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";

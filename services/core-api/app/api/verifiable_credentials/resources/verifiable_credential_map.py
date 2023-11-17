@@ -53,17 +53,18 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
         # https://github.com/bcgov/bc-vcpedia/blob/main/credentials/credential-bc-mines-act-permit.md#261-schema-definition
         credential_attrs={}
 
-        mine_commodity_code_list = [mtd.mine_commodity_code for mtd in permit_amendment.mine.mine_type[0].mine_type_detail if mtd.mine_commodity_code]
-        mine_disturbance_code_list = [mtd.mine_disturbance_code for mtd in permit_amendment.mine.mine_type[0].mine_type_detail if mtd.mine_disturbance_code]
+        mine_disturbance_list = [mtd.mine_disturbance_literal for mtd in permit_amendment.mine.mine_type[0].mine_type_detail if mtd.mine_disturbance_code]
+        mine_commodity_list = [mtd.mine_commodity_literal for mtd in permit_amendment.mine.mine_type[0].mine_type_detail if mtd.mine_commodity_code]
+        mine_status_xref = permit_amendment.mine.mine_status[0].mine_status_xref
 
         credential_attrs["permit_no"] = permit_amendment.permit_no
-        credential_attrs["permit_status_code"] = permit_amendment.permit.permit_status_code
-        credential_attrs["mine_party_appt"] = permit_amendment.permit.current_permittee
-        credential_attrs["mine_operation_status_code"] = permit_amendment.mine.mine_status[0].mine_status_xref.mine_operation_status_code
-        credential_attrs["mine_operation_status_reason_code"] = permit_amendment.mine.mine_status[0].mine_status_xref.mine_operation_status_reason_code
-        credential_attrs["mine_operation_status_sub_reason_code"] =  permit_amendment.mine.mine_status[0].mine_status_xref.mine_operation_status_sub_reason_code
-        credential_attrs["mine_commodity_code"] =  ", ".join(mine_commodity_code_list) if mine_commodity_code_list else ""
-        credential_attrs["mine_disturbance_code"] = ", ".join(mine_disturbance_code_list) if mine_disturbance_code_list else "" 
+        credential_attrs["permit_status"] = permit_amendment.permit.permit_status_code_description
+        credential_attrs["permittee_name"] = permit_amendment.permit.current_permittee
+        credential_attrs["mine_operation_status"] = mine_status_xref.mine_operation_status.description
+        credential_attrs["mine_operation_status_reason"] = mine_status_xref.mine_operation_status_reason.description if mine_status_xref.mine_operation_status_reason else None
+        credential_attrs["mine_operation_status_sub_reason"] = mine_status_xref.mine_operation_status_sub_reason.description if mine_status_xref.mine_operation_status_sub_reason else None
+        credential_attrs["mine_disturbance"] = ", ".join(mine_disturbance_list) if mine_disturbance_list else None
+        credential_attrs["mine_commodity"] =  ", ".join(mine_commodity_list) if mine_commodity_list else None
         credential_attrs["mine_no"] = permit_amendment.mine.mine_no
         credential_attrs["issue_date"] = permit_amendment.issue_date
         credential_attrs["latitude"] = permit_amendment.mine.latitude
@@ -74,18 +75,19 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
 
         # offer credential
         attributes = [{
-            "mime-type":"text/plain",
+            # "mime-type":"text/plain",
+            # NB Orbit does not expect this removing for now
             "name":str(attr),
             "value":str(val),
         } for attr,val in credential_attrs.items()]
 
-        
         vc_conn = PartyVerifiableCredentialConnection.find_by_party_guid(party_guid)
         active_connections = [con for con in vc_conn if con.connection_state in ["active","completed"]] 
+
         if not active_connections:
             current_app.logger.error("NO ACTIVE CONNECTION")
             current_app.logger.warning(vc_conn)
-            current_app.logger.warning("returning credentials_attributes")
+            current_app.logger.warning(attributes)
             raise BadRequest("Party does not have an active Digital Wallet connection")
         else:   
             traction_svc = TractionService()

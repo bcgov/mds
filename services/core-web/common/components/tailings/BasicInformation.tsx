@@ -23,8 +23,8 @@ import {
 import { Field } from "redux-form";
 import { connect } from "react-redux";
 import { formatDateTime } from "@common/utils/helpers";
-import { getPermits } from "@common/selectors/permitSelectors";
-import { getTsf } from "@common/selectors/tailingsSelectors";
+import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
+import { getTsf } from "@mds/common/redux/selectors/tailingsSelectors";
 import { RootState } from "@/App";
 
 interface BasicInformationProps {

@@ -1,11 +1,11 @@
-import { mineReducer } from "@common/reducers/mineReducer";
+import { mineReducer } from "@mds/common/redux/reducers/mineReducer";
 import {
   storeMine,
   storeMineList,
   storeMineNameList,
   storeSubscribedMines,
   storeMineComments,
-} from "@common/actions/mineActions";
+} from "@mds/common/redux/actions/mineActions";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const baseExpectedValue = {

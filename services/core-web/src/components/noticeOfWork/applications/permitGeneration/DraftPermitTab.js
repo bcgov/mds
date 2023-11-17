@@ -6,14 +6,14 @@ import { connect } from "react-redux";
 import {
   getNoticeOfWork,
   getImportNowSubmissionDocumentsJob,
-} from "@common/selectors/noticeOfWorkSelectors";
+} from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
 import { generateNoticeOfWorkApplicationDocument } from "@/actionCreators/documentActionCreator";
-import { getGeneratableNoticeOfWorkApplicationDocumentTypeOptions } from "@common/selectors/staticContentSelectors";
+import { getGeneratableNoticeOfWorkApplicationDocumentTypeOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import PropTypes from "prop-types";
 import { reset } from "redux-form";
-import { fetchImportedNoticeOfWorkApplication } from "@common/actionCreators/noticeOfWorkActionCreator";
+import { fetchImportedNoticeOfWorkApplication } from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
 import NOWPermitGeneration from "@/components/noticeOfWork/applications/permitGeneration/NOWPermitGeneration";
 
 const propTypes = {

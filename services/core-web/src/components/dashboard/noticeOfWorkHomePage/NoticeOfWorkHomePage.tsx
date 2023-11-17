@@ -3,18 +3,18 @@ import { useLocation, useHistory } from "react-router-dom";
 import { Action, bindActionCreators, Dispatch } from "redux";
 import { connect } from "react-redux";
 import queryString from "query-string";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import {
   getMineRegionHash,
   getMineRegionDropdownOptions,
   getDropdownNoticeOfWorkApplicationStatusOptions,
   getDropdownNoticeOfWorkApplicationTypeOptions,
-} from "@common/selectors/staticContentSelectors";
-import { fetchNoticeOfWorkApplications } from "@common/actionCreators/noticeOfWorkActionCreator";
+} from "@mds/common/redux/selectors/staticContentSelectors";
+import { fetchNoticeOfWorkApplications } from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
 import {
   getNoticeOfWorkList,
   getNoticeOfWorkPageData,
-} from "@common/selectors/noticeOfWorkSelectors";
+} from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import * as routes from "@/constants/routes";
 import NoticeOfWorkTable from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkTable";
 import NoticeOfWorkSearch from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkSearch";

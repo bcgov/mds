@@ -1,5 +1,5 @@
 import { Button, Dropdown, Modal } from "antd";
-import { CaretDownOutlined } from "@ant-design/icons";
+import CaretDownOutlined from "@ant-design/icons/CaretDownOutlined";
 import React, { FC } from "react";
 import { ITableAction } from "@/components/common/CoreTableCommonColumns";
 

@@ -1,34 +1,19 @@
-import React, { Component } from "react";
+import React, { Component, Suspense } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { ENVIRONMENT } from "@mds/common";
-import {
-  PdfViewerComponent,
-  Toolbar,
-  Magnification,
-  Navigation,
-  LinkAnnotation,
-  BookmarkView,
-  ThumbnailView,
-  Print,
-  TextSelection,
-  Annotation,
-  TextSearch,
-  FormFields,
-  FormDesigner,
-  Inject,
-} from "@syncfusion/ej2-react-pdfviewer";
 import { createRequestHeader } from "@common/utils/RequestHeaders";
-import { Modal } from "antd";
-import { closeDocumentViewer, openDocumentViewer } from "@common/actions/documentViewerActions";
+import { Modal, Skeleton } from "antd";
+import { closeDocumentViewer, openDocumentViewer } from "@mds/common/redux/actions/documentViewerActions";
 import {
   getDocumentPath,
   getDocumentName,
   getIsDocumentViewerOpen,
   getProps,
-} from "@common/selectors/documentViewerSelectors";
+} from "@mds/common/redux/selectors/documentViewerSelectors";
 
+const PdfViewer = React.lazy(() => import("./PdfViewer"));
 import { getDocument, downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 
 const propTypes = {
@@ -126,34 +111,13 @@ export class DocumentViewer extends Component {
           width="98%"
           destroyOnClose={true}
         >
-          {/* // NOTE: See here for documentation:
-        https://ej2.syncfusion.com/react/documentation/pdfviewer/getting-started/ */}
-          <PdfViewerComponent
-            id="pdfviewer-container"
-            serviceUrl={this.pdfViewerServiceUrl}
-            documentPath={this.props.documentPath}
-            ajaxRequestSettings={ajaxRequestSettings}
-            style={{ display: "block", height: "80vh" }}
-            enableAnnotation={false}
-          >
-            {/* NOTE: Some toolbar items are hidden using CSS. */}
-            <Inject
-              services={[
-                Toolbar,
-                Magnification,
-                Navigation,
-                Annotation,
-                LinkAnnotation,
-                BookmarkView,
-                ThumbnailView,
-                Print,
-                TextSelection,
-                TextSearch,
-                FormFields,
-                FormDesigner,
-              ]}
-            />
-          </PdfViewerComponent>
+          <Suspense fallback={<Skeleton />}>
+            <PdfViewer
+              serviceUrl={this.pdfViewerServiceUrl}
+              documentPath={this.props.documentPath}
+              ajaxRequestSettings={ajaxRequestSettings}>
+            </PdfViewer>
+          </Suspense>
         </Modal>
       </>
     );

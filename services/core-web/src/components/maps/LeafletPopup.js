@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Link, StaticRouter } from "react-router-dom";
 import { formatDate } from "@common/utils/helpers";
 import { uniqBy } from "lodash";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 import { SUCCESS_CHECKMARK } from "@/constants/assets";

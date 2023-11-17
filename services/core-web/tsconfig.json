@@ -20,6 +20,6 @@
     "noImplicitAny": false /* Enable error reporting for expressions and declarations with an implied 'any' type. */,
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
-  "include": ["src/**/*", "common/**/*"],
+  "include": ["src/**/*", "common/**/*", "../common/src/@Types/**/*"],
   "exclude": ["node_modules", "src/**/*.test.ts", "src/**/*.test.tsx"]
 }

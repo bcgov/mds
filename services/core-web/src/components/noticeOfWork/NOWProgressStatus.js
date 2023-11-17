@@ -10,11 +10,11 @@ import {
   getNoticeOfWork,
   getApplicationDelay,
   getNOWProgress,
-} from "@common/selectors/noticeOfWorkSelectors";
+} from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import {
   getDelayTypeOptionsHash,
   getNoticeOfWorkApplicationProgressStatusCodeOptionsHash,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import { COLOR } from "@/constants/styles";
 import * as routes from "@/constants/routes";
 

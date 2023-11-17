@@ -27,7 +27,7 @@ export const Header = (props) => {
           <div className="header-content">
             <div>
               <a className="header-logo" href="https://gov.bc.ca/">
-                <img alt="BC Government Logo" src={BC_GOV} width={154} />
+                <img alt="BC Government Logo" src={BC_GOV} width={154} height={43} />
               </a>
               <Link className="header-title" to={routes.HOME.route}>
                 MineSpace

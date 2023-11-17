@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { CloseOutlined } from "@ant-design/icons";
+import CloseOutlined from "@ant-design/icons/CloseOutlined";
 import { Col, Row, Popconfirm, Button } from "antd";
 
 const propTypes = {

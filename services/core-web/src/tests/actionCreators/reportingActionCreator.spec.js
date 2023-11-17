@@ -1,9 +1,9 @@
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
-import * as genericActions from "@common/actions/genericActions";
-import { fetchMetabaseDashboard } from "@common/actionCreators/reportingActionCreator";
+import * as genericActions from "@mds/common/redux/actions/genericActions";
+import { fetchMetabaseDashboard } from "@mds/common/redux/actionCreators/reportingActionCreator";
 import { ENVIRONMENT } from "@mds/common";
-import * as API from "@common/constants/API";
+import * as API from "@mds/common/constants/API";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const dispatch = jest.fn();

@@ -21,7 +21,7 @@ import {
   getDropdownMineReportCategoryOptions,
   getMineReportDefinitionOptions,
   getDropdownMineReportStatusOptions,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import { ReportSubmissions } from "@/components/Forms/reports/ReportSubmissions";
 import ReportComments from "@/components/Forms/reports/ReportComments";

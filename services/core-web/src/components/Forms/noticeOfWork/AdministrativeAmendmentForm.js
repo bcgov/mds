@@ -11,11 +11,11 @@ import CustomPropTypes from "@/customPropTypes";
 import { resetForm, createDropDownList, formatDate } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
-import { getPermits } from "@common/selectors/permitSelectors";
+import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import {
   getApplicationReasonCodeDropdownOptions,
   getApplicationSourceTypeCodeDropdownOptions,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,

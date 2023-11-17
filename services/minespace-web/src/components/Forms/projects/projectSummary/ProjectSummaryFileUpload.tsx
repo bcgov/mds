@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Field, WrappedFieldProps } from "redux-form";
 import { useSelector } from "react-redux";
-import { NEW_VERSION_DOCUMENTS, PROJECT_SUMMARY_DOCUMENTS } from "@common/constants/API";
+import { NEW_VERSION_DOCUMENTS, PROJECT_SUMMARY_DOCUMENTS } from "@mds/common/constants/API";
 import FileUpload from "@/components/common/FileUpload";
 import { Alert, Divider, Modal, Popconfirm, Table, Typography } from "antd";
 import { getUserInfo } from "@/selectors/authenticationSelectors";

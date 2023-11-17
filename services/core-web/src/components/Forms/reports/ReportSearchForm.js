@@ -13,7 +13,7 @@ import {
   getDropdownMineReportCategoryOptions,
   getDropdownMineReportDefinitionOptions,
   getMineRegionDropdownOptions,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import { sortListObjectsByPropertyLocaleCompare } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";

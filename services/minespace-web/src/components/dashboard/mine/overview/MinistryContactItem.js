@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Typography } from "antd";
-import { getEMLIContactTypesHash } from "@common/selectors/staticContentSelectors";
+import { getEMLIContactTypesHash } from "@mds/common/redux/selectors/staticContentSelectors";
 import * as Strings from "@/constants/strings";
 
 const propTypes = {

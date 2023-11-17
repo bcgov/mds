@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Popconfirm } from "antd";
 import PropTypes from "prop-types";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import { TRASHCAN, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
 import CoreTable from "../common/CoreTable";

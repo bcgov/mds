@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import {
   fetchImportedNoticeOfWorkApplication,
   importNoticeOfWorkApplication,
-} from "@common/actionCreators/noticeOfWorkActionCreator";
+} from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
 import CustomPropTypes from "@/customPropTypes";
 import VerifyApplicationInformationForm from "@/components/noticeOfWork/applications/verification/VerifyApplicationInformationForm";
 

@@ -6,7 +6,7 @@ import NOWProgressActions from "@/components/noticeOfWork/NOWProgressActions";
 import NOWProgressStatus from "@/components/noticeOfWork/NOWProgressStatus";
 import { TAB_DISCLAIMERS } from "@/constants/NOWConditions";
 import CustomPropTypes from "@/customPropTypes";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 
 /**
  * @constant NOWTabHeader renders react children with an active indicator if the id is in the url.

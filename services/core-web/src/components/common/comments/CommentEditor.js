@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Input, Button, Checkbox } from "antd";
-import { getUserAccessData } from "@common/selectors/authenticationSelectors";
+import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import { USER_ROLES } from "@mds/common";
 
 const propTypes = {

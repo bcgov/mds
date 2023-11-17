@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import MergePartyConfirmationForm from "@/components/Forms/parties/MergePartyConfirmationForm";
-import { getDropdownProvinceOptions } from "@common/selectors/staticContentSelectors";
+import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {

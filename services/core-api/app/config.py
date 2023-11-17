@@ -58,6 +58,10 @@ class Config(object):
     # Environment config
     FLASK_LOGGING_LEVEL = os.environ.get('FLASK_LOGGING_LEVEL',
                                          'INFO')                # ['DEBUG','INFO','WARN','ERROR','CRITICAL']
+    WERKZEUG_LOGGING_LEVEL = os.environ.get('WERKZEUG_LOGGING_LEVEL',
+                                         'CRITICAL')  # ['DEBUG','INFO','WARN','ERROR','CRITICAL']
+    DISPLAY_WERKZEUG_LOG = os.environ.get('DISPLAY_WERKZEUG_LOG',
+                                            False)
 
     LOGGING_DICT_CONFIG = {
         'version': 1,
@@ -86,6 +90,12 @@ class Config(object):
         'root': {
             'level': FLASK_LOGGING_LEVEL,
             'handlers': ['file', 'console']
+        },
+        'loggers': {
+            'werkzeug': {
+                'level': WERKZEUG_LOGGING_LEVEL,
+                'propagate': DISPLAY_WERKZEUG_LOG
+            }
         }
     }
 
@@ -249,7 +259,7 @@ class Config(object):
     TRACTION_HOST = os.environ.get("TRACTION_HOST","https://traction-tenant-proxy-dev.apps.silver.devops.gov.bc.ca")
     TRACTION_TENANT_ID = os.environ.get("TRACTION_TENANT_ID","GET_TENANT_ID_FROM_TRACTION")
     TRACTION_WALLET_API_KEY = os.environ.get("TRACTION_WALLET_API_KEY","GET_WALLET_API_KEY_FROM_TRACTION")
-
+    TRACTION_WEBHOOK_X_API_KEY = os.environ.get("TRACTION_WEBHOOK_X_API_KEY","NO_X_API_KEY")
     CRED_DEF_ID_MINES_ACT_PERMIT = os.environ.get("CRED_DEF_ID_MINES_ACT_PERMIT","CRED_DEF_ID_MINES_ACT_PERMIT")
 
 class TestConfig(Config):

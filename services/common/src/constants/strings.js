@@ -82,6 +82,7 @@ export const INCIDENT_FOLLOWUP_ACTIONS = {
   inspectorInvestigation: "INS",
 };
 
+
 export const INCIDENT_CONTACT_METHOD_OPTIONS = [
   { label: "Phone", value: "PHN" },
   { label: "Email", value: "EML" },
@@ -90,6 +91,7 @@ export const INCIDENT_CONTACT_METHOD_OPTIONS = [
   { label: "Ministry reporting phone line", value: "MRP", inspectorOnly: true },
   { label: "Ministry reporting email", value: "MRE", inspectorOnly: true },
 ];
+
 
 export const BUSINESS_ROLES = {
   inspector: "INS",
@@ -198,6 +200,65 @@ export const MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE = {
   SUPPORTING: "SPR",
 };
 
+export const MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE_LOCATION = {
+  PRM: "Primary Document",
+  SPT: "Spatial Component",
+  SPR: "Supporting Document",
+};
+
+export const PROJECT_SUMMARY_DOCUMENT_TYPE = {
+  GENERAL: "general",
+};
+
+export const PROJECT_SUMMARY_DOCUMENT_TYPE_CODE = {
+  GENRAL: "GEN",
+};
+
+export const PROJECT_SUMMARY_DOCUMENT_TYPE_CODE_LOCATION = {
+  GEN: "General",
+};
+
+export const PROJECT_DECISION_PACKAGE_DOCUMENT_TYPE = {
+  DECISION: "decision_package",
+  ADDITIONAL: "additional_government",
+  INTERNAL: "internal_ministry",
+};
+
+export const PROJECT_DECISION_PACKAGE_DOCUMENT_TYPE_CODE = {
+  DECISION: "DEC",
+  ADDITIONAL: "ADG",
+  INTERNAL: "INM",
+};
+
+export const PROJECT_DECISION_PACKAGE_DOCUMENT_TYPE_CODE_LOCATION = {
+  DCP: "Decision Package",
+  ADG: "Additional Government",
+  INM: "Internal Ministry",
+};
+
+export const INFORMATION_REQUIREMENTS_TABLE_DOCUMENT_TYPE = {
+  TEMPLATE: "template",
+};
+
+export const INFORMATION_REQUIREMENTS_TABLE_DOCUMENT_TYPE_CODE = {
+  TEMPLATE: "TEM",
+};
+
+export const INFORMATION_REQUIREMENTS_TABLE_DOCUMENT_TYPE_CODE_LOCATION = {
+  TEM: "Template",
+};
+
+export const CATEGORY_CODE = {
+  PRM: "Primary Document",
+  SPT: "Spatial Component",
+  SPR: "Supporting Document",
+  GEN: "General",
+  DCP: "Decision Package",
+  ADG: "Additional Government",
+  INM: "Internal Ministry",
+  TEM: "Template",
+};
+
 export const FACILITY_TYPES = [
   { value: "tailings_storage_facility", label: "Tailing Storage Facility" },
 ];
@@ -284,7 +345,6 @@ export const MINISTRY_ACKNOWLEDGED_STATUS = {
   not_acknowledged: "Not acknowledged",
   acknowledged: "Acknowledged",
 };
-
 export const PARTY_APPOINTMENT_STATUS = {
   pending: "Pending",
   active: "Active",
@@ -295,3 +355,50 @@ export const ESUP_DOCUMENT_GENERATED_TYPES = {
   LET: "Explosives Storage and Use Permit",
   PER: "Permit Enclosed Letter",
 };
+
+
+export const BC_TIMEZONE_NAMES = ["Canada/Pacific", "Canada/Mountain", "Canada/Yukon"];
+
+// "Display name": [corresponding zones as picked up by moment]
+// the "Canada/*" TZs are valid, and what we want to display, but browser picks up "America/*"
+export const CANADA_TIMEZONE_MAP = {
+  // PDT (DST) -700
+  "Canada/Pacific": ["America/Vancouver"],
+  // MST (no DST) -700
+  "Canada/Yukon": [
+    "America/Creston",
+    "America/Dawson",
+    "America/Dawson_Creek",
+    "America/Fort_Nelson",
+    "America/Phoenix",
+    "America/Whitehorse",
+  ],
+  // MDT (DST) -600
+  "Canada/Mountain": [
+    "America/Cambridge_Bay",
+    "America/Edmonton",
+    "America/Inuvik",
+    "America/Yellowknife",
+  ],
+  // CST (no DST) -600
+  "Canada/Saskatchewan": ["America/Regina", "America/Swift_Current"],
+  // CDT (DST) -500
+  "Canada/Central": ["America/Winnipeg", "America/Rankin_Inlet", "America/Resolute"],
+  // EDT (DST) -400
+  "Canada/Eastern": ["America/Toronto", "America/Iqaluit"],
+  // ADT (DST) -300
+  "Canada/Atlantic": [
+    "America/Halifax",
+    "America/Moncton",
+    "America/Glace_Bay",
+    "America/Goose_Bay",
+  ],
+  // NDT (DST) -230
+  "Canada/Newfoundland": ["America/St_Johns"],
+};
+
+export const DEFAULT_TIMEZONE = "Canada/Pacific";
+
+export const DATETIME_TZ_INPUT_FORMAT = "YYYY-MM-DD HH:mm Z z";
+export const DATE_TZ_INPUT_FORMAT = "YYYY-MM-DD Z z";
+export const DATETIME_TZ_FORMAT = "MMM DD YYYY, HH:mm (z)";

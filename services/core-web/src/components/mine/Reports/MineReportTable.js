@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import {
   formatDate,
   dateSorter,
@@ -12,7 +12,7 @@ import {
   getMineReportCategoryOptionsHash,
   getMineReportStatusOptionsHash,
   getMineReportDefinitionHash,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import { Link } from "react-router-dom";
 import { Badge } from "antd";
 import CustomPropTypes from "@/customPropTypes";

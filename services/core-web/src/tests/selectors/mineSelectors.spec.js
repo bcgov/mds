@@ -9,8 +9,8 @@ import {
   getMineBasicInfoList,
   getMineDocuments,
   getMineComments,
-} from "@common/selectors/mineSelectors";
-import { mineReducer } from "@common/reducers/mineReducer";
+} from "@mds/common/redux/selectors/mineSelectors";
+import { mineReducer } from "@mds/common/redux/reducers/mineReducer";
 import {
   storeMineList,
   storeMineNameList,
@@ -19,8 +19,8 @@ import {
   storeMineBasicInfoList,
   storeMineDocuments,
   storeMineComments,
-} from "@common/actions/mineActions";
-import { MINES } from "@common/constants/reducerTypes";
+} from "@mds/common/redux/actions/mineActions";
+import { MINES } from "@mds/common/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
 
 const mockResponse = Mock.MINE_RESPONSE;

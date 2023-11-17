@@ -5,7 +5,7 @@ import { dateSorter, nullableStringSorter, formatMoney } from "@common/utils/hel
 import {
   getBondTypeOptionsHash,
   getBondStatusOptionsHash,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import { formatDate } from "@/utils/helpers";
 import * as Strings from "@/constants/strings";
 import CustomPropTypes from "@/customPropTypes";

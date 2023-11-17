@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import { Button, Popconfirm, Tag, Tooltip } from "antd";
 import { ColumnType } from "antd/lib/table";
 import { TRASHCAN } from "@/constants/assets";

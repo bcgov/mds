@@ -3,9 +3,9 @@ import { connect } from "react-redux";
 import { uniqBy } from "lodash";
 import PropTypes from "prop-types";
 import { destroy } from "redux-form";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import queryString from "query-string";
-import { fetchProjects } from "@common/actionCreators/projectActionCreator";
+import { fetchProjects } from "@mds/common/redux/actionCreators/projectActionCreator";
 import {
   getCommodityOptionHash,
   getProjectSummaryStatusCodesHash,
@@ -14,8 +14,8 @@ import {
   getDropdownProjectSummaryStatusCodes,
   getDropdownInformationRequirementsTableStatusCodes,
   getDropdownMajorMinesApplicationStatusCodes,
-} from "@common/selectors/staticContentSelectors";
-import { getProjects, getProjectPageData } from "@common/selectors/projectSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
+import { getProjects, getProjectPageData } from "@mds/common/redux/selectors/projectSelectors";
 import { bindActionCreators } from "redux";
 import * as router from "@/constants/routes";
 import ResponsivePagination from "@/components/common/ResponsivePagination";

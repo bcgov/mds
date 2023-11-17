@@ -1,4 +1,4 @@
-import { USER_ROLES } from "@common/constants/environment";
+import { USER_ROLES } from "@mds/common/constants/environment";
 import {
   FileOperations,
   MajorMineApplicationDocument,

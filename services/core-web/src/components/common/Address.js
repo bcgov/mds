@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { formatPostalCode } from "@common/utils/helpers";
 import { ContactsOutlined } from "@ant-design/icons";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 
 const propTypes = {
   address: PropTypes.objectOf(PropTypes.string).isRequired,

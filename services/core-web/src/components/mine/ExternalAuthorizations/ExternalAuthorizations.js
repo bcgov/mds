@@ -5,9 +5,9 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 import CustomPropTypes from "@/customPropTypes";
-import { getMineGuid } from "@common/selectors/mineSelectors";
-import { getMineEpicInfo } from "@common/selectors/externalAuthorizationSelectors";
-import { fetchMineEpicInformation } from "@common/actionCreators/externalAuthorizationActionCreator";
+import { getMineGuid } from "@mds/common/redux/selectors/mineSelectors";
+import { getMineEpicInfo } from "@mds/common/redux/selectors/externalAuthorizationSelectors";
+import { fetchMineEpicInformation } from "@mds/common/redux/actionCreators/externalAuthorizationActionCreator";
 import EPICAuthorizationsTable from "@/components/mine/ExternalAuthorizations/EPICAuthorizationsTable";
 
 const propTypes = {

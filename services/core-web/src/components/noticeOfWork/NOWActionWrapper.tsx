@@ -7,7 +7,7 @@ import {
   getNoticeOfWork,
   getApplicationDelay,
   getNOWProgress,
-} from "@common/selectors/noticeOfWorkSelectors";
+} from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import { APPLICATION_PROGRESS_TRACKING } from "@/constants/NOWConditions";
 
 /**

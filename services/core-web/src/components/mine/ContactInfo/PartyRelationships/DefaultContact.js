@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Button, Card } from "antd";
 import { Link } from "react-router-dom";
 import { formatDate } from "@common/utils/helpers";
-import { EMPTY_FIELD } from "@common/constants/strings";
+import { EMPTY_FIELD } from "@mds/common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as router from "@/constants/routes";

@@ -5,10 +5,10 @@ import { isEmpty } from "lodash";
 import { connect } from "react-redux";
 import { Anchor } from "antd";
 import * as routes from "@/constants/routes";
-import { getNoticeOfWork } from "@common/selectors/noticeOfWorkSelectors";
+import { getNoticeOfWork } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import { renderActivities, sideMenuOptions } from "@/constants/NOWConditions";
-import { getDraftPermitAmendmentForNOW } from "@common/selectors/permitSelectors";
+import { getDraftPermitAmendmentForNOW } from "@mds/common/redux/selectors/permitSelectors";
 
 /**
  * @constant NOWSideMenu renders react children with an active indicator if the id is in the url.

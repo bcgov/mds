@@ -1,10 +1,10 @@
-import { searchReducer } from "@common/reducers/searchReducer";
+import { searchReducer } from "@mds/common/redux/reducers/searchReducer";
 import {
   storeSearchOptions,
   storeSearchResults,
   storeSearchBarResults,
   clearSearchBarResults,
-} from "@common/actions/searchActions";
+} from "@mds/common/redux/actions/searchActions";
 
 const baseExpectedValue = {
   searchOptions: [],

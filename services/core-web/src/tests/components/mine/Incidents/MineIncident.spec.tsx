@@ -3,7 +3,7 @@ import { shallow } from "enzyme";
 import { MineIncident, MineIncidentProps } from "@/components/mine/Incidents/MineIncident";
 import * as MOCK from "@/tests/mocks/dataMocks";
 import PropTypes, { any } from "prop-types";
-import { createMineIncident } from "@common/actionCreators/incidentActionCreator";
+import { createMineIncident } from "@mds/common/redux/actionCreators/incidentActionCreator";
 import { AxiosResponse } from "axios";
 
 const props: MineIncidentProps = {

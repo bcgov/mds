@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Steps, Alert } from "antd";
-import { MDS_EMAIL } from "@common/constants/strings";
+import { MDS_EMAIL } from "@mds/common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import GenerateDocumentForm from "@/components/Forms/GenerateDocumentForm";
 import RejectApplicationForm from "@/components/Forms/noticeOfWork/RejectApplicationForm";

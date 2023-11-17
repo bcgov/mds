@@ -1,8 +1,9 @@
-import enum
 from flask import current_app, request
+from werkzeug.exceptions import Forbidden
 from flask_restplus import Resource
 from app.api.utils.include.user_info import User
 
+from app.config import Config
 from app.extensions import api
 
 from app.api.utils.resources_mixins import UserMixin
@@ -20,6 +21,10 @@ PING = "ping"
 class VerifiableCredentialWebhookResource(Resource, UserMixin):
     @api.doc(description='Endpoint to recieve webhooks from Traction.', params={})
     def post(self, topic):
+        #custom auth for traction
+        if request.headers.get("x-api-key") != Config.TRACTION_WEBHOOK_X_API_KEY:
+             return Forbidden("bad x-api-key")
+
         User._test_mode = True  #webhook handling has no row level auth
         webhook_body = request.get_json()
         current_app.logger.debug(f"TRACTION WEBHOOK <topic={topic}>: {webhook_body}")
@@ -53,7 +58,6 @@ class VerifiableCredentialWebhookResource(Resource, UserMixin):
                 # 'deleted' is the final state, do not update 
                 cred_exch_record.cred_exch_state=new_state
                 if new_state == "credential_acked":
-                    current_app.logger.info(f"cred_acked, save revokation details {webhook_body}")
                     cred_exch_record.rev_reg_id = webhook_body["revoc_reg_id"]
                     cred_exch_record.cred_rev_id = webhook_body["revocation_id"]
 

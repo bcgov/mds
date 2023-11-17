@@ -6,28 +6,28 @@ import { Button, Popconfirm } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { openModal, closeModal } from "@common/actions/modalActions";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import { formatDate, getDurationText, flattenObject } from "@common/utils/helpers";
 import { getFormValues, reset, isSubmitting, getFormSyncErrors, submit } from "redux-form";
 import {
   getNoticeOfWorkApplicationTypeOptions,
   getDropdownPermitAmendmentTypeOptions,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import {
   fetchPermits,
   updatePermitAmendment,
   fetchDraftPermitByNOW,
   deletePermit,
   deletePermitAmendment,
-} from "@common/actionCreators/permitActionCreator";
-import { storeEditingPreambleFlag } from "@common/actions/permitActions";
+} from "@mds/common/redux/actionCreators/permitActionCreator";
+import { storeEditingPreambleFlag } from "@mds/common/redux/actions/permitActions";
 import {
   getDraftPermitForNOW,
   getDraftPermitAmendmentForNOW,
   getPermits,
-} from "@common/selectors/permitSelectors";
-import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";
-import { getNOWProgress } from "@common/selectors/noticeOfWorkSelectors";
+} from "@mds/common/redux/selectors/permitSelectors";
+import { PERMIT_AMENDMENT_TYPES } from "@mds/common/constants/strings";
+import { getNOWProgress } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import { modalConfig } from "@/components/modalContent/config";
 import * as FORM from "@/constants/forms";
 import * as Permission from "@/constants/permissions";

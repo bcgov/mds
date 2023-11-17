@@ -8,7 +8,7 @@ import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm } from "antd";
 import { required } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
-import { getExplosivesPermitStatusDropdownOptions } from "@common/selectors/staticContentSelectors";
+import { getExplosivesPermitStatusDropdownOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
 import RenderSelect from "@/components/common/RenderSelect";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";

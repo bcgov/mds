@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
 import MineVarianceTable from "@/components/mine/Variances/MineVarianceTable";

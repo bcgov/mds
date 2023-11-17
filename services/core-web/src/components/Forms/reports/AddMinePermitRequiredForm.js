@@ -13,12 +13,12 @@ import { resetForm, createDropDownList } from "@common/utils/helpers";
 import {
   getDropdownPermitConditionCategoryOptions,
   getDropdownMineReportStatusOptions,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import { ReportSubmissions } from "@/components/Forms/reports/ReportSubmissions";
 import ReportComments from "@/components/Forms/reports/ReportComments";
-import { fetchPermits } from "@common/actionCreators/permitActionCreator";
-import { getPermits } from "@common/selectors/permitSelectors";
+import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
+import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,

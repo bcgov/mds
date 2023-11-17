@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { fetchMetabaseDashboard } from "@common/actionCreators/reportingActionCreator";
+import { fetchMetabaseDashboard } from "@mds/common/redux/actionCreators/reportingActionCreator";
 
 export class ReportingDashboard extends Component {
   state = {};

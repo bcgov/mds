@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
 import { Row, Col, Typography } from "antd";
-import { getPartyRelationshipTypeHash } from "@common/selectors/staticContentSelectors";
+import { getPartyRelationshipTypeHash } from "@mds/common/redux/selectors/staticContentSelectors";
 import { party } from "@/customPropTypes/parties";
 
 const fieldPropTypes = {

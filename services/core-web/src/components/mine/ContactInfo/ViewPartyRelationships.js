@@ -12,17 +12,17 @@ import {
   updatePartyRelationship,
   fetchPartyRelationships,
   addDocumentToRelationship,
-} from "@common/actionCreators/partiesActionCreator";
-import { createTailingsStorageFacility } from "@common/actionCreators/mineActionCreator";
-import { getPartyRelationships } from "@common/selectors/partiesSelectors";
+} from "@mds/common/redux/actionCreators/partiesActionCreator";
+import { createTailingsStorageFacility } from "@mds/common/redux/actionCreators/mineActionCreator";
+import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
 import {
   getPartyRelationshipTypes,
   getPartyRelationshipTypesList,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 
-import { getUserAccessData } from "@common/selectors/authenticationSelectors";
+import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import { USER_ROLES } from "@mds/common";
-import { getPermits } from "@common/selectors/permitSelectors";
+import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 import { modalConfig } from "@/components/modalContent/config";

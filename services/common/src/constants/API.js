@@ -27,7 +27,9 @@ export const MINE_TSF = (mine_guid, mine_tailings_storage_facility_guid) =>
 export const DISTURBANCE_CODES = "/mines/disturbance-codes";
 export const COMMODITY_CODES = "/mines/commodity-codes";
 export const EDIT_TSF_REPORT = "";
-export const MINE_DOCUMENTS = (mine_guid) => `/mines/${mine_guid}/documents`;
+export const MINE_DOCUMENTS = (mine_guid, params = {}) =>
+  `/mines/${mine_guid}/documents?${queryString.stringify(params)}`;
+export const ARCHIVE_MINE_DOCUMENTS = (mine_guid) => `/mines/${mine_guid}/documents/archive`;
 export const MINE_TSF_REQUIRED_DOCUMENTS = "/required-documents?category=TSF";
 export const MINE_TENURE_TYPES = "/mines/mine-tenure-type-codes";
 export const MINE_TYPES = (mineGuid) => `/mines/${mineGuid}/mine-types`;
@@ -98,6 +100,10 @@ export const EXPLOSIVES_PERMIT = (mineGuid, explosivesPermitGuid) =>
 export const EXPLOSIVES_PERMIT_DOCUMENTS = (mineGuid, guid) =>
   `/mines/${mineGuid}/explosives-permits/${guid}/documents`;
 export const EXPLOSIVES_PERMIT_DOCUMENT_TYPE_OPTIONS = "/mines/explosives-permit-document-types";
+export const CREATE_EXPLOSIVES_PERMIT_AMENDMENT = (mineGuid) =>
+  `/mines/${mineGuid}/explosives-permits-amendment`;
+export const EXPLOSIVES_PERMIT_AMENDMENT = (mineGuid, explosivesPermitGuid) =>
+  `/mines/${mineGuid}/explosives-permits-amendment/${explosivesPermitGuid}`;
 
 // EPIC Mine Information
 export const EPIC_INFO = (mineGuid) => `/mines/${mineGuid}/epic`;
@@ -108,7 +114,7 @@ export const SEARCH_OPTIONS = "/search/options";
 export const SIMPLE_SEARCH = "/search/simple";
 
 // Reporting
-export const DASHBOARD = (dashboardId) => `/reporting/dashboard/${dashboardId}`;
+export const DASHBOARD = (dashboardId, type = "dashboard") => `/reporting/${type}/${dashboardId}`;
 
 // Variances
 export const COMPLIANCE_CODES = "/compliance/codes";
@@ -134,6 +140,9 @@ export const PROJECT_SUMMARY_DOCUMENTS = ({ projectGuid, projectSummaryGuid, min
   `/projects/${projectGuid}/project-summaries/${projectSummaryGuid}/documents?${queryString.stringify(
     { mine_guid: mineGuid }
   )}`;
+//New file version upload
+export const NEW_VERSION_DOCUMENTS = ({ mineGuid, mineDocumentGuid }) =>
+  `/mines/${mineGuid}/documents/${mineDocumentGuid}/versions/upload`;
 export const PROJECT_SUMMARY_DOCUMENT = (
   projectGuid,
   projectSummaryGuid,
@@ -190,10 +199,10 @@ export const PROJECT_DECISION_PACKAGE_DOCUMENT = (
 
 // Users
 export const CORE_USER = "/users/core";
-export const USER_INFO = "/users/me";
 
 // Incidents
-export const MINE_INCIDENTS = (mine_guid) => `/mines/${mine_guid}/incidents`;
+export const MINE_INCIDENTS = (mine_guid, params) =>
+  `/mines/${mine_guid}/incidents?${queryString.stringify(params)}`;
 export const MINE_INCIDENT = (mineGuid, mine_incident_guid) =>
   `/mines/${mineGuid}/incidents/${mine_incident_guid}`;
 export const MINE_INCIDENT_DOCUMENTS = (mineGuid) => `/mines/${mineGuid}/incidents/documents`;

@@ -23,10 +23,10 @@ import {
   createNoticeOfWorkApplicationReview,
   fetchNoticeOfWorkApplicationReviews,
   fetchMineNoticeOfWorkApplications,
-} from "@common/actionCreators/noticeOfWorkActionCreator";
-import * as genericActions from "@common/actions/genericActions";
+} from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
+import * as genericActions from "@mds/common/redux/actions/genericActions";
 import { ENVIRONMENT } from "@mds/common";
-import * as API from "@common/constants/API";
+import * as API from "@mds/common/constants/API";
 import * as MOCK from "@/tests/mocks/dataMocks";
 import * as NOW_MOCK from "@/tests/mocks/noticeOfWorkMocks";
 

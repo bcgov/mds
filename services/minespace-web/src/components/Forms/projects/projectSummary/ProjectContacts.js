@@ -4,7 +4,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { isNil } from "lodash";
 import { Typography, Button, Row, Col, Popconfirm } from "antd";
-import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
+import PlusOutlined from "@ant-design/icons/PlusOutlined";
 import { Field, FieldArray, arrayPush, formValueSelector } from "redux-form";
 
 import { maxLength, phoneNumber, required, email } from "@common/utils/Validate";

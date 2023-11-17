@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { Badge, Button, Col, Dropdown, Popconfirm, Row, Tooltip, Typography } from "antd";
 import { DeleteOutlined, EditOutlined, EyeOutlined, WarningOutlined } from "@ant-design/icons";
 import { dateSorter, formatDate } from "@common/utils/helpers";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import CoreTable from "@/components/common/CoreTable";
 import {
   getExplosivesPermitBadgeStatusType,
@@ -35,11 +35,10 @@ import ActionMenu, {
   deleteConfirmWrapper,
   generateActionMenuItems,
 } from "@/components/common/ActionMenu";
-import { userHasRole } from "@common/reducers/authenticationReducer";
+import { userHasRole } from "@mds/common/redux/reducers/authenticationReducer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFiles } from "@fortawesome/pro-light-svg-icons";
 import { COLOR } from "@/constants/styles";
-import { EMPTY_FIELD } from "@common/constants/strings";
 import { ColumnsType } from "antd/es/table";
 
 interface amendmentsWithTotal extends IExplosivesPermitAmendment {
@@ -605,7 +604,7 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
       title: "Amendment",
       key: "explosives_permit_amendment_id",
       render: (_, record, index) => {
-        const amendmentIndex = record.totalAmendments - index;
+        const amendmentIndex = record.totalAmendments - 1 - index;
         return <Typography.Text>{amendmentIndex}</Typography.Text>;
       },
     },

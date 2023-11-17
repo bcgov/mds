@@ -3,7 +3,7 @@ import {
   CONSEQUENCE_CLASSIFICATION_RANK_HASH,
   DATETIME_TZ_FORMAT,
   DEFAULT_TIMEZONE,
-} from "@common/constants/strings";
+} from "@mds/common/constants/strings";
 import { get, isEmpty, isNil, sortBy } from "lodash";
 import { createNumberMask } from "redux-form-input-masks";
 import moment from "moment-timezone";

@@ -6,7 +6,7 @@ import {
   EMPTY_FIELD,
   NOTICE_OF_DEPARTURE_STATUS,
   NOTICE_OF_DEPARTURE_TYPE,
-} from "@common/constants/strings";
+} from "@mds/common/constants/strings";
 import CoreTable from "@/components/common/CoreTable";
 import { INoticeOfDeparture } from "@mds/common";
 import { TablePaginationConfig } from "antd/es/table";

@@ -7,8 +7,8 @@ import {
   fetchDetailedNoticeOfDeparture,
   updateNoticeOfDeparture,
   removeFileFromDocumentManager,
-} from "@common/actionCreators/noticeOfDepartureActionCreator";
-import * as genericActions from "@common/actions/genericActions";
+} from "@mds/common/redux/actionCreators/noticeOfDepartureActionCreator";
+import * as genericActions from "@mds/common/redux/actions/genericActions";
 import { ENVIRONMENT } from "@mds/common";
 import * as MOCK from "@/tests/mocks/dataMocks";
 import {
@@ -16,7 +16,7 @@ import {
   NOTICES_OF_DEPARTURE_DOCUMENTS,
   NOTICES_OF_DEPARTURE,
   NOTICES_OF_DEPARTURE_DOCUMENT,
-} from "../../../common/constants/API";
+} from "@mds/common/constants/API";
 
 const dispatch = jest.fn();
 const requestSpy = jest.spyOn(genericActions, "request");

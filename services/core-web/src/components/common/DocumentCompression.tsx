@@ -9,7 +9,7 @@ import {
   documentsCompression,
   pollDocumentsCompressionProgress,
 } from "@/actionCreators/documentActionCreator";
-import { ActionCreator } from "@/interfaces/actionCreator";
+import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { MineDocument } from "@mds/common/models/documents/document";
 
 interface DocumentCompressionProps {
