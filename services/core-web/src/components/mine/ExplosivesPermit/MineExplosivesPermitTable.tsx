@@ -51,7 +51,11 @@ interface MineExplosivesPermitTableProps {
   handleOpenExplosivesPermitDecisionModal: (event, record: IExplosivesPermit) => void;
   handleOpenExplosivesPermitStatusModal: (event, record: IExplosivesPermit) => void;
   handleDeleteExplosivesPermit: (event, record: IExplosivesPermit) => void;
-  handleOpenEditExplosivesPermitModal: (event, record: IExplosivesPermit) => void;
+  handleOpenEditExplosivesPermitModal: (
+    event,
+    record: IExplosivesPermit,
+    actionKey: string
+  ) => void;
   isPermitTab: boolean;
   explosivesPermitDocumentTypeOptionsHash: any;
   explosivesPermitStatusOptionsHash: any;
@@ -125,20 +129,21 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
   };
 
   const editPermitFunction = isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT)
-    ? (event, permitRecord) =>
-        props.handleOpenAddExplosivesPermitModal(event, isPermitTab, permitRecord)
-    : (event, permitRecord) => props.handleOpenEditExplosivesPermitModal(event, permitRecord);
+    ? (actionKey) => (event, permitRecord) =>
+        props.handleOpenEditExplosivesPermitModal(event, permitRecord, actionKey)
+    : (_actionKey) => (event, permitRecord) =>
+        props.handleOpenAddExplosivesPermitModal(event, isPermitTab, permitRecord);
 
   const editDocumentAction: ITableAction = {
     key: "edit_documents",
     label: "Edit Documents",
-    clickFunction: editPermitFunction,
+    clickFunction: editPermitFunction("edit_documents"),
     icon: editIcon,
   };
   const editPermitAction: ITableAction = {
     key: "edit",
     label: "Edit",
-    clickFunction: editPermitFunction,
+    clickFunction: editPermitFunction("edit"),
     icon: editIcon,
   };
   const processPermitAction: ITableAction = {

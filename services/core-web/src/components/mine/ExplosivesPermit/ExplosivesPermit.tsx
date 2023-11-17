@@ -32,6 +32,8 @@ import MineExplosivesPermitTable from "@/components/mine/ExplosivesPermit/MineEx
 import { modalConfig } from "@/components/modalContent/config";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { IExplosivesPermit, IGroupedDropdownList, IMine, IOption } from "@mds/common";
+import { formatDate } from "@common/utils/helpers";
+import { EsupFormMode } from "@/components/Forms/ExplosivesPermit/ExplosivesPermitFormNew";
 
 interface IExplosivesPermitAmendmentData {
   amendment_count?: number;
@@ -68,6 +70,10 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
   inspectors,
   explosivesPermits,
   explosivesPermitDocumentTypeDropdownOptions,
+  updateExplosivesPermit,
+  updateExplosivesPermitAmendment,
+  fetchExplosivesPermits,
+  closeModal,
   ...props
 }) => {
   const getAmendmentData = (record) => {
@@ -82,12 +88,6 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
 
   const handleIssueExplosivesPermit = async (values, record) => {
     const { explosives_permit_guid } = record;
-    const {
-      updateExplosivesPermit,
-      updateExplosivesPermitAmendment,
-      fetchExplosivesPermits,
-      closeModal,
-    } = props;
 
     const amendmentData = getAmendmentData(record);
     const { explosives_permit_amendment_guid, amendment_count } = amendmentData;
@@ -157,11 +157,11 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
       ...values,
     };
     return props.createExplosivesPermit(mineGuid, payload).then((newPermit) => {
-      props.fetchExplosivesPermits(mineGuid);
+      fetchExplosivesPermits(mineGuid);
       if (system === "Core") {
         handleOpenExplosivesPermitDecisionModal(null, newPermit.data);
       } else {
-        props.closeModal();
+        closeModal();
       }
     });
   };
@@ -171,24 +171,23 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
       ...values,
     };
     if (!isAmendment) {
-      return props
-        .updateExplosivesPermit(mineGuid, values.explosives_permit_guid, payload)
+      return updateExplosivesPermit(mineGuid, values.explosives_permit_guid, payload)
         .then(() => {
-          props.fetchExplosivesPermits(mineGuid);
-          props.closeModal();
+          fetchExplosivesPermits(mineGuid);
+          closeModal();
         });
     } else {
-      return props.updateExplosivesPermitAmendment(payload).then(() => {
-        props.fetchExplosivesPermits(mineGuid);
-        props.closeModal();
+      return updateExplosivesPermitAmendment(payload).then(() => {
+        fetchExplosivesPermits(mineGuid);
+        closeModal();
       });
     }
   };
 
   const handleCreateNewAmendment = (values) => {
     return props.createExplosivesPermitAmendment(values).then(() => {
-      props.fetchExplosivesPermits(mineGuid);
-      props.closeModal();
+      fetchExplosivesPermits(mineGuid);
+      closeModal();
     });
   };
 
@@ -219,27 +218,28 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
     });
   };
 
-  const handleOpenEditExplosivesPermitModal = (event, record = null) => {
+  const handleOpenEditExplosivesPermitModal = (event, record = null, actionKey) => {
+    // I think this might  be the only actual use of this function? Until we add draft. :D
+    const formMode = actionKey === "edit_documents" ? EsupFormMode.edit_document : undefined;
     const initialValues = record || {};
     const hasAmendments = record?.explosives_permit_amendments?.length > 1;
     const isProcessed = record !== null && record?.application_status !== "REC";
     event.preventDefault();
-
     props.openModal({
       props: {
         onSubmit: (values) =>
           record
             ? handleUpdateExplosivesPermit(values, hasAmendments)
             : console.log("WE DIDN'T EXPECT THIS", values),
-        title: "Title goes here",
+        title: "Add Documents to Permits",
         initialValues,
         documents: record?.documents ?? [],
         mineGuid,
-        hideDecisionModal: true,
+        formMode,
         isProcessed,
         documentTypeDropdownOptions: explosivesPermitDocumentTypeDropdownOptions,
         inspectors,
-        isAmendment: !!record?.explosives_permit_amendment_guid,
+        // isAmendment: !!record?.explosives_permit_amendment_guid,
       },
       content: modalConfig.EXPLOSIVES_PERMIT_MODAL,
       width: "75vw",
@@ -264,6 +264,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
         onSubmit: (values) => handleCreateNewAmendment(values),
         initialValues: record,
         documents: allDocs,
+        formMode: EsupFormMode.amend,
         isAmendment: true,
         mineGuid,
         isProcessed: false,
@@ -335,7 +336,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
         explosivesPermit: record,
         parentPermit: { explosives_permit_amendments: [], ...parentPermit },
         openAmendModal: handleOpenAmendExplosivesPermitModal,
-        closeModal: props.closeModal,
+        closeModal: closeModal,
         handleOpenExplosivesPermitCloseModal,
       },
       content: modalConfig.EXPLOSIVES_PERMIT_VIEW_MODAL,
@@ -347,7 +348,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
   const handleDeleteExplosivesPermit = (event, record) => {
     event.preventDefault();
     return props.deleteExplosivesPermit(mineGuid, record.explosives_permit_guid).then(() => {
-      props.fetchExplosivesPermits(mineGuid);
+      fetchExplosivesPermits(mineGuid);
     });
   };
 
