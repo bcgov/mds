@@ -40,19 +40,21 @@ class TractionService():
             current_app.logger.error(f"party_guid={party.party_guid} already has wallet connection, do not create another one")
             raise VerificableCredentialWorkflowError("cannot make invitation if mine already has active connection")
         
+        #only have suffix if non-prod environment
+        my_label_suffix = (" "+Config.ENVIRONMENT_NAME) if (Config.ENVIRONMENT_NAME in ["test","dev"]) else ""
         payload = {
             "accept": [
                 "didcomm/aip1",
                 "didcomm/aip2;env=rfc19"
             ],
-            "alias": str(party.party_guid),
+            "alias": f"{party.party_name}:{str(party.party_guid)}",
             "attachments": [],
             "goal": f"To establish a secure connection between BC Government Mines Permitting and the mining company ({party.party_name})",
             "goal_code": "issue-vc",
             "handshake_protocols": [
                 "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/didexchange/1.0"
             ],
-            "my_label": f"BC Mines - Chief Permitting Officer {Config.ENVIRONMENT_NAME}",
+            "my_label": f"BC Mines - Chief Permitting Officer{my_label_suffix}",
             "use_public_did": False
         }
 
