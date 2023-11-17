@@ -47,6 +47,12 @@ Current Limitations:
 - The existence of this problem report should show in the Minespace and Core UI, as well as the text description contained in the problem-report
 - Controls and endpoints should be built to allow for a new credential-offer when a problem report has been received on a previous offer
 
+## OCA Bundle.
+
+The Overlay Capture Architechture (OCA) bundle for this credential is hosted [here](https://github.com/bcgov/aries-oca-bundles/tree/main/OCABundles/schema). The OCA bundle provides infomation on how the credential should be presented, including backgroun colors, labels, data-typing, and localization. If the credential is updated, the OCA bundle may need to be updated to match.
+
+OCA bundles hosted here can be previewed on the [OCA Explorer](https://bcgov.github.io/aries-oca-bundles/)
+
 ### Permit Amendments and Revocation
 
 When a permit is amendended, the previous authorization is no longer valid and the new authorization should be the only valid credential that exist
@@ -68,17 +74,17 @@ Public DID:
 - Test Ledger: [SG22gyoUVsC7TiC9m68ytU](http://test.bcovrin.vonx.io/browse/domain?page=1&query=SG22gyoUVsC7TiC9m68ytU&txn_type=1) on [BCovrin Test](http://test.bcovrin.vonx.io/) (same as dev)
 - Prod Ledger: [A2UZSmrL9N5FDZGPu68wy](https://candyscan.idlab.org/tx/CANDY_PROD/domain/321) on [CANdy-Prod](https://candyscan.idlab.org/home/CANDY_DEV)
 
-Schema:
+Schema v1.1.1:
 
-- Dev: `S7S2wzcF2giKuwxdeLBk69:2:bc-mines-act-permit:1.0` on BCovrin Test ([TXN](http://test.bcovrin.vonx.io/))
-- Test: `S7S2wzcF2giKuwxdeLBk69:2:bc-mines-act-permit:1.0` on BCovrin Test ([TXN](http://test.bcovrin.vonx.io/))
-- Prod: `A2UZSmrL9N5FDZGPu68wy:2:bc-mines-act-permit:1.0` on CANdy-Prod ([TXN](https://candyscan.idlab.org/tx/CANDY_PROD/domain/332))
+- Dev: `S7S2wzcF2giKuwxdeLBk69:2:bc-mines-act-permit:1.1.1` on BCovrin Test ([TXN](http://test.bcovrin.vonx.io/))
+- Test: `S7S2wzcF2giKuwxdeLBk69:2:bc-mines-act-permit:1.1.1` on BCovrin Test ([TXN](http://test.bcovrin.vonx.io/))
+- Prod: `A2UZSmrL9N5FDZGPu68wy:2:bc-mines-act-permit:1.1.1` on CANdy-Prod ([TXN](https://candyscan.idlab.org/tx/CANDY_PROD/domain/361))
 
-Credential Definitions:
+Credential Definitions for v1.1.1:
 
-- Dev: `S7S2wzcF2giKuwxdeLBk69:3:CL:115414:mds-dev-revok` on BCovrin Test ([TXN](http://test.bcovrin.vonx.io/))
-- Test: `SG22gyoUVsC7TiC9m68ytU:3:CL:115414:mds-test-revok` on BCovrin Test ([TXN](http://test.bcovrin.vonx.io/))
-- Prod: `A2UZSmrL9N5FDZGPu68wy:3:CL:332:mds-prod-revok` on CANdy-Prod ([TXN](https://candyscan.idlab.org/txs/CANDY_PROD/domain?page=1&pageSize=50&filterTxNames=[]&sortFromRecent=true&search=A2UZSmrL9N5FDZGPu68wy:3:CL:332:mds-prod-revok))
+- Dev: `S7S2wzcF2giKuwxdeLBk69:3:CL:171126:mds-dev-revok` on BCovrin Test ([TXN](http://test.bcovrin.vonx.io/))
+- Test: `SG22gyoUVsC7TiC9m68ytU:3:CL:171126:mds-test-revok` on BCovrin Test ([TXN](http://test.bcovrin.vonx.io/))
+- Prod: `A2UZSmrL9N5FDZGPu68wy:3:CL:361:mds-prod-revok` on CANdy-Prod ([TXN](https://candyscan.idlab.org/txs/CANDY_PROD/domain?page=1&pageSize=50&filterTxNames=[]&sortFromRecent=true&search=A2UZSmrL9N5FDZGPu68wy:3:CL:361:mds-prod-revok))
 
 Tenant UI:
 
@@ -108,12 +114,6 @@ Traction Tenant API:
 
 Traction is configured to call the Core-api with HTTP requests when protocol events happen. Should these need to be reviewed or changed, navigate to the Tenant UI of the environment you want to view/change and navigate to `/tenant/settings` through the upper right wallet avatar.
 
-### IMPORTANT NOTE:
-
-Traction supports a webhook_key attribute to access protected endpoints, however the MDS webhook urls are currently unprotected, meaning malicious requests could cause issues. This should be reviewed and rectified immediately [MDS-5601](https://bcmines.atlassian.net/browse/MDS-5601)
-
-[PR for 5601](https://github.com/bcgov/mds/pull/2791)
-
 ### Core-api Environment Variables
 
 Example Environment Variables these connnect to Dev Traction.
@@ -122,7 +122,7 @@ Example Environment Variables these connnect to Dev Traction.
 TRACTION_HOST=https://traction-tenant-proxy-dev.apps.silver.devops.gov.bc.ca
 TRACTION_TENANT_ID=fb4090f1-bd27-45a8-9839-d58abdf54e76
 TRACTION_WALLET_API_KEY=c664c4c9ad6e4cfe9010f83aea8504e5
-CRED_DEF_ID_MINES_ACT_PERMIT=S7S2wzcF2giKuwxdeLBk69:3:CL:115414:mds-dev-revok
+CRED_DEF_ID_MINES_ACT_PERMIT=S7S2wzcF2giKuwxdeLBk69:3:CL:171126:mds-dev-revok
 TRACTION_WEBHOOK_X_API_KEY=1263835957285d576a09466f2d5f6142
 ```
 
