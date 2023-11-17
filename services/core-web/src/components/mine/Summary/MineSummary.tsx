@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { Row, Col, Divider, Card } from "antd";
 import moment from "moment";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { formatDate } from "@common/utils/helpers";
 import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
 import { getPartyRelationshipTypes } from "@mds/common/redux/selectors/staticContentSelectors";
@@ -18,7 +18,6 @@ import { DOC, OVERDUEDOC } from "@/constants/assets";
 import MineHeader from "@/components/mine/MineHeader";
 import MineWorkInformation from "@/components/mine/Summary/MineWorkInformation";
 import {
-  IMatch,
   IMine,
   IPartyRelationshipType,
   IPermitPartyRelationship,
@@ -31,7 +30,6 @@ import {
  */
 
 interface MineSummaryProps {
-  match: IMatch;
   mines: Partial<IMine>;
   partyRelationshipTypes: IPartyRelationshipType[];
   partyRelationships: IPermitPartyRelationship[];
@@ -78,14 +76,14 @@ const isActive = (pr) =>
   (!pr.end_date ||
     moment(pr.end_date)
       .add(1, "days")
-      .toDate() > new Date()) &&
-  (!pr.start_date || Date.parse(pr.start_date) <= new Date().getMilliseconds());
+      .isAfter()) &&
+  (!pr.start_date || moment(pr.start_date).isBefore());
 
 const activePermitteesByPermit = (pr, permit) =>
   isActive(pr) && pr.mine_party_appt_type_code === "PMT" && pr.related_guid === permit.permit_guid;
 
 export const MineSummary: FC<MineSummaryProps> = (props) => {
-  const { id } = props.match.params;
+  const { id } = useParams<any>();
   const mine = props.mines[id];
 
   return (
