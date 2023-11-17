@@ -12,13 +12,6 @@ exports[`MineSummary renders properly 1`] = `
   </div>
   <Connect(MineHeader)
     complianceInfoLoading={true}
-    match={
-      Object {
-        "params": Object {
-          "id": "18145c75-49ad-0101-85f3-a43e45ae989a",
-        },
-      }
-    }
     mine={
       Object {
         "major_mine_ind": true,
