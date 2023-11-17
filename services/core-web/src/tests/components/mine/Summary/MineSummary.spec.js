@@ -15,7 +15,6 @@ const setupProps = () => {
 };
 
 function mockFunction() {
-  // @ts-ignore
   const original = require.requireActual("react-router-dom");
   return {
     ...original,
