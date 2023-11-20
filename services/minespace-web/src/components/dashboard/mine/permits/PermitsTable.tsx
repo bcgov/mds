@@ -9,7 +9,7 @@ import {
   VC_CONNECTION_STATES,
   VC_CRED_ISSUE_STATES,
   isFeatureEnabled,
-} from "@mds/common/index";
+} from "@mds/common";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import { truncateFilename } from "@common/utils/helpers";
 import { getDropdownPermitStatusOptions } from "@mds/common/redux/selectors/staticContentSelectors";
@@ -26,6 +26,9 @@ import {
 } from "@mds/common/components/common/CoreTableCommonColumns";
 import IssuePermitDigitalCredential from "@/components/modalContent/verifiableCredentials/IssuePermitDigitalCredential";
 import { SortOrder } from "antd/lib/table/interface";
+import { VIEW_ESUP } from "@/constants/routes";
+import { useHistory } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const draftAmendment = "DFT";
 
@@ -40,6 +43,7 @@ interface PermitsTableProps {
   explosivesPermits: IExplosivesPermit[];
   majorMineInd: boolean;
   openModal: (value: any) => void;
+  closeModal: (value: any) => void;
   openVCWalletInvitationModal: (
     event,
     partyGuid: string,
@@ -49,6 +53,9 @@ interface PermitsTableProps {
 }
 
 export const PermitsTable: FC<PermitsTableProps> = (props) => {
+  const history = useHistory();
+  const { id } = useParams<{ id: string }>();
+
   const columns = [
     renderTextColumn("permit_no", "Permit No.", true),
     renderTextColumn("current_permittee", "Permittee"),
@@ -62,15 +69,22 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
     },
   ];
 
-  if (
+  const showVCColumn =
     isFeatureEnabled(Feature.VERIFIABLE_CREDENTIALS) &&
     props.majorMineInd &&
     props.permits.some((p) => {
       // look for *any* active wallet connections to show the issuance column/action
       const walletStatus = p.current_permittee_digital_wallet_connection_state;
       return VC_CONNECTION_STATES[walletStatus] === VC_CONNECTION_STATES.active;
-    })
-  ) {
+    });
+
+  const handleOpenViewEsup = (event, record: any) => {
+    event.preventDefault();
+    event.stopPropagation();
+    history.push(VIEW_ESUP.dynamicRoute(id, record.key));
+  };
+
+  if (showVCColumn || isFeatureEnabled(Feature.MINESPACE_ESUPS)) {
     const colourMap = {
       "Not Active": "#D8292F",
       Pending: "#F1C21B",
@@ -108,14 +122,31 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
         label: "Issue as digital credential",
         clickFunction: openIssuanceModal,
       },
+      {
+        key: "view_esup",
+        label: "View",
+        clickFunction: (event, esup: IExplosivesPermit) => {
+          handleOpenViewEsup(event, esup);
+        },
+      },
     ];
 
     const filterActions = (record, actionList) => {
-      if (record.permit_type !== permitTypes.Permit) {
-        return actionList.filter((a) => a.key !== "vc_issue");
+      let filteredActionList = actionList;
+
+      // filter for permit type and vc_issue key
+      if (record.permit_type !== permitTypes.Permit || !showVCColumn) {
+        filteredActionList = filteredActionList.filter((a) => a.key !== "vc_issue");
       }
-      return actionList;
+
+      // filter for feature flag and view_esup key
+      if (!isFeatureEnabled(Feature.MINESPACE_ESUPS) || record.permit_type !== permitTypes.ESUP) {
+        filteredActionList = filteredActionList.filter((a) => a.key !== "view_esup");
+      }
+
+      return filteredActionList;
     };
+
     const actionColumn = renderActionsColumn(actions, filterActions);
     columns.splice(3, 0, issuanceStateColumn);
     columns.push(actionColumn);

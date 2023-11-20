@@ -24,7 +24,7 @@ const ExplosivesPermitDiffModal: FC<ExplosivesPermitDiffModalProps> = ({
   open = false,
   onCancel,
 }) => {
-  const [differences, setDifferences] = useState<IPermitDifferencesByAmendment>({});
+  const [currentDiff, setCurrentDiff] = useState<IPermitDifferencesByAmendment>({});
 
   const getPermitDifferences = (permit: IExplosivesPermit): IPermitDifferencesByAmendment => {
     const comparablePermit = {
@@ -44,98 +44,93 @@ const ExplosivesPermitDiffModal: FC<ExplosivesPermitDiffModalProps> = ({
       "amendment_no",
     ];
 
-    const differences: IPermitDifferencesByAmendment = permitVersions.reduce(
-      (acc, currAmendment, i) => {
-        if (i === 0) {
-          acc["0"] = [];
-          return acc;
-        }
+    return permitVersions.reduce((acc, currAmendment, i) => {
+      if (i === 0) {
+        acc["0"] = [];
+        return acc;
+      }
 
-        const previousAmendment = permitVersions[i - 1];
+      const previousAmendment = permitVersions[i - 1];
 
-        Object.entries(currAmendment).forEach(([key, newValue]) => {
-          const oldValue = previousAmendment[key];
+      Object.entries(currAmendment).forEach(([key, newValue]) => {
+        const oldValue = previousAmendment[key];
 
-          if (
-            (key === "detonator_magazines" || key === "explosive_magazines") &&
-            Array.isArray(newValue)
-          ) {
-            for (const [idx, newVal] of newValue.entries()) {
-              const oldVal = oldValue[idx];
+        if (
+          (key === "detonator_magazines" || key === "explosive_magazines") &&
+          Array.isArray(newValue)
+        ) {
+          for (const [idx, newVal] of newValue.entries()) {
+            const oldVal = oldValue[idx];
 
-              if (!isEqual(newVal, oldVal)) {
-                if (!acc[currAmendment.explosives_permit_amendment_id]) {
-                  acc[currAmendment.explosives_permit_amendment_id] = [];
-                }
+            if (!isEqual(newVal, oldVal)) {
+              if (!acc[currAmendment.explosives_permit_amendment_id]) {
+                acc[currAmendment.explosives_permit_amendment_id] = [];
+              }
 
-                for (const [magazineKey, magazineValue] of Object.entries(newVal)) {
-                  const oldMagazineValue = oldVal?.[magazineKey];
-                  const ignoredMagazineFields = [
-                    "explosives_permit_amendment_magazine_id",
-                    "explosives_permit_amendment_magazine_type_code",
-                    "explosives_permit_magazine_id",
-                    "explosives_permit_magazine_type_code",
-                  ];
+              for (const [magazineKey, magazineValue] of Object.entries(newVal)) {
+                const oldMagazineValue = oldVal?.[magazineKey];
+                const ignoredMagazineFields = [
+                  "explosives_permit_amendment_magazine_id",
+                  "explosives_permit_amendment_magazine_type_code",
+                  "explosives_permit_magazine_id",
+                  "explosives_permit_magazine_type_code",
+                ];
 
-                  if (
-                    magazineValue !== oldMagazineValue &&
-                    !ignoredMagazineFields.includes(magazineKey)
-                  ) {
-                    const fieldPrefix =
-                      key === "detonator_magazines" ? "Detonator Magazine" : "Explosive Magazine";
-                    const diff: IPermitDifference = {
-                      fieldName: `${fieldPrefix} ${idx} - ${magazineKey}`,
-                      previousValue: oldMagazineValue,
-                      currentValue: magazineValue,
-                    };
-                    acc[currAmendment.explosives_permit_amendment_id].push(diff);
-                  }
+                if (
+                  magazineValue !== oldMagazineValue &&
+                  !ignoredMagazineFields.includes(magazineKey)
+                ) {
+                  const fieldPrefix =
+                    key === "detonator_magazines" ? "Detonator Magazine" : "Explosive Magazine";
+                  const diff: IPermitDifference = {
+                    fieldName: `${fieldPrefix} ${idx} - ${magazineKey}`,
+                    previousValue: oldMagazineValue,
+                    currentValue: magazineValue,
+                  };
+                  acc[currAmendment.explosives_permit_amendment_id].push(diff);
                 }
               }
             }
-
-            return;
           }
 
-          if (typeof newValue === "object" && newValue !== null) {
-            return;
-          }
-
-          if (!acc[currAmendment.explosives_permit_amendment_id]) {
-            acc[currAmendment.explosives_permit_amendment_id] = [];
-          }
-
-          if (newValue !== oldValue && !ignoredFields.includes(key)) {
-            const diff: IPermitDifference = {
-              fieldName: key,
-              previousValue: oldValue,
-              currentValue: newValue,
-            };
-
-            acc[currAmendment.explosives_permit_amendment_id].push(diff);
-          }
-        });
-
-        const amendmentDocuments = currAmendment.documents.map((doc) => doc.document_name);
-        if (amendmentDocuments && amendmentDocuments.length > 0) {
-          acc[currAmendment.explosives_permit_amendment_id].push({
-            fieldName: "Documents",
-            previousValue: [],
-            currentValue: amendmentDocuments,
-          });
+          return;
         }
-        return acc;
-      },
-      {}
-    );
 
-    return differences;
+        if (typeof newValue === "object" && newValue !== null) {
+          return;
+        }
+
+        if (!acc[currAmendment.explosives_permit_amendment_id]) {
+          acc[currAmendment.explosives_permit_amendment_id] = [];
+        }
+
+        if (newValue !== oldValue && !ignoredFields.includes(key)) {
+          const diff: IPermitDifference = {
+            fieldName: key,
+            previousValue: oldValue,
+            currentValue: newValue,
+          };
+
+          acc[currAmendment.explosives_permit_amendment_id].push(diff);
+        }
+      });
+
+      const amendmentDocuments = currAmendment.documents.map((doc) => doc.document_name);
+      if (amendmentDocuments && amendmentDocuments.length > 0) {
+        acc[currAmendment.explosives_permit_amendment_id].push({
+          fieldName: "Documents",
+          previousValue: [],
+          currentValue: amendmentDocuments,
+        });
+      }
+      return acc;
+    }, {});
   };
 
   useEffect(() => {
     if (explosivesPermit) {
       const differencesList = getPermitDifferences(explosivesPermit);
-      setDifferences(differencesList);
+      setCurrentDiff(differencesList);
     }
   }, [explosivesPermit]);
 
@@ -169,44 +164,52 @@ const ExplosivesPermitDiffModal: FC<ExplosivesPermitDiffModalProps> = ({
       title: "Changes",
       dataIndex: "differences",
       key: "differences",
-      render: (differences: IPermitDifference[]) =>
-        differences.map((diff) => (
-          <div key={diff.fieldName}>
-            {diff.fieldName === "Documents" ? (
-              <div>
-                <Typography.Paragraph strong className="margin-none">
-                  Files Added:
-                </Typography.Paragraph>
-                {diff.currentValue.map((file: any, index) => (
-                  <Typography.Paragraph key={`${file}${index}`} className="green margin-none">
-                    {file}
-                  </Typography.Paragraph>
-                ))}
-              </div>
-            ) : (
-              <div>
-                <Typography.Paragraph strong className="margin-none">
-                  {diff.fieldName}
-                </Typography.Paragraph>
-                {diff.fieldName !== "None" && (
-                  <Typography.Paragraph>
-                    <Typography.Text className="red">
-                      {valueOrNoData(diff.previousValue)}
-                    </Typography.Text>
-                    {` => `}
-                    <Typography.Text className="green">
-                      {valueOrNoData(diff.currentValue)}
-                    </Typography.Text>
-                  </Typography.Paragraph>
+      render: (differences: IPermitDifference[]) => {
+        return (
+          <div className="padding-md--top">
+            {differences.map((diff) => (
+              <div key={diff.fieldName}>
+                {diff.fieldName === "Documents" ? (
+                  <div>
+                    <Typography.Paragraph strong className="margin-none line-height-none">
+                      Files Added:
+                    </Typography.Paragraph>
+                    {diff.currentValue.map((file: any, index) => (
+                      <Typography.Paragraph
+                        key={`${file}${index}`}
+                        className="green margin-none line-height-none"
+                      >
+                        {file}
+                      </Typography.Paragraph>
+                    ))}
+                  </div>
+                ) : (
+                  <div>
+                    <Typography.Paragraph strong className="margin-none line-height-none">
+                      {diff.fieldName}:
+                    </Typography.Paragraph>
+                    {diff.fieldName !== "None" && (
+                      <Typography.Paragraph>
+                        <Typography.Text className="red">
+                          {valueOrNoData(diff.previousValue)}
+                        </Typography.Text>
+                        {` => `}
+                        <Typography.Text className="green">
+                          {valueOrNoData(diff.currentValue)}
+                        </Typography.Text>
+                      </Typography.Paragraph>
+                    )}
+                  </div>
                 )}
               </div>
-            )}
+            ))}
           </div>
-        )),
+        );
+      },
     },
   ];
 
-  const data = Object.keys(differences)
+  const data = Object.keys(currentDiff)
     .map((key: any, index: number) => {
       const amendment = explosivesPermit.explosives_permit_amendments.find(
         (amendment) => amendment.explosives_permit_amendment_id == key
@@ -216,7 +219,7 @@ const ExplosivesPermitDiffModal: FC<ExplosivesPermitDiffModalProps> = ({
 
       return {
         ...permit,
-        differences: differences[key].length > 0 ? differences[key] : [{ fieldName: "None" }],
+        differences: currentDiff[key].length > 0 ? currentDiff[key] : [{ fieldName: "None" }],
         order_no: index,
       };
     })
@@ -240,6 +243,8 @@ const ExplosivesPermitDiffModal: FC<ExplosivesPermitDiffModalProps> = ({
         <Typography.Text strong>Permit #</Typography.Text> {explosivesPermit.permit_number})
       </Typography.Paragraph>
       <Table
+        className="diff-table"
+        rowClassName="diff-table-row"
         pagination={false}
         columns={columns}
         dataSource={data}

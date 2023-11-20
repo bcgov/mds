@@ -1,6 +1,8 @@
 import React, { FC } from "react";
 import { Col, Collapse, Row, Typography } from "antd";
 import { IExplosivesPermitMagazine } from "@mds/common/interfaces/permits/explosivesPermit.interface";
+import { useParams } from "react-router-dom";
+import PlusOutlined from "@ant-design/icons/PlusOutlined";
 
 interface IMagazineProps {
   label: string;
@@ -9,12 +11,22 @@ interface IMagazineProps {
 
 const Magazine: FC<IMagazineProps> = (props) => {
   const { label, magazine } = props;
+  const { explosivesPermitGuid } = useParams<{
+    explosivesPermitGuid: string;
+  }>();
+  const isCore = !explosivesPermitGuid;
+
   return (
-    <Collapse className="magazine-collapse margin-large--bottom">
+    <Collapse
+      expandIcon={
+        isCore ? undefined : ({ isActive }) => <PlusOutlined rotate={isActive ? 90 : 0} />
+      }
+      className="magazine-collapse margin-large--bottom"
+    >
       <Collapse.Panel
         className="magazine-collapse"
         header={
-          <Typography.Text strong className="purple">
+          <Typography.Text strong className="primary-colour">
             {label}
           </Typography.Text>
         }

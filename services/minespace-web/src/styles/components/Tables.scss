@@ -36,12 +36,12 @@
     display: none;
   }
 
-  .ant-table-tbody>tr {
+  .ant-table-tbody > tr {
     display: block;
     border-top: 2px solid $background;
   }
 
-  .ant-table-tbody>tr>td {
+  .ant-table-tbody > tr > td {
     display: block !important;
     padding: 0.25rem 0.5rem;
     border-bottom: none;
@@ -70,9 +70,15 @@
     }
   }
 
-  .ant-table-tbody>tr>td:last-child {
+  .ant-table-tbody > tr > td:last-child {
     border-bottom: 0;
   }
+}
+
+.break-word {
+  word-break: break-word !important;
+  overflow: initial !important;
+  white-space: initial !important;
 }
 
 // buttons within tables
@@ -83,4 +89,20 @@ td.ant-table-cell {
     margin-top: 0;
     margin-bottom: 0;
   }
+}
+
+.diff-table th {
+  background-color: #F4F0F0 !important;
+}
+
+.diff-table td {
+    background-color: #fff !important;
+}
+
+.diff-table-row, .diff-table-row:hover, .ant-table-cell-row-hover {
+  background: none;
+}
+
+.diff-table-row > td{
+  vertical-align: top;
 }

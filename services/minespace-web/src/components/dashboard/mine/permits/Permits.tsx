@@ -3,13 +3,21 @@ import { connect } from "react-redux";
 import { Row, Col, Typography, Button, Badge } from "antd";
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { fetchExplosivesPermits } from "@mds/common/redux/actionCreators/explosivesPermitActionCreator";
-import { openModal } from "@mds/common/redux/actions/modalActions";
+import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { getExplosivesPermits } from "@mds/common/redux/selectors/explosivesPermitSelectors";
 import PermitsTable from "@/components/dashboard/mine/permits/PermitsTable";
-import { Feature, IExplosivesPermit, IMine, IPermit, VC_CONNECTION_STATES, isFeatureEnabled } from "@mds/common";
+import {
+  Feature,
+  IExplosivesPermit,
+  IMine,
+  IPermit,
+  VC_CONNECTION_STATES,
+  isFeatureEnabled,
+} from "@mds/common";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import modalConfig from "@/components/modalContent/config";
+import { openDocument } from "@mds/common/components/syncfusion/DocumentViewer";
 
 interface PermitsProps {
   mine: IMine;
@@ -17,7 +25,9 @@ interface PermitsProps {
   explosivesPermits: IExplosivesPermit[];
   fetchPermits: ActionCreator<typeof fetchPermits>;
   fetchExplosivesPermits: ActionCreator<typeof fetchExplosivesPermits>;
+  openDocument: (document_manager_guid: string, mine_document_guid: string) => void;
   openModal: (payload) => any;
+  closeModal: (payload) => void;
 }
 export const Permits: FC<PermitsProps> = ({ mine, permits, explosivesPermits, ...props }) => {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
@@ -178,6 +188,8 @@ const mapDispatchToProps = {
   fetchPermits,
   fetchExplosivesPermits,
   openModal,
+  closeModal,
+  openDocument,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Permits);

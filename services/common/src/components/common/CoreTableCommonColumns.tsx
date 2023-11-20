@@ -50,11 +50,13 @@ export const renderCategoryColumn = (
   title: string,
   categoryMap: any,
   sortable = false,
-  placeHolder = EMPTY_FIELD
+  placeHolder = EMPTY_FIELD,
+  className?: string
 ) => {
   return {
     title,
     dataIndex,
+    className,
     key: dataIndex,
     render: (text: string) => <div title={title}>{categoryMap[text] ?? placeHolder}</div>,
     ...(sortable ? { sorter: nullableStringSorter(dataIndex) } : null),

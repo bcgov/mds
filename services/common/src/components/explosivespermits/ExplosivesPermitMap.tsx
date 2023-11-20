@@ -1,7 +1,6 @@
 import React, { Component, FC, useEffect, useRef, useState } from "react";
 import L, { Map } from "leaflet";
 import LeafletWms from "leaflet.wms";
-import PropTypes from "prop-types";
 
 import "leaflet.markercluster";
 import "leaflet/dist/leaflet.css";
@@ -10,7 +9,7 @@ import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 
 import * as Strings from "@mds/common/constants/strings";
 import { Validate } from "@mds/common/redux/utils/Validate";
-import { ReactComponent as SMALL_PIN_SELECTED } from "@mds/common/assets/images/small-pin-selected.svg";
+import { SMALL_PIN_SELECTED } from "@mds/common/constants/assets";
 
 /**
  * @class ExplosivesPermitMap.js is a Leaflet Map component.

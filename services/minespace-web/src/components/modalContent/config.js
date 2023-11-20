@@ -39,7 +39,7 @@ export const modalConfig = {
   VIEW_FILE_HISTORY: ViewFileHistoryModal,
   UPLOAD_INCIDENT_DOCUMENT: UploadIncidentDocumentModal,
   VC_WALLET_INVITATION: CreateInvitationModal,
-  VIEW_EXPLOSIVES_PERMIT: ExplosivesPermitViewModal,
+  EXPLOSIVES_PERMIT_VIEW_MODAL: ExplosivesPermitViewModal,
 };
 
 export default modalConfig;

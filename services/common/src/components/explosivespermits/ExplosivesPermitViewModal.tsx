@@ -7,7 +7,7 @@ import {
   IExplosivesPermitAmendment,
 } from "@mds/common";
 import React, { FC, useEffect, useState } from "react";
-import { connect } from "react-redux";
+import { useParams } from "react-router-dom";
 
 import { bindActionCreators } from "redux";
 
@@ -25,13 +25,21 @@ export const generatedDocColumns = [
     "Category",
     ESUP_DOCUMENT_GENERATED_TYPES,
     true,
-    ""
+    "",
+    "break-word"
   ),
   {
     title: "File Name",
     dataIndex: "document_name",
     key: "document_name",
-    render: (text, record) => <a onClick={() => downloadFileFromDocumentManager(record)}>{text}</a>,
+    render: (text, record) => (
+      <Typography.Link
+        className="break-word"
+        onClick={() => downloadFileFromDocumentManager(record)}
+      >
+        {text}
+      </Typography.Link>
+    ),
   },
   {
     title: "Created",
@@ -46,7 +54,14 @@ export const supportingDocColumns = [
     title: "File Name",
     dataIndex: "document_name",
     key: "document_name",
-    render: (text, record) => <a onClick={() => downloadFileFromDocumentManager(record)}>{text}</a>,
+    render: (text, record) => (
+      <Typography.Link
+        className="break-word"
+        onClick={() => downloadFileFromDocumentManager(record)}
+      >
+        {text}
+      </Typography.Link>
+    ),
   },
   {
     title: "Created By",
@@ -80,6 +95,11 @@ const permitAmendmentLike = (permit: IExplosivesPermit): IExplosivesPermitAmendm
 export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (props) => {
   const { explosivesPermit, parentPermit } = props;
   const amendmentsCount = parentPermit?.amendment_count || 0;
+  const { explosivesPermitGuid } = useParams<{
+    explosivesPermitGuid: string;
+  }>();
+
+  const isCore = !explosivesPermitGuid;
 
   const [generatedDocs, setGeneratedDocs] = useState([]);
   const [supportingDocs, setSupportingDocs] = useState([]);
@@ -141,12 +161,12 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
   useEffect(() => {
     if (currentPermit) {
       const generatedTypes = Object.keys(ESUP_DOCUMENT_GENERATED_TYPES);
-      const allDocs = [
-        ...parentPermit?.documents,
-        ...parentPermit?.explosives_permit_amendments
-          .map((amendment) => amendment.documents)
-          .flat(),
-      ];
+      const permitDocuments = parentPermit?.documents ?? [];
+      const amendmentDocuments =
+        parentPermit?.explosives_permit_amendments?.map((amendment) => amendment.documents) ?? [];
+      // Wrapping in another array to flatten only if it's not undefined
+      const allDocs = [...permitDocuments, ...[].concat(...amendmentDocuments)];
+
       setGeneratedDocs(
         allDocs.filter((doc) => generatedTypes.includes(doc.explosives_permit_document_type_code))
       );
@@ -180,12 +200,14 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
           <br />
         </>
       )}
-      <Typography.Title level={2} className="margin-large--bottom">
-        Explosive Storage and Use Permit
-      </Typography.Title>
+      {isCore && (
+        <Typography.Title level={2} className="margin-large--bottom">
+          Explosive Storage and Use Permit
+        </Typography.Title>
+      )}
       <Row gutter={48}>
         <Col md={12} sm={24}>
-          <Typography.Title level={3} className="purple">
+          <Typography.Title level={3} className="primary-colour">
             Explosives Permit Details
           </Typography.Title>
           <>
@@ -236,7 +258,7 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
           <Typography.Paragraph>{currentPermit.application_date}</Typography.Paragraph>
           <Typography.Paragraph strong>Other Information</Typography.Paragraph>
           <Typography.Paragraph>{currentPermit.description}</Typography.Paragraph>
-          <Typography.Title level={3} className="purple">
+          <Typography.Title level={3} className="primary-colour">
             Storage Details
           </Typography.Title>
           <Row gutter={6}>
@@ -253,7 +275,7 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
           <br />
           {(supportingDocs.length > 0 || generatedDocs.length > 0) && (
             <Row>
-              <Typography.Title level={3} className="purple">
+              <Typography.Title level={3} className="primary-colour">
                 Supporting Documents
               </Typography.Title>
               {generatedDocs.length > 0 && (
@@ -269,6 +291,7 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
                   </Col>
                   <Col span={24}>
                     <Table
+                      sticky={true}
                       dataSource={generatedDocs}
                       pagination={false}
                       columns={generatedDocColumns}
@@ -301,7 +324,7 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
         </Col>
         <Col md={12} sm={24} className="border--left--layout">
           <>
-            <Typography.Title level={3} className="purple">
+            <Typography.Title level={3} className="primary-colour">
               Permit Status
             </Typography.Title>
             <Row>
@@ -324,23 +347,25 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
                   {currentPermit.is_closed ? "Closed" : "Open"}
                 </Typography.Paragraph>
               </Col>
-              <Col span={currentPermit.is_closed ? 12 : 16}>
-                {currentPermit.is_closed ? (
-                  <Typography.Paragraph className="margin-none">
-                    {formatDate(currentPermit.closed_timestamp)}
-                  </Typography.Paragraph>
-                ) : (
-                  <Button
-                    onClick={(event) =>
-                      props.handleOpenExplosivesPermitCloseModal(event, currentPermit)
-                    }
-                    type="ghost"
-                    className="close-permit-button"
-                  >
-                    Close Permit
-                  </Button>
-                )}
-              </Col>
+              {isCore && (
+                <Col span={currentPermit.is_closed ? 12 : 16}>
+                  {currentPermit.is_closed ? (
+                    <Typography.Paragraph className="margin-none">
+                      {formatDate(currentPermit.closed_timestamp)}
+                    </Typography.Paragraph>
+                  ) : (
+                    <Button
+                      onClick={(event) =>
+                        props.handleOpenExplosivesPermitCloseModal(event, currentPermit)
+                      }
+                      type="ghost"
+                      className="close-permit-button"
+                    >
+                      Close Permit
+                    </Button>
+                  )}
+                </Col>
+              )}
             </Row>
             {currentPermit.is_closed && (
               <Row className="margin-large--top">
@@ -352,7 +377,7 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
                 </Col>
               </Row>
             )}
-            <Typography.Title level={3} className="purple margin-large--top">
+            <Typography.Title level={3} className="primary-colour margin-large--top">
               Explosives Magazines
             </Typography.Title>
             {currentPermit?.explosive_magazines?.length > 0 &&
@@ -363,7 +388,7 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
                   magazine={magazine}
                 />
               ))}
-            <Typography.Title level={3} className="purple">
+            <Typography.Title level={3} className="primary-colour">
               Detonator Magazines
             </Typography.Title>
             {currentPermit?.detonator_magazines?.length > 0 &&
@@ -399,25 +424,29 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
           </>
         </Col>
       </Row>
-      <Row className="flex-between form-button-container-row">
-        {explosivesPermit.application_status === "APP" && (
-          <Button
-            onClick={(event) => props.openAmendModal(event, explosivesPermit)}
-            className="full-mobile"
-            type="ghost"
-          >
-            Create Amendment
-          </Button>
-        )}
-        <Button
-          onClick={props.closeModal}
-          className="full-mobile"
-          type="primary"
-          style={{ marginLeft: "auto" }}
-        >
-          Close
-        </Button>
-      </Row>
+      {isCore && (
+        <div>
+          <Row className="flex-between form-button-container-row">
+            {explosivesPermit.application_status === "APP" && (
+              <Button
+                onClick={(event) => props.openAmendModal(event, explosivesPermit)}
+                className="full-mobile"
+                type="ghost"
+              >
+                Create Amendment
+              </Button>
+            )}
+            <Button
+              onClick={props.closeModal}
+              className="full-mobile"
+              type="primary"
+              style={{ marginLeft: "auto" }}
+            >
+              Close
+            </Button>
+          </Row>
+        </div>
+      )}
       <ExplosivesPermitDiffModal
         open={openDiffModal}
         onCancel={() => setOpenDiffModal(false)}
@@ -427,12 +456,4 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
   );
 };
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      openDocument,
-    },
-    dispatch
-  );
-
-export default connect(null, mapDispatchToProps)(ExplosivesPermitViewModal);
+export default ExplosivesPermitViewModal;
