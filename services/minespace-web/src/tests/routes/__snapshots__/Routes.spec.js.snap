@@ -369,6 +369,18 @@ exports[`PrivateRoutes  renders properly 1`] = `
       path="/mines/:mineGuid/incidents/:mineIncidentGuid"
     />
     <Route
+      component={
+        Object {
+          "$$typeof": Symbol(react.memo),
+          "WrappedComponent": [Function],
+          "compare": null,
+          "displayName": "Connect(authenticationGuard)",
+          "type": [Function],
+        }
+      }
+      path="/mine/:mineGuid/explosives-permits/:explosivesPermitGuid"
+    />
+    <Route
       render={[Function]}
     />
   </Switch>

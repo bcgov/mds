@@ -48,6 +48,7 @@ export const authenticationReducer = (state = initialState, action) => {
           ...action.payload.userInfo,
           preferred_username,
         },
+        redirect: ROUTES?.MINES?.route,
       };
     case ActionTypes.STORE_USER_ACCESS_DATA:
       return {
@@ -64,6 +65,7 @@ export const authenticationReducer = (state = initialState, action) => {
         ...state,
         isAuthenticated: false,
         userInfo: {},
+        redirect: ROUTES?.HOME?.route,
       };
     default:
       return state;
