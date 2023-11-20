@@ -32,7 +32,6 @@ import MineExplosivesPermitTable from "@/components/mine/ExplosivesPermit/MineEx
 import { modalConfig } from "@/components/modalContent/config";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { Feature, IExplosivesPermit, IGroupedDropdownList, IMine, IOption } from "@mds/common";
-import { formatDate } from "@common/utils/helpers";
 import { EsupFormMode } from "@/components/Forms/ExplosivesPermit/ExplosivesPermitFormNew";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 
@@ -79,6 +78,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
 }) => {
   const { isFeatureEnabled } = useFeatureFlag();
 
+
   const getAmendmentData = (record) => {
     const result: IExplosivesPermitAmendmentData = {};
     if (record.explosives_permit_amendments && record.explosives_permit_amendments.length > 1) {
@@ -88,6 +88,15 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
     }
     return result;
   };  
+
+  //find out if given record is an amendment
+  const isEsupAmendment = (record) => {
+    if (record?.explosives_permit_amendment_id) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   const handleIssueExplosivesPermit = async (values, record) => {
     const { explosives_permit_guid } = record;
@@ -153,6 +162,25 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
       });
   };
 
+  const handleUpdateExplosivesPermit = (values, isAmendment = false, issuePermitAfter = false) => {
+    const payload = {
+      ...values,
+    };
+    const updateEsup = () =>
+      isAmendment
+        ? updateExplosivesPermitAmendment(payload)
+        : updateExplosivesPermit(mineGuid, values.explosives_permit_guid, payload);
+
+    updateEsup().then((permitData) => {
+      fetchExplosivesPermits(mineGuid);
+      if (issuePermitAfter) {
+        handleOpenExplosivesPermitDecisionModal(event, permitData.data);
+      } else {
+        closeModal();
+      }
+    });
+  };
+
   const handleAddExplosivesPermit = (values) => {
     const system = values.is_historic ? "MMS" : "Core";
     const payload = {
@@ -169,28 +197,15 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
     });
   };
 
-  const handleUpdateExplosivesPermit = (values, isAmendment = false) => {
-    const payload = {
-      ...values,
-    };
-    if (!isAmendment) {
-      return updateExplosivesPermit(mineGuid, values.explosives_permit_guid, payload)
-        .then(() => {
-          fetchExplosivesPermits(mineGuid);
-          closeModal();
-        });
-    } else {
-      return updateExplosivesPermitAmendment(payload).then(() => {
-        fetchExplosivesPermits(mineGuid);
-        closeModal();
-      });
-    }
-  };
 
-  const handleCreateNewAmendment = (values) => {
-    return props.createExplosivesPermitAmendment(values).then(() => {
+  const handleCreateNewAmendment = (values, issueAfter = true) => {
+    return props.createExplosivesPermitAmendment(values).then((newPermit) => {
       fetchExplosivesPermits(mineGuid);
-      closeModal();
+      if (issueAfter) {
+        handleOpenExplosivesPermitDecisionModal({ preventDefault: () => null }, newPermit.data);
+      } else {
+        closeModal();
+      }
     });
   };
 
@@ -224,22 +239,44 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
     });
   };
 
+  const getAmendmentDocuments = (record) => {
+    // Get all documents for the parent permit and all amendments
+    const parentPermit = explosivesPermits.find(
+      ({ explosives_permit_id }) => explosives_permit_id === record.explosives_permit_id
+    );
+    return [
+      ...parentPermit.documents,
+      ...parentPermit?.explosives_permit_amendments?.map((amendment) => amendment.documents),
+    ].flat();
+  };
+
   const handleOpenEditExplosivesPermitModal = (event, record = null, actionKey) => {
-    // I think this might  be the only use of this function? Until we add draft. :D
-    const formMode = actionKey === "edit_documents" ? EsupFormMode.edit_document : undefined;
+    const documentsOnly = actionKey === "edit_documents";
     const initialValues = record || {};
-    const hasAmendments = record?.explosives_permit_amendments?.length > 1;
+    const isAmendment = isEsupAmendment(record);
     const isProcessed = record !== null && record?.application_status !== "REC";
+
+    let modalTitle = "Add Permit";
+    let formMode = EsupFormMode.create_new;
+    let documents = record?.documents ?? [];
+
+    if (documentsOnly) {
+      modalTitle = "Add Documents to Permits";
+      formMode = EsupFormMode.edit_document;
+    } else {
+      if (isAmendment) {
+        modalTitle = "Amend Explosives Storage and Use Permit";
+        formMode = EsupFormMode.amend;
+        documents = getAmendmentDocuments(record);
+      }
+    }
     event.preventDefault();
     props.openModal({
       props: {
-        onSubmit: (values) =>
-          record
-            ? handleUpdateExplosivesPermit(values, hasAmendments)
-            : console.log("WE DIDN'T EXPECT THIS", values),
-        title: "Add Documents to Permits",
+        onSubmit: (values) => handleUpdateExplosivesPermit(values, isAmendment, !documentsOnly),
+        title: modalTitle,
         initialValues,
-        documents: record?.documents ?? [],
+        documents: documents,
         mineGuid,
         formMode,
         isProcessed,
@@ -255,15 +292,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
   const handleOpenAmendExplosivesPermitModal = (event, record: IExplosivesPermit = null) => {
     event.preventDefault();
 
-    // Get all documents for the parent permit and all amendments
-    const parentPermit = explosivesPermits.find(
-      ({ explosives_permit_id }) => explosives_permit_id === record.explosives_permit_id
-    );
-    const allDocs = [
-      ...parentPermit.documents,
-      ...parentPermit?.explosives_permit_amendments?.map((amendment) => amendment.documents),
-    ].flat();
-
+    const allDocs = getAmendmentDocuments(record);
     props.openModal({
       props: {
         title: "Amend Explosives Storage and Use Permit",

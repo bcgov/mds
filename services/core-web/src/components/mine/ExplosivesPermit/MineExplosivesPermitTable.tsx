@@ -181,12 +181,9 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
           ? [viewPermitAction, editDocumentAction, amendPermitAction]
           : [editDocumentAction, editPermitAction];
         const menu: ITableAction[] = isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT)
-          ? [
-              ...(!isProcessed //ie: is draft
-                ? [viewPermitAction, processPermitAction, editPermitAction]
-                : []),
-              editDocumentAction,
-            ]
+          ? !isProcessed
+            ? [viewPermitAction, processPermitAction, editPermitAction]
+            : []
           : [...(!isProcessed ? [processPermitAction, editPermitAction] : []), editDocumentAction];
         const deleteAction: ITableAction = {
           key: "delete",
