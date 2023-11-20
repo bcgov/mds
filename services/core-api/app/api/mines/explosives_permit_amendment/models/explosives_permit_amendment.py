@@ -255,8 +255,6 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
         self.longitude = longitude
         self.issue_date = issue_date
 
-        amendment_info = ExplosivesPermitDocumentType.get_amendment_info(amendment_count, str(issue_date))
-
         # Check for permit closed changes.
         self.is_closed = is_closed
         if is_closed:
@@ -331,6 +329,7 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
                     or self.application_status == 'APP') and application_status == 'APP':
                 from app.api.document_generation.resources.explosives_permit_amendment_document_resource import ExplosivesPermitAmendmentDocumentResource
                 from app.api.mines.explosives_permit.resources.explosives_permit_document_type import ExplosivesPermitDocumentGenerateResource
+                amendment_info = ExplosivesPermitDocumentType.get_amendment_info(amendment_count, str(issue_date))
 
                 def create_permit_enclosed_letter():
                     mine = self.mine

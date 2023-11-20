@@ -81,7 +81,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
   };
 
   const handleIssueExplosivesPermit = async (values, record) => {
-    const { issue_date, explosives_permit_guid } = record;
+    const { explosives_permit_guid } = record;
     const {
       updateExplosivesPermit,
       updateExplosivesPermitAmendment,
