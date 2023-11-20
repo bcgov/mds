@@ -25,8 +25,8 @@ class CustomFormatter(logging.Formatter):
                     if getJwtManager().audience:
                         return getJwtManager().audience
             except Exception as e:
-                # Handle the exception here (e.g., log it)
-                print(f"An error occurred: {e}")
+                # The exception is caught, but no error message is printed or logged
+                pass
 
             return None
 
