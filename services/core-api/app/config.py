@@ -61,7 +61,7 @@ class Config(object):
     WERKZEUG_LOGGING_LEVEL = os.environ.get('WERKZEUG_LOGGING_LEVEL',
                                          'INFO')  # ['DEBUG','INFO','WARN','ERROR','CRITICAL']
     DISPLAY_WERKZEUG_LOG = os.environ.get('DISPLAY_WERKZEUG_LOG',
-                                            False)
+                                            True)
 
     LOGGING_DICT_CONFIG = {
         'version': 1,
