@@ -77,6 +77,7 @@ class DocumentManagerService():
             'pretty_folder': pretty_folder,
             'filename': metadata.get('filename')
         }
+        current_app.logger.info('[MDS-5629][%s] - Uploading file details: %s', __class__.__name__, str(data))
 
         resp = requests.post(
             url=cls.document_manager_document_resource_url,
@@ -84,6 +85,7 @@ class DocumentManagerService():
                      for (key, value) in request.headers if key != 'Host'},
             data=data,
             cookies=request.cookies)
+        current_app.logger.info('[MDS-5629][%s] - Response for %s, file upload: %s', __class__.__name__, metadata.get('filename'), str(resp.json()))
 
         return Response(str(resp.json()), resp.status_code, resp.raw.headers.items())
 
