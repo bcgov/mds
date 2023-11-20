@@ -29,7 +29,7 @@ class VerifiableCredentialWebhookResource(Resource, UserMixin):
 
         User._test_mode = True  #webhook handling has no row level auth
         webhook_body = request.get_json()
-        current_app.logger.warning(f"TRACTION WEBHOOK <topic={topic}>: {webhook_body}")
+        current_app.logger.debug(f"TRACTION WEBHOOK <topic={topic}>: {webhook_body}")
         if topic == CONNECTIONS:
             invitation_id = webhook_body['invitation_msg_id']
             vc_conn = PartyVerifiableCredentialConnection.query.unbound_unsafe().filter_by(invitation_id=invitation_id).first()
