@@ -15,14 +15,8 @@ from app.api.mines.explosives_permit_amendment.models.explosives_permit_amendmen
 class ExplosivesPermitAmendmentResource(Resource, UserMixin):
     parser = CustomReqparser()
     parser.add_argument(
-        'amendment',
-        type=str,
-        store_missing=False,
-        required=False,
-    )
-    parser.add_argument(
-        'amendment_with_date',
-        type=str,
+        'amendment_count',
+        type=int,
         store_missing=False,
         required=False,
     )
@@ -192,6 +186,7 @@ class ExplosivesPermitAmendmentResource(Resource, UserMixin):
     @api.doc(
         description='Update an Explosives Permit Amendment.',
         params={
+            'amendment_count': 'Number of amendments created.',
             'mine_guid': 'The GUID of the mine the Explosives Permit belongs to.',
             'explosives_permit_amendment_guid': 'The GUID of the Explosives Permit Amendment to update.'
         })
@@ -206,8 +201,7 @@ class ExplosivesPermitAmendmentResource(Resource, UserMixin):
         current_app.logger.debug('DOCUMENTS')
         current_app.logger.debug(data.get('documents', []))
         explosives_permit_amendment.update(
-            data.get('amendment'),
-            data.get('amendment_with_date'),
+            data.get('amendment_count'),
             data.get('explosives_permit_id'),
             data.get('permit_guid'), data.get('now_application_guid'),
             data.get('issuing_inspector_party_guid'), data.get('mine_manager_mine_party_appt_id'),

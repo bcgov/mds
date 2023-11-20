@@ -32,11 +32,9 @@ import MineExplosivesPermitTable from "@/components/mine/ExplosivesPermit/MineEx
 import { modalConfig } from "@/components/modalContent/config";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { IExplosivesPermit, IGroupedDropdownList, IMine, IOption } from "@mds/common";
-import { formatDate } from "@common/utils/helpers";
 
 interface IExplosivesPermitAmendmentData {
-  amendment?: string;
-  amendment_with_date?: string;
+  amendment_count?: number;
   explosives_permit_amendment_guid?: string;
 }
 interface ExplosivesPermitProps {
@@ -72,14 +70,12 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
   explosivesPermitDocumentTypeDropdownOptions,
   ...props
 }) => {
-  const getAmendmentData = (record, issueDate: string) => {
+  const getAmendmentData = (record) => {
     const result: IExplosivesPermitAmendmentData = {};
     if (record.explosives_permit_amendments && record.explosives_permit_amendments.length > 1) {
-      const amendmentValue = `Amendment ${record.explosives_permit_amendments.length - 1}`;
+      result.amendment_count = record.explosives_permit_amendments.length - 1;
       result.explosives_permit_amendment_guid =
         record.explosives_permit_amendments[0].explosives_permit_amendment_guid;
-      result.amendment = amendmentValue;
-      result.amendment_with_date = `(${amendmentValue}) issued ${formatDate(issueDate)}`;
     }
     return result;
   };
@@ -93,8 +89,8 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
       closeModal,
     } = props;
 
-    const amendmentData = getAmendmentData(record, issue_date);
-    const { explosives_permit_amendment_guid, amendment, amendment_with_date } = amendmentData;
+    const amendmentData = getAmendmentData(record);
+    const { explosives_permit_amendment_guid, amendment_count } = amendmentData;
 
     const updatedValues = explosives_permit_amendment_guid
       ? { ...values, ...amendmentData }
@@ -102,7 +98,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
 
     const payload = { ...record, ...updatedValues, application_status: "APP" };
 
-    if (amendment && amendment_with_date) {
+    if (amendment_count) {
       await updateExplosivesPermitAmendment(payload, true);
     } else {
       await updateExplosivesPermit(mineGuid, explosives_permit_guid, payload, true);
@@ -113,8 +109,8 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
   };
 
   const handleDocumentPreview = (documentTypeCode, values: any, record) => {
-    const amendmentData = getAmendmentData(record, values.issue_date);
-    if (amendmentData.amendment && amendmentData.amendment_with_date) {
+    const amendmentData = getAmendmentData(record);
+    if (amendmentData.amendment_count) {
       values = { ...values, ...amendmentData };
     }
     const payload = {
