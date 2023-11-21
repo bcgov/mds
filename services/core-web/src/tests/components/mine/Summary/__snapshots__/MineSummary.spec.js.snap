@@ -12,13 +12,6 @@ exports[`MineSummary renders properly 1`] = `
   </div>
   <Connect(MineHeader)
     complianceInfoLoading={true}
-    match={
-      Object {
-        "params": Object {
-          "id": "18145c75-49ad-0101-85f3-a43e45ae989a",
-        },
-      }
-    }
     mine={
       Object {
         "major_mine_ind": true,
@@ -269,7 +262,6 @@ exports[`MineSummary renders properly 1`] = `
     </Row>
     <Row
       gutter={16}
-      type="flex"
     >
       <Col
         key="1628847c-060b-45f2-990f-815877174801"
@@ -379,7 +371,6 @@ exports[`MineSummary renders properly 1`] = `
             <ForwardRef
               align="middle"
               justify="center"
-              type="flex"
             >
               <div
                 className="center"
@@ -413,7 +404,6 @@ exports[`MineSummary renders properly 1`] = `
             <ForwardRef
               align="middle"
               justify="center"
-              type="flex"
             >
               <img
                 alt="Open Orders"
@@ -455,7 +445,6 @@ exports[`MineSummary renders properly 1`] = `
             <ForwardRef
               align="middle"
               justify="center"
-              type="flex"
             >
               <img
                 alt="Overdue Orders"

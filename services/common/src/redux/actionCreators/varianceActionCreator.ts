@@ -1,15 +1,26 @@
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { ENVIRONMENT } from "@mds/common";
-import { request, success, error } from "../actions/genericActions";
+import { request, success, error, IDispatchError } from "../actions/genericActions";
 import * as reducerTypes from "@mds/common/constants/reducerTypes";
 import * as Strings from "@mds/common/constants/strings";
 import * as varianceActions from "../actions/varianceActions";
 import * as API from "@mds/common/constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
+import { AxiosResponse } from "axios";
+import { AppThunk } from "@mds/common/interfaces/appThunk.type";
+import {
+  ICreateVariancePayload,
+  IVariance,
+  IAddDocumentToVariancePayload,
+  IFetchVariancesPayload,
+} from "@mds/common";
 
-export const createVariance = ({ mineGuid }, payload) => (dispatch) => {
+export const createVariance = (
+  { mineGuid },
+  payload: ICreateVariancePayload
+): AppThunk<Promise<AxiosResponse<IVariance>>> => (dispatch): Promise<AxiosResponse<IVariance>> => {
   const message =
     payload.variance_application_status_code === Strings.VARIANCE_APPLICATION_CODE
       ? "Successfully applied for a new variance"
@@ -18,7 +29,7 @@ export const createVariance = ({ mineGuid }, payload) => (dispatch) => {
   dispatch(showLoading("modal"));
   return CustomAxios()
     .post(ENVIRONMENT.apiUrl + API.MINE_VARIANCES(mineGuid), payload, createRequestHeader())
-    .then((response) => {
+    .then((response: AxiosResponse<IVariance>) => {
       notification.success({ message, duration: 10 });
       dispatch(success(reducerTypes.CREATE_MINE_VARIANCE));
       return response;
@@ -30,12 +41,15 @@ export const createVariance = ({ mineGuid }, payload) => (dispatch) => {
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const updateVariance = ({ mineGuid, varianceGuid, codeLabel }, payload) => (dispatch) => {
+export const updateVariance = (
+  { mineGuid, varianceGuid, codeLabel },
+  payload: IVariance
+): AppThunk<Promise<AxiosResponse<IVariance>>> => (dispatch): Promise<AxiosResponse<IVariance>> => {
   dispatch(request(reducerTypes.UPDATE_MINE_VARIANCE));
   dispatch(showLoading("modal"));
   return CustomAxios()
     .put(ENVIRONMENT.apiUrl + API.VARIANCE(mineGuid, varianceGuid), payload, createRequestHeader())
-    .then((response) => {
+    .then((response: AxiosResponse<IVariance>) => {
       notification.success({
         message: `Successfully updated the variance application for: ${codeLabel}`,
         duration: 10,
@@ -50,7 +64,9 @@ export const updateVariance = ({ mineGuid, varianceGuid, codeLabel }, payload) =
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const fetchVariancesByMine = ({ mineGuid }) => (dispatch) => {
+export const fetchVariancesByMine = ({ mineGuid }): AppThunk<Promise<void | IDispatchError>> => (
+  dispatch
+) => {
   dispatch(request(reducerTypes.GET_VARIANCES));
   dispatch(showLoading());
   return CustomAxios({ errorToastMessage: Strings.ERROR })
@@ -63,7 +79,10 @@ export const fetchVariancesByMine = ({ mineGuid }) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchVarianceById = (mineGuid, varianceGuid) => (dispatch) => {
+export const fetchVarianceById = (
+  mineGuid: string,
+  varianceGuid: string
+): AppThunk<Promise<void | IDispatchError>> => (dispatch) => {
   dispatch(request(reducerTypes.GET_VARIANCE));
   dispatch(showLoading("modal"));
   return CustomAxios({ errorToastMessage: Strings.ERROR })
@@ -76,7 +95,10 @@ export const fetchVarianceById = (mineGuid, varianceGuid) => (dispatch) => {
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const addDocumentToVariance = ({ mineGuid, varianceGuid }, payload) => (dispatch) => {
+export const addDocumentToVariance = (
+  { mineGuid, varianceGuid },
+  payload: IAddDocumentToVariancePayload
+): AppThunk<Promise<AxiosResponse<IVariance>>> => (dispatch): Promise<AxiosResponse<IVariance>> => {
   dispatch(showLoading("modal"));
   dispatch(request(reducerTypes.ADD_DOCUMENT_TO_VARIANCE));
   return CustomAxios()
@@ -85,7 +107,7 @@ export const addDocumentToVariance = ({ mineGuid, varianceGuid }, payload) => (d
       payload,
       createRequestHeader()
     )
-    .then((response) => {
+    .then((response: AxiosResponse<IVariance>) => {
       dispatch(success(reducerTypes.ADD_DOCUMENT_TO_VARIANCE));
       return response;
     })
@@ -96,9 +118,11 @@ export const addDocumentToVariance = ({ mineGuid, varianceGuid }, payload) => (d
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const removeDocumentFromVariance = (mineGuid, varianceGuid, mineDocumentGuid) => (
-  dispatch
-) => {
+export const removeDocumentFromVariance = (
+  mineGuid: string,
+  varianceGuid: string,
+  mineDocumentGuid: string
+): AppThunk<Promise<AxiosResponse<string>>> => (dispatch): Promise<AxiosResponse<string>> => {
   dispatch(showLoading("modal"));
   dispatch(request(reducerTypes.REMOVE_DOCUMENT_FROM_VARIANCE));
   return CustomAxios()
@@ -106,7 +130,7 @@ export const removeDocumentFromVariance = (mineGuid, varianceGuid, mineDocumentG
       ENVIRONMENT.apiUrl + API.VARIANCE_DOCUMENT(mineGuid, varianceGuid, mineDocumentGuid),
       createRequestHeader()
     )
-    .then((response) => {
+    .then((response: AxiosResponse<string>) => {
       dispatch(success(reducerTypes.REMOVE_DOCUMENT_FROM_VARIANCE));
       return response;
     })
@@ -117,7 +141,9 @@ export const removeDocumentFromVariance = (mineGuid, varianceGuid, mineDocumentG
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const fetchVariances = (payload) => (dispatch) => {
+export const fetchVariances = (
+  payload: Partial<IFetchVariancesPayload>
+): AppThunk<Promise<void | IDispatchError>> => (dispatch) => {
   dispatch(request(reducerTypes.GET_VARIANCES));
   dispatch(showLoading());
   return CustomAxios({ errorToastMessage: Strings.ERROR })
@@ -130,12 +156,15 @@ export const fetchVariances = (payload) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const deleteVariance = (mineGuid, varianceGuid) => (dispatch) => {
+export const deleteVariance = (
+  mineGuid: string,
+  varianceGuid: string
+): AppThunk<Promise<AxiosResponse<string>>> => (dispatch): Promise<AxiosResponse<string>> => {
   dispatch(request(reducerTypes.DELETE_VARIANCE));
   dispatch(showLoading());
   return CustomAxios()
     .delete(`${ENVIRONMENT.apiUrl}${API.VARIANCE(mineGuid, varianceGuid)}`, createRequestHeader())
-    .then((response) => {
+    .then((response: AxiosResponse<string>) => {
       notification.success({
         message: "Successfully deleted variance.",
         duration: 10,
