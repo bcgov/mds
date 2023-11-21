@@ -64,9 +64,10 @@ def create_app(test_config=None):
         # Get request information
         method = request.method
         path = request.path
+        ip_address = request.remote_addr
 
         # Log combined request and response information
-        current_app.logger.info(f"Received {method} request to {path} | Response status code: {response.status_code}")
+        current_app.logger.info(f"Received {method} request to {path} from {ip_address} | Response status code: {response.status_code}")
 
         return response
 
