@@ -1,14 +1,14 @@
-# VC's in Core
+# Verifiable Credentials in Core
 
-The core-api is integrated with [Traction](https://github.com/bcgov/traction). Traction is a multi-tenant solution to provide [Hyperledger Aries](https://www.hyperledger.org/projects/aries) wallets to BC Goverment offices that want to interact with Verifiable Credentials.
+The core-api is integrated with [Traction](https://github.com/bcgov/traction). Traction is a multi-tenant solution to provide [Hyperledger Aries](https://www.hyperledger.org/projects/aries) wallets to BC Government offices that want to interact with Verifiable Credentials.
 
-The Core-api is enabled to create out-of-band messages([spec](https://github.com/hyperledger/aries-rfcs/tree/main/features/0434-outofband#messages.README.md)) that contain did-exchange ([spec](https://github.com/hyperledger/aries-rfcs/blob/main/features/0023-did-exchange/README.md)) connection invitations.
+The core-api is enabled to create out-of-band messages([spec](https://github.com/hyperledger/aries-rfcs/tree/main/features/0434-outofband#messages.README.md)) that contain did-exchange ([spec](https://github.com/hyperledger/aries-rfcs/blob/main/features/0023-did-exchange/README.md)) connection invitations.
 
-The Core-api is enable to send credential-offer messages to connected wallets as way of initating the [issue-credential](https://github.com/hyperledger/aries-rfcs/tree/main/features/0036-issue-credential) protocol.
+The core-api is enabled to send credential-offer messages to connected wallets as way of initiating the [issue-credential](https://github.com/hyperledger/aries-rfcs/tree/main/features/0036-issue-credential) protocol.
 
 ## Governance Documentation
 
-The Mines Act Permit VC has public [governance documentation](https://github.com/bcgov/bc-vcpedia/blob/main/credentials/credential-bc-mines-act-permit.md) that should be kept up-to-date with any technical or process changes.
+The Mines Act Permit Verifiable Credentials has public [governance documentation](https://github.com/bcgov/bc-vcpedia/blob/main/credentials/credential-bc-mines-act-permit.md) that should be kept up-to-date with any technical or process changes.
 
 ### Connection Establishment
 
@@ -16,8 +16,8 @@ This is abbreviated from the governance documentation above which will supercede
 
 Happy Path UX Flow
 
-1. A user in minespace can create a connection invitation, this connection will be directly related to the `party` record of the permitee.
-1. The user then copies the connection invitation out of minespace
+1. A user in Minespace can create a connection invitation, this connection will be directly related to the `party` record of the permittee.
+1. The user then copies the connection invitation from Minespace
 1. The user then provides that connection invitation to their company's digital wallet solution
 
 - The Company's wallet will use the `did-exchange` protocol to establish a connection with the `CHIEF PERMITTING OFFICER OF MINES` (CPO) wallet used by Core.
@@ -35,7 +35,7 @@ This is abbreviated from the governance documentation above which will supercede
 
 Happy Path UX Flow
 
-1. A user in core viewing a record with; an open permit, a major mine, and active digital wallet connection; will see a control to 'Issue Permit as Verifiable Credential"
+1. A user in Core viewing a record with: an open permit, a major mine, and an active digital wallet connection; will see a control to 'Issue Permit as Verifiable Credential"
 1. Minespace will indicate to the user that the offer has been sent, and they should inspect their company wallet for the pending credential offer
 1. The user will go to their Company's digital wallet and accept the credential offer
 1. The two agents will complete the `issue credential` protocol until the credential_exchange record has the state `deleted` (`'deleted'` is successful, and means that the exchange is complete)
@@ -43,11 +43,11 @@ Happy Path UX Flow
 
 Current Limitations:
 
-- If the User chooses NOT to accept the credential to their wallet, Core-api will recieve a `problem-report` message
+- If the User chooses NOT to accept the credential to their wallet, core-api will recieve a `problem-report` message
 - The existence of this problem report should show in the Minespace and Core UI, as well as the text description contained in the problem-report
 - Controls and endpoints should be built to allow for a new credential-offer when a problem report has been received on a previous offer
 
-## OCA Bundle.
+## OCA Bundle
 
 The Overlay Capture Architechture (OCA) bundle for this credential is hosted [here](https://github.com/bcgov/aries-oca-bundles/tree/main/OCABundles/schema). The OCA bundle provides infomation on how the credential should be presented, including backgroun colors, labels, data-typing, and localization. If the credential is updated, the OCA bundle may need to be updated to match.
 
@@ -55,11 +55,11 @@ OCA bundles hosted here can be previewed on the [OCA Explorer](https://bcgov.git
 
 ### Permit Amendments and Revocation
 
-When a permit is amendended, the previous authorization is no longer valid and the new authorization should be the only valid credential that exist
+When a permit is amended, the previous authorization is no longer valid and the new authorization should be the only valid credential that exists.
 
-After a new permit amendment is created for a permit
+After a new permit amendment is created for a permit:
 
-- A ministry user in Core should means to revoke the previous veriifable credentials
+- A ministry user in Core should have the ability to revoke the previous veriifable credentials
 - The new version of the permit cannot be issued until existing credentials have been revoked
 
 ## Key identifiers and links
@@ -98,7 +98,7 @@ Traction Tenant ID:
 - Test: `cecfcac5-2945-460b-a43b-756c4fe6c017`
 - Prod: `7455e995-aacc-4797-a25f-e1f4a2bcdbb8`
 
-Traction Api Keys:
+Traction API Keys:
 
 - These are not stored here, API keys can be destroyed and replaced if compromised, unlike the Wallet Key, which is immutable.
 
@@ -112,11 +112,11 @@ Traction Tenant API:
 
 ## Webhook URL
 
-Traction is configured to call the Core-api with HTTP requests when protocol events happen. Should these need to be reviewed or changed, navigate to the Tenant UI of the environment you want to view/change and navigate to `/tenant/settings` through the upper right wallet avatar.
+Traction is configured to call the core-api with HTTP requests when protocol events happen. Should these need to be reviewed or changed, navigate to the Tenant UI of the environment you want to view/change and navigate to `/tenant/settings` through the upper-right wallet avatar.
 
 ### Core-api Environment Variables
 
-Example Environment Variables these connnect to Dev Traction.
+Example Environment Variables needed to connnect to Dev Traction.
 
 ```
 TRACTION_HOST=https://traction-tenant-proxy-dev.apps.silver.devops.gov.bc.ca
