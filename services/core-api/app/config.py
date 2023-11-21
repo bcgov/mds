@@ -59,7 +59,7 @@ class Config(object):
     FLASK_LOGGING_LEVEL = os.environ.get('FLASK_LOGGING_LEVEL',
                                          'INFO')                # ['DEBUG','INFO','WARN','ERROR','CRITICAL']
     WERKZEUG_LOGGING_LEVEL = os.environ.get('WERKZEUG_LOGGING_LEVEL',
-                                         'INFO')  # ['DEBUG','INFO','WARN','ERROR','CRITICAL']
+                                         'CRITICAL')  # ['DEBUG','INFO','WARN','ERROR','CRITICAL']
     DISPLAY_WERKZEUG_LOG = os.environ.get('DISPLAY_WERKZEUG_LOG',
                                             True)
 
