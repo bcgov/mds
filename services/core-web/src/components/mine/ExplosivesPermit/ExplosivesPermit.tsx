@@ -78,7 +78,6 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
 }) => {
   const { isFeatureEnabled } = useFeatureFlag();
 
-
   const getAmendmentData = (record) => {
     const result: IExplosivesPermitAmendmentData = {};
     if (record.explosives_permit_amendments && record.explosives_permit_amendments.length > 1) {
@@ -87,7 +86,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
         record.explosives_permit_amendments[0].explosives_permit_amendment_guid;
     }
     return result;
-  };  
+  };
 
   //find out if given record is an amendment
   const isEsupAmendment = (record) => {
@@ -99,8 +98,6 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
   };
 
   const handleIssueExplosivesPermit = async (values, record) => {
-    const { explosives_permit_guid } = record;
-
     const amendmentData = getAmendmentData(record);
     const { explosives_permit_amendment_guid, amendment_count } = amendmentData;
 
@@ -113,7 +110,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
     if (amendment_count) {
       await updateExplosivesPermitAmendment(payload, true);
     } else {
-      await updateExplosivesPermit(mineGuid, explosives_permit_guid, payload, true);
+      await updateExplosivesPermit(payload, true);
     }
 
     fetchExplosivesPermits(mineGuid);
@@ -166,12 +163,9 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
     const payload = {
       ...values,
     };
-    const updateEsup = () =>
-      isAmendment
-        ? updateExplosivesPermitAmendment(payload)
-        : updateExplosivesPermit(mineGuid, values.explosives_permit_guid, payload);
+    const updateEsup = isAmendment ? updateExplosivesPermitAmendment : updateExplosivesPermit;
 
-    updateEsup().then((permitData) => {
+    updateEsup(payload).then((permitData) => {
       fetchExplosivesPermits(mineGuid);
       if (issuePermitAfter) {
         handleOpenExplosivesPermitDecisionModal(event, permitData.data);
@@ -197,7 +191,6 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
     });
   };
 
-
   const handleCreateNewAmendment = (values, issueAfter = true) => {
     return props.createExplosivesPermitAmendment(values).then((newPermit) => {
       fetchExplosivesPermits(mineGuid);
@@ -217,7 +210,6 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
     props.openModal({
       props: {
         onSubmit: (values) => {
-
           // after feature flag removed, this will ONLY be used for new records and can be simplified. ("Add" button on table)
           return record && !isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT)
             ? handleUpdateExplosivesPermit(values, hasAmendments)
