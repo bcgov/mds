@@ -75,7 +75,7 @@ const commonConfig = merge([
       }),
       new webpack.ProvidePlugin({
         REQUEST_HEADER: path.resolve(__dirname, "common/utils/RequestHeaders.js"),
-        ROUTES: path.resolve(__dirname, "src/constants/routes.ts"),
+        GLOBAL_ROUTES: path.resolve(__dirname, "src/constants/routes.ts"),
       }),
     ],
     resolve: {

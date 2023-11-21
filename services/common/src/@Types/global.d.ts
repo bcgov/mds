@@ -10,7 +10,7 @@ declare global {
       };
     };
   };
-  const ROUTES: any;
+  const GLOBAL_ROUTES: any;
 }
 
 export {};
