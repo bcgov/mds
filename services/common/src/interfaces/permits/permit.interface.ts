@@ -23,5 +23,4 @@ export interface IPermit {
   site_properties: IMineType;
   permit_prefix: string;
   mine_guid?: string;
-  amendments?: Partial<IPermitAmendment>[];
 }
