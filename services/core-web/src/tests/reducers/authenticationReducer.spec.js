@@ -4,6 +4,7 @@ import {
   logoutUser,
   storeUserAccessData,
 } from "@mds/common/redux/actions/authenticationActions";
+import * as ROUTES from "../../constants/routes";
 
 const baseExpectedValue = {
   isAuthenticated: false,
@@ -25,6 +26,10 @@ const getBaseAuthenticatedExpectedValue = () =>
   JSON.parse(JSON.stringify(baseAuthenticatedExpectedValue));
 
 describe("authReducer", () => {
+  beforeEach(() => {
+    global.ROUTES = ROUTES;
+  });
+
   it("receives undefined", () => {
     const expectedValue = getBaseExpectedValue();
     expect(authenticationReducer(undefined, {})).toEqual(expectedValue);

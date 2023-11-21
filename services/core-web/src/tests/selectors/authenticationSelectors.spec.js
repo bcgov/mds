@@ -10,6 +10,7 @@ import {
   storeUserAccessData,
 } from "@mds/common/redux/actions/authenticationActions";
 import { AUTHENTICATION } from "@mds/common/constants/reducerTypes";
+import * as ROUTES from "../../constants/routes";
 
 const mockData = {
   userAccessData: ["role1"],
@@ -17,6 +18,9 @@ const mockData = {
 };
 
 describe("authSelectors", () => {
+  beforeEach(() => {
+    global.ROUTES = ROUTES;
+  });
   it("`isAuthenticated` calls `authReducer.isAuthenticated`", () => {
     const authAction = authenticateUser(mockData.userInfo);
     const authState = authenticationReducer({}, authAction);
