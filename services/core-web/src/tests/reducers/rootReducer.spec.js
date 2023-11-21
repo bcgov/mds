@@ -6,7 +6,7 @@ import * as ROUTES from "../../constants/routes";
 
 describe("Store", () => {
   beforeEach(() => {
-    global.ROUTES = ROUTES;
+    global.GLOBAL_ROUTES = ROUTES;
   });
   it("should handle reducer creation", () => {
     const store = createStore(rootReducer, reducerObject);

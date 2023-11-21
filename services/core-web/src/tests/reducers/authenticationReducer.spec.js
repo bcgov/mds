@@ -27,7 +27,7 @@ const getBaseAuthenticatedExpectedValue = () =>
 
 describe("authReducer", () => {
   beforeEach(() => {
-    global.ROUTES = ROUTES;
+    global.GLOBAL_ROUTES = ROUTES;
   });
 
   it("receives undefined", () => {

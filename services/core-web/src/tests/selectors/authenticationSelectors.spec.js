@@ -19,7 +19,7 @@ const mockData = {
 
 describe("authSelectors", () => {
   beforeEach(() => {
-    global.ROUTES = ROUTES;
+    global.GLOBAL_ROUTES = ROUTES;
   });
   it("`isAuthenticated` calls `authReducer.isAuthenticated`", () => {
     const authAction = authenticateUser(mockData.userInfo);
