@@ -41,10 +41,6 @@ import { faFiles } from "@fortawesome/pro-light-svg-icons";
 import { COLOR } from "@/constants/styles";
 import { ColumnsType } from "antd/es/table";
 
-interface amendmentsWithTotal extends IExplosivesPermitAmendment {
-  totalAmendments: number;
-}
-
 interface MineExplosivesPermitTableProps {
   data: IExplosivesPermit[];
   isLoaded: boolean;
@@ -69,8 +65,7 @@ interface MineExplosivesPermitTableProps {
   handleOpenAmendExplosivesPermitModal: (event, record: IExplosivesPermit) => void;
 }
 
-type MineExplosivesTableItem = IExplosivesPermit & {
-  documents: IExplosivesPermitDocument;
+type MineExplosivesTableItem = (IExplosivesPermit | IExplosivesPermitAmendment) & {
   key: string;
   isExpired: boolean;
 };
@@ -78,13 +73,11 @@ type MineExplosivesTableItem = IExplosivesPermit & {
 const transformRowData = (permits: IExplosivesPermit[]) => {
   return permits.map((permit) => {
     const mostRecentVersion =
-      permit.explosives_permit_amendments?.length > 0
+      permit.explosives_permit_amendments.length > 0
         ? permit.explosives_permit_amendments[permit.explosives_permit_amendments.length - 1]
         : permit;
 
-    const amendments = permit?.explosives_permit_amendments
-      ? [...permit?.explosives_permit_amendments?.reverse(), permit] || []
-      : [permit];
+    const amendments = [...permit.explosives_permit_amendments, permit];
 
     return {
       ...mostRecentVersion,
@@ -142,7 +135,7 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
   };
   const editPermitAction: ITableAction = {
     key: "edit",
-    label: "Edit",
+    label: "Edit Draft",
     clickFunction: editPermitFunction("edit"),
     icon: editIcon,
   };
@@ -159,9 +152,7 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
     icon: editIcon,
   };
 
-  const actionsColumn = (
-    type?: "permit" | "amendment"
-  ): ColumnType<MineExplosivesTableItem | amendmentsWithTotal> => {
+  const actionsColumn = (type?: "permit" | "amendment"): ColumnType<MineExplosivesTableItem> => {
     return {
       title: "",
       key: "addEditButton",
@@ -460,7 +451,7 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
 
   const esupCommonColumns = (
     type: "permit" | "amendment"
-  ): ColumnsType<MineExplosivesTableItem | amendmentsWithTotal> => {
+  ): ColumnsType<MineExplosivesTableItem> => {
     return [
       {
         title: "Status",
@@ -528,39 +519,24 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
             <Col>
               <Typography.Text>{record.permit_number || Strings.EMPTY_FIELD}</Typography.Text>
             </Col>
-            {record.explosives_permit_amendments.length > 1 && (
+            {record.amendment_count > 0 && (
               <Col className="amendments-badge">
                 <FontAwesomeIcon icon={faFiles} />
-                {record.explosives_permit_amendments.length - 1}
+                {record.amendment_count}
               </Col>
             )}
           </Row>
         );
       },
     },
-    renderTextColumn("mines_permit_number", "Mines Act Permit #", false, Strings.EMPTY_FIELD),
-    renderTextColumn("now_number", "Notice of Work #", false, Strings.EMPTY_FIELD),
-    {
-      title: "Amendments",
-      key: "explosives_permit_amendments",
-      render: (record) => {
-        return (
-          <Typography.Text>{record?.explosives_permit_amendments.length - 1 || 0}</Typography.Text>
-        );
-      },
-    },
+    renderTextColumn("mines_permit_number", "Mines Act Permit #"),
+    renderTextColumn("now_number", "Notice of Work #"),
+    renderTextColumn("amendment_count", "Amendments"),
     ...esupCommonColumns("permit"),
   ];
 
-  const amendmentDetailColumns: ColumnType<amendmentsWithTotal>[] = [
-    {
-      title: "Amendment",
-      key: "explosives_permit_amendment_id",
-      render: (_, record, index) => {
-        const amendmentIndex = record.totalAmendments - 1 - index;
-        return <Typography.Text>{amendmentIndex}</Typography.Text>;
-      },
-    },
+  const amendmentDetailColumns: ColumnType<MineExplosivesTableItem>[] = [
+    renderTextColumn("amendment_no", "Amendment"),
     ...esupCommonColumns("amendment"),
   ];
 
@@ -603,15 +579,10 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
       expandProps={
         isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT)
           ? {
-              rowExpandable: (record: IExplosivesPermit) =>
-                record.explosives_permit_amendments?.length > 1,
+              rowExpandable: (record: IExplosivesPermit) => record.amendment_count > 0,
               recordDescription: "amendment details",
-              getDataSource: (record: IExplosivesPermit) => {
-                const totalAmendments = record.explosives_permit_amendments.length;
-                return record.explosives_permit_amendments.map((amendment) => {
-                  return { ...amendment, totalAmendments };
-                });
-              },
+              getDataSource: (record: IExplosivesPermit) =>
+                record.explosives_permit_amendments.sort((a, b) => b.amendment_no - a.amendment_no),
               subTableColumns: amendmentDetailColumns,
             }
           : {

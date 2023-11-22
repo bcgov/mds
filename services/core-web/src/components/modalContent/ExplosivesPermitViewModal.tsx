@@ -15,7 +15,7 @@ import { bindActionCreators } from "redux";
 import { openDocument } from "@/components/syncfusion/DocumentViewer";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import ExplosivesPermitDiffModal from "@common/components/explosivesPermits/ExplosivesPermitDiffModal";
-import { renderCategoryColumn } from "../common/CoreTableCommonColumns";
+import { renderCategoryColumn, renderTextColumn } from "../common/CoreTableCommonColumns";
 
 export const generatedDocColumns = [
   renderCategoryColumn(
@@ -77,7 +77,7 @@ const permitAmendmentLike = (permit: IExplosivesPermit): IExplosivesPermitAmendm
 
 export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (props) => {
   const { explosivesPermit, parentPermit } = props;
-  const amendmentsCount = parentPermit?.explosives_permit_amendments?.length || 0;
+  const amendmentsCount = parentPermit?.amendment_count || 0;
 
   const [generatedDocs, setGeneratedDocs] = useState([]);
   const [supportingDocs, setSupportingDocs] = useState([]);
@@ -98,12 +98,7 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
       render: (text) => <div>{formatDate(text)}</div>,
     },
     renderCategoryColumn("is_closed", "Status", { true: "Closed", false: "Open" }),
-    {
-      title: "Amendment",
-      key: "amendment_order",
-      dataIndex: "amendment_order",
-      render: (text) => <div>{text}</div>,
-    },
+    renderTextColumn("amendment_no", "Amendment"),
     {
       title: "",
       key: "action",
@@ -138,11 +133,7 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
       ),
     ];
 
-    return permitHistory
-      .map((amendment, index) => {
-        return { ...amendment, amendment_order: index };
-      })
-      .reverse();
+    return permitHistory.reverse();
   };
 
   useEffect(() => {
@@ -224,7 +215,7 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
 
             <Col span={12}>
               <Typography.Paragraph strong>Mines Act Permit</Typography.Paragraph>
-              <Typography.Paragraph>example</Typography.Paragraph>
+              <Typography.Paragraph>{currentPermit.mines_permit_number}</Typography.Paragraph>
             </Col>
           </Row>
           <Typography.Paragraph strong>Notice of Work Number</Typography.Paragraph>
@@ -407,14 +398,21 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
         </Col>
       </Row>
       <Row className="flex-between form-button-container-row">
+        {explosivesPermit.application_status === "APP" && (
+          <Button
+            onClick={(event) => props.openAmendModal(event, explosivesPermit)}
+            className="full-mobile"
+            type="ghost"
+          >
+            Create Amendment
+          </Button>
+        )}
         <Button
-          onClick={(event) => props.openAmendModal(event, explosivesPermit)}
+          onClick={props.closeModal}
           className="full-mobile"
-          type="ghost"
+          type="primary"
+          style={{ marginLeft: "auto" }}
         >
-          Create Amendment
-        </Button>
-        <Button onClick={props.closeModal} className="full-mobile" type="primary">
           Close
         </Button>
       </Row>

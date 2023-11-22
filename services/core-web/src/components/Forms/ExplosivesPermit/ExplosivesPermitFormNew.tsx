@@ -60,11 +60,8 @@ interface ExplosivesPermitFormProps {
   closeModal: () => void;
   initialValues: any;
   mineGuid: string;
-  // isProcessed: boolean;
   documentTypeDropdownOptions: IOption[];
   isPermitTab: boolean;
-  // isAmendment?: boolean;
-  hideDecisionModal?: boolean;
   formMode?: EsupFormMode;
   inspectors: IGroupedDropdownList[];
   documents: IExplosivesPermitDocument[];
@@ -88,13 +85,9 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
   initialValues = {},
   mines_permit_guid = null,
   formMode = EsupFormMode.select_type_modal,
-  // isProcessed = false,
-  // isAmendment = false,
   documents,
   ...props
 }) => {
-  const isProcessed = initialValues.application_status === "APP";
-
   const [generatedDocs, setGeneratedDocs] = useState([]);
   const [supportingDocs, setSupportingDocs] = useState([]);
 
@@ -169,12 +162,18 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
   };
 
   // go to the issue modal next unless adding documents or creating historic record
+  // controlled in parent, this is just for button text.
   const showIssueModal = ![EsupFormMode.edit_document, EsupFormMode.create_historic].includes(
     currentFormMode
   );
   const disabled = formMode === EsupFormMode.edit_document;
   const showBackButton = formMode === EsupFormMode.select_type_modal;
   const isAmendment = formMode === EsupFormMode.amend;
+
+  const cancelButtonText = showBackButton ? "Back" : "Close";
+  const cancelButtonFunc = showBackButton
+    ? props.closeModal
+    : () => setCurrentFormMode(EsupFormMode.select_type_modal);
 
   const descriptionListElement = (
     <div>
@@ -610,15 +609,17 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
         </Col>
       </Row>
       <Row className="flex-between form-button-container-row">
-        {showBackButton && (
-          <Button
-            onClick={() => setCurrentFormMode(EsupFormMode.select_type_modal)}
-            className="full-mobile"
-            type="ghost"
-          >
-            Back
+        <Popconfirm
+          placement="topRight"
+          title={`Are you sure you want to cancel?`}
+          okText="Yes"
+          cancelText="No"
+          onConfirm={cancelButtonFunc}
+        >
+          <Button className="full-mobile" type="ghost">
+            {cancelButtonText}
           </Button>
-        )}
+        </Popconfirm>
         <Button
           type="primary"
           className="full-mobile"
