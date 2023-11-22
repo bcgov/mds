@@ -32,8 +32,11 @@ import MineExplosivesPermitTable from "@/components/mine/ExplosivesPermit/MineEx
 import { modalConfig } from "@/components/modalContent/config";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { IExplosivesPermit, IGroupedDropdownList, IMine, IOption } from "@mds/common";
-import { formatDate } from "@common/utils/helpers";
 
+interface IExplosivesPermitAmendmentData {
+  amendment_count?: number;
+  explosives_permit_amendment_guid?: string;
+}
 interface ExplosivesPermitProps {
   isPermitTab: boolean;
   mineGuid: string;
@@ -67,21 +70,48 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
   explosivesPermitDocumentTypeDropdownOptions,
   ...props
 }) => {
-  const handleIssueExplosivesPermit = (values, record) => {
-    const payload = { ...record, ...values, application_status: "APP" };
-    return props
-      .updateExplosivesPermit(mineGuid, record.explosives_permit_guid, payload, true)
-      .then(() => {
-        props.fetchExplosivesPermits(mineGuid);
-        props.closeModal();
-      });
+  const getAmendmentData = (record) => {
+    const result: IExplosivesPermitAmendmentData = {};
+    if (record.explosives_permit_amendments && record.explosives_permit_amendments.length > 1) {
+      result.amendment_count = record.explosives_permit_amendments.length - 1;
+      result.explosives_permit_amendment_guid =
+        record.explosives_permit_amendments[0].explosives_permit_amendment_guid;
+    }
+    return result;
+  };
+
+  const handleIssueExplosivesPermit = async (values, record) => {
+    const { explosives_permit_guid } = record;
+    const {
+      updateExplosivesPermit,
+      updateExplosivesPermitAmendment,
+      fetchExplosivesPermits,
+      closeModal,
+    } = props;
+
+    const amendmentData = getAmendmentData(record);
+    const { explosives_permit_amendment_guid, amendment_count } = amendmentData;
+
+    const updatedValues = explosives_permit_amendment_guid
+      ? { ...values, ...amendmentData }
+      : values;
+
+    const payload = { ...record, ...updatedValues, application_status: "APP" };
+
+    if (amendment_count) {
+      await updateExplosivesPermitAmendment(payload, true);
+    } else {
+      await updateExplosivesPermit(mineGuid, explosives_permit_guid, payload, true);
+    }
+
+    fetchExplosivesPermits(mineGuid);
+    closeModal();
   };
 
   const handleDocumentPreview = (documentTypeCode, values: any, record) => {
-    if (record.explosives_permit_amendments && record.explosives_permit_amendments.length > 0) {
-      const amendmentValue = `Amendment ${record.explosives_permit_amendments.length}`;
-      values.amendment = amendmentValue;
-      values.amendment_with_date = `(${amendmentValue}) issued ${formatDate(values.issue_date)}`;
+    const amendmentData = getAmendmentData(record);
+    if (amendmentData.amendment_count) {
+      values = { ...values, ...amendmentData };
     }
     const payload = {
       explosives_permit_guid: record.explosives_permit_guid,
@@ -170,7 +200,9 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
     props.openModal({
       props: {
         onSubmit: (values) => {
-          record ? handleUpdateExplosivesPermit(values, hasAmendments) : handleAddExplosivesPermit(values)
+          return record
+            ? handleUpdateExplosivesPermit(values, hasAmendments)
+            : handleAddExplosivesPermit(values);
         },
         title: "Add Permit",
         initialValues,

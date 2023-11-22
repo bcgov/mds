@@ -22,6 +22,8 @@ class VerifiableCredentialWebhookResource(Resource, UserMixin):
     @api.doc(description='Endpoint to recieve webhooks from Traction.', params={})
     def post(self, topic):
         #custom auth for traction
+        current_app.logger.warning(f"TRACTION WEBHOOK headers: {request.headers}")
+
         if request.headers.get("x-api-key") != Config.TRACTION_WEBHOOK_X_API_KEY:
              return Forbidden("bad x-api-key")
 
