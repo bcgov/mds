@@ -82,7 +82,6 @@ interface ExplosivesPermitViewModalProps {
   parentPermit: IExplosivesPermit;
   closeModal: () => void;
   openAmendModal?: (event, record: IExplosivesPermit) => void;
-  openDocument: (document_manager_guid: string, mine_document_guid: string) => void;
   handleOpenExplosivesPermitCloseModal: (event, record: IExplosivesPermit) => void;
 }
 

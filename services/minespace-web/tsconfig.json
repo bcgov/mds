@@ -5,18 +5,10 @@
     "jsx": "react",
     "outDir": "build" /* Redirect output structure to the directory. */,
     "paths": {
-      "@common/*": [
-        "common/*"
-      ],
-      "@mds/common": [
-        "../common/src"
-      ],
-      "@mds/common/*": [
-        "../common/src/*"
-      ],
-      "@/*": [
-        "src/*"
-      ]
+      "@common/*": ["common/*"],
+      "@mds/common": ["../common/src"],
+      "@mds/common/*": ["../common/src/*"],
+      "@/*": ["src/*"]
     },
     "module": "ESNext",
     "moduleResolution": "node",
@@ -26,7 +18,6 @@
     "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
     "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
     "strict": false /* Enable all strict type-checking options. */,
-    "strictNullChecks": false,
     "noImplicitAny": false /* Enable error reporting for expressions and declarations with an implied 'any' type. */,
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
     "typeRoots": [
@@ -42,9 +33,5 @@
     "../../.eslintrc.js",
     "../common/src/@Types/**/*"
   ],
-  "exclude": [
-    "node_modules",
-    "src/**/*.test.ts",
-    "src/**/*.test.tsx"
-  ]
+  "exclude": ["node_modules", "src/**/*.test.ts", "src/**/*.test.tsx"]
 }

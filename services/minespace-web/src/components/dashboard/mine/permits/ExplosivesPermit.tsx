@@ -85,7 +85,6 @@ const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
           explosivesPermit={explosivesPermit as IExplosivesPermitAmendment}
           parentPermit={parentPermit}
           closeModal={props.closeModal}
-          openDocument={() => {}}
           handleOpenExplosivesPermitCloseModal={handleOpenExplosivesPermitCloseModal}
         />
       )}
