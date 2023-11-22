@@ -8,8 +8,9 @@ from flask import Flask, request, current_app
 from flask_cors import CORS
 from flask_restplus import Resource, apidoc
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
-from opentelemetry.instrumentation.logging import LoggingInstrumentor
 from sqlalchemy.exc import SQLAlchemyError
+
+from app.date_time_helper import get_formatted_current_time
 from app.flask_jwt_oidc_local.exceptions import AuthError
 from werkzeug.exceptions import Forbidden
 import traceback
@@ -59,6 +60,19 @@ def create_app(test_config=None):
     trace.set_tracer_provider(TracerProvider())
 
     FlaskInstrumentor().instrument_app(app)
+
+    @app.after_request
+    def log_response_info(response):
+        # Get request information
+        method = request.method
+        path = request.path
+        ip_address = request.remote_addr
+        http_version = request.environ.get('SERVER_PROTOCOL', 'HTTP/1.1')
+
+        # Log combined request and response information
+        current_app.logger.info(f'{ip_address} - - [{get_formatted_current_time()}] "{method} {path} {http_version}" {response.status_code} -')
+
+        return response
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
