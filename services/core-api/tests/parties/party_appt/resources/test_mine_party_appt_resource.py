@@ -25,7 +25,7 @@ def setup_info(db_session):
 # GET
 def test_get_mine_party_appt_by_mine_guid(test_client, db_session, auth_headers, setup_info):
     get_resp = test_client.get(
-        f'/parties/mines?mine_guid={setup_info["mine_guid"]}',
+        f'/parties/mines?mine_guid={setup_info["mine_guid"]}&active_only=true',
         headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200
@@ -35,7 +35,7 @@ def test_get_mine_party_appt_by_mine_guid(test_client, db_session, auth_headers,
 
 def test_get_mine_party_appt_by_party_guid(test_client, db_session, auth_headers, setup_info):
     get_resp = test_client.get(
-        f'/parties/mines?party_guid={setup_info["eor_party_guid"]}',
+        f'/parties/mines?party_guid={setup_info["eor_party_guid"]}&active_only=true',
         headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200
@@ -45,7 +45,7 @@ def test_get_mine_party_appt_by_party_guid(test_client, db_session, auth_headers
 
 def test_get_mine_party_appt_by_type(test_client, db_session, auth_headers, setup_info):
     get_resp = test_client.get(
-        f'/parties/mines?mine_guid={setup_info["mine_guid"]}&types=EOR',
+        f'/parties/mines?mine_guid={setup_info["mine_guid"]}&types=EOR&active_only=true',
         headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200
@@ -55,7 +55,7 @@ def test_get_mine_party_appt_by_type(test_client, db_session, auth_headers, setu
 
 def test_get_mine_party_appt_by_multiple_types(test_client, db_session, auth_headers, setup_info):
     get_resp = test_client.get(
-        f'/parties/mines?mine_guid={setup_info["mine_guid"]}&types=MMG&types=EOR',
+        f'/parties/mines?mine_guid={setup_info["mine_guid"]}&types=MMG&types=EOR&active_only=true',
         headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200
