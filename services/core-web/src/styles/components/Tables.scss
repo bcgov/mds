@@ -106,6 +106,12 @@ tr.ant-table-expanded-row:hover {
   white-space: normal;
 }
 
+.break-word {
+  word-break: break-word !important;
+  overflow: initial !important;
+  white-space: initial !important;
+}
+
 // Centered Pagination
 $pagination-width-1: 112px;
 $pagination-width-2: 152px;
@@ -166,6 +172,9 @@ td.ant-table-cell {
     margin-bottom: 0;
   }
 }
+
+// This style is used in a common component, so it needs to be here, but doesn't require styles in core-web
+.diff-table {}
 
 .diff-table-row > td{
   vertical-align: top;
