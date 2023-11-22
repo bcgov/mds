@@ -658,7 +658,7 @@ class MinePartyAppointmentFactory(BaseFactory):
     party = factory.SubFactory(PartyFactory, person=True, address=1)
     start_date = factory.LazyFunction(datetime.utcnow().date)
     end_date = None
-    status = None
+    status = 'active'
     processed_by = factory.Faker('first_name')
     processed_on = TODAY
     permit_id = factory.LazyAttribute(lambda o: o.mine.mine_permit[0].permit_id
