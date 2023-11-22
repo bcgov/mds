@@ -1,5 +1,6 @@
 import logging
 import os
+import traceback
 
 from dotenv import load_dotenv, find_dotenv
 from celery.schedules import crontab
@@ -22,11 +23,16 @@ class CustomFormatter(logging.Formatter):
                 # Check if the request is a valid HTTP request
                 if current_app and hasattr(current_app, 'extensions'):
                     from app.extensions import getJwtManager
-                    if getJwtManager().audience:
-                        return getJwtManager().audience
+                    from flask import request
+
+                    # Check if the request has a bearer token
+                    bearer_token = request.headers.get('Authorization')
+                    if bearer_token and bearer_token.startswith('Bearer '):
+                        if getJwtManager().audience:
+                            return getJwtManager().audience
             except Exception as e:
-                # The exception is caught, but no error message is printed or logged
-                pass
+                #print error only when there is a major error with implementation of getJwtManager()
+                print(traceback.format_exc())
 
             return None
 
