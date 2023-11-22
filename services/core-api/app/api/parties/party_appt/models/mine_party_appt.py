@@ -275,7 +275,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
                 party_guid=None,
                 mine_party_appt_type_codes=None,
                 include_permit_contacts=False,
-                active_only=True,
+                active_only=False,
                 mine_tailings_storage_facility_guid=None):
         built_query = cls.query.filter_by(deleted_ind=False)
         if mine_guid:
