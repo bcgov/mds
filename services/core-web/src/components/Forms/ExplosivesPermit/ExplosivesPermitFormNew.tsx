@@ -172,8 +172,8 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
 
   const cancelButtonText = showBackButton ? "Back" : "Close";
   const cancelButtonFunc = showBackButton
-    ? props.closeModal
-    : () => setCurrentFormMode(EsupFormMode.select_type_modal);
+    ? () => setCurrentFormMode(EsupFormMode.select_type_modal)
+    : props.closeModal;
 
   const descriptionListElement = (
     <div>

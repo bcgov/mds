@@ -211,7 +211,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
         documentTypeDropdownOptions: explosivesPermitDocumentTypeDropdownOptions,
         isPermitTab: permitTab,
         inspectors,
-        isAmendment: record.isAmendment, //remove with feature flag
+        isAmendment: record?.isAmendment || false, //remove with feature flag
       },
       content: modalConfig.EXPLOSIVES_PERMIT_MODAL,
       width: "75vw",

@@ -191,7 +191,10 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
         const currentMenu = isApproved ? approvedMenu : menu;
         const showActions = !isApproved || (isApproved && isPermitTab);
         const showDelete =
-          (isAdmin && record.application_status !== "APP" && !isPermitTab) ||
+          (isAdmin &&
+            record.application_status !== "APP" &&
+            record.amendment_count === 0 &&
+            !isPermitTab) ||
           (isApproved && isPermitTab);
 
         if (showDelete && isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT)) {
