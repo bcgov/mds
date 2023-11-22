@@ -9,7 +9,7 @@ const mockState = {
   explosivesPermits: Mock.EXPLOSIVES_PERMITS.data.records,
 };
 
-describe("complianceSelectors", () => {
+describe("explosivesPermitSelectors", () => {
   const { explosivesPermits } = mockState;
 
   it("`getExplosivesPermits` calls `explosivesPermitReducer.getExplosivesPermits`", () => {
