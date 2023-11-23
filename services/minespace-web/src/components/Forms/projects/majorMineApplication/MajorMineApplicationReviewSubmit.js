@@ -17,7 +17,7 @@ import { MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES } from "@/components/pages/P
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 import { getMineDocuments } from "@mds/common/redux/selectors/mineSelectors";
 import { MajorMineApplicationDocument } from "@mds/common/models/documents/document";
-import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
+import { renderCategoryColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 
 const propTypes = {
   project: CustomPropTypes.project.isRequired,

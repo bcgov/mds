@@ -7,13 +7,7 @@ exports[`Loading renders properly 1`] = `
   <div
     id="loader"
   >
-    <Lottie
-      ariaLabel="animation"
-      ariaRole="button"
-      eventListeners={Array []}
-      isClickToPauseDisabled={false}
-      isPaused={false}
-      isStopped={false}
+    <lottie-mock
       options={
         Object {
           "animationData": Object {
@@ -435,8 +429,6 @@ exports[`Loading renders properly 1`] = `
           "loop": true,
         }
       }
-      speed={1}
-      title=""
     />
   </div>
 </div>

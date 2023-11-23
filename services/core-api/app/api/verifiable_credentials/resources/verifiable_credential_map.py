@@ -11,6 +11,7 @@ from app.api.verifiable_credentials.models.credentials import PartyVerifiableCre
 
 from app.api.services.traction_service import TractionService
 from app.api.utils.resources_mixins import UserMixin
+from app.api.utils.access_decorators import requires_any_of, MINESPACE_PROPONENT, EDIT_PARTY
 
 
 
@@ -25,10 +26,9 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
     parser.add_argument(
         'permit_amendment_guid', location='json', type=str, store_missing=False)
     
-
     @api.doc(description="Create a connection invitation for a party by guid", params={"party_guid":"guid for party with wallet connection","permit_amendment_guid":"parmit_amendment that will be offered as a credential to the indicated party"})
+    @requires_any_of([EDIT_PARTY, MINESPACE_PROPONENT])
     def post(self):
-
         data = self.parser.parse_args()
         current_app.logger.warning(data)
         party_guid = data["party_guid"]

@@ -4,7 +4,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import queryString from "query-string";
-import { getRedirect, isAuthenticated } from "@/selectors/authenticationSelectors";
+import { getRedirect, isAuthenticated } from "@mds/common/redux/selectors/authenticationSelectors";
 import { unAuthenticateUser } from "@/actionCreators/authenticationActionCreator";
 import { signOutFromSSO } from "@/utils/authenticationHelpers";
 import { RETURN_PAGE_TYPE } from "@/constants/strings";

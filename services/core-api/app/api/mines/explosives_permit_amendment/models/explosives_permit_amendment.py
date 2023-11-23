@@ -374,7 +374,9 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
                     return ExplosivesPermitAmendmentDocumentResource.generate_explosives_permit_document(
                         token, True, False, False)
 
-                permit_number = ExplosivesPermit.find_permit_number_by_explosives_permit_id(explosives_permit_id)
+                # Close any previously open permit versions & amendments
+                ExplosivesPermit.update_permit_status(self.explosives_permit_id, True)
+                ExplosivesPermitAmendment.update_amendment_status_by_explosives_permit_id(self.explosives_permit_id, True, self.explosives_permit_amendment_guid)
                 if generate_documents:
                     create_permit_enclosed_letter()
                     create_issued_permit()

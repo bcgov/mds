@@ -36,7 +36,10 @@ import {
 } from "@mds/common";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import CoreTable from "@/components/common/CoreTable";
-import { renderDateColumn, renderTextColumn } from "../common/CoreTableCommonColumns";
+import {
+  renderDateColumn,
+  renderTextColumn,
+} from "@mds/common/components/common/CoreTableCommonColumns";
 import * as FORM from "@/constants/forms";
 import { TRASHCAN } from "@/constants/assets";
 import { NOTICE_OF_DEPARTURE_DOCUMENTS } from "@/constants/API";

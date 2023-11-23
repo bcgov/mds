@@ -1,10 +1,10 @@
-import React, { FC } from "react";
+import React, { FC, ReactNode } from "react";
 import { Tooltip } from "antd";
 import { COLOR } from "@/constants/styles";
 import { WarningOutlined, InfoCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 
 interface CoreTooltipProps {
-  title: string;
+  title: string | ReactNode;
   iconColor?: string;
   icon?: "exclamation" | "question";
 }

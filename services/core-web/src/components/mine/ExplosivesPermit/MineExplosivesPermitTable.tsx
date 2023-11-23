@@ -29,21 +29,17 @@ import {
   ITableAction,
   renderDateColumn,
   renderTextColumn,
-} from "@/components/common/CoreTableCommonColumns";
+} from "@mds/common/components/common/CoreTableCommonColumns";
 import VioletEditIcon from "@/assets/icons/violet-edit";
 import ActionMenu, {
   deleteConfirmWrapper,
   generateActionMenuItems,
-} from "@/components/common/ActionMenu";
+} from "@mds/common/components/common/ActionMenu";
 import { userHasRole } from "@mds/common/redux/reducers/authenticationReducer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFiles } from "@fortawesome/pro-light-svg-icons";
 import { COLOR } from "@/constants/styles";
 import { ColumnsType } from "antd/es/table";
-
-interface amendmentsWithTotal extends IExplosivesPermitAmendment {
-  totalAmendments: number;
-}
 
 interface MineExplosivesPermitTableProps {
   data: IExplosivesPermit[];
@@ -51,6 +47,11 @@ interface MineExplosivesPermitTableProps {
   handleOpenExplosivesPermitDecisionModal: (event, record: IExplosivesPermit) => void;
   handleOpenExplosivesPermitStatusModal: (event, record: IExplosivesPermit) => void;
   handleDeleteExplosivesPermit: (event, record: IExplosivesPermit) => void;
+  handleOpenEditExplosivesPermitModal: (
+    event,
+    record: IExplosivesPermit,
+    actionKey: string
+  ) => void;
   isPermitTab: boolean;
   explosivesPermitDocumentTypeOptionsHash: any;
   explosivesPermitStatusOptionsHash: any;
@@ -64,8 +65,7 @@ interface MineExplosivesPermitTableProps {
   handleOpenAmendExplosivesPermitModal: (event, record: IExplosivesPermit) => void;
 }
 
-type MineExplosivesTableItem = IExplosivesPermit & {
-  documents: IExplosivesPermitDocument;
+type MineExplosivesTableItem = (IExplosivesPermit | IExplosivesPermitAmendment) & {
   key: string;
   isExpired: boolean;
 };
@@ -73,13 +73,11 @@ type MineExplosivesTableItem = IExplosivesPermit & {
 const transformRowData = (permits: IExplosivesPermit[]) => {
   return permits.map((permit) => {
     const mostRecentVersion =
-      permit.explosives_permit_amendments?.length > 0
+      permit.explosives_permit_amendments.length > 0
         ? permit.explosives_permit_amendments[permit.explosives_permit_amendments.length - 1]
         : permit;
 
-    const amendments = permit?.explosives_permit_amendments
-      ? [...permit?.explosives_permit_amendments?.reverse(), permit] || []
-      : [permit];
+    const amendments = [...permit.explosives_permit_amendments, permit];
 
     return {
       ...mostRecentVersion,
@@ -116,9 +114,45 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
     <EyeOutlined className="padding-sm icon-lg icon-svg-filter" />
   );
 
-  const actionsColumn = (
-    type?: "permit" | "amendment"
-  ): ColumnType<MineExplosivesTableItem | amendmentsWithTotal> => {
+  const viewPermitAction: ITableAction = {
+    key: "view",
+    label: "View",
+    clickFunction: handleOpenViewExplosivesPermitModal,
+    icon: viewIcon,
+  };
+
+  const editPermitFunction = isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT)
+    ? (actionKey) => (event, permitRecord) =>
+        props.handleOpenEditExplosivesPermitModal(event, permitRecord, actionKey)
+    : (_actionKey) => (event, permitRecord) =>
+        props.handleOpenAddExplosivesPermitModal(event, isPermitTab, permitRecord);
+
+  const editDocumentAction: ITableAction = {
+    key: "edit_documents",
+    label: "Edit Documents",
+    clickFunction: editPermitFunction("edit_documents"),
+    icon: editIcon,
+  };
+  const editPermitAction: ITableAction = {
+    key: "edit",
+    label: "Edit Draft",
+    clickFunction: editPermitFunction("edit"),
+    icon: editIcon,
+  };
+  const processPermitAction: ITableAction = {
+    key: "process",
+    label: "Process",
+    clickFunction: props.handleOpenExplosivesPermitDecisionModal,
+    icon: editIcon,
+  };
+  const amendPermitAction: ITableAction = {
+    key: "amend",
+    label: "Create Amendment",
+    clickFunction: props.handleOpenAmendExplosivesPermitModal,
+    icon: editIcon,
+  };
+
+  const actionsColumn = (type?: "permit" | "amendment"): ColumnType<MineExplosivesTableItem> => {
     return {
       title: "",
       key: "addEditButton",
@@ -134,104 +168,14 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
           )?.length > 0;
         const isCoreSource = record.originating_system === "Core";
 
-        const viewOnlyMenu: ITableAction[] = [
-          {
-            key: "view",
-            label: "View",
-            clickFunction: (event) => handleOpenViewExplosivesPermitModal(event, record),
-            icon: viewIcon,
-          },
-        ];
         const approvedMenu: ITableAction[] = isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT)
-          ? [
-              ...viewOnlyMenu,
-              {
-                key: "0",
-                label: "Edit Documents",
-                clickFunction: (event, record) =>
-                  props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record),
-                icon: editIcon,
-              },
-              {
-                key: "edit",
-                label: "Create Amendment",
-                clickFunction: (event, record) =>
-                  props.handleOpenAmendExplosivesPermitModal(event, record),
-                icon: editIcon,
-              },
-            ]
-          : [
-              {
-                key: "0",
-                label: "Edit Documents",
-                clickFunction: (event, record) =>
-                  props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record),
-                icon: editIcon,
-              },
-              {
-                key: "edit",
-                label: "Edit Permit",
-                clickFunction: (event, record) =>
-                  props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record),
-                icon: editIcon,
-              },
-            ];
+          ? [viewPermitAction, editDocumentAction, amendPermitAction]
+          : [editDocumentAction, editPermitAction];
         const menu: ITableAction[] = isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT)
-          ? [
-              ...(!isProcessed
-                ? [
-                    ...viewOnlyMenu,
-                    {
-                      key: "process",
-                      label: "Process",
-                      clickFunction: (event) =>
-                        props.handleOpenExplosivesPermitDecisionModal(event, record),
-                      icon: editIcon,
-                    },
-                    {
-                      key: "edit",
-                      label: "Edit",
-                      clickFunction: (event) =>
-                        props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record),
-                      icon: editIcon,
-                    },
-                  ]
-                : []),
-              {
-                key: "0",
-                label: "Edit Documents",
-                clickFunction: (event) =>
-                  props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record),
-                icon: editIcon,
-              },
-            ]
-          : [
-              ...(!isProcessed
-                ? [
-                    {
-                      key: "process",
-                      label: "Process",
-                      clickFunction: (event) =>
-                        props.handleOpenExplosivesPermitDecisionModal(event, record),
-                      icon: editIcon,
-                    },
-                    {
-                      key: "edit",
-                      label: "Edit",
-                      clickFunction: (event) =>
-                        props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record),
-                      icon: editIcon,
-                    },
-                  ]
-                : []),
-              {
-                key: "0",
-                label: "Edit Documents",
-                clickFunction: (event) =>
-                  props.handleOpenAddExplosivesPermitModal(event, isPermitTab, record),
-                icon: editIcon,
-              },
-            ];
+          ? !isProcessed
+            ? [viewPermitAction, processPermitAction, editPermitAction]
+            : []
+          : [...(!isProcessed ? [processPermitAction, editPermitAction] : []), editDocumentAction];
         const deleteAction: ITableAction = {
           key: "delete",
           label: "Delete",
@@ -247,7 +191,10 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
         const currentMenu = isApproved ? approvedMenu : menu;
         const showActions = !isApproved || (isApproved && isPermitTab);
         const showDelete =
-          (isAdmin && record.application_status !== "APP" && !isPermitTab) ||
+          (isAdmin &&
+            record.application_status !== "APP" &&
+            record.amendment_count === 0 &&
+            !isPermitTab) ||
           (isApproved && isPermitTab);
 
         if (showDelete && isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT)) {
@@ -277,7 +224,7 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
                 {isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT) ? (
                   <ActionMenu
                     record={record}
-                    actionItems={type === "amendment" ? viewOnlyMenu : currentMenu}
+                    actionItems={type === "amendment" ? [viewPermitAction] : currentMenu}
                     category="ESUP"
                   />
                 ) : (
@@ -507,7 +454,7 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
 
   const esupCommonColumns = (
     type: "permit" | "amendment"
-  ): ColumnsType<MineExplosivesTableItem | amendmentsWithTotal> => {
+  ): ColumnsType<MineExplosivesTableItem> => {
     return [
       {
         title: "Status",
@@ -575,39 +522,24 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
             <Col>
               <Typography.Text>{record.permit_number || Strings.EMPTY_FIELD}</Typography.Text>
             </Col>
-            {record.explosives_permit_amendments.length > 1 && (
+            {record.amendment_count > 0 && (
               <Col className="amendments-badge">
                 <FontAwesomeIcon icon={faFiles} />
-                {record.explosives_permit_amendments.length - 1}
+                {record.amendment_count}
               </Col>
             )}
           </Row>
         );
       },
     },
-    renderTextColumn("mines_permit_number", "Mines Act Permit #", false, Strings.EMPTY_FIELD),
-    renderTextColumn("now_number", "Notice of Work #", false, Strings.EMPTY_FIELD),
-    {
-      title: "Amendments",
-      key: "explosives_permit_amendments",
-      render: (record) => {
-        return (
-          <Typography.Text>{record?.explosives_permit_amendments.length - 1 || 0}</Typography.Text>
-        );
-      },
-    },
+    renderTextColumn("mines_permit_number", "Mines Act Permit #"),
+    renderTextColumn("now_number", "Notice of Work #"),
+    renderTextColumn("amendment_count", "Amendments"),
     ...esupCommonColumns("permit"),
   ];
 
-  const amendmentDetailColumns: ColumnType<amendmentsWithTotal>[] = [
-    {
-      title: "Amendment",
-      key: "explosives_permit_amendment_id",
-      render: (_, record, index) => {
-        const amendmentIndex = record.totalAmendments - 1 - index;
-        return <Typography.Text>{amendmentIndex}</Typography.Text>;
-      },
-    },
+  const amendmentDetailColumns: ColumnType<MineExplosivesTableItem>[] = [
+    renderTextColumn("amendment_no", "Amendment"),
     ...esupCommonColumns("amendment"),
   ];
 
@@ -650,15 +582,10 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
       expandProps={
         isFeatureEnabled(Feature.ESUP_PERMIT_AMENDMENT)
           ? {
-              rowExpandable: (record: IExplosivesPermit) =>
-                record.explosives_permit_amendments?.length > 1,
+              rowExpandable: (record: IExplosivesPermit) => record.amendment_count > 0,
               recordDescription: "amendment details",
-              getDataSource: (record: IExplosivesPermit) => {
-                const totalAmendments = record.explosives_permit_amendments.length;
-                return record.explosives_permit_amendments.map((amendment) => {
-                  return { ...amendment, totalAmendments };
-                });
-              },
+              getDataSource: (record: IExplosivesPermit) =>
+                record.explosives_permit_amendments.sort((a, b) => b.amendment_no - a.amendment_no),
               subTableColumns: amendmentDetailColumns,
             }
           : {

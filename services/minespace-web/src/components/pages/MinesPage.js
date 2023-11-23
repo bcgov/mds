@@ -5,7 +5,7 @@ import EnvironmentOutlined from "@ant-design/icons/EnvironmentOutlined";
 import { Row, Col, Divider, Typography } from "antd";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { getUserInfo, isProponent } from "@/selectors/authenticationSelectors";
+import { getUserInfo, isProponent } from "@mds/common/redux/selectors/authenticationSelectors";
 import { getUserMineInfo } from "@/selectors/userMineSelectors";
 import { fetchUserMineInfo } from "@/actionCreators/userDashboardActionCreator";
 import CustomPropTypes from "@/customPropTypes";

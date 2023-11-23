@@ -67,6 +67,10 @@
   width: 100%;
 }
 
+.line-height-none {
+  line-height: 1;
+}
+
 .padding-sm {
   &--left {
     padding-left: $default-padding-sm;
@@ -156,6 +160,10 @@
   padding: $default-padding-xxl;
 }
 
+.margin-none {
+  margin: 0 !important;
+}
+
 .margin-small {
   margin: $default-margin-sm;
   &--top {
@@ -242,6 +250,10 @@
 
 .red {
   color: $gov-red;
+}
+
+.green {
+  color: $ok-green;
 }
 
 .light-grey-background {

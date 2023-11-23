@@ -8,7 +8,7 @@ import CoreTable from "@/components/common/CoreTable";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
-import { renderTextColumn } from "@/components/common/CoreTableCommonColumns";
+import { renderTextColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 
 const propTypes = {
   isLoaded: PropTypes.bool.isRequired,

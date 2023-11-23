@@ -65,6 +65,11 @@ export interface IExplosivesPermit {
   now_number: string;
   closed_by: string;
   explosives_permit_amendments: IExplosivesPermitAmendment[];
+  // does not include the initial record as amendment
+  amendment_count: number;
+  // starts at 0 for initial record
+  amendment_no: number;
+  isAmendment: boolean;
 }
 
 export interface IExplosivesPermitStatus {

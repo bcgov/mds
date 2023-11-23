@@ -45,6 +45,7 @@ exports[`MajorProjectTable renders properly 1`] = `
         "title": "Stage",
       },
       Object {
+        "className": undefined,
         "dataIndex": "status_code",
         "key": "status_code",
         "render": [Function],

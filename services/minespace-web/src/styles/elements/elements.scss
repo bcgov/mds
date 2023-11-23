@@ -1,3 +1,7 @@
+.primary-colour {
+  color: $gov-blue !important;
+}
+
 a {
   &[disabled] {
     pointer-events: all;
