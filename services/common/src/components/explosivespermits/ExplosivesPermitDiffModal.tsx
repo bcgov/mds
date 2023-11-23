@@ -157,8 +157,8 @@ const ExplosivesPermitDiffModal: FC<ExplosivesPermitDiffModalProps> = ({
     },
     {
       title: "Amendment",
-      key: "order_no",
-      dataIndex: "order_no",
+      key: "amendment_no",
+      dataIndex: "amendment_no",
     },
     {
       title: "Changes",
@@ -220,7 +220,7 @@ const ExplosivesPermitDiffModal: FC<ExplosivesPermitDiffModalProps> = ({
       return {
         ...permit,
         differences: currentDiff[key].length > 0 ? currentDiff[key] : [{ fieldName: "None" }],
-        order_no: index,
+        order_no: currentDiff,
       };
     })
     .reverse();
