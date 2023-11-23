@@ -2,21 +2,41 @@ import json
 from app.api.exception.mds_core_api_exceptions import MDSCoreAPIException
 
 class MineException(MDSCoreAPIException):
-    """A Custom Exception for MINE API Module Erros"""
+    """A Custom Exception for Errors in MINE Namespace"""
 
     description = (
-        "Exeption occurred in the Mine module"
+        "Generic exeption for errors occurred in the Mine module"
     )
-    def __init__(self, message, **kwargs):
+    def __init__(self, message = "Oops! Something went wrong", **kwargs):
         super().__init__(message, **kwargs)
         self.code = int(kwargs.get("status_code", 500))
 
-class InvalidInputDataException(MineException):
-    """Exception for invalid data in the input params/body"""
+class ExplosivesPermitDocumentExeption(MineException):
+    """Exception for Explosives Permit Document Related Exception"""
 
     description = (
-        "Exception occurred due to the input data"
+        "Exception For Explosives Permit Document Related Errors"
     )
-    def __init__(self, message, **kwargs):
+    def __init__(self, message = "An error occurred while processing Explosives Permit Document", **kwargs):
+        super().__init__(message, **kwargs)
+        self.code = int(kwargs.get("status_code", 500))
+
+class ExplosivesPermitExeption(MineException):
+    """Exception for Explosive Permit related errors"""
+
+    description = (
+        "Exception for errors in Explosive Permit"
+    )
+    def __init__(self, message = "Error in Explosive Permit", **kwargs):
+        super().__init__(message, **kwargs)
+        self.code = int(kwargs.get("status_code", 500))
+
+class ExplosivePermitNumberAlreadyExistExeption(MineException):
+    """Exception for already existing permit number"""
+
+    description = (
+        "Exception for already existing permit number"
+    )
+    def __init__(self, message = "A record already exists with the provided 'Explosives Permit Number'", **kwargs):
         super().__init__(message, **kwargs)
         self.code = int(kwargs.get("status_code", 422))

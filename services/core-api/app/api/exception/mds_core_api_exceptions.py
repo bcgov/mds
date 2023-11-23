@@ -5,7 +5,7 @@ class MDSCoreAPIException(Exception):
         "Exception occurred in MDS Core API"
     )
 
-    def __init__(self, message, **kwargs):
+    def __init__(self, message="Oops! Something went wrong", **kwargs):
         super().__init__(message)
         self.code = int(kwargs.get("status_code", 500))
         self.message = message

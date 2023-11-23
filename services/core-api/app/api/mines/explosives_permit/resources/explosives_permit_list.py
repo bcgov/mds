@@ -10,7 +10,7 @@ from app.api.mines.mine.models.mine import Mine
 from app.api.mines.explosives_permit.response_models import EXPLOSIVES_PERMIT_MODEL
 from app.api.mines.explosives_permit.models.explosives_permit import ExplosivesPermit
 from sqlalchemy import exc
-from app.api.mines.exceptions.mine_exceptions import MineException, InvalidInputDataException
+from app.api.mines.exceptions.mine_exceptions import MineException, ExplosivePermitNumberAlreadyExistExeption
 from flask import current_app
 
 class ExplosivesPermitListResource(Resource, UserMixin):
@@ -140,12 +140,20 @@ class ExplosivesPermitListResource(Resource, UserMixin):
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     @api.marshal_with(EXPLOSIVES_PERMIT_MODEL, code=200, envelope='records')
     def get(self, mine_guid):
-        mine = Mine.find_by_mine_guid(mine_guid)
-        if mine is None:
-            raise NotFound('Mine not found')
+        try:
+            mine = Mine.find_by_mine_guid(mine_guid)
+            if mine is None:
+                raise NotFound('Mine not found')
 
-        explosives_permits = ExplosivesPermit.find_by_mine_guid(mine_guid)
-        return explosives_permits
+            explosives_permits = ExplosivesPermit.find_by_mine_guid(mine_guid)
+
+        except Exception as e:
+            current_app.logger.error(e)
+            raise MineException("Oops!, Something went wrong while retrieving the mine information",
+                                detailed_error = e)
+
+        else:
+            return explosives_permits
 
     @api.doc(
         description='Create a new Explosives Permit.',
@@ -185,13 +193,14 @@ class ExplosivesPermitListResource(Resource, UserMixin):
                 "duplicate key value violates unique constraint \"explosives_permit_permit_number_key\"" \
                 in str(intgErr.__cause__)
             if is_duplicate_permit_number:
-                raise InvalidInputDataException("A record already exists with the provided \"Explosives Permit Number\".", detailed_error = intgErr)
+                raise ExplosivePermitNumberAlreadyExistExeption(detailed_error = intgErr)
             else:
-                raise MineException("Unexpected error occurred, when creating the esup", detailed_error = intgErr)
+                raise MineException("Unexpected error occurred, when creating the esup",
+                                    detailed_error = intgErr)
 
         except Exception as e:
             current_app.logger.error(e)
-            raise MineException("Unexpected error occurred, when creating the esup", detailed_error = e)
+            raise MineException(detailed_error = e)
 
         else:
             return explosives_permit, 201
