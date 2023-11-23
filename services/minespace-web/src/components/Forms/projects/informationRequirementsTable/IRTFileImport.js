@@ -24,7 +24,7 @@ import {
   renderCategoryColumn,
   renderDateColumn,
   renderTextColumn,
-} from "@/components/common/CoreTableCommonColumns";
+} from "@mds/common/components/common/CoreTableCommonColumns";
 import { formatDateTime } from "@common/utils/helpers";
 import { documentNameColumn } from "@/components/common/DocumentColumns";
 import { MineDocument } from "@mds/common/models/documents/document";

@@ -1,5 +1,6 @@
 import logging
 import os
+import traceback
 
 from dotenv import load_dotenv, find_dotenv
 from celery.schedules import crontab
@@ -22,11 +23,16 @@ class CustomFormatter(logging.Formatter):
                 # Check if the request is a valid HTTP request
                 if current_app and hasattr(current_app, 'extensions'):
                     from app.extensions import getJwtManager
-                    if getJwtManager().audience:
-                        return getJwtManager().audience
+                    from flask import request
+
+                    # Check if the request has a bearer token
+                    bearer_token = request.headers.get('Authorization')
+                    if bearer_token and bearer_token.startswith('Bearer '):
+                        if getJwtManager().audience:
+                            return getJwtManager().audience
             except Exception as e:
-                # Handle the exception here (e.g., log it)
-                print(f"An error occurred: {e}")
+                #print error only when there is a major error with implementation of getJwtManager()
+                print(traceback.format_exc())
 
             return None
 
@@ -61,7 +67,7 @@ class Config(object):
     WERKZEUG_LOGGING_LEVEL = os.environ.get('WERKZEUG_LOGGING_LEVEL',
                                          'CRITICAL')  # ['DEBUG','INFO','WARN','ERROR','CRITICAL']
     DISPLAY_WERKZEUG_LOG = os.environ.get('DISPLAY_WERKZEUG_LOG',
-                                            False)
+                                            True)
 
     LOGGING_DICT_CONFIG = {
         'version': 1,
@@ -94,6 +100,7 @@ class Config(object):
         'loggers': {
             'werkzeug': {
                 'level': WERKZEUG_LOGGING_LEVEL,
+                'handlers': ['file', 'console'],
                 'propagate': DISPLAY_WERKZEUG_LOG
             }
         }

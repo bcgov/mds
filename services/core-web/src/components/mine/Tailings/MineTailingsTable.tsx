@@ -24,7 +24,10 @@ import { EDIT_DAM, MINE_TAILINGS_DETAILS } from "@/constants/routes";
 import { IDam, ITailingsStorageFacility } from "@mds/common";
 import { ColumnsType } from "antd/lib/table";
 import { FixedType } from "rc-table/lib/interface";
-import { renderCategoryColumn, renderTextColumn } from "@/components/common/CoreTableCommonColumns";
+import {
+  renderCategoryColumn,
+  renderTextColumn,
+} from "@mds/common/components/common/CoreTableCommonColumns";
 import { Feature } from "@mds/common";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 

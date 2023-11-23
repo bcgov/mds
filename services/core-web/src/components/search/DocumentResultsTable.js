@@ -4,7 +4,10 @@ import PropTypes from "prop-types";
 import Highlight from "react-highlighter";
 import DocumentLink from "@/components/common/DocumentLink";
 import CoreTable from "@/components/common/CoreTable";
-import { renderDateColumn, renderTextColumn } from "../common/CoreTableCommonColumns";
+import {
+  renderDateColumn,
+  renderTextColumn,
+} from "@mds/common/components/common/CoreTableCommonColumns";
 import { nullableStringSorter } from "@common/utils/helpers";
 
 /**

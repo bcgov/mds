@@ -23,12 +23,15 @@ class NOWApplicationDocumentUploadResource(Resource, UserMixin):
     @api.doc(description='Request a document_manager_guid for uploading a document')
     @requires_role_edit_permit
     def post(self, application_guid):
+        current_app.logger.info('[MDS-5629][%s] - Uploading file for application_guid: %s', self.__class__.__name__, application_guid)
         now_application_identity = NOWApplicationIdentity.find_by_guid(application_guid)
         if not now_application_identity:
             raise NotFound('No identity record for this application guid.')
 
-        return DocumentManagerService.initializeFileUploadWithDocumentManager(
+        resp = DocumentManagerService.initializeFileUploadWithDocumentManager(
             request, now_application_identity.mine, 'noticeofwork')
+        current_app.logger.info('[MDS-5629][%s] - Response: %s', self.__class__.__name__, str(resp))
+        return resp
 
 
 class NOWApplicationDocumentSortResource(Resource, UserMixin):

@@ -18,7 +18,6 @@ from app.api.mines.explosives_permit_amendment.models.explosives_permit_amendmen
 from app.api.utils.models_mixins import Base, SoftDeleteMixin, AuditMixin, PermitMixin
 from sqlalchemy import func, and_
 from sqlalchemy.sql import update
-from app.api.utils.include.user_info import User
 
 from app.extensions import db
 
@@ -217,6 +216,7 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
             explosives_permit_amendment_guid=explosives_permit_amendment_guid, deleted_ind=False).one_or_none()
 
     def update(self,
+               amendment_count,
                explosives_permit_id,
                permit_guid,
                now_application_guid,
@@ -235,6 +235,7 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
                description,
                letter_date,
                letter_body,
+               issue_date,
                explosive_magazines=[],
                detonator_magazines=[],
                documents=[],
@@ -252,6 +253,7 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
         self.expiry_date = expiry_date
         self.latitude = latitude
         self.longitude = longitude
+        self.issue_date = issue_date
 
         # Check for permit closed changes.
         self.is_closed = is_closed
@@ -327,6 +329,7 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
                     or self.application_status == 'APP') and application_status == 'APP':
                 from app.api.document_generation.resources.explosives_permit_amendment_document_resource import ExplosivesPermitAmendmentDocumentResource
                 from app.api.mines.explosives_permit.resources.explosives_permit_document_type import ExplosivesPermitDocumentGenerateResource
+                amendment_info = ExplosivesPermitDocumentType.get_amendment_info(amendment_count, str(issue_date))
 
                 def create_permit_enclosed_letter():
                     mine = self.mine
@@ -340,7 +343,8 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
                         mine.region.regional_contact_office.mailing_address_line_1,
                         'rc_office_mailing_address_line_2':
                         mine.region.regional_contact_office.mailing_address_line_2,
-                        'is_draft': False
+                        'is_draft': False,
+                        'amendment_with_date': amendment_info['amendment_with_date']
                     }
                     explosives_permit_amendment_document_type = ExplosivesPermitDocumentType.get_with_context(
                         'LET', self.explosives_permit_amendment_guid)
@@ -356,7 +360,7 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
                         token, True, False, False)
 
                 def create_issued_permit():
-                    template_data = {'is_draft': False}
+                    template_data = {'is_draft': False, 'amendment': amendment_info['amendment']}
                     explosives_permit_amendment_document_type = ExplosivesPermitDocumentType.get_with_context(
                         'PER', self.explosives_permit_amendment_guid)
                     template_data = explosives_permit_amendment_document_type.transform_template_data(
@@ -370,7 +374,9 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
                     return ExplosivesPermitAmendmentDocumentResource.generate_explosives_permit_document(
                         token, True, False, False)
 
-                permit_number = ExplosivesPermit.find_permit_number_by_explosives_permit_id(explosives_permit_id)
+                # Close any previously open permit versions & amendments
+                ExplosivesPermit.update_permit_status(self.explosives_permit_id, True)
+                ExplosivesPermitAmendment.update_amendment_status_by_explosives_permit_id(self.explosives_permit_id, True, self.explosives_permit_amendment_guid)
                 if generate_documents:
                     create_permit_enclosed_letter()
                     create_issued_permit()

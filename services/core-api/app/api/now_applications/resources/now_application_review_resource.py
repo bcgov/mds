@@ -14,6 +14,7 @@ from app.api.now_applications.models.now_application_identity import NOWApplicat
 from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
 from app.api.now_applications.response_models import NOW_APPLICATION_REVIEW_MODEL
 
+import time
 
 class NOWApplicationReviewListResource(Resource, UserMixin):
     parser = CustomReqparser()
@@ -29,12 +30,16 @@ class NOWApplicationReviewListResource(Resource, UserMixin):
     @requires_role_edit_permit
     @api.marshal_with(NOW_APPLICATION_REVIEW_MODEL, code=201)
     def post(self, application_guid):
+        current_app.logger.info('[MDS-5629][%s] - Creating Review List for application_guid: %s', self.__class__.__name__,
+                                application_guid)
         now_application = NOWApplicationIdentity.find_by_guid(application_guid)
         if not now_application:
             raise NotFound('No now_application found')
         if not now_application.now_application_id:
             raise BadRequest('Now Application not imported, call import endpoint first')
 
+        current_app.logger.info('[MDS-5629][%s] - Found NOWApplication with now_application_id: %s',
+                                self.__class__.__name__, now_application.now_application_id)
         data = self.parser.parse_args()
         new_review = NOWApplicationReview.create(now_application.now_application,
                                                  data['now_application_review_type_code'],
@@ -42,8 +47,9 @@ class NOWApplicationReviewListResource(Resource, UserMixin):
                                                  data.get('referee_name'),
                                                  data.get('referral_number'),
                                                  data.get('response_url'))
-
+        current_app.logger.info('[MDS-5629][%s] - new_review created', self.__class__.__name__)
         new_documents = request.json.get('uploadedFiles', [])
+        current_app.logger.info('[MDS-5629][%s] - Found %s documents to append to NoWReview', self.__class__.__name__, len(new_documents))
         if 'uploadedFiles' in request.json.keys():
             del request.json['uploadedFiles']
 
@@ -52,7 +58,11 @@ class NOWApplicationReviewListResource(Resource, UserMixin):
                 mine_guid=now_application.mine_guid,
                 document_manager_guid=doc[0],
                 document_name=doc[1])
-
+            current_app.logger.info('[MDS-5629][%s] - new_mine_doc created' \
+                                    '\nmine_guid: %s' \
+                                    '\ndocument_manager_guid: %s' \
+                                    '\ndocument_name: %s',
+                                    self.__class__.__name__, now_application.mine_guid, doc[0], doc[1])
             new_now_mine_doc = NOWApplicationDocumentXref(
                 mine_document=new_mine_doc,
                 now_application_document_type_code=data['now_application_document_type_code'],
@@ -62,8 +72,7 @@ class NOWApplicationReviewListResource(Resource, UserMixin):
             new_review.documents.append(new_now_mine_doc)
 
         new_review.save()
-
-        new_review.save()
+        current_app.logger.info('[MDS-5629][%s] - new_review saved', self.__class__.__name__,)
         return new_review, 201
 
     @api.doc(description='Add new Review to Now Application', params={})
@@ -71,12 +80,15 @@ class NOWApplicationReviewListResource(Resource, UserMixin):
     @api.marshal_with(NOW_APPLICATION_REVIEW_MODEL, envelope='records', code=201)
     def get(self, application_guid):
         now_application = NOWApplicationIdentity.find_by_guid(application_guid)
+        current_app.logger.info("[MDS-5629][%s] - Retrieving review for application_guid: %s", self.__class__.__name__, application_guid)
         if not now_application:
             raise NotFound('No now_application found')
         if not now_application.now_application_id:
             raise BadRequest('Now Application not imported, call import endpoint first')
 
-        return now_application.now_application.reviews
+        reviews = now_application.now_application.reviews
+        current_app.logger.info('[MDS-5629][%s] - Returning : %s reviews', self.__class__.__name__, len(reviews))
+        return reviews
 
 
 class NOWApplicationReviewResource(Resource, UserMixin):

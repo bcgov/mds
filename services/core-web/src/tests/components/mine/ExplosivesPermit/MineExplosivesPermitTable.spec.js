@@ -9,6 +9,7 @@ import * as MOCK from "@/tests/mocks/dataMocks";
 const props = {};
 
 const setupProps = () => {
+  props.data = [];
   props.isPermitTab = false;
   props.isLoaded = false;
   props.expandedRowKeys = [];
@@ -35,9 +36,9 @@ beforeAll(() => {
       matches: false,
       addListener: jest.fn(),
       removeListener: jest.fn(),
-    }))
-  })
-})
+    })),
+  });
+});
 beforeEach(() => {
   setupProps();
 });

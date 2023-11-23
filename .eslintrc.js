@@ -9,6 +9,7 @@ module.exports = {
     "services/minespace-web/cypress.config.ts",
     "services/minespace-web/cypress/**",
     "services/core-web/webpack.config.ts",
+    "services/core-web/webpack.parts.js",
     "services/core-web/cypress.config.ts",
     "services/core-web/cypress/**",
   ],

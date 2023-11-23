@@ -45,7 +45,7 @@ import ExplosivesPermitApplicationDecisionModal from "./ExplosivesPermitApplicat
 import ViewMagazineModal from "./ViewMagazineModal";
 import ExplosivesPermitStatusModal from "./ExplosivesPermitStatusModal";
 import ExplosivesPermitCloseModal from "./ExplosivesPermitCloseModal";
-import ExplosivesPermitViewModal from "./ExplosivesPermitViewModal";
+import ExplosivesPermitViewModal from "@mds/common/components/explosivespermits/ExplosivesPermitViewModal";
 import MergePartyConfirmationModal from "./MergePartyConfirmationModal";
 import ViewAllConditionsModal from "./ViewAllConditionsModal";
 import UpdateNoWDateModal from "./UpdateNoWDateModal";

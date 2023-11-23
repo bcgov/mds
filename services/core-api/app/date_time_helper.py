@@ -1,5 +1,8 @@
 from dateutil.relativedelta import relativedelta
+from datetime import datetime
 
+def get_formatted_current_time():
+    return datetime.now().strftime("%d/%b/%Y %H:%M:%S")
 
 def get_duration_text(start_date, end_date):
     def get_duration_text_or_default(duration, unit):
