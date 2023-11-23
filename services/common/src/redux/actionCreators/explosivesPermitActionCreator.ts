@@ -58,18 +58,17 @@ export const fetchExplosivesPermits = (
 };
 
 export const updateExplosivesPermit = (
-  mineGuid: string,
-  explosivesPermitGuid: string,
   payload: Partial<IExplosivesPermit>,
   generate_documents = false
 ): AppThunk<Promise<AxiosResponse<IExplosivesPermit>>> => (
   dispatch
 ): Promise<AxiosResponse<IExplosivesPermit>> => {
+  const { mine_guid, explosives_permit_guid } = payload;
   dispatch(request(reducerTypes.UPDATE_EXPLOSIVES_PERMIT));
   dispatch(showLoading("modal"));
   return CustomAxios()
     .put(
-      ENVIRONMENT.apiUrl + API.EXPLOSIVES_PERMIT(mineGuid, explosivesPermitGuid),
+      ENVIRONMENT.apiUrl + API.EXPLOSIVES_PERMIT(mine_guid, explosives_permit_guid),
       { ...payload, generate_documents },
       createRequestHeader()
     )

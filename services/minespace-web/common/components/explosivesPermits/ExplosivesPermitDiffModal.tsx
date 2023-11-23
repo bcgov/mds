@@ -36,7 +36,13 @@ const ExplosivesPermitDiffModal: FC<ExplosivesPermitDiffModalProps> = ({
       (a, b) => a.explosives_permit_amendment_id - b.explosives_permit_amendment_id
     );
 
-    const ignoredFields = ["explosives_permit_amendment_id", "explosives_permit_amendment_guid"];
+    const ignoredFields = [
+      "explosives_permit_amendment_id",
+      "explosives_permit_amendment_guid",
+      "issuing_inspector_party_guid",
+      "isAmendment",
+      "amendment_no",
+    ];
 
     const differences: IPermitDifferencesByAmendment = permitVersions.reduce(
       (acc, currAmendment, i) => {
