@@ -1,4 +1,5 @@
 import json, uuid, pytest
+from datetime import datetime
 
 from tests.factories import MineFactory, PartyFactory, MinePartyAppointmentFactory, MineTailingsStorageFacilityFactory
 
@@ -19,7 +20,9 @@ def setup_info(db_session):
         mine_manager_guid=str(mine_manager.party.party_guid),
         qp_guid=str(qp.party.party_guid),
         tsf_guid=str(mine.mine_tailings_storage_facilities[0].mine_tailings_storage_facility_guid),
-        unrelated_tsf_guid=str(mine_b.mine_tailings_storage_facilities[0].mine_tailings_storage_facility_guid),)
+        unrelated_tsf_guid=str(mine_b.mine_tailings_storage_facilities[0].mine_tailings_storage_facility_guid),
+        start_date=str(datetime.today().date()),
+        )
 
 
 # GET
@@ -71,6 +74,7 @@ def test_post_mine_party_appt_EOR_success(test_client, db_session, auth_headers,
         'party_guid': str(party_guid),
         'mine_party_appt_type_code': 'EOR',
         'related_guid': setup_info['tsf_guid'],
+        'start_date': setup_info['start_date'],
     }
     post_resp = test_client.post(
         '/parties/mines', data=test_data, headers=auth_headers['full_auth_header'])
@@ -86,6 +90,7 @@ def test_post_mine_party_appt_TQP_success(test_client, db_session, auth_headers,
         'party_guid': str(party_guid),
         'mine_party_appt_type_code': 'TQP',
         'related_guid': setup_info['tsf_guid'],
+        'start_date': setup_info['start_date'],
     }
     post_resp = test_client.post(
         '/parties/mines', data=test_data, headers=auth_headers['full_auth_header'])
@@ -100,7 +105,8 @@ def test_post_mine_party_appt_EOR_without_TSF(test_client, db_session, auth_head
     test_data = {
         'mine_guid': setup_info['mine_guid'],
         'party_guid': setup_info['eor_party_guid'],
-        'mine_party_appt_type_code': 'EOR'
+        'mine_party_appt_type_code': 'EOR',
+        'start_date': setup_info['start_date'],
     }
     post_resp = test_client.post(
         '/parties/mines', data=test_data, headers=auth_headers['full_auth_header'])
@@ -111,7 +117,8 @@ def test_post_mine_party_appt_TQP_without_TSF(test_client, db_session, auth_head
     test_data = {
         'mine_guid': setup_info['mine_guid'],
         'party_guid': setup_info['qp_guid'],
-        'mine_party_appt_type_code': 'TQP'
+        'mine_party_appt_type_code': 'TQP',
+        'start_date': setup_info['start_date'],
     }
     post_resp = test_client.post(
         '/parties/mines', data=test_data, headers=auth_headers['full_auth_header'])
@@ -125,7 +132,8 @@ def test_post_mine_party_appt_success(test_client, db_session, auth_headers, set
     test_data = {
         'mine_guid': setup_info['mine_guid'],
         'party_guid': str(party_guid),
-        'mine_party_appt_type_code': 'BLA'
+        'mine_party_appt_type_code': 'BLA',
+        'start_date': setup_info['start_date'],
     }
     post_resp = test_client.post(
         '/parties/mines', data=test_data, headers=auth_headers['full_auth_header'])
@@ -140,6 +148,7 @@ def test_post_mine_party_appt_missing_mine_guid_and_permit_guid(test_client, db_
     test_data = {
         'party_guid': str(party_guid),
         'mine_party_appt_type_code': 'BLA',
+        'start_date': setup_info['start_date'],
     }
     post_resp = test_client.post(
         '/parties/mines', data=test_data, headers=auth_headers['full_auth_header'])
@@ -148,7 +157,11 @@ def test_post_mine_party_appt_missing_mine_guid_and_permit_guid(test_client, db_
 
 
 def test_post_mine_party_appt_missing_party_guid(test_client, db_session, auth_headers, setup_info):
-    test_data = {'mine_guid': setup_info['mine_guid'], 'mine_party_appt_type_code': 'BLA'}
+    test_data = {
+        'mine_guid': setup_info['mine_guid'], 
+        'mine_party_appt_type_code': 'BLA',
+        'start_date': setup_info['start_date'],
+        }
     post_resp = test_client.post(
         '/parties/mines', data=test_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
@@ -184,6 +197,7 @@ def test_post_mine_party_appt_EOR_as_ms_user_success(test_client, db_session, au
         'party_guid': setup_info['mine_manager_guid'],
         'mine_party_appt_type_code': 'EOR',
         'related_guid': setup_info['tsf_guid'],
+        'start_date': setup_info['start_date'],
     }
     post_resp = test_client.post(
         '/parties/mines', data=test_data, headers=auth_headers['proponent_only_auth_header'])
@@ -198,6 +212,7 @@ def test_post_mine_party_appt_TQP_as_ms_user_success(test_client, db_session, au
         'party_guid': setup_info['mine_manager_guid'],
         'mine_party_appt_type_code': 'TQP',
         'related_guid': setup_info['tsf_guid'],
+        'start_date': setup_info['start_date'],
     }
     post_resp = test_client.post(
         '/parties/mines', data=test_data, headers=auth_headers['proponent_only_auth_header'])
@@ -212,6 +227,7 @@ def test_post_mine_party_appt_EOR_as_ms_user_other_aptt_type_fail(test_client, d
         'party_guid': setup_info['mine_manager_guid'],
         'mine_party_appt_type_code': 'BLA',
         'related_guid': setup_info['tsf_guid'],
+        'start_date': setup_info['start_date'],
     }
     post_resp = test_client.post(
         '/parties/mines', data=test_data, headers=auth_headers['proponent_only_auth_header'])
@@ -225,6 +241,7 @@ def test_post_mine_party_appt_EOR_as_ms_user_not_associated_with_mine_fail(test_
         'party_guid': str(party_guid),
         'mine_party_appt_type_code': 'EOR',
         'related_guid': setup_info['unrelated_tsf_guid'],
+        'start_date': setup_info['start_date'],
     }
     post_resp = test_client.post(
         '/parties/mines', data=test_data, headers=auth_headers['proponent_only_auth_header'])
@@ -239,7 +256,19 @@ def test_post_mine_party_appt_TQP_as_ms_user_not_associated_with_mine_fail(test_
         'party_guid': str(party_guid),
         'mine_party_appt_type_code': 'TQP',
         'related_guid': setup_info['unrelated_tsf_guid'],
+        'start_date': setup_info['start_date'],
     }
     post_resp = test_client.post(
         '/parties/mines', data=test_data, headers=auth_headers['proponent_only_auth_header'])
     assert post_resp.status_code == 403
+
+def test_post_mine_party_appt_start_date_not_provided_fail(test_client, db_session, auth_headers, setup_info):
+    test_data = {
+        'mine_guid': setup_info['mine_guid'],
+        'party_guid': setup_info['mine_manager_guid'],
+        'mine_party_appt_type_code': 'BLA',
+        'related_guid': setup_info['tsf_guid'],
+    }
+    post_resp = test_client.post(
+        '/parties/mines', data=test_data, headers=auth_headers['proponent_only_auth_header'])
+    assert post_resp.status_code == 400

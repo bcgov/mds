@@ -35,8 +35,8 @@ def test_post_mine_manager_happy_before(test_client, db_session, auth_headers, s
         'mine_guid': setup_info['mine_guid'],
         'party_guid': setup_info['party_guid'],
         'mine_party_appt_type_code': "MMG",
-        'start_date': None,
-        'end_date': str(one_day_before)
+        'start_date': str(one_day_before),
+        'end_date': str(one_day_before),
     }
     post_resp = test_client.post(
         '/parties/mines', data=test_data, headers=auth_headers['full_auth_header'])
