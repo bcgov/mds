@@ -17,7 +17,6 @@ import {
 } from "@mds/common";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import modalConfig from "@/components/modalContent/config";
-import { openDocument } from "@mds/common/components/syncfusion/DocumentViewer";
 
 interface PermitsProps {
   mine: IMine;
@@ -25,7 +24,6 @@ interface PermitsProps {
   explosivesPermits: IExplosivesPermit[];
   fetchPermits: ActionCreator<typeof fetchPermits>;
   fetchExplosivesPermits: ActionCreator<typeof fetchExplosivesPermits>;
-  openDocument: (document_manager_guid: string, mine_document_guid: string) => void;
   openModal: (payload) => any;
 }
 export const Permits: FC<PermitsProps> = ({ mine, permits, explosivesPermits, ...props }) => {
@@ -187,7 +185,6 @@ const mapDispatchToProps = {
   fetchPermits,
   fetchExplosivesPermits,
   openModal,
-  openDocument,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Permits);
