@@ -220,7 +220,6 @@ const ExplosivesPermitDiffModal: FC<ExplosivesPermitDiffModalProps> = ({
       return {
         ...permit,
         differences: currentDiff[key].length > 0 ? currentDiff[key] : [{ fieldName: "None" }],
-        order_no: currentDiff,
       };
     })
     .reverse();
