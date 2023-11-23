@@ -34,7 +34,8 @@ def test_post_permittee_no_party(test_client, db_session, auth_headers):
         'mine_guid': str(mine.mine_guid),
         'related_guid': str(permit.permit_guid),
         'mine_party_appt_type_code': 'PMT',
-        'effective_date': datetime.today().strftime("%Y-%m-%d")
+        'effective_date': datetime.today().strftime("%Y-%m-%d"),
+        'start_date': str(datetime.today().date()),
     }
     post_resp = test_client.post(
         '/parties/mines', data=data, headers=auth_headers['full_auth_header'])
@@ -47,12 +48,12 @@ def test_post_permittee_no_party(test_client, db_session, auth_headers):
 def test_post_permittee_no_permit(test_client, db_session, auth_headers):
     mine, permit = create_mine_and_permit()
     party_guid = PartyFactory(company=True).party_guid
-
     data = {
         'mine_guid': str(mine.mine_guid),
         'party_guid': str(party_guid),
         'mine_party_appt_type_code': 'PMT',
-        'effective_date': datetime.today().strftime("%Y-%m-%d")
+        'effective_date': datetime.today().strftime("%Y-%m-%d"),
+        'start_date': str(datetime.today().date()),
     }
     post_resp = test_client.post(
         '/parties/mines', data=data, headers=auth_headers['full_auth_header'])
@@ -70,7 +71,8 @@ def test_post_permittee(test_client, db_session, auth_headers):
         'party_guid': str(party_guid),
         'mine_party_appt_type_code': 'PMT',
         'related_guid': str(permit.permit_guid),
-        'effective_date': datetime.today().strftime("%Y-%m-%d")
+        'effective_date': datetime.today().strftime("%Y-%m-%d"),
+        'start_date': str(datetime.today().date()),
     }
     post_resp = test_client.post(
         '/parties/mines', data=data, headers=auth_headers['full_auth_header'])
@@ -88,7 +90,8 @@ def test_post_permittee_permit_guid_not_found(test_client, db_session, auth_head
         'party_guid': str(party_guid),
         'mine_party_appt_type_code': 'PMT',
         'related_guid': str(uuid.uuid4()),
-        'effective_date': datetime.today().strftime("%Y-%m-%d")
+        'effective_date': datetime.today().strftime("%Y-%m-%d"),
+        'start_date': str(datetime.today().date()),
     }
     post_resp = test_client.post(
         '/parties/mines', data=data, headers=auth_headers['full_auth_header'])
@@ -105,7 +108,8 @@ def test_post_permittee_party_guid_not_found(test_client, db_session, auth_heade
         'party_guid': str(uuid.uuid4()),
         'mine_party_appt_type_code': 'PMT',
         'related_guid': str(permit.permit_guid),
-        'effective_date': datetime.today().strftime("%Y-%m-%d")
+        'effective_date': datetime.today().strftime("%Y-%m-%d"),
+        'start_date': str(datetime.today().date()),
     }
     post_resp = test_client.post(
         '/parties/mines', data=data, headers=auth_headers['full_auth_header'])
