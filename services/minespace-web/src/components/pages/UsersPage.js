@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Row, Col, Divider, Typography } from "antd";
 import PropTypes from "prop-types";
-import { getUserInfo } from "@/selectors/authenticationSelectors";
+import { getUserInfo } from "@mds/common/redux/selectors/authenticationSelectors";
 import Loading from "@/components/common/Loading";
 
 const propTypes = {

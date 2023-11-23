@@ -1,5 +1,4 @@
 import { combineReducers } from "redux";
-import authenticationReducer from "@/reducers/authenticationReducer";
 import userMineReducer from "@/reducers/userMineReducer";
 import networkReducer from "./networkReducer";
 import * as reducerTypes from "../constants/reducerTypes";
@@ -8,7 +7,6 @@ import { sharedReducer } from "@mds/common/redux/reducers/rootReducerShared";
 
 const minespaceReducer = {
   ...sharedReducer,
-  [reducerTypes.AUTHENTICATION]: authenticationReducer,
   [reducerTypes.USER_MINE_INFO]: userMineReducer,
   [reducerTypes.GET_USER_MINE_INFO]: createReducer(networkReducer, reducerTypes.GET_USER_MINE_INFO),
   [reducerTypes.AUTHENTICATE_USER]: createReducer(networkReducer, reducerTypes.AUTHENTICATE_USER),

@@ -1,7 +1,7 @@
 import { Button, Dropdown, Modal } from "antd";
 import { CaretDownOutlined } from "@ant-design/icons";
 import React, { FC } from "react";
-import { ITableAction } from "@/components/common/CoreTableCommonColumns";
+import { ITableAction } from "@mds/common/components/common/CoreTableCommonColumns";
 
 interface ActionMenuProps {
   record: any;

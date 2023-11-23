@@ -7,7 +7,7 @@ import * as COMMON_ENV from "@mds/common";
 // Uncomment when image is re-introduced
 // import { MAP_LOGO } from "@/constants/assets";
 import * as MINESPACE_ENV from "@/constants/environment";
-import { isAuthenticated } from "@/selectors/authenticationSelectors";
+import { isAuthenticated } from "@mds/common/redux/selectors/authenticationSelectors";
 import { AuthorizationWrapper } from "@/components/common/wrappers/AuthorizationWrapper";
 import LoginButton from "../common/LoginButton";
 

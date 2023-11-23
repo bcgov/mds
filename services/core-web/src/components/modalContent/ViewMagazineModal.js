@@ -1,8 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Button, Descriptions, Row, Col, Divider } from "antd";
-import ExplosivesPermitMap from "@/components/maps/ExplosivesPermitMap";
+
 import CustomPropTypes from "@/customPropTypes";
+import ExplosivesPermitMap from "@mds/common/components/explosivespermits/ExplosivesPermitMap";
 
 const propTypes = {
   closeModal: PropTypes.func.isRequired,

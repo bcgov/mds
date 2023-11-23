@@ -522,3 +522,44 @@ th.ant-descriptions-item.vertical-description {
 .ant-popover-message-title {
   max-width: 400px;
 }
+
+.ant-alert-grey {
+  background-color: $lightest-grey;
+  border: 1px solid $medium-grey;
+
+  span>svg {
+    fill: #6b6363;
+    background-color: #f4f0f0;
+  }
+
+  .ant-alert-content .ant-alert-description div {
+    position: relative;
+
+    button.ant-btn {
+      position: absolute;
+      right: 0;
+      top: -75%;
+
+      border-width: 2px;
+      background-color: transparent;
+
+      &:focus,
+      &:hover {
+        background-color: white;
+      ;
+      }
+    }
+  }
+}
+
+.magazine-collapse,
+.magazine-collapse > div {
+  background-color: #f2f2f2;
+  align-items: center !important;
+  border-bottom: none !important;
+}
+
+.ant-modal-footer {
+  padding-right: 24px;
+  padding-bottom: 24px;
+}

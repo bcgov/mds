@@ -34,7 +34,7 @@ import {
   removeFunctionColumn,
   uploadDateColumn,
 } from "@/components/common/DocumentColumns";
-import { renderTextColumn } from "@/components/common/CoreTableCommonColumns";
+import { renderTextColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,

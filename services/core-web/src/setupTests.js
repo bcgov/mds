@@ -4,13 +4,19 @@ import path from "path";
 
 require("jest-localstorage-mock");
 
-global.REQUEST_HEADER = require(path.resolve(__dirname, "../common/utils/RequestHeaders.js"));
-
 Enzyme.configure({ adapter: new Adapter() });
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+global.REQUEST_HEADER = require(path.resolve(__dirname, "../common/utils/RequestHeaders.js"));
 
 global.requestAnimationFrame = (callback) => {
   setTimeout(callback, 0);
 };
+
+jest.mock("react-lottie", () => ({
+  __esModule: true,
+  default: "lottie-mock",
+}));
 
 const location = JSON.stringify(window.location);
 delete window.location;

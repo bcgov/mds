@@ -24,7 +24,7 @@ import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocum
 import DocumentCompression from "@/components/common/DocumentCompression";
 import { Feature } from "@mds/common";
 import { MajorMineApplicationDocument } from "@mds/common/models/documents/document";
-import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
+import { renderCategoryColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 
 import { DownloadOutlined } from "@ant-design/icons";
 import { Button } from "antd";

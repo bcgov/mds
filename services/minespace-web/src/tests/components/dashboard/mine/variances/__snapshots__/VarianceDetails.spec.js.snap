@@ -39,6 +39,7 @@ exports[`VarianceDetails renders properly 1`] = `
           "title": "File Name",
         },
         Object {
+          "className": undefined,
           "dataIndex": "category",
           "key": "category",
           "render": [Function],

@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { NEW_VERSION_DOCUMENTS, PROJECT_SUMMARY_DOCUMENTS } from "@mds/common/constants/API";
 import FileUpload from "@/components/common/FileUpload";
 import { Alert, Divider, Modal, Popconfirm, Table, Typography } from "antd";
-import { getUserInfo } from "@/selectors/authenticationSelectors";
+import { getUserInfo } from "@mds/common/redux/selectors/authenticationSelectors";
 import { FilePondFile } from "filepond";
 import { IDocument } from "@mds/common";
 import { HttpRequest, HttpResponse } from "tus-js-client";

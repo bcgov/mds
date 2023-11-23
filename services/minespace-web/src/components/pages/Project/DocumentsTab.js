@@ -14,7 +14,7 @@ import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocum
 import { documentNameColumn, uploadDateColumn } from "@/components/common/DocumentColumns";
 import { Feature } from "@mds/common";
 import { MajorMineApplicationDocument } from "@mds/common/models/documents/document";
-import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
+import { renderCategoryColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import * as Strings from "@mds/common/constants/strings";
 import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
 

@@ -2,8 +2,12 @@ import { createStore } from "redux";
 import { authenticateUser } from "@mds/common/redux/actions/authenticationActions";
 import * as reducerTypes from "@mds/common/constants/reducerTypes";
 import { rootReducer, reducerObject } from "@/reducers/rootReducer";
+import * as ROUTES from "../../constants/routes";
 
 describe("Store", () => {
+  beforeEach(() => {
+    global.GLOBAL_ROUTES = ROUTES;
+  });
   it("should handle reducer creation", () => {
     const store = createStore(rootReducer, reducerObject);
 

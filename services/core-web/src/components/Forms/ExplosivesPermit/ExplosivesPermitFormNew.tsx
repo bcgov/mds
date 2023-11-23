@@ -40,13 +40,13 @@ import {
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
-import ExplosivesPermitMap from "@/components/maps/ExplosivesPermitMap";
 import DocumentCategoryForm from "@/components/Forms/DocumentCategoryForm";
 import MagazineFormNew from "@/components/Forms/ExplosivesPermit/MagazineFormNew";
 import {
   generatedDocColumns,
   supportingDocColumns,
-} from "@/components/modalContent/ExplosivesPermitViewModal";
+} from "@mds/common/components/explosivespermits/ExplosivesPermitViewModal";
+import ExplosivesPermitMap from "@mds/common/components/explosivespermits/ExplosivesPermitMap";
 
 export enum EsupFormMode {
   select_type_modal,
