@@ -188,10 +188,7 @@ def register_routes(app):
     root_api_namespace.add_namespace(notice_of_departure_api)
     root_api_namespace.add_namespace(activity_api)
     root_api_namespace.add_namespace(dams_api)
-    # THIS DOES NOT WORK AS EXPECTED, AND ONLY CHECKS FEATURE FLAG ON APP START
-    # POD RESTART IS REQUIRED FOR FEATURE FLAG CHANGE TO TAKE EFFECT
-    if is_feature_enabled(Feature.TRACTION_VERIFIABLE_CREDENTIALS):
-        root_api_namespace.add_namespace(verifiable_credential_api)
+    root_api_namespace.add_namespace(verifiable_credential_api)
 
     @root_api_namespace.route('/version/')
     class VersionCheck(Resource):

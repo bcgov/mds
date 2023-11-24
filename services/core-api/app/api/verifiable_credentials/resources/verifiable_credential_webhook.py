@@ -12,6 +12,8 @@ from app.api.services.traction_service import TractionService
 from app.api.verifiable_credentials.models.connection import PartyVerifiableCredentialConnection
 from app.api.verifiable_credentials.models.credentials import PartyVerifiableCredentialMinesActPermit
 
+from app.api.utils.feature_flag import Feature, is_feature_enabled
+
 PRESENT_PROOF = "present_proof"
 CONNECTIONS = "connections"
 CREDENTIAL_OFFER = "issue_credential"
@@ -21,14 +23,15 @@ PING = "ping"
 class VerifiableCredentialWebhookResource(Resource, UserMixin):
     @api.doc(description='Endpoint to recieve webhooks from Traction.', params={})
     def post(self, topic):
+        if not is_feature_enabled(Feature.TRACTION_VERIFIABLE_CREDENTIALS):
+            raise NotImplemented()
+        
         #custom auth for traction
         if request.headers.get("x-api-key") != Config.TRACTION_WEBHOOK_X_API_KEY:
              return Forbidden("bad x-api-key")
 
-        User._test_mode = True  #webhook handling has no row level auth
         webhook_body = request.get_json()
         current_app.logger.debug(f"TRACTION WEBHOOK <topic={topic}>: {webhook_body}")
-        current_app.logger.debug(f"TRACTION WEBHOOK request.__dict__ {request.__dict__}")
         if topic == CONNECTIONS:
             invitation_id = webhook_body['invitation_msg_id']
             vc_conn = PartyVerifiableCredentialConnection.query.unbound_unsafe().filter_by(invitation_id=invitation_id).first()
