@@ -38,7 +38,7 @@ class VerifiableCredentialWebhookResource(Resource, UserMixin):
             assert vc_conn, f"connection.invitation_msg_id={invitation_id} not found. webhook_body={webhook_body}"
             vc_conn.connection_id = webhook_body["connection_id"]
             new_state = webhook_body["state"]
-            if new_state != vc_conn.connection_state and vc_conn.connection != 'completed':
+            if new_state != vc_conn.connection_state and vc_conn.connection_state != 'completed':
                 # 'completed' is the final succesful state.
                 vc_conn.connection_state=new_state
                 vc_conn.save()
