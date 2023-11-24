@@ -6,8 +6,6 @@ import * as API from "./constants/API";
 import * as reducerTypes from "./constants/reducerTypes";
 import { ENVIRONMENT } from "@mds/common";
 import { createRequestHeader } from "./utils/RequestHeaders";
-// import { getUserInfo } from "@common/selectors/authenticationSelectors";
-// import { useSelector, useDispatch } from "react-redux";
 
 // https://stackoverflow.com/questions/39696007/axios-with-promise-prototype-finally-doesnt-work
 const promiseFinally = require("promise.prototype.finally");
@@ -21,6 +19,17 @@ const formatErrorMessage = (errorMessage) => {
   return errorMessage.replace("(psycopg2.", "(DatabaseError.");
 };
 
+const decodeJWT = (token) => {
+  var base64Url = token.split('.')[1];
+  var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(''));
+
+  return JSON.parse(jsonPayload);
+};
+
+
 const CustomAxios = ({ errorToastMessage, suppressErrorNotification = false } = {}) => {
 
   const instance = axios.create();
@@ -28,20 +37,20 @@ const CustomAxios = ({ errorToastMessage, suppressErrorNotification = false } = 
   const notifymAdmin = (error) => {
     const business_message = error?.response?.data?.message;
     const detailed_error = error?.response?.data?.detailed_error;
-
-    // const dispatch = useDispatch();
-    // const userInfo = useSelector(getUserInfo);
-    // const user_name = userInfo ? userInfo.preferred_username : 'Unknown User';
-    const user_name = "user-name"
-
     let date = new Date()
     const reported_date = `${date} ${date.getHours()}:${date.getMinutes()}`;
+    const user = decodeJWT(createRequestHeader().headers.Authorization)
+
     const email_title = "[MDS_ERROR] [TO_ADMIN] - " + reported_date + " - " + business_message;
-    const email_body = `<p>Business error: ${business_message}</P>
-      <p>Reported date: ${reported_date}</P>
-      <p>Reported by: ${user_name}</P>
-      <p>Detailed error: ${detailed_error}</P><br/>
-      <p>To create a Jira ticket,
+    const email_body = `<p><b>Business error:</b> ${business_message}</P>
+      <p>
+        <b>Reporters name:</b> ${user.given_name} ${user.family_name}</br>
+        <b>Reporters email:</b> ${user.email}</br>
+        <b>Reporters idir:</b> ${user.idir_username}<br/>
+        <b>Reported date:</b> ${reported_date}
+      </P>
+      <p><b>Detailed error:</b> ${detailed_error}</P><br/>
+      <p>To create a Jira ticket
       <a href="https://bcmines.atlassian.net/jira/software/c/projects/MDS/boards/34/backlog">
       Click here</a> </P><br/>`;
 
@@ -49,7 +58,7 @@ const CustomAxios = ({ errorToastMessage, suppressErrorNotification = false } = 
     const payload = {
       "title" : email_title,
       "body": email_body,
-      "recipients" : "isuru.gunawardana@aot-technologies.com"
+      "recipients" : "to@be.configured"
     };
 
     instance.post(ENVIRONMENT.apiUrl + API.COMMONS_EMAIL, payload, createRequestHeader())
@@ -81,7 +90,7 @@ const CustomAxios = ({ errorToastMessage, suppressErrorNotification = false } = 
         (errorToastMessage === "default" || errorToastMessage === undefined) &&
         !suppressErrorNotification
       ) {
-        console.log('Detailed Error: ', error?.response?.data?.detailed_error)
+        console.error('Detailed Error: ', error?.response?.data?.detailed_error)
         const notificationKey = 'errorNotification';
         notification.error({
           key: notificationKey,
