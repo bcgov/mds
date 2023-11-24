@@ -25,7 +25,6 @@ class VerifiableCredentialWebhookResource(Resource, UserMixin):
         if request.headers.get("x-api-key") != Config.TRACTION_WEBHOOK_X_API_KEY:
              return Forbidden("bad x-api-key")
 
-        User._test_mode = True  #webhook handling has no row level auth
         webhook_body = request.get_json()
         current_app.logger.debug(f"TRACTION WEBHOOK <topic={topic}>: {webhook_body}")
         current_app.logger.debug(f"TRACTION WEBHOOK request.__dict__ {request.__dict__}")
