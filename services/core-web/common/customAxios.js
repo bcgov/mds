@@ -31,7 +31,6 @@ const decodeJWT = (token) => {
 
 
 const CustomAxios = ({ errorToastMessage, suppressErrorNotification = false } = {}) => {
-
   const instance = axios.create();
 
   const notifymAdmin = (error) => {
@@ -42,12 +41,12 @@ const CustomAxios = ({ errorToastMessage, suppressErrorNotification = false } = 
     const user = decodeJWT(createRequestHeader().headers.Authorization)
 
     const email_title = "[MDS_ERROR] [TO_ADMIN] - " + reported_date + " - " + business_message;
-    const email_body = `<p><b>Business error:</b> ${business_message}</P>
+    const email_body = `<p><b>Business Error:</b> ${business_message}</P>
       <p>
-        <b>Reporters name:</b> ${user.given_name} ${user.family_name}</br>
-        <b>Reporters email:</b> ${user.email}</br>
-        <b>Reporters idir:</b> ${user.idir_username}<br/>
-        <b>Reported date:</b> ${reported_date}
+        <b>Reporter's Name:</b> ${user.given_name} ${user.family_name}</br>
+        <b>Reporter's Email:</b> ${user.email}</br>
+        <b>Reporter's IDIR:</b> ${user.idir_username}<br/>
+        <b>Reported Date:</b> ${reported_date}
       </P>
       <p><b>Detailed error:</b> ${detailed_error}</P><br/>
       <p>To create a Jira ticket
