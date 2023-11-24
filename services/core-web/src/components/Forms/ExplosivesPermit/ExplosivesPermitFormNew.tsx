@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { compose } from "redux";
 import {
   Field,
@@ -38,6 +38,7 @@ import {
   getPartyRelationships,
 } from "@mds/common/redux/selectors/partiesSelectors";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
+import { getIsFormLoading } from "@mds/common/redux/reducers/modalReducer";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import DocumentCategoryForm from "@/components/Forms/DocumentCategoryForm";
@@ -97,6 +98,8 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
   );
   const [currentFormMode, setCurrentFormMode] = useState<EsupFormMode>(formMode);
   const [isAmendSelected, setIsAmendSelected] = useState<boolean>(false);
+
+  const isDocumentUploading = useSelector(getIsFormLoading);
 
   useEffect(() => {
     if (documents) {
@@ -168,7 +171,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
   );
   const disabled = formMode === EsupFormMode.edit_document;
   const showBackButton = formMode === EsupFormMode.select_type_modal;
-  const isAmendment = formMode === EsupFormMode.amend;
+  const isAmendment = formMode === EsupFormMode.amend || initialValues.isAmendment;
 
   const cancelButtonText = showBackButton ? "Back" : "Close";
   const cancelButtonFunc = showBackButton
@@ -625,7 +628,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
           className="full-mobile"
           htmlType="submit"
           style={{ marginLeft: "auto" }}
-          loading={props.submitting}
+          loading={props.submitting || isDocumentUploading}
         >
           {showIssueModal ? "Finish And Generate Certificate" : "Submit"}
         </Button>
