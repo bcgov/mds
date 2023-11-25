@@ -4,18 +4,18 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
-import { openModal, closeModal } from "@common/actions/modalActions";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import {
   getMineRegionHash,
   getEMLIContactTypesHash,
-} from "@common/selectors/staticContentSelectors";
-import { getEMLIContacts } from "@common/selectors/minespaceSelector";
+} from "@mds/common/redux/selectors/staticContentSelectors";
+import { getEMLIContacts } from "@mds/common/redux/selectors/minespaceSelector";
 import {
   fetchEMLIContacts,
   updateEMLIContact,
   deleteEMLIContact,
   createEMLIContact,
-} from "@common/actionCreators/minespaceActionCreator";
+} from "@mds/common/redux/actionCreators/minespaceActionCreator";
 import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";

@@ -6,14 +6,14 @@ import { withRouter } from "react-router-dom";
 import { Row, Col, Typography, Button } from "antd";
 import { LockOutlined, FolderViewOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
-import { getProject } from "@common/selectors/projectSelectors";
-import { openModal, closeModal } from "@common/actions/modalActions";
+import { getProject } from "@mds/common/redux/selectors/projectSelectors";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import {
   fetchProjectById,
   createProjectDecisionPackage,
   updateProjectDecisionPackage,
   removeDocumentFromProjectDecisionPackage,
-} from "@common/actionCreators/projectActionCreator";
+} from "@mds/common/redux/actionCreators/projectActionCreator";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import * as routes from "@/constants/routes";
 import customPropTypes from "@/customPropTypes";
@@ -21,14 +21,14 @@ import ScrollSideMenu from "@/components/common/ScrollSideMenu";
 import DocumentTable from "@/components/common/DocumentTable";
 import UpdateDecisionPackageStatusForm from "@/components/Forms/majorMineApplication/UpdateDecisionPackageStatusForm";
 import { modalConfig } from "@/components/modalContent/config";
-import { getProjectDecisionPackageStatusCodesHash } from "@common/selectors/staticContentSelectors";
+import { getProjectDecisionPackageStatusCodesHash } from "@mds/common/redux/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
-import { fetchMineDocuments } from "@common/actionCreators/mineActionCreator";
-import { getMineDocuments } from "@common/selectors/mineSelectors";
+import { fetchMineDocuments } from "@mds/common/redux/actionCreators/mineActionCreator";
+import { getMineDocuments } from "@mds/common/redux/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 import { Feature } from "@mds/common";
-import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
-import * as Strings from "@common/constants/strings";
+import { renderCategoryColumn } from "@mds/common/components/common/CoreTableCommonColumns";
+import * as Strings from "@mds/common/constants/strings";
 import { MajorMineApplicationDocument } from "@mds/common/models/documents/document";
 import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
 

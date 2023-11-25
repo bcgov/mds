@@ -1,7 +1,7 @@
-import { getActivities } from "@common/selectors/activitySelectors";
-import { activityReducer } from "@common/reducers/activityReducer";
-import { storeActivities } from "@common/actions/activityActions";
-import { ACTIVITIES } from "@common/constants/reducerTypes";
+import { getActivities } from "@mds/common/redux/selectors/activitySelectors";
+import { activityReducer } from "@mds/common/redux/reducers/activityReducer";
+import { storeActivities } from "@mds/common/redux/actions/activityActions";
+import { ACTIVITIES } from "@mds/common/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
 
 const mockResponse = Mock.ACTIVITIES.data;

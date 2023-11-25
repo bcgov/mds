@@ -5,26 +5,26 @@ import { withRouter } from "react-router-dom";
 import { Row, Col, Typography, Descriptions, Input } from "antd";
 import "@ant-design/compatible/assets/index.css";
 import PropTypes from "prop-types";
-import { getMajorMinesApplicationStatusCodesHash } from "@common/selectors/staticContentSelectors";
+import { getMajorMinesApplicationStatusCodesHash } from "@mds/common/redux/selectors/staticContentSelectors";
 import {
   fetchProjectById,
   updateMajorMineApplication,
-} from "@common/actionCreators/projectActionCreator";
+} from "@mds/common/redux/actionCreators/projectActionCreator";
 import { formatDate } from "@common/utils/helpers";
-import * as Strings from "@common/constants/strings";
-import { getProject } from "@common/selectors/projectSelectors";
+import * as Strings from "@mds/common/constants/strings";
+import { getProject } from "@mds/common/redux/selectors/projectSelectors";
 import * as routes from "@/constants/routes";
 import UpdateMajorMineAppStatusForm from "@/components/Forms/majorMineApplication/UpdateMajorMineAppStatusForm";
 import CustomPropTypes from "@/customPropTypes";
 import DocumentTable from "@/components/common/DocumentTable";
 import ScrollSideMenu from "@/components/common/ScrollSideMenu";
-import { fetchMineDocuments } from "@common/actionCreators/mineActionCreator";
-import { getMineDocuments } from "@common/selectors/mineSelectors";
+import { fetchMineDocuments } from "@mds/common/redux/actionCreators/mineActionCreator";
+import { getMineDocuments } from "@mds/common/redux/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 import DocumentCompression from "@/components/common/DocumentCompression";
 import { Feature } from "@mds/common";
 import { MajorMineApplicationDocument } from "@mds/common/models/documents/document";
-import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
+import { renderCategoryColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 
 import { DownloadOutlined } from "@ant-design/icons";
 import { Button } from "antd";

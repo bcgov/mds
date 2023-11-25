@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
-import { CaretDownOutlined } from "@ant-design/icons";
+import CaretDownOutlined from "@ant-design/icons/CaretDownOutlined";
 import { Menu, Dropdown, Button, Divider } from "antd";
 import MediaQuery from "react-responsive";
 import PropTypes from "prop-types";
@@ -9,7 +9,7 @@ import * as COMMON_ENV from "@mds/common";
 import * as route from "@/constants/routes";
 import * as MINESPACE_ENV from "@/constants/environment";
 import { signOutFromSSO } from "@/utils/authenticationHelpers";
-import { isAuthenticated, getUserInfo } from "@/selectors/authenticationSelectors";
+import { isAuthenticated, getUserInfo } from "@mds/common/redux/selectors/authenticationSelectors";
 import { MENU } from "@/constants/assets";
 import AuthorizationWrapper from "../common/wrappers/AuthorizationWrapper";
 import LoginButton from "../common/LoginButton";

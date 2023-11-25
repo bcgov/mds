@@ -2,24 +2,24 @@ import { Col, Divider, Popconfirm, Row, Typography } from "antd";
 import { Link, useHistory, useParams, withRouter } from "react-router-dom";
 import React, { FC, useEffect } from "react";
 import { bindActionCreators, compose } from "redux";
-import { createDam, updateDam } from "@common/actionCreators/damActionCreator";
+import { createDam, updateDam } from "@mds/common/redux/actionCreators/damActionCreator";
 import { getFormSyncErrors, getFormValues, InjectedFormProps, reduxForm, submit } from "redux-form";
 
-import { ArrowLeftOutlined } from "@ant-design/icons";
+import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import Step from "@common/components/Step";
 import SteppedForm from "@common/components/SteppedForm";
 import { connect } from "react-redux";
-import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
-import { getDam } from "@common/selectors/damSelectors";
-import { getTsf } from "@common/selectors/tailingsSelectors";
+import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
+import { getDam } from "@mds/common/redux/selectors/damSelectors";
+import { getTsf } from "@mds/common/redux/selectors/tailingsSelectors";
 import { resetForm } from "@common/utils/helpers";
-import { storeDam } from "@common/actions/damActions";
-import { storeTsf } from "@common/actions/tailingsActions";
+import { storeDam } from "@mds/common/redux/actions/damActions";
+import { storeTsf } from "@mds/common/redux/actions/tailingsActions";
 import { EDIT_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
 import DamForm from "./DamForm";
 import { ADD_EDIT_DAM } from "@/constants/forms";
 import { IDam, ITailingsStorageFacility } from "@mds/common";
-import { ActionCreator } from "@/interfaces/actionCreator";
+import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { RootState } from "@/App";
 import { Feature } from "@mds/common";
 import FeatureFlagGuard from "@/components/common/featureFlag.guard";
@@ -102,9 +102,8 @@ const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
         </Col>
         <Col span={24}>
           <Popconfirm
-            title={`Are you sure you want to cancel ${
-              tailingsStorageFacilityGuid ? "updating this" : "creating a new"
-            } dam?
+            title={`Are you sure you want to cancel ${tailingsStorageFacilityGuid ? "updating this" : "creating a new"
+              } dam?
             All unsaved data on this page will be lost.`}
             onConfirm={handleBack}
             cancelText="No"
@@ -122,13 +121,12 @@ const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
       <SteppedForm
         errors={[]}
         handleSaveData={handleSave}
-        handleTabChange={() => {}}
+        handleTabChange={() => { }}
         activeTab="basic-dam-information"
         submitText="Save and Return to Associated Dams"
         handleCancel={handleBack}
-        cancelConfirmMessage={`Are you sure you want to cancel ${
-          tailingsStorageFacilityGuid ? "updating this" : "creating a new"
-        } dam?
+        cancelConfirmMessage={`Are you sure you want to cancel ${tailingsStorageFacilityGuid ? "updating this" : "creating a new"
+          } dam?
         All unsaved data on this page will be lost.`}
       >
         {[

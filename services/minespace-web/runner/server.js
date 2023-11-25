@@ -1,6 +1,7 @@
 const express = require("express");
 const cacheControl = require("express-cache-controller");
-const dotenv = require("dotenv").config({ path: `${__dirname}/.env` });
+const dotenv = require("dotenv").config('./env');
+var expressStaticGzip = require("express-static-gzip");
 
 let { BASE_PATH } = process.env;
 let BUILD_DIR = process.env.BUILD_DIR || "../build";
@@ -24,9 +25,15 @@ app.use(
   })
 );
 
-const staticServe = express.static(`${__dirname}/${BUILD_DIR}`, {
-  immutable: true,
+
+const staticServe = expressStaticGzip(`${__dirname}/${BUILD_DIR}`, {
+  enableBrotli: true,
   maxAge: "1y",
+  customCompressions: [{
+    encodingName: 'deflate',
+    fileExtension: 'zz'
+  }],
+  orderPreference: ['br', 'gzip']
 });
 
 app.get(`${BASE_PATH}/env`, (req, res) => {
@@ -67,4 +74,6 @@ app.use(`${BASE_PATH}*`, staticServe);
 app.use(`/`, staticServe);
 app.use(`*`, staticServe);
 
-app.listen(PORT, "0.0.0.0", () => console.log("Server running"));
+const server = app.listen(PORT, "0.0.0.0", () => console.log("Server running"));
+server.keepAliveTimeout = 15 * 1000;
+server.headersTimeout = 20 * 1000;

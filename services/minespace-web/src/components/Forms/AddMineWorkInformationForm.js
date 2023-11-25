@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { Field, reduxForm, getFormValues } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { InfoCircleOutlined } from "@ant-design/icons";
+import InfoCircleOutlined from "@ant-design/icons/InfoCircleOutlined";
 import { Row, Col, Popconfirm, Button, Descriptions, Typography, Badge, Tooltip } from "antd";
 import { dateNotBeforeOther, dateNotAfterOther, date } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";

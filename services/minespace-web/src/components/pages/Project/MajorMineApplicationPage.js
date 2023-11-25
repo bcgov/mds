@@ -13,17 +13,17 @@ import {
   touch,
 } from "redux-form";
 import { Button, Row, Col, Popconfirm, Steps, Typography } from "antd";
-import { ArrowLeftOutlined } from "@ant-design/icons";
+import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import PropTypes from "prop-types";
 import { flattenObject } from "@common/utils/helpers";
-import { getProject } from "@common/reducers/projectReducer";
+import { getProject } from "@mds/common/redux/reducers/projectReducer";
 import {
   fetchProjectById,
   createMajorMineApplication,
   updateMajorMineApplication,
-} from "@common/actionCreators/projectActionCreator";
-import { clearMajorMinesApplication } from "@common/actions/projectActions";
-import { getMajorMinesApplicationDocumentTypesHash } from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/actionCreators/projectActionCreator";
+import { clearMajorMinesApplication } from "@mds/common/redux/actions/projectActions";
+import { getMajorMinesApplicationDocumentTypesHash } from "@mds/common/redux/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
 import LinkButton from "@/components/common/LinkButton";
 import customPropTypes from "@/customPropTypes";
@@ -32,7 +32,7 @@ import { MajorMineApplicationGetStarted } from "@/components/Forms/projects/majo
 import MajorMineApplicationReviewSubmit from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationReviewSubmit";
 import MajorMineApplicationCallout from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationCallout";
 import * as routes from "@/constants/routes";
-import { fetchMineDocuments } from "@common/actionCreators/mineActionCreator";
+import { fetchMineDocuments } from "@mds/common/redux/actionCreators/mineActionCreator";
 
 const propTypes = {
   project: customPropTypes.project.isRequired,
@@ -80,194 +80,194 @@ const StepForms = (
   setConfirmedSubmission,
   handleFetchData
 ) => [
-  {
-    title: "Get Started",
-    content: <MajorMineApplicationGetStarted />,
-    buttons: [
-      <React.Fragment key="step-1-buttons">
-        <Link to={routes.EDIT_PROJECT.dynamicRoute(props.project?.project_guid)}>
-          <Button
-            id="step1-cancel"
-            type="secondary"
-            style={{ marginRight: "15px" }}
-            onClick={() => {}}
-          >
-            Cancel
+    {
+      title: "Get Started",
+      content: <MajorMineApplicationGetStarted />,
+      buttons: [
+        <React.Fragment key="step-1-buttons">
+          <Link to={routes.EDIT_PROJECT.dynamicRoute(props.project?.project_guid)}>
+            <Button
+              id="step1-cancel"
+              type="secondary"
+              style={{ marginRight: "15px" }}
+              onClick={() => { }}
+            >
+              Cancel
+            </Button>
+          </Link>
+          <Button id="step1-next" type="primary" onClick={() => next()}>
+            Next
           </Button>
-        </Link>
-        <Button id="step1-next" type="primary" onClick={() => next()}>
-          Next
-        </Button>
-      </React.Fragment>,
-    ],
-  },
-  {
-    title: "Create Submission",
-    content: (
-      <MajorMineApplicationForm
-        refreshData={() => handleFetchData()}
-        initialValues={{
-          mine_name: mineName,
-          primary_contact: primaryContact,
-          primary_documents: props.project.major_mine_application?.documents?.filter(
-            (d) => d.major_mine_application_document_type_code === "PRM"
-          ),
-          spatial_documents: props.project.major_mine_application?.documents?.filter(
-            (d) => d.major_mine_application_document_type_code === "SPT"
-          ),
-          supporting_documents: props.project.major_mine_application?.documents?.filter(
-            (d) => d.major_mine_application_document_type_code === "SPR"
-          ),
-          ...props.project.major_mine_application,
-        }}
-        project={props.project}
-        majorMinesApplicationDocumentTypesHash={props.majorMinesApplicationDocumentTypesHash}
-        onSubmit={handleSaveData}
-      />
-    ),
-    buttons: [
-      <React.Fragment key="step-2-buttons">
-        {props.formIsDirty && (
-          <LinkButton
-            style={{ marginRight: "15px" }}
+        </React.Fragment>,
+      ],
+    },
+    {
+      title: "Create Submission",
+      content: (
+        <MajorMineApplicationForm
+          refreshData={() => handleFetchData()}
+          initialValues={{
+            mine_name: mineName,
+            primary_contact: primaryContact,
+            primary_documents: props.project.major_mine_application?.documents?.filter(
+              (d) => d.major_mine_application_document_type_code === "PRM"
+            ),
+            spatial_documents: props.project.major_mine_application?.documents?.filter(
+              (d) => d.major_mine_application_document_type_code === "SPT"
+            ),
+            supporting_documents: props.project.major_mine_application?.documents?.filter(
+              (d) => d.major_mine_application_document_type_code === "SPR"
+            ),
+            ...props.project.major_mine_application,
+          }}
+          project={props.project}
+          majorMinesApplicationDocumentTypesHash={props.majorMinesApplicationDocumentTypesHash}
+          onSubmit={handleSaveData}
+        />
+      ),
+      buttons: [
+        <React.Fragment key="step-2-buttons">
+          {props.formIsDirty && (
+            <LinkButton
+              style={{ marginRight: "15px" }}
+              onClick={async (e) => {
+                const response = await handleSaveData(
+                  e,
+                  {
+                    ...props.formValues,
+                    documents: [
+                      ...(props.formValues?.primary_documents || []),
+                      ...(props.formValues?.spatial_documents || []),
+                      ...(props.formValues?.supporting_documents || []),
+                    ],
+                    status_code: "DFT",
+                  },
+                  true
+                );
+                if (response) {
+                  const majorMineApplicationGuid =
+                    props.project.major_mine_application?.major_mine_application_guid ||
+                    response?.major_mine_application_guid;
+                  return props.history.push({
+                    pathname: `${routes.EDIT_MAJOR_MINE_APPLICATION.dynamicRoute(
+                      props.project?.project_guid,
+                      majorMineApplicationGuid
+                    )}`,
+                    state: { current: 1 },
+                  });
+                }
+                return null;
+              }}
+              title="Save Draft"
+            >
+              Save Draft
+            </LinkButton>
+          )}
+          <Button
+            id="step-back"
+            type="tertiary"
+            className="full-mobile"
+            style={{ marginRight: "20px" }}
+            onClick={() => prev()}
+          >
+            Back
+          </Button>
+          <Button
+            id="step2-next"
+            type="primary"
             onClick={async (e) => {
-              const response = await handleSaveData(
-                e,
-                {
-                  ...props.formValues,
-                  documents: [
-                    ...(props.formValues?.primary_documents || []),
-                    ...(props.formValues?.spatial_documents || []),
-                    ...(props.formValues?.supporting_documents || []),
-                  ],
-                  status_code: "DFT",
-                },
-                true
-              );
-              if (response) {
-                const majorMineApplicationGuid =
-                  props.project.major_mine_application?.major_mine_application_guid ||
-                  response?.major_mine_application_guid;
+              const response = await handleSaveData(e, {
+                ...props.formValues,
+                documents: [
+                  ...(props.formValues?.primary_documents || []),
+                  ...(props.formValues?.spatial_documents || []),
+                  ...(props.formValues?.supporting_documents || []),
+                ],
+                status_code: props.formValues?.status_code ?? "DFT",
+              });
+
+              const majorMineApplicationGuid =
+                props.project.major_mine_application?.major_mine_application_guid ??
+                response?.major_mine_application_guid;
+              if (majorMineApplicationGuid) {
                 return props.history.push({
-                  pathname: `${routes.EDIT_MAJOR_MINE_APPLICATION.dynamicRoute(
+                  pathname: routes.REVIEW_MAJOR_MINE_APPLICATION.dynamicRoute(
                     props.project?.project_guid,
                     majorMineApplicationGuid
-                  )}`,
-                  state: { current: 1 },
+                  ),
+                  state: { current: 2 },
                 });
               }
               return null;
             }}
-            title="Save Draft"
+            disabled={!props.formValues?.primary_documents?.length > 0}
           >
-            Save Draft
-          </LinkButton>
-        )}
-        <Button
-          id="step-back"
-          type="tertiary"
-          className="full-mobile"
-          style={{ marginRight: "20px" }}
-          onClick={() => prev()}
-        >
-          Back
-        </Button>
-        <Button
-          id="step2-next"
-          type="primary"
-          onClick={async (e) => {
-            const response = await handleSaveData(e, {
-              ...props.formValues,
-              documents: [
-                ...(props.formValues?.primary_documents || []),
-                ...(props.formValues?.spatial_documents || []),
-                ...(props.formValues?.supporting_documents || []),
-              ],
-              status_code: props.formValues?.status_code ?? "DFT",
-            });
-
-            const majorMineApplicationGuid =
-              props.project.major_mine_application?.major_mine_application_guid ??
-              response?.major_mine_application_guid;
-            if (majorMineApplicationGuid) {
-              return props.history.push({
-                pathname: routes.REVIEW_MAJOR_MINE_APPLICATION.dynamicRoute(
-                  props.project?.project_guid,
-                  majorMineApplicationGuid
-                ),
-                state: { current: 2 },
-              });
-            }
-            return null;
-          }}
-          disabled={!props.formValues?.primary_documents?.length > 0}
-        >
-          Review & Submit
-        </Button>
-      </React.Fragment>,
-    ],
-  },
-  {
-    title: "Review & Submit",
-    content: (
-      <MajorMineApplicationReviewSubmit
-        setConfirmedSubmission={setConfirmedSubmission}
-        confirmedSubmission={state.confirmedSubmission}
-        project={props.project}
-        refreshData={() => handleFetchData()}
-      />
-    ),
-    buttons: [
-      <React.Fragment key="step-3-buttons">
-        <Button
-          id="step-back2"
-          type="tertiary"
-          className="full-mobile"
-          style={{ marginRight: "24px" }}
-          onClick={() => {
-            props.history.push({
-              pathname: `${routes.EDIT_MAJOR_MINE_APPLICATION.dynamicRoute(
-                props.project.project_guid,
-                props.project.major_mine_application?.major_mine_application_guid ??
-                  props.formValues.major_mine_application_guid
-              )}`,
-              state: { current: 1 },
-            });
-          }}
-        >
-          Back
-        </Button>
-        <Popconfirm
-          placement="topRight"
-          title="Are you sure you want to submit your final major mine application? No changes can be made after submitting."
-          onConfirm={async (e) => {
-            await handleSaveData(
-              e,
-              {
-                ...props.project.major_mine_application,
-                status_code: "SUB",
-              },
-              false
-            );
-            return props.history.push({
-              pathname: `${routes.MAJOR_MINE_APPLICATION_SUCCESS.dynamicRoute(
-                props.project.major_mine_application?.project_guid,
-                props.project.major_mine_application?.major_mine_application_guid
-              )}`,
-              state: { project: props.project },
-            });
-          }}
-          okText="Yes"
-          cancelText="No"
-        >
-          <Button id="submit_irt" type="primary" disabled={!state.confirmedSubmission}>
-            Submit Now
+            Review & Submit
           </Button>
-        </Popconfirm>
-      </React.Fragment>,
-    ],
-  },
-];
+        </React.Fragment>,
+      ],
+    },
+    {
+      title: "Review & Submit",
+      content: (
+        <MajorMineApplicationReviewSubmit
+          setConfirmedSubmission={setConfirmedSubmission}
+          confirmedSubmission={state.confirmedSubmission}
+          project={props.project}
+          refreshData={() => handleFetchData()}
+        />
+      ),
+      buttons: [
+        <React.Fragment key="step-3-buttons">
+          <Button
+            id="step-back2"
+            type="tertiary"
+            className="full-mobile"
+            style={{ marginRight: "24px" }}
+            onClick={() => {
+              props.history.push({
+                pathname: `${routes.EDIT_MAJOR_MINE_APPLICATION.dynamicRoute(
+                  props.project.project_guid,
+                  props.project.major_mine_application?.major_mine_application_guid ??
+                  props.formValues.major_mine_application_guid
+                )}`,
+                state: { current: 1 },
+              });
+            }}
+          >
+            Back
+          </Button>
+          <Popconfirm
+            placement="topRight"
+            title="Are you sure you want to submit your final major mine application? No changes can be made after submitting."
+            onConfirm={async (e) => {
+              await handleSaveData(
+                e,
+                {
+                  ...props.project.major_mine_application,
+                  status_code: "SUB",
+                },
+                false
+              );
+              return props.history.push({
+                pathname: `${routes.MAJOR_MINE_APPLICATION_SUCCESS.dynamicRoute(
+                  props.project.major_mine_application?.project_guid,
+                  props.project.major_mine_application?.major_mine_application_guid
+                )}`,
+                state: { project: props.project },
+              });
+            }}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button id="submit_irt" type="primary" disabled={!state.confirmedSubmission}>
+              Submit Now
+            </Button>
+          </Popconfirm>
+        </React.Fragment>,
+      ],
+    },
+  ];
 
 export class MajorMineApplicationPage extends Component {
   state = {

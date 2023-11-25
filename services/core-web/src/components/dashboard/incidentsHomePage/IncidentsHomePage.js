@@ -4,7 +4,7 @@ import { bindActionCreators } from "redux";
 import { destroy } from "redux-form";
 import queryString from "query-string";
 import PropTypes from "prop-types";
-import { openModal, closeModal } from "@common/actions/modalActions";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import {
   getMineRegionHash,
   getMineTenureTypesHash,
@@ -17,15 +17,15 @@ import {
   getDropdownIncidentDeterminationOptions,
   getDropdownIncidentStatusCodeOptions,
   getDropdownIncidentCategoryCodeOptions,
-} from "@common/selectors/staticContentSelectors";
-import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
-import { getIncidents, getIncidentPageData } from "@common/selectors/incidentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
+import { getDropdownInspectors } from "@mds/common/redux/selectors/partiesSelectors";
+import { getIncidents, getIncidentPageData } from "@mds/common/redux/selectors/incidentSelectors";
 import {
   fetchIncidents,
   updateMineIncident,
   deleteMineIncident,
-} from "@common/actionCreators/incidentActionCreator";
-import * as Strings from "@common/constants/strings";
+} from "@mds/common/redux/actionCreators/incidentActionCreator";
+import * as Strings from "@mds/common/constants/strings";
 import { PageTracker } from "@common/utils/trackers";
 import CustomPropTypes from "@/customPropTypes";
 import { IncidentsTable } from "./IncidentsTable";

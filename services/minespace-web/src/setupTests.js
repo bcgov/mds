@@ -1,9 +1,15 @@
 import Enzyme from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
+import path from "path";
 
 require("jest-localstorage-mock");
 
 Enzyme.configure({ adapter: new Adapter() });
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+global.REQUEST_HEADER = require(path.resolve(__dirname, "../common/utils/RequestHeaders.js"));
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+global.GLOBAL_ROUTES = require(path.resolve(__dirname, "./constants/routes.js"));
 
 global.requestAnimationFrame = (callback) => {
   setTimeout(callback, 0);

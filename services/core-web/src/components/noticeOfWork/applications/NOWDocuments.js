@@ -8,20 +8,20 @@ import moment from "moment";
 import { FlagOutlined, MenuOutlined } from "@ant-design/icons";
 import CustomPropTypes from "@/customPropTypes";
 import { formatDateTime } from "@common/utils/helpers";
-import { openModal, closeModal } from "@common/actions/modalActions";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import {
   getNoticeOfWorkApplicationDocumentTypeOptionsHash,
   getDropdownNoticeOfWorkApplicationDocumentTypeOptions,
-} from "@common/selectors/staticContentSelectors";
-import { getNoticeOfWork, getApplicationDelay } from "@common/selectors/noticeOfWorkSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
+import { getNoticeOfWork, getApplicationDelay } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import {
   fetchImportedNoticeOfWorkApplication,
   updateNoticeOfWorkApplication,
   deleteNoticeOfWorkApplicationDocument,
   editNoticeOfWorkDocument,
   sortNoticeOfWorkDocuments,
-} from "@common/actionCreators/noticeOfWorkActionCreator";
-import * as Strings from "@common/constants/strings";
+} from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
+import * as Strings from "@mds/common/constants/strings";
 import DocumentLink from "@/components/common/DocumentLink";
 import AddButton from "@/components/common/buttons/AddButton";
 import { modalConfig } from "@/components/modalContent/config";

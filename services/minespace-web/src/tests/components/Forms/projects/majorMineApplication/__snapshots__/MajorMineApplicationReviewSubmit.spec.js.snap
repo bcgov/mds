@@ -140,6 +140,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
         additionalColumns={
           Array [
             Object {
+              "className": undefined,
               "dataIndex": "category_code",
               "key": "category_code",
               "render": [Function],

@@ -8,10 +8,10 @@ import { ArrowLeftOutlined } from "@ant-design/icons";
 // and you need to use Refs to interact with it for a number of features. Brought in react-responsive-carousel instead.
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { createParty, setAddPartyFormState } from "@common/actionCreators/partiesActionCreator";
-import { getAddPartyFormState } from "@common/selectors/partiesSelectors";
+import { createParty, setAddPartyFormState } from "@mds/common/redux/actionCreators/partiesActionCreator";
+import { getAddPartyFormState } from "@mds/common/redux/selectors/partiesSelectors";
 import AddQuickPartyForm from "@/components/Forms/parties/AddQuickPartyForm";
-import { getDropdownProvinceOptions } from "@common/selectors/staticContentSelectors";
+import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import LinkButton from "../buttons/LinkButton";
 

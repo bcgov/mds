@@ -3,7 +3,7 @@ import { Badge, Button } from "antd";
 import { Link, withRouter } from "react-router-dom";
 import { EyeOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 import { getApplicationStatusType } from "@/constants/theme";
@@ -11,7 +11,10 @@ import DocumentLink from "@/components/common/DocumentLink";
 import { isEmpty } from "lodash";
 import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
 import CoreTable from "@/components/common/CoreTable";
-import { renderDateColumn, renderTextColumn } from "@/components/common/CoreTableCommonColumns";
+import {
+  renderDateColumn,
+  renderTextColumn,
+} from "@mds/common/components/common/CoreTableCommonColumns";
 
 /**
  * @class MineNoticeOfWorkTable - list of mine notice of work applications

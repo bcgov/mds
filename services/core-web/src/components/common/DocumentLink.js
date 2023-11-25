@@ -6,7 +6,7 @@ import { Dropdown, Menu } from "antd";
 import { DownOutlined, DownloadOutlined, FileOutlined, DeleteOutlined } from "@ant-design/icons";
 import LinkButton from "@/components/common/buttons/LinkButton";
 import { truncateFilename } from "@common/utils/helpers";
-import { getUserAccessData } from "@common/selectors/authenticationSelectors";
+import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import { openDocument, isDocumentOpenable } from "@/components/syncfusion/DocumentViewer";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { USER_ROLES } from "@mds/common";

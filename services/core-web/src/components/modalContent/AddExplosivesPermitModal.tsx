@@ -16,6 +16,7 @@ interface ExplosivesPermitModalProps {
   closeModal: () => void;
   isProcessed: boolean;
   isAmendment: boolean;
+  dispatch: any;
 }
 
 export const AddExplosivesPermitModal: FC<ExplosivesPermitModalProps> = (props) => (

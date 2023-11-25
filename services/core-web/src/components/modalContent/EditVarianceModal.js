@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { getVariance } from "@common/selectors/varianceSelectors";
-import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
+import { getVariance } from "@mds/common/redux/selectors/varianceSelectors";
+import { getDropdownInspectors } from "@mds/common/redux/selectors/partiesSelectors";
 import {
   getDropdownHSRCMComplianceCodes,
   getHSRCMComplianceCodesHash,
@@ -11,12 +11,12 @@ import {
   getVarianceStatusOptionsHash,
   getDropdownVarianceDocumentCategoryOptions,
   getVarianceDocumentCategoryOptionsHash,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import {
   fetchVarianceById,
   removeDocumentFromVariance,
   fetchVariancesByMine,
-} from "@common/actionCreators/varianceActionCreator";
+} from "@mds/common/redux/actionCreators/varianceActionCreator";
 import EditVarianceForm from "@/components/Forms/variances/EditVarianceForm";
 import CustomPropTypes from "@/customPropTypes";
 import LoadingWrapper from "../common/wrappers/LoadingWrapper";

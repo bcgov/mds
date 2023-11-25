@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Button, Col, Row, Typography } from "antd";
-import { DownloadOutlined } from "@ant-design/icons";
+import DownloadOutlined from "@ant-design/icons/DownloadOutlined";
 import { ENVIRONMENT } from "@mds/common";
-import * as API from "@common/constants/API";
+import * as API from "@mds/common/constants/API";
 import LinkButton from "@/components/common/LinkButton";
 
 export class IRTDownloadTemplate extends Component {

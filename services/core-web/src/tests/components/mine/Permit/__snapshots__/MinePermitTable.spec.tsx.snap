@@ -36,6 +36,12 @@ exports[`MinePermitTable renders properly 1`] = `
         "title": "Last Amended",
       },
       Object {
+        "dataIndex": "lastAmendedVC",
+        "key": "lastAmendedVC",
+        "render": [Function],
+        "title": "VC Issuance State",
+      },
+      Object {
         "align": "right",
         "dataIndex": "addEditButton",
         "key": "addEditButton",

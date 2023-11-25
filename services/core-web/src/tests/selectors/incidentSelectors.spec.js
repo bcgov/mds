@@ -2,14 +2,14 @@ import {
   getMineIncidents,
   getIncidents,
   getMineIncidentNotes,
-} from "@common/selectors/incidentSelectors";
+} from "@mds/common/redux/selectors/incidentSelectors";
 import {
   storeMineIncidents,
   storeIncidents,
   storeMineIncidentNotes,
-} from "@common/actions/incidentActions";
-import { incidentReducer } from "@common/reducers/incidentReducer";
-import { INCIDENTS } from "@common/constants/reducerTypes";
+} from "@mds/common/redux/actions/incidentActions";
+import { incidentReducer } from "@mds/common/redux/reducers/incidentReducer";
+import { INCIDENTS } from "@mds/common/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
 
 const mockState = {

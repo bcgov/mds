@@ -1,15 +1,15 @@
 import { Alert, Button, Col, Empty, Popconfirm, Row, Typography } from "antd";
 import { change, ChangeAction, Field, getFormValues } from "redux-form";
 import React, { FC, useContext, useEffect, useState } from "react";
-import { closeModal, openModal } from "@common/actions/modalActions";
+import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import { IDocument, IMine, IMinePartyAppt, IParty, PARTY_APPOINTMENT_STATUS } from "@mds/common";
 
-import { MINE_PARTY_APPOINTMENT_DOCUMENTS } from "@common/constants/API";
-import { PlusCircleFilled } from "@ant-design/icons";
+import { MINE_PARTY_APPOINTMENT_DOCUMENTS } from "@mds/common/constants/API";
+import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import { bindActionCreators } from "redux";
 import { connect, useSelector } from "react-redux";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import { getPartyRelationships } from "@common/selectors/partiesSelectors";
+import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
 import {
   dateInFuture,
   dateNotInFuture,
@@ -17,12 +17,12 @@ import {
   validateDateRanges,
 } from "@common/utils/Validate";
 import { formatDateTime, truncateFilename } from "@common/utils/helpers";
-import { PDF } from "@common/constants/fileTypes";
+import { PDF } from "@mds/common/constants/fileTypes";
 
 import moment from "moment";
 import { isNumber } from "lodash";
 import TailingsContext from "@common/components/tailings/TailingsContext";
-import { getMines } from "@common/selectors/mineSelectors";
+import { getMines } from "@mds/common/redux/selectors/mineSelectors";
 import PartyAppointmentTable from "../PartyAppointmentTable";
 import { ColumnsType } from "antd/lib/table";
 import CoreTable from "@/components/common/CoreTable";

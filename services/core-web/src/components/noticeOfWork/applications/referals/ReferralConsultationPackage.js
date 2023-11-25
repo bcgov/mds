@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Button, notification } from "antd";
 
-import { openModal, closeModal } from "@common/actions/modalActions";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import { getDocumentDownloadToken } from "@common/utils/actionlessNetworkCalls";
 import {
   createNoticeOfWorkApplicationReview,
@@ -15,9 +15,9 @@ import {
   setNoticeOfWorkApplicationDocumentDownloadState,
   updateNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
-} from "@common/actionCreators/noticeOfWorkActionCreator";
-import { getNoticeOfWorkReviews, getNoticeOfWork } from "@common/selectors/noticeOfWorkSelectors";
-import { getDropdownNoticeOfWorkApplicationReviewTypeOptions } from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
+import { getNoticeOfWorkReviews, getNoticeOfWork } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
+import { getDropdownNoticeOfWorkApplicationReviewTypeOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";

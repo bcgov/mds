@@ -1,10 +1,10 @@
 import { Alert, Button, Col, Empty, Popconfirm, Row, Typography } from "antd";
 import { change, ChangeAction, Field, getFormValues } from "redux-form";
 import React, { FC, useContext, useEffect, useState } from "react";
-import { closeModal, openModal } from "@common/actions/modalActions";
-import { getPartyRelationships } from "@common/selectors/partiesSelectors";
+import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
+import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
 
-import { PlusCircleFilled } from "@ant-design/icons";
+import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import { bindActionCreators } from "redux";
 import { connect, useSelector } from "react-redux";
 import {

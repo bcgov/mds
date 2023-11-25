@@ -4,10 +4,10 @@ import PropTypes from "prop-types";
 import Highlight from "react-highlighter";
 import { Link } from "react-router-dom";
 import { Validate } from "@common/utils/Validate";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import * as router from "@/constants/routes";
 import CoreTable from "@/components/common/CoreTable";
-import { renderHighlightedTextColumn } from "../common/CoreTableCommonColumns";
+import { renderHighlightedTextColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import { nullableStringSorter } from "@common/utils/helpers";
 
 /**

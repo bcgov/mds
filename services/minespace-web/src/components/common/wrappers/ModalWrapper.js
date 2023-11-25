@@ -4,14 +4,14 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Modal } from "antd";
 import LoadingBar from "react-redux-loading-bar";
-import { closeModal } from "@common/actions/modalActions";
+import { closeModal } from "@mds/common/redux/actions/modalActions";
 import {
   getIsModalOpen,
   getProps,
   getContent,
   getClearOnSubmit,
   getWidth,
-} from "@common/selectors/modalSelectors";
+} from "@mds/common/redux/selectors/modalSelectors";
 
 const propTypes = {
   closeModal: PropTypes.func.isRequired,

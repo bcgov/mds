@@ -1,5 +1,5 @@
 import React from "react";
-import { CALLOUT_SEVERITY } from "@common/constants/strings";
+import { CALLOUT_SEVERITY } from "@mds/common/constants/strings";
 import PropTypes from "prop-types";
 import Callout from "@/components/common/Callout";
 

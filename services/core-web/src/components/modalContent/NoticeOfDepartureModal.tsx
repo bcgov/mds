@@ -9,7 +9,7 @@ import {
   NOTICE_OF_DEPARTURE_STATUS,
   NOTICE_OF_DEPARTURE_STATUS_VALUES,
   NOTICE_OF_DEPARTURE_TYPE,
-} from "@common/constants/strings";
+} from "@mds/common/constants/strings";
 import { formatDate, normalizePhone, resetForm } from "@common/utils/helpers";
 import {
   addDocumentToNoticeOfDeparture,
@@ -17,8 +17,8 @@ import {
   fetchNoticesOfDeparture,
   removeFileFromDocumentManager,
   updateNoticeOfDeparture,
-} from "@common/actionCreators/noticeOfDepartureActionCreator";
-import { getNoticeOfDeparture } from "@common/selectors/noticeOfDepartureSelectors";
+} from "@mds/common/redux/actionCreators/noticeOfDepartureActionCreator";
+import { getNoticeOfDeparture } from "@mds/common/redux/selectors/noticeOfDepartureSelectors";
 import { Field, FieldArray, InjectedFormProps, reduxForm } from "redux-form";
 import {
   email,
@@ -34,9 +34,12 @@ import {
   INoticeOfDeparture,
   USER_ROLES,
 } from "@mds/common";
-import { getUserAccessData } from "@common/selectors/authenticationSelectors";
+import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import CoreTable from "@/components/common/CoreTable";
-import { renderDateColumn, renderTextColumn } from "../common/CoreTableCommonColumns";
+import {
+  renderDateColumn,
+  renderTextColumn,
+} from "@mds/common/components/common/CoreTableCommonColumns";
 import * as FORM from "@/constants/forms";
 import { TRASHCAN } from "@/constants/assets";
 import { NOTICE_OF_DEPARTURE_DOCUMENTS } from "@/constants/API";

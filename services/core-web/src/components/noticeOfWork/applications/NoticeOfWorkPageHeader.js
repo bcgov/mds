@@ -8,11 +8,11 @@ import {
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
-import { getInspectorsHash } from "@common/selectors/partiesSelectors";
-import { getNoticeOfWorkApplicationStatusOptionsHash } from "@common/selectors/staticContentSelectors";
+import { getInspectorsHash } from "@mds/common/redux/selectors/partiesSelectors";
+import { getNoticeOfWorkApplicationStatusOptionsHash } from "@mds/common/redux/selectors/staticContentSelectors";
 import { connect } from "react-redux";
 
 const propTypes = {

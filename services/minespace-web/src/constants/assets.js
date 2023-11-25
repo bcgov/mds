@@ -11,3 +11,4 @@ export { default as MAP_LOGO } from "../assets/images/maplogo.svg";
 
 export { default as USER_GUIDE } from "../assets/downloads/User Guide - Register of Tailings Storage Facilities and Dams.pdf";
 export { default as TAILINGS_DOCUMENT } from "../assets/downloads/Register of Tailings Storage Facilities and Dams.xlsm";
+export { default as LOADER } from "../assets/images/loader.gif";

@@ -3,13 +3,14 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Typography, Checkbox, Tooltip } from "antd";
-import { DownOutlined, InfoCircleOutlined } from "@ant-design/icons";
+import DownOutlined from "@ant-design/icons/DownOutlined"
+import InfoCircleOutlined from "@ant-design/icons/InfoCircleOutlined"
 import { Field, FormSection, change, getFormValues } from "redux-form";
 import {
   getTransformedProjectSummaryAuthorizationTypes,
   getDropdownProjectSummaryPermitTypes,
-} from "@common/selectors/staticContentSelectors";
-import { getFormattedProjectSummary } from "@common/selectors/projectSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
+import { getFormattedProjectSummary } from "@mds/common/redux/selectors/projectSelectors";
 import { requiredRadioButton } from "@common/utils/Validate";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";

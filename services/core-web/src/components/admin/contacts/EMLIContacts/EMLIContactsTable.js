@@ -2,13 +2,13 @@ import React from "react";
 import { Button, Popconfirm } from "antd";
 import PropTypes from "prop-types";
 import { nullableStringSorter } from "@common/utils/helpers";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import { TRASHCAN, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import CoreTable from "@/components/common/CoreTable";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
-import { renderTextColumn } from "@/components/common/CoreTableCommonColumns";
+import { renderTextColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 
 const propTypes = {
   isLoaded: PropTypes.bool.isRequired,

@@ -5,23 +5,23 @@ import { withRouter } from "react-router-dom";
 import { Row, Col, Typography } from "antd";
 import PropTypes from "prop-types";
 import * as routes from "@/constants/routes";
-import { getProject } from "@common/selectors/projectSelectors";
+import { getProject } from "@mds/common/redux/selectors/projectSelectors";
 import {
   fetchProjectById,
   removeDocumentFromProjectSummary,
   removeDocumentFromInformationRequirementsTable,
   removeDocumentFromMajorMineApplication,
-} from "@common/actionCreators/projectActionCreator";
+} from "@mds/common/redux/actionCreators/projectActionCreator";
 import customPropTypes from "@/customPropTypes";
 import DocumentTable from "@/components/common/DocumentTable";
 import ScrollSideMenu from "@/components/common/ScrollSideMenu";
-import { fetchMineDocuments } from "@common/actionCreators/mineActionCreator";
-import { getMineDocuments } from "@common/selectors/mineSelectors";
+import { fetchMineDocuments } from "@mds/common/redux/actionCreators/mineActionCreator";
+import { getMineDocuments } from "@mds/common/redux/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 import { Feature } from "@mds/common";
 import { MajorMineApplicationDocument } from "@mds/common/models/documents/document";
-import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
-import * as Strings from "@common/constants/strings";
+import { renderCategoryColumn } from "@mds/common/components/common/CoreTableCommonColumns";
+import * as Strings from "@mds/common/constants/strings";
 import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
 
 const propTypes = {

@@ -4,15 +4,15 @@ import { connect } from "react-redux";
 import { Divider, Tabs } from "antd";
 import PropTypes from "prop-types";
 import queryString from "query-string";
-import { getMineRegionHash } from "@common/selectors/staticContentSelectors";
+import { getMineRegionHash } from "@mds/common/redux/selectors/staticContentSelectors";
 import {
   fetchMineNoticeOfWorkApplications,
   createAdminAmendmentApplication,
-} from "@common/actionCreators/noticeOfWorkActionCreator";
-import { getExplosivesPermits } from "@common/selectors/explosivesPermitSelectors";
-import { getNoticeOfWorkList } from "@common/selectors/noticeOfWorkSelectors";
-import { openModal, closeModal } from "@common/actions/modalActions";
-import { getMineGuid } from "@common/selectors/mineSelectors";
+} from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
+import { getExplosivesPermits } from "@mds/common/redux/selectors/explosivesPermitSelectors";
+import { getNoticeOfWorkList } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
+import { getMineGuid } from "@mds/common/redux/selectors/mineSelectors";
 import { formatQueryListParams } from "@common/utils/helpers";
 import * as router from "@/constants/routes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";

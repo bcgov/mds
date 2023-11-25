@@ -30,11 +30,11 @@ import {
 import {
   getTransformedProjectSummaryAuthorizationTypes,
   getDropdownProjectSummaryPermitTypes,
-} from "@common/selectors/staticContentSelectors";
-import { getDropdownProjectLeads } from "@common/selectors/partiesSelectors";
-import { getUserAccessData } from "@common/selectors/authenticationSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
+import { getDropdownProjectLeads } from "@mds/common/redux/selectors/partiesSelectors";
+import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import { USER_ROLES } from "@mds/common";
-import { getFormattedProjectSummary } from "@common/selectors/projectSelectors";
+import { getFormattedProjectSummary } from "@mds/common/redux/selectors/projectSelectors";
 import { normalizePhone } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";

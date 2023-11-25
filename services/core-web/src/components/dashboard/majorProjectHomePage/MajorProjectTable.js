@@ -3,12 +3,15 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Button, Col, Row } from "antd";
 import { uniqBy, flattenDeep } from "lodash";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import { formatDate } from "@common/utils/helpers";
 import CoreTable from "@/components/common/CoreTable";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
-import { renderCategoryColumn, renderTextColumn } from "@/components/common/CoreTableCommonColumns";
+import {
+  renderCategoryColumn,
+  renderTextColumn,
+} from "@mds/common/components/common/CoreTableCommonColumns";
 
 const propTypes = {
   projects: PropTypes.arrayOf(CustomPropTypes.project).isRequired,

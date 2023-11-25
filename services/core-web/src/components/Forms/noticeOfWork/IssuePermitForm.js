@@ -16,7 +16,7 @@ import {
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
-import { getExemptionFeeStatusDropDownOptions } from "@common/selectors/staticContentSelectors";
+import { getExemptionFeeStatusDropDownOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {

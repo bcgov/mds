@@ -1,7 +1,7 @@
 import axios from "axios";
 import { notification } from "antd";
 import { isEmpty } from "lodash";
-import * as String from "@common/constants/strings";
+import * as String from "@mds/common/constants/strings";
 import { store } from "@/App";
 
 // https://stackoverflow.com/questions/39696007/axios-with-promise-prototype-finally-doesnt-work

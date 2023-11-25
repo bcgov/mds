@@ -3,12 +3,12 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { uniqBy, map, toArray, isEmpty } from "lodash";
 import { formatDate } from "@common/utils/helpers";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import { SUCCESS_CHECKMARK } from "@/constants/assets";
 import CoreTable from "@/components/common/CoreTable";
-import { renderTextColumn } from "@/components/common/CoreTableCommonColumns";
+import { renderTextColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 
 /**
  * @class ContactList - paginated list of contacts

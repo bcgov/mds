@@ -16,7 +16,7 @@ import { createRequestHeader } from "@common/utils/RequestHeaders";
 import { FLUSH_SOUND, WATER_SOUND } from "@/constants/assets";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { pollDocumentUploadStatus } from "@common/actionCreators/documentActionCreator";
+import { pollDocumentUploadStatus } from "@mds/common/redux/actionCreators/documentActionCreator";
 
 registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 

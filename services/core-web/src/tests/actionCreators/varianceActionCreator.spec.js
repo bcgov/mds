@@ -9,10 +9,10 @@ import {
   fetchVarianceById,
   fetchVariances,
   deleteVariance,
-} from "@common/actionCreators/varianceActionCreator";
-import * as genericActions from "@common/actions/genericActions";
+} from "@mds/common/redux/actionCreators/varianceActionCreator";
+import * as genericActions from "@mds/common/redux/actions/genericActions";
 import { ENVIRONMENT } from "@mds/common";
-import * as API from "@common/constants/API";
+import * as API from "@mds/common/constants/API";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const dispatch = jest.fn();

@@ -11,8 +11,8 @@ import {
   dateNotInFuture,
   validateSelectOptions,
 } from "@common/utils/Validate";
-import { MINE_INCIDENT_DOCUMENTS } from "@common/constants/API";
-import * as Strings from "@common/constants/strings";
+import { MINE_INCIDENT_DOCUMENTS } from "@mds/common/constants/API";
+import * as Strings from "@mds/common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";

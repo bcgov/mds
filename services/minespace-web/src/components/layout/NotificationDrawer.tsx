@@ -1,16 +1,16 @@
 import React, { FC, RefObject, useEffect, useRef, useState } from "react";
 import { Badge, Button, Col, Row, Tabs, Typography } from "antd";
-import { BellOutlined } from "@ant-design/icons";
+import BellOutlined from "@ant-design/icons/BellOutlined";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import {
   fetchActivities,
   markActivitiesAsRead,
-} from "@common/actionCreators/activityActionCreator";
+} from "@mds/common/redux/actionCreators/activityActionCreator";
 import { formatDateTime } from "@common/utils/helpers";
-import { getActivities } from "@common/selectors/activitySelectors";
-import { getUserInfo } from "@common/selectors/authenticationSelectors";
-import { storeActivities } from "@common/actions/activityActions";
+import { getActivities } from "@mds/common/redux/selectors/activitySelectors";
+import { getUserInfo } from "@mds/common/redux/selectors/authenticationSelectors";
+import { storeActivities } from "@mds/common/redux/actions/activityActions";
 import { useHistory } from "react-router-dom";
 import {
   EDIT_MINE_INCIDENT,
@@ -20,8 +20,8 @@ import {
   REVIEW_INFORMATION_REQUIREMENTS_TABLE,
   REVIEW_MAJOR_MINE_APPLICATION,
 } from "@/constants/routes";
-import { ActionCreator } from "@mds/core-web/src/interfaces/actionCreator";
 import { IActivity } from "@mds/common";
+import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 
 interface INotificationDrawerProps {
   fetchActivities: ActionCreator<typeof fetchActivities>;

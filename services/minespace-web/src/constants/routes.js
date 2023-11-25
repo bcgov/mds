@@ -1,19 +1,35 @@
+import React from "react";
 import queryString from "query-string";
-import DamsPage from "@common/components/tailings/dam/DamsPage";
-import InformationRequirementsTablePage from "@/components/pages/Project/InformationRequirementsTablePage";
-import InformationRequirementsTableSuccessPage from "@/components/pages/Project/InformationRequirementsTableSuccessPage";
-import LandingPage from "@/components/pages/LandingPage";
-import MajorMineApplicationPage from "@/components/pages/Project/MajorMineApplicationPage";
-import MajorMineApplicationSuccessPage from "@/components/pages/Project/MajorMineApplicationSuccessPage";
-import MineDashboard from "@/components/dashboard/mine/MineDashboard";
-import MinesPage from "@/components/pages/MinesPage";
-import ProjectPage from "@/components/pages/Project/ProjectPage";
-import ProjectSummaryPage from "@/components/pages/Project/ProjectSummaryPage";
-import ReturnPage from "@/components/pages/ReturnPage";
-import TailingsSummaryPageWrapper from "@/components/pages/Tailings/TailingsSummaryPageWrapper";
-import IncidentPage from "@/components/pages/Incidents/IncidentPage";
-import IncidentSuccessPage from "@/components/pages/Incidents/IncidentSuccessPage";
-import { UsersPage } from "@/components/pages/UsersPage";
+import ExplosivesPermit from "@/components/dashboard/mine/permits/ExplosivesPermit";
+const DamsPage = React.lazy(() => import("@common/components/tailings/dam/DamsPage"));
+const InformationRequirementsTablePage = React.lazy(() =>
+  import("@/components/pages/Project/InformationRequirementsTablePage")
+);
+const InformationRequirementsTableSuccessPage = React.lazy(() =>
+  import("@/components/pages/Project/InformationRequirementsTableSuccessPage")
+);
+const LandingPage = React.lazy(() => import("@/components/pages/LandingPage"));
+const MajorMineApplicationPage = React.lazy(() =>
+  import("@/components/pages/Project/MajorMineApplicationPage")
+);
+const MajorMineApplicationSuccessPage = React.lazy(() =>
+  import("@/components/pages/Project/MajorMineApplicationSuccessPage")
+);
+const MineDashboard = React.lazy(() => import("@/components/dashboard/mine/MineDashboard"));
+const MinesPage = React.lazy(() => import("@/components/pages/MinesPage"));
+const ProjectPage = React.lazy(() => import("@/components/pages/Project/ProjectPage"));
+const ProjectSummaryPage = React.lazy(() =>
+  import("@/components/pages/Project/ProjectSummaryPage")
+);
+const ReturnPage = React.lazy(() => import("@/components/pages/ReturnPage"));
+const TailingsSummaryPageWrapper = React.lazy(() =>
+  import("@/components/pages/Tailings/TailingsSummaryPageWrapper")
+);
+const IncidentPage = React.lazy(() => import("@/components/pages/Incidents/IncidentPage"));
+const IncidentSuccessPage = React.lazy(() =>
+  import("@/components/pages/Incidents/IncidentSuccessPage")
+);
+const UsersPage = React.lazy(() => import("@/components/pages/UsersPage"));
 
 export const HOME = {
   route: "/",
@@ -170,4 +186,11 @@ export const EDIT_DAM = {
   dynamicRoute: (mineGuid, tailingsStorageFacilityGuid, damGuid) =>
     `/mine/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/${damGuid}`,
   component: DamsPage,
+};
+
+export const VIEW_ESUP = {
+  route: "/mine/:mineGuid/explosives-permits/:explosivesPermitGuid",
+  dynamicRoute: (mineGuid, explosivesPermitGuid) =>
+    `/mine/${mineGuid}/explosives-permits/${explosivesPermitGuid}`,
+  component: ExplosivesPermit,
 };

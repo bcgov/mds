@@ -7,10 +7,13 @@ import { connect } from "react-redux";
 import { nullableStringSorter } from "@common/utils/helpers";
 import CoreTable from "@/components/common/CoreTable";
 import * as router from "@/constants/routes";
-import { fetchMineVerifiedStatuses } from "@common/actionCreators/mineActionCreator";
+import { fetchMineVerifiedStatuses } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
-import { renderDateColumn, renderTextColumn } from "../common/CoreTableCommonColumns";
+import {
+  renderDateColumn,
+  renderTextColumn,
+} from "@mds/common/components/common/CoreTableCommonColumns";
 
 /**
  * @class AdminVerifiedMinesList displays list of mineVerifiedStatuses for the admin page.

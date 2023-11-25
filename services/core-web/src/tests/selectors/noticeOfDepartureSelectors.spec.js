@@ -1,13 +1,13 @@
 import {
   getNoticesOfDeparture,
   getNoticeOfDeparture,
-} from "@common/selectors/noticeOfDepartureSelectors";
+} from "@mds/common/redux/selectors/noticeOfDepartureSelectors";
 import {
   storeNoticesOfDeparture,
   storeNoticeOfDeparture,
-} from "@common/actions/noticeOfDepartureActions";
-import { noticeOfDepartureReducer } from "@common/reducers/noticeOfDepartureReducer";
-import { NOTICES_OF_DEPARTURE } from "@common/constants/reducerTypes";
+} from "@mds/common/redux/actions/noticeOfDepartureActions";
+import { noticeOfDepartureReducer } from "@mds/common/redux/reducers/noticeOfDepartureReducer";
+import { NOTICES_OF_DEPARTURE } from "@mds/common/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
 
 const mockState = {

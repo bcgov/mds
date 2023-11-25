@@ -9,7 +9,7 @@ import debounce from "lodash/debounce";
 import {
   fetchSearchResults,
   clearAllSearchResults,
-} from "@common/actionCreators/searchActionCreator";
+} from "@mds/common/redux/actionCreators/searchActionCreator";
 
 const debouncePropTypes = {
   fetchOptions: PropTypes.func.isRequired,

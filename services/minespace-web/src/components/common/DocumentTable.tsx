@@ -6,28 +6,30 @@ import {
   uploadDateColumn,
   uploadedByColumn,
 } from "./DocumentColumns";
-import { renderTextColumn, renderActionsColumn, ITableAction } from "./CoreTableCommonColumns";
+import {
+  renderTextColumn,
+  renderActionsColumn,
+  ITableAction,
+} from "@mds/common/components/common/CoreTableCommonColumns";
 import { some } from "lodash";
-import { closeModal, openModal } from "@common/actions/modalActions";
-import { archiveMineDocuments } from "@common/actionCreators/mineActionCreator";
+import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
+import { archiveMineDocuments } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { modalConfig } from "@/components/modalContent/config";
 import { Feature } from "@mds/common";
 import { SizeType } from "antd/lib/config-provider/SizeContext";
 import { ColumnType, ColumnsType } from "antd/es/table";
-import {
-  DeleteOutlined,
-  DownloadOutlined,
-  FileOutlined,
-  InboxOutlined,
-  SyncOutlined,
-} from "@ant-design/icons";
+import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
+import DownloadOutlined from "@ant-design/icons/DownloadOutlined";
+import FileOutlined from "@ant-design/icons/FileOutlined";
+import InboxOutlined from "@ant-design/icons/InboxOutlined";
+import SyncOutlined from "@ant-design/icons/SyncOutlined";
 import { openDocument } from "../syncfusion/DocumentViewer";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import { getUserAccessData } from "@common/selectors/authenticationSelectors";
+import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import { Dropdown, Button, MenuProps } from "antd";
-import { DownOutlined } from "@ant-design/icons";
+import DownOutlined from "@ant-design/icons/DownOutlined";
 import DocumentTableProps from "@mds/common/interfaces/document/documentTableProps.interface";
 import { FileOperations, MineDocument } from "@mds/common/models/documents/document";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
@@ -292,22 +294,22 @@ export const DocumentTable: FC<DocumentTableProps> = ({
 
   const bulkActionsProps = enableBulkActions
     ? {
-        rowSelection: {
-          type: "checkbox",
-          ...rowSelectionObject,
-        },
-      }
+      rowSelection: {
+        type: "checkbox",
+        ...rowSelectionObject,
+      },
+    }
     : {};
 
   const versionProps = showVersionHistory
     ? {
-        expandProps: {
-          childrenColumnName: "versions",
-          matchChildColumnsToParent: true,
-          recordDescription: "version history",
-          rowExpandable: (record) => record.number_prev_versions > 0,
-        },
-      }
+      expandProps: {
+        childrenColumnName: "versions",
+        matchChildColumnsToParent: true,
+        recordDescription: "version history",
+        rowExpandable: (record) => record.number_prev_versions > 0,
+      },
+    }
     : {};
 
   const coreTableProps = {

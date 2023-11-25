@@ -5,17 +5,17 @@ import { withRouter } from "react-router-dom";
 import { Row, Col, Tabs, Typography } from "antd";
 import PropTypes from "prop-types";
 import { formatUrlToUpperCaseString } from "@common/utils/helpers";
-import { getProject } from "@common/selectors/projectSelectors";
-import { fetchProjectById } from "@common/actionCreators/projectActionCreator";
+import { getProject } from "@mds/common/redux/selectors/projectSelectors";
+import { fetchProjectById } from "@mds/common/redux/actionCreators/projectActionCreator";
 import customPropTypes from "@/customPropTypes";
 import DocumentsPage from "./DocumentsPage";
-import { getMineDocuments } from "@common/selectors/mineSelectors";
+import { getMineDocuments } from "@mds/common/redux/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 import { documentNameColumn, uploadDateColumn } from "@/components/common/DocumentColumns";
 import { Feature } from "@mds/common";
 import { MajorMineApplicationDocument } from "@mds/common/models/documents/document";
-import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
-import * as Strings from "@common/constants/strings";
+import { renderCategoryColumn } from "@mds/common/components/common/CoreTableCommonColumns";
+import * as Strings from "@mds/common/constants/strings";
 import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
 
 const propTypes = {

@@ -11,7 +11,7 @@ import {
   getConsequenceClassificationStatusCodeDropdownOptions,
   getITRBExemptionStatusCodeDropdownOptions,
   getTSFOperatingStatusCodeDropdownOptions,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import { resetForm } from "@common/utils/helpers";
 import RenderField from "@/components/common/RenderField";
 import RenderSelect from "@/components/common/RenderSelect";

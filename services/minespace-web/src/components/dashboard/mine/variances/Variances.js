@@ -2,26 +2,26 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Row, Col, Typography, Button } from "antd";
-import { PlusCircleFilled } from "@ant-design/icons";
+import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import moment from "moment";
 import PropTypes from "prop-types";
-import { getMines } from "@common/selectors/mineSelectors";
-import { openModal, closeModal } from "@common/actions/modalActions";
-import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
+import { getMines } from "@mds/common/redux/selectors/mineSelectors";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
+import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
 import {
   fetchVariancesByMine,
   createVariance,
   addDocumentToVariance,
   updateVariance,
-} from "@common/actionCreators/varianceActionCreator";
-import { getVariances } from "@common/selectors/varianceSelectors";
+} from "@mds/common/redux/actionCreators/varianceActionCreator";
+import { getVariances } from "@mds/common/redux/selectors/varianceSelectors";
 import {
   getVarianceStatusOptionsHash,
   getVarianceDocumentCategoryOptionsHash,
   getHSRCMComplianceCodesHash,
   getDropdownHSRCMComplianceCodes,
-} from "@common/selectors/staticContentSelectors";
-import { getInspectorsHash } from "@common/selectors/partiesSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
+import { getInspectorsHash } from "@mds/common/redux/selectors/partiesSelectors";
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
 import VariancesTable from "@/components/dashboard/mine/variances/VariancesTable";

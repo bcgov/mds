@@ -5,7 +5,7 @@ import moment from "moment";
 import { formatDateTime } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import DocumentLink from "@/components/common/DocumentLink";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import CoreTable from "@/components/common/CoreTable";
 
 const propTypes = {

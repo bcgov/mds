@@ -1,10 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getParties } from "@common/selectors/partiesSelectors";
+import { getParties } from "@mds/common/redux/selectors/partiesSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import EditFullPartyForm from "@/components/Forms/parties/EditFullPartyForm";
-import { getDropdownProvinceOptions } from "@common/selectors/staticContentSelectors";
+import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import moment from "moment";
 import { formatDate } from "@common/utils/helpers";
 

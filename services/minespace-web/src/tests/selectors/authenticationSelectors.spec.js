@@ -1,8 +1,12 @@
-import { isAuthenticated, getUserInfo, getRedirect } from "@/selectors/authenticationSelectors";
-import authenticationReducer from "@/reducers/authenticationReducer";
+import {
+  isAuthenticated,
+  getUserInfo,
+  getRedirect,
+} from "@mds/common/redux/selectors/authenticationSelectors";
 import { authenticateUser, logoutUser } from "@/actions/authenticationActions";
 import { AUTHENTICATION } from "@/constants/reducerTypes";
 import * as route from "@/constants/routes";
+import { authenticationReducer } from "@mds/common/redux/reducers/authenticationReducer";
 
 const mockData = {
   isAuthenticated: true,

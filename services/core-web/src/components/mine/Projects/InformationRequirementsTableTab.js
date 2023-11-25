@@ -10,13 +10,13 @@ import {
   fetchRequirements,
   fetchProjectById,
   updateInformationRequirementsTable,
-} from "@common/actionCreators/projectActionCreator";
-import { getInformationRequirementsTableStatusCodesHash } from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/actionCreators/projectActionCreator";
+import { getInformationRequirementsTableStatusCodesHash } from "@mds/common/redux/selectors/staticContentSelectors";
 import {
   getProject,
   getInformationRequirementsTable,
   getRequirements,
-} from "@common/selectors/projectSelectors";
+} from "@mds/common/redux/selectors/projectSelectors";
 import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
 import ReviewInformationRequirementsTable from "@/components/mine/Projects/ReviewInformationRequirementsTable";
 import UpdateInformationRequirementsTableForm from "@/components/Forms/informationRequirementsTable/UpdateInformationRequirementsTableForm";

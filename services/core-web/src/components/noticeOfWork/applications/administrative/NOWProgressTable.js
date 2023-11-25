@@ -11,24 +11,24 @@ import {
   getApplicationDelaysWithDuration,
   getTotalApplicationDelayDuration,
   getApplicationDelays,
-} from "@common/selectors/noticeOfWorkSelectors";
+} from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import {
   getDelayTypeOptionsHash,
   getDropdownNoticeOfWorkApplicationStatusCodes,
   getNoticeOfWorkApplicationProgressStatusCodeOptionsHash,
   getNoticeOfWorkApplicationStatusOptionsHash,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import {
   updateNoticeOfWorkApplicationProgress,
   updateNoticeOfWorkApplication,
   updateApplicationDelay,
   fetchApplicationDelay,
   fetchNoticeOfWorkApplication,
-} from "@common/actionCreators/noticeOfWorkActionCreator";
-import { openModal, closeModal } from "@common/actions/modalActions";
+} from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import { ClockCircleOutlined, CheckCircleOutlined, StopOutlined } from "@ant-design/icons";
 import { formatDate, getDurationTextInDays } from "@common/utils/helpers";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import CoreTable from "@/components/common/CoreTable";
 import { COLOR } from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";

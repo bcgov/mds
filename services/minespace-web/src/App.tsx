@@ -4,22 +4,23 @@ import { connect } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 // eslint-disable-next-line
 import { hot } from "react-hot-loader";
-import { LoadingOutlined } from "@ant-design/icons";
+import LoadingOutlined from "@ant-design/icons/LoadingOutlined";
 import { Layout, BackTop, Row, Col, Spin } from "antd";
-import { loadBulkStaticContent } from "@common/actionCreators/staticContentActionCreator";
-import { getStaticContentLoadingIsComplete } from "@common/selectors/staticContentSelectors";
+import { loadBulkStaticContent } from "@mds/common/redux/actionCreators/staticContentActionCreator";
+import { getStaticContentLoadingIsComplete } from "@mds/common/redux/selectors/staticContentSelectors";
 import MediaQuery from "react-responsive";
 import * as PropTypes from "prop-types";
-import { isAuthenticated } from "@/selectors/authenticationSelectors";
+import { isAuthenticated } from "@mds/common/redux/selectors/authenticationSelectors";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import ModalWrapper from "@/components/common/wrappers/ModalWrapper";
 import DocumentViewer from "@/components/syncfusion/DocumentViewer";
 import AuthenticationGuard from "@/HOC/AuthenticationGuard";
 import WarningBanner from "@/components/common/WarningBanner";
-import { detectIE } from "@mds/common";
+
 import Routes from "./routes/Routes";
 import configureStore from "./store/configureStore";
+import { detectIE } from "@mds/common";
 
 export const store = configureStore();
 

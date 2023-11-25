@@ -1,9 +1,9 @@
-import { documentViewerReducer } from "@common/reducers/documentViewerReducer";
+import { documentViewerReducer } from "@mds/common/redux/reducers/documentViewerReducer";
 import {
   openDocumentViewer,
   closeDocumentViewer,
   updateDocumentViewerTitle,
-} from "@common/actions/documentViewerActions";
+} from "@mds/common/redux/actions/documentViewerActions";
 
 const baseExpectedValue = {
   isDocumentViewerOpen: false,

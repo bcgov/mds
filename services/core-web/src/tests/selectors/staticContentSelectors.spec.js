@@ -82,8 +82,8 @@ import {
   getDropdownEMLIContactTypes,
   getDropdownProjectSummaryAliasStatusCodes,
   getProjectSummaryAliasStatusCodesHash,
-} from "@common/selectors/staticContentSelectors";
-import { STATIC_CONTENT } from "@common/constants/reducerTypes";
+} from "@mds/common/redux/selectors/staticContentSelectors";
+import { STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
 import * as NOW_MOCK from "@/tests/mocks/noticeOfWorkMocks";
 

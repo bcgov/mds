@@ -2,14 +2,17 @@ import React, { FC } from "react";
 import { connect } from "react-redux";
 import {
   Feature,
+  IExplosivesPermit,
+  IExplosivesPermitAmendment,
   IPermit,
+  IPermitAmendment,
   VC_CONNECTION_STATES,
   VC_CRED_ISSUE_STATES,
   isFeatureEnabled,
-} from "@mds/common/index";
-import { openModal, closeModal } from "@common/actions/modalActions";
+} from "@mds/common";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import { truncateFilename } from "@common/utils/helpers";
-import { getDropdownPermitStatusOptions } from "@common/selectors/staticContentSelectors";
+import { getDropdownPermitStatusOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import LinkButton from "@/components/common/LinkButton";
 import * as Strings from "@/constants/strings";
@@ -20,16 +23,27 @@ import {
   renderCategoryColumn,
   renderDateColumn,
   renderTextColumn,
-} from "@/components/common/CoreTableCommonColumns";
+} from "@mds/common/components/common/CoreTableCommonColumns";
 import IssuePermitDigitalCredential from "@/components/modalContent/verifiableCredentials/IssuePermitDigitalCredential";
+import { SortOrder } from "antd/lib/table/interface";
+import { VIEW_ESUP } from "@/constants/routes";
+import { useHistory } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const draftAmendment = "DFT";
+
+const permitTypes = {
+  ESUP: "Explosive Storage and Use",
+  Permit: "Mines Act Permit",
+};
 
 interface PermitsTableProps {
   isLoaded: boolean;
   permits: IPermit[];
+  explosivesPermits: IExplosivesPermit[];
   majorMineInd: boolean;
   openModal: (value: any) => void;
+  closeModal: (value: any) => void;
   openVCWalletInvitationModal: (
     event,
     partyGuid: string,
@@ -39,24 +53,38 @@ interface PermitsTableProps {
 }
 
 export const PermitsTable: FC<PermitsTableProps> = (props) => {
+  const history = useHistory();
+  const { id } = useParams<{ id: string }>();
+
   const columns = [
     renderTextColumn("permit_no", "Permit No.", true),
     renderTextColumn("current_permittee", "Permittee"),
+    renderTextColumn("permit_type", "Permit Type", true),
     renderCategoryColumn("permit_status_code", "Permit Status", { C: "Closed", O: "Open" }, true),
-    renderDateColumn("authorizationEndDate", "Authorization End Date", true),
+    renderDateColumn("authorization_end_date", "Authorization End Date", true),
     renderDateColumn("firstIssued", "First Issued", true),
-    renderDateColumn("lastAmended", "Last Amended", true),
+    {
+      ...renderDateColumn("lastAmended", "Last Amended", true),
+      defaultSortOrder: "descend" as SortOrder,
+    },
   ];
 
-  if (
+  const showVCColumn =
     isFeatureEnabled(Feature.VERIFIABLE_CREDENTIALS) &&
     props.majorMineInd &&
     props.permits.some((p) => {
       // look for *any* active wallet connections to show the issuance column/action
       const walletStatus = p.current_permittee_digital_wallet_connection_state;
       return VC_CONNECTION_STATES[walletStatus] === VC_CONNECTION_STATES.active;
-    })
-  ) {
+    });
+
+  const handleOpenViewEsup = (event, record: any) => {
+    event.preventDefault();
+    event.stopPropagation();
+    history.push(VIEW_ESUP.dynamicRoute(id, record.key));
+  };
+
+  if (showVCColumn || isFeatureEnabled(Feature.MINESPACE_ESUPS)) {
     const colourMap = {
       "Not Active": "#D8292F",
       Pending: "#F1C21B",
@@ -77,7 +105,7 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
       event.preventDefault();
       props.openModal({
         props: {
-          title: "Issue Permit as Digital Credential",
+          title: "Issue Digital Credential",
           issuanceState: permit.lastAmendedVC,
           connectionState: permit.current_permittee_digital_wallet_connection_state,
           permitAmendmentGuid: permit.lastAmendedGuid,
@@ -94,8 +122,32 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
         label: "Issue as digital credential",
         clickFunction: openIssuanceModal,
       },
+      {
+        key: "view_esup",
+        label: "View",
+        clickFunction: (event, esup: IExplosivesPermit) => {
+          handleOpenViewEsup(event, esup);
+        },
+      },
     ];
-    const actionColumn = renderActionsColumn(actions);
+
+    const filterActions = (record, actionList) => {
+      let filteredActionList = actionList;
+
+      // filter for permit type and vc_issue key
+      if (record.permit_type !== permitTypes.Permit || !showVCColumn) {
+        filteredActionList = filteredActionList.filter((a) => a.key !== "vc_issue");
+      }
+
+      // filter for feature flag and view_esup key
+      if (!isFeatureEnabled(Feature.MINESPACE_ESUPS) || record.permit_type !== permitTypes.ESUP) {
+        filteredActionList = filteredActionList.filter((a) => a.key !== "view_esup");
+      }
+
+      return filteredActionList;
+    };
+
+    const actionColumn = renderActionsColumn(actions, filterActions);
     columns.splice(3, 0, issuanceStateColumn);
     columns.push(actionColumn);
   }
@@ -112,26 +164,7 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
     return finalAppPackageCore.concat(finalAppPackageImported);
   };
 
-  const transformRowData = (permit, majorMineInd) => {
-    const filteredAmendments = permit.permit_amendments.filter(
-      (a) => a.permit_amendment_status_code !== draftAmendment
-    );
-    const latestAmendment = filteredAmendments[0];
-    const firstAmendment = filteredAmendments[filteredAmendments.length - 1];
-
-    return {
-      ...permit,
-      majorMineInd: majorMineInd,
-      authorizationEndDate: latestAmendment?.authorization_end_date,
-      firstIssued: firstAmendment?.issue_date,
-      lastAmended: latestAmendment?.issue_date,
-      lastAmendedVC: latestAmendment?.vc_credential_exch_state,
-      lastAmendedGuid: latestAmendment?.permit_amendment_guid,
-      permit_amendments: filteredAmendments,
-    };
-  };
-
-  const transformExpandedRowData = (amendment, amendmentNumber) => ({
+  const transformExpandedPermitRowData = (amendment: IPermitAmendment, amendmentNumber) => ({
     ...amendment,
     amendmentNumber,
     maps: amendment.now_application_documents?.filter(
@@ -140,14 +173,81 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
     permitPackage: finalApplicationPackage(amendment),
   });
 
-  const rowData = props.permits.map((permit) => transformRowData(permit, props.majorMineInd));
+  const transformRowData = (permit) => {
+    const filteredAmendments = permit.permit_amendments.filter(
+      (a) => a.permit_amendment_status_code !== draftAmendment
+    );
+    const latestAmendment = filteredAmendments[0];
+    const firstAmendment = filteredAmendments[filteredAmendments.length - 1];
 
-  const getExpandedRowData = (permit) =>
-    permit.permit_amendments
-      ? permit.permit_amendments.map((amendment, index) =>
-          transformExpandedRowData(amendment, permit.permit_amendments.length - index)
-        )
-      : [];
+    return {
+      ...permit,
+      key: permit.permit_guid,
+      permit_type: permitTypes.Permit,
+      majorMineInd: props.majorMineInd,
+      authorization_end_date: latestAmendment?.authorization_end_date,
+      firstIssued: firstAmendment?.issue_date,
+      lastAmended: latestAmendment?.issue_date,
+      lastAmendedVC: latestAmendment?.vc_credential_exch_state,
+      lastAmendedGuid: latestAmendment?.permit_amendment_guid,
+      permit_amendments: filteredAmendments.map((amendment, index) =>
+        transformExpandedPermitRowData(amendment, permit.permit_amendments.length - index)
+      ),
+    };
+  };
+
+  const transformEsupData = (esup: IExplosivesPermit) => {
+    const transformEsupAmendment = (
+      amendment: IExplosivesPermitAmendment | IExplosivesPermit,
+      index = 0
+    ) => {
+      return {
+        permit_no: amendment.permit_number,
+        amendmentNumber: index + 1,
+        current_permittee: amendment.permittee_name,
+        permit_status_code: amendment.is_closed ? "C" : "O",
+        issue_date: amendment.issue_date,
+        description: amendment.description,
+        authorization_end_date: amendment.expiry_date,
+        related_documents: amendment.documents,
+        permit_type: permitTypes.ESUP,
+      };
+    };
+
+    let lastAmended = esup.issue_date;
+    let isClosed = esup.is_closed;
+    if (esup?.explosives_permit_amendments.length > 0) {
+      const lastAmendment =
+        esup.explosives_permit_amendments[esup.explosives_permit_amendments.length - 1];
+      lastAmended = lastAmendment.issue_date;
+      isClosed = lastAmendment.is_closed;
+    }
+    // esup amendments don't initially include 1st record as amendment
+    const firstAmendment = transformEsupAmendment(esup);
+    const permit_amendments: any[] = esup.explosives_permit_amendments
+      .map((a, i) => transformEsupAmendment(a, i + 1))
+      .reverse();
+    permit_amendments.push(firstAmendment);
+
+    return {
+      ...firstAmendment,
+      key: esup.explosives_permit_guid,
+      permit_status_code: isClosed ? "C" : "O",
+      firstIssued: esup.issue_date,
+      lastAmended: lastAmended,
+      permit_amendments: permit_amendments,
+    };
+  };
+
+  const esupRowData = props.explosivesPermits.map((esup) => transformEsupData(esup));
+  const permitRowData = props.permits.map((permit) => transformRowData(permit));
+
+  let rowData: any[];
+  if (isFeatureEnabled(Feature.MINESPACE_ESUPS)) {
+    rowData = [...esupRowData, ...permitRowData];
+  } else {
+    rowData = permitRowData;
+  }
 
   const expandedColumns = [
     renderTextColumn("amendmentNumber", "Amendment No."),
@@ -166,7 +266,6 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
               <LinkButton
                 key={file.mine_document.document_manager_guid}
                 onClick={() => downloadFileFromDocumentManager(file.mine_document)}
-                // @ts-ignore (compiler is wrong, title is a global attribute available on <a>)
                 title={file.mine_document.document_name}
               >
                 <p className="wrapped-text">{truncateFilename(file.mine_document.document_name)}</p>
@@ -188,7 +287,6 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
               <LinkButton
                 key={file.document_manager_guid}
                 onClick={() => downloadFileFromDocumentManager(file)}
-                // @ts-ignore
                 title={file.document_name}
               >
                 <p className="wrapped-text">{truncateFilename(file.document_name)}</p>
@@ -205,12 +303,12 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
       loading={!props.isLoaded}
       columns={columns}
       dataSource={rowData}
-      rowKey="permit_no"
       emptyText="This mine has no permit data."
       expandProps={{
-        getDataSource: getExpandedRowData,
+        getDataSource: (record) => record.permit_amendments,
         subTableColumns: expandedColumns,
-        rowKey: "permit_amendment_guid",
+        rowKey: "amendmentNumber",
+        recordDescription: "amendment history",
       }}
     />
   );

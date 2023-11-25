@@ -11,23 +11,23 @@ import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 
 import * as FORM from "@/constants/forms";
 import "@ant-design/compatible/assets/index.css";
-import { getPartyRelationshipTypesList } from "@common/selectors/staticContentSelectors";
-import { openModal, closeModal } from "@common/actions/modalActions";
+import { getPartyRelationshipTypesList } from "@mds/common/redux/selectors/staticContentSelectors";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
 import { required } from "@common/utils/Validate";
 import {
   fetchSearchResults,
   clearAllSearchResults,
-} from "@common/actionCreators/searchActionCreator";
-import { fetchPartyById, updateParty } from "@common/actionCreators/partiesActionCreator";
-import { storeSubsetSearchResults } from "@common/actions/searchActions";
+} from "@mds/common/redux/actionCreators/searchActionCreator";
+import { fetchPartyById, updateParty } from "@mds/common/redux/actionCreators/partiesActionCreator";
+import { storeSubsetSearchResults } from "@mds/common/redux/actions/searchActions";
 import { TRASHCAN, PROFILE_NOCIRCLE } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
-import { getSearchResults, getSearchSubsetResults } from "@common/selectors/searchSelectors";
-import * as Strings from "@common/constants/strings";
+import { getSearchResults, getSearchSubsetResults } from "@mds/common/redux/selectors/searchSelectors";
+import * as Strings from "@mds/common/constants/strings";
 
 import Address from "@/components/common/Address";
 import AddButton from "@/components/common/buttons/AddButton";

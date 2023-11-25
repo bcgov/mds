@@ -1,6 +1,6 @@
 import axios from "axios";
 import { notification, Button } from "antd";
-import * as String from "./constants/strings";
+import * as String from "@mds/common/constants/strings";
 import React from 'react';
 import * as API from "./constants/API";
 import * as reducerTypes from "./constants/reducerTypes";

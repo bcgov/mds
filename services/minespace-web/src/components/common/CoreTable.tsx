@@ -1,7 +1,8 @@
 import React from "react";
 import { Table, TableProps, Tooltip } from "antd";
 import { ColumnsType } from "antd/es/table";
-import { MinusSquareFilled, PlusSquareFilled } from "@ant-design/icons";
+import PlusSquareFilled from "@ant-design/icons/PlusSquareFilled";
+import MinusSquareFilled from "@ant-design/icons/MinusSquareFilled";
 import { ExpandableConfig, TableRowSelection } from "antd/lib/table/interface";
 
 interface CoreTableExpandConfig<T> extends ExpandableConfig<T> {
@@ -100,14 +101,14 @@ const CoreTable = <T,>(props: CoreTableProps<T>) => {
       return expandProps.matchChildColumnsToParent
         ? { expandIcon: renderTableExpandIcon, indentSize: 0, ...expandProps }
         : {
-            rowExpandable:
-              expandProps.rowExpandable ??
-              ((record) => expandProps.getDataSource(record).length > 0),
-            expandIcon: renderTableExpandIcon,
-            expandRowByClick: true,
-            expandedRowRender: expandProps.expandedRowRender ?? renderExpandedRow,
-            ...expandProps,
-          };
+          rowExpandable:
+            expandProps.rowExpandable ??
+            ((record) => expandProps.getDataSource(record).length > 0),
+          expandIcon: renderTableExpandIcon,
+          expandRowByClick: true,
+          expandedRowRender: expandProps.expandedRowRender ?? renderExpandedRow,
+          ...expandProps,
+        };
     }
     return { showExpandColumn: false };
   };

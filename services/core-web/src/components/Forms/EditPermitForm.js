@@ -11,7 +11,7 @@ import { resetForm, determineExemptionFeeStatus, currencyMask } from "@common/ut
 import {
   getDropdownPermitStatusOptions,
   getExemptionFeeStatusDropDownOptions,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
 import RenderSelect from "@/components/common/RenderSelect";
 import RenderField from "@/components/common/RenderField";

@@ -1,5 +1,6 @@
 import { Button, Col, Menu, Popconfirm, Row } from "antd";
-import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import LeftOutlined from "@ant-design/icons/LeftOutlined";
+import RightOutlined from "@ant-design/icons/RightOutlined";
 import React, { useEffect, useState } from "react";
 
 import { Form } from "@ant-design/compatible";

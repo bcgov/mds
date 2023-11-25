@@ -69,3 +69,8 @@ jobs:
         with:
           name: cypress-recording
           path: services/minespace-web/cypress/videos
+      - name: Upload stats file
+        uses: actions/upload-artifact@v3
+        with:
+          name: stats
+          path: services/minespace-web/build/stats.json

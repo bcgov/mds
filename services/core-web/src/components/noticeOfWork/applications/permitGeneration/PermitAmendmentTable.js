@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { formatDate } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import DocumentLink from "@/components/common/DocumentLink";
 import CoreTable from "@/components/common/CoreTable";
-import { getPermitAmendmentTypeOptionsHash } from "@common/selectors/staticContentSelectors";
+import { getPermitAmendmentTypeOptionsHash } from "@mds/common/redux/selectors/staticContentSelectors";
 
 const propTypes = {
   permit: CustomPropTypes.permit.isRequired,

@@ -6,8 +6,8 @@ import { connect } from "react-redux";
 import {
   updateNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
-} from "@common/actionCreators/noticeOfWorkActionCreator";
-import { getNoticeOfWork } from "@common/selectors/noticeOfWorkSelectors";
+} from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
+import { getNoticeOfWork } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import CustomPropTypes from "@/customPropTypes";
 import { EDIT_OUTLINE } from "@/constants/assets";

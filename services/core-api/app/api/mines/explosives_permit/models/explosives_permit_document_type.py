@@ -1,15 +1,10 @@
-import base64
-from io import BytesIO
-
-from PIL import Image
-from flask import current_app
 from sqlalchemy.schema import FetchedValue
 
-from app.extensions import db
-from app.api.utils.models_mixins import AuditMixin, Base
-from app.api.parties.party.models.party import Party
-from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.document_generation.models.document_template import format_letter_date
+from app.api.parties.party.models.party import Party
+from app.api.utils.helpers import create_image_with_aspect_ratio
+from app.api.utils.models_mixins import AuditMixin, Base
+from app.extensions import db
 from app.api.mines.exceptions.mine_exceptions import ExplosivesPermitExeption
 
 PERMIT_SIGNATURE_IMAGE_HEIGHT_INCHES = 0.8
@@ -51,32 +46,7 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
                 raise ExplosivesPermitExeption("No Issuing Inspector has been assigned",
                                               status_code = 422)
             if not explosives_permit.issuing_inspector.signature:
-                raise ExplosivesPermitExeption("No signature for the Issuing Inspector has been provided",
-                                              status_code = 422)
-
-        def create_image(source, width=None, height=None):
-
-            # If there is a prefix in the source, remove it
-            base64_source = source
-            if ';base64,' in base64_source:
-                prefix, base64_source = base64_source.split(';base64,', 1)
-
-            # Convert base64 string to PIL Image to get dimensions
-            img_data = base64.b64decode(base64_source)
-            img = Image.open(BytesIO(img_data))
-
-            # Use aspect ratio of image to calculate width if not provided
-            if height and not width:
-                aspect_ratio = img.width / img.height
-                # Convert height from inches to pixels (Word assumes 96 DPI)
-                height_in_pixels = height * 96
-
-                # Calculate width while maintaining aspect ratio
-                width = height_in_pixels * aspect_ratio
-                # Convert width from pixels back to inches
-                width = width / 96
-
-            return {'source': source, 'width': width, 'height': height}
+                raise Exception('No signature for the Issuing Inspector has been provided')
 
         is_draft = template_data.get('is_draft', True)
         template_data['is_draft'] = is_draft
@@ -156,6 +126,11 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
             template_data['issue_date'] = format_letter_date(issue_date)
             template_data['expiry_date'] = format_letter_date(expiry_date)
 
+            if 'amendment_count' in template_data:
+                amendment_info = self.get_amendment_info(template_data['amendment_count'],
+                                                         issue_date)
+                template_data['amendment'] = amendment_info['amendment']
+
             def transform_magazines(magazines):
                 def get_type_label(magazine):
                     if hasattr(magazine,
@@ -205,8 +180,8 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
             if not is_draft:
                 template_data['images'] = {
                     'issuing_inspector_signature':
-                    create_image(
-                        issuing_inspector.signature, height=PERMIT_SIGNATURE_IMAGE_HEIGHT_INCHES)
+                        create_image_with_aspect_ratio(
+                            issuing_inspector.signature, height=PERMIT_SIGNATURE_IMAGE_HEIGHT_INCHES)
                 }
 
             return template_data
@@ -215,11 +190,16 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
         def transform_letter(template_data, explosives_permit):
             template_data['letter_date'] = format_letter_date(template_data['letter_date'])
 
+            if 'amendment_count' in template_data:
+                amendment_info = self.get_amendment_info(template_data['amendment_count'],
+                                                         template_data['issue_date'])
+                template_data['amendment_with_date'] = amendment_info['amendment_with_date']
+
             if not is_draft:
                 template_data['images'] = {
                     'issuing_inspector_signature':
-                    create_image(
-                        issuing_inspector.signature, height=LETTER_SIGNATURE_IMAGE_HEIGHT_INCHES)
+                        create_image_with_aspect_ratio(
+                            issuing_inspector.signature, height=LETTER_SIGNATURE_IMAGE_HEIGHT_INCHES)
                 }
 
             return template_data
@@ -241,3 +221,12 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
 
         if self.explosives_permit_document_type_code == 'PER':
             return after_permit_generated(template_data, explosives_permit_doc, explosives_permit)
+
+    @classmethod
+    def get_amendment_info(self, amendment_count, issue_date):
+        amendment_info_payload = {}
+        amendment_info_payload['amendment'] = f'Amendment {amendment_count}'
+        amendment_info_payload[
+            'amendment_with_date'] = f'(Amendment {amendment_count}) issued {format_letter_date(issue_date)}'
+
+        return amendment_info_payload

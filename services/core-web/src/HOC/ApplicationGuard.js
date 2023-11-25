@@ -8,13 +8,13 @@ import {
   fetchImportedNoticeOfWorkApplication,
   fetchOriginalNoticeOfWorkApplication,
   fetchImportNoticeOfWorkSubmissionDocumentsJob,
-} from "@common/actionCreators/noticeOfWorkActionCreator";
+} from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
 import CustomPropTypes from "@/customPropTypes";
 import * as routes from "@/constants/routes";
-import { clearNoticeOfWorkApplication } from "@common/actions/noticeOfWorkActions";
+import { clearNoticeOfWorkApplication } from "@mds/common/redux/actions/noticeOfWorkActions";
 import NOWStatusIndicator from "@/components/noticeOfWork/NOWStatusIndicator";
 import NullScreen from "@/components/common/NullScreen";
-import { fetchDraftPermitByNOW, fetchPermits } from "@common/actionCreators/permitActionCreator";
+import { fetchDraftPermitByNOW, fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 /**
  * @constant ApplicationGuard - Higher Order Component that fetches applications, and handles all common logic between the application routes.
  * If users try to access an "Administrative Amendment" via the Notice of work Flow, they will be redirected.

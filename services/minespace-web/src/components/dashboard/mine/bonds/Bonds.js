@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Row, Col, Typography } from "antd";
 import PropTypes from "prop-types";
-import { fetchMineBonds } from "@common/actionCreators/securitiesActionCreator";
-import { getBonds } from "@common/selectors/securitiesSelectors";
+import { fetchMineBonds } from "@mds/common/redux/actionCreators/securitiesActionCreator";
+import { getBonds } from "@mds/common/redux/selectors/securitiesSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import BondsTable from "@/components/dashboard/mine/bonds/BondsTable";
 

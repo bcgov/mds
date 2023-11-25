@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { uniqBy, flattenDeep } from "lodash";
 import { Badge, Tooltip } from "antd";
 import { formatDate } from "@common/utils/helpers";
-import * as Strings from "@common/constants/strings";
+import * as Strings from "@mds/common/constants/strings";
 import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import { SUCCESS_CHECKMARK } from "@/constants/assets";

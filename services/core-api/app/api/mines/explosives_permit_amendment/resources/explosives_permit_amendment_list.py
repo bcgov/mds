@@ -187,12 +187,16 @@ class ExplosivesPermitAmendmentListResource(Resource, UserMixin):
             data.get('now_application_guid'))
         explosives_permit_amendment.save()
 
-        # Updating the previous amendments' is_closed status to True.
-        updated_columns = ExplosivesPermitAmendment.update_amendment_status_by_explosives_permit_id(
-            data.get('explosives_permit_id'), True,
-            explosives_permit_amendment.explosives_permit_amendment_guid)
+        # only update previous status if new amendment is ready to issue
+        is_draft = explosives_permit_amendment.application_status != 'APP'
 
-        if updated_columns == 0: #Explosive Permit status need to be updated.
-            ExplosivesPermit.update_permit_status(explosives_permit_amendment.explosives_permit_id, True)
+        if not is_draft:
+            # Updating the previous amendments' is_closed status to True.
+            updated_columns = ExplosivesPermitAmendment.update_amendment_status_by_explosives_permit_id(
+                data.get('explosives_permit_id'), True,
+                explosives_permit_amendment.explosives_permit_amendment_guid)
+
+            if updated_columns == 0: #Explosive Permit status need to be updated.
+                ExplosivesPermit.update_permit_status(explosives_permit_amendment.explosives_permit_id, True)
 
         return explosives_permit_amendment, 201

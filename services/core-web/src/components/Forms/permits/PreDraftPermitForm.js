@@ -14,7 +14,7 @@ import {
   validateIfApplicationTypeCorrespondsToPermitNumber,
 } from "@common/utils/Validate";
 import RenderSelect from "@/components/common/RenderSelect";
-import { getNoticeOfWorkEditableTypes } from "@common/selectors/noticeOfWorkSelectors";
+import { getNoticeOfWorkEditableTypes } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
@@ -22,8 +22,8 @@ import CustomPropTypes from "@/customPropTypes";
 import {
   getDropdownPermitAmendmentTypeOptions,
   getDropdownNoticeOfWorkApplicationTypeOptions,
-} from "@common/selectors/staticContentSelectors";
-import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";
+} from "@mds/common/redux/selectors/staticContentSelectors";
+import { PERMIT_AMENDMENT_TYPES } from "@mds/common/constants/strings";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 
 const propTypes = {

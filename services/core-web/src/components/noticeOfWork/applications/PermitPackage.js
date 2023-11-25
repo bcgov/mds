@@ -4,21 +4,21 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Button } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
-import { openModal, closeModal } from "@common/actions/modalActions";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
 import {
   updateNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
-} from "@common/actionCreators/noticeOfWorkActionCreator";
+} from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
 import {
   getNoticeOfWorkReviews,
   getNoticeOfWork,
   getNOWProgress,
-} from "@common/selectors/noticeOfWorkSelectors";
+} from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import { EDIT_OUTLINE_VIOLET, EDIT_OUTLINE } from "@/constants/assets";
 import * as Permission from "@/constants/permissions";
-import { getDropdownNoticeOfWorkApplicationReviewTypeOptions } from "@common/selectors/staticContentSelectors";
+import { getDropdownNoticeOfWorkApplicationReviewTypeOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import DocumentCompression from "@/components/common/DocumentCompression";
 import { MineDocument } from "@mds/common/models/documents/document";

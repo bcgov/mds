@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Button, Modal, Popconfirm } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
-import { closeModal } from "@common/actions/modalActions";
+import { closeModal } from "@mds/common/redux/actions/modalActions";
 import {
   getClearOnSubmit,
   getContent,
@@ -12,7 +12,7 @@ import {
   getIsViewOnly,
   getProps,
   getWidth,
-} from "@common/selectors/modalSelectors";
+} from "@mds/common/redux/selectors/modalSelectors";
 import AddPartyComponentWrapper from "./AddPartyComponentWrapper";
 
 const propTypes = {

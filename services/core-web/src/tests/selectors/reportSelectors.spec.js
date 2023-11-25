@@ -1,7 +1,7 @@
-import { getReports } from "@common/selectors/reportSelectors";
-import { reportReducer } from "@common/reducers/reportReducer";
-import { storeReports } from "@common/actions/mineReportActions";
-import { REPORTS } from "@common/constants/reducerTypes";
+import { getReports } from "@mds/common/redux/selectors/reportSelectors";
+import { reportReducer } from "@mds/common/redux/reducers/reportReducer";
+import { storeReports } from "@mds/common/redux/actions/mineReportActions";
+import { REPORTS } from "@mds/common/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
 
 const mockState = {

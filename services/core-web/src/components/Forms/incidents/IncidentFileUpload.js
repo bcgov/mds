@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Field } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { MINE_INCIDENT_DOCUMENTS } from "@common/constants/API";
+import { MINE_INCIDENT_DOCUMENTS } from "@mds/common/constants/API";
 import FileUpload from "@/components/common/FileUpload";
 import { DOCUMENT, EXCEL, SPATIAL } from "@/constants/fileTypes";
 

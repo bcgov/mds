@@ -1,7 +1,8 @@
 import React from "react";
 import { withRouter, Link } from "react-router-dom";
 import { Row, Col, Typography, Button, Divider } from "antd";
-import { ArrowLeftOutlined, CheckCircleOutlined } from "@ant-design/icons";
+import CheckCircleOutlined from "@ant-design/icons/CheckCircleOutlined";
+import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import PropTypes from "prop-types";
 import * as routes from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";

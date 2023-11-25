@@ -22,13 +22,13 @@ import {
   requiredNotUndefined,
 } from "@common/utils/Validate";
 import { normalizePhone, normalizeDatetime } from "@common/utils/helpers";
-import * as Strings from "@common/constants/strings";
-import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
+import * as Strings from "@mds/common/constants/strings";
+import { getDropdownInspectors } from "@mds/common/redux/selectors/partiesSelectors";
 import {
   getDropdownIncidentStatusCodeOptions,
   getDropdownIncidentFollowupActionOptions,
-} from "@common/selectors/staticContentSelectors";
-import { closeModal, openModal } from "@common/actions/modalActions";
+} from "@mds/common/redux/selectors/staticContentSelectors";
+import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import { INCIDENT_CONTACT_METHOD_OPTIONS } from "@mds/common";
 import * as FORM from "@/constants/forms";
 import DocumentTable from "@/components/common/DocumentTable";

@@ -8,13 +8,13 @@ import { Alert, Typography, Row, Col } from "antd";
 import { Form } from "@ant-design/compatible";
 import { remove } from "lodash";
 import { ENVIRONMENT } from "@mds/common";
-import * as API from "@common/constants/API";
+import * as API from "@mds/common/constants/API";
 import {
   createInformationRequirementsTable,
   updateInformationRequirementsTableByFile,
-} from "@common/actionCreators/projectActionCreator";
-import { getProject } from "@common/selectors/projectSelectors";
-import { MODERN_EXCEL } from "@common/constants/fileTypes";
+} from "@mds/common/redux/actionCreators/projectActionCreator";
+import { getProject } from "@mds/common/redux/selectors/projectSelectors";
+import { MODERN_EXCEL } from "@mds/common/constants/fileTypes";
 import * as FORM from "@/constants/forms";
 import LinkButton from "@/components/common/LinkButton";
 import DocumentTable from "@/components/common/DocumentTable";
@@ -24,7 +24,7 @@ import {
   renderCategoryColumn,
   renderDateColumn,
   renderTextColumn,
-} from "@/components/common/CoreTableCommonColumns";
+} from "@mds/common/components/common/CoreTableCommonColumns";
 import { formatDateTime } from "@common/utils/helpers";
 import { documentNameColumn } from "@/components/common/DocumentColumns";
 import { MineDocument } from "@mds/common/models/documents/document";

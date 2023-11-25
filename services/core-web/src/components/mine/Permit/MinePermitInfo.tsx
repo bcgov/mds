@@ -12,12 +12,15 @@ import {
   removePermitAmendmentDocument,
   deletePermit,
   deletePermitAmendment,
-} from "@common/actionCreators/permitActionCreator";
-import { fetchPartyRelationships } from "@common/actionCreators/partiesActionCreator";
-import { fetchMineRecordById, createMineTypes } from "@common/actionCreators/mineActionCreator";
-import { openModal, closeModal } from "@common/actions/modalActions";
-import { getPermits } from "@common/selectors/permitSelectors";
-import { getMines, getMineGuid } from "@common/selectors/mineSelectors";
+} from "@mds/common/redux/actionCreators/permitActionCreator";
+import { fetchPartyRelationships } from "@mds/common/redux/actionCreators/partiesActionCreator";
+import {
+  fetchMineRecordById,
+  createMineTypes,
+} from "@mds/common/redux/actionCreators/mineActionCreator";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
+import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
+import { getMines, getMineGuid } from "@mds/common/redux/selectors/mineSelectors";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import ExplosivesPermit from "@/components/mine/ExplosivesPermit/ExplosivesPermit";
 import * as Permission from "@/constants/permissions";
@@ -25,10 +28,10 @@ import AddButton from "@/components/common/buttons/AddButton";
 import MinePermitTable from "@/components/mine/Permit/MinePermitTable";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
-import { getExplosivesPermits } from "@common/selectors/explosivesPermitSelectors";
-import { getUserAccessData } from "@common/selectors/authenticationSelectors";
+import { getExplosivesPermits } from "@mds/common/redux/selectors/explosivesPermitSelectors";
+import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import { IPermit, IMine, IPermitPartyRelationship, IExplosivesPermit } from "@mds/common";
-import { ActionCreator } from "@/interfaces/actionCreator";
+import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 /**
  * @class  MinePermitInfo - contains all permit information
  */

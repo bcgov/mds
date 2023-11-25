@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { PropTypes } from "prop-types";
-import { openModal, closeModal } from "@common/actions/modalActions";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import { Button, Dropdown, Menu } from "antd";
 import { isEmpty } from "lodash";
 import CustomPropTypes from "@/customPropTypes";
@@ -13,17 +13,17 @@ import {
   updateApplicationDelay,
   createApplicationDelay,
   fetchApplicationDelay,
-} from "@common/actionCreators/noticeOfWorkActionCreator";
+} from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
 import {
   getNoticeOfWork,
   getNOWProgress,
   getApplicationDelay,
-} from "@common/selectors/noticeOfWorkSelectors";
+} from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import {
   getDelayTypeDropDownOptions,
   getNoticeOfWorkApplicationProgressStatusCodeOptionsHash,
-} from "@common/selectors/staticContentSelectors";
-import { getDraftPermitAmendmentForNOW } from "@common/selectors/permitSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
+import { getDraftPermitAmendmentForNOW } from "@mds/common/redux/selectors/permitSelectors";
 import { ClockCircleOutlined, EyeOutlined, DownOutlined } from "@ant-design/icons";
 import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";

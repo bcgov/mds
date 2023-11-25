@@ -19,9 +19,9 @@ import {
   validateSelectOptions,
 } from "@common/utils/Validate";
 import { normalizePhone, resetForm } from "@common/utils/helpers";
-import { NOD_TYPE_FIELD_VALUE, NOTICE_OF_DEPARTURE_DOCUMENT_TYPE } from "@common/constants/strings";
+import { NOD_TYPE_FIELD_VALUE, NOTICE_OF_DEPARTURE_DOCUMENT_TYPE } from "@mds/common/constants/strings";
 import { bindActionCreators, compose } from "redux";
-import { DOCUMENT, EXCEL, SPATIAL } from "@common/constants/fileTypes";
+import { DOCUMENT, EXCEL, SPATIAL } from "@mds/common/constants/fileTypes";
 import { NOTICE_OF_DEPARTURE_DOWNLOAD_LINK } from "@/constants/strings";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";

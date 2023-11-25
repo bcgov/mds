@@ -2,7 +2,7 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
 import { detectDevelopmentEnvironment, detectProdEnvironment } from "@mds/common";
-import { isProponent, isAuthenticated } from "@/selectors/authenticationSelectors";
+import { isProponent, isAuthenticated } from "@mds/common/redux/selectors/authenticationSelectors";
 
 /**
  * @constant AuthorizationWrapper conditionally renders react children depending

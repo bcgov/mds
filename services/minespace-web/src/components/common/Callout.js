@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { CALLOUT_SEVERITY } from "../../../common/constants/strings";
+import { CALLOUT_SEVERITY } from "@mds/common/constants/strings";
 
 const propTypes = {
   message: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,

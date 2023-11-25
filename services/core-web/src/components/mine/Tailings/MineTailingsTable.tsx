@@ -7,15 +7,15 @@ import {
   CONSEQUENCE_CLASSIFICATION_CODE_HASH,
   DAM_OPERATING_STATUS_HASH,
   EMPTY_FIELD,
-} from "@common/constants/strings";
+} from "@mds/common/constants/strings";
 import { getHighestConsequence } from "@common/utils/helpers";
 import {
   getITRBExemptionStatusCodeOptionsHash,
   getTSFOperatingStatusCodeOptionsHash,
-} from "@common/selectors/staticContentSelectors";
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import { bindActionCreators } from "redux";
-import { storeDam } from "@common/actions/damActions";
-import { storeTsf } from "@common/actions/tailingsActions";
+import { storeDam } from "@mds/common/redux/actions/damActions";
+import { storeTsf } from "@mds/common/redux/actions/tailingsActions";
 import CoreTable from "@/components/common/CoreTable";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -24,7 +24,10 @@ import { EDIT_DAM, MINE_TAILINGS_DETAILS } from "@/constants/routes";
 import { IDam, ITailingsStorageFacility } from "@mds/common";
 import { ColumnsType } from "antd/lib/table";
 import { FixedType } from "rc-table/lib/interface";
-import { renderCategoryColumn, renderTextColumn } from "@/components/common/CoreTableCommonColumns";
+import {
+  renderCategoryColumn,
+  renderTextColumn,
+} from "@mds/common/components/common/CoreTableCommonColumns";
 import { Feature } from "@mds/common";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 

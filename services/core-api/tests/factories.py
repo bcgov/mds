@@ -1,5 +1,6 @@
 import uuid
 from datetime import datetime, timedelta
+from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointmentStatus
 from pytz import timezone, utc
 from random import randrange
 import factory
@@ -658,7 +659,7 @@ class MinePartyAppointmentFactory(BaseFactory):
     party = factory.SubFactory(PartyFactory, person=True, address=1)
     start_date = factory.LazyFunction(datetime.utcnow().date)
     end_date = None
-    status = None
+    status = MinePartyAppointmentStatus.active
     processed_by = factory.Faker('first_name')
     processed_on = TODAY
     permit_id = factory.LazyAttribute(lambda o: o.mine.mine_permit[0].permit_id
