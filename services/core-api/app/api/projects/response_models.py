@@ -8,20 +8,20 @@ class Requirement(fields.Raw):
     def format(self, value):
         return marshal(value, REQUIREMENTS_MODEL)
 
-PROJECT_SUMMARY_MODEL_ATTRIBUTES = api.inherit(
+PROJECT_SUMMARY_MODEL_ATTRIBUTES = api.model(
     'ProjectSummary', {
         'status_code': fields.String
     }
 )
 
-PROJECT_CONTACT_MODEL_ATTRIBUTES = api.inherit(
+PROJECT_CONTACT_MODEL_ATTRIBUTES = api.model(
     'ProjectContact', {
         'name': fields.String
     }
 )
 
-PROJECT_MODEL_ATTRIBUTES = api.inherit(
-    'Project', {
+PROJECT_MODEL_ATTRIBUTES = api.model(
+    'ProjectAttributes', {
         'project_guid': fields.String,
         'project_title': fields.String,
         'contacts': fields.List(fields.Nested(PROJECT_CONTACT_MODEL_ATTRIBUTES)),
