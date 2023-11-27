@@ -8,6 +8,18 @@ class Requirement(fields.Raw):
     def format(self, value):
         return marshal(value, REQUIREMENTS_MODEL)
 
+PROJECT_LINK_MODEL = api.model(
+    'ProjectLink', {
+        'project_link_guid': fields.String,
+        'project_guid': fields.String,
+        'related_project_guid': fields.String,
+        'update_user': fields.String,
+        'update_timestamp': fields.DateTime,
+        'create_user': fields.String,
+        'create_timestamp': fields.DateTime
+    }
+)
+
 
 PROJECT_SUMMARY_DOCUMENT_MODEL = api.inherit('ProjectSummaryDocument', MINE_DOCUMENT_MODEL, {
     'project_summary_id': fields.Integer,
@@ -243,6 +255,7 @@ PROJECT_MODEL = api.model(
         'information_requirements_table': fields.Nested(IRT_MODEL),
         'major_mine_application': fields.Nested(MAJOR_MINE_APPLICATION_MODEL),
         'project_decision_package': fields.Nested(PROJECT_DECISION_PACKAGE_MODEL),
+        'project_links': fields.Nested(PROJECT_LINK_MODEL),
         'update_user': fields.String,
         'update_timestamp': fields.DateTime,
         'create_user': fields.String,
