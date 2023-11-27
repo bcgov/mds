@@ -4,6 +4,7 @@ from sqlalchemy import FetchedValue
 from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import or_
 
 class ProjectLink(AuditMixin, Base):
     __tablename__ = 'project_link'
@@ -15,14 +16,18 @@ class ProjectLink(AuditMixin, Base):
 
     project = db.relationship('Project',
                               primaryjoin='Project.project_guid == ProjectLink.project_guid',
-                              back_populates='project_link')
+                              back_populates='project_links')
     related_project = db.relationship('Project',
                               primaryjoin='Project.project_guid == ProjectLink.related_project_guid',
-                              back_populates='project_link')
+                              back_populates='project_links')
 
 
     def __repr__(self):
         return f'{self.__class__.__name__} {self.project_link_guid}'
+
+    @classmethod
+    def get_project_and_related_projects(cls, guid):
+        return cls.query.filter(or_(ProjectLink.project_guid == guid, ProjectLink.related_project_guid == guid)).all()
 
     @classmethod
     def find_by_project_link_guid(cls, project_link_guid):

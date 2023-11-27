@@ -35,10 +35,11 @@ class Project(AuditMixin, Base):
         'ProjectContact',
         primaryjoin='and_(ProjectContact.project_guid == Project.project_guid, ProjectContact.deleted_ind == False)',
         lazy='selectin')
-    project_link = db.relationship(
+    project_links = db.relationship(
         'ProjectLink',
         primaryjoin='or_(Project.project_guid == ProjectLink.project_guid, Project.project_guid == ProjectLink.related_project_guid)',
-        lazy='selectin'
+        lazy='selectin',
+        back_populates='related_project'
     )
 
     def __repr__(self):

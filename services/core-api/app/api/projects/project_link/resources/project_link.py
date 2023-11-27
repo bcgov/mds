@@ -58,3 +58,13 @@ class ProjectLinkListResource(Resource, UserMixin):
 
         project_link.delete()
         return None, 204
+
+    @api.doc(
+        description='Get Project Links.',
+        params={'project_guid': 'The GUID of the project to get the Project Links for.'})
+    @api.marshal_with(PROJECT_LINK_MODEL, code=200)
+    @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT])
+    def get(self, project_guid):
+        project_links = ProjectLink.get_project_and_related_projects(project_guid)
+
+        return project_links, 200
