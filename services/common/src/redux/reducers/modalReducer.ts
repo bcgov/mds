@@ -56,7 +56,7 @@ export const modalReducer = (state = initialState, action) => {
           title: action.payload,
         },
       };
-    case actionTypes.STORE_IS_LOADING:
+    case actionTypes.STORE_FORM_IS_LOADING:
       return {
         ...state,
         isLoading: action.payload,
