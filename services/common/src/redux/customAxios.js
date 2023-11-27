@@ -54,7 +54,7 @@ const notifymAdmin = (error) => {
   const payload = {
     "title" : email_title,
     "body": email_body,
-    "recipients" : "to@be.configured"
+    "recipients" : ENVIRONMENT.errorNotifyRecipients
   };
 
   CustomAxios().post(ENVIRONMENT.apiUrl + API.COMMONS_EMAIL, payload, createRequestHeader())
