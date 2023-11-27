@@ -24,6 +24,7 @@ PROJECT_MODEL_ATTRIBUTES = api.model(
     'ProjectAttributes', {
         'project_guid': fields.String,
         'project_title': fields.String,
+        'proponent_project_id': fields.String,
         'contacts': fields.List(fields.Nested(PROJECT_CONTACT_MODEL_ATTRIBUTES)),
         'project_summary': fields.Nested(PROJECT_SUMMARY_MODEL_ATTRIBUTES),
         'update_timestamp': fields.DateTime
