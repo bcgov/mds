@@ -42,3 +42,19 @@ class ProjectLinkListResource(Resource, UserMixin):
                                      data.get('related_project_guid'))
         project_link.save()
         return project_link, 201
+
+    @api.doc(
+        description='Delete a Project Link.',
+        params={
+            'project_link_guid': 'The GUID of the Project Link to delete.'
+        })
+    @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT])
+    @api.response(204, 'Successfully deleted.')
+    def delete(self, mine_guid, project_link_guid):
+        project_link = ProjectLink.find_by_project_link_guid(
+            project_link_guid)
+        if project_link is None:
+            raise NotFound('Project Link Not found')
+
+        project_link.delete()
+        return None, 204

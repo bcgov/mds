@@ -255,7 +255,7 @@ PROJECT_MODEL = api.model(
         'information_requirements_table': fields.Nested(IRT_MODEL),
         'major_mine_application': fields.Nested(MAJOR_MINE_APPLICATION_MODEL),
         'project_decision_package': fields.Nested(PROJECT_DECISION_PACKAGE_MODEL),
-        'project_links': fields.Nested(PROJECT_LINK_MODEL),
+        'project_link': fields.List(fields.Nested(PROJECT_LINK_MODEL)),
         'update_user': fields.String,
         'update_timestamp': fields.DateTime,
         'create_user': fields.String,
