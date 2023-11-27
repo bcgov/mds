@@ -6,7 +6,10 @@ import { Link } from "react-router-dom";
 import * as Strings from "@mds/common/constants/strings";
 import * as router from "@/constants/routes";
 import { nullableStringSorter } from "@common/utils/helpers";
-import { renderHighlightedTextColumn, renderTextColumn } from "../common/CoreTableCommonColumns";
+import {
+  renderHighlightedTextColumn,
+  renderTextColumn,
+} from "@mds/common/components/common/CoreTableCommonColumns";
 import CoreTable from "@/components/common/CoreTable";
 
 /**

@@ -11,7 +11,10 @@ import DocumentLink from "@/components/common/DocumentLink";
 import { isEmpty } from "lodash";
 import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
 import CoreTable from "@/components/common/CoreTable";
-import { renderDateColumn, renderTextColumn } from "@/components/common/CoreTableCommonColumns";
+import {
+  renderDateColumn,
+  renderTextColumn,
+} from "@mds/common/components/common/CoreTableCommonColumns";
 
 /**
  * @class MineNoticeOfWorkTable - list of mine notice of work applications

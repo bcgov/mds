@@ -3,7 +3,10 @@ import * as Strings from "@mds/common/constants/strings";
 import { Button, Popconfirm, Tag, Tooltip } from "antd";
 import { ColumnType } from "antd/lib/table";
 import { TRASHCAN } from "@/constants/assets";
-import { renderDateColumn, renderTextColumn } from "./CoreTableCommonColumns";
+import {
+  renderDateColumn,
+  renderTextColumn,
+} from "@mds/common/components/common/CoreTableCommonColumns";
 import { nullableStringSorter } from "@common/utils/helpers";
 import { ClockCircleOutlined } from "@ant-design/icons";
 import DocumentLink from "./DocumentLink";

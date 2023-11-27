@@ -1,6 +1,10 @@
+import base64
+from io import BytesIO
 import re
 from datetime import datetime
 from pytz import timezone, utc
+from PIL import Image
+from flask import current_app
 
 
 def clean_HTML_string(raw_html):
@@ -45,3 +49,33 @@ def get_preamble_text(description):
            f"Reclamation Program, including the deposit of reclamation securities. Nothing in this permit limits the authority of "\
            f"other government agencies to set additional requirements or to act independently under their respective authorizations "\
            f"and legislation."
+
+def create_image_with_aspect_ratio(source, width=None, height=None):
+
+    # If there is a prefix in the source, remove it
+    base64_source = source
+    if ';base64,' in base64_source:
+        prefix, base64_source = base64_source.split(';base64,', 1)
+
+    # Pad base64_source if it's not correctly padded
+    missing_padding = len(base64_source) % 4
+    if missing_padding:
+        current_app.logger.debug('Padding base64 string with {} ='.format(missing_padding))
+        base64_source += '=' * (4 - missing_padding)
+
+    # Convert base64 string to PIL Image to get dimensions
+    img_data = base64.b64decode(base64_source)
+    img = Image.open(BytesIO(img_data))
+
+    # Use aspect ratio of image to calculate width if not provided
+    if height and not width:
+        aspect_ratio = img.width / img.height
+        # Convert height from inches to pixels (Word assumes 96 DPI)
+        height_in_pixels = height * 96
+
+        # Calculate width while maintaining aspect ratio
+        width = height_in_pixels * aspect_ratio
+        # Convert width from pixels back to inches
+        width = width / 96
+
+    return {'source': source, 'width': width, 'height': height}

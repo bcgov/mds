@@ -78,7 +78,7 @@ class TestGetNOWApplicationDocumentTypeResource:
         """Should return the a token for successful generation"""
         now_application = NOWApplicationFactory()
         now_application_identity = NOWApplicationIdentityFactory(now_application=now_application)
-        now_application.issuing_inspector.signature = 'data:image/png;base64,'
+        now_application.issuing_inspector.signature = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
 
         data = {
             'now_application_guid': now_application_identity.now_application_guid,
@@ -99,7 +99,7 @@ class TestGetNOWApplicationDocumentTypeResource:
         """Should return the a token for successful generation"""
         now_application = NOWApplicationFactory()
         now_application_identity = NOWApplicationIdentityFactory(now_application=now_application)
-        now_application.issuing_inspector.signature = 'data:image/png;base64,'
+        now_application.issuing_inspector.signature = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
 
         changed_mine_no = str(now_application_identity.mine.mine_no + '1')
         data = {

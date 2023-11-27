@@ -79,18 +79,22 @@ describe("`fetchExplosivesPermits` action creator", () => {
 
 describe("`updateExplosivesPermit` action creator", () => {
   const mine_guid = "12345-6789";
-  const permit_guid = "12345-6789";
-  const url = `${ENVIRONMENT.apiUrl}${API.EXPLOSIVES_PERMIT(mine_guid, permit_guid)}`;
+  const explosives_permit_guid = "12345-6789";
+  const url = `${ENVIRONMENT.apiUrl}${API.EXPLOSIVES_PERMIT(mine_guid, explosives_permit_guid)}`;
   const permit_status_code = "C";
   const description = "test description";
 
-  const mockPayload = { permit_status_code, description, generate_documents: true };
+  const mockPayload = {
+    mine_guid,
+    explosives_permit_guid,
+    permit_status_code,
+    description,
+    generate_documents: true,
+  };
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPut(url, mockPayload).reply(200, mockResponse);
     return updateExplosivesPermit(
-      mine_guid,
-      permit_guid,
       mockPayload,
       true
     )(dispatch).then(() => {
@@ -102,11 +106,7 @@ describe("`updateExplosivesPermit` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPut(url).reply(418, MOCK.ERROR);
-    return updateExplosivesPermit(
-      mine_guid,
-      permit_guid,
-      mockPayload
-    )(dispatch).catch(() => {
+    return updateExplosivesPermit(mockPayload)(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

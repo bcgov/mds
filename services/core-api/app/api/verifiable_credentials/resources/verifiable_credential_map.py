@@ -12,6 +12,7 @@ from app.api.verifiable_credentials.models.credentials import PartyVerifiableCre
 from app.api.services.traction_service import TractionService
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import requires_any_of, MINESPACE_PROPONENT, EDIT_PARTY
+from app.api.utils.feature_flag import Feature, is_feature_enabled
 
 
 
@@ -29,6 +30,8 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
     @api.doc(description="Create a connection invitation for a party by guid", params={"party_guid":"guid for party with wallet connection","permit_amendment_guid":"parmit_amendment that will be offered as a credential to the indicated party"})
     @requires_any_of([EDIT_PARTY, MINESPACE_PROPONENT])
     def post(self):
+        if not is_feature_enabled(Feature.TRACTION_VERIFIABLE_CREDENTIALS):
+            raise NotImplemented()
         data = self.parser.parse_args()
         current_app.logger.warning(data)
         party_guid = data["party_guid"]

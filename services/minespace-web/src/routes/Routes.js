@@ -111,6 +111,10 @@ const Routes = () => (
         path={routes.EDIT_MINE_INCIDENT.route}
         component={AuthenticationGuard()(routes.EDIT_MINE_INCIDENT.component)}
       />
+      <Route
+        path={routes.VIEW_ESUP.route}
+        component={AuthenticationGuard()(routes.VIEW_ESUP.component)}
+      />
       {/* 404 - PAGE NOT FOUND */}
       <Route
         render={() => (

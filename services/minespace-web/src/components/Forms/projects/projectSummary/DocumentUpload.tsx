@@ -12,7 +12,7 @@ import DocumentTable from "@/components/common/DocumentTable";
 import { documentNameColumn, uploadDateColumn } from "@/components/common/DocumentColumns";
 import ProjectSummaryFileUpload from "@/components/Forms/projects/projectSummary/ProjectSummaryFileUpload";
 import * as FORM from "@/constants/forms";
-import { renderCategoryColumn } from "@/components/common/CoreTableCommonColumns";
+import { renderCategoryColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import { MineDocument } from "@mds/common/models/documents/document";
 import { IMineDocument } from "@mds/common";
 import { RootState } from "@/App";

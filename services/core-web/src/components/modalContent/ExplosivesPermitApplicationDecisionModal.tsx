@@ -1,6 +1,4 @@
 import React, { FC } from "react";
-import PropTypes from "prop-types";
-import CustomPropTypes from "@/customPropTypes";
 import ExplosivesPermitDecisionForm from "@/components/Forms/ExplosivesPermit/ExplosivesPermitDecisionForm";
 import { IExplosivesPermitDocumentType, IParty } from "@mds/common";
 

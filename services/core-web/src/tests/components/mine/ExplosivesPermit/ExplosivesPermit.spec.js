@@ -5,6 +5,12 @@ import * as MOCK from "@/tests/mocks/dataMocks";
 
 const props = {};
 
+jest.mock("@mds/common/providers/featureFlags/useFeatureFlag", () => ({
+  useFeatureFlag: () => ({
+    isFeatureEnabled: () => true,
+  }),
+}));
+
 const setupProps = () => {
   props.isPermitTab = false;
   props.mineGuid = "12351235";

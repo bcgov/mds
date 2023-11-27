@@ -5,18 +5,10 @@
     "jsx": "react",
     "outDir": "build" /* Redirect output structure to the directory. */,
     "paths": {
-      "@common/*": [
-        "common/*"
-      ],
-      "@mds/common": [
-        "../common/src"
-      ],
-      "@mds/common/*": [
-        "../common/src/*"
-      ],
-      "@/*": [
-        "src/*"
-      ]
+      "@common/*": ["common/*"],
+      "@mds/common": ["../common/src"],
+      "@mds/common/*": ["../common/src/*"],
+      "@/*": ["src/*"]
     },
     "module": "ESNext",
     "moduleResolution": "node",
@@ -41,9 +33,5 @@
     "../../.eslintrc.js",
     "../common/src/@Types/**/*"
   ],
-  "exclude": [
-    "node_modules",
-    "src/**/*.test.ts",
-    "src/**/*.test.tsx"
-  ]
+  "exclude": ["node_modules", "src/**/*.test.ts", "src/**/*.test.tsx"]
 }

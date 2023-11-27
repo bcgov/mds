@@ -43,6 +43,7 @@ exports[`DocumentUpload renders properly 1`] = `
             "title": "File Name",
           },
           Object {
+            "className": undefined,
             "dataIndex": "project_summary_document_type_code",
             "key": "project_summary_document_type_code",
             "render": [Function],

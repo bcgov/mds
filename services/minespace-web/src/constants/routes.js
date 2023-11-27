@@ -1,5 +1,6 @@
 import React from "react";
 import queryString from "query-string";
+import ExplosivesPermit from "@/components/dashboard/mine/permits/ExplosivesPermit";
 const DamsPage = React.lazy(() => import("@common/components/tailings/dam/DamsPage"));
 const InformationRequirementsTablePage = React.lazy(() =>
   import("@/components/pages/Project/InformationRequirementsTablePage")
@@ -185,4 +186,11 @@ export const EDIT_DAM = {
   dynamicRoute: (mineGuid, tailingsStorageFacilityGuid, damGuid) =>
     `/mine/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/${damGuid}`,
   component: DamsPage,
+};
+
+export const VIEW_ESUP = {
+  route: "/mine/:mineGuid/explosives-permits/:explosivesPermitGuid",
+  dynamicRoute: (mineGuid, explosivesPermitGuid) =>
+    `/mine/${mineGuid}/explosives-permits/${explosivesPermitGuid}`,
+  component: ExplosivesPermit,
 };

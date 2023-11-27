@@ -7,7 +7,14 @@ import { openModal } from "@mds/common/redux/actions/modalActions";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { getExplosivesPermits } from "@mds/common/redux/selectors/explosivesPermitSelectors";
 import PermitsTable from "@/components/dashboard/mine/permits/PermitsTable";
-import { Feature, IExplosivesPermit, IMine, IPermit, VC_CONNECTION_STATES, isFeatureEnabled } from "@mds/common";
+import {
+  Feature,
+  IExplosivesPermit,
+  IMine,
+  IPermit,
+  VC_CONNECTION_STATES,
+  isFeatureEnabled,
+} from "@mds/common";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import modalConfig from "@/components/modalContent/config";
 

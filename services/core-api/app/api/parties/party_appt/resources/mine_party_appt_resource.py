@@ -127,6 +127,9 @@ class MinePartyApptResource(Resource, UserMixin):
         end_date = data.get('end_date')
         union_rep_company = data.get('union_rep_company')
 
+        if start_date is None:
+            raise BadRequest("Start date not provided")
+
         party = Party.find_by_party_guid(party_guid)
         if party is None:
             raise NotFound('Party not found')

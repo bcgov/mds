@@ -4,24 +4,39 @@ import {
   logoutUser,
   storeUserAccessData,
 } from "@mds/common/redux/actions/authenticationActions";
+import * as ROUTES from "../../constants/routes";
 
 const baseExpectedValue = {
   isAuthenticated: false,
+  userAccessData: [],
+  userInfo: {},
+  isProponent: undefined,
+  redirect: false,
+};
+
+const baseAuthenticatedExpectedValue = {
+  isAuthenticated: true,
   userAccessData: [],
   userInfo: {},
 };
 
 // Creates deep copy of javascript object instead of setting a reference
 const getBaseExpectedValue = () => JSON.parse(JSON.stringify(baseExpectedValue));
+const getBaseAuthenticatedExpectedValue = () =>
+  JSON.parse(JSON.stringify(baseAuthenticatedExpectedValue));
 
 describe("authReducer", () => {
+  beforeEach(() => {
+    global.GLOBAL_ROUTES = ROUTES;
+  });
+
   it("receives undefined", () => {
     const expectedValue = getBaseExpectedValue();
     expect(authenticationReducer(undefined, {})).toEqual(expectedValue);
   });
 
   it("receives AUTHENTICATE_USER", () => {
-    const expectedValue = getBaseExpectedValue();
+    const expectedValue = getBaseAuthenticatedExpectedValue();
     expectedValue.isAuthenticated = true;
     const result = authenticationReducer(undefined, authenticateUser({}));
     expect(result).toEqual(expectedValue);
@@ -35,7 +50,8 @@ describe("authReducer", () => {
   });
 
   it("receives LOGOUT", () => {
-    const expectedValue = getBaseExpectedValue();
+    const expectedValue = getBaseAuthenticatedExpectedValue();
+    expectedValue.isAuthenticated = false;
     const result = authenticationReducer(undefined, logoutUser());
     expect(result).toEqual(expectedValue);
   });

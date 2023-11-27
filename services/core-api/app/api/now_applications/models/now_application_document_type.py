@@ -1,7 +1,7 @@
 import re
 from sqlalchemy.schema import FetchedValue
 from flask_restplus import marshal
-from app.api.utils.helpers import format_datetime_to_string, format_currency
+from app.api.utils.helpers import format_datetime_to_string, format_currency, create_image_with_aspect_ratio
 
 from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
@@ -145,9 +145,6 @@ class NOWApplicationDocumentType(AuditMixin, Base):
                                                 'reclamation_cost', True),
             }
 
-        def create_image(source, width=None, height=None):
-            return {'source': source, 'width': width, 'height': height}
-
         def validate_issuing_inspector(now_application):
             if not now_application.issuing_inspector:
                 raise Exception('No Issuing Inspector has been assigned')
@@ -188,7 +185,7 @@ class NOWApplicationDocumentType(AuditMixin, Base):
             if not is_draft:
                 template_data['images'] = {
                     'issuing_inspector_signature':
-                    create_image(
+                    create_image_with_aspect_ratio(
                         now_application.issuing_inspector.signature,
                         height=SIGNATURE_IMAGE_HEIGHT_INCHES)
                 }
@@ -248,7 +245,7 @@ class NOWApplicationDocumentType(AuditMixin, Base):
 
             template_data['images'] = {
                 'issuing_inspector_signature':
-                create_image(
+                create_image_with_aspect_ratio(
                     now_application.issuing_inspector.signature,
                     height=SIGNATURE_IMAGE_HEIGHT_INCHES)
             }

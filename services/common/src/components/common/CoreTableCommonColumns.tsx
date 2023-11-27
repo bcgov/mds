@@ -1,10 +1,10 @@
 import React, { ReactNode } from "react";
 import Highlight from "react-highlighter";
-import { dateSorter, formatDate, nullableStringSorter } from "@common/utils/helpers";
+import { dateSorter, formatDate, nullableStringSorter } from "@mds/common/redux/utils/helpers";
 import { EMPTY_FIELD } from "@mds/common/constants/strings";
 import { ColumnType } from "antd/lib/table";
 import { Button, Dropdown } from "antd";
-import CaretDownOutlined from "@ant-design/icons/CaretDownOutlined";
+import { CaretDownOutlined } from "@ant-design/icons";
 import { generateActionMenuItems } from "./ActionMenu";
 
 export const renderTextColumn = (
@@ -50,11 +50,13 @@ export const renderCategoryColumn = (
   title: string,
   categoryMap: any,
   sortable = false,
-  placeHolder = EMPTY_FIELD
+  placeHolder = EMPTY_FIELD,
+  className?: string
 ) => {
   return {
     title,
     dataIndex,
+    className,
     key: dataIndex,
     render: (text: string) => <div title={title}>{categoryMap[text] ?? placeHolder}</div>,
     ...(sortable ? { sorter: nullableStringSorter(dataIndex) } : null),
