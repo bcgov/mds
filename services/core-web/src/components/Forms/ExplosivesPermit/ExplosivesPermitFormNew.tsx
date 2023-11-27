@@ -33,10 +33,7 @@ import {
   required,
 } from "@common/utils/Validate";
 import { createDropDownList, formatDate, resetForm } from "@common/utils/helpers";
-import {
-  getAllPartyRelationships,
-  getPartyRelationships,
-} from "@mds/common/redux/selectors/partiesSelectors";
+import { getAllPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { getIsFormLoading } from "@mds/common/redux/reducers/modalReducer";
 import { renderConfig } from "@/components/common/config";
@@ -73,7 +70,6 @@ interface StateProps {
   permits: IPermit[];
   mines_permit_guid: string;
   formValues: IExplosivesPermit;
-  partyRelationships: IPermitPartyRelationship[];
   allPartyRelationships: IPermitPartyRelationship[];
   noticeOfWorkApplications: IimportedNOWApplication[];
   submitting: boolean;
@@ -128,7 +124,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
     }
   }, [radioSelection]);
 
-  const partiesData = props.isPermitTab ? props.allPartyRelationships : props.partyRelationships;
+  const partiesData = props.allPartyRelationships;
   const mineManagers = partiesData.filter(
     ({ mine_party_appt_type_code }) => mine_party_appt_type_code === "MMG"
   );
@@ -644,7 +640,6 @@ const mapStateToProps = (state) => ({
   permits: getPermits(state),
   mines_permit_guid: selector(state, "permit_guid"),
   formValues: getFormValues(FORM.EXPLOSIVES_PERMIT_NEW)(state),
-  partyRelationships: getPartyRelationships(state),
   allPartyRelationships: getAllPartyRelationships(state),
   noticeOfWorkApplications: getNoticeOfWorkList(state),
 });
