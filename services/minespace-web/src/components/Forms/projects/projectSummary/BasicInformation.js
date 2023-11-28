@@ -3,6 +3,7 @@ import { Typography } from "antd";
 import { Field } from "redux-form";
 import { maxLength, required } from "@common/utils/Validate";
 import { renderConfig } from "@/components/common/config";
+import LinkedProjects from "@/components/Forms/projects/projectSummary/LinkedProjects";
 
 const propTypes = {};
 
@@ -48,6 +49,7 @@ export const BasicInformation = () => {
         minRows={10}
         validate={[maxLength(4000), required]}
       />
+      <LinkedProjects />
     </>
   );
 };
