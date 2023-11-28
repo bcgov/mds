@@ -1,18 +1,18 @@
 import axios from "axios";
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
-import { ENVIRONMENT } from "@mds/common";
+import { DEFAULT_DASHBOARD_PARAMS, ENVIRONMENT } from "@mds/common";
 import { request, success, error } from "@/actions/genericActions";
 import * as userMineActions from "@/actions/userMineActions";
 import * as reducerTypes from "@/constants/reducerTypes";
-import * as API from "@/constants/API";
+import * as API from "@mds/common/constants/API";
 import { createRequestHeader } from "@/utils/RequestHeaders";
 
-export const fetchUserMineInfo = () => (dispatch) => {
+export const fetchUserMineInfo = (params = DEFAULT_DASHBOARD_PARAMS) => (dispatch) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.GET_USER_MINE_INFO));
   return axios
-    .get(`${ENVIRONMENT.apiUrl + API.USER_MINE_INFO}`, createRequestHeader())
+    .get(`${ENVIRONMENT.apiUrl + API.MINE_LIST_QUERY(params)}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_USER_MINE_INFO));
       dispatch(userMineActions.storeUserMineInfo(response.data));

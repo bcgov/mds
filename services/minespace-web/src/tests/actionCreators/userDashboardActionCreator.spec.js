@@ -6,7 +6,7 @@ import {
   fetchUserMineInfo,
 } from "@/actionCreators/userDashboardActionCreator";
 import * as genericActions from "@/actions/genericActions";
-import * as API from "@/constants/API";
+import * as API from "@mds/common/constants/API";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const dispatch = jest.fn();
@@ -47,7 +47,7 @@ describe("`fetchMineRecordById` action creator", () => {
 });
 
 describe("`fetchUserMineInfo` action creator", () => {
-  const url = ENVIRONMENT.apiUrl + API.USER_MINE_INFO;
+  const url = ENVIRONMENT.apiUrl + API.MINE_LIST_QUERY(`&page=1&per_page=10`);
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);

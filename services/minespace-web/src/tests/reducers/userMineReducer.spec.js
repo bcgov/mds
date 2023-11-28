@@ -2,9 +2,15 @@ import userMineReducer from "@/reducers/userMineReducer";
 import { storeMine, storeUserMineInfo, storeMineDocuments } from "@/actions/userMineActions";
 
 const baseExpectedValue = {
-  userMineInfo: {},
-  mine: {},
+  userMineInfo: {
+    records: [],
+    current_page: 0,
+    items_per_page: 0,
+    total: 0,
+    total_pages: 0,
+  },
   mineDocuments: [],
+  mine: null,
 };
 
 // Creates deep copy of javascript object instead of setting a reference
