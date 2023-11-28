@@ -15,6 +15,7 @@ export const DEFAULT_ENVIRONMENT = {
   keycloak_url: "https://test.loginproxy.gov.bc.ca/auth",
   siteminder_url: "https://logontest.gov.bc.ca",
   vcauthn_pres_req_conf_id: "minespace-access-0.1-dev",
+  errorNotifyRecipients: "mds@gov.bc.ca",
 };
 
 export const WINDOW_LOCATION = `${window.location.origin}${process.env.BASE_PATH}`;

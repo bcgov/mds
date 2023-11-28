@@ -36,9 +36,11 @@ const notifymAdmin = (error) => {
   let date = new Date()
   const reported_date = `${date} ${date.getHours()}:${date.getMinutes()}`;
   const user = decodeJWT(createRequestHeader().headers.Authorization)
+  const environment_name = ENVIRONMENT.environment.toString().toUpperCase();
 
-  const email_title = "[MDS_ERROR] [TO_ADMIN] - " + reported_date + " - " + business_message;
-  const email_body = `<p><b>Business Error:</b> ${business_message}</P>
+  const email_title = "[MDS_INCIDENT_REPORT] [" + environment_name + "] - " + reported_date + " - " + business_message;
+  const email_body = `<p><b>Environment:</b> ${environment_name}</P>
+    <p><b>Business Error:</b> ${business_message}</P>
     <p>
       <b>Reporter's Name:</b> ${user.given_name} ${user.family_name}</br>
       <b>Reporter's Email:</b> ${user.email}</br>
@@ -56,6 +58,8 @@ const notifymAdmin = (error) => {
     "body": email_body,
     "recipients" : ENVIRONMENT.errorNotifyRecipients
   };
+
+  console.log("Sending error details to ", ENVIRONMENT.errorNotifyRecipients)
 
   CustomAxios().post(ENVIRONMENT.apiUrl + API.COMMONS_EMAIL, payload, createRequestHeader())
     .then((response) => {
