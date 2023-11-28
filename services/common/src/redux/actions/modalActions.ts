@@ -19,3 +19,8 @@ export const changeModalTitle = (payload: unknown) => ({
   type: actionTypes.UPDATE_MODAL_TITLE,
   payload,
 });
+
+export const setIsFormLoading = (payload: boolean) => ({
+  type: actionTypes.STORE_FORM_IS_LOADING,
+  payload,
+});
