@@ -26,6 +26,7 @@ Cypress.Commands.add("login", () => {
     environment: Cypress.env("CYPRESS_ENVIRONMENT"),
     flagsmithUrl: Cypress.env("CYPRESS_FLAGSMITH_URL"),
     flagsmithKey: Cypress.env("CYPRESS_FLAGSMITH_KEY"),
+    errorNotifyRecipients: Cypress.env("ERROR_NOTIFY_RECIPIENTS"),
   };
 
   cy.intercept("GET", environmentUrl, (req) => {
