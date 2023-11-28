@@ -26,10 +26,6 @@ class ProjectLink(AuditMixin, Base):
         return f'{self.__class__.__name__} {self.project_link_guid}'
 
     @classmethod
-    def get_project_and_related_projects(cls, guid):
-        return cls.query.filter(or_(ProjectLink.project_guid == guid, ProjectLink.related_project_guid == guid)).all()
-
-    @classmethod
     def find_by_project_link_guid(cls, project_link_guid):
         return cls.query.filter_by(
             project_link_guid=project_link_guid).one_or_none()

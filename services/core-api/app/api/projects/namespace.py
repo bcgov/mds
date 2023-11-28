@@ -87,4 +87,4 @@ api.add_resource(ProjectDecisionPackageUploadedDocumentResource, '/<string:proje
 # Project Link
 api.add_resource(ProjectLinkListResource, '/<string:mine_guid>/project-link')
 api.add_resource(ProjectLinkListResource, '/<string:mine_guid>/project-link/<string:project_link_guid>')
-api.add_resource(ProjectLinkListResource, '/project-link/<string:project_guid>')
+
