@@ -10,7 +10,7 @@ Cypress.Commands.add("login", () => {
     matomoUrl: Cypress.env("CYPRESS_MATOMO_URL"),
     filesystemProviderUrl: Cypress.env("CYPRESS_FILE_SYSTEM_PROVIDER_URL"),
     flagsmithUrl: Cypress.env("CYPRESS_FLAGSMITH_URL"),
-    errorNotifyRecipients: Cypress.env("ERROR_NOTIFY_RECIPIENTS"),
+    errorNotifyRecipients: "test@test.test",
     flagsmithKey: Cypress.env("CYPRESS_FLAGSMITH_KEY"),
     keycloak_clientId: Cypress.env("CYPRESS_KEYCLOAK_CLIENT_ID"),
     keycloak_resource: Cypress.env("CYPRESS_KEYCLOAK_RESOURCE"),
