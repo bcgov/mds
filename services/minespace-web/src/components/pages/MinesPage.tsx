@@ -50,7 +50,6 @@ export const MinesPage = () => {
     setDesiredPageSize(pageSize);
   };
 
-  // MAKE H1 ON MINESPACE 36px
   const renderSkeleton = () => {
     return (
       <div className="link-card">
