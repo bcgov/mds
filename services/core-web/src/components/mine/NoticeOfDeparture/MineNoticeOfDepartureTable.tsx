@@ -7,7 +7,7 @@ import {
   NOTICE_OF_DEPARTURE_STATUS,
   NOTICE_OF_DEPARTURE_TYPE,
 } from "@mds/common/constants/strings";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 import { INoticeOfDeparture } from "@mds/common";
 import { TablePaginationConfig } from "antd/es/table";
 

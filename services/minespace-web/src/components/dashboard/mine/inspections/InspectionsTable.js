@@ -6,7 +6,7 @@ import { formatDate } from "@/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import { RED_CLOCK } from "@/constants/assets";
 import * as STRINGS from "@/constants/strings";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 
 const propTypes = {
   orders: CustomPropTypes.complianceOrders,

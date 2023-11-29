@@ -7,7 +7,7 @@ import { formatDate } from "@/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import * as routes from "@/constants/routes";
 import { EDIT_PENCIL } from "@/constants/assets";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 
 const propTypes = {
   projects: PropTypes.arrayOf(CustomPropTypes.project).isRequired,

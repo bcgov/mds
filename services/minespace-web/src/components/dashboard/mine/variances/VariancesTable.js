@@ -8,7 +8,7 @@ import { formatDate } from "@/utils/helpers";
 import { RED_CLOCK } from "@/constants/assets";
 import * as Strings from "@/constants/strings";
 import LinkButton from "@/components/common/LinkButton";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 
 const propTypes = {
   variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,

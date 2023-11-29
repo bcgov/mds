@@ -1,5 +1,5 @@
 import React, { useState, useEffect, FC } from "react";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 import {
   documentNameColumn,
   documentNameColumnNew,
@@ -294,22 +294,22 @@ export const DocumentTable: FC<DocumentTableProps> = ({
 
   const bulkActionsProps = enableBulkActions
     ? {
-      rowSelection: {
-        type: "checkbox",
-        ...rowSelectionObject,
-      },
-    }
+        rowSelection: {
+          type: "checkbox",
+          ...rowSelectionObject,
+        },
+      }
     : {};
 
   const versionProps = showVersionHistory
     ? {
-      expandProps: {
-        childrenColumnName: "versions",
-        matchChildColumnsToParent: true,
-        recordDescription: "version history",
-        rowExpandable: (record) => record.number_prev_versions > 0,
-      },
-    }
+        expandProps: {
+          childrenColumnName: "versions",
+          matchChildColumnsToParent: true,
+          recordDescription: "version history",
+          rowExpandable: (record) => record.number_prev_versions > 0,
+        },
+      }
     : {};
 
   const coreTableProps = {

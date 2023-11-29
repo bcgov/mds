@@ -10,7 +10,7 @@ import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import * as Permission from "@/constants/permissions";
 import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import DocumentLink from "@/components/common/DocumentLink";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 
 const propTypes = {
   noticeOfWorkReviews: PropTypes.arrayOf(CustomPropTypes.NOWApplicationReview).isRequired,

@@ -1,14 +1,17 @@
 import React from "react";
 import { Button, Row } from "antd";
 import EyeOutlined from "@ant-design/icons/EyeOutlined";
-import { NOTICE_OF_DEPARTURE_STATUS, NOTICE_OF_DEPARTURE_TYPE } from "@mds/common/constants/strings";
+import {
+  NOTICE_OF_DEPARTURE_STATUS,
+  NOTICE_OF_DEPARTURE_TYPE,
+} from "@mds/common/constants/strings";
 import { EDITABLE_NOTICE_OF_DEPARTURE_STATUS, EMPTY_FIELD } from "@/constants/strings";
 
 import { formatDate } from "@/utils/helpers";
 import { EditIcon } from "@/assets/icons";
 import { INoticeOfDeparture, NoDStatusDisplayEnum, NoDTypeSaveEnum } from "@mds/common";
 import { ColumnsType } from "antd/lib/table";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 
 interface NoticeOfDepartureTableProps {
   data: INoticeOfDeparture[];

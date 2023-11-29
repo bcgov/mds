@@ -17,7 +17,7 @@ import { serverSidePaginationOptions, parseServerSideSearchOptions } from "@mds/
 import LinkButton from "@/components/common/LinkButton";
 import * as routes from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 
 const propTypes = {
   isLoaded: PropTypes.bool.isRequired,

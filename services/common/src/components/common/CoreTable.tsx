@@ -101,14 +101,14 @@ const CoreTable = <T,>(props: CoreTableProps<T>) => {
       return expandProps.matchChildColumnsToParent
         ? { expandIcon: renderTableExpandIcon, indentSize: 0, ...expandProps }
         : {
-          rowExpandable:
-            expandProps.rowExpandable ??
-            ((record) => expandProps.getDataSource(record).length > 0),
-          expandIcon: renderTableExpandIcon,
-          expandRowByClick: true,
-          expandedRowRender: expandProps.expandedRowRender ?? renderExpandedRow,
-          ...expandProps,
-        };
+            rowExpandable:
+              expandProps.rowExpandable ??
+              ((record) => expandProps.getDataSource(record).length > 0),
+            expandIcon: renderTableExpandIcon,
+            expandRowByClick: true,
+            expandedRowRender: expandProps.expandedRowRender ?? renderExpandedRow,
+            ...expandProps,
+          };
     }
     return { showExpandColumn: false };
   };

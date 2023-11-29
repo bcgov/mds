@@ -5,7 +5,7 @@ import { formatDate } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@mds/common/constants/strings";
 import DocumentLink from "@/components/common/DocumentLink";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 import { getPermitAmendmentTypeOptionsHash } from "@mds/common/redux/selectors/staticContentSelectors";
 
 const propTypes = {

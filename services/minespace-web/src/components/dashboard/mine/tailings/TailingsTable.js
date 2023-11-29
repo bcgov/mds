@@ -20,7 +20,7 @@ import { storeTsf } from "@mds/common/redux/actions/tailingsActions";
 import { EDIT_PENCIL } from "@/constants/assets";
 import { EDIT_DAM } from "@/constants/routes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 import { Feature } from "@mds/common";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 
