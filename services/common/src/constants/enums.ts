@@ -134,3 +134,13 @@ export enum VC_CRED_ISSUE_STATES {
   credential_acked = "Active",
   deleted = "Active",
 }
+
+export enum PROJECT_SUMMARY_STATUS_CODES {
+  DFT = "Draft",
+  WDN = "Withdrawn",
+  ASG = "Assigned",
+  COM = "Complete",
+  OHD = "On Hold",
+  SUB = "Submitted",
+  UNR = "Under review",
+}
