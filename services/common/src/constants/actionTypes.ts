@@ -9,6 +9,7 @@ export const CLEAR = "CLEAR";
 export const OPEN_MODAL = "OPEN_MODAL";
 export const CLOSE_MODAL = "CLOSE_MODAL";
 export const UPDATE_MODAL_TITLE = "UPDATE_MODAL_TITLE";
+export const STORE_FORM_IS_LOADING = "STORE_FORM_IS_LOADING";
 
 // Document Viewer
 export const OPEN_DOCUMENT_VIEWER = "OPEN_DOCUMENT_VIEWER";

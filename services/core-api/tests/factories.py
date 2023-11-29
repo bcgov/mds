@@ -1,6 +1,5 @@
 import uuid
 from datetime import datetime, timedelta
-from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointmentStatus
 from pytz import timezone, utc
 from random import randrange
 import factory
@@ -9,6 +8,7 @@ import factory.fuzzy
 from app.api.dams import Dam
 from app.api.dams.models.dam import DamType, OperatingStatus, ConsequenceClassification
 from app.api.mines.explosives_permit_amendment.models.explosives_permit_amendment import ExplosivesPermitAmendment
+from app.api.projects.project_link.models.project_link import ProjectLink
 from app.extensions import db
 from tests.status_code_gen import *
 from app.api.mines.documents.models.mine_document import MineDocument
@@ -659,7 +659,7 @@ class MinePartyAppointmentFactory(BaseFactory):
     party = factory.SubFactory(PartyFactory, person=True, address=1)
     start_date = factory.LazyFunction(datetime.utcnow().date)
     end_date = None
-    status = MinePartyAppointmentStatus.active
+    status = None
     processed_by = factory.Faker('first_name')
     processed_on = TODAY
     permit_id = factory.LazyAttribute(lambda o: o.mine.mine_permit[0].permit_id
@@ -1163,6 +1163,7 @@ class ProjectFactory(BaseFactory):
     proponent_project_id = factory.Faker('sentence', nb_words=1)
     project_title = factory.Faker('text', max_nb_chars=50)
     contacts = []
+    project_links = []
 
     proponent_project_id = None
 
@@ -1461,3 +1462,13 @@ class ExplosivesPermitAmendmentFactory(BaseFactory):
     closed_timestamp = None
 
     deleted_ind = False
+
+class ProjectLinkFactory(BaseFactory):
+    class Meta:
+        model = ProjectLink
+
+    class Params:
+        project = factory.SubFactory(ProjectFactory)
+    project_link_guid = GUID
+    project_guid = factory.SelfAttribute('project.project_guid')
+    related_project_guid = factory.SelfAttribute('project.project_guid')

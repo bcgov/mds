@@ -143,7 +143,6 @@ export const DocumentCategoryForm: FC<DocumentCategoryFormProps> = ({
           mineGuid={mineGuid}
           esupGuid={esupGuid}
           component={ExplosivesPermitFileUpload}
-          allowMultiple
         />
       </Form.Item>
     </div>

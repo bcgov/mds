@@ -4,6 +4,7 @@ import {
   IMajorMinesApplication,
   IProjectContact,
   IProjectDecisionPackage,
+  IProjectLink,
 } from "@mds/common/index";
 
 export interface IProject {
@@ -25,4 +26,5 @@ export interface IProject {
   update_timestamp: string;
   create_user: string;
   create_timestamp: string;
+  project_links: IProjectLink[];
 }
