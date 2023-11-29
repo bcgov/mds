@@ -1,3 +1,78 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`UserDashboard renders properly 1`] = `<UnauthenticatedNotice />`;
+exports[`UserDashboard renders properly 1`] = `
+<div
+  class="ant-row"
+>
+  <div
+    class="ant-col ant-col-24"
+  >
+    <h1
+      class="ant-typography"
+    >
+      My Mines
+    </h1>
+    <div
+      class="ant-divider ant-divider-horizontal"
+      role="separator"
+    />
+    <h4
+      class="ant-typography"
+    >
+      Welcome, 
+      test@bceid
+      .
+    </h4>
+    <div
+      class="ant-skeleton"
+    >
+      <div
+        class="ant-skeleton-content"
+      >
+        <h3
+          class="ant-skeleton-title"
+          style="width: 38%;"
+        />
+        <ul
+          class="ant-skeleton-paragraph"
+        >
+          <li />
+          <li />
+          <li
+            style="width: 61%;"
+          />
+        </ul>
+      </div>
+    </div>
+    <div
+      class="ant-row ant-row-space-between"
+    >
+      <button
+        class="ant-btn ant-btn-default"
+        disabled=""
+        type="button"
+      >
+        <span>
+          Previous
+        </span>
+      </button>
+      <button
+        class="ant-btn ant-btn-default"
+        disabled=""
+        type="button"
+      >
+        <span>
+          Next
+        </span>
+      </button>
+    </div>
+    Viewing page 
+    1
+     of 
+    1
+     (
+    2
+     mines)
+  </div>
+</div>
+`;
