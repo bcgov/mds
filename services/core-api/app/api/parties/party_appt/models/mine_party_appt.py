@@ -275,8 +275,14 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
                 party_guid=None,
                 mine_party_appt_type_codes=None,
                 include_permit_contacts=False,
-                active_only=True,
+                active_only=False,
                 mine_tailings_storage_facility_guid=None):
+
+        eor_and_tqp = (cls.mine_party_appt_type_code ==  "EOR"
+                                            or cls.mine_party_appt_type_code ==  "TQP" )
+        active_only_for_eor_and_tqp = ((cls.status == 'active' and eor_and_tqp)
+                                        or not eor_and_tqp)
+
         built_query = cls.query.filter_by(deleted_ind=False)
         if mine_guid:
             built_query = built_query.filter_by(mine_guid=mine_guid)
@@ -287,6 +293,10 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
         if mine_party_appt_type_codes:
             built_query = built_query.filter(
                 cls.mine_party_appt_type_code.in_(mine_party_appt_type_codes))
+
+        if active_only:
+            built_query = built_query.filter(active_only_for_eor_and_tqp)
+
         results = built_query\
             .order_by(nullslast(cls.start_date.desc()), nullsfirst(cls.end_date.desc())) \
             .all()
@@ -302,9 +312,10 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
                         if not active_only:
                             permit_contacts.append(pa)
                         else:
-                            if pa.end_date is None or (
+                            if (active_only_for_eor_and_tqp
+                                and (pa.end_date is None or (
                                     (pa.start_date is None or pa.start_date <= datetime.utcnow().date())
-                                    and pa.end_date >= datetime.utcnow().date()):
+                                    and pa.end_date >= datetime.utcnow().date()))):
                                 permit_contacts.append(pa)
 
             results = results + permit_contacts
