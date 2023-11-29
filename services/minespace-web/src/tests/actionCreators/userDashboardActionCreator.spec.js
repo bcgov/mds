@@ -47,11 +47,12 @@ describe("`fetchMineRecordById` action creator", () => {
 });
 
 describe("`fetchUserMineInfo` action creator", () => {
-  const url = ENVIRONMENT.apiUrl + API.MINE_LIST_QUERY(`&page=1&per_page=10`);
+  const params = "&page=1&per_page=10";
+  const url = ENVIRONMENT.apiUrl + API.MINE_LIST_QUERY(params);
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchUserMineInfo()(dispatch).then(() => {
+    return fetchUserMineInfo(params)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(5);
@@ -60,7 +61,7 @@ describe("`fetchUserMineInfo` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
-    return fetchUserMineInfo()(dispatch).then(() => {
+    return fetchUserMineInfo(params)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
