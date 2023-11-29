@@ -25,8 +25,6 @@ import * as Strings from "@mds/common/constants/strings";
 import DamsPage from "@common/components/tailings/dam/DamsPage";
 import MineReportTable from "@/components/mine/Reports/MineReportTable";
 import { modalConfig } from "@/components/modalContent/config";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as Permission from "@/constants/permissions";
 import MineTailingsMap from "@/components/maps/MineTailingsMap";
 import MineTailingsTable from "@/components/mine/Tailings/MineTailingsTable";
 import AddButton from "@/components/common/buttons/AddButton";
@@ -35,6 +33,10 @@ import { SMALL_PIN, SMALL_PIN_SELECTED } from "@/constants/assets";
 import TailingsSummaryPageWrapper from "./TailingsSummaryPageWrapper";
 import { IMine, IMineReport } from "@mds/common";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { Feature } from "@mds/common";
+import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
+import { USER_ROLES } from "@mds/common";
 
 /**
  * @class  MineTailingsInfoTabs - all tenure information related to the mine.
@@ -57,6 +59,7 @@ interface MineTailingsInfoTabsProps {
   consequenceClassificationStatusCodeHash: any;
   itrbExemptionStatusCodeHash: any;
   enabledTabs: string[];
+  userRoles: string[];
 }
 
 const defaultParams = {
@@ -67,9 +70,18 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [mine, setMine] = useState<IMine>({} as IMine);
   const [params, setParams] = useState({ sort_field: "received_date", sort_dir: "desc" });
+  const [canEditTSF, setCanEditTSF] = useState(false);
+
+  const { isFeatureEnabled } = useFeatureFlag();
+  const tsfV2Enabled = isFeatureEnabled(Feature.TSF_V2);
 
   useEffect(() => {
     setMine(props.mines[props.mineGuid]);
+    setCanEditTSF(
+      props.userRoles.some(
+        (r) => r === USER_ROLES.role_minespace_proponent || r === USER_ROLES.role_edit_tsf
+      )
+    );
     props.fetchMineReports(props.mineGuid, defaultParams.mineReportType).then(() => {
       setIsLoaded(true);
     });
@@ -190,7 +202,7 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
             tab={`Tailings Storage Facilities (${mine.mine_tailings_storage_facilities?.length})`}
             key="tsfDetails"
           >
-            <TailingsSummaryPageWrapper />
+            <TailingsSummaryPageWrapper canEditTSF={canEditTSF} />
           </Tabs.TabPane>
         )}
         {tabEnabled("dam") && (
@@ -199,7 +211,7 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
             key="dam"
           >
             {/*@ts-ignore*/}
-            <DamsPage />
+            <DamsPage canEditTSF={canEditTSF} />
           </Tabs.TabPane>
         )}
         {tabEnabled("tsf") && (
@@ -211,19 +223,21 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
               <br />
               <div className="inline-flex between">
                 <h4 className="uppercase">Tailings Storage Facilities</h4>
-                <AuthorizationWrapper permission={Permission.EDIT_TSF}>
+                {canEditTSF && (
                   <AddButton
                     onClick={(event) => openTailingsModal(event, handleAddTailings, "Add TSF")}
                   >
                     Add TSF
                   </AddButton>
-                </AuthorizationWrapper>
+                )}
               </div>
               <MineTailingsTable
                 tailings={mine.mine_tailings_storage_facilities}
                 isLoaded={isLoaded}
                 openEditTailingsModal={openEditTailingsModal}
                 handleEditTailings={handleEditTailings}
+                tsfV2Enabled={tsfV2Enabled}
+                canEditTSF={canEditTSF}
               />
             </div>
           </Tabs.TabPane>
@@ -301,6 +315,7 @@ const mapStateToProps = (state) => ({
   TSFOperatingStatusCodeHash: getTSFOperatingStatusCodeOptionsHash(state),
   consequenceClassificationStatusCodeHash: getConsequenceClassificationStatusCodeOptionsHash(state),
   itrbExemptionStatusCodeHash: getITRBExemptionStatusCodeOptionsHash(state),
+  userRoles: getUserAccessData(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

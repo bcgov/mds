@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps, useParams, withRouter } from "react-router-dom";
 import { EyeOutlined } from "@ant-design/icons";
-import { Button, Typography } from "antd";
+import { Button, Typography, Dropdown, MenuProps } from "antd";
 import {
   CONSEQUENCE_CLASSIFICATION_CODE_HASH,
   DAM_OPERATING_STATUS_HASH,
@@ -17,7 +17,7 @@ import { bindActionCreators } from "redux";
 import { storeDam } from "@mds/common/redux/actions/damActions";
 import { storeTsf } from "@mds/common/redux/actions/tailingsActions";
 import CoreTable from "@/components/common/CoreTable";
-import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
+import { EDIT_OUTLINE_VIOLET, CARAT } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import { EDIT_DAM, MINE_TAILINGS_DETAILS } from "@/constants/routes";
@@ -28,8 +28,6 @@ import {
   renderCategoryColumn,
   renderTextColumn,
 } from "@mds/common/components/common/CoreTableCommonColumns";
-import { Feature } from "@mds/common";
-import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 
 interface MineTailingsTableProps {
   tailings: ITailingsStorageFacility[];
@@ -45,6 +43,8 @@ interface MineTailingsTableProps {
   history?: any;
   storeDam?: typeof storeDam;
   storeTsf?: typeof storeTsf;
+  tsfV2Enabled: boolean;
+  canEditTSF: boolean;
 }
 
 const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (props) => {
@@ -55,11 +55,9 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
     openEditTailingsModal,
     handleEditTailings,
     tailings,
+    tsfV2Enabled,
+    canEditTSF,
   } = props;
-
-  const { isFeatureEnabled } = useFeatureFlag();
-
-  const tsfV2Enabled = isFeatureEnabled(Feature.TSF_V2);
 
   const transformRowData = (items: ITailingsStorageFacility[]) => {
     return items?.map((tailing) => {
@@ -86,6 +84,66 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
     );
     props.history.push(url);
   };
+
+  const renderOldTSFEditView = (record) => {
+    return (
+      <div>
+        <AuthorizationWrapper permission={Permission.EDIT_TSF}>
+          <Button
+            type="primary"
+            size="small"
+            ghost
+            onClick={(event) => openEditTailingsModal(event, handleEditTailings, record)}
+          >
+            <img src={EDIT_OUTLINE_VIOLET} alt="Edit TSF" />
+          </Button>
+        </AuthorizationWrapper>
+      </div>
+    );
+  };
+
+  const renderOldDamEditView = (record) => {
+    return (
+      <div>
+        <AuthorizationWrapper>
+          <Button
+            type="primary"
+            size="small"
+            ghost
+            onClick={(event) => {
+              handleEditDam(event, record);
+            }}
+          >
+            <img src={EDIT_OUTLINE_VIOLET} alt="Edit Dam" />
+          </Button>
+        </AuthorizationWrapper>
+      </div>
+    );
+  };
+
+  const renderNewEditViewDropdown = (menu) => {
+    return (
+      <div>
+        <Dropdown menu={{ items: menu }} placement="bottomLeft">
+          <Button className="permit-table-button" type="primary">
+            Actions
+            <img
+              className="padding-sm--right icon-svg-filter"
+              src={CARAT}
+              alt="Menu"
+              style={{ paddingLeft: "5px" }}
+            />
+          </Button>
+        </Dropdown>
+      </div>
+    );
+  };
+
+  const editViewIcon = canEditTSF ? (
+    <img src={EDIT_OUTLINE_VIOLET} className="icon-sm padding-sm--right violet" />
+  ) : (
+    <EyeOutlined className="icon-sm padding-sm--right violet" />
+  );
 
   const columns: ColumnsType<ITailingsStorageFacility> = [
     {
@@ -148,37 +206,31 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
       title: "Actions",
       fixed: "right",
       render: (record) => {
-        return (
-          <div>
-            <AuthorizationWrapper permission={Permission.EDIT_TSF}>
+        const editViewText = canEditTSF ? "Edit TSF" : "View TSF";
+        const menu: MenuProps["items"] = [
+          {
+            key: "0",
+            icon: editViewIcon,
+            label: (
               <Button
+                className="permit-table-button"
                 type="primary"
-                size="small"
-                ghost
-                onClick={(event) => openEditTailingsModal(event, handleEditTailings, record)}
-              >
-                <img src={EDIT_OUTLINE_VIOLET} alt="Edit TSF" />
-              </Button>
-              {tsfV2Enabled && (
-                <Button
-                  type="primary"
-                  size="small"
-                  ghost
-                  onClick={() =>
-                    props.history.push(
-                      MINE_TAILINGS_DETAILS.dynamicRoute(
-                        record.mine_tailings_storage_facility_guid,
-                        record.mine_guid
-                      )
+                onClick={() => {
+                  props.history.push(
+                    MINE_TAILINGS_DETAILS.dynamicRoute(
+                      record.mine_tailings_storage_facility_guid,
+                      record.mine_guid
                     )
-                  }
-                >
-                  <EyeOutlined className="icon-lg icon-svg-filter" />
-                </Button>
-              )}
-            </AuthorizationWrapper>
-          </div>
-        );
+                  );
+                }}
+              >
+                <div>{editViewText}</div>
+              </Button>
+            ),
+          },
+        ];
+
+        return tsfV2Enabled ? renderNewEditViewDropdown(menu) : renderOldTSFEditView(record);
       },
     },
   ];
@@ -196,22 +248,26 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
       fixed: "right" as FixedType,
       key: "edit",
       render: (record) => {
-        return (
-          <div>
-            <AuthorizationWrapper>
+        const editViewText = canEditTSF ? "Edit Dam" : "View Dam";
+        const menu: MenuProps["items"] = [
+          {
+            key: "0",
+            icon: editViewIcon,
+            label: (
               <Button
+                className="permit-table-button"
                 type="primary"
-                size="small"
-                ghost
                 onClick={(event) => {
                   handleEditDam(event, record);
                 }}
               >
-                <img src={EDIT_OUTLINE_VIOLET} alt="Edit Dam" />
+                <div>{editViewText}</div>
               </Button>
-            </AuthorizationWrapper>
-          </div>
-        );
+            ),
+          },
+        ];
+
+        return tsfV2Enabled ? renderNewEditViewDropdown(menu) : renderOldDamEditView(record);
       },
     },
   ];

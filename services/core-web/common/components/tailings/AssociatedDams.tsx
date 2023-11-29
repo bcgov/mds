@@ -1,4 +1,4 @@
-import { Button, Col, Row, Space, Typography } from "antd";
+import { Button, Col, Row, Typography, Dropdown, MenuProps } from "antd";
 import {
   CONSEQUENCE_CLASSIFICATION_CODE_HASH,
   DAM_OPERATING_STATUS_HASH,
@@ -12,22 +12,24 @@ import { getTsf } from "@mds/common/redux/reducers/tailingsReducer";
 import moment from "moment";
 import { storeDam } from "@mds/common/redux/actions/damActions";
 import { useHistory } from "react-router-dom";
-import { EditIcon } from "@/assets/icons";
 import { ADD_DAM, EDIT_DAM } from "@/constants/routes";
-import { IDam, INoticeOfDeparture, ITailingsStorageFacility } from "@mds/common";
+import { IDam, ITailingsStorageFacility } from "@mds/common";
 import { RootState } from "@/App";
 import { ColumnsType } from "antd/lib/table";
 import CoreTable from "@/components/common/CoreTable";
+import { EDIT_OUTLINE_VIOLET, CARAT } from "@/constants/assets";
+import { EyeOutlined } from "@ant-design/icons";
 
 interface AssociatedDamsProps {
   tsf: ITailingsStorageFacility;
   storeDam: typeof storeDam;
   isCore?: boolean;
+  canEditTSF: boolean;
 }
 
 const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
   const history = useHistory();
-  const { tsf, isCore } = props;
+  const { tsf, isCore, canEditTSF } = props;
 
   const handleNavigateToEdit = (event, dam) => {
     event.preventDefault();
@@ -89,18 +91,46 @@ const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
     {
       title: "Actions",
       key: "actions",
-      render: (record) => (
-        <Space size="middle">
-          <div className="inline-flex">
-            <Button type="primary" size="small" ghost>
-              <EditIcon
+      render: (record) => {
+        const buttonText = canEditTSF ? "Edit Dam" : "View Dam";
+        const buttonIcon = canEditTSF ? (
+          <img src={EDIT_OUTLINE_VIOLET} className="icon-sm padding-sm--right violet" />
+        ) : (
+          <EyeOutlined className="icon-sm padding-sm--right violet" />
+        );
+
+        const menu: MenuProps["items"] = [
+          {
+            key: "0",
+            icon: buttonIcon,
+            label: (
+              <Button
+                className="permit-table-button"
+                type="primary"
                 onClick={(event) => handleNavigateToEdit(event, record)}
-                className="icon-xs--darkestgrey"
-              />
-            </Button>
+              >
+                <div>{buttonText}</div>
+              </Button>
+            ),
+          },
+        ];
+
+        return (
+          <div>
+            <Dropdown menu={{ items: menu }} placement="bottomLeft">
+              <Button className="permit-table-button" type="primary">
+                Actions
+                <img
+                  className="padding-sm--right icon-svg-filter"
+                  src={CARAT}
+                  alt="Menu"
+                  style={{ paddingLeft: "5px" }}
+                />
+              </Button>
+            </Dropdown>
           </div>
-        </Space>
-      ),
+        );
+      },
     },
   ];
 

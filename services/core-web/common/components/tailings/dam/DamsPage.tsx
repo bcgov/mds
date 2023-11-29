@@ -35,11 +35,12 @@ interface DamsPageProps {
   createDam: ActionCreator<typeof createDam>;
   updateDam: ActionCreator<typeof updateDam>;
   initialValues: IDam;
+  canEditTSF: boolean;
 }
 
 const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
   const history = useHistory();
-  const { tsf, formValues, formErrors, initialValues } = props;
+  const { tsf, formValues, formErrors, initialValues, canEditTSF } = props;
   const { tailingsStorageFacilityGuid, damGuid, mineGuid } = useParams<{
     tailingsStorageFacilityGuid: string;
     damGuid?: string;
@@ -102,8 +103,9 @@ const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
         </Col>
         <Col span={24}>
           <Popconfirm
-            title={`Are you sure you want to cancel ${tailingsStorageFacilityGuid ? "updating this" : "creating a new"
-              } dam?
+            title={`Are you sure you want to cancel ${
+              tailingsStorageFacilityGuid ? "updating this" : "creating a new"
+            } dam?
             All unsaved data on this page will be lost.`}
             onConfirm={handleBack}
             cancelText="No"
@@ -121,17 +123,18 @@ const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
       <SteppedForm
         errors={[]}
         handleSaveData={handleSave}
-        handleTabChange={() => { }}
+        handleTabChange={() => {}}
         activeTab="basic-dam-information"
         submitText="Save and Return to Associated Dams"
         handleCancel={handleBack}
-        cancelConfirmMessage={`Are you sure you want to cancel ${tailingsStorageFacilityGuid ? "updating this" : "creating a new"
-          } dam?
+        cancelConfirmMessage={`Are you sure you want to cancel ${
+          tailingsStorageFacilityGuid ? "updating this" : "creating a new"
+        } dam?
         All unsaved data on this page will be lost.`}
       >
         {[
           <Step key="basic-dam-information">
-            <DamForm tsf={tsf} dam={initialValues} />
+            <DamForm tsf={tsf} dam={initialValues} canEditTSF={canEditTSF} />
           </Step>,
         ]}
       </SteppedForm>

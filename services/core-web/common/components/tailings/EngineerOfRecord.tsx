@@ -42,6 +42,7 @@ interface EngineerOfRecordProps {
   partyRelationships: IMinePartyAppt[];
   loading?: boolean;
   mines: IMine[];
+  canEditTSF: boolean;
 }
 
 const columns = (LinkButton): ColumnsType<IDocument> => [
@@ -61,7 +62,15 @@ const columns = (LinkButton): ColumnsType<IDocument> => [
 ];
 
 export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
-  const { mineGuid, uploadedFiles, setUploadedFiles, partyRelationships, loading, mines } = props;
+  const {
+    mineGuid,
+    uploadedFiles,
+    setUploadedFiles,
+    partyRelationships,
+    loading,
+    mines,
+    canEditTSF,
+  } = props;
 
   const [openPopConfirm, setOpenPopConfirm] = useState(false);
 
@@ -176,7 +185,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
     formValues?.engineer_of_record?.party_guid &&
     !formValues?.engineer_of_record?.mine_party_appt_guid;
 
-  const fieldsDisabled = !canEditEOR || loading;
+  const fieldsDisabled = !canEditEOR || loading || !canEditTSF;
 
   const hasPendingEOR = formValues?.engineers_of_record?.some(
     (eor) => PARTY_APPOINTMENT_STATUS[eor.status] === PARTY_APPOINTMENT_STATUS.pending
@@ -207,7 +216,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
 
             <Col span={12}>
               <Row justify="end">
-                {canAssignEor && (
+                {canEditTSF && canAssignEor && (
                   <Popconfirm
                     style={{ maxWidth: "150px" }}
                     open={openPopConfirm}
@@ -236,48 +245,52 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
             </Col>
           </Row>
 
-          {canAssignEor &&
-            (formValues?.engineer_of_record?.party_guid ? (
-              <Alert
-                description="Assigning a new Engineer of Record will replace the current Engineer of Record and set the previous Engineer of Record’s status to inactive."
-                showIcon
-                type="info"
-                message={""}
-              />
-            ) : (
-              <Alert
-                description="Assigning a new Engineer of Record (EoR) will replace the current listed contact and set their status to Inactive. When a new EoR is assigned, a notification will be sent to the Ministry of changes in the record, and must include an acknowledgement by the EoR to be active."
-                showIcon
-                type="info"
-                message={""}
-              />
-            ))}
+          {canEditTSF && (
+            <div>
+              {canAssignEor &&
+                (formValues?.engineer_of_record?.party_guid ? (
+                  <Alert
+                    description="Assigning a new Engineer of Record will replace the current Engineer of Record and set the previous Engineer of Record’s status to inactive."
+                    showIcon
+                    type="info"
+                    message={""}
+                  />
+                ) : (
+                  <Alert
+                    description="Assigning a new Engineer of Record (EoR) will replace the current listed contact and set their status to Inactive. When a new EoR is assigned, a notification will be sent to the Ministry of changes in the record, and must include an acknowledgement by the EoR to be active."
+                    showIcon
+                    type="info"
+                    message={""}
+                  />
+                ))}
 
-          {hasPendingEOR && isCore && (
-            <Alert
-              description="An Engineer of Record for this facility is awaiting Ministry acknowledgment below. Please contact the mine directly for any issues."
-              showIcon
-              type="warning"
-              message={""}
-            />
-          )}
+              {hasPendingEOR && isCore && (
+                <Alert
+                  description="An Engineer of Record for this facility is awaiting Ministry acknowledgment below. Please contact the mine directly for any issues."
+                  showIcon
+                  type="warning"
+                  message={""}
+                />
+              )}
 
-          {isNumber(daysToEORExpiry) && daysToEORExpiry >= 0 && daysToEORExpiry <= 60 && (
-            <Alert
-              message="Engineer of Record will Expire within 60 Days"
-              description="To be in compliance, you must have a current, Ministry-acknowledged Engineer of Record on file."
-              showIcon
-              type="warning"
-            />
-          )}
+              {isNumber(daysToEORExpiry) && daysToEORExpiry >= 0 && daysToEORExpiry <= 60 && (
+                <Alert
+                  message="Engineer of Record will Expire within 60 Days"
+                  description="To be in compliance, you must have a current, Ministry-acknowledged Engineer of Record on file."
+                  showIcon
+                  type="warning"
+                />
+              )}
 
-          {isNumber(daysToEORExpiry) && daysToEORExpiry < 0 && (
-            <Alert
-              message="No Engineer of Record"
-              description="To be in compliance, you must have a current, Ministry-acknowledged Engineer of Record on file."
-              showIcon
-              type="error"
-            />
+              {isNumber(daysToEORExpiry) && daysToEORExpiry < 0 && (
+                <Alert
+                  message="No Engineer of Record"
+                  description="To be in compliance, you must have a current, Ministry-acknowledged Engineer of Record on file."
+                  showIcon
+                  type="error"
+                />
+              )}
+            </div>
           )}
 
           <Typography.Title level={4} className="margin-large--top">
@@ -312,7 +325,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
             </div>
           )}
 
-          {!formValues?.engineer_of_record?.mine_party_appt_guid && (
+          {canEditTSF && !formValues?.engineer_of_record?.mine_party_appt_guid && (
             <>
               <div className="margin-large--top margin-large--bottom">
                 <Typography.Title level={4}>
@@ -381,6 +394,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
           <PartyAppointmentTable
             columns={eorHistoryColumns}
             partyRelationships={formValues?.engineers_of_record}
+            canEditTSF={canEditTSF}
           />
         </Col>
       </Row>
