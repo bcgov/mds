@@ -10,6 +10,7 @@ class Requirement(fields.Raw):
 
 PROJECT_SUMMARY_MODEL_ATTRIBUTES = api.model(
     'ProjectSummary', {
+        'project_summary_guid': fields.String,
         'status_code': fields.String
     }
 )

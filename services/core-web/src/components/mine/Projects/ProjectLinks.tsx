@@ -1,6 +1,4 @@
 import React from "react";
-import { getProject } from "@mds/common/redux/selectors/projectSelectors";
-import { useSelector } from "react-redux";
 import ProjectLinksTable from "@mds/common/components/projects/ProjectLinksTable";
 import { ILinkedProject, IProject } from "@mds/common/interfaces";
 import FileOutlined from "@ant-design/icons/FileOutlined";
@@ -12,11 +10,14 @@ import {
 import { ColumnsType } from "antd/es/table";
 import { Typography } from "antd";
 import { useHistory } from "react-router-dom";
-import { EDIT_PROJECT } from "@/constants/routes";
+import { PRE_APPLICATIONS } from "@/constants/routes";
 
-const ProjectLinks = () => {
+interface IProjectLinksProps {
+  project: IProject;
+}
+
+const ProjectLinks: React.FC<IProjectLinksProps> = ({ project }) => {
   const history = useHistory();
-  const project = useSelector(getProject);
 
   const getLinkedProjects = (data: IProject): ILinkedProject[] => {
     return data.project_links.flatMap((link) => {
@@ -47,7 +48,9 @@ const ProjectLinks = () => {
       label: "View",
       icon: <FileOutlined />,
       clickFunction: (_event, record: ILinkedProject) => {
-        history.push(EDIT_PROJECT.dynamicRoute(record.project_guid));
+        history.push(
+          PRE_APPLICATIONS.dynamicRoute(record.project_guid, record.project_summary_guid)
+        );
       },
     },
   ];
@@ -56,9 +59,9 @@ const ProjectLinks = () => {
     const columns = [
       renderTextColumn("project_title", "Project Title", true),
       renderTextColumn("proponent_project_id", "Project #", true),
+      renderDateColumn("update_timestamp", "Last Updated", true),
       renderTextColumn("status_code", "Status", true),
       renderTextColumn("primary_contact", "Contact", true),
-      renderDateColumn("update_timestamp", "Last Updated", true),
       renderActionsColumn(actions),
     ];
     return columns;
@@ -66,9 +69,9 @@ const ProjectLinks = () => {
 
   return (
     <>
-      <Typography.Title level={3}>Related Projects</Typography.Title>
+      <Typography.Title level={3}>Sub-Projects</Typography.Title>
       <Typography.Paragraph>
-        Link related projects to help with communication with your team and the ministry.
+        Description of sub projects section is displayed here.
       </Typography.Paragraph>
       <ProjectLinksTable linkedProjects={getLinkedProjects(project)} tableColumns={getColumns()} />
     </>

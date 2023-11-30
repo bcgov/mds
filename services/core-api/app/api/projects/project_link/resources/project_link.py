@@ -3,7 +3,7 @@ from werkzeug.exceptions import NotFound
 from app.api.mines.mine.models.mine import Mine
 from app.api.projects.project_link.models.project_link import ProjectLink
 from app.api.projects.response_models import PROJECT_LINK_MODEL
-from app.api.utils.access_decorators import requires_any_of, MINE_ADMIN, MINESPACE_PROPONENT
+from app.api.utils.access_decorators import requires_any_of, MINE_ADMIN, MINESPACE_PROPONENT, VIEW_ALL
 from app.api.utils.resources_mixins import UserMixin
 from flask_restplus import Resource, inputs
 from app.api.utils.custom_reqparser import CustomReqparser
@@ -35,7 +35,7 @@ class ProjectLinkListResource(Resource, UserMixin):
         })
     @api.expect(parser)
     @api.marshal_with(PROJECT_LINK_MODEL, code=201)
-    @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT])
+    @requires_any_of([VIEW_ALL, MINE_ADMIN, MINESPACE_PROPONENT])
     def post(self, mine_guid):
         mine = Mine.find_by_mine_guid(mine_guid)
         if mine is None:

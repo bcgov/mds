@@ -5,6 +5,7 @@ interface IProjectLinkContact {
 }
 
 interface IProjectLinkSummary {
+  project_summary_guid: string;
   status_code: PROJECT_SUMMARY_STATUS_CODES;
 }
 

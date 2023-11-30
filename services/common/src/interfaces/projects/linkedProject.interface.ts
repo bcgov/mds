@@ -1,5 +1,6 @@
 export interface ILinkedProject {
-  key: string;
+  project_guid: string;
+  project_summary_guid: string;
   project_title: string;
   proponent_project_id: string;
   status_code: string;
