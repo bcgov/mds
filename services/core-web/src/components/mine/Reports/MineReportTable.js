@@ -42,7 +42,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  handleTableChange: () => { },
+  handleTableChange: () => {},
   filters: {},
   sortField: undefined,
   sortDir: undefined,
@@ -56,9 +56,9 @@ export const MineReportTable = (props) => {
   const getComplianceCodeValue = (guid) => {
     return props.mineReportDefinitionHash && props.mineReportDefinitionHash[guid]
       ? formatComplianceCodeValueOrLabel(
-        props.mineReportDefinitionHash[guid].compliance_articles[0],
-        false
-      )
+          props.mineReportDefinitionHash[guid].compliance_articles[0],
+          false
+        )
       : null;
   };
 
@@ -228,15 +228,15 @@ export const MineReportTable = (props) => {
         (report.mine_report_submissions &&
           report.mine_report_submissions.length > 0 &&
           props.mineReportStatusOptionsHash[
-          report.mine_report_submissions[report.mine_report_submissions.length - 1]
-            .mine_report_submission_status_code
+            report.mine_report_submissions[report.mine_report_submissions.length - 1]
+              .mine_report_submission_status_code
           ]) ||
         null,
       documents:
         report.mine_report_submissions &&
-          report.mine_report_submissions.length > 0 &&
-          report.mine_report_submissions[report.mine_report_submissions.length - 1].documents &&
-          report.mine_report_submissions[report.mine_report_submissions.length - 1].documents.length >
+        report.mine_report_submissions.length > 0 &&
+        report.mine_report_submissions[report.mine_report_submissions.length - 1].documents &&
+        report.mine_report_submissions[report.mine_report_submissions.length - 1].documents.length >
           0
           ? report.mine_report_submissions[report.mine_report_submissions.length - 1].documents
           : [],

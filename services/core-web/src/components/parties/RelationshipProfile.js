@@ -131,21 +131,21 @@ export class RelationshipProfile extends Component {
     const mine = this.props.mines[id];
     const permitColumn = isPermittee
       ? [
-        {
-          title: "Permit",
-          dataIndex: "permit",
-          render: (text) => <div title="Permit">{text}</div>,
-        },
-      ]
+          {
+            title: "Permit",
+            dataIndex: "permit",
+            render: (text) => <div title="Permit">{text}</div>,
+          },
+        ]
       : [];
     const EORColumn = isEOR
       ? [
-        {
-          title: "Tailings Storage Facility",
-          dataIndex: "tailingsStorageFacility",
-          render: (text) => <div title="Tailings Storage Facility">{text}</div>,
-        },
-      ]
+          {
+            title: "Tailings Storage Facility",
+            dataIndex: "tailingsStorageFacility",
+            render: (text) => <div title="Tailings Storage Facility">{text}</div>,
+          },
+        ]
       : [];
     const columns = [
       {

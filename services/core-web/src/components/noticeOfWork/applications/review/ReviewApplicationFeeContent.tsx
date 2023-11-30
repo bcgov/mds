@@ -172,7 +172,7 @@ export const ReviewApplicationFeeContent: FC<ReviewApplicationFeeContentProps> =
     );
   }, [proposedStartDate, proposedAuthorizationEndDate]);
 
-  useEffect(() => { }, [adjustedTonnage, proposedTonnage]);
+  useEffect(() => {}, [adjustedTonnage, proposedTonnage]);
 
   const toggleFeeDrawer = () => setIsFeeDrawerVisible(!isFeeDrawerVisible);
 

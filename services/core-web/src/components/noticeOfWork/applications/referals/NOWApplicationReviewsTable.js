@@ -79,17 +79,17 @@ const columns = (type) => {
         <div title="Documents">
           {text.length > 0
             ? text.map((doc) =>
-              doc && doc.mine_document ? (
-                <li key={doc.mine_document.mine_document_guid}>
-                  <div key={doc.mine_document.mine_document_guid}>
-                    <DocumentLink
-                      documentManagerGuid={doc.mine_document.document_manager_guid}
-                      documentName={doc.mine_document.document_name}
-                    />
-                  </div>
-                </li>
-              ) : null
-            )
+                doc && doc.mine_document ? (
+                  <li key={doc.mine_document.mine_document_guid}>
+                    <div key={doc.mine_document.mine_document_guid}>
+                      <DocumentLink
+                        documentManagerGuid={doc.mine_document.document_manager_guid}
+                        documentName={doc.mine_document.document_name}
+                      />
+                    </div>
+                  </li>
+                ) : null
+              )
             : Strings.EMPTY_FIELD}
         </div>
       ),

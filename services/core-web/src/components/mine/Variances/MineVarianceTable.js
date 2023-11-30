@@ -41,10 +41,10 @@ const propTypes = {
 };
 
 const defaultProps = {
-  openEditVarianceModal: () => { },
-  openViewVarianceModal: () => { },
-  handleVarianceSearch: () => { },
-  handleDeleteVariance: () => { },
+  openEditVarianceModal: () => {},
+  openViewVarianceModal: () => {},
+  handleVarianceSearch: () => {},
+  handleDeleteVariance: () => {},
   isApplication: false,
   isDashboardView: false,
   params: {},
@@ -216,13 +216,13 @@ export class MineVarianceTable extends Component {
           <div title="Documents">
             {record.documents.length > 0
               ? record.documents.map((file) => (
-                <div key={file.mine_document_guid} title={file.document_name}>
-                  <DocumentLink
-                    documentManagerGuid={file.document_manager_guid}
-                    documentName={file.document_name}
-                  />
-                </div>
-              ))
+                  <div key={file.mine_document_guid} title={file.document_name}>
+                    <DocumentLink
+                      documentManagerGuid={file.document_manager_guid}
+                      documentName={file.document_name}
+                    />
+                  </div>
+                ))
               : Strings.EMPTY_FIELD}
           </div>
         ),

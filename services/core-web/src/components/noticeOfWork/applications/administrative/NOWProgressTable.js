@@ -125,7 +125,7 @@ const stepItem = (progress, progressStatus, delaysExist) => {
                       .durationWithoutDelays === "N/A"
                       ? clientDelayMessage
                       : progress[progressStatus.application_progress_status_code]
-                        .durationWithoutDelays}
+                          .durationWithoutDelays}
                   </Descriptions.Item>
                 )}
               </Descriptions>
@@ -160,7 +160,7 @@ const stepItem = (progress, progressStatus, delaysExist) => {
                     .durationWithoutDelays === "N/A"
                     ? clientDelayMessage
                     : progress[progressStatus.application_progress_status_code]
-                      .durationWithoutDelays}
+                        .durationWithoutDelays}
                 </Descriptions.Item>
               )}
             </Descriptions>
@@ -479,8 +479,8 @@ export class NOWProgressTable extends Component {
     const getDuration = (date) =>
       firstProgress?.start_date && hasImportMeta
         ? getDurationTextInDays(
-          moment.duration(moment(firstProgress.start_date).diff(moment(date)))
-        )
+            moment.duration(moment(firstProgress.start_date).diff(moment(date)))
+          )
         : Strings.EMPTY_FIELD;
     const delaysExist = this.props.applicationDelays.length > 0;
     return (
