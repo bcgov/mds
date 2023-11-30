@@ -5,6 +5,7 @@ import React from 'react';
 import * as API from "@mds/common/constants/API";
 import { ENVIRONMENT } from "@mds/common";
 import { createRequestHeader } from "./utils/RequestHeaders";
+import { Feature, isFeatureEnabled } from "@mds/common";
 
 // https://stackoverflow.com/questions/39696007/axios-with-promise-prototype-finally-doesnt-work
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -63,21 +64,31 @@ const CustomAxios = ({ errorToastMessage, suppressErrorNotification = false } = 
       ) {
         console.error('Detailed Error: ', error?.response?.data?.detailed_error)
         const notificationKey = 'errorNotification';
-        notification.error({
-          key: notificationKey,
-          message: formatErrorMessage(error?.response?.data?.message ?? String.ERROR),
-          description: <p style={{ color: 'grey' }}>If you think this is a system error please help us to improve by informing the system Admin</p>,
-          duration: 10,
-          btn: (
-            <Button type="primary" size="small"
-              onClick={() => {
-                  notifymAdmin(error);
-                  notification.close(notificationKey);
-                }}>
-              Tell Admin
-            </Button>
-          ),
-        });
+        
+        if (isFeatureEnabled(Feature.REPORT_ERROR)) {
+          notification.error({
+            key: notificationKey,
+            message: formatErrorMessage(error?.response?.data?.message ?? String.ERROR),
+            description: <p style={{ color: 'grey' }}>If you think this is a system error please help us to improve by informing the system Admin</p>,
+            duration: 10,
+            btn: (
+              <Button type="primary" size="small"
+                onClick={() => {
+                    notifymAdmin(error);
+                    notification.close(notificationKey);
+                  }}>
+                Tell Admin
+              </Button>
+            ),
+          });
+        } else {
+          notification.error({
+            key: notificationKey,
+            message: formatErrorMessage(error?.response?.data?.message ?? String.ERROR),
+            duration: 10,
+          });
+        }
+
       } else if (errorToastMessage && !suppressErrorNotification) {
         notification.error({
           message: errorToastMessage,

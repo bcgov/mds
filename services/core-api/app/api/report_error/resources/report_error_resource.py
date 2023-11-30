@@ -22,17 +22,11 @@ class ReportErrorResource(Resource, UserMixin):
             user_raw_info = User().get_user_raw_info()
             reporter_name = user_raw_info.get('given_name', '') + " " + user_raw_info.get('family_name', '')
             reporter_email = User().get_user_email()
-            reported_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            email_title = "[MDS_INCIDENT_REPORT] [" + Config.ENVIRONMENT_NAME + "] - " + reported_date + " - " + business_error
+            environment = Config.ENVIRONMENT_NAME.upper()
 
-            html_content = f"<html><body> \
-              <p><strong>Reporter's Name:</strong> {reporter_name} </br>\
-              <strong>Reporter's Email:</strong> {reporter_email} </br>\
-              <strong>Reported Date:</strong> {reported_date}</p> \
-              <p><strong>Business Error:</strong> {business_error}</p> \
-              <p><strong>Detailed Error:</strong> {detailed_error}</p> \
-              </body></html>"
-              # ///test below email input params with template and the sending email
+            reported_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            email_title = "[ERROR_REPORT] [" + environment + "] - " + reported_date + " - " + business_error
+
             email_body = open("app/templates/email/report_error/error_report_email.html", "r").read()
             email_context = {
                     "reporter": {
@@ -40,10 +34,12 @@ class ReportErrorResource(Resource, UserMixin):
                         "email": reporter_email
                     },
                     "reported_date": reported_date,
+                    "environment": environment,
                     "business_error": business_error,
                     "detailed_error": detailed_error
                 }
-            EmailService.send_email(email_title, MDS_EMAIL, email_body, email_context)
+            recipients = [MDS_EMAIL]
+            EmailService.send_template_email(email_title, recipients, email_body, email_context)
 
         except Exception as e:
             raise MDSCoreAPIException("Error in sending email", detailed_error = e)
