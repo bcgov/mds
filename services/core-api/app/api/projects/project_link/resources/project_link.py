@@ -17,18 +17,22 @@ class ProjectLinkListResource(Resource, UserMixin):
         'project_guid',
         type=str,
         store_missing=False,
-        required=False,
+        required=True,
     )
     parser.add_argument(
         'related_project_guid',
         type=str,
         store_missing=False,
-        required=False,
+        required=True,
     )
 
     @api.doc(
         description='Create a new Project Link.',
-        params={'mine_guid': 'The GUID of the mine to create the Project Link for.'})
+        params={
+            'mine_guid': 'The GUID of the mine to create the Project Link for.',
+            'project_guid': 'The GUID of the project.',
+            'related_project_guid': 'The GUID of the related project.'
+        })
     @api.expect(parser)
     @api.marshal_with(PROJECT_LINK_MODEL, code=201)
     @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT])

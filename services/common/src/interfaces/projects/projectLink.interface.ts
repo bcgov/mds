@@ -1,9 +1,11 @@
+import { PROJECT_SUMMARY_STATUS_CODES } from "@mds/common/constants/enums";
+
 interface IProjectLinkContact {
   name: string;
 }
 
 interface IProjectLinkSummary {
-  status_code: string;
+  status_code: PROJECT_SUMMARY_STATUS_CODES;
 }
 
 interface IProjectLinkProject {

@@ -21,7 +21,6 @@ exports[`DocumentCategoryForm renders properly 1`] = `
       some info
     </ForwardRef(Text)>
     <Field
-      allowMultiple={true}
       component={[Function]}
       id="DocumentFileUpload"
       mineGuid="52783475"
