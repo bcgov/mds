@@ -54,7 +54,6 @@ app.get(`${BASE_PATH}/env`, (req, res) => {
     vcauthn_pres_req_conf_id: process.env.VCAUTHN_PRES_REQ_CONF_ID,
     flagsmithKey: process.env.FLAGSMITH_KEY,
     flagsmithUrl: process.env.FLAGSMITH_URL,
-    errorNotifyRecipients: process.env.ERROR_NOTIFY_RECIPIENTS,
   });
 });
 
