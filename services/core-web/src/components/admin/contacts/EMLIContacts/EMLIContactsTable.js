@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { nullableStringSorter } from "@common/utils/helpers";
 import * as Strings from "@mds/common/constants/strings";
 import { TRASHCAN, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import { CoreTooltip } from "@/components/common/CoreTooltip";

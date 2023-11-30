@@ -37,7 +37,7 @@ import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import CustomPropTypes from "@/customPropTypes";
 import Address from "@/components/common/Address";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 import { Feature, VC_CONNECTION_STATES, isFeatureEnabled } from "@mds/common";
 
 /**

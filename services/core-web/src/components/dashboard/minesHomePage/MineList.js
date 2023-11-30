@@ -9,7 +9,7 @@ import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import { SUCCESS_CHECKMARK } from "@/constants/assets";
 import { getWorkInformationBadgeStatusType } from "@/constants/theme";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 
 const propTypes = {
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,

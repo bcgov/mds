@@ -16,7 +16,7 @@ import {
 import { bindActionCreators } from "redux";
 import { storeDam } from "@mds/common/redux/actions/damActions";
 import { storeTsf } from "@mds/common/redux/actions/tailingsActions";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
@@ -227,12 +227,12 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
         !tsfV2Enabled
           ? null
           : {
-              rowKey: "dam_guid",
-              rowExpandable: (record: any) => record.dams.length > 0,
-              recordDescription: "associated dams",
-              getDataSource: (record: any) => record.dams,
-              subTableColumns: damColumns,
-            }
+            rowKey: "dam_guid",
+            rowExpandable: (record: any) => record.dams.length > 0,
+            recordDescription: "associated dams",
+            getDataSource: (record: any) => record.dams,
+            subTableColumns: damColumns,
+          }
       }
     />
   );

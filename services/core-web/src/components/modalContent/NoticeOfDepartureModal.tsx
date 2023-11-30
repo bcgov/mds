@@ -35,7 +35,7 @@ import {
   USER_ROLES,
 } from "@mds/common";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 import {
   renderDateColumn,
   renderTextColumn,
@@ -131,112 +131,112 @@ interface NoticeOfDepartureModalProps {
 
 const NoticeOfDepartureModal: React.FC<InjectedFormProps<ICreateNoD> &
   NoticeOfDepartureModalProps> = (props) => {
-  const [statusOptions, setStatusOptions] = React.useState([]);
-  const [documentArray, setDocumentArray] = useState([]);
-  const [uploadedFiles, setUploadedFiles] = useState([]);
-  const [uploading, setUploading] = useState(false);
+    const [statusOptions, setStatusOptions] = React.useState([]);
+    const [documentArray, setDocumentArray] = useState([]);
+    const [uploadedFiles, setUploadedFiles] = useState([]);
+    const [uploading, setUploading] = useState(false);
 
-  const { noticeOfDeparture, mine, handleSubmit, pristine, change } = props;
-  const { nod_guid } = noticeOfDeparture;
+    const { noticeOfDeparture, mine, handleSubmit, pristine, change } = props;
+    const { nod_guid } = noticeOfDeparture;
 
-  const hasEditPermission = props.userRoles.includes(USER_ROLES[Permission.EDIT_PERMITS]);
-  const disabled = !hasEditPermission;
+    const hasEditPermission = props.userRoles.includes(USER_ROLES[Permission.EDIT_PERMITS]);
+    const disabled = !hasEditPermission;
 
-  const checklist = noticeOfDeparture.documents.filter(
-    (doc) => doc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
-  );
-  const otherDocuments = noticeOfDeparture.documents.filter(
-    (doc) => doc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.OTHER
-  );
-  const decision = noticeOfDeparture.documents.filter(
-    (doc) => doc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.DECISION
-  );
+    const checklist = noticeOfDeparture.documents.filter(
+      (doc) => doc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.CHECKLIST
+    );
+    const otherDocuments = noticeOfDeparture.documents.filter(
+      (doc) => doc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.OTHER
+    );
+    const decision = noticeOfDeparture.documents.filter(
+      (doc) => doc.document_type === NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.DECISION
+    );
 
-  const handleAddDocuments = (noticeOfDepartureGuid) => {
-    documentArray.forEach((document) =>
-      props.addDocumentToNoticeOfDeparture(
-        { mineGuid: mine.mine_guid, noticeOfDepartureGuid },
+    const handleAddDocuments = (noticeOfDepartureGuid) => {
+      documentArray.forEach((document) =>
+        props.addDocumentToNoticeOfDeparture(
+          { mineGuid: mine.mine_guid, noticeOfDepartureGuid },
+          {
+            document_type: document.document_type,
+            document_name: document.document_name,
+            document_manager_guid: document.document_manager_guid,
+          }
+        )
+      );
+    };
+
+    const onFileLoad = (documentName, document_manager_guid, documentType) => {
+      setUploadedFiles([
+        ...uploadedFiles,
         {
-          document_type: document.document_type,
-          document_name: document.document_name,
-          document_manager_guid: document.document_manager_guid,
-        }
-      )
-    );
-  };
+          documentType,
+          documentName,
+          document_manager_guid,
+        },
+      ]);
+      setDocumentArray([
+        ...documentArray,
+        {
+          document_type: documentType,
+          document_name: documentName,
+          document_manager_guid,
+        },
+      ]);
+    };
 
-  const onFileLoad = (documentName, document_manager_guid, documentType) => {
-    setUploadedFiles([
-      ...uploadedFiles,
-      {
-        documentType,
-        documentName,
-        document_manager_guid,
-      },
-    ]);
-    setDocumentArray([
-      ...documentArray,
-      {
-        document_type: documentType,
-        document_name: documentName,
-        document_manager_guid,
-      },
-    ]);
-  };
+    useEffect(() => {
+      change("uploadedFiles", documentArray);
+    }, [documentArray]);
 
-  useEffect(() => {
-    change("uploadedFiles", documentArray);
-  }, [documentArray]);
+    const onRemoveFile = (_, fileItem) => {
+      setDocumentArray(
+        documentArray.filter((document) => document.document_manager_guid !== fileItem.serverId)
+      );
+      setUploadedFiles(
+        uploadedFiles.filter((file) => file.document_manager_guid !== fileItem.serverId)
+      );
+      setUploading(false);
+    };
 
-  const onRemoveFile = (_, fileItem) => {
-    setDocumentArray(
-      documentArray.filter((document) => document.document_manager_guid !== fileItem.serverId)
-    );
-    setUploadedFiles(
-      uploadedFiles.filter((file) => file.document_manager_guid !== fileItem.serverId)
-    );
-    setUploading(false);
-  };
+    useEffect(() => {
+      const statuses = (() => {
+        const { self_authorized, ...coreStatuses } = NOTICE_OF_DEPARTURE_STATUS_VALUES;
+        return Object.values(coreStatuses);
+      })();
 
-  useEffect(() => {
-    const statuses = (() => {
-      const { self_authorized, ...coreStatuses } = NOTICE_OF_DEPARTURE_STATUS_VALUES;
-      return Object.values(coreStatuses);
-    })();
+      setStatusOptions(
+        statuses.map((status) => {
+          return {
+            value: status,
+            label: NOTICE_OF_DEPARTURE_STATUS[status],
+          };
+        })
+      );
+    }, []);
 
-    setStatusOptions(
-      statuses.map((status) => {
-        return {
-          value: status,
-          label: NOTICE_OF_DEPARTURE_STATUS[status],
-        };
-      })
-    );
-  }, []);
+    const handleDeleteANoticeOfDepartureDocument = async (document) => {
+      await removeFileFromDocumentManager(document);
 
-  const handleDeleteANoticeOfDepartureDocument = async (document) => {
-    await removeFileFromDocumentManager(document);
+      await props.fetchDetailedNoticeOfDeparture(nod_guid);
+    };
 
-    await props.fetchDetailedNoticeOfDeparture(nod_guid);
-  };
+    const updateNoticeOfDepartureSubmit = async (values) => {
+      await props.updateNoticeOfDeparture({ mineGuid: mine.mine_guid, nodGuid: nod_guid }, values);
+      if (documentArray.length > 0) {
+        await handleAddDocuments(nod_guid);
+      }
+      await props.fetchNoticesOfDeparture(mine.mine_guid);
+      props.closeModal();
+    };
 
-  const updateNoticeOfDepartureSubmit = async (values) => {
-    await props.updateNoticeOfDeparture({ mineGuid: mine.mine_guid, nodGuid: nod_guid }, values);
-    if (documentArray.length > 0) {
-      await handleAddDocuments(nod_guid);
-    }
-    await props.fetchNoticesOfDeparture(mine.mine_guid);
-    props.closeModal();
-  };
-
-  const fileColumns = (isSortable: boolean) => {
-    return [
-      renderDocumentLinkColumn("document_name", "File Name", isSortable),
-      renderTextColumn("document_category", "Category", isSortable, EMPTY_FIELD),
-      renderDateColumn("create_timestamp", "Uploaded", isSortable, null, EMPTY_FIELD),
-      ...(disabled
-        ? []
-        : [
+    const fileColumns = (isSortable: boolean) => {
+      return [
+        renderDocumentLinkColumn("document_name", "File Name", isSortable),
+        renderTextColumn("document_category", "Category", isSortable, EMPTY_FIELD),
+        renderDateColumn("create_timestamp", "Uploaded", isSortable, null, EMPTY_FIELD),
+        ...(disabled
+          ? []
+          : [
             {
               key: "actions",
               render: (record) => (
@@ -262,149 +262,149 @@ const NoticeOfDepartureModal: React.FC<InjectedFormProps<ICreateNoD> &
               ),
             },
           ]),
-    ];
-  };
+      ];
+    };
 
-  return (
-    <div>
-      <Form layout="vertical" onSubmit={handleSubmit(updateNoticeOfDepartureSubmit)}>
-        <h4 className="nod-modal-section-header">Basic Information</h4>
-        <div className="content--light-grey nod-section-padding">
-          <div className="inline-flex padding-sm">
-            <p className="field-title margin-large--right">Departure Project Title</p>
-            <p>{noticeOfDeparture.nod_title || EMPTY_FIELD}</p>
-          </div>
-          <div className="inline-flex padding-sm">
-            <p className="field-title margin-large--right">Departure Summary</p>
-            <p>{noticeOfDeparture.nod_description || EMPTY_FIELD}</p>
-          </div>
-          <div className="inline-flex padding-sm">
-            <p className="field-title margin-large--right">Permit #</p>
-            <p>{noticeOfDeparture?.permit.permit_no || EMPTY_FIELD}</p>
-          </div>
-          <div>
+    return (
+      <div>
+        <Form layout="vertical" onSubmit={handleSubmit(updateNoticeOfDepartureSubmit)}>
+          <h4 className="nod-modal-section-header">Basic Information</h4>
+          <div className="content--light-grey nod-section-padding">
             <div className="inline-flex padding-sm">
-              <p className="field-title margin-large--right">NOD #</p>
-              <p>{noticeOfDeparture.nod_no || EMPTY_FIELD}</p>
+              <p className="field-title margin-large--right">Departure Project Title</p>
+              <p>{noticeOfDeparture.nod_title || EMPTY_FIELD}</p>
             </div>
             <div className="inline-flex padding-sm">
-              <p className="field-title margin-large--right">Declared Type</p>
-              <p>{NOTICE_OF_DEPARTURE_TYPE[noticeOfDeparture.nod_type] || EMPTY_FIELD}</p>
+              <p className="field-title margin-large--right">Departure Summary</p>
+              <p>{noticeOfDeparture.nod_description || EMPTY_FIELD}</p>
             </div>
-          </div>
-          <div className="inline-flex padding-sm">
-            <p className="field-title margin-large--right">Mine Manager</p>
-            <p>{formatDate(noticeOfDeparture.mine_manager_name) || EMPTY_FIELD}</p>
-          </div>
-          <div className="inline-flex padding-sm">
-            <p className="field-title margin-large--right">Submitted</p>
-            <p>{formatDate(noticeOfDeparture.submission_timestamp) || EMPTY_FIELD}</p>
-          </div>
-        </div>
-        <FieldArray
-          name="nod_contacts"
-          component={(componentProps) => renderContacts(componentProps, disabled)}
-        />
-        <h4 className="nod-modal-section-header padding-md--top">Self-Assessment Form</h4>
-        <CoreTable condition columns={fileColumns(false)} dataSource={checklist} />
-        <h4 className="nod-modal-section-header padding-md--top">Application Documentation</h4>
-        <CoreTable condition columns={fileColumns(true)} dataSource={otherDocuments} />
-        {decision.length > 0 && (
-          <div>
-            <h4 className="nod-modal-section-header padding-md--top">
-              Ministry Decision Documentation
-            </h4>
-            <CoreTable condition columns={fileColumns(false)} dataSource={decision} />
-          </div>
-        )}
-        {!disabled && (
-          <Form.Item>
-            <div className="nod-modal-section-header padding-md--top">
-              <h4 className="nod-modal-section-header padding-md--top">
-                Upload Ministry Decision Documentation
-              </h4>
-              <Field
-                id="fileUpload"
-                name="fileUpload"
-                component={FileUpload}
-                addFileStart={() => setUploading(true)}
-                onAbort={() => setUploading(false)}
-                onProcessFiles={() => setUploading(false)}
-                uploadUrl={NOTICE_OF_DEPARTURE_DOCUMENTS(mine.mine_guid)}
-                acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
-                onFileLoad={(documentName, document_manager_guid) => {
-                  onFileLoad(
-                    documentName,
-                    document_manager_guid,
-                    NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.DECISION
-                  );
-                }}
-                onRemoveFile={onRemoveFile}
-                allowRevert
-                allowMultiple
-              />
+            <div className="inline-flex padding-sm">
+              <p className="field-title margin-large--right">Permit #</p>
+              <p>{noticeOfDeparture?.permit.permit_no || EMPTY_FIELD}</p>
             </div>
-          </Form.Item>
-        )}
-        <Row justify="space-between" className="padding-md--top" gutter={24}>
-          <Col span={12}>
-            <p className="field-title">Updated Date</p>
-            <p className="content--light-grey padding-md">
-              {formatDate(noticeOfDeparture.update_timestamp) || EMPTY_FIELD}
-            </p>
-          </Col>
-          <Col span={12}>
-            <p className="field-title">NOD Review Status</p>
             <div>
-              <Form.Item>
-                <Field
-                  id="nod_status"
-                  name="nod_status"
-                  validate={[validateSelectOptions(statusOptions)]}
-                  component={renderConfig.SELECT}
-                  data={statusOptions}
-                  disabled={disabled}
-                />
-              </Form.Item>
+              <div className="inline-flex padding-sm">
+                <p className="field-title margin-large--right">NOD #</p>
+                <p>{noticeOfDeparture.nod_no || EMPTY_FIELD}</p>
+              </div>
+              <div className="inline-flex padding-sm">
+                <p className="field-title margin-large--right">Declared Type</p>
+                <p>{NOTICE_OF_DEPARTURE_TYPE[noticeOfDeparture.nod_type] || EMPTY_FIELD}</p>
+              </div>
             </div>
-          </Col>
-        </Row>
-        <div className="right center-mobile">
-          {disabled ? (
-            <Button
-              className="full-mobile nod-cancel-button"
-              type="primary"
-              onClick={props.closeModal}
-            >
-              Close
-            </Button>
-          ) : (
-            <>
-              <Popconfirm
-                placement="top"
-                title="Are you sure you want to cancel?"
-                okText="Yes"
-                cancelText="No"
-                onConfirm={props.closeModal}
-              >
-                <Button className="full-mobile">Cancel</Button>
-              </Popconfirm>
-              <Button
-                className="full-mobile nod-update-button"
-                type="primary"
-                htmlType="submit"
-                onClick={handleSubmit(updateNoticeOfDepartureSubmit)}
-                disabled={(pristine && documentArray.length === 0) || uploading}
-              >
-                Update
-              </Button>
-            </>
+            <div className="inline-flex padding-sm">
+              <p className="field-title margin-large--right">Mine Manager</p>
+              <p>{formatDate(noticeOfDeparture.mine_manager_name) || EMPTY_FIELD}</p>
+            </div>
+            <div className="inline-flex padding-sm">
+              <p className="field-title margin-large--right">Submitted</p>
+              <p>{formatDate(noticeOfDeparture.submission_timestamp) || EMPTY_FIELD}</p>
+            </div>
+          </div>
+          <FieldArray
+            name="nod_contacts"
+            component={(componentProps) => renderContacts(componentProps, disabled)}
+          />
+          <h4 className="nod-modal-section-header padding-md--top">Self-Assessment Form</h4>
+          <CoreTable condition columns={fileColumns(false)} dataSource={checklist} />
+          <h4 className="nod-modal-section-header padding-md--top">Application Documentation</h4>
+          <CoreTable condition columns={fileColumns(true)} dataSource={otherDocuments} />
+          {decision.length > 0 && (
+            <div>
+              <h4 className="nod-modal-section-header padding-md--top">
+                Ministry Decision Documentation
+              </h4>
+              <CoreTable condition columns={fileColumns(false)} dataSource={decision} />
+            </div>
           )}
-        </div>
-      </Form>
-    </div>
-  );
-};
+          {!disabled && (
+            <Form.Item>
+              <div className="nod-modal-section-header padding-md--top">
+                <h4 className="nod-modal-section-header padding-md--top">
+                  Upload Ministry Decision Documentation
+                </h4>
+                <Field
+                  id="fileUpload"
+                  name="fileUpload"
+                  component={FileUpload}
+                  addFileStart={() => setUploading(true)}
+                  onAbort={() => setUploading(false)}
+                  onProcessFiles={() => setUploading(false)}
+                  uploadUrl={NOTICE_OF_DEPARTURE_DOCUMENTS(mine.mine_guid)}
+                  acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
+                  onFileLoad={(documentName, document_manager_guid) => {
+                    onFileLoad(
+                      documentName,
+                      document_manager_guid,
+                      NOTICE_OF_DEPARTURE_DOCUMENT_TYPE.DECISION
+                    );
+                  }}
+                  onRemoveFile={onRemoveFile}
+                  allowRevert
+                  allowMultiple
+                />
+              </div>
+            </Form.Item>
+          )}
+          <Row justify="space-between" className="padding-md--top" gutter={24}>
+            <Col span={12}>
+              <p className="field-title">Updated Date</p>
+              <p className="content--light-grey padding-md">
+                {formatDate(noticeOfDeparture.update_timestamp) || EMPTY_FIELD}
+              </p>
+            </Col>
+            <Col span={12}>
+              <p className="field-title">NOD Review Status</p>
+              <div>
+                <Form.Item>
+                  <Field
+                    id="nod_status"
+                    name="nod_status"
+                    validate={[validateSelectOptions(statusOptions)]}
+                    component={renderConfig.SELECT}
+                    data={statusOptions}
+                    disabled={disabled}
+                  />
+                </Form.Item>
+              </div>
+            </Col>
+          </Row>
+          <div className="right center-mobile">
+            {disabled ? (
+              <Button
+                className="full-mobile nod-cancel-button"
+                type="primary"
+                onClick={props.closeModal}
+              >
+                Close
+              </Button>
+            ) : (
+              <>
+                <Popconfirm
+                  placement="top"
+                  title="Are you sure you want to cancel?"
+                  okText="Yes"
+                  cancelText="No"
+                  onConfirm={props.closeModal}
+                >
+                  <Button className="full-mobile">Cancel</Button>
+                </Popconfirm>
+                <Button
+                  className="full-mobile nod-update-button"
+                  type="primary"
+                  htmlType="submit"
+                  onClick={handleSubmit(updateNoticeOfDepartureSubmit)}
+                  disabled={(pristine && documentArray.length === 0) || uploading}
+                >
+                  Update
+                </Button>
+              </>
+            )}
+          </div>
+        </Form>
+      </div>
+    );
+  };
 
 const mapStateToProps = (state) => ({
   noticeOfDeparture: getNoticeOfDeparture(state),

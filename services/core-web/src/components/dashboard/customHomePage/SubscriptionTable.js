@@ -6,7 +6,7 @@ import { uniqBy, flattenDeep } from "lodash";
 import * as Strings from "@mds/common/constants/strings";
 import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 import { UNSUBSCRIBE } from "@/constants/assets";
 
 /**

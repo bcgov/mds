@@ -1,7 +1,7 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 import { formatMoney } from "@common/utils/helpers";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 import { NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {

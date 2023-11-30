@@ -32,7 +32,7 @@ import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import AddButton from "@/components/common/buttons/AddButton";
 import ReferralConsultationPackage from "@/components/noticeOfWork/applications/referals/ReferralConsultationPackage";
 import PermitPackage from "@/components/noticeOfWork/applications/PermitPackage";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 
 const propTypes = {
   openModal: PropTypes.func.isRequired,
@@ -93,15 +93,15 @@ const transformDocuments = (
   documents.map((document) => {
     const importNowSubmissionDocument =
       !isEmpty(importNowSubmissionDocumentsJob) &&
-      !isEmpty(importNowSubmissionDocumentsJob.import_now_submission_documents)
+        !isEmpty(importNowSubmissionDocumentsJob.import_now_submission_documents)
         ? importNowSubmissionDocumentsJob.import_now_submission_documents.find((doc) => {
-            return (
-              doc.submission_document_file_name === document.filename &&
-              doc.submission_document_url === document.documenturl &&
-              doc.submission_document_type === document.documenttype &&
-              doc.submission_document_message_id === document.messageid
-            );
-          })
+          return (
+            doc.submission_document_file_name === document.filename &&
+            doc.submission_document_url === document.documenturl &&
+            doc.submission_document_type === document.documenttype &&
+            doc.submission_document_message_id === document.messageid
+          );
+        })
         : null;
     return {
       key: document.mine_document_guid ?? document.id,
@@ -112,11 +112,11 @@ const transformDocuments = (
       category: document.is_imported_submission
         ? document.category
         : (props.noticeOfWorkApplicationDocumentTypeOptionsHash &&
-            props.noticeOfWorkApplicationDocumentTypeOptionsHash[
-              document.now_application_document_type_code
-            ]) ||
-          document.documenttype ||
-          Strings.EMPTY_FIELD,
+          props.noticeOfWorkApplicationDocumentTypeOptionsHash[
+          document.now_application_document_type_code
+          ]) ||
+        document.documenttype ||
+        Strings.EMPTY_FIELD,
       description: document.description || Strings.EMPTY_FIELD,
       document_manager_guid: document.document_manager_guid,
       mine_document_guid: document.mine_document_guid,
@@ -231,27 +231,27 @@ export const NOWSubmissionDocuments = (props) => {
 
   const fileNameColumn = props.selectedRows
     ? {
-        title: "File Name",
-        dataIndex: "filename",
-        key: "filename",
-        sorter: (a, b) => (a.filename > b.filename ? -1 : 1),
-        render: (text) => <div title="File Name">{text}</div>,
-      }
+      title: "File Name",
+      dataIndex: "filename",
+      key: "filename",
+      sorter: (a, b) => (a.filename > b.filename ? -1 : 1),
+      render: (text) => <div title="File Name">{text}</div>,
+    }
     : {
-        title: "File Name",
-        dataIndex: "filename",
-        key: "filename",
-        sorter: (a, b) => (a.filename > b.filename ? -1 : 1),
-        render: (text, record) => (
-          <div title="File Name">
-            <DocumentLink
-              documentManagerGuid={record.document_manager_guid}
-              documentName={record.filename}
-              truncateDocumentName={false}
-            />
-          </div>
-        ),
-      };
+      title: "File Name",
+      dataIndex: "filename",
+      key: "filename",
+      sorter: (a, b) => (a.filename > b.filename ? -1 : 1),
+      render: (text, record) => (
+        <div title="File Name">
+          <DocumentLink
+            documentManagerGuid={record.document_manager_guid}
+            documentName={record.filename}
+            truncateDocumentName={false}
+          />
+        </div>
+      ),
+    };
 
   const descriptionColumn = {
     title: "Description",
@@ -267,7 +267,7 @@ export const NOWSubmissionDocuments = (props) => {
     key: "category",
     filters: props.disableCategoryFilter ? null : categoryFilters,
     onFilter: props.disableCategoryFilter
-      ? () => {}
+      ? () => { }
       : (value, record) => record.category.includes(value),
     sorter: (a, b) => (a.category > b.category ? -1 : 1),
     render: (text) => <div title="Category">{text}</div>,
@@ -475,7 +475,7 @@ export const NOWSubmissionDocuments = (props) => {
       if (
         isInCompleteStatus &&
         moment(record.upload_date, "YYYY-MM-DD") >
-          moment(props.noticeOfWork.decision_by_user_date, "YYYY-MM-DD")
+        moment(props.noticeOfWork.decision_by_user_date, "YYYY-MM-DD")
       ) {
         isPostDecision = true;
       }
@@ -566,7 +566,7 @@ export const NOWSubmissionDocuments = (props) => {
     }
     const importDocuments =
       importJobExists &&
-      !isEmpty(props.importNowSubmissionDocumentsJob.import_now_submission_documents)
+        !isEmpty(props.importNowSubmissionDocumentsJob.import_now_submission_documents)
         ? props.importNowSubmissionDocumentsJob.import_now_submission_documents
         : [];
     const amountToImport = importDocuments.length;
@@ -675,14 +675,14 @@ export const NOWSubmissionDocuments = (props) => {
         rowSelection={
           props.selectedRows
             ? {
-                selectedRowKeys: props.selectedRows.selectedSubmissionRows,
-                onChange: (selectedRowKeys) => {
-                  props.selectedRows.setSelectedSubmissionRows(selectedRowKeys);
-                },
-                getCheckboxProps: (record) => ({
-                  disabled: record && !record.mine_document_guid,
-                }),
-              }
+              selectedRowKeys: props.selectedRows.selectedSubmissionRows,
+              onChange: (selectedRowKeys) => {
+                props.selectedRows.setSelectedSubmissionRows(selectedRowKeys);
+              },
+              getCheckboxProps: (record) => ({
+                disabled: record && !record.mine_document_guid,
+              }),
+            }
             : null
         }
       />

@@ -32,7 +32,7 @@ import ReferralConsultationPackage from "@/components/noticeOfWork/applications/
 import PermitPackage from "@/components/noticeOfWork/applications/PermitPackage";
 import { sortableContainer, sortableElement, sortableHandle } from "react-sortable-hoc";
 import arrayMove from "array-move";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 
 const DragHandle = sortableHandle(() => <MenuOutlined style={{ cursor: "grab", color: "#999" }} />);
 
@@ -99,7 +99,7 @@ const transformDocuments = (
       category:
         (noticeOfWorkApplicationDocumentTypeOptionsHash &&
           noticeOfWorkApplicationDocumentTypeOptionsHash[
-            document.now_application_document_type_code
+          document.now_application_document_type_code
           ]) ||
         document.documenttype ||
         Strings.EMPTY_FIELD,
@@ -304,27 +304,27 @@ export class NOWDocuments extends Component {
 
     const fileNameColumn = this.props.selectedRows
       ? {
-          title: "File Name",
-          dataIndex: "filename",
-          key: "filename",
-          sorter: (a, b) => (a.filename > b.filename ? -1 : 1),
-          render: (text) => <div title="File Name">{text}</div>,
-        }
+        title: "File Name",
+        dataIndex: "filename",
+        key: "filename",
+        sorter: (a, b) => (a.filename > b.filename ? -1 : 1),
+        render: (text) => <div title="File Name">{text}</div>,
+      }
       : {
-          title: "File Name",
-          dataIndex: "filename",
-          key: "filename",
-          sorter: (a, b) => (a.filename > b.filename ? -1 : 1),
-          render: (text, record) => (
-            <div title="File Name">
-              <DocumentLink
-                documentManagerGuid={record.document_manager_guid}
-                documentName={record.filename}
-                truncateDocumentName={false}
-              />
-            </div>
-          ),
-        };
+        title: "File Name",
+        dataIndex: "filename",
+        key: "filename",
+        sorter: (a, b) => (a.filename > b.filename ? -1 : 1),
+        render: (text, record) => (
+          <div title="File Name">
+            <DocumentLink
+              documentManagerGuid={record.document_manager_guid}
+              documentName={record.filename}
+              truncateDocumentName={false}
+            />
+          </div>
+        ),
+      };
 
     const descriptionColumn = {
       title: "Description",
@@ -363,7 +363,7 @@ export class NOWDocuments extends Component {
       key: "category",
       filters: this.props.disableCategoryFilter ? null : categoryFilters,
       onFilter: this.props.disableCategoryFilter
-        ? () => {}
+        ? () => { }
         : (value, record) => record.category.includes(value),
       sorter: (a, b) => (a.category > b.category ? -1 : 1),
       render: (text) => <div title="Category">{text}</div>,
@@ -543,7 +543,7 @@ export class NOWDocuments extends Component {
         if (
           this.isInCompleteStatus() &&
           moment(record.upload_date, "YYYY-MM-DD") >
-            moment(this.props.noticeOfWork.decision_by_user_date, "YYYY-MM-DD")
+          moment(this.props.noticeOfWork.decision_by_user_date, "YYYY-MM-DD")
         ) {
           isPostDecision = true;
         }
@@ -659,11 +659,11 @@ export class NOWDocuments extends Component {
           rowSelection={
             this.props.selectedRows
               ? {
-                  selectedRowKeys: this.props.selectedRows.selectedCoreRows,
-                  onChange: (selectedRowKeys) => {
-                    this.props.selectedRows.setSelectedCoreRows(selectedRowKeys);
-                  },
-                }
+                selectedRowKeys: this.props.selectedRows.selectedCoreRows,
+                onChange: (selectedRowKeys) => {
+                  this.props.selectedRows.setSelectedCoreRows(selectedRowKeys);
+                },
+              }
               : null
           }
         />

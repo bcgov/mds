@@ -20,7 +20,7 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import DocumentLink from "@/components/common/DocumentLink";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 import MineIncidentNotes from "@/components/mine/Incidents/MineIncidentNotes";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
 import * as router from "@/constants/routes";

@@ -5,7 +5,7 @@ import { Button, Col, Row } from "antd";
 import { uniqBy, flattenDeep } from "lodash";
 import * as Strings from "@mds/common/constants/strings";
 import { formatDate } from "@common/utils/helpers";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 import {
