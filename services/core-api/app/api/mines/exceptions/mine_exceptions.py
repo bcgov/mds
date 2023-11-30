@@ -11,7 +11,7 @@ class MineException(MDSCoreAPIException):
         super().__init__(message, **kwargs)
         self.code = int(kwargs.get("status_code", 500))
 
-class ExplosivesPermitDocumentExeption(MineException):
+class ExplosivesPermitDocumentException(MineException):
     """Exception for Explosives Permit Document Related Exception"""
 
     description = (

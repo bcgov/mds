@@ -13,7 +13,7 @@ from app.api.utils.access_decorators import requires_role_view_all, requires_rol
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.constants import TIMEOUT_5_MINUTES, EXPLOSIVES_PERMIT_DOCUMENT_DOWNLOAD_TOKEN
 from app.api.mines.explosives_permit.response_models import EXPLOSIVES_PERMIT_DOCUMENT_TYPE_MODEL
-from app.api.mines.exceptions.mine_exceptions import MineException, ExplosivesPermitExeption, ExplosivesPermitDocumentExeption
+from app.api.mines.exceptions.mine_exceptions import MineException, ExplosivesPermitExeption, ExplosivesPermitDocumentException
 
 EXPLOSIVES_PERMIT_DOCUMENT_DOWNLOAD_TOKEN_MODEL = api.model('ExplosivesPermitDocumentDownloadToken',
                                                             {'token': fields.String})
@@ -59,11 +59,11 @@ class ExplosivesPermitDocumentGenerateResource(Resource, UserMixin):
         try:
             document_type = ExplosivesPermitDocumentType.query.get(document_type_code)
             if not document_type:
-                raise ExplosivesPermitDocumentExeption("Document type not found", status_code = 404)
+                raise ExplosivesPermitDocumentException("Document type not found", status_code = 404)
 
             document_template = document_type.document_template
             if not document_template:
-                raise ExplosivesPermitDocumentExeption(f"Cannot generate a {document_type.description}",
+                raise ExplosivesPermitDocumentException(f"Cannot generate a {document_type.description}",
                                                     status_code = 400)
 
             data = self.parser.parse_args()
@@ -71,7 +71,7 @@ class ExplosivesPermitDocumentGenerateResource(Resource, UserMixin):
             explosives_permit_guid = data['explosives_permit_guid']
             explosives_permit = ExplosivesPermit.find_by_explosives_permit_guid(explosives_permit_guid)
             if not explosives_permit:
-                raise ExplosivesPermitDocumentExeption("Explosives Permit not found",
+                raise ExplosivesPermitDocumentException("Explosives Permit not found",
                                                     status_code = 404)
 
             template_data = data['template_data']
@@ -85,7 +85,7 @@ class ExplosivesPermitDocumentGenerateResource(Resource, UserMixin):
             token = ExplosivesPermitDocumentGenerateResource.get_explosives_document_generate_token(
                 document_type_code, explosives_permit_guid, template_data)
 
-        except ExplosivesPermitDocumentExeption as e:
+        except ExplosivesPermitDocumentException as e:
             current_app.logger.error(e)
             raise e
 
