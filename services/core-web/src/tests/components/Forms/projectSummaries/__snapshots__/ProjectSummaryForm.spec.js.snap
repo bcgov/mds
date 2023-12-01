@@ -361,6 +361,47 @@ exports[`ProjectSummaryForm renders properly 1`] = `
           "mine_guid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
           "mine_name": "Sample Mine",
           "project_guid": "35633148-57f8-4967-be35-7f89abfbd02e",
+          "project_links": Array [
+            Object {
+              "create_timestamp": "2023-11-27T18:27:20.598193-07:00",
+              "create_user": "test@bctest",
+              "project": Object {
+                "contacts": Array [
+                  Object {
+                    "name": "Test Contact",
+                  },
+                ],
+                "project_guid": "8132462392222",
+                "project_summary": Object {
+                  "project_summary_guid": "6bab1df6-e181-435a-abc0-e99466411880",
+                  "status_code": "SUB",
+                },
+                "project_title": "Test Mine",
+                "proponent_project_id": "Test-123",
+                "update_timestamp": "2023-08-04T09:21:06.028471-06:00",
+              },
+              "project_guid": "8132462392222",
+              "project_link_guid": "90de19e1-7292-4646-af0a-260bd14b1d45",
+              "related_project": Object {
+                "contacts": Array [
+                  Object {
+                    "name": "Tom Tester",
+                  },
+                ],
+                "project_guid": "913246239223",
+                "project_summary": Object {
+                  "project_summary_guid": "a2e76a72-f306-4973-bda8-37018d15baa2",
+                  "status_code": "SUB",
+                },
+                "project_title": "Test Coal",
+                "proponent_project_id": "TEST-1001",
+                "update_timestamp": "2023-08-24T15:49:16.702250-06:00",
+              },
+              "related_project_guid": "d7411155-dc79-4fa9-8975-c22594aab7ec",
+              "update_timestamp": "2023-11-27T18:27:20.598307-07:00",
+              "update_user": "test@bctest",
+            },
+          ],
           "project_summary": Object {
             "documents": Array [],
           },
