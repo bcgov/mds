@@ -32,23 +32,17 @@ export const removeNullValues = (obj) => {
   return obj;
 };
 
-export const getStatusDescription = (statusCode) => {
-  switch (statusCode) {
-    case "DFT":
-      return "Draft";
-    case "WDN":
-      return "Withdrawn";
-    case "ASG":
-      return "Assigned";
-    case "COM":
-      return "Complete";
-    case "OHD":
-      return "On Hold";
-    case "SUB":
-      return "Submitted";
-    case "UNR":
-      return "Under review";
-    default:
-      return "";
+export const getStatusDescription = (
+  projectSummaryStatusCode,
+  majorMineApplicationStatusCode,
+  irtStatusCode
+) => {
+  if (
+    projectSummaryStatusCode === "WDN" ||
+    majorMineApplicationStatusCode === "WDN" ||
+    irtStatusCode === "WDN"
+  ) {
+    return "Inactive";
   }
+  return "Active";
 };

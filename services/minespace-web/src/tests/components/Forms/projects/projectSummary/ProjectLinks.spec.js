@@ -27,5 +27,7 @@ describe("ProjectLinks Component", () => {
     ).toBeTruthy();
     expect(screen.queryByText("Project Title")).toBeTruthy();
     expect(screen.queryByText(PROJECT.project_links[0].related_project.project_title)).toBeTruthy();
+    // Check if status is inactive when either project summary, major mine application, or irt status is WDN
+    expect(screen.queryByText("Inactive")).toBeTruthy();
   });
 });

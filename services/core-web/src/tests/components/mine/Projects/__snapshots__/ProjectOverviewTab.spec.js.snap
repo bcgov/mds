@@ -205,6 +205,14 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                     "name": "Test Contact",
                   },
                 ],
+                "information_requirements_table": Object {
+                  "irt_guid": "awxyz12345",
+                  "status_code": "APV",
+                },
+                "major_mine_application": Object {
+                  "major_mine_application_guid": "abcde12345",
+                  "status_code": "DFT",
+                },
                 "project_guid": "8132462392222",
                 "project_summary": Object {
                   "project_summary_guid": "6bab1df6-e181-435a-abc0-e99466411880",
@@ -222,6 +230,14 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                     "name": "Tom Tester",
                   },
                 ],
+                "information_requirements_table": Object {
+                  "irt_guid": "awxyz12345",
+                  "status_code": "APV",
+                },
+                "major_mine_application": Object {
+                  "major_mine_application_guid": "abcde12345",
+                  "status_code": "WDN",
+                },
                 "project_guid": "913246239223",
                 "project_summary": Object {
                   "project_summary_guid": "a2e76a72-f306-4973-bda8-37018d15baa2",

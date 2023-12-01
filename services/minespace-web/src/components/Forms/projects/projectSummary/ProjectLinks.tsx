@@ -25,14 +25,19 @@ const ProjectLinks = () => {
       const isSameRelatedProject = link.related_project.project_guid === data.project_guid;
 
       const transformProject = (res) => ({
+        fullStuff: JSON.stringify(res),
         project_guid: res.project_guid,
         project_summary_guid: res.project_summary.project_summary_guid,
         project_title: res.project_title,
-        proponent_project_id: project.proponent_project_id,
-        status_code: getStatusDescription(project.project_summary.status_code),
-        mine_guid: project.mine_guid,
-        primary_contact: project.contacts.find((c: any) => c.name)?.name || "",
-        update_timestamp: project.update_timestamp,
+        proponent_project_id: res.proponent_project_id,
+        status_code: getStatusDescription(
+          res.project_summary.status_code,
+          res.major_mine_application.status_code,
+          res.information_requirements_table.status_code
+        ),
+        mine_guid: res.mine_guid,
+        primary_contact: res.contacts.find((c: any) => c.name)?.name || "",
+        update_timestamp: res.update_timestamp,
       });
 
       return [
@@ -45,10 +50,18 @@ const ProjectLinks = () => {
   const actions = [
     {
       key: "view",
-      label: "View",
+      label: "View Project",
       icon: <FileOutlined />,
       clickFunction: (_event, record: ILinkedProject) => {
         history.push(EDIT_PROJECT.dynamicRoute(record.project_guid));
+      },
+    },
+    {
+      key: "remove",
+      label: "Remove Linked-project",
+      icon: <FileOutlined />,
+      clickFunction: (_event, record: ILinkedProject) => {
+        console.log("remove linked project");
       },
     },
   ];

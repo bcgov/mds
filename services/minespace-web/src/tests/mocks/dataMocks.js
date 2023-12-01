@@ -1172,6 +1172,14 @@ export const PROJECT = {
           project_summary_guid: "6bab1df6-e181-435a-abc0-e99466411880",
           status_code: "SUB",
         },
+        major_mine_application: {
+          major_mine_application_guid: "abcde12345",
+          status_code: "DFT",
+        },
+        information_requirements_table: {
+          irt_guid: "awxyz12345",
+          status_code: "APV",
+        },
         update_timestamp: "2023-08-04T09:21:06.028471-06:00",
       },
       related_project: {
@@ -1185,7 +1193,15 @@ export const PROJECT = {
         ],
         project_summary: {
           project_summary_guid: "a2e76a72-f306-4973-bda8-37018d15baa2",
-          status_code: "SUB",
+          status_code: "DFT",
+        },
+        major_mine_application: {
+          major_mine_application_guid: "abcde12345",
+          status_code: "WDN",
+        },
+        information_requirements_table: {
+          irt_guid: "awxyz12345",
+          status_code: "APV",
         },
         update_timestamp: "2023-08-24T15:49:16.702250-06:00",
       },
