@@ -7,6 +7,7 @@ services:
       dockerfile: './Dockerfile'
     volumes:
       - ./:/opt/pipelines
+      - ./app:/code/app
     ports:
       - 8004:80
     restart: on-failure
@@ -14,8 +15,12 @@ services:
       - DOCUMENTSTORE_PARAMS_HOST=elasticsearch
       - PIPELINE_YAML_PATH=/opt/pipelines/document-search.haystack-pipeline.yml
       - TOKENIZERS_PARALLELISM=false
+      - ROOT_PATH=/haystack
     networks:
       - elastic
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
 
   elasticsearch:
     image: "docker.elastic.co/elasticsearch/elasticsearch:8.11.1"
@@ -26,18 +31,19 @@ services:
     environment:
       - discovery.type=single-node
       - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
+
     # volumes:
     #   - ./elasticsearch-data:/usr/share/elasticsearch/data
     networks:
       - elastic
 
 
-      # - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
-    # healthcheck:
-    #     test: curl --fail http://localhost:9200/_cat/health || exit 1
-    #     interval: 10s
-    #     timeout: 1s
-    #     retries: 10
+    healthcheck:
+        test: curl --fail http://localhost:9200/_cat/health || exit 1
+        interval: 10s
+        timeout: 1s
+        retries: 10
   kibana:
     image: "docker.elastic.co/kibana/kibana:8.11.1"
     ports:

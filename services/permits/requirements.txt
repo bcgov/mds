@@ -1,5 +1,5 @@
 fastapi==0.103.2
 uvicorn==0.24.0.post1
-farm-haystack[all]==1.22.1
+farm-haystack[elasticsearch8,pdf,inference]==1.22.1
 git+https://github.com/deepset-ai/haystack.git@v1.22.1#egg=rest_api&subdirectory=rest_api
-tensorflow==2.15.0
+torch==2.1.1
