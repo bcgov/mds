@@ -787,6 +787,12 @@ NOW_VIEW_MODEL = api.model(
         fields.String,
         'source_permit_amendment_issue_date':
         fields.Date,
+        'latest_response_date':
+        fields.Date,
+        'regional_contact':
+        fields.String,
+        'mine_purpose':
+        fields.String,
     })
 
 PAGINATED_LIST = api.model(

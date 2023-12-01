@@ -56,7 +56,13 @@ class ApplicationsView(Base):
     decision_date = db.Column(db.DateTime)
     source_permit_no = db.Column(db.String)
 
+    latest_response_date = db.Column(db.DateTime)
+
+    mine_purpose = db.Column(db.String)
+
     is_historic = db.Column(db.Boolean)
+
+    regional_contact = db.Column(db.String)
 
     import_timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     update_timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
