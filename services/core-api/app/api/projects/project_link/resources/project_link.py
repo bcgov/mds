@@ -35,7 +35,7 @@ class ProjectLinkListResource(Resource, UserMixin):
         })
     @api.expect(parser)
     @api.marshal_with(PROJECT_LINK_MODEL, code=201)
-    @requires_any_of([VIEW_ALL, MINE_ADMIN, MINESPACE_PROPONENT])
+    @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT])
     def post(self, mine_guid):
         mine = Mine.find_by_mine_guid(mine_guid)
         if mine is None:
