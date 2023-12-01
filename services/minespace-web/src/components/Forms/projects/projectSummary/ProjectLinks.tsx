@@ -13,6 +13,7 @@ import { ColumnsType } from "antd/es/table";
 import { Typography } from "antd";
 import { useHistory } from "react-router-dom";
 import { EDIT_PROJECT } from "@/constants/routes";
+import { getStatusDescription } from "@mds/common/constants";
 
 const ProjectLinks = () => {
   const history = useHistory();
@@ -28,7 +29,7 @@ const ProjectLinks = () => {
         project_summary_guid: res.project_summary.project_summary_guid,
         project_title: res.project_title,
         proponent_project_id: project.proponent_project_id,
-        status_code: project.project_summary.status_code,
+        status_code: getStatusDescription(project.project_summary.status_code),
         mine_guid: project.mine_guid,
         primary_contact: project.contacts.find((c: any) => c.name)?.name || "",
         update_timestamp: project.update_timestamp,

@@ -1,3 +1,5 @@
+import { PROJECT_SUMMARY_STATUS_CODES } from "./enums";
+
 export const serverSidePaginationOptions = (pageData) => {
   return {
     defaultCurrent: 1,
@@ -28,4 +30,25 @@ export const parseServerSideSearchOptions = (pagination, filters, sorter) => {
 export const removeNullValues = (obj) => {
   Object.keys(obj).forEach((key) => obj[key] === null && delete obj[key]);
   return obj;
+};
+
+export const getStatusDescription = (statusCode) => {
+  switch (statusCode) {
+    case "DFT":
+      return "Draft";
+    case "WDN":
+      return "Withdrawn";
+    case "ASG":
+      return "Assigned";
+    case "COM":
+      return "Complete";
+    case "OHD":
+      return "On Hold";
+    case "SUB":
+      return "Submitted";
+    case "UNR":
+      return "Under review";
+    default:
+      return "";
+  }
 };
