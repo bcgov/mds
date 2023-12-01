@@ -1,6 +1,6 @@
 import { Col, Divider, Popconfirm, Row, Typography } from "antd";
 import { Link, useHistory, useParams, withRouter } from "react-router-dom";
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { bindActionCreators, compose } from "redux";
 import { createDam, updateDam } from "@mds/common/redux/actionCreators/damActionCreator";
 import { getFormSyncErrors, getFormValues, InjectedFormProps, reduxForm, submit } from "redux-form";
@@ -23,6 +23,8 @@ import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { RootState } from "@/App";
 import { Feature } from "@mds/common";
 import FeatureFlagGuard from "@/components/common/featureFlag.guard";
+import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
+import { USER_ROLES } from "@mds/common";
 
 interface DamsPageProps {
   tsf: ITailingsStorageFacility;
@@ -35,6 +37,7 @@ interface DamsPageProps {
   createDam: ActionCreator<typeof createDam>;
   updateDam: ActionCreator<typeof updateDam>;
   initialValues: IDam;
+  userRoles: string[];
 }
 
 const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
@@ -45,8 +48,14 @@ const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
     damGuid?: string;
     mineGuid: string;
   }>();
+  const [canEditTSF, setCanEditTSF] = useState(false);
 
   useEffect(() => {
+    setCanEditTSF(
+      props.userRoles.some(
+        (r) => r === USER_ROLES.role_minespace_proponent || r === USER_ROLES.role_edit_tsf
+      )
+    );
     if (!tsf.mine_tailings_storage_facility_guid) {
       (async () => {
         const mine = await props.fetchMineRecordById(mineGuid);
@@ -102,8 +111,9 @@ const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
         </Col>
         <Col span={24}>
           <Popconfirm
-            title={`Are you sure you want to cancel ${tailingsStorageFacilityGuid ? "updating this" : "creating a new"
-              } dam?
+            title={`Are you sure you want to cancel ${
+              tailingsStorageFacilityGuid ? "updating this" : "creating a new"
+            } dam?
             All unsaved data on this page will be lost.`}
             onConfirm={handleBack}
             cancelText="No"
@@ -121,17 +131,18 @@ const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
       <SteppedForm
         errors={[]}
         handleSaveData={handleSave}
-        handleTabChange={() => { }}
+        handleTabChange={() => {}}
         activeTab="basic-dam-information"
         submitText="Save and Return to Associated Dams"
         handleCancel={handleBack}
-        cancelConfirmMessage={`Are you sure you want to cancel ${tailingsStorageFacilityGuid ? "updating this" : "creating a new"
-          } dam?
+        cancelConfirmMessage={`Are you sure you want to cancel ${
+          tailingsStorageFacilityGuid ? "updating this" : "creating a new"
+        } dam?
         All unsaved data on this page will be lost.`}
       >
         {[
           <Step key="basic-dam-information">
-            <DamForm tsf={tsf} dam={initialValues} />
+            <DamForm tsf={tsf} dam={initialValues} canEditTSF={canEditTSF} />
           </Step>,
         ]}
       </SteppedForm>
@@ -144,6 +155,7 @@ const mapStateToProps = (state: RootState) => ({
   tsf: getTsf(state),
   formValues: getFormValues(ADD_EDIT_DAM)(state),
   formErrors: getFormSyncErrors(ADD_EDIT_DAM)(state),
+  userRoles: getUserAccessData(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

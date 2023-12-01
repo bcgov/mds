@@ -23,6 +23,8 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import CoreTable from "@/components/common/CoreTable";
 import { Feature } from "@mds/common";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { renderActionsColumn } from "@mds/common/components/common/CoreTableCommonColumns";
+import { EyeOutlined } from "@ant-design/icons";
 
 const propTypes = {
   tailings: PropTypes.arrayOf(PropTypes.any).isRequired,
@@ -33,6 +35,7 @@ const propTypes = {
   editTailings: PropTypes.func.isRequired,
   storeDam: PropTypes.func.isRequired,
   storeTsf: PropTypes.func.isRequired,
+  canEditTSF: PropTypes.bool.isRequired,
 };
 
 export const TailingsTable = (props) => {
@@ -48,6 +51,7 @@ export const TailingsTable = (props) => {
     handleEditTailings,
     TSFOperatingStatusCodeHash,
     itrmExemptionStatusCodeHash,
+    canEditTSF,
   } = props;
 
   const tsfV2Enabled = isFeatureEnabled(Feature.TSF_V2);
@@ -67,6 +71,65 @@ export const TailingsTable = (props) => {
       dam.dam_guid
     );
     history.push(url);
+  };
+
+  const editViewIcon = canEditTSF ? (
+    <img src={EDIT_PENCIL} className="icon-sm padding-sm--right primary-color" />
+  ) : (
+    <EyeOutlined className="icon-sm padding-sm--right primary-color" />
+  );
+
+  const renderOldTSFActions = () => {
+    return {
+      dataIndex: "edit",
+      fixed: "right",
+      render: (text, record) => {
+        console.log("wtf renderOldTSFActions");
+        console.log(record);
+        return (
+          <div title="" align="right">
+            <AuthorizationWrapper>
+              <Button
+                type="link"
+                onClick={(event) => openEditTailingsModal(event, handleEditTailings, record)}
+              >
+                <img src={EDIT_PENCIL} alt="Edit" />
+              </Button>
+            </AuthorizationWrapper>
+          </div>
+        );
+      },
+    };
+  };
+
+  const renderNewTSFActions = () => {
+    const actions = [
+      {
+        key: "actions",
+        label: canEditTSF ? "Edit TSF" : "View TSF",
+        icon: editViewIcon,
+        clickFunction: (_event, record) => {
+          editTailings(event, record);
+        },
+      },
+    ];
+
+    return renderActionsColumn(actions);
+  };
+
+  const renderDamActions = () => {
+    const actions = [
+      {
+        key: "actions",
+        label: canEditTSF ? "Edit Dam" : "View Dam",
+        icon: editViewIcon,
+        clickFunction: (_event, record) => {
+          handleEditDam(event, record);
+        },
+      },
+    ];
+
+    return renderActionsColumn(actions);
   };
 
   // const handleRowExpand = (record) => {
@@ -150,31 +213,7 @@ export const TailingsTable = (props) => {
       render: (text) => <div title="Notes">{text || EMPTY_FIELD}</div>,
       sorter: (a, b) => (a.notes > b.notes ? -1 : 1),
     },
-    {
-      title: "",
-      dataIndex: "edit",
-      fixed: "right",
-      render: (text, record) => {
-        return (
-          <div title="" align="right">
-            <AuthorizationWrapper>
-              {tsfV2Enabled ? (
-                <Button type="link" onClick={(event) => editTailings(event, record)}>
-                  <img src={EDIT_PENCIL} alt="Edit" />
-                </Button>
-              ) : (
-                <Button
-                  type="link"
-                  onClick={(event) => openEditTailingsModal(event, handleEditTailings, record)}
-                >
-                  <img src={EDIT_PENCIL} alt="Edit" />
-                </Button>
-              )}
-            </AuthorizationWrapper>
-          </div>
-        );
-      },
-    },
+    ...(tsfV2Enabled ? [renderNewTSFActions()] : [renderOldTSFActions()]),
   ];
 
   const expandedColumns = [
@@ -195,27 +234,7 @@ export const TailingsTable = (props) => {
         </Typography.Text>
       ),
     },
-    {
-      title: "",
-      fixed: "right",
-      dataIndex: "edit",
-      render: (text, record) => {
-        return (
-          <div title="" align="right">
-            <AuthorizationWrapper>
-              <Button
-                type="link"
-                onClick={(event) => {
-                  handleEditDam(event, record);
-                }}
-              >
-                <img src={EDIT_PENCIL} alt="Edit" />
-              </Button>
-            </AuthorizationWrapper>
-          </div>
-        );
-      },
-    },
+    ...[renderDamActions()],
   ];
 
   return (

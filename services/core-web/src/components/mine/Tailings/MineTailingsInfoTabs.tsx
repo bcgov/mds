@@ -202,7 +202,7 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
             tab={`Tailings Storage Facilities (${mine.mine_tailings_storage_facilities?.length})`}
             key="tsfDetails"
           >
-            <TailingsSummaryPageWrapper canEditTSF={canEditTSF} />
+            <TailingsSummaryPageWrapper />
           </Tabs.TabPane>
         )}
         {tabEnabled("dam") && (

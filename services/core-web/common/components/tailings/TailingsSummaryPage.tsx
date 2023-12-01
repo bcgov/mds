@@ -52,6 +52,8 @@ import {
 import { Feature } from "@mds/common";
 import FeatureFlagGuard from "@/components/common/featureFlag.guard";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
+import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
+import { USER_ROLES } from "@mds/common";
 
 interface TailingsSummaryPageProps {
   form: string;
@@ -75,15 +77,16 @@ interface TailingsSummaryPageProps {
   clearTsf?: typeof clearTsf;
   isDirty?: (form: string) => boolean;
   initialValues?: Partial<ITailingsStorageFacility>;
-  canEditTSF: boolean;
+  userRoles?: string[];
 }
 
 export const TailingsSummaryPage: FC<InjectedFormProps<ITailingsStorageFacility> &
   TailingsSummaryPageProps> = (props) => {
-  const { mines, history, formErrors, formValues, mineGuid, tsfGuid, tab, canEditTSF } = props;
+  const { mines, history, formErrors, formValues, mineGuid, tsfGuid, tab } = props;
   const [isLoaded, setIsLoaded] = useState(false);
   const [isReloading, setIsReloading] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [canEditTSF, setCanEditTSF] = useState(false);
 
   const { renderConfig, components, routes, isCore } = useContext(TailingsContext);
 
@@ -117,6 +120,14 @@ export const TailingsSummaryPage: FC<InjectedFormProps<ITailingsStorageFacility>
   useEffect(() => {
     handleFetchData(true);
   }, [mineGuid, tsfGuid]);
+
+  useEffect(() => {
+    setCanEditTSF(
+      props.userRoles.some(
+        (r) => r === USER_ROLES.role_minespace_proponent || r === USER_ROLES.role_edit_tsf
+      )
+    );
+  }, []);
 
   const handleAddDocuments = async (minePartyApptGuid) => {
     await Promise.all(
@@ -258,7 +269,7 @@ export const TailingsSummaryPage: FC<InjectedFormProps<ITailingsStorageFacility>
           activeTab={tab}
         >
           <Step key="basic-information">
-            <BasicInformation renderConfig={renderConfig} viewOnly={!props.canEditTSF} />
+            <BasicInformation renderConfig={renderConfig} viewOnly={!canEditTSF} />
           </Step>
           <Step key="engineer-of-record" disabled={!hasCreatedTSF}>
             <EngineerOfRecord
@@ -311,6 +322,7 @@ const mapStateToProps = (state, ownProps) => {
     },
     eors: getEngineersOfRecordOptions(state),
     form: ownProps.form,
+    userRoles: getUserAccessData(state),
   };
 };
 

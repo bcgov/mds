@@ -23,12 +23,11 @@ interface TailingsSummaryPageWrapperProps {
       tab: string;
     };
   };
-  canEditTSF: boolean;
 }
 
 export const TailingsSummaryPageWrapper: FC<RouteComponentProps &
   TailingsSummaryPageWrapperProps> = (props) => {
-  const { match, canEditTSF } = props;
+  const { match } = props;
 
   const tsfComponents = {
     LinkButton,
@@ -60,7 +59,6 @@ export const TailingsSummaryPageWrapper: FC<RouteComponentProps &
         mineGuid={match.params.id}
         tsfGuid={match.params.tailingsStorageFacilityGuid}
         tab={match.params.tab}
-        canEditTSF={canEditTSF}
       />
     </TailingsProvider>
   );

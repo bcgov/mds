@@ -1,4 +1,4 @@
-import { Button, Col, Row, Typography, Dropdown, MenuProps } from "antd";
+import { Button, Col, Row, Typography } from "antd";
 import {
   CONSEQUENCE_CLASSIFICATION_CODE_HASH,
   DAM_OPERATING_STATUS_HASH,
@@ -17,8 +17,9 @@ import { IDam, ITailingsStorageFacility } from "@mds/common";
 import { RootState } from "@/App";
 import { ColumnsType } from "antd/lib/table";
 import CoreTable from "@/components/common/CoreTable";
-import { EDIT_OUTLINE_VIOLET, CARAT } from "@/constants/assets";
+import { EDIT_OUTLINE } from "@mds/common/constants/assets";
 import { EyeOutlined } from "@ant-design/icons";
+import { renderActionsColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 
 interface AssociatedDamsProps {
   tsf: ITailingsStorageFacility;
@@ -46,6 +47,27 @@ const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
     props.storeDam({});
     const url = ADD_DAM.dynamicRoute(tsf.mine_guid, tsf.mine_tailings_storage_facility_guid);
     history.push(url);
+  };
+
+  const editViewIcon = canEditTSF ? (
+    <img src={EDIT_OUTLINE} className="icon-sm padding-sm--right primary-colour" />
+  ) : (
+    <EyeOutlined className="icon-sm padding-sm--right primary-colour" />
+  );
+
+  const renderDamActions = () => {
+    const actions = [
+      {
+        key: "actions",
+        label: canEditTSF ? "Edit Dam" : "View Dam",
+        icon: editViewIcon,
+        clickFunction: (_event, record) => {
+          handleNavigateToEdit(event, record);
+        },
+      },
+    ];
+
+    return renderActionsColumn(actions);
   };
 
   const columns: ColumnsType<IDam> = [
@@ -88,50 +110,7 @@ const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
       dataIndex: "max_pond_elevation",
       key: "max_pond_elevation",
     },
-    {
-      title: "Actions",
-      key: "actions",
-      render: (record) => {
-        const buttonText = canEditTSF ? "Edit Dam" : "View Dam";
-        const buttonIcon = canEditTSF ? (
-          <img src={EDIT_OUTLINE_VIOLET} className="icon-sm padding-sm--right violet" />
-        ) : (
-          <EyeOutlined className="icon-sm padding-sm--right violet" />
-        );
-
-        const menu: MenuProps["items"] = [
-          {
-            key: "0",
-            icon: buttonIcon,
-            label: (
-              <Button
-                className="permit-table-button"
-                type="primary"
-                onClick={(event) => handleNavigateToEdit(event, record)}
-              >
-                <div>{buttonText}</div>
-              </Button>
-            ),
-          },
-        ];
-
-        return (
-          <div>
-            <Dropdown menu={{ items: menu }} placement="bottomLeft">
-              <Button className="permit-table-button" type="primary">
-                Actions
-                <img
-                  className="padding-sm--right icon-svg-filter"
-                  src={CARAT}
-                  alt="Menu"
-                  style={{ paddingLeft: "5px" }}
-                />
-              </Button>
-            </Dropdown>
-          </div>
-        );
-      },
-    },
+    ...[renderDamActions()],
   ];
 
   const mostRecentUpdatedDate = moment(

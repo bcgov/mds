@@ -31,11 +31,12 @@ const propTypes = {
   storeTsf: PropTypes.func.isRequired,
   clearTsf: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func, replace: PropTypes.func }).isRequired,
+  canEditTSF: PropTypes.bool.isRequired,
 };
 
 export const Tailings = (props) => {
   const history = useHistory();
-  const { mine } = props;
+  const { mine, canEditTSF } = props;
 
   const { isFeatureEnabled } = useFeatureFlag();
 
@@ -114,6 +115,7 @@ export const Tailings = (props) => {
               tailings={props.mine.mine_tailings_storage_facilities}
               openEditTailingsModal={openEditTailingsModal}
               handleEditTailings={handleEditTailings}
+              canEditTSF={canEditTSF}
             />
           </Col>
         </Row>
