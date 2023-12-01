@@ -92,9 +92,6 @@ export const TailingsSummaryPage: FC<InjectedFormProps<ITailingsStorageFacility>
 
   const { Loading } = components;
 
-  console.log("Minespace TailingsSummaryPage");
-  console.log(canEditTSF);
-
   const handleFetchData = async (forceReload = false) => {
     setIsReloading(true);
     await props.fetchPermits(mineGuid);
