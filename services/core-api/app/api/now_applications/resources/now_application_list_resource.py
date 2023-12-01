@@ -1,4 +1,4 @@
-from flask import request, current_app
+from flask import request
 from flask_restplus import Resource, inputs
 from sqlalchemy import func, or_, and_
 from sqlalchemy_filters import apply_pagination, apply_sort
@@ -124,7 +124,6 @@ class NOWApplicationListResource(Resource, UserMixin):
                                       party=None):
 
         filters = []
-        current_app.logger.debug(f'*********************************************************************************************************************************************************')
         base_query = ApplicationsView.query
         if application_type:
             filters.append(ApplicationsView.application_type_code == application_type)
