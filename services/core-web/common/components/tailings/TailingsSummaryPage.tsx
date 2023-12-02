@@ -234,7 +234,7 @@ export const TailingsSummaryPage: FC<InjectedFormProps<ITailingsStorageFacility>
       url = routes.EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
         tsfGuid,
         mineGuid,
-        userAction,
+        action,
         newActiveTab
       );
     } else {
