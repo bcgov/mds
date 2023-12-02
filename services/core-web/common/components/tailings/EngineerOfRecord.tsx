@@ -43,6 +43,7 @@ interface EngineerOfRecordProps {
   loading?: boolean;
   mines: IMine[];
   canEditTSF: boolean;
+  userAction: string;
 }
 
 const columns = (LinkButton): ColumnsType<IDocument> => [
@@ -70,6 +71,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
     loading,
     mines,
     canEditTSF,
+    userAction,
   } = props;
 
   const [openPopConfirm, setOpenPopConfirm] = useState(false);
@@ -100,6 +102,8 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
     setCurrentEor(null);
     props.closeModal();
   };
+
+  const canEditTSFAndEditMode = canEditTSF && userAction === "edit";
 
   useEffect(() => {
     if (partyRelationships.length > 0) {
@@ -185,7 +189,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
     formValues?.engineer_of_record?.party_guid &&
     !formValues?.engineer_of_record?.mine_party_appt_guid;
 
-  const fieldsDisabled = !canEditEOR || loading || !canEditTSF;
+  const fieldsDisabled = !canEditEOR || loading || !canEditTSFAndEditMode;
 
   const hasPendingEOR = formValues?.engineers_of_record?.some(
     (eor) => PARTY_APPOINTMENT_STATUS[eor.status] === PARTY_APPOINTMENT_STATUS.pending
@@ -216,7 +220,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
 
             <Col span={12}>
               <Row justify="end">
-                {canEditTSF && canAssignEor && (
+                {canEditTSFAndEditMode && canAssignEor && (
                   <Popconfirm
                     style={{ maxWidth: "150px" }}
                     open={openPopConfirm}
@@ -245,7 +249,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
             </Col>
           </Row>
 
-          {canEditTSF && (
+          {canEditTSFAndEditMode && (
             <div>
               {canAssignEor &&
                 (formValues?.engineer_of_record?.party_guid ? (
@@ -325,7 +329,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
             </div>
           )}
 
-          {canEditTSF && !formValues?.engineer_of_record?.mine_party_appt_guid && (
+          {canEditTSFAndEditMode && !formValues?.engineer_of_record?.mine_party_appt_guid && (
             <>
               <div className="margin-large--top margin-large--bottom">
                 <Typography.Title level={4}>
@@ -394,7 +398,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
           <PartyAppointmentTable
             columns={eorHistoryColumns}
             partyRelationships={formValues?.engineers_of_record}
-            canEditTSF={canEditTSF}
+            canEditTSF={canEditTSFAndEditMode}
           />
         </Col>
       </Row>

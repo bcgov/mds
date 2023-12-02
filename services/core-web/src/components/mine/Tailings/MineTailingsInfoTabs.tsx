@@ -211,7 +211,7 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
             key="dam"
           >
             {/*@ts-ignore*/}
-            <DamsPage canEditTSF={canEditTSF} />
+            <DamsPage />
           </Tabs.TabPane>
         )}
         {tabEnabled("tsf") && (

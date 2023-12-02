@@ -78,19 +78,19 @@ interface TailingsSummaryPageProps {
   isDirty?: (form: string) => boolean;
   initialValues?: Partial<ITailingsStorageFacility>;
   userRoles?: string[];
+  userAction: string;
 }
 
 export const TailingsSummaryPage: FC<InjectedFormProps<ITailingsStorageFacility> &
   TailingsSummaryPageProps> = (props) => {
-  const { mines, history, formErrors, formValues, mineGuid, tsfGuid, tab } = props;
+  const { mines, history, formErrors, formValues, mineGuid, tsfGuid, tab, userAction } = props;
   const [isLoaded, setIsLoaded] = useState(false);
   const [isReloading, setIsReloading] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [canEditTSF, setCanEditTSF] = useState(false);
-
   const { renderConfig, components, routes, isCore } = useContext(TailingsContext);
-
   const { Loading } = components;
+  const action = userAction ? userAction : "edit";
 
   const handleFetchData = async (forceReload = false) => {
     setIsReloading(true);
@@ -221,6 +221,7 @@ export const TailingsSummaryPage: FC<InjectedFormProps<ITailingsStorageFacility>
       routes.EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
         newTsf?.data.mine_tailings_storage_facility_guid || tsfGuid,
         mineGuid,
+        action,
         newActiveTab || "engineer-of-record"
       )
     );
@@ -230,7 +231,12 @@ export const TailingsSummaryPage: FC<InjectedFormProps<ITailingsStorageFacility>
     let url;
 
     if (tsfGuid) {
-      url = routes.EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(tsfGuid, mineGuid, newActiveTab);
+      url = routes.EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
+        tsfGuid,
+        mineGuid,
+        action,
+        newActiveTab
+      );
     } else {
       url = routes.ADD_TAILINGS_STORAGE_FACILITY.dynamicRoute(newActiveTab);
     }
@@ -269,7 +275,11 @@ export const TailingsSummaryPage: FC<InjectedFormProps<ITailingsStorageFacility>
           activeTab={tab}
         >
           <Step key="basic-information">
-            <BasicInformation renderConfig={renderConfig} viewOnly={!canEditTSF} />
+            <BasicInformation
+              renderConfig={renderConfig}
+              canEditTSF={canEditTSF}
+              userAction={action}
+            />
           </Step>
           <Step key="engineer-of-record" disabled={!hasCreatedTSF}>
             <EngineerOfRecord
@@ -279,6 +289,7 @@ export const TailingsSummaryPage: FC<InjectedFormProps<ITailingsStorageFacility>
               uploadedFiles={uploadedFiles}
               setUploadedFiles={setUploadedFiles}
               canEditTSF={canEditTSF}
+              userAction={action}
             />
           </Step>
           <Step key="qualified-person" disabled={!hasCreatedTSF}>
@@ -288,10 +299,11 @@ export const TailingsSummaryPage: FC<InjectedFormProps<ITailingsStorageFacility>
               mineGuid={mineGuid}
               isCore={isCore}
               canEditTSF={canEditTSF}
+              userAction={action}
             />
           </Step>
           <Step key="associated-dams" disabled={!hasCreatedTSF}>
-            <AssociatedDams isCore={isCore} canEditTSF={canEditTSF} />
+            <AssociatedDams isCore={isCore} canEditTSF={canEditTSF} userAction={action} />
           </Step>
           <Step key="reports" disabled={!hasCreatedTSF}>
             <div />

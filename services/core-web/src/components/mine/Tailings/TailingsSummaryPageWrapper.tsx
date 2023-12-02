@@ -21,6 +21,7 @@ interface TailingsSummaryPageWrapperProps {
       id: string;
       tailingsStorageFacilityGuid: string;
       tab: string;
+      userAction: string;
     };
   };
 }
@@ -28,7 +29,6 @@ interface TailingsSummaryPageWrapperProps {
 export const TailingsSummaryPageWrapper: FC<RouteComponentProps &
   TailingsSummaryPageWrapperProps> = (props) => {
   const { match } = props;
-
   const tsfComponents = {
     LinkButton,
     ContactDetails,
@@ -59,6 +59,7 @@ export const TailingsSummaryPageWrapper: FC<RouteComponentProps &
         mineGuid={match.params.id}
         tsfGuid={match.params.tailingsStorageFacilityGuid}
         tab={match.params.tab}
+        userAction={match.params.userAction}
       />
     </TailingsProvider>
   );

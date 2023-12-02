@@ -255,16 +255,18 @@ export const MINE_TAILINGS = {
 };
 
 export const MINE_TAILINGS_DETAILS = {
-  route: "/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab",
-  dynamicRoute: (tsfGuid, mineGuid, tab = "basic-information") =>
-    `/mine-dashboard/${mineGuid}/permits-and-approvals/tailings/${tsfGuid}/${tab}`,
+  route:
+    "/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab/:userAction",
+  dynamicRoute: (tsfGuid, mineGuid, userAction = "view", tab = "basic-information") =>
+    `/mine-dashboard/${mineGuid}/permits-and-approvals/tailings/${tsfGuid}/${tab}/${userAction}`,
   component: MineTailingsDetailsPage,
 };
 
 export const EDIT_TAILINGS_STORAGE_FACILITY = {
-  route: "/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab",
-  dynamicRoute: (tsfGuid, mineGuid, tab = "basic-information") =>
-    `/mine-dashboard/${mineGuid}/permits-and-approvals/tailings/${tsfGuid}/${tab}`,
+  route:
+    "/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab/:userAction",
+  dynamicRoute: (tsfGuid, mineGuid, userAction = "view", tab = "basic-information") =>
+    `/mine-dashboard/${mineGuid}/permits-and-approvals/tailings/${tsfGuid}/${tab}/${userAction}`,
   component: MineTailingsDetailsPage,
 };
 
@@ -497,16 +499,16 @@ export const ORGBOOK_CREDENTIAL_URL = (sourceId, credentialId) =>
 
 export const ADD_DAM = {
   route:
-    "/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/new/",
-  dynamicRoute: (mineGuid, tailingsStorageFacilityGuid) =>
-    `/mine/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/new/`,
+    "/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/new/:userAction",
+  dynamicRoute: (mineGuid, tailingsStorageFacilityGuid, userAction = "view") =>
+    `/mine/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/new/${userAction}`,
   component: DamsDetailsPage,
 };
 
 export const EDIT_DAM = {
   route:
-    "/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/:damGuid",
-  dynamicRoute: (mineGuid, tailingsStorageFacilityGuid, damGuid) =>
-    `/mine-dashboard/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/${damGuid}`,
+    "/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/:damGuid/:userAction",
+  dynamicRoute: (mineGuid, tailingsStorageFacilityGuid, damGuid, userAction = "view") =>
+    `/mine-dashboard/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/${damGuid}/${userAction}`,
   component: DamsDetailsPage,
 };

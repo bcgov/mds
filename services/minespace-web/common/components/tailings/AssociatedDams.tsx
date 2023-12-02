@@ -18,54 +18,68 @@ import { RootState } from "@/App";
 import { ColumnsType } from "antd/lib/table";
 import CoreTable from "@/components/common/CoreTable";
 import { EDIT_OUTLINE } from "@mds/common/constants/assets";
-import { EyeOutlined } from "@ant-design/icons";
+import EyeOutlined from "@ant-design/icons/EyeOutlined";
 import { renderActionsColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 
 interface AssociatedDamsProps {
   tsf: ITailingsStorageFacility;
   storeDam: typeof storeDam;
   isCore?: boolean;
+  userAction: string;
   canEditTSF: boolean;
 }
 
 const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
   const history = useHistory();
-  const { tsf, isCore, canEditTSF } = props;
+  const { tsf, isCore, userAction, canEditTSF } = props;
 
-  const handleNavigateToEdit = (event, dam) => {
+  const handleNavigateToEdit = (event, dam, userAction) => {
     event.preventDefault();
     props.storeDam(dam);
     const url = EDIT_DAM.dynamicRoute(
       tsf.mine_guid,
       dam.mine_tailings_storage_facility_guid,
-      dam.dam_guid
+      dam.dam_guid,
+      userAction
     );
     history.push(url);
   };
 
   const handleNavigateToCreate = () => {
     props.storeDam({});
-    const url = ADD_DAM.dynamicRoute(tsf.mine_guid, tsf.mine_tailings_storage_facility_guid);
+    const url = ADD_DAM.dynamicRoute(
+      tsf.mine_guid,
+      tsf.mine_tailings_storage_facility_guid,
+      userAction
+    );
     history.push(url);
   };
 
-  const editViewIcon = canEditTSF ? (
-    <img src={EDIT_OUTLINE} className="icon-sm padding-sm--right primary-colour" />
-  ) : (
-    <EyeOutlined className="icon-sm padding-sm--right primary-colour" />
-  );
-
   const renderDamActions = () => {
-    const actions = [
+    let actions = [
       {
-        key: "actions",
-        label: canEditTSF ? "Edit Dam" : "View Dam",
-        icon: editViewIcon,
+        key: "edit",
+        label: "Edit Dam",
+        icon: <img src={EDIT_OUTLINE} className="icon-sm padding-sm--right primary-colour" />,
         clickFunction: (_event, record) => {
-          handleNavigateToEdit(event, record);
+          handleNavigateToEdit(event, record, "edit");
+        },
+      },
+      {
+        key: "view",
+        label: "View Dam",
+        icon: <EyeOutlined className="icon-sm padding-sm--right" />,
+        clickFunction: (_event, record) => {
+          handleNavigateToEdit(event, record, "view");
         },
       },
     ];
+
+    if (userAction !== "edit") {
+      actions = actions.filter((a) => a.key !== "edit");
+    } else {
+      actions = actions.filter((a) => a.key !== "view");
+    }
 
     return renderActionsColumn(actions);
   };
@@ -140,10 +154,13 @@ const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
               <Typography.Paragraph>{mostRecentUpdatedDate}</Typography.Paragraph>
             </div>
           ) : (
-            <Button type="primary" onClick={handleNavigateToCreate}>
-              <PlusCircleFilled />
-              Create a new dam
-            </Button>
+            canEditTSF &&
+            userAction === "edit" && (
+              <Button type="primary" onClick={handleNavigateToCreate}>
+                <PlusCircleFilled />
+                Create a new dam
+              </Button>
+            )
           )}
         </Col>
       </Row>

@@ -43,10 +43,11 @@ interface DamsPageProps {
 const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
   const history = useHistory();
   const { tsf, formValues, formErrors, initialValues } = props;
-  const { tailingsStorageFacilityGuid, damGuid, mineGuid } = useParams<{
+  const { tailingsStorageFacilityGuid, damGuid, mineGuid, userAction } = useParams<{
     tailingsStorageFacilityGuid: string;
     damGuid?: string;
     mineGuid: string;
+    userAction: string;
   }>();
   const [canEditTSF, setCanEditTSF] = useState(false);
 
@@ -72,6 +73,7 @@ const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
   const backUrl = EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
     tailingsStorageFacilityGuid,
     mineGuid,
+    userAction,
     "associated-dams"
   );
 
@@ -142,7 +144,12 @@ const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
       >
         {[
           <Step key="basic-dam-information">
-            <DamForm tsf={tsf} dam={initialValues} canEditTSF={canEditTSF} />
+            <DamForm
+              tsf={tsf}
+              dam={initialValues}
+              canEditTSF={canEditTSF}
+              userAction={userAction}
+            />
           </Step>,
         ]}
       </SteppedForm>

@@ -355,14 +355,14 @@ exports[`DashboardRoutes  renders properly 1`] = `
   <Route
     component={[Function]}
     exact={true}
-    key="/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab"
-    path="/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab"
+    key="/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab/:userAction"
+    path="/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab/:userAction"
   />
   <Route
     component={[Function]}
     exact={true}
-    key="/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab"
-    path="/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab"
+    key="/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab/:userAction"
+    path="/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab/:userAction"
   />
   <Route
     component={
@@ -731,14 +731,14 @@ exports[`DashboardRoutes  renders properly 1`] = `
   <Route
     component={[Function]}
     exact={true}
-    key="/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/new/"
-    path="/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/new/"
+    key="/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/new/:userAction"
+    path="/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/new/:userAction"
   />
   <Route
     component={[Function]}
     exact={true}
-    key="/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/:damGuid"
-    path="/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/:damGuid"
+    key="/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/:damGuid/:userAction"
+    path="/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/:damGuid/:userAction"
   />
   <Route
     component={[Function]}

@@ -32,12 +32,15 @@ interface BasicInformationProps {
   showUpdateTimestamp: boolean;
   renderConfig: any;
   tsf: ITailingsStorageFacility;
-  viewOnly?: boolean;
+  canEditTSF?: boolean;
+  userAction: string;
 }
 
 export const BasicInformation: FC<BasicInformationProps> = (props) => {
-  const { permits, renderConfig, viewOnly = false, tsf } = props;
+  const { permits, renderConfig, canEditTSF = false, tsf, userAction } = props;
   const [permitOptions, setPermitOptions] = useState([]);
+
+  const canEditTSFAndEditMode = canEditTSF && userAction === "edit";
 
   const statusCodeOptions =
     tsf?.tsf_operating_status_code === "CLO"
@@ -71,7 +74,7 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
         name="facility_type"
         label="Facility Type *"
         component={renderConfig.SELECT}
-        disabled={viewOnly}
+        disabled={!canEditTSFAndEditMode}
         data={FACILITY_TYPES}
         validate={[requiredList, validateSelectOptions(FACILITY_TYPES)]}
       />
@@ -80,7 +83,7 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
         id="mines_act_permit_no"
         name="mines_act_permit_no"
         component={renderConfig.SELECT}
-        disabled={viewOnly}
+        disabled={!canEditTSFAndEditMode}
         validate={[requiredList, validateSelectOptions(permitOptions)]}
         data={permitOptions}
       />
@@ -89,7 +92,7 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
         name="tailings_storage_facility_type"
         label="Tailings Storage Facility Type *"
         component={renderConfig.SELECT}
-        disabled={viewOnly}
+        disabled={!canEditTSFAndEditMode}
         validate={[requiredList, validateSelectOptions(TSF_TYPES)]}
         data={TSF_TYPES}
       />
@@ -98,7 +101,7 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
         name="storage_location"
         label="Underground or Above Ground? *"
         component={renderConfig.SELECT}
-        disabled={viewOnly}
+        disabled={!canEditTSFAndEditMode}
         data={STORAGE_LOCATION}
         validate={[requiredList, validateSelectOptions(STORAGE_LOCATION)]}
       />
@@ -107,7 +110,7 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
         name="mine_tailings_storage_facility_name"
         label="Facility Name *"
         component={renderConfig.FIELD}
-        disabled={viewOnly}
+        disabled={!canEditTSFAndEditMode}
         validate={[maxLength(60), required]}
       />
       <Row gutter={16}>
@@ -117,7 +120,7 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
             name="latitude"
             label="Latitude *"
             component={renderConfig.FIELD}
-            disabled={viewOnly}
+            disabled={!canEditTSFAndEditMode}
             validate={[lat, required]}
           />
         </Col>
@@ -127,7 +130,7 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
             name="longitude"
             label="Longitude *"
             component={renderConfig.FIELD}
-            disabled={viewOnly}
+            disabled={!canEditTSFAndEditMode}
             validate={[lonNegative, lon, required]}
           />
         </Col>
@@ -137,7 +140,7 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
         name="consequence_classification_status_code"
         label="Consequence Classification *"
         component={renderConfig.SELECT}
-        disabled={viewOnly}
+        disabled={!canEditTSFAndEditMode}
         data={CONSEQUENCE_CLASSIFICATION_STATUS_CODE}
         validate={[requiredList, validateSelectOptions(CONSEQUENCE_CLASSIFICATION_STATUS_CODE)]}
       />
@@ -147,7 +150,7 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
         label="Operating Status *"
         data={statusCodeOptions}
         component={renderConfig.SELECT}
-        disabled={viewOnly}
+        disabled={!canEditTSFAndEditMode}
         validate={[requiredList, validateSelectOptions(statusCodeOptions)]}
       />
       <Field
@@ -155,7 +158,7 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
         name="itrb_exemption_status_code"
         label="Independent Tailings Review Board Member *"
         component={renderConfig.SELECT}
-        disabled={viewOnly}
+        disabled={!canEditTSFAndEditMode}
         data={TSF_INDEPENDENT_TAILINGS_REVIEW_BOARD}
         validate={[maxLength(300), required]}
       />

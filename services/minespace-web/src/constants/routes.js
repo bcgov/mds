@@ -168,23 +168,30 @@ export const ADD_TAILINGS_STORAGE_FACILITY = {
 };
 
 export const EDIT_TAILINGS_STORAGE_FACILITY = {
-  route: "/mines/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/:tab",
-  dynamicRoute: (tailingsStorageFacilityGuid, mineGuid, activeTab = "basic-information") =>
-    `/mines/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/${activeTab}`,
+  route: "/mines/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/:tab/:userAction",
+  dynamicRoute: (
+    tailingsStorageFacilityGuid,
+    mineGuid,
+    userAction = "view",
+    activeTab = "basic-information"
+  ) =>
+    `/mines/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/${activeTab}/${userAction}`,
   component: TailingsSummaryPageWrapper,
 };
 
 export const ADD_DAM = {
-  route: "/mine/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/new/",
-  dynamicRoute: (mineGuid, tailingsStorageFacilityGuid) =>
-    `/mine/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/new/`,
+  route:
+    "/mine/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/new/:userAction",
+  dynamicRoute: (mineGuid, tailingsStorageFacilityGuid, userAction = "view") =>
+    `/mine/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/new/${userAction}`,
   component: DamsPage,
 };
 
 export const EDIT_DAM = {
-  route: "/mine/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/:damGuid",
-  dynamicRoute: (mineGuid, tailingsStorageFacilityGuid, damGuid) =>
-    `/mine/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/${damGuid}`,
+  route:
+    "/mine/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/:damGuid/:userAction",
+  dynamicRoute: (mineGuid, tailingsStorageFacilityGuid, damGuid, userAction = "view") =>
+    `/mine/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/${damGuid}/${userAction}`,
   component: DamsPage,
 };
 

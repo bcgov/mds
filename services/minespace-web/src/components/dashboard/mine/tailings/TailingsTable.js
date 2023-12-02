@@ -24,7 +24,7 @@ import CoreTable from "@/components/common/CoreTable";
 import { Feature } from "@mds/common";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { renderActionsColumn } from "@mds/common/components/common/CoreTableCommonColumns";
-import { EyeOutlined } from "@ant-design/icons";
+import EyeOutlined from "@ant-design/icons/EyeOutlined";
 
 const propTypes = {
   tailings: PropTypes.arrayOf(PropTypes.any).isRequired,
@@ -56,7 +56,7 @@ export const TailingsTable = (props) => {
 
   const tsfV2Enabled = isFeatureEnabled(Feature.TSF_V2);
 
-  const handleEditDam = (event, dam) => {
+  const handleEditDam = (event, dam, userAction) => {
     event.preventDefault();
     props.storeDam(dam);
     const tsf = tailings.find(
@@ -68,24 +68,17 @@ export const TailingsTable = (props) => {
     const url = EDIT_DAM.dynamicRoute(
       mineGuid,
       dam.mine_tailings_storage_facility_guid,
-      dam.dam_guid
+      dam.dam_guid,
+      userAction
     );
     history.push(url);
   };
-
-  const editViewIcon = canEditTSF ? (
-    <img src={EDIT_PENCIL} className="icon-sm padding-sm--right primary-color" />
-  ) : (
-    <EyeOutlined className="icon-sm padding-sm--right primary-color" />
-  );
 
   const renderOldTSFActions = () => {
     return {
       dataIndex: "edit",
       fixed: "right",
       render: (text, record) => {
-        console.log("wtf renderOldTSFActions");
-        console.log(record);
         return (
           <div title="" align="right">
             <AuthorizationWrapper>
@@ -103,31 +96,55 @@ export const TailingsTable = (props) => {
   };
 
   const renderNewTSFActions = () => {
-    const actions = [
+    let actions = [
       {
-        key: "actions",
-        label: canEditTSF ? "Edit TSF" : "View TSF",
-        icon: editViewIcon,
+        key: "edit",
+        label: "Edit TSF",
+        icon: <img src={EDIT_PENCIL} className="icon-sm padding-sm--right primary-color" />,
         clickFunction: (_event, record) => {
-          editTailings(event, record);
+          editTailings(event, record, "edit");
+        },
+      },
+      {
+        key: "view",
+        label: "View TSF",
+        icon: <EyeOutlined className="icon-sm padding-sm--right primary-color" />,
+        clickFunction: (_event, record) => {
+          editTailings(event, record, "view");
         },
       },
     ];
+
+    if (!canEditTSF) {
+      actions = actions.filter((a) => a.key !== "edit");
+    }
 
     return renderActionsColumn(actions);
   };
 
   const renderDamActions = () => {
-    const actions = [
+    let actions = [
       {
-        key: "actions",
-        label: canEditTSF ? "Edit Dam" : "View Dam",
-        icon: editViewIcon,
+        key: "edit",
+        label: "Edit Dam",
+        icon: <img src={EDIT_PENCIL} className="icon-sm padding-sm--right primary-color" />,
         clickFunction: (_event, record) => {
-          handleEditDam(event, record);
+          handleEditDam(event, record, "edit");
+        },
+      },
+      {
+        key: "view",
+        label: "View Dam",
+        icon: <EyeOutlined className="icon-sm padding-sm--right primary-color" />,
+        clickFunction: (_event, record) => {
+          handleEditDam(event, record, "view");
         },
       },
     ];
+
+    if (!canEditTSF) {
+      actions = actions.filter((a) => a.key !== "edit");
+    }
 
     return renderActionsColumn(actions);
   };

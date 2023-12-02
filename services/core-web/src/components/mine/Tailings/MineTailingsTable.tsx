@@ -68,7 +68,7 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
     });
   };
 
-  const handleEditDam = (event, dam: IDam) => {
+  const handleEditDam = (event, dam: IDam, userAction) => {
     event.preventDefault();
     props.storeDam(dam);
     const tsf = tailings.find(
@@ -80,16 +80,11 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
     const url = EDIT_DAM.dynamicRoute(
       mineGuid,
       dam.mine_tailings_storage_facility_guid,
-      dam.dam_guid
+      dam.dam_guid,
+      userAction
     );
     props.history.push(url);
   };
-
-  const editViewIcon = canEditTSF ? (
-    <img src={EDIT_OUTLINE_VIOLET} className="icon-sm padding-sm--right violet" />
-  ) : (
-    <EyeOutlined className="icon-sm padding-sm--right violet" />
-  );
 
   const renderOldTSFActions = () => {
     return {
@@ -115,36 +110,67 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
   };
 
   const renderNewTSFActions = () => {
-    const actions = [
+    let actions = [
       {
-        key: "actions",
-        label: canEditTSF ? "Edit TSF" : "View TSF",
-        icon: editViewIcon,
+        key: "edit",
+        label: "Edit TSF",
+        icon: <img src={EDIT_OUTLINE_VIOLET} className="icon-sm padding-sm--right violet" />,
         clickFunction: (_event, record) => {
-          props.history.push(
-            MINE_TAILINGS_DETAILS.dynamicRoute(
+          props.history.push({
+            pathname: MINE_TAILINGS_DETAILS.dynamicRoute(
               record.mine_tailings_storage_facility_guid,
-              record.mine_guid
-            )
-          );
+              record.mine_guid,
+              "edit"
+            ),
+          });
+        },
+      },
+      {
+        key: "view",
+        label: "View TSF",
+        icon: <EyeOutlined className="icon-sm padding-sm--right violet" />,
+        clickFunction: (_event, record) => {
+          props.history.push({
+            pathname: MINE_TAILINGS_DETAILS.dynamicRoute(
+              record.mine_tailings_storage_facility_guid,
+              record.mine_guid,
+              "view"
+            ),
+          });
         },
       },
     ];
+
+    if (!canEditTSF) {
+      actions = actions.filter((a) => a.key !== "edit");
+    }
 
     return renderActionsColumn(actions);
   };
 
   const renderDamActions = () => {
-    const actions = [
+    let actions = [
       {
-        key: "actions",
-        label: canEditTSF ? "Edit Dam" : "View Dam",
-        icon: editViewIcon,
+        key: "edit",
+        label: "Edit Dam",
+        icon: <img src={EDIT_OUTLINE_VIOLET} className="icon-sm padding-sm--right violet" />,
         clickFunction: (_event, record) => {
-          handleEditDam(event, record);
+          handleEditDam(event, record, "edit");
+        },
+      },
+      {
+        key: "view",
+        label: "View Dam",
+        icon: <EyeOutlined className="icon-sm padding-sm--right violet" />,
+        clickFunction: (_event, record) => {
+          handleEditDam(event, record, "view");
         },
       },
     ];
+
+    if (!canEditTSF) {
+      actions = actions.filter((a) => a.key !== "edit");
+    }
 
     return renderActionsColumn(actions);
   };

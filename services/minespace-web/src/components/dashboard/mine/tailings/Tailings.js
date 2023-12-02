@@ -53,13 +53,14 @@ export const Tailings = (props) => {
       .then(() => props.fetchMineRecordById(values.mine_guid));
   };
 
-  const navigateToEditTailings = async (event, mineTSF) => {
+  const navigateToEditTailings = async (event, mineTSF, userAction) => {
     event.preventDefault();
 
     await props.storeTsf(mineTSF);
     const url = EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
       mineTSF.mine_tailings_storage_facility_guid,
-      mine.mine_guid
+      mine.mine_guid,
+      userAction
     );
     history.push(url);
   };
@@ -99,7 +100,7 @@ export const Tailings = (props) => {
             </Paragraph>
             <br />
           </Col>
-          {tsfV2Enabled && (
+          {tsfV2Enabled && canEditTSF && (
             <Col>
               <Button type="primary" onClick={navigateToCreateTailings}>
                 <PlusCircleFilled />

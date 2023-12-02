@@ -32,13 +32,16 @@ interface QualifiedPersonProps {
   loading?: boolean;
   isCore?: boolean;
   canEditTSF: boolean;
+  userAction: string;
 }
 
 export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
-  const { isCore, mineGuid, partyRelationships, canEditTSF } = props;
+  const { isCore, mineGuid, partyRelationships, canEditTSF, userAction } = props;
   const { renderConfig, addContactModalConfig, tsfFormName } = useContext(TailingsContext);
   const formValues = useSelector((state) => getFormValues(tsfFormName)(state));
   const [currentQp, setCurrentQp] = useState(null);
+
+  const canEditTSFAndEditMode = canEditTSF && userAction === "edit";
 
   const handleCreateQP = (value) => {
     props.change(tsfFormName, "qualified_person.party_guid", value.party_guid);
@@ -111,7 +114,7 @@ export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
     props.formValues?.qualified_person?.party_guid &&
     !props.formValues?.qualified_person?.mine_party_appt_guid;
 
-  const fieldsDisabled = !canEditQFP || props.loading || !canEditTSF;
+  const fieldsDisabled = !canEditQFP || props.loading || !canEditTSFAndEditMode;
 
   return (
     <Row>
@@ -121,7 +124,7 @@ export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
           {isCore ? (
             <Col span={12}>
               <Row justify="end">
-                {canEditTSF && (
+                {canEditTSFAndEditMode && (
                   <Popconfirm
                     placement="top"
                     title="Once acknowledged by the Ministry, assigning a new Qualified Person will replace the current one and set the previous status to inactive. Continue?"
@@ -148,7 +151,7 @@ export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
             </Col>
           ) : (
             <Col>
-              {canEditTSF && (
+              {canEditTSFAndEditMode && (
                 <Popconfirm
                   style={{ maxWidth: "150px" }}
                   placement="top"
@@ -167,7 +170,7 @@ export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
           )}
         </Row>
 
-        {canEditTSF && (
+        {canEditTSFAndEditMode && (
           <div>
             {props.formValues?.qualified_person?.party_guid ? (
               <Alert
