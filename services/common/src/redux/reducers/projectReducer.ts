@@ -1,5 +1,6 @@
 import * as actionTypes from "@mds/common/constants/actionTypes";
 import { PROJECTS } from "@mds/common/constants/reducerTypes";
+import { RootState } from "../rootState";
 
 const initialState = {
   projects: [],
@@ -109,17 +110,18 @@ const projectReducerObject = {
   [PROJECTS]: projectReducer,
 };
 
-export const getProjects = (state) => state[PROJECTS].projects;
-export const getProject = (state) => state[PROJECTS].project;
-export const getProjectPageData = (state) => state[PROJECTS].projectPageData;
-export const getProjectSummaries = (state) => state[PROJECTS].projectSummaries;
-export const getProjectSummary = (state) => state[PROJECTS].projectSummary;
-export const getProjectSummaryPageData = (state) => state[PROJECTS].projectSummaryPageData;
-export const getRequirements = (state) => state[PROJECTS].requirements;
-export const getInformationRequirementsTable = (state) =>
+export const getProjects = (state: RootState) => state[PROJECTS].projects;
+export const getProject = (state: RootState) => state[PROJECTS].project;
+export const getProjectPageData = (state: RootState) => state[PROJECTS].projectPageData;
+export const getProjectSummaries = (state: RootState) => state[PROJECTS].projectSummaries;
+export const getProjectSummary = (state: RootState) => state[PROJECTS].projectSummary;
+export const getProjectSummaryPageData = (state: RootState) =>
+  state[PROJECTS].projectSummaryPageData;
+export const getRequirements = (state: RootState) => state[PROJECTS].requirements;
+export const getInformationRequirementsTable = (state: RootState) =>
   state[PROJECTS].informationRequirementsTable;
-export const getMajorMinesApplication = (state) => state[PROJECTS].majorMinesApplication;
-export const getProjectDecisionPackage = (state) => state[PROJECTS].projectDecisionPackage;
-export const getProjectViewAllTable = (state) => state[PROJECTS].viewAllProjectsPageData;
+export const getMajorMinesApplication = (state: RootState) => state[PROJECTS].majorMinesApplication;
+export const getProjectDecisionPackage = (state: RootState) =>
+  state[PROJECTS].projectDecisionPackage;
 
 export default projectReducerObject;

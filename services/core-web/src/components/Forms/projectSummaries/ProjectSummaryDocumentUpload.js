@@ -22,11 +22,6 @@ const propTypes = {
   onArchivedDocuments: PropTypes.func.isRequired,
   projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineGuid: PropTypes.string.isRequired,
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      mineGuid: PropTypes.string,
-    }),
-  }).isRequired,
   isNewProject: PropTypes.bool,
   isEditMode: PropTypes.bool,
 };
@@ -65,6 +60,17 @@ export class ProjectSummaryDocumentUpload extends Component {
       projectSummaryGuid: this.props.initialValues?.project_summary_guid,
     };
 
+    const documents =
+      this.props.initialValues?.documents?.map((doc) => {
+        return {
+          ...doc,
+          key: doc.mine_document_guid,
+          category: this.props.projectSummaryDocumentTypesHash[
+            doc.project_summary_document_type_code
+          ],
+        };
+      }) ?? [];
+
     return (
       <>
         <Typography.Title level={4}>Documents</Typography.Title>
@@ -82,19 +88,7 @@ export class ProjectSummaryDocumentUpload extends Component {
           </Row>
 
           <DocumentTable
-            documents={this.props.initialValues?.documents?.reduce(
-              (docs, doc) => [
-                {
-                  ...doc,
-                  key: doc.mine_document_guid,
-                  category: this.props.projectSummaryDocumentTypesHash[
-                    doc.project_summary_document_type_code
-                  ],
-                },
-                ...docs,
-              ],
-              []
-            )}
+            documents={documents}
             removeDocument={this.props.canRemoveDocuments ? this.props.removeDocument : null}
             canArchiveDocuments={true}
             archiveDocumentsArgs={{ mineGuid: fileUploadParams.mineGuid }}

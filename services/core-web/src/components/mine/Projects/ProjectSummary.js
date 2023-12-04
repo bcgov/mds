@@ -6,17 +6,9 @@ import { submit, getFormValues, getFormSyncErrors, reset, touch } from "redux-fo
 import { flattenObject } from "@common/utils/helpers";
 import { Tabs, Tag } from "antd";
 import PropTypes from "prop-types";
-import {
-  getProjectSummaryStatusCodesHash,
-  getProjectSummaryDocumentTypesHash,
-  getTransformedChildProjectSummaryAuthorizationTypesHash,
-  getProjectSummaryPermitTypesHash,
-  getProjectSummaryAuthorizationTypesArray,
-  getDropdownProjectSummaryStatusCodes,
-} from "@mds/common/redux/selectors/staticContentSelectors";
+import { getProjectSummaryAuthorizationTypesArray } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getMineDocuments, getMines } from "@mds/common/redux/selectors/mineSelectors";
 import {
-  getProjectSummary,
   getFormattedProjectSummary,
   getProject,
 } from "@mds/common/redux/selectors/projectSelectors";
@@ -57,12 +49,8 @@ const propTypes = {
   project: CustomPropTypes.project.isRequired,
   mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
-  projectSummaryStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  projectSummaryPermitTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  projectSummaryAuthorizationTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   fetchProjectSummaryById: PropTypes.func.isRequired,
   fetchProjectById: PropTypes.func.isRequired,
-  projectSummaryStatusCodes: CustomPropTypes.options.isRequired,
   updateProjectSummary: PropTypes.func.isRequired,
   updateProject: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
@@ -89,7 +77,6 @@ export class ProjectSummary extends Component {
   state = {
     isLoaded: false,
     isNewProject: false,
-    isEditMode: false,
     fixedTop: false,
     isValid: true,
     activeTab: "project-descriptions",
@@ -151,17 +138,13 @@ export class ProjectSummary extends Component {
         activeTab: tab,
         mineName: mine.mine_name,
         isNewProject: true,
-        isEditMode: true,
       });
     });
   };
 
-  toggleEditMode = () => {
-    this.setState((prevState) => ({ isEditMode: !prevState.isEditMode }));
-  };
-
   handleSaveData = (e, message) => {
     e.preventDefault();
+
     this.props.submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
     this.props.touch(FORM.ADD_EDIT_PROJECT_SUMMARY);
     const errors = Object.keys(flattenObject(this.props.formErrors));
@@ -188,8 +171,8 @@ export class ProjectSummary extends Component {
     let values = this.removeUploadedDocument(payload, this.state.uploadedDocuments);
     let payloadValues = {};
     const updatedAuthorizations = [];
-    // eslint-disable-next-line array-callback-return
-    Object.keys(values).map((key) => {
+
+    Object.keys(values).forEach((key) => {
       // Pull out form properties from request object that match known authorization types
       if (values[key] && this.props.projectSummaryAuthorizationTypesArray?.includes(key)) {
         const project_summary_guid = values?.project_summary_guid;
@@ -210,7 +193,6 @@ export class ProjectSummary extends Component {
           existing_permits_authorizations:
             values[key]?.existing_permits_authorizations?.split(",") || [],
         });
-        // eslint-disable-next-line no-param-reassign
         delete values[key];
       }
     });
@@ -219,7 +201,6 @@ export class ProjectSummary extends Component {
       ...values,
       authorizations: updatedAuthorizations,
     };
-    // eslint-disable-next-line no-param-reassign
     delete payloadValues.authorizationOptions;
     return payloadValues;
   };
@@ -266,9 +247,6 @@ export class ProjectSummary extends Component {
       })
       .then(() => {
         this.handleFetchData(this.props.match.params);
-        this.setState((prevState) => ({
-          isEditMode: !prevState.isEditMode,
-        }));
       });
   };
 
@@ -410,11 +388,8 @@ export class ProjectSummary extends Component {
                     }
                   >
                     <ProjectSummaryForm
-                      {...this.props}
-                      projectSummaryStatusCodes={this.props.projectSummaryStatusCodes}
+                      project={this.props.project}
                       isNewProject={this.state.isNewProject}
-                      isEditMode={this.state.isEditMode}
-                      toggleEditMode={this.toggleEditMode}
                       initialValues={
                         !this.state.isNewProject
                           ? {
@@ -436,9 +411,9 @@ export class ProjectSummary extends Component {
                               documents: [],
                             }
                       }
-                      reset={this.props.reset}
+                      // onSubmit is required as a prop for redux, even if not used
+                      onSubmit={() => {}}
                       handleSaveData={this.handleSaveData}
-                      handleUpdateData={this.handleUpdateData}
                       removeDocument={this.handleRemoveDocument}
                       onArchivedDocuments={this.reloadData.bind(this, mineGuid, projectSummaryGuid)}
                       archivedDocuments={this.props.mineDocuments}
@@ -459,24 +434,14 @@ ProjectSummary.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => {
   return {
-    projectSummary: getProjectSummary(state),
     formattedProjectSummary: getFormattedProjectSummary(state),
     project: getProject(state),
     mines: getMines(state),
     formValues: getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)(state),
     formErrors: getFormSyncErrors(FORM.ADD_EDIT_PROJECT_SUMMARY)(state),
     anyTouched: state.form[FORM.ADD_EDIT_PROJECT_SUMMARY]?.anyTouched || false,
-    fieldsTouched: state.form[FORM.ADD_EDIT_PROJECT_SUMMARY]?.fields || {},
     mineDocuments: getMineDocuments(state),
-    projectSummaryStatusCodeHash: getProjectSummaryStatusCodesHash(state),
-    projectSummaryDocumentTypesHash: getProjectSummaryDocumentTypesHash(state),
     projectSummaryAuthorizationTypesArray: getProjectSummaryAuthorizationTypesArray(state),
-    projectSummaryAuthorizationTypesHash: getTransformedChildProjectSummaryAuthorizationTypesHash(
-      state
-    ),
-    projectSummaryPermitTypesHash: getProjectSummaryPermitTypesHash(state),
-    projectSummaryStatusCodes: getDropdownProjectSummaryStatusCodes(state),
-    onSubmit: () => {},
   };
 };
 
