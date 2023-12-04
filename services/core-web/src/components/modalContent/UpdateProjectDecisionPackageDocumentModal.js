@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Button, Col, Row, Popconfirm, Typography, Checkbox } from "antd";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 import { formatDate, dateSorter, nullableStringSorter } from "@common/utils/helpers";
 
 const propTypes = {

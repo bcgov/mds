@@ -8,7 +8,7 @@ import { formatDate, dateSorter } from "@common/utils/helpers";
 import * as Strings from "@mds/common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 
 const propTypes = {
   projects: PropTypes.arrayOf(CustomPropTypes.project).isRequired,

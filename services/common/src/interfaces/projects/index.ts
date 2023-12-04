@@ -17,3 +17,4 @@ export * from "./createProjectSummary.interface";
 export * from "./fileInfo.interface";
 export * from "./contact.interface";
 export * from "./projectLink.interface";
+export * from "./linkedProject.interface";

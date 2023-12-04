@@ -16,7 +16,7 @@ import {
 import { bindActionCreators } from "redux";
 import { storeDam } from "@mds/common/redux/actions/damActions";
 import { storeTsf } from "@mds/common/redux/actions/tailingsActions";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";

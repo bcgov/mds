@@ -5,7 +5,7 @@ import { Divider } from "antd";
 import { compose, bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { nullableStringSorter } from "@common/utils/helpers";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 import * as router from "@/constants/routes";
 import { fetchMineVerifiedStatuses } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";

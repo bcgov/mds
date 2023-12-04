@@ -10,7 +10,7 @@ import { getApplicationStatusType } from "@/constants/theme";
 import DocumentLink from "@/components/common/DocumentLink";
 import { isEmpty } from "lodash";
 import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 import {
   renderDateColumn,
   renderTextColumn,

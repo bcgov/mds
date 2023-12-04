@@ -18,7 +18,7 @@ import { Badge } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import { MineReportActions } from "@/components/mine/Reports/MineReportActions";
 import DocumentLink from "@/components/common/DocumentLink";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 import * as router from "@/constants/routes";
 import { getReportSubmissionBadgeStatusType } from "@/constants/theme";
 

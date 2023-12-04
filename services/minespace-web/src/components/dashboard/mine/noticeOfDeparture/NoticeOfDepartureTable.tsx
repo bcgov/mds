@@ -8,7 +8,7 @@ import { formatDate } from "@/utils/helpers";
 import { EditIcon } from "@/assets/icons";
 import { INoticeOfDeparture, NoDStatusDisplayEnum, NoDTypeSaveEnum } from "@mds/common";
 import { ColumnsType } from "antd/lib/table";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 
 interface NoticeOfDepartureTableProps {
   data: INoticeOfDeparture[];

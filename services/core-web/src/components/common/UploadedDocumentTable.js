@@ -6,7 +6,7 @@ import { formatDateTime } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import DocumentLink from "@/components/common/DocumentLink";
 import * as Strings from "@mds/common/constants/strings";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 
 const propTypes = {
   files: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,

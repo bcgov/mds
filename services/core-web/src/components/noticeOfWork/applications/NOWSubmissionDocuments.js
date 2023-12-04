@@ -32,7 +32,7 @@ import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import AddButton from "@/components/common/buttons/AddButton";
 import ReferralConsultationPackage from "@/components/noticeOfWork/applications/referals/ReferralConsultationPackage";
 import PermitPackage from "@/components/noticeOfWork/applications/PermitPackage";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 
 const propTypes = {
   openModal: PropTypes.func.isRequired,

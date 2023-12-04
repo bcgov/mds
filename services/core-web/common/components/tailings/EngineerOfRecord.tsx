@@ -25,7 +25,7 @@ import TailingsContext from "@common/components/tailings/TailingsContext";
 import { getMines } from "@mds/common/redux/selectors/mineSelectors";
 import PartyAppointmentTable from "../PartyAppointmentTable";
 import { ColumnsType } from "antd/lib/table";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 
 interface EngineerOfRecordProps {
   change: (

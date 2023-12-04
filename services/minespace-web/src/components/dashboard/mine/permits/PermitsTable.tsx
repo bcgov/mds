@@ -16,7 +16,7 @@ import { getDropdownPermitStatusOptions } from "@mds/common/redux/selectors/stat
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import LinkButton from "@/components/common/LinkButton";
 import * as Strings from "@/constants/strings";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 import { Badge } from "antd";
 import {
   renderActionsColumn,

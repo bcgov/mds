@@ -144,3 +144,11 @@ export enum PROJECT_SUMMARY_STATUS_CODES {
   SUB = "Submitted",
   UNR = "Under review",
 }
+
+export enum MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODES {
+  DFT = "Draft",
+  APV = "Approved",
+  CHR = "Change Requested",
+  SUB = "Submitted",
+  UNR = "Under review",
+}
