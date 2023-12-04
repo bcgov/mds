@@ -109,70 +109,63 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
     };
   };
 
-  const renderNewTSFActions = () => {
-    let actions = [
-      {
-        key: "edit",
-        label: "Edit TSF",
-        icon: <img src={EDIT_OUTLINE_VIOLET} className="icon-sm padding-sm--right violet" />,
-        clickFunction: (_event, record) => {
-          props.history.push({
-            pathname: MINE_TAILINGS_DETAILS.dynamicRoute(
-              record.mine_tailings_storage_facility_guid,
-              record.mine_guid,
-              "edit"
-            ),
-          });
-        },
+  const newTSFActions = [
+    {
+      key: "edit",
+      label: "Edit TSF",
+      icon: <img src={EDIT_OUTLINE_VIOLET} className="icon-sm padding-sm--right violet" />,
+      clickFunction: (_event, record) => {
+        props.history.push({
+          pathname: MINE_TAILINGS_DETAILS.dynamicRoute(
+            record.mine_tailings_storage_facility_guid,
+            record.mine_guid,
+            "edit"
+          ),
+        });
       },
-      {
-        key: "view",
-        label: "View TSF",
-        icon: <EyeOutlined className="icon-sm padding-sm--right violet" />,
-        clickFunction: (_event, record) => {
-          props.history.push({
-            pathname: MINE_TAILINGS_DETAILS.dynamicRoute(
-              record.mine_tailings_storage_facility_guid,
-              record.mine_guid,
-              "view"
-            ),
-          });
-        },
+    },
+    {
+      key: "view",
+      label: "View TSF",
+      icon: <EyeOutlined className="icon-sm padding-sm--right violet" />,
+      clickFunction: (_event, record) => {
+        props.history.push({
+          pathname: MINE_TAILINGS_DETAILS.dynamicRoute(
+            record.mine_tailings_storage_facility_guid,
+            record.mine_guid,
+            "view"
+          ),
+        });
       },
-    ];
+    },
+  ];
 
+  const damActions = [
+    {
+      key: "edit",
+      label: "Edit Dam",
+      icon: <img src={EDIT_OUTLINE_VIOLET} className="icon-sm padding-sm--right violet" />,
+      clickFunction: (_event, record) => {
+        handleEditDam(event, record, "edit");
+      },
+    },
+    {
+      key: "view",
+      label: "View Dam",
+      icon: <EyeOutlined className="icon-sm padding-sm--right violet" />,
+      clickFunction: (_event, record) => {
+        handleEditDam(event, record, "view");
+      },
+    },
+  ];
+
+  const renderActions = (actions) => {
+    let filteredActions = actions;
     if (!canEditTSF) {
-      actions = actions.filter((a) => a.key !== "edit");
+      filteredActions = actions.filter((a) => a.key !== "edit");
     }
 
-    return renderActionsColumn(actions);
-  };
-
-  const renderDamActions = () => {
-    let actions = [
-      {
-        key: "edit",
-        label: "Edit Dam",
-        icon: <img src={EDIT_OUTLINE_VIOLET} className="icon-sm padding-sm--right violet" />,
-        clickFunction: (_event, record) => {
-          handleEditDam(event, record, "edit");
-        },
-      },
-      {
-        key: "view",
-        label: "View Dam",
-        icon: <EyeOutlined className="icon-sm padding-sm--right violet" />,
-        clickFunction: (_event, record) => {
-          handleEditDam(event, record, "view");
-        },
-      },
-    ];
-
-    if (!canEditTSF) {
-      actions = actions.filter((a) => a.key !== "edit");
-    }
-
-    return renderActionsColumn(actions);
+    return renderActionsColumn(filteredActions);
   };
 
   const columns: ColumnsType<ITailingsStorageFacility> = [
@@ -231,7 +224,7 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
       dataIndex: "longitude",
       render: (text) => <div title="Longitude">{text || EMPTY_FIELD}</div>,
     },
-    ...(tsfV2Enabled ? [renderNewTSFActions()] : [renderOldTSFActions()]),
+    ...(tsfV2Enabled ? [renderActions(newTSFActions)] : [renderOldTSFActions()]),
   ];
 
   const damColumns = [
@@ -242,7 +235,7 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
       "Consequence Classification",
       CONSEQUENCE_CLASSIFICATION_CODE_HASH
     ),
-    ...[renderDamActions()],
+    ...[renderActions(damActions)],
   ];
 
   return (

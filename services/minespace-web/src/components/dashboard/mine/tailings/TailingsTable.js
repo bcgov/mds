@@ -95,58 +95,51 @@ export const TailingsTable = (props) => {
     };
   };
 
-  const renderNewTSFActions = () => {
-    let actions = [
-      {
-        key: "edit",
-        label: "Edit TSF",
-        icon: <img src={EDIT_PENCIL} className="icon-sm padding-sm--right primary-color" />,
-        clickFunction: (_event, record) => {
-          editTailings(event, record, "edit");
-        },
+  let newTSFActions = [
+    {
+      key: "edit",
+      label: "Edit TSF",
+      icon: <img src={EDIT_PENCIL} className="icon-sm padding-sm--right primary-color" />,
+      clickFunction: (_event, record) => {
+        editTailings(event, record, "edit");
       },
-      {
-        key: "view",
-        label: "View TSF",
-        icon: <EyeOutlined className="icon-sm padding-sm--right primary-color" />,
-        clickFunction: (_event, record) => {
-          editTailings(event, record, "view");
-        },
+    },
+    {
+      key: "view",
+      label: "View TSF",
+      icon: <EyeOutlined className="icon-sm padding-sm--right primary-color" />,
+      clickFunction: (_event, record) => {
+        editTailings(event, record, "view");
       },
-    ];
+    },
+  ];
 
+  let damActions = [
+    {
+      key: "edit",
+      label: "Edit Dam",
+      icon: <img src={EDIT_PENCIL} className="icon-sm padding-sm--right primary-color" />,
+      clickFunction: (_event, record) => {
+        handleEditDam(event, record, "edit");
+      },
+    },
+    {
+      key: "view",
+      label: "View Dam",
+      icon: <EyeOutlined className="icon-sm padding-sm--right primary-color" />,
+      clickFunction: (_event, record) => {
+        handleEditDam(event, record, "view");
+      },
+    },
+  ];
+
+  const renderActions = (actions) => {
+    let filteredActions = actions;
     if (!canEditTSF) {
-      actions = actions.filter((a) => a.key !== "edit");
+      filteredActions = actions.filter((a) => a.key !== "edit");
     }
 
-    return renderActionsColumn(actions);
-  };
-
-  const renderDamActions = () => {
-    let actions = [
-      {
-        key: "edit",
-        label: "Edit Dam",
-        icon: <img src={EDIT_PENCIL} className="icon-sm padding-sm--right primary-color" />,
-        clickFunction: (_event, record) => {
-          handleEditDam(event, record, "edit");
-        },
-      },
-      {
-        key: "view",
-        label: "View Dam",
-        icon: <EyeOutlined className="icon-sm padding-sm--right primary-color" />,
-        clickFunction: (_event, record) => {
-          handleEditDam(event, record, "view");
-        },
-      },
-    ];
-
-    if (!canEditTSF) {
-      actions = actions.filter((a) => a.key !== "edit");
-    }
-
-    return renderActionsColumn(actions);
+    return renderActionsColumn(filteredActions);
   };
 
   // const handleRowExpand = (record) => {
@@ -230,7 +223,7 @@ export const TailingsTable = (props) => {
       render: (text) => <div title="Notes">{text || EMPTY_FIELD}</div>,
       sorter: (a, b) => (a.notes > b.notes ? -1 : 1),
     },
-    ...(tsfV2Enabled ? [renderNewTSFActions()] : [renderOldTSFActions()]),
+    ...(tsfV2Enabled ? [renderActions(newTSFActions)] : [renderOldTSFActions()]),
   ];
 
   const expandedColumns = [
@@ -251,7 +244,7 @@ export const TailingsTable = (props) => {
         </Typography.Text>
       ),
     },
-    ...[renderDamActions()],
+    ...[renderActions(damActions)],
   ];
 
   return (
