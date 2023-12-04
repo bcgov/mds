@@ -1,6 +1,7 @@
 from decimal import Decimal
 from datetime import datetime
 from flask.globals import current_app
+from app.api.mines.exceptions.mine_exceptions import MineException
 
 from werkzeug.exceptions import NotFound
 from flask_restplus import Resource, inputs
@@ -166,11 +167,16 @@ class ExplosivesPermitResource(Resource, UserMixin):
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     @api.marshal_with(EXPLOSIVES_PERMIT_MODEL, code=200)
     def get(self, mine_guid, explosives_permit_guid):
-        explosives_permit = ExplosivesPermit.find_by_explosives_permit_guid(explosives_permit_guid)
-        if explosives_permit is None:
-            raise NotFound('Explosives Permit not found')
-
-        return explosives_permit
+        try:
+            explosives_permit = ExplosivesPermit.find_by_explosives_permit_guid(explosives_permit_guid)
+            if explosives_permit is None:
+                raise NotFound('Explosives Permit not found')
+        except Exception as e:
+            current_app.logger.error(e)
+            raise MineException("Oops!, Something went wrong while retrieving the explosive permit information",
+                                detailed_error = e)
+        else:
+            return explosives_permit
 
     @api.doc(
         description='Update an Explosives Permit.',
@@ -181,39 +187,44 @@ class ExplosivesPermitResource(Resource, UserMixin):
     @requires_role_edit_explosives_permit
     @api.marshal_with(EXPLOSIVES_PERMIT_MODEL, code=200)
     def put(self, mine_guid, explosives_permit_guid):
-        explosives_permit = ExplosivesPermit.find_by_explosives_permit_guid(explosives_permit_guid)
-        if explosives_permit is None:
-            raise NotFound('Explosives Permit not found')
+        try:
+            explosives_permit = ExplosivesPermit.find_by_explosives_permit_guid(explosives_permit_guid)
+            if explosives_permit is None:
+                raise NotFound('Explosives Permit not found')
 
-        data = self.parser.parse_args()
+            data = self.parser.parse_args()
 
-        letter_date = data.get('letter_date')
-        if letter_date is None:
-            letter_date = str(datetime.utcnow())
+            letter_date = data.get('letter_date')
+            if letter_date is None:
+                letter_date = str(datetime.utcnow())
 
-        letter_body = data.get('letter_body')
-        if letter_body is None:
-            letter_body = ""
+            letter_body = data.get('letter_body')
+            if letter_body is None:
+                letter_body = ""
 
-        explosives_permit.update(
-            data.get('permit_guid'), data.get('now_application_guid'),
-            data.get('issuing_inspector_party_guid'), data.get('mine_manager_mine_party_appt_id'),
-            data.get('permittee_mine_party_appt_id'), data.get('application_status'),
-            data.get('issue_date'), data.get('expiry_date'), data.get('decision_reason'),
-            data.get('is_closed'), data.get('closed_reason'), data.get('closed_timestamp'),
-            data.get('latitude'), data.get('longitude'), data.get('application_date'),
-            data.get('description'),
-            letter_date,
-            letter_body,
-            data.get('explosive_magazines', []),
-            data.get('detonator_magazines', []),
-            data.get('documents', []),
-            data.get('generate_documents', False)
-        )
-        
+            explosives_permit.update(
+                data.get('permit_guid'), data.get('now_application_guid'),
+                data.get('issuing_inspector_party_guid'), data.get('mine_manager_mine_party_appt_id'),
+                data.get('permittee_mine_party_appt_id'), data.get('application_status'),
+                data.get('issue_date'), data.get('expiry_date'), data.get('decision_reason'),
+                data.get('is_closed'), data.get('closed_reason'), data.get('closed_timestamp'),
+                data.get('latitude'), data.get('longitude'), data.get('application_date'),
+                data.get('description'),
+                letter_date,
+                letter_body,
+                data.get('explosive_magazines', []),
+                data.get('detonator_magazines', []),
+                data.get('documents', []),
+                data.get('generate_documents', False)
+            )
 
-        explosives_permit.save()
-        return explosives_permit
+            explosives_permit.save()
+        except Exception as e:
+            current_app.logger.error(e)
+            raise MineException("Oops!, Something went wrong while updaitng the explosive permit information",
+                                detailed_error = e)
+        else:
+            return explosives_permit
 
     @api.doc(
         description='Delete an Explosives Permit.',
@@ -224,9 +235,15 @@ class ExplosivesPermitResource(Resource, UserMixin):
     @requires_any_of([MINE_ADMIN])
     @api.response(204, 'Successfully deleted.')
     def delete(self, mine_guid, explosives_permit_guid):
-        explosives_permit = ExplosivesPermit.find_by_explosives_permit_guid(explosives_permit_guid)
-        if explosives_permit is None:
-            raise NotFound('Explosives Permit not found')
+        try:
+            explosives_permit = ExplosivesPermit.find_by_explosives_permit_guid(explosives_permit_guid)
+            if explosives_permit is None:
+                raise NotFound('Explosives Permit not found')
 
-        explosives_permit.delete()
-        return None, 204
+            explosives_permit.delete()
+        except Exception as e:
+            current_app.logger.error(e)
+            raise MineException("Oops!, Something went wrong while deleting the explosive permit",
+                                detailed_error = e)
+        else:
+            return None, 204
