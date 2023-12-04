@@ -162,6 +162,9 @@ export const dateSorter = (key: string) => (a: any, b: any) => {
 export const nullableStringSorter = (path) => (a, b) => {
   const aObj = get(a, path, null);
   const bObj = get(b, path, null);
+  if (typeof aObj === "number" && typeof bObj === "number") {
+    return aObj - bObj;
+  }
   if (aObj === bObj) {
     return 0;
   }

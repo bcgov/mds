@@ -147,7 +147,7 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
       return filteredActionList;
     };
 
-    const actionColumn = renderActionsColumn(actions, filterActions);
+    const actionColumn = renderActionsColumn({ actions, recordActionsFilter: filterActions });
     columns.splice(3, 0, issuanceStateColumn);
     columns.push(actionColumn);
   }

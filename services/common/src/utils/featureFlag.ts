@@ -12,6 +12,7 @@ export enum Feature {
   VERIFIABLE_CREDENTIALS = "verifiable_credentials",
   MINESPACE_ESUPS = "minespace_esups",
   REPORT_ERROR = "report_error"
+  CODE_REQUIRED_REPORTS = "code_required_reports",
 }
 
 export const initializeFlagsmith = async (flagsmithUrl, flagsmithKey) => {

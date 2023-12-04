@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-key */
 import React from "react";
+import { MINE_REPORT_SUBMISSION_CODES } from "@mds/common/constants/enums";
 // reusable messages for error handling, validations, null-screens, etc.
 export const ERROR = "Error.";
 export const ERROR_CANCELED =
@@ -82,7 +83,6 @@ export const INCIDENT_FOLLOWUP_ACTIONS = {
   inspectorInvestigation: "INS",
 };
 
-
 export const INCIDENT_CONTACT_METHOD_OPTIONS = [
   { label: "Phone", value: "PHN" },
   { label: "Email", value: "EML" },
@@ -91,7 +91,6 @@ export const INCIDENT_CONTACT_METHOD_OPTIONS = [
   { label: "Ministry reporting phone line", value: "MRP", inspectorOnly: true },
   { label: "Ministry reporting email", value: "MRE", inspectorOnly: true },
 ];
-
 
 export const BUSINESS_ROLES = {
   inspector: "INS",
@@ -356,7 +355,6 @@ export const ESUP_DOCUMENT_GENERATED_TYPES = {
   PER: "Permit Enclosed Letter",
 };
 
-
 export const BC_TIMEZONE_NAMES = ["Canada/Pacific", "Canada/Mountain", "Canada/Yukon"];
 
 // "Display name": [corresponding zones as picked up by moment]
@@ -402,3 +400,10 @@ export const DEFAULT_TIMEZONE = "Canada/Pacific";
 export const DATETIME_TZ_INPUT_FORMAT = "YYYY-MM-DD HH:mm Z z";
 export const DATE_TZ_INPUT_FORMAT = "YYYY-MM-DD Z z";
 export const DATETIME_TZ_FORMAT = "MMM DD YYYY, HH:mm (z)";
+
+export const MINE_REPORT_STATUS_HASH = {
+  [MINE_REPORT_SUBMISSION_CODES.NRQ]: "Not Requested",
+  [MINE_REPORT_SUBMISSION_CODES.REQ]: "Changes Requested",
+  [MINE_REPORT_SUBMISSION_CODES.REC]: "Changes Received",
+  [MINE_REPORT_SUBMISSION_CODES.ACC]: "Accepted",
+};
