@@ -91,6 +91,9 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
   };
 
   const handleDocumentPreview = (documentTypeCode, values: any, record) => {
+    if (record.isAmendment) {
+      values.amendment_no = record.amendment_no;
+    }
     const payload = {
       explosives_permit_guid: record.explosives_permit_guid,
       template_data: values,

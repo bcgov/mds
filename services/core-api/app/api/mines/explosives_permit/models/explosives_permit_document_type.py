@@ -118,8 +118,8 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
             template_data['issue_date'] = format_letter_date(issue_date)
             template_data['expiry_date'] = format_letter_date(expiry_date)
 
-            if 'amendment_count' in template_data:
-                amendment_info = self.get_amendment_info(template_data['amendment_count'],
+            if 'amendment_no' in template_data:
+                amendment_info = self.get_amendment_info(template_data['amendment_no'],
                                                          issue_date)
                 template_data['amendment'] = amendment_info['amendment']
 
@@ -182,8 +182,8 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
         def transform_letter(template_data, explosives_permit):
             template_data['letter_date'] = format_letter_date(template_data['letter_date'])
 
-            if 'amendment_count' in template_data:
-                amendment_info = self.get_amendment_info(template_data['amendment_count'],
+            if 'amendment_no' in template_data:
+                amendment_info = self.get_amendment_info(template_data['amendment_no'],
                                                          template_data['issue_date'])
                 template_data['amendment_with_date'] = amendment_info['amendment_with_date']
 
@@ -215,10 +215,10 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
             return after_permit_generated(template_data, explosives_permit_doc, explosives_permit)
 
     @classmethod
-    def get_amendment_info(self, amendment_count, issue_date):
+    def get_amendment_info(self, amendment_no, issue_date):
         amendment_info_payload = {}
-        amendment_info_payload['amendment'] = f'Amendment {amendment_count}'
+        amendment_info_payload['amendment'] = f'Amendment {amendment_no}'
         amendment_info_payload[
-            'amendment_with_date'] = f'(Amendment {amendment_count}) issued {format_letter_date(issue_date)}'
+            'amendment_with_date'] = f'(Amendment {amendment_no}) issued {format_letter_date(issue_date)}'
 
         return amendment_info_payload

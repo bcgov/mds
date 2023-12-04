@@ -216,7 +216,7 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
             explosives_permit_amendment_guid=explosives_permit_amendment_guid, deleted_ind=False).one_or_none()
 
     def update(self,
-               amendment_count,
+               amendment_no,
                explosives_permit_id,
                permit_guid,
                now_application_guid,
@@ -329,7 +329,7 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
                     or self.application_status == 'APP') and application_status == 'APP':
                 from app.api.document_generation.resources.explosives_permit_amendment_document_resource import ExplosivesPermitAmendmentDocumentResource
                 from app.api.mines.explosives_permit.resources.explosives_permit_document_type import ExplosivesPermitDocumentGenerateResource
-                amendment_info = ExplosivesPermitDocumentType.get_amendment_info(amendment_count, str(issue_date))
+                amendment_info = ExplosivesPermitDocumentType.get_amendment_info(amendment_no, str(issue_date))
 
                 def create_permit_enclosed_letter():
                     mine = self.mine
