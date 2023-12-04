@@ -109,7 +109,7 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
     };
   };
 
-  const newTSFActions = [
+  let newTSFActions = [
     {
       key: "edit",
       label: "Edit TSF",
@@ -140,7 +140,7 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
     },
   ];
 
-  const damActions = [
+  let damActions = [
     {
       key: "edit",
       label: "Edit Dam",
@@ -249,12 +249,12 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
         !tsfV2Enabled
           ? null
           : {
-              rowKey: "dam_guid",
-              rowExpandable: (record: any) => record.dams.length > 0,
-              recordDescription: "associated dams",
-              getDataSource: (record: any) => record.dams,
-              subTableColumns: damColumns,
-            }
+            rowKey: "dam_guid",
+            rowExpandable: (record: any) => record.dams.length > 0,
+            recordDescription: "associated dams",
+            getDataSource: (record: any) => record.dams,
+            subTableColumns: damColumns,
+          }
       }
     />
   );
