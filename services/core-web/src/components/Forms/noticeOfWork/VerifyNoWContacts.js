@@ -26,13 +26,16 @@ import { TRASHCAN, PROFILE_NOCIRCLE } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
-import { getSearchResults, getSearchSubsetResults } from "@mds/common/redux/selectors/searchSelectors";
+import {
+  getSearchResults,
+  getSearchSubsetResults,
+} from "@mds/common/redux/selectors/searchSelectors";
 import * as Strings from "@mds/common/constants/strings";
 
 import Address from "@/components/common/Address";
 import AddButton from "@/components/common/buttons/AddButton";
 import RenderSelect from "@/components/common/RenderSelect";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 
 const propTypes = {
   partyRelationshipTypesList: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,

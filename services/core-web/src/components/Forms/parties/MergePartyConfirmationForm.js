@@ -4,7 +4,7 @@ import { Field, reduxForm, FormSection } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm, Alert } from "antd";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 import { formatDate, resetForm, normalizePhone, upperCase } from "@common/utils/helpers";
 
 import * as Strings from "@mds/common/constants/strings";

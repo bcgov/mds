@@ -16,7 +16,7 @@ import { ADD_DAM, EDIT_DAM } from "@/constants/routes";
 import { IDam, ITailingsStorageFacility } from "@mds/common";
 import { RootState } from "@/App";
 import { ColumnsType } from "antd/lib/table";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 import { EDIT_OUTLINE } from "@mds/common/constants/assets";
 import EyeOutlined from "@ant-design/icons/EyeOutlined";
 import { renderActionsColumn } from "@mds/common/components/common/CoreTableCommonColumns";

@@ -5,7 +5,7 @@ import { downloadNrisDocument } from "@common/utils/actionlessNetworkCalls";
 import { RED_CLOCK } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
 import DocumentLink from "@/components/common/DocumentLink";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 import {
   renderDateColumn,
   renderTextColumn,

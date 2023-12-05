@@ -17,7 +17,7 @@ import {
 import LinkButton from "@/components/common/buttons/LinkButton";
 import { CoreTooltip, NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
 import * as FORM from "@/constants/forms";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 
 interface ReviewApplicationFeeContentProps {
   isViewMode: boolean;

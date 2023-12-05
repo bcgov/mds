@@ -7,7 +7,7 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import { EDIT, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 import DocumentLink from "@/components/common/DocumentLink";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
 

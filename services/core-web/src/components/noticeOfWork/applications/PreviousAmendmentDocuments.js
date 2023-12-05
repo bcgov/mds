@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { FormSection, Field } from "redux-form";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 import DocumentLink from "@/components/common/DocumentLink";
 import { renderConfig } from "@/components/common/config";
 

@@ -3,7 +3,7 @@ import { Divider } from "antd";
 import PropTypes from "prop-types";
 import Highlight from "react-highlighter";
 import DocumentLink from "@/components/common/DocumentLink";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 import {
   renderDateColumn,
   renderTextColumn,

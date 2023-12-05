@@ -35,7 +35,7 @@ import {
   USER_ROLES,
 } from "@mds/common";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 import {
   renderDateColumn,
   renderTextColumn,

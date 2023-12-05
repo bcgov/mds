@@ -29,3 +29,18 @@ export const removeNullValues = (obj) => {
   Object.keys(obj).forEach((key) => obj[key] === null && delete obj[key]);
   return obj;
 };
+
+export const getStatusDescription = (
+  projectSummaryStatusCode,
+  majorMineApplicationStatusCode,
+  irtStatusCode
+) => {
+  if (
+    projectSummaryStatusCode === "WDN" ||
+    majorMineApplicationStatusCode === "WDN" ||
+    irtStatusCode === "WDN"
+  ) {
+    return "Inactive";
+  }
+  return "Active";
+};

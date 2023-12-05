@@ -16,6 +16,7 @@ import { getProject } from "@mds/common/redux/selectors/projectSelectors";
 import * as routes from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import ProjectStagesTable from "./ProjectStagesTable";
+import ProjectLinks from "./ProjectLinks";
 
 const propTypes = {
   informationRequirementsTableStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -128,7 +129,10 @@ export class ProjectOverviewTab extends Component {
         payload: this.props.project.project_summary,
         statusHash: this.props.projectSummaryStatusCodesHash,
         link: (
-          <Link data-cy="project-description-view-link" to={routes.PRE_APPLICATIONS.dynamicRoute(project_guid, project_summary_guid)}>
+          <Link
+            data-cy="project-description-view-link"
+            to={routes.PRE_APPLICATIONS.dynamicRoute(project_guid, project_summary_guid)}
+          >
             <Button className="full-mobile margin-small" type="secondary">
               View
             </Button>
@@ -142,7 +146,10 @@ export class ProjectOverviewTab extends Component {
         payload: this.props.project.major_mine_application,
         statusHash: this.props.majorMineApplicationStatusCodeHash,
         link: (
-          <Link data-cy="final-application-view-link" to={routes.PROJECT_FINAL_APPLICATION.dynamicRoute(project_guid)}>
+          <Link
+            data-cy="final-application-view-link"
+            to={routes.PROJECT_FINAL_APPLICATION.dynamicRoute(project_guid)}
+          >
             <Button className="full-mobile margin-small" type="secondary">
               View
             </Button>
@@ -236,6 +243,7 @@ export class ProjectOverviewTab extends Component {
             projectStages={[...requiredProjectStages, ...optionalProjectStages]}
           />
           <br />
+          <ProjectLinks project={this.props.project} />
         </Col>
         <Col lg={{ span: 9, offset: 1 }} xl={{ span: 7, offset: 1 }}>
           <Row>

@@ -9,7 +9,7 @@ import {
 import { formatDate } from "@/utils/helpers";
 import * as Strings from "@/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 
 const propTypes = {
   bonds: PropTypes.arrayOf(CustomPropTypes.bond).isRequired,

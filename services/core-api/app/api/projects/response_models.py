@@ -8,8 +8,22 @@ class Requirement(fields.Raw):
     def format(self, value):
         return marshal(value, REQUIREMENTS_MODEL)
 
+IRT_MODEL_ATTRIBUTES = api.model(
+    'InformationRequirementsTable', {
+        'irt_guid': fields.String,
+        'status_code': fields.String
+    })
+
+MAJOR_MINE_APPLICATION_MODEL_ATTRIBUTES = api.model(
+    'MajorMineApplication', {
+        'major_mine_application_guid': fields.String,
+        'status_code': fields.String
+    }
+)
+
 PROJECT_SUMMARY_MODEL_ATTRIBUTES = api.model(
     'ProjectSummary', {
+        'project_summary_guid': fields.String,
         'status_code': fields.String
     }
 )
@@ -27,6 +41,8 @@ PROJECT_MODEL_ATTRIBUTES = api.model(
         'proponent_project_id': fields.String,
         'contacts': fields.List(fields.Nested(PROJECT_CONTACT_MODEL_ATTRIBUTES)),
         'project_summary': fields.Nested(PROJECT_SUMMARY_MODEL_ATTRIBUTES),
+        'major_mine_application': fields.Nested(MAJOR_MINE_APPLICATION_MODEL_ATTRIBUTES),
+        'information_requirements_table': fields.Nested(IRT_MODEL_ATTRIBUTES),
         'update_timestamp': fields.DateTime
     }
 )

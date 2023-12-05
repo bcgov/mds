@@ -105,6 +105,9 @@ export const CREATE_EXPLOSIVES_PERMIT_AMENDMENT = (mineGuid) =>
 export const EXPLOSIVES_PERMIT_AMENDMENT = (mineGuid, explosivesPermitGuid) =>
   `/mines/${mineGuid}/explosives-permits-amendment/${explosivesPermitGuid}`;
 
+// Common
+export const REPORT_ERROR = `/report-error`;
+
 // EPIC Mine Information
 export const EPIC_INFO = (mineGuid) => `/mines/${mineGuid}/epic`;
 

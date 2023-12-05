@@ -13,7 +13,10 @@ import {
   getNoticeOfWorkApplicationDocumentTypeOptionsHash,
   getDropdownNoticeOfWorkApplicationDocumentTypeOptions,
 } from "@mds/common/redux/selectors/staticContentSelectors";
-import { getNoticeOfWork, getApplicationDelay } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
+import {
+  getNoticeOfWork,
+  getApplicationDelay,
+} from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import {
   fetchImportedNoticeOfWorkApplication,
   updateNoticeOfWorkApplication,
@@ -32,7 +35,7 @@ import ReferralConsultationPackage from "@/components/noticeOfWork/applications/
 import PermitPackage from "@/components/noticeOfWork/applications/PermitPackage";
 import { sortableContainer, sortableElement, sortableHandle } from "react-sortable-hoc";
 import arrayMove from "array-move";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 
 const DragHandle = sortableHandle(() => <MenuOutlined style={{ cursor: "grab", color: "#999" }} />);
 

@@ -11,7 +11,7 @@ import {
 import { MINISTRY_ACKNOWLEDGED_STATUS, PARTY_APPOINTMENT_STATUS } from "@mds/common";
 import TailingsContext from "./tailings/TailingsContext";
 import DocumentLink from "@/components/common/DocumentLink";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 
 const propTypes = {
   columns: PropTypes.arrayOf(PropTypes.string),

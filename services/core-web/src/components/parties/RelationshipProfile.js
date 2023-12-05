@@ -19,7 +19,7 @@ import * as String from "@mds/common/constants/strings";
 import Loading from "@/components/common/Loading";
 import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 
 /**
  * @class RelationshipProfile - profile view for party relationship types

@@ -2,6 +2,7 @@ import uuid
 from flask import request
 from flask_restplus import Resource, fields
 from werkzeug.exceptions import NotFound, BadRequest
+from flask.globals import current_app
 
 from app.extensions import api, cache
 from app.api.mines.explosives_permit.models.explosives_permit import ExplosivesPermit
@@ -12,6 +13,7 @@ from app.api.utils.access_decorators import requires_role_view_all, requires_rol
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.constants import TIMEOUT_5_MINUTES, EXPLOSIVES_PERMIT_DOCUMENT_DOWNLOAD_TOKEN
 from app.api.mines.explosives_permit.response_models import EXPLOSIVES_PERMIT_DOCUMENT_TYPE_MODEL
+from app.api.mines.exceptions.mine_exceptions import MineException, ExplosivesPermitExeption, ExplosivesPermitDocumentException
 
 EXPLOSIVES_PERMIT_DOCUMENT_DOWNLOAD_TOKEN_MODEL = api.model('ExplosivesPermitDocumentDownloadToken',
                                                             {'token': fields.String})
@@ -22,8 +24,11 @@ class ExplosivesPermitDocumentTypeListResource(Resource, UserMixin):
     @requires_role_view_all
     @api.marshal_with(EXPLOSIVES_PERMIT_DOCUMENT_TYPE_MODEL, code=200, envelope='records')
     def get(self):
-        return ExplosivesPermitDocumentType.get_all()
-
+        try:
+            return ExplosivesPermitDocumentType.get_all()
+        except Exception as e:
+            current_app.logger.error(e)
+            raise MineException(detailed_error = e)
 
 class ExplosivesPermitDocumentTypeResource(Resource, UserMixin):
     @api.doc(description=
@@ -31,8 +36,12 @@ class ExplosivesPermitDocumentTypeResource(Resource, UserMixin):
     @requires_role_view_all
     @api.marshal_with(EXPLOSIVES_PERMIT_DOCUMENT_TYPE_MODEL, code=200)
     def get(self, document_type_code):
-        context_guid = request.args.get('context_guid')
-        return ExplosivesPermitDocumentType.get_with_context(document_type_code, context_guid)
+        try:
+            context_guid = request.args.get('context_guid')
+            return ExplosivesPermitDocumentType.get_with_context(document_type_code, context_guid)
+        except Exception as e:
+            current_app.logger.error(e)
+            raise MineException(detailed_error = e)
 
 
 class ExplosivesPermitDocumentGenerateResource(Resource, UserMixin):
@@ -47,44 +56,65 @@ class ExplosivesPermitDocumentGenerateResource(Resource, UserMixin):
     @api.marshal_with(EXPLOSIVES_PERMIT_DOCUMENT_DOWNLOAD_TOKEN_MODEL, code=200)
     @requires_role_mine_edit
     def post(self, document_type_code):
-        document_type = ExplosivesPermitDocumentType.query.get(document_type_code)
-        if not document_type:
-            raise NotFound('Document type not found')
+        try:
+            document_type = ExplosivesPermitDocumentType.query.get(document_type_code)
+            if not document_type:
+                raise ExplosivesPermitDocumentException("Document type not found", status_code = 404)
 
-        document_template = document_type.document_template
-        if not document_template:
-            raise BadRequest(f'Cannot generate a {document_type.description}')
+            document_template = document_type.document_template
+            if not document_template:
+                raise ExplosivesPermitDocumentException(f"Cannot generate a {document_type.description}",
+                                                    status_code = 400)
 
-        data = self.parser.parse_args()
+            data = self.parser.parse_args()
 
-        explosives_permit_guid = data['explosives_permit_guid']
-        explosives_permit = ExplosivesPermit.find_by_explosives_permit_guid(explosives_permit_guid)
-        if not explosives_permit:
-            raise NotFound('Explosives Permit not found')
+            explosives_permit_guid = data['explosives_permit_guid']
+            explosives_permit = ExplosivesPermit.find_by_explosives_permit_guid(explosives_permit_guid)
+            if not explosives_permit:
+                raise ExplosivesPermitDocumentException("Explosives Permit not found",
+                                                    status_code = 404)
 
-        template_data = data['template_data']
-        template_data = document_type.transform_template_data(template_data, explosives_permit)
+            template_data = data['template_data']
+            template_data = document_type.transform_template_data(template_data, explosives_permit)
 
-        form_spec_with_context = document_template._form_spec_with_context(explosives_permit_guid)
-        enforced_data = [x for x in form_spec_with_context if x.get('read-only') == True]
-        for enforced_item in enforced_data:
-            template_data[enforced_item['id']] = enforced_item['context-value']
+            form_spec_with_context = document_template._form_spec_with_context(explosives_permit_guid)
+            enforced_data = [x for x in form_spec_with_context if x.get('read-only') == True]
+            for enforced_item in enforced_data:
+                template_data[enforced_item['id']] = enforced_item['context-value']
 
-        token = ExplosivesPermitDocumentGenerateResource.get_explosives_document_generate_token(
-            document_type_code, explosives_permit_guid, template_data)
+            token = ExplosivesPermitDocumentGenerateResource.get_explosives_document_generate_token(
+                document_type_code, explosives_permit_guid, template_data)
 
-        return {'token': token}
+        except ExplosivesPermitDocumentException as e:
+            current_app.logger.error(e)
+            raise e
+
+        except ExplosivesPermitExeption as e:
+            current_app.logger.error(e)
+            raise e
+
+        except Exception as e:
+            current_app.logger.error(e)
+            raise MineException(detailed_error = e)
+
+        else:
+            return {'token': token}
 
     @classmethod
     def get_explosives_document_generate_token(cls, document_type_code, explosives_permit_guid,
                                                template_data):
-        token = uuid.uuid4()
-        cache.set(
-            EXPLOSIVES_PERMIT_DOCUMENT_DOWNLOAD_TOKEN(token), {
-                'document_type_code': document_type_code,
-                'explosives_permit_guid': explosives_permit_guid,
-                'template_data': template_data,
-                'username': User().get_user_username(),
-                'authorization_header': request.headers['Authorization']
-            }, TIMEOUT_5_MINUTES)
-        return token
+        try:
+            token = uuid.uuid4()
+            cache.set(
+                EXPLOSIVES_PERMIT_DOCUMENT_DOWNLOAD_TOKEN(token), {
+                    'document_type_code': document_type_code,
+                    'explosives_permit_guid': explosives_permit_guid,
+                    'template_data': template_data,
+                    'username': User().get_user_username(),
+                    'authorization_header': request.headers['Authorization']
+                }, TIMEOUT_5_MINUTES)
+            return token
+
+        except Exception as e:
+            current_app.logger.error(e)
+            raise MineException(detailed_error = e)

@@ -8,7 +8,7 @@ import { formatDate } from "@/utils/helpers";
 import { RED_CLOCK } from "@/constants/assets";
 import * as Strings from "@/constants/strings";
 import LinkButton from "@/components/common/LinkButton";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 
 const propTypes = {
   variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
@@ -21,8 +21,8 @@ const propTypes = {
 };
 
 const defaultProps = {
-  openEditVarianceModal: () => {},
-  openViewVarianceModal: () => {},
+  openEditVarianceModal: () => { },
+  openViewVarianceModal: () => { },
 };
 
 export class VariancesTable extends Component {
@@ -130,12 +130,12 @@ export class VariancesTable extends Component {
           <div title="Documents" className="cap-col-height">
             {record.documents.length > 0
               ? record.documents.map((file) => (
-                  <div key={file.mine_document_guid}>
-                    <LinkButton title={text} onClick={() => downloadFileFromDocumentManager(file)}>
-                      {truncateFilename(file.document_name)}
-                    </LinkButton>
-                  </div>
-                ))
+                <div key={file.mine_document_guid}>
+                  <LinkButton title={text} onClick={() => downloadFileFromDocumentManager(file)}>
+                    {truncateFilename(file.document_name)}
+                  </LinkButton>
+                </div>
+              ))
               : Strings.EMPTY_FIELD}
           </div>
         );
