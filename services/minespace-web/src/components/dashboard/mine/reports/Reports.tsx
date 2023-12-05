@@ -1,8 +1,8 @@
-import React, { Component, FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
-import { Row, Col, Typography, Button } from "antd";
+import { Button, Col, Row, Typography } from "antd";
 import moment from "moment";
 import PropTypes from "prop-types";
 import {
@@ -10,22 +10,19 @@ import {
   fetchMineReports,
   updateMineReport,
 } from "@mds/common/redux/actionCreators/reportActionCreator";
-import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
+import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import { getMineReports } from "@mds/common/redux/selectors/reportSelectors";
 import { getMineReportDefinitionOptions } from "@mds/common/redux/reducers/staticContentReducer";
 import CustomPropTypes from "@/customPropTypes";
 import ReportsTable from "@/components/dashboard/mine/reports/ReportsTable";
-import TableSummaryCard from "@/components/common/TableSummaryCard";
 import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { IMine, IMineReport } from "@mds/common";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
-import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
-  mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
-  // eslint-disable-next-line react/no-unused-prop-types
+  mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired, // eslint-disable-next-line react/no-unused-prop-types
   mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   updateMineReport: PropTypes.func.isRequired,
   createMineReport: PropTypes.func.isRequired,
@@ -53,10 +50,6 @@ export const Reports: FC<ReportsProps> = ({
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [report, setReport] = useState(null);
-  const [reportsDue, setReportsDue] = useState(0);
-  const [reportsSubmitted, setReportsSubmitted] = useState(0);
-
-  const { isFeatureEnabled } = useFeatureFlag();
 
   useEffect(() => {
     props.fetchMineReports(mine.mine_guid).then(() => {
@@ -71,8 +64,6 @@ export const Reports: FC<ReportsProps> = ({
     const reportsDue = mineReports.filter(
       (report) => report.mine_report_submissions.length === 0 && report.due_date
     ).length;
-    setReportsSubmitted(reportsSubmitted);
-    setReportsDue(reportsDue);
   }, [mineReports]);
 
   const handleAddReport = (values) => {

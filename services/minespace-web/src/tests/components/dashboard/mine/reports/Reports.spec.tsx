@@ -3,8 +3,8 @@ import { shallow } from "enzyme";
 import { Reports } from "@/components/dashboard/mine/reports/Reports";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
-const props = {};
-const dispatchProps = {};
+const props: any = {};
+const dispatchProps: any = {};
 
 const setupProps = () => {
   props.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];

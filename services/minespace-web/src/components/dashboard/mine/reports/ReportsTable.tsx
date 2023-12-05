@@ -8,7 +8,6 @@ import * as Strings from "@/constants/strings";
 import { EDIT_PENCIL } from "@/constants/assets";
 import LinkButton from "@/components/common/LinkButton";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import CoreTable from "@/components/common/CoreTable";
 import {
   Feature,
   IMineReport,
@@ -22,6 +21,7 @@ import {
 } from "@mds/common/components/common/CoreTableCommonColumns";
 import EyeOutlined from "@ant-design/icons/EyeOutlined";
 import { ColumnsType } from "antd/es/table";
+import CoreTable from "@mds/common/components/common/CoreTable";
 
 interface ReportsTableProps {
   mineReports: IMineReport[];

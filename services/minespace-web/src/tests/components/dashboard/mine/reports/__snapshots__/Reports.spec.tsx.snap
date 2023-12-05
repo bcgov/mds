@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Reports renders properly 1`] = `
+<Row>
+  <Col
+    span={24}
+  >
+    <Row>
+      <Col
+        span={24}
+      >
+        <div
+          className="submit-report-button"
+        >
+          <Connect(AuthorizationWrapper)>
+            <Button
+              className="submit-report-button"
+              onClick={[Function]}
+              style={
+                Object {
+                  "zIndex": 1,
+                }
+              }
+              type="primary"
+            >
+              <ForwardRef(PlusCircleFilled) />
+              Submit Report
+            </Button>
+          </Connect(AuthorizationWrapper)>
+        </div>
+        <ForwardRef
+          className="report-title"
+          level={4}
+        >
+          Reports
+        </ForwardRef>
+        <ForwardRef>
+          This table shows reports from the Health, Safety and Reclamation code that your mine has submitted to the cMinistry. It also shows reports the Ministry has requested from your mine. If you do not see an HSRC report that your mine must submit, click Submit Report, choose the report you need to send and then attach the file or files.
+        </ForwardRef>
+        <ForwardRef>
+          Note: Do not use this page to submit reports specified in your permit. Continue to email these reports to the Ministry.
+        </ForwardRef>
+      </Col>
+    </Row>
+    <Row
+      gutter={
+        Array [
+          16,
+          32,
+        ]
+      }
+    >
+      <Col
+        span={24}
+      >
+        <Connect(ReportsTable)
+          isLoaded={false}
+          openEditReportModal={[Function]}
+        />
+      </Col>
+    </Row>
+  </Col>
+</Row>
+`;
