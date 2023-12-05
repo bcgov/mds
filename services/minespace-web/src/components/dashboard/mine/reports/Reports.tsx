@@ -20,17 +20,6 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import { IMine, IMineReport } from "@mds/common";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 
-const propTypes = {
-  mine: CustomPropTypes.mine.isRequired,
-  mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired, // eslint-disable-next-line react/no-unused-prop-types
-  mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-  updateMineReport: PropTypes.func.isRequired,
-  createMineReport: PropTypes.func.isRequired,
-  fetchMineReports: PropTypes.func.isRequired,
-  openModal: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
-};
-
 interface ReportsProps {
   mine: IMine;
   mineReports: IMineReport[];
