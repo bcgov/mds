@@ -43,7 +43,7 @@ const DamForm: FC<DamFormProps> = (props) => {
   const returnUrl = EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
     tailingsStorageFacilityGuid,
     mineGuid,
-    userAction,
+    (userAction === "editView" ? "edit" : userAction),
     "associated-dams"
   );
 
@@ -56,9 +56,8 @@ const DamForm: FC<DamFormProps> = (props) => {
       <div className="margin-large--bottom">
         <Typography.Title level={4}>Associated Dams - {dam.dam_name}</Typography.Title>
         <Popconfirm
-          title={`Are you sure you want to cancel ${
-            tailingsStorageFacilityGuid ? "updating this" : "creating a new"
-          } dam?
+          title={`Are you sure you want to cancel ${tailingsStorageFacilityGuid ? "updating this" : "creating a new"
+            } dam?
         All unsaved data on this page will be lost.`}
           cancelText="No"
           okText="Yes"

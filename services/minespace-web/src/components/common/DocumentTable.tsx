@@ -1,5 +1,5 @@
 import React, { useState, useEffect, FC } from "react";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 import {
   documentNameColumn,
   documentNameColumnNew,

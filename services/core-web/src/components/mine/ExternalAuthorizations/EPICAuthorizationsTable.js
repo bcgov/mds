@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import * as Strings from "@mds/common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import NullScreen from "@/components/common/NullScreen";
 

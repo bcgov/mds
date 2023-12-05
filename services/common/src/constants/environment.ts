@@ -12,7 +12,7 @@ export const DEFAULT_ENVIRONMENT = {
   keycloak_idpHint: "test",
   keycloak_url: "https://test.loginproxy.gov.bc.ca/auth",
   flagsmithKey: "4Eu9eEMDmWVEHKDaKoeWY7",
-  flagsmithUrl: "https://mds-flags-dev.apps.silver.devops.gov.bc.ca/api/v1/",
+  flagsmithUrl: "https://mds-flags-dev.apps.silver.devops.gov.bc.ca/api/v1/"
 };
 
 export const ENVIRONMENT = {
@@ -82,7 +82,6 @@ export function setupEnvironment(
   if (!flagsmithUrl) {
     throw new Error("flagsmithUrl Is Mandatory");
   }
-
   ENVIRONMENT.apiUrl = apiUrl;
   ENVIRONMENT.docManUrl = docManUrl;
   ENVIRONMENT.filesystemProviderUrl = filesystemProviderUrl;

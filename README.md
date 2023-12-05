@@ -36,6 +36,7 @@ The product is anticipated to include:
 - [Fider](services/fider/README.md)
 - [Filesystem Provider](services/filesystem-provider/ej2-amazon-s3-aspcore-file-provider/README.md)
 - [NRIS](services/nris-api/backend/README.md)
+- [Permits](services/permits/README.md)
 
 ## Operations
 

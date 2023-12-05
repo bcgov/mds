@@ -66,6 +66,10 @@ ms:
 	@echo "+\n++ Building minespace ...\n+"
 	@docker-compose $(DC_FILE) up -d minespace
 
+permits:
+	@echo "+\n++ Running Permit Service ...\n+"
+	@docker-compose -f services/permits/docker-compose.yaml up -d
+
 extra:
 	@echo "+\n++ Building tertiary services ...\n+"
 	@docker-compose $(DC_FILE) up -d docgen-api

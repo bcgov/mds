@@ -1150,6 +1150,63 @@ export const PROJECT = {
     major_mine_application_guid: "c16afb82-144c-4138-9a36-ba5c24c43d8a",
   },
   contacts: [],
+  project_links: [
+    {
+      project_link_guid: "90de19e1-7292-4646-af0a-260bd14b1d45",
+      project_guid: "8132462392222",
+      related_project_guid: "d7411155-dc79-4fa9-8975-c22594aab7ec",
+      update_user: "test@bctest",
+      update_timestamp: "2023-11-27T18:27:20.598307-07:00",
+      create_user: "test@bctest",
+      create_timestamp: "2023-11-27T18:27:20.598193-07:00",
+      project: {
+        project_guid: "8132462392222",
+        project_title: "Test Mine",
+        proponent_project_id: "Test-123",
+        contacts: [
+          {
+            name: "Test Contact",
+          },
+        ],
+        project_summary: {
+          project_summary_guid: "6bab1df6-e181-435a-abc0-e99466411880",
+          status_code: "SUB",
+        },
+        major_mine_application: {
+          major_mine_application_guid: "abcde12345",
+          status_code: "DFT",
+        },
+        information_requirements_table: {
+          irt_guid: "awxyz12345",
+          status_code: "APV",
+        },
+        update_timestamp: "2023-08-04T09:21:06.028471-06:00",
+      },
+      related_project: {
+        project_guid: "913246239223",
+        project_title: "Test Coal",
+        proponent_project_id: "TEST-1001",
+        contacts: [
+          {
+            name: "Tom Tester",
+          },
+        ],
+        project_summary: {
+          project_summary_guid: "a2e76a72-f306-4973-bda8-37018d15baa2",
+          status_code: "DFT",
+        },
+        major_mine_application: {
+          major_mine_application_guid: "abcde12345",
+          status_code: "WDN",
+        },
+        information_requirements_table: {
+          irt_guid: "awxyz12345",
+          status_code: "APV",
+        },
+        update_timestamp: "2023-08-24T15:49:16.702250-06:00",
+      },
+    },
+  ],
 };
 
 export const PROJECT_SUMMARIES = {

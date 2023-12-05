@@ -8,7 +8,7 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import { EDIT, CARAT } from "@/constants/assets";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
 
 /**

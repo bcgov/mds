@@ -1,11 +1,25 @@
-import { PROJECT_SUMMARY_STATUS_CODES } from "@mds/common/constants/enums";
+import {
+  PROJECT_SUMMARY_STATUS_CODES,
+  MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODES,
+} from "@mds/common/constants/enums";
 
 interface IProjectLinkContact {
   name: string;
 }
 
 interface IProjectLinkSummary {
+  project_summary_guid: string;
   status_code: PROJECT_SUMMARY_STATUS_CODES;
+}
+
+interface IMajorMineApplication {
+  major_mine_application_guid: string;
+  status_code: MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODES;
+}
+
+interface IInformationRequirementsTable {
+  irt_guid: string;
+  status_code: MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODES;
 }
 
 interface IProjectLinkProject {
@@ -14,6 +28,8 @@ interface IProjectLinkProject {
   proponent_project_id: string;
   contacts: IProjectLinkContact[];
   project_summary: IProjectLinkSummary;
+  major_mine_application: IMajorMineApplication;
+  information_requirements_table: IInformationRequirementsTable;
 }
 
 export interface IProjectLink {

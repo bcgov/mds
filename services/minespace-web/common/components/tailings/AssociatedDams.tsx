@@ -16,7 +16,7 @@ import { ADD_DAM, EDIT_DAM } from "@/constants/routes";
 import { IDam, ITailingsStorageFacility } from "@mds/common";
 import { RootState } from "@/App";
 import { ColumnsType } from "antd/lib/table";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 import { EDIT_OUTLINE } from "@mds/common/constants/assets";
 import EyeOutlined from "@ant-design/icons/EyeOutlined";
 import { renderActionsColumn } from "@mds/common/components/common/CoreTableCommonColumns";
@@ -70,15 +70,13 @@ const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
         label: "View Dam",
         icon: <EyeOutlined className="icon-sm padding-sm--right" />,
         clickFunction: (_event, record) => {
-          handleNavigateToEdit(event, record, "view");
+          handleNavigateToEdit(event, record, (userAction === "edit" ? "editView" : "view"));
         },
       },
     ];
 
     if (userAction !== "edit") {
       actions = actions.filter((a) => a.key !== "edit");
-    } else {
-      actions = actions.filter((a) => a.key !== "view");
     }
 
     return renderActionsColumn(actions);
