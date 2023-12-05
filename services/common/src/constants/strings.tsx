@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-key */
 import React from "react";
-import { MINE_REPORT_SUBMISSION_CODES } from "@mds/common/constants/enums";
+import { MINE_REPORT_SUBMISSION_CODES } from "./enums";
 // reusable messages for error handling, validations, null-screens, etc.
 export const ERROR = "Error.";
 export const ERROR_CANCELED =
