@@ -73,7 +73,7 @@ const ProjectLinks = () => {
       renderTextColumn("status_code", "Status", true),
       renderTextColumn("primary_contact", "Contact", true),
       renderDateColumn("update_timestamp", "Last Updated", true),
-      renderActionsColumn(actions),
+      renderActionsColumn({ actions }),
     ];
     return columns;
   };
