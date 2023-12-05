@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { connect } from "react-redux";
 import {
   createExplosivesPermit,
@@ -91,9 +91,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
   };
 
   const handleDocumentPreview = (documentTypeCode, values: any, record) => {
-    if (record.isAmendment) {
-      values.amendment_no = record.amendment_no;
-    }
+    if (record.isAmendment) values.amendment_no = record.amendment_no;
     const payload = {
       explosives_permit_guid: record.explosives_permit_guid,
       template_data: values,
@@ -185,7 +183,11 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
     return props.createExplosivesPermitAmendment(payload).then((newPermit) => {
       fetchExplosivesPermits(mineGuid);
       if (issueAfter) {
-        handleOpenExplosivesPermitDecisionModal(null, { ...newPermit.data, isAmendment: true });
+        handleOpenExplosivesPermitDecisionModal(null, {
+          ...newPermit.data,
+          isAmendment: true,
+          amendment_no: amendment_count,
+        });
       } else {
         closeModal();
       }
