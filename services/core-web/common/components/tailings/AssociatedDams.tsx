@@ -17,9 +17,8 @@ import { IDam, ITailingsStorageFacility } from "@mds/common";
 import { RootState } from "@/App";
 import { ColumnsType } from "antd/lib/table";
 import CoreTable from "@mds/common/components/common/CoreTable";
-import { EDIT_OUTLINE } from "@mds/common/constants/assets";
-import EyeOutlined from "@ant-design/icons/EyeOutlined";
 import { renderActionsColumn } from "@mds/common/components/common/CoreTableCommonColumns";
+import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 
 interface AssociatedDamsProps {
   tsf: ITailingsStorageFacility;
@@ -60,7 +59,7 @@ const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
       {
         key: "edit",
         label: "Edit Dam",
-        icon: <img src={EDIT_OUTLINE} className="icon-sm padding-sm--right primary-colour" />,
+        icon: <EditOutlined />,
         clickFunction: (_event, record) => {
           handleNavigateToEdit(event, record, "edit");
         },
@@ -68,9 +67,9 @@ const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
       {
         key: "view",
         label: "View Dam",
-        icon: <EyeOutlined className="icon-sm padding-sm--right" />,
+        icon: <EyeOutlined />,
         clickFunction: (_event, record) => {
-          handleNavigateToEdit(event, record, (userAction === "edit" ? "editView" : "view"));
+          handleNavigateToEdit(event, record, userAction === "edit" ? "editView" : "view");
         },
       },
     ];

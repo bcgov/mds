@@ -24,7 +24,7 @@ import CoreTable from "@mds/common/components/common/CoreTable";
 import { Feature } from "@mds/common";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { renderActionsColumn } from "@mds/common/components/common/CoreTableCommonColumns";
-import EyeOutlined from "@ant-design/icons/EyeOutlined";
+import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 
 const propTypes = {
   tailings: PropTypes.arrayOf(PropTypes.any).isRequired,
@@ -99,7 +99,7 @@ export const TailingsTable = (props) => {
     {
       key: "edit",
       label: "Edit TSF",
-      icon: <img src={EDIT_PENCIL} className="icon-sm padding-sm--right primary-color" />,
+      icon: <EditOutlined />,
       clickFunction: (_event, record) => {
         editTailings(event, record, "edit");
       },
@@ -107,7 +107,7 @@ export const TailingsTable = (props) => {
     {
       key: "view",
       label: "View TSF",
-      icon: <EyeOutlined className="icon-sm padding-sm--right primary-color" />,
+      icon: <EyeOutlined />,
       clickFunction: (_event, record) => {
         editTailings(event, record, "view");
       },
@@ -118,7 +118,7 @@ export const TailingsTable = (props) => {
     {
       key: "edit",
       label: "Edit Dam",
-      icon: <img src={EDIT_PENCIL} className="icon-sm padding-sm--right primary-color" />,
+      icon: <EditOutlined />,
       clickFunction: (_event, record) => {
         handleEditDam(event, record, "edit");
       },
@@ -126,7 +126,7 @@ export const TailingsTable = (props) => {
     {
       key: "view",
       label: "View Dam",
-      icon: <EyeOutlined className="icon-sm padding-sm--right primary-color" />,
+      icon: <EyeOutlined />,
       clickFunction: (_event, record) => {
         handleEditDam(event, record, "view");
       },
@@ -257,10 +257,10 @@ export const TailingsTable = (props) => {
       expandProps={
         tsfV2Enabled
           ? {
-            recordDescription: "associated dams",
-            getDataSource: (record) => record.dams,
-            subTableColumns: expandedColumns,
-          }
+              recordDescription: "associated dams",
+              getDataSource: (record) => record.dams,
+              subTableColumns: expandedColumns,
+            }
           : null
       }
     />

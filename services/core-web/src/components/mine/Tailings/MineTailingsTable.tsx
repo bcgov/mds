@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps, useParams, withRouter } from "react-router-dom";
-import { EyeOutlined } from "@ant-design/icons";
+import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { Button, Typography } from "antd";
 import {
   CONSEQUENCE_CLASSIFICATION_CODE_HASH,
@@ -109,11 +109,11 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
     };
   };
 
-  let newTSFActions = [
+  const newTSFActions = [
     {
       key: "edit",
       label: "Edit TSF",
-      icon: <img src={EDIT_OUTLINE_VIOLET} className="icon-sm padding-sm--right violet" />,
+      icon: <EditOutlined />,
       clickFunction: (_event, record) => {
         props.history.push({
           pathname: MINE_TAILINGS_DETAILS.dynamicRoute(
@@ -127,7 +127,7 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
     {
       key: "view",
       label: "View TSF",
-      icon: <EyeOutlined className="icon-sm padding-sm--right violet" />,
+      icon: <EyeOutlined />,
       clickFunction: (_event, record) => {
         props.history.push({
           pathname: MINE_TAILINGS_DETAILS.dynamicRoute(
@@ -140,11 +140,11 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
     },
   ];
 
-  let damActions = [
+  const damActions = [
     {
       key: "edit",
       label: "Edit Dam",
-      icon: <img src={EDIT_OUTLINE_VIOLET} className="icon-sm padding-sm--right violet" />,
+      icon: <EditOutlined />,
       clickFunction: (_event, record) => {
         handleEditDam(event, record, "edit");
       },
@@ -152,7 +152,7 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
     {
       key: "view",
       label: "View Dam",
-      icon: <EyeOutlined className="icon-sm padding-sm--right violet" />,
+      icon: <EyeOutlined />,
       clickFunction: (_event, record) => {
         handleEditDam(event, record, "view");
       },
@@ -249,12 +249,12 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
         !tsfV2Enabled
           ? null
           : {
-            rowKey: "dam_guid",
-            rowExpandable: (record: any) => record.dams.length > 0,
-            recordDescription: "associated dams",
-            getDataSource: (record: any) => record.dams,
-            subTableColumns: damColumns,
-          }
+              rowKey: "dam_guid",
+              rowExpandable: (record: any) => record.dams.length > 0,
+              recordDescription: "associated dams",
+              getDataSource: (record: any) => record.dams,
+              subTableColumns: damColumns,
+            }
       }
     />
   );
