@@ -1,10 +1,8 @@
 import React, { FC, useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import { useDispatch, useSelector } from "react-redux";
 import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import { Button, Col, Row, Typography } from "antd";
 import moment from "moment";
-import PropTypes from "prop-types";
 import {
   createMineReport,
   fetchMineReports,
@@ -12,63 +10,53 @@ import {
 } from "@mds/common/redux/actionCreators/reportActionCreator";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import { getMineReports } from "@mds/common/redux/selectors/reportSelectors";
-import { getMineReportDefinitionOptions } from "@mds/common/redux/reducers/staticContentReducer";
-import CustomPropTypes from "@/customPropTypes";
 import ReportsTable from "@/components/dashboard/mine/reports/ReportsTable";
 import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { IMine, IMineReport } from "@mds/common";
-import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 
 interface ReportsProps {
   mine: IMine;
-  mineReports: IMineReport[];
-  mineReportDefinitionOptions: any[];
-  updateMineReport: ActionCreator<typeof updateMineReport>;
-  createMineReport: ActionCreator<typeof createMineReport>;
-  fetchMineReports: ActionCreator<typeof fetchMineReports>;
-  openModal: (any?) => void;
-  closeModal: (any?) => void;
 }
 
-export const Reports: FC<ReportsProps> = ({
-  mine,
-  mineReports,
-  mineReportDefinitionOptions,
-  ...props
-}) => {
+export const Reports: FC<ReportsProps> = ({ mine, ...props }) => {
+  const dispatch = useDispatch();
+
+  const mineReports: IMineReport[] = useSelector(getMineReports);
+
   const [isLoaded, setIsLoaded] = useState(false);
   const [report, setReport] = useState(null);
 
   useEffect(() => {
-    props.fetchMineReports(mine.mine_guid).then(() => {
-      setIsLoaded(true);
+    let isMounted = true;
+
+    setIsLoaded(false);
+
+    dispatch(fetchMineReports(mine.mine_guid)).then(() => {
+      if (isMounted) {
+        setIsLoaded(true);
+      }
     });
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
-  useEffect(() => {
-    const reportsSubmitted = mineReports.filter(
-      (report) => report.mine_report_submissions.length > 0
-    ).length;
-    const reportsDue = mineReports.filter(
-      (report) => report.mine_report_submissions.length === 0 && report.due_date
-    ).length;
-  }, [mineReports]);
-
-  const handleAddReport = (values) => {
+  const handleAddReport = async (values) => {
     const formValues = values;
     if (values.mine_report_submissions && values.mine_report_submissions.length > 0) {
       formValues.received_date = moment().format("YYYY-MM-DD");
     }
-    return props
-      .createMineReport(mine.mine_guid, formValues)
-      .then(() => props.closeModal())
-      .then(() => props.fetchMineReports(mine.mine_guid));
+
+    await dispatch(createMineReport(mine.mine_guid, formValues));
+    await dispatch(closeModal());
+    return dispatch(fetchMineReports(mine.mine_guid));
   };
 
-  const handleEditReport = (values) => {
+  const handleEditReport = async (values) => {
     if (!values.mine_report_submissions || values.mine_report_submissions.length === 0) {
-      props.closeModal();
+      dispatch(closeModal());
       return;
     }
 
@@ -89,39 +77,41 @@ export const Reports: FC<ReportsProps> = ({
     ) {
       payload = { ...payload, received_date: moment().format("YYYY-MM-DD") };
     }
-
-    return props
-      .updateMineReport(mine.mine_guid, report.mine_report_guid, payload)
-      .then(() => props.closeModal())
-      .then(() => props.fetchMineReports(mine.mine_guid));
+    await dispatch(updateMineReport(mine.mine_guid, report.mine_report_guid, payload));
+    await dispatch(closeModal());
+    return dispatch(fetchMineReports(mine.mine_guid));
   };
 
   const openAddReportModal = (event) => {
     event.preventDefault();
-    props.openModal({
-      props: {
-        onSubmit: handleAddReport,
-        title: "Add Report",
-        mineGuid: mine.mine_guid,
-        width: "40vw",
-      },
-      content: modalConfig.ADD_REPORT,
-    });
+    dispatch(
+      openModal({
+        props: {
+          onSubmit: handleAddReport,
+          title: "Add Report",
+          mineGuid: mine.mine_guid,
+          width: "40vw",
+        },
+        content: modalConfig.ADD_REPORT,
+      })
+    );
   };
 
   const openEditReportModal = (event, report) => {
     event.preventDefault();
     setReport(report);
-    props.openModal({
-      props: {
-        onSubmit: handleEditReport,
-        title: `Add Documents to: ${report.report_name}`,
-        width: "40vw",
-        mineGuid: mine.mine_guid,
-        mineReport: report,
-      },
-      content: modalConfig.EDIT_REPORT,
-    });
+    dispatch(
+      openModal({
+        props: {
+          onSubmit: handleEditReport,
+          title: `Edit Report: ${report.report_name}`,
+          mineGuid: mine.mine_guid,
+          width: "40vw",
+          mineReport: report,
+        },
+        content: modalConfig.EDIT_REPORT,
+      })
+    );
   };
 
   return (
@@ -171,21 +161,4 @@ export const Reports: FC<ReportsProps> = ({
   );
 };
 
-const mapStateToProps = (state) => ({
-  mineReports: getMineReports(state),
-  mineReportDefinitionOptions: getMineReportDefinitionOptions(state),
-});
-
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      fetchMineReports,
-      createMineReport,
-      updateMineReport,
-      openModal,
-      closeModal,
-    },
-    dispatch
-  );
-
-export default connect(mapStateToProps, mapDispatchToProps)(Reports);
+export default Reports;
