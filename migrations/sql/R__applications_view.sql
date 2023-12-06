@@ -1,13 +1,14 @@
 
 DROP VIEW IF EXISTS public.applications_view;
 
-CREATE OR REPLACE VIEW public.applications_view
-AS SELECT nid.now_application_guid,
+CREATE OR REPLACE VIEW public.applications_view AS
+SELECT nid.now_application_guid,
     m.mine_guid,
     m.mine_no,
     nid.now_application_id,
     nid.now_number,
     app.status_reason,
+    app.mine_purpose,
     nid.permit_id,
     app.lead_inspector_party_guid,
     concat_ws(' '::text, p.first_name, p.party_name) AS lead_inspector_name,
@@ -17,9 +18,11 @@ AS SELECT nid.now_application_guid,
     nid.source_permit_amendment_id,
     spa.permit_amendment_guid as source_permit_amendment_guid,
     sp.permit_no as source_permit_no,
-    spa.issue_date as source_permit_amendment_issue_date, 
+    spa.issue_date as source_permit_amendment_issue_date,
+    nrev.response_date as latest_response_date,
     COALESCE(nowt.description, sub.noticeofworktype, msub.noticeofworktype) AS notice_of_work_type_description,
     atc.description,
+    ec.email AS regional_contact,
         CASE
             WHEN nows.description IS NULL THEN
             CASE COALESCE(msub.status, sub.status)
@@ -74,4 +77,7 @@ AS SELECT nid.now_application_guid,
      LEFT JOIN permit sp ON sp.permit_id = spa.permit_id
      LEFT JOIN application_type_code atc ON atc.application_type_code::text = nid.application_type_code::text
      LEFT JOIN party pis ON app.issuing_inspector_party_guid = pis.party_guid
-  WHERE (nid.messageid IS NOT NULL AND sub.processed::text = 'Y'::text OR nid.messageid IS NULL) AND (sub.originating_system IS NULL OR sub.originating_system IS NOT NULL AND nid.now_number IS NOT NULL);
+     LEFT JOIN (SELECT *, ROW_NUMBER() OVER (PARTITION BY now_application_id ORDER BY response_date DESC) AS rn FROM now_application_review) nrev
+               ON nrev.now_application_id = nid.now_application_id AND nrev.rn = 1 AND nrev.now_application_review_type_code = 'ADV'
+     LEFT JOIN emli_contact ec ON m.mine_region = ec.mine_region_code AND ec.emli_contact_type_code = 'ROE'
+     WHERE (nid.messageid IS NOT NULL AND sub.processed::text = 'Y'::text OR nid.messageid IS NULL) AND (sub.originating_system IS NULL OR sub.originating_system IS NOT NULL AND nid.now_number IS NOT NULL);
