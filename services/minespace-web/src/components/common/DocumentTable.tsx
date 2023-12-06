@@ -196,7 +196,7 @@ export const DocumentTable: FC<DocumentTableProps> = ({
       uploadDateColumn("dated", "Dated", !isMinimalView),
     ];
     if (actions.length > 0 && !columns.some((column) => column.key === "actions")) {
-      columns.push(renderActionsColumn(actions, filterActions));
+      columns.push(renderActionsColumn({ actions, recordActionsFilter: filterActions }));
     }
     if (!some(documents, "dated")) {
       columns = columns.filter((column) => column.key !== "dated");
@@ -217,7 +217,13 @@ export const DocumentTable: FC<DocumentTableProps> = ({
       uploadedByColumn("create_user", "Created By"),
     ];
     if (actions.length) {
-      columns.push(renderActionsColumn(actions, filterActions, rowSelection.length > 0));
+      columns.push(
+        renderActionsColumn({
+          actions,
+          recordActionsFilter: filterActions,
+          isRowSelected: rowSelection.length > 0,
+        })
+      );
     }
     return columns;
   };
@@ -294,22 +300,22 @@ export const DocumentTable: FC<DocumentTableProps> = ({
 
   const bulkActionsProps = enableBulkActions
     ? {
-      rowSelection: {
-        type: "checkbox",
-        ...rowSelectionObject,
-      },
-    }
+        rowSelection: {
+          type: "checkbox",
+          ...rowSelectionObject,
+        },
+      }
     : {};
 
   const versionProps = showVersionHistory
     ? {
-      expandProps: {
-        childrenColumnName: "versions",
-        matchChildColumnsToParent: true,
-        recordDescription: "version history",
-        rowExpandable: (record) => record.number_prev_versions > 0,
-      },
-    }
+        expandProps: {
+          childrenColumnName: "versions",
+          matchChildColumnsToParent: true,
+          recordDescription: "version history",
+          rowExpandable: (record) => record.number_prev_versions > 0,
+        },
+      }
     : {};
 
   const coreTableProps = {

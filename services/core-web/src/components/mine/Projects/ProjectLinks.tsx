@@ -67,7 +67,7 @@ const ProjectLinks: React.FC<IProjectLinksProps> = ({ project }) => {
       renderDateColumn("update_timestamp", "Last Updated", true),
       renderTextColumn("status_code", "Status", true),
       renderTextColumn("primary_contact", "Contact", true),
-      renderActionsColumn(actions),
+      renderActionsColumn({ actions }),
     ];
     return columns;
   };
