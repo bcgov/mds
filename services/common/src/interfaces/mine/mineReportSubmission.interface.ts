@@ -1,6 +1,9 @@
 import { IDocument } from "@mds/common/interfaces";
+import { MINE_REPORT_SUBMISSION_CODES } from "@mds/common/constants";
 
 export interface IMineReportSubmission {
-  recieved_date: string;
+  submission_date: string;
   documents: IDocument[];
+  mine_report_submission_guid: string;
+  mine_report_submission_status_code: MINE_REPORT_SUBMISSION_CODES;
 }

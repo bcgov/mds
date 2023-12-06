@@ -152,3 +152,10 @@ export enum MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODES {
   SUB = "Submitted",
   UNR = "Under review",
 }
+
+export enum MINE_REPORT_SUBMISSION_CODES {
+  NRQ = "NRQ",
+  REQ = "REQ",
+  REC = "REC",
+  ACC = "ACC",
+}
