@@ -7,6 +7,13 @@ export const authenticateUser = (userInfo = {}) => ({
   },
 });
 
+export const storeSystemFlag = (flag: "core" | "ms") => ({
+  type: ActionTypes.STORE_SYSTEM_FLAG,
+  payload: {
+    flag,
+  },
+});
+
 export const logoutUser = () => ({
   type: ActionTypes.LOGOUT,
 });

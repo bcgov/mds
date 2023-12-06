@@ -11,6 +11,7 @@ interface IAuthenticationReducerState {
   redirect: boolean;
   userAccessData: string[];
   isProponent: boolean;
+  systemFlag: "core" | "ms";
 }
 
 /**
@@ -23,6 +24,7 @@ const initialState: IAuthenticationReducerState = {
   userInfo: {} as IUserInfo,
   redirect: false,
   isProponent: undefined,
+  systemFlag: undefined,
 };
 
 const getUserName = (tokenParsed) => {
@@ -67,6 +69,11 @@ export const authenticationReducer = (state = initialState, action) => {
         userInfo: {},
         redirect: GLOBAL_ROUTES?.HOME?.route,
       };
+    case ActionTypes.STORE_SYSTEM_FLAG:
+      return {
+        ...state,
+        systemFlag: action.payload.flag,
+      };
     default:
       return state;
   }
@@ -76,6 +83,7 @@ const authenticationReducerObject = {
   [AUTHENTICATION]: authenticationReducer,
 };
 
+export const getSystemFlag = (state: RootState) => state[AUTHENTICATION].systemFlag;
 export const isAuthenticated = (state: RootState) => state[AUTHENTICATION].isAuthenticated;
 export const getUserAccessData = (state: RootState) => state[AUTHENTICATION].userAccessData;
 export const getUserInfo = (state: RootState) => state[AUTHENTICATION].userInfo;

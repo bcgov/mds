@@ -42,6 +42,7 @@ import LinkButton from "@/components/common/buttons/LinkButton";
 import { ProjectSummaryDocumentUpload } from "@/components/Forms/projectSummaries/ProjectSummaryDocumentUpload";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 import { MajorMineApplicationDocument } from "@mds/common/models/documents/document";
+import ProjectLinks from "@mds/common/components/projects/ProjectLinks";
 
 interface ProjectSummaryFormProps {
   project: IProject;
@@ -335,6 +336,11 @@ export const ProjectSummaryForm: FC<InjectedFormProps<IProjectSummary> &
               minRows={10}
               validate={[maxLength(4000), required]}
               disabled={!props.isNewProject && !isEditMode}
+            />
+            <ProjectLinks
+              viewProjectLink={(p) =>
+                routes.PRE_APPLICATIONS.dynamicRoute(p.project_guid, p.project_summary_guid)
+              }
             />
           </Col>
         </Row>

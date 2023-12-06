@@ -4,6 +4,7 @@ export const AUTHENTICATION = "AUTHENTICATION";
 export const STATIC_CONTENT = "STATIC_CONTENT";
 export const MODAL = "MODAL";
 export const DOCUMENT_VIEWER = "DOCUMENT_VIEWER";
+export const SYSTEM_FLAG = "SYSTEM_FLAG";
 
 // Mines
 export const CREATE_MINE_RECORD = "CREATE_MINE_RECORD";

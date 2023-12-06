@@ -16,9 +16,9 @@ import { getProject } from "@mds/common/redux/selectors/projectSelectors";
 import * as routes from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import ProjectStagesTable from "./ProjectStagesTable";
-import ProjectLinks from "./ProjectLinks";
 import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
 import { Feature } from "@mds/common";
+import ProjectLinks from "@mds/common/components/projects/ProjectLinks";
 
 const propTypes = {
   informationRequirementsTableStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -249,9 +249,12 @@ export class ProjectOverviewTab extends Component {
             projectStages={[...requiredProjectStages, ...optionalProjectStages]}
           />
           <br />
-          {shouldDisplayLinkedProjects ? (
-            <ProjectLinks ProjectLinks project={this.props.project} />
-          ) : null}
+
+          {shouldDisplayLinkedProjects && <ProjectLinks
+            viewProjectLink={(p) =>
+              routes.PRE_APPLICATIONS.dynamicRoute(p.project_guid, p.project_summary_guid)
+            }
+          />}
         </Col>
         <Col lg={{ span: 9, offset: 1 }} xl={{ span: 7, offset: 1 }}>
           <Row>
