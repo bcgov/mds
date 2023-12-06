@@ -17,6 +17,8 @@ import * as routes from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import ProjectStagesTable from "./ProjectStagesTable";
 import ProjectLinks from "./ProjectLinks";
+import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
+import { Feature } from "@mds/common";
 
 const propTypes = {
   informationRequirementsTableStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -24,6 +26,7 @@ const propTypes = {
   majorMineApplicationStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
   project: CustomPropTypes.project.isRequired,
   projectLeads: CustomPropTypes.projectContact.isRequired,
+  isFeatureEnabled: PropTypes.func.isRequired,
 };
 
 export class ProjectOverviewTab extends Component {
@@ -73,6 +76,9 @@ export class ProjectOverviewTab extends Component {
   };
 
   render() {
+    const shouldDisplayLinkedProjects = this.props.isFeatureEnabled(
+      Feature.MAJOR_PROJECT_LINK_PROJECTS
+    );
     const {
       project_summary_description,
       expected_draft_irt_submission_date,
@@ -243,7 +249,9 @@ export class ProjectOverviewTab extends Component {
             projectStages={[...requiredProjectStages, ...optionalProjectStages]}
           />
           <br />
-          <ProjectLinks project={this.props.project} />
+          {shouldDisplayLinkedProjects ? (
+            <ProjectLinks ProjectLinks project={this.props.project} />
+          ) : null}
         </Col>
         <Col lg={{ span: 9, offset: 1 }} xl={{ span: 7, offset: 1 }}>
           <Row>
@@ -268,4 +276,4 @@ const mapStateToProps = (state) => ({
 
 ProjectOverviewTab.propTypes = propTypes;
 
-export default connect(mapStateToProps, null)(ProjectOverviewTab);
+export default connect(mapStateToProps, null)(withFeatureFlag(ProjectOverviewTab));

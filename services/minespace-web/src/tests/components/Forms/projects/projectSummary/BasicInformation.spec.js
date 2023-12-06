@@ -9,6 +9,12 @@ const setupDispatchProps = () => {};
 
 const setupProps = () => {};
 
+jest.mock("@mds/common/providers/featureFlags/useFeatureFlag", () => ({
+  useFeatureFlag: () => ({
+    isFeatureEnabled: () => true,
+  }),
+}));
+
 beforeEach(() => {
   setupDispatchProps();
   setupProps();
