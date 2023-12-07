@@ -23,6 +23,8 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { Feature } from "@mds/common";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { renderActionsColumn } from "@mds/common/components/common/CoreTableCommonColumns";
+import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 
 const propTypes = {
   tailings: PropTypes.arrayOf(PropTypes.any).isRequired,
@@ -33,6 +35,7 @@ const propTypes = {
   editTailings: PropTypes.func.isRequired,
   storeDam: PropTypes.func.isRequired,
   storeTsf: PropTypes.func.isRequired,
+  canEditTSF: PropTypes.bool.isRequired,
 };
 
 export const TailingsTable = (props) => {
@@ -48,11 +51,12 @@ export const TailingsTable = (props) => {
     handleEditTailings,
     TSFOperatingStatusCodeHash,
     itrmExemptionStatusCodeHash,
+    canEditTSF,
   } = props;
 
   const tsfV2Enabled = isFeatureEnabled(Feature.TSF_V2);
 
-  const handleEditDam = (event, dam) => {
+  const handleEditDam = (event, dam, isEditMode, canEditDam) => {
     event.preventDefault();
     props.storeDam(dam);
     const tsf = tailings.find(
@@ -64,9 +68,79 @@ export const TailingsTable = (props) => {
     const url = EDIT_DAM.dynamicRoute(
       mineGuid,
       dam.mine_tailings_storage_facility_guid,
-      dam.dam_guid
+      dam.dam_guid,
+      isEditMode,
+      canEditDam
     );
     history.push(url);
+  };
+
+  const renderOldTSFActions = () => {
+    return {
+      dataIndex: "edit",
+      fixed: "right",
+      render: (text, record) => {
+        return (
+          <div title="" align="right">
+            <AuthorizationWrapper>
+              <Button
+                type="link"
+                onClick={(event) => openEditTailingsModal(event, handleEditTailings, record)}
+              >
+                <img src={EDIT_PENCIL} alt="Edit" />
+              </Button>
+            </AuthorizationWrapper>
+          </div>
+        );
+      },
+    };
+  };
+
+  let newTSFActions = [
+    {
+      key: "view",
+      label: "View TSF",
+      icon: <EyeOutlined />,
+      clickFunction: (_event, record) => {
+        editTailings(event, record, false);
+      },
+    },
+    {
+      key: "edit",
+      label: "Edit TSF",
+      icon: <EditOutlined />,
+      clickFunction: (_event, record) => {
+        editTailings(event, record, true);
+      },
+    },
+  ];
+
+  let damActions = [
+    {
+      key: "view",
+      label: "View Dam",
+      icon: <EyeOutlined />,
+      clickFunction: (_event, record) => {
+        handleEditDam(event, record, false, false);
+      },
+    },
+    {
+      key: "edit",
+      label: "Edit Dam",
+      icon: <EditOutlined />,
+      clickFunction: (_event, record) => {
+        handleEditDam(event, record, true, true);
+      },
+    },
+  ];
+
+  const renderActions = (actions) => {
+    let filteredActions = actions;
+    if (!canEditTSF) {
+      filteredActions = actions.filter((a) => a.key !== "edit");
+    }
+
+    return renderActionsColumn(filteredActions);
   };
 
   // const handleRowExpand = (record) => {
@@ -150,31 +224,7 @@ export const TailingsTable = (props) => {
       render: (text) => <div title="Notes">{text || EMPTY_FIELD}</div>,
       sorter: (a, b) => (a.notes > b.notes ? -1 : 1),
     },
-    {
-      title: "",
-      dataIndex: "edit",
-      fixed: "right",
-      render: (text, record) => {
-        return (
-          <div title="" align="right">
-            <AuthorizationWrapper>
-              {tsfV2Enabled ? (
-                <Button type="link" onClick={(event) => editTailings(event, record)}>
-                  <img src={EDIT_PENCIL} alt="Edit" />
-                </Button>
-              ) : (
-                <Button
-                  type="link"
-                  onClick={(event) => openEditTailingsModal(event, handleEditTailings, record)}
-                >
-                  <img src={EDIT_PENCIL} alt="Edit" />
-                </Button>
-              )}
-            </AuthorizationWrapper>
-          </div>
-        );
-      },
-    },
+    ...(tsfV2Enabled ? [renderActions(newTSFActions)] : [renderOldTSFActions()]),
   ];
 
   const expandedColumns = [
@@ -195,27 +245,7 @@ export const TailingsTable = (props) => {
         </Typography.Text>
       ),
     },
-    {
-      title: "",
-      fixed: "right",
-      dataIndex: "edit",
-      render: (text, record) => {
-        return (
-          <div title="" align="right">
-            <AuthorizationWrapper>
-              <Button
-                type="link"
-                onClick={(event) => {
-                  handleEditDam(event, record);
-                }}
-              >
-                <img src={EDIT_PENCIL} alt="Edit" />
-              </Button>
-            </AuthorizationWrapper>
-          </div>
-        );
-      },
-    },
+    ...[renderActions(damActions)],
   ];
 
   return (
@@ -228,10 +258,10 @@ export const TailingsTable = (props) => {
       expandProps={
         tsfV2Enabled
           ? {
-            recordDescription: "associated dams",
-            getDataSource: (record) => record.dams,
-            subTableColumns: expandedColumns,
-          }
+              recordDescription: "associated dams",
+              getDataSource: (record) => record.dams,
+              subTableColumns: expandedColumns,
+            }
           : null
       }
     />

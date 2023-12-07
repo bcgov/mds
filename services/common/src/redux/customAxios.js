@@ -26,10 +26,11 @@ const notifymAdmin = (error) => {
   const detailed_error = error?.response?.data?.detailed_error;
 
   const payload = {
-    "business_error" : business_message,
+    "business_error": business_message,
     "detailed_error": detailed_error
   };
 
+  // @ts-ignore
   CustomAxios().post(ENVIRONMENT.apiUrl + API.REPORT_ERROR, payload, createRequestHeader())
     .then((response) => {
       notification.success({
@@ -64,7 +65,7 @@ const CustomAxios = ({ errorToastMessage, suppressErrorNotification = false } = 
       ) {
         console.error('Detailed Error: ', error?.response?.data?.detailed_error)
         const notificationKey = 'errorNotification';
-        
+
         if (isFeatureEnabled(Feature.REPORT_ERROR)) {
           notification.error({
             key: notificationKey,
@@ -74,9 +75,9 @@ const CustomAxios = ({ errorToastMessage, suppressErrorNotification = false } = 
             btn: (
               <Button type="primary" size="small"
                 onClick={() => {
-                    notifymAdmin(error);
-                    notification.close(notificationKey);
-                  }}>
+                  notifymAdmin(error);
+                  notification.close(notificationKey);
+                }}>
                 Tell Admin
               </Button>
             ),

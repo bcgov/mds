@@ -168,23 +168,40 @@ export const ADD_TAILINGS_STORAGE_FACILITY = {
 };
 
 export const EDIT_TAILINGS_STORAGE_FACILITY = {
-  route: "/mines/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/:tab",
-  dynamicRoute: (tailingsStorageFacilityGuid, mineGuid, activeTab = "basic-information") =>
-    `/mines/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/${activeTab}`,
+  route: "/mines/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/:tab/:userAction",
+  dynamicRoute: (
+    tailingsStorageFacilityGuid,
+    mineGuid,
+    activeTab = "basic-information",
+    isEditMode = false
+  ) =>
+    `/mines/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/${activeTab}/${
+      isEditMode ? "edit" : "view"
+    }`,
   component: TailingsSummaryPageWrapper,
 };
 
 export const ADD_DAM = {
-  route: "/mine/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/new/",
-  dynamicRoute: (mineGuid, tailingsStorageFacilityGuid) =>
-    `/mine/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/new/`,
+  route:
+    "/mine/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/:parentTSFFormMode/:userAction",
+  dynamicRoute: (mineGuid, tailingsStorageFacilityGuid, editMode = "edit", userAction = "newDam") =>
+    `/mine/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/${editMode}/${userAction}`,
   component: DamsPage,
 };
 
 export const EDIT_DAM = {
-  route: "/mine/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/:damGuid",
-  dynamicRoute: (mineGuid, tailingsStorageFacilityGuid, damGuid) =>
-    `/mine/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/${damGuid}`,
+  route:
+    "/mine/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/:parentTSFFormMode/:userAction/dam/:damGuid",
+  dynamicRoute: (
+    mineGuid,
+    tailingsStorageFacilityGuid,
+    damGuid,
+    isEditMode = false,
+    canEditDam = false
+  ) =>
+    `/mine/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/${
+      isEditMode ? "edit" : "view"
+    }/${canEditDam ? "editDam" : "viewDam"}/dam/${damGuid}`,
   component: DamsPage,
 };
 
