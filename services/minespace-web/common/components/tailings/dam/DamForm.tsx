@@ -44,8 +44,8 @@ const DamForm: FC<DamFormProps> = (props) => {
   const returnUrl = EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
     tailingsStorageFacilityGuid,
     mineGuid,
-    isEditMode,
-    "associated-dams"
+    "associated-dams",
+    isEditMode
   );
 
   const handleBack = () => {

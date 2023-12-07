@@ -172,8 +172,8 @@ export const EDIT_TAILINGS_STORAGE_FACILITY = {
   dynamicRoute: (
     tailingsStorageFacilityGuid,
     mineGuid,
-    isEditMode = false,
-    activeTab = "basic-information"
+    activeTab = "basic-information",
+    isEditMode = false
   ) =>
     `/mines/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/${activeTab}/${
       isEditMode ? "edit" : "view"

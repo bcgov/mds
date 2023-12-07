@@ -120,6 +120,7 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
           pathname: MINE_TAILINGS_DETAILS.dynamicRoute(
             record.mine_tailings_storage_facility_guid,
             record.mine_guid,
+            "basic-information",
             false
           ),
         });
@@ -134,6 +135,7 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
           pathname: MINE_TAILINGS_DETAILS.dynamicRoute(
             record.mine_tailings_storage_facility_guid,
             record.mine_guid,
+            "basic-information",
             true
           ),
         });

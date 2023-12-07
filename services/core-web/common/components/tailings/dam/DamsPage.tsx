@@ -108,11 +108,19 @@ const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
     }
   };
 
+  const renderTitle = () => {
+    if (!isUserActionEdit) {
+      return "View Dam";
+    }
+
+    return damGuid ? "Edit Dam" : "Create Dam";
+  };
+
   return (
     <div>
       <Row>
         <Col span={24}>
-          <Typography.Title>{damGuid ? "Edit Dam" : "Create Dam"}</Typography.Title>
+          <Typography.Title>{renderTitle()}</Typography.Title>
         </Col>
         <Col span={24}>
           <Popconfirm
@@ -138,7 +146,7 @@ const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
         handleSaveData={handleSave}
         handleTabChange={() => {}}
         activeTab="basic-dam-information"
-        submitText="Save and Return to Associated Dams"
+        submitText={`${isUserActionEdit ? "Save and" : ""} Return to Associated Dams`}
         handleCancel={handleBack}
         cancelConfirmMessage={`Are you sure you want to cancel ${
           tailingsStorageFacilityGuid ? "updating this" : "creating a new"

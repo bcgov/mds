@@ -60,6 +60,7 @@ export const Tailings = (props) => {
     const url = EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
       mineTSF.mine_tailings_storage_facility_guid,
       mine.mine_guid,
+      "basic-information",
       isEditMode
     );
     history.push(url);
