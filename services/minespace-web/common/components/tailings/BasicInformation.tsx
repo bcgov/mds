@@ -33,14 +33,14 @@ interface BasicInformationProps {
   renderConfig: any;
   tsf: ITailingsStorageFacility;
   canEditTSF?: boolean;
-  userAction: string;
+  isEditMode: boolean;
 }
 
 export const BasicInformation: FC<BasicInformationProps> = (props) => {
-  const { permits, renderConfig, canEditTSF = false, tsf, userAction } = props;
+  const { permits, renderConfig, canEditTSF = false, tsf, isEditMode } = props;
   const [permitOptions, setPermitOptions] = useState([]);
 
-  const canEditTSFAndEditMode = canEditTSF && userAction === "edit";
+  const canEditTSFAndEditMode = canEditTSF && isEditMode;
 
   const statusCodeOptions =
     tsf?.tsf_operating_status_code === "CLO"

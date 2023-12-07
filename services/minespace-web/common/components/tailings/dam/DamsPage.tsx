@@ -43,13 +43,16 @@ interface DamsPageProps {
 const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
   const history = useHistory();
   const { tsf, formValues, formErrors, initialValues } = props;
-  const { tailingsStorageFacilityGuid, damGuid, mineGuid, userAction } = useParams<{
+  const { tailingsStorageFacilityGuid, damGuid, mineGuid, mode, userAction } = useParams<{
     tailingsStorageFacilityGuid: string;
     damGuid?: string;
     mineGuid: string;
+    mode: string;
     userAction: string;
   }>();
   const [canEditTSF, setCanEditTSF] = useState(false);
+  const isUserActionEdit = userAction === "editDam";
+  const isTSFEditMode = mode === "edit";
 
   useEffect(() => {
     setCanEditTSF(
@@ -73,7 +76,7 @@ const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
   const backUrl = EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
     tailingsStorageFacilityGuid,
     mineGuid,
-    (userAction === "editView" ? "edit" : userAction),
+    isTSFEditMode,
     "associated-dams"
   );
 
@@ -113,8 +116,9 @@ const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
         </Col>
         <Col span={24}>
           <Popconfirm
-            title={`Are you sure you want to cancel ${tailingsStorageFacilityGuid ? "updating this" : "creating a new"
-              } dam?
+            title={`Are you sure you want to cancel ${
+              tailingsStorageFacilityGuid ? "updating this" : "creating a new"
+            } dam?
             All unsaved data on this page will be lost.`}
             onConfirm={handleBack}
             cancelText="No"
@@ -132,12 +136,13 @@ const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
       <SteppedForm
         errors={[]}
         handleSaveData={handleSave}
-        handleTabChange={() => { }}
+        handleTabChange={() => {}}
         activeTab="basic-dam-information"
         submitText="Save and Return to Associated Dams"
         handleCancel={handleBack}
-        cancelConfirmMessage={`Are you sure you want to cancel ${tailingsStorageFacilityGuid ? "updating this" : "creating a new"
-          } dam?
+        cancelConfirmMessage={`Are you sure you want to cancel ${
+          tailingsStorageFacilityGuid ? "updating this" : "creating a new"
+        } dam?
         All unsaved data on this page will be lost.`}
       >
         {[
@@ -146,7 +151,8 @@ const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
               tsf={tsf}
               dam={initialValues}
               canEditTSF={canEditTSF}
-              userAction={userAction}
+              isEditMode={isTSFEditMode}
+              canEditDam={isUserActionEdit}
             />
           </Step>,
         ]}

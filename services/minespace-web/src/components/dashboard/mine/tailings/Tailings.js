@@ -53,14 +53,14 @@ export const Tailings = (props) => {
       .then(() => props.fetchMineRecordById(values.mine_guid));
   };
 
-  const navigateToEditTailings = async (event, mineTSF, userAction) => {
+  const navigateToEditTailings = async (event, mineTSF, isEditMode) => {
     event.preventDefault();
 
     await props.storeTsf(mineTSF);
     const url = EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
       mineTSF.mine_tailings_storage_facility_guid,
       mine.mine_guid,
-      userAction
+      isEditMode
     );
     history.push(url);
   };

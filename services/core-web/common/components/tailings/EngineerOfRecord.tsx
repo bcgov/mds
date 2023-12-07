@@ -43,7 +43,7 @@ interface EngineerOfRecordProps {
   loading?: boolean;
   mines: IMine[];
   canEditTSF: boolean;
-  userAction: string;
+  isEditMode: boolean;
 }
 
 const columns = (LinkButton): ColumnsType<IDocument> => [
@@ -71,7 +71,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
     loading,
     mines,
     canEditTSF,
-    userAction,
+    isEditMode,
   } = props;
 
   const [openPopConfirm, setOpenPopConfirm] = useState(false);
@@ -103,7 +103,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
     props.closeModal();
   };
 
-  const canEditTSFAndEditMode = canEditTSF && userAction === "edit";
+  const canEditTSFAndEditMode = canEditTSF && isEditMode;
 
   useEffect(() => {
     if (partyRelationships.length > 0) {

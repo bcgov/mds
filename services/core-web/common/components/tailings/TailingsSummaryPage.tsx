@@ -100,6 +100,8 @@ export const TailingsSummaryPage: FC<InjectedFormProps<ITailingsStorageFacility>
   const { renderConfig, components, routes, isCore } = useContext(TailingsContext);
   const { Loading } = components;
 
+  const isUserActionEdit = userAction === "edit";
+
   const handleFetchData = async (forceReload = false) => {
     setIsReloading(true);
     await props.fetchPermits(mineGuid);
@@ -229,7 +231,7 @@ export const TailingsSummaryPage: FC<InjectedFormProps<ITailingsStorageFacility>
       routes.EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
         newTsf?.data.mine_tailings_storage_facility_guid || tsfGuid,
         mineGuid,
-        userAction,
+        isUserActionEdit,
         newActiveTab || "engineer-of-record"
       )
     );
@@ -242,7 +244,7 @@ export const TailingsSummaryPage: FC<InjectedFormProps<ITailingsStorageFacility>
       url = routes.EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
         tsfGuid,
         mineGuid,
-        userAction,
+        isUserActionEdit,
         newActiveTab
       );
     } else {
@@ -286,7 +288,7 @@ export const TailingsSummaryPage: FC<InjectedFormProps<ITailingsStorageFacility>
             <BasicInformation
               renderConfig={renderConfig}
               canEditTSF={canEditTSF}
-              userAction={userAction}
+              isEditMode={isUserActionEdit}
             />
           </Step>
           <Step key="engineer-of-record" disabled={!hasCreatedTSF}>
@@ -297,7 +299,7 @@ export const TailingsSummaryPage: FC<InjectedFormProps<ITailingsStorageFacility>
               uploadedFiles={uploadedFiles}
               setUploadedFiles={setUploadedFiles}
               canEditTSF={canEditTSF}
-              userAction={userAction}
+              isEditMode={isUserActionEdit}
             />
           </Step>
           <Step key="qualified-person" disabled={!hasCreatedTSF}>
@@ -307,11 +309,11 @@ export const TailingsSummaryPage: FC<InjectedFormProps<ITailingsStorageFacility>
               mineGuid={mineGuid}
               isCore={isCore}
               canEditTSF={canEditTSF}
-              userAction={userAction}
+              isEditMode={isUserActionEdit}
             />
           </Step>
           <Step key="associated-dams" disabled={!hasCreatedTSF}>
-            <AssociatedDams isCore={isCore} canEditTSF={canEditTSF} userAction={userAction} />
+            <AssociatedDams isCore={isCore} canEditTSF={canEditTSF} isEditMode={isUserActionEdit} />
           </Step>
           <Step key="reports" disabled={!hasCreatedTSF}>
             <div />

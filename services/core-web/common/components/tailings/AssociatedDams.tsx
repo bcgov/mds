@@ -24,22 +24,23 @@ interface AssociatedDamsProps {
   tsf: ITailingsStorageFacility;
   storeDam: typeof storeDam;
   isCore?: boolean;
-  userAction: string;
   canEditTSF: boolean;
+  isEditMode: boolean;
 }
 
 const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
   const history = useHistory();
-  const { tsf, isCore, userAction, canEditTSF } = props;
+  const { tsf, isCore, isEditMode, canEditTSF } = props;
 
-  const handleNavigateToEdit = (event, dam, userAction) => {
+  const handleNavigateToEdit = (event, dam, canEditDam) => {
     event.preventDefault();
     props.storeDam(dam);
     const url = EDIT_DAM.dynamicRoute(
       tsf.mine_guid,
       dam.mine_tailings_storage_facility_guid,
       dam.dam_guid,
-      userAction
+      isEditMode,
+      canEditDam
     );
     history.push(url);
   };
@@ -49,7 +50,7 @@ const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
     const url = ADD_DAM.dynamicRoute(
       tsf.mine_guid,
       tsf.mine_tailings_storage_facility_guid,
-      userAction
+      isEditMode
     );
     history.push(url);
   };
@@ -57,24 +58,24 @@ const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
   const renderDamActions = () => {
     let actions = [
       {
-        key: "edit",
-        label: "Edit Dam",
-        icon: <EditOutlined />,
-        clickFunction: (_event, record) => {
-          handleNavigateToEdit(event, record, "edit");
-        },
-      },
-      {
         key: "view",
         label: "View Dam",
         icon: <EyeOutlined />,
         clickFunction: (_event, record) => {
-          handleNavigateToEdit(event, record, userAction === "edit" ? "editView" : "view");
+          handleNavigateToEdit(event, record, false);
+        },
+      },
+      {
+        key: "edit",
+        label: "Edit Dam",
+        icon: <EditOutlined />,
+        clickFunction: (_event, record) => {
+          handleNavigateToEdit(event, record, true);
         },
       },
     ];
 
-    if (userAction !== "edit") {
+    if (!isEditMode) {
       actions = actions.filter((a) => a.key !== "edit");
     }
 
@@ -152,7 +153,7 @@ const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
             </div>
           ) : (
             canEditTSF &&
-            userAction === "edit" && (
+            isEditMode && (
               <Button type="primary" onClick={handleNavigateToCreate}>
                 <PlusCircleFilled />
                 Create a new dam

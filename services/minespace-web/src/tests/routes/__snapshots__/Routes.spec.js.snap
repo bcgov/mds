@@ -321,7 +321,7 @@ exports[`PrivateRoutes  renders properly 1`] = `
           "type": [Function],
         }
       }
-      path="/mine/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/new/:userAction"
+      path="/mine/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/new/:mode/:userAction"
     />
     <Route
       component={
@@ -336,7 +336,7 @@ exports[`PrivateRoutes  renders properly 1`] = `
           "type": [Function],
         }
       }
-      path="/mine/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/:damGuid/:userAction"
+      path="/mine/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/:damGuid/:mode/:userAction"
     />
     <Route
       component={

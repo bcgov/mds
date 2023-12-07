@@ -32,16 +32,16 @@ interface QualifiedPersonProps {
   loading?: boolean;
   isCore?: boolean;
   canEditTSF: boolean;
-  userAction: string;
+  isEditMode: boolean;
 }
 
 export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
-  const { isCore, mineGuid, partyRelationships, canEditTSF, userAction } = props;
+  const { isCore, mineGuid, partyRelationships, canEditTSF, isEditMode } = props;
   const { renderConfig, addContactModalConfig, tsfFormName } = useContext(TailingsContext);
   const formValues = useSelector((state) => getFormValues(tsfFormName)(state));
   const [currentQp, setCurrentQp] = useState(null);
 
-  const canEditTSFAndEditMode = canEditTSF && userAction === "edit";
+  const canEditTSFAndEditMode = canEditTSF && isEditMode;
 
   const handleCreateQP = (value) => {
     props.change(tsfFormName, "qualified_person.party_guid", value.party_guid);

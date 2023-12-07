@@ -172,26 +172,38 @@ export const EDIT_TAILINGS_STORAGE_FACILITY = {
   dynamicRoute: (
     tailingsStorageFacilityGuid,
     mineGuid,
-    userAction = "view",
+    isEditMode = false,
     activeTab = "basic-information"
   ) =>
-    `/mines/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/${activeTab}/${userAction}`,
+    `/mines/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/${activeTab}/${
+      isEditMode ? "edit" : "view"
+    }`,
   component: TailingsSummaryPageWrapper,
 };
 
 export const ADD_DAM = {
   route:
-    "/mine/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/new/:userAction",
-  dynamicRoute: (mineGuid, tailingsStorageFacilityGuid, userAction = "view") =>
-    `/mine/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/new/${userAction}`,
+    "/mine/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/new/:mode/:userAction",
+  dynamicRoute: (mineGuid, tailingsStorageFacilityGuid, isEditMode = false, canEditDam = true) =>
+    `/mine/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/new/${
+      isEditMode ? "edit" : "view"
+    }/${canEditDam ? "editDam" : "viewDam"}`,
   component: DamsPage,
 };
 
 export const EDIT_DAM = {
   route:
-    "/mine/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/:damGuid/:userAction",
-  dynamicRoute: (mineGuid, tailingsStorageFacilityGuid, damGuid, userAction = "view") =>
-    `/mine/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/${damGuid}/${userAction}`,
+    "/mine/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/:damGuid/:mode/:userAction",
+  dynamicRoute: (
+    mineGuid,
+    tailingsStorageFacilityGuid,
+    damGuid,
+    isEditMode = false,
+    canEditDam = false
+  ) =>
+    `/mine/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/${damGuid}/${
+      isEditMode ? "edit" : "view"
+    }/${canEditDam ? "editDam" : "viewDam"}`,
   component: DamsPage,
 };
 

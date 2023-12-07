@@ -56,7 +56,7 @@ export const TailingsTable = (props) => {
 
   const tsfV2Enabled = isFeatureEnabled(Feature.TSF_V2);
 
-  const handleEditDam = (event, dam, userAction) => {
+  const handleEditDam = (event, dam, isEditMode, canEditDam) => {
     event.preventDefault();
     props.storeDam(dam);
     const tsf = tailings.find(
@@ -69,7 +69,8 @@ export const TailingsTable = (props) => {
       mineGuid,
       dam.mine_tailings_storage_facility_guid,
       dam.dam_guid,
-      userAction
+      isEditMode,
+      canEditDam
     );
     history.push(url);
   };
@@ -97,38 +98,38 @@ export const TailingsTable = (props) => {
 
   let newTSFActions = [
     {
-      key: "edit",
-      label: "Edit TSF",
-      icon: <EditOutlined />,
-      clickFunction: (_event, record) => {
-        editTailings(event, record, "edit");
-      },
-    },
-    {
       key: "view",
       label: "View TSF",
       icon: <EyeOutlined />,
       clickFunction: (_event, record) => {
-        editTailings(event, record, "view");
+        editTailings(event, record, false);
+      },
+    },
+    {
+      key: "edit",
+      label: "Edit TSF",
+      icon: <EditOutlined />,
+      clickFunction: (_event, record) => {
+        editTailings(event, record, true);
       },
     },
   ];
 
   let damActions = [
     {
-      key: "edit",
-      label: "Edit Dam",
-      icon: <EditOutlined />,
-      clickFunction: (_event, record) => {
-        handleEditDam(event, record, "edit");
-      },
-    },
-    {
       key: "view",
       label: "View Dam",
       icon: <EyeOutlined />,
       clickFunction: (_event, record) => {
-        handleEditDam(event, record, "view");
+        handleEditDam(event, record, false, false);
+      },
+    },
+    {
+      key: "edit",
+      label: "Edit Dam",
+      icon: <EditOutlined />,
+      clickFunction: (_event, record) => {
+        handleEditDam(event, record, true, true);
       },
     },
   ];

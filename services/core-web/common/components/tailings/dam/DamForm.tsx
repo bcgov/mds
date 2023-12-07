@@ -27,7 +27,8 @@ interface DamFormProps {
   tsf: ITailingsStorageFacility;
   dam?: IDam;
   canEditTSF: boolean;
-  userAction: string;
+  isEditMode: boolean;
+  canEditDam: boolean;
 }
 
 interface Params {
@@ -36,14 +37,14 @@ interface Params {
 }
 
 const DamForm: FC<DamFormProps> = (props) => {
-  const { tsf, dam, canEditTSF, userAction } = props;
+  const { tsf, dam, canEditTSF, isEditMode, canEditDam } = props;
   const history = useHistory();
   const { tailingsStorageFacilityGuid, mineGuid } = useParams<Params>();
-  const canEditTSFAndEditMode = canEditTSF && userAction === "edit";
+  const canEditTSFAndEditMode = canEditTSF && canEditDam;
   const returnUrl = EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
     tailingsStorageFacilityGuid,
     mineGuid,
-    (userAction === "editView" ? "edit" : userAction),
+    isEditMode,
     "associated-dams"
   );
 
@@ -56,8 +57,9 @@ const DamForm: FC<DamFormProps> = (props) => {
       <div className="margin-large--bottom">
         <Typography.Title level={4}>Associated Dams - {dam.dam_name}</Typography.Title>
         <Popconfirm
-          title={`Are you sure you want to cancel ${tailingsStorageFacilityGuid ? "updating this" : "creating a new"
-            } dam?
+          title={`Are you sure you want to cancel ${
+            tailingsStorageFacilityGuid ? "updating this" : "creating a new"
+          } dam?
         All unsaved data on this page will be lost.`}
           cancelText="No"
           okText="Yes"

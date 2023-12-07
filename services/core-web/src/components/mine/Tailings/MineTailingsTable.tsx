@@ -68,7 +68,7 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
     });
   };
 
-  const handleEditDam = (event, dam: IDam, userAction) => {
+  const handleEditDam = (event, dam: IDam, isEditMode, canEditDam) => {
     event.preventDefault();
     props.storeDam(dam);
     const tsf = tailings.find(
@@ -81,7 +81,8 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
       mineGuid,
       dam.mine_tailings_storage_facility_guid,
       dam.dam_guid,
-      userAction
+      isEditMode,
+      canEditDam
     );
     props.history.push(url);
   };
@@ -111,20 +112,6 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
 
   const newTSFActions = [
     {
-      key: "edit",
-      label: "Edit TSF",
-      icon: <EditOutlined />,
-      clickFunction: (_event, record) => {
-        props.history.push({
-          pathname: MINE_TAILINGS_DETAILS.dynamicRoute(
-            record.mine_tailings_storage_facility_guid,
-            record.mine_guid,
-            "edit"
-          ),
-        });
-      },
-    },
-    {
       key: "view",
       label: "View TSF",
       icon: <EyeOutlined />,
@@ -133,7 +120,21 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
           pathname: MINE_TAILINGS_DETAILS.dynamicRoute(
             record.mine_tailings_storage_facility_guid,
             record.mine_guid,
-            "view"
+            false
+          ),
+        });
+      },
+    },
+    {
+      key: "edit",
+      label: "Edit TSF",
+      icon: <EditOutlined />,
+      clickFunction: (_event, record) => {
+        props.history.push({
+          pathname: MINE_TAILINGS_DETAILS.dynamicRoute(
+            record.mine_tailings_storage_facility_guid,
+            record.mine_guid,
+            true
           ),
         });
       },
@@ -142,19 +143,19 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
 
   const damActions = [
     {
-      key: "edit",
-      label: "Edit Dam",
-      icon: <EditOutlined />,
-      clickFunction: (_event, record) => {
-        handleEditDam(event, record, "edit");
-      },
-    },
-    {
       key: "view",
       label: "View Dam",
       icon: <EyeOutlined />,
       clickFunction: (_event, record) => {
-        handleEditDam(event, record, "view");
+        handleEditDam(event, record, false, false);
+      },
+    },
+    {
+      key: "edit",
+      label: "Edit Dam",
+      icon: <EditOutlined />,
+      clickFunction: (_event, record) => {
+        handleEditDam(event, record, true, true);
       },
     },
   ];
