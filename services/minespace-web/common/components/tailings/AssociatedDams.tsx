@@ -47,12 +47,7 @@ const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
 
   const handleNavigateToCreate = () => {
     props.storeDam({});
-    const url = ADD_DAM.dynamicRoute(
-      tsf.mine_guid,
-      tsf.mine_tailings_storage_facility_guid,
-      isEditMode,
-      true
-    );
+    const url = ADD_DAM.dynamicRoute(tsf.mine_guid, tsf.mine_tailings_storage_facility_guid);
     history.push(url);
   };
 

@@ -43,16 +43,22 @@ interface DamsPageProps {
 const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
   const history = useHistory();
   const { tsf, formValues, formErrors, initialValues } = props;
-  const { tailingsStorageFacilityGuid, damGuid, mineGuid, mode, userAction } = useParams<{
+  const {
+    tailingsStorageFacilityGuid,
+    damGuid,
+    mineGuid,
+    parentTSFFormMode,
+    userAction,
+  } = useParams<{
     tailingsStorageFacilityGuid: string;
     damGuid?: string;
     mineGuid: string;
-    mode: string;
+    parentTSFFormMode: string;
     userAction: string;
   }>();
   const [canEditTSF, setCanEditTSF] = useState(false);
-  const isUserActionEdit = userAction === "editDam";
-  const isTSFEditMode = mode === "edit";
+  const isUserActionEdit = userAction === "editDam" || userAction === "newDam";
+  const isTSFEditMode = parentTSFFormMode === "edit";
 
   useEffect(() => {
     setCanEditTSF(

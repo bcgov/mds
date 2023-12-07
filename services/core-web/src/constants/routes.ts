@@ -503,17 +503,15 @@ export const ORGBOOK_CREDENTIAL_URL = (sourceId, credentialId) =>
 
 export const ADD_DAM = {
   route:
-    "/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/new/:mode/:userAction",
-  dynamicRoute: (mineGuid, tailingsStorageFacilityGuid, isEditMode = false, canEditDam = true) =>
-    `/mine/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/new/${
-      isEditMode ? "edit" : "view"
-    }/${canEditDam ? "editDam" : "viewDam"}`,
+    "/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/:parentTSFFormMode/:userAction",
+  dynamicRoute: (mineGuid, tailingsStorageFacilityGuid, editMode = "edit", userAction = "newDam") =>
+    `/mine/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/${editMode}/${userAction}`,
   component: DamsDetailsPage,
 };
 
 export const EDIT_DAM = {
   route:
-    "/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/:damGuid/:mode/:userAction",
+    "/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/:parentTSFFormMode/:userAction/dam/:damGuid",
   dynamicRoute: (
     mineGuid,
     tailingsStorageFacilityGuid,
@@ -521,8 +519,8 @@ export const EDIT_DAM = {
     isEditMode = false,
     canEditDam = false
   ) =>
-    `/mine-dashboard/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/${damGuid}/${
+    `/mine-dashboard/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/${
       isEditMode ? "edit" : "view"
-    }/${canEditDam ? "editDam" : "viewDam"}`,
+    }/${canEditDam ? "editDam" : "viewDam"}/dam/${damGuid}`,
   component: DamsDetailsPage,
 };
