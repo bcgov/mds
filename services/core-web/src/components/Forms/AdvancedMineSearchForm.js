@@ -175,7 +175,12 @@ export class AdvancedMineSearchForm extends Component {
           <Button className="full-mobile" type="secondary" htmlType="reset">
             Clear Filters
           </Button>
-          <Button className="full-mobile" type="primary" htmlType="submit">
+          <Button
+            data-cy="apply-filter-button"
+            className="full-mobile"
+            type="primary"
+            htmlType="submit"
+          >
             Apply Filters
           </Button>
         </div>

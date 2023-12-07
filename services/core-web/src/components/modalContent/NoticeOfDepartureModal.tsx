@@ -200,7 +200,7 @@ const NoticeOfDepartureModal: React.FC<InjectedFormProps<ICreateNoD> &
 
   useEffect(() => {
     const statuses = (() => {
-      const { self_authorized, ...coreStatuses } = NOTICE_OF_DEPARTURE_STATUS_VALUES;
+      const { ...coreStatuses } = NOTICE_OF_DEPARTURE_STATUS_VALUES;
       return Object.values(coreStatuses);
     })();
 
