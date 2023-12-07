@@ -267,7 +267,7 @@ export const MINE_TAILINGS_DETAILS = {
 export const EDIT_TAILINGS_STORAGE_FACILITY = {
   route:
     "/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab/:userAction",
-  dynamicRoute: (tsfGuid, mineGuid, isEditMode = false, tab = "basic-information") =>
+  dynamicRoute: (tsfGuid, mineGuid, tab = "basic-information", isEditMode = false) =>
     `/mine-dashboard/${mineGuid}/permits-and-approvals/tailings/${tsfGuid}/${tab}/${
       isEditMode ? "edit" : "view"
     }`,

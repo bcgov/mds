@@ -231,8 +231,8 @@ export const TailingsSummaryPage: FC<InjectedFormProps<ITailingsStorageFacility>
       routes.EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
         newTsf?.data.mine_tailings_storage_facility_guid || tsfGuid,
         mineGuid,
-        isUserActionEdit,
-        newActiveTab || "engineer-of-record"
+        newActiveTab || "engineer-of-record",
+        isUserActionEdit
       )
     );
   };
@@ -244,8 +244,8 @@ export const TailingsSummaryPage: FC<InjectedFormProps<ITailingsStorageFacility>
       url = routes.EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
         tsfGuid,
         mineGuid,
-        isUserActionEdit,
-        newActiveTab
+        newActiveTab,
+        isUserActionEdit
       );
     } else {
       url = routes.ADD_TAILINGS_STORAGE_FACILITY.dynamicRoute(newActiveTab);

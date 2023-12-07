@@ -76,8 +76,8 @@ const DamsPage: React.FC<InjectedFormProps<IDam> & DamsPageProps> = (props) => {
   const backUrl = EDIT_TAILINGS_STORAGE_FACILITY.dynamicRoute(
     tailingsStorageFacilityGuid,
     mineGuid,
-    isTSFEditMode,
-    "associated-dams"
+    "associated-dams",
+    isTSFEditMode
   );
 
   const handleBack = () => {
