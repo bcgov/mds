@@ -37,7 +37,7 @@ const columns = [
     sorter: true,
     width: 150,
     render: (text, record) => (
-      <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)} title="Name">
+      <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)} title="Name" data-cy="mine-link">
         {text}
         {record.verified_status && record.verified_status.healthy_ind && (
           <img
@@ -151,9 +151,9 @@ const transformRowData = (mines, mineRegionHash, mineTenureHash, mineCommodityHa
     mine_no: mine.mine_no || Strings.EMPTY_FIELD,
     mine_operation_status_code:
       mine.mine_status &&
-      mine.mine_status.length > 0 &&
-      mine.mine_status[0].status_labels &&
-      mine.mine_status[0].status_labels.length > 0
+        mine.mine_status.length > 0 &&
+        mine.mine_status[0].status_labels &&
+        mine.mine_status[0].status_labels.length > 0
         ? mine.mine_status[0].status_labels[0]
         : Strings.EMPTY_FIELD,
     permit_numbers:
@@ -164,19 +164,19 @@ const transformRowData = (mines, mineRegionHash, mineTenureHash, mineCommodityHa
     commodity:
       mine.mine_type && mine.mine_type.length > 0
         ? uniqBy(
-            flattenDeep(
-              mine.mine_type.reduce((result, type) => {
-                if (type.mine_type_detail && type.mine_type_detail.length > 0) {
-                  result.push(
-                    type.mine_type_detail
-                      .filter((detail) => detail.mine_commodity_code)
-                      .map((detail) => mineCommodityHash[detail.mine_commodity_code])
-                  );
-                }
-                return result;
-              }, [])
-            )
+          flattenDeep(
+            mine.mine_type.reduce((result, type) => {
+              if (type.mine_type_detail && type.mine_type_detail.length > 0) {
+                result.push(
+                  type.mine_type_detail
+                    .filter((detail) => detail.mine_commodity_code)
+                    .map((detail) => mineCommodityHash[detail.mine_commodity_code])
+                );
+              }
+              return result;
+            }, [])
           )
+        )
         : [],
     tenure:
       mine.mine_type && mine.mine_type.length > 0
