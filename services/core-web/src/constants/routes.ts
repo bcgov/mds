@@ -503,11 +503,11 @@ export const ORGBOOK_CREDENTIAL_URL = (sourceId, credentialId) =>
 
 export const ADD_DAM = {
   route:
-    "/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/new/:userAction",
-  dynamicRoute: (mineGuid, tailingsStorageFacilityGuid, isEditMode = false) =>
+    "/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/new/:mode/:userAction",
+  dynamicRoute: (mineGuid, tailingsStorageFacilityGuid, isEditMode = false, canEditDam = true) =>
     `/mine/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/new/${
       isEditMode ? "edit" : "view"
-    }`,
+    }/${canEditDam ? "editDam" : "viewDam"}`,
   component: DamsDetailsPage,
 };
 

@@ -50,7 +50,8 @@ const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
     const url = ADD_DAM.dynamicRoute(
       tsf.mine_guid,
       tsf.mine_tailings_storage_facility_guid,
-      isEditMode
+      isEditMode,
+      true
     );
     history.push(url);
   };
