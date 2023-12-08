@@ -137,7 +137,7 @@ export const Reports: FC<ReportsProps> = ({ mine, ...props }) => {
             </Typography.Title>
             <Typography.Paragraph>
               This table shows reports from the Health, Safety and Reclamation code that your mine
-              has submitted to the cMinistry. It also shows reports the Ministry has requested from
+              has submitted to the Ministry. It also shows reports the Ministry has requested from
               your mine. If you do not see an HSRC report that your mine must submit, click Submit
               Report, choose the report you need to send and then attach the file or files.
             </Typography.Paragraph>
