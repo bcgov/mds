@@ -53,7 +53,7 @@ const ProjectLinksTable: React.FC<IProjectLinksTableProps> = ({
     });
   };
 
-  const actions = [
+  const actions: ITableAction[] = [
     {
       key: "view",
       label: "View Project",
@@ -63,21 +63,18 @@ const ProjectLinksTable: React.FC<IProjectLinksTableProps> = ({
         // history.push(viewProjectLink(record));
       },
     },
-    {
-      key: "remove",
-      label: "Remove Linked-project",
-      icon: <FileOutlined />,
-      clickFunction: (_event, record: ILinkedProject) => {
-        console.log("remove linked project");
-      },
-    },
   ];
-
-  const filterActions = (tableActions: ITableAction[]) => {
-    return hasModifyPermission
-      ? tableActions
-      : tableActions.filter((a) => ["view"].includes(a.key));
+  const deleteAction = {
+    key: "remove",
+    label: "Remove Linked-project",
+    icon: <FileOutlined />,
+    clickFunction: (_event, record: ILinkedProject) => {
+      console.log("remove linked project");
+    },
   };
+  if (hasModifyPermission) {
+    actions.push(deleteAction);
+  }
 
   const columns: ColumnsType<ILinkedProject> = [
     renderTextColumn("project_title", "Project Title", true),
@@ -85,7 +82,7 @@ const ProjectLinksTable: React.FC<IProjectLinksTableProps> = ({
     renderTextColumn("status_code", "Status", true),
     renderTextColumn("primary_contact", "Contact", true),
     renderDateColumn("update_timestamp", "Last Updated", true),
-    renderActionsColumn({ actions, recordActionsFilter: filterActions }),
+    renderActionsColumn({ actions }),
   ];
 
   return (

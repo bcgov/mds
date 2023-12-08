@@ -12,6 +12,7 @@ import {
   ICreateProjectSummary,
   IProjectSummary,
   IProject,
+  IProjectLink,
   IInformationRequirementsTable,
   IFileInfo,
   ICreateMajorMinesApplication,
@@ -592,11 +593,13 @@ export const removeDocumentFromProjectDecisionPackage = (
 };
 
 export const createProjectLinks = (
-  mineGuid,
-  projectGuid,
-  relatedProjectGuids,
-  message = "Successfully created a new project description"
-): AppThunk<Promise<AxiosResponse<any>>> => (dispatch): Promise<AxiosResponse<any>> => {
+  mineGuid: string,
+  projectGuid: string,
+  relatedProjectGuids: string[],
+  message = "Successfully create new project links"
+): AppThunk<Promise<AxiosResponse<IProjectLink[]>>> => (
+  dispatch
+): Promise<AxiosResponse<IProjectLink[]>> => {
   dispatch(request(reducerTypes.CREATE_PROJECT_LINKS));
   dispatch(showLoading());
   const payload = {
@@ -606,16 +609,18 @@ export const createProjectLinks = (
   return CustomAxios()
     .post(
       // TODO: url is invalid
-      ENVIRONMENT.apiUrl + API.PROJECT_LINKS(projectGuid, mineGuid),
+      ENVIRONMENT.apiUrl + API.PROJECT_LINKS(projectGuid),
       payload,
       createRequestHeader()
     )
-    .then((response: AxiosResponse<any>) => {
-      notification.success({ message, duration: 10 });
-      dispatch(success(reducerTypes.CREATE_PROJECT_LINKS));
-      dispatch(projectActions.storeRelatedProjects(payload));
-      return response;
-    })
+    .then(
+      ({ data }): AxiosResponse<IProjectLink[]> => {
+        notification.success({ message, duration: 10 });
+        dispatch(success(reducerTypes.CREATE_PROJECT_LINKS));
+        dispatch(projectActions.storeRelatedProjects(data));
+        return data;
+      }
+    )
     .catch((err) => {
       dispatch(error(reducerTypes.CREATE_PROJECT_LINKS));
       throw new Error(err);

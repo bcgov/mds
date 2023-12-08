@@ -126,7 +126,7 @@ export const projectReducer = (state = initialState, action) => {
         ...state,
         project: {
           ...state.project,
-          project_links: [...state.project?.project_links, ...action.payload],
+          project_links: [...action.payload, ...state.project?.project_links],
         },
       };
     default:
