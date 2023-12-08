@@ -173,6 +173,7 @@ export const NOTICE_OF_DEPARTURE_STATUS_VALUES = {
   determined_non_substantial: "determined_non_substantial",
   determined_substantial: "determined_substantial",
   withdrawn: "withdrawn",
+  self_authorized: "self_authorized",
 };
 
 export const NOD_TYPE_FIELD_VALUE = {
