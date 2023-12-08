@@ -51,32 +51,28 @@ const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
     history.push(url);
   };
 
-  const renderDamActions = () => {
-    let actions = [
-      {
-        key: "view",
-        label: "View Dam",
-        icon: <EyeOutlined />,
-        clickFunction: (_event, record) => {
-          handleNavigateToEdit(event, record, false);
-        },
+  const actions = [
+    {
+      key: "view",
+      label: "View Dam",
+      icon: <EyeOutlined />,
+      clickFunction: (_event, record) => {
+        handleNavigateToEdit(event, record, false);
       },
-      {
-        key: "edit",
-        label: "Edit Dam",
-        icon: <EditOutlined />,
-        clickFunction: (_event, record) => {
-          handleNavigateToEdit(event, record, true);
-        },
-      },
-    ];
-
-    if (!isEditMode) {
-      actions = actions.filter((a) => a.key !== "edit");
-    }
-
-    return renderActionsColumn(actions);
-  };
+    },
+    ...(isEditMode
+      ? [
+          {
+            key: "edit",
+            label: "Edit Dam",
+            icon: <EditOutlined />,
+            clickFunction: (_event, record) => {
+              handleNavigateToEdit(event, record, true);
+            },
+          },
+        ]
+      : []),
+  ];
 
   const columns: ColumnsType<IDam> = [
     {
@@ -118,7 +114,7 @@ const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
       dataIndex: "max_pond_elevation",
       key: "max_pond_elevation",
     },
-    ...[renderDamActions()],
+    renderActionsColumn({ actions }),
   ];
 
   const mostRecentUpdatedDate = moment(
