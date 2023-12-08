@@ -3,6 +3,8 @@ import Adapter from "enzyme-adapter-react-16";
 import path from "path";
 
 require("jest-localstorage-mock");
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+require("ts-node").register();
 
 Enzyme.configure({ adapter: new Adapter() });
 
