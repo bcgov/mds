@@ -43,8 +43,14 @@ class ProjectLink(AuditMixin, Base):
             new_project_link.save(commit=False)
         return new_project_link
 
+    @classmethod
+    def create_many(cls, project_guid, related_project_guids, add_to_session=True):
+        links = []
+        for related_project_guid in related_project_guids:
+            new_link = cls.create(project_guid, related_project_guid, add_to_session),
+            links.append(new_link)
+        db.session.commit()
+        return links
+
     def delete(self, commit=True):
         return super(ProjectLink, self).delete(commit)
-
-
-

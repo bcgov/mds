@@ -8,20 +8,20 @@ from app.api.utils.resources_mixins import UserMixin
 from flask_restplus import Resource, inputs
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.extensions import api
-
+from flask import current_app
 
 class ProjectLinkListResource(Resource, UserMixin):
     parser = CustomReqparser()
 
     parser.add_argument(
-        'project_guid',
+        'mine_guid',
         type=str,
         store_missing=False,
         required=True,
     )
     parser.add_argument(
-        'related_project_guid',
-        type=str,
+        'related_project_guids',
+        type=list,
         store_missing=False,
         required=True,
     )
@@ -31,7 +31,7 @@ class ProjectLinkListResource(Resource, UserMixin):
         params={
             'mine_guid': 'The GUID of the mine to create the Project Link for.',
             'project_guid': 'The GUID of the project.',
-            'related_project_guid': 'The GUID of the related project.'
+            'related_project_guids': 'An array of GUIDs of the related projects.'
         })
     @api.expect(parser)
     @api.marshal_with(PROJECT_LINK_MODEL, code=201)
@@ -40,12 +40,13 @@ class ProjectLinkListResource(Resource, UserMixin):
         mine = Mine.find_by_mine_guid(mine_guid)
         if mine is None:
             raise NotFound('Mine not found')
-
+        # TODO: Each related project should be from the same mine
         data = self.parser.parse_args()
-        project_link = ProjectLink.create(data.get('project_guid'),
-                                     data.get('related_project_guid'))
-        project_link.save()
-        return project_link, 201
+        project_links = ProjectLink.create_many(data.get('project_guid'),
+                                     data.get('related_project_guids'))
+        current_app.logger.info(project_links)
+        # project_link.save()
+        return project_links, 201
 
     @api.doc(
         description='Delete a Project Link.',
