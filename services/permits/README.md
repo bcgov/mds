@@ -45,7 +45,7 @@ Swagger docs for the service can be found at [http://localhost:8004/haystack/doc
 _Index document_
 `POST http://localhost:8004/haystack/file-upload`
 
-This takes in a PDF file and run it through the `indexing` pipeline defined in `app/app.py`.
+This takes in a PDF file and run it through the `indexing` pipeline defined in `app/app.py`. Note: This can take a while depending on your specs.
 
 _Query_
 `POST http://localhost:8004/haystack/query`
@@ -54,6 +54,9 @@ This endpoint receives the question as a string and allows the requester to set 
 ### Kibana
 
 Kibana can be accessed at http://localhost:5601/.
+
+If Kibana prompts you to enter an address for elasticsearch, put in http://elasticsearch:9200. No further setup should be necessary in order to use the app.
+
 In order to view documents in Kibana:
 
 1. Navigate to `Analytics -> Discover`
