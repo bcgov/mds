@@ -18,14 +18,16 @@ const propTypes = {
   updatePartyRelationship: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
   change: PropTypes.func.isRequired,
+  canEditTSF: PropTypes.bool,
 };
 
 const defaultProps = {
   columns: [],
+  canEditTSF: true,
 };
 
 const PartyAppointmentTable = (props) => {
-  const { columns } = props;
+  const { columns, canEditTSF } = props;
 
   const { renderConfig, isCore, tsfFormName, mineGuid, tsfGuid } = useContext(TailingsContext);
 
@@ -92,6 +94,7 @@ const PartyAppointmentTable = (props) => {
               data={statusColumns}
               loading={loadingField[`${record.rowName}.status`]}
               onChange={(val) => partyAppointmentChanged(record.rowName, record.key, "status", val)}
+              disabled={!canEditTSF}
             />
           );
         }

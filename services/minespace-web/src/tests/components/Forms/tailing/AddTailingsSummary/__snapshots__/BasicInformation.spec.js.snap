@@ -21,7 +21,7 @@ exports[`BasicInformation renders properly 1`] = `
         },
       ]
     }
-    disabled={false}
+    disabled={true}
     id="facility_type"
     label="Facility Type *"
     name="facility_type"
@@ -35,7 +35,7 @@ exports[`BasicInformation renders properly 1`] = `
   <Field
     component={[Function]}
     data={Array []}
-    disabled={false}
+    disabled={true}
     id="mines_act_permit_no"
     label="Mines Act Permit Number *"
     name="mines_act_permit_no"
@@ -72,7 +72,7 @@ exports[`BasicInformation renders properly 1`] = `
         },
       ]
     }
-    disabled={false}
+    disabled={true}
     id="tailings_storage_facility_type"
     label="Tailings Storage Facility Type *"
     name="tailings_storage_facility_type"
@@ -97,7 +97,7 @@ exports[`BasicInformation renders properly 1`] = `
         },
       ]
     }
-    disabled={false}
+    disabled={true}
     id="storage_location"
     label="Underground or Above Ground? *"
     name="storage_location"
@@ -110,7 +110,7 @@ exports[`BasicInformation renders properly 1`] = `
   />
   <Field
     component={[Function]}
-    disabled={false}
+    disabled={true}
     id="mine_tailings_storage_facility_name"
     label="Facility Name *"
     name="mine_tailings_storage_facility_name"
@@ -129,7 +129,7 @@ exports[`BasicInformation renders properly 1`] = `
     >
       <Field
         component={[Function]}
-        disabled={false}
+        disabled={true}
         id="latitude"
         label="Latitude *"
         name="latitude"
@@ -146,7 +146,7 @@ exports[`BasicInformation renders properly 1`] = `
     >
       <Field
         component={[Function]}
-        disabled={false}
+        disabled={true}
         id="longitude"
         label="Longitude *"
         name="longitude"
@@ -190,7 +190,7 @@ exports[`BasicInformation renders properly 1`] = `
         },
       ]
     }
-    disabled={false}
+    disabled={true}
     id="consequence_classification_status_code"
     label="Consequence Classification *"
     name="consequence_classification_status_code"
@@ -231,7 +231,7 @@ exports[`BasicInformation renders properly 1`] = `
         },
       ]
     }
-    disabled={false}
+    disabled={true}
     id="tsf_operating_status_code"
     label="Operating Status *"
     name="tsf_operating_status_code"
@@ -256,7 +256,7 @@ exports[`BasicInformation renders properly 1`] = `
         },
       ]
     }
-    disabled={false}
+    disabled={true}
     id="itrb_exemption_status_code"
     label="Independent Tailings Review Board Member *"
     name="itrb_exemption_status_code"

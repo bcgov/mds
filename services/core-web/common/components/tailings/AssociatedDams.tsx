@@ -1,4 +1,4 @@
-import { Button, Col, Row, Space, Typography } from "antd";
+import { Button, Col, Row, Typography } from "antd";
 import {
   CONSEQUENCE_CLASSIFICATION_CODE_HASH,
   DAM_OPERATING_STATUS_HASH,
@@ -12,30 +12,35 @@ import { getTsf } from "@mds/common/redux/reducers/tailingsReducer";
 import moment from "moment";
 import { storeDam } from "@mds/common/redux/actions/damActions";
 import { useHistory } from "react-router-dom";
-import { EditIcon } from "@/assets/icons";
 import { ADD_DAM, EDIT_DAM } from "@/constants/routes";
-import { IDam, INoticeOfDeparture, ITailingsStorageFacility } from "@mds/common";
+import { IDam, ITailingsStorageFacility } from "@mds/common";
 import { RootState } from "@/App";
 import { ColumnsType } from "antd/lib/table";
 import CoreTable from "@mds/common/components/common/CoreTable";
+import { renderActionsColumn } from "@mds/common/components/common/CoreTableCommonColumns";
+import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 
 interface AssociatedDamsProps {
   tsf: ITailingsStorageFacility;
   storeDam: typeof storeDam;
   isCore?: boolean;
+  canEditTSF: boolean;
+  isEditMode: boolean;
 }
 
 const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
   const history = useHistory();
-  const { tsf, isCore } = props;
+  const { tsf, isCore, isEditMode, canEditTSF } = props;
 
-  const handleNavigateToEdit = (event, dam) => {
+  const handleNavigateToEdit = (event, dam, canEditDam) => {
     event.preventDefault();
     props.storeDam(dam);
     const url = EDIT_DAM.dynamicRoute(
       tsf.mine_guid,
       dam.mine_tailings_storage_facility_guid,
-      dam.dam_guid
+      dam.dam_guid,
+      isEditMode,
+      canEditDam
     );
     history.push(url);
   };
@@ -45,6 +50,29 @@ const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
     const url = ADD_DAM.dynamicRoute(tsf.mine_guid, tsf.mine_tailings_storage_facility_guid);
     history.push(url);
   };
+
+  const actions = [
+    {
+      key: "view",
+      label: "View Dam",
+      icon: <EyeOutlined />,
+      clickFunction: (_event, record) => {
+        handleNavigateToEdit(event, record, false);
+      },
+    },
+    ...(isEditMode
+      ? [
+          {
+            key: "edit",
+            label: "Edit Dam",
+            icon: <EditOutlined />,
+            clickFunction: (_event, record) => {
+              handleNavigateToEdit(event, record, true);
+            },
+          },
+        ]
+      : []),
+  ];
 
   const columns: ColumnsType<IDam> = [
     {
@@ -86,22 +114,7 @@ const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
       dataIndex: "max_pond_elevation",
       key: "max_pond_elevation",
     },
-    {
-      title: "Actions",
-      key: "actions",
-      render: (record) => (
-        <Space size="middle">
-          <div className="inline-flex">
-            <Button type="primary" size="small" ghost>
-              <EditIcon
-                onClick={(event) => handleNavigateToEdit(event, record)}
-                className="icon-xs--darkestgrey"
-              />
-            </Button>
-          </div>
-        </Space>
-      ),
-    },
+    renderActionsColumn({ actions }),
   ];
 
   const mostRecentUpdatedDate = moment(
@@ -131,10 +144,13 @@ const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
               <Typography.Paragraph>{mostRecentUpdatedDate}</Typography.Paragraph>
             </div>
           ) : (
-            <Button type="primary" onClick={handleNavigateToCreate}>
-              <PlusCircleFilled />
-              Create a new dam
-            </Button>
+            canEditTSF &&
+            isEditMode && (
+              <Button type="primary" onClick={handleNavigateToCreate}>
+                <PlusCircleFilled />
+                Create a new dam
+              </Button>
+            )
           )}
         </Col>
       </Row>

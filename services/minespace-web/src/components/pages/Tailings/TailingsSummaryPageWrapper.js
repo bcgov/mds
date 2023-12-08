@@ -22,6 +22,7 @@ const propTypes = {
       mineGuid: PropTypes.string,
       tailingsStorageFacilityGuid: PropTypes.string,
       tab: PropTypes.string,
+      userAction: PropTypes.string,
     }),
   }).isRequired,
 };
@@ -56,6 +57,7 @@ export const TailingsSummaryPageWrapper = (props) => {
         mineGuid={match.params.mineGuid}
         tsfGuid={match.params.tailingsStorageFacilityGuid}
         tab={match.params.tab}
+        userAction={match.params.userAction}
       />
     </TailingsProvider>
   );
