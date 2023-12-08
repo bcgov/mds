@@ -12,7 +12,7 @@ export const renderTextColumn = (
   title: string,
   sortable = false,
   placeHolder = EMPTY_FIELD,
-  width?: number
+  width?: number | string
 ): ColumnType<any> => {
   return {
     title,
@@ -87,15 +87,24 @@ export interface ITableAction {
   icon?: ReactNode;
 }
 
-export const renderActionsColumn = (
-  actions: ITableAction[],
-  recordActionsFilter?: (record, actions) => ITableAction[],
+export const renderActionsColumn = ({
+  actions,
+  recordActionsFilter,
   isRowSelected = false,
   text = "Actions",
-  dropdownAltText = "Menu"
-) => {
+  dropdownAltText = "Menu",
+  fixed = false,
+}: {
+  actions: ITableAction[];
+  recordActionsFilter?: (record, actions) => ITableAction[];
+  isRowSelected?: boolean;
+  text?: string;
+  dropdownAltText?: string;
+  fixed?: boolean;
+}) => {
   return {
     key: "actions",
+    fixed: fixed ? ("right" as const) : null,
     render: (record) => {
       const filteredActions = recordActionsFilter ? recordActionsFilter(record, actions) : actions;
       const items = generateActionMenuItems(filteredActions, record);

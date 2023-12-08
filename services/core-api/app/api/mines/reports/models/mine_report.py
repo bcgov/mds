@@ -173,7 +173,8 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
                                           reports_type=MINE_REPORT_TYPE['CODE REQUIRED REPORTS']):
         try:
             uuid.UUID(_id, version=4)
-            reports = cls.query.filter_by(mine_guid=_id).filter_by(deleted_ind=False)
+            reports = cls.query.filter_by(mine_guid=_id).filter_by(deleted_ind=False).order_by(
+                cls.due_date.asc())
             if reports_type == MINE_REPORT_TYPE['PERMIT REQUIRED REPORTS']:
                 reports = reports.filter(MineReport.permit_condition_category_code.isnot(None))
             else:
