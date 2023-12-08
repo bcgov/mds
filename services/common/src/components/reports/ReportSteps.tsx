@@ -8,7 +8,6 @@ import { getMines } from "@mds/common/redux/selectors/mineSelectors";
 import ReportGetStarted from "@mds/common/components/reports/ReportGetStarted";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
 
-const routes = GLOBAL_ROUTES;
 const ReportSteps = () => {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -96,7 +95,7 @@ const ReportSteps = () => {
       </Row>
       <Row>
         <Col span={24}>
-          <Link to={routes.MINE_DASHBOARD.dynamicRoute(mineGuid, "reports")}>
+          <Link to={GLOBAL_ROUTES?.MINE_DASHBOARD.dynamicRoute(mineGuid, "reports")}>
             <ArrowLeftOutlined className="padding-sm--right" />
             {`Back to: ${mine?.mine_name} reports`}
           </Link>

@@ -156,7 +156,7 @@ export const MINE_INCIDENT_SUCCESS = {
 
 export const MINE_DASHBOARD = {
   route: "/mines/:id/:activeTab",
-  dynamicRoute: (id, activeTab = "overview", filterParams) =>
+  dynamicRoute: (id, activeTab = "overview", filterParams?: any) =>
     `/mines/${id}/${activeTab}?${queryString.stringify(filterParams)}`,
   component: MineDashboard,
 };
