@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Row, Steps, Typography } from "antd";
-import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { Link, useHistory, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { IMine } from "@mds/common/interfaces";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import { getMines } from "@mds/common/redux/selectors/mineSelectors";
-import { useParams, useHistory } from "react-router-dom";
 import ReportGetStarted from "@mds/common/components/reports/ReportGetStarted";
-import { fetchMineRecords } from "@mds/common/redux/actionCreators/mineActionCreator";
+import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
 
 const routes = GLOBAL_ROUTES;
 const ReportSteps = () => {
@@ -16,15 +15,19 @@ const ReportSteps = () => {
 
   const { mineGuid } = useParams<{ mineGuid: string }>();
   const mines: IMine = useSelector(getMines);
-  const mine = mines[mineGuid];
-
-  useEffect(() => {
-    if (!mine) {
-      dispatch(fetchMineRecords);
-    }
-  }, [mine]);
 
   const [currentStep, setCurrentStep] = useState(0);
+  const [mine, setMine] = useState<IMine>(mines[mineGuid]);
+
+  useEffect(() => {
+    if (Object.keys(mines).length === 0) {
+      dispatch(fetchMineRecordById(mineGuid));
+    }
+  }, []);
+
+  useEffect(() => {
+    setMine(mines[mineGuid]);
+  }, [mines]);
 
   const renderStepButtons = ({
     nextButtonTitle,
