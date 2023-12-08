@@ -1,18 +1,38 @@
 import * as actionTypes from "@mds/common/constants/actionTypes";
 import { PROJECTS } from "@mds/common/constants/reducerTypes";
 import { RootState } from "../rootState";
+import {
+  IInformationRequirementsTable,
+  IMajorMinesApplication,
+  IProject,
+  IProjectDecisionPackage,
+  IProjectPageData,
+  IProjectSummary,
+} from "../..";
 
-const initialState = {
+interface IProjectReducerState {
+  projects: IProject[];
+  project: IProject;
+  projectPageData: IProjectPageData;
+  projectSummaries: IProjectSummary[];
+  projectSummary: IProjectSummary;
+  projectSummaryPageData: any;
+  informationRequirementsTable: IInformationRequirementsTable;
+  requirements: IInformationRequirementsTable[];
+  majorMinesApplication: IMajorMinesApplication;
+  projectDecisionPackage: IProjectDecisionPackage;
+}
+const initialState: IProjectReducerState = {
   projects: [],
-  project: {},
-  projectPageData: {},
+  project: {} as IProject,
+  projectPageData: {} as IProjectPageData,
   projectSummaries: [],
-  projectSummary: {},
+  projectSummary: {} as IProjectSummary,
   projectSummaryPageData: {},
-  informationRequirementsTable: {},
+  informationRequirementsTable: {} as IInformationRequirementsTable,
   requirements: [],
-  majorMinesApplication: {},
-  projectDecisionPackage: {},
+  majorMinesApplication: {} as IMajorMinesApplication,
+  projectDecisionPackage: {} as IProjectDecisionPackage,
 };
 
 export const projectReducer = (state = initialState, action) => {
@@ -101,6 +121,14 @@ export const projectReducer = (state = initialState, action) => {
         projects: {},
         projectPageData: {},
       };
+    case actionTypes.STORE_PROJECT_LINKS:
+      return {
+        ...state,
+        project: {
+          ...state.project,
+          project_links: [...state.project?.project_links, ...action.payload],
+        },
+      };
     default:
       return state;
   }
@@ -123,5 +151,6 @@ export const getInformationRequirementsTable = (state: RootState) =>
 export const getMajorMinesApplication = (state: RootState) => state[PROJECTS].majorMinesApplication;
 export const getProjectDecisionPackage = (state: RootState) =>
   state[PROJECTS].projectDecisionPackage;
+export const getProjectLinks = (state: RootState) => state[PROJECTS].project?.project_links;
 
 export default projectReducerObject;

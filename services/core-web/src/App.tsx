@@ -8,6 +8,7 @@ import DocumentViewer from "@/components/syncfusion/DocumentViewer";
 import ScrollToTopWrapper from "@/components/common/wrappers/ScrollToTopWrapper";
 import configureStore from "./store/configureStore";
 import { storeSystemFlag } from "@mds/common/redux/actions/authenticationActions";
+import { SystemFlagEnum } from "@mds/common";
 
 export const store = configureStore();
 
@@ -30,7 +31,7 @@ export const useKey = (test: (e: KeyboardEvent) => boolean, ref) => {
 
 const App = () => {
   const dispatch = useDispatch();
-  dispatch(storeSystemFlag("core"));
+  dispatch(storeSystemFlag(SystemFlagEnum.core));
   return (
     <BrowserRouter basename={process.env.BASE_PATH}>
       <ScrollToTopWrapper>

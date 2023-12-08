@@ -1,4 +1,5 @@
 import * as ActionTypes from "@mds/common/constants/actionTypes";
+import { SystemFlagEnum } from "../..";
 
 export const authenticateUser = (userInfo = {}) => ({
   type: ActionTypes.AUTHENTICATE_USER,
@@ -7,7 +8,7 @@ export const authenticateUser = (userInfo = {}) => ({
   },
 });
 
-export const storeSystemFlag = (flag: "core" | "ms") => ({
+export const storeSystemFlag = (flag: SystemFlagEnum) => ({
   type: ActionTypes.STORE_SYSTEM_FLAG,
   payload: {
     flag,

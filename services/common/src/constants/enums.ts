@@ -1,3 +1,7 @@
+export enum SystemFlagEnum {
+  core = "CORE",
+  ms = "MineSpace",
+}
 export enum NoDTypeDisplayEnum {
   non_substantial = "Non Substantial",
   potentially_substantial = "Potentially Substantial",

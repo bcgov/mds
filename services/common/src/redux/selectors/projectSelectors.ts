@@ -13,6 +13,7 @@ export const {
   getInformationRequirementsTable,
   getMajorMinesApplication,
   getProjectDecisionPackage,
+  getProjectLinks,
 } = projectReducer;
 
 export const getFormattedProjectSummary = createSelector(

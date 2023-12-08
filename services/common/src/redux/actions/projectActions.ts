@@ -80,3 +80,8 @@ export const postNewDocumentVersion = (payload) => ({
   type: actionTypes.POST_NEW_DOCUMENT_VERSION,
   payload,
 });
+
+export const storeRelatedProjects = (payload) => ({
+  type: actionTypes.STORE_PROJECT_LINKS,
+  payload,
+});

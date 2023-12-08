@@ -18,7 +18,7 @@ import WarningBanner from "@/components/common/WarningBanner";
 
 import Routes from "./routes/Routes";
 import configureStore from "./store/configureStore";
-import { detectIE } from "@mds/common";
+import { SystemFlagEnum, detectIE } from "@mds/common";
 import { storeSystemFlag } from "@mds/common/redux/actions/authenticationActions";
 
 export const store = configureStore();
@@ -51,7 +51,7 @@ const App: FC<AppProps> = (props) => {
       loadBulkStaticContent();
     }
     setIsIE(!!detectIE());
-    storeSystemFlag("ms");
+    storeSystemFlag(SystemFlagEnum.ms);
   }, []);
 
   useEffect(() => {

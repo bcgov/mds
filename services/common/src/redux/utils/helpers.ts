@@ -146,7 +146,7 @@ export const isDateRangeValid = (start, end) => {
   return Math.sign(milliseconds) !== -1;
 };
 
-export const dateSorter = (key: string) => (a: any, b: any) => {
+export const dateSorter = (key: string, ascending = true) => (a: any, b: any) => {
   if (a[key] === b[key]) {
     return 0;
   }
@@ -156,7 +156,8 @@ export const dateSorter = (key: string) => (a: any, b: any) => {
   if (!b[key]) {
     return -1;
   }
-  return moment(a[key]).diff(moment(b[key]));
+
+  return ascending ? moment(a[key]).diff(moment(b[key])) : moment(b[key]).diff(moment(a[key]));
 };
 
 export const nullableStringSorter = (path) => (a, b) => {

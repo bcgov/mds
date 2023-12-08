@@ -590,3 +590,35 @@ export const removeDocumentFromProjectDecisionPackage = (
     })
     .finally(() => dispatch(hideLoading()));
 };
+
+export const createProjectLinks = (
+  mineGuid,
+  projectGuid,
+  relatedProjectGuids,
+  message = "Successfully created a new project description"
+): AppThunk<Promise<AxiosResponse<any>>> => (dispatch): Promise<AxiosResponse<any>> => {
+  dispatch(request(reducerTypes.CREATE_PROJECT_LINKS));
+  dispatch(showLoading());
+  const payload = {
+    mine_guid: mineGuid,
+    related_project_guids: relatedProjectGuids,
+  };
+  return CustomAxios()
+    .post(
+      // TODO: url is invalid
+      ENVIRONMENT.apiUrl + API.PROJECT_LINKS(projectGuid, mineGuid),
+      payload,
+      createRequestHeader()
+    )
+    .then((response: AxiosResponse<any>) => {
+      notification.success({ message, duration: 10 });
+      dispatch(success(reducerTypes.CREATE_PROJECT_LINKS));
+      dispatch(projectActions.storeRelatedProjects(payload));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.CREATE_PROJECT_LINKS));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
+};
