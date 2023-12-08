@@ -126,21 +126,25 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
         });
       },
     },
-    {
-      key: "edit",
-      label: "Edit TSF",
-      icon: <EditOutlined />,
-      clickFunction: (_event, record) => {
-        props.history.push({
-          pathname: MINE_TAILINGS_DETAILS.dynamicRoute(
-            record.mine_tailings_storage_facility_guid,
-            record.mine_guid,
-            "basic-information",
-            true
-          ),
-        });
-      },
-    },
+    ...(canEditTSF
+      ? [
+          {
+            key: "edit",
+            label: "Edit TSF",
+            icon: <EditOutlined />,
+            clickFunction: (_event, record) => {
+              props.history.push({
+                pathname: MINE_TAILINGS_DETAILS.dynamicRoute(
+                  record.mine_tailings_storage_facility_guid,
+                  record.mine_guid,
+                  "basic-information",
+                  true
+                ),
+              });
+            },
+          },
+        ]
+      : []),
   ];
 
   const damActions = [
@@ -152,26 +156,21 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
         handleEditDam(event, record, false, false);
       },
     },
-    {
-      key: "edit",
-      label: "Edit Dam",
-      icon: <EditOutlined />,
-      clickFunction: (_event, record) => {
-        handleEditDam(event, record, true, true);
-      },
-    },
+    ...(canEditTSF
+      ? [
+          {
+            key: "edit",
+            label: "Edit Dam",
+            icon: <EditOutlined />,
+            clickFunction: (_event, record) => {
+              handleEditDam(event, record, true, true);
+            },
+          },
+        ]
+      : []),
   ];
 
-  const renderActions = (actions) => {
-    let filteredActions = actions;
-    if (!canEditTSF) {
-      filteredActions = actions.filter((a) => a.key !== "edit");
-    }
-
-    return renderActionsColumn(filteredActions);
-  };
-
-  const columns: ColumnsType<ITailingsStorageFacility> = [
+  const columns = [
     {
       title: "Name",
       dataIndex: "mine_tailings_storage_facility_name",
@@ -227,7 +226,7 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
       dataIndex: "longitude",
       render: (text) => <div title="Longitude">{text || EMPTY_FIELD}</div>,
     },
-    ...(tsfV2Enabled ? [renderActions(newTSFActions)] : [renderOldTSFActions()]),
+    ...(tsfV2Enabled ? [renderActionsColumn({ actions: newTSFActions })] : [renderOldTSFActions()]),
   ];
 
   const damColumns = [
@@ -238,14 +237,14 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
       "Consequence Classification",
       CONSEQUENCE_CLASSIFICATION_CODE_HASH
     ),
-    ...[renderActions(damActions)],
+    renderActionsColumn({ actions: damActions }),
   ];
 
   return (
     <CoreTable
       condition={props.isLoaded}
       dataSource={transformRowData(props.tailings)}
-      columns={columns}
+      columns={columns as ColumnsType<ITailingsStorageFacility>}
       rowKey="mine_tailings_storage_facility_guid"
       classPrefix="tailings"
       expandProps={

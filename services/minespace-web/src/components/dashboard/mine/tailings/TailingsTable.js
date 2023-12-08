@@ -96,7 +96,7 @@ export const TailingsTable = (props) => {
     };
   };
 
-  let newTSFActions = [
+  const newTSFActions = [
     {
       key: "view",
       label: "View TSF",
@@ -105,17 +105,21 @@ export const TailingsTable = (props) => {
         editTailings(event, record, false);
       },
     },
-    {
-      key: "edit",
-      label: "Edit TSF",
-      icon: <EditOutlined />,
-      clickFunction: (_event, record) => {
-        editTailings(event, record, true);
-      },
-    },
+    ...(canEditTSF
+      ? [
+          {
+            key: "edit",
+            label: "Edit TSF",
+            icon: <EditOutlined />,
+            clickFunction: (_event, record) => {
+              editTailings(event, record, true);
+            },
+          },
+        ]
+      : []),
   ];
 
-  let damActions = [
+  const damActions = [
     {
       key: "view",
       label: "View Dam",
@@ -124,24 +128,19 @@ export const TailingsTable = (props) => {
         handleEditDam(event, record, false, false);
       },
     },
-    {
-      key: "edit",
-      label: "Edit Dam",
-      icon: <EditOutlined />,
-      clickFunction: (_event, record) => {
-        handleEditDam(event, record, true, true);
-      },
-    },
+    ...(canEditTSF
+      ? [
+          {
+            key: "edit",
+            label: "Edit Dam",
+            icon: <EditOutlined />,
+            clickFunction: (_event, record) => {
+              handleEditDam(event, record, true, true);
+            },
+          },
+        ]
+      : []),
   ];
-
-  const renderActions = (actions) => {
-    let filteredActions = actions;
-    if (!canEditTSF) {
-      filteredActions = actions.filter((a) => a.key !== "edit");
-    }
-
-    return renderActionsColumn(filteredActions);
-  };
 
   // const handleRowExpand = (record) => {
   //   const key = record.mine_tailings_storage_facility_guid;
@@ -224,7 +223,7 @@ export const TailingsTable = (props) => {
       render: (text) => <div title="Notes">{text || EMPTY_FIELD}</div>,
       sorter: (a, b) => (a.notes > b.notes ? -1 : 1),
     },
-    ...(tsfV2Enabled ? [renderActions(newTSFActions)] : [renderOldTSFActions()]),
+    ...(tsfV2Enabled ? [renderActionsColumn({ actions: newTSFActions })] : [renderOldTSFActions()]),
   ];
 
   const expandedColumns = [
@@ -245,7 +244,7 @@ export const TailingsTable = (props) => {
         </Typography.Text>
       ),
     },
-    ...[renderActions(damActions)],
+    renderActionsColumn({ actions: damActions }),
   ];
 
   return (
