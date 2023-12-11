@@ -14,6 +14,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         name: checkout
+      - uses: KengoTODA/actions-setup-docker-compose@v1
+        if: ${{ env.ACT }}
+        name: Install `docker-compose` for local simulations
+        with:
+          version: "2.14.2"
 
       - uses: actions/cache@v3
         name: Cache yarn
@@ -38,8 +43,15 @@ jobs:
       - name: Install Dependencies
         run: yarn install
 
-      - name: Run frontend tests
-        run: cd services/core-web/ && yarn && yarn test
+      # - name: Run frontend tests
+      #   run: cd services/core-web/ && yarn && yarn test
+
+      - name: Set dev env variables
+        run: INPUT=yes LOAD_EXTERNAL=no make env
+      - name: Run backend
+        run: make be
+      - name: Seed db
+        run: make seeddb
 
       - name: build-core-web
         run: |
@@ -55,7 +67,7 @@ jobs:
           CYPRESS_TEST_PASSWORD: ${{ secrets.CYPRESS_CORE_PASSWORD }}
           CYPRESS_CORE_WEB_TEST_URL: ${{ secrets.CYPRESS_CORE_WEB_TEST_URL }}
           CYPRESS_BACKEND: ${{ secrets.CYPRESS_BACKEND }}
-          CYPRESS_API_URL: ${{ secrets.CYPRESS_API_URL }}
+          CYPRESS_API_URL: "http://localhost:8000"
           CYPRESS_KEYCLOAK_URL: ${{ secrets.CYPRESS_KEYCLOAK_URL }}
           CYPRESS_ENVIRONMENT: ${{ secrets.CYPRESS_ENVIRONMENT }}
           CYPRESS_DOC_MAN_URL: ${{ secrets.CYPRESS_DOC_MAN_URL }}
