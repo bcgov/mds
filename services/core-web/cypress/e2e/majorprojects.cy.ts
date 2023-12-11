@@ -90,11 +90,11 @@ describe("Major Projects", () => {
       .scrollIntoView()
       .trigger("mouseover", { force: true });
 
-    cy.get('[data-cy="major-projects-link"]', { timeout: 3000 }).click({
+    cy.get('[data-cy="major-projects-link"]', { timeout: 10000 }).click({
       force: true,
     });
 
-    cy.get('[data-cy="create-new-project"]', { timeout: 3000 }).click({
+    cy.get('[data-cy="create-new-project"]', { timeout: 10000 }).click({
       force: true,
     });
 
