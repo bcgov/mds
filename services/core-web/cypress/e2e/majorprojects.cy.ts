@@ -3,45 +3,6 @@ describe("Major Projects", () => {
     cy.login();
   });
 
-  it("should add a new major project successfully", () => {
-    cy.get('[data-cy="mines-button"]', { timeout: 10000 }).click({
-      force: true,
-    });
-
-    cy.get("#search", { timeout: 10000 }).type("Brenda mine", { force: true });
-
-    cy.get('[data-cy="apply-filter-button"]').click();
-
-    cy.get('[data-cy="mine-link"]', { timeout: 10000 })
-      .eq(0)
-      .click({
-        force: true,
-      });
-
-    cy.get('[data-menu-id^="rc-menu-"][data-menu-id$="permits-and-approvals"]')
-      .scrollIntoView()
-      .trigger("mouseover", { force: true });
-
-    cy.get('[data-cy="major-projects-link"]', { timeout: 3000 }).click({
-      force: true,
-    });
-
-    cy.get('[data-cy="create-new-project"]', { timeout: 3000 }).click({
-      force: true,
-    });
-
-    cy.get("#project_summary_title").type("Cypress Test Project", { force: true });
-    cy.get("#project_summary_description").type("This is just a cypress test project description", {
-      force: true,
-    });
-    cy.get("#mrc_review_required")
-      .contains("No")
-      .click({ force: true });
-    cy.get("#contacts\\[0\\]\\.name").type("Cypress", { force: true });
-    cy.get("#contacts\\[0\\]\\.email").type("cypress@mds.com", { force: true });
-    cy.get("#contacts\\[0\\]\\.phone_number").type("1234567890", { force: true });
-  });
-
   it("should upload and download a document successfully", () => {
     const fileName = "dummy.pdf";
 
@@ -107,6 +68,59 @@ describe("Major Projects", () => {
     cy.wait("@downloadRequest").then((interception) => {
       // Check that the download request was made successfully
       expect(interception.response.statusCode).to.equal(301);
+    });
+  });
+
+  it("should add a new major project successfully", () => {
+    cy.get('[data-cy="mines-button"]', { timeout: 10000 }).click({
+      force: true,
+    });
+
+    cy.get("#search", { timeout: 10000 }).type("Brenda mine", { force: true });
+
+    cy.get('[data-cy="apply-filter-button"]').click();
+
+    cy.get('[data-cy="mine-link"]', { timeout: 10000 })
+      .eq(0)
+      .click({
+        force: true,
+      });
+
+    cy.get('[data-menu-id^="rc-menu-"][data-menu-id$="permits-and-approvals"]')
+      .scrollIntoView()
+      .trigger("mouseover", { force: true });
+
+    cy.get('[data-cy="major-projects-link"]', { timeout: 3000 }).click({
+      force: true,
+    });
+
+    cy.get('[data-cy="create-new-project"]', { timeout: 3000 }).click({
+      force: true,
+    });
+
+    cy.get("#project_summary_title").type("Cypress Test Project", { force: true });
+    cy.get("#project_summary_description").type("This is just a cypress test project description", {
+      force: true,
+    });
+    cy.get("#mrc_review_required")
+      .contains("No")
+      .click({ force: true });
+    cy.get("#contacts\\[0\\]\\.name").type("Cypress", { force: true });
+    cy.get("#contacts\\[0\\]\\.email").type("cypress@mds.com", { force: true });
+    cy.get("#contacts\\[0\\]\\.phone_number").type("1234567890", { force: true });
+
+    cy.intercept("POST", /.*\/(api\/)?projects\/new\/project-summaries\/new.*$/, {
+      statusCode: 201,
+      body: { message: "project created successfully" }, // Stubbed response
+    }).as("createNewProject");
+
+    cy.get("#project-summary-submit").then(($button) => {
+      $button[0].click();
+    });
+
+    cy.wait("@createNewProject").then((interception) => {
+      // Assert that the response body contains the expected message
+      expect(interception.response.body.message).to.equal("project created successfully");
     });
   });
 });
