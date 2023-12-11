@@ -1,7 +1,7 @@
 const express = require("express");
 const cacheControl = require("express-cache-controller");
 const dotenv = require("dotenv").config({ path: `${__dirname}/.env` });
-
+const expressStaticGzip = require("express-static-gzip");
 let { BASE_PATH } = process.env;
 let BUILD_DIR = process.env.BUILD_DIR || "../build";
 const VENDOR_DIR = process.env.VENDOR_DIR || "vendor";
@@ -25,14 +25,26 @@ app.use(
   })
 );
 
-const staticServe = express.static(`${__dirname}/${BUILD_DIR}`, {
+const staticServe = expressStaticGzip(`${__dirname}/${BUILD_DIR}`, {
   immutable: true,
   maxAge: "1y",
+  enableBrotli: true,
+  customCompressions: [{
+    encodingName: 'deflate',
+    fileExtension: 'zz'
+  }],
+  orderPreference: ['br', 'gzip']
 });
 
-const vendorServe = express.static(`${__dirname}/${VENDOR_DIR}`, {
+const vendorServe = expressStaticGzip(`${__dirname}/${VENDOR_DIR}`, {
   immutable: true,
   maxAge: "1y",
+  enableBrotli: true,
+  customCompressions: [{
+    encodingName: 'deflate',
+    fileExtension: 'zz'
+  }],
+  orderPreference: ['br', 'gzip']
 });
 
 app.get(`${BASE_PATH}/env`, (req, res) => {
@@ -71,4 +83,6 @@ app.use(`/`, staticServe);
 app.use(`/vendor/`, staticServe);
 app.use(`*`, staticServe);
 
-app.listen(PORT, "0.0.0.0", () => console.log("Server running"));
+const server = app.listen(PORT, "0.0.0.0", () => console.log("Server running"));
+server.keepAliveTimeout = 15 * 1000;
+server.headersTimeout = 20 * 1000;

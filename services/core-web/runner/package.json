@@ -12,6 +12,7 @@
   "dependencies": {
     "dotenv": "16.0.1",
     "express": "4.18.1",
-    "express-cache-controller": "1.1.0"
+    "express-cache-controller": "1.1.0",
+    "express-static-gzip": "2.1.7"
   }
 }
