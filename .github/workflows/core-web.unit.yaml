@@ -49,7 +49,7 @@ jobs:
       - name: Set dev env variables
         run: INPUT=yes LOAD_EXTERNAL=no make env
       - name: Run backend
-        run: make be
+        run: make runbe
       - name: Seed db
         run: make seeddb
 
@@ -67,7 +67,7 @@ jobs:
           CYPRESS_TEST_PASSWORD: ${{ secrets.CYPRESS_CORE_PASSWORD }}
           CYPRESS_CORE_WEB_TEST_URL: ${{ secrets.CYPRESS_CORE_WEB_TEST_URL }}
           CYPRESS_BACKEND: ${{ secrets.CYPRESS_BACKEND }}
-          CYPRESS_API_URL: "http://localhost:8000"
+          CYPRESS_API_URL: "http://localhost:5000"
           CYPRESS_KEYCLOAK_URL: ${{ secrets.CYPRESS_KEYCLOAK_URL }}
           CYPRESS_ENVIRONMENT: ${{ secrets.CYPRESS_ENVIRONMENT }}
           CYPRESS_DOC_MAN_URL: ${{ secrets.CYPRESS_DOC_MAN_URL }}
