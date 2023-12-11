@@ -87,7 +87,7 @@ const commonConfig = merge([
       }),
       new webpack.ProvidePlugin({
         REQUEST_HEADER: path.resolve(__dirname, "common/utils/RequestHeaders.js"),
-        GLOBAL_ROUTES: path.resolve(__dirname, "src/constants/routes.js"),
+        GLOBAL_ROUTES: path.resolve(__dirname, "src/constants/routes.ts"),
       }),
       // Prevent moment locales to be bundled with the app
       // to reduce app size
@@ -114,6 +114,7 @@ const commonConfig = merge([
           : {}),
         // Use lodash-es that supports proper tree-shaking
         lodash: "lodash-es",
+        "react-redux": require.resolve("react-redux"),
       },
     },
   },

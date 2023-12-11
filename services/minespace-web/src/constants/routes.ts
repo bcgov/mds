@@ -1,6 +1,7 @@
 import React from "react";
 import queryString from "query-string";
 import ExplosivesPermit from "@/components/dashboard/mine/permits/ExplosivesPermit";
+import ReportSteps from "@mds/common/components/reports/ReportSteps";
 const DamsPage = React.lazy(() => import("@common/components/tailings/dam/DamsPage"));
 const InformationRequirementsTablePage = React.lazy(() =>
   import("@/components/pages/Project/InformationRequirementsTablePage")
@@ -155,7 +156,7 @@ export const MINE_INCIDENT_SUCCESS = {
 
 export const MINE_DASHBOARD = {
   route: "/mines/:id/:activeTab",
-  dynamicRoute: (id, activeTab = "overview", filterParams) =>
+  dynamicRoute: (id, activeTab = "overview", filterParams?: any) =>
     `/mines/${id}/${activeTab}?${queryString.stringify(filterParams)}`,
   component: MineDashboard,
 };
@@ -210,4 +211,10 @@ export const VIEW_ESUP = {
   dynamicRoute: (mineGuid, explosivesPermitGuid) =>
     `/mine/${mineGuid}/explosives-permits/${explosivesPermitGuid}`,
   component: ExplosivesPermit,
+};
+
+export const REPORTS_GETTING_STARTED = {
+  route: "/mines/:mineGuid/reports/getting-started",
+  dynamicRoute: (mineGuid) => `/mines/${mineGuid}/reports/getting-started`,
+  component: ReportSteps,
 };

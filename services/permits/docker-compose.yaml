@@ -8,20 +8,21 @@ services:
     volumes:
       - ./:/opt/pipelines
       - ./app:/code/app
+      - fileuploads:/file-uploads
     ports:
       - 8004:80
     restart: on-failure
     environment:
       - DOCUMENTSTORE_PARAMS_HOST=elasticsearch
-      - PIPELINE_YAML_PATH=/opt/pipelines/document-search.haystack-pipeline.yml
       - TOKENIZERS_PARALLELISM=false
       - ROOT_PATH=/haystack
+      - FILE_UPLOAD_PATH=/file-uploads
     networks:
       - elastic
     depends_on:
       elasticsearch:
         condition: service_healthy
-
+  
   elasticsearch:
     image: "docker.elastic.co/elasticsearch/elasticsearch:8.11.1"
     container_name: elasticsearch
@@ -59,3 +60,6 @@ services:
 
 networks:
   elastic:
+
+volumes:
+  fileuploads:
