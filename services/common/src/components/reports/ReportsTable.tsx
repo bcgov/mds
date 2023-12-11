@@ -1,8 +1,11 @@
 import React, { FC } from "react";
 import { connect } from "react-redux";
 import { Badge, Button, TablePaginationConfig } from "antd";
-import { formatComplianceCodeValueOrLabel, truncateFilename } from "@mds/common/components/common/utils/helpers";
-import { downloadFileFromDocumentManager } from "@mds/common/components/common/utils/actionlessNetworkCalls";
+import {
+  formatComplianceCodeValueOrLabel,
+  truncateFilename,
+} from "@mds/common/redux/utils/helpers";
+import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls";
 import { getMineReportDefinitionHash } from "@mds/common/redux/selectors/staticContentSelectors";
 import { EDIT_PENCIL } from "@mds/common/constants/assets";
 import LinkButton from "@mds/common/components/common/LinkButton";
@@ -92,9 +95,9 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
         return (
           <div>
             {/* <AuthorizationWrapper> */}
-              <Button type="link" onClick={(event) => props.openEditReportModal(event, record)}>
-                <img src={EDIT_PENCIL} alt="Edit" />
-              </Button>
+            <Button type="link" onClick={(event) => props.openEditReportModal(event, record)}>
+              <img src={EDIT_PENCIL} alt="Edit" />
+            </Button>
             {/* </AuthorizationWrapper> */}
           </div>
         );
@@ -133,9 +136,9 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
   }
 
   const transformRowData = (reports: IMineReport[]): IMineReport[] =>
-    reports.map((report) => {
+    reports?.map((report) => {
       const { mine_report_submissions } = report;
-      const latestSubmission = mine_report_submissions?.[mine_report_submissions.length - 1];
+      const latestSubmission = mine_report_submissions?.[mine_report_submissions?.length - 1];
 
       return {
         ...report,
@@ -145,7 +148,7 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
 
   const pagination: TablePaginationConfig = {
     defaultPageSize: DEFAULT_PAGE_SIZE,
-    total: props.mineReports.length,
+    total: props.mineReports?.length,
     position: ["bottomCenter"],
   };
 
@@ -156,7 +159,7 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
       columns={columns}
       rowKey={(record) => record.mine_report_guid}
       emptyText="This mine has no report data."
-      dataSource={transformRowData(props.mineReports)}
+      dataSource={transformRowData(props.mineReports ?? [])}
       pagination={pagination}
     />
   );

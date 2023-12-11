@@ -1,7 +1,10 @@
 import React, { FC } from "react";
 import { connect } from "react-redux";
 import { Badge, Button, TablePaginationConfig } from "antd";
-import { formatComplianceCodeValueOrLabel, truncateFilename } from "@common/utils/helpers";
+import {
+  formatComplianceCodeValueOrLabel,
+  truncateFilename,
+} from "@mds/common/redux/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { getMineReportDefinitionHash } from "@mds/common/redux/selectors/staticContentSelectors";
 import * as Strings from "@/constants/strings";
@@ -136,7 +139,7 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
   const transformRowData = (reports: IMineReport[]): IMineReport[] =>
     reports.map((report) => {
       const { mine_report_submissions } = report;
-      const latestSubmission = mine_report_submissions?.[mine_report_submissions.length - 1];
+      const latestSubmission = mine_report_submissions?.[mine_report_submissions?.length - 1];
 
       return {
         ...report,

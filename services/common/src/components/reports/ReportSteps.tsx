@@ -74,8 +74,7 @@ const ReportSteps = () => {
       case 1:
         return (
           <div>
-            <AddReportDetails mineGuid = {mineGuid}/>
-            {/* <p>this stuff</p> */}
+            <AddReportDetails mineGuid={mineGuid} />
             {renderStepButtons({
               nextButtonTitle: "Review & Submit",
               previousButtonTitle: "Back",
