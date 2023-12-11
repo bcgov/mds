@@ -3,7 +3,7 @@ import { AUTHENTICATION } from "@mds/common/constants/reducerTypes";
 import { IUserInfo } from "@mds/common/interfaces";
 import { USER_ROLES } from "@mds/common/constants";
 import { RootState } from "@mds/common/redux/rootState";
-import * as ReducerTypes from "@mds/minespace-web/src/constants/reducerTypes";
+import * as ReducerTypes from "@mds/common/constants/reducerTypes";
 
 interface IAuthenticationReducerState {
   isAuthenticated: boolean;
