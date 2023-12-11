@@ -7,6 +7,8 @@ import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import { getMines } from "@mds/common/redux/selectors/mineSelectors";
 import ReportGetStarted from "@mds/common/components/reports/ReportGetStarted";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
+import AddReportDetails from "@mds/common/components/reports/AddReportDetails";
+import { fetchMineRecords } from "@mds/common/redux/actionCreators/mineActionCreator";
 
 const ReportSteps = () => {
   const history = useHistory();
@@ -72,7 +74,8 @@ const ReportSteps = () => {
       case 1:
         return (
           <div>
-            <p>this stuff</p>
+            <AddReportDetails mineGuid = {mineGuid}/>
+            {/* <p>this stuff</p> */}
             {renderStepButtons({
               nextButtonTitle: "Review & Submit",
               previousButtonTitle: "Back",
