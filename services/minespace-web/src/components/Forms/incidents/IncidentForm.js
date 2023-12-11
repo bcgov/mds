@@ -88,21 +88,15 @@ const retrieveIncidentDetailsDynamicValidation = (childProps) => {
   const { formValues } = childProps;
   const inspectorSet = formValues?.reported_to_inspector_party_guid;
   const workerRepSet = formValues?.johsc_worker_rep_name;
-  const workerRepContacted = formValues?.johsc_worker_rep_contacted;
   const managementRepSet = formValues?.johsc_management_rep_name;
-  const managementRepContacted = formValues?.johsc_management_rep_contacted;
 
   return {
     inspectorContactedValidation: inspectorSet ? { validate: [requiredRadioButton] } : {},
     inspectorContacted: formValues?.reported_to_inspector_contacted,
     workerRepContactedValidation: workerRepSet ? { validate: [requiredRadioButton] } : {},
-    workerRepContacted: workerRepContacted
-      ? workerRepContacted.toLowerCase() === "true"
-      : undefined,
+    workerRepContacted: formValues?.johsc_worker_rep_contacted,
     managementRepContactedValidation: managementRepSet ? { validate: [requiredRadioButton] } : {},
-    managementRepContacted: managementRepContacted
-      ? managementRepContacted.toLowerCase() === "true"
-      : undefined,
+    managementRepContacted: formValues?.johsc_management_rep_contacted,
   };
 };
 
