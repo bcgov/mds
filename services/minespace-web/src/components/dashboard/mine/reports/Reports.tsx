@@ -13,7 +13,10 @@ import { getMineReports } from "@mds/common/redux/selectors/reportSelectors";
 import ReportsTable from "@/components/dashboard/mine/reports/ReportsTable";
 import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import { IMine, IMineReport } from "@mds/common";
+import { IMine, IMineReport, Feature } from "@mds/common";
+import { Link } from "react-router-dom";
+import * as routes from "@/constants/routes";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 
 interface ReportsProps {
   mine: IMine;
@@ -21,6 +24,7 @@ interface ReportsProps {
 
 export const Reports: FC<ReportsProps> = ({ mine, ...props }) => {
   const dispatch = useDispatch();
+  const { isFeatureEnabled } = useFeatureFlag();
 
   const mineReports: IMineReport[] = useSelector(getMineReports);
 
@@ -121,15 +125,24 @@ export const Reports: FC<ReportsProps> = ({ mine, ...props }) => {
           <Col span={24}>
             <div className="submit-report-button">
               <AuthorizationWrapper>
-                <Button
-                  style={{ zIndex: 1 }}
-                  className="submit-report-button"
-                  type="primary"
-                  onClick={(event) => openAddReportModal(event)}
-                >
-                  <PlusCircleFilled />
-                  Submit Report
-                </Button>
+                {isFeatureEnabled(Feature.CODE_REQUIRED_REPORTS) ? (
+                  <Link to={routes.REPORTS_GETTING_STARTED.dynamicRoute(mine.mine_guid)}>
+                    <Button style={{ zIndex: 1 }} className="submit-report-button" type="primary">
+                      <PlusCircleFilled />
+                      Submit Report
+                    </Button>
+                  </Link>
+                ) : (
+                  <Button
+                    style={{ zIndex: 1 }}
+                    className="submit-report-button"
+                    type="primary"
+                    onClick={(event) => openAddReportModal(event)}
+                  >
+                    <PlusCircleFilled />
+                    Submit Report
+                  </Button>
+                )}
               </AuthorizationWrapper>
             </div>
             <Typography.Title level={4} className="report-title">
@@ -137,7 +150,7 @@ export const Reports: FC<ReportsProps> = ({ mine, ...props }) => {
             </Typography.Title>
             <Typography.Paragraph>
               This table shows reports from the Health, Safety and Reclamation code that your mine
-              has submitted to the cMinistry. It also shows reports the Ministry has requested from
+              has submitted to the Ministry. It also shows reports the Ministry has requested from
               your mine. If you do not see an HSRC report that your mine must submit, click Submit
               Report, choose the report you need to send and then attach the file or files.
             </Typography.Paragraph>
