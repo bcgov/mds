@@ -53,6 +53,10 @@ cypress-keycloak:
 run-cypress-core:
 	cd services/core-web && npx cypress open
 
+runbe:
+	@echo "+\n++ Running backend ...\n+"
+	@docker-compose $(DC_FILE) up -d backend
+
 testbe:
 	@echo "+\n++ Running tests in backend container ...\n+"
 	@docker compose $(DC_FILE) exec backend pytest
