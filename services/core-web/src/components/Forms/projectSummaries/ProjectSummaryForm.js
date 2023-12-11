@@ -620,6 +620,7 @@ export const ProjectSummaryForm = (props) => {
               </Button>
             </Popconfirm>
             <Button
+              data-cy="project-summary-submit-button"
               id="project-summary-submit"
               className="full-mobile"
               type="primary"

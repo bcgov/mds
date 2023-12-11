@@ -114,8 +114,8 @@ describe("Major Projects", () => {
       body: { message: "project created successfully" }, // Stubbed response
     }).as("createNewProject");
 
-    cy.get("#project-summary-submit").then(($button) => {
-      $button[0].click();
+    cy.get('[data-cy="project-summary-submit-button"]').click({
+      force: true,
     });
 
     cy.wait("@createNewProject").then((interception) => {

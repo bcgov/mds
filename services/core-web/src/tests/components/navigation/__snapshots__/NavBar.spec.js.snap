@@ -86,6 +86,7 @@ exports[`NavBar renders properly 1`] = `
           >
             <Button
               className="menu__btn--link"
+              data-cy="mines-button"
               id=""
             >
               Mines
