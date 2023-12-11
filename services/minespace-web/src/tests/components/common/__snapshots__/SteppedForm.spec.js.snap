@@ -67,7 +67,6 @@ exports[`SteppedForm renders properly 1`] = `
             type="primary"
           >
             Save & Continue
-             
             <ForwardRef(RightOutlined) />
           </Button>
         </div>

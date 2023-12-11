@@ -162,7 +162,7 @@ const SteppedForm = (props) => {
                     disabled={isSubmitting}
                     onClick={(e) => handleNextClick(e, tabs[tabIndex + 1])}
                   >
-                    {sectionChangeText ? sectionChangeText : <>Save &amp; Continue</>}{" "}
+                    {sectionChangeText ? sectionChangeText : <>Save &amp; Continue</>}
                     <RightOutlined />
                   </Button>
                 </div>
