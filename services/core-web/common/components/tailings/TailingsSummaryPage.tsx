@@ -283,6 +283,7 @@ export const TailingsSummaryPage: FC<InjectedFormProps<ITailingsStorageFacility>
           handleSaveData={handleSaveData}
           handleTabChange={handleTabChange}
           activeTab={tab}
+          sectionChangeText={canEditTSF && isUserActionEdit ? undefined : "Continue"}
         >
           <Step key="basic-information">
             <BasicInformation
