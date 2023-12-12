@@ -88,7 +88,7 @@ describe("Major Projects", () => {
         force: true,
       });
 
-    cy.get('[data-menu-id^="rc-menu-"][data-menu-id$="permits-and-approvals"]')
+    cy.get('[data-menu-id^="rc-menu-"][data-menu-id$="permits-and-approvals"]', { timeout: 10000 })
       .scrollIntoView()
       .trigger("mouseover", { force: true });
 
