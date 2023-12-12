@@ -90,13 +90,11 @@ describe("Major Projects", () => {
     // Go to major projects
     cy.get('[data-cy="major-projects-link"]').click({ force: true });
 
-    //wait for the page to load
-    cy.wait(15000);
     // Create a new project
-    cy.get('[data-cy="create-new-project"]').click({ force: true });
-    cy.wait(10000);
+    cy.get('[data-cy="create-new-project"]', { timeout: 15000 }).click({ force: true });
+
     // Fill in project details
-    cy.get("#project_summary_title").type(uniqueProjectName, { force: true });
+    cy.get("#project_summary_title", { timeout: 15000 }).type(uniqueProjectName, { force: true });
     cy.get("#project_summary_description").type("This is just a Cypress test project description", {
       force: true,
     });
