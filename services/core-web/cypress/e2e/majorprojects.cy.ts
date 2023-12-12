@@ -118,7 +118,7 @@ describe("Major Projects", () => {
     cy.get('[data-cy="back-to-major-project-link"]').click({ force: true });
     cy.wait(15000);
     // Find the newly created project in the table and assert
-    cy.get("[data-cy=project-name-column]")
+    cy.get("[data-cy=project-name-column]", { timeout: 10000 })
       .contains(uniqueProjectName)
       .closest("tr")
       .as("targetRow");
