@@ -79,7 +79,7 @@ describe("Major Projects", () => {
 
     // Navigate to the second mine
     cy.get('[data-cy="mine-link"]', { timeout: 10000 })
-      .eq(1)
+      .eq(2)
       .click({ force: true });
 
     // Hover over the permits and approvals menu
@@ -109,13 +109,14 @@ describe("Major Projects", () => {
 
     // Submit the project
     cy.get('[data-cy="project-summary-submit-button"]').click({ force: true });
-
+    // wait for API to respond before navigating
     cy.wait(15000);
     // Navigate back to projects
     cy.get('[data-cy="back-to-project-link"]').click({ force: true });
     cy.wait(15000);
     // Navigate back to major projects
     cy.get('[data-cy="back-to-major-project-link"]').click({ force: true });
+    // wait for table to load data
     cy.wait(15000);
     // Find the newly created project in the table and assert
     cy.get("[data-cy=project-name-column]", { timeout: 10000 })
