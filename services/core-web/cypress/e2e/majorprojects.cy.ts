@@ -79,7 +79,7 @@ describe("Major Projects", () => {
 
     // Navigate to the second mine
     cy.get('[data-cy="mine-link"]', { timeout: 10000 })
-      .eq(2)
+      .eq(4)
       .click({ force: true });
 
     // Hover over the permits and approvals menu
