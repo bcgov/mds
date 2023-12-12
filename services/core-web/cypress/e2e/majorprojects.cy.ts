@@ -74,65 +74,55 @@ describe("Major Projects", () => {
   it("should add a new major project successfully", () => {
     const uniqueProjectName = `Cypress_${Date.now()}`;
 
-    cy.get('[data-cy="mines-button"]', { timeout: 10000 }).click({
-      force: true,
-    });
+    // Navigate to the mines page
+    cy.get('[data-cy="mines-button"]', { timeout: 10000 }).click({ force: true });
 
+    // Navigate to the second mine
     cy.get('[data-cy="mine-link"]', { timeout: 10000 })
       .eq(1)
-      .click({
-        force: true,
-      });
+      .click({ force: true });
 
-    cy.wait(15000);
-
-    cy.get('[data-menu-id^="rc-menu-"][data-menu-id$="permits-and-approvals"]')
+    // Hover over the permits and approvals menu
+    cy.get('[data-menu-id^="rc-menu-"][data-menu-id$="permits-and-approvals"]', { timeout: 15000 })
       .scrollIntoView()
       .trigger("mouseover", { force: true });
 
-    cy.get('[data-cy="major-projects-link"]', { timeout: 10000 }).click({
-      force: true,
-    });
+    // Go to major projects
+    cy.get('[data-cy="major-projects-link"]', { timeout: 10000 }).click({ force: true });
 
-    cy.get('[data-cy="create-new-project"]', { timeout: 10000 }).click({
-      force: true,
-    });
+    // Create a new project
+    cy.get('[data-cy="create-new-project"]', { timeout: 10000 }).click({ force: true });
 
-    cy.get("#project_summary_title").type(uniqueProjectName, { force: true });
-    cy.get("#project_summary_description").type("This is just a cypress test project description", {
-      force: true,
-    });
-    cy.get("#mrc_review_required")
+    // Fill in project details
+    cy.get("#project_summary_title", { timeout: 10000 }).type(uniqueProjectName, { force: true });
+    cy.get("#project_summary_description", {
+      timeout: 10000,
+    }).type("This is just a Cypress test project description", { force: true });
+    cy.get("#mrc_review_required", { timeout: 10000 })
       .contains("No")
       .click({ force: true });
-    cy.get("#contacts\\[0\\]\\.name").type("Cypress", { force: true });
-    cy.get("#contacts\\[0\\]\\.email").type("cypress@mds.com", { force: true });
-    cy.get("#contacts\\[0\\]\\.phone_number").type("1234567890", { force: true });
-
-    cy.get('[data-cy="project-summary-submit-button"]').click({
+    cy.get("#contacts\\[0\\]\\.name", { timeout: 10000 }).type("Cypress", { force: true });
+    cy.get("#contacts\\[0\\]\\.email", { timeout: 10000 }).type("cypress@mds.com", { force: true });
+    cy.get("#contacts\\[0\\]\\.phone_number", { timeout: 10000 }).type("1234567890", {
       force: true,
     });
 
-    cy.wait(10000);
+    // Submit the project
+    cy.get('[data-cy="project-summary-submit-button"]', { timeout: 2000 }).click({ force: true });
 
-    cy.get('[data-cy="back-to-project-link"]').click({
-      force: true,
-    });
+    // Navigate back to projects
+    cy.get('[data-cy="back-to-project-link"]', { timeout: 15000 }).click({ force: true });
 
-    cy.wait(15000);
+    // Navigate back to major projects
+    cy.get('[data-cy="back-to-major-project-link"]', { timeout: 15000 }).click({ force: true });
 
-    cy.get('[data-cy="back-to-major-project-link"]').click({
-      force: true,
-    });
-
-    cy.wait(15000);
-
-    cy.get("[data-cy=project-name-column]", { timeout: 10000 })
+    // Find the newly created project in the table and assert
+    cy.get("[data-cy=project-name-column]", { timeout: 15000 })
       .contains(uniqueProjectName)
       .closest("tr")
       .as("targetRow");
 
     // Assert that the row contains the expected data
-    cy.get("@targetRow").should("contain", uniqueProjectName);
+    cy.get("@targetRow", { timeout: 10000 }).should("contain", uniqueProjectName);
   });
 });
