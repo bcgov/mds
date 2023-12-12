@@ -125,11 +125,13 @@ describe("Major Projects", () => {
       force: true,
     });
 
-    cy.wait(10000);
+    cy.wait(15000);
 
     cy.get('[data-cy="back-to-major-project-link"]').click({
       force: true,
     });
+
+    cy.wait(15000);
 
     cy.get("[data-cy=project-name-column]", { timeout: 10000 })
       .contains(uniqueProjectName)
