@@ -78,12 +78,6 @@ describe("Major Projects", () => {
       force: true,
     });
 
-    // cy.get("#search", { timeout: 10000 }).type("Brenda mine", { force: true });
-
-    // cy.get('[data-cy="apply-filter-button"]', { timeout: 10000 }).click({ force: true });
-
-    // cy.wait(10000)
-
     cy.get('[data-cy="mine-link"]', { timeout: 10000 })
       .eq(1)
       .click({
