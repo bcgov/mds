@@ -177,8 +177,8 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
       payload,
       message
     )
-      .then(() => {
-        updateProject(
+      .then(async () => {
+        await updateProject(
           { projectGuid },
           { mrc_review_required: payload.mrc_review_required, contacts: payload.contacts },
           "Successfully updated project.",
