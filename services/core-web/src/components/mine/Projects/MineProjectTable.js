@@ -42,7 +42,11 @@ export const MineProjectTable = (props) => {
       key: "project_name",
       title: "Project name",
       dataIndex: "project_name",
-      render: (text) => <div title="Project name">{text}</div>,
+      render: (text) => (
+        <div data-cy="project-name-column" title="Project name">
+          {text}
+        </div>
+      ),
     },
     {
       key: "proponent_project_id",

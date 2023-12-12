@@ -72,6 +72,8 @@ describe("Major Projects", () => {
   });
 
   it("should add a new major project successfully", () => {
+    const uniqueProjectName = `Cypress_${Date.now()}`;
+
     cy.get('[data-cy="mines-button"]', { timeout: 10000 }).click({
       force: true,
     });
@@ -98,7 +100,7 @@ describe("Major Projects", () => {
       force: true,
     });
 
-    cy.get("#project_summary_title").type("Cypress Test Project", { force: true });
+    cy.get("#project_summary_title").type(uniqueProjectName, { force: true });
     cy.get("#project_summary_description").type("This is just a cypress test project description", {
       force: true,
     });
@@ -109,18 +111,28 @@ describe("Major Projects", () => {
     cy.get("#contacts\\[0\\]\\.email").type("cypress@mds.com", { force: true });
     cy.get("#contacts\\[0\\]\\.phone_number").type("1234567890", { force: true });
 
-    cy.intercept("POST", /.*\/(api\/)?projects\/new\/project-summaries\/new.*$/, {
-      statusCode: 201,
-      body: { message: "project created successfully" }, // Stubbed response
-    }).as("createNewProject");
-
     cy.get('[data-cy="project-summary-submit-button"]').click({
       force: true,
     });
 
-    cy.wait("@createNewProject").then((interception) => {
-      // Assert that the response body contains the expected message
-      expect(interception.response.body.message).to.equal("project created successfully");
+    cy.wait(10000);
+
+    cy.get('[data-cy="back-to-project-link"]').click({
+      force: true,
     });
+
+    cy.wait(10000);
+
+    cy.get('[data-cy="back-to-major-project-link"]').click({
+      force: true,
+    });
+
+    cy.get("[data-cy=project-name-column]", { timeout: 10000 })
+      .contains(uniqueProjectName)
+      .closest("tr")
+      .as("targetRow");
+
+    // Assert that the row contains the expected data
+    cy.get("@targetRow").should("contain", uniqueProjectName);
   });
 });
