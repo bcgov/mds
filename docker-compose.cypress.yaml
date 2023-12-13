@@ -1,0 +1,4 @@
+services:
+  flyway:
+    environment:
+      - FLYWAY_DB_NAME=mds

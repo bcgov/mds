@@ -42,12 +42,12 @@ jobs:
       - name: Run Migrations
         env:
           DOCKER_BUILDKIT: 1
-        run: docker-compose -f docker-compose.ci.yaml up -e FLYWAY_DB_NAME=mds --force-recreate --exit-code-from flyway flyway
+        run: docker-compose -f docker-compose.ci.yaml -f docker-compose.cypress.yaml up --force-recreate --exit-code-from flyway flyway
 
       - name: Create containers for integration tests
         env:
           DOCKER_BUILDKIT: 1
-        run: docker-compose -f docker-compose.ci.yaml up -d backend
+        run: docker-compose -f docker-compose.ci.yaml -f docker-compose.cypress.yaml up -d backend
       - name: build-core-web
         run: |
           NODE_OPTIONS=--max-old-space-size=5024 yarn workspace @mds/core-web build
