@@ -55,8 +55,12 @@ run-cypress-core:
 
 runbe:
 	@echo "+\n++ Running backend ...\n+"
-	@docker-compose $(DC_FILE) up --no-deps -d  postgres redis tusd document_manager_backend backend 
+
+	@docker-compose $(DC_FILE) up --no-deps -d  postgres
 	@docker-compose $(DC_FILE) up --always-recreate-deps --force-recreate flyway
+
+	@docker-compose $(DC_FILE) up --no-deps -d redis tusd document_manager_backend backend 
+
 
 testbe:
 	@echo "+\n++ Running tests in backend container ...\n+"
