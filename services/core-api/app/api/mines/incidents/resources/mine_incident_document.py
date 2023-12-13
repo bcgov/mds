@@ -59,7 +59,7 @@ class MineIncidentDocumentResource(Resource, UserMixin):
             mine_incident_id=mine_incident.mine_incident_id,
             mine_incident_document_type_code=mine_incident_document_type if mine_incident_document_type else 'INI')
 
-        mine_incident.documents.append(mine_incident_doc)
+        mine_incident._documents.append(mine_incident_doc)
         mine_incident.save()
 
         return mine_incident
