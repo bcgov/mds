@@ -4,17 +4,12 @@ import PropTypes from "prop-types";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Field } from "redux-form";
-import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import { DOCUMENT, EXCEL, IMAGE, SPATIAL } from "@mds/common/constants/fileTypes";
-import FileUpload from "@/components/common/FileUpload";
-import LinkButton from "@/components/common/LinkButton";
-import { MINE_REPORT_DOCUMENT } from "@/constants/API";
 import { Typography } from "antd";
-// import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls"
-// import { DOCUMENT, EXCEL, IMAGE, SPATIAL } from "@mds/common/constants/fileTypes";
-// import FileUpload from "@mds/common/components/common/FileUpload"
-// import LinkButton from "@mds/common/components/common/LinkButton";
-// import { MINE_REPORT_DOCUMENT } from "@mds/common/constants/API";''
+import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls"
+import { DOCUMENT, EXCEL, IMAGE, SPATIAL } from "@mds/common/constants/fileTypes";
+import FileUpload from "@mds/common/components/common/FileUpload"
+import LinkButton from "@mds/common/components/common/LinkButton";
+import { MINE_REPORT_DOCUMENT } from "@mds/common/constants/API";''
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   updateMineReportSubmissions: PropTypes.func.isRequired,

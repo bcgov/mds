@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@mds/common/customPropTypes";
-import EditReportForm from "@/components/Forms/reports/EditReportForm";
+import EditReportForm from "@mds/common/components/reports/EditReportForm";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
