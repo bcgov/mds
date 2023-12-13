@@ -7,9 +7,9 @@ import {
   getMineReportDefinitionOptions,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import PropTypes from "prop-types";
-import ReportSubmissions from "@mds/common/components/reports/ReportSubmissions";
+import { ReportSubmissions } from "@mds/common/components/reports/ReportSubmissions";
 import { compose } from "redux";
-import { useDispatch, connect } from "react-redux";
+import { useDispatch, connect, useSelector } from "react-redux";
 import { Field, reduxForm, formValueSelector } from "redux-form";
 import * as FORM from "@mds/common/constants/forms";
 import { dateNotInFuture, required, yearNotInFuture } from "@mds/common/redux/utils/Validate";
@@ -26,20 +26,15 @@ import {
 import CustomPropTypes from "@mds/common/customPropTypes";
 import moment from "moment";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
+
+import { getMineReports } from "@mds/common/redux/selectors/reportSelectors";
 import {
+  createMineReport,
   fetchMineReports,
   updateMineReport,
 } from "@mds/common/redux/actionCreators/reportActionCreator";
-
-const propTypes = {
-  mineGuid: PropTypes.string.isRequired,
-  updateMineReportSubmissions: PropTypes.func.isRequired,
-  mineReportSubmissions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
-  showUploadedFiles: PropTypes.bool,
-  dropdownMineReportCategoryOptions: PropTypes.arrayOf(
-    PropTypes.objectOf(CustomPropTypes.dropdownListItem)
-  ).isRequired,
-};
+import { modalConfig } from "@mds/common/components/modalContent/config";
+import TextArea from "antd/lib/input/TextArea";
 
 const selector = formValueSelector(FORM.ADD_REPORT);
 
@@ -70,7 +65,7 @@ const updateMineReportDefinitionOptions = (
 
 interface AddReportDetailsProps {
   mineGuid: string;
-  updateMineReportSubmissions: (mineReportSubmissions: any) => void;
+  updateMineReportSubmissions: any;
   mineReportSubmissions: any;
   showUploadedFiles: boolean;
   dropdownMineReportCategoryOptions: any;
@@ -81,18 +76,21 @@ interface AddReportDetailsProps {
   updateDueDateWithDefaultDueDate: any;
 }
 
-// const AddReportDetails = ({mineGuid}) => {
 const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
-  // const dispatch = useDispatch();
   const { mineGuid, dropdownMineReportCategoryOptions } = props;
   const [state, setState] = useState({
     existingReport: Boolean(!props.initialValues?.mine_report_definition_guid),
     mineReportDefinitionOptionsFiltered: [],
     dropdownMineReportDefinitionOptionsFiltered: [],
     selectedMineReportComplianceArticles: [],
-    mineReportSubmissions: props.initialValues?.mine_report_submissions || [], // Provide a default value
+    mineReportSubmissions: [],
   });
   const [report, setReport] = useState(null);
+  const [reportType, setReportType] = useState("");
+  const [reportName, setReportName] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedReportName, setSelectedReportName] = useState("");
+  const [selectedReportCodes, setSelectedReportCodes] = useState([]);
 
   useEffect(() => {
     const updateOptions = () => {
@@ -116,13 +114,17 @@ const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
         "label"
       );
 
+      updateMineReportDefinitionOptions(
+        props.mineReportDefinitionOptions,
+        props.selectedMineReportCategory
+      );
+
       setState((prev) => ({
         ...prev,
         mineReportDefinitionOptionsFiltered,
         dropdownMineReportDefinitionOptionsFiltered,
       }));
 
-      // Update selectedMineReportComplianceArticles when mineReportDefinitionOptionsFiltered changes
       if (props.selectedMineReportDefinition) {
         const selectedMineReportComplianceArticles = uniqBy(
           flatMap(
@@ -148,62 +150,141 @@ const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
     props.selectedMineReportDefinition,
   ]);
 
+  useEffect(() => {
+    const category = props.dropdownMineReportCategoryOptions.find(
+      (reportCategory) => reportCategory.value === reportType
+    );
+    if (category) {
+      setSelectedCategory(category.label);
+    }
+  }, [reportType]);
+
+  useEffect(() => {
+    const name = state.dropdownMineReportDefinitionOptionsFiltered.find(
+      (reportDefinitionOption) => reportDefinitionOption.value === reportName
+    );
+    if (name) {
+      setSelectedReportName(name.label);
+    }
+  }, [reportName]);
+
+  useEffect(() => {
+    const selectedCodes = state.selectedMineReportComplianceArticles.map((opt) => {
+      return formatComplianceCodeValueOrLabel(opt, true);
+    });
+    setSelectedReportCodes(selectedCodes);
+  }, [state.selectedMineReportComplianceArticles]);
+
+  const handleEditReport = async (values) => {
+    if (!values.mine_report_submissions || values.mine_report_submissions.length === 0) {
+      useDispatch()(closeModal());
+      return;
+    }
+
+    let payload: any = {
+      mine_report_submissions: [
+        ...values.mine_report_submissions,
+        {
+          documents:
+            values.mine_report_submissions[values.mine_report_submissions.length - 1].documents,
+        },
+      ],
+    };
+
+    if (
+      !report.received_date &&
+      values.mine_report_submissions &&
+      values.mine_report_submissions.length > 0
+    ) {
+      payload = { ...payload, received_date: moment().format("YYYY-MM-DD") };
+    }
+    await useDispatch()(updateMineReport(props.mineGuid, report.mine_report_guid, payload));
+    await useDispatch()(closeModal());
+    return useDispatch()(fetchMineReports(props.mineGuid));
+  };
+
+  const openEditReportModal = (event, report) => {
+    event.preventDefault();
+    setReport(report);
+    useDispatch()(
+      openModal({
+        props: {
+          onSubmit: handleEditReport,
+          title: `Edit Report: ${report.report_name}`,
+          mineGuid: props.mineGuid,
+          width: "40vw",
+          mineReport: report,
+        },
+        content: modalConfig.EDIT_REPORT,
+      })
+    );
+  };
+
+  const updateMineReportSubmissions = (updatedSubmissions) => {
+    setState((prev) => ({
+      ...prev,
+      mineReportSubmissions: updatedSubmissions,
+    }));
+  };
+
   return (
     <div>
-      <Typography.Title level={4}>Report ___________-- Type</Typography.Title>
-      <Row gutter={[16, 16]}>
+      <Typography.Title level={4}>Report Type</Typography.Title>
+      <Row gutter={[16, 8]}>
         <Col span={12}>
-          <Field
-            id="mine_report_category"
-            name="mine_report_category"
-            label="Report Type*"
-            placeholder="Select"
-            data={props.dropdownMineReportCategoryOptions}
-            doNotPinDropdown
-            component={renderConfig.SELECT}
-            validate={[required]}
-          />
+          <Form layout="vertical">
+            <Typography.Text>* Report Type</Typography.Text>
+            <Field
+              id="mine_report_category"
+              name="mine_report_category"
+              label=""
+              placeholder="Select"
+              data={props.dropdownMineReportCategoryOptions}
+              doNotPinDropdown
+              component={renderConfig.SELECT}
+              validate={[required]}
+              onChange={(event, newValue) => {
+                setReportType(newValue);
+              }}
+              value={reportType}
+            />
+          </Form>
         </Col>
-        <Col span={12}>
-          <Field
-            id="mine_report_definition_guid"
-            name="mine_report_definition_guid"
-            label="Report Name*"
-            placeholder={props.selectedMineReportCategory ? "Select" : "Select a category above"}
-            data={state.dropdownMineReportDefinitionOptionsFiltered}
-            doNotPinDropdown
-            component={renderConfig.SELECT}
-            validate={[required]}
-            onChange={props.updateDueDateWithDefaultDueDate}
-            props={{ disabled: !props.selectedMineReportCategory }}
-          />
-        </Col>
-      </Row>
 
-      <Row gutter={[16, 16]}>
+        <Col span={12}>
+          <Form layout="vertical">
+            <Typography.Text>* Report Name</Typography.Text>
+            <Field
+              id="mine_report_definition_guid"
+              name="mine_report_definition_guid"
+              label=""
+              placeholder={props.selectedMineReportCategory ? "Select" : "Select a category above"}
+              data={state.dropdownMineReportDefinitionOptionsFiltered}
+              doNotPinDropdown
+              component={renderConfig.SELECT}
+              validate={[required]}
+              props={{ disabled: !props.selectedMineReportCategory }}
+              onChange={(event, newValue) => {
+                setReportName(newValue);
+                // props.updateDueDateWithDefaultDueDate(event)
+              }}
+              value={reportName}
+            />
+          </Form>
+        </Col>
+
         <Col span={24}>
           <Form.Item label="Report Code Requirements">
             {state.selectedMineReportComplianceArticles.length > 0 ? (
-              // <List bordered size="small" className="color-primary">
-              <List>
-                {/* {state.selectedMineReportComplianceArticles.map((opt) => (
-                  <div>
-                    <Typography.Paragraph>
-                      {formatComplianceCodeValueOrLabel(opt, true)}
-                    </Typography.Paragraph>
-                  </div>
-                ))} */}
-
-                {state.selectedMineReportComplianceArticles.map((opt) => {
-                  const formattedCode = formatComplianceCodeValueOrLabel(opt, true);
+              <Form layout="vertical">
+                {selectedReportCodes.map((code) => {
                   return (
-                    <div key={opt}>
-                      <Typography.Paragraph>{formattedCode}</Typography.Paragraph>
-                      {/* You can use 'formattedCode' wherever you need it */}
+                    <div key={code}>
+                      <Typography.Text>{code}</Typography.Text>
                     </div>
                   );
                 })}
-              </List>
+              </Form>
             ) : (
               <Typography.Paragraph>
                 Select the report type and name to view the required codes.
@@ -211,156 +292,168 @@ const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
             )}
           </Form.Item>
         </Col>
-      </Row>
-      <Row gutter={[16, 16]}>
-        <Col span={24}>
-          <Alert
-            style={{ borderWidth: "1px" }}
-            message=""
-            description={
-              <Row>
-                <Col xs={24} md={18}>
-                  <p>
-                    <b>You are submitting:</b>
-                    <br />
-                    Category
-                    <br />
-                    Definition
-                    <br />
-                    Number
-                    <br />
-                  </p>
-                </Col>
-              </Row>
-            }
-            type="info"
-          />
-        </Col>
-      </Row>
-      <Row>
-        <Typography.Title level={4}>Report Information</Typography.Title>
-      </Row>
-      <Row gutter={[16, 16]}>
-        <Col span={24}>
-          <Alert
-            message=""
-            description={
-              <Row style={{ border: "none" }}>
-                <Col xs={24} md={18}>
-                  <p>This type of report submission will be posted online publicly.</p>
-                </Col>
-              </Row>
-            }
-            type="warning"
-            showIcon
-          />
-        </Col>
-      </Row>
 
-      <Row gutter={[16, 16]}>
-        <Col span={12}>
-          <Field
-            id="submission_year"
-            name="submission_year"
-            label={
-              <span>
-                <div style={{ paddingBottom: 8 }}>Report Compliance Year/Period*</div>
-              </span>
-            }
-            component={renderConfig.YEAR}
-            validate={[required, yearNotInFuture]}
-            disabledDate={(currentDate) => currentDate.year() > moment().year}
-          />
-        </Col>
-        <Col span={12}>
-          {/* <Form>
-          <Form.Item label="Due Date">
-            <Input placeholder="Select Date" />
-          </Form.Item>
-        </Form> */}
-          <Field
-            id="due_date"
-            name="due_date"
-            label={
-              <span>
-                <div style={{ paddingBottom: 8 }}>Due Date*</div>
-              </span>
-            }
-            component={renderConfig.DATE}
-            validate={[required, dateNotInFuture]}
-            disabledDate={(currentDate) => currentDate.date() > moment().date}
-          />
-        </Col>
-      </Row>
-
-      <Row gutter={[16, 16]}>
         <Col span={24}>
+          <Form layout="vertical">
+            <Alert
+              style={{ borderWidth: "1px" }}
+              message=""
+              description={
+                <Row>
+                  <Col xs={24} md={18}>
+                    <p>
+                      <b>You are submitting:</b>
+                      <br />
+                      {selectedCategory} [TODO: plain language on what it is]
+                      <br />
+                      {selectedReportName} [TODO: plain language on what it is]
+                      <br />
+                      {selectedReportCodes.length ? selectedReportCodes[0] : ""} [TODO: plain
+                      language on what it is]
+                      <br />
+                    </p>
+                  </Col>
+                </Row>
+              }
+              type="info"
+            />
+          </Form>
+        </Col>
+
+        <Typography.Title className="margin-large--top" level={4}>
+          Report Information
+        </Typography.Title>
+
+        <Col span={24}>
+          <Form layout="vertical">
+            <Alert
+              message=""
+              description={
+                <Row style={{ border: "none" }}>
+                  <Col xs={24} md={18}>
+                    <p>This type of report submission will be posted online publicly.</p>
+                  </Col>
+                </Row>
+              }
+              type="warning"
+              showIcon
+            />
+          </Form>
+        </Col>
+
+        <Col span={12}>
+          <Form layout="vertical">
+            <Form.Item label="Report Compliance Year/Period*">
+              <Field
+                id="submission_year"
+                name="submission_year"
+                label=""
+                component={renderConfig.YEAR}
+                validate={[required, yearNotInFuture]}
+                disabledDate={(currentDate) => currentDate.year() > moment().year}
+              />
+            </Form.Item>
+          </Form>
+        </Col>
+        <Col span={12}>
+          <Form layout="vertical">
+            <Form.Item label="Due Date*">
+              <Field
+                id="due_date"
+                name="due_date"
+                label=""
+                component={renderConfig.DATE}
+                validate={[required, dateNotInFuture]}
+                disabledDate={(currentDate) => currentDate.date() > moment().date}
+              />
+            </Form.Item>
+          </Form>
+        </Col>
+
+        <Col span={12}>
           <Form layout="vertical">
             <Form.Item label="Submitter Name">
               <Input placeholder="Enter Name" style={{ borderWidth: "1px" }} />
             </Form.Item>
           </Form>
         </Col>
-        <Col span={24}>
+        <Col span={12}>
           <Form layout="vertical">
             <Form.Item label="Submitter Email">
               <Input placeholder="Enter Email" style={{ borderWidth: "1px" }} />
-              Include a concise and descriptive title to the report
             </Form.Item>
           </Form>
         </Col>
-      </Row>
-
-      <Row gutter={[16, 16]}>
         <Col span={24}>
           <Form layout="vertical">
             <Form.Item label="Report Title and Additional Comment">
-              <Input placeholder="Enter comment" style={{ borderWidth: "1px" }} />
+              <Input.TextArea
+                rows={3}
+                placeholder="Include a concise and descriptive title to the report"
+                style={{ borderWidth: "1px" }}
+              />
               Include a concise and descriptive title to the report
             </Form.Item>
           </Form>
         </Col>
-      </Row>
 
-      <Row gutter={[16, 16]}>
         <Col span={24}>
-          <Alert
-            style={{ borderWidth: "1px" }}
-            message=""
-            description={
-              <div>
-                <Row>
-                  <Typography.Title level={5}>
-                    Your mine manager will be notified of this submission
-                  </Typography.Title>
-                </Row>
-                <Row>
-                  <Col xs={12} md={12}>
-                    <Typography.Text>Mine Manager</Typography.Text>
-                    <Typography.Paragraph>Denise George</Typography.Paragraph>
-                  </Col>
-                  <Col xs={12} md={12}>
-                    <Typography.Text>Mine Manager Email</Typography.Text>
-                    <Typography.Paragraph>Denise.George@gov.bc.ca</Typography.Paragraph>
-                  </Col>
-                </Row>
-              </div>
-            }
-            type="info"
-          />
+          <Form layout="vertical">
+            <Alert
+              style={{ borderWidth: "1px" }}
+              message=""
+              description={
+                <div>
+                  <Row>
+                    <Typography.Title level={5}>
+                      Your mine manager will be notified of this submission
+                    </Typography.Title>
+                  </Row>
+                  <Row>
+                    <Col span={12}>
+                      <Typography.Text>Mine Manager</Typography.Text>
+                      <Typography.Paragraph>Denise George</Typography.Paragraph>
+                    </Col>
+                    <Col span={12}>
+                      <Typography.Text>Mine Manager Email</Typography.Text>
+                      <Typography.Paragraph>Denise.George@gov.bc.ca</Typography.Paragraph>
+                    </Col>
+                    <Col span={24}>
+                      <Typography.Text>
+                        If this information is incorrect, please contact us.
+                      </Typography.Text>
+                    </Col>
+                  </Row>
+                </div>
+              }
+              type="info"
+            />
+          </Form>
+        </Col>
+
+        <Col span={24}>
+          <Typography.Title className="margin-large--top" level={4}>
+            Report File(s)
+          </Typography.Title>
+          <Form layout="vertical">
+            <ReportSubmissions
+              mineGuid={mineGuid}
+              mineReportSubmissions={props.mineReportSubmissions}
+              updateMineReportSubmissions={updateMineReportSubmissions}
+            />
+          </Form>
+        </Col>
+
+        <Col span={24}>
+          <Form layout="vertical">
+            <ReportsTable
+              openEditReportModal={openEditReportModal}
+              mineReports={useSelector(getMineReports)}
+              isLoaded={true}
+            />
+          </Form>
         </Col>
       </Row>
-
-      <Typography.Title level={4}>Report File(s)</Typography.Title>
-      <ReportSubmissions
-        mineGuid={mineGuid}
-        // mineReportSubmissions={state.mineReportSubmissions}
-        // updateMineReportSubmissions={updateMineReportSubmissions}
-      />
-      <ReportsTable
-        openEditReportModal={null}
-        // openEditReportModal={openEditReportModal}
-      />
     </div>
   );
 };

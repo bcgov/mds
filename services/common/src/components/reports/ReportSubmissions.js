@@ -9,7 +9,12 @@ import { DOCUMENT, EXCEL, IMAGE, SPATIAL } from "@mds/common/constants/fileTypes
 import FileUpload from "@/components/common/FileUpload";
 import LinkButton from "@/components/common/LinkButton";
 import { MINE_REPORT_DOCUMENT } from "@/constants/API";
-
+import { Typography } from "antd";
+// import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls"
+// import { DOCUMENT, EXCEL, IMAGE, SPATIAL } from "@mds/common/constants/fileTypes";
+// import FileUpload from "@mds/common/components/common/FileUpload"
+// import LinkButton from "@mds/common/components/common/LinkButton";
+// import { MINE_REPORT_DOCUMENT } from "@mds/common/constants/API";''
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   updateMineReportSubmissions: PropTypes.func.isRequired,
@@ -84,13 +89,8 @@ export const ReportSubmissions = (props) => {
           )) || <div>This report has no uploaded files.</div>}{" "}
         </Form.Item>
       )}
-      <Form.Item label="Upload Files">
-        {/* <ul style={{ paddingLeft: 20 }}>
-          <li>You can attach multiple files for the report in the box below</li>
-          <li>You cannot upload ZIP files</li>
-          <li>The allowed file types are: {uniq(Object.keys(acceptedFileTypesMap)).join(", ")}</li>
-          <li>Maximum individual file size is 400 MB</li>
-        </ul> */}
+      <Typography.Text>Upload Files</Typography.Text>
+      <Form.Item>
         <Field
           id="ReportFileUpload"
           name="ReportFileUpload"

@@ -104,7 +104,7 @@ const ReportSteps = () => {
         </Col>
       </Row>
       <Typography.Title className="margin-large--top margin-large--bottom" level={3}>
-        Submit Report
+        Submit New Report
       </Typography.Title>
       <Steps className="report-steps" current={currentStep}>
         <Steps.Step title="Get Started" />
