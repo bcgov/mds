@@ -39,9 +39,6 @@ jobs:
 
       # - name: Run frontend tests
       #   run: cd services/core-web/ && yarn && yarn test
-
-      - name: Set dev env variables
-        run: INPUT=yes LOAD_EXTERNAL=no make env
       - name: Run Migrations First
         env:
           DOCKER_BUILDKIT: 1
