@@ -1,0 +1,49 @@
+version: "3"
+
+services:
+
+  ####################### Keycloak for Cypress #######################
+  keycloak:
+    image: jboss/keycloak
+    build: !reset null
+  ####################### Open Telemetry #######################
+
+  ####################### Postgres Definition #######################
+  postgres:
+    image: image-registry.apps.silver.devops.gov.bc.ca/4c2ba9-tools/postgres:13
+    build: !reset null
+  ####################### Flyway Migration Definition #######################
+  flyway:
+    image: image-registry.apps.silver.devops.gov.bc.ca/4c2ba9-tools/flyway:dev
+    build: !reset null
+  ####################### Backend Definition #######################
+  backend:
+    image: image-registry.apps.silver.devops.gov.bc.ca/4c2ba9-tools/backend:dev
+    build: !reset null
+  core_api_celery:
+    image: image-registry.apps.silver.devops.gov.bc.ca/4c2ba9-tools/backend:dev
+    build: !reset null
+
+  ####################### TUSD Definition #######################
+  tusd:
+    image: image-registry.apps.silver.devops.gov.bc.ca/4c2ba9-tools/tusd:dev
+    build: !reset null
+
+
+  ####################### DOCUMENT_MANAGER_BACKEND Definition #######################
+  document_manager_backend:
+    image: image-registry.apps.silver.devops.gov.bc.ca/4c2ba9-tools/docman:dev
+    build: !reset null
+
+  document_manager_celery:
+    image: image-registry.apps.silver.devops.gov.bc.ca/4c2ba9-tools/docman:dev
+    build: !reset null
+
+  document_manager_migrate:
+    image: image-registry.apps.silver.devops.gov.bc.ca/4c2ba9-tools/docman:dev
+    build: !reset null
+
+  ####################### DOCUMENT_GENERATION Definition #######################
+  docgen-api:
+    image: image-registry.apps.silver.devops.gov.bc.ca/4c2ba9-tools/docgen
+    build: !reset null
