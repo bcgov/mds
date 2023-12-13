@@ -19,6 +19,9 @@ jobs:
         name: Install `docker-compose` for local simulations
         with:
           version: "2.14.2"
+      - name: Login
+        run: |
+          docker login -u ${{ secrets.CLUSTER_REGISTRY_USER }} -p ${{ secrets.BUILD_TOKEN }} ${{ secrets.CLUSTER_REGISTRY }}
 
       - uses: actions/cache@v3
         name: Cache yarn
