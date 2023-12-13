@@ -357,6 +357,7 @@ export class ProjectSummary extends Component {
                 </span>
               </h1>
               <Link
+                data-cy="back-to-project-link"
                 to={
                   this.props.formattedProjectSummary.project_guid
                     ? routes.PROJECTS.dynamicRoute(this.props.formattedProjectSummary.project_guid)
