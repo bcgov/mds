@@ -39,10 +39,10 @@ jobs:
 
       # - name: Run frontend tests
       #   run: cd services/core-web/ && yarn && yarn test
-      - name: Run Migrations First
+      - name: Run Migrations
         env:
           DOCKER_BUILDKIT: 1
-        run: docker-compose -f docker-compose.ci.yaml up --force-recreate --exit-code-from flyway flyway
+        run: docker-compose -f docker-compose.ci.yaml -e FLYWAY_DB_NAME=mds up --force-recreate --exit-code-from flyway flyway
 
       - name: Create containers for integration tests
         env:
