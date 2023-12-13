@@ -21,6 +21,7 @@ const propTypes = {
   submitText: PropTypes.string,
   cancelText: PropTypes.string,
   cancelConfirmMessage: PropTypes.string,
+  sectionChangeText: PropTypes.string,
 };
 
 const defaultProps = {
@@ -31,6 +32,7 @@ const defaultProps = {
   handleCancel: undefined,
   cancelConfirmMessage: undefined,
   errors: [],
+  sectionChangeText: undefined,
 };
 
 const SteppedForm = (props) => {
@@ -46,6 +48,7 @@ const SteppedForm = (props) => {
     handleCancel,
     cancelConfirmMessage,
     errors,
+    sectionChangeText,
   } = props;
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [tabIndex, setTabIndex] = useState(0);
@@ -159,7 +162,8 @@ const SteppedForm = (props) => {
                     disabled={isSubmitting}
                     onClick={(e) => handleNextClick(e, tabs[tabIndex + 1])}
                   >
-                    Save &amp; Continue <RightOutlined />
+                    {sectionChangeText ? sectionChangeText : <>Save &amp; Continue</>}
+                    <RightOutlined />
                   </Button>
                 </div>
               )}
