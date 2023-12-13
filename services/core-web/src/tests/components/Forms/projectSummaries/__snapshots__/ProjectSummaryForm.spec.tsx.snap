@@ -219,6 +219,21 @@ exports[`ProjectSummaryForm renders properly 1`] = `
           </div>
         </div>
       </div>
+      <div
+        class="ant-col"
+        style="padding-left: 8px; padding-right: 8px;"
+      >
+        <h3
+          class="ant-typography"
+        >
+          Related Project Applications
+        </h3>
+        <div
+          class="ant-typography"
+        >
+          Description of related major project applications for this mine are listed below.
+        </div>
+      </div>
     </div>
   </div>
   <br />

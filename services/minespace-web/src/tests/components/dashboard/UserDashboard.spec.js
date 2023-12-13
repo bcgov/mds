@@ -9,6 +9,8 @@ import { MINE_RESPONSE } from "@/tests/mocks/dataMocks";
 const initialState = {
   [USER_MINE_INFO]: {
     userMineInfo: {
+      // this is a really cheesy fix for a problem where the BE doesn't match the FE TS def
+      mines: MINE_RESPONSE.mines,
       records: MINE_RESPONSE.mines,
       current_page: 1,
       items_per_page: 10,

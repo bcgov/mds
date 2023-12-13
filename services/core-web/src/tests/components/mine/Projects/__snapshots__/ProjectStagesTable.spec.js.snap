@@ -32,6 +32,7 @@ exports[`ProjectStagesTable renders properly 1`] = `
           "key": 1,
           "link": null,
           "payload": Object {
+            "authorizations": Array [],
             "contacts": Array [],
             "documents": Array [],
             "expected_draft_irt_submission_date": "2020-11-10T22:18:19+00:00",

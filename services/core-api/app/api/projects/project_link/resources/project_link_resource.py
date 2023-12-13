@@ -39,12 +39,8 @@ class ProjectLinkListResource(Resource, UserMixin):
         mine = Mine.find_by_mine_guid(mine_guid)
         if mine is None:
             raise NotFound('Mine not found')
-        # TODO: Each related project should be from the same mine
-        
         project_links = ProjectLink.create_many(project_guid,
                                      data.get('related_project_guids'))
-        current_app.logger.info(project_links)
-        # project_link.save()
         return project_links, 201
 
     @api.doc(
@@ -54,7 +50,7 @@ class ProjectLinkListResource(Resource, UserMixin):
         })
     @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT])
     @api.response(204, 'Successfully deleted.')
-    def delete(self, mine_guid, project_link_guid):
+    def delete(self, project_guid, project_link_guid):
         project_link = ProjectLink.find_by_project_link_guid(
             project_link_guid)
         if project_link is None:

@@ -6783,6 +6783,7 @@ export const PROJECT_SUMMARY = {
   expected_project_start_date: "2020-11-22T22:18:19+00:00",
   documents: [],
   contacts: [],
+  authorizations: [],
 };
 
 export const PROJECT_SUMMARY_AUTHORIZATION_TYPES_HASH = {
