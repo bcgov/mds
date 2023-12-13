@@ -8,7 +8,6 @@ from app.api.utils.resources_mixins import UserMixin
 from flask_restplus import Resource, inputs
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.extensions import api
-from flask import current_app
 
 class ProjectLinkListResource(Resource, UserMixin):
     parser = CustomReqparser()

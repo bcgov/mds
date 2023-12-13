@@ -17,7 +17,6 @@ def test_post_project_link(test_client, db_session, auth_headers):
     assert post_resp.status_code == 201
 
 def test_delete_project_link(test_client, db_session, auth_headers):
-    # mine = MineFactory(minimal=True, project=0)
     batch_size = 1
 
     project_links = ProjectLinkFactory.create_batch(size=batch_size)
