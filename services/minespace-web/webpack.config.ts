@@ -117,6 +117,7 @@ const commonConfig = merge([
         // Make sure we do not use de-duped react-redux to prevent
         // errors related to no redux store access
         "react-redux": require.resolve("react-redux"),
+        "redux-form": require.resolve("redux-form"),
       },
     },
   },

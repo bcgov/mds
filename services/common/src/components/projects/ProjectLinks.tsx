@@ -1,38 +1,50 @@
 import React, { FC, useEffect, useState } from "react";
 import { getProject, getProjects } from "@mds/common/redux/selectors/projectSelectors";
 import { useSelector, useDispatch } from "react-redux";
-import { Field } from "redux-form";
+import { Field, change } from "redux-form";
 import ProjectLinksTable from "@mds/common/components/projects/ProjectLinksTable";
 import { ILinkedProject, IProject } from "@mds/common/interfaces";
 
 import { Button, Col, Row, Typography } from "antd";
-import { USER_ROLES } from "@mds/common/constants";
-import {
-  getSystemFlag,
-  isProponent,
-  userHasRole,
-} from "@mds/common/redux/reducers/authenticationReducer";
-import { renderConfig } from "@mds/common/components/forms/config";
+import { FORM, USER_ROLES, getProjectStatusDescription } from "@mds/common/constants";
+import { isProponent, userHasRole } from "@mds/common/redux/reducers/authenticationReducer";
 import {
   createProjectLinks,
   fetchProjectsByMine,
 } from "@mds/common/redux/actionCreators/projectActionCreator";
 import { dateSorter } from "@mds/common/redux/utils/helpers";
+import RenderMultiSelect from "../forms/RenderMultiSelect";
 
 interface ProjectLinksProps {
-  viewProjectLink: (record) => string;
-  tableOnly?: boolean;
+  viewProject: (record: ILinkedProject) => string;
+  tableOnly?: boolean; // only show the table, no inputs
 }
-
 // outside of component to sneak past "hooks can't be rendered conditionally"
-const ProjectLinkInput = ({ unrelatedProjects, mineGuid, projectGuid }) => {
+const ProjectLinkInput = ({ unrelatedProjects = [], mineGuid, projectGuid }) => {
   const dispatch = useDispatch();
   const [currentSelection, setCurrentSelection] = useState([]);
+  const formName = FORM.ADD_EDIT_PROJECT_SUMMARY;
+  const fieldName = "linked-projects";
+
+  if (!projectGuid) {
+    return (
+      <Typography.Paragraph>
+        Please save this record first to add links to other project applications.
+      </Typography.Paragraph>
+    );
+  }
+
+  const transformUnrelatedProjects = (projects) => {
+    const unrelated = projects.sort(dateSorter("update_timestamp", false)).map((p) => ({
+      value: p.project_guid,
+      label: `${p.project_title} ${new Date(p.update_timestamp).toDateString()}`,
+    }));
+    return unrelated;
+  };
 
   const addRelatedProjects = () => {
-    console.log("add is clicked!", currentSelection);
-    dispatch(createProjectLinks(mineGuid, projectGuid, currentSelection)).then((resp) => {
-      console.log(resp);
+    dispatch(createProjectLinks(mineGuid, projectGuid, currentSelection)).then(() => {
+      dispatch(change(formName, fieldName, []));
     });
   };
 
@@ -47,15 +59,14 @@ const ProjectLinkInput = ({ unrelatedProjects, mineGuid, projectGuid }) => {
         <Field
           id="linked-projects"
           name="linked-projects"
-          component={renderConfig.MULTI_SELECT}
-          label="Select one or more related projects (optional)"
-          data={unrelatedProjects}
-          // this produces a TS error "no overload matches this call". But it is in fact fine.
+          props={{
+            label: "Select one or more related projects (optional)",
+            data: transformUnrelatedProjects(unrelatedProjects),
+          }}
+          component={RenderMultiSelect}
           onChange={(...args) => handleChange(args)}
         />
-      </Col>
-      <Col>
-        <Button type="primary" onClick={addRelatedProjects}>
+        <Button type="primary" onClick={addRelatedProjects} className="block-button">
           Add
         </Button>
       </Col>
@@ -63,30 +74,48 @@ const ProjectLinkInput = ({ unrelatedProjects, mineGuid, projectGuid }) => {
   );
 };
 
-const ProjectLinks: FC<ProjectLinksProps> = ({ viewProjectLink, tableOnly = false, ...props }) => {
+const ProjectLinks: FC<ProjectLinksProps> = ({ viewProject, tableOnly = false }) => {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
   const [unrelatedProjects, setUnrelatedProjects] = useState([]);
+  const [projectLinks, setProjectLinks] = useState([]);
   const project = useSelector(getProject);
   const mineProjects = useSelector(getProjects);
-  const systemFlag = useSelector(getSystemFlag);
   const isUserProponent = useSelector(isProponent);
   const canEditProjects = useSelector((state) =>
     userHasRole(state, USER_ROLES.role_edit_project_summaries)
   );
   const hasModifyPermission = isUserProponent || canEditProjects;
-  console.log(project);
 
-  const transformUnrelatedProjects = (projects) => {
-    const unrelated = projects
-      .filter((p) => p.project_guid !== project.project_guid)
-      .sort(dateSorter("update_timestamp", false))
-      .map((p) => ({
-        value: p.project_guid,
-        label: `${p.project_title} ${new Date(p.update_timestamp).toDateString()}`,
-      }));
-    console.log(unrelated);
-    return unrelated;
+  const separateProjectLists = (projects: IProject[]): [ILinkedProject[], IProject[]] => {
+    // guids to filter out from the input as options
+    const relatedProjectGuids = [project.project_guid];
+
+    const { project_links = [] } = project;
+    const related: ILinkedProject[] = project_links.map((link) => {
+      const relatedProject =
+        link.project.project_guid === project.project_guid ? link.related_project : link.project;
+      relatedProjectGuids.push(relatedProject.project_guid);
+      const status_description = getProjectStatusDescription(
+        relatedProject.project_summary.status_code,
+        relatedProject.major_mine_application.status_code,
+        relatedProject.information_requirements_table.status_code
+      );
+      const primary_contact = relatedProject.contacts.find((c: any) => c.name)?.name || "";
+      const { project_summary_guid } = relatedProject.project_summary;
+      return {
+        ...relatedProject,
+        primary_contact,
+        status_description,
+        project_summary_guid,
+        project_link_guid: link.project_link_guid,
+      };
+    });
+
+    const unrelated: IProject[] = projects.filter(
+      (p) => !relatedProjectGuids.includes(p.project_guid) && p.project_guid !== project.guid
+    );
+    return [related, unrelated];
   };
 
   useEffect(() => {
@@ -100,11 +129,13 @@ const ProjectLinks: FC<ProjectLinksProps> = ({ viewProjectLink, tableOnly = fals
       });
     }
     return () => (isMounted = false);
-  }, [project]);
+  }, []);
 
   useEffect(() => {
-    setUnrelatedProjects(transformUnrelatedProjects(mineProjects));
-  }, [mineProjects]);
+    const [related, unrelated] = separateProjectLists(mineProjects);
+    setUnrelatedProjects(unrelated);
+    setProjectLinks(related);
+  }, [mineProjects, project.project_links]);
 
   return (
     <>
@@ -119,11 +150,15 @@ const ProjectLinks: FC<ProjectLinksProps> = ({ viewProjectLink, tableOnly = fals
           projectGuid={project.project_guid}
         />
       )}
-      <ProjectLinksTable
-        project={project}
-        hasModifyPermission={hasModifyPermission}
-        isLoaded={isLoaded}
-      />
+      {project.project_guid && (
+        <ProjectLinksTable
+          projectGuid={project.project_guid}
+          projectLinks={projectLinks}
+          hasModifyPermission={hasModifyPermission && !tableOnly}
+          viewProject={viewProject}
+          isLoaded={isLoaded}
+        />
+      )}
     </>
   );
 };

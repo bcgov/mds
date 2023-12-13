@@ -30,7 +30,7 @@ export const removeNullValues = (obj) => {
   return obj;
 };
 
-export const getStatusDescription = (
+export const getProjectStatusDescription = (
   projectSummaryStatusCode,
   majorMineApplicationStatusCode,
   irtStatusCode

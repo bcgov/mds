@@ -249,13 +249,14 @@ export class ProjectOverviewTab extends Component {
             projectStages={[...requiredProjectStages, ...optionalProjectStages]}
           />
           <br />
-          {shouldDisplayLinkedProjects &&
+          {shouldDisplayLinkedProjects && (
             <ProjectLinks
               tableOnly
-              viewProjectLink={(p) =>
+              viewProject={(p) =>
                 routes.PRE_APPLICATIONS.dynamicRoute(p.project_guid, p.project_summary_guid)
               }
-            />}
+            />
+          )}
         </Col>
         <Col lg={{ span: 9, offset: 1 }} xl={{ span: 7, offset: 1 }}>
           <Row>

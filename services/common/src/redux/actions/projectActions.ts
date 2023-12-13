@@ -85,3 +85,8 @@ export const storeRelatedProjects = (payload) => ({
   type: actionTypes.STORE_PROJECT_LINKS,
   payload,
 });
+
+export const removeProjectLink = (projectLinkGuid) => ({
+  type: actionTypes.REMOVE_PROJECT_LINK,
+  payload: projectLinkGuid,
+});

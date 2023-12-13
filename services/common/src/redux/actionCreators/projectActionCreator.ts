@@ -607,12 +607,7 @@ export const createProjectLinks = (
     related_project_guids: relatedProjectGuids,
   };
   return CustomAxios()
-    .post(
-      // TODO: url is invalid
-      ENVIRONMENT.apiUrl + API.PROJECT_LINKS(projectGuid),
-      payload,
-      createRequestHeader()
-    )
+    .post(ENVIRONMENT.apiUrl + API.PROJECT_LINKS(projectGuid), payload, createRequestHeader())
     .then(
       ({ data }): AxiosResponse<IProjectLink[]> => {
         notification.success({ message, duration: 10 });
@@ -623,6 +618,33 @@ export const createProjectLinks = (
     )
     .catch((err) => {
       dispatch(error(reducerTypes.CREATE_PROJECT_LINKS));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const deleteProjectLink = (
+  projectGuid: string,
+  projectLinkGuid: string
+): AppThunk<Promise<AxiosResponse<string>>> => (dispatch): Promise<AxiosResponse<string>> => {
+  dispatch(request(reducerTypes.DELETE_PROJECT_LINK));
+  dispatch(showLoading());
+  return CustomAxios()
+    .delete(
+      `${ENVIRONMENT.apiUrl}${API.PROJECT_LINKS(projectGuid, projectLinkGuid)}`,
+      createRequestHeader()
+    )
+    .then((response: AxiosResponse<string>) => {
+      notification.success({
+        message: "Successfully deleted project link.",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.DELETE_PROJECT_LINK));
+      dispatch(projectActions.removeProjectLink(projectLinkGuid));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.DELETE_PROJECT_LINK));
       throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));

@@ -32,7 +32,7 @@ import {
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getDropdownProjectLeads } from "@mds/common/redux/selectors/partiesSelectors";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
-import { IGroupedDropdownList, IProject, IProjectSummary, USER_ROLES } from "@mds/common";
+import { Feature, IGroupedDropdownList, IProject, IProjectSummary, USER_ROLES } from "@mds/common";
 import { getFormattedProjectSummary } from "@mds/common/redux/selectors/projectSelectors";
 import { normalizePhone } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
@@ -43,6 +43,7 @@ import { ProjectSummaryDocumentUpload } from "@/components/Forms/projectSummarie
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 import { MajorMineApplicationDocument } from "@mds/common/models/documents/document";
 import ProjectLinks from "@mds/common/components/projects/ProjectLinks";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 
 interface ProjectSummaryFormProps {
   project: IProject;
@@ -224,6 +225,8 @@ const renderNestedFields = (
 
 export const ProjectSummaryForm: FC<InjectedFormProps<IProjectSummary> &
   ProjectSummaryFormProps> = (props) => {
+  const { isFeatureEnabled } = useFeatureFlag();
+  const majorProjectsFeatureEnabled = isFeatureEnabled(Feature.MAJOR_PROJECT_LINK_PROJECTS);
   const [isEditMode, setIsEditMode] = useState(false);
   const projectLeads: IGroupedDropdownList = useSelector(getDropdownProjectLeads);
   const userRoles: string[] = useSelector(getUserAccessData);
@@ -337,12 +340,17 @@ export const ProjectSummaryForm: FC<InjectedFormProps<IProjectSummary> &
               validate={[maxLength(4000), required]}
               disabled={!props.isNewProject && !isEditMode}
             />
-            <ProjectLinks
-              viewProjectLink={(p) =>
-                routes.PRE_APPLICATIONS.dynamicRoute(p.project_guid, p.project_summary_guid)
-              }
-            />
           </Col>
+          {majorProjectsFeatureEnabled && (
+            <Col>
+              <ProjectLinks
+                tableOnly={!props.isNewProject && !isEditMode}
+                viewProject={(p) =>
+                  routes.PRE_APPLICATIONS.dynamicRoute(p.project_guid, p.project_summary_guid)
+                }
+              />
+            </Col>
+          )}
         </Row>
       </div>
     );

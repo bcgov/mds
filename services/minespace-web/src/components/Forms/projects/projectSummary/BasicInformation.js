@@ -1,23 +1,12 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Typography } from "antd";
 import { Field } from "redux-form";
 import { maxLength, required } from "@common/utils/Validate";
 import { renderConfig } from "@/components/common/config";
-import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
-import { Feature } from "@mds/common";
-import ProjectLinks from "@mds/common/components/projects/ProjectLinks";
-import { EDIT_PROJECT } from "@/constants/routes";
-import { isProponent } from "@mds/common/redux/selectors/authenticationSelectors";
-import { getSystemFlag } from "@mds/common/redux/reducers/authenticationReducer";
 
 const propTypes = {};
 
 export const BasicInformation = () => {
-  const { isFeatureEnabled } = useFeatureFlag();
-  const dispatch = useDispatch();
-  const flag = useSelector(getSystemFlag);
-  console.log("is proponent?", flag);
   return (
     <>
       <Typography.Title level={3}>Basic Information</Typography.Title>
@@ -59,7 +48,6 @@ export const BasicInformation = () => {
         minRows={10}
         validate={[maxLength(4000), required]}
       />
-      {isFeatureEnabled(Feature.MAJOR_PROJECT_LINK_PROJECTS) && <ProjectLinks viewProjectLink={""} />}
     </>
   );
 };

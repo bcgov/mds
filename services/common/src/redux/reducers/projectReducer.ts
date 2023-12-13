@@ -129,6 +129,17 @@ export const projectReducer = (state = initialState, action) => {
           project_links: [...action.payload, ...state.project?.project_links],
         },
       };
+    case actionTypes.REMOVE_PROJECT_LINK:
+      const newLinks = state.project?.project_links?.filter(
+        (link) => link.project_link_guid !== action.payload
+      );
+      return {
+        ...state,
+        project: {
+          ...state.project,
+          project_links: [...newLinks],
+        },
+      };
     default:
       return state;
   }

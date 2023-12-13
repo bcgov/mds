@@ -1,5 +1,5 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { FC } from "react";
+import { WrappedFieldProps } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Select } from "antd";
@@ -8,36 +8,34 @@ import { caseInsensitiveLabelFilter } from "@mds/common/redux/utils/helpers";
 /**
  * @constant RenderSelect - Ant Design `Select` component for redux-form - used for small data sets that (< 100);
  */
-const propTypes = {
-  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  input: PropTypes.objectOf(PropTypes.any).isRequired,
-  placeholder: PropTypes.string,
-  label: PropTypes.string,
-  meta: PropTypes.any, //CustomPropTypes.formMeta,
-  data: PropTypes.any, //CustomPropTypes.options,
-  filterOption: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
-  disabled: PropTypes.bool,
-  onSearch: PropTypes.func,
-  isModal: PropTypes.bool,
-};
 
-const defaultProps = {
-  placeholder: "",
-  label: "",
-  data: [],
-  disabled: false,
-  meta: {},
-  onSearch: () => {},
-  filterOption: false,
-  isModal: false,
-};
+interface MultiSelectProps extends WrappedFieldProps {
+  id: string;
+  input: any;
+  placeholder?: string;
+  label?: string;
+  meta: any; //CustomPropTypes.formMeta, made required for redux
+  data: any[]; //CustomPropTypes.options,
+  filterOption?: any;
+  disabled?: boolean;
+  onSearch?: any;
+  isModal?: boolean;
+}
 
-export const RenderMultiSelect = (props) => {
-  const extraProps = props.isModal ? null : { getPopupContainer: (trigger) => trigger.parentNode };
+export const RenderMultiSelect: FC<MultiSelectProps> = ({
+  placeholder = "",
+  data = [],
+  disabled = false,
+  onSearch = () => {},
+  filterOption = false,
+  isModal = false,
+  ...props
+}) => {
+  const extraProps = isModal ? null : { getPopupContainer: (trigger) => trigger.parentNode };
   return (
     <div>
       <Form.Item
-        label={props.label}
+        label={props.label || ""}
         validateStatus={
           props.meta.touched
             ? (props.meta.error && "error") || (props.meta.warning && "warning")
@@ -51,20 +49,20 @@ export const RenderMultiSelect = (props) => {
       >
         <Select
           virtual={false}
-          disabled={!props.data || props.disabled}
+          disabled={!data || disabled}
           mode="multiple"
           size="small"
-          placeholder={props.placeholder}
+          placeholder={placeholder}
           id={props.id}
-          onSearch={props.onSearch}
+          onSearch={onSearch}
           value={props.input.value ? props.input.value : undefined}
           onChange={props.input.onChange}
-          filterOption={props.filterOption || caseInsensitiveLabelFilter}
+          filterOption={filterOption || caseInsensitiveLabelFilter}
           showArrow
           {...extraProps}
         >
-          {props.data &&
-            props.data.map(({ value, label, tooltip }) => (
+          {data &&
+            data.map(({ value, label, tooltip }) => (
               <Select.Option key={value} value={value} title={tooltip}>
                 {label}
               </Select.Option>
@@ -74,8 +72,5 @@ export const RenderMultiSelect = (props) => {
     </div>
   );
 };
-
-RenderMultiSelect.propTypes = propTypes;
-RenderMultiSelect.defaultProps = defaultProps;
 
 export default RenderMultiSelect;

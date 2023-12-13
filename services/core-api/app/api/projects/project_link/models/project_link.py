@@ -48,7 +48,7 @@ class ProjectLink(AuditMixin, Base):
         links = []
         for related_project_guid in related_project_guids:
             new_link = cls.create(project_guid, related_project_guid, add_to_session),
-            links.append(new_link)
+            links.extend(new_link)
         db.session.commit()
         return links
 

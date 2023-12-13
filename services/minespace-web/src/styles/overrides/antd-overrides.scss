@@ -82,6 +82,11 @@
   border-color: transparent;
 }
 
+.ant-btn.block-button {
+  margin-left: 0;
+  margin-bottom: $default-margin-lg;
+}
+
 // Typography
 
 .ant-typography mark {
