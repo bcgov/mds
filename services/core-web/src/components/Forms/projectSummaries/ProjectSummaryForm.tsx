@@ -223,8 +223,9 @@ const renderNestedFields = (
   );
 };
 
-export const ProjectSummaryForm: FC<InjectedFormProps<IProjectSummary> &
-  ProjectSummaryFormProps> = (props) => {
+const ProjectSummaryForm: FC<InjectedFormProps<IProjectSummary> & ProjectSummaryFormProps> = (
+  props
+) => {
   const { isFeatureEnabled } = useFeatureFlag();
   const majorProjectsFeatureEnabled = isFeatureEnabled(Feature.MAJOR_PROJECT_LINK_PROJECTS);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -551,6 +552,7 @@ export const ProjectSummaryForm: FC<InjectedFormProps<IProjectSummary> &
           isNewProject={props.isNewProject}
           isEditMode={isEditMode}
           documents={documents}
+          change={props.change}
         />
       </div>
     );
@@ -681,7 +683,7 @@ const mapDispatchToProps = {
   change,
 };
 
-export default compose(
+export default (compose(
   withRouter,
   connect(null, mapDispatchToProps),
   reduxForm({
@@ -690,4 +692,4 @@ export default compose(
     touchOnBlur: true,
     touchOnChange: false,
   })
-)(ProjectSummaryForm);
+)(ProjectSummaryForm) as any) as FC<ProjectSummaryFormProps>;
