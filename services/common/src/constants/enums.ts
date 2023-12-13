@@ -159,3 +159,9 @@ export enum MINE_REPORT_SUBMISSION_CODES {
   REC = "REC",
   ACC = "ACC",
 }
+
+export enum MINE_INCIDENT_DOCUMENT_TYPE_CODE {
+  INM = "INM",
+  FIN = "FIN",
+  INI = "INI",
+}

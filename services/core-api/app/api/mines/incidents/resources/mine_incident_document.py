@@ -1,30 +1,16 @@
-import decimal
-import uuid
-import base64
-import requests
-import json
-
-from datetime import datetime
-from flask import request, current_app, Response
-from flask_restplus import Resource, reqparse
-from werkzeug.datastructures import FileStorage
-from werkzeug.exceptions import BadRequest, NotFound
-from sqlalchemy.exc import DBAPIError
-
 from app.api.incidents.models.mine_incident import MineIncident
-from app.api.mines.mine.models.mine import Mine
 from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.mines.incidents.models.mine_incident_document_xref import MineIncidentDocumentXref
+from app.api.mines.mine.models.mine import Mine
 from app.api.mines.response_models import MINE_INCIDENT_MODEL
-
-from app.extensions import api, db
-from app.api.utils.custom_reqparser import CustomReqparser
+from app.api.services.document_manager_service import DocumentManagerService
 from app.api.utils.access_decorators import EDIT_DO, MINESPACE_PROPONENT, requires_any_of
+from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.utils.resources_mixins import UserMixin
-
-from app.api.services.document_manager_service import DocumentManagerService
-
-from app.api.services.document_manager_service import DocumentManagerService
+from app.extensions import api
+from flask import request
+from flask_restplus import Resource
+from werkzeug.exceptions import BadRequest, NotFound
 
 
 class MineIncidentDocumentListResource(Resource, UserMixin):
@@ -36,8 +22,7 @@ class MineIncidentDocumentListResource(Resource, UserMixin):
         if not mine:
             raise NotFound('Mine not found.')
 
-        return DocumentManagerService.initializeFileUploadWithDocumentManager(
-            request, mine, 'incidents')
+        return DocumentManagerService.initializeFileUploadWithDocumentManager(request, mine, 'incidents')
 
 
 class MineIncidentDocumentResource(Resource, UserMixin):
@@ -63,19 +48,16 @@ class MineIncidentDocumentResource(Resource, UserMixin):
         file_name = data.get('filename')
         mine_incident_document_type = data.get('mine_incident_document_type')
 
-        mine_doc = MineDocument(mine_guid=mine.mine_guid,
-                                document_name=file_name,
+        mine_doc = MineDocument(mine_guid=mine.mine_guid, document_name=file_name,
                                 document_manager_guid=document_manager_guid)
 
         if not mine_doc:
             raise BadRequest('Unable to register uploaded file as document')
 
         mine_doc.save()
-        mine_incident_doc = MineIncidentDocumentXref(
-            mine_document_guid=mine_doc.mine_document_guid,
+        mine_incident_doc = MineIncidentDocumentXref(mine_document_guid=mine_doc.mine_document_guid,
             mine_incident_id=mine_incident.mine_incident_id,
-            mine_incident_document_type_code=mine_incident_document_type
-            if mine_incident_document_type else 'INI')
+            mine_incident_document_type_code=mine_incident_document_type if mine_incident_document_type else 'INI')
 
         mine_incident.documents.append(mine_incident_doc)
         mine_incident.save()
@@ -98,7 +80,8 @@ class MineIncidentDocumentResource(Resource, UserMixin):
         if mine_document not in mine_incident.mine_documents:
             raise NotFound('Mine document not found on incident.')
 
-        mine_incident.mine_documents.remove(mine_document)
-        mine_incident.save()
+        mine_document.deleted_ind = True
+
+        mine_document.save()
 
         return ('', 204)

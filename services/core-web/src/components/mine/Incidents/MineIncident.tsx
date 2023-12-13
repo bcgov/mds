@@ -145,13 +145,13 @@ export const MineIncident: FunctionComponent<MineIncidentProps> = (props) => {
     return null;
   };
 
-  const handleDeleteDocument = (): Promise<void> | null => {
-    if (params?.mineGuid && params?.mineIncidentGuid && params.mineDocumentGuid) {
+  const handleDeleteDocument = (mineDocumentGuid: string): Promise<void> | null => {
+    if (params?.mineGuid && incident.mine_incident_guid && mineDocumentGuid) {
       return props
         .removeDocumentFromMineIncident(
           params?.mineGuid,
-          params?.mineIncidentGuid,
-          params.mineDocumentGuid
+          incident.mine_incident_guid,
+          mineDocumentGuid
         )
         .then(() => handleFetchData());
     }
