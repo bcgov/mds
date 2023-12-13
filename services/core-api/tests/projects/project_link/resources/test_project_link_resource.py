@@ -11,7 +11,7 @@ def test_post_project_link(test_client, db_session, auth_headers):
 
     post_resp = test_client.post(
         f'/projects/{project_link.project_guid}/project-link',
-        data=data,
+        json=data,
         headers=auth_headers['full_auth_header'])
 
     assert post_resp.status_code == 201
