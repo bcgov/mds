@@ -2,3 +2,4 @@ services:
   flyway:
     environment:
       - FLYWAY_DB_NAME=mds
+      - FLYWAY_URL=jdbc:postgresql://postgres/mds
