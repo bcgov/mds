@@ -14,7 +14,7 @@ describe("Major Projects", () => {
       .eq(4)
       .click({ force: true });
 
-    // Hover over the permits and approvals menu
+    // Hover over the permits and approvals menu option
     cy.get('[data-menu-id^="rc-menu-"][data-menu-id$="permits-and-approvals"]', { timeout: 15000 })
       .scrollIntoView()
       .trigger("mouseover", { force: true });
