@@ -42,7 +42,7 @@ jobs:
       - name: Run Migrations
         env:
           DOCKER_BUILDKIT: 1
-        run: docker-compose -f docker-compose.ci.yaml -e FLYWAY_DB_NAME=mds up --force-recreate --exit-code-from flyway flyway
+        run: docker-compose -f docker-compose.ci.yaml up -e FLYWAY_DB_NAME=mds --force-recreate --exit-code-from flyway flyway
 
       - name: Create containers for integration tests
         env:
