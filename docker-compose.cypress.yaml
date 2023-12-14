@@ -3,3 +3,19 @@ services:
     environment:
       - FLYWAY_DB_NAME=mds
       - FLYWAY_URL=jdbc:postgresql://postgres/mds
+  keycloak:
+    build:
+      context: ./cypress/.docker/keycloak
+      dockerfile: Dockerfile.test
+    container_name: cypress-keycloak
+    environment:
+      DB_VENDOR: h2
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_PASSWORD: keycloak
+      KEYCLOAK_IMPORT: /tmp/realm-export.json -Dkeycloak.profile.feature.upload_scripts=enabled
+    volumes:
+      - ./cypress/realm-export.json:/tmp/realm-export.json
+      - ./cypress/keycloak-users.json:/opt/jboss/keycloak/standalone/configuration/keycloak-add-user.json
+    ports:
+      - 8080:8080
