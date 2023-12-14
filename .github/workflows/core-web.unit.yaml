@@ -47,7 +47,7 @@ jobs:
       - name: Create containers for integration tests
         env:
           DOCKER_BUILDKIT: 1
-        run: docker-compose -f docker-compose.ci.yaml -f docker-compose.cypress.yaml up -d backend
+        run: docker-compose -f docker-compose.ci.yaml -f docker-compose.cypress.yaml up -d backend keycloak
       - name: build-core-web
         run: |
           NODE_OPTIONS=--max-old-space-size=5024 yarn workspace @mds/core-web build
