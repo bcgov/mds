@@ -3,35 +3,35 @@ import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { bindActionCreators, compose } from "redux";
 import { connect, useSelector } from "react-redux";
-import { Field, FieldArray, reduxForm, change, getFormValues, formValueSelector } from "redux-form";
+import { change, Field, FieldArray, formValueSelector, getFormValues, reduxForm } from "redux-form";
 import { LockOutlined, PlusOutlined } from "@ant-design/icons";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Col, Row, Typography, Divider, Empty, Button, Alert } from "antd";
+import { Alert, Button, Col, Divider, Empty, Row, Typography } from "antd";
 import {
-  required,
-  requiredList,
-  maxLength,
-  email,
-  phoneNumber,
-  number,
-  wholeNumber,
-  validateSelectOptions,
-  requiredRadioButton,
-  requiredNotUndefined,
   dateNotBeforeStrictOther,
   dateNotInFutureTZ,
   dateTimezoneRequired,
+  email,
+  maxLength,
+  number,
+  phoneNumber,
+  required,
+  requiredList,
+  requiredNotUndefined,
+  requiredRadioButton,
+  validateSelectOptions,
+  wholeNumber,
 } from "@common/utils/Validate";
-import { normalizePhone, normalizeDatetime, formatDate } from "@common/utils/helpers";
+import { formatDate, normalizeDatetime, normalizePhone } from "@common/utils/helpers";
 import * as Strings from "@mds/common/constants/strings";
 import { INCIDENT_CONTACT_METHOD_OPTIONS } from "@mds/common";
 import { getDropdownInspectors } from "@mds/common/redux/selectors/partiesSelectors";
 import {
+  getDangerousOccurrenceSubparagraphOptions,
   getDropdownIncidentCategoryCodeOptions,
   getDropdownIncidentDeterminationOptions,
   getDropdownIncidentFollowupActionOptions,
-  getDangerousOccurrenceSubparagraphOptions,
   getDropdownIncidentStatusCodeOptions,
   getIncidentStatusCodeHash,
 } from "@mds/common/redux/selectors/staticContentSelectors";
@@ -39,8 +39,8 @@ import * as FORM from "@/constants/forms";
 import DocumentTable from "@/components/common/DocumentTable";
 import {
   documentNameColumn,
-  uploadedByColumn,
   uploadDateColumn,
+  uploadedByColumn,
 } from "@/components/common/DocumentColumns";
 import { renderConfig } from "@/components/common/config";
 import customPropTypes from "@/customPropTypes";
@@ -51,13 +51,10 @@ import RenderDateTimeTz from "@/components/common/RenderDateTimeTz";
 
 const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
-  incident: customPropTypes.incident.isRequired,
-  // eslint-disable-next-line react/no-unused-prop-types
+  incident: customPropTypes.incident.isRequired, // eslint-disable-next-line react/no-unused-prop-types
   formValues: PropTypes.objectOf(PropTypes.any).isRequired,
-  handlers: PropTypes.shape({ deleteDocument: PropTypes.func }).isRequired,
-  // eslint-disable-next-line react/no-unused-prop-types
-  incidentCategoryCodeOptions: customPropTypes.options.isRequired,
-  // eslint-disable-next-line react/no-unused-prop-types
+  handlers: PropTypes.shape({ deleteDocument: PropTypes.func }).isRequired, // eslint-disable-next-line react/no-unused-prop-types
+  incidentCategoryCodeOptions: customPropTypes.options.isRequired, // eslint-disable-next-line react/no-unused-prop-types
   dropdownIncidentStatusCodeOptions: PropTypes.objectOf(PropTypes.string).isRequired,
   change: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
@@ -157,7 +154,7 @@ const renderInitialReport = (incidentCategoryCodeOptions, locationOptions, isEdi
         <Typography.Paragraph>
           Enter all available details about the reporter of this incident.
         </Typography.Paragraph>
-        <Row gutter={[16]}>
+        <Row gutter={16}>
           <Col xs={24} md={10}>
             <Form.Item label="* Reported by">
               <Field
@@ -221,7 +218,7 @@ const renderInitialReport = (incidentCategoryCodeOptions, locationOptions, isEdi
           optional but help the ministry understand the nature of the incident, please consider
           including them.
         </Typography.Paragraph>
-        <Row gutter={[16]}>
+        <Row gutter={16}>
           <Col span={24}>
             <Form.Item label="* Incident Location">
               <Field
@@ -397,6 +394,10 @@ const renderDocumentation = (childProps, isEditMode, handlers, parentHandlers) =
     (doc) => doc.mine_incident_document_type_code === "FIN"
   );
 
+  const handleRemoveDocument = (event, documentGuid: string) => {
+    parentHandlers.deleteDocument(documentGuid);
+  };
+
   return (
     <Row>
       <Col span={24}>
@@ -444,7 +445,7 @@ const renderDocumentation = (childProps, isEditMode, handlers, parentHandlers) =
           documents={formatDocumentRecords(initialIncidentDocuments)}
           documentParent="Mine Incident"
           documentColumns={documentColumns}
-          removeDocument={false}
+          removeDocument={handleRemoveDocument}
         />
         <br />
       </Col>
@@ -480,7 +481,7 @@ const renderDocumentation = (childProps, isEditMode, handlers, parentHandlers) =
           documents={formatDocumentRecords(finalReportDocuments)}
           documentParent="Mine Incident"
           documentColumns={documentColumns}
-          removeDocument={false}
+          removeDocument={handleRemoveDocument}
         />
         <br />
       </Col>
@@ -507,24 +508,25 @@ const renderDocumentation = (childProps, isEditMode, handlers, parentHandlers) =
   );
 };
 
-const renderRecommendations = ({ fields, isEditMode }) => [
-  fields.map((recommendation) => (
-    <Field
-      key={recommendation}
-      name={`${recommendation}.recommendation`}
-      placeholder="Write in each individual Mine Manager Recommendation here"
-      component={renderConfig.AUTO_SIZE_FIELD}
-      disabled={!isEditMode}
-    />
-  )),
-  isEditMode ? (
-    <Button type="primary" onClick={() => fields.push({})}>
-      <PlusOutlined />
-      Add Recommendation
-    </Button>
-  ) : null,
-];
-
+const renderRecommendations = ({ fields, isEditMode }) => (
+  <div>
+    {fields.map((recommendation, index) => (
+      <Field
+        key={index}
+        name={`${recommendation}.recommendation`}
+        placeholder="Write in each individual Mine Manager Recommendation here"
+        component={renderConfig.AUTO_SIZE_FIELD}
+        disabled={!isEditMode}
+      />
+    ))}
+    {isEditMode && (
+      <Button type="primary" onClick={() => fields.push({})}>
+        <PlusOutlined />
+        Add Recommendation
+      </Button>
+    )}
+  </div>
+);
 const renderMinistryFollowUp = (childProps, isEditMode) => {
   const filteredFollowUpActions = childProps.incidentFollowUpActionOptions.filter(
     (act) =>
@@ -646,6 +648,7 @@ const renderMinistryFollowUp = (childProps, isEditMode) => {
                 name="reported_to_inspector_contacted"
                 component={renderConfig.RADIO}
                 disabled={!isEditMode}
+                validate={[]}
                 {...inspectorContactedValidation}
               />
             </Form.Item>
@@ -925,7 +928,7 @@ export const IncidentForm = (props) => {
   const [uploadedFiles, setUploadedFiles] = useState([]);
   // 2nd parameter in getDropdownIncidentCategoryCodeOptions controls inclusion of historic categories
   const incidentCategoryCodeOptions = useSelector((state) =>
-    getDropdownIncidentCategoryCodeOptions(state, false)
+    getDropdownIncidentCategoryCodeOptions(state)
   );
 
   const onFileLoad = (fileName, document_manager_guid, documentTypeCode, documentFormField) => {
@@ -957,7 +960,10 @@ export const IncidentForm = (props) => {
   const showUnspecified = !isNewIncident && !props.incident.incident_location;
   const locationOptions = [
     { label: "Surface", value: "surface" },
-    { label: "Underground", value: "underground" },
+    {
+      label: "Underground",
+      value: "underground",
+    },
     ...(showUnspecified ? [{ label: "Not Specified", value: "" }] : []),
   ];
   return (
