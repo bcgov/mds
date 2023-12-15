@@ -42,23 +42,23 @@ const updateMineReportDefinitionOptions = (
   mineReportDefinitionOptions,
   selectedMineReportCategory
 ) => {
-  let mineReportDefinitionOptionsFiltered = mineReportDefinitionOptions;
+  let mineReportDefnOptionsFiltered = mineReportDefinitionOptions;
 
   if (selectedMineReportCategory) {
-    mineReportDefinitionOptionsFiltered = mineReportDefinitionOptions.filter(
+    mineReportDefnOptionsFiltered = mineReportDefinitionOptions.filter(
       (rd) =>
         rd.categories.filter((c) => c.mine_report_category === selectedMineReportCategory).length >
         0
     );
   }
 
-  let dropdownMineReportDefinitionOptionsFiltered = createDropDownList(
-    mineReportDefinitionOptionsFiltered,
+  let dropdownMineReportDefnOptionsFiltered = createDropDownList(
+    mineReportDefnOptionsFiltered,
     "report_name",
     "mine_report_definition_guid"
   );
-  dropdownMineReportDefinitionOptionsFiltered = sortListObjectsByPropertyLocaleCompare(
-    dropdownMineReportDefinitionOptionsFiltered,
+  dropdownMineReportDefnOptionsFiltered = sortListObjectsByPropertyLocaleCompare(
+    dropdownMineReportDefnOptionsFiltered,
     "label"
   );
 };
@@ -78,13 +78,12 @@ interface AddReportDetailsProps {
 
 const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
   const { mineGuid, dropdownMineReportCategoryOptions } = props;
-  const [state, setState] = useState({
-    existingReport: Boolean(!props.initialValues?.mine_report_definition_guid),
-    mineReportDefinitionOptionsFiltered: [],
-    dropdownMineReportDefinitionOptionsFiltered: [],
-    selectedMineReportComplianceArticles: [],
-    mineReportSubmissions: [],
-  });
+
+  const [mineReportDefinitionOptionsFiltered, setMineReportDefinitionOptionsFiltered] = useState([]);
+  const [dropdownMineReportDefinitionOptionsFiltered, setDropdownMineReportDefinitionOptionsFiltered] = useState([]);
+  const [selectedMineReportComplianceArticles, setSelectedMineReportComplianceArticles] = useState([]);
+  const [mineReportSubmissions, setMineReportSubmissions] = useState([]);
+
   const [report, setReport] = useState(null);
   const [reportType, setReportType] = useState("");
   const [reportName, setReportName] = useState("");
@@ -94,23 +93,23 @@ const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
 
   useEffect(() => {
     const updateOptions = () => {
-      let mineReportDefinitionOptionsFiltered = props.mineReportDefinitionOptions;
+      let mineReportDefnOptionsFiltered = props.mineReportDefinitionOptions;
 
       if (props.selectedMineReportCategory) {
-        mineReportDefinitionOptionsFiltered = props.mineReportDefinitionOptions.filter(
+        mineReportDefnOptionsFiltered = props.mineReportDefinitionOptions.filter(
           (rd) =>
             rd.categories.filter((c) => c.mine_report_category === props.selectedMineReportCategory)
               .length > 0
         );
       }
 
-      let dropdownMineReportDefinitionOptionsFiltered = createDropDownList(
-        mineReportDefinitionOptionsFiltered,
+      let dropdownMineReportDefnOptionsFiltered = createDropDownList(
+        mineReportDefnOptionsFiltered,
         "report_name",
         "mine_report_definition_guid"
       );
-      dropdownMineReportDefinitionOptionsFiltered = sortListObjectsByPropertyLocaleCompare(
-        dropdownMineReportDefinitionOptionsFiltered,
+      dropdownMineReportDefnOptionsFiltered = sortListObjectsByPropertyLocaleCompare(
+        dropdownMineReportDefnOptionsFiltered,
         "label"
       );
 
@@ -119,14 +118,11 @@ const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
         props.selectedMineReportCategory
       );
 
-      setState((prev) => ({
-        ...prev,
-        mineReportDefinitionOptionsFiltered,
-        dropdownMineReportDefinitionOptionsFiltered,
-      }));
+      setMineReportDefinitionOptionsFiltered(mineReportDefnOptionsFiltered);
+      setDropdownMineReportDefinitionOptionsFiltered(dropdownMineReportDefnOptionsFiltered);
 
       if (props.selectedMineReportDefinition) {
-        const selectedMineReportComplianceArticles = uniqBy(
+        const selectedMineReportComplnceArticles = uniqBy(
           flatMap(
             mineReportDefinitionOptionsFiltered.filter(
               (x) => x.mine_report_definition_guid === props.selectedMineReportDefinition
@@ -135,11 +131,7 @@ const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
           ),
           "compliance_article_id"
         );
-
-        setState((prev) => ({
-          ...prev,
-          selectedMineReportComplianceArticles,
-        }));
+        setSelectedMineReportComplianceArticles(selectedMineReportComplnceArticles);
       }
     };
 
@@ -151,7 +143,7 @@ const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
   ]);
 
   useEffect(() => {
-    const category = props.dropdownMineReportCategoryOptions.find(
+      const category = dropdownMineReportCategoryOptions.find(
       (reportCategory) => reportCategory.value === reportType
     );
     if (category) {
@@ -160,7 +152,7 @@ const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
   }, [reportType]);
 
   useEffect(() => {
-    const name = state.dropdownMineReportDefinitionOptionsFiltered.find(
+    const name = dropdownMineReportDefinitionOptionsFiltered.find(
       (reportDefinitionOption) => reportDefinitionOption.value === reportName
     );
     if (name) {
@@ -169,11 +161,11 @@ const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
   }, [reportName]);
 
   useEffect(() => {
-    const selectedCodes = state.selectedMineReportComplianceArticles.map((opt) => {
+    const selectedCodes = selectedMineReportComplianceArticles.map((opt) => {
       return formatComplianceCodeValueOrLabel(opt, true);
     });
     setSelectedReportCodes(selectedCodes);
-  }, [state.selectedMineReportComplianceArticles]);
+  }, [selectedMineReportComplianceArticles]);
 
   const handleEditReport = async (values) => {
     if (!values.mine_report_submissions || values.mine_report_submissions.length === 0) {
@@ -221,10 +213,7 @@ const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
   };
 
   const updateMineReportSubmissions = (updatedSubmissions) => {
-    setState((prev) => ({
-      ...prev,
-      mineReportSubmissions: updatedSubmissions,
-    }));
+    setMineReportSubmissions(updatedSubmissions);
   };
 
   return (
@@ -239,7 +228,7 @@ const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
               name="mine_report_category"
               label=""
               placeholder="Select"
-              data={props.dropdownMineReportCategoryOptions}
+              data={dropdownMineReportCategoryOptions}
               doNotPinDropdown
               component={renderConfig.SELECT}
               validate={[required]}
@@ -259,7 +248,7 @@ const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
               name="mine_report_definition_guid"
               label=""
               placeholder={props.selectedMineReportCategory ? "Select" : "Select a category above"}
-              data={state.dropdownMineReportDefinitionOptionsFiltered}
+              data={dropdownMineReportDefinitionOptionsFiltered}
               doNotPinDropdown
               component={renderConfig.SELECT}
               validate={[required]}
@@ -275,7 +264,7 @@ const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
 
         <Col span={24}>
           <Form.Item label="Report Code Requirements">
-            {state.selectedMineReportComplianceArticles.length > 0 ? (
+            {selectedMineReportComplianceArticles.length > 0 ? (
               <Form layout="vertical">
                 {selectedReportCodes.map((code) => {
                   return (
@@ -438,7 +427,7 @@ const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
           <Form layout="vertical">
             <ReportSubmissions
               mineGuid={mineGuid}
-              mineReportSubmissions={props.mineReportSubmissions}
+              mineReportSubmissions={mineReportSubmissions}
               updateMineReportSubmissions={updateMineReportSubmissions}
             />
           </Form>
