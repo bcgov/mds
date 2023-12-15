@@ -143,402 +143,364 @@ const retrieveInitialReportDynamicValidation = (childProps) => {
   };
 };
 
-const renderInitialReport = (incidentCategoryCodeOptions, locationOptions, isEditMode) => {
-  return (
-    <Row>
-      {/* Reporter Details */}
-      <Col span={24}>
-        <Typography.Title level={3} id="initial-report">
-          Initial Report
-        </Typography.Title>
-        <h4>Reporter Details</h4>
-        <Typography.Paragraph>
-          Enter all available details about the reporter of this incident.
-        </Typography.Paragraph>
-        <Row gutter={16}>
-          <Col xs={24} md={10}>
-            <Form.Item label="* Reported by">
-              <Field
-                id="reported_by_name"
-                name="reported_by_name"
-                placeholder="Enter name of reporter..."
-                component={renderConfig.FIELD}
-                validate={[required]}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={10}>
-            <Form.Item label="* Phone number">
-              <Field
-                id="reported_by_phone_no"
-                name="reported_by_phone_no"
-                placeholder="xxx-xxx-xxxx"
-                component={renderConfig.FIELD}
-                validate={[required, phoneNumber, maxLength(12)]}
-                normalize={normalizePhone}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={4}>
-            <Form.Item label="Ext.">
-              <Field
-                id="reported_by_phone_ext"
-                name="reported_by_phone_ext"
-                placeholder="xxxxxx"
-                component={renderConfig.FIELD}
-                validate={[number, maxLength(6)]}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          <Col md={10} xs={24}>
-            <Form.Item label="* Email">
-              <Field
-                id="reported_by_email"
-                name="reported_by_email"
-                placeholder="example@domain.com"
-                component={renderConfig.FIELD}
-                validate={[required, email]}
-                disabled={!isEditMode}
-                blockLabelText={
-                  "Notification of record creation and updates will be sent to this address"
-                }
-              />
-            </Form.Item>
-          </Col>
-        </Row>
-        <br />
-      </Col>
-      {/* Incident Details */}
-      <Col span={24}>
-        <h4 id="incident-details">Incident Details</h4>
-        <Typography.Paragraph>
-          Enter more information regarding the reported incident. Some fields may be marked as
-          optional but help the ministry understand the nature of the incident, please consider
-          including them.
-        </Typography.Paragraph>
-        <Row gutter={16}>
-          <Col span={24}>
-            <Form.Item label="* Incident Location">
-              <Field
-                id="incident_location"
-                name="incident_location"
-                disabled={!isEditMode}
-                component={renderConfig.RADIO}
-                validate={[requiredNotUndefined]}
-                customOptions={locationOptions}
-              />
-            </Form.Item>
-            <Form.Item label="* Incident Category and Subcategory">
-              <Field
-                id="categories"
-                name="categories"
-                component={IncidentCategoryCheckboxGroup}
-                validate={[requiredList]}
-                data={incidentCategoryCodeOptions}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          <Col md={12} xs={24}>
-            <Form.Item label="* Incident date & time">
-              <Field
-                id="incident_timestamp"
-                name="incident_timestamp"
-                disabled={!isEditMode}
-                normalize={normalizeDatetime}
-                validate={[dateNotInFutureTZ, required, dateTimezoneRequired("incident_timezone")]}
-                props={{ timezoneFieldProps: { name: "incident_timezone" } }}
-                component={RenderDateTimeTz}
-              />
-            </Form.Item>
-          </Col>
-          <Col md={12} xs={24}>
-            <Form.Item label="Proponent incident number (optional)">
-              <Field
-                id="proponent_incident_no"
-                name="proponent_incident_no"
-                component={renderConfig.FIELD}
-                validate={[maxLength(20)]}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          <Col md={12} xs={24}>
-            <Form.Item label="Number of injuries (optional)">
-              <Field
-                id="number_of_injuries"
-                name="number_of_injuries"
-                component={renderConfig.FIELD}
-                validate={[wholeNumber, maxLength(10)]}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          <Col md={12} xs={24}>
-            <Form.Item label="Number of fatalities (optional)">
-              <Field
-                id="number_of_fatalities"
-                name="number_of_fatalities"
-                component={renderConfig.FIELD}
-                validate={[wholeNumber, maxLength(10)]}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          <Col md={12} xs={24}>
-            <Form.Item label="Were emergency services called? (optional)">
-              <Field
-                id="emergency_services_called"
-                name="emergency_services_called"
-                component={renderConfig.RADIO}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={24}>
-            <Form.Item label="* Description of incident">
-              <Field
-                id="incident_description"
-                name="incident_description"
-                placeholder="Provide a detailed description of the incident..."
-                component={renderConfig.SCROLL_FIELD}
-                validate={[required, maxLength(4000)]}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={24}>
-            <Form.Item label="Immediate measures taken (optional)">
-              <Field
-                id="immediate_measures_taken"
-                name="immediate_measures_taken"
-                placeholder="Provide a detailed description of any immediate measures taken..."
-                component={renderConfig.SCROLL_FIELD}
-                validate={[maxLength(4000)]}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={24}>
-            <Form.Item label="If any injuries, please describe (optional)">
-              <Field
-                id="injuries_description"
-                name="injuries_description"
-                placeholder="Provide a detailed description of any injuries..."
-                component={renderConfig.SCROLL_FIELD}
-                validate={[maxLength(4000)]}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          <Divider />
-          <Col md={12} xs={24}>
-            <Form.Item label="JOHSC/Worker Rep Name (optional)">
-              <Field
-                id="johsc_worker_rep_name"
-                name="johsc_worker_rep_name"
-                component={renderConfig.FIELD}
-                placeholder="Enter name of representative..."
-                validate={[maxLength(100)]}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          <Col md={12} xs={24}>
-            <Form.Item label="Was this person contacted? (optional)">
-              <Field
-                id="johsc_worker_rep_contacted"
-                name="johsc_worker_rep_contacted"
-                component={renderConfig.RADIO}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          <Col md={12} xs={24}>
-            <Form.Item label="JOHSC/Management Rep Name (optional)">
-              <Field
-                id="johsc_management_rep_name"
-                name="johsc_management_rep_name"
-                component={renderConfig.FIELD}
-                placeholder="Enter name of representative..."
-                validate={[maxLength(100)]}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          <Col md={12} xs={24}>
-            <Form.Item label="Was this person contacted? (optional)">
-              <Field
-                id="johsc_management_rep_contacted"
-                name="johsc_management_rep_contacted"
-                component={renderConfig.RADIO}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-            <br />
-          </Col>
-        </Row>
-        <br />
-      </Col>
-    </Row>
+export const IncidentForm = (props) => {
+  const [uploadedFiles, setUploadedFiles] = useState([]);
+  // 2nd parameter in getDropdownIncidentCategoryCodeOptions controls inclusion of historic categories
+  const incidentCategoryCodeOptions = useSelector((state) =>
+    getDropdownIncidentCategoryCodeOptions(state)
   );
-};
 
-const renderRecommendations = ({ fields, isEditMode }) => (
-  <div>
-    {fields.map((recommendation, index) => (
-      <Field
-        key={index}
-        name={`${recommendation}.recommendation`}
-        placeholder="Write in each individual Mine Manager Recommendation here"
-        component={renderConfig.AUTO_SIZE_FIELD}
-        disabled={!isEditMode}
-      />
-    ))}
-    {isEditMode && (
-      <Button type="primary" onClick={() => fields.push({})}>
-        <PlusOutlined />
-        Add Recommendation
-      </Button>
-    )}
-  </div>
-);
-const renderMinistryFollowUp = (childProps, isEditMode) => {
-  const filteredFollowUpActions = childProps.incidentFollowUpActionOptions.filter(
-    (act) =>
-      act.mine_incident_followup_investigation_type !== Strings.INCIDENT_FOLLOWUP_ACTIONS.unknown
+  const renderInitialReport = (incidentCategoryCodeOptions, locationOptions, isEditMode) => {
+    return (
+      <Row>
+        {/* Reporter Details */}
+        <Col span={24}>
+          <Typography.Title level={3} id="initial-report">
+            Initial Report
+          </Typography.Title>
+          <h4>Reporter Details</h4>
+          <Typography.Paragraph>
+            Enter all available details about the reporter of this incident.
+          </Typography.Paragraph>
+          <Row gutter={16}>
+            <Col xs={24} md={10}>
+              <Form.Item label="* Reported by">
+                <Field
+                  id="reported_by_name"
+                  name="reported_by_name"
+                  placeholder="Enter name of reporter..."
+                  component={renderConfig.FIELD}
+                  validate={[required]}
+                  disabled={!isEditMode}
+                />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={10}>
+              <Form.Item label="* Phone number">
+                <Field
+                  id="reported_by_phone_no"
+                  name="reported_by_phone_no"
+                  placeholder="xxx-xxx-xxxx"
+                  component={renderConfig.FIELD}
+                  validate={[required, phoneNumber, maxLength(12)]}
+                  normalize={normalizePhone}
+                  disabled={!isEditMode}
+                />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={4}>
+              <Form.Item label="Ext.">
+                <Field
+                  id="reported_by_phone_ext"
+                  name="reported_by_phone_ext"
+                  placeholder="xxxxxx"
+                  component={renderConfig.FIELD}
+                  validate={[number, maxLength(6)]}
+                  disabled={!isEditMode}
+                />
+              </Form.Item>
+            </Col>
+            <Col md={10} xs={24}>
+              <Form.Item label="* Email">
+                <Field
+                  id="reported_by_email"
+                  name="reported_by_email"
+                  placeholder="example@domain.com"
+                  component={renderConfig.FIELD}
+                  validate={[required, email]}
+                  disabled={!isEditMode}
+                  blockLabelText={
+                    "Notification of record creation and updates will be sent to this address"
+                  }
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+          <br />
+        </Col>
+        {/* Incident Details */}
+        <Col span={24}>
+          <h4 id="incident-details">Incident Details</h4>
+          <Typography.Paragraph>
+            Enter more information regarding the reported incident. Some fields may be marked as
+            optional but help the ministry understand the nature of the incident, please consider
+            including them.
+          </Typography.Paragraph>
+          <Row gutter={16}>
+            <Col span={24}>
+              <Form.Item label="* Incident Location">
+                <Field
+                  id="incident_location"
+                  name="incident_location"
+                  disabled={!isEditMode}
+                  component={renderConfig.RADIO}
+                  validate={[requiredNotUndefined]}
+                  customOptions={locationOptions}
+                />
+              </Form.Item>
+              <Form.Item label="* Incident Category and Subcategory">
+                <Field
+                  id="categories"
+                  name="categories"
+                  component={IncidentCategoryCheckboxGroup}
+                  validate={[requiredList]}
+                  data={incidentCategoryCodeOptions}
+                  disabled={!isEditMode}
+                />
+              </Form.Item>
+            </Col>
+            <Col md={12} xs={24}>
+              <Form.Item label="* Incident date & time">
+                <Field
+                  id="incident_timestamp"
+                  name="incident_timestamp"
+                  disabled={!isEditMode}
+                  normalize={normalizeDatetime}
+                  validate={[
+                    dateNotInFutureTZ,
+                    required,
+                    dateTimezoneRequired("incident_timezone"),
+                  ]}
+                  props={{ timezoneFieldProps: { name: "incident_timezone" } }}
+                  component={RenderDateTimeTz}
+                />
+              </Form.Item>
+            </Col>
+            <Col md={12} xs={24}>
+              <Form.Item label="Proponent incident number (optional)">
+                <Field
+                  id="proponent_incident_no"
+                  name="proponent_incident_no"
+                  component={renderConfig.FIELD}
+                  validate={[maxLength(20)]}
+                  disabled={!isEditMode}
+                />
+              </Form.Item>
+            </Col>
+            <Col md={12} xs={24}>
+              <Form.Item label="Number of injuries (optional)">
+                <Field
+                  id="number_of_injuries"
+                  name="number_of_injuries"
+                  component={renderConfig.FIELD}
+                  validate={[wholeNumber, maxLength(10)]}
+                  disabled={!isEditMode}
+                />
+              </Form.Item>
+            </Col>
+            <Col md={12} xs={24}>
+              <Form.Item label="Number of fatalities (optional)">
+                <Field
+                  id="number_of_fatalities"
+                  name="number_of_fatalities"
+                  component={renderConfig.FIELD}
+                  validate={[wholeNumber, maxLength(10)]}
+                  disabled={!isEditMode}
+                />
+              </Form.Item>
+            </Col>
+            <Col md={12} xs={24}>
+              <Form.Item label="Were emergency services called? (optional)">
+                <Field
+                  id="emergency_services_called"
+                  name="emergency_services_called"
+                  component={renderConfig.RADIO}
+                  disabled={!isEditMode}
+                />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item label="* Description of incident">
+                <Field
+                  id="incident_description"
+                  name="incident_description"
+                  placeholder="Provide a detailed description of the incident..."
+                  component={renderConfig.SCROLL_FIELD}
+                  validate={[required, maxLength(4000)]}
+                  disabled={!isEditMode}
+                />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item label="Immediate measures taken (optional)">
+                <Field
+                  id="immediate_measures_taken"
+                  name="immediate_measures_taken"
+                  placeholder="Provide a detailed description of any immediate measures taken..."
+                  component={renderConfig.SCROLL_FIELD}
+                  validate={[maxLength(4000)]}
+                  disabled={!isEditMode}
+                />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item label="If any injuries, please describe (optional)">
+                <Field
+                  id="injuries_description"
+                  name="injuries_description"
+                  placeholder="Provide a detailed description of any injuries..."
+                  component={renderConfig.SCROLL_FIELD}
+                  validate={[maxLength(4000)]}
+                  disabled={!isEditMode}
+                />
+              </Form.Item>
+            </Col>
+            <Divider />
+            <Col md={12} xs={24}>
+              <Form.Item label="JOHSC/Worker Rep Name (optional)">
+                <Field
+                  id="johsc_worker_rep_name"
+                  name="johsc_worker_rep_name"
+                  component={renderConfig.FIELD}
+                  placeholder="Enter name of representative..."
+                  validate={[maxLength(100)]}
+                  disabled={!isEditMode}
+                />
+              </Form.Item>
+            </Col>
+            <Col md={12} xs={24}>
+              <Form.Item label="Was this person contacted? (optional)">
+                <Field
+                  id="johsc_worker_rep_contacted"
+                  name="johsc_worker_rep_contacted"
+                  component={renderConfig.RADIO}
+                  disabled={!isEditMode}
+                />
+              </Form.Item>
+            </Col>
+            <Col md={12} xs={24}>
+              <Form.Item label="JOHSC/Management Rep Name (optional)">
+                <Field
+                  id="johsc_management_rep_name"
+                  name="johsc_management_rep_name"
+                  component={renderConfig.FIELD}
+                  placeholder="Enter name of representative..."
+                  validate={[maxLength(100)]}
+                  disabled={!isEditMode}
+                />
+              </Form.Item>
+            </Col>
+            <Col md={12} xs={24}>
+              <Form.Item label="Was this person contacted? (optional)">
+                <Field
+                  id="johsc_management_rep_contacted"
+                  name="johsc_management_rep_contacted"
+                  component={renderConfig.RADIO}
+                  disabled={!isEditMode}
+                />
+              </Form.Item>
+              <br />
+            </Col>
+          </Row>
+          <br />
+        </Col>
+      </Row>
+    );
+  };
+
+  const renderRecommendations = ({ fields, isEditMode }) => (
+    <div>
+      {fields.map((recommendation, index) => (
+        <Field
+          key={index}
+          name={`${recommendation}.recommendation`}
+          placeholder="Write in each individual Mine Manager Recommendation here"
+          component={renderConfig.AUTO_SIZE_FIELD}
+          disabled={!isEditMode}
+        />
+      ))}
+      {isEditMode && (
+        <Button type="primary" onClick={() => fields.push({})}>
+          <PlusOutlined />
+          Add Recommendation
+        </Button>
+      )}
+    </div>
   );
-  const {
-    inspectorContactedValidation,
-    inspectorContacted,
-  } = retrieveInitialReportDynamicValidation(childProps);
+  const renderMinistryFollowUp = (childProps, isEditMode) => {
+    const filteredFollowUpActions = childProps.incidentFollowUpActionOptions.filter(
+      (act) =>
+        act.mine_incident_followup_investigation_type !== Strings.INCIDENT_FOLLOWUP_ACTIONS.unknown
+    );
+    const {
+      inspectorContactedValidation,
+      inspectorContacted,
+    } = retrieveInitialReportDynamicValidation(childProps);
 
-  const formValues = useSelector((state) => getFormValues(FORM.ADD_EDIT_INCIDENT)(state));
+    const formValues = useSelector((state) => getFormValues(FORM.ADD_EDIT_INCIDENT)(state));
 
-  return (
-    <Row>
-      <Col span={24}>
-        <Typography.Title level={3} id="ministry-follow-up">
-          Ministry Follow Up
-        </Typography.Title>
-        <h4>Dangerous Occurence Determination</h4>
-        <Row gutter={16}>
-          <Col span={24}>
-            <Form.Item label="Inspector's Determination">
-              <Field
-                id="determination_type_code"
-                name="determination_type_code"
-                placeholder="Select determination..."
-                component={renderConfig.SELECT}
-                data={childProps.incidentDeterminationOptions}
-                disabled={!isEditMode}
-                validate={[validateSelectOptions(childProps.incidentDeterminationOptions)]}
-              />
-            </Form.Item>
-          </Col>
-          {formValues?.determination_type_code &&
-            formValues?.determination_type_code !==
-              Strings.INCIDENT_DETERMINATION_TYPES.pending && (
+    return (
+      <Row>
+        <Col span={24}>
+          <Typography.Title level={3} id="ministry-follow-up">
+            Ministry Follow Up
+          </Typography.Title>
+          <h4>Dangerous Occurence Determination</h4>
+          <Row gutter={16}>
+            <Col span={24}>
+              <Form.Item label="Inspector's Determination">
+                <Field
+                  id="determination_type_code"
+                  name="determination_type_code"
+                  placeholder="Select determination..."
+                  component={renderConfig.SELECT}
+                  data={childProps.incidentDeterminationOptions}
+                  disabled={!isEditMode}
+                  validate={[validateSelectOptions(childProps.incidentDeterminationOptions)]}
+                />
+              </Form.Item>
+            </Col>
+            {formValues?.determination_type_code &&
+              formValues?.determination_type_code !==
+                Strings.INCIDENT_DETERMINATION_TYPES.pending && (
+                <Col xs={24} md={12}>
+                  <Form.Item label="* Inspector who made the determination">
+                    <Field
+                      id="determination_inspector_party_guid"
+                      name="determination_inspector_party_guid"
+                      component={renderConfig.GROUPED_SELECT}
+                      data={childProps.inspectorOptions}
+                      validate={[required]}
+                      disabled={!isEditMode}
+                    />
+                  </Form.Item>
+                </Col>
+              )}
+            {formValues?.determination_type_code ===
+              Strings.INCIDENT_DETERMINATION_TYPES.dangerousOccurance && (
               <Col xs={24} md={12}>
-                <Form.Item label="* Inspector who made the determination">
+                <Form.Item label="* Which section(s) of the code apply to this dangerous occurrence?">
                   <Field
-                    id="determination_inspector_party_guid"
-                    name="determination_inspector_party_guid"
-                    component={renderConfig.GROUPED_SELECT}
-                    data={childProps.inspectorOptions}
-                    validate={[required]}
+                    id="dangerous_occurrence_subparagraph_ids"
+                    name="dangerous_occurrence_subparagraph_ids"
+                    placeholder="Please choose one or more..."
+                    component={renderConfig.MULTI_SELECT}
+                    data={childProps.dangerousOccurenceSubparagraphOptions}
+                    validate={[required, validateDoSubparagraphs]}
                     disabled={!isEditMode}
                   />
                 </Form.Item>
               </Col>
             )}
-          {formValues?.determination_type_code ===
-            Strings.INCIDENT_DETERMINATION_TYPES.dangerousOccurance && (
-            <Col xs={24} md={12}>
-              <Form.Item label="* Which section(s) of the code apply to this dangerous occurrence?">
-                <Field
-                  id="dangerous_occurrence_subparagraph_ids"
-                  name="dangerous_occurrence_subparagraph_ids"
-                  placeholder="Please choose one or more..."
-                  component={renderConfig.MULTI_SELECT}
-                  data={childProps.dangerousOccurenceSubparagraphOptions}
-                  validate={[required, validateDoSubparagraphs]}
-                  disabled={!isEditMode}
-                />
-              </Form.Item>
+            <Col span={24}>
+              <h4>Verbal Notification</h4>
             </Col>
-          )}
-          <Col span={24}>
-            <h4>Verbal Notification</h4>
-          </Col>
-          <Col md={12} xs={24}>
-            <Form.Item label="Was verbal notification of the incident provided through the Mine Incident Reporting Line (1-888-348-0299)?">
-              <Field
-                id="verbal_notification_provided"
-                name="verbal_notification_provided"
-                component={renderConfig.RADIO}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          {formValues.verbal_notification_provided && (
             <Col md={12} xs={24}>
-              <Form.Item label="Date and time">
+              <Form.Item label="Was verbal notification of the incident provided through the Mine Incident Reporting Line (1-888-348-0299)?">
                 <Field
-                  id="verbal_notification_timestamp"
-                  name="verbal_notification_timestamp"
-                  component={RenderDateTimeTz}
-                  normalize={normalizeDatetime}
-                  timezone={formValues.incident_timezone}
-                  showTime
+                  id="verbal_notification_provided"
+                  name="verbal_notification_provided"
+                  component={renderConfig.RADIO}
                   disabled={!isEditMode}
-                  placeholder="Please select date"
-                  validate={[
-                    dateNotInFutureTZ,
-                    dateNotBeforeStrictOther(formValues.incident_timestamp),
-                  ]}
                 />
               </Form.Item>
             </Col>
-          )}
-          <Col span={24}>
-            <h4>Follow-Up Information</h4>
-          </Col>
-          <Col md={12} xs={24}>
-            <Form.Item label="Incident reported to">
-              <Field
-                id="reported_to_inspector_party_guid"
-                name="reported_to_inspector_party_guid"
-                placeholder="Search for inspector..."
-                component={renderConfig.GROUPED_SELECT}
-                format={null}
-                data={childProps.inspectorOptions}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          <Col md={12} xs={24}>
-            <Form.Item label="Was this person contacted?">
-              <Field
-                id="reported_to_inspector_contacted"
-                name="reported_to_inspector_contacted"
-                component={renderConfig.RADIO}
-                disabled={!isEditMode}
-                validate={[]}
-                {...inspectorContactedValidation}
-              />
-            </Form.Item>
-          </Col>
-          {inspectorContacted && (
-            <>
+            {formValues.verbal_notification_provided && (
               <Col md={12} xs={24}>
                 <Form.Item label="Date and time">
                   <Field
-                    id="reported_timestamp"
-                    name="reported_timestamp"
+                    id="verbal_notification_timestamp"
+                    name="verbal_notification_timestamp"
                     component={RenderDateTimeTz}
                     normalize={normalizeDatetime}
                     timezone={formValues.incident_timezone}
@@ -546,184 +508,227 @@ const renderMinistryFollowUp = (childProps, isEditMode) => {
                     disabled={!isEditMode}
                     placeholder="Please select date"
                     validate={[
-                      required,
                       dateNotInFutureTZ,
                       dateNotBeforeStrictOther(formValues.incident_timestamp),
                     ]}
                   />
                 </Form.Item>
               </Col>
-              <Col md={12} xs={24}>
-                <Form.Item label="Initial Contact Method">
-                  <Field
-                    id="reported_to_inspector_contact_method"
-                    name="reported_to_inspector_contact_method"
-                    component={renderConfig.SELECT}
-                    data={INCIDENT_CONTACT_METHOD_OPTIONS.filter((cm) => cm?.inspectorOnly)}
-                    disabled={!isEditMode}
-                    validate={[required]}
-                  />
-                </Form.Item>
-              </Col>
-            </>
-          )}
-          <Col md={12} xs={24}>
-            <Form.Item label="Inspector responsible">
-              <Field
-                id="responsible_inspector_party_guid"
-                name="responsible_inspector_party_guid"
-                component={renderConfig.GROUPED_SELECT}
-                format={null}
-                placeholder="Search for responsible inspector..."
-                data={childProps.inspectorOptions}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          <Col md={12} xs={24}>
-            <Form.Item label="Was there a follow-up inspection?">
-              <Field
-                id="followup_inspection"
-                name="followup_inspection"
-                component={renderConfig.RADIO}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          <Col md={12} xs={24}>
-            <Form.Item label="Follow-up inspection date">
-              <Field
-                id="followup_inspection_date"
-                name="followup_inspection_date"
-                placeholder="Please select date..."
-                showTime={false}
-                component={RenderDateTimeTz}
-                normalize={normalizeDatetime}
-                timezone={formValues.incident_timezone}
-                validate={[
-                  dateNotInFutureTZ,
-                  dateNotBeforeStrictOther(formValues.incident_timestamp),
-                ]}
-                disabled={!isEditMode}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={24}>
-            <Form.Item label="Was it escalated to EMLI investigation?">
-              <Field
-                id="followup_investigation_type_code"
-                name="followup_investigation_type_code"
-                component={renderConfig.RADIO}
-                customOptions={filteredFollowUpActions}
-                disabled={!isEditMode}
-                validate={validateSelectOptions(filteredFollowUpActions)}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={24}>
-            <Form.Item label="Mine manager's recommendations">
-              <FieldArray
-                id="recommendations"
-                name="recommendations"
-                component={renderRecommendations}
-                {...{
-                  isEditMode,
-                  handlers: childProps.handlers,
-                }}
-              />
-            </Form.Item>
-          </Col>
-        </Row>
-      </Col>
-    </Row>
-  );
-};
-
-const updateIncidentStatus = (childProps, isNewIncident) => {
-  const isClosed = childProps.incident?.status_code === "CLD";
-  const selectedStatusCode = childProps.formValues.status_code;
-  const responsibleInspector = childProps.incident?.responsible_inspector_party;
-  return !isNewIncident ? (
-    <Col span={24}>
-      <Alert
-        message={
-          childProps.incidentStatusCodeHash[childProps.incident?.status_code] || "Undefined Status"
-        }
-        description={
-          <Row>
-            <Col xs={24} md={18}>
-              <p>
-                {alertText(
-                  childProps.incident?.update_user,
-                  childProps.incident?.update_timestamp,
-                  responsibleInspector,
-                  selectedStatusCode
-                )}
-              </p>
+            )}
+            <Col span={24}>
+              <h4>Follow-Up Information</h4>
             </Col>
-            <Col xs={24} md={6}>
-              {!isClosed && childProps.isEditMode && (
-                <Form.Item>
-                  <Field
-                    id="status_code"
-                    name="status_code"
-                    label=""
-                    placeholder="Action"
-                    component={renderConfig.SELECT}
-                    validate={[required]}
-                    data={childProps.dropdownIncidentStatusCodeOptions}
-                  />
-                </Form.Item>
-              )}
-              {!childProps.pristine && !isClosed && (
-                <div className="right center-mobile">
-                  <Button
-                    className="full-mobile"
-                    type="primary"
-                    htmlType="submit"
-                    disabled={selectedStatusCode === "UNR" && !responsibleInspector}
-                  >
-                    Update Status
-                  </Button>
-                </div>
-              )}
+            <Col md={12} xs={24}>
+              <Form.Item label="Incident reported to">
+                <Field
+                  id="reported_to_inspector_party_guid"
+                  name="reported_to_inspector_party_guid"
+                  placeholder="Search for inspector..."
+                  component={renderConfig.GROUPED_SELECT}
+                  format={null}
+                  data={childProps.inspectorOptions}
+                  disabled={!isEditMode}
+                />
+              </Form.Item>
+            </Col>
+            <Col md={12} xs={24}>
+              <Form.Item label="Was this person contacted?">
+                <Field
+                  id="reported_to_inspector_contacted"
+                  name="reported_to_inspector_contacted"
+                  component={renderConfig.RADIO}
+                  disabled={!isEditMode}
+                  validate={[]}
+                  {...inspectorContactedValidation}
+                />
+              </Form.Item>
+            </Col>
+            {inspectorContacted && (
+              <>
+                <Col md={12} xs={24}>
+                  <Form.Item label="Date and time">
+                    <Field
+                      id="reported_timestamp"
+                      name="reported_timestamp"
+                      component={RenderDateTimeTz}
+                      normalize={normalizeDatetime}
+                      timezone={formValues.incident_timezone}
+                      showTime
+                      disabled={!isEditMode}
+                      placeholder="Please select date"
+                      validate={[
+                        required,
+                        dateNotInFutureTZ,
+                        dateNotBeforeStrictOther(formValues.incident_timestamp),
+                      ]}
+                    />
+                  </Form.Item>
+                </Col>
+                <Col md={12} xs={24}>
+                  <Form.Item label="Initial Contact Method">
+                    <Field
+                      id="reported_to_inspector_contact_method"
+                      name="reported_to_inspector_contact_method"
+                      component={renderConfig.SELECT}
+                      data={INCIDENT_CONTACT_METHOD_OPTIONS.filter((cm) => cm?.inspectorOnly)}
+                      disabled={!isEditMode}
+                      validate={[required]}
+                    />
+                  </Form.Item>
+                </Col>
+              </>
+            )}
+            <Col md={12} xs={24}>
+              <Form.Item label="Inspector responsible">
+                <Field
+                  id="responsible_inspector_party_guid"
+                  name="responsible_inspector_party_guid"
+                  component={renderConfig.GROUPED_SELECT}
+                  format={null}
+                  placeholder="Search for responsible inspector..."
+                  data={childProps.inspectorOptions}
+                  disabled={!isEditMode}
+                />
+              </Form.Item>
+            </Col>
+            <Col md={12} xs={24}>
+              <Form.Item label="Was there a follow-up inspection?">
+                <Field
+                  id="followup_inspection"
+                  name="followup_inspection"
+                  component={renderConfig.RADIO}
+                  disabled={!isEditMode}
+                />
+              </Form.Item>
+            </Col>
+            <Col md={12} xs={24}>
+              <Form.Item label="Follow-up inspection date">
+                <Field
+                  id="followup_inspection_date"
+                  name="followup_inspection_date"
+                  placeholder="Please select date..."
+                  showTime={false}
+                  component={RenderDateTimeTz}
+                  normalize={normalizeDatetime}
+                  timezone={formValues.incident_timezone}
+                  validate={[
+                    dateNotInFutureTZ,
+                    dateNotBeforeStrictOther(formValues.incident_timestamp),
+                  ]}
+                  disabled={!isEditMode}
+                />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item label="Was it escalated to EMLI investigation?">
+                <Field
+                  id="followup_investigation_type_code"
+                  name="followup_investigation_type_code"
+                  component={renderConfig.RADIO}
+                  customOptions={filteredFollowUpActions}
+                  disabled={!isEditMode}
+                  validate={validateSelectOptions(filteredFollowUpActions)}
+                />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item label="Mine manager's recommendations">
+                <FieldArray
+                  id="recommendations"
+                  name="recommendations"
+                  component={renderRecommendations}
+                  {...{
+                    isEditMode,
+                    handlers: childProps.handlers,
+                  }}
+                />
+              </Form.Item>
             </Col>
           </Row>
-        }
-        type={!isClosed ? "warning" : "info"}
-        showIcon
-        style={{
-          backgroundColor: isClosed ? "#FFFFFF" : "",
-          border: isClosed ? "1.5px solid #5e46a1" : "",
-        }}
-        className={isClosed ? "ant-alert-info ant-alert-info-custom-core-color-icon" : null}
-      />
-    </Col>
-  ) : null;
-};
+        </Col>
+      </Row>
+    );
+  };
 
-const renderEditSaveControls = (childProps, isEditMode, isNewIncident) => (
-  <div className="right center-mobile violet">
-    {isEditMode && (
-      <Button
-        id="mine-incident-submit"
-        className="full-mobile right"
-        type="primary"
-        htmlType="submit"
-        loading={childProps.submitting}
-        disabled={childProps.submitting}
-      >
-        {isNewIncident ? "Create Incident" : "Save Changes"}
-      </Button>
-    )}
-  </div>
-);
+  const updateIncidentStatus = (childProps, isNewIncident) => {
+    const isClosed = childProps.incident?.status_code === "CLD";
+    const selectedStatusCode = childProps.formValues.status_code;
+    const responsibleInspector = childProps.incident?.responsible_inspector_party;
+    return !isNewIncident ? (
+      <Col span={24}>
+        <Alert
+          message={
+            childProps.incidentStatusCodeHash[childProps.incident?.status_code] ||
+            "Undefined Status"
+          }
+          description={
+            <Row>
+              <Col xs={24} md={18}>
+                <p>
+                  {alertText(
+                    childProps.incident?.update_user,
+                    childProps.incident?.update_timestamp,
+                    responsibleInspector,
+                    selectedStatusCode
+                  )}
+                </p>
+              </Col>
+              <Col xs={24} md={6}>
+                {!isClosed && childProps.isEditMode && (
+                  <Form.Item>
+                    <Field
+                      id="status_code"
+                      name="status_code"
+                      label=""
+                      placeholder="Action"
+                      component={renderConfig.SELECT}
+                      validate={[required]}
+                      data={childProps.dropdownIncidentStatusCodeOptions}
+                    />
+                  </Form.Item>
+                )}
+                {!childProps.pristine && !isClosed && (
+                  <div className="right center-mobile">
+                    <Button
+                      className="full-mobile"
+                      type="primary"
+                      htmlType="submit"
+                      disabled={selectedStatusCode === "UNR" && !responsibleInspector}
+                    >
+                      Update Status
+                    </Button>
+                  </div>
+                )}
+              </Col>
+            </Row>
+          }
+          type={!isClosed ? "warning" : "info"}
+          showIcon
+          style={{
+            backgroundColor: isClosed ? "#FFFFFF" : "",
+            border: isClosed ? "1.5px solid #5e46a1" : "",
+          }}
+          className={isClosed ? "ant-alert-info ant-alert-info-custom-core-color-icon" : null}
+        />
+      </Col>
+    ) : null;
+  };
 
-export const IncidentForm = (props) => {
-  const [uploadedFiles, setUploadedFiles] = useState([]);
-  // 2nd parameter in getDropdownIncidentCategoryCodeOptions controls inclusion of historic categories
-  const incidentCategoryCodeOptions = useSelector((state) =>
-    getDropdownIncidentCategoryCodeOptions(state)
+  const renderEditSaveControls = (childProps, isEditMode, isNewIncident) => (
+    <div className="right center-mobile violet">
+      {isEditMode && (
+        <Button
+          id="mine-incident-submit"
+          className="full-mobile right"
+          type="primary"
+          htmlType="submit"
+          loading={childProps.submitting}
+          disabled={childProps.submitting}
+        >
+          {isNewIncident ? "Create Incident" : "Save Changes"}
+        </Button>
+      )}
+    </div>
   );
 
   const renderInternalDocumentsComments = (childProps, isEditMode, handlers, parentHandlers) => {
