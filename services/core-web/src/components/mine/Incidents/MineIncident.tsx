@@ -145,19 +145,6 @@ export const MineIncident: FunctionComponent<MineIncidentProps> = (props) => {
     return null;
   };
 
-  const handleDeleteDocument = (mineDocumentGuid: string): Promise<void> | null => {
-    if (params?.mineGuid && incident.mine_incident_guid && mineDocumentGuid) {
-      return props
-        .removeDocumentFromMineIncident(
-          params?.mineGuid,
-          incident.mine_incident_guid,
-          mineDocumentGuid
-        )
-        .then(() => handleFetchData());
-    }
-    return null;
-  };
-
   const formatInitialValues = () => {
     if (!isNewIncident) {
       return {
@@ -181,7 +168,7 @@ export const MineIncident: FunctionComponent<MineIncidentProps> = (props) => {
     isNewIncident: isNewIncident,
     incident: incident,
     handlers: {
-      deleteDocument: handleDeleteDocument,
+      deleteDocument: handleFetchData,
       handleSaveData,
     },
   };

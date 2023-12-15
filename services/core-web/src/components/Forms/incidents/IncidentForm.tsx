@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { bindActionCreators, compose } from "redux";
-import { connect, useSelector } from "react-redux";
+import { connect, useSelector, useDispatch } from "react-redux";
 import { change, Field, FieldArray, formValueSelector, getFormValues, reduxForm } from "redux-form";
 import { LockOutlined, PlusOutlined } from "@ant-design/icons";
 import { Form } from "@ant-design/compatible";
@@ -48,6 +48,7 @@ import MinistryInternalComments from "@/components/mine/Incidents/MinistryIntern
 import IncidentFileUpload from "./IncidentFileUpload";
 import IncidentCategoryCheckboxGroup from "./IncidentCategoryCheckboxGroup";
 import RenderDateTimeTz from "@/components/common/RenderDateTimeTz";
+import { removeDocumentFromMineIncident } from "@mds/common/redux/actionCreators/incidentActionCreator";
 
 const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
@@ -386,128 +387,6 @@ const renderInitialReport = (incidentCategoryCodeOptions, locationOptions, isEdi
   );
 };
 
-const renderDocumentation = (childProps, isEditMode, handlers, parentHandlers) => {
-  const initialIncidentDocuments = childProps.documents.filter(
-    (doc) => doc.mine_incident_document_type_code === "INI"
-  );
-  const finalReportDocuments = childProps.documents.filter(
-    (doc) => doc.mine_incident_document_type_code === "FIN"
-  );
-
-  const handleRemoveDocument = (event, documentGuid: string) => {
-    parentHandlers.deleteDocument(documentGuid);
-  };
-
-  return (
-    <Row>
-      <Col span={24}>
-        <Typography.Title level={3} id="documentation">
-          Documentation
-        </Typography.Title>
-        <Row>
-          <Col xs={24} md={12}>
-            <h4>Upload Initial Notification Documents</h4>
-          </Col>
-        </Row>
-        <br />
-        <h4>Incident Documents</h4>
-        <br />
-        <Typography.Paragraph>
-          Please upload any initial notifications that will provide context with this incident
-          report.
-        </Typography.Paragraph>
-      </Col>
-      {isEditMode && (
-        <Col span={24}>
-          <Form.Item>
-            <Field
-              id={INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD}
-              name={INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD}
-              labelIdle='<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><br>
-              <div>Accepted filetypes: .kmz, .doc, .docx, .xlsx, .pdf</div>'
-              onFileLoad={(document_name, document_manager_guid) =>
-                handlers.onFileLoad(
-                  document_name,
-                  document_manager_guid,
-                  Strings.INCIDENT_DOCUMENT_TYPES.initial,
-                  INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD
-                )
-              }
-              onRemoveFile={parentHandlers.deleteDocument}
-              mineGuid={childProps.match.params?.mineGuid}
-              component={IncidentFileUpload}
-            />
-          </Form.Item>
-        </Col>
-      )}
-      <Col span={24}>
-        <DocumentTable
-          documents={formatDocumentRecords(initialIncidentDocuments)}
-          documentParent="Mine Incident"
-          documentColumns={documentColumns}
-          removeDocument={handleRemoveDocument}
-        />
-        <br />
-      </Col>
-      <Col span={24}>
-        <h4 id="final-report">Final Report</h4>
-        <br />
-      </Col>
-      {isEditMode && (
-        <Col span={24}>
-          <Form.Item>
-            <Field
-              id={FINAL_REPORT_DOCUMENTS_FORM_FIELD}
-              name={FINAL_REPORT_DOCUMENTS_FORM_FIELD}
-              labelIdle='<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><br>
-              <div>Accepted filetypes: .kmz, .doc, .docx, .xlsx, .pdf</div>'
-              onFileLoad={(document_name, document_manager_guid) =>
-                handlers.onFileLoad(
-                  document_name,
-                  document_manager_guid,
-                  Strings.INCIDENT_DOCUMENT_TYPES.final,
-                  FINAL_REPORT_DOCUMENTS_FORM_FIELD
-                )
-              }
-              onRemoveFile={parentHandlers.deleteDocument}
-              mineGuid={childProps.match.params?.mineGuid}
-              component={IncidentFileUpload}
-            />
-          </Form.Item>
-        </Col>
-      )}
-      <Col span={24}>
-        <DocumentTable
-          documents={formatDocumentRecords(finalReportDocuments)}
-          documentParent="Mine Incident"
-          documentColumns={documentColumns}
-          removeDocument={handleRemoveDocument}
-        />
-        <br />
-      </Col>
-      {!isEditMode && finalReportDocuments?.length === 0 && (
-        <Col span={24}>
-          <Empty
-            image={Empty.PRESENTED_IMAGE_SIMPLE}
-            description={
-              <div className="center">
-                <Typography.Paragraph strong>
-                  This incident requires a final investigation report.
-                </Typography.Paragraph>
-                <Typography.Paragraph>
-                  Pursuant to section 1.7.2 of the HSRC, an investigation report must be submitted
-                  within 60 days of the reportable incident. Please add the final report
-                  documentation by clicking below.
-                </Typography.Paragraph>
-              </div>
-            }
-          />
-        </Col>
-      )}
-    </Row>
-  );
-};
-
 const renderRecommendations = ({ fields, isEditMode }) => (
   <div>
     {fields.map((recommendation, index) => (
@@ -760,90 +639,6 @@ const renderMinistryFollowUp = (childProps, isEditMode) => {
   );
 };
 
-const renderInternalDocumentsComments = (childProps, isEditMode, handlers, parentHandlers) => {
-  const incidentCreated = Boolean(childProps.formValues?.mine_incident_guid);
-  const internalMinistryDocuments = childProps.documents.filter(
-    (doc) => doc.mine_incident_document_type_code === "INM"
-  );
-
-  return (
-    <Row>
-      <Col span={24}>
-        <Typography.Title level={3} id="internal-documents">
-          <LockOutlined className="violet" />
-          Internal Documents and Comments (Ministry Visible Only)
-        </Typography.Title>
-        <Divider />
-        {!incidentCreated ? (
-          <div className="center">
-            <Empty
-              description={
-                <Typography.Paragraph strong className="center padding-md--top">
-                  The internal ministry documentation section will be displayed after this incident
-                  is created.
-                </Typography.Paragraph>
-              }
-              image={Empty.PRESENTED_IMAGE_SIMPLE}
-            />
-          </div>
-        ) : (
-          <Row>
-            <Col span={24}>
-              <Row>
-                <Col xs={24} md={12}>
-                  <h4>Internal Ministry Documentation</h4>
-                </Col>
-              </Row>
-              <br />
-              <Typography.Paragraph strong>
-                These files are for internal staff only and will not be shown to proponents. Upload
-                internal documents that are created durring the review process.
-              </Typography.Paragraph>
-            </Col>
-            {isEditMode && (
-              <Col span={24}>
-                <Form.Item>
-                  <Field
-                    id={INTERNAL_MINISTRY_DOCUMENTS_FORM_FIELD}
-                    name={INTERNAL_MINISTRY_DOCUMENTS_FORM_FIELD}
-                    labelIdle='<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><br>
-                    <div>Accepted filetypes: .kmz, .doc, .docx, .xlsx, .pdf</div>'
-                    onFileLoad={(document_name, document_manager_guid) =>
-                      handlers.onFileLoad(
-                        document_name,
-                        document_manager_guid,
-                        Strings.INCIDENT_DOCUMENT_TYPES.internalMinistry,
-                        INTERNAL_MINISTRY_DOCUMENTS_FORM_FIELD
-                      )
-                    }
-                    onRemoveFile={parentHandlers.deleteDocument}
-                    mineGuid={childProps.match.params?.mineGuid}
-                    component={IncidentFileUpload}
-                  />
-                </Form.Item>
-              </Col>
-            )}
-            <Col span={24}>
-              <DocumentTable
-                documents={formatDocumentRecords(internalMinistryDocuments)}
-                documentParent="Mine Incident"
-                documentColumns={documentColumns}
-                removeDocument={false}
-              />
-            </Col>
-            <Col span={24}>
-              <br />
-              <MinistryInternalComments
-                mineIncidentGuid={childProps.incident?.mine_incident_guid}
-              />
-            </Col>
-          </Row>
-        )}
-      </Col>
-    </Row>
-  );
-};
-
 const updateIncidentStatus = (childProps, isNewIncident) => {
   const isClosed = childProps.incident?.status_code === "CLD";
   const selectedStatusCode = childProps.formValues.status_code;
@@ -930,6 +725,233 @@ export const IncidentForm = (props) => {
   const incidentCategoryCodeOptions = useSelector((state) =>
     getDropdownIncidentCategoryCodeOptions(state)
   );
+
+  const renderInternalDocumentsComments = (childProps, isEditMode, handlers, parentHandlers) => {
+    const incidentCreated = Boolean(childProps.formValues?.mine_incident_guid);
+    const internalMinistryDocuments = childProps.documents.filter(
+      (doc) => doc.mine_incident_document_type_code === "INM"
+    );
+    const dispatch = useDispatch();
+
+    const handleRemoveDocument = async (event, documentGuid: string) => {
+      await dispatch(
+        removeDocumentFromMineIncident(
+          childProps.incident.mine_guid,
+          childProps.incident?.mine_incident_guid,
+          documentGuid
+        )
+      );
+      parentHandlers.deleteDocument(documentGuid);
+    };
+
+    return (
+      <Row>
+        <Col span={24}>
+          <Typography.Title level={3} id="internal-documents">
+            <LockOutlined className="violet" />
+            Internal Documents and Comments (Ministry Visible Only)
+          </Typography.Title>
+          <Divider />
+          {!incidentCreated ? (
+            <div className="center">
+              <Empty
+                description={
+                  <Typography.Paragraph strong className="center padding-md--top">
+                    The internal ministry documentation section will be displayed after this
+                    incident is created.
+                  </Typography.Paragraph>
+                }
+                image={Empty.PRESENTED_IMAGE_SIMPLE}
+              />
+            </div>
+          ) : (
+            <Row>
+              <Col span={24}>
+                <Row>
+                  <Col xs={24} md={12}>
+                    <h4>Internal Ministry Documentation</h4>
+                  </Col>
+                </Row>
+                <br />
+                <Typography.Paragraph strong>
+                  These files are for internal staff only and will not be shown to proponents.
+                  Upload internal documents that are created durring the review process.
+                </Typography.Paragraph>
+              </Col>
+              {isEditMode && (
+                <Col span={24}>
+                  <Form.Item>
+                    <Field
+                      id={INTERNAL_MINISTRY_DOCUMENTS_FORM_FIELD}
+                      name={INTERNAL_MINISTRY_DOCUMENTS_FORM_FIELD}
+                      labelIdle='<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><br>
+                    <div>Accepted filetypes: .kmz, .doc, .docx, .xlsx, .pdf</div>'
+                      onFileLoad={(document_name, document_manager_guid) =>
+                        handlers.onFileLoad(
+                          document_name,
+                          document_manager_guid,
+                          Strings.INCIDENT_DOCUMENT_TYPES.internalMinistry,
+                          INTERNAL_MINISTRY_DOCUMENTS_FORM_FIELD
+                        )
+                      }
+                      onRemoveFile={handleRemoveDocument}
+                      mineGuid={childProps.match.params?.mineGuid}
+                      component={IncidentFileUpload}
+                    />
+                  </Form.Item>
+                </Col>
+              )}
+              <Col span={24}>
+                <DocumentTable
+                  documents={formatDocumentRecords(internalMinistryDocuments)}
+                  documentParent="Mine Incident"
+                  documentColumns={documentColumns}
+                  removeDocument={false}
+                />
+              </Col>
+              <Col span={24}>
+                <br />
+                <MinistryInternalComments
+                  mineIncidentGuid={childProps.incident?.mine_incident_guid}
+                />
+              </Col>
+            </Row>
+          )}
+        </Col>
+      </Row>
+    );
+  };
+
+  const renderDocumentation = (childProps, isEditMode, handlers, parentHandlers) => {
+    const dispatch = useDispatch();
+
+    const initialIncidentDocuments = childProps.documents.filter(
+      (doc) => doc.mine_incident_document_type_code === "INI"
+    );
+    const finalReportDocuments = childProps.documents.filter(
+      (doc) => doc.mine_incident_document_type_code === "FIN"
+    );
+
+    const handleRemoveDocument = async (event, documentGuid: string) => {
+      await dispatch(
+        removeDocumentFromMineIncident(
+          childProps.incident.mine_guid,
+          childProps.incident?.mine_incident_guid,
+          documentGuid
+        )
+      );
+      parentHandlers.deleteDocument(documentGuid);
+    };
+
+    return (
+      <Row>
+        <Col span={24}>
+          <Typography.Title level={3} id="documentation">
+            Documentation
+          </Typography.Title>
+          <Row>
+            <Col xs={24} md={12}>
+              <h4>Upload Initial Notification Documents</h4>
+            </Col>
+          </Row>
+          <br />
+          <h4>Incident Documents</h4>
+          <br />
+          <Typography.Paragraph>
+            Please upload any initial notifications that will provide context with this incident
+            report.
+          </Typography.Paragraph>
+        </Col>
+        {isEditMode && (
+          <Col span={24}>
+            <Form.Item>
+              <Field
+                id={INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD}
+                name={INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD}
+                labelIdle='<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><br>
+              <div>Accepted filetypes: .kmz, .doc, .docx, .xlsx, .pdf</div>'
+                onFileLoad={(document_name, document_manager_guid) =>
+                  handlers.onFileLoad(
+                    document_name,
+                    document_manager_guid,
+                    Strings.INCIDENT_DOCUMENT_TYPES.initial,
+                    INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD
+                  )
+                }
+                onRemoveFile={handleRemoveDocument}
+                mineGuid={childProps.match.params?.mineGuid}
+                component={IncidentFileUpload}
+              />
+            </Form.Item>
+          </Col>
+        )}
+        <Col span={24}>
+          <DocumentTable
+            documents={formatDocumentRecords(initialIncidentDocuments)}
+            documentParent="Mine Incident"
+            documentColumns={documentColumns}
+            removeDocument={handleRemoveDocument}
+          />
+          <br />
+        </Col>
+        <Col span={24}>
+          <h4 id="final-report">Final Report</h4>
+          <br />
+        </Col>
+        {isEditMode && (
+          <Col span={24}>
+            <Form.Item>
+              <Field
+                id={FINAL_REPORT_DOCUMENTS_FORM_FIELD}
+                name={FINAL_REPORT_DOCUMENTS_FORM_FIELD}
+                labelIdle='<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><br>
+              <div>Accepted filetypes: .kmz, .doc, .docx, .xlsx, .pdf</div>'
+                onFileLoad={(document_name, document_manager_guid) =>
+                  handlers.onFileLoad(
+                    document_name,
+                    document_manager_guid,
+                    Strings.INCIDENT_DOCUMENT_TYPES.final,
+                    FINAL_REPORT_DOCUMENTS_FORM_FIELD
+                  )
+                }
+                onRemoveFile={handleRemoveDocument}
+                mineGuid={childProps.match.params?.mineGuid}
+                component={IncidentFileUpload}
+              />
+            </Form.Item>
+          </Col>
+        )}
+        <Col span={24}>
+          <DocumentTable
+            documents={formatDocumentRecords(finalReportDocuments)}
+            documentParent="Mine Incident"
+            documentColumns={documentColumns}
+            removeDocument={handleRemoveDocument}
+          />
+          <br />
+        </Col>
+        {!isEditMode && finalReportDocuments?.length === 0 && (
+          <Col span={24}>
+            <Empty
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+              description={
+                <div className="center">
+                  <Typography.Paragraph strong>
+                    This incident requires a final investigation report.
+                  </Typography.Paragraph>
+                  <Typography.Paragraph>
+                    Pursuant to section 1.7.2 of the HSRC, an investigation report must be submitted
+                    within 60 days of the reportable incident. Please add the final report
+                    documentation by clicking below.
+                  </Typography.Paragraph>
+                </div>
+              }
+            />
+          </Col>
+        )}
+      </Row>
+    );
+  };
 
   const onFileLoad = (fileName, document_manager_guid, documentTypeCode, documentFormField) => {
     const updatedUploadedFiles = [
