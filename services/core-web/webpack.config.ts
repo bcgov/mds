@@ -80,18 +80,18 @@ const commonConfig = merge([
         REQUEST_HEADER: path.resolve(__dirname, "common/utils/RequestHeaders.js"),
         GLOBAL_ROUTES: path.resolve(__dirname, "src/constants/routes.ts"),
       }),
-      // Prevent moment locales to be bundled with the app
-      // to reduce app size
-      new webpack.IgnorePlugin({
-        resourceRegExp: /^\.\/locale$/,
-        contextRegExp: /moment$/,
-      }),
-      // Explicitly load timezone data for Canada and US
-      new MomentTimezoneDataPlugin({
-        startYear: 1900,
-        endYear: 2300,
-        matchCountries: ["CA", "US"],
-      }),
+      // // Prevent moment locales to be bundled with the app
+      // // to reduce app size
+      // new webpack.IgnorePlugin({
+      //   resourceRegExp: /^\.\/locale$/,
+      //   contextRegExp: /moment$/,
+      // }),
+      // // Explicitly load timezone data for Canada and US
+      // new MomentTimezoneDataPlugin({
+      //   startYear: 1900,
+      //   endYear: 2300,
+      //   matchCountries: ["CA", "US"],
+      // }),
       new MiniCssExtractPlugin(),
     ],
     resolve: {
@@ -100,8 +100,8 @@ const commonConfig = merge([
         ...PATH_ALIASES,
         ...(process.env.NODE_ENV === "development"
           ? {
-            "react-dom": "@hot-loader/react-dom",
-          }
+              "react-dom": "@hot-loader/react-dom",
+            }
           : {}),
         // Use lodash-es that supports proper tree-shaking
         lodash: "lodash-es",
@@ -246,8 +246,8 @@ const prodConfig = merge([
         generateStatsFile: true,
         statsOptions: { source: false },
       }),
-    ]
-  }
+    ],
+  },
 ]);
 
 module.exports = () => {
