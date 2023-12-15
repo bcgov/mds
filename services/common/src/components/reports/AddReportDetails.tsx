@@ -1,40 +1,32 @@
-import { Alert, Button, Col, Form, Input, List, Popconfirm, Row, Typography } from "antd";
+import { Alert, Col, Form, Input, Row, Typography } from "antd";
 import React, { FC, useEffect, useState } from "react";
-import ArrowRightOutlined from "@ant-design/icons/ArrowRightOutlined";
-import { Link } from "react-router-dom";
+
 import {
   getDropdownMineReportCategoryOptions,
   getMineReportDefinitionOptions,
 } from "@mds/common/redux/selectors/staticContentSelectors";
-import PropTypes from "prop-types";
 import { ReportSubmissions } from "@mds/common/components/reports/ReportSubmissions";
 import { compose } from "redux";
-import { useDispatch, connect, useSelector } from "react-redux";
+import { useDispatch, connect } from "react-redux";
 import { Field, reduxForm, formValueSelector } from "redux-form";
 import * as FORM from "@mds/common/constants/forms";
 import { dateNotInFuture, required, yearNotInFuture } from "@mds/common/redux/utils/Validate";
 import { renderConfig } from "@mds/common/components/common/config";
 import { flatMap, uniqBy } from "lodash";
-import Callout from "@mds/common/components/common/Callout";
-import ReportsTable from "./ReportsTable";
+import ReportFilesTable from "./ReportFilesTable";
 import {
   resetForm,
   formatComplianceCodeValueOrLabel,
   createDropDownList,
   sortListObjectsByPropertyLocaleCompare,
 } from "@mds/common/redux/utils/helpers";
-import CustomPropTypes from "@mds/common/customPropTypes";
 import moment from "moment";
-import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
+import { closeModal } from "@mds/common/redux/actions/modalActions";
 
-import { getMineReports } from "@mds/common/redux/selectors/reportSelectors";
 import {
-  createMineReport,
   fetchMineReports,
   updateMineReport,
 } from "@mds/common/redux/actionCreators/reportActionCreator";
-import { modalConfig } from "@mds/common/components/modalContent/config";
-import TextArea from "antd/lib/input/TextArea";
 
 const selector = formValueSelector(FORM.ADD_REPORT);
 
@@ -65,23 +57,26 @@ const updateMineReportDefinitionOptions = (
 
 interface AddReportDetailsProps {
   mineGuid: string;
-  updateMineReportSubmissions: any;
-  mineReportSubmissions: any;
-  showUploadedFiles: boolean;
   dropdownMineReportCategoryOptions: any;
   initialValues: any;
   mineReportDefinitionOptions: any;
   selectedMineReportCategory: any;
   selectedMineReportDefinition: any;
-  updateDueDateWithDefaultDueDate: any;
 }
 
 const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
   const { mineGuid, dropdownMineReportCategoryOptions } = props;
 
-  const [mineReportDefinitionOptionsFiltered, setMineReportDefinitionOptionsFiltered] = useState([]);
-  const [dropdownMineReportDefinitionOptionsFiltered, setDropdownMineReportDefinitionOptionsFiltered] = useState([]);
-  const [selectedMineReportComplianceArticles, setSelectedMineReportComplianceArticles] = useState([]);
+  const [mineReportDefinitionOptionsFiltered, setMineReportDefinitionOptionsFiltered] = useState(
+    []
+  );
+  const [
+    dropdownMineReportDefinitionOptionsFiltered,
+    setDropdownMineReportDefinitionOptionsFiltered,
+  ] = useState([]);
+  const [selectedMineReportComplianceArticles, setSelectedMineReportComplianceArticles] = useState(
+    []
+  );
   const [mineReportSubmissions, setMineReportSubmissions] = useState([]);
 
   const [report, setReport] = useState(null);
@@ -143,7 +138,7 @@ const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
   ]);
 
   useEffect(() => {
-      const category = dropdownMineReportCategoryOptions.find(
+    const category = dropdownMineReportCategoryOptions.find(
       (reportCategory) => reportCategory.value === reportType
     );
     if (category) {
@@ -195,23 +190,6 @@ const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
     return useDispatch()(fetchMineReports(props.mineGuid));
   };
 
-  const openEditReportModal = (event, report) => {
-    event.preventDefault();
-    setReport(report);
-    useDispatch()(
-      openModal({
-        props: {
-          onSubmit: handleEditReport,
-          title: `Edit Report: ${report.report_name}`,
-          mineGuid: props.mineGuid,
-          width: "40vw",
-          mineReport: report,
-        },
-        content: modalConfig.EDIT_REPORT,
-      })
-    );
-  };
-
   const updateMineReportSubmissions = (updatedSubmissions) => {
     setMineReportSubmissions(updatedSubmissions);
   };
@@ -255,7 +233,6 @@ const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
               props={{ disabled: !props.selectedMineReportCategory }}
               onChange={(event, newValue) => {
                 setReportName(newValue);
-                // props.updateDueDateWithDefaultDueDate(event)
               }}
               value={reportName}
             />
@@ -435,11 +412,7 @@ const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
 
         <Col span={24}>
           <Form layout="vertical">
-            <ReportsTable
-              openEditReportModal={openEditReportModal}
-              mineReports={useSelector(getMineReports)}
-              isLoaded={true}
-            />
+            <ReportFilesTable />
           </Form>
         </Col>
       </Row>
