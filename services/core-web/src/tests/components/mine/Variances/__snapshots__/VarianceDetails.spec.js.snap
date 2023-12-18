@@ -72,7 +72,7 @@ exports[`VarianceDetails renders properly 1`] = `
   <h5>
     Documents
   </h5>
-  <Connect(DocumentTable)
+  <DocumentTable
     documents={Array []}
     isViewOnly={false}
     removeDocument={[MockFunction]}

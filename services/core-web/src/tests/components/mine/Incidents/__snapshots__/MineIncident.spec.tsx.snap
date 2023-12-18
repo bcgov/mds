@@ -1,13 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MineIncident renders properly 1`] = `
-NodeList [
-  <div
-    id="loader"
-  >
-    <lottie-mock
-      options="[object Object]"
-    />
-  </div>,
-]
-`;
+exports[`MineIncident renders properly 1`] = `NodeList []`;
