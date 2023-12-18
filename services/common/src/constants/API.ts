@@ -143,6 +143,9 @@ export const PROJECT_SUMMARY_DOCUMENTS = ({ projectGuid, projectSummaryGuid, min
   `/projects/${projectGuid}/project-summaries/${projectSummaryGuid}/documents?${queryString.stringify(
     { mine_guid: mineGuid }
   )}`;
+export const PROJECT_LINKS = (projectGuid, projectLinkGuid = "") =>
+  `/projects/${projectGuid}/project-link${projectLinkGuid ? "/" + projectLinkGuid : ""}`;
+
 //New file version upload
 export const NEW_VERSION_DOCUMENTS = ({ mineGuid, mineDocumentGuid }) =>
   `/mines/${mineGuid}/documents/${mineDocumentGuid}/versions/upload`;
@@ -204,7 +207,7 @@ export const PROJECT_DECISION_PACKAGE_DOCUMENT = (
 export const CORE_USER = "/users/core";
 
 // Incidents
-export const MINE_INCIDENTS = (mine_guid, params) =>
+export const MINE_INCIDENTS = (mine_guid, params?) =>
   `/mines/${mine_guid}/incidents?${queryString.stringify(params)}`;
 export const MINE_INCIDENT = (mineGuid, mine_incident_guid) =>
   `/mines/${mineGuid}/incidents/${mine_incident_guid}`;
@@ -289,7 +292,8 @@ export const NOTICE_OF_WORK_APPLICATION_DELAY = (applicationGuid, delayGuid) =>
     : `/now-applications/${applicationGuid}/delays`;
 
 // Mine Party Appointments
-export const MINE_PARTY_APPOINTMENT_DOCUMENTS = (mineGuid, minePartyAppointmentGuid) =>
+// NOTE: pretty sure the file generating the TS error should actually be passing MPAGuid below
+export const MINE_PARTY_APPOINTMENT_DOCUMENTS = (mineGuid, minePartyAppointmentGuid?) =>
   `/mines/${mineGuid}/party-appts/${minePartyAppointmentGuid}/documents`;
 
 export const NRIS_DOCUMENT_TOKEN_GET_URL = (externalId, inspectionId, file_name) =>

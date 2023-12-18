@@ -1,17 +1,38 @@
 import * as actionTypes from "@mds/common/constants/actionTypes";
 import { PROJECTS } from "@mds/common/constants/reducerTypes";
+import { RootState } from "../rootState";
+import {
+  IInformationRequirementsTable,
+  IMajorMinesApplication,
+  IProject,
+  IProjectDecisionPackage,
+  IProjectPageData,
+  IProjectSummary,
+} from "../..";
 
-const initialState = {
+interface IProjectReducerState {
+  projects: IProject[];
+  project: IProject;
+  projectPageData: IProjectPageData;
+  projectSummaries: IProjectSummary[];
+  projectSummary: IProjectSummary;
+  projectSummaryPageData: any;
+  informationRequirementsTable: IInformationRequirementsTable;
+  requirements: IInformationRequirementsTable[];
+  majorMinesApplication: IMajorMinesApplication;
+  projectDecisionPackage: IProjectDecisionPackage;
+}
+const initialState: IProjectReducerState = {
   projects: [],
-  project: {},
-  projectPageData: {},
+  project: {} as IProject,
+  projectPageData: {} as IProjectPageData,
   projectSummaries: [],
-  projectSummary: {},
+  projectSummary: {} as IProjectSummary,
   projectSummaryPageData: {},
-  informationRequirementsTable: {},
+  informationRequirementsTable: {} as IInformationRequirementsTable,
   requirements: [],
-  majorMinesApplication: {},
-  projectDecisionPackage: {},
+  majorMinesApplication: {} as IMajorMinesApplication,
+  projectDecisionPackage: {} as IProjectDecisionPackage,
 };
 
 export const projectReducer = (state = initialState, action) => {
@@ -100,6 +121,25 @@ export const projectReducer = (state = initialState, action) => {
         projects: {},
         projectPageData: {},
       };
+    case actionTypes.STORE_PROJECT_LINKS:
+      return {
+        ...state,
+        project: {
+          ...state.project,
+          project_links: [...action.payload, ...state.project?.project_links],
+        },
+      };
+    case actionTypes.REMOVE_PROJECT_LINK:
+      const newLinks = state.project?.project_links?.filter(
+        (link) => link.project_link_guid !== action.payload
+      );
+      return {
+        ...state,
+        project: {
+          ...state.project,
+          project_links: [...newLinks],
+        },
+      };
     default:
       return state;
   }
@@ -109,17 +149,19 @@ const projectReducerObject = {
   [PROJECTS]: projectReducer,
 };
 
-export const getProjects = (state) => state[PROJECTS].projects;
-export const getProject = (state) => state[PROJECTS].project;
-export const getProjectPageData = (state) => state[PROJECTS].projectPageData;
-export const getProjectSummaries = (state) => state[PROJECTS].projectSummaries;
-export const getProjectSummary = (state) => state[PROJECTS].projectSummary;
-export const getProjectSummaryPageData = (state) => state[PROJECTS].projectSummaryPageData;
-export const getRequirements = (state) => state[PROJECTS].requirements;
-export const getInformationRequirementsTable = (state) =>
+export const getProjects = (state: RootState) => state[PROJECTS].projects;
+export const getProject = (state: RootState) => state[PROJECTS].project;
+export const getProjectPageData = (state: RootState) => state[PROJECTS].projectPageData;
+export const getProjectSummaries = (state: RootState) => state[PROJECTS].projectSummaries;
+export const getProjectSummary = (state: RootState) => state[PROJECTS].projectSummary;
+export const getProjectSummaryPageData = (state: RootState) =>
+  state[PROJECTS].projectSummaryPageData;
+export const getRequirements = (state: RootState) => state[PROJECTS].requirements;
+export const getInformationRequirementsTable = (state: RootState) =>
   state[PROJECTS].informationRequirementsTable;
-export const getMajorMinesApplication = (state) => state[PROJECTS].majorMinesApplication;
-export const getProjectDecisionPackage = (state) => state[PROJECTS].projectDecisionPackage;
-export const getProjectViewAllTable = (state) => state[PROJECTS].viewAllProjectsPageData;
+export const getMajorMinesApplication = (state: RootState) => state[PROJECTS].majorMinesApplication;
+export const getProjectDecisionPackage = (state: RootState) =>
+  state[PROJECTS].projectDecisionPackage;
+export const getProjectLinks = (state: RootState) => state[PROJECTS].project?.project_links;
 
 export default projectReducerObject;

@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProjectSummary renders properly 1`] = `
+<div
+  class="loading-screen"
+>
+  <div
+    id="loader"
+  >
+    <lottie-mock
+      options="[object Object]"
+    />
+  </div>
+</div>
+`;

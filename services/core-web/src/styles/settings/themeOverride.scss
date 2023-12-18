@@ -295,6 +295,11 @@
   border-style: solid !important;
 }
 
+.ant-btn.block-button {
+  margin-left: 0;
+  margin-bottom: $default-margin-lg;
+}
+
 // POPUP CONFIRM
 .ant-popover-inner-content {
   background-color: $pure-white;

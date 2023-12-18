@@ -114,7 +114,10 @@ const commonConfig = merge([
           : {}),
         // Use lodash-es that supports proper tree-shaking
         lodash: "lodash-es",
+        // Make sure we do not use de-duped react-redux to prevent
+        // errors related to no redux store access
         "react-redux": require.resolve("react-redux"),
+        "redux-form": require.resolve("redux-form"),
       },
     },
   },

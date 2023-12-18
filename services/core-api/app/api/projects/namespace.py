@@ -1,7 +1,7 @@
 from flask_restplus import Namespace
 
 from app.api.projects.project.resources.project import ProjectResource, ProjectListResource, ProjectListDashboardResource
-from app.api.projects.project_link.resources.project_link import ProjectLinkListResource
+from app.api.projects.project_link.resources.project_link_resource import ProjectLinkListResource
 from app.api.projects.project_summary.resources.project_summary import ProjectSummaryResource
 from app.api.projects.project_summary.resources.project_summary_list import ProjectSummaryListGetResource, ProjectSummaryListPostResource
 from app.api.projects.project_summary.resources.project_summary_document_types import ProjectSummaryDocumentTypeResource
@@ -85,6 +85,5 @@ api.add_resource(ProjectDecisionPackageDocumentUploadResource, '/<string:project
 api.add_resource(ProjectDecisionPackageUploadedDocumentResource, '/<string:project_guid>/project-decision-package/<string:project_decision_package_guid>/documents/<string:mine_document_guid>')
 
 # Project Link
-api.add_resource(ProjectLinkListResource, '/<string:mine_guid>/project-link')
-api.add_resource(ProjectLinkListResource, '/<string:mine_guid>/project-link/<string:project_link_guid>')
-
+api.add_resource(ProjectLinkListResource, '/<string:project_guid>/project-link')
+api.add_resource(ProjectLinkListResource, '/<string:project_guid>/project-link/<string:project_link_guid>')

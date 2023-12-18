@@ -47,7 +47,7 @@ const transformRowData = (projects, mineCommodityHash) =>
       .map((contact) => contact.name)[0],
     project_lead_name: project.project_lead_name,
     commodity:
-      project.mine.mine_type && project.mine.mine_type.length > 0
+      project?.mine?.mine_type && project.mine.mine_type.length > 0
         ? uniqBy(
             flattenDeep(
               project.mine.mine_type.reduce((result, type) => {

@@ -12,6 +12,7 @@ import {
   ICreateProjectSummary,
   IProjectSummary,
   IProject,
+  IProjectLink,
   IInformationRequirementsTable,
   IFileInfo,
   ICreateMajorMinesApplication,
@@ -586,6 +587,64 @@ export const removeDocumentFromProjectDecisionPackage = (
     })
     .catch((err) => {
       dispatch(error(reducerTypes.REMOVE_DOCUMENT_FROM_PROJECT_DECISION_PACKAGE));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const createProjectLinks = (
+  mineGuid: string,
+  projectGuid: string,
+  relatedProjectGuids: string[],
+  message = "Successfully create new project links"
+): AppThunk<Promise<AxiosResponse<IProjectLink[]>>> => (
+  dispatch
+): Promise<AxiosResponse<IProjectLink[]>> => {
+  dispatch(request(reducerTypes.CREATE_PROJECT_LINKS));
+  dispatch(showLoading());
+  const payload = {
+    mine_guid: mineGuid,
+    related_project_guids: relatedProjectGuids,
+  };
+  return CustomAxios()
+    .post(ENVIRONMENT.apiUrl + API.PROJECT_LINKS(projectGuid), payload, createRequestHeader())
+    .then(
+      ({ data }): AxiosResponse<IProjectLink[]> => {
+        notification.success({ message, duration: 10 });
+        dispatch(success(reducerTypes.CREATE_PROJECT_LINKS));
+        dispatch(projectActions.storeRelatedProjects(data));
+        return data;
+      }
+    )
+    .catch((err) => {
+      dispatch(error(reducerTypes.CREATE_PROJECT_LINKS));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const deleteProjectLink = (
+  projectGuid: string,
+  projectLinkGuid: string
+): AppThunk<Promise<AxiosResponse<string>>> => (dispatch): Promise<AxiosResponse<string>> => {
+  dispatch(request(reducerTypes.DELETE_PROJECT_LINK));
+  dispatch(showLoading());
+  return CustomAxios()
+    .delete(
+      `${ENVIRONMENT.apiUrl}${API.PROJECT_LINKS(projectGuid, projectLinkGuid)}`,
+      createRequestHeader()
+    )
+    .then((response: AxiosResponse<string>) => {
+      notification.success({
+        message: "Successfully deleted project link.",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.DELETE_PROJECT_LINK));
+      dispatch(projectActions.removeProjectLink(projectLinkGuid));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.DELETE_PROJECT_LINK));
       throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
