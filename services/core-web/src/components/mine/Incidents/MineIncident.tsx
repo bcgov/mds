@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { flattenObject } from "@common/utils/helpers";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useParams } from "react-router-dom";
@@ -14,22 +14,9 @@ import {
 import { clearMineIncident } from "@mds/common/redux/actions/incidentActions";
 import * as Strings from "@mds/common/constants/strings";
 import * as FORM from "@/constants/forms";
-import Loading from "@/components/common/Loading";
 import IncidentForm from "@/components/Forms/incidents/IncidentForm";
 import ScrollSideMenu from "@/components/common/ScrollSideMenu";
 import * as routes from "@/constants/routes";
-import { IMineIncident } from "@mds/common";
-
-export interface MineIncidentProps {
-  incident: IMineIncident;
-  history: {
-    push(): Promise<any>;
-    replace(mineGuid: string, formattedValues?: any): Promise<any>;
-  };
-  formValues: Record<string, any>;
-  formIsDirty: boolean;
-  formErrors: Record<string, string>;
-}
 
 interface IParams {
   mineGuid?: string;
@@ -37,7 +24,7 @@ interface IParams {
   mineDocumentGuid?: string;
 }
 
-export const MineIncident: FunctionComponent<MineIncidentProps> = (props) => {
+export const MineIncident = (props) => {
   const dispatch = useDispatch();
 
   const { history } = props;
@@ -69,10 +56,12 @@ export const MineIncident: FunctionComponent<MineIncidentProps> = (props) => {
     return { url: routes.VIEW_MINE_INCIDENT, params: [mineGuid, mineIncidentGuid] };
   })();
 
-  const handleFetchData = (): Promise<void> => {
+  const handleFetchData = async (): Promise<void> => {
     if (mineGuid && mineIncidentGuid) {
       setIsNewIncident(false);
-      return dispatch(fetchMineIncident(mineGuid, mineIncidentGuid));
+      setIsLoaded(false);
+      await dispatch(fetchMineIncident(mineGuid, mineIncidentGuid));
+      setIsLoaded(true);
     }
     return Promise.resolve();
   };
@@ -83,15 +72,14 @@ export const MineIncident: FunctionComponent<MineIncidentProps> = (props) => {
       .then(({ data: { mine_guid, mine_incident_guid } }) =>
         history.replace(routes.EDIT_MINE_INCIDENT.dynamicRoute(mine_guid, mine_incident_guid))
       )
-      .then(() => handleFetchData())
-      .then(() => setIsLoaded(true));
+      .then(() => handleFetchData());
   };
 
   const handleUpdateMineIncident = (formattedValues) => {
     setIsLoaded(false);
-    return dispatch(updateMineIncident(mineGuid, mineIncidentGuid, formattedValues))
-      .then(() => handleFetchData())
-      .then(() => setIsLoaded(true));
+    return dispatch(updateMineIncident(mineGuid, mineIncidentGuid, formattedValues)).then(() =>
+      handleFetchData()
+    );
   };
 
   const formatPayload = (values) => {
@@ -185,6 +173,20 @@ export const MineIncident: FunctionComponent<MineIncidentProps> = (props) => {
   };
 
   useEffect(() => {
+    let isMounted = true;
+
+    const handleFetchData = async (): Promise<void> => {
+      if (mineGuid && mineIncidentGuid) {
+        setIsNewIncident(false);
+        setIsLoaded(false);
+        await dispatch(fetchMineIncident(mineGuid, mineIncidentGuid));
+        if (isMounted) {
+          setIsLoaded(true);
+        }
+      }
+      return Promise.resolve();
+    };
+
     const handleScroll = () => {
       if (window.pageYOffset > 170 && !fixedTop) {
         setIsFixedTop(true);
@@ -194,18 +196,15 @@ export const MineIncident: FunctionComponent<MineIncidentProps> = (props) => {
     };
 
     window.addEventListener("scroll", handleScroll);
-
-    handleFetchData().then(() => {
-      setIsLoaded(true);
-    });
-
+    handleFetchData();
     handleScroll();
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      isMounted = false;
       dispatch(clearMineIncident());
     };
-  }, [pathname]);
+  }, [pathname, mineGuid, mineIncidentGuid]);
 
   return isLoaded ? (
     <>
@@ -246,7 +245,7 @@ export const MineIncident: FunctionComponent<MineIncidentProps> = (props) => {
       </div>
     </>
   ) : (
-    <Loading />
+    <div />
   );
 };
 

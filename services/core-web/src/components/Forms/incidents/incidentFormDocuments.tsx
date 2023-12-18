@@ -13,7 +13,6 @@ import {
 import DocumentTable from "@/components/common/DocumentTable";
 
 interface IncidentFormDocumentsProps {
-  incidentGuid: string;
   documents: IMineIncidentDocument[];
   isEditMode: boolean;
   onFileLoad: (
@@ -27,7 +26,6 @@ interface IncidentFormDocumentsProps {
 }
 
 const IncidentFormDocuments: FC<IncidentFormDocumentsProps> = ({
-  incidentGuid,
   documents,
   isEditMode,
   onFileLoad,
@@ -46,7 +44,7 @@ const IncidentFormDocuments: FC<IncidentFormDocumentsProps> = ({
   );
 
   return (
-    <Form layout="vertical">
+    <div className="ant-form-vertical">
       <Row>
         <Col span={24}>
           <Typography.Title level={3} id="documentation">
@@ -91,7 +89,7 @@ const IncidentFormDocuments: FC<IncidentFormDocumentsProps> = ({
         <Col span={24}>
           <DocumentTable
             documents={formatDocumentRecords(initialIncidentDocuments)}
-            documentParent={incidentGuid}
+            documentParent={"Mine Incident"}
             documentColumns={documentColumns}
             removeDocument={onDeleteDocument}
           />
@@ -153,7 +151,7 @@ const IncidentFormDocuments: FC<IncidentFormDocumentsProps> = ({
           </Col>
         )}
       </Row>
-    </Form>
+    </div>
   );
 };
 

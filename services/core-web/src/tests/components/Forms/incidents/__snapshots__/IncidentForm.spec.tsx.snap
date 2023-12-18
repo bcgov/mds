@@ -1,0 +1,161 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`IncidentForm renders properly 1`] = `
+<ContextProvider
+  value={
+    Object {
+      "store": Object {
+        "dispatch": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+        Symbol(observable): [Function],
+      },
+      "subscription": Subscription {
+        "handleChangeWrapper": [Function],
+        "listeners": Object {
+          "notify": [Function],
+        },
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": Object {
+          "dispatch": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+          Symbol(observable): [Function],
+        },
+        "unsubscribe": null,
+      },
+    }
+  }
+>
+  <MemoryRouter
+    initialEntries={
+      Array [
+        "/1/2",
+      ]
+    }
+  >
+    <IncidentForm
+      handleSubmit={[MockFunction]}
+      handlers={
+        Object {
+          "handleFetchData": [MockFunction],
+          "handleSaveData": [MockFunction],
+        }
+      }
+      incident={
+        Object {
+          "categories": Array [
+            Object {
+              "mine_incident_category_code": "ENV",
+            },
+          ],
+          "dangerous_occurrence_subparagraph_ids": Array [
+            1747,
+          ],
+          "determination_inspector_party_guid": "c002cc91-555a-4edd-9a9c-fcfee8357b00",
+          "determination_type_code": "DO",
+          "documents": Array [
+            Object {
+              "document_manager_guid": "7b41c10c-4974-428d-a38a-ee3e8c4cee5a",
+              "document_name": "Amazing_PDF.pdf",
+              "mine_document_guid": "75855dd1-1f51-4fc1-835f-2dd99ea96f90",
+              "mine_incident_document_type_code": "INI",
+              "update_user": "test",
+              "upload_date": "2019-07-04 14:05",
+            },
+          ],
+          "emergency_services_called": false,
+          "followup_inspection": false,
+          "followup_inspection_date": null,
+          "followup_investigation_type_code": "NO",
+          "incident_description": "sHDJGFJAS",
+          "incident_location": "test",
+          "incident_timestamp": "2019-07-04 14:05",
+          "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
+          "mine_incident_guid": "036787af-51d0-4d9c-8f31-f6dc7e5b3cb3",
+          "mine_incident_id_year": 2019,
+          "mine_incident_no": null,
+          "mine_incident_report_no": "2019-48",
+          "mine_name": "Test Mine",
+          "mms_inspector_initials": null,
+          "number_of_fatalities": 0,
+          "number_of_injuries": 0,
+          "proponent_incident_no": "",
+          "recommendations": Array [],
+          "reported_by_email": "jake.doe@gmail.com",
+          "reported_by_name": "Jake Doe",
+          "reported_by_phone_ext": null,
+          "reported_by_phone_no": "250-360-9494",
+          "reported_timestamp": "2019-07-04 14:05",
+          "reported_to_inspector_party_guid": "c002cc91-555a-4edd-9a9c-fcfee8357b00",
+          "responsible_inspector_party": "test",
+          "responsible_inspector_party_guid": "eda69201-b283-44ed-92b9-bcbcb5b83e69",
+          "status_code": "CLD",
+          "update_timestamp": "test",
+          "update_user": "test",
+          "verbal_notification_provided": false,
+        }
+      }
+      initialValues={
+        Object {
+          "categories": Array [
+            Object {
+              "mine_incident_category_code": "ENV",
+            },
+          ],
+          "dangerous_occurrence_subparagraph_ids": Array [
+            1747,
+          ],
+          "determination_inspector_party_guid": "c002cc91-555a-4edd-9a9c-fcfee8357b00",
+          "determination_type_code": "DO",
+          "documents": Array [
+            Object {
+              "document_manager_guid": "7b41c10c-4974-428d-a38a-ee3e8c4cee5a",
+              "document_name": "Amazing_PDF.pdf",
+              "mine_document_guid": "75855dd1-1f51-4fc1-835f-2dd99ea96f90",
+              "mine_incident_document_type_code": "INI",
+              "update_user": "test",
+              "upload_date": "2019-07-04 14:05",
+            },
+          ],
+          "emergency_services_called": false,
+          "followup_inspection": false,
+          "followup_inspection_date": null,
+          "followup_investigation_type_code": "NO",
+          "incident_description": "sHDJGFJAS",
+          "incident_location": "test",
+          "incident_timestamp": "2019-07-04 14:05",
+          "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
+          "mine_incident_guid": "036787af-51d0-4d9c-8f31-f6dc7e5b3cb3",
+          "mine_incident_id_year": 2019,
+          "mine_incident_no": null,
+          "mine_incident_report_no": "2019-48",
+          "mine_name": "Test Mine",
+          "mms_inspector_initials": null,
+          "number_of_fatalities": 0,
+          "number_of_injuries": 0,
+          "proponent_incident_no": "",
+          "recommendations": Array [],
+          "reported_by_email": "jake.doe@gmail.com",
+          "reported_by_name": "Jake Doe",
+          "reported_by_phone_ext": null,
+          "reported_by_phone_no": "250-360-9494",
+          "reported_timestamp": "2019-07-04 14:05",
+          "reported_to_inspector_party_guid": "c002cc91-555a-4edd-9a9c-fcfee8357b00",
+          "responsible_inspector_party": "test",
+          "responsible_inspector_party_guid": "eda69201-b283-44ed-92b9-bcbcb5b83e69",
+          "status_code": "CLD",
+          "update_timestamp": "test",
+          "update_user": "test",
+          "verbal_notification_provided": false,
+        }
+      }
+      isEditMode={false}
+      isNewIncident={false}
+    />
+  </MemoryRouter>
+</ContextProvider>
+`;

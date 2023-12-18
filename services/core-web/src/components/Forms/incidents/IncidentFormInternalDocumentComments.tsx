@@ -44,7 +44,7 @@ const IncidentFormInternalDocumentComments: FC<IncidentFormInternalDocumentComme
   );
 
   return (
-    <Form layout="vertical">
+    <div className="ant-form-vertical">
       <Row>
         <Col span={24}>
           <Typography.Title level={3} id="internal-documents">
@@ -120,7 +120,7 @@ const IncidentFormInternalDocumentComments: FC<IncidentFormInternalDocumentComme
           )}
         </Col>
       </Row>
-    </Form>
+    </div>
   );
 };
 

@@ -3,9 +3,8 @@ import { useParams, withRouter } from "react-router-dom";
 import { compose } from "redux";
 import { useDispatch, useSelector } from "react-redux";
 import { change, formValueSelector, getFormValues, InjectedFormProps, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row } from "antd";
+import { Button, Col, Form, Row } from "antd";
 import { IMineIncident } from "@mds/common";
 import { getDropdownInspectors } from "@mds/common/redux/selectors/partiesSelectors";
 import {
@@ -26,7 +25,6 @@ import IncidentFormInternalDocumentComments from "@/components/Forms/incidents/I
 import IncidentFormInitialReport from "@/components/Forms/incidents/incidentFormInitialReport";
 import IncidentFormUpdateIncidentStatus from "@/components/Forms/incidents/IncidentFormUpdateIncidentStatus";
 import IncidentFormMinistryFollowup from "@/components/Forms/incidents/IncidentFormMinistryFollowup";
-import { getMineIncident } from "@mds/common/redux/reducers/incidentReducer";
 import { removeDocumentFromMineIncident } from "@mds/common/redux/actionCreators/incidentActionCreator";
 
 export const INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD = "initial_incident_documents";
@@ -73,8 +71,6 @@ export const IncidentForm: FC<IncidentFormProps & InjectedFormProps> = (props) =
   const dropdownIncidentStatusCodeOptions = useSelector(getDropdownIncidentStatusCodeOptions);
   const isPristine = useSelector((state) => state.form[FORM.ADD_EDIT_INCIDENT]?.pristine);
 
-  const incident = useSelector(getMineIncident);
-
   const [uploadedFiles, setUploadedFiles] = useState([]);
 
   const onFileLoad = (fileName, document_manager_guid, documentTypeCode, documentFormField) => {
@@ -87,7 +83,7 @@ export const IncidentForm: FC<IncidentFormProps & InjectedFormProps> = (props) =
       },
     ];
     setUploadedFiles(updatedUploadedFiles);
-    return dispatch(change(FORM.ADD_EDIT_INCIDENT, documentFormField, updatedUploadedFiles));
+    dispatch(change(FORM.ADD_EDIT_INCIDENT, documentFormField, updatedUploadedFiles));
   };
 
   const onRemoveFile = (err, fileItem, documentFormField) => {
@@ -131,9 +127,8 @@ export const IncidentForm: FC<IncidentFormProps & InjectedFormProps> = (props) =
   };
 
   return (
-    <Form layout="vertical" onSubmit={props.handleSubmit(parentHandlers.handleSaveData)}>
+    <Form layout="vertical" onFinish={props.handleSubmit(parentHandlers.handleSaveData)}>
       <Col span={24}>
-        Is Edit - {isEditMode.toString()}
         <IncidentFormUpdateIncidentStatus
           incident={props.incident}
           dropdownIncidentStatusCodeOptions={dropdownIncidentStatusCodeOptions}
@@ -149,7 +144,6 @@ export const IncidentForm: FC<IncidentFormProps & InjectedFormProps> = (props) =
           <IncidentFormInitialReport incident={props.incident} isEditMode={isEditMode} />
           <br />
           <IncidentFormDocuments
-            incidentGuid={incident.mine_incident_guid}
             documents={documents}
             isEditMode={isEditMode}
             onFileLoad={onFileLoad}

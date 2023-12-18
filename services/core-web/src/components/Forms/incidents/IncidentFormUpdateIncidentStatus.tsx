@@ -78,7 +78,7 @@ const IncidentFormUpdateIncidentStatus: FC<IncidentFormUpdateIncidentStatusProps
   };
 
   return !isNewIncident ? (
-    <Form layout="vertical">
+    <div className="ant-form-vertical">
       <Col span={24}>
         <Alert
           message={incidentStatusCodeHash[incident?.status_code] || "Undefined Status"}
@@ -132,7 +132,7 @@ const IncidentFormUpdateIncidentStatus: FC<IncidentFormUpdateIncidentStatusProps
           className={isClosed ? "ant-alert-info ant-alert-info-custom-core-color-icon" : null}
         />
       </Col>
-    </Form>
+    </div>
   ) : null;
 };
 

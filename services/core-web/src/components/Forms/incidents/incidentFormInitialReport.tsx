@@ -44,7 +44,7 @@ const IncidentFormInitialReport: FC<IncidentFormInitialReportProps> = ({
   const incidentCategoryCodeOptions = useSelector(getDropdownIncidentCategoryCodeOptions);
 
   return (
-    <Form layout="vertical">
+    <div className="ant-form-vertical">
       <Row>
         {/* Reporter Details */}
         <Col span={24}>
@@ -288,7 +288,7 @@ const IncidentFormInitialReport: FC<IncidentFormInitialReportProps> = ({
           <br />
         </Col>
       </Row>
-    </Form>
+    </div>
   );
 };
 

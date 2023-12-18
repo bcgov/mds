@@ -4,6 +4,8 @@ import {
   INoticeOfWork,
   NoDTypeSaveEnum,
   NodStatusSaveEnum,
+  IMineIncident,
+  MINE_INCIDENT_DOCUMENT_TYPE_CODE,
 } from "@mds/common";
 
 export const createMockHeader = () => ({
@@ -1721,7 +1723,11 @@ export const INSPECTORS_HASH = {
   "51b3a499-a474-4d52-be99-5c5123d7501c": "BLAH",
 };
 
-export const INCIDENT = {
+export const INCIDENT: IMineIncident = {
+  incident_location: "test",
+  responsible_inspector_party: "test",
+  update_user: "test",
+  update_timestamp: "test",
   dangerous_occurrence_subparagraph_ids: [1747],
   determination_inspector_party_guid: "c002cc91-555a-4edd-9a9c-fcfee8357b00",
   determination_type_code: "DO",
@@ -1730,9 +1736,12 @@ export const INCIDENT = {
       document_manager_guid: "7b41c10c-4974-428d-a38a-ee3e8c4cee5a",
       document_name: "Amazing_PDF.pdf",
       mine_document_guid: "75855dd1-1f51-4fc1-835f-2dd99ea96f90",
-      mine_incident_document_type_code: "INI",
+      mine_incident_document_type_code: MINE_INCIDENT_DOCUMENT_TYPE_CODE.INI,
+      update_user: "test",
+      upload_date: "2019-07-04 14:05",
     },
   ],
+  verbal_notification_provided: false,
   emergency_services_called: false,
   followup_inspection: false,
   followup_inspection_date: null,
