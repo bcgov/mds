@@ -1,48 +1,41 @@
-import React, { useEffect, useState } from "react";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
+import React, { FC, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { getMineIncidentNotes } from "@mds/common/redux/selectors/incidentSelectors";
 import {
   createMineIncidentNote,
   fetchMineIncidentNotes,
 } from "@mds/common/redux/actionCreators/incidentActionCreator";
 import MinistryCommentPanel from "@/components/common/comments/MinistryCommentPanel";
-import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
-const propTypes = {
-  notes: PropTypes.arrayOf(CustomPropTypes.incidentNote).isRequired,
-  createMineIncidentNote: PropTypes.func.isRequired,
-  fetchMineIncidentNotes: PropTypes.func.isRequired,
-  mineIncidentGuid: PropTypes.string,
-  isEditMode: PropTypes.bool,
-  createPermission: PropTypes.string,
-};
+interface MinistryInternalCommentsProps {
+  mineIncidentGuid: string;
+  isEditMode: boolean;
+  createPermission?: string;
+}
 
-const defaultProps = {
-  mineIncidentGuid: null,
-  isEditMode: true,
-  createPermission: Permission.EDIT_INCIDENTS,
-};
-
-export const MinistryInternalComments = (props) => {
+export const MinistryInternalComments: FC<MinistryInternalCommentsProps> = ({
+  mineIncidentGuid,
+  isEditMode = true,
+  createPermission = Permission.EDIT_INCIDENTS,
+}) => {
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
-  const { createPermission, isEditMode, mineIncidentGuid } = props;
+  const notes = useSelector(getMineIncidentNotes);
 
-  const fetchNotes = () => {
+  const fetchNotes = async () => {
     setIsLoading(true);
-    props.fetchMineIncidentNotes(mineIncidentGuid).then(() => setIsLoading(false));
+    await dispatch(fetchMineIncidentNotes(mineIncidentGuid));
+    setIsLoading(false);
   };
 
-  const handleAddComment = (values) => {
+  const handleAddComment = async (values) => {
     const formValues = {
       content: values.comment,
     };
-    return props.createMineIncidentNote(mineIncidentGuid, formValues).then(() => {
-      fetchNotes();
-    });
+    await dispatch(createMineIncidentNote(mineIncidentGuid, formValues));
+    fetchNotes();
   };
 
   useEffect(() => {
@@ -57,7 +50,7 @@ export const MinistryInternalComments = (props) => {
           <div className="margin-large--top margin-large--bottom">
             <p>
               <strong>
-                These comments are for interal staff only and will not be shown to proponents.
+                These comments are for internal staff only and will not be shown to proponents.
               </strong>{" "}
               Add comments to this incident for future reference. Anything written in these comments
               may be requested under FOIPPA. Keep it professional and concise.
@@ -69,7 +62,7 @@ export const MinistryInternalComments = (props) => {
         renderEditor={isEditMode}
         onSubmit={handleAddComment}
         loading={isLoading}
-        comments={props.notes?.map((note) => ({
+        comments={notes?.map((note) => ({
           key: note.mine_incident_note_guid,
           author: note.update_user,
           content: note.content,
@@ -82,20 +75,4 @@ export const MinistryInternalComments = (props) => {
   );
 };
 
-MinistryInternalComments.propTypes = propTypes;
-MinistryInternalComments.defaultProps = defaultProps;
-
-const mapStateToProps = (state) => ({
-  notes: getMineIncidentNotes(state),
-});
-
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      createMineIncidentNote,
-      fetchMineIncidentNotes,
-    },
-    dispatch
-  );
-
-export default connect(mapStateToProps, mapDispatchToProps)(MinistryInternalComments);
+export default MinistryInternalComments;

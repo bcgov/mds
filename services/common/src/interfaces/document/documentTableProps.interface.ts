@@ -6,7 +6,6 @@ interface DocumentTableProps {
   additionalColumns?: ColumnType<MineDocument>[];
   archiveMineDocuments?: (mineGuid: string, mineDocumentGuids: string[]) => void;
   canArchiveDocuments?: boolean;
-  closeModal?: () => void;
   defaultSortKeys?: string[];
   documentColumns?: ColumnType<unknown>[];
   documentParent?: string;
@@ -20,7 +19,6 @@ interface DocumentTableProps {
   onArchivedDocuments?: (docs?: MineDocument[]) => void;
   onReplaceDocument?: (document: MineDocument) => void;
   openDocument?: any;
-  openModal?: (arg) => void;
   removeDocument?: (event, doc_guid: string, mine_guid: string) => void;
   replaceAlertMessage?: string;
   showVersionHistory?: boolean;

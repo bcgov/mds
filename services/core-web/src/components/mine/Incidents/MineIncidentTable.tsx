@@ -1,54 +1,32 @@
-import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { Link, withRouter } from "react-router-dom";
-import PropTypes from "prop-types";
-import { Button, Popconfirm, Drawer } from "antd";
-import { EyeOutlined, CloseOutlined } from "@ant-design/icons";
+import React, { FC, useEffect, useState } from "react";
+import { connect, useDispatch } from "react-redux";
+import { Link, useHistory, withRouter } from "react-router-dom";
+import { Button, Drawer, Popconfirm } from "antd";
+import { CloseOutlined, EyeOutlined } from "@ant-design/icons";
 import _ from "lodash";
 import {
+  getDropdownIncidentStatusCodeOptions,
+  getHSRCMComplianceCodesHash,
+  getIncidentCategoryCodeHash,
   getIncidentDeterminationHash,
   getIncidentStatusCodeHash,
-  getIncidentCategoryCodeHash,
-  getHSRCMComplianceCodesHash,
-  getDropdownIncidentStatusCodeOptions,
 } from "@mds/common/redux/selectors/staticContentSelectors";
-import { dateSorter, optionsFilterLabelAndValue, formatDateTimeTz } from "@common/utils/helpers";
+import { dateSorter, formatDateTimeTz, optionsFilterLabelAndValue } from "@common/utils/helpers";
 import * as Strings from "@mds/common/constants/strings";
-import { serverSidePaginationOptions, parseServerSideSearchOptions } from "@mds/common";
+import {
+  IMineIncident,
+  parseServerSideSearchOptions,
+  serverSidePaginationOptions,
+} from "@mds/common";
 import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
-import CustomPropTypes from "@/customPropTypes";
 import DocumentLink from "@/components/common/DocumentLink";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import MineIncidentNotes from "@/components/mine/Incidents/MineIncidentNotes";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
 import * as router from "@/constants/routes";
-
-const propTypes = {
-  incidents: PropTypes.arrayOf(CustomPropTypes.incident).isRequired,
-  followupActions: PropTypes.arrayOf(CustomPropTypes.incidentFollowupType).isRequired,
-  handleEditMineIncident: PropTypes.func.isRequired,
-  handleDeleteMineIncident: PropTypes.func.isRequired,
-  isLoaded: PropTypes.bool.isRequired,
-  incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
-  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
-  incidentDeterminationHash: PropTypes.objectOf(PropTypes.string),
-  complianceCodesHash: PropTypes.objectOf(PropTypes.string),
-  incidentStatusCodeHash: PropTypes.objectOf(PropTypes.string),
-  incidentCategoryCodeHash: PropTypes.objectOf(PropTypes.string),
-  isDashboardView: PropTypes.bool,
-  handleUpdate: PropTypes.func.isRequired,
-  pageData: CustomPropTypes.incidentPageData.isRequired,
-};
-
-const defaultProps = {
-  incidentDeterminationHash: {},
-  complianceCodesHash: {},
-  incidentStatusCodeHash: {},
-  incidentCategoryCodeHash: {},
-  isDashboardView: false,
-};
+import { clearMineIncident, storeMineIncident } from "@mds/common/redux/actions/incidentActions";
 
 const hideColumn = (condition) => (condition ? "column-hide" : "");
 
@@ -66,10 +44,30 @@ const renderDownloadLinks = (files, mine_incident_document_type_code) => {
   return links && links.length > 0 ? links : false;
 };
 
-const MineIncidentTable = (props) => {
-  const [isDrawerVisible, setIsDrawerVisible] = useState();
-  const [mineIncident, setMineIncident] = useState();
-  const [paginationOptions, setPaginationOptions] = useState();
+interface MineIncidentTableProps {
+  incidents: IMineIncident[];
+  followupActions: any[];
+  handleEditMineIncident: (incident: IMineIncident) => void;
+  handleDeleteMineIncident: (incident: IMineIncident) => void;
+  isLoaded: boolean;
+  incidentStatusCodeOptions: any[];
+  history: any;
+  incidentDeterminationHash: any;
+  complianceCodesHash: any;
+  incidentStatusCodeHash: any;
+  incidentCategoryCodeHash: any;
+  isDashboardView: boolean;
+  handleUpdate: (searchOptions) => void;
+  pageData: any;
+}
+
+const MineIncidentTable: FC<MineIncidentTableProps> = (props) => {
+  const dispatch = useDispatch();
+  const browserHistory = useHistory();
+
+  const [isDrawerVisible, setIsDrawerVisible] = useState(false);
+  const [mineIncident, setMineIncident] = useState<IMineIncident>();
+  const [paginationOptions, setPaginationOptions] = useState<any>();
 
   const {
     isDashboardView,
@@ -83,6 +81,20 @@ const MineIncidentTable = (props) => {
     handleUpdate,
     pageData,
   } = props;
+
+  const handleNavigateToIncident = async (record) => {
+    const editIncident = incidents.find((incident) => incident.mine_incident_guid === record.key);
+    await dispatch(storeMineIncident(editIncident));
+
+    browserHistory.replace(
+      router.VIEW_MINE_INCIDENT.dynamicRoute(
+        editIncident.mine_guid,
+        editIncident.mine_incident_guid
+      )
+    );
+
+    location.reload();
+  };
 
   const transformRowData = (
     rawIncidents,
@@ -148,7 +160,6 @@ const MineIncidentTable = (props) => {
       dataIndex: "incident_timestamp",
       sortField: "incident_timestamp",
       sorter: isDashboardView || dateSorter("incident_timestamp"),
-      defaultSortOrder: "descend",
       render: (text) => <span title="Occurred On">{text}</span>,
     },
     {
@@ -298,17 +309,13 @@ const MineIncidentTable = (props) => {
       key: "handleEditModal",
       dataIndex: "handleEditModal",
       render: (text, record) => (
-        <div align="right" className="btn--middle flex">
+        <div className="btn--middle flex">
           <AuthorizationWrapper permission={Permission.EDIT_DO}>
             <Button
               type="primary"
               size="small"
               ghost
-              onClick={() =>
-                props.history.push({
-                  pathname: router.EDIT_MINE_INCIDENT.dynamicRoute(record.mine_guid, record.key),
-                })
-              }
+              onClick={() => handleNavigateToIncident(record)}
             >
               <img src={EDIT_OUTLINE_VIOLET} alt="Edit Incident" />
             </Button>
@@ -334,7 +341,7 @@ const MineIncidentTable = (props) => {
               cancelText="Cancel"
             >
               <Button ghost size="small" type="primary">
-                <img name="remove" src={TRASHCAN} alt="Remove Incident" />
+                <img src={TRASHCAN} alt="Remove Incident" />
               </Button>
             </Popconfirm>
           </AuthorizationWrapper>
@@ -342,6 +349,10 @@ const MineIncidentTable = (props) => {
       ),
     },
   ];
+
+  useEffect(() => {
+    dispatch(clearMineIncident());
+  }, []);
 
   useEffect(() => {
     setPaginationOptions(serverSidePaginationOptions(pageData));
@@ -380,8 +391,7 @@ const MineIncidentTable = (props) => {
           props.handleEditMineIncident,
           props.handleDeleteMineIncident,
           props.incidentDeterminationHash,
-          incidentStatusCodeHash,
-          incidentCategoryCodeHash
+          incidentStatusCodeHash
         )}
         onChange={handleTableUpdate}
         pagination={paginationOptions}
@@ -390,13 +400,10 @@ const MineIncidentTable = (props) => {
   );
 };
 
-MineIncidentTable.propTypes = propTypes;
-MineIncidentTable.defaultProps = defaultProps;
-
 const mapStateToProps = (state) => ({
   incidentDeterminationHash: getIncidentDeterminationHash(state),
   incidentStatusCodeHash: getIncidentStatusCodeHash(state),
-  incidentCategoryCodeHash: getIncidentCategoryCodeHash(state, false),
+  incidentCategoryCodeHash: getIncidentCategoryCodeHash(state),
   complianceCodesHash: getHSRCMComplianceCodesHash(state),
   incidentStatusCodeOptions: getDropdownIncidentStatusCodeOptions(state),
 });
