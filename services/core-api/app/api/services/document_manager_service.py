@@ -78,16 +78,16 @@ class DocumentManagerService():
             'filename': metadata.get('filename')
         }
         current_app.logger.info('[MDS-5629][%s] - Uploading file details: %s', __class__.__name__, str(data))
-
+        print(data)
         resp = requests.post(
             url=cls.document_manager_document_resource_url,
             headers={key: value
-                     for (key, value) in request.headers if key != 'Host'},
-            data=data,
+                     for (key, value) in request.headers if key != 'Host' and key != 'Content-Type'},
+            json=data,
             cookies=request.cookies)
         current_app.logger.info('[MDS-5629][%s] - Response for %s, file upload: %s', __class__.__name__, metadata.get('filename'), str(resp.json()))
 
-        return Response(str(resp.json()), resp.status_code, resp.raw.headers.items())
+        return Response(json.dumps(resp.json()), resp.status_code, resp.raw.headers.items())
 
     @classmethod
     def initializeFileVersionUploadWithDocumentManager(cls, request, mine_document):
@@ -103,7 +103,7 @@ class DocumentManagerService():
         resp = requests.post(
             url=version_url,
             headers={key: value
-                     for (key, value) in request.headers if key != 'Host'},
+                     for (key, value) in request.headers if key != 'Host' and key != 'Content-Type'},
             data=data,
             cookies=request.cookies)
 
@@ -111,7 +111,7 @@ class DocumentManagerService():
             mine_document.document_name = metadata.get('filename')
             mine_document.save()
 
-        return Response(str(resp.json()), resp.status_code, resp.raw.headers.items())
+        return Response(json.dumps(resp.json()), resp.status_code, resp.raw.headers.items())
 
     @classmethod
     def importNoticeOfWorkSubmissionDocuments(cls, request, now_application):

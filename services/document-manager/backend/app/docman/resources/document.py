@@ -56,11 +56,15 @@ class DocumentListResource(Resource):
             base_folder = os.path.join(base_folder, "cypress")
 
         folder = data.get('folder') or request.headers.get('Folder')
+        print("hiiii")
+        print(request.data)
+        print(data)
+        print(base_folder, folder)
         folder = os.path.join(base_folder, folder)
         file_path = os.path.join(folder, document_guid)
         pretty_folder = data.get(
             'pretty_folder') or request.headers.get('Pretty-Folder') or request.headers.get('Prettyfolder')
-
+        print(pretty_folder, base_folder, filename)
         pretty_path = os.path.join(base_folder, pretty_folder, filename)
 
         response, object_store_path = DocumentUploadHelper.initiate_document_upload(

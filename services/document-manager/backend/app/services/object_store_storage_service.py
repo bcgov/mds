@@ -1,8 +1,9 @@
 import io
+import math
 import os
 import sys
 import threading
-from datetime import datetime
+from datetime import datetime, timedelta
 from stat import S_IFREG
 
 import boto3
@@ -364,3 +365,58 @@ class ObjectStoreStorageService():
             Config=boto3.s3.transfer.TransferConfig(multipart_chunksize=1024 * 1024 * 8, use_threads=False),
             Callback=zip_upload_progress_callback
         )
+
+    def create_multipart_upload(self, key, file_size):
+        # Create multipart upload that must be completed in 1 day
+        upload = self._client.create_multipart_upload(Bucket=Config.OBJECT_STORE_BUCKET, Key=key, Expires=datetime.now() + timedelta(days=1))
+
+        upload_id = upload['UploadId']
+        parts = self.create_multipart_upload_urls(key, upload_id, file_size)
+
+        return {
+            "uploadId": upload_id,
+            "parts": parts
+        }
+    
+    def create_multipart_upload_urls(self, key, uploadId, file_size):
+        chunk_size = 5 * 1024 * 1024
+
+        num_chunks = math.ceil(file_size / chunk_size)
+        print(file_size, chunk_size, num_chunks)
+
+        upload_urls = []
+
+        for i in range(num_chunks):
+            part_size = chunk_size
+            part_no = i + 1
+            if i == num_chunks:
+                # last chunk should cover the remaining of what's left of the file
+                part_size = file_size - (chunk_size * len(chunk_size - 1))
+
+            upload_url = self._sign_upload_url(key, uploadId, part_no, part_size)
+
+            upload_urls.append({
+                "part": part_no,
+                "size": part_size,
+                "url": upload_url
+            })
+
+        return upload_urls
+
+    
+    def _sign_upload_url(self, key, uploadId, part_no, part_size):
+        return self._client.generate_presigned_url(
+            ClientMethod='upload_part',
+            HttpMethod='PUT',
+            ExpiresIn=3600,
+            Params={
+                "Bucket": Config.OBJECT_STORE_BUCKET,
+                "Key": key,
+                "UploadId": uploadId,
+                "PartNumber": part_no,
+                # "ContentLength": part_size
+            }
+        )
+
+
+                               

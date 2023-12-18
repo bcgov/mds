@@ -13,6 +13,8 @@ from app.extensions import cache
 from flask import request, current_app, make_response, jsonify
 from werkzeug.exceptions import BadRequest, NotFound, RequestEntityTooLarge, InternalServerError, BadGateway
 
+from app.services.object_store_storage_service import ObjectStoreStorageService
+
 CACHE_TIMEOUT = TIMEOUT_24_HOURS
 
 
@@ -22,6 +24,10 @@ class DocumentUploadHelper:
     def initiate_document_upload(cls, document_guid, file_path, folder, file_size, version_guid=None):
         # If the object store is enabled, send the post request through to TUSD to the object store
         object_store_path = None
+        s3_upload = None
+
+        is_s3_multipart = False
+
         if Config.OBJECT_STORE_ENABLED:
 
             # Add the path to be used in the post-finish tusd hook to set the correct object store path
@@ -30,6 +36,8 @@ class DocumentUploadHelper:
             path = base64.b64encode(file_path.encode('utf-8')).decode('utf-8')
             doc_guid = base64.b64encode(
                 document_guid.encode('utf-8')).decode('utf-8')
+            
+            is_s3_multipart = headers.get('Upload-Protocol') == 's3-multipart'
             upload_metadata = request.headers['Upload-Metadata']
             headers['Upload-Metadata'] = f'{upload_metadata},path {path},doc_guid {doc_guid}'
 
@@ -41,38 +49,11 @@ class DocumentUploadHelper:
                     f',version_guid {ver_guid}'
 
             # Send the request
-            resp = None
-            try:
-                resp = requests.post(url=Config.TUSD_URL,
-                                     headers=headers, data=request.data)
-            except Exception as e:
-                message = f'POST request to object store raised an exception:\n{e}'
-                current_app.logger.error(message)
-                raise InternalServerError(message)
-
-            # Validate the request
-            if resp.status_code != requests.codes.created:
-                message = f'POST request to object store failed: {resp.status_code} ({resp.reason}): {resp._content}'
-                current_app.logger.error(
-                    f'POST resp.request:\n{resp.request.__dict__}')
-                current_app.logger.error(f'POST resp:\n{resp.__dict__}')
-                current_app.logger.error(message)
-                if resp.status_code == requests.codes.not_found:
-                    raise NotFound(message)
-                raise BadGateway(message)
-
-            # Set object store upload data in cache
-            object_store_upload_resource = urlparse(
-                resp.headers['Location']).path.split('/')[-1]
-            object_store_path = Config.S3_PREFIX + \
-                object_store_upload_resource.split('+')[0]
-            cache.set(
-                OBJECT_STORE_UPLOAD_RESOURCE(
-                    document_guid), object_store_upload_resource,
-                CACHE_TIMEOUT)
-            cache.set(OBJECT_STORE_PATH(document_guid),
-                      object_store_path, CACHE_TIMEOUT)
-
+            if is_s3_multipart:
+                object_store_path = Config.S3_PREFIX + 'multipart/' + doc_guid 
+                s3_upload = ObjectStoreStorageService().create_multipart_upload(object_store_path, file_size)
+            else:
+                object_store_path = cls._initialize_tusd_upload(document_guid, headers)
         # Else, create an empty file at this path in the file system
         else:
             try:
@@ -87,36 +68,86 @@ class DocumentUploadHelper:
 
         # Cache data to be used in future PATCH requests
         upload_expiry = format_date_time(time.time() + CACHE_TIMEOUT)
-        cache.set(FILE_UPLOAD_EXPIRY(document_guid),
-                  upload_expiry, CACHE_TIMEOUT)
-        cache.set(FILE_UPLOAD_SIZE(document_guid), file_size, CACHE_TIMEOUT)
-        cache.set(FILE_UPLOAD_OFFSET(document_guid), 0, CACHE_TIMEOUT)
-        cache.set(FILE_UPLOAD_PATH(document_guid), file_path, CACHE_TIMEOUT)
+
+        if not is_s3_multipart:
+            cache.set(FILE_UPLOAD_EXPIRY(document_guid),
+                    upload_expiry, CACHE_TIMEOUT)
+            cache.set(FILE_UPLOAD_SIZE(document_guid), file_size, CACHE_TIMEOUT)
+            cache.set(FILE_UPLOAD_OFFSET(document_guid), 0, CACHE_TIMEOUT)
+            cache.set(FILE_UPLOAD_PATH(document_guid), file_path, CACHE_TIMEOUT)
 
         # Create and send response
         response = make_response(
-            jsonify(document_manager_guid=document_guid), 201)
+            jsonify(
+                document_manager_guid=document_guid,
+                upload=s3_upload
+            ), 201)
 
         if version_guid is not None:
             response = make_response(
-                jsonify(document_manager_guid=document_guid, document_manager_version_guid=version_guid), 201)
+                jsonify(
+                    document_manager_guid=document_guid,
+                    document_manager_version_guid=version_guid,
+                    upload=s3_upload
+                ), 201)
 
-        response.headers['Tus-Resumable'] = TUS_API_VERSION
-        response.headers['Tus-Version'] = TUS_API_SUPPORTED_VERSIONS
+        if not is_s3_multipart:
+            response.headers['Tus-Resumable'] = TUS_API_VERSION
+            response.headers['Tus-Version'] = TUS_API_SUPPORTED_VERSIONS
+            response.headers[
+                'Access-Control-Expose-Headers'] = 'Tus-Resumable,Tus-Version,Location,Upload-Offset,Upload-Expires,Content-Type'
+
         response.headers['Location'] = f'{Config.DOCUMENT_MANAGER_URL}/documents/{document_guid}'
         response.headers['Upload-Offset'] = 0
         response.headers['Upload-Expires'] = upload_expiry
-        response.headers[
-            'Access-Control-Expose-Headers'] = 'Tus-Resumable,Tus-Version,Location,Upload-Offset,Upload-Expires,Content-Type'
+
         if version_guid is not None:
             response.headers['Document-Version'] = version_guid
-            response.headers[
-                'Access-Control-Expose-Headers'] = response.headers[
-                'Access-Control-Expose-Headers'] + ',Document-Version'
+
+            if not is_s3_multipart:
+                response.headers[
+                    'Access-Control-Expose-Headers'] = response.headers[
+                    'Access-Control-Expose-Headers'] + ',Document-Version'
 
         response.autocorrect_location_header = False
 
-        return response, object_store_path
+        return response, object_store_path        
+
+    @classmethod
+    def _initialize_tusd_upload(cls, document_guid, headers):
+        resp = None
+        try:
+            resp = requests.post(url=Config.TUSD_URL,
+                                     headers=headers, data=request.data)
+        except Exception as e:
+            message = f'POST request to object store raised an exception:\n{e}'
+            current_app.logger.error(message)
+            raise InternalServerError(message)
+
+            # Validate the request
+        if resp.status_code != requests.codes.created:
+            message = f'POST request to object store failed: {resp.status_code} ({resp.reason}): {resp._content}'
+            current_app.logger.error(
+                    f'POST resp.request:\n{resp.request.__dict__}')
+            current_app.logger.error(f'POST resp:\n{resp.__dict__}')
+            current_app.logger.error(message)
+            if resp.status_code == requests.codes.not_found:
+                raise NotFound(message)
+            raise BadGateway(message)
+
+            # Set object store upload data in cache
+        object_store_upload_resource = urlparse(
+                resp.headers['Location']).path.split('/')[-1]
+        object_store_path = Config.S3_PREFIX + \
+                object_store_upload_resource.split('+')[0]
+        cache.set(
+                OBJECT_STORE_UPLOAD_RESOURCE(
+                    document_guid), object_store_upload_resource,
+                CACHE_TIMEOUT)
+        cache.set(OBJECT_STORE_PATH(document_guid),
+                      object_store_path, CACHE_TIMEOUT)
+                  
+        return object_store_path
 
     @ classmethod
     def parse_and_validate_uploaded_file(cls, data):
@@ -125,7 +156,7 @@ class DocumentUploadHelper:
         to make sure the file and the associated metadata is
         Tusd compatible and matches files that the system can accept
         """
-        if request.headers.get('Tus-Resumable') is None:
+        if request.headers.get('Tus-Resumable') is None and request.headers.get('Upload-Protocol') != 's3-multipart':
             raise BadRequest(
                 'Received file upload for unsupported file transfer protocol')
 

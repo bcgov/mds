@@ -17,6 +17,7 @@ import { FLUSH_SOUND, WATER_SOUND } from "@/constants/assets";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { pollDocumentUploadStatus } from "@mds/common/redux/actionCreators/documentActionCreator";
+import { FileUploadHelper } from "@mds/common/utils/fileUploadHelper";
 
 registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 
@@ -69,6 +70,28 @@ class FileUpload extends React.Component {
 
     this.server = {
       process: (fieldName, file, metadata, load, error, progress, abort) => {
+        const uploadHelper = new FileUploadHelper(file, {
+          uploadUrl: ENVIRONMENT.apiUrl + this.props.uploadUrl,
+          retryDelays: [100, 1000, 3000],
+          metadata: {
+            filename: file.name,
+            filetype: file.type || APPLICATION_OCTET_STREAM,
+          },
+          onError: (err) => {
+            notification.error({
+              message: `Failed to upload ${file.name}: ${err}`,
+              duration: 10,
+            });
+            error(err);
+          },
+          onProgress: (bytesUploaded, bytesTotal) => {
+            progress(true, bytesUploaded, bytesTotal);
+          },
+          onSuccess: () => {},
+        });
+
+        uploadHelper.start();
+
         const upload = new tus.Upload(file, {
           endpoint: ENVIRONMENT.apiUrl + this.props.uploadUrl,
           retryDelays: [100, 1000, 3000],
@@ -125,7 +148,7 @@ class FileUpload extends React.Component {
             const intervalId = setInterval(pollUploadStatus, 1000);
           },
         });
-        upload.start();
+        // upload.start();
         return {
           abort: () => {
             upload.abort();
