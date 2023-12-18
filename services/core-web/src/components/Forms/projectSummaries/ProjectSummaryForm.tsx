@@ -1,18 +1,15 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import { compose, bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
+import React, { FC, useState } from "react";
+import { compose } from "redux";
+import { connect, useSelector } from "react-redux";
+import { useHistory, useParams, withRouter } from "react-router-dom";
 import {
-  arrayPush,
-  change,
   FieldArray,
   Field,
   reduxForm,
   formValueSelector,
-  getFormValues,
-  getFormSyncErrors,
   FormSection,
+  InjectedFormProps,
+  change,
 } from "redux-form";
 import { Alert, Button, Row, Col, Checkbox, Typography, Popconfirm } from "antd";
 import { DeleteOutlined, PlusOutlined, DownOutlined } from "@ant-design/icons";
@@ -30,69 +27,34 @@ import {
 import {
   getTransformedProjectSummaryAuthorizationTypes,
   getDropdownProjectSummaryPermitTypes,
+  getDropdownProjectSummaryStatusCodes,
+  getProjectSummaryDocumentTypesHash,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getDropdownProjectLeads } from "@mds/common/redux/selectors/partiesSelectors";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
-import { USER_ROLES } from "@mds/common";
+import { Feature, IGroupedDropdownList, IProject, IProjectSummary, USER_ROLES } from "@mds/common";
 import { getFormattedProjectSummary } from "@mds/common/redux/selectors/projectSelectors";
 import { normalizePhone } from "@common/utils/helpers";
-import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
 import * as routes from "@/constants/routes";
 import { renderConfig } from "@/components/common/config";
 import LinkButton from "@/components/common/buttons/LinkButton";
 import { ProjectSummaryDocumentUpload } from "@/components/Forms/projectSummaries/ProjectSummaryDocumentUpload";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
+import { MajorMineApplicationDocument } from "@mds/common/models/documents/document";
+import ProjectLinks from "@mds/common/components/projects/ProjectLinks";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 
-const propTypes = {
-  projectSummary: CustomPropTypes.projectSummary.isRequired,
-  project: CustomPropTypes.project.isRequired,
-  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
-  projectLeads: CustomPropTypes.groupOptions.isRequired,
-  handleSaveData: PropTypes.func.isRequired,
-  handleUpdateData: PropTypes.func.isRequired,
-  removeDocument: PropTypes.func.isRequired,
-  archivedDocuments: PropTypes.arrayOf(CustomPropTypes.mineDocument),
-  onArchivedDocuments: PropTypes.func.isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func,
-  }).isRequired,
-  change: PropTypes.func.isRequired,
-  submitting: PropTypes.bool.isRequired,
-  isNewProject: PropTypes.bool.isRequired,
-  isEditMode: PropTypes.bool.isRequired,
-  toggleEditMode: PropTypes.func.isRequired,
-  userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
-  projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  projectSummaryAuthorizationTypesHash: PropTypes.objectOf(PropTypes.any).isRequired,
-  projectSummaryPermitTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  projectSummaryStatusCodes: CustomPropTypes.options.isRequired,
-  transformedProjectSummaryAuthorizationTypes: PropTypes.arrayOf(
-    PropTypes.objectOf(PropTypes.string)
-  ).isRequired,
-  formValues: PropTypes.objectOf(PropTypes.string),
-  formErrors: PropTypes.objectOf(PropTypes.string),
-  formattedProjectSummary: PropTypes.objectOf(
-    PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)])
-  ).isRequired,
-  expected_permit_application_date: PropTypes.string,
-  expected_draft_irt_submission_date: PropTypes.string,
-  expected_permit_receipt_date: PropTypes.string,
-  match: PropTypes.shape({
-    params: {
-      mineGuid: PropTypes.string,
-    },
-  }).isRequired,
-  reset: PropTypes.func.isRequired,
-};
-
-const defaultProps = {
-  formValues: {},
-  formErrors: {},
-  expected_permit_application_date: undefined,
-  expected_draft_irt_submission_date: undefined,
-  expected_permit_receipt_date: undefined,
-};
+interface ProjectSummaryFormProps {
+  project: IProject;
+  initialValues: Partial<IProject>;
+  onSubmit: any;
+  handleSaveData: (event, message: string) => Promise<void>;
+  removeDocument: (event, documentGuid: string) => Promise<void>;
+  archivedDocuments: MajorMineApplicationDocument[];
+  onArchivedDocuments: (mineGuid, projectSummaryGuid) => Promise<void>;
+  isNewProject: boolean;
+}
 
 const unassignedProjectLeadEntry = {
   label: "Unassigned",
@@ -104,8 +66,7 @@ const contactFields = ({ fields, isNewProject, isEditMode }) => {
     <>
       {fields.map((field, index) => {
         return (
-          // eslint-disable-next-line react/no-array-index-key
-          <div key={index}>
+          <div key={field}>
             {index === 0 ? (
               <p className="bold">Primary project contact</p>
             ) : (
@@ -199,7 +160,6 @@ const contactFields = ({ fields, isNewProject, isEditMode }) => {
             fields.push({ is_primary: false });
           }}
           title="Add additional project contacts"
-          disabled={!isNewProject && !isEditMode}
         >
           <PlusOutlined /> Add additional project contacts
         </LinkButton>
@@ -215,7 +175,13 @@ const setInitialValues = (authorizationType, formValues) => {
   return currentAuthorizationType?.project_summary_permit_type ?? [];
 };
 
-const renderNestedFields = (code, props) => {
+const renderNestedFields = (
+  code,
+  { change, isNewProject },
+  isEditMode,
+  dropdownProjectSummaryPermitTypes,
+  formattedProjectSummary
+) => {
   return (
     <div>
       {code !== "OTHER" && (
@@ -224,18 +190,18 @@ const renderNestedFields = (code, props) => {
             id="project_summary_permit_type"
             name="project_summary_permit_type"
             fieldName={`${code}.project_summary_permit_type`}
-            options={props.dropdownProjectSummaryPermitTypes}
+            options={dropdownProjectSummaryPermitTypes}
             formName={FORM.ADD_EDIT_PROJECT_SUMMARY}
-            formValues={props.formattedProjectSummary}
-            change={props.change}
+            formValues={formattedProjectSummary}
+            change={change}
             component={renderConfig.GROUP_CHECK_BOX}
             label={
               <>
                 <p>What type of permit is involved in your application?</p>
               </>
             }
-            setInitialValues={() => setInitialValues(code, props.formattedProjectSummary)}
-            disabled={!props.isNewProject && !props.isEditMode}
+            setInitialValues={() => setInitialValues(code, formattedProjectSummary)}
+            disabled={!isNewProject && !isEditMode}
           />
         </>
       )}
@@ -257,11 +223,40 @@ const renderNestedFields = (code, props) => {
   );
 };
 
-export const ProjectSummaryForm = (props) => {
-  const projectLeadData = [unassignedProjectLeadEntry, ...props.projectLeads[0]?.opt];
-  const [checked, setChecked] = useState(
-    props.formattedProjectSummary ? props.formattedProjectSummary.authorizationOptions : []
+const ProjectSummaryForm: FC<InjectedFormProps<IProjectSummary> & ProjectSummaryFormProps> = (
+  props
+) => {
+  const { isFeatureEnabled } = useFeatureFlag();
+  const majorProjectsFeatureEnabled = isFeatureEnabled(Feature.MAJOR_PROJECT_LINK_PROJECTS);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const projectLeads: IGroupedDropdownList = useSelector(getDropdownProjectLeads);
+  const userRoles: string[] = useSelector(getUserAccessData);
+  const formSelector = formValueSelector(FORM.ADD_EDIT_PROJECT_SUMMARY);
+  const expected_draft_irt_submission_date = useSelector((state) =>
+    formSelector(state, "expected_draft_irt_submission_date")
   );
+  const expected_permit_application_date = useSelector((state) =>
+    formSelector(state, "expected_permit_application_date")
+  );
+  const expected_permit_receipt_date = useSelector((state) =>
+    formSelector(state, "expected_permit_receipt_date")
+  );
+  const documents = useSelector((state) => formSelector(state, "documents"));
+
+  const transformedProjectSummaryAuthorizationTypes = useSelector(
+    getTransformedProjectSummaryAuthorizationTypes
+  );
+  const dropdownProjectSummaryPermitTypes = useSelector(getDropdownProjectSummaryPermitTypes);
+  const formattedProjectSummary = useSelector(getFormattedProjectSummary);
+  const projectSummaryStatusCodes = useSelector(getDropdownProjectSummaryStatusCodes);
+  const projectSummaryDocumentTypesHash = useSelector(getProjectSummaryDocumentTypesHash);
+
+  const projectLeadData = [unassignedProjectLeadEntry, ...projectLeads[0]?.opt];
+  const [checked, setChecked] = useState(
+    formattedProjectSummary ? formattedProjectSummary.authorizationOptions : []
+  );
+  const { mineGuid } = useParams<{ mineGuid: string }>();
+  const history = useHistory();
 
   const renderProjectDetails = () => {
     const {
@@ -289,72 +284,74 @@ export const ProjectSummaryForm = (props) => {
         </div>
 
         {props.initialValues?.status_code && (
-          <Row gutter={16} className={props.isEditMode ? "grey-background" : ""} align="bottom">
+          <Row gutter={16} className={isEditMode ? "grey-background" : ""} align="bottom">
             <Col lg={12} md={24}>
-              <Form.Item>
-                <Field
-                  id="status_code"
-                  name="status_code"
-                  label="Project Stage"
-                  component={renderConfig.SELECT}
-                  data={props.projectSummaryStatusCodes.filter(({ value }) => value !== "DFT")}
-                  disabled={!props.isEditMode}
-                />
-              </Form.Item>
+              <Field
+                id="status_code"
+                name="status_code"
+                label="Project Stage"
+                component={renderConfig.SELECT}
+                data={projectSummaryStatusCodes.filter(({ value }) => value !== "DFT")}
+                disabled={!isEditMode}
+              />
             </Col>
           </Row>
         )}
         <Row gutter={16}>
           <Col lg={12} md={24}>
-            <Form.Item>
-              <Field
-                id="project_summary_title"
-                name="project_summary_title"
-                label="Project title"
-                component={renderConfig.FIELD}
-                validate={[maxLength(300), required]}
-                disabled={!props.isNewProject && !props.isEditMode}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Field
-                id="proponent_project_id"
-                name="proponent_project_id"
-                label={
-                  <>
-                    Proponent project tracking ID (optional)
-                    <br />
-                    <span className="light--sm">
-                      If your company uses a tracking number to identify projects, please provide it
-                      here.
-                    </span>
-                  </>
-                }
-                component={renderConfig.FIELD}
-                validate={[maxLength(20)]}
-                disabled={!props.isNewProject && !props.isEditMode}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Field
-                id="project_summary_description"
-                name="project_summary_description"
-                label={
-                  <>
-                    Project Overview
-                    <br />
-                    <span className="light--sm">
-                      Provide a 2-3 paragraph high-level description of your proposed project.
-                    </span>
-                  </>
-                }
-                component={renderConfig.AUTO_SIZE_FIELD}
-                minRows={10}
-                validate={[maxLength(4000), required]}
-                disabled={!props.isNewProject && !props.isEditMode}
-              />
-            </Form.Item>
+            <Field
+              id="project_summary_title"
+              name="project_summary_title"
+              label="Project title"
+              component={renderConfig.FIELD}
+              validate={[maxLength(300), required]}
+              disabled={!props.isNewProject && !isEditMode}
+            />
+            <Field
+              id="proponent_project_id"
+              name="proponent_project_id"
+              label={
+                <>
+                  Proponent project tracking ID (optional)
+                  <br />
+                  <span className="light--sm">
+                    If your company uses a tracking number to identify projects, please provide it
+                    here.
+                  </span>
+                </>
+              }
+              component={renderConfig.FIELD}
+              validate={[maxLength(20)]}
+              disabled={!props.isNewProject && !isEditMode}
+            />
+            <Field
+              id="project_summary_description"
+              name="project_summary_description"
+              label={
+                <>
+                  Project Overview
+                  <br />
+                  <span className="light--sm">
+                    Provide a 2-3 paragraph high-level description of your proposed project.
+                  </span>
+                </>
+              }
+              component={renderConfig.AUTO_SIZE_FIELD}
+              minRows={10}
+              validate={[maxLength(4000), required]}
+              disabled={!props.isNewProject && !isEditMode}
+            />
           </Col>
+          {majorProjectsFeatureEnabled && (
+            <Col>
+              <ProjectLinks
+                tableOnly={!props.isNewProject && !isEditMode}
+                viewProject={(p) =>
+                  routes.PRE_APPLICATIONS.dynamicRoute(p.project_guid, p.project_summary_guid)
+                }
+              />
+            </Col>
+          )}
         </Row>
       </div>
     );
@@ -365,6 +362,7 @@ export const ProjectSummaryForm = (props) => {
       setChecked((arr) => [code, ...arr]);
     } else {
       setChecked(checked.filter((item) => item !== code));
+      // @ts-ignore (expected 2 args got 3)
       props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, code, null);
     }
   };
@@ -403,10 +401,10 @@ export const ProjectSummaryForm = (props) => {
           }
           component={renderConfig.RADIO}
           validate={[requiredRadioButton]}
-          disabled={!props.isNewProject && !props.isEditMode}
+          disabled={!props.isNewProject && !isEditMode}
         />
         <br />
-        {props.transformedProjectSummaryAuthorizationTypes?.map((a) => {
+        {transformedProjectSummaryAuthorizationTypes?.map((a) => {
           return (
             <React.Fragment key={a.code}>
               <h2>{a.description}</h2>
@@ -419,7 +417,7 @@ export const ProjectSummaryForm = (props) => {
                         value={child.code}
                         onChange={(e) => handleChange(e, child.code)}
                         checked={checked.includes(child.code)}
-                        disabled={!props.isNewProject && !props.isEditMode}
+                        disabled={!props.isNewProject && !isEditMode}
                       >
                         {checked.includes(child.code) ? (
                           <>
@@ -429,7 +427,14 @@ export const ProjectSummaryForm = (props) => {
                           child.description
                         )}
                       </Checkbox>
-                      {checked.includes(child.code) && renderNestedFields(child.code, props)}
+                      {checked.includes(child.code) &&
+                        renderNestedFields(
+                          child.code,
+                          props,
+                          isEditMode,
+                          dropdownProjectSummaryPermitTypes,
+                          formattedProjectSummary
+                        )}
                     </FormSection>
                   );
                 })}
@@ -449,16 +454,14 @@ export const ProjectSummaryForm = (props) => {
         <h3>EMLI contacts</h3>
         <Row gutter={16}>
           <Col lg={12} md={24}>
-            <Form.Item>
-              <Field
-                id="project_lead_party_guid"
-                name="project_lead_party_guid"
-                label={<p className="bold">Project Lead</p>}
-                component={renderConfig.SELECT}
-                data={projectLeadData}
-                disabled={!props.isNewProject && !props.isEditMode}
-              />
-            </Form.Item>
+            <Field
+              id="project_lead_party_guid"
+              name="project_lead_party_guid"
+              label={<p className="bold">Project Lead</p>}
+              component={renderConfig.SELECT}
+              data={projectLeadData}
+              disabled={!props.isNewProject && !isEditMode}
+            />
           </Col>
         </Row>
         <h3>Proponent contacts</h3>
@@ -469,7 +472,7 @@ export const ProjectSummaryForm = (props) => {
             rerenderOnEveryChange
             {...{
               isNewProject: props.isNewProject,
-              isEditMode: props.isEditMode,
+              isEditMode: isEditMode,
             }}
           />
         </>
@@ -490,50 +493,42 @@ export const ProjectSummaryForm = (props) => {
         <br />
         <Row gutter={16}>
           <Col lg={12} md={24}>
-            <Form.Item>
-              <Field
-                id="expected_draft_irt_submission_date"
-                name="expected_draft_irt_submission_date"
-                label="When do you anticipate submitting a draft Information Requirements Table? (optional)"
-                placeholder="Please select date"
-                component={renderConfig.DATE}
-                validate={[dateNotAfterOther(props.expected_permit_application_date)]}
-                disabled={!props.isNewProject && !props.isEditMode}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Field
-                id="expected_permit_application_date"
-                name="expected_permit_application_date"
-                label="When do you anticipate submitting a permit application? (optional)"
-                placeholder="Please select date"
-                component={renderConfig.DATE}
-                validate={[dateNotBeforeOther(props.expected_draft_irt_submission_date)]}
-                disabled={!props.isNewProject && !props.isEditMode}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Field
-                id="expected_permit_receipt_date"
-                name="expected_permit_receipt_date"
-                label="When do you hope to receive your permit/amendment(s)? (optional)"
-                placeholder="Please select date"
-                component={renderConfig.DATE}
-                validate={[dateNotBeforeOther(props.expected_permit_application_date)]}
-                disabled={!props.isNewProject && !props.isEditMode}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Field
-                id="expected_project_start_date"
-                name="expected_project_start_date"
-                label="When do you anticipate starting work on this project? (optional)"
-                placeholder="Please select date"
-                component={renderConfig.DATE}
-                validate={[dateNotBeforeOther(props.expected_permit_receipt_date)]}
-                disabled={!props.isNewProject && !props.isEditMode}
-              />
-            </Form.Item>
+            <Field
+              id="expected_draft_irt_submission_date"
+              name="expected_draft_irt_submission_date"
+              label="When do you anticipate submitting a draft Information Requirements Table? (optional)"
+              placeholder="Please select date"
+              component={renderConfig.DATE}
+              validate={[dateNotAfterOther(expected_permit_application_date)]}
+              disabled={!props.isNewProject && !isEditMode}
+            />
+            <Field
+              id="expected_permit_application_date"
+              name="expected_permit_application_date"
+              label="When do you anticipate submitting a permit application? (optional)"
+              placeholder="Please select date"
+              component={renderConfig.DATE}
+              validate={[dateNotBeforeOther(expected_draft_irt_submission_date)]}
+              disabled={!props.isNewProject && !isEditMode}
+            />
+            <Field
+              id="expected_permit_receipt_date"
+              name="expected_permit_receipt_date"
+              label="When do you hope to receive your permit/amendment(s)? (optional)"
+              placeholder="Please select date"
+              component={renderConfig.DATE}
+              validate={[dateNotBeforeOther(expected_permit_application_date)]}
+              disabled={!props.isNewProject && !isEditMode}
+            />
+            <Field
+              id="expected_project_start_date"
+              name="expected_project_start_date"
+              label="When do you anticipate starting work on this project? (optional)"
+              placeholder="Please select date"
+              component={renderConfig.DATE}
+              validate={[dateNotBeforeOther(expected_permit_receipt_date)]}
+              disabled={!props.isNewProject && !isEditMode}
+            />
           </Col>
         </Row>
       </div>
@@ -542,20 +537,22 @@ export const ProjectSummaryForm = (props) => {
 
   const renderDocuments = () => {
     const canRemoveDocuments =
-      props.userRoles.includes(USER_ROLES.role_admin) ||
-      props.userRoles.includes(USER_ROLES.role_edit_project_summaries);
+      userRoles.includes(USER_ROLES.role_admin) ||
+      userRoles.includes(USER_ROLES.role_edit_project_summaries);
     return (
       <div id="document-details">
         <ProjectSummaryDocumentUpload
           initialValues={props.initialValues}
+          removeDocument={props.removeDocument}
           canRemoveDocuments={canRemoveDocuments}
           canArchiveDocuments={canRemoveDocuments}
-          mineGuid={
-            props.match?.params?.mineGuid
-              ? props.match?.params?.mineGuid
-              : props?.project?.mine_guid
-          }
-          {...props}
+          onArchivedDocuments={props.onArchivedDocuments}
+          projectSummaryDocumentTypesHash={projectSummaryDocumentTypesHash}
+          mineGuid={mineGuid ?? props?.project?.mine_guid}
+          isNewProject={props.isNewProject}
+          isEditMode={isEditMode}
+          documents={documents}
+          change={props.change}
         />
       </div>
     );
@@ -566,60 +563,61 @@ export const ProjectSummaryForm = (props) => {
   };
 
   const cancelEdit = () => {
-    props.reset(FORM.ADD_EDIT_PROJECT_SUMMARY);
-    props.toggleEditMode();
+    props.reset();
+    setIsEditMode(false);
+  };
+
+  const toggleEditMode = () => {
+    setIsEditMode(!isEditMode);
   };
 
   return (
     <Form
       layout="vertical"
       onSubmit={(e) => {
-        props.handleSaveData(
-          e,
-          props.isNewProject
-            ? "Successfully submitted a project description to the Province of British Columbia."
-            : "Successfully updated the project."
-        );
+        const message = props.isNewProject
+          ? "Successfully submitted a project description to the Province of British Columbia."
+          : "Successfully updated the project.";
+        props.handleSaveData(e, message);
       }}
     >
       <div className="right center-mobile">
-        {!props.isNewProject && !props.isEditMode && (
+        {!props.isNewProject && !isEditMode && (
           <>
             <Button
               id="project-summary-submit"
               className="full-mobile"
               type="primary"
               onClick={() => {
-                props.toggleEditMode();
+                toggleEditMode();
               }}
             >
               Edit Project Description
             </Button>
           </>
         )}
-        {(props.isNewProject || props.isEditMode) && (
+        {(props.isNewProject || isEditMode) && (
           <>
             <Popconfirm
               placement="topLeft"
               title="Are you sure you want to leave this page? All unsaved changes will be lost."
               onConfirm={() => {
                 if (props.isNewProject) {
-                  const url = routes.MINE_PRE_APPLICATIONS.dynamicRoute(
-                    props.match?.params?.mineGuid
-                  );
-                  props.history.push(url);
-                } else if (props.isEditMode) {
+                  const url = routes.MINE_PRE_APPLICATIONS.dynamicRoute(mineGuid);
+                  history.push(url);
+                } else if (isEditMode) {
                   cancelEdit();
                 }
               }}
               okText="Yes"
               cancelText="No"
             >
-              <Button className="full-mobile" type="secondary">
+              <Button className="full-mobile" type="default">
                 Cancel
               </Button>
             </Popconfirm>
             <Button
+              data-cy="project-summary-submit-button"
               id="project-summary-submit"
               className="full-mobile"
               type="primary"
@@ -644,25 +642,23 @@ export const ProjectSummaryForm = (props) => {
       <br />
       {renderArchivedDocuments()}
       <div className="right center-mobile">
-        {(props.isNewProject || props.isEditMode) && (
+        {(props.isNewProject || isEditMode) && (
           <>
             <Popconfirm
               placement="topLeft"
               title="Are you sure you want to leave this page? All Unsaved changes will be lost."
               onConfirm={() => {
                 if (props.isNewProject) {
-                  const url = routes.MINE_PRE_APPLICATIONS.dynamicRoute(
-                    props.match?.params?.mineGuid
-                  );
-                  props.history.push(url);
-                } else if (props.isEditMode) {
+                  const url = routes.MINE_PRE_APPLICATIONS.dynamicRoute(mineGuid);
+                  history.push(url);
+                } else if (isEditMode) {
                   cancelEdit();
                 }
               }}
               okText="Yes"
               cancelText="No"
             >
-              <Button className="full-mobile" type="secondary">
+              <Button className="full-mobile" type="default">
                 Cancel
               </Button>
             </Popconfirm>
@@ -683,44 +679,17 @@ export const ProjectSummaryForm = (props) => {
   );
 };
 
-ProjectSummaryForm.propTypes = propTypes;
-ProjectSummaryForm.defaultProps = defaultProps;
+const mapDispatchToProps = {
+  change,
+};
 
-const selector = formValueSelector(FORM.ADD_EDIT_PROJECT_SUMMARY);
-
-const mapStateToProps = (state) => ({
-  projectLeads: getDropdownProjectLeads(state),
-  userRoles: getUserAccessData(state),
-  contacts: selector(state, "contacts") || [],
-  expected_draft_irt_submission_date: selector(state, "expected_draft_irt_submission_date"),
-  expected_permit_application_date: selector(state, "expected_permit_application_date"),
-  expected_permit_receipt_date: selector(state, "expected_permit_receipt_date"),
-  documents: selector(state, "documents"),
-  formValues: getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)(state) || {},
-  formErrors: getFormSyncErrors(FORM.ADD_EDIT_PROJECT_SUMMARY)(state),
-  anyTouched: selector(state, "anyTouched"),
-  transformedProjectSummaryAuthorizationTypes: getTransformedProjectSummaryAuthorizationTypes(
-    state
-  ),
-  dropdownProjectSummaryPermitTypes: getDropdownProjectSummaryPermitTypes(state),
-  formattedProjectSummary: getFormattedProjectSummary(state),
-});
-
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      arrayPush,
-      change,
-    },
-    dispatch
-  );
-
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+export default (compose(
+  withRouter,
+  connect(null, mapDispatchToProps),
   reduxForm({
     form: FORM.ADD_EDIT_PROJECT_SUMMARY,
     enableReinitialize: true,
     touchOnBlur: true,
     touchOnChange: false,
   })
-)(withRouter(ProjectSummaryForm));
+)(ProjectSummaryForm) as any) as FC<ProjectSummaryFormProps>;

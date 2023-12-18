@@ -212,7 +212,7 @@ class MineIncidentListResource(Resource, UserMixin):
                     mine_incident_document_type_code=updated_file['mine_incident_document_type_code']
                     if updated_file['mine_incident_document_type_code'] else 'INI')
 
-                incident.documents.append(mine_incident_doc)
+                incident._documents.append(mine_incident_doc)
 
         if is_minespace_user() is not True:
             recommendations = data.get('recommendations')

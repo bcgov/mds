@@ -89,18 +89,18 @@ const commonConfig = merge([
         REQUEST_HEADER: path.resolve(__dirname, "common/utils/RequestHeaders.js"),
         GLOBAL_ROUTES: path.resolve(__dirname, "src/constants/routes.ts"),
       }),
-      // Prevent moment locales to be bundled with the app
-      // to reduce app size
-      new webpack.IgnorePlugin({
-        resourceRegExp: /^\.\/locale$/,
-        contextRegExp: /moment$/,
-      }),
-      // Explicitly load timezone data for Canada and US
-      new MomentTimezoneDataPlugin({
-        startYear: 1900,
-        endYear: 2300,
-        matchCountries: ["CA", "US"],
-      }),
+      // // Prevent moment locales to be bundled with the app
+      // // to reduce app size
+      // new webpack.IgnorePlugin({
+      //   resourceRegExp: /^\.\/locale$/,
+      //   contextRegExp: /moment$/,
+      // }),
+      // // Explicitly load timezone data for Canada and US
+      // new MomentTimezoneDataPlugin({
+      //   startYear: 1900,
+      //   endYear: 2300,
+      //   matchCountries: ["CA", "US"],
+      // }),
       new MiniCssExtractPlugin(),
     ],
     resolve: {
@@ -114,7 +114,10 @@ const commonConfig = merge([
           : {}),
         // Use lodash-es that supports proper tree-shaking
         lodash: "lodash-es",
+        // Make sure we do not use de-duped react-redux to prevent
+        // errors related to no redux store access
         "react-redux": require.resolve("react-redux"),
+        "redux-form": require.resolve("redux-form"),
       },
     },
   },

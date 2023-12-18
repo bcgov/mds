@@ -1,3 +1,5 @@
+import { IMineIncidentDocument } from "@mds/common/interfaces/incidents/mineIncidentDocument.interface";
+
 export interface IMineIncidentCategory {
   mine_incident_category_code: string;
 }
@@ -7,4 +9,5 @@ export interface IMineIncident {
   categories: IMineIncidentCategory[];
   incident_timestamp: string;
   mine_incident_guid: string;
+  documents: IMineIncidentDocument[];
 }

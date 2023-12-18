@@ -9,7 +9,7 @@ import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFla
 
 interface ArchivedDocumentsSectionProps {
   documents: MineDocument[];
-  documentColumns: any;
+  documentColumns?: ColumnType<MineDocument>[];
   titleLevel?: 1 | 2 | 3 | 4 | 5;
   additionalColumns?: ColumnType<MineDocument>[];
 }

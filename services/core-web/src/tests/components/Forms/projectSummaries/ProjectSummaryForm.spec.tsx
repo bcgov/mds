@@ -1,9 +1,12 @@
 import React from "react";
-import { shallow } from "enzyme";
-import { ProjectSummaryForm } from "@/components/Forms/projectSummaries/ProjectSummaryForm";
+import { render } from "@testing-library/react";
+import ProjectSummaryForm from "@/components/Forms/projectSummaries/ProjectSummaryForm";
 import * as MOCK from "@/tests/mocks/dataMocks";
+import { store } from "@/App";
+import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
 
-const props = {};
+const props: any = {};
 
 const setupProps = () => {
   props.handleSubmit = jest.fn();
@@ -32,7 +35,13 @@ beforeEach(() => {
 
 describe("ProjectSummaryForm", () => {
   it("renders properly", () => {
-    const component = shallow(<ProjectSummaryForm {...props} />);
-    expect(component).toMatchSnapshot();
+    const { container } = render(
+      <Provider store={store}>
+        <BrowserRouter>
+          <ProjectSummaryForm {...props} />
+        </BrowserRouter>
+      </Provider>
+    );
+    expect(container.firstChild).toMatchSnapshot();
   });
 });

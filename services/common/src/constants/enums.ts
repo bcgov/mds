@@ -1,3 +1,7 @@
+export enum SystemFlagEnum {
+  core = "CORE",
+  ms = "MineSpace",
+}
 export enum NoDTypeDisplayEnum {
   non_substantial = "Non Substantial",
   potentially_substantial = "Potentially Substantial",
@@ -158,4 +162,10 @@ export enum MINE_REPORT_SUBMISSION_CODES {
   REQ = "REQ",
   REC = "REC",
   ACC = "ACC",
+}
+
+export enum MINE_INCIDENT_DOCUMENT_TYPE_CODE {
+  INM = "INM",
+  FIN = "FIN",
+  INI = "INI",
 }

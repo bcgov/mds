@@ -3,14 +3,10 @@ import { Typography } from "antd";
 import { Field } from "redux-form";
 import { maxLength, required } from "@common/utils/Validate";
 import { renderConfig } from "@/components/common/config";
-import ProjectLinks from "@/components/Forms/projects/projectSummary/ProjectLinks";
-import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
-import { Feature } from "@mds/common";
 
 const propTypes = {};
 
 export const BasicInformation = () => {
-  const { isFeatureEnabled } = useFeatureFlag();
   return (
     <>
       <Typography.Title level={3}>Basic Information</Typography.Title>
@@ -52,7 +48,6 @@ export const BasicInformation = () => {
         minRows={10}
         validate={[maxLength(4000), required]}
       />
-      {isFeatureEnabled(Feature.MAJOR_PROJECT_LINK_PROJECTS) ? <ProjectLinks /> : null}
     </>
   );
 };

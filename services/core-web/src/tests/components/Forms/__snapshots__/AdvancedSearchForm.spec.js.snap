@@ -47,6 +47,7 @@ exports[`AdvancedMineSearchForm renders properly 1`] = `
     </Button>
     <Button
       className="full-mobile"
+      data-cy="apply-filter-button"
       htmlType="submit"
       type="primary"
     >

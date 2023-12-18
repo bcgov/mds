@@ -64,6 +64,5 @@ exports[`BasicInformation renders properly 1`] = `
       ]
     }
   />
-  <ProjectLinks />
 </Fragment>
 `;

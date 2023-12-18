@@ -129,7 +129,7 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
         lazy='selectin')
 
     # Note there is a dependency on deleted_ind in mine_documents
-    documents = db.relationship('MineIncidentDocumentXref', lazy='selectin')
+    _documents = db.relationship('MineIncidentDocumentXref', lazy='selectin')
     mine_documents = db.relationship(
         'MineDocument',
         lazy='selectin',
@@ -150,6 +150,10 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
     mine_name = association_proxy('mine_table', 'mine_name')
     mine_region = association_proxy('mine_table', 'mine_region')
     major_mine_ind = association_proxy('mine_table', 'major_mine_ind')
+
+    @hybrid_property
+    def documents(self):
+        return [doc for doc in self._documents if doc.deleted_ind is False]
 
     @hybrid_property
     def reported_to_inspector_party(self):

@@ -13,6 +13,7 @@ exports[`ResponsivePagination renders properly 1`] = `
       pageSize={25}
       pageSizeOptions={
         Array [
+          "10",
           "25",
           "50",
           "75",
@@ -35,6 +36,7 @@ exports[`ResponsivePagination renders properly 1`] = `
       pageSize={25}
       pageSizeOptions={
         Array [
+          "10",
           "25",
           "50",
           "75",

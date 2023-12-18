@@ -1,13 +1,10 @@
 import React, { FC, useState } from "react";
-import PropTypes from "prop-types";
 import { change, Field, formValueSelector } from "redux-form";
-// import { Form } from "@ant-design/compatible";
 import { connect } from "react-redux";
 import { remove } from "lodash";
 import { Col, Form, Row, Typography } from "antd";
 import { bindActionCreators } from "redux";
 import { DOCUMENT, EXCEL, IMAGE } from "@mds/common/constants/fileTypes";
-import CustomPropTypes from "@/customPropTypes";
 import DocumentTable from "@/components/common/DocumentTable";
 import { documentNameColumn, uploadDateColumn } from "@/components/common/DocumentColumns";
 import ProjectSummaryFileUpload from "@/components/Forms/projects/projectSummary/ProjectSummaryFileUpload";
@@ -18,20 +15,6 @@ import { IMineDocument } from "@mds/common";
 import { RootState } from "@/App";
 import { postNewDocumentVersion } from "@mds/common/redux/actionCreators/documentActionCreator";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
-
-const propTypes = {
-  initialValues: CustomPropTypes.projectSummary.isRequired,
-  change: PropTypes.func.isRequired,
-  documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
-  isEditMode: PropTypes.bool.isRequired,
-  projectSummaryDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  mineGuid: PropTypes.string.isRequired,
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      mineGuid: PropTypes.string,
-    }),
-  }).isRequired,
-};
 
 interface IProjectSummaryDocument extends IMineDocument {
   project_summary_document_type_code: string;
