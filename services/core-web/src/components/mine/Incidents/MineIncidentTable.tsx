@@ -93,6 +93,7 @@ const MineIncidentTable: FC<MineIncidentTableProps> = (props) => {
       )
     );
 
+    // This is a temp fix to force the page to reload and prevent a stale data issue when deleting incident documents
     location.reload();
   };
 

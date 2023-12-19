@@ -1,0 +1,16 @@
+{
+  "id": "core-admin",
+  "username": "core-admin",
+  "enabled": true,
+  "emailVerified": true,
+  "firstName": "Core",
+  "lastName": "Admin",
+  "credentials": [
+    {
+      "type": "password",
+      "value": "test",
+      "temporary": false
+    }
+  ],
+  "clientRoles": ["mds_application_admins", "core_edit_mines"]
+}
