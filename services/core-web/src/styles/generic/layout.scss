@@ -681,3 +681,6 @@ img.lessOpacity {
     margin-top: 125px !important;
   }
 }
+
+// This style is provided by antd, but it's added here to prevent sass crashing
+.ant-form-vertical {}

@@ -2,15 +2,15 @@ import React, { FC, useState, useRef, useEffect } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { notification } from "antd";
-import DocumentCompressionWarningModal from "../modalContent/DocumentCompressionWarningModal";
-import DocumentCompressedDownloadModal from "../modalContent/DocumentCompressedDownloadModal";
-import CompressionNotificationProgressBar from "./CompressionNotificationProgressBar";
+import CompressionNotificationProgressBar from "@mds/common/components/documents/CompressionNotificationProgressBar";
+import { ActionCreator } from "@mds/common/interfaces/actionCreator";
+import { MineDocument } from "@mds/common/models/documents/document";
 import {
   documentsCompression,
   pollDocumentsCompressionProgress,
-} from "@/actionCreators/documentActionCreator";
-import { ActionCreator } from "@mds/common/interfaces/actionCreator";
-import { MineDocument } from "@mds/common/models/documents/document";
+} from "@mds/common/redux/actionCreators/documentActionCreator";
+import DocumentCompressionWarningModal from "./DocumentCompressionWarningModal";
+import DocumentCompressedDownloadModal from "./DocumentCompressedDownloadModal";
 
 interface DocumentCompressionProps {
   documentType: string;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import {
   documentNameColumn,
@@ -7,34 +7,35 @@ import {
   uploadedByColumn,
 } from "./DocumentColumns";
 import {
-  renderTextColumn,
-  renderActionsColumn,
   ITableAction,
+  renderActionsColumn,
+  renderTextColumn,
 } from "@mds/common/components/common/CoreTableCommonColumns";
 import { some } from "lodash";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
+import DocumentCompression from "@mds/common/components/documents/DocumentCompression";
 import { archiveMineDocuments } from "@mds/common/redux/actionCreators/mineActionCreator";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import { useDispatch, useSelector } from "react-redux";
 import { modalConfig } from "@/components/modalContent/config";
 import { Feature } from "@mds/common";
 import { SizeType } from "antd/lib/config-provider/SizeContext";
-import { ColumnType, ColumnsType } from "antd/es/table";
-import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
-import DownloadOutlined from "@ant-design/icons/DownloadOutlined";
-import FileOutlined from "@ant-design/icons/FileOutlined";
-import InboxOutlined from "@ant-design/icons/InboxOutlined";
-import SyncOutlined from "@ant-design/icons/SyncOutlined";
+import { ColumnsType } from "antd/es/table";
+import { FileOperations, MineDocument } from "@mds/common/models/documents/document";
+import {
+  DeleteOutlined,
+  DownloadOutlined,
+  DownOutlined,
+  FileOutlined,
+  InboxOutlined,
+  SyncOutlined,
+} from "@ant-design/icons";
 import { openDocument } from "../syncfusion/DocumentViewer";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
-import { Dropdown, Button, MenuProps } from "antd";
-import DownOutlined from "@ant-design/icons/DownOutlined";
-import DocumentTableProps from "@mds/common/interfaces/document/documentTableProps.interface";
-import { FileOperations, MineDocument } from "@mds/common/models/documents/document";
+import { Button, Dropdown, MenuProps } from "antd";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import DocumentTableProps from "@mds/common/interfaces/document/documentTableProps.interface";
 
-// eslint-disable-next-line @typescript-eslint/no-shadow
 export const DocumentTable: FC<DocumentTableProps> = ({
   isViewOnly = false,
   excludedColumnKeys = [],
@@ -48,20 +49,26 @@ export const DocumentTable: FC<DocumentTableProps> = ({
   defaultSortKeys = ["upload_date", "dated", "update_timestamp"],
   view = "standard",
   canArchiveDocuments = false,
-  openModal,
-  closeModal,
   removeDocument,
-  openDocument,
   replaceAlertMessage = "The replaced file will not reviewed as part of the submission.  The new file should be in the same format as the original file.",
   ...props
 }: DocumentTableProps) => {
+  const dispatch = useDispatch();
+  const userRoles = useSelector(getUserAccessData);
+
+  const handleCloseModal = () => {
+    dispatch(closeModal());
+  };
+
   const [rowSelection, setRowSelection] = useState([]);
+  const [isCompressionModal, setCompressionModal] = useState(false);
+  const [isCompressionInProgress, setCompressionInProgress] = useState(false);
+  const [documentsCanBulkDropDown, setDocumentsCanBulkDropDown] = useState(false);
   const { isFeatureEnabled } = useFeatureFlag();
 
   const allowedTableActions = {
     [FileOperations.View]: true,
-    [FileOperations.Download]: true,
-    // don't allow changes to version history where history is not shown
+    [FileOperations.Download]: true, // don't allow changes to version history where history is not shown
     [FileOperations.Replace]: !isViewOnly && showVersionHistory,
     [FileOperations.Archive]:
       !isViewOnly && canArchiveDocuments && isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE),
@@ -78,12 +85,20 @@ export const DocumentTable: FC<DocumentTableProps> = ({
       parsedDocs = docs.map((doc) => new MineDocument(doc));
     }
     return parsedDocs.map((doc) => {
-      doc.setAllowedActions(props.userRoles);
+      doc.setAllowedActions(userRoles);
       return doc;
     });
   };
 
   const [documents, setDocuments] = useState<MineDocument[]>(parseDocuments(props.documents ?? []));
+
+  useEffect(() => {
+    const isBulkArchive = documents.every((doc) =>
+      doc.allowed_actions.find((a) => a === FileOperations.Archive)
+    );
+
+    setDocumentsCanBulkDropDown(isBulkArchive);
+  }, []);
 
   useEffect(() => {
     setDocuments(parseDocuments(props.documents ?? []));
@@ -92,57 +107,70 @@ export const DocumentTable: FC<DocumentTableProps> = ({
   const openArchiveModal = (event, docs: MineDocument[]) => {
     const mineGuid = docs[0].mine_guid;
     event.preventDefault();
-    openModal({
-      props: {
-        title: `Archive ${docs?.length > 1 ? "Multiple Files" : "File"}`,
-        closeModal: closeModal,
-        handleSubmit: async () => {
-          await props.archiveMineDocuments(
-            mineGuid,
-            docs.map((d) => d.mine_document_guid)
-          );
-          if (props.onArchivedDocuments) {
-            props.onArchivedDocuments(docs);
-          }
+    dispatch(
+      openModal({
+        props: {
+          title: `Archive ${docs?.length > 1 ? "Multiple Files" : "File"}`,
+          closeModal: handleCloseModal,
+          handleSubmit: async () => {
+            await dispatch(
+              archiveMineDocuments(
+                mineGuid,
+                docs.map((d) => d.mine_document_guid)
+              )
+            );
+            if (props.onArchivedDocuments) {
+              props.onArchivedDocuments(docs);
+            }
+          },
+          documents: docs,
         },
-        documents: docs,
-      },
-      content: modalConfig.ARCHIVE_DOCUMENT,
-    });
+        content: modalConfig.ARCHIVE_DOCUMENT,
+      })
+    );
   };
 
   const openDeleteModal = (event, docs: MineDocument[]) => {
     event.preventDefault();
-    openModal({
-      props: {
-        title: `Delete ${docs?.length > 1 ? "Multiple Files" : "File"}`,
-        closeModal: closeModal,
-        handleSubmit: async () => {
-          docs.forEach((record) => removeDocument(event, record.key, documentParent));
+    dispatch(
+      openModal({
+        props: {
+          DocumentTable,
+          title: `Delete ${docs?.length > 1 ? "Multiple Files" : "File"}`,
+          closeModal: handleCloseModal,
+          handleSubmit: async () => {
+            for (const doc of docs) {
+              await removeDocument(event, doc.key, documentParent);
+            }
+            handleCloseModal();
+          },
+          documents: docs,
         },
-        documents: docs,
-      },
-      content: modalConfig.DELETE_DOCUMENT,
-    });
+
+        content: modalConfig.DELETE_DOCUMENT,
+      })
+    );
   };
 
   const openReplaceModal = (event, doc: MineDocument) => {
     event.preventDefault();
-    openModal({
-      props: {
-        title: `Replace File`,
-        closeModal: closeModal,
-        handleSubmit: async (document: MineDocument) => {
-          const newDocuments = documents.map((d) =>
-            d.mine_document_guid === document.mine_document_guid ? document : d
-          );
-          setDocuments(newDocuments);
+    dispatch(
+      openModal({
+        props: {
+          title: `Replace File`,
+          closeModal: handleCloseModal,
+          handleSubmit: async (document: MineDocument) => {
+            const newDocuments = documents.map((d) =>
+              d.mine_document_guid === document.mine_document_guid ? document : d
+            );
+            setDocuments(newDocuments);
+          },
+          document: doc,
+          alertMessage: replaceAlertMessage,
         },
-        document: doc,
-        alertMessage: replaceAlertMessage,
-      },
-      content: modalConfig.REPLACE_DOCUMENT,
-    });
+        content: modalConfig.REPLACE_DOCUMENT,
+      })
+    );
   };
 
   const actions = [
@@ -151,7 +179,7 @@ export const DocumentTable: FC<DocumentTableProps> = ({
       label: FileOperations.View,
       icon: <FileOutlined />,
       clickFunction: (_event, record: MineDocument) =>
-        openDocument(record.document_manager_guid, record.mine_document_guid),
+        dispatch(openDocument(record.document_manager_guid, record.mine_document_guid)),
     },
     {
       key: "download",
@@ -176,8 +204,7 @@ export const DocumentTable: FC<DocumentTableProps> = ({
     {
       key: "delete",
       label: FileOperations.Delete,
-      icon: <DeleteOutlined />,
-      // PopConfirm does not work in either the function or label field here
+      icon: <DeleteOutlined />, // PopConfirm does not work in either the function or label field here
       clickFunction: (event, record: MineDocument) => openDeleteModal(event, [record]),
     },
   ].filter((action) => allowedTableActions[action.label]);
@@ -253,11 +280,26 @@ export const DocumentTable: FC<DocumentTableProps> = ({
   const bulkItems: MenuProps["items"] = [
     {
       key: "0",
+      icon: <DownloadOutlined />,
+      label: (
+        <button
+          type="button"
+          className="full add-permit-dropdown-button"
+          onClick={() => {
+            setCompressionModal(true);
+          }}
+        >
+          <div>Download File(s)</div>
+        </button>
+      ),
+    },
+    {
+      key: "1",
       icon: <InboxOutlined />,
       label: (
         <button
           type="button"
-          className="full actions-dropdown-button"
+          className="full add-permit-dropdown-button"
           onClick={(e) => {
             openArchiveModal(e, rowSelection);
           }}
@@ -269,23 +311,33 @@ export const DocumentTable: FC<DocumentTableProps> = ({
   ];
 
   const renderBulkActions = () => {
-    const element = (
-      <Dropdown
-        menu={{ items: bulkItems }}
-        placement="bottomLeft"
-        disabled={rowSelection.length === 0}
+    let element = (
+      <Button
+        className="ant-btn ant-btn-primary"
+        disabled={rowSelection.length === 0 || isCompressionInProgress}
+        onClick={() => {
+          setCompressionModal(true);
+        }}
       >
-        <Button className="ant-btn ant-btn-primary">
-          Action
-          <DownOutlined />
-        </Button>
-      </Dropdown>
+        <div>Download</div>
+      </Button>
     );
-    return (
-      enableBulkActions && (
-        <div style={{ float: "right", marginBottom: 8, marginRight: 8 }}>{element}</div>
-      )
-    );
+    if (documentsCanBulkDropDown) {
+      element = (
+        <Dropdown
+          menu={{ items: bulkItems }}
+          placement="bottomLeft"
+          disabled={rowSelection.length === 0 || isCompressionInProgress}
+        >
+          <Button className="ant-btn ant-btn-primary">
+            Action
+            <DownOutlined />
+          </Button>
+        </Dropdown>
+      );
+    }
+
+    return enableBulkActions && <div style={{ float: "right" }}>{element}</div>;
   };
 
   const handleRowSelectionChange = (value) => {
@@ -329,26 +381,18 @@ export const DocumentTable: FC<DocumentTableProps> = ({
 
   return (
     <div>
+      <DocumentCompression
+        documentType={""}
+        rows={rowSelection}
+        setCompressionModalVisible={setCompressionModal}
+        isCompressionModalVisible={isCompressionModal}
+        compressionInProgress={setCompressionInProgress}
+        showDownloadWarning={showVersionHistory || canArchiveDocuments}
+      />
       {renderBulkActions()}
       {<CoreTable {...coreTableProps} />}
     </div>
   );
 };
 
-const mapStateToProps = (state) => ({
-  userRoles: getUserAccessData(state),
-});
-
-// eslint-disable-next-line @typescript-eslint/no-shadow
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      openModal,
-      closeModal,
-      archiveMineDocuments,
-      openDocument,
-    },
-    dispatch
-  );
-
-export default connect(mapStateToProps, mapDispatchToProps)(DocumentTable);
+export default DocumentTable;
