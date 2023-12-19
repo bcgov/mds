@@ -70,7 +70,7 @@ class FileUpload extends React.Component {
 
     this.server = {
       process: (fieldName, file, metadata, load, error, progress, abort) => {
-        const uploadHelper = new FileUploadHelper(file, {
+        let upload = new FileUploadHelper(file, {
           uploadUrl: ENVIRONMENT.apiUrl + this.props.uploadUrl,
           retryDelays: [100, 1000, 3000],
           metadata: {
@@ -87,67 +87,72 @@ class FileUpload extends React.Component {
           onProgress: (bytesUploaded, bytesTotal) => {
             progress(true, bytesUploaded, bytesTotal);
           },
-          onSuccess: () => {},
-        });
-
-        uploadHelper.start();
-
-        const upload = new tus.Upload(file, {
-          endpoint: ENVIRONMENT.apiUrl + this.props.uploadUrl,
-          retryDelays: [100, 1000, 3000],
-          removeFingerprintOnSuccess: true,
-          chunkSize: this.props.chunkSize,
-          metadata: {
-            filename: file.name,
-            filetype: file.type || APPLICATION_OCTET_STREAM,
-          },
-          onBeforeRequest: (req) => {
-            // Set authorization header on each request to make use
-            // of the new token in case of a token refresh was performed
-            var xhr = req.getUnderlyingObject();
-            const { headers } = createRequestHeader();
-
-            xhr.setRequestHeader("Authorization", headers.Authorization);
-          },
-          onError: (err) => {
-            notification.error({
-              message: `Failed to upload ${file.name}: ${err}`,
-              duration: 10,
-            });
-            error(err);
-          },
-          onProgress: (bytesUploaded, bytesTotal) => {
-            progress(true, bytesUploaded, bytesTotal);
-          },
-          onAfterResponse: this.props.onAfterResponse,
-          onSuccess: () => {
-            const documentGuid = upload.url.split("/").pop();
-
-            const pollUploadStatus = async () => {
-              const response = await props.pollDocumentUploadStatus(documentGuid);
-              if (response.data.status !== "In Progress") {
-                clearInterval(intervalId);
-                if (response.data.status === "Success") {
-                  load(documentGuid);
-                  this.props.onFileLoad(file.name, documentGuid);
-                  if (this.state.showWhirlpool) {
-                    this.flushSound.play();
-                  }
-                } else {
-                  notification.error({
-                    message: `Failed to upload ${file && file.name ? file.name : ""}: ${
-                      response.data.status
-                    }`,
-                    duration: 10,
-                  });
-
-                  abort();
-                }
-              }
-            };
-            const intervalId = setInterval(pollUploadStatus, 1000);
+          onSuccess: (documentGuid) => {
+            load(documentGuid);
+            this.props.onFileLoad(file.name, documentGuid);
+            if (this.state.showWhirlpool) {
+              this.flushSound.play();
+            }
           },
         });
+
+        upload.start();
+
+        // const upload = new tus.Upload(file, {
+        //   endpoint: ENVIRONMENT.apiUrl + this.props.uploadUrl,
+        //   retryDelays: [100, 1000, 3000],
+        //   removeFingerprintOnSuccess: true,
+        //   chunkSize: this.props.chunkSize,
+        //   metadata: {
+        //     filename: file.name,
+        //     filetype: file.type || APPLICATION_OCTET_STREAM,
+        //   },
+        //   onBeforeRequest: (req) => {
+        //     // Set authorization header on each request to make use
+        //     // of the new token in case of a token refresh was performed
+        //     var xhr = req.getUnderlyingObject();
+        //     const { headers } = createRequestHeader();
+
+        //     xhr.setRequestHeader("Authorization", headers.Authorization);
+        //   },
+        //   onError: (err) => {
+        //     notification.error({
+        //       message: `Failed to upload ${file.name}: ${err}`,
+        //       duration: 10,
+        //     });
+        //     error(err);
+        //   },
+        //   onProgress: (bytesUploaded, bytesTotal) => {
+        //     progress(true, bytesUploaded, bytesTotal);
+        //   },
+        //   onAfterResponse: this.props.onAfterResponse,
+        //   onSuccess: () => {
+        //     const documentGuid = upload.url.split("/").pop();
+
+        //     const pollUploadStatus = async () => {
+        //       const response = await props.pollDocumentUploadStatus(documentGuid);
+        //       if (response.data.status !== "In Progress") {
+        //         clearInterval(intervalId);
+        //         if (response.data.status === "Success") {
+        //           load(documentGuid);
+        //           this.props.onFileLoad(file.name, documentGuid);
+        //           if (this.state.showWhirlpool) {
+        //             this.flushSound.play();
+        //           }
+        //         } else {
+        //           notification.error({
+        //             message: `Failed to upload ${file && file.name ? file.name : ""}: ${response.data.status
+        //               }`,
+        //             duration: 10,
+        //           });
+
+        //           abort();
+        //         }
+        //       }
+        //     };
+        //     const intervalId = setInterval(pollUploadStatus, 1000);
+        //   },
+        // });
         // upload.start();
         return {
           abort: () => {

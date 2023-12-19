@@ -13,9 +13,26 @@ from app.extensions import cache
 from flask import request, current_app, make_response, jsonify
 from werkzeug.exceptions import BadRequest, NotFound, RequestEntityTooLarge, InternalServerError, BadGateway
 
+from datetime import datetime
+
+from werkzeug.exceptions import BadRequest, BadGateway, InternalServerError
+from flask import request, current_app
+
+from app.extensions import db
+from app.config import Config
+from app.services.object_store_storage_service import ObjectStoreStorageService
+from app.docman.models.document import Document
+from app.docman.models.document_version import DocumentVersion
 from app.services.object_store_storage_service import ObjectStoreStorageService
 
 CACHE_TIMEOUT = TIMEOUT_24_HOURS
+
+def handle_status_and_update_doc(status, doc_guid):
+    doc = Document.find_by_document_guid(doc_guid)
+    db.session.rollback()
+    doc.status = str(status)
+    db.session.add(doc)
+    db.session.commit()
 
 
 class DocumentUploadHelper:
@@ -177,3 +194,73 @@ class DocumentUploadHelper:
         if filename.endswith(FORBIDDEN_FILETYPES):
             raise BadRequest('File type is forbidden')
         return file_size, data, filename
+
+    @classmethod
+    def complete_multipart_upload(cls, upload_id, parts, document, version=None):
+        ObjectStoreStorageService().complete_multipart_upload(upload_id, document.object_store_path, parts)
+        return cls.complete_upload(document.object_store_path, document.full_storage_path, str(document.document_guid), None, None, None)
+
+
+    @classmethod
+    def complete_upload(cls, key, new_key, doc_guid, versions=None, version_guid=None, info_key=None):
+        oss = ObjectStoreStorageService()
+
+        # Copy the file to its new location
+        try:
+            oss.copy_file(source_key=key, key=new_key)
+        except Exception as e:
+            handle_status_and_update_doc(e, doc_guid)
+            raise e
+
+        # Update the document's object store path and create a new version
+        try:
+            db.session.rollback()
+
+            doc = Document.find_by_document_guid(doc_guid)
+            if doc.object_store_path != new_key:
+                doc.object_store_path = new_key
+                doc.update_user = 'mds'
+
+                db.session.add(doc)
+
+            # update the record of the previous version
+            if versions is not None and len(versions) >= 1:
+                # Sort the versions
+                versions.sort(key=lambda v: v["LastModified"], reverse=True)
+
+                # create a version record for the previous version
+                previous_version_data = versions[0]
+
+                # get the versionId of the previous version
+                previous_version_id = previous_version_data["VersionId"]
+
+                # find the corresponding DocumentVersion record
+                if version_guid is not None:
+                    previous_version = DocumentVersion.find_by_id(version_guid)
+
+                    if previous_version is not None:
+                        previous_version.object_store_version_id = previous_version_id
+                        previous_version.upload_completed_date = datetime.utcnow()
+
+                        db.session.add(previous_version)
+
+            db.session.commit()
+
+        except Exception as e:
+            handle_status_and_update_doc(e, doc_guid)
+            raise e
+
+        # Delete the old file and its .info file
+        try:
+            ObjectStoreStorageService().delete_file(key)
+
+            if info_key:
+                ObjectStoreStorageService().delete_file(info_key)
+        except Exception as e:
+            handle_status_and_update_doc(e, doc_guid)
+            raise e
+
+        # If there are no exceptions up to this point, set the status to 'Success'
+        handle_status_and_update_doc('Success', doc_guid)
+
+        return ('', 204)

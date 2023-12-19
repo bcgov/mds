@@ -368,7 +368,7 @@ class ObjectStoreStorageService():
 
     def create_multipart_upload(self, key, file_size):
         # Create multipart upload that must be completed in 1 day
-        upload = self._client.create_multipart_upload(Bucket=Config.OBJECT_STORE_BUCKET, Key=key, Expires=datetime.now() + timedelta(days=1))
+        upload = self._client.create_multipart_upload(Bucket=Config.OBJECT_STORE_BUCKET, Key=key, Expires=datetime.now() + timedelta(days=1), ContentType='application/pdf')
 
         upload_id = upload['UploadId']
         parts = self.create_multipart_upload_urls(key, upload_id, file_size)
@@ -419,4 +419,16 @@ class ObjectStoreStorageService():
         )
 
 
+    def complete_multipart_upload(self, uploadId, key, parts):
+        return self._client.complete_multipart_upload(
+            Bucket=Config.OBJECT_STORE_BUCKET,
+            Key=key,
+            UploadId=uploadId,
+            MultipartUpload={
+                'Parts': [{
+                    'ETag': part['etag'],
+                    'PartNumber': part['part']
+                } for part in parts]
+            }
+        )
                                

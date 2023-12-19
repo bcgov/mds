@@ -225,6 +225,10 @@ export const INCIDENT_STATUS_CODES = `/incidents/status-codes`;
 export const INCIDENT_DOCUMENT_TYPE = `/incidents/document-types`;
 export const INCIDENT_CATEGORY_CODES = `/incidents/category-codes`;
 
+// Documents
+export const COMPLETE_MULTIPART_UPLOAD = (documentGuid) =>
+  `/documents/${documentGuid}/complete-upload`;
+
 // Work Information
 export const MINE_WORK_INFORMATIONS = (mineGuid) => `/mines/${mineGuid}/work-information`;
 export const MINE_WORK_INFORMATION = (mineGuid, mineWorkInformationGuid) =>

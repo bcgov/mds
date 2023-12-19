@@ -1,6 +1,8 @@
+import { COMPLETE_MULTIPART_UPLOAD, ENVIRONMENT } from "../constants";
 import CustomAxios from "../redux/customAxios";
 import { createRequestHeader } from "../redux/utils/RequestHeaders";
-
+import axios from "axios";
+import pLimit from "p-limit";
 interface FileUploadHelperProps {
   uploadUrl: string;
   retryDelays: number[];
@@ -10,7 +12,7 @@ interface FileUploadHelperProps {
   };
   onError: (err) => void;
   onProgress: (bytesUploaded: number, bytesTotal: number) => void;
-  onSuccess: () => void;
+  onSuccess: (documentManagerGuid: string) => void;
 }
 
 interface MultipartUploadPart {
@@ -61,7 +63,12 @@ export class FileUploadHelper {
 
     console.log("Got a response", fileUploadData);
 
-    let offset;
+    const bytesUploaded: { [key: number]: number } = {};
+
+    const limitParallel = pLimit(4);
+
+    const totalBytesUploaded = () =>
+      Object.values(bytesUploaded).reduce((total: number, c: number) => total + c, 0);
 
     const apiList = fileUploadData.upload.parts.map((part, i) => {
       const start = fileUploadData.upload.parts
@@ -70,23 +77,41 @@ export class FileUploadHelper {
         .reduce((sum, size) => sum + size, 0);
       const end = start + part.size;
       const chunk = this.file.slice(start, end);
-      return () =>
-        CustomAxios().put(part.url, chunk, {
-          // headers: {
-          //     'Content-Type': undefined,
-          // }
+      return limitParallel(async () => {
+        const res = await axios.put(part.url, chunk, {
+          headers: {
+            "Content-Type": "",
+          },
+          onUploadProgress: (progressEvent) => {
+            bytesUploaded[i] = progressEvent.loaded;
+
+            this.config.onProgress(totalBytesUploaded(), this.file.size);
+          },
         });
+
+        return {
+          part: part.part,
+          etag: res.headers.etag,
+        };
+      });
     });
 
-    for (const prom of apiList) {
-      try {
-        const res = await prom();
-        console.log(res);
-      } catch (e) {
-        console.log(e);
-        throw e;
-      }
-    }
+    const res = await Promise.all(apiList);
+
+    console.log(res);
+
+    const payload = {
+      upload_id: fileUploadData.upload.uploadId,
+      parts: res.map((part) => ({ part: part.part, etag: part.etag })),
+    };
+
+    await CustomAxios().patch(
+      ENVIRONMENT.docManUrl + COMPLETE_MULTIPART_UPLOAD(fileUploadData.document_manager_guid),
+      payload,
+      createRequestHeader()
+    );
+
+    this.config.onSuccess(fileUploadData.document_manager_guid);
   };
 
   stop = async () => {};
