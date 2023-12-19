@@ -71,7 +71,7 @@ jobs:
           ELECTRON_ENABLE_STACK_DUMPING: true
       - name: Upload cypress video
         uses: actions/upload-artifact@v3
-        if: always()
+        if: failure()
         with:
           name: cypress-recording
           path: services/core-web/cypress/videos
