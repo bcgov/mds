@@ -65,6 +65,10 @@ jobs:
           CYPRESS_KEYCLOAK_RESOURCE: ${{ secrets.CYPRESS_KEYCLOAK_RESOURCE }}
           CYPRESS_FLAGSMITH_URL: ${{ secrets.CYPRESS_FLAGSMITH_URL }}
           CYPRESS_FLAGSMITH_KEY: ${{ secrets.CYPRESS_FLAGSMITH_KEY }}
+          DEBUG_DEPTH: 3
+          DEBUG: cypress:webpack,cypress:server*,cypress:network:*
+          ELECTRON_ENABLE_LOGGING: true
+          ELECTRON_ENABLE_STACK_DUMPING: true
       - name: Upload cypress video
         uses: actions/upload-artifact@v3
         if: always()
