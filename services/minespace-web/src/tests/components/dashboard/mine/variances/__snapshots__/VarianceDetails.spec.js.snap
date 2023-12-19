@@ -28,7 +28,7 @@ exports[`VarianceDetails renders properly 1`] = `
       notesss
     </DescriptionsItem>
   </Descriptions>
-  <Connect(DocumentTable)
+  <DocumentTable
     documentColumns={
       Array [
         Object {
