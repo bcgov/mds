@@ -13,7 +13,6 @@ import {
 } from "@mds/common/components/common/CoreTableCommonColumns";
 import { some } from "lodash";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
-import DocumentCompression from "@mds/common/components/documents/DocumentCompression";
 import { archiveMineDocuments } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { useDispatch, useSelector } from "react-redux";
 import { modalConfig } from "@/components/modalContent/config";
@@ -35,6 +34,7 @@ import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSel
 import { Button, Dropdown, MenuProps } from "antd";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import DocumentTableProps from "@mds/common/interfaces/document/documentTableProps.interface";
+import { DocumentCompression } from "@mds/common/components/documents/DocumentCompression";
 
 export const DocumentTable: FC<DocumentTableProps> = ({
   isViewOnly = false,

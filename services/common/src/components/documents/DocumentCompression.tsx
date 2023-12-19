@@ -18,9 +18,9 @@ interface DocumentCompressionProps {
   setCompressionModalVisible: (arg1: boolean) => void;
   isCompressionModalVisible: boolean;
   compressionInProgress?: (arg1: boolean) => void;
-  documentsCompression: ActionCreator<typeof documentsCompression>;
-  pollDocumentsCompressionProgress: ActionCreator<typeof pollDocumentsCompressionProgress>;
-  startFilesCompression: () => void;
+  documentsCompression?: ActionCreator<typeof documentsCompression>;
+  pollDocumentsCompressionProgress?: ActionCreator<typeof pollDocumentsCompressionProgress>;
+  startFilesCompression?: () => void;
   showDownloadWarning: boolean;
 }
 
