@@ -3,7 +3,7 @@ import { shallow } from "enzyme";
 import { DocumentsPage } from "@/components/pages/Project/DocumentsPage";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
-const props = {};
+const props: any = {};
 
 const setupProps = () => {
   props.title = "mockTitle";
