@@ -1,4 +1,3 @@
-/* eslint-disable */
 import * as ActionTypes from "@mds/core-web/src/constants/actionTypes";
 
 export const storeDocumentContextTemplate = (payload) => ({
