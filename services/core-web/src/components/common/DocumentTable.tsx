@@ -68,7 +68,8 @@ export const DocumentTable: FC<DocumentTableProps> = ({
 
   const allowedTableActions = {
     [FileOperations.View]: true,
-    [FileOperations.Download]: true, // don't allow changes to version history where history is not shown
+    [FileOperations.Download]: true,
+    // don't allow changes to version history where history is not shown
     [FileOperations.Replace]: !isViewOnly && showVersionHistory,
     [FileOperations.Archive]:
       !isViewOnly && canArchiveDocuments && isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE),
