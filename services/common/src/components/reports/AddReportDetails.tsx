@@ -9,7 +9,7 @@ import { ReportSubmissions } from "@mds/common/components/reports/ReportSubmissi
 import { compose } from "redux";
 import { useDispatch, connect } from "react-redux";
 import { Field, reduxForm, formValueSelector } from "redux-form";
-import * as FORM from "@mds/common/constants/forms";
+import { FORM } from "@mds/common/constants/forms";
 import { dateNotInFuture, required, yearNotInFuture } from "@mds/common/redux/utils/Validate";
 import { renderConfig } from "@mds/common/components/common/config";
 import { flatMap, uniqBy } from "lodash";

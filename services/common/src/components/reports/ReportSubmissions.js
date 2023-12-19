@@ -5,11 +5,11 @@ import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Field } from "redux-form";
 import { Typography } from "antd";
-import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls"
+import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls";
 import { DOCUMENT, EXCEL, IMAGE, SPATIAL } from "@mds/common/constants/fileTypes";
-import FileUpload from "@mds/common/components/common/FileUpload"
 import LinkButton from "@mds/common/components/common/LinkButton";
-import { MINE_REPORT_DOCUMENT } from "@mds/common/constants/API";''
+import { MINE_REPORT_DOCUMENT } from "@mds/common/constants/API";
+import RenderFileUpload from "../forms/RenderFileUpload";
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   updateMineReportSubmissions: PropTypes.func.isRequired,
@@ -89,7 +89,7 @@ export const ReportSubmissions = (props) => {
         <Field
           id="ReportFileUpload"
           name="ReportFileUpload"
-          component={FileUpload}
+          component={RenderFileUpload}
           allowRevert
           allowMultiple
           acceptedFileTypesMap={acceptedFileTypesMap}
