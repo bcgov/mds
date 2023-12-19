@@ -91,16 +91,16 @@ const commonConfig = merge([
       }),
       // // Prevent moment locales to be bundled with the app
       // // to reduce app size
-      // new webpack.IgnorePlugin({
-      //   resourceRegExp: /^\.\/locale$/,
-      //   contextRegExp: /moment$/,
-      // }),
+      new webpack.IgnorePlugin({
+        resourceRegExp: /^\.\/locale$/,
+        contextRegExp: /moment$/,
+      }),
       // // Explicitly load timezone data for Canada and US
-      // new MomentTimezoneDataPlugin({
-      //   startYear: 1900,
-      //   endYear: 2300,
-      //   matchCountries: ["CA", "US"],
-      // }),
+      new MomentTimezoneDataPlugin({
+        startYear: 1900,
+        endYear: 2300,
+        matchZones: /^(America.*|Canada.*)/,
+      }),
       new MiniCssExtractPlugin(),
     ],
     resolve: {
