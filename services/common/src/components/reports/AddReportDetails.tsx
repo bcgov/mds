@@ -7,11 +7,10 @@ import {
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { ReportSubmissions } from "@mds/common/components/reports/ReportSubmissions";
 import { compose } from "redux";
-import { useDispatch, connect } from "react-redux";
+import { connect } from "react-redux";
 import { Field, reduxForm, formValueSelector } from "redux-form";
 import { FORM } from "@mds/common/constants/forms";
 import { dateNotInFuture, required, yearNotInFuture } from "@mds/common/redux/utils/Validate";
-import { renderConfig } from "@mds/common/components/common/config";
 import { flatMap, uniqBy } from "lodash";
 import ReportFilesTable from "./ReportFilesTable";
 import {
@@ -21,39 +20,11 @@ import {
   sortListObjectsByPropertyLocaleCompare,
 } from "@mds/common/redux/utils/helpers";
 import moment from "moment";
-import { closeModal } from "@mds/common/redux/actions/modalActions";
-
-import {
-  fetchMineReports,
-  updateMineReport,
-} from "@mds/common/redux/actionCreators/reportActionCreator";
+import RenderDate from "../forms/RenderDate";
+import RenderYear from "../forms/RenderYear";
+import RenderSelect from "../forms/RenderSelect";
 
 const selector = formValueSelector(FORM.ADD_REPORT);
-
-const updateMineReportDefinitionOptions = (
-  mineReportDefinitionOptions,
-  selectedMineReportCategory
-) => {
-  let mineReportDefnOptionsFiltered = mineReportDefinitionOptions;
-
-  if (selectedMineReportCategory) {
-    mineReportDefnOptionsFiltered = mineReportDefinitionOptions.filter(
-      (rd) =>
-        rd.categories.filter((c) => c.mine_report_category === selectedMineReportCategory).length >
-        0
-    );
-  }
-
-  let dropdownMineReportDefnOptionsFiltered = createDropDownList(
-    mineReportDefnOptionsFiltered,
-    "report_name",
-    "mine_report_definition_guid"
-  );
-  dropdownMineReportDefnOptionsFiltered = sortListObjectsByPropertyLocaleCompare(
-    dropdownMineReportDefnOptionsFiltered,
-    "label"
-  );
-};
 
 interface AddReportDetailsProps {
   mineGuid: string;
@@ -79,7 +50,6 @@ const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
   );
   const [mineReportSubmissions, setMineReportSubmissions] = useState([]);
 
-  const [report, setReport] = useState(null);
   const [reportType, setReportType] = useState("");
   const [reportName, setReportName] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -106,11 +76,6 @@ const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
       dropdownMineReportDefnOptionsFiltered = sortListObjectsByPropertyLocaleCompare(
         dropdownMineReportDefnOptionsFiltered,
         "label"
-      );
-
-      updateMineReportDefinitionOptions(
-        props.mineReportDefinitionOptions,
-        props.selectedMineReportCategory
       );
 
       setMineReportDefinitionOptionsFiltered(mineReportDefnOptionsFiltered);
@@ -162,34 +127,6 @@ const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
     setSelectedReportCodes(selectedCodes);
   }, [selectedMineReportComplianceArticles]);
 
-  const handleEditReport = async (values) => {
-    if (!values.mine_report_submissions || values.mine_report_submissions.length === 0) {
-      useDispatch()(closeModal());
-      return;
-    }
-
-    let payload: any = {
-      mine_report_submissions: [
-        ...values.mine_report_submissions,
-        {
-          documents:
-            values.mine_report_submissions[values.mine_report_submissions.length - 1].documents,
-        },
-      ],
-    };
-
-    if (
-      !report.received_date &&
-      values.mine_report_submissions &&
-      values.mine_report_submissions.length > 0
-    ) {
-      payload = { ...payload, received_date: moment().format("YYYY-MM-DD") };
-    }
-    await useDispatch()(updateMineReport(props.mineGuid, report.mine_report_guid, payload));
-    await useDispatch()(closeModal());
-    return useDispatch()(fetchMineReports(props.mineGuid));
-  };
-
   const updateMineReportSubmissions = (updatedSubmissions) => {
     setMineReportSubmissions(updatedSubmissions);
   };
@@ -202,13 +139,14 @@ const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
           <Form layout="vertical">
             <Typography.Text>* Report Type</Typography.Text>
             <Field
+              component={RenderSelect}
               id="mine_report_category"
               name="mine_report_category"
-              label=""
+              props={{
+                label: "",
+                data: dropdownMineReportCategoryOptions,
+              }}
               placeholder="Select"
-              data={dropdownMineReportCategoryOptions}
-              doNotPinDropdown
-              component={renderConfig.SELECT}
               validate={[required]}
               onChange={(event, newValue) => {
                 setReportType(newValue);
@@ -222,15 +160,16 @@ const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
           <Form layout="vertical">
             <Typography.Text>* Report Name</Typography.Text>
             <Field
+              key={"sdffd"}
               id="mine_report_definition_guid"
               name="mine_report_definition_guid"
-              label=""
+              props={{
+                label: "",
+                data: dropdownMineReportDefinitionOptionsFiltered,
+              }}
               placeholder={props.selectedMineReportCategory ? "Select" : "Select a category above"}
-              data={dropdownMineReportDefinitionOptionsFiltered}
-              doNotPinDropdown
-              component={renderConfig.SELECT}
+              component={RenderSelect}
               validate={[required]}
-              props={{ disabled: !props.selectedMineReportCategory }}
               onChange={(event, newValue) => {
                 setReportName(newValue);
               }}
@@ -314,7 +253,7 @@ const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
                 id="submission_year"
                 name="submission_year"
                 label=""
-                component={renderConfig.YEAR}
+                component={RenderYear}
                 validate={[required, yearNotInFuture]}
                 disabledDate={(currentDate) => currentDate.year() > moment().year}
               />
@@ -328,7 +267,7 @@ const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
                 id="due_date"
                 name="due_date"
                 label=""
-                component={renderConfig.DATE}
+                component={RenderDate}
                 validate={[required, dateNotInFuture]}
                 disabledDate={(currentDate) => currentDate.date() > moment().date}
               />
@@ -426,7 +365,7 @@ export default compose(
     mineReportDefinitionOptions: getMineReportDefinitionOptions(state),
     selectedMineReportCategory: selector(state, "mine_report_category"),
     selectedMineReportDefinition: selector(state, "mine_report_definition_guid"),
-    formMeta: state.form[FORM.ADD_REPORT],
+    formMeta: state[FORM.ADD_REPORT],
   })),
   reduxForm({
     form: FORM.ADD_REPORT,
@@ -434,5 +373,3 @@ export default compose(
     onSubmitSuccess: resetForm(FORM.ADD_REPORT),
   })
 )(AddReportDetails as any) as any;
-
-//LOAD the

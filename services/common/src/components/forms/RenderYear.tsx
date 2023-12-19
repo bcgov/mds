@@ -1,55 +1,59 @@
-/* eslint-disable */
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { DatePicker } from "antd";
-import moment from "moment";
+import moment, { Moment } from "moment";
 
 /**
- * @constant RenderDate  - Ant Design `DatePicker` component for redux-form.
+ * @constant RenderYear  - Ant Design `DatePicker` component for redux-form.
  */
 
-const propTypes = {
-  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  input: PropTypes.objectOf(PropTypes.any).isRequired,
-  label: PropTypes.string.isRequired,
-  placeholder: PropTypes.string,
-  required: PropTypes.bool,
-  onChange: PropTypes.func,
-  disabledDate: PropTypes.func,
-  disabled: PropTypes.bool,
-  meta: PropTypes.objectOf(PropTypes.any).isRequired,
-};
+interface RenderYearProps {
+  id: any;
+  input: Record<string, any>;
+  label: string;
+  placeholder?: string;
+  required?: boolean;
+  onChange?: (date: Moment | null, dateString: string) => void;
+  disabledDate?: (current: Moment | null) => boolean;
+  disabled?: boolean;
+  meta: Record<string, any>;
+}
 
 const defaultProps = {
   placeholder: "",
   onChange: () => {},
-  disabledDate: () => {},
+  disabledDate: () => false, // Default value for disabledDate
   disabled: false,
   required: false,
 };
 
-export class RenderDate extends Component {
-  state = {
-    isopen: false,
-    time: this.props.input.value ? moment(`${this.props.input.value}-01-01`) : null,
-  };
+type RenderYearState = {
+  isopen: boolean;
+  time: Moment | null;
+};
 
-  handlePanelChange = (value) => {
+export class RenderYear extends Component<RenderYearProps, RenderYearState> {
+  static defaultProps = defaultProps; // Initialize default props here
+
+  constructor(props: RenderYearProps) {
+    super(props);
+    this.state = {
+      isopen: false,
+      time: props.input.value ? moment(`${props.input.value}-01-01`) : null,
+    };
+  }
+
+  handlePanelChange = (value: Moment) => {
     this.setState({
       time: value,
       isopen: false,
     });
-    this.props.input.onChange(moment(value).format("YYYY"));
+    this.props.onChange?.(value, moment(value).format("YYYY"));
   };
 
-  handleOpenChange = (status) => {
-    if (status) {
-      this.setState({ isopen: true });
-    } else {
-      this.setState({ isopen: false });
-    }
+  handleOpenChange = (status: boolean) => {
+    this.setState({ isopen: status });
   };
 
   clearValue = () => {
@@ -90,7 +94,4 @@ export class RenderDate extends Component {
   );
 }
 
-RenderDate.propTypes = propTypes;
-RenderDate.defaultProps = defaultProps;
-
-export default RenderDate;
+export default RenderYear;
