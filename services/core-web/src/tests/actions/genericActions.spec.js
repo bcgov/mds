@@ -1,26 +1,22 @@
-import configureMockStore from "redux-mock-store";
-import thunk from "redux-thunk";
+import configureStore from "redux-mock-store";
 import { request, success, error } from "@mds/common/redux/actions/genericActions";
-import * as ReducerTypes from "@mds/common/constants/reducerTypes";
 import * as ActionTypes from "@mds/common/constants/actionTypes";
 
-/*
+/* 
 Testing against action `createMineRecord` arbitrarily.
-The genericActions includes: request, success, and error.
+The genericActions includes: request, success, and error. 
 They are used in every network action.
 */
-
-const createMockStore = configureMockStore([thunk]);
-const store = createMockStore({
-  rootReducer: {
-    CREATE_MINE_RECORD: {
-      data: [],
-      errorMessage: [],
-      isFetching: false,
-      success: false,
-    },
+const initialState = {
+  CREATE_MINE_RECORD: {
+    data: [],
+    errorMessage: [],
+    isFetching: false,
+    success: false,
   },
-});
+};
+const mockStore = configureStore();
+const store = mockStore(initialState);
 
 describe("genericActions", () => {
   afterEach(() => {
@@ -28,9 +24,9 @@ describe("genericActions", () => {
   });
 
   it("`request action` returns `type: REQUEST`", () => {
-    const expectedActions = [{ name: ReducerTypes.CREATE_MINE_RECORD, type: ActionTypes.REQUEST }];
+    const expectedActions = [{ name: "CREATE_MINE_RECORD", type: ActionTypes.REQUEST }];
 
-    store.dispatch(request(ReducerTypes.CREATE_MINE_RECORD));
+    store.dispatch(request("CREATE_MINE_RECORD"));
     expect(store.getActions()).toEqual(expectedActions);
   });
 
@@ -38,23 +34,25 @@ describe("genericActions", () => {
     it("when an API endpoint has been successful, the `success` action returns `type: SUCCESS`", () => {
       const mockData = {};
       const expectedActions = [
-        { name: ReducerTypes.CREATE_MINE_RECORD, type: ActionTypes.REQUEST },
-        { name: ReducerTypes.CREATE_MINE_RECORD, type: ActionTypes.SUCCESS, data: mockData },
+        { name: "CREATE_MINE_RECORD", type: ActionTypes.REQUEST },
+        { name: "CREATE_MINE_RECORD", type: ActionTypes.SUCCESS, data: mockData },
       ];
 
-      store.dispatch(request(ReducerTypes.CREATE_MINE_RECORD));
-      store.dispatch(success(ReducerTypes.CREATE_MINE_RECORD, mockData));
+      store.dispatch(request("CREATE_MINE_RECORD"));
+      store.dispatch(success("CREATE_MINE_RECORD", mockData));
       expect(store.getActions()).toEqual(expectedActions);
     });
 
     it("when an API endpoint has failed, the `error` action returns `type: ERROR`", () => {
-      const mockError = { response: { status: 400, data: { errors: [], message: "Error" } } };
+      const mockError = {
+        response: { status: 400, data: { errors: [], message: ActionTypes.ERROR } },
+      };
       const expectedActions = [
-        { name: ReducerTypes.CREATE_MINE_RECORD, type: ActionTypes.REQUEST },
-        { name: ReducerTypes.CREATE_MINE_RECORD, type: ActionTypes.ERROR, errorMessage: mockError },
+        { name: "CREATE_MINE_RECORD", type: ActionTypes.REQUEST },
+        { name: "CREATE_MINE_RECORD", type: ActionTypes.ERROR, errorMessage: mockError },
       ];
-      store.dispatch(request(ReducerTypes.CREATE_MINE_RECORD));
-      store.dispatch(error(ReducerTypes.CREATE_MINE_RECORD, mockError));
+      store.dispatch(request("CREATE_MINE_RECORD"));
+      store.dispatch(error("CREATE_MINE_RECORD", mockError));
       expect(store.getActions()).toEqual(expectedActions);
     });
   });

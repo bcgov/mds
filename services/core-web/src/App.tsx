@@ -6,11 +6,11 @@ import Routes from "./routes/Routes";
 import ModalWrapper from "@/components/common/wrappers/ModalWrapper";
 import DocumentViewer from "@/components/syncfusion/DocumentViewer";
 import ScrollToTopWrapper from "@/components/common/wrappers/ScrollToTopWrapper";
-import configureStore from "./store/configureStore";
+import getStore from "./store/configureStore";
 import { storeSystemFlag } from "@mds/common/redux/actions/authenticationActions";
 import { SystemFlagEnum } from "@mds/common";
 
-export const store = configureStore();
+export const store = getStore();
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

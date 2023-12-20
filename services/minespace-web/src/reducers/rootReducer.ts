@@ -1,4 +1,3 @@
-import { combineReducers } from "redux";
 import userMineReducer from "@/reducers/userMineReducer";
 import networkReducer from "./networkReducer";
 import * as reducerTypes from "../constants/reducerTypes";
@@ -13,4 +12,4 @@ const minespaceReducer = {
   [reducerTypes.GET_USER_INFO]: createReducer(networkReducer, reducerTypes.GET_USER_INFO),
 };
 
-export const rootReducer = combineReducers(minespaceReducer);
+export const rootReducer = minespaceReducer;

@@ -67,7 +67,7 @@ jobs:
           CYPRESS_FLAGSMITH_KEY: ${{ secrets.CYPRESS_FLAGSMITH_KEY }}
       - name: Upload cypress video
         uses: actions/upload-artifact@v3
-        if: always()
+        if: failure()
         with:
           name: cypress-recording
           path: services/core-web/cypress/videos
