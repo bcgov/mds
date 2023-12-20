@@ -75,7 +75,11 @@ export class NavBar extends Component {
           per_page: Strings.DEFAULT_PER_PAGE,
         })}
       >
-        <Button id={this.ifActiveButton(router.MINE_HOME_PAGE.route)} className="menu__btn--link" data-cy="mines-button">
+        <Button
+          id={this.ifActiveButton(router.MINE_HOME_PAGE.route)}
+          className="menu__btn--link"
+          data-cy="mines-button"
+        >
           Mines
         </Button>
       </Link>
