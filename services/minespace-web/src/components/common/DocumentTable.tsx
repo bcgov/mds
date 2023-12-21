@@ -172,7 +172,8 @@ export const DocumentTable: FC<DocumentTableProps> = ({
     {
       key: "delete",
       label: FileOperations.Delete,
-      icon: <DeleteOutlined />, // PopConfirm does not work in either the function or label field here
+      icon: <DeleteOutlined />,
+      // PopConfirm does not work in either the function or label field here
       clickFunction: (event, record: MineDocument) => openDeleteModal(event, [record]),
     },
   ].filter((action) => allowedTableActions[action.label]);
