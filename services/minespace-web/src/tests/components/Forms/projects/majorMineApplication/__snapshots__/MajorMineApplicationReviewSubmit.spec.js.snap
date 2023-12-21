@@ -78,7 +78,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
       >
         Primary Document
       </ForwardRef>
-      <DocumentTable
+      <Connect(DocumentTable)
         canArchiveDocuments={true}
         deletePayload={
           Object {
@@ -99,7 +99,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
       >
         Spatial Components
       </ForwardRef>
-      <DocumentTable
+      <Connect(DocumentTable)
         canArchiveDocuments={true}
         deletePayload={
           Object {
@@ -120,7 +120,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
       >
         Supporting Documents
       </ForwardRef>
-      <DocumentTable
+      <Connect(DocumentTable)
         canArchiveDocuments={true}
         deletePayload={
           Object {

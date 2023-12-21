@@ -14,7 +14,7 @@ exports[`DocumentsPage renders properly 1`] = `
   <Col
     span={24}
   >
-    <DocumentTable
+    <Connect(DocumentTable)
       canArchiveDocuments={true}
       documentParent="mockTitle"
       documents={

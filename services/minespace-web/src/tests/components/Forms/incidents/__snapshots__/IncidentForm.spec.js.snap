@@ -573,7 +573,7 @@ exports[`IncidentForm renders properly 1`] = `
               </div>
             </Col>
           </Row>
-          <DocumentTable
+          <Connect(DocumentTable)
             documentColumns={
               Array [
                 Object {
@@ -645,7 +645,7 @@ exports[`IncidentForm renders properly 1`] = `
               A final report must be submitted within 60 days of the reportable incident. Please add the final report documentation below.
             </ForwardRef>
           </Row>
-          <DocumentTable
+          <Connect(DocumentTable)
             documentColumns={
               Array [
                 Object {
