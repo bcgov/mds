@@ -874,7 +874,7 @@ export const IncidentForm = (props) => {
                 id={INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD}
                 name={INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD}
                 labelIdle='<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><br>
-              <div>Accepted filetypes: .kmz, .doc, .docx, .xlsx, .pdf</div>'
+              <div>Accepted filetypes: .kmz, .doc, .docx, .xlsx, .pdf, .jpeg, .tiff, .hiec</div>'
                 onFileLoad={(document_name, document_manager_guid) =>
                   handlers.onFileLoad(
                     document_name,
@@ -910,7 +910,7 @@ export const IncidentForm = (props) => {
                 id={FINAL_REPORT_DOCUMENTS_FORM_FIELD}
                 name={FINAL_REPORT_DOCUMENTS_FORM_FIELD}
                 labelIdle='<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><br>
-              <div>Accepted filetypes: .kmz, .doc, .docx, .xlsx, .pdf</div>'
+              <div>Accepted filetypes: .kmz, .doc, .docx, .xlsx, .pdf, .jpeg, .tiff, .hiec</div>'
                 onFileLoad={(document_name, document_manager_guid) =>
                   handlers.onFileLoad(
                     document_name,
