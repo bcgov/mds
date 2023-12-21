@@ -4,7 +4,7 @@ import { Field } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { MINE_INCIDENT_DOCUMENTS } from "@mds/common/constants/API";
-import { DOCUMENT, EXCEL, SPATIAL } from "@mds/common/constants/fileTypes";
+import { DOCUMENT, EXCEL, SPATIAL, IMAGE } from "@mds/common/constants/fileTypes";
 import FileUpload from "@/components/common/FileUpload";
 
 const propTypes = {
@@ -25,7 +25,7 @@ export const IncidentFileUpload = (props) => (
       name="fileUpload"
       component={FileUpload}
       uploadUrl={MINE_INCIDENT_DOCUMENTS(props.mineGuid)}
-      acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL, ...SPATIAL }}
+      acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL, ...SPATIAL, ...IMAGE }}
       onFileLoad={props.onFileLoad}
       onRemoveFile={props.onRemoveFile}
       allowRevert

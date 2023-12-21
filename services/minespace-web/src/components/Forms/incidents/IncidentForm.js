@@ -663,7 +663,7 @@ const renderUploadInitialNotificationDocuments = (
                 onRemoveFile={parentHandlers?.deleteDocument}
                 mineGuid={match.params?.mineGuid}
                 component={IncidentFileUpload}
-                labelIdle='<strong class="filepond--label-action">Drag & drop your files or Browse</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf</div>'
+                labelIdle='<strong class="filepond--label-action">Drag & drop your files or Browse</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf .jpeg .tiff .hiec</div>'
               />
             </Form.Item>
           </Col>
@@ -738,7 +738,7 @@ const renderUploadInitialNotificationDocuments = (
                   onRemoveFile={parentHandlers?.deleteDocument}
                   mineGuid={match.params?.mineGuid}
                   component={IncidentFileUpload}
-                  labelIdle='<strong class="filepond--label-action">Final Report Upload</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf</div>'
+                  labelIdle='<strong class="filepond--label-action">Final Report Upload</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf .jpeg .tiff .hiec</div>'
                 />
               </Form.Item>
             </Col>
