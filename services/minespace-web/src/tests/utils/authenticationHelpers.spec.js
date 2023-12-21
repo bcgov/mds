@@ -1,5 +1,5 @@
 import { KEYCLOAK } from "@mds/common";
-import keycloak from "@/keycloak";
+import keycloak from "@mds/common/keycloak";
 import { signOutFromSSO, signOutFromSiteMinder } from "@/utils/authenticationHelpers";
 import {
   KEYCLOAK_LOGOUT_REDIRECT_URI,

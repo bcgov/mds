@@ -3,7 +3,7 @@ import { USER_ROLES } from "@mds/common";
 import { request, success, error } from "@/actions/genericActions";
 import * as reducerTypes from "@/constants/reducerTypes";
 import * as authenticationActions from "@/actions/authenticationActions";
-import keycloak from "@/keycloak";
+import keycloak from "@mds/common/keycloak";
 
 export const unAuthenticateUser = (toastMessage) => (dispatch) => {
   dispatch(authenticationActions.logoutUser());

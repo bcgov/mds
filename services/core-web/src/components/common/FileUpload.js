@@ -63,7 +63,7 @@ const defaultProps = {
 };
 
 class FileUpload extends React.Component {
-  state = { showWhirlpool: false };
+  state = { showWhirlpool: false, uploadResults: [], uploadData: null };
 
   constructor(props) {
     super(props);
@@ -73,16 +73,22 @@ class FileUpload extends React.Component {
         let upload = new FileUploadHelper(file, {
           uploadUrl: ENVIRONMENT.apiUrl + this.props.uploadUrl,
           retryDelays: [100, 1000, 3000],
+          uploadResults: this.state.uploadResults,
+          uploadData: this.state.uploadData,
           metadata: {
             filename: file.name,
             filetype: file.type || APPLICATION_OCTET_STREAM,
           },
-          onError: (err) => {
+          onError: (err, uploadResults) => {
+            this.setState({ uploadResults });
             notification.error({
               message: `Failed to upload ${file.name}: ${err}`,
               duration: 10,
             });
             error(err);
+          },
+          onInit: (uploadData) => {
+            this.setState({ uploadData });
           },
           onProgress: (bytesUploaded, bytesTotal) => {
             progress(true, bytesUploaded, bytesTotal);

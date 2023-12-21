@@ -3,7 +3,7 @@ import {
   KEYCLOAK_LOGOUT_REDIRECT_URI,
   SITEMINDER_LOGOUT_REDIRECT_URI,
 } from "@/constants/environment";
-import keycloak from "../keycloak";
+import keycloak from "@mds/common/keycloak";
 
 export const signOutFromSSO = () => {
   keycloak.logout({

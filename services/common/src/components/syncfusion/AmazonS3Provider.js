@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { SampleBase } from "@/components/syncfusion/SampleBase";
+import { SampleBase } from "@mds/common/components/syncfusion/SampleBase";
 import { ENVIRONMENT } from "@mds/common";
 import {
   FileManagerComponent,
@@ -12,10 +12,10 @@ import {
   Toolbar,
   ContextMenu,
 } from "@syncfusion/ej2-react-filemanager";
-import { createRequestHeader } from "@common/utils/RequestHeaders";
+import { createRequestHeader } from "@mds/common/redux/utils/RequestHeaders";
 import { openDocumentViewer } from "@mds/common/redux/actions/documentViewerActions";
-import { isDocumentOpenable } from "@/components/syncfusion/DocumentViewer";
-import keycloak from "@/keycloak";
+import { isDocumentOpenable } from "@mds/common/components/syncfusion/DocumentViewer";
+import keycloak from "@mds/common";
 
 const propTypes = {
   path: PropTypes.string.isRequired,
