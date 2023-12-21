@@ -313,7 +313,7 @@ exports[`BondForm renders properly 1`] = `
     <Col
       xs={24}
     >
-      <Connect(DocumentTable)
+      <DocumentTable
         documentColumns={
           Array [
             Object {

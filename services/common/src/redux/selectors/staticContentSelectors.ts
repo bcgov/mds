@@ -63,7 +63,7 @@ export const {
   getProjectDecisionPackageStatusCodes,
 } = staticContentReducer;
 
-const getVisibilityFilterOption = (_state, showActiveOnly: true | undefined = true) =>
+const getVisibilityFilterOption = (_state, showActiveOnly: boolean | undefined = true) =>
   showActiveOnly;
 
 const getOptions = (transformOptionsFunc, showActiveOnly) => {

@@ -1,34 +1,40 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MinistryInternalComments renders properly 1`] = `
-<div>
-  <h4
-    id="internal-ministry-comments"
-  >
-    Internal Ministry Comments
-  </h4>
-  <Connect(AuthorizationWrapper)
-    permission="role_edit_incidents"
-  >
-    <div
-      className="margin-large--top margin-large--bottom"
-    >
-      <p>
-        <strong>
-          These comments are for interal staff only and will not be shown to proponents.
-        </strong>
-         
-        Add comments to this incident for future reference. Anything written in these comments may be requested under FOIPPA. Keep it professional and concise.
-      </p>
-    </div>
-  </Connect(AuthorizationWrapper)>
-  <MinistryCommentPanel
-    comments={Array []}
-    createPermission="role_edit_incidents"
-    loading={true}
-    onChange={[Function]}
-    onSubmit={[Function]}
-    renderEditor={true}
+<ContextProvider
+  value={
+    Object {
+      "store": Object {
+        "@@observable": [Function],
+        "dispatch": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      },
+      "subscription": Subscription {
+        "handleChangeWrapper": [Function],
+        "listeners": Object {
+          "notify": [Function],
+        },
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": Object {
+          "@@observable": [Function],
+          "dispatch": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+        },
+        "unsubscribe": null,
+      },
+    }
+  }
+>
+  <MinistryInternalComments
+    createMineIncidentNote={[MockFunction]}
+    fetchMineIncidentNotes={[MockFunction]}
+    mineIncidentGuid="04db885d-3e9f-45dd-9383-52bb52be9a7e"
+    notes={Array []}
   />
-</div>
+</ContextProvider>
 `;

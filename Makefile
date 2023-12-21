@@ -46,6 +46,13 @@ be:
 	@docker-compose $(DC_FILE) build --force-rm --no-cache --parallel backend
 	@docker-compose $(DC_FILE) up -d --build backend
 
+cypress-keycloak:
+	@docker-compose $(DC_FILE) build --force-rm --no-cache keycloak
+	@docker-compose $(DC_FILE) up -d keycloak
+
+run-cypress-core:
+	cd services/core-web && npx cypress open
+
 testbe:
 	@echo "+\n++ Running tests in backend container ...\n+"
 	@docker-compose $(DC_FILE) exec backend pytest

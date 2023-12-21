@@ -6,8 +6,10 @@ import { hideLoading, showLoading } from "react-redux-loading-bar";
 
 import { notification } from "antd";
 import { ENVIRONMENT, IMineDocumentVersion } from "@mds/common";
-import { request, success, error } from "@mds/common/redux/actions/genericActions";
+import { error, request, success } from "@mds/common/redux/actions/genericActions";
 import CustomAxios from "@mds/common/redux/customAxios";
+import * as API from "@mds/common/constants/API";
+import * as documentActions from "@mds/common/redux/actions/documentActions";
 
 const createRequestHeader = REQUEST_HEADER.createRequestHeader;
 
@@ -74,4 +76,44 @@ export const pollDocumentUploadStatus = (
     .finally(() => {
       dispatch(hideLoading());
     });
+};
+
+export const documentsCompression = (mineGuid, documentManagerGuids) => (dispatch) => {
+  dispatch(request(reducerTypes.DOCUMENTS_COMPRESSION));
+  dispatch(showLoading());
+  return CustomAxios()
+    .post(
+      `${ENVIRONMENT.apiUrl}${API.DOCUMENTS_COMPRESSION(mineGuid)}`,
+      { document_manager_guids: documentManagerGuids },
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.DOCUMENTS_COMPRESSION));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.DOCUMENTS_COMPRESSION));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const pollDocumentsCompressionProgress = (taskId) => (dispatch) => {
+  dispatch(request(reducerTypes.POLL_DOCUMENTS_COMPRESSION_PROGRESS));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl}${API.POLL_DOCUMENTS_COMPRESSION_PROGRESS(taskId)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.POLL_DOCUMENTS_COMPRESSION_PROGRESS));
+      dispatch(documentActions.storeDocumentCompressionProgress(response.data));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.POLL_DOCUMENTS_COMPRESSION_PROGRESS));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
 };
