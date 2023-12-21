@@ -24,6 +24,8 @@ interface DocumentTableProps {
   showVersionHistory?: boolean;
   userRoles?: string[];
   view?: "standard" | "minimal";
+  openModal?: (arg1: any) => void;
+  closeModal?: (arg1: any) => void;
 }
 
 export default DocumentTableProps;

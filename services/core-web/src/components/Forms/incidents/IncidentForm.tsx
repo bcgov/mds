@@ -20,9 +20,10 @@ import {
   uploadDateColumn,
   uploadedByColumn,
 } from "@/components/common/DocumentColumns";
-import IncidentFormDocuments from "@/components/Forms/incidents/incidentFormDocuments";
+import IncidentFormDocuments from "@/components/Forms/incidents/IncidentFormDocuments";
 import IncidentFormInternalDocumentComments from "@/components/Forms/incidents/IncidentFormInternalDocumentComments";
-import IncidentFormInitialReport from "@/components/Forms/incidents/incidentFormInitialReport";
+import IncidentFormInitialReport from "@/components/Forms/incidents/IncidentFormInitialReport";
+
 import IncidentFormUpdateIncidentStatus from "@/components/Forms/incidents/IncidentFormUpdateIncidentStatus";
 import IncidentFormMinistryFollowup from "@/components/Forms/incidents/IncidentFormMinistryFollowup";
 import { removeDocumentFromMineIncident } from "@mds/common/redux/actionCreators/incidentActionCreator";
