@@ -1,9 +1,8 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
-import { bindActionCreators } from "redux";
+import React, { useEffect, useState } from "react";
 import { flattenObject } from "@common/utils/helpers";
-import { connect } from "react-redux";
-import { Link, withRouter, useParams, useLocation, matchPath } from "react-router-dom";
-import { change, submit, getFormSyncErrors, getFormValues, touch, isDirty } from "redux-form";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useLocation, useParams } from "react-router-dom";
+import { getFormSyncErrors, getFormValues } from "redux-form";
 import { Tag } from "antd";
 import { ArrowLeftOutlined, EnvironmentOutlined } from "@ant-design/icons";
 import { getMineIncident } from "@mds/common/redux/reducers/incidentReducer";
@@ -11,33 +10,13 @@ import {
   createMineIncident,
   fetchMineIncident,
   updateMineIncident,
-  removeDocumentFromMineIncident,
 } from "@mds/common/redux/actionCreators/incidentActionCreator";
 import { clearMineIncident } from "@mds/common/redux/actions/incidentActions";
 import * as Strings from "@mds/common/constants/strings";
 import * as FORM from "@/constants/forms";
-import Loading from "@/components/common/Loading";
 import IncidentForm from "@/components/Forms/incidents/IncidentForm";
 import ScrollSideMenu from "@/components/common/ScrollSideMenu";
 import * as routes from "@/constants/routes";
-import { IMineIncident } from "@mds/common";
-import { ActionCreator } from "@mds/common/interfaces/actionCreator";
-
-export interface MineIncidentProps {
-  incident: IMineIncident;
-  createMineIncident: ActionCreator<typeof createMineIncident>;
-  fetchMineIncident: ActionCreator<typeof fetchMineIncident>;
-  updateMineIncident: ActionCreator<typeof updateMineIncident>;
-  clearMineIncident(): Promise<void>;
-  removeDocumentFromMineIncident: ActionCreator<typeof removeDocumentFromMineIncident>;
-  history: {
-    push(): Promise<any>;
-    replace(mineGuid: string, formattedValues?: any): Promise<any>;
-  };
-  formValues: Record<string, any>;
-  formIsDirty: boolean;
-  formErrors: Record<string, string>;
-}
 
 interface IParams {
   mineGuid?: string;
@@ -45,8 +24,10 @@ interface IParams {
   mineDocumentGuid?: string;
 }
 
-export const MineIncident: FunctionComponent<MineIncidentProps> = (props) => {
-  const { formValues, formErrors, incident, history } = props;
+export const MineIncident = (props) => {
+  const dispatch = useDispatch();
+
+  const { history } = props;
   const params = useParams<IParams>();
   const { mineGuid, mineIncidentGuid = null } = params;
   const { pathname, search = null } = useLocation();
@@ -54,7 +35,11 @@ export const MineIncident: FunctionComponent<MineIncidentProps> = (props) => {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [fixedTop, setIsFixedTop] = useState<boolean>(false);
 
-  const isEditPage = Boolean(matchPath(pathname, routes.EDIT_MINE_INCIDENT.route));
+  const incident = useSelector(getMineIncident);
+  const formValues = useSelector((state) => getFormValues(FORM.ADD_EDIT_INCIDENT)(state)) || {};
+  const formErrors = useSelector((state) => getFormSyncErrors(FORM.ADD_EDIT_INCIDENT)(state)) || {};
+
+  const isEditPage = !!params.mineIncidentGuid;
   const mineName = isNewIncident
     ? new URLSearchParams(search).get("mine_name")
     : incident.mine_name;
@@ -71,39 +56,30 @@ export const MineIncident: FunctionComponent<MineIncidentProps> = (props) => {
     return { url: routes.VIEW_MINE_INCIDENT, params: [mineGuid, mineIncidentGuid] };
   })();
 
-  const handleScroll = () => {
-    if (window.pageYOffset > 170 && !fixedTop) {
-      setIsFixedTop(true);
-    } else if (window.pageYOffset <= 170 && fixedTop) {
-      setIsFixedTop(false);
-    }
-  };
-
-  const handleFetchData = (): Promise<void> => {
+  const handleFetchData = async (): Promise<void> => {
     if (mineGuid && mineIncidentGuid) {
       setIsNewIncident(false);
-      return props.fetchMineIncident(mineGuid, mineIncidentGuid);
+      setIsLoaded(false);
+      await dispatch(fetchMineIncident(mineGuid, mineIncidentGuid));
+      setIsLoaded(true);
     }
     return Promise.resolve();
   };
 
   const handleCreateMineIncident = (formattedValues: any) => {
     setIsLoaded(false);
-    return props
-      .createMineIncident(mineGuid, formattedValues)
+    return dispatch(createMineIncident(mineGuid, formattedValues))
       .then(({ data: { mine_guid, mine_incident_guid } }) =>
         history.replace(routes.EDIT_MINE_INCIDENT.dynamicRoute(mine_guid, mine_incident_guid))
       )
-      .then(() => handleFetchData())
-      .then(() => setIsLoaded(true));
+      .then(() => handleFetchData());
   };
 
   const handleUpdateMineIncident = (formattedValues) => {
     setIsLoaded(false);
-    return props
-      .updateMineIncident(mineGuid, mineIncidentGuid, formattedValues)
-      .then(() => handleFetchData())
-      .then(() => setIsLoaded(true));
+    return dispatch(updateMineIncident(mineGuid, mineIncidentGuid, formattedValues)).then(() =>
+      handleFetchData()
+    );
   };
 
   const formatPayload = (values) => {
@@ -168,38 +144,67 @@ export const MineIncident: FunctionComponent<MineIncidentProps> = (props) => {
     isNewIncident: isNewIncident,
     incident: incident,
     handlers: {
-      deleteDocument: handleFetchData,
       handleSaveData,
+      handleFetchData: handleFetchData,
     },
   };
 
   const scrollSideMenuProps = {
     menuOptions: [
       { href: "initial-report", title: "Initial Report" },
-      { href: "incident-details", title: "Incident Details" },
+      {
+        href: "incident-details",
+        title: "Incident Details",
+      },
       { href: "documentation", title: "Documentation" },
-      { href: "final-report", title: "Final Report" },
+      {
+        href: "final-report",
+        title: "Final Report",
+      },
       { href: "ministry-follow-up", title: "Ministry Follow Up" },
-      { href: "internal-documents", title: "Internal Documents" },
+      {
+        href: "internal-documents",
+        title: "Internal Documents",
+      },
       { href: "internal-ministry-comments", title: "Comments" },
     ],
     featureUrlRoute: sideBarRoute.url.hashRoute,
     featureUrlRouteArguments: sideBarRoute.params,
   };
 
-  window.addEventListener("scroll", handleScroll);
-
   useEffect(() => {
-    handleFetchData().then(() => {
-      setIsLoaded(true);
+    let isMounted = true;
 
-      return () => {
-        window.removeEventListener("scroll", handleScroll);
-        props.clearMineIncident();
-      };
-    });
+    const handleFetchData = async (): Promise<void> => {
+      if (mineGuid && mineIncidentGuid) {
+        setIsNewIncident(false);
+        setIsLoaded(false);
+        await dispatch(fetchMineIncident(mineGuid, mineIncidentGuid));
+        if (isMounted) {
+          setIsLoaded(true);
+        }
+      }
+      return Promise.resolve();
+    };
+
+    const handleScroll = () => {
+      if (window.pageYOffset > 170 && !fixedTop) {
+        setIsFixedTop(true);
+      } else if (window.pageYOffset <= 170 && fixedTop) {
+        setIsFixedTop(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleFetchData();
     handleScroll();
-  }, [pathname]);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      isMounted = false;
+      dispatch(clearMineIncident());
+    };
+  }, [pathname, mineGuid, mineIncidentGuid]);
 
   return isLoaded ? (
     <>
@@ -213,7 +218,6 @@ export const MineIncident: FunctionComponent<MineIncidentProps> = (props) => {
             &nbsp;
             <span>
               <Tag title={`Mine: ${mineName}`}>
-                {/* @ts-ignore */}
                 <Link
                   style={{ textDecoration: "none" }}
                   to={routes.MINE_GENERAL.dynamicRoute(mineGuid)}
@@ -224,7 +228,6 @@ export const MineIncident: FunctionComponent<MineIncidentProps> = (props) => {
               </Tag>
             </span>
           </h1>
-          {/* @ts-ignore */}
           <Link to={routes.MINE_INCIDENTS.dynamicRoute(mineGuid)}>
             <ArrowLeftOutlined className="padding-sm--right" />
             Back to All Incidents
@@ -242,30 +245,8 @@ export const MineIncident: FunctionComponent<MineIncidentProps> = (props) => {
       </div>
     </>
   ) : (
-    <Loading />
+    <div />
   );
 };
 
-const mapStateToProps = (state) => ({
-  incident: getMineIncident(state) || {},
-  formErrors: getFormSyncErrors(FORM.ADD_EDIT_INCIDENT)(state) || {},
-  formValues: getFormValues(FORM.ADD_EDIT_INCIDENT)(state) || {},
-  formIsDirty: isDirty(FORM.ADD_EDIT_INCIDENT)(state),
-});
-
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      clearMineIncident,
-      createMineIncident,
-      fetchMineIncident,
-      updateMineIncident,
-      removeDocumentFromMineIncident,
-      submit,
-      touch,
-      change,
-    },
-    dispatch
-  );
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MineIncident));
+export default MineIncident;

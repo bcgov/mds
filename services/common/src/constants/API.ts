@@ -331,3 +331,6 @@ export const ACTIVITIES_MARK_AS_READ = () => "/activities/mark-as-read";
 // Dams
 export const DAMS = () => `/dams`;
 export const DAM = (damGuid) => (damGuid ? `/dams/${damGuid}` : "/dams");
+
+export const DOCUMENTS_COMPRESSION = (mineGuid) => `/mines/${mineGuid}/documents/zip`;
+export const POLL_DOCUMENTS_COMPRESSION_PROGRESS = (taskId) => `/mines/documents/zip/${taskId}`;

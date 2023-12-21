@@ -1,6 +1,8 @@
 import React from "react";
 import { shallow } from "enzyme";
 import { MinistryInternalComments } from "@/components/mine/Incidents/MinistryInternalComments";
+import { store } from "@/App";
+import { Provider } from "react-redux";
 
 const props = {};
 const dispatchProps = {};
@@ -22,7 +24,11 @@ beforeEach(() => {
 
 describe("MinistryInternalComments", () => {
   it("renders properly", () => {
-    const component = shallow(<MinistryInternalComments {...dispatchProps} {...props} />);
+    const component = shallow(
+      <Provider store={store}>
+        <MinistryInternalComments {...dispatchProps} {...props} />
+      </Provider>
+    );
     expect(component).toMatchSnapshot();
   });
 });

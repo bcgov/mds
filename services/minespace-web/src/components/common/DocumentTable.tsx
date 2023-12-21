@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import {
   documentNameColumn,
@@ -7,9 +7,9 @@ import {
   uploadedByColumn,
 } from "./DocumentColumns";
 import {
-  renderTextColumn,
-  renderActionsColumn,
   ITableAction,
+  renderActionsColumn,
+  renderTextColumn,
 } from "@mds/common/components/common/CoreTableCommonColumns";
 import { some } from "lodash";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
@@ -19,7 +19,7 @@ import { bindActionCreators } from "redux";
 import { modalConfig } from "@/components/modalContent/config";
 import { Feature } from "@mds/common";
 import { SizeType } from "antd/lib/config-provider/SizeContext";
-import { ColumnType, ColumnsType } from "antd/es/table";
+import { ColumnsType } from "antd/es/table";
 import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
 import DownloadOutlined from "@ant-design/icons/DownloadOutlined";
 import FileOutlined from "@ant-design/icons/FileOutlined";
@@ -28,13 +28,12 @@ import SyncOutlined from "@ant-design/icons/SyncOutlined";
 import { openDocument } from "../syncfusion/DocumentViewer";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
-import { Dropdown, Button, MenuProps } from "antd";
+import { Button, Dropdown, MenuProps } from "antd";
 import DownOutlined from "@ant-design/icons/DownOutlined";
 import DocumentTableProps from "@mds/common/interfaces/document/documentTableProps.interface";
 import { FileOperations, MineDocument } from "@mds/common/models/documents/document";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 
-// eslint-disable-next-line @typescript-eslint/no-shadow
 export const DocumentTable: FC<DocumentTableProps> = ({
   isViewOnly = false,
   excludedColumnKeys = [],
@@ -48,8 +47,6 @@ export const DocumentTable: FC<DocumentTableProps> = ({
   defaultSortKeys = ["upload_date", "dated", "update_timestamp"],
   view = "standard",
   canArchiveDocuments = false,
-  openModal,
-  closeModal,
   removeDocument,
   openDocument,
   replaceAlertMessage = "The replaced file will not reviewed as part of the submission.  The new file should be in the same format as the original file.",
@@ -60,8 +57,7 @@ export const DocumentTable: FC<DocumentTableProps> = ({
 
   const allowedTableActions = {
     [FileOperations.View]: true,
-    [FileOperations.Download]: true,
-    // don't allow changes to version history where history is not shown
+    [FileOperations.Download]: true, // don't allow changes to version history where history is not shown
     [FileOperations.Replace]: !isViewOnly && showVersionHistory,
     [FileOperations.Archive]:
       !isViewOnly && canArchiveDocuments && isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE),
@@ -92,10 +88,10 @@ export const DocumentTable: FC<DocumentTableProps> = ({
   const openArchiveModal = (event, docs: MineDocument[]) => {
     const mineGuid = docs[0].mine_guid;
     event.preventDefault();
-    openModal({
+    props.openModal({
       props: {
         title: `Archive ${docs?.length > 1 ? "Multiple Files" : "File"}`,
-        closeModal: closeModal,
+        closeModal: props.closeModal,
         handleSubmit: async () => {
           await props.archiveMineDocuments(
             mineGuid,
@@ -113,10 +109,10 @@ export const DocumentTable: FC<DocumentTableProps> = ({
 
   const openDeleteModal = (event, docs: MineDocument[]) => {
     event.preventDefault();
-    openModal({
+    props.openModal({
       props: {
         title: `Delete ${docs?.length > 1 ? "Multiple Files" : "File"}`,
-        closeModal: closeModal,
+        closeModal: props.closeModal,
         handleSubmit: async () => {
           docs.forEach((record) => removeDocument(event, record.key, documentParent));
         },
@@ -128,10 +124,10 @@ export const DocumentTable: FC<DocumentTableProps> = ({
 
   const openReplaceModal = (event, doc: MineDocument) => {
     event.preventDefault();
-    openModal({
+    props.openModal({
       props: {
         title: `Replace File`,
-        closeModal: closeModal,
+        closeModal: props.closeModal,
         handleSubmit: async (document: MineDocument) => {
           const newDocuments = documents.map((d) =>
             d.mine_document_guid === document.mine_document_guid ? document : d

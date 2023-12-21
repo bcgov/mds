@@ -21,7 +21,7 @@ import ScrollSideMenu from "@/components/common/ScrollSideMenu";
 import { fetchMineDocuments } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { getMineDocuments } from "@mds/common/redux/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
-import DocumentCompression from "@/components/common/DocumentCompression";
+import DocumentCompression from "@mds/common/components/documents/DocumentCompression";
 import { Feature } from "@mds/common";
 import { MajorMineApplicationDocument } from "@mds/common/models/documents/document";
 import { renderCategoryColumn } from "@mds/common/components/common/CoreTableCommonColumns";

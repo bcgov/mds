@@ -23,7 +23,7 @@ import { modalConfig } from "@/components/modalContent/config";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import NOWTabHeader from "@/components/noticeOfWork/applications/NOWTabHeader";
 import NOWApplicationManageDocuments from "@/components/noticeOfWork/applications/manageDocuments/NOWApplicationManageDocuments";
-import DocumentCompression from "@/components/common/DocumentCompression";
+import DocumentCompression from "@mds/common/components/documents/DocumentCompression";
 import { MineDocument } from "@mds/common/models/documents/document";
 
 /**
