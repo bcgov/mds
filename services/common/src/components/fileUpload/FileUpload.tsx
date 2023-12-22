@@ -98,7 +98,7 @@ const FileUpload = (props: FileUploadProps) => {
 
   const _s3MultipartUpload = (file, metadata, load, error, progress, abort) => {
     return new FileUploadHelper(file, {
-      endpoint: ENVIRONMENT.apiUrl + props.uploadUrl,
+      uploadUrl: ENVIRONMENT.apiUrl + props.uploadUrl,
       uploadResults: uploadResults,
       uploadData: uploadData,
       metadata: {

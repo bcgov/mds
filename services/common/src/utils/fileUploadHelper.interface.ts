@@ -1,7 +1,7 @@
 export type UploadResult = { part: MultipartUploadPart; etag?: string | null; status: string };
 
 export interface FileUploadHelperProps {
-  endpoint: string;
+  uploadUrl: string;
 
   metadata: {
     filename: string;
