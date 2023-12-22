@@ -230,6 +230,21 @@ const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
             />
           </Form>
         </Col>
+        <Col span={24}>
+          <Form layout="vertical">
+            <Typography.Text>* Report Title and Additional Comment</Typography.Text>
+            <Field
+              id="description_comment"
+              name="description_comment"
+              component={RenderAutoSizeField}
+              validate={[required, maxLength(500)]}
+              maximumCharacters={500}
+              placeholder="Include a concise and descriptive title to the report"
+              style={{ borderWidth: "1px" }}
+              rows={3}
+            />
+          </Form>
+        </Col>
 
         <Typography.Title className="margin-large--top" level={4}>
           Report Information
@@ -254,7 +269,7 @@ const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
 
         <Col span={12}>
           <Form layout="vertical">
-            <Form.Item label="Report Compliance Year/Period*">
+            <Form.Item label="* Report Compliance Year/Period">
               <Field
                 id="submission_year"
                 name="submission_year"
@@ -268,7 +283,7 @@ const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
         </Col>
         <Col span={12}>
           <Form layout="vertical">
-            <Form.Item label="Due Date*">
+            <Form.Item label="* Due Date">
               <Field
                 id="due_date"
                 name="due_date"
@@ -292,22 +307,6 @@ const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
           <Form layout="vertical">
             <Form.Item label="Submitter Email">
               <Input placeholder="Enter Email" style={{ borderWidth: "1px" }} />
-            </Form.Item>
-          </Form>
-        </Col>
-        <Col span={24}>
-          <Form layout="vertical">
-            <Form.Item label="Report Title and Additional Comment*">
-              <Field
-                id="description_comment"
-                name="description_comment"
-                component={RenderAutoSizeField}
-                validate={[required, maxLength(500)]}
-                maximumCharacters={500}
-                placeholder="Include a concise and descriptive title to the report"
-                style={{ borderWidth: "1px" }}
-                rows={3}
-              />
             </Form.Item>
           </Form>
         </Col>
