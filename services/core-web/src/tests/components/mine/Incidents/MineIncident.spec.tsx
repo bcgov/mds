@@ -1,11 +1,11 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import { MineIncident, MineIncidentProps } from "@/components/mine/Incidents/MineIncident";
+import { MineIncident } from "@/components/mine/Incidents/MineIncident";
 import * as MOCK from "@/tests/mocks/dataMocks";
 import { store } from "@/App";
 import { Provider } from "react-redux";
 
-const props: MineIncidentProps = {
+const props: any = {
   incident: MOCK.INCIDENT,
   formErrors: {},
   formValues: {
