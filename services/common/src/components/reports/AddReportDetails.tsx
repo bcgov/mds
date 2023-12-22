@@ -269,7 +269,7 @@ const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
 
         <Col span={12}>
           <Form layout="vertical">
-            <Form.Item label="* Report Compliance Year/Period">
+            <Form.Item label="Report Compliance Year/Period*">
               <Field
                 id="submission_year"
                 name="submission_year"
@@ -283,7 +283,7 @@ const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
         </Col>
         <Col span={12}>
           <Form layout="vertical">
-            <Form.Item label="* Due Date">
+            <Form.Item label="Due Date*">
               <Field
                 id="due_date"
                 name="due_date"
