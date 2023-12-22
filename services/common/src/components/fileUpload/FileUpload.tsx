@@ -25,24 +25,27 @@ type ItemInsertLocationType = "before" | "after" | ((a: any, b: any) => number);
 
 interface FileUploadProps {
   uploadUrl: string;
-  maxFileSize?: string;
   acceptedFileTypesMap?: { [key: string]: string };
   onFileLoad?: (fileName?: string, documentGuid?: string) => void;
-  onRemoveFile?: () => void;
-  addFileStart?: () => void;
   chunkSize?: number;
-  labelIdle?: string;
+  onAbort?: () => void;
+  onAfterResponse?: () => void;
+  isFeatureEnabled: (feature: string) => boolean;
+  pollDocumentUploadStatus: (documentGuid: string) => Promise<{ data: { status: string } }>;
+
+  // Properties that are passed along directly to FilePond
   allowRevert?: boolean;
   allowMultiple?: boolean;
   allowReorder?: boolean;
-  onProcessFiles?: () => void;
-  onAbort?: () => void;
+  labelIdle?: string;
+  maxFileSize?: string;
   itemInsertLocation?: ItemInsertLocationType;
-  onAfterResponse?: () => void;
+
   beforeAddFile?: (file?: any) => any;
   beforeDropFile?: (file?: any) => any;
-  isFeatureEnabled: (feature: string) => boolean;
-  pollDocumentUploadStatus: (documentGuid: string) => Promise<{ data: { status: string } }>;
+  onProcessFiles?: () => void;
+  onRemoveFile?: () => void;
+  addFileStart?: () => void;
 }
 
 const defaultProps = {
