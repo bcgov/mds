@@ -60,6 +60,7 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
         db.String, db.ForeignKey('permit_condition_category.condition_category_code'))
     permit_condition_category_description = association_proxy('permit_condition_category',
                                                               'description')
+    description_comment = db.Column(db.String)
 
     # The below hybrid properties/expressions exist solely for filtering and sorting purposes.
 
@@ -123,6 +124,7 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
                due_date,
                received_date,
                submission_year,
+               description_comment,
                permit_id=None,
                permit_condition_category_code=None,
                add_to_session=True):
@@ -132,6 +134,7 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
             due_date=due_date,
             received_date=received_date,
             submission_year=submission_year,
+            description_comment=description_comment,
             permit_id=permit_id,
             permit_condition_category_code=permit_condition_category_code)
         if add_to_session:

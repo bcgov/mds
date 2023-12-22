@@ -10,7 +10,12 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import { Field, reduxForm, formValueSelector } from "redux-form";
 import { FORM } from "@mds/common/constants/forms";
-import { dateNotInFuture, required, yearNotInFuture } from "@mds/common/redux/utils/Validate";
+import {
+  dateNotInFuture,
+  required,
+  yearNotInFuture,
+  maxLength,
+} from "@mds/common/redux/utils/Validate";
 import { flatMap, uniqBy } from "lodash";
 import ReportFilesTable from "./ReportFilesTable";
 import {
@@ -23,6 +28,7 @@ import moment from "moment";
 import RenderDate from "../forms/RenderDate";
 import RenderYear from "../forms/RenderYear";
 import RenderSelect from "../forms/RenderSelect";
+import RenderAutoSizeField from "../forms/RenderAutoSizeField";
 
 const selector = formValueSelector(FORM.ADD_REPORT);
 
@@ -224,6 +230,21 @@ const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
             />
           </Form>
         </Col>
+        <Col span={24}>
+          <Form layout="vertical">
+            <Typography.Text>* Report Title and Additional Comment</Typography.Text>
+            <Field
+              id="description_comment"
+              name="description_comment"
+              component={RenderAutoSizeField}
+              validate={[required, maxLength(500)]}
+              maximumCharacters={500}
+              placeholder="Include a concise and descriptive title to the report"
+              style={{ borderWidth: "1px" }}
+              rows={3}
+            />
+          </Form>
+        </Col>
 
         <Typography.Title className="margin-large--top" level={4}>
           Report Information
@@ -286,18 +307,6 @@ const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
           <Form layout="vertical">
             <Form.Item label="Submitter Email">
               <Input placeholder="Enter Email" style={{ borderWidth: "1px" }} />
-            </Form.Item>
-          </Form>
-        </Col>
-        <Col span={24}>
-          <Form layout="vertical">
-            <Form.Item label="Report Title and Additional Comment">
-              <Input.TextArea
-                rows={3}
-                placeholder="Include a concise and descriptive title to the report"
-                style={{ borderWidth: "1px" }}
-              />
-              Include a concise and descriptive title to the report
             </Form.Item>
           </Form>
         </Col>
