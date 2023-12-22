@@ -37,6 +37,10 @@ export const IMAGE = {
   ".heif": "image/heif",
 };
 
+export const MESSAGE = {
+  ".msg": "application/vnd.ms-outlook",
+};
+
 export const APPLICATION_OCTET_STREAM = "application/octet-stream";
 
 export const UNIQUELY_SPATIAL = {
