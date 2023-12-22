@@ -119,7 +119,10 @@ const commonConfig = merge([
     },
   }),
   parts.loadFiles({
-    include: path.join(PATHS.src, "assets", "downloads"),
+    include: [
+      path.join(PATHS.src, "assets", "downloads"),
+      path.join(PATHS.sharedPackage, "assets", "downloads"),
+    ],
   }),
 ]);
 
