@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import "filepond-polyfill";
 import { FilePond, registerPlugin } from "react-filepond";
@@ -37,9 +37,9 @@ interface FileUploadProps {
   allowRevert?: boolean;
   allowMultiple?: boolean;
   allowReorder?: boolean;
-  labelIdle?: string;
   maxFileSize?: string;
   itemInsertLocation?: ItemInsertLocationType;
+  labelIdle?: string;
 
   beforeAddFile?: (file?: any) => any;
   beforeDropFile?: (file?: any) => any;
@@ -82,6 +82,9 @@ const FileUpload = (props: FileUploadProps) => {
     process: (fieldName, file, metadata, load, error, progress, abort) => {
       let upload;
 
+      setUploadData(null);
+      setUploadResults([]);
+
       if (props.isFeatureEnabled("s3_multipart_upload")) {
         upload = _s3MultipartUpload(file, metadata, load, error, progress, abort);
       } else {
@@ -98,6 +101,10 @@ const FileUpload = (props: FileUploadProps) => {
       };
     },
   };
+
+  // useEffect(() => {
+  //   server.process(fieldName, file, metadata, load, error, progress, abort);
+  // }, [props.uploadUrl]);
 
   const _s3MultipartUpload = (file, metadata, load, error, progress, abort) => {
     return new FileUploadHelper(file, {
