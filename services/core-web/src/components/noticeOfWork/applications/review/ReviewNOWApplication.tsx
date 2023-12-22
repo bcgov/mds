@@ -1256,7 +1256,7 @@ export const ReviewNOWApplication: FC<InjectedFormProps<any> & ReviewNOWApplicat
             )}
           </>
         </ScrollContentWrapper>
-        <ScrollContentWrapper id="indegenous-engagement" title="Indigenous Engagement">
+        <ScrollContentWrapper id="indigenous-engagement" title="Indigenous Engagement">
           <>
             <Row gutter={16}>
               <Col md={12} sm={24}>
