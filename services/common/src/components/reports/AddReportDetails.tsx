@@ -10,7 +10,12 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import { Field, reduxForm, formValueSelector } from "redux-form";
 import { FORM } from "@mds/common/constants/forms";
-import { dateNotInFuture, required, yearNotInFuture } from "@mds/common/redux/utils/Validate";
+import {
+  dateNotInFuture,
+  required,
+  yearNotInFuture,
+  maxLength,
+} from "@mds/common/redux/utils/Validate";
 import { flatMap, uniqBy } from "lodash";
 import ReportFilesTable from "./ReportFilesTable";
 import {
@@ -23,6 +28,7 @@ import moment from "moment";
 import RenderDate from "../forms/RenderDate";
 import RenderYear from "../forms/RenderYear";
 import RenderSelect from "../forms/RenderSelect";
+import RenderAutoSizeField from "../forms/RenderAutoSizeField";
 
 const selector = formValueSelector(FORM.ADD_REPORT);
 
@@ -291,13 +297,17 @@ const AddReportDetails: FC<AddReportDetailsProps> = (props) => {
         </Col>
         <Col span={24}>
           <Form layout="vertical">
-            <Form.Item label="Report Title and Additional Comment">
-              <Input.TextArea
-                rows={3}
+            <Form.Item label="Report Title and Additional Comment*">
+              <Field
+                id="description_comment"
+                name="description_comment"
+                component={RenderAutoSizeField}
+                validate={[required, maxLength(500)]}
+                maximumCharacters={500}
                 placeholder="Include a concise and descriptive title to the report"
                 style={{ borderWidth: "1px" }}
+                rows={3}
               />
-              Include a concise and descriptive title to the report
             </Form.Item>
           </Form>
         </Col>

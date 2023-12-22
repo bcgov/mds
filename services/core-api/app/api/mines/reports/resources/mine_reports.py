@@ -42,6 +42,7 @@ class MineReportListResource(Resource, UserMixin):
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
     parser.add_argument('mine_report_submissions', type=list, location='json')
     parser.add_argument('permit_condition_category_code', type=str, location='json')
+    parser.add_argument('description_comment', type=str, location='json')
 
     @api.marshal_with(MINE_REPORT_MODEL, envelope='records', code=200)
     @api.doc(description='returns the reports for a given mine.')
@@ -101,6 +102,7 @@ class MineReportListResource(Resource, UserMixin):
             due_date=data.get('due_date'),
             received_date=data['received_date'],
             submission_year=data['submission_year'],
+            description_comment=data['description_comment'],
             permit_id=permit.permit_id if permit else None,
             permit_condition_category_code=permit_condition_category_code)
 

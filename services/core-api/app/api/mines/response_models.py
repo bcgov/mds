@@ -689,7 +689,9 @@ MINE_REPORT_MODEL = api.model(
         'mine_name':
             fields.String,
         'permit_condition_category_code':
-            fields.String
+            fields.String,
+        'description_comment':
+            fields.String,
     })
 
 MINE_REPORT_DEFINITION_CATEGORIES = api.model('MineReportDefinitionCategoriesModel', {
