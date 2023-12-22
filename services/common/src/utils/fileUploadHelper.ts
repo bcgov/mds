@@ -56,7 +56,6 @@ export class FileUploadHelper {
       Object.values(bytesUploaded).reduce((total: number, c: number) => total + c, 0);
 
     if (!this.config.uploadData) {
-      console.log("creating multipart upload");
       uploadData = await this._createMultipartUpload();
     }
 
@@ -77,11 +76,9 @@ export class FileUploadHelper {
       (p) => !uploadResults.some((r) => p.part === r.part.part)
     );
 
-    console.log("upload primizes");
     // Upload the remaining parts
     const uploadPromises = unfinishedParts.map((result) => {
       const chunk = this._parseFileChunk(uploadData.upload.parts, result);
-      console.log("uploading chunk");
       return this._uploadMultipartChunk(
         result,
         chunk,
@@ -93,7 +90,6 @@ export class FileUploadHelper {
 
     await Promise.allSettled(uploadPromises);
 
-    console.log("completing upload");
     // If all parts have been uploaded, complete the multipart upload
     if (uploadResults?.length && uploadResults.every((result) => result.status === "success")) {
       await this._completeMultipartUpload(uploadData, uploadResults);
@@ -146,8 +142,6 @@ export class FileUploadHelper {
   ): Promise<any> {
     return this.limitParallel(async () => {
       try {
-        console.log("uploading");
-
         // Retry the upload of the given chunk up to 4 times before failing hard
         return await retryOnFail(
           async () => {
@@ -168,7 +162,6 @@ export class FileUploadHelper {
           this.config.retryDelayMs || 500
         );
       } catch (e) {
-        console.log("error when uploading");
         uploadResults.push({ part: result, etag: null, status: "error" });
 
         this.limitParallel.clearQueue();

@@ -10,7 +10,7 @@ import "filepond/dist/filepond.min.css";
 import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import * as tus from "tus-js-client";
-import { ENVIRONMENT } from "@mds/common";
+import { ENVIRONMENT, isFeatureEnabled } from "@mds/common";
 import { APPLICATION_OCTET_STREAM } from "@/constants/fileTypes";
 import { createRequestHeader } from "@common/utils/RequestHeaders";
 import { FLUSH_SOUND, WATER_SOUND } from "@/constants/assets";
@@ -18,6 +18,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { pollDocumentUploadStatus } from "@mds/common/redux/actionCreators/documentActionCreator";
 import { FileUploadHelper } from "@mds/common/utils/fileUploadHelper";
+import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
 
 registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 
@@ -39,6 +40,8 @@ const propTypes = {
   onAfterResponse: PropTypes.func,
   beforeAddFile: PropTypes.func,
   beforeDropFile: PropTypes.func,
+  beforeDropFile: PropTypes.func,
+  isFeatureEnabled: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -61,7 +64,6 @@ const defaultProps = {
   beforeAddFile: () => {},
   beforeDropFile: () => {},
 };
-
 class FileUpload extends React.Component {
   state = { showWhirlpool: false, uploadResults: [], uploadData: null };
 
@@ -70,96 +72,16 @@ class FileUpload extends React.Component {
 
     this.server = {
       process: (fieldName, file, metadata, load, error, progress, abort) => {
-        let upload = new FileUploadHelper(file, {
-          uploadUrl: ENVIRONMENT.apiUrl + this.props.uploadUrl,
-          retryDelays: [100, 1000, 3000],
-          uploadResults: this.state.uploadResults,
-          uploadData: this.state.uploadData,
-          metadata: {
-            filename: file.name,
-            filetype: file.type || APPLICATION_OCTET_STREAM,
-          },
-          onError: (err, uploadResults) => {
-            this.setState({ uploadResults });
-            notification.error({
-              message: `Failed to upload ${file.name}: ${err}`,
-              duration: 10,
-            });
-            error(err);
-          },
-          onInit: (uploadData) => {
-            this.setState({ uploadData });
-          },
-          onProgress: (bytesUploaded, bytesTotal) => {
-            progress(true, bytesUploaded, bytesTotal);
-          },
-          onSuccess: (documentGuid) => {
-            load(documentGuid);
-            this.props.onFileLoad(file.name, documentGuid);
-            if (this.state.showWhirlpool) {
-              this.flushSound.play();
-            }
-          },
-        });
+        let upload;
+
+        if (props.isFeatureEnabled("s3_multipart_upload")) {
+          upload = this._s3MultipartUpload(file, metadata, load, error, progress, abort);
+        } else {
+          upload = this._tusdUpload(file, metadata, load, error, progress, abort);
+        }
 
         upload.start();
 
-        // const upload = new tus.Upload(file, {
-        //   endpoint: ENVIRONMENT.apiUrl + this.props.uploadUrl,
-        //   retryDelays: [100, 1000, 3000],
-        //   removeFingerprintOnSuccess: true,
-        //   chunkSize: this.props.chunkSize,
-        //   metadata: {
-        //     filename: file.name,
-        //     filetype: file.type || APPLICATION_OCTET_STREAM,
-        //   },
-        //   onBeforeRequest: (req) => {
-        //     // Set authorization header on each request to make use
-        //     // of the new token in case of a token refresh was performed
-        //     var xhr = req.getUnderlyingObject();
-        //     const { headers } = createRequestHeader();
-
-        //     xhr.setRequestHeader("Authorization", headers.Authorization);
-        //   },
-        //   onError: (err) => {
-        //     notification.error({
-        //       message: `Failed to upload ${file.name}: ${err}`,
-        //       duration: 10,
-        //     });
-        //     error(err);
-        //   },
-        //   onProgress: (bytesUploaded, bytesTotal) => {
-        //     progress(true, bytesUploaded, bytesTotal);
-        //   },
-        //   onAfterResponse: this.props.onAfterResponse,
-        //   onSuccess: () => {
-        //     const documentGuid = upload.url.split("/").pop();
-
-        //     const pollUploadStatus = async () => {
-        //       const response = await props.pollDocumentUploadStatus(documentGuid);
-        //       if (response.data.status !== "In Progress") {
-        //         clearInterval(intervalId);
-        //         if (response.data.status === "Success") {
-        //           load(documentGuid);
-        //           this.props.onFileLoad(file.name, documentGuid);
-        //           if (this.state.showWhirlpool) {
-        //             this.flushSound.play();
-        //           }
-        //         } else {
-        //           notification.error({
-        //             message: `Failed to upload ${file && file.name ? file.name : ""}: ${response.data.status
-        //               }`,
-        //             duration: 10,
-        //           });
-
-        //           abort();
-        //         }
-        //       }
-        //     };
-        //     const intervalId = setInterval(pollUploadStatus, 1000);
-        //   },
-        // });
-        // upload.start();
         return {
           abort: () => {
             upload.abort();
@@ -168,6 +90,99 @@ class FileUpload extends React.Component {
         };
       },
     };
+  }
+
+  _s3MultipartUpload(file, metadata, load, error, progress, abort) {
+    return new FileUploadHelper(file, {
+      uploadUrl: ENVIRONMENT.apiUrl + this.props.uploadUrl,
+      retryDelays: [100, 1000, 3000],
+      uploadResults: this.state.uploadResults,
+      uploadData: this.state.uploadData,
+      metadata: {
+        filename: file.name,
+        filetype: file.type || APPLICATION_OCTET_STREAM,
+      },
+      onError: (err, uploadResults) => {
+        this.setState({ uploadResults });
+        notification.error({
+          message: `Failed to upload ${file.name}: ${err}`,
+          duration: 10,
+        });
+        error(err);
+      },
+      onInit: (uploadData) => {
+        this.setState({ uploadData });
+      },
+      onProgress: (bytesUploaded, bytesTotal) => {
+        progress(true, bytesUploaded, bytesTotal);
+      },
+      onSuccess: (documentGuid) => {
+        load(documentGuid);
+        this.props.onFileLoad(file.name, documentGuid);
+        if (this.state.showWhirlpool) {
+          this.flushSound.play();
+        }
+      },
+    });
+  }
+
+  _tusdUpload(file, metadata, load, error, progress, abort) {
+    return new tus.Upload(file, {
+      endpoint: ENVIRONMENT.apiUrl + this.props.uploadUrl,
+      retryDelays: [100, 1000, 3000],
+      removeFingerprintOnSuccess: true,
+      chunkSize: this.props.chunkSize,
+      metadata: {
+        filename: file.name,
+        filetype: file.type || APPLICATION_OCTET_STREAM,
+      },
+      onBeforeRequest: (req) => {
+        // Set authorization header on each request to make use
+        // of the new token in case of a token refresh was performed
+        var xhr = req.getUnderlyingObject();
+        const { headers } = createRequestHeader();
+
+        xhr.setRequestHeader("Authorization", headers.Authorization);
+      },
+      onError: (err) => {
+        notification.error({
+          message: `Failed to upload ${file.name}: ${err}`,
+          duration: 10,
+        });
+        error(err);
+      },
+      onProgress: (bytesUploaded, bytesTotal) => {
+        progress(true, bytesUploaded, bytesTotal);
+      },
+      onAfterResponse: this.props.onAfterResponse,
+      onSuccess: () => {
+        const documentGuid = upload.url.split("/").pop();
+
+        const pollUploadStatus = async () => {
+          const response = await props.pollDocumentUploadStatus(documentGuid);
+          if (response.data.status !== "In Progress") {
+            clearInterval(intervalId);
+            if (response.data.status === "Success") {
+              load(documentGuid);
+              this.props.onFileLoad(file.name, documentGuid);
+              if (this.state.showWhirlpool) {
+                this.flushSound.play();
+              }
+            } else {
+              notification.error({
+                message: `Failed to upload ${file && file.name ? file.name : ""}: ${
+                  response.data.status
+                }`,
+                duration: 10,
+              });
+
+              abort();
+            }
+          }
+        };
+        const intervalId = setInterval(pollUploadStatus, 1000);
+      },
+    });
   }
 
   componentWillUnmount() {
@@ -255,4 +270,4 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(null, mapDispatchToProps)(FileUpload);
+export default withFeatureFlag(connect(null, mapDispatchToProps)(FileUpload));
