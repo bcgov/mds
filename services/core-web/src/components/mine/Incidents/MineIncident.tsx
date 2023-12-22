@@ -172,39 +172,25 @@ export const MineIncident = (props) => {
     featureUrlRouteArguments: sideBarRoute.params,
   };
 
+  const handleScroll = () => {
+    if (window.pageYOffset > 170 && !fixedTop) {
+      setIsFixedTop(true);
+    } else if (window.pageYOffset <= 170 && fixedTop) {
+      setIsFixedTop(false);
+    }
+  };
+
   useEffect(() => {
-    let isMounted = true;
+    handleFetchData().then(() => {
+      setIsLoaded(true);
 
-    const handleFetchData = async (): Promise<void> => {
-      if (mineGuid && mineIncidentGuid) {
-        setIsNewIncident(false);
-        setIsLoaded(false);
-        await dispatch(fetchMineIncident(mineGuid, mineIncidentGuid));
-        if (isMounted) {
-          setIsLoaded(true);
-        }
-      }
-      return Promise.resolve();
-    };
-
-    const handleScroll = () => {
-      if (window.pageYOffset > 170 && !fixedTop) {
-        setIsFixedTop(true);
-      } else if (window.pageYOffset <= 170 && fixedTop) {
-        setIsFixedTop(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    handleFetchData();
+      return () => {
+        window.removeEventListener("scroll", handleScroll);
+        props.clearMineIncident();
+      };
+    });
     handleScroll();
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      isMounted = false;
-      dispatch(clearMineIncident());
-    };
-  }, [pathname, mineGuid, mineIncidentGuid]);
+  }, [pathname]);
 
   return isLoaded ? (
     <>
