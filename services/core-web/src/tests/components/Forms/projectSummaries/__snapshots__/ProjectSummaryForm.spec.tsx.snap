@@ -879,7 +879,7 @@ exports[`ProjectSummaryForm renders properly 1`] = `
                     </li>
                     <li>
                       The allowed file types are: 
-                      .pdf, .doc, .docx, .rtf, .odt, .ott, .oth, .odm, .xls, .xlsx, .jpeg, .png
+                      .pdf, .doc, .docx, .rtf, .odt, .ott, .oth, .odm, .xls, .xlsx, .jpeg, .png, .jpg, .jp2, .tif, .tiff, .heic, .heif
                     </li>
                     <li>
                       Maximum individual file size is 400 MB

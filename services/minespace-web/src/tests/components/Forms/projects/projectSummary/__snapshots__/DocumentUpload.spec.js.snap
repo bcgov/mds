@@ -23,7 +23,7 @@ exports[`DocumentUpload renders properly 1`] = `
             </li>
             <li>
               The allowed file types are: 
-              .pdf, .doc, .docx, .rtf, .odt, .ott, .oth, .odm, .xls, .xlsx, .jpg, .jpeg, .png
+              .pdf, .doc, .docx, .rtf, .odt, .ott, .oth, .odm, .xls, .xlsx, .jpg, .jpeg, .png, .jp2, .tif, .tiff, .heic, .heif
             </li>
             <li>
               Maximum individual file size is 400 MB
@@ -66,6 +66,9 @@ exports[`DocumentUpload renders properly 1`] = `
         Object {
           ".doc": "application/msword",
           ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          ".heic": "image/heic",
+          ".heif": "image/heif",
+          ".jp2": "image/jp2",
           ".jpeg": "image/jpeg",
           ".jpg": "image/jpg",
           ".odm": "application/vnd.oasis.opendocument.text-master",
@@ -75,6 +78,8 @@ exports[`DocumentUpload renders properly 1`] = `
           ".pdf": "application/pdf",
           ".png": "image/png",
           ".rtf": "application/rtf",
+          ".tif": "image/tiff",
+          ".tiff": "image/tiff",
           ".xls": "application/vnd.ms-excel",
           ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         }

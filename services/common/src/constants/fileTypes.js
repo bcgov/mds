@@ -30,6 +30,15 @@ export const IMAGE = {
   ".jpg": "image/jpg",
   ".jpeg": "image/jpeg",
   ".png": "image/png",
+  ".jp2": "image/jp2",
+  ".tif": "image/tiff",
+  ".tiff": "image/tiff",
+  ".heic": "image/heic",
+  ".heif": "image/heif",
+};
+
+export const MESSAGE = {
+  ".msg": "application/vnd.ms-outlook",
 };
 
 export const APPLICATION_OCTET_STREAM = "application/octet-stream";
