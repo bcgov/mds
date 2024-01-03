@@ -78,7 +78,6 @@ class DocumentManagerService():
             'filename': metadata.get('filename')
         }
         current_app.logger.info('[MDS-5629][%s] - Uploading file details: %s', __class__.__name__, str(data))
-        print(data)
         resp = requests.post(
             url=cls.document_manager_document_resource_url,
             headers={key: value

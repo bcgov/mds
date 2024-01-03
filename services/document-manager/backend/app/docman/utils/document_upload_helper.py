@@ -240,7 +240,6 @@ class DocumentUploadHelper:
             # update the record of the previous version
             if versions is not None and len(versions) >= 1:
                 # Sort the versions
-                print(versions)
                 versions.sort(key=lambda v: v["LastModified"], reverse=True)
 
                 # create a version record for the previous version
