@@ -1,0 +1,42 @@
+name: Common Package - Unit Tests
+
+on:
+  pull_request:
+    paths:
+      - services/common/**
+on:
+  workflow_dispatch:
+
+jobs:
+  test-common-package:
+    name: test-common-package
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+        name: checkout
+
+      - uses: actions/cache@v3
+        name: Cache yarn
+        with:
+          path: ./.yarn/cache
+          key: common-package
+          restore-keys: common-package
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+
+      - name: Upgrade yarn
+        run: npm install -g yarn
+
+      - name: Set Fontawesome token
+        run: |
+          yarn config set 'npmScopes["fortawesome"].npmAuthIdent' "${{ secrets.ARTIFACTORY_TOKEN }}"
+          yarn config set 'npmScopes["fortawesome"].npmAlwaysAuth' true
+          yarn config set 'npmScopes["fortawesome"].npmRegistryServer' "https://artifacts.developer.gov.bc.ca/artifactory/api/npm/m4c2-mds/"
+
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Run frontend tests
+        run: yarn workspace @mds/common run test
