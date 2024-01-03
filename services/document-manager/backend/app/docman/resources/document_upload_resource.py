@@ -8,6 +8,7 @@ from app.docman.models.document_upload_status import DocumentUploadStatus
 from flask_restx import Resource, reqparse
 from werkzeug.exceptions import BadRequest, Forbidden, NotFound
 from app.utils.include.user_info import User
+from app.docman.models.document_version import DocumentVersion
 
 CACHE_TIMEOUT = TIMEOUT_24_HOURS
 
@@ -30,18 +31,39 @@ class DocumentUploadResource(Resource):
         document = Document.query.filter_by(
             document_guid=document_guid).one_or_none()
 
+
         if not document:
             raise NotFound('Document not found')
 
-        if document.status == str(DocumentUploadStatus.SUCCESS):
+        if document.status == str(DocumentUploadStatus.SUCCESS) and not data.get('version_guid'):
             raise BadRequest('Forbidden, Document upload has already been completed.')
         
-        if document.create_user != User().get_user_username():
+        if document.create_user != User().get_user_username() and not data.get('version_guid'):
             raise Forbidden("Cannot complete upload of file you did not upload")
-        
+
+        version = None
+        if data.get('version_guid'):
+            version = DocumentVersion.query.filter_by(
+                id=data.get('version_guid'),
+                document_guid=document_guid).one_or_none()
+
+            if not version:
+                raise NotFound('Document version not found')
+            
+            if version.upload_completed_date is not None:
+                raise BadRequest('Forbidden, Document upload has already been completed.')
+
+            print(version.created_by, User().get_user_username())
+
+            if version.created_by != User().get_user_username():
+                raise Forbidden("Cannot complete upload of file you did not upload")
+            
+            if str(version.document_guid) != document_guid:
+                raise BadRequest('Document guid does not match version guid')
+
         return DocumentUploadHelper().complete_multipart_upload(
             upload_id=data['upload_id'],
             parts=data['parts'],
             document=document,
-            version=None
+            version=version
         )

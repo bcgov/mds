@@ -2,13 +2,12 @@ import React, { FC, useState } from "react";
 
 import { Alert, Button, Col, Form, notification, Row, Typography } from "antd";
 import { MineDocument } from "@mds/common/models/documents/document";
-import { formatDate } from "@common/utils/helpers";
-import FileUpload from "@/components/common/FileUpload";
+import { formatDate } from "@mds/common/redux/utils/helpers";
+import RenderFileUpload from "@mds/common/components/forms/RenderFileUpload";
 import { NEW_VERSION_DOCUMENTS } from "@mds/common/constants/API";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
-import { HttpRequest, HttpResponse } from "tus-js-client";
 import { IMAGE, DOCUMENT, EXCEL, SPATIAL } from "@mds/common/constants/fileTypes";
 import { postNewDocumentVersion } from "@mds/common/redux/actionCreators/documentActionCreator";
 import { IMineDocumentVersion } from "@mds/common";
@@ -24,7 +23,6 @@ interface ReplaceDocumentModalProps {
 
 const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
   const { document, alertMessage } = props;
-
   const [versionGuid, setVersionGuid] = useState<string>();
   const [disableReplace, setDisableReplace] = useState<boolean>(true);
   const [updatedDocument, setUpdatedDocument] = useState<MineDocument>(document);
@@ -40,15 +38,9 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
     setDisableReplace(false);
   };
 
-  const onAfterResponse = (request: HttpRequest, response: HttpResponse) => {
-    const responseBody = response.getBody();
-    if (responseBody) {
-      const jsonString = responseBody.replace(/'/g, '"');
-
-      const obj = JSON.parse(jsonString);
-      if (obj && obj.document_manager_version_guid) {
-        setVersionGuid(obj.document_manager_version_guid);
-      }
+  const onUploadResponse = (response) => {
+    if (response.document_manager_version_guid) {
+      setVersionGuid(response.document_manager_version_guid);
     }
   };
 
@@ -117,10 +109,10 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
         </Col>
       </Row>
 
-      <FileUpload
+      <RenderFileUpload
         id="fileUpload"
         name="fileUpload"
-        component={FileUpload}
+        component={RenderFileUpload}
         uploadUrl={NEW_VERSION_DOCUMENTS({
           mineGuid: document.mine_guid,
           mineDocumentGuid: document.mine_document_guid,
@@ -133,7 +125,7 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
         maxFiles={1}
         beforeAddFile={beforeUpload}
         beforeDropFile={beforeUpload}
-        onAfterResponse={onAfterResponse}
+        onUploadResponse={onUploadResponse}
       />
 
       <div className="ant-modal-footer">

@@ -59,6 +59,10 @@ export class FileUploadHelper {
       uploadData = await this._createMultipartUpload();
     }
 
+    if (this.config.onUploadResponse) {
+      this.config.onUploadResponse(uploadData);
+    }
+
     uploadResults = uploadResults.filter((r) => r.status === "success");
 
     if (uploadResults?.length) {
@@ -108,6 +112,7 @@ export class FileUploadHelper {
   ) {
     const payload = {
       upload_id: uploadData.upload.uploadId,
+      version_guid: uploadData.document_manager_version_guid,
       parts: uploadResults.map((result) => ({ part: result.part.part, etag: result.etag })),
     };
 

@@ -149,15 +149,9 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
     });
   };
 
-  const onAfterResponse = (request: HttpRequest, response: HttpResponse) => {
-    const responseBody = response.getBody();
-    if (responseBody) {
-      const jsonString = responseBody.replace(/'/g, '"');
-
-      const obj = JSON.parse(jsonString);
-      if (obj && obj.document_manager_version_guid) {
-        setVersion(obj.document_manager_version_guid);
-      }
+  const onUploadResponse = (response) => {
+    if (response.document_manager_version_guid) {
+      setVersion(response.document_manager_version_guid);
     }
   };
 
@@ -224,7 +218,7 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
               }
             }
           },
-          onAfterResponse,
+          onUploadResponse,
         }}
       />
       <Popconfirm

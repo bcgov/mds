@@ -43,7 +43,7 @@ export const NoticeOfDepartureFileUpload: React.FC<NoticeOfDepartureFileUploadPr
       labelIdle={labelIdle}
       onRemoveFile={onRemoveFile}
       allowRevert
-      onprocessfiles={() => setUploading(false)}
+      onProcessFiles={() => setUploading(false)}
       allowMultiple={allowMultiple}
       beforeAddFile={props.beforeUpload}
       beforeDropFile={props.beforeUpload}

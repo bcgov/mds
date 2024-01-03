@@ -42,7 +42,7 @@ class DocumentUploadHelper:
         # If the object store is enabled, send the post request through to TUSD to the object store
         object_store_path = None
         s3_upload = None
-
+        multipart_upload_path=None
         is_s3_multipart = False
 
         if Config.OBJECT_STORE_ENABLED:
@@ -67,7 +67,8 @@ class DocumentUploadHelper:
 
             # Send the request
             if is_s3_multipart:
-                object_store_path = Config.S3_PREFIX + 'multipart/' + doc_guid 
+                object_store_path = Config.S3_PREFIX + 'multipart/' + doc_guid
+                multipart_upload_path=object_store_path
                 s3_upload = ObjectStoreStorageService().create_multipart_upload(object_store_path, file_size)
             else:
                 object_store_path = cls._initialize_tusd_upload(document_guid, headers)
@@ -128,7 +129,7 @@ class DocumentUploadHelper:
 
         response.autocorrect_location_header = False
 
-        return response, object_store_path        
+        return response, object_store_path, multipart_upload_path, s3_upload['uploadId'] if s3_upload is not None else None
 
     @classmethod
     def _initialize_tusd_upload(cls, document_guid, headers):
@@ -193,12 +194,21 @@ class DocumentUploadHelper:
             raise BadRequest('File name cannot be empty')
         if filename.endswith(FORBIDDEN_FILETYPES):
             raise BadRequest('File type is forbidden')
+
         return file_size, data, filename
 
     @classmethod
     def complete_multipart_upload(cls, upload_id, parts, document, version=None):
-        ObjectStoreStorageService().complete_multipart_upload(upload_id, document.object_store_path, parts)
-        return cls.complete_upload(document.object_store_path, document.full_storage_path, str(document.document_guid), None, None, None)
+        ObjectStoreStorageService().complete_multipart_upload(upload_id, document.multipart_upload_path, parts)
+
+        return cls.complete_upload(
+            key=document.multipart_upload_path,
+            new_key=document.full_storage_path,
+            doc_guid=str(document.document_guid),
+            versions=None,
+            version_guid=str(version.id) if version is not None else None,
+            info_key=None
+        )
 
 
     @classmethod
@@ -208,6 +218,10 @@ class DocumentUploadHelper:
         # Copy the file to its new location
         try:
             oss.copy_file(source_key=key, key=new_key)
+
+            if version_guid is not None and versions is None:
+                versions = oss.list_versions(new_key)['Versions']
+
         except Exception as e:
             handle_status_and_update_doc(e, doc_guid)
             raise e
@@ -226,6 +240,7 @@ class DocumentUploadHelper:
             # update the record of the previous version
             if versions is not None and len(versions) >= 1:
                 # Sort the versions
+                print(versions)
                 versions.sort(key=lambda v: v["LastModified"], reverse=True)
 
                 # create a version record for the previous version

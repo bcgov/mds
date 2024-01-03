@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import { store } from "@/App";
 import { MINEDOCUMENTS } from "@/tests/mocks/dataMocks";
 import matchMedia from "@/tests/mocks/matchMedia";
-import ReplaceDocumentModal from "@common/components/documents/ReplaceDocumentModal";
+import ReplaceDocumentModal from "@mds/common/components/documents/ReplaceDocumentModal";
 
 const props = {
   document: MINEDOCUMENTS[0],

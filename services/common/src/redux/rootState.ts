@@ -12,7 +12,7 @@ const getStore = (preloadedState = {}) =>
     devTools: process.env.NODE_ENV === "development",
   });
 
-const store = getStore();
+export const store = getStore();
 
 type RootState = ReturnType<typeof store.getState>;
 

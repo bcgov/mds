@@ -31,7 +31,8 @@
     "common/**/*",
     "tsconfig.json",
     "../../.eslintrc.js",
-    "../common/src/@Types/**/*"
+    "../common/src/@Types/**/*",
+    "webpack.parts.js"
   ],
   "exclude": ["node_modules", "src/**/*.test.ts", "src/**/*.test.tsx"]
 }

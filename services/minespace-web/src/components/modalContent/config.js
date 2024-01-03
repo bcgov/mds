@@ -15,7 +15,7 @@ import ViewFileHistoryModal from "./informationRequirementsTable/ViewFileHistory
 import UploadIncidentDocumentModal from "@/components/modalContent/incidents/UploadIncidentDocumentModal";
 import ArchiveDocumentModal from "@common/components/documents/ArchiveDocumentModal";
 import DeleteDocumentModal from "@mds/common/components/documents/DeleteDocumentModal";
-import ReplaceDocumentModal from "@common/components/documents/ReplaceDocumentModal";
+import ReplaceDocumentModal from "@mds/common/components/documents/ReplaceDocumentModal";
 import CreateInvitationModal from "@/components/modalContent/verifiableCredentials/createInvitationModal";
 import ExplosivesPermitViewModal from "@mds/common/components/explosivespermits/ExplosivesPermitViewModal";
 

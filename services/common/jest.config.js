@@ -13,7 +13,7 @@ module.exports = {
   verbose: true,
   testURL: "http://localhost",
   testEnvironment: "jest-environment-jsdom-global",
-  setupFiles: ["jest-localstorage-mock", "jest-canvas-mock"],
+  setupFiles: ["jest-localstorage-mock", "jest-canvas-mock", "./src/setupTests.ts"],
   collectCoverageFrom: ["**/src/**/*.{js,ts,tsx}"],
   moduleNameMapper: {
     "@mds/common/(.*)": "<rootDir>/../common/src/$1",
