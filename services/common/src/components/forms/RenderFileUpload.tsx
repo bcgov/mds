@@ -42,8 +42,8 @@ interface FileUploadProps {
   file?: any;
   notificationDisabledStatusCodes?: number[];
 
-  replaceFileUploadUrl: string;
-  afterSuccess?: { action: Function; projectGuid: string; irtGuid: string };
+  replaceFileUploadUrl?: string;
+  afterSuccess?: { action: Function[]; projectGuid: string; irtGuid: string };
   importIsSuccessful?: (isSuccessful: boolean, err?: any) => void;
   // Properties that are passed along directly to FilePond
   allowRevert?: boolean;
@@ -84,7 +84,7 @@ const defaultProps = {
   maxFiles: undefined,
 };
 
-const FileUpload = (props: FileUploadProps) => {
+export const FileUpload = (props: FileUploadProps) => {
   props = { ...defaultProps, ...props };
 
   const system = useSelector(getSystemFlag);

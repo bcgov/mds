@@ -103,7 +103,7 @@ describe("FileUploadHelper", () => {
     it("should not upload successful parts when retrying", async () => {
       const uploadData: MultipartDocumentUpload = {
         document_manager_guid: "guid",
-        document_manager_version_guid: "",
+        document_manager_version_guid: "versionguid",
         upload: {
           uploadId: "uploadId",
           parts: [
@@ -140,7 +140,7 @@ describe("FileUploadHelper", () => {
     it("should abort the upload if a part fails to upload", async () => {
       const uploadData: MultipartDocumentUpload = {
         document_manager_guid: "guid",
-        document_manager_version_guid: "",
+        document_manager_version_guid: "versionguid",
         upload: { uploadId: "uploadId", parts: [{ part: 1, size: 100, url: "part1-url" }] },
       };
       const uploadResults = [
@@ -165,7 +165,7 @@ describe("FileUploadHelper", () => {
     it("should only retry failed results", async () => {
       const uploadData: MultipartDocumentUpload = {
         document_manager_guid: "guid",
-        document_manager_version_guid: "",
+        document_manager_version_guid: "versionguid",
         upload: {
           uploadId: "uploadId",
           parts: [
@@ -199,6 +199,7 @@ describe("FileUploadHelper", () => {
             { etag: "etagpart2", part: 2 },
             { etag: "etagpart1", part: 1 },
           ],
+          version_guid: "versionguid",
         },
         expect.any(Object)
       );

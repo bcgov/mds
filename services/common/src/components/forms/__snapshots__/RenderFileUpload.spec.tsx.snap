@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`FileUpload renders properly 1`] = `
+exports[`RenderFileUpload component renders correctly 1`] = `
 <div
   class="whirlpool-container"
 >

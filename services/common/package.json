@@ -9,7 +9,8 @@
   "scripts": {
     "build": "webpack --env production",
     "watch": "webpack --watch --env development",
-    "test": "jest --env=jest-environment-jsdom-sixteen --runInBand"
+    "test": "jest --env=jsdom --runInBand",
+    "test:updateAll": "jest --runInBand --env=jsdom -u --"
   },
   "dependencies": {
     "@babel/runtime": "7.15.3",
