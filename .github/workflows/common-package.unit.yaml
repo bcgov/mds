@@ -4,7 +4,6 @@ on:
   pull_request:
     paths:
       - services/common/**
-on:
   workflow_dispatch:
 
 jobs:
