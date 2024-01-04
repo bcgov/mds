@@ -33,30 +33,35 @@ Contributors to this codebase are expected to follow the testing standards set o
 
 _If coverage is lower than before writing a new feature, the tests **need** to be updated, and the feature is considered **incomplete**_
 
+#### Cypress tests
+
 **Setup Cypress test**
-Add the following cypress related environment variables from env-example.
 
-CYPRESS_TEST_USER
-CYPRESS_TEST_PASSWORD
-CYPRESS_MINESPACE_WEB_TEST_URL
-CYPRESS_BACKEND
-CYPRESS_API_URL
-CYPRESS_KEYCLOAK_URL
-CYPRESS_ENVIRONMENT
-CYPRESS_DOC_MAN_URL
-CYPRESS_MATOMO_URL
-CYPRESS_KEYCLOAK_CLIENT_ID
-CYPRESS_KEYCLOAK_RESOURCE
-CYPRESS_KEYCLOAK_IDP_HINT
-CYPRESS_FILE_SYSTEM_PROVIDER_URL
-
-run the command `docker-compose up -d keycloak`
-
-Navigate to `http://localhost:8080` to check if keycloak was successfully installed.
+1. Make sure you've run `make env` which will configure env variables cypress need to run successfully. Most are prefixed with `CYPRESS_` and found in `.env-example` files in services/minespace-web and services/core-web
+2. Start a local version of `keycloak`: `docker-compose up -d keycloak`. This will start a keycloak instance at http://localhost:8080, admin credentials if you ever need to log into it for debugging purposes is `admin/admin`.
 
 **Run Cypress test**
 To run your cypress tests with a browser, type the command `yarn run cypress open`.
 To run your cypress tests in headless mode, type the command `yarn cypress run`.
+
+**Keycloak Realm configuration**
+A keycloak realm named `standard` is created when Keycloak is started. The configuration of the realm is found in `cypress/realm-export.json`. This is where you can configure roles that should be available for users
+
+**Keycloak user configuration**
+Keycloak will automatically create the following users for cypress to use (defined in `cypress/keycloak-users.json`).
+
+`core-admin` - Used by core cypress tests. Roles: the composite `core_full_permissions` role defined in `cypress/realm-export.json`. Password: cypress
+`minespace-admin` - Used by minespace cypress tests. Roles: core_view_all and mds_minespace_proponents. Password: cypress
+`admin` - Used to log into the Keycloak admin interface. Password: admin
+
+#### Running cypress tests in Codespaces
+
+Cypress tests can be run in github codespaces following the instructions above. If you want to run your cypress tests in a headful browser
+
+1. Run cypress: `yarn run cypress open`
+2. Access a remote desktop at http://localhost:6080 - password `vscode`
+
+This is made possible by the [desktop-lite](https://github.com/devcontainers/features/tree/main/src/desktop-lite) Codespaces feature, and configured in `.devcontainer/devcontainer.json`
 
 ### Running
 
