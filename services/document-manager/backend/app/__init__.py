@@ -21,6 +21,8 @@ from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
 from logging.config import dictConfig
 
+from .date_time_helper import get_formatted_current_time
+
 
 def create_app(test_config=None):
     """Create and configure an instance of the Flask application."""
@@ -34,9 +36,6 @@ def create_app(test_config=None):
 
     @app.after_request
     def log_response_info(response):
-        from datetime import datetime
-        def get_formatted_current_time():
-            return datetime.now().strftime("%d/%b/%Y %H:%M:%S")
         # Get request information
         method = request.method
         path = request.path
@@ -44,8 +43,7 @@ def create_app(test_config=None):
         http_version = request.environ.get('SERVER_PROTOCOL', 'HTTP/1.1')
 
         # Log combined request and response information
-        current_app.logger.info(
-            f'{ip_address} - - [{get_formatted_current_time()}] "{method} {path} {http_version}" {response.status_code} -')
+        current_app.logger.info(f'{ip_address} - - [{get_formatted_current_time()}] "{method} {path} {http_version}" {response.status_code} -')
 
         return response
 
