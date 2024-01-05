@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import "filepond-polyfill";
@@ -25,6 +24,10 @@ import { HttpRequest, HttpResponse } from "tus-js-client";
 registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 
 type ItemInsertLocationType = "before" | "after" | ((a: any, b: any) => number);
+type AfterSuccessActionType = [
+  (projectGuid, file, documentGuid) => Promise<void>,
+  (projectGuid, irtGuid, file, documentGuid) => Promise<void>
+];
 
 interface FileUploadProps {
   uploadUrl: string;
@@ -43,7 +46,7 @@ interface FileUploadProps {
   notificationDisabledStatusCodes?: number[];
 
   replaceFileUploadUrl?: string;
-  afterSuccess?: { action: Function[]; projectGuid: string; irtGuid: string };
+  afterSuccess?: { action: AfterSuccessActionType; projectGuid: string; irtGuid: string };
   importIsSuccessful?: (isSuccessful: boolean, err?: any) => void;
   // Properties that are passed along directly to FilePond
   allowRevert?: boolean;
@@ -106,41 +109,6 @@ export const FileUpload = (props: FileUploadProps) => {
   let flushSound;
   let filepond;
 
-  const server = {
-    process: (fieldName, file, metadata, load, error, progress, abort) => {
-      let upload;
-
-      setUploadProcess({
-        fieldName,
-        file,
-        metadata,
-        load,
-        error,
-        progress,
-        abort,
-      });
-      setUploadData(null);
-      setUploadResults([]);
-
-      const uploadUrl = props.shouldReplaceFile ? props.replaceFileUploadUrl : props.uploadUrl;
-
-      if (props.isFeatureEnabled("s3_multipart_upload")) {
-        upload = _s3MultipartUpload(uploadUrl, file, metadata, load, error, progress, abort);
-      } else {
-        upload = _tusdUpload(uploadUrl, file, metadata, load, error, progress, abort);
-      }
-
-      upload.start();
-
-      return {
-        abort: () => {
-          upload.abort();
-          abort();
-        },
-      };
-    },
-  };
-
   const handleError = (file, err) => {
     try {
       const response = JSON.parse(err.originalRequest.getUnderlyingObject().response);
@@ -168,7 +136,7 @@ export const FileUpload = (props: FileUploadProps) => {
   };
 
   const handleSuccess = (documentGuid, file, load, abort) => {
-    let intervalId;
+    let intervalId; // eslint-disable-line prefer-const
 
     const pollUploadStatus = async () => {
       const response = await props.pollDocumentUploadStatus(documentGuid);
@@ -222,7 +190,7 @@ export const FileUpload = (props: FileUploadProps) => {
     intervalId = setInterval(pollUploadStatus, 1000);
   };
 
-  const _s3MultipartUpload = (uploadUrl, file, metadata, load, error, progress, abort) => {
+  function _s3MultipartUpload(uploadUrl, file, metadata, load, error, progress, abort) {
     return new FileUploadHelper(file, {
       uploadUrl: ENVIRONMENT.apiUrl + uploadUrl,
       uploadResults: uploadResults,
@@ -247,9 +215,9 @@ export const FileUpload = (props: FileUploadProps) => {
       },
       onUploadResponse: props.onUploadResponse,
     });
-  };
+  }
 
-  const _tusdUpload = (uploadUrl, file, metadata, load, error, progress, abort) => {
+  function _tusdUpload(uploadUrl, file, metadata, load, error, progress, abort) {
     const upload = new tus.Upload(file, {
       endpoint: ENVIRONMENT.apiUrl + uploadUrl,
       retryDelays: [100, 1000, 3000],
@@ -262,7 +230,7 @@ export const FileUpload = (props: FileUploadProps) => {
       onBeforeRequest: (req) => {
         // Set authorization header on each request to make use
         // of the new token in case of a token refresh was performed
-        var xhr = req.getUnderlyingObject();
+        const xhr = req.getUnderlyingObject();
         const { headers } = createRequestHeader();
 
         xhr.setRequestHeader("Authorization", headers.Authorization);
@@ -297,6 +265,41 @@ export const FileUpload = (props: FileUploadProps) => {
     });
 
     return upload;
+  }
+
+  const server = {
+    process: (fieldName, file, metadata, load, error, progress, abort) => {
+      let upload;
+
+      setUploadProcess({
+        fieldName,
+        file,
+        metadata,
+        load,
+        error,
+        progress,
+        abort,
+      });
+      setUploadData(null);
+      setUploadResults([]);
+
+      const uploadUrl = props.shouldReplaceFile ? props.replaceFileUploadUrl : props.uploadUrl;
+
+      if (props.isFeatureEnabled("s3_multipart_upload")) {
+        upload = _s3MultipartUpload(uploadUrl, file, metadata, load, error, progress, abort);
+      } else {
+        upload = _tusdUpload(uploadUrl, file, metadata, load, error, progress, abort);
+      }
+
+      upload.start();
+
+      return {
+        abort: () => {
+          upload.abort();
+          abort();
+        },
+      };
+    },
   };
 
   useEffect(() => {

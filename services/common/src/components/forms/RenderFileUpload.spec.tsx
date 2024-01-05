@@ -1,9 +1,7 @@
 import React from "react";
 import { render } from "enzyme";
 import RenderFileUpload from "./RenderFileUpload";
-import { Provider } from "react-redux";
-import { configureStore } from "@reduxjs/toolkit";
-import { sharedReducer } from "@mds/common/redux/reducers/rootReducerShared";
+import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 
 jest.mock("filepond", () => {
   const filepond = jest.requireActual("filepond");
@@ -33,11 +31,10 @@ test("RenderFileUpload component renders correctly", () => {
     itemInsertLocation: "before",
   };
 
-  const store = configureStore({ reducer: sharedReducer });
   const component = render(
-    <Provider store={store}>
+    <ReduxWrapper initialState={{}}>
       <RenderFileUpload {...props} />
-    </Provider>
+    </ReduxWrapper>
   );
   expect(component).toMatchSnapshot();
 });

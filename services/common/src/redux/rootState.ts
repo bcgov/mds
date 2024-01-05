@@ -2,7 +2,7 @@ import { sharedReducer } from "@mds/common/redux/reducers/rootReducerShared";
 import { configureStore } from "@reduxjs/toolkit";
 import { loadingBarReducer } from "react-redux-loading-bar";
 
-const getStore = (preloadedState = {}) =>
+export const getStore = (preloadedState = {}) =>
   configureStore({
     reducer: {
       ...sharedReducer,
