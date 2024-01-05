@@ -21,7 +21,7 @@ document_store = ElasticsearchDocumentStore(
     embedding_dim=384,
     ca_certs=ca_cert,
     verify_certs=True if ca_cert else False,
-    secheme='https' if ca_cert else 'http'
+    scheme='https' if ca_cert else 'http'
 )
 
 def query_pipeline():
