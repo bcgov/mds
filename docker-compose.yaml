@@ -259,6 +259,7 @@ services:
       - 5001:5001
     volumes:
       - ./services/document-manager/backend:/app
+      - document_manager_logs:/var/log/document-manager
     depends_on:
       - postgres
       - redis
@@ -277,6 +278,7 @@ services:
       - 5555:5555
     volumes:
       - ./services/document-manager/backend:/app
+      - document_manager_logs:/var/log/document-manager
     depends_on:
       - postgres
       - redis
@@ -320,3 +322,4 @@ volumes:
   postgres_data: {}
   core_api_logs: {}
   core_web_logs: {}
+  document_manager_logs: {}
