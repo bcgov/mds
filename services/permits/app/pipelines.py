@@ -13,7 +13,16 @@ host = os.environ.get('ELASTICSEARCH_HOST', 'elasticsearch')
 username = os.environ.get('ELASTICSEARCH_USERNAME', '')
 password = os.environ.get('ELASTICSEARCH_PASSWORD', '')
 
-document_store = ElasticsearchDocumentStore(host=host, username=username, password=password, index="permits", embedding_dim=384, ca_certs=ca_cert)
+document_store = ElasticsearchDocumentStore(
+    host=host,
+    username=username,
+    password=password,
+    index="permits",
+    embedding_dim=384,
+    ca_certs=ca_cert,
+    verify_certs=True if ca_cert else False,
+    secheme='https' if ca_cert else 'http'
+)
 
 def query_pipeline():
     """
