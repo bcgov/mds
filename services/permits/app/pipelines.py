@@ -8,11 +8,12 @@ from haystack.nodes import BM25Retriever
 from haystack.nodes import FARMReader
 import os
 
+ca_cert = os.environ.get('ELASTICSEARCH_CA_CERT', None)
 host = os.environ.get('ELASTICSEARCH_HOST', 'elasticsearch')
 username = os.environ.get('ELASTICSEARCH_USERNAME', '')
 password = os.environ.get('ELASTICSEARCH_PASSWORD', '')
 
-document_store = ElasticsearchDocumentStore(host=host, username=username, password=password, index="permits", embedding_dim=384)
+document_store = ElasticsearchDocumentStore(host=host, username=username, password=password, index="permits", embedding_dim=384, ca_certs=ca_cert)
 
 def query_pipeline():
     """
