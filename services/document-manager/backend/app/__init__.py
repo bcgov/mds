@@ -1,16 +1,8 @@
-import sys
-import json
 import os
-
 
 from flask import Flask, current_app, request
 from flask_cors import CORS
-from flask_restx import Resource
 from flask_restx.apidoc import apidoc
-from flask_migrate import MigrateCommand
-
-from flask_jwt_oidc.exceptions import AuthError
-from sqlalchemy.exc import SQLAlchemyError
 
 from app.docman.models import *
 from app.docman.resources import *
@@ -24,12 +16,38 @@ from .config import Config, TestConfig
 
 from celery import Celery
 
+from opentelemetry import trace
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.instrumentation.flask import FlaskInstrumentor
+from logging.config import dictConfig
 
-def create_app(config_object=None):
+from .date_time_helper import get_formatted_current_time
+
+
+def create_app(test_config=None):
     """Create and configure an instance of the Flask application."""
+    if test_config is None:
+        dictConfig(Config.LOGGING_DICT_CONFIG)
     app = Flask(__name__)
 
-    config = config_object if config_object else Config
+    trace.set_tracer_provider(TracerProvider())
+
+    FlaskInstrumentor().instrument_app(app)
+
+    @app.after_request
+    def log_response_info(response):
+        # Get request information
+        method = request.method
+        path = request.path
+        ip_address = request.remote_addr
+        http_version = request.environ.get('SERVER_PROTOCOL', 'HTTP/1.1')
+
+        # Log combined request and response information
+        current_app.logger.info(f'{ip_address} - - [{get_formatted_current_time()}] "{method} {path} {http_version}" {response.status_code} -')
+
+        return response
+
+    config = test_config if test_config else Config
     app.config.from_object(config)
 
     if isinstance(config, TestConfig):
