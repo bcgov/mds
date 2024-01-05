@@ -1,0 +1,59 @@
+name: Permit Service - Promote Prod
+
+on:
+  workflow_dispatch:
+
+env:
+  ORIG_TAG: test
+  PROMOTE_TAG: prod
+  IMAGE: permits
+
+jobs:
+  promote-image:
+    name: promote-image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install oc
+        uses: redhat-actions/openshift-tools-installer@v1
+        with:
+          oc: "4.7"
+
+      - name: oc login
+        run: |
+          oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
+
+      - name: Promote from test to prod
+        run: |
+          oc -n ${{secrets.NS_TOOLS}} tag \
+          ${{ secrets.NS_TOOLS }}/${{ env.IMAGE }}:${{ env.ORIG_TAG }} \
+          ${{ secrets.NS_TOOLS }}/${{ env.IMAGE }}:${{ env.PROMOTE_TAG }}
+
+  trigger-gitops:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: promote-image
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Git Ops Push
+        run: ./gitops/commit.sh ${{ env.IMAGE }} test prod ${{ github.actor }} ${{ secrets.GH_TOKEN }}
+      - name: Install oc
+        uses: redhat-actions/openshift-tools-installer@v1
+        with:
+          oc: "4.7"
+      - name: Setup ArgoCD CLI
+        uses: imajeetyadav/argocd-cli@v1
+        with:
+          version: v2.7.9 # optional
+      - name: oc login
+        run: oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
+      - name: Notification
+        run: ./gitops/watch-deployment.sh permits prod ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }} ${{ secrets.ARGOCD_SERVER }} ${{ secrets.ARGO_CD_CLI_JWT }}
+
+  run-if-failed:
+    runs-on: ubuntu-latest
+    needs: [trigger-gitops]
+    if: failure()
+    steps:
+      - name: Notification
+        run: ./gitops/watch-deployment.sh permits prod ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }} 1
