@@ -24,7 +24,7 @@ from app.services.object_store_storage_service import ObjectStoreStorageService
 from app.docman.models.document import Document
 from app.docman.models.document_version import DocumentVersion
 from app.services.object_store_storage_service import ObjectStoreStorageService
-
+from werkzeug.utils import secure_filename
 CACHE_TIMEOUT = TIMEOUT_24_HOURS
 
 def handle_status_and_update_doc(status, doc_guid):
@@ -39,6 +39,9 @@ class DocumentUploadHelper:
 
     @classmethod
     def initiate_document_upload(cls, document_guid, file_path, folder, file_size, version_guid=None):
+        folder = secure_filename(folder)
+        file_path = secure_filename(file_path)
+
         # If the object store is enabled, send the post request through to TUSD to the object store
         object_store_path = None
         s3_upload = None
