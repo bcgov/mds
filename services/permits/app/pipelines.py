@@ -6,8 +6,13 @@ from rest_api.controller.utils import RequestLimiter
 from haystack.document_stores import ElasticsearchDocumentStore
 from haystack.nodes import BM25Retriever
 from haystack.nodes import FARMReader
+import os
 
-document_store = ElasticsearchDocumentStore(host='elasticsearch', username="", password="", index="permits", embedding_dim=384)
+host = os.environ.get('ELASTICSEARCH_HOST', 'elasticsearch')
+username = os.environ.get('ELASTICSEARCH_USERNAME', '')
+password = os.environ.get('ELASTICSEARCH_PASSWORD', '')
+
+document_store = ElasticsearchDocumentStore(host=host, username=username, password=password, index="permits", embedding_dim=384)
 
 def query_pipeline():
     """
