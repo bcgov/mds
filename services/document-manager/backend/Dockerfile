@@ -8,6 +8,11 @@ RUN apt-get update
 RUN mkdir /app
 WORKDIR /app
 
+# Fix log path permissions
+RUN mkdir -p /var/log/document-manager
+RUN chmod -R 700 /var/log
+RUN chown -R 1000:0 /var/log
+
 # Install the requirements
 COPY requirements.txt .
 
