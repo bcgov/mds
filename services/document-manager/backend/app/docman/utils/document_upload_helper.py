@@ -39,7 +39,7 @@ class DocumentUploadHelper:
 
     @classmethod
     def initiate_document_upload(cls, document_guid, file_path, folder, file_size, version_guid=None):
-        folder = secure_filename(folder) if folder else folder
+        folder = secure_filename(folder) if folder else None
         file_path = secure_filename(file_path)
 
         # If the object store is enabled, send the post request through to TUSD to the object store
