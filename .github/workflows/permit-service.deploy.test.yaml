@@ -20,11 +20,13 @@ jobs:
           registry: ${{ secrets.ARTIFACTORY_CLUSTER_REGISTRY }}
           username: ${{ secrets.ARTIFACTORY_USER }}
           password: ${{ secrets.ARTIFACTORY_PASSWORD }}
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
       - name: Promote from dev to test
         run: |
-          docker tag ${{ secrets.ARTIFACTORY_CLUSTER_REGISTRY }}/${{ secrets.ARTIFACTORY_PROJECT_NAME }}/${{ env.IMAGE }}:${{ env.ORIG_TAG }} ${{ secrets.ARTIFACTORY_CLUSTER_REGISTRY }}/${{ secrets.ARTIFACTORY_PROJECT_NAME }}/${{ env.IMAGE }}:${{ env.PROMOTE_TAG }}
-          docker push ${{ secrets.ARTIFACTORY_CLUSTER_REGISTRY }}/${{ secrets.ARTIFACTORY_PROJECT_NAME }}/${{ env.IMAGE }}:${{ env.PROMOTE_TAG }}
+          docker buildx imagetools create  ${{ secrets.ARTIFACTORY_CLUSTER_REGISTRY }}/${{ secrets.ARTIFACTORY_PROJECT_NAME }}/${{ env.IMAGE }}:${{ env.ORIG_TAG }} --tag ${{ secrets.ARTIFACTORY_CLUSTER_REGISTRY }}/${{ secrets.ARTIFACTORY_PROJECT_NAME }}/${{ env.IMAGE }}:${{ env.PROMOTE_TAG }}
   trigger-gitops:
     runs-on: ubuntu-latest
     timeout-minutes: 10
