@@ -13,21 +13,20 @@ jobs:
     name: promote-image
     runs-on: ubuntu-latest
     steps:
-      - name: Install oc
-        uses: redhat-actions/openshift-tools-installer@v1
+      -
+        name: Login to Openshift image registry
+        uses: docker/login-action@v3
         with:
-          oc: "4.7"
-
-      - name: oc login
-        run: |
-          oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
+          registry: ${{ secrets.ARTIFACTORY_CLUSTER_REGISTRY }}
+          username: ${{ secrets.ARTIFACTORY_USER }}
+          password: ${{ secrets.ARTIFACTORY_PASSWORD }}
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
       - name: Promote from dev to test
         run: |
-          oc -n ${{secrets.NS_TOOLS}} tag \
-          ${{ secrets.NS_TOOLS }}/${{ env.IMAGE }}:${{ env.ORIG_TAG }} \
-          ${{ secrets.NS_TOOLS }}/${{ env.IMAGE }}:${{ env.PROMOTE_TAG }}
-
+          docker buildx imagetools create  ${{ secrets.ARTIFACTORY_CLUSTER_REGISTRY }}/${{ secrets.ARTIFACTORY_PROJECT_NAME }}/${{ env.IMAGE }}:${{ env.ORIG_TAG }} --tag ${{ secrets.ARTIFACTORY_CLUSTER_REGISTRY }}/${{ secrets.ARTIFACTORY_PROJECT_NAME }}/${{ env.IMAGE }}:${{ env.PROMOTE_TAG }}
   trigger-gitops:
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -56,4 +55,4 @@ jobs:
     if: failure()
     steps:
       - name: Notification
-        run: ./gitops/notify_discord.sh permits dev ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }} 1
+        run: ./gitops/notify_discord.sh permits test ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }} 1
