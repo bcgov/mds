@@ -7,10 +7,18 @@ RUN apt-get update
 RUN mkdir /app
 WORKDIR /app
 
+# Install the requirements
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
 # Fix log path permissions
 RUN mkdir -p /var/log/document-manager
 RUN chmod -R 700 /var/log
 RUN chown -R 1000:0 /var/log
+
+RUN mkdir -p /tmp/celery && chmod 777 /tmp/celery
 
 # Setup user to represent developer permissions in container
 ARG USERNAME=python
@@ -19,14 +27,8 @@ ARG USER_GID=1000
 RUN useradd -rm -d /home/$USERNAME -s /bin/bash -g root -G sudo -u $USER_UID $USERNAME
 USER $USERNAME
 
-# Install the requirements
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-COPY . .
 # Run the server
 EXPOSE 5001
 
-RUN mkdir -p /tmp/celery && chmod 777 /tmp/celery
 
 CMD [ "opentelemetry-instrument", "flask", "run", "--no-reload"]
