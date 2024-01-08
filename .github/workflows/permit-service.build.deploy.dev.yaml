@@ -16,9 +16,11 @@ env:
   CONTEXT: services/permits/
 
 jobs:
-  build-backend:
+  build-service:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -26,16 +28,45 @@ jobs:
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       -
-        name: Login to Docker Hub
+        name: Login to Openshift image registry
         uses: docker/login-action@v3
         with:
-          reguistry: ${{ secrets.CLUSTER_REGISTRY }}
-          username: ${{ secrets.CLUSTER_REGISTRY_USER }}
-          password: ${{ secrets.BUILD_TOKEN }}
+          registry: ${{ secrets.ARTIFACTORY_CLUSTER_REGISTRY }}
+          username: ${{ secrets.ARTIFACTORY_USER }}
+          password: ${{ secrets.ARTIFACTORY_PASSWORD }}
       -
         name: Build and push
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}:${{ env.INITIAL_TAG }},${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}:${{ env.TAG }}
+          tags: ${{ secrets.ARTIFACTORY_CLUSTER_REGISTRY }}/${{ secrets.ARTIFACTORY_PROJECT_NAME }}/${{ env.NAME }}:${{ env.INITIAL_TAG }},${{ secrets.ARTIFACTORY_CLUSTER_REGISTRY }}/${{ secrets.ARTIFACTORY_PROJECT_NAME }}/${{ env.NAME }}:${{ env.TAG }}
           context: ${{ env.CONTEXT }}
+  trigger-gitops:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: [build-service]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Git Ops Push
+        run: ./gitops/commit.sh permits dev dev ${{ github.actor }} ${{ secrets.GH_TOKEN }}
+      - name: Install oc
+        uses: redhat-actions/openshift-tools-installer@v1
+        with:
+          oc: "4.7"
+      - name: Setup ArgoCD CLI
+        uses: imajeetyadav/argocd-cli@v1
+        with:
+          version: v2.7.9 # optional
+      - name: oc login
+        run: oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
+      - name: Wait for deployment to complete
+        run: ./gitops/watch-deployment.sh permits dev ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }} ${{ secrets.ARGOCD_SERVER }} ${{ secrets.ARGO_CD_CLI_JWT }}
+
+  run-if-failed:
+    runs-on: ubuntu-latest
+    needs: [trigger-gitops]
+    if: failure()
+    steps:
+      - name: Notify Discord of Rollout failure
+        run: ./gitops/notify_discord.sh permits dev ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }} 1
