@@ -23,7 +23,7 @@ jobs:
 
       - name: Promote from dev to test
         run: |
-          docker tag ${{ secrets.ARTIFACTORY_CLUSTER_REGISTRY }}/${{ secrets.ARTIFACTORY_PROJECT_NAME }}/${{ env.IMAGE }}:${{ env.INITIAL_TAG }} ${{ secrets.ARTIFACTORY_CLUSTER_REGISTRY }}/${{ secrets.ARTIFACTORY_PROJECT_NAME }}/${{ env.IMAGE }}:${{ env.PROMOTE_TAG }}
+          docker tag ${{ secrets.ARTIFACTORY_CLUSTER_REGISTRY }}/${{ secrets.ARTIFACTORY_PROJECT_NAME }}/${{ env.IMAGE }}:${{ env.ORIG_TAG }} ${{ secrets.ARTIFACTORY_CLUSTER_REGISTRY }}/${{ secrets.ARTIFACTORY_PROJECT_NAME }}/${{ env.IMAGE }}:${{ env.PROMOTE_TAG }}
           docker push ${{ secrets.ARTIFACTORY_CLUSTER_REGISTRY }}/${{ secrets.ARTIFACTORY_PROJECT_NAME }}/${{ env.IMAGE }}:${{ env.PROMOTE_TAG }}
   trigger-gitops:
     runs-on: ubuntu-latest
