@@ -14,6 +14,7 @@ document-manager/backend
 filesystem-provider
 minespace-web
 tusd
+permits
 "
 
 bold=$(tput bold)

@@ -1,4 +1,3 @@
-from haystack.pipelines import Pipeline
 from haystack import Pipeline
 from haystack.nodes import PDFToTextConverter, PreProcessor
 
@@ -43,6 +42,7 @@ def query_pipeline():
 
     return querying_pipeline
 
+
 def indexing_pipeline():
     """
     Returns a Pipeline that
@@ -68,6 +68,7 @@ def indexing_pipeline():
     index_pipeline.add_node(component=preprocessor, name="PreProcessor", inputs=["TextConverter"])
     index_pipeline.add_node(component=document_store, name="DocumentStore", inputs=["PreProcessor"])
     return index_pipeline
+
 
 def request_limiter():
     return RequestLimiter(limit=2)
