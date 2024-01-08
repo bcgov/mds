@@ -147,24 +147,16 @@ class Config(object):
                 'stream': 'ext://sys.stdout',
                 'formatter': 'default',
                 'level': 'DEBUG'
-            },
-            'file': {
-                'class': 'logging.handlers.RotatingFileHandler',
-                'mode': 'a',
-                'backupCount': 0,
-                'maxBytes': 100000000,
-                'filename': '/var/log/document-manager.log',
-                'formatter': 'default',
             }
         },
         'root': {
             'level': FLASK_LOGGING_LEVEL,
-            'handlers': ['file', 'console']
+            'handlers': ['console']
         },
         'loggers': {
             'werkzeug': {
                 'level': WERKZEUG_LOGGING_LEVEL,
-                'handlers': ['file', 'console'],
+                'handlers': ['console'],
                 'propagate': DISPLAY_WERKZEUG_LOG
             }
         }
