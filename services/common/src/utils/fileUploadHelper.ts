@@ -126,7 +126,6 @@ export class FileUploadHelper {
   private _createMultipartUpload = async (): Promise<MultipartDocumentUpload> => {
     const headers = createRequestHeader({
       "Upload-Length": `${this.file.size}`,
-      // "Content-Type": this.file.type,
       Filename: this.file.name,
       "Upload-Metadata": encodeUploadMetadata(this.config.metadata),
       "Upload-Protocol": "s3-multipart",
