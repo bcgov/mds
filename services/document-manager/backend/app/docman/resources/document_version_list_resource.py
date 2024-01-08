@@ -4,6 +4,7 @@ import uuid
 from datetime import datetime
 from urllib.parse import urlparse
 from wsgiref.handlers import format_date_time
+from app.utils.include.user_info import User
 
 from app.docman.utils.document_upload_helper import DocumentUploadHelper
 import requests
@@ -47,7 +48,7 @@ class DocumentVersionListResource(Resource):
         document_guid = str(document.document_guid)
         version_guid = str(uuid.uuid4())
 
-        response, object_store_path = DocumentUploadHelper.initiate_document_upload(
+        response, object_store_path, multipart_upload_path, multipart_upload_id = DocumentUploadHelper.initiate_document_upload(
             document_guid=document_guid,
             file_path=document.full_storage_path,
             folder=None,
@@ -58,7 +59,7 @@ class DocumentVersionListResource(Resource):
         new_version = DocumentVersion(
             id=version_guid,
             document_guid=document.document_guid,
-            created_by='mds',
+            created_by=User().get_user_username() or 'mds',
             created_date=datetime.utcnow(),
             file_display_name=document.file_display_name,
             upload_started_date=datetime.utcnow(),
@@ -66,6 +67,11 @@ class DocumentVersionListResource(Resource):
         new_version.save()
 
         document.file_display_name = filename
+        
+        if document.multipart_upload_path is None:
+            document.multipart_upload_path = multipart_upload_path
+            document.multipart_upload_id = multipart_upload_id
+
         document.save()
 
         return response

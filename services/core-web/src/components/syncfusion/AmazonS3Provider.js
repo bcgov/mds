@@ -15,7 +15,7 @@ import {
 import { createRequestHeader } from "@common/utils/RequestHeaders";
 import { openDocumentViewer } from "@mds/common/redux/actions/documentViewerActions";
 import { isDocumentOpenable } from "@/components/syncfusion/DocumentViewer";
-import keycloak from "@/keycloak";
+import keycloak from "@mds/common/keycloak";
 
 const propTypes = {
   path: PropTypes.string.isRequired,

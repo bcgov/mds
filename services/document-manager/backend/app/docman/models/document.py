@@ -18,6 +18,9 @@ class Document(AuditMixin, Base):
     object_store_path = db.Column(db.String)
     status = db.Column(db.String(255), nullable=False, default='In Progress')
     
+    # ID of multipart upload
+    multipart_upload_id = db.Column(db.String(1024), nullable=True, default=None)
+    multipart_upload_path = db.Column(db.String(4096), nullable=True, default=None)
 
     versions = db.relationship('DocumentVersion', backref='document', lazy=True)
 

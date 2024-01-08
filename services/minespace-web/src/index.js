@@ -11,7 +11,7 @@ import App, { store } from "./App";
 import "antd/dist/antd.less";
 import "./styles/index.scss";
 import fetchEnv from "./fetchEnv";
-import keycloak, { keycloakInitConfig } from "./keycloak";
+import keycloak, { keycloakInitConfig } from "@mds/common/keycloak";
 import { unAuthenticateUser } from "./actionCreators/authenticationActionCreator";
 import FeatureFlagProvider from "@mds/common/providers/featureFlags/featureFlag.provider";
 

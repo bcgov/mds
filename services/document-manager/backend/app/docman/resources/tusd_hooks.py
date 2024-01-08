@@ -13,13 +13,7 @@ from app.utils.access_decorators import requires_any_of, DOCUMENT_UPLOAD_ROLES
 from app.services.object_store_storage_service import ObjectStoreStorageService
 from app.docman.models.document import Document
 from app.docman.models.document_version import DocumentVersion
-
-def handle_status_and_update_doc(status, doc_guid):
-    doc = Document.find_by_document_guid(doc_guid)
-    db.session.rollback()
-    doc.status = str(status)
-    db.session.add(doc)
-    db.session.commit()
+from app.docman.utils.document_upload_helper import DocumentUploadHelper, handle_status_and_update_doc
 
 @api.route('/tusd-hooks')
 class TusdHooks(Resource):
@@ -62,61 +56,5 @@ class TusdHooks(Resource):
         except Exception as e:
             handle_status_and_update_doc(e, doc_guid)
             raise e
-
-        # Copy the file to its new location
-        try:
-            ObjectStoreStorageService().copy_file(source_key=key, key=new_key)
-        except Exception as e:
-            handle_status_and_update_doc(e, doc_guid)
-            raise e
-
-        # Update the document's object store path and create a new version
-        try:
-            db.session.rollback()
-
-            doc = Document.find_by_document_guid(doc_guid)
-            if doc.object_store_path != new_key:
-                doc.object_store_path = new_key
-                doc.update_user = 'mds'
-
-                db.session.add(doc)
-
-            # update the record of the previous version
-            if len(versions) >= 1:
-                # Sort the versions
-                versions.sort(key=lambda v: v["LastModified"], reverse=True)
-
-                # create a version record for the previous version
-                previous_version_data = versions[0]
-
-                # get the versionId of the previous version
-                previous_version_id = previous_version_data["VersionId"]
-
-                # find the corresponding DocumentVersion record
-                if version_guid is not None:
-                    previous_version = DocumentVersion.find_by_id(version_guid)
-
-                    if previous_version is not None:
-                        previous_version.object_store_version_id = previous_version_id
-                        previous_version.upload_completed_date = datetime.utcnow()
-
-                        db.session.add(previous_version)
-
-            db.session.commit()
-
-        except Exception as e:
-            handle_status_and_update_doc(e, doc_guid)
-            raise e
-
-        # Delete the old file and its .info file
-        try:
-            ObjectStoreStorageService().delete_file(key)
-            ObjectStoreStorageService().delete_file(info_key)
-        except Exception as e:
-            handle_status_and_update_doc(e, doc_guid)
-            raise e
-
-        # If there are no exceptions up to this point, set the status to 'Success'
-        handle_status_and_update_doc('Success', doc_guid)
-
-        return ('', 204)
+        
+        return DocumentUploadHelper.complete_upload(key, new_key,doc_guid, versions, version_guid, info_key)

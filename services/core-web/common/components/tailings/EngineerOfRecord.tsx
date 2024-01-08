@@ -355,7 +355,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
                 labelIdle='<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><br>
                 <div>Accepted formats: pdf</div>'
                 allowRevert
-                onprocessfiles={() => setUploading(false)}
+                onProcessFiles={() => setUploading(false)}
               />
             </>
           )}

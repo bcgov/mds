@@ -381,7 +381,7 @@ exports.loadFiles = ({ include, exclude } = {}) => ({
   module: {
     rules: [
       {
-        test: /\.(xls?m|pdf|doc?x)$/,
+        test: /\.(xls?m|pdf|mp3|doc?x)$/,
         include,
         exclude,
         loader: "file-loader",

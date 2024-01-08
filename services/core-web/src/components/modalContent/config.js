@@ -59,7 +59,7 @@ import AddMineAlertModal from "./AddMineAlertModal";
 import ViewPastMineAlertModal from "./ViewPastMineAlertModal";
 import ArchiveDocumentModal from "@common/components/documents/ArchiveDocumentModal";
 import DeleteDocumentModal from "@mds/common/components/documents/DeleteDocumentModal";
-import ReplaceDocumentModal from "@common/components/documents/ReplaceDocumentModal";
+import ReplaceDocumentModal from "@mds/common/components/documents/ReplaceDocumentModal";
 
 export const modalConfig = {
   MINE_RECORD: MineRecordModal,

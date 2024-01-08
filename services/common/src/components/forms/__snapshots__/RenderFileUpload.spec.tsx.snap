@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RenderFileUpload component renders correctly 1`] = `
+<div
+  class="whirlpool-container"
+>
+  <div
+    class="filepond--wrapper"
+  >
+    <input
+      accept=""
+      multiple=""
+      name="file"
+      type="file"
+    />
+  </div>
+</div>
+`;
