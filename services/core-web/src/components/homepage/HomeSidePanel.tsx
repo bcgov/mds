@@ -63,6 +63,10 @@ const ExternalLinksSection = () => {
       title: "First Nation Consultation System",
       url: "https://apps.nrs.gov.bc.ca/int/fncs",
     },
+    {
+      title: "Regional Mines Public Engagement Tool Portal",
+      url: "http://www.gov.bc.ca/minesengagement",
+    },
   ];
   return linkWidget("External Links", links);
 };

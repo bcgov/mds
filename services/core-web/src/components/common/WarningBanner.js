@@ -21,7 +21,7 @@ const defaultProps = {
 const testWarningData = {
   message: "This is the Core test site",
   description:
-    "Features and layout could differ from the live production site and data entered in this system will not be saved.",
+    "This site is used to test developing and existing features in Core. The live production site may have different features and a different layout, and data entered into this system won't be displayed there.",
 };
 
 const mobileWarningData = {
