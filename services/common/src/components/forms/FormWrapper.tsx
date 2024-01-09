@@ -1,8 +1,8 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { Form } from "antd";
 import { compose } from "@reduxjs/toolkit";
-import { connect, useDispatch } from "react-redux";
-import { reduxForm, submit, InjectedFormProps, ConfigProps } from "redux-form";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { reduxForm, submit, getFormSubmitErrors, InjectedFormProps, ConfigProps } from "redux-form";
 
 export interface IFormContext {
   isEditMode: boolean;
@@ -28,11 +28,13 @@ interface FormWrapperProps {
   isModal?: boolean;
   loading?: boolean;
   isEditMode?: boolean;
+  scrollOnToggleEdit?: boolean;
 }
 
 const FormWrapper: FC<FormWrapperProps & InjectedFormProps<any>> = ({
   isEditMode = true,
   isModal = false,
+  scrollOnToggleEdit = true,
   children,
   ...props
 }) => {
@@ -41,10 +43,19 @@ const FormWrapper: FC<FormWrapperProps & InjectedFormProps<any>> = ({
     isModal,
   };
   const dispatch = useDispatch();
+  const formErrors = useSelector(getFormSubmitErrors(props.name));
+
+  useEffect(() => {
+    if (scrollOnToggleEdit) {
+      window.scrollTo(0, 0);
+    }
+  }, [isEditMode]);
 
   const handleSubmit = (values) => {
     dispatch(submit(props.name));
-    props.onSubmit(values);
+    if (!formErrors) {
+      props.onSubmit(values);
+    }
   };
 
   return (

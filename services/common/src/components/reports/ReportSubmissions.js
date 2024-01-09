@@ -1,10 +1,9 @@
-import { uniq, concat, reject } from "lodash";
+import { concat, reject } from "lodash";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Field } from "redux-form";
-import { Typography } from "antd";
 import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls";
 import { DOCUMENT, EXCEL, IMAGE, SPATIAL } from "@mds/common/constants/fileTypes";
 import LinkButton from "@mds/common/components/common/LinkButton";
@@ -67,6 +66,8 @@ export const ReportSubmissions = (props) => {
   return (
     <div>
       {props.showUploadedFiles && (
+        // what is this? Why is it a FormItem?
+        // this prop (showUploadedFiles) isn't used anywhere within common, suggest removing when we get to file management
         <Form.Item label="Uploaded Files">
           {(initialUploadedFiles && initialUploadedFiles.length > 0 && (
             <ul style={{ paddingLeft: 20 }}>
@@ -84,20 +85,18 @@ export const ReportSubmissions = (props) => {
           )) || <div>This report has no uploaded files.</div>}{" "}
         </Form.Item>
       )}
-      <Typography.Text>Upload Files</Typography.Text>
-      <Form.Item>
-        <Field
-          id="ReportFileUpload"
-          name="ReportFileUpload"
-          component={RenderFileUpload}
-          allowRevert
-          allowMultiple
-          acceptedFileTypesMap={acceptedFileTypesMap}
-          uploadUrl={MINE_REPORT_DOCUMENT(props.mineGuid)}
-          onFileLoad={handleFileLoad}
-          onRemoveFile={handleRemoveFile}
-        />
-      </Form.Item>
+      <Field
+        id="ReportFileUpload"
+        name="ReportFileUpload"
+        label="Upload Files"
+        component={RenderFileUpload}
+        allowRevert
+        allowMultiple
+        acceptedFileTypesMap={acceptedFileTypesMap}
+        uploadUrl={MINE_REPORT_DOCUMENT(props.mineGuid)}
+        onFileLoad={handleFileLoad}
+        onRemoveFile={handleRemoveFile}
+      />
     </div>
   );
 };

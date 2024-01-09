@@ -95,6 +95,8 @@ const mineReducerObject = {
 };
 
 export const getMines = (state: RootState): ItemMap<IMine> => state[MINES].mines as ItemMap<IMine>;
+export const getMineById = (state: RootState, mineGuid: string): IMine =>
+  state[MINES]?.mines[mineGuid] as IMine;
 export const getMineIds = (state: RootState): string[] => state[MINES].mineIds;
 export const getMineNames = (state: RootState): IMine[] => state[MINES].mineNameList;
 export const getMinesPageData = (state: RootState): IMine => state[MINES].minesPageData;

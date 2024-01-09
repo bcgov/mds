@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import "filepond-polyfill";
 import { FilePond, registerPlugin } from "react-filepond";
-import { Switch, notification } from "antd";
+import { Form, Switch, notification } from "antd";
 import { invert, uniq } from "lodash";
 import { FunnelPlotOutlined } from "@ant-design/icons";
 import "filepond/dist/filepond.min.css";
@@ -20,6 +20,7 @@ import { FLUSH_SOUND, WATER_SOUND } from "@mds/common/constants/assets";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import { MultipartDocumentUpload } from "@mds/common/utils/fileUploadHelper.interface";
 import { HttpRequest, HttpResponse } from "tus-js-client";
+import { BaseInputProps } from "./BaseInput";
 
 registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 
@@ -29,7 +30,7 @@ type AfterSuccessActionType = [
   (projectGuid, irtGuid, file, documentGuid) => Promise<void>
 ];
 
-interface FileUploadProps {
+interface FileUploadProps extends BaseInputProps {
   uploadUrl: string;
   acceptedFileTypesMap?: { [key: string]: string };
   onFileLoad?: (fileName?: string, documentGuid?: string) => void;
@@ -361,44 +362,60 @@ export const FileUpload = (props: FileUploadProps) => {
           }}
         />
       )}
-      <FilePond
-        ref={(ref) => (filepond = ref)}
-        server={server}
-        name="file"
-        beforeDropFile={props.beforeDropFile}
-        beforeAddFile={props.beforeAddFile}
-        allowRevert={props.allowRevert}
-        onremovefile={props.onRemoveFile}
-        allowMultiple={props.allowMultiple}
-        onaddfilestart={props.addFileStart}
-        allowReorder={props.allowReorder}
-        maxFileSize={props.maxFileSize}
-        // maxFiles={props.maxFiles || undefined}
-        allowFileTypeValidation={acceptedFileTypes.length > 0}
-        acceptedFileTypes={acceptedFileTypes}
-        onprocessfiles={props.onProcessFiles}
-        onprocessfileabort={props.onAbort}
-        // oninit={props.onInit}
-        labelIdle={props?.labelIdle}
-        itemInsertLocation={props?.itemInsertLocation}
-        credits={null}
-        fileValidateTypeLabelExpectedTypesMap={fileValidateTypeLabelExpectedTypesMap}
-        fileValidateTypeDetectType={(source, type) =>
-          new Promise((resolve, reject) => {
-            // If the browser can't automatically detect the file's MIME type, use the one stored in the "accepted file types" map.
-            if (!type) {
-              const exts = source.name.split(".");
-              const ext = exts && exts.length > 0 && `.${exts.pop()}`;
-              if (ext && ext in props.acceptedFileTypesMap) {
-                type = props.acceptedFileTypesMap[ext];
-              } else {
-                reject(type);
-              }
-            }
-            resolve(type);
-          })
+      <Form.Item
+        name={props.input.name}
+        required={props.required}
+        label={props.label}
+        validateStatus={
+          props.meta.touched
+            ? (props.meta.error && "error") || (props.meta.warning && "warning")
+            : ""
         }
-      />
+        help={
+          props.meta.touched &&
+          ((props.meta.error && <span>{props.meta.error}</span>) ||
+            (props.meta.warning && <span>{props.meta.warning}</span>))
+        }
+      >
+        <FilePond
+          ref={(ref) => (filepond = ref)}
+          server={server}
+          name="file"
+          beforeDropFile={props.beforeDropFile}
+          beforeAddFile={props.beforeAddFile}
+          allowRevert={props.allowRevert}
+          onremovefile={props.onRemoveFile}
+          allowMultiple={props.allowMultiple}
+          onaddfilestart={props.addFileStart}
+          allowReorder={props.allowReorder}
+          maxFileSize={props.maxFileSize}
+          // maxFiles={props.maxFiles || undefined}
+          allowFileTypeValidation={acceptedFileTypes.length > 0}
+          acceptedFileTypes={acceptedFileTypes}
+          onprocessfiles={props.onProcessFiles}
+          onprocessfileabort={props.onAbort}
+          // oninit={props.onInit}
+          labelIdle={props?.labelIdle}
+          itemInsertLocation={props?.itemInsertLocation}
+          credits={null}
+          fileValidateTypeLabelExpectedTypesMap={fileValidateTypeLabelExpectedTypesMap}
+          fileValidateTypeDetectType={(source, type) =>
+            new Promise((resolve, reject) => {
+              // If the browser can't automatically detect the file's MIME type, use the one stored in the "accepted file types" map.
+              if (!type) {
+                const exts = source.name.split(".");
+                const ext = exts && exts.length > 0 && `.${exts.pop()}`;
+                if (ext && ext in props.acceptedFileTypesMap) {
+                  type = props.acceptedFileTypesMap[ext];
+                } else {
+                  reject(type);
+                }
+              }
+              resolve(type);
+            })
+          }
+        />
+      </Form.Item>
     </div>
   );
 };

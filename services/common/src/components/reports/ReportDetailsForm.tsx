@@ -1,4 +1,4 @@
-import { Alert, Button, Col, Row, Typography } from "antd";
+import { Alert, Col, Row, Typography } from "antd";
 import React, { FC, ReactNode, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Field, getFormValues, change } from "redux-form";
@@ -35,12 +35,14 @@ interface ReportDetailsFormProps {
   isEditMode?: boolean;
   mineGuid: string;
   formButtons: ReactNode;
+  handleSubmit: (values) => void;
 }
 
 const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   isEditMode = true,
   mineGuid,
   formButtons,
+  handleSubmit,
 }) => {
   const dispatch = useDispatch();
   const formValues: IMineReport =
@@ -127,13 +129,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   return (
     <div>
       <Typography.Title level={3}>Report Type</Typography.Title>
-      <FormWrapper
-        name={FORM.VIEW_EDIT_REPORT}
-        onSubmit={(values) => {
-          console.log(values);
-        }}
-        isEditMode={isEditMode}
-      >
+      <FormWrapper name={FORM.VIEW_EDIT_REPORT} onSubmit={handleSubmit} isEditMode={isEditMode}>
         <Row gutter={[16, 8]}>
           <Col span={12}>
             <Field
@@ -325,20 +321,16 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
             <Typography.Title className="margin-large--top" level={3}>
               Report File(s)
             </Typography.Title>
-            <ReportSubmissions
-              mineGuid={mineGuid}
-              mineReportSubmissions={mineReportSubmissions}
-              updateMineReportSubmissions={updateMineReportSubmissions}
-            />
-          </Col>
-
-          <Col span={24}>
+            {isEditMode && (
+              <ReportSubmissions
+                mineGuid={mineGuid}
+                mineReportSubmissions={mineReportSubmissions}
+                updateMineReportSubmissions={updateMineReportSubmissions}
+              />
+            )}
             <ReportFilesTable />
           </Col>
         </Row>
-        <Button type="primary" htmlType="submit">
-          TEST SUBMIT
-        </Button>
         {formButtons}
       </FormWrapper>
     </div>

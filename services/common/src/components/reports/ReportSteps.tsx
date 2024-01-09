@@ -4,41 +4,34 @@ import { Link, useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { IMine } from "@mds/common/interfaces";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
-import { getMines } from "@mds/common/redux/selectors/mineSelectors";
+import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import ReportGetStarted from "@mds/common/components/reports/ReportGetStarted";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
 
 import ReportDetailsForm from "@mds/common/components/reports/ReportDetailsForm";
+import { createMineReport } from "@mds/common/redux/actionCreators/reportActionCreator";
 
 const ReportSteps = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
   const { mineGuid } = useParams<{ mineGuid: string }>();
-  const mines: IMine = useSelector(getMines);
+  const [currentStep, setCurrentStep] = useState(0);
 
-  const [currentStep, setCurrentStep] = useState(1);
-  const [mine, setMine] = useState<IMine>(mines[mineGuid]);
+  const mine: IMine = useSelector((state) => getMineById(state, mineGuid));
 
   useEffect(() => {
-    if (Object.keys(mines).length === 0) {
+    if (!mine) {
       dispatch(fetchMineRecordById(mineGuid));
     }
   }, []);
 
-  useEffect(() => {
-    setMine(mines[mineGuid]);
-  }, [mines]);
-
   const renderStepButtons = ({
     nextButtonTitle,
     previousButtonTitle,
-    hideNextButton = false,
     hidePreviousButton = false,
-    nextButtonFunction = () => null,
-    previousButtonFunction = () => null,
-    // nextButtonFunction = () => setCurrentStep(currentStep + 1),
-    // previousButtonFunction = () => setCurrentStep(currentStep - 1),
+    previousButtonFunction = () => setCurrentStep(currentStep - 1),
+    nextButtonFunction = null,
   }) => {
     return (
       <Row justify="end" gutter={16}>
@@ -49,13 +42,17 @@ const ReportSteps = () => {
             </Button>
           </Col>
         )}
-        {!hideNextButton && (
-          <Col>
-            <Button type="primary" htmlType="submit" onClick={nextButtonFunction}>
+        <Col>
+          {nextButtonFunction ? (
+            <Button type="primary" onClick={nextButtonFunction}>
               {nextButtonTitle ?? "Next"}
             </Button>
-          </Col>
-        )}
+          ) : (
+            <Button type="primary" htmlType="submit">
+              {nextButtonTitle ?? "Next"}
+            </Button>
+          )}
+        </Col>
       </Row>
     );
   };
@@ -70,6 +67,7 @@ const ReportSteps = () => {
               nextButtonTitle: "Add Report Details",
               previousButtonTitle: "Cancel",
               previousButtonFunction: () => history.goBack(),
+              nextButtonFunction: () => setCurrentStep(currentStep + 1),
             })}
           </div>
         );
@@ -78,15 +76,12 @@ const ReportSteps = () => {
           <div>
             <ReportDetailsForm
               mineGuid={mineGuid}
+              handleSubmit={() => setCurrentStep(currentStep + 1)}
               formButtons={renderStepButtons({
                 nextButtonTitle: "Review & Submit",
                 previousButtonTitle: "Back",
               })}
             />
-            {/* {renderStepButtons({
-              nextButtonTitle: "Review & Submit",
-              previousButtonTitle: "Back",
-            })} */}
           </div>
         );
       case 2:
@@ -95,15 +90,14 @@ const ReportSteps = () => {
             <ReportDetailsForm
               isEditMode={false}
               mineGuid={mineGuid}
+              handleSubmit={(values) => {
+                dispatch(createMineReport(mineGuid, values));
+              }}
               formButtons={renderStepButtons({
                 nextButtonTitle: "Submit",
                 previousButtonTitle: "Back",
               })}
             />
-            {/* {renderStepButtons({
-              nextButtonTitle: "Submit",
-              previousButtonTitle: "Back",
-            })} */}
           </div>
         );
       default:
