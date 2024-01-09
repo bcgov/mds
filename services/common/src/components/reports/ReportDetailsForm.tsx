@@ -30,6 +30,7 @@ import FormWrapper from "../forms/FormWrapper";
 import RenderField from "../forms/RenderField";
 import { IMineReport } from "../..";
 import RenderAutoSizeField from "../forms/RenderAutoSizeField";
+import { BaseViewInput } from "../forms/BaseInput";
 
 interface ReportDetailsFormProps {
   isEditMode?: boolean;
@@ -58,7 +59,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
 
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedReportName, setSelectedReportName] = useState("");
-  const [selectedReportCodes, setSelectedReportCodes] = useState([]);
+  const [selectedReportCode, setSelectedReportCode] = useState("");
 
   const dropdownMineReportCategoryOptions = useSelector(getDropdownMineReportCategoryOptions);
   const mineReportDefinitionOptions = useSelector(getMineReportDefinitionOptions);
@@ -112,13 +113,17 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
         "compliance_article_id"
       );
 
-      const newSelectedCodeOptions = newReportComplianceArticles.map((opt) => {
-        return formatComplianceCodeValueOrLabel(opt, true);
+      const newReportComplianceArticle = mineReportDefinitionOptions.find((opt) => {
+        return opt.mine_report_definition_guid === mine_report_definition_guid;
       });
-      setSelectedReportCodes(newSelectedCodeOptions);
+
+      const newSelectedCode = newReportComplianceArticle?.compliance_articles[0] ?? {};
+
+      console.log(newReportComplianceArticles, newSelectedCode);
+      setSelectedReportCode(formatComplianceCodeValueOrLabel(newSelectedCode, true));
     } else {
       setSelectedReportName("");
-      setSelectedReportCodes([]);
+      setSelectedReportCode("");
     }
   }, [mine_report_definition_guid]);
 
@@ -131,6 +136,8 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
       <Typography.Title level={3}>Report Type</Typography.Title>
       <FormWrapper name={FORM.VIEW_EDIT_REPORT} onSubmit={handleSubmit} isEditMode={isEditMode}>
         <Row gutter={[16, 8]}>
+          {/* TODO: this input is currently in the UI, and it controls the data for the next one
+            but it is not intended to stay here! */}
           <Col span={12}>
             <Field
               component={RenderSelect}
@@ -162,16 +169,8 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
           </Col>
 
           <Col span={24}>
-            {selectedReportCodes.length > 0 ? (
-              <>
-                {selectedReportCodes.map((code) => {
-                  return (
-                    <div key={code}>
-                      <Typography.Text>{code}</Typography.Text>
-                    </div>
-                  );
-                })}
-              </>
+            {selectedReportCode ? (
+              <BaseViewInput label="Report Code Requirements" value={selectedReportCode} />
             ) : (
               <Typography.Paragraph>
                 Select the report type and name to view the required codes.
@@ -192,8 +191,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
                       <br />
                       {selectedReportName} [TODO: plain language on what it is]
                       <br />
-                      {selectedReportCodes.length ? selectedReportCodes[0] : ""} [TODO: plain
-                      language on what it is]
+                      {selectedReportCode} [TODO: plain language on what it is]
                       <br />
                     </p>
                   </Col>
