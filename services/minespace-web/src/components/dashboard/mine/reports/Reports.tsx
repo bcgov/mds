@@ -126,7 +126,7 @@ export const Reports: FC<ReportsProps> = ({ mine, ...props }) => {
             <div className="submit-report-button">
               <AuthorizationWrapper>
                 {isFeatureEnabled(Feature.CODE_REQUIRED_REPORTS) ? (
-                  <Link to={routes.REPORTS_GETTING_STARTED.dynamicRoute(mine.mine_guid)}>
+                  <Link to={routes.REPORTS_CREATE_NEW.dynamicRoute(mine.mine_guid)}>
                     <Button style={{ zIndex: 1 }} className="submit-report-button" type="primary">
                       <PlusCircleFilled />
                       Submit Report

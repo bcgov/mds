@@ -213,8 +213,8 @@ export const VIEW_ESUP = {
   component: ExplosivesPermit,
 };
 
-export const REPORTS_GETTING_STARTED = {
-  route: "/mines/:mineGuid/reports/getting-started",
-  dynamicRoute: (mineGuid) => `/mines/${mineGuid}/reports/getting-started`,
+export const REPORTS_CREATE_NEW = {
+  route: "/mines/:mineGuid/reports/new",
+  dynamicRoute: (mineGuid) => `/mines/${mineGuid}/reports/new`,
   component: ReportSteps,
 };
