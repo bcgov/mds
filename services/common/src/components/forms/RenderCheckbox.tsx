@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Checkbox } from "antd";
+import { Checkbox, Form } from "antd";
 /**
  * @constant RenderCheckbox - Ant Design `Checkbox` component for redux-form.
  */

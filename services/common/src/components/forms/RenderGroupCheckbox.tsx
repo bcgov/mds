@@ -3,9 +3,7 @@ import PropTypes from "prop-types";
 import { change } from "redux-form";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Checkbox } from "antd";
+import { Checkbox, Form } from "antd";
 
 /**
  * @constant RenderGroupCheckbox - Ant Design `Checkbox` component for redux-form.
