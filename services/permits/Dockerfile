@@ -3,6 +3,7 @@ FROM python:3.9
 WORKDIR /code
 
 COPY ./requirements.txt /code/requirements.txt
+COPY ./.env /.env
 
 RUN apt-get update \
     && apt-get -y install tesseract-ocr # required for pytesseract
