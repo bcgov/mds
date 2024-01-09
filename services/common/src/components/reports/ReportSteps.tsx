@@ -7,8 +7,8 @@ import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import { getMines } from "@mds/common/redux/selectors/mineSelectors";
 import ReportGetStarted from "@mds/common/components/reports/ReportGetStarted";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
-import AddReportDetails from "@mds/common/components/reports/AddReportDetails";
-import { fetchMineRecords } from "@mds/common/redux/actionCreators/mineActionCreator";
+
+import ReportDetailsForm from "@mds/common/components/reports/ReportDetailsForm";
 
 const ReportSteps = () => {
   const history = useHistory();
@@ -17,7 +17,7 @@ const ReportSteps = () => {
   const { mineGuid } = useParams<{ mineGuid: string }>();
   const mines: IMine = useSelector(getMines);
 
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(1);
   const [mine, setMine] = useState<IMine>(mines[mineGuid]);
 
   useEffect(() => {
@@ -35,8 +35,10 @@ const ReportSteps = () => {
     previousButtonTitle,
     hideNextButton = false,
     hidePreviousButton = false,
-    nextButtonFunction = () => setCurrentStep(currentStep + 1),
-    previousButtonFunction = () => setCurrentStep(currentStep - 1),
+    nextButtonFunction = () => null,
+    previousButtonFunction = () => null,
+    // nextButtonFunction = () => setCurrentStep(currentStep + 1),
+    // previousButtonFunction = () => setCurrentStep(currentStep - 1),
   }) => {
     return (
       <Row justify="end" gutter={16}>
@@ -49,7 +51,7 @@ const ReportSteps = () => {
         )}
         {!hideNextButton && (
           <Col>
-            <Button type="primary" onClick={nextButtonFunction}>
+            <Button type="primary" htmlType="submit" onClick={nextButtonFunction}>
               {nextButtonTitle ?? "Next"}
             </Button>
           </Col>
@@ -74,19 +76,46 @@ const ReportSteps = () => {
       case 1:
         return (
           <div>
-            <AddReportDetails mineGuid={mineGuid} />
-            {renderStepButtons({
+            <ReportDetailsForm
+              mineGuid={mineGuid}
+              formButtons={renderStepButtons({
+                nextButtonTitle: "Review & Submit",
+                previousButtonTitle: "Back",
+              })}
+            />
+            {/* {renderStepButtons({
               nextButtonTitle: "Review & Submit",
               previousButtonTitle: "Back",
-            })}
+            })} */}
           </div>
         );
       case 2:
-        return <div>3</div>;
+        return (
+          <div>
+            <ReportDetailsForm
+              isEditMode={false}
+              mineGuid={mineGuid}
+              formButtons={renderStepButtons({
+                nextButtonTitle: "Submit",
+                previousButtonTitle: "Back",
+              })}
+            />
+            {/* {renderStepButtons({
+              nextButtonTitle: "Submit",
+              previousButtonTitle: "Back",
+            })} */}
+          </div>
+        );
       default:
         return <div>4</div>;
     }
   };
+
+  const stepItems = [
+    { title: "Get Started" },
+    { title: "Add Report" },
+    { title: "Review & Submit" },
+  ];
 
   return (
     <div>
@@ -106,11 +135,7 @@ const ReportSteps = () => {
       <Typography.Title className="margin-large--top margin-large--bottom" level={3}>
         Submit New Report
       </Typography.Title>
-      <Steps className="report-steps" current={currentStep}>
-        <Steps.Step title="Get Started" />
-        <Steps.Step title="Add Report" />
-        <Steps.Step title="Review & Submit" />
-      </Steps>
+      <Steps className="report-steps" current={currentStep} items={stepItems}></Steps>
       {renderStepContent()}
     </div>
   );

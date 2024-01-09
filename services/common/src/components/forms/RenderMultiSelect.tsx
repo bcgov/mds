@@ -1,75 +1,80 @@
 import React, { FC } from "react";
-import { WrappedFieldProps } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Select } from "antd";
+import { Select, Form } from "antd";
 import { caseInsensitiveLabelFilter } from "@mds/common/redux/utils/helpers";
+import { BaseInputProps, BaseViewInput } from "./BaseInput";
+import { FormConsumer, IFormContext } from "./FormWrapper";
+import { IOption } from "../..";
 
 /**
  * @constant RenderSelect - Ant Design `Select` component for redux-form - used for small data sets that (< 100);
  */
 
-interface MultiSelectProps extends WrappedFieldProps {
-  id: string;
-  input: any;
-  placeholder?: string;
-  label?: string;
-  meta: any; //CustomPropTypes.formMeta, made required for redux
-  data: any[]; //CustomPropTypes.options,
+interface MultiSelectProps extends BaseInputProps {
+  data: IOption[];
   filterOption?: any;
-  disabled?: boolean;
   onSearch?: any;
-  isModal?: boolean;
 }
 
-export const RenderMultiSelect: FC<MultiSelectProps> = ({
-  placeholder = "",
-  data = [],
-  disabled = false,
-  onSearch = () => {},
-  filterOption = false,
-  isModal = false,
-  ...props
-}) => {
-  const extraProps = isModal ? null : { getPopupContainer: (trigger) => trigger.parentNode };
+export const RenderMultiSelect: FC<MultiSelectProps> = (props) => {
+  const {
+    placeholder = "",
+    data = [],
+    disabled = false,
+    onSearch = () => {},
+    filterOption = false,
+    label = "",
+    meta,
+    input,
+  } = props;
   return (
-    <div>
-      <Form.Item
-        label={props.label || ""}
-        validateStatus={
-          props.meta.touched
-            ? (props.meta.error && "error") || (props.meta.warning && "warning")
-            : ""
+    <FormConsumer>
+      {(value: IFormContext) => {
+        const { isEditMode, isModal } = value;
+
+        if (!isEditMode) {
+          const stringValue = "";
+          return <BaseViewInput value={stringValue} label={label} />;
         }
-        help={
-          props.meta.touched &&
-          ((props.meta.error && <span>{props.meta.error}</span>) ||
-            (props.meta.warning && <span>{props.meta.warning}</span>))
-        }
-      >
-        <Select
-          virtual={false}
-          disabled={!data || disabled}
-          mode="multiple"
-          size="small"
-          placeholder={placeholder}
-          id={props.id}
-          onSearch={onSearch}
-          value={props.input.value ? props.input.value : undefined}
-          onChange={props.input.onChange}
-          filterOption={filterOption || caseInsensitiveLabelFilter}
-          showArrow
-          {...extraProps}
-        >
-          {data &&
-            data.map(({ value, label, tooltip }) => (
-              <Select.Option key={value} value={value} title={tooltip}>
-                {label}
-              </Select.Option>
-            ))}
-        </Select>
-      </Form.Item>
-    </div>
+
+        const extraProps = isModal ? null : { getPopupContainer: (trigger) => trigger.parentNode };
+        return (
+          <div>
+            <Form.Item
+              name={input.name}
+              required={props.required}
+              label={label}
+              validateStatus={
+                meta.touched ? (meta.error && "error") || (meta.warning && "warning") : ""
+              }
+              help={
+                meta.touched &&
+                ((meta.error && <span>{meta.error}</span>) ||
+                  (meta.warning && <span>{meta.warning}</span>))
+              }
+            >
+              <Select
+                loading={props.loading}
+                style={{ width: "100%" }}
+                virtual={false}
+                disabled={!data.length || disabled}
+                mode="multiple"
+                size="small"
+                placeholder={placeholder}
+                {...input}
+                id={props.id}
+                onSearch={onSearch}
+                options={data}
+                value={input.value ?? undefined}
+                onChange={input.onChange}
+                filterOption={filterOption || caseInsensitiveLabelFilter}
+                showArrow
+                {...extraProps}
+              ></Select>
+            </Form.Item>
+          </div>
+        );
+      }}
+    </FormConsumer>
   );
 };
 
