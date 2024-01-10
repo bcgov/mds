@@ -58,9 +58,12 @@ const FormWrapper: FC<FormWrapperProps & InjectedFormProps<any>> = ({
     }
   };
 
+  const formClassName =
+    `common-form common-form-${props.name} form-` + isEditMode ? "edit" : "view";
+
   return (
     <FormProvider value={providerValues}>
-      <Form layout="vertical" onFinish={handleSubmit} name={props.name}>
+      <Form layout="vertical" onFinish={handleSubmit} name={props.name} className={formClassName}>
         {children}
       </Form>
     </FormProvider>
