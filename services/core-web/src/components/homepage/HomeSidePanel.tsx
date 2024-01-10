@@ -65,7 +65,7 @@ const ExternalLinksSection = () => {
     },
     {
       title: "Regional Mines Public Engagement Tool Portal",
-      url: "http://www.gov.bc.ca/minesengagement",
+      url: "https://www.gov.bc.ca/minesengagement",
     },
   ];
   return linkWidget("External Links", links);
