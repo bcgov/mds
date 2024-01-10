@@ -8,6 +8,8 @@ import LinkButton from "@mds/common/components/common/LinkButton";
 import { MINE_REPORT_DOCUMENT } from "@mds/common/constants/API";
 import RenderFileUpload from "../forms/RenderFileUpload";
 import { Form } from "antd";
+import { required } from "@mds/common/redux/utils/Validate";
+
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   updateMineReportSubmissions: PropTypes.func.isRequired,
@@ -89,6 +91,9 @@ export const ReportSubmissions = (props) => {
         name="ReportFileUpload"
         label="Upload Files"
         component={RenderFileUpload}
+        // TODO:
+        // validate={[required]}
+        // required
         allowRevert
         allowMultiple
         acceptedFileTypesMap={acceptedFileTypesMap}

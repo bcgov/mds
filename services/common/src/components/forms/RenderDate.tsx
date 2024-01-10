@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import moment from "moment-timezone";
 import { DatePicker, Form } from "antd";
-import { BaseInputProps, BaseViewInput } from "./BaseInput";
+import { BaseInputProps, BaseViewInput, getFormItemLabel } from "./BaseInput";
 import { FormConsumer } from "./FormWrapper";
 
 /**
@@ -51,7 +51,7 @@ const RenderDate: FC<DateInputProps> = ({
           <Form.Item
             name={input.name}
             required={required}
-            label={label}
+            label={getFormItemLabel(label, required)}
             validateStatus={
               meta.touched ? (meta.error && "error") || (meta.warning && "warning") : ""
             }

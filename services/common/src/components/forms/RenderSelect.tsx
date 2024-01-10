@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import { Form, Select } from "antd";
-import { BaseInputProps, BaseViewInput } from "./BaseInput";
+import { BaseInputProps, BaseViewInput, getFormItemLabel } from "./BaseInput";
 import { IOption } from "../..";
 import { caseInsensitiveLabelFilter } from "@mds/common/redux/utils/helpers";
 import { FormConsumer, IFormContext } from "./FormWrapper";
@@ -42,12 +42,10 @@ export const RenderSelect: FC<SelectProps> = ({
           return <BaseViewInput value={displayedValue} label={label} />;
         }
 
-        const formLabel = required ? label : `${label} (optional)`;
-
         return (
           <Form.Item
             name={input.name}
-            label={formLabel}
+            label={getFormItemLabel(label, required)}
             required={required}
             validateStatus={
               isDirty || meta.touched ? (meta.error && "error") || (meta.warning && "warning") : ""

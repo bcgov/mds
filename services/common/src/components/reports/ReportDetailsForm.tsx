@@ -133,7 +133,20 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
 
   return (
     <div>
+      <Alert
+        message=""
+        description={
+          <b>
+            Please submit only one report package per permit section. If multiple sections are
+            relevant, make separate submissions for each corresponding permit section.
+          </b>
+        }
+        type="warning"
+        showIcon
+        style={{ marginBottom: "32px" }}
+      />
       <Typography.Title level={3}>Report Type</Typography.Title>
+
       <FormWrapper name={FORM.VIEW_EDIT_REPORT} onSubmit={handleSubmit} isEditMode={isEditMode}>
         <Row gutter={[16, 8]}>
           {/* TODO: this input is currently in the UI, and it controls the data for the next one
@@ -179,42 +192,41 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
           </Col>
 
           <Col span={24}>
-            <Alert
-              message=""
-              description={
-                <Row>
-                  <Col xs={24} md={18}>
-                    <p>
-                      <b>You are submitting:</b>
-                      <br />
-                      {selectedCategory} [TODO: plain language on what it is]
-                      <br />
-                      {selectedReportName} [TODO: plain language on what it is]
-                      <br />
-                      {selectedReportCode} [TODO: plain language on what it is]
-                      <br />
-                    </p>
-                  </Col>
-                </Row>
-              }
-              type="info"
+            <div className="grey-box" style={{ backgroundColor: "#F2F2F2", padding: "16px 24px" }}>
+              <Row>
+                <Col xs={24} md={18}>
+                  <b>You are submitting:</b>
+                  <br />
+                  <b>{selectedCategory}</b> [TODO: plain language on what it is]
+                  <br />
+                  <b>{selectedReportName}</b> [TODO: plain language on what it is]
+                  <br />
+                  <b>{selectedReportCode}</b> [TODO: plain language on what it is]
+                </Col>
+              </Row>
+            </div>
+          </Col>
+
+          <Col span={24}>
+            <Field
+              id="description_comment"
+              name="description_comment"
+              label="Report Title and Additional Comment"
+              required
+              props={{ maximumCharacters: 500, rows: 3 }}
+              placeholder="Include a precise and descriptive title to the report."
+              component={RenderAutoSizeField}
+              validate={[required, maxLength(500)]}
             />
           </Col>
 
-          <Typography.Title className="margin-large--top" level={3}>
-            Report Information
-          </Typography.Title>
-
           <Col span={24}>
+            <Typography.Title className="margin-large--top" level={3}>
+              Report Information
+            </Typography.Title>
             <Alert
               message=""
-              description={
-                <Row>
-                  <Col xs={24} md={18}>
-                    <p>This type of report submission will be posted online publicly.</p>
-                  </Col>
-                </Row>
-              }
+              description={<b>This type of report submission will be posted online publicly.</b>}
               type="warning"
               showIcon
             />
@@ -271,19 +283,6 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
             />
             {/*  TODO: "By providing your email, you agree to receive notification of the report" */}
           </Col>
-          <Col span={24}>
-            <Field
-              id="description_comment"
-              name="description_comment"
-              label="Report Title and Additional Comment"
-              required
-              props={{ maximumCharacters: 500, rows: 3 }}
-              placeholder="Include a precise and descriptive title to the report."
-              component={RenderAutoSizeField}
-              validate={[required, maxLength(500)]}
-            />
-          </Col>
-
           <Col span={24}>
             <Alert
               message=""

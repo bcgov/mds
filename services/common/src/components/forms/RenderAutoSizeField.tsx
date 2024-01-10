@@ -1,6 +1,6 @@
 import React, { useState, useEffect, FC } from "react";
 import { Input, Form, Row } from "antd";
-import { BaseInputProps, BaseViewInput } from "./BaseInput";
+import { BaseInputProps, BaseViewInput, getFormItemLabel } from "./BaseInput";
 import { FormConsumer, IFormContext } from "./FormWrapper";
 
 /**
@@ -44,12 +44,11 @@ const RenderAutoSizeField: FC<AutoSizeProps> = ({
         if (!value.isEditMode) {
           return <BaseViewInput value={props.input.value} label={label} />;
         }
-        const formLabel = required ? label : `${label} (optional)`;
         return (
           <Form.Item
             name={props.input.name}
             required={required}
-            label={formLabel}
+            label={getFormItemLabel(label, required)}
             validateStatus={
               props.meta.touched
                 ? (props.meta.error && "error") || (props.meta.warning && "warning")

@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { Input, Form } from "antd";
-import { BaseInputProps, BaseViewInput } from "./BaseInput";
+import { BaseInputProps, BaseViewInput, getFormItemLabel } from "./BaseInput";
 import { FormConsumer } from "./FormWrapper";
 
 /**
@@ -18,7 +18,6 @@ const RenderField: FC<BaseInputProps> = ({
   placeholder,
   allowClear,
 }) => {
-  const formLabel = required ? label : `${label} (optional)`;
   return (
     <FormConsumer>
       {(value) => {
@@ -29,7 +28,7 @@ const RenderField: FC<BaseInputProps> = ({
           <Form.Item
             name={input.name}
             required={required}
-            label={formLabel}
+            label={getFormItemLabel(label, required)}
             validateStatus={
               meta.touched ? (meta.error && "error") || (meta.warning && "warning") : ""
             }

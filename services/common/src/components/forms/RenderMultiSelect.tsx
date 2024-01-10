@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Select, Form } from "antd";
 import { caseInsensitiveLabelFilter } from "@mds/common/redux/utils/helpers";
-import { BaseInputProps, BaseViewInput } from "./BaseInput";
+import { BaseInputProps, BaseViewInput, getFormItemLabel } from "./BaseInput";
 import { FormConsumer, IFormContext } from "./FormWrapper";
 import { IOption } from "../..";
 
@@ -42,7 +42,7 @@ export const RenderMultiSelect: FC<MultiSelectProps> = (props) => {
             <Form.Item
               name={input.name}
               required={props.required}
-              label={label}
+              label={getFormItemLabel(label, props.required)}
               validateStatus={
                 meta.touched ? (meta.error && "error") || (meta.warning && "warning") : ""
               }
