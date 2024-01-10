@@ -37,9 +37,10 @@ export const MyForm = () => {
         props={{ mySpecificAttribute: someData }} 
         required 
         validate={[required]} 
-        component={RenderInput}
+        component={RenderMyInput}
       />
       ... more Fields
+      <Button htmlType="submit">Submit</Button>
     </FormWrapper>
   );
 }

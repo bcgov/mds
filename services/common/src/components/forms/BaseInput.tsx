@@ -23,29 +23,22 @@ import { WrappedFieldProps, WrappedFieldMetaProps, WrappedFieldInputProps } from
   EXAMPLE IMPLEMENTATION:
 
   interface MyInputProps extends BaseInputProps {
-    someAttribute: string;
+    mySpecificAttribute: string;
   }
 
-  // any props defined in BaseInputProps will be available in your component
-  // reduxForm will pass input and meta
   export const RenderMyInput: FC<MyInputProps> = ({input, meta, label, required, ...props}) => {
     return (
-      // FormConsumer will give access to attributes given to FormWrapper
       <FormConsumer>
         {(value: IFormContext) => {
           if (!value.isEditMode) {
-
-            // optionally do any formatting or processing of the input value
             let displayValue = formatMyValueForDisplay(input.value);
             return <BaseViewInput value={displayValue} label={label} />;
           }
           return (
-            // The following attributes (name, label, required, validateStatus, help)
-            // can and should be copied and pasted into most implementations
             <Form.Item
-              name={input.name} // the name attribute is needed for the value to be passed to onSubmit
+              name={input.name} 
               label={getFormItemLabel(label, required)}
-              required={required} // for showing the * mark. Not validation
+              required={required}
               validateStatus={
                 meta.touched ? (meta.error && "error") || (meta.warning && "warning") : ""
               }
@@ -62,7 +55,6 @@ import { WrappedFieldProps, WrappedFieldMetaProps, WrappedFieldInputProps } from
       </FormConsumer>
     );
   }
-
 */
 
 export interface BaseInputProps extends WrappedFieldProps {
