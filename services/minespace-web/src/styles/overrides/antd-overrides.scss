@@ -106,12 +106,12 @@ h4.ant-typography,
 
 h3.ant-typography,
 .ant-typography h3 {
-  color: #313132;
+  color: $font-colour;
 }
 
 h5.ant-typography,
 .ant-typography h5 {
-  color: #313132;
+  color: $font-colour;
 }
 
 .ant-typography a {
@@ -250,7 +250,8 @@ h5.ant-typography,
   .ant-table-content {
     overflow-x: auto;
   }
-  tr > td {
+
+  tr>td {
     border-bottom: 1px solid #BBBBBB;
   }
 }
@@ -299,6 +300,7 @@ td a {
 }
 
 tr.ant-table-expanded-row {
+
   & table,
   .ant-table-body {
     margin: 0;
@@ -387,14 +389,25 @@ th.ant-descriptions-item.vertical-description {
 }
 
 // Forms
-.ant-form-item-required {
+.ant-input,
+.ant-select-selector,
+.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+  border: 1px solid $normal-color;
+}
+
+.ant-form-item-required,
+.ant-form-item-label>label.ant-form-item-required:not(.ant-form-item-required-mark-optional) {
   &::before {
     font-family: $font-family;
   }
 }
 
-.ant-legacy-form label {
+.ant-legacy-form label,
+.ant-form-item-label label,
+.view-item .ant-typography.view-item-label {
   font-size: 16px;
+  color: $font-colour;
+  font-weight: 600;
 }
 
 .ant-form-vertical .ant-form-item {
@@ -403,6 +416,22 @@ th.ant-descriptions-item.vertical-description {
 
 .ant-form-item {
   margin-bottom: 8px;
+}
+
+.form-item-optional {
+  font-weight: normal;
+}
+
+.view-item {
+  line-height: 22px;
+
+  .ant-typography.view-item-label {
+    margin-bottom: 4px;
+  }
+
+  .ant-typography.view-item-value {
+    margin-bottom: 0;
+  }
 }
 
 .ant-steps-item-finish>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-title {
@@ -483,6 +512,7 @@ th.ant-descriptions-item.vertical-description {
 
 .ant-alert-info {
   background-color: $card-bg;
+  border-width: 0;
 }
 
 .ant-alert+.ant-alert {
@@ -551,14 +581,14 @@ th.ant-descriptions-item.vertical-description {
       &:focus,
       &:hover {
         background-color: white;
-      ;
+        ;
       }
     }
   }
 }
 
 .magazine-collapse,
-.magazine-collapse > div {
+.magazine-collapse>div {
   background-color: #f2f2f2;
   align-items: center !important;
   border-bottom: none !important;

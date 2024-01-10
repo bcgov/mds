@@ -1,9 +1,9 @@
 .icon-svg-filter {
-  filter: brightness(0) saturate(100%) invert(33%) sepia(15%) saturate(2661%) hue-rotate(216deg)
-    brightness(89%) contrast(92%);
+  filter: brightness(0) saturate(100%) invert(33%) sepia(15%) saturate(2661%) hue-rotate(216deg) brightness(89%) contrast(92%);
 }
 
-.permit-table-button {
+.permit-table-button,
+.actions-dropdown-button {
   margin: 0;
   border: 0;
   color: $violet;
@@ -30,6 +30,7 @@
 
 .add-permit-dropdown-button {
   border: none;
+
   div {
     display: flex;
     align-items: center;

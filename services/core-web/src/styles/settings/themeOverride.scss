@@ -836,6 +836,10 @@ select {
 .ant-legacy-form-item-control-wrapper {
   flex: 1 1 100%;
 }
+// same effect as above but not legacy
+.ant-form-item-row {
+  flex-direction: column;
+}
 
 .ant-legacy-form-item {
   margin-bottom: 6px;

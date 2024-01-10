@@ -1,5 +1,6 @@
 export enum FORM {
   // projects
   ADD_EDIT_PROJECT_SUMMARY = "ADD_EDIT_PROJECT_SUMMARY",
-  ADD_REPORT = "ADD_REPORT",
+  // reports
+  VIEW_EDIT_REPORT = "VIEW_EDIT_REPORT",
 }

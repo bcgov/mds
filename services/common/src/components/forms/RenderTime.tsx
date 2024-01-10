@@ -1,40 +1,29 @@
-import React from "react";
-import PropTypes from "prop-types";
-import moment from "moment";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { TimePicker } from "antd";
+import React, { FC } from "react";
+import moment from "moment-timezone";
+import { Form, TimePicker } from "antd";
+import { BaseInputProps } from "./BaseInput";
 
 /**
  * @constant RenderTime  - Ant Design `TimePicker` component for redux-form.
  */
 
-const propTypes = {
-  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  input: PropTypes.objectOf(PropTypes.any).isRequired,
-  label: PropTypes.string.isRequired,
-  meta: PropTypes.objectOf(PropTypes.any).isRequired,
-  placeholder: PropTypes.string,
-  onBlur: PropTypes.func,
-  onChange: PropTypes.func,
-  format: PropTypes.string,
-  defaultOpenValue: PropTypes.string,
-  fullWidth: PropTypes.bool,
-  disabled: PropTypes.bool,
-};
+interface RenderTimeProps extends BaseInputProps {
+  fullWidth: boolean;
+  onBlur?: () => void;
+  onChange?: () => void;
+  format?: string;
+}
 
-const defaultProps = {
-  placeholder: "Select a time",
-  onBlur: () => {},
-  onChange: () => {},
-  format: "HH:mm",
-  defaultOpenValue: "00:00",
-  fullWidth: false,
-  disabled: false,
-};
-
-const RenderTime = (props) => (
+const RenderTime: FC<RenderTimeProps> = ({
+  placeholder = "Select a time",
+  format = "HH:mm",
+  defaultValue = "00:00",
+  fullWidth = false,
+  ...props
+}) => (
   <Form.Item
+    name={props.input.name}
+    required={props.required}
     label={props.label}
     validateStatus={
       props.meta.touched ? (props.meta.error && "error") || (props.meta.warning && "warning") : ""
@@ -49,18 +38,15 @@ const RenderTime = (props) => (
       disabled={props.disabled}
       id={props.id}
       {...props.input}
-      placeholder={props.placeholder}
+      placeholder={placeholder}
       onChange={props.input.onChange}
       onBlur={props.onBlur}
-      value={props.input.value ? moment(props.input.value, props.format) : null}
-      defaultOpenValue={moment(props.defaultOpenValue, props.format)}
-      format={props.format}
-      className={props.fullWidth && "full"}
+      value={props.input.value ? moment(props.input.value, format) : null}
+      defaultValue={moment(defaultValue, format)}
+      format={format}
+      className={fullWidth && "full"}
     />
   </Form.Item>
 );
-
-RenderTime.propTypes = propTypes;
-RenderTime.defaultProps = defaultProps;
 
 export default RenderTime;

@@ -4,39 +4,34 @@ import { Link, useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { IMine } from "@mds/common/interfaces";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
-import { getMines } from "@mds/common/redux/selectors/mineSelectors";
+import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import ReportGetStarted from "@mds/common/components/reports/ReportGetStarted";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
-import AddReportDetails from "@mds/common/components/reports/AddReportDetails";
-import { fetchMineRecords } from "@mds/common/redux/actionCreators/mineActionCreator";
+import moment from "moment-timezone";
+import ReportDetailsForm from "@mds/common/components/reports/ReportDetailsForm";
+import { createMineReport } from "@mds/common/redux/actionCreators/reportActionCreator";
 
 const ReportSteps = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
   const { mineGuid } = useParams<{ mineGuid: string }>();
-  const mines: IMine = useSelector(getMines);
-
   const [currentStep, setCurrentStep] = useState(0);
-  const [mine, setMine] = useState<IMine>(mines[mineGuid]);
+
+  const mine: IMine = useSelector((state) => getMineById(state, mineGuid));
 
   useEffect(() => {
-    if (Object.keys(mines).length === 0) {
+    if (!mine) {
       dispatch(fetchMineRecordById(mineGuid));
     }
   }, []);
 
-  useEffect(() => {
-    setMine(mines[mineGuid]);
-  }, [mines]);
-
   const renderStepButtons = ({
     nextButtonTitle,
     previousButtonTitle,
-    hideNextButton = false,
     hidePreviousButton = false,
-    nextButtonFunction = () => setCurrentStep(currentStep + 1),
     previousButtonFunction = () => setCurrentStep(currentStep - 1),
+    nextButtonFunction = null,
   }) => {
     return (
       <Row justify="end" gutter={16}>
@@ -47,13 +42,17 @@ const ReportSteps = () => {
             </Button>
           </Col>
         )}
-        {!hideNextButton && (
-          <Col>
+        <Col>
+          {nextButtonFunction ? (
             <Button type="primary" onClick={nextButtonFunction}>
               {nextButtonTitle ?? "Next"}
             </Button>
-          </Col>
-        )}
+          ) : (
+            <Button type="primary" htmlType="submit">
+              {nextButtonTitle ?? "Next"}
+            </Button>
+          )}
+        </Col>
       </Row>
     );
   };
@@ -68,25 +67,52 @@ const ReportSteps = () => {
               nextButtonTitle: "Add Report Details",
               previousButtonTitle: "Cancel",
               previousButtonFunction: () => history.goBack(),
+              nextButtonFunction: () => setCurrentStep(currentStep + 1),
             })}
           </div>
         );
       case 1:
         return (
           <div>
-            <AddReportDetails mineGuid={mineGuid} />
-            {renderStepButtons({
-              nextButtonTitle: "Review & Submit",
-              previousButtonTitle: "Back",
-            })}
+            <ReportDetailsForm
+              mineGuid={mineGuid}
+              handleSubmit={() => setCurrentStep(currentStep + 1)}
+              formButtons={renderStepButtons({
+                nextButtonTitle: "Review & Submit",
+                previousButtonTitle: "Back",
+              })}
+            />
           </div>
         );
       case 2:
-        return <div>3</div>;
+        return (
+          <div>
+            <ReportDetailsForm
+              isEditMode={false}
+              mineGuid={mineGuid}
+              handleSubmit={(values) => {
+                const formValues = { received_date: moment().format("YYYY-MM-DD"), ...values };
+                dispatch(createMineReport(mineGuid, formValues)).then(() => {
+                  history.push(GLOBAL_ROUTES?.MINE_DASHBOARD.dynamicRoute(mineGuid, "reports"));
+                });
+              }}
+              formButtons={renderStepButtons({
+                nextButtonTitle: "Submit",
+                previousButtonTitle: "Back",
+              })}
+            />
+          </div>
+        );
       default:
         return <div>4</div>;
     }
   };
+
+  const stepItems = [
+    { title: "Get Started" },
+    { title: "Add Report" },
+    { title: "Review & Submit" },
+  ];
 
   return (
     <div>
@@ -106,11 +132,7 @@ const ReportSteps = () => {
       <Typography.Title className="margin-large--top margin-large--bottom" level={3}>
         Submit New Report
       </Typography.Title>
-      <Steps className="report-steps" current={currentStep}>
-        <Steps.Step title="Get Started" />
-        <Steps.Step title="Add Report" />
-        <Steps.Step title="Review & Submit" />
-      </Steps>
+      <Steps className="report-steps" current={currentStep} items={stepItems}></Steps>
       {renderStepContent()}
     </div>
   );

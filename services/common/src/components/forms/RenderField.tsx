@@ -1,73 +1,56 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Input } from "antd";
+import React, { FC } from "react";
+import { Input, Form } from "antd";
+import { BaseInputProps, BaseViewInput, getFormItemLabel } from "./BaseInput";
+import { FormConsumer } from "./FormWrapper";
 
 /**
  * @constant RenderField - Ant Design `Input` component for redux-form.
  */
 
-const propTypes = {
-  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  input: PropTypes.objectOf(PropTypes.any).isRequired,
-  label: PropTypes.string,
-  placeholder: PropTypes.string,
-  meta: PropTypes.objectOf(PropTypes.any).isRequired,
-  inlineLabel: PropTypes.string,
-  disabled: PropTypes.bool,
-  defaultValue: PropTypes.string,
-  allowClear: PropTypes.bool,
-  blockLabelText: PropTypes.string,
-};
-
-const defaultProps = {
-  label: "",
-  placeholder: "",
-  inlineLabel: "",
-  disabled: false,
-  defaultValue: "",
-  allowClear: false,
-  blockLabelText: "",
-};
-
-const RenderField = (props) => {
+const RenderField: FC<BaseInputProps> = ({
+  label,
+  meta,
+  input,
+  disabled,
+  required,
+  defaultValue,
+  id,
+  placeholder,
+  allowClear,
+}) => {
   return (
-    <Form.Item
-      label={props.label}
-      validateStatus={
-        props.meta.touched ? (props.meta.error && "error") || (props.meta.warning && "warning") : ""
-      }
-      help={
-        props.meta.touched &&
-        ((props.meta.error && <span>{props.meta.error}</span>) ||
-          (props.meta.warning && <span>{props.meta.warning}</span>))
-      }
-    >
-      <div className="inline-flex" style={{ flexDirection: "column" }}>
-        {props.inlineLabel && (
-          <label
-            htmlFor={props.id}
-            className="nowrap"
-            style={{ paddingRight: "10px", fontSize: "20px" }}
+    <FormConsumer>
+      {(value) => {
+        if (!value.isEditMode) {
+          return <BaseViewInput label={label} value={input?.value} />;
+        }
+        return (
+          <Form.Item
+            name={input.name}
+            required={required}
+            label={getFormItemLabel(label, required)}
+            validateStatus={
+              meta.touched ? (meta.error && "error") || (meta.warning && "warning") : ""
+            }
+            help={
+              meta.touched &&
+              ((meta.error && <span>{meta.error}</span>) ||
+                (meta.warning && <span>{meta.warning}</span>))
+            }
           >
-            {props.inlineLabel}
-          </label>
-        )}
-        <Input
-          disabled={props.disabled}
-          defaultValue={props.defaultValue}
-          id={props.id}
-          placeholder={props.placeholder}
-          allowClear={props.allowClear}
-          {...props.input}
-        />
-        {props.blockLabelText && <div className="block flex-start">{props.blockLabelText}</div>}
-      </div>
-    </Form.Item>
+            <Input
+              disabled={disabled}
+              defaultValue={defaultValue}
+              id={id}
+              placeholder={placeholder}
+              allowClear={allowClear}
+              {...input}
+            />
+          </Form.Item>
+        );
+      }}
+    </FormConsumer>
   );
 };
-RenderField.propTypes = propTypes;
-RenderField.defaultProps = defaultProps;
 
 export default RenderField;

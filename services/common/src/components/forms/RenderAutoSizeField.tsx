@@ -1,86 +1,84 @@
-import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Input } from "antd";
+import React, { useState, useEffect, FC } from "react";
+import { Input, Form, Row } from "antd";
+import { BaseInputProps, BaseViewInput, getFormItemLabel } from "./BaseInput";
+import { FormConsumer, IFormContext } from "./FormWrapper";
 
 /**
  * @constant  RenderAutoSizeField - Ant Design `Input` autosize component for redux-form. (useful for notes/description)
  */
 
-const propTypes = {
-  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  input: PropTypes.objectOf(PropTypes.any).isRequired,
-  label: PropTypes.string,
-  placeholder: PropTypes.string,
-  meta: PropTypes.objectOf(PropTypes.any).isRequired,
-  disabled: PropTypes.bool,
-  minRows: PropTypes.number,
-  maximumCharacters: PropTypes.number,
-};
+interface AutoSizeProps extends BaseInputProps {
+  minRows?: number;
+  maximumCharacters?: number;
+}
 
-const defaultProps = {
-  placeholder: "",
-  label: "",
-  disabled: false,
-  minRows: 3,
-  maximumCharacters: 0,
-};
-
-const RenderAutoSizeField = (props) => {
-  const [remainingChars, setRemainingChars] = useState(props.maximumCharacters);
-  const [value, setValue] = useState(props.input?.value ?? "");
+const RenderAutoSizeField: FC<AutoSizeProps> = ({
+  label = "",
+  disabled = false,
+  maximumCharacters = 0,
+  minRows = 3,
+  required = false,
+  ...props
+}) => {
+  const [remainingChars, setRemainingChars] = useState(maximumCharacters);
+  const [inputValue, setValue] = useState(props.input.value ?? "");
 
   const handleTextAreaChange = (event) => {
     setValue(event.target.value);
-    if (props.maximumCharacters > 0) {
+    if (maximumCharacters > 0) {
       const input = event.target.value;
-      const remaining = props.maximumCharacters - input.length;
+      const remaining = maximumCharacters - input.length;
       setRemainingChars(remaining);
     }
   };
 
   useEffect(() => {
-    if (props.input) {
-      const input = props.input.value;
-      const remaining = props.maximumCharacters - input.length;
-      setRemainingChars(remaining);
-    }
+    const input = props.input.value;
+    const remaining = maximumCharacters - input.length;
+    setRemainingChars(remaining);
   }, []);
 
   return (
-    <Form.Item
-      label={props.label}
-      //   placeholder={props.placeholder}
-      validateStatus={
-        props.meta.touched ? (props.meta.error && "error") || (props.meta.warning && "warning") : ""
-      }
-      help={
-        props.meta.touched &&
-        ((props.meta.error && <span>{props.meta.error}</span>) ||
-          (props.meta.warning && <span>{props.meta.warning}</span>))
-      }
-    >
-      <Input.TextArea
-        disabled={props.disabled}
-        id={props.id}
-        {...props.input}
-        autoSize={{ minRows: props.minRows }}
-        placeholder={props.placeholder}
-        onChange={handleTextAreaChange}
-        value={value}
-      />
-      {props.maximumCharacters > 0 && (
-        <div className="flex between">
-          <span>{`Maximum ${props.maximumCharacters} characters`}</span>
-          <span className="flex-end">{`${remainingChars} / ${props.maximumCharacters}`}</span>
-        </div>
-      )}
-    </Form.Item>
+    <FormConsumer>
+      {(value: IFormContext) => {
+        if (!value.isEditMode) {
+          return <BaseViewInput value={props.input.value} label={label} />;
+        }
+        return (
+          <Form.Item
+            name={props.input.name}
+            required={required}
+            label={getFormItemLabel(label, required)}
+            validateStatus={
+              props.meta.touched
+                ? (props.meta.error && "error") || (props.meta.warning && "warning")
+                : ""
+            }
+            help={
+              props.meta.touched &&
+              ((props.meta.error && <span>{props.meta.error}</span>) ||
+                (props.meta.warning && <span>{props.meta.warning}</span>))
+            }
+          >
+            <Input.TextArea
+              disabled={disabled}
+              id={props.id}
+              {...props.input}
+              autoSize={{ minRows: minRows }}
+              placeholder={props.placeholder}
+              onChange={handleTextAreaChange}
+              value={inputValue}
+            />
+            {maximumCharacters > 0 && (
+              <Row justify="space-between">
+                <span>{`Maximum ${maximumCharacters} characters`}</span>
+                <span className="flex-end">{`${remainingChars} / ${maximumCharacters}`}</span>
+              </Row>
+            )}
+          </Form.Item>
+        );
+      }}
+    </FormConsumer>
   );
 };
-
-RenderAutoSizeField.propTypes = propTypes;
-RenderAutoSizeField.defaultProps = defaultProps;
-
 export default RenderAutoSizeField;
