@@ -10,13 +10,7 @@ import {
 import { ReportSubmissions } from "@mds/common/components/reports/ReportSubmissions";
 
 import { FORM } from "@mds/common/constants/forms";
-import {
-  dateNotInFuture,
-  email,
-  maxLength,
-  required,
-  yearNotInFuture,
-} from "@mds/common/redux/utils/Validate";
+import { email, maxLength, required, yearNotInFuture } from "@mds/common/redux/utils/Validate";
 import ReportFilesTable from "./ReportFilesTable";
 import {
   formatComplianceCodeValueOrLabel,
@@ -242,8 +236,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               placeholder="Select date"
               required
               component={RenderDate}
-              validate={[required, dateNotInFuture]}
-              disabledDate={(currentDate) => currentDate.isAfter()}
+              validate={[required]}
             />
           </Col>
 

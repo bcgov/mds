@@ -7,7 +7,7 @@ import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import ReportGetStarted from "@mds/common/components/reports/ReportGetStarted";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
-
+import moment from "moment-timezone";
 import ReportDetailsForm from "@mds/common/components/reports/ReportDetailsForm";
 import { createMineReport } from "@mds/common/redux/actionCreators/reportActionCreator";
 
@@ -91,7 +91,10 @@ const ReportSteps = () => {
               isEditMode={false}
               mineGuid={mineGuid}
               handleSubmit={(values) => {
-                dispatch(createMineReport(mineGuid, values));
+                const formValues = { received_date: moment().format("YYYY-MM-DD"), ...values };
+                dispatch(createMineReport(mineGuid, formValues)).then(() => {
+                  history.push(GLOBAL_ROUTES?.MINE_DASHBOARD.dynamicRoute(mineGuid, "reports"));
+                });
               }}
               formButtons={renderStepButtons({
                 nextButtonTitle: "Submit",
