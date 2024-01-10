@@ -363,18 +363,18 @@ export const FileUpload = (props: FileUploadProps) => {
         />
       )}
       <Form.Item
-        name={props.input.name}
+        name={props.input?.name}
         required={props.required}
         label={props.label}
         validateStatus={
-          props.meta.touched
-            ? (props.meta.error && "error") || (props.meta.warning && "warning")
+          props.meta?.touched
+            ? (props.meta?.error && "error") || (props.meta?.warning && "warning")
             : ""
         }
         help={
-          props.meta.touched &&
-          ((props.meta.error && <span>{props.meta.error}</span>) ||
-            (props.meta.warning && <span>{props.meta.warning}</span>))
+          props.meta?.touched &&
+          ((props.meta?.error && <span>{props.meta?.error}</span>) ||
+            (props.meta?.warning && <span>{props.meta?.warning}</span>))
         }
       >
         <FilePond

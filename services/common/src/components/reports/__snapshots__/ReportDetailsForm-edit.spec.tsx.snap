@@ -1,0 +1,1183 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReportDetailsForm renders edit mode properly 1`] = `
+<div>
+  <div
+    class="ant-alert ant-alert-warning ant-alert-with-description"
+    data-show="true"
+    role="alert"
+    style="margin-bottom: 32px;"
+  >
+    <span
+      aria-label="exclamation-circle"
+      class="anticon anticon-exclamation-circle ant-alert-icon"
+      role="img"
+    >
+      <svg
+        aria-hidden="true"
+        data-icon="exclamation-circle"
+        fill="currentColor"
+        focusable="false"
+        height="1em"
+        viewBox="64 64 896 896"
+        width="1em"
+      >
+        <path
+          d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+        />
+        <path
+          d="M464 688a48 48 0 1096 0 48 48 0 10-96 0zm24-112h48c4.4 0 8-3.6 8-8V296c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8z"
+        />
+      </svg>
+    </span>
+    <div
+      class="ant-alert-content"
+    >
+      <div
+        class="ant-alert-description"
+      >
+        <b>
+          Please submit only one report package per permit section. If multiple sections are relevant, make separate submissions for each corresponding permit section.
+        </b>
+      </div>
+    </div>
+  </div>
+  <h3
+    class="ant-typography"
+  >
+    Report Type
+  </h3>
+  <form
+    class="ant-form ant-form-vertical edit"
+    id="VIEW_EDIT_REPORT"
+  >
+    <div
+      class="ant-row"
+      style="margin: -4px -8px -4px -8px;"
+    >
+      <div
+        class="ant-col ant-col-12"
+        style="padding: 4px 8px 4px 8px;"
+      >
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class="ant-form-item-required"
+                for="VIEW_EDIT_REPORT_mine_report_category"
+                title="Report Type"
+              >
+                Report Type
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <div
+                    aria-required="true"
+                    class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                  >
+                    <div
+                      class="ant-select-selector"
+                    >
+                      <span
+                        class="ant-select-selection-search"
+                      >
+                        <input
+                          aria-activedescendant="mine_report_category_list_0"
+                          aria-autocomplete="list"
+                          aria-controls="mine_report_category_list"
+                          aria-haspopup="listbox"
+                          aria-owns="mine_report_category_list"
+                          aria-required="true"
+                          autocomplete="off"
+                          class="ant-select-selection-search-input"
+                          id="mine_report_category"
+                          role="combobox"
+                          type="search"
+                          value=""
+                        />
+                      </span>
+                      <span
+                        class="ant-select-selection-placeholder"
+                      >
+                        Select
+                      </span>
+                    </div>
+                    <span
+                      aria-hidden="true"
+                      class="ant-select-arrow"
+                      style="user-select: none;"
+                      unselectable="on"
+                    >
+                      <span
+                        aria-label="down"
+                        class="anticon anticon-down ant-select-suffix"
+                        role="img"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          data-icon="down"
+                          fill="currentColor"
+                          focusable="false"
+                          height="1em"
+                          viewBox="64 64 896 896"
+                          width="1em"
+                        >
+                          <path
+                            d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                          />
+                        </svg>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="VIEW_EDIT_REPORT_mine_report_category_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-col ant-col-12"
+        style="padding: 4px 8px 4px 8px;"
+      >
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class="ant-form-item-required"
+                for="VIEW_EDIT_REPORT_mine_report_definition_guid"
+                title="Report Name"
+              >
+                Report Name
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <div
+                    aria-required="true"
+                    class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                  >
+                    <div
+                      class="ant-select-selector"
+                    >
+                      <span
+                        class="ant-select-selection-search"
+                      >
+                        <input
+                          aria-activedescendant="mine_report_definition_guid_list_0"
+                          aria-autocomplete="list"
+                          aria-controls="mine_report_definition_guid_list"
+                          aria-haspopup="listbox"
+                          aria-owns="mine_report_definition_guid_list"
+                          aria-required="true"
+                          autocomplete="off"
+                          class="ant-select-selection-search-input"
+                          id="mine_report_definition_guid"
+                          role="combobox"
+                          type="search"
+                          value=""
+                        />
+                      </span>
+                      <span
+                        class="ant-select-selection-placeholder"
+                      >
+                        Select a report type
+                      </span>
+                    </div>
+                    <span
+                      aria-hidden="true"
+                      class="ant-select-arrow"
+                      style="user-select: none;"
+                      unselectable="on"
+                    >
+                      <span
+                        aria-label="down"
+                        class="anticon anticon-down ant-select-suffix"
+                        role="img"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          data-icon="down"
+                          fill="currentColor"
+                          focusable="false"
+                          height="1em"
+                          viewBox="64 64 896 896"
+                          width="1em"
+                        >
+                          <path
+                            d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                          />
+                        </svg>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="VIEW_EDIT_REPORT_mine_report_definition_guid_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-col ant-col-24"
+        style="padding: 4px 8px 4px 8px;"
+      >
+        <div
+          class="ant-typography"
+        >
+          Select the report type and name to view the required codes.
+        </div>
+      </div>
+      <div
+        class="ant-col ant-col-24"
+        style="padding: 4px 8px 4px 8px;"
+      >
+        <div
+          class="grey-box"
+          style="background-color: rgb(242, 242, 242); padding: 16px 24px;"
+        >
+          <div
+            class="ant-row"
+          >
+            <div
+              class="ant-col ant-col-xs-24 ant-col-md-18"
+            >
+              <b>
+                You are submitting:
+              </b>
+              <br />
+              <b />
+               [TODO: plain language on what it is]
+              <br />
+              <b />
+               [TODO: plain language on what it is]
+              <br />
+              <b />
+               [TODO: plain language on what it is]
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-col ant-col-24"
+        style="padding: 4px 8px 4px 8px;"
+      >
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class="ant-form-item-required"
+                for="VIEW_EDIT_REPORT_description_comment"
+                title="Report Title and Additional Comment"
+              >
+                Report Title and Additional Comment
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <textarea
+                    class="ant-input"
+                    id="description_comment"
+                    name="description_comment"
+                    placeholder="Include a precise and descriptive title to the report."
+                    style="height: 0px; resize: none; min-height: -12px;"
+                  />
+                  <div
+                    class="ant-row ant-row-space-between"
+                  >
+                    <span>
+                      Maximum 500 characters
+                    </span>
+                    <span
+                      class="flex-end"
+                    >
+                      500 / 500
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="VIEW_EDIT_REPORT_description_comment_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-col ant-col-24"
+        style="padding: 4px 8px 4px 8px;"
+      >
+        <h3
+          class="ant-typography margin-large--top"
+        >
+          Report Information
+        </h3>
+        <div
+          class="ant-alert ant-alert-warning ant-alert-with-description"
+          data-show="true"
+          role="alert"
+        >
+          <span
+            aria-label="exclamation-circle"
+            class="anticon anticon-exclamation-circle ant-alert-icon"
+            role="img"
+          >
+            <svg
+              aria-hidden="true"
+              data-icon="exclamation-circle"
+              fill="currentColor"
+              focusable="false"
+              height="1em"
+              viewBox="64 64 896 896"
+              width="1em"
+            >
+              <path
+                d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+              />
+              <path
+                d="M464 688a48 48 0 1096 0 48 48 0 10-96 0zm24-112h48c4.4 0 8-3.6 8-8V296c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8z"
+              />
+            </svg>
+          </span>
+          <div
+            class="ant-alert-content"
+          >
+            <div
+              class="ant-alert-description"
+            >
+              <b>
+                This type of report submission will be posted online publicly.
+              </b>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-col ant-col-12"
+        style="padding: 4px 8px 4px 8px;"
+      >
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class="ant-form-item-required"
+                for="VIEW_EDIT_REPORT_submission_year"
+                title="Report Compliance Year/Period"
+              >
+                Report Compliance Year/Period
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <div
+                    class="ant-picker"
+                  >
+                    <div
+                      class="ant-picker-input"
+                    >
+                      <input
+                        aria-required="true"
+                        autocomplete="off"
+                        id="submission_year"
+                        name="submission_year"
+                        placeholder="Select year"
+                        readonly=""
+                        size="12"
+                        title=""
+                        value=""
+                      />
+                      <span
+                        class="ant-picker-suffix"
+                      >
+                        <span
+                          aria-label="calendar"
+                          class="anticon anticon-calendar"
+                          role="img"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            data-icon="calendar"
+                            fill="currentColor"
+                            focusable="false"
+                            height="1em"
+                            viewBox="64 64 896 896"
+                            width="1em"
+                          >
+                            <path
+                              d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z"
+                            />
+                          </svg>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="VIEW_EDIT_REPORT_submission_year_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-col ant-col-12"
+        style="padding: 4px 8px 4px 8px;"
+      >
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class="ant-form-item-required"
+                for="VIEW_EDIT_REPORT_due_date"
+                title="Due Date"
+              >
+                Due Date
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <div
+                    class="ant-picker"
+                  >
+                    <div
+                      class="ant-picker-input"
+                    >
+                      <input
+                        aria-required="true"
+                        autocomplete="off"
+                        id="due_date"
+                        name="due_date"
+                        placeholder="Select date"
+                        readonly=""
+                        size="12"
+                        title=""
+                        value=""
+                      />
+                      <span
+                        class="ant-picker-suffix"
+                      >
+                        <span
+                          aria-label="calendar"
+                          class="anticon anticon-calendar"
+                          role="img"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            data-icon="calendar"
+                            fill="currentColor"
+                            focusable="false"
+                            height="1em"
+                            viewBox="64 64 896 896"
+                            width="1em"
+                          >
+                            <path
+                              d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z"
+                            />
+                          </svg>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="VIEW_EDIT_REPORT_due_date_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-col ant-col-12"
+        style="padding: 4px 8px 4px 8px;"
+      >
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class="ant-form-item-required"
+                for="VIEW_EDIT_REPORT_submitter_name"
+                title="Submitter Name"
+              >
+                Submitter Name
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <input
+                    aria-required="true"
+                    class="ant-input"
+                    id="submitter_name"
+                    name="submitter_name"
+                    placeholder="Enter name"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="VIEW_EDIT_REPORT_submitter_name_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-col ant-col-12"
+        style="padding: 4px 8px 4px 8px;"
+      >
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class=""
+                for="VIEW_EDIT_REPORT_submitter_email"
+                title=""
+              >
+                Submitter Email
+                 
+                <span
+                  class="form-item-optional"
+                >
+                   (optional)
+                </span>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <input
+                    class="ant-input"
+                    id="submitter_email"
+                    name="submitter_email"
+                    placeholder="Enter email"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="VIEW_EDIT_REPORT_submitter_email_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-col ant-col-24"
+        style="padding: 4px 8px 4px 8px;"
+      >
+        <div
+          class="ant-alert ant-alert-info ant-alert-with-description ant-alert-no-icon"
+          data-show="true"
+          role="alert"
+        >
+          <div
+            class="ant-alert-content"
+          >
+            <div
+              class="ant-alert-description"
+            >
+              <div>
+                <div
+                  class="ant-row"
+                >
+                  <h5
+                    class="ant-typography"
+                  >
+                    Your mine manager will be notified of this submission
+                  </h5>
+                </div>
+                <div
+                  class="ant-row"
+                >
+                  <div
+                    class="ant-col ant-col-12"
+                  >
+                    <span
+                      class="ant-typography"
+                    >
+                      Mine Manager
+                    </span>
+                    <div
+                      class="ant-typography"
+                    >
+                      Denise George
+                    </div>
+                  </div>
+                  <div
+                    class="ant-col ant-col-12"
+                  >
+                    <span
+                      class="ant-typography"
+                    >
+                      Mine Manager Email
+                    </span>
+                    <div
+                      class="ant-typography"
+                    >
+                      Denise.George@gov.bc.ca
+                    </div>
+                  </div>
+                  <div
+                    class="ant-col ant-col-24"
+                  >
+                    <span
+                      class="ant-typography"
+                    >
+                      If this information is incorrect, please contact us.
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-col ant-col-24"
+        style="padding: 4px 8px 4px 8px;"
+      >
+        <h3
+          class="ant-typography margin-large--top"
+        >
+          Report File(s)
+        </h3>
+        <div>
+          <div
+            class="whirlpool-container"
+          >
+            <div
+              class="ant-form-item ant-form-item-with-help"
+            >
+              <div
+                class="ant-row ant-form-item-row"
+              >
+                <div
+                  class="ant-col ant-form-item-label"
+                >
+                  <label
+                    class=""
+                    for="VIEW_EDIT_REPORT_ReportFileUpload"
+                    title="Upload Files"
+                  >
+                    Upload Files
+                  </label>
+                </div>
+                <div
+                  class="ant-col ant-form-item-control"
+                >
+                  <div
+                    class="ant-form-item-control-input"
+                  >
+                    <div
+                      class="ant-form-item-control-input-content"
+                    >
+                      <div
+                        class="filepond--wrapper"
+                      >
+                        <input
+                          accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,application/vnd.oasis.opendocument.text,application/vnd.oasis.opendocument.text-template,application/vnd.oasis.opendocument.text-web,application/vnd.oasis.opendocument.text-master,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,image/jpg,image/jpeg,image/png,image/jp2,image/tiff,image/heic,image/heif,application/dbf,application/vnd.geo+json,application/gml+xml,application/vnd.google-earth.kml+xml,application/vnd.google-earth.kmz,application/octet-stream,text/csv,application/xml,text/xml"
+                          id="VIEW_EDIT_REPORT_ReportFileUpload"
+                          multiple=""
+                          name="file"
+                          type="file"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    style="display: flex; flex-wrap: nowrap;"
+                  >
+                    <div
+                      class="ant-form-item-explain ant-form-item-explain-connected"
+                      id="VIEW_EDIT_REPORT_ReportFileUpload_help"
+                      role="alert"
+                    >
+                      <div
+                        class=""
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-table-wrapper  core-table"
+        >
+          <div
+            class="ant-spin-nested-loading"
+          >
+            <div
+              class="ant-spin-container"
+            >
+              <div
+                class="ant-table ant-table-small"
+              >
+                <div
+                  class="ant-table-container"
+                >
+                  <div
+                    class="ant-table-content"
+                  >
+                    <table
+                      style="table-layout: auto;"
+                    >
+                      <colgroup />
+                      <thead
+                        class="ant-table-thead"
+                      >
+                        <tr>
+                          <th
+                            aria-label="File Name"
+                            class="ant-table-cell ant-table-column-has-sorters"
+                            tabindex="0"
+                          >
+                            <div
+                              class="ant-table-column-sorters"
+                            >
+                              <span
+                                class="ant-table-column-title"
+                              >
+                                File Name
+                              </span>
+                              <span
+                                class="ant-table-column-sorter ant-table-column-sorter-full"
+                              >
+                                <span
+                                  class="ant-table-column-sorter-inner"
+                                >
+                                  <span
+                                    aria-label="caret-up"
+                                    class="anticon anticon-caret-up ant-table-column-sorter-up"
+                                    role="presentation"
+                                  >
+                                    <svg
+                                      aria-hidden="true"
+                                      data-icon="caret-up"
+                                      fill="currentColor"
+                                      focusable="false"
+                                      height="1em"
+                                      viewBox="0 0 1024 1024"
+                                      width="1em"
+                                    >
+                                      <path
+                                        d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                      />
+                                    </svg>
+                                  </span>
+                                  <span
+                                    aria-label="caret-down"
+                                    class="anticon anticon-caret-down ant-table-column-sorter-down"
+                                    role="presentation"
+                                  >
+                                    <svg
+                                      aria-hidden="true"
+                                      data-icon="caret-down"
+                                      fill="currentColor"
+                                      focusable="false"
+                                      height="1em"
+                                      viewBox="0 0 1024 1024"
+                                      width="1em"
+                                    >
+                                      <path
+                                        d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                      />
+                                    </svg>
+                                  </span>
+                                </span>
+                              </span>
+                            </div>
+                          </th>
+                          <th
+                            aria-label="File Type"
+                            class="ant-table-cell ant-table-column-has-sorters"
+                            tabindex="0"
+                          >
+                            <div
+                              class="ant-table-column-sorters"
+                            >
+                              <span
+                                class="ant-table-column-title"
+                              >
+                                File Type
+                              </span>
+                              <span
+                                class="ant-table-column-sorter ant-table-column-sorter-full"
+                              >
+                                <span
+                                  class="ant-table-column-sorter-inner"
+                                >
+                                  <span
+                                    aria-label="caret-up"
+                                    class="anticon anticon-caret-up ant-table-column-sorter-up"
+                                    role="presentation"
+                                  >
+                                    <svg
+                                      aria-hidden="true"
+                                      data-icon="caret-up"
+                                      fill="currentColor"
+                                      focusable="false"
+                                      height="1em"
+                                      viewBox="0 0 1024 1024"
+                                      width="1em"
+                                    >
+                                      <path
+                                        d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                      />
+                                    </svg>
+                                  </span>
+                                  <span
+                                    aria-label="caret-down"
+                                    class="anticon anticon-caret-down ant-table-column-sorter-down"
+                                    role="presentation"
+                                  >
+                                    <svg
+                                      aria-hidden="true"
+                                      data-icon="caret-down"
+                                      fill="currentColor"
+                                      focusable="false"
+                                      height="1em"
+                                      viewBox="0 0 1024 1024"
+                                      width="1em"
+                                    >
+                                      <path
+                                        d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                      />
+                                    </svg>
+                                  </span>
+                                </span>
+                              </span>
+                            </div>
+                          </th>
+                          <th
+                            aria-label="Created By"
+                            class="ant-table-cell ant-table-column-has-sorters"
+                            tabindex="0"
+                          >
+                            <div
+                              class="ant-table-column-sorters"
+                            >
+                              <span
+                                class="ant-table-column-title"
+                              >
+                                Created By
+                              </span>
+                              <span
+                                class="ant-table-column-sorter ant-table-column-sorter-full"
+                              >
+                                <span
+                                  class="ant-table-column-sorter-inner"
+                                >
+                                  <span
+                                    aria-label="caret-up"
+                                    class="anticon anticon-caret-up ant-table-column-sorter-up"
+                                    role="presentation"
+                                  >
+                                    <svg
+                                      aria-hidden="true"
+                                      data-icon="caret-up"
+                                      fill="currentColor"
+                                      focusable="false"
+                                      height="1em"
+                                      viewBox="0 0 1024 1024"
+                                      width="1em"
+                                    >
+                                      <path
+                                        d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                      />
+                                    </svg>
+                                  </span>
+                                  <span
+                                    aria-label="caret-down"
+                                    class="anticon anticon-caret-down ant-table-column-sorter-down"
+                                    role="presentation"
+                                  >
+                                    <svg
+                                      aria-hidden="true"
+                                      data-icon="caret-down"
+                                      fill="currentColor"
+                                      focusable="false"
+                                      height="1em"
+                                      viewBox="0 0 1024 1024"
+                                      width="1em"
+                                    >
+                                      <path
+                                        d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                      />
+                                    </svg>
+                                  </span>
+                                </span>
+                              </span>
+                            </div>
+                          </th>
+                          <th
+                            class="ant-table-cell actions-column"
+                          />
+                        </tr>
+                      </thead>
+                      <tbody
+                        class="ant-table-tbody"
+                      >
+                        <tr
+                          class="ant-table-row ant-table-row-level-0 fade-in"
+                          data-row-key="1"
+                        >
+                          <td
+                            class="ant-table-cell"
+                          >
+                            <div
+                              class="file_name-column"
+                              title="File Name"
+                            >
+                              Report 1
+                            </div>
+                          </td>
+                          <td
+                            class="ant-table-cell"
+                          >
+                            <div
+                              class="file_type-column"
+                              title="File Type"
+                            >
+                              N/A
+                            </div>
+                          </td>
+                          <td
+                            class="ant-table-cell"
+                          >
+                            <div
+                              class="created_by-column"
+                              title="Created By"
+                            >
+                              admin
+                            </div>
+                          </td>
+                          <td
+                            class="ant-table-cell actions-column"
+                          >
+                            <div>
+                              <button
+                                class="ant-btn ant-btn-default ant-dropdown-trigger actions-dropdown-button "
+                                data-cy="menu-actions-button"
+                                type="button"
+                              >
+                                <span>
+                                  Actions
+                                </span>
+                                <span
+                                  alt="Menu"
+                                  aria-label="caret-down"
+                                  class="anticon anticon-caret-down"
+                                  role="img"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    class=""
+                                    data-icon="caret-down"
+                                    fill="currentColor"
+                                    focusable="false"
+                                    height="1em"
+                                    viewBox="0 0 1024 1024"
+                                    width="1em"
+                                  >
+                                    <path
+                                      d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                    />
+                                  </svg>
+                                </span>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <button
+        class="ant-btn ant-btn-default"
+        type="submit"
+      >
+        <span>
+          Submit
+        </span>
+      </button>
+    </div>
+  </form>
+</div>
+`;

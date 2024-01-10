@@ -5,14 +5,34 @@ exports[`RenderFileUpload component renders correctly 1`] = `
   class="whirlpool-container"
 >
   <div
-    class="filepond--wrapper"
+    class="ant-form-item"
   >
-    <input
-      accept=""
-      multiple=""
-      name="file"
-      type="file"
-    />
+    <div
+      class="ant-row ant-form-item-row"
+    >
+      <div
+        class="ant-col ant-form-item-control"
+      >
+        <div
+          class="ant-form-item-control-input"
+        >
+          <div
+            class="ant-form-item-control-input-content"
+          >
+            <div
+              class="filepond--wrapper"
+            >
+              <input
+                accept=""
+                multiple=""
+                name="file"
+                type="file"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 `;
