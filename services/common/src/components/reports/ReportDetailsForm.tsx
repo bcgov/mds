@@ -17,7 +17,6 @@ import {
   required,
   yearNotInFuture,
 } from "@mds/common/redux/utils/Validate";
-import { flatMap, uniqBy } from "lodash";
 import ReportFilesTable from "./ReportFilesTable";
 import {
   formatComplianceCodeValueOrLabel,
@@ -103,23 +102,11 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
         )?.label ?? "";
       setSelectedReportName(newReportName);
 
-      const newReportComplianceArticles = uniqBy(
-        flatMap(
-          mineReportDefinitionOptions.filter(
-            (opt) => opt.mine_report_definition_guid === mine_report_definition_guid
-          ),
-          "compliance_articles"
-        ),
-        "compliance_article_id"
-      );
-
       const newReportComplianceArticle = mineReportDefinitionOptions.find((opt) => {
         return opt.mine_report_definition_guid === mine_report_definition_guid;
       });
 
       const newSelectedCode = newReportComplianceArticle?.compliance_articles[0] ?? {};
-
-      console.log(newReportComplianceArticles, newSelectedCode);
       setSelectedReportCode(formatComplianceCodeValueOrLabel(newSelectedCode, true));
     } else {
       setSelectedReportName("");
