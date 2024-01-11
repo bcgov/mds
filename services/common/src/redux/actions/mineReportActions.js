@@ -10,6 +10,11 @@ export const storeMineReports = (payload) => ({
   payload,
 });
 
+export const storeMineReport = (payload) => ({
+  type: ActionTypes.STORE_MINE_REPORT,
+  payload,
+});
+
 export const storeMineReportComments = (payload) => ({
   type: ActionTypes.STORE_MINE_REPORT_COMMENTS,
   payload,

@@ -30,6 +30,7 @@ interface ReportsTableProps {
   mineReports: IMineReport[];
   mineReportDefinitionHash: any;
   openEditReportModal: (event: React.MouseEvent, record: IMineReport) => void;
+  openReport: (record: IMineReport) => void;
   isLoaded: boolean;
 }
 
@@ -42,7 +43,9 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
     {
       key: "view",
       label: "View",
-      clickFunction: () => {},
+      clickFunction: (_event, record) => {
+        props.openReport(record);
+      },
       icon: <EyeOutlined />,
     },
   ];
