@@ -68,7 +68,7 @@ describe("FileUploadHelper", () => {
         expect.any(Blob),
         expect.any(Object)
       );
-      expect(config.onSuccess).toHaveBeenCalledWith(uploadData.document_manager_guid);
+      expect(config.onSuccess).toHaveBeenCalledWith(uploadData.document_manager_guid, "");
     });
 
     it("should retry parts when uploadResults is provided", async () => {
@@ -97,7 +97,7 @@ describe("FileUploadHelper", () => {
 
       expect(mockedAxios.post).not.toHaveBeenCalled();
       expect(mockedAxios.patch).toHaveBeenCalledTimes(1);
-      expect(config.onSuccess).toHaveBeenCalledWith(uploadData.document_manager_guid);
+      expect(config.onSuccess).toHaveBeenCalledWith(uploadData.document_manager_guid, "");
     });
 
     it("should not upload successful parts when retrying", async () => {
@@ -134,7 +134,10 @@ describe("FileUploadHelper", () => {
 
       expect(mockedAxios.post).not.toHaveBeenCalled();
       expect(mockedAxios.patch).toHaveBeenCalledTimes(1);
-      expect(config.onSuccess).toHaveBeenCalledWith(uploadData.document_manager_guid);
+      expect(config.onSuccess).toHaveBeenCalledWith(
+        uploadData.document_manager_guid,
+        "versionguid"
+      );
     });
 
     it("should abort the upload if a part fails to upload", async () => {
@@ -206,7 +209,10 @@ describe("FileUploadHelper", () => {
       expect(mockedAxios.put).toHaveBeenCalledTimes(1);
       expect(mockedAxios.patch).toHaveBeenCalledTimes(1);
       expect(mockedAxios.post).not.toHaveBeenCalled();
-      expect(config.onSuccess).toHaveBeenCalledWith(uploadData.document_manager_guid);
+      expect(config.onSuccess).toHaveBeenCalledWith(
+        uploadData.document_manager_guid,
+        "versionguid"
+      );
     });
     it("should complete upload with parts in ascending order", async () => {
       const uploadData: MultipartDocumentUpload = {
@@ -267,7 +273,10 @@ describe("FileUploadHelper", () => {
       expect(mockedAxios.put).toHaveBeenCalledTimes(3);
       expect(mockedAxios.patch).toHaveBeenCalledTimes(1);
       expect(mockedAxios.post).not.toHaveBeenCalled();
-      expect(config.onSuccess).toHaveBeenCalledWith(uploadData.document_manager_guid);
+      expect(config.onSuccess).toHaveBeenCalledWith(
+        uploadData.document_manager_guid,
+        "versionguid"
+      );
     });
   });
 });
