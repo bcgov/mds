@@ -26,17 +26,22 @@ export const ReportFilesTable: FC = () => {
   //Dummy data
   const files = [
     {
+      document_manager_guid: "1",
       file_name: "Report 1",
       "file_type ": "PDF",
       created_by: "admin",
     },
   ];
 
-  function transformRowData() {
-    return { ...files };
-  }
-
-  return <CoreTable size={"small"} columns={tableColumns} rowKey="1" dataSource={files} />;
+  // TODO: Probably replace with DocumentTable
+  return (
+    <CoreTable
+      size={"small"}
+      columns={tableColumns}
+      rowKey="document_manager_guid"
+      dataSource={files}
+    />
+  );
 };
 
 export default ReportFilesTable;

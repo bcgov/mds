@@ -1,0 +1,1 @@
+ALTER TABLE mine_report ALTER received_date SET DEFAULT NOW();

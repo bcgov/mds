@@ -1,8 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Select } from "antd";
+import { Select, Form } from "antd";
 
 /**
  * @constant RenderGroupedSelect - Ant Design `Select` component for redux-form - used for data sets that require grouping.

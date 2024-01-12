@@ -1,85 +1,91 @@
-import React, { FC } from "react";
-import "@ant-design/compatible/assets/index.css";
+import React, { FC, useState } from "react";
 import { Form, Select } from "antd";
-import { WrappedFieldProps } from "redux-form";
+import { BaseInputProps, BaseViewInput, getFormItemLabel } from "./BaseInput";
+import { IOption } from "../..";
+import { caseInsensitiveLabelFilter } from "@mds/common/redux/utils/helpers";
+import { FormConsumer, IFormContext } from "./FormWrapper";
 
 /**
  * @constant RenderSelect - Ant Design `Select` component for redux-form - used for small data sets that (< 100);
  * There is a bug when the data sets are large enough to cause the dropdown to scroll, and the field is in a modal.
  */
 
-interface SelectProps extends WrappedFieldProps {
-  id: string;
-  input: any;
-  placeholder?: string;
-  label?: string;
-  meta: any; //CustomPropTypes.formMeta,
-  data: any; //CustomPropTypes.options,
-  disabled: boolean;
-  onSelect: any;
+interface SelectProps extends BaseInputProps {
+  data: IOption[];
+  onSelect?: (value, option) => void;
   usedOptions: string[];
-  allowClear?: any;
+  allowClear?: boolean;
 }
 
 export const RenderSelect: FC<SelectProps> = ({
+  label = "",
+  id,
+  meta,
+  input,
   placeholder = "Please select",
   data = [],
   onSelect = () => {},
   allowClear = true,
-  ...props
+  disabled = false,
+  required = false,
 }) => {
+  const [isDirty, setIsDirty] = useState(meta.touched);
   return (
-    <Form.Item
-      label={props.label}
-      validateStatus={
-        props.meta.touched ? (props.meta.error && "error") || (props.meta.warning && "warning") : ""
-      }
-      help={
-        props.meta.touched &&
-        ((props.meta.error && <span>{props.meta.error}</span>) ||
-          (props.meta.warning && <span>{props.meta.warning}</span>))
-      }
-      id={props.id}
-      // following 4 properties do not exist
-      //   onSelect={props.onSelect}
-      //   defaultValue={props.input.value}
-      //   value={props.input.value ? props.input.value : null}
-      //   onChange={props.input.onChange}
-    >
-      <Select
-        virtual={false}
-        disabled={props.disabled}
-        allowClear={allowClear}
-        dropdownMatchSelectWidth
-        getPopupContainer={(trigger) => trigger.parentNode}
-        showSearch
-        dropdownStyle={{ zIndex: 100000, position: "relative" }}
-        placeholder={placeholder}
-        optionFilterProp="children"
-        filterOption={(input, option) =>
-          option.children
-            .toString()
-            .toLowerCase()
-            .indexOf(input.toLowerCase()) >= 0
+    <FormConsumer>
+      {(value: IFormContext) => {
+        if (!value.isEditMode) {
+          let displayedValue = "";
+          if (input?.value) {
+            const selectedOption = data.find((opt) => opt.value === input.value);
+            displayedValue = selectedOption.label ?? "";
+          }
+          return <BaseViewInput value={displayedValue} label={label} />;
         }
-        id={props.id}
-        defaultValue={props.input.value}
-        value={props.input.value ? props.input.value : null}
-        onChange={props.input.onChange}
-        onSelect={onSelect}
-      >
-        {data.map((opt) => (
-          <Select.Option
-            style={{ zIndex: 10000, position: "relative" }}
-            disabled={props.usedOptions && props.usedOptions.includes(opt.value)}
-            key={opt.value}
-            value={opt.value}
+
+        return (
+          <Form.Item
+            name={input.name}
+            label={getFormItemLabel(label, required)}
+            required={required}
+            validateStatus={
+              isDirty || meta.touched ? (meta.error && "error") || (meta.warning && "warning") : ""
+            }
+            help={
+              (isDirty || meta.touched) &&
+              ((meta.error && <span>{meta.error}</span>) ||
+                (meta.warning && <span>{meta.warning}</span>))
+            }
+            id={id}
           >
-            {opt.label}
-          </Select.Option>
-        ))}
-      </Select>
-    </Form.Item>
+            <Select
+              virtual={false}
+              disabled={disabled}
+              allowClear={allowClear}
+              dropdownMatchSelectWidth
+              getPopupContainer={(trigger) => trigger.parentNode}
+              showSearch
+              dropdownStyle={{ zIndex: 100000, position: "relative" }}
+              placeholder={placeholder}
+              optionFilterProp="children"
+              filterOption={caseInsensitiveLabelFilter}
+              id={id}
+              value={data.length && input.value ? input.value : null}
+              onChange={(value) => {
+                setIsDirty(true);
+                input.onChange(value);
+              }}
+              onDropdownVisibleChange={(open) => {
+                if (!open) {
+                  setIsDirty(true);
+                }
+              }}
+              onSelect={onSelect}
+              options={data}
+            />
+          </Form.Item>
+        );
+      }}
+    </FormConsumer>
   );
 };
 

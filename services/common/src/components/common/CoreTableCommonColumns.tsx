@@ -105,6 +105,7 @@ export const renderActionsColumn = ({
   return {
     key: "actions",
     fixed: fixed ? ("right" as const) : null,
+    className: "actions-column",
     render: (record) => {
       const filteredActions = recordActionsFilter ? recordActionsFilter(record, actions) : actions;
       const items = generateActionMenuItems(filteredActions, record);
@@ -113,8 +114,7 @@ export const renderActionsColumn = ({
         <div>
           {items.length > 0 && (
             <Dropdown menu={{ items }} placement="bottomLeft" disabled={isRowSelected}>
-              {/* // TODO: change button classname to something generic */}
-              <Button data-cy="menu-actions-button" className="permit-table-button">
+              <Button data-cy="menu-actions-button" className="actions-dropdown-button ">
                 {text}
                 <CaretDownOutlined alt={dropdownAltText} />
               </Button>

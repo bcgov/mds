@@ -1165,7 +1165,7 @@ exports[`ProjectSummaryForm renders properly 1`] = `
                                   </div>
                                 </th>
                                 <th
-                                  class="ant-table-cell"
+                                  class="ant-table-cell actions-column"
                                 />
                               </tr>
                             </thead>
@@ -1507,7 +1507,7 @@ exports[`ProjectSummaryForm renders properly 1`] = `
                           </div>
                         </th>
                         <th
-                          class="ant-table-cell"
+                          class="ant-table-cell actions-column"
                         />
                       </tr>
                     </thead>
