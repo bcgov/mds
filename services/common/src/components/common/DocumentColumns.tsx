@@ -10,7 +10,6 @@ import { MineDocument } from "@mds/common/models/documents/document";
 import { nullableStringSorter } from "@mds/common/redux/utils/helpers";
 import ClockCircleOutlined from "@ant-design/icons/ClockCircleOutlined";
 import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
-// import DocumentLink from "./DocumentLink";
 import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls";
 import DocumentLink from "./DocumentLink";
 
@@ -173,7 +172,6 @@ export const removeFunctionColumn = (
         >
           <Button ghost type="primary" size="small">
             <DeleteOutlined className="violet" />
-            {/* <img src={TRASHCAN} alt="remove" style={{ width: "24px" }} /> */}
           </Button>
         </Popconfirm>
       </div>

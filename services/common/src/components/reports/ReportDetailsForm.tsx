@@ -407,7 +407,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
                 updateMineReportSubmissions={updateMineReportSubmissions}
               />
             )}
-            <ReportFilesTable documents={initialValues?.documents} />
+            <ReportFilesTable report={initialValues} />
           </Col>
         </Row>
         {formButtons}

@@ -53,7 +53,6 @@ const ReportPage = () => {
       const latestSubmission = report.mine_report_submissions[submissionCount - 1];
       // TODO: submitter_name is dummy data
       const {
-        documents = [],
         mine_report_submission_status_code,
         submission_date,
         submitter_name = "Steve",
@@ -62,7 +61,6 @@ const ReportPage = () => {
         ...report,
         mine_report_submission_status_code,
         status: MINE_REPORT_STATUS_HASH[mine_report_submission_status_code],
-        documents,
         submission_date,
         submitter_name,
       };
