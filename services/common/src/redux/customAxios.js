@@ -1,7 +1,7 @@
 import axios from "axios";
 import { notification, Button } from "antd";
 import * as String from "@mds/common/constants/strings";
-import React from 'react';
+import React from "react";
 import * as API from "@mds/common/constants/API";
 import { ENVIRONMENT } from "@mds/common";
 import { createRequestHeader } from "./utils/RequestHeaders";
@@ -20,18 +20,19 @@ const formatErrorMessage = (errorMessage) => {
   return errorMessage.replace("(psycopg2.", "(DatabaseError.");
 };
 
-const notifymAdmin = (error) => {
+let CustomAxios;
 
+const notifymAdmin = (error) => {
   const business_message = error?.response?.data?.message;
   const detailed_error = error?.response?.data?.detailed_error;
 
   const payload = {
-    "business_error": business_message,
-    "detailed_error": detailed_error
+    business_error: business_message,
+    detailed_error: detailed_error,
   };
 
-  // @ts-ignore
-  CustomAxios().post(ENVIRONMENT.apiUrl + API.REPORT_ERROR, payload, createRequestHeader())
+  CustomAxios()
+    .post(ENVIRONMENT.apiUrl + API.REPORT_ERROR, payload, createRequestHeader())
     .then((response) => {
       notification.success({
         message: "Error details sent to Admin. Thank you.",
@@ -41,11 +42,10 @@ const notifymAdmin = (error) => {
     })
     .catch((err) => {
       throw new Error(err);
-    })
+    });
 };
 
-// @ts-ignore
-const CustomAxios = ({ errorToastMessage, suppressErrorNotification = false } = {}) => {
+CustomAxios = ({ errorToastMessage = null, suppressErrorNotification = false } = {}) => {
   const instance = axios.create();
 
   instance.interceptors.response.use(
@@ -63,21 +63,29 @@ const CustomAxios = ({ errorToastMessage, suppressErrorNotification = false } = 
         (errorToastMessage === "default" || errorToastMessage === undefined) &&
         !suppressErrorNotification
       ) {
-        console.error('Detailed Error: ', error?.response?.data?.detailed_error)
-        const notificationKey = 'errorNotification';
+        console.error("Detailed Error: ", error?.response?.data?.detailed_error);
+        const notificationKey = "errorNotification";
 
         if (isFeatureEnabled(Feature.REPORT_ERROR)) {
           notification.error({
             key: notificationKey,
             message: formatErrorMessage(error?.response?.data?.message ?? String.ERROR),
-            description: <p style={{ color: 'grey' }}>If you think this is a system error please help us to improve by informing the system Admin</p>,
+            description: (
+              <p style={{ color: "grey" }}>
+                If you think this is a system error please help us to improve by informing the
+                system Admin
+              </p>
+            ),
             duration: 10,
             btn: (
-              <Button type="primary" size="small"
+              <Button
+                type="primary"
+                size="small"
                 onClick={() => {
                   notifymAdmin(error);
                   notification.close(notificationKey);
-                }}>
+                }}
+              >
                 Tell Admin
               </Button>
             ),
@@ -89,7 +97,6 @@ const CustomAxios = ({ errorToastMessage, suppressErrorNotification = false } = 
             duration: 10,
           });
         }
-
       } else if (errorToastMessage && !suppressErrorNotification) {
         notification.error({
           message: errorToastMessage,
