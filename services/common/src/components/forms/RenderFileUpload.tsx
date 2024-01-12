@@ -35,7 +35,7 @@ type AfterSuccessActionType = [
 interface FileUploadProps {
   uploadUrl: string;
   acceptedFileTypesMap?: { [key: string]: string };
-  onFileLoad?: (fileName?: string, documentGuid?: string) => void;
+  onFileLoad?: (fileName?: string, documentGuid?: string, versionGuid?: string) => void;
   chunkSize?: number;
   onAbort?: () => void;
   onUploadResponse?: (data: MultipartDocumentUpload) => void;
@@ -154,7 +154,7 @@ export const FileUpload = (props: FileUploadProps) => {
     }
   };
 
-  const handleSuccess = (documentGuid, file, load, abort) => {
+  const handleSuccess = (documentGuid, file, load, abort, versionGuid?) => {
     let intervalId; // eslint-disable-line prefer-const
 
     const pollUploadStatus = async () => {
@@ -163,7 +163,7 @@ export const FileUpload = (props: FileUploadProps) => {
         clearInterval(intervalId);
         if (response.data.status === "Success") {
           load(documentGuid);
-          props.onFileLoad(file.name, documentGuid);
+          props.onFileLoad(file.name, documentGuid, versionGuid);
 
           if (props?.afterSuccess?.action) {
             try {
@@ -274,8 +274,8 @@ export const FileUpload = (props: FileUploadProps) => {
 
         progress(true, bytesUploaded, bytesTotal);
       },
-      onSuccess: (documentGuid) => {
-        handleSuccess(documentGuid, file, load, abort);
+      onSuccess: (documentGuid, versionGuid) => {
+        handleSuccess(documentGuid, file, load, abort, versionGuid);
       },
       onUploadResponse: props.onUploadResponse,
     });

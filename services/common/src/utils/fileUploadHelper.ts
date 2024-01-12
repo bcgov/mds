@@ -108,7 +108,10 @@ export class FileUploadHelper {
     if (uploadResults?.length && uploadResults.every((result) => result.status === "success")) {
       await this._completeMultipartUpload(uploadData, uploadResults);
 
-      this.config.onSuccess(uploadData.document_manager_guid);
+      this.config.onSuccess(
+        uploadData.document_manager_guid,
+        uploadData.document_manager_version_guid
+      );
     }
   };
 

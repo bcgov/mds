@@ -83,6 +83,7 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
     setFileName("");
     setMineDocumentGuid(null);
     setVersion(null);
+    console.log("Resetting version to null");
     return new Promise<boolean>((resolve, reject) => {
       const existingDocument = existingFiles.find(
         (document) => document.document_name === file.filename
@@ -156,9 +157,9 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
     }
   };
 
-  const handleFileLoad = (fileName: string, document_guid: string) => {
+  const handleFileLoad = (fileName: string, document_guid: string, versionGuid: string) => {
     props.onFileLoad(fileName, document_guid, {
-      document_manager_version_guid: version,
+      document_manager_version_guid: version || versionGuid,
       document_manager_guid: mineDocumentGuid,
     });
   };
@@ -211,7 +212,9 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
         uploadUrl={uploadUrl}
         replaceFileUploadUrl={replaceFileUploadUrl}
         acceptedFileTypesMap={props.acceptedFileTypesMap}
-        onFileLoad={handleFileLoad}
+        onFileLoad={(fileName, documentGuid, versionGuid) =>
+          handleFileLoad(fileName, documentGuid, versionGuid)
+        }
         onRemoveFile={props.onRemoveFile}
         notificationDisabledStatusCodes={notificationDisabledStatusCodes}
         shouldAbortUpload={shouldAbortUpload}
