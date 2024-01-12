@@ -11,7 +11,7 @@ import { MineDocument } from "@mds/common/models/documents/document";
 interface ReportFilesTableProps {
   documents: IMineDocument[];
 }
-export const ReportFilesTable: FC<ReportFilesTableProps> = ({ documents }) => {
+export const ReportFilesTable: FC<ReportFilesTableProps> = ({ documents = [] }) => {
   const actions = [
     {
       key: "view",
