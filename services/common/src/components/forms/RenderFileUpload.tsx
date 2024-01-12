@@ -230,19 +230,6 @@ export const FileUpload = (props: FileUploadProps) => {
   };
 
   function _s3MultipartUpload(fileId, uploadUrl, file, metadata, load, error, progress, abort) {
-    const timestamp = new Date().getTime();
-    const start = timestamp;
-    function formatBytes(kiloBytes, decimals) {
-      if (kiloBytes == 0) return ["0", "KB"];
-
-      const k = 1024,
-        dm = decimals + 1 || 1,
-        sizes = ["KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"],
-        i = Math.floor(Math.log(kiloBytes) / Math.log(k));
-
-      return [parseFloat((kiloBytes / Math.pow(k, i)).toFixed(dm)).toLocaleString(), sizes[i]]; // parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' +
-    }
-
     return new FileUploadHelper(file, {
       uploadUrl: ENVIRONMENT.apiUrl + uploadUrl,
       // Pass along results and upload configuration if exists from
@@ -262,16 +249,6 @@ export const FileUpload = (props: FileUploadProps) => {
         setUploadDataFor(fileId, uploadData);
       },
       onProgress: (bytesUploaded, bytesTotal) => {
-        const ms = new Date().getTime();
-        const elapsed = (ms - timestamp) / 1000.0;
-        const bps = bytesUploaded / elapsed;
-
-        console.log(
-          `Uploading ${fileId}:`,
-          (bytesUploaded * 100) / bytesTotal + "%",
-          formatBytes(bps / 1024, 2) + "/s"
-        );
-
         progress(true, bytesUploaded, bytesTotal);
       },
       onSuccess: (documentGuid, versionGuid) => {
@@ -426,9 +403,12 @@ export const FileUpload = (props: FileUploadProps) => {
       }
     };
   }, []);
-  const onProcessFiles = (err, file) => {
+
+  const handleFileAdd = (err, file) => {
+    // Add ID to file metadata so we can reference it later
     file.setMetadata("filepondid", file.id);
   };
+
   const fileValidateTypeLabelExpectedTypesMap = invert(props.acceptedFileTypesMap);
   const acceptedFileTypes = uniq(Object.values(props.acceptedFileTypesMap));
 
@@ -472,7 +452,8 @@ export const FileUpload = (props: FileUploadProps) => {
         // maxFiles={props.maxFiles || undefined}
         allowFileTypeValidation={acceptedFileTypes.length > 0}
         acceptedFileTypes={acceptedFileTypes}
-        onaddfile={onProcessFiles}
+        onaddfile={handleFileAdd}
+        onprocessfiles={props.onProcessFiles}
         onprocessfileabort={props.onAbort}
         // oninit={props.onInit}
         labelIdle={props?.labelIdle}

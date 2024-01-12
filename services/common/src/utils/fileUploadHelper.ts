@@ -132,7 +132,6 @@ export class FileUploadHelper {
         .sort((r1, r2) => r1.part - r2.part),
     };
 
-    console.log(payload);
     await CustomAxios().patch(
       ENVIRONMENT.docManUrl + COMPLETE_MULTIPART_UPLOAD(uploadData.document_manager_guid),
       payload,

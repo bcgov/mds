@@ -35,7 +35,7 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
   const [replaceableFileModalMessage, setReplaceableFileModalMessage] = useState("");
   const [isReplaceableFileModalVisible, setReplaceableFileModalVisible] = useState(false);
   const [fileName, setFileName] = useState("");
-  const [shouldReplaceFile, setShouldReplaceFile] = useState<FilePondFile>(null);
+  const [shouldReplaceFile, setShouldReplaceFile] = useState(false);
   const [replaceFileUploadUrl, setReplaceFileUploadUrl] = useState<undefined | string>();
   const [mineDocumentGuid, setMineDocumentGuid] = useState(null);
   const [mineGuid, setMineGuid] = useState(null);
@@ -77,13 +77,11 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
   }, [props.documents]);
 
   const beforeUpload = (file: FilePondFile) => {
-    console.log("beeefore upload");
     setShouldReplaceFile(null);
     setShouldAbortUpload(false);
     setFileName("");
     setMineDocumentGuid(null);
     setVersion(null);
-    console.log("Resetting version to null");
     return new Promise<boolean>((resolve, reject) => {
       const existingDocument = existingFiles.find(
         (document) => document.document_name === file.filename
@@ -140,7 +138,7 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
         return;
       } else {
         setReplaceFileUploadUrl(undefined);
-        setShouldReplaceFile(null);
+        setShouldReplaceFile(false);
         setHandleModalClose(null);
         setHandleModalSubmit(null);
 
@@ -212,13 +210,10 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
         uploadUrl={uploadUrl}
         replaceFileUploadUrl={replaceFileUploadUrl}
         acceptedFileTypesMap={props.acceptedFileTypesMap}
-        onFileLoad={(fileName, documentGuid, versionGuid) =>
-          handleFileLoad(fileName, documentGuid, versionGuid)
-        }
+        onFileLoad={handleFileLoad}
         onRemoveFile={props.onRemoveFile}
         notificationDisabledStatusCodes={notificationDisabledStatusCodes}
         shouldAbortUpload={shouldAbortUpload}
-        onError={onError}
         allowRevert
         allowMultiple
         props={{
