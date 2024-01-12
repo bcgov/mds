@@ -112,7 +112,6 @@ export const fetchMineReport = (mineGuid, mineReportGuid) => (dispatch) => {
   return CustomAxios()
     .get(`${ENVIRONMENT.apiUrl}${API.MINE_REPORT(mineGuid, mineReportGuid)}`, createRequestHeader())
     .then((response) => {
-      console.log(response.data);
       dispatch(success(reducerTypes.GET_MINE_REPORT));
       dispatch(mineReportActions.storeMineReport(response.data));
       return response.data;

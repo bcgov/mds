@@ -37,7 +37,7 @@ export const RenderSelect: FC<SelectProps> = ({
           let displayedValue = "";
           if (input?.value) {
             const selectedOption = data.find((opt) => opt.value === input.value);
-            displayedValue = selectedOption.label ?? "";
+            displayedValue = selectedOption?.label ?? "";
           }
           return <BaseViewInput value={displayedValue} label={label} />;
         }

@@ -1,12 +1,17 @@
 import React, { FC } from "react";
-import CoreTable from "@mds/common/components/common/CoreTable";
 import EyeOutlined from "@ant-design/icons/EyeOutlined";
 import {
   renderActionsColumn,
   renderTextColumn,
 } from "@mds/common/components/common/CoreTableCommonColumns";
+import { IMineDocument } from "../..";
+import DocumentTable from "../common/DocumentTable";
+import { MineDocument } from "@mds/common/models/documents/document";
 
-export const ReportFilesTable: FC = () => {
+interface ReportFilesTableProps {
+  documents: IMineDocument[];
+}
+export const ReportFilesTable: FC<ReportFilesTableProps> = ({ documents }) => {
   const actions = [
     {
       key: "view",
@@ -23,23 +28,11 @@ export const ReportFilesTable: FC = () => {
     renderActionsColumn({ actions }),
   ];
 
-  //Dummy data
-  const files = [
-    {
-      document_manager_guid: "1",
-      file_name: "Report 1",
-      "file_type ": "PDF",
-      created_by: "admin",
-    },
-  ];
-
-  // TODO: Probably replace with DocumentTable
   return (
-    <CoreTable
-      size={"small"}
-      columns={tableColumns}
-      rowKey="document_manager_guid"
-      dataSource={files}
+    <DocumentTable
+      documents={documents.map((doc) => new MineDocument(doc))}
+      documentParent={"Report Submission"}
+      documentColumns={tableColumns}
     />
   );
 };

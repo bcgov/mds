@@ -73,6 +73,7 @@ const RenderContacts: FC<any> = ({ fields }) => (
 
 interface ReportDetailsFormProps {
   isEditMode?: boolean;
+  initialValues?: IMineReport;
   mineGuid: string;
   formButtons: ReactNode;
   handleSubmit: (values) => void;
@@ -80,6 +81,7 @@ interface ReportDetailsFormProps {
 
 const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   isEditMode = true,
+  initialValues,
   mineGuid,
   formButtons,
   handleSubmit,
@@ -194,21 +196,28 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
 
   return (
     <div>
-      <Alert
-        message=""
-        description={
-          <b>
-            Please submit only one report package per permit section. If multiple sections are
-            relevant, make separate submissions for each corresponding permit section.
-          </b>
-        }
-        type="warning"
-        showIcon
-        style={{ marginBottom: "32px" }}
-      />
+      {!initialValues && (
+        <Alert
+          message=""
+          description={
+            <b>
+              Please submit only one report package per permit section. If multiple sections are
+              relevant, make separate submissions for each corresponding permit section.
+            </b>
+          }
+          type="warning"
+          showIcon
+          style={{ marginBottom: "32px" }}
+        />
+      )}
       <Typography.Title level={3}>Report Type</Typography.Title>
 
-      <FormWrapper name={FORM.VIEW_EDIT_REPORT} onSubmit={handleSubmit} isEditMode={isEditMode}>
+      <FormWrapper
+        name={FORM.VIEW_EDIT_REPORT}
+        onSubmit={handleSubmit}
+        isEditMode={isEditMode}
+        initialValues={initialValues}
+      >
         <Row gutter={[16, 8]}>
           {/* TODO: this input is currently in the UI, and it controls the data for the next one
             but it is not intended to stay here! */}
@@ -246,9 +255,11 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
             {selectedReportCode ? (
               <BaseViewInput label="Report Code Requirements" value={selectedReportCode} />
             ) : (
-              <Typography.Paragraph>
-                Select the report type and name to view the required codes.
-              </Typography.Paragraph>
+              isEditMode && (
+                <Typography.Paragraph>
+                  Select the report type and name to view the required codes.
+                </Typography.Paragraph>
+              )
             )}
           </Col>
 
@@ -396,7 +407,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
                 updateMineReportSubmissions={updateMineReportSubmissions}
               />
             )}
-            <ReportFilesTable />
+            <ReportFilesTable documents={initialValues.documents} />
           </Col>
         </Row>
         {formButtons}
