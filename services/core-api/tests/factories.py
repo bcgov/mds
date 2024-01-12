@@ -518,6 +518,7 @@ class MineReportFactory(BaseFactory):
                                                  datetime.utcnow().year + 11)
     mine_report_submissions = []
     permit_condition_category_code = None
+    submitter_name = factory.Faker('name')
 
     @factory.post_generation
     def mine_report_submissions(obj, create, extracted, **kwargs):
