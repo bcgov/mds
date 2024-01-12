@@ -77,7 +77,7 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
   }, [props.documents]);
 
   const beforeUpload = (file: FilePondFile) => {
-    setShouldReplaceFile(null);
+    setShouldReplaceFile(false);
     setShouldAbortUpload(false);
     setFileName("");
     setMineDocumentGuid(null);
