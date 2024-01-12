@@ -33,8 +33,8 @@ import { Button, Dropdown, MenuProps } from "antd";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import DocumentTableProps from "@mds/common/interfaces/document/documentTableProps.interface";
 import ArchiveDocumentModal from "./ArchiveDocumentModal";
-import DeleteDocumentModal from "../documents/DeleteDocumentModal";
-import ReplaceDocumentModal from "../documents/ReplaceDocumentModal";
+import DeleteDocumentModal from "./DeleteDocumentModal";
+import ReplaceDocumentModal from "./ReplaceDocumentModal";
 import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls";
 
 export const DocumentTable: FC<DocumentTableProps> = ({

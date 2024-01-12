@@ -12,7 +12,7 @@ import { USER_ROLES } from "@mds/common";
 import { truncateFilename } from "@mds/common/redux/utils/helpers";
 import { openDocument, isDocumentOpenable } from "../syncfusion/DocumentViewer";
 import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls";
-import LinkButton from "./LinkButton";
+import LinkButton from "../common/LinkButton";
 
 const propTypes = {
   documentManagerGuid: PropTypes.string.isRequired,

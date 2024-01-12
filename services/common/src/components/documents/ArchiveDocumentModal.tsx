@@ -1,6 +1,5 @@
 import React, { FC } from "react";
 
-// import DocumentTable from "@/components/common/DocumentTable";
 import { Alert, Button, Form, Typography } from "antd";
 import { IMineDocument } from "@mds/common";
 import { MineDocument } from "@mds/common/models/documents/document";
