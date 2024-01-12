@@ -151,6 +151,11 @@ exports[`ReportDetailsForm renders view mode properly 1`] = `
             
           </div>
         </div>
+        <span
+          class="ant-typography report-instructions"
+        >
+          Include a precise and descriptive title to the report.
+        </span>
       </div>
       <div
         class="ant-col ant-col-24"
@@ -161,45 +166,6 @@ exports[`ReportDetailsForm renders view mode properly 1`] = `
         >
           Report Information
         </h3>
-        <div
-          class="ant-alert ant-alert-warning ant-alert-with-description"
-          data-show="true"
-          role="alert"
-        >
-          <span
-            aria-label="exclamation-circle"
-            class="anticon anticon-exclamation-circle ant-alert-icon"
-            role="img"
-          >
-            <svg
-              aria-hidden="true"
-              data-icon="exclamation-circle"
-              fill="currentColor"
-              focusable="false"
-              height="1em"
-              viewBox="64 64 896 896"
-              width="1em"
-            >
-              <path
-                d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
-              />
-              <path
-                d="M464 688a48 48 0 1096 0 48 48 0 10-96 0zm24-112h48c4.4 0 8-3.6 8-8V296c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8z"
-              />
-            </svg>
-          </span>
-          <div
-            class="ant-alert-content"
-          >
-            <div
-              class="ant-alert-description"
-            >
-              <b>
-                This type of report submission will be posted online publicly.
-              </b>
-            </div>
-          </div>
-        </div>
       </div>
       <div
         class="ant-col ant-col-12"
@@ -257,6 +223,11 @@ exports[`ReportDetailsForm renders view mode properly 1`] = `
             
           </div>
         </div>
+        <span
+          class="ant-typography report-instructions"
+        >
+          Your name is recorded for reference
+        </span>
       </div>
       <div
         class="ant-col ant-col-12"
@@ -276,77 +247,91 @@ exports[`ReportDetailsForm renders view mode properly 1`] = `
             
           </div>
         </div>
+        <span
+          class="ant-typography report-instructions"
+        >
+          By providing your email, you agree to receive notification of the report
+        </span>
+      </div>
+      <div
+        class="ant-col ant-col-24"
+        style="padding: 4px 8px 4px 8px;"
+      >
+        <h3
+          class="ant-typography margin-large--top"
+        >
+          Contact Information
+        </h3>
       </div>
       <div
         class="ant-col ant-col-24"
         style="padding: 4px 8px 4px 8px;"
       >
         <div
-          class="ant-alert ant-alert-info ant-alert-with-description ant-alert-no-icon"
-          data-show="true"
-          role="alert"
+          class="ant-typography"
         >
-          <div
-            class="ant-alert-content"
+          The mine manager and additional contacts provided will be notified regarding this report submission. If the mine manager information is incorrect, please
+           
+          <a
+            href=""
           >
-            <div
-              class="ant-alert-description"
-            >
-              <div>
-                <div
-                  class="ant-row"
-                >
-                  <h5
-                    class="ant-typography"
-                  >
-                    Your mine manager will be notified of this submission
-                  </h5>
-                </div>
-                <div
-                  class="ant-row"
-                >
-                  <div
-                    class="ant-col ant-col-12"
-                  >
-                    <span
-                      class="ant-typography"
-                    >
-                      Mine Manager
-                    </span>
-                    <div
-                      class="ant-typography"
-                    >
-                      Denise George
-                    </div>
-                  </div>
-                  <div
-                    class="ant-col ant-col-12"
-                  >
-                    <span
-                      class="ant-typography"
-                    >
-                      Mine Manager Email
-                    </span>
-                    <div
-                      class="ant-typography"
-                    >
-                      Denise.George@gov.bc.ca
-                    </div>
-                  </div>
-                  <div
-                    class="ant-col ant-col-24"
-                  >
-                    <span
-                      class="ant-typography"
-                    >
-                      If this information is incorrect, please contact us.
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+            contact us
+          </a>
+          .
         </div>
+      </div>
+      <div
+        class="ant-col ant-col-12"
+        style="padding: 4px 8px 4px 8px;"
+      >
+        <div
+          class="ant-typography"
+        >
+          <strong>
+            Mine Manager
+          </strong>
+        </div>
+        <div
+          class="ant-typography"
+        >
+          -
+        </div>
+      </div>
+      <div
+        class="ant-col ant-col-12"
+        style="padding: 4px 8px 4px 8px;"
+      >
+        <div
+          class="ant-typography"
+        >
+          <strong>
+            Mine Manager Email
+          </strong>
+        </div>
+        <div
+          class="ant-typography"
+        >
+          -
+        </div>
+      </div>
+      <div
+        class="ant-col ant-col-24"
+        style="padding: 4px 8px 4px 8px;"
+      >
+        <div />
+      </div>
+      <div
+        class="ant-col ant-col-24"
+        style="padding: 4px 8px 4px 8px;"
+      >
+        <button
+          class="ant-btn ant-btn-link"
+          type="button"
+        >
+          <span>
+            + Add report contacts
+          </span>
+        </button>
       </div>
       <div
         class="ant-col ant-col-24"
@@ -357,6 +342,45 @@ exports[`ReportDetailsForm renders view mode properly 1`] = `
         >
           Report File(s)
         </h3>
+        <div
+          class="ant-alert ant-alert-warning ant-alert-with-description"
+          data-show="true"
+          role="alert"
+        >
+          <span
+            aria-label="exclamation-circle"
+            class="anticon anticon-exclamation-circle ant-alert-icon"
+            role="img"
+          >
+            <svg
+              aria-hidden="true"
+              data-icon="exclamation-circle"
+              fill="currentColor"
+              focusable="false"
+              height="1em"
+              viewBox="64 64 896 896"
+              width="1em"
+            >
+              <path
+                d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+              />
+              <path
+                d="M464 688a48 48 0 1096 0 48 48 0 10-96 0zm24-112h48c4.4 0 8-3.6 8-8V296c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8z"
+              />
+            </svg>
+          </span>
+          <div
+            class="ant-alert-content"
+          >
+            <div
+              class="ant-alert-description"
+            >
+              <b>
+                This type of report submission will be posted online publicly.
+              </b>
+            </div>
+          </div>
+        </div>
         <div
           class="ant-table-wrapper  core-table"
         >
