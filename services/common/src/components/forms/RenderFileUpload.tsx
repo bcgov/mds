@@ -18,7 +18,10 @@ import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag"
 import { createRequestHeader } from "@mds/common/redux/utils/RequestHeaders";
 import { FLUSH_SOUND, WATER_SOUND } from "@mds/common/constants/assets";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
-import { MultipartDocumentUpload } from "@mds/common/utils/fileUploadHelper.interface";
+import {
+  MultipartDocumentUpload,
+  UploadResult,
+} from "@mds/common/utils/fileUploadHelper.interface";
 import { HttpRequest, HttpResponse } from "tus-js-client";
 import { BaseInputProps } from "./BaseInput";
 
@@ -33,7 +36,7 @@ type AfterSuccessActionType = [
 interface FileUploadProps extends BaseInputProps {
   uploadUrl: string;
   acceptedFileTypesMap?: { [key: string]: string };
-  onFileLoad?: (fileName?: string, documentGuid?: string) => void;
+  onFileLoad?: (fileName?: string, documentGuid?: string, versionGuid?: string) => void;
   chunkSize?: number;
   onAbort?: () => void;
   onUploadResponse?: (data: MultipartDocumentUpload) => void;
@@ -94,17 +97,30 @@ export const FileUpload = (props: FileUploadProps) => {
   const system = useSelector(getSystemFlag);
 
   const [showWhirlpool, setShowWhirlpool] = useState(false);
-  const [uploadResults, setUploadResults] = useState([]);
-  const [uploadData, setUploadData] = useState(null);
-  const [uploadProcess, setUploadProcess] = useState({
-    fieldName: null,
-    file: props.file || null,
-    metadata: null,
-    load: null,
-    error: null,
-    progress: null,
-    abort: null,
-  });
+
+  // Used to store intermittent results of upload parts to enable
+  // retries of parts that fail.
+  const [uploadResults, setUploadResults] = useState<{ [fileId: string]: UploadResult[] }>({});
+
+  // Used to store upload information about each upload and part
+  // including pre-signed urls to enable retries of parts that fail,
+  // and replace file functionality
+  const [uploadData, setUploadData] = useState<{ [fileId: string]: MultipartDocumentUpload }>({});
+
+  // Stores metadata and process function for each file, so we can manually
+  // trigger it. Currently, this is being used for the replace file functionality
+  // which dynamically changes the URL of the upload if you confirm the replacement
+  const [uploadProcess, setUploadProcess] = useState<{
+    [fileId: string]: {
+      fieldName: string;
+      file: File;
+      metadata: any;
+      load: (documentGuid: string) => void;
+      error: (file: File, err: any) => void;
+      progress: (file: File, progress: number) => void;
+      abort: () => void;
+    };
+  }>({});
 
   let waterSound;
   let flushSound;
@@ -112,7 +128,9 @@ export const FileUpload = (props: FileUploadProps) => {
 
   const handleError = (file, err) => {
     try {
-      const response = JSON.parse(err.originalRequest.getUnderlyingObject().response);
+      const response = err.originalRequest
+        ? JSON.parse(err.originalRequest.getUnderlyingObject().response)
+        : err || {};
 
       if (
         !(
@@ -125,6 +143,7 @@ export const FileUpload = (props: FileUploadProps) => {
           duration: 10,
         });
       }
+
       if (props.onError) {
         props.onError(file && file.name ? file.name : "", err);
       }
@@ -136,7 +155,7 @@ export const FileUpload = (props: FileUploadProps) => {
     }
   };
 
-  const handleSuccess = (documentGuid, file, load, abort) => {
+  const handleSuccess = (documentGuid, file, load, abort, versionGuid?) => {
     let intervalId; // eslint-disable-line prefer-const
 
     const pollUploadStatus = async () => {
@@ -145,7 +164,7 @@ export const FileUpload = (props: FileUploadProps) => {
         clearInterval(intervalId);
         if (response.data.status === "Success") {
           load(documentGuid);
-          props.onFileLoad(file.name, documentGuid);
+          props.onFileLoad(file.name, documentGuid, versionGuid);
 
           if (props?.afterSuccess?.action) {
             try {
@@ -191,34 +210,56 @@ export const FileUpload = (props: FileUploadProps) => {
     intervalId = setInterval(pollUploadStatus, 1000);
   };
 
-  function _s3MultipartUpload(uploadUrl, file, metadata, load, error, progress, abort) {
+  const setUploadResultsFor = (fileId, results) => {
+    setUploadResults({
+      ...uploadResults,
+      [fileId]: results,
+    });
+  };
+
+  const setUploadProcessFor = (fileId, process) => {
+    setUploadProcess({
+      ...uploadProcess,
+      [fileId]: process,
+    });
+  };
+  const setUploadDataFor = (fileId, data) => {
+    setUploadData({
+      ...uploadData,
+      [fileId]: data,
+    });
+  };
+
+  function _s3MultipartUpload(fileId, uploadUrl, file, metadata, load, error, progress, abort) {
     return new FileUploadHelper(file, {
       uploadUrl: ENVIRONMENT.apiUrl + uploadUrl,
-      uploadResults: uploadResults,
-      uploadData: uploadData,
+      // Pass along results and upload configuration if exists from
+      // previous upload attempts for this file. Occurs if retrying a failed upload.
+      uploadResults: uploadResults[fileId],
+      uploadData: uploadData[fileId],
       metadata: {
         filename: file.name,
         filetype: file.type || APPLICATION_OCTET_STREAM,
       },
       onError: (err, uploadResults) => {
-        setUploadResults(uploadResults);
+        setUploadResultsFor(fileId, uploadResults);
         handleError(file, err);
         error(err);
       },
       onInit: (uploadData) => {
-        setUploadData(uploadData);
+        setUploadDataFor(fileId, uploadData);
       },
       onProgress: (bytesUploaded, bytesTotal) => {
         progress(true, bytesUploaded, bytesTotal);
       },
-      onSuccess: (documentGuid) => {
-        handleSuccess(documentGuid, file, load, abort);
+      onSuccess: (documentGuid, versionGuid) => {
+        handleSuccess(documentGuid, file, load, abort, versionGuid);
       },
       onUploadResponse: props.onUploadResponse,
     });
   }
 
-  function _tusdUpload(uploadUrl, file, metadata, load, error, progress, abort) {
+  function _tusdUpload(fileId, uploadUrl, file, metadata, load, error, progress, abort) {
     const upload = new tus.Upload(file, {
       endpoint: ENVIRONMENT.apiUrl + uploadUrl,
       retryDelays: [100, 1000, 3000],
@@ -269,10 +310,20 @@ export const FileUpload = (props: FileUploadProps) => {
   }
 
   const server = {
-    process: (fieldName, file, metadata, load, error, progress, abort) => {
+    process: (
+      fieldName,
+      file,
+      metadata,
+      load,
+      error,
+      progress,
+      abort,
+      transfer = null,
+      options = null
+    ) => {
       let upload;
 
-      setUploadProcess({
+      setUploadProcessFor(metadata.filepondid, {
         fieldName,
         file,
         metadata,
@@ -281,15 +332,34 @@ export const FileUpload = (props: FileUploadProps) => {
         progress,
         abort,
       });
-      setUploadData(null);
-      setUploadResults([]);
+
+      setUploadDataFor(metadata.filepondid, null);
+      setUploadResultsFor(metadata.filepondid, []);
 
       const uploadUrl = props.shouldReplaceFile ? props.replaceFileUploadUrl : props.uploadUrl;
 
       if (props.isFeatureEnabled("s3_multipart_upload")) {
-        upload = _s3MultipartUpload(uploadUrl, file, metadata, load, error, progress, abort);
+        upload = _s3MultipartUpload(
+          metadata.filepondid,
+          uploadUrl,
+          file,
+          metadata,
+          load,
+          error,
+          progress,
+          abort
+        );
       } else {
-        upload = _tusdUpload(uploadUrl, file, metadata, load, error, progress, abort);
+        upload = _tusdUpload(
+          metadata.filepondid,
+          uploadUrl,
+          file,
+          metadata,
+          load,
+          error,
+          progress,
+          abort
+        );
       }
 
       upload.start();
@@ -334,6 +404,11 @@ export const FileUpload = (props: FileUploadProps) => {
       }
     };
   }, []);
+
+  const handleFileAdd = (err, file) => {
+    // Add ID to file metadata so we can reference it later
+    file.setMetadata("filepondid", file.id);
+  };
 
   const fileValidateTypeLabelExpectedTypesMap = invert(props.acceptedFileTypesMap);
   const acceptedFileTypes = uniq(Object.values(props.acceptedFileTypesMap));
@@ -392,6 +467,7 @@ export const FileUpload = (props: FileUploadProps) => {
           // maxFiles={props.maxFiles || undefined}
           allowFileTypeValidation={acceptedFileTypes.length > 0}
           acceptedFileTypes={acceptedFileTypes}
+          onaddfile={handleFileAdd}
           onprocessfiles={props.onProcessFiles}
           onprocessfileabort={props.onAbort}
           // oninit={props.onInit}

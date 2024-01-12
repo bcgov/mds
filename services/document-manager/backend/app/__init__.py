@@ -87,7 +87,11 @@ def register_extensions(app, test_config=None):
         jwt.init_app(app)
 
     if os.environ.get('ALLOW_CYPRESS_AUTH') == 'true':
-        jwt_cypress.init_app(app)
+        try:
+            jwt_cypress.init_app(app)
+        except Exception as e:
+            with app.app_context():
+                current_app.logger.error('Failed to initialize cypress auth. Make sure keycloak is running', e)
 
     migrate.init_app(app, db)
     CORS(app)

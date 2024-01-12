@@ -56,7 +56,17 @@ export class FileUploadHelper {
       Object.values(bytesUploaded).reduce((total: number, c: number) => total + c, 0);
 
     if (!this.config.uploadData) {
-      uploadData = await this._createMultipartUpload();
+      try {
+        uploadData = await this._createMultipartUpload();
+      } catch (e) {
+        if (this.config.onError) {
+          this.config.onError(e, uploadResults);
+
+          return;
+        } else {
+          throw e;
+        }
+      }
     }
 
     if (this.config.onUploadResponse) {
@@ -98,7 +108,10 @@ export class FileUploadHelper {
     if (uploadResults?.length && uploadResults.every((result) => result.status === "success")) {
       await this._completeMultipartUpload(uploadData, uploadResults);
 
-      this.config.onSuccess(uploadData.document_manager_guid);
+      this.config.onSuccess(
+        uploadData.document_manager_guid,
+        uploadData.document_manager_version_guid
+      );
     }
   };
 
@@ -113,7 +126,10 @@ export class FileUploadHelper {
     const payload = {
       upload_id: uploadData.upload.uploadId,
       version_guid: uploadData.document_manager_version_guid,
-      parts: uploadResults.map((result) => ({ part: result.part.part, etag: result.etag })),
+      parts: uploadResults
+        .map((result) => ({ part: result.part.part, etag: result.etag }))
+        // S3 API requires parts to be passed along in ascending order
+        .sort((r1, r2) => r1.part - r2.part),
     };
 
     await CustomAxios().patch(
@@ -131,7 +147,11 @@ export class FileUploadHelper {
       "Upload-Protocol": "s3-multipart",
     });
 
-    const fileUploadResponse = await CustomAxios().post(this.config.uploadUrl, null, headers);
+    const fileUploadResponse = await CustomAxios({ suppressErrorNotification: true }).post(
+      this.config.uploadUrl,
+      null,
+      headers
+    );
     this.config.onInit(<MultipartDocumentUpload>fileUploadResponse.data);
 
     return <MultipartDocumentUpload>fileUploadResponse.data;

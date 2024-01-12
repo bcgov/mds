@@ -155,11 +155,49 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
     }
   };
 
-  const handleFileLoad = (fileName: string, document_guid: string) => {
+  const handleFileLoad = (fileName: string, document_guid: string, versionGuid: string) => {
     props.onFileLoad(fileName, document_guid, {
-      document_manager_version_guid: version,
+      document_manager_version_guid: version || versionGuid,
       document_manager_guid: mineDocumentGuid,
     });
+  };
+
+  const onError = (filename: string, e) => {
+    setFileName(fileName);
+    if (
+      e.response.status_code &&
+      notificationDisabledStatusCodes.includes(e.response.status_code)
+    ) {
+      if (e.response.status === "ARCHIVED_FILE_EXIST") {
+        setShouldAbortUpload(false);
+        const message = `An archived file named ${filename} already exists. If you would like to restore it, download the archived file and upload it again with a different file name.`;
+        setArchivedFileModalMessage(message);
+        setIsArchivedFileModalVisible(true);
+      }
+      if (e.response.status === "REPLACEABLE_FILE_EXIST") {
+        setShouldAbortUpload(false);
+        const message = `A file with the same name already exists in this project. Replacing it will create a new version of the original file and replace it as part of this submission.`;
+        setReplaceableFileModalMessage(message);
+        setReplaceableFileModalVisible(true);
+        setMineGuid(e.response.mine_guid);
+        setMineDocumentGuid(e.response.mine_document_guid);
+
+        const date = new Date(e.response.update_timestamp);
+        const options: Intl.DateTimeFormatOptions = {
+          year: "numeric",
+          month: "short",
+          day: "2-digit",
+        };
+        const formattedDate = date.toLocaleDateString("en-US", options);
+
+        setFileDetails({
+          file_name: filename,
+          file_type: e.response.file_type,
+          update_timestamp: `${formattedDate}`,
+          update_user: e.response.update_user,
+        });
+      }
+    }
   };
 
   return (
@@ -181,43 +219,7 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
         props={{
           beforeAddFile: beforeUpload,
           beforeDropFile: beforeUpload,
-          onError: (filename: string, e) => {
-            setFileName(fileName);
-            if (
-              e.response.status_code &&
-              notificationDisabledStatusCodes.includes(e.response.status_code)
-            ) {
-              if (e.response.status === "ARCHIVED_FILE_EXIST") {
-                setShouldAbortUpload(false);
-                const message = `An archived file named ${filename} already exists. If you would like to restore it, download the archived file and upload it again with a different file name.`;
-                setArchivedFileModalMessage(message);
-                setIsArchivedFileModalVisible(true);
-              }
-              if (e.response.status === "REPLACEABLE_FILE_EXIST") {
-                setShouldAbortUpload(false);
-                const message = `A file with the same name already exists in this project. Replacing it will create a new version of the original file and replace it as part of this submission.`;
-                setReplaceableFileModalMessage(message);
-                setReplaceableFileModalVisible(true);
-                setMineGuid(e.response.mine_guid);
-                setMineDocumentGuid(e.response.mine_document_guid);
-
-                const date = new Date(e.response.update_timestamp);
-                const options: Intl.DateTimeFormatOptions = {
-                  year: "numeric",
-                  month: "short",
-                  day: "2-digit",
-                };
-                const formattedDate = date.toLocaleDateString("en-US", options);
-
-                setFileDetails({
-                  file_name: filename,
-                  file_type: e.response.file_type,
-                  update_timestamp: `${formattedDate}`,
-                  update_user: e.response.update_user,
-                });
-              }
-            }
-          },
+          onError,
           onUploadResponse,
         }}
       />

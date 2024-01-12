@@ -11,7 +11,7 @@ export interface FileUploadHelperProps {
   uploadData?: MultipartDocumentUpload;
   onError: (err, uploadResults: UploadResult[]) => void;
   onProgress: (bytesUploaded: number, bytesTotal: number) => void;
-  onSuccess: (documentManagerGuid: string) => void;
+  onSuccess: (documentManagerGuid: string, documentManagerVersionGuid?: string) => void;
   onInit?: (uploadData: MultipartDocumentUpload) => void;
   onUploadResponse?: (data: MultipartDocumentUpload) => void;
   retryDelayMs?: number;
