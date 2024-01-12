@@ -93,6 +93,7 @@ export enum OperatingStatusEnum {
 export enum MinePartyAppointmentTypeCodeEnum {
   EOR = "EOR",
   TQP = "TQP",
+  MMG = "MMG",
 }
 
 export enum ActivityTypeEnum {

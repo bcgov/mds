@@ -6,6 +6,7 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
 from sqlalchemy import select, and_, desc
+from app.api.mines.reports.models.mine_report_contact import MineReportContact
 from app.api.mines.reports.models.mine_report_submission import MineReportSubmission
 from app.api.mines.reports.models.mine_report_submission_status_code import MineReportSubmissionStatusCode
 from app.api.constants import MINE_REPORT_TYPE
@@ -31,6 +32,9 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
                                                     'mine_report_definition_guid')
     mine_report_definition_report_name = association_proxy('mine_report_definition', 'report_name')
 
+    submitter_name = db.Column(db.String, nullable=False)
+    submitter_email = db.Column(db.String, nullable=False)
+
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
     mine = db.relationship('Mine', lazy='joined')
     mine_name = association_proxy('mine', 'mine_name')
@@ -50,6 +54,12 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
         'MineReportSubmission',
         lazy='joined',
         order_by='asc(MineReportSubmission.mine_report_submission_id)',
+        uselist=True)
+
+    mine_report_contacts = db.relationship(
+        'MineReportContact',
+        lazy='joined',
+        order_by='asc(MineReportContact.mine_report_contact_id)',
         uselist=True)
 
     created_by_idir = db.Column(db.String, nullable=False, default=User().get_user_username)
@@ -125,8 +135,10 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
                received_date,
                submission_year,
                description_comment,
+               submitter_name,
                permit_id=None,
                permit_condition_category_code=None,
+               submitter_email=None,
                add_to_session=True):
         mine_report = cls(
             mine_report_definition_id=mine_report_definition_id,
@@ -136,7 +148,9 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
             submission_year=submission_year,
             description_comment=description_comment,
             permit_id=permit_id,
-            permit_condition_category_code=permit_condition_category_code)
+            permit_condition_category_code=permit_condition_category_code,
+            submitter_name=submitter_name,
+            submitter_email=submitter_email)
         if add_to_session:
             mine_report.save(commit=False)
         return mine_report

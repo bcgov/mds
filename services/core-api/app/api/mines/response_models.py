@@ -656,6 +656,14 @@ MINE_REPORT_SUBMISSION_MODEL = api.model(
         'comments': fields.List(fields.Nested(MINE_REPORT_COMMENT_MODEL))
     })
 
+MINE_REPORT_CONTACT_MODEL = api.model(
+    'MineReportContact', {
+        'mine_report_contact_id': fields.String,
+        'name': fields.String,
+        'email': fields.String
+    })
+
+
 MINE_REPORT_MODEL = api.model(
     'MineReportModel', {
         'mine_report_id':
@@ -692,6 +700,12 @@ MINE_REPORT_MODEL = api.model(
             fields.String,
         'description_comment':
             fields.String,
+        'submitter_name':
+            fields.String,
+        'submitter_email':
+            fields.String,
+        'mine_report_contacts':
+            fields.List(fields.Nested(MINE_REPORT_CONTACT_MODEL)),
     })
 
 MINE_REPORT_DEFINITION_CATEGORIES = api.model('MineReportDefinitionCategoriesModel', {
