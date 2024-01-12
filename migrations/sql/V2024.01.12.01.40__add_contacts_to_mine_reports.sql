@@ -9,10 +9,3 @@ CREATE TABLE mine_report_contact (
 ALTER TABLE mine_report
     ADD COLUMN submitter_name VARCHAR(255),
     ADD COLUMN submitter_email VARCHAR(255);
-
-UPDATE mine_report
-SET submitter_name = ''
-WHERE submitter_name IS NULL;
-
-ALTER TABLE mine_report
-    ALTER COLUMN submitter_name SET NOT NULL
