@@ -99,7 +99,13 @@ const FormWrapper: FC<FormWrapperProps & InjectedFormProps<any>> = ({
 
   return (
     <FormProvider value={providerValues}>
-      <Form layout="vertical" onFinish={handleSubmit} name={props.name} className={formClassName}>
+      <Form
+        layout="vertical"
+        onFinish={handleSubmit}
+        name={props.name}
+        className={formClassName}
+        initialValues={props.initialValues}
+      >
         {children}
       </Form>
     </FormProvider>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 
-import { Col, Row, Typography } from "antd";
+import { Button, Col, Row, Typography } from "antd";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 
 import ReportDetailsForm from "@mds/common/components/reports/ReportDetailsForm";
@@ -21,6 +21,7 @@ const ReportPage = () => {
   const mineReport = useSelector((state) => getMineReportById(state, reportGuid));
   const mine = useSelector((state) => getMineById(state, mineGuid));
   const [loaded, setIsLoaded] = useState(mineReport && mine);
+  const [isEditMode, setIsEditMode] = useState(false);
 
   useEffect(() => {
     if (!mine || mine.mine_guid !== mineGuid) {
@@ -69,10 +70,14 @@ const ReportPage = () => {
       ...report,
       status: "",
       mine_report_submission_status_code: "",
-      documents: [],
       submission_date: "",
       submitter_name: "",
     };
+  };
+
+  const handleUpdateReport = (values) => {
+    console.log("HANDLE UPDATE REPORT");
+    console.log(values);
   };
 
   const transformedReportData = transformData(mineReport);
@@ -93,7 +98,22 @@ const ReportPage = () => {
             </Link>
           </Col>
         </Row>
-        <Typography.Title level={2}>{mineReport.report_name}</Typography.Title>
+        <Row align="middle" justify="space-between">
+          <Typography.Title level={2}>{mineReport.report_name}</Typography.Title>
+          {!isEditMode ? (
+            <Button onClick={() => setIsEditMode(true)} type="primary">
+              Edit Report
+            </Button>
+          ) : (
+            <Button htmlType="submit" type="primary">
+              Save Changes
+            </Button>
+          )}
+          <Button onClick={() => setIsEditMode(!isEditMode)} type="primary">
+            Toggle edit
+          </Button>
+        </Row>
+
         {transformedReportData.status && (
           <Callout
             title={`Submission ${transformedReportData.status}`}
@@ -112,10 +132,16 @@ const ReportPage = () => {
         )}
         <ReportDetailsForm
           mineGuid={mineGuid}
-          initialValues={transformedReportData}
-          handleSubmit={(values) => console.log(values)}
-          isEditMode={false}
-          formButtons={null}
+          initialValues={mineReport}
+          handleSubmit={handleUpdateReport}
+          isEditMode={isEditMode}
+          formButtons={
+            isEditMode ? (
+              <Button htmlType="submit" type="primary">
+                Save Changes
+              </Button>
+            ) : null
+          }
         />
       </div>
     )) || <Loading />

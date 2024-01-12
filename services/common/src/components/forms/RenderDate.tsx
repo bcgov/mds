@@ -47,11 +47,22 @@ const RenderDate: FC<DateInputProps> = ({
           };
         }
 
+        // this is to deal with a bug that surfaces with antd/moment/initialValues.
+        // basically this issue: https://stackoverflow.com/questions/64527820/antd-datepicker-date-clone-date-load-is-not-a-function
+        const getMomentValue = (value) => {
+          if (!value) {
+            return null;
+          }
+          const momentValue = yearMode ? moment(`${value}-01-01`) : moment(value);
+          return { value: momentValue };
+        };
+
         return (
           <Form.Item
             name={input.name}
             required={required}
             label={getFormItemLabel(label, required)}
+            getValueProps={getMomentValue}
             validateStatus={
               meta.touched ? (meta.error && "error") || (meta.warning && "warning") : ""
             }
