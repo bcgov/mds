@@ -223,11 +223,6 @@ exports[`ReportDetailsForm renders view mode properly 1`] = `
             
           </div>
         </div>
-        <span
-          class="ant-typography report-instructions"
-        >
-          Your name is recorded for reference
-        </span>
       </div>
       <div
         class="ant-col ant-col-12"
@@ -247,11 +242,6 @@ exports[`ReportDetailsForm renders view mode properly 1`] = `
             
           </div>
         </div>
-        <span
-          class="ant-typography report-instructions"
-        >
-          By providing your email, you agree to receive notification of the report
-        </span>
       </div>
       <div
         class="ant-col ant-col-24"

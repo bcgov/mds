@@ -104,14 +104,14 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   useEffect(() => {
     if (partyRelationships) {
       // Once the party relationships are fetched, find the mine manager
-      const mineManager = partyRelationships.find(
+      const currentMineManager = partyRelationships.find(
         (relationship) =>
           relationship.mine_party_appt_type_code === MinePartyAppointmentTypeCodeEnum.MMG
       );
       if (mineManager) {
         // Since the party relationships don't contain the required party data, fetch the party
-        setMineManagerGuid(mineManager.party_guid);
-        dispatch(fetchPartyById(mineManager.party_guid));
+        setMineManagerGuid(currentMineManager.party_guid);
+        dispatch(fetchPartyById(currentMineManager.party_guid));
       }
     }
   }, [partyRelationships]);
@@ -326,9 +326,11 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               component={RenderField}
               validate={[required]}
             />
-            <Typography.Text className="report-instructions">
-              Your name is recorded for reference
-            </Typography.Text>
+            {isEditMode && (
+              <Typography.Text className="report-instructions">
+                Your name is recorded for reference
+              </Typography.Text>
+            )}
           </Col>
           <Col span={12}>
             <Field
@@ -339,9 +341,11 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               component={RenderField}
               validate={[email]}
             />
-            <Typography.Text className="report-instructions">
-              By providing your email, you agree to receive notification of the report
-            </Typography.Text>
+            {isEditMode && (
+              <Typography.Text className="report-instructions">
+                By providing your email, you agree to receive notification of the report
+              </Typography.Text>
+            )}
           </Col>
           <Col span={24}>
             <Typography.Title className="margin-large--top" level={3}>
