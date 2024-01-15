@@ -30,7 +30,6 @@ export const RenderMultiSelect: FC<MultiSelectProps> = (props) => {
     <FormConsumer>
       {(value: IFormContext) => {
         const { isEditMode, isModal } = value;
-
         if (!isEditMode) {
           const stringValue = "";
           return <BaseViewInput value={stringValue} label={label} />;
@@ -38,7 +37,7 @@ export const RenderMultiSelect: FC<MultiSelectProps> = (props) => {
 
         const extraProps = isModal ? null : { getPopupContainer: (trigger) => trigger.parentNode };
         return (
-          <div>
+          <div className="form-multiselect">
             <Form.Item
               name={input.name}
               required={props.required}
