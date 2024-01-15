@@ -6,7 +6,7 @@ const helmet = require("helmet");
 
 // Content Security Policy is managed by the environment variable CONTENT_SECURITY_POLICY defined
 // in the bcgov-c/tenant-gitops-4c2ba9 repository. The value of this variable is a JSON string
-let { BASE_PATH, CONTENT_SECURITY_POLICY = null } = process.env;
+let { BASE_PATH, CONTENT_SECURITY_POLICY = null, PERMISSIONS_POLICY = null } = process.env;
 let BUILD_DIR = process.env.BUILD_DIR || "../build";
 let PORT = process.env.PORT || 3020;
 if (dotenv.parsed) {
@@ -17,6 +17,10 @@ if (dotenv.parsed) {
 
 if (CONTENT_SECURITY_POLICY) {
   CONTENT_SECURITY_POLICY = JSON.parse(CONTENT_SECURITY_POLICY);
+}
+
+if (PERMISSIONS_POLICY) {
+  PERMISSIONS_POLICY = JSON.parse(PERMISSIONS_POLICY);
 }
 
 
@@ -80,6 +84,13 @@ app.get(`/version`, (req, res) => {
   res.json({
     commit: process.env.COMMIT_ID || "N/A",
   });
+});
+
+app.use((req, res, next) => {
+  if (PERMISSIONS_POLICY) {
+    res.setHeader("Permissions-Policy", PERMISSIONS_POLICY);
+  }
+  next();
 });
 
 app.use(`${BASE_PATH}/`, staticServe);
