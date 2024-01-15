@@ -33,9 +33,7 @@ const ReportPage = () => {
     if (!mine || mine.mine_guid !== mineGuid) {
       dispatch(fetchMineRecordById(mineGuid));
     }
-  }, [mineGuid]);
 
-  useEffect(() => {
     if (
       !mineReport ||
       mineReport.mine_report_guid !== reportGuid ||
