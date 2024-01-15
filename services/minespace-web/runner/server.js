@@ -19,11 +19,6 @@ if (CONTENT_SECURITY_POLICY) {
   CONTENT_SECURITY_POLICY = JSON.parse(CONTENT_SECURITY_POLICY);
 }
 
-if (PERMISSIONS_POLICY) {
-  PERMISSIONS_POLICY = JSON.parse(PERMISSIONS_POLICY);
-}
-
-
 // maxAge and mustRevalidate control how the client caches application files. The settings
 // below allows the client to cache content, but the client must check to see if the content
 // is stale. Our app serves content with eTags, so this results in a status 304 Not Modified
