@@ -89,7 +89,6 @@ const ReportPage = () => {
   };
 
   const transformedReportData = transformData(mineReport);
-  console.log(transformedReportData);
   return (
     (loaded && (
       <div>
