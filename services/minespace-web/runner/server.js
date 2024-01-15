@@ -1,9 +1,12 @@
 const express = require("express");
 const cacheControl = require("express-cache-controller");
 const dotenv = require("dotenv").config('./env');
-var expressStaticGzip = require("express-static-gzip");
+const expressStaticGzip = require("express-static-gzip");
+const helmet = require("helmet");
 
-let { BASE_PATH } = process.env;
+// Content Security Policy is managed by the environment variable CONTENT_SECURITY_POLICY defined
+// in the bcgov-c/tenant-gitops-4c2ba9 repository. The value of this variable is a JSON string
+let { BASE_PATH, CONTENT_SECURITY_POLICY = null } = process.env;
 let BUILD_DIR = process.env.BUILD_DIR || "../build";
 let PORT = process.env.PORT || 3020;
 if (dotenv.parsed) {
@@ -11,6 +14,11 @@ if (dotenv.parsed) {
   BUILD_DIR = dotenv.parsed.BUILD_DIR || BUILD_DIR;
   PORT = dotenv.parsed.PORT || PORT;
 }
+
+if (CONTENT_SECURITY_POLICY) {
+  CONTENT_SECURITY_POLICY = JSON.parse(CONTENT_SECURITY_POLICY);
+}
+
 
 // maxAge and mustRevalidate control how the client caches application files. The settings
 // below allows the client to cache content, but the client must check to see if the content
@@ -25,6 +33,11 @@ app.use(
   })
 );
 
+app.use(helmet({
+  contentSecurityPolicy: CONTENT_SECURITY_POLICY ? {
+    directives: CONTENT_SECURITY_POLICY
+  } : false
+}));
 
 const staticServe = expressStaticGzip(`${__dirname}/${BUILD_DIR}`, {
   enableBrotli: true,
@@ -73,6 +86,7 @@ app.use(`${BASE_PATH}/`, staticServe);
 app.use(`${BASE_PATH}*`, staticServe);
 app.use(`/`, staticServe);
 app.use(`*`, staticServe);
+
 
 const server = app.listen(PORT, "0.0.0.0", () => console.log("Server running"));
 server.keepAliveTimeout = 15 * 1000;
