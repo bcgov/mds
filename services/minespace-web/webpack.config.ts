@@ -9,7 +9,6 @@ const dotenv = require("dotenv").config({ path: `${__dirname}/.env` });
 const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
 const threadLoader = require("thread-loader");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const HtmlCriticalWebpackPlugin = require("html-critical-webpack-plugin");
 
 const parts = require("./webpack.parts");
 
@@ -260,19 +259,6 @@ const prodConfig = merge([
   parts.copy(PATHS.public, path.join(PATHS.build, "public")),
   {
     plugins: [
-      new HtmlCriticalWebpackPlugin({
-        base: PATHS.build,
-        src: "index.html",
-        dest: "index.html",
-        inline: true,
-        minify: true,
-        extract: true,
-        width: 375,
-        height: 565,
-        penthouse: {
-          blockJSRequests: false,
-        },
-      }),
       new BundleAnalyzerPlugin({
         analyzerMode: "static",
         generateStatsFile: true,

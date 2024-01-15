@@ -113,7 +113,6 @@
     "file-loader": "4.3.0",
     "fsevents": "2.3.2",
     "hard-source-webpack-plugin": "0.13.1",
-    "html-critical-webpack-plugin": "2.1.0",
     "http-server-spa": "1.3.0",
     "jest": "24.8.0",
     "less": "4.1.3",
