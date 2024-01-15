@@ -60,7 +60,7 @@ const ProjectLinkInput = ({ unrelatedProjects = [], mineGuid, projectGuid }) => 
           id="linked-projects"
           name="linked-projects"
           props={{
-            label: "Select one or more related projects (optional)",
+            label: "Select one or more related projects",
             data: transformUnrelatedProjects(unrelatedProjects),
           }}
           component={RenderMultiSelect}
