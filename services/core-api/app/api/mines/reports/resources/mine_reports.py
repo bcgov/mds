@@ -4,6 +4,7 @@ from flask import request, current_app
 from datetime import datetime
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
+from app.api.mines.reports.models.mine_report_contact import MineReportContact
 from app.extensions import api, db
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import requires_role_view_all, requires_any_of, requires_role_edit_report, EDIT_REPORT, MINESPACE_PROPONENT, VIEW_ALL, is_minespace_user
@@ -43,6 +44,9 @@ class MineReportListResource(Resource, UserMixin):
     parser.add_argument('mine_report_submissions', type=list, location='json')
     parser.add_argument('permit_condition_category_code', type=str, location='json')
     parser.add_argument('description_comment', type=str, location='json')
+    parser.add_argument('submitter_name', type=str, location='json')
+    parser.add_argument('submitter_email', type=str, location='json')
+    parser.add_argument('contacts', type=list, location='json')
 
     @api.marshal_with(MINE_REPORT_MODEL, envelope='records', code=200)
     @api.doc(description='returns the reports for a given mine.')
@@ -104,7 +108,15 @@ class MineReportListResource(Resource, UserMixin):
             submission_year=data['submission_year'],
             description_comment=data['description_comment'],
             permit_id=permit.permit_id if permit else None,
-            permit_condition_category_code=permit_condition_category_code)
+            permit_condition_category_code=permit_condition_category_code,
+            submitter_name=data['submitter_name'],
+            submitter_email=data['submitter_email'])
+
+        contacts = data.get('contacts')
+        if contacts:
+            mine_report_contacts = MineReportContact.create_from_list(contacts, mine_report.mine_report_id)
+            if mine_report_contacts:
+                mine_report.mine_report_contacts = mine_report_contacts
 
         submissions = data.get('mine_report_submissions')
         if submissions:

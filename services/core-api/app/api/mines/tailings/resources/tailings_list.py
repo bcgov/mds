@@ -152,6 +152,7 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
                         received_date=None,
                         submission_year=calculated_due_date.year - 1,
                         description_comment=None,
+                        submitter_name=None,
                         permit_id=None)
             except Exception as e:
                 db.session.rollback()

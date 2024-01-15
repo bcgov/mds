@@ -1,7 +1,9 @@
-import { Alert, Col, Row, Typography } from "antd";
+import { Alert, Button, Col, Row, Typography } from "antd";
 import React, { FC, ReactNode, useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Field, getFormValues, change } from "redux-form";
+import { useDispatch, useSelector } from "react-redux";
+import { arrayPush, change, Field, FieldArray, getFormValues } from "redux-form";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/pro-light-svg-icons";
 
 import {
   getDropdownMineReportCategoryOptions,
@@ -13,17 +15,61 @@ import { FORM } from "@mds/common/constants/forms";
 import { email, maxLength, required, yearNotInFuture } from "@mds/common/redux/utils/Validate";
 import ReportFilesTable from "./ReportFilesTable";
 import {
-  formatComplianceCodeValueOrLabel,
   createDropDownList,
+  formatComplianceCodeValueOrLabel,
   nullableStringSorter,
 } from "@mds/common/redux/utils/helpers";
 import RenderDate from "../forms/RenderDate";
 import RenderSelect from "../forms/RenderSelect";
 import FormWrapper from "../forms/FormWrapper";
 import RenderField from "../forms/RenderField";
-import { IMineReport } from "../..";
+import { IMineReport, IParty, IPartyAppt, MinePartyAppointmentTypeCodeEnum } from "../..";
 import RenderAutoSizeField from "../forms/RenderAutoSizeField";
 import { BaseViewInput } from "../forms/BaseInput";
+import {
+  fetchPartyById,
+  fetchPartyRelationships,
+} from "@mds/common/redux/actionCreators/partiesActionCreator";
+import { getParties, getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
+
+const RenderContacts: FC<any> = ({ fields }) => (
+  <div>
+    {fields.map((contact, index) => (
+      <Row key={contact.id} gutter={[16, 8]}>
+        <Col span={24}>
+          <Row>
+            <Typography.Title level={5}>Report Contact #{index + 1}</Typography.Title>
+            <Button
+              icon={<FontAwesomeIcon icon={faTrash} />}
+              type="text"
+              onClick={() => fields.remove(index)}
+            />
+          </Row>
+        </Col>
+        <Col span={12}>
+          <Field
+            name={`${contact}.name`}
+            component={RenderField}
+            label={`Contact Name`}
+            placeholder="Enter name"
+            required
+            validate={[required]}
+          />
+        </Col>
+        <Col span={12}>
+          <Field
+            name={`${contact}.email`}
+            component={RenderField}
+            label={`Contact Email`}
+            required
+            placeholder="Enter email"
+            validate={[email, required]}
+          />
+        </Col>
+      </Row>
+    ))}
+  </div>
+);
 
 interface ReportDetailsFormProps {
   isEditMode?: boolean;
@@ -42,6 +88,40 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   const formValues: IMineReport =
     useSelector((state) => getFormValues(FORM.VIEW_EDIT_REPORT)(state)) ?? {};
   const { mine_report_category = "", mine_report_definition_guid = "" } = formValues;
+  const [mineManager, setMineManager] = useState<IParty>();
+  const [mineManagerGuid, setMineManagerGuid] = useState<string>("");
+
+  const partyRelationships: IPartyAppt[] = useSelector((state) => getPartyRelationships(state));
+  const parties = useSelector((state) => getParties(state));
+
+  useEffect(() => {
+    if (!partyRelationships.length) {
+      // fetch all party relationships for the mine
+      dispatch(fetchPartyRelationships({ mine_guid: mineGuid }));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (partyRelationships) {
+      // Once the party relationships are fetched, find the mine manager
+      const currentMineManager = partyRelationships.find(
+        (relationship) =>
+          relationship.mine_party_appt_type_code === MinePartyAppointmentTypeCodeEnum.MMG
+      );
+      if (currentMineManager) {
+        // Since the party relationships don't contain the required party data, fetch the party
+        setMineManagerGuid(currentMineManager.party_guid);
+        dispatch(fetchPartyById(currentMineManager.party_guid));
+      }
+    }
+  }, [partyRelationships]);
+
+  useEffect(() => {
+    if (parties) {
+      // Once the mine manager is fetched, set the mine manager
+      setMineManager(parties[mineManagerGuid]);
+    }
+  }, [parties]);
 
   const [
     dropdownMineReportDefinitionOptionsFiltered,
@@ -195,22 +275,18 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               label="Report Title and Additional Comment"
               required
               props={{ maximumCharacters: 500, rows: 3 }}
-              placeholder="Include a precise and descriptive title to the report."
               component={RenderAutoSizeField}
               validate={[required, maxLength(500)]}
             />
+            <Typography.Text className="report-instructions">
+              Include a precise and descriptive title to the report.
+            </Typography.Text>
           </Col>
 
           <Col span={24}>
             <Typography.Title className="margin-large--top" level={3}>
               Report Information
             </Typography.Title>
-            <Alert
-              message=""
-              description={<b>This type of report submission will be posted online publicly.</b>}
-              type="warning"
-              showIcon
-            />
           </Col>
 
           <Col span={12}>
@@ -250,7 +326,11 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               component={RenderField}
               validate={[required]}
             />
-            {/*  TODO: "Your name is recorded for reference." */}
+            {isEditMode && (
+              <Typography.Text className="report-instructions">
+                Your name is recorded for reference
+              </Typography.Text>
+            )}
           </Col>
           <Col span={12}>
             <Field
@@ -261,43 +341,54 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               component={RenderField}
               validate={[email]}
             />
-            {/*  TODO: "By providing your email, you agree to receive notification of the report" */}
+            {isEditMode && (
+              <Typography.Text className="report-instructions">
+                By providing your email, you agree to receive notification of the report
+              </Typography.Text>
+            )}
           </Col>
           <Col span={24}>
-            <Alert
-              message=""
-              description={
-                <div>
-                  <Row>
-                    <Typography.Title level={5}>
-                      Your mine manager will be notified of this submission
-                    </Typography.Title>
-                  </Row>
-                  <Row>
-                    <Col span={12}>
-                      <Typography.Text>Mine Manager</Typography.Text>
-                      <Typography.Paragraph>Denise George</Typography.Paragraph>
-                    </Col>
-                    <Col span={12}>
-                      <Typography.Text>Mine Manager Email</Typography.Text>
-                      <Typography.Paragraph>Denise.George@gov.bc.ca</Typography.Paragraph>
-                    </Col>
-                    <Col span={24}>
-                      <Typography.Text>
-                        If this information is incorrect, please contact us.
-                      </Typography.Text>
-                    </Col>
-                  </Row>
-                </div>
-              }
-              type="info"
-            />
+            <Typography.Title className="margin-large--top" level={3}>
+              Contact Information
+            </Typography.Title>
+          </Col>
+          <Col span={24}>
+            <Typography.Paragraph>
+              The mine manager and additional contacts provided will be notified regarding this
+              report submission. If the mine manager information is incorrect, please{" "}
+              <a href={""}>contact us</a>.
+            </Typography.Paragraph>
+          </Col>
+          <Col span={12}>
+            <Typography.Paragraph strong>Mine Manager</Typography.Paragraph>
+            <Typography.Paragraph>{mineManager?.name ?? "-"}</Typography.Paragraph>
+          </Col>
+          <Col span={12}>
+            <Typography.Paragraph strong>Mine Manager Email</Typography.Paragraph>
+            <Typography.Paragraph>{mineManager?.email ?? "-"}</Typography.Paragraph>
+          </Col>
+          <Col span={24}>
+            <FieldArray name="contacts" component={RenderContacts} />
+          </Col>
+          <Col span={24}>
+            <Button
+              type="link"
+              onClick={() => dispatch(arrayPush(FORM.VIEW_EDIT_REPORT, "contacts", {}))}
+            >
+              + Add report contacts
+            </Button>
           </Col>
 
           <Col span={24}>
             <Typography.Title className="margin-large--top" level={3}>
               Report File(s)
             </Typography.Title>
+            <Alert
+              message=""
+              description={<b>This type of report submission will be posted online publicly.</b>}
+              type="warning"
+              showIcon
+            />
             {isEditMode && (
               <ReportSubmissions
                 mineGuid={mineGuid}
