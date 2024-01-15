@@ -57,6 +57,7 @@ SEE ALSO:
 */
 interface FormWrapperProps {
   name: string;
+  initialValues?: any;
   reduxFormConfig?: Partial<ConfigProps>;
   onSubmit: (values) => void | Promise<void>;
   children: any;
@@ -98,7 +99,13 @@ const FormWrapper: FC<FormWrapperProps & InjectedFormProps<any>> = ({
 
   return (
     <FormProvider value={providerValues}>
-      <Form layout="vertical" onFinish={handleSubmit} name={props.name} className={formClassName}>
+      <Form
+        layout="vertical"
+        onFinish={handleSubmit}
+        name={props.name}
+        className={formClassName}
+        initialValues={props.initialValues}
+      >
         {children}
       </Form>
     </FormProvider>
@@ -107,6 +114,7 @@ const FormWrapper: FC<FormWrapperProps & InjectedFormProps<any>> = ({
 
 const mapStateToProps = (_state, ownProps) => ({
   form: ownProps.name,
+  initialValues: ownProps.initialValues,
   ...ownProps.reduxFormConfig,
 });
 export default compose(connect(mapStateToProps), reduxForm({}))(FormWrapper as any) as FC<

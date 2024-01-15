@@ -30,10 +30,26 @@ interface ReportsTableProps {
   mineReports: IMineReport[];
   mineReportDefinitionHash: any;
   openEditReportModal: (event: React.MouseEvent, record: IMineReport) => void;
+  openReport: (record: IMineReport) => void;
   isLoaded: boolean;
 }
 
 const DEFAULT_PAGE_SIZE = 10;
+
+export const reportStatusSeverity = (status: MINE_REPORT_SUBMISSION_CODES) => {
+  switch (status) {
+    case MINE_REPORT_SUBMISSION_CODES.REQ:
+      return "processing";
+    case MINE_REPORT_SUBMISSION_CODES.ACC:
+      return "success";
+    case MINE_REPORT_SUBMISSION_CODES.REC:
+      return "warning";
+    case MINE_REPORT_SUBMISSION_CODES.NRQ:
+      return "default";
+    default:
+      return "default";
+  }
+};
 
 export const ReportsTable: FC<ReportsTableProps> = (props) => {
   const { isFeatureEnabled } = useFeatureFlag();
@@ -42,7 +58,9 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
     {
       key: "view",
       label: "View",
-      clickFunction: () => {},
+      clickFunction: (_event, record) => {
+        props.openReport(record);
+      },
       icon: <EyeOutlined />,
     },
   ];
@@ -106,21 +124,6 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
     },
   ];
 
-  const statusSeverity = (status: MINE_REPORT_SUBMISSION_CODES) => {
-    switch (status) {
-      case MINE_REPORT_SUBMISSION_CODES.REQ:
-        return "processing";
-      case MINE_REPORT_SUBMISSION_CODES.ACC:
-        return "success";
-      case MINE_REPORT_SUBMISSION_CODES.REC:
-        return "warning";
-      case MINE_REPORT_SUBMISSION_CODES.NRQ:
-        return "default";
-      default:
-        return "default";
-    }
-  };
-
   if (isFeatureEnabled(Feature.CODE_REQUIRED_REPORTS)) {
     columns = columns.filter((column) => !["", "Documents"].includes(column.title as string));
     const statusColumn = {
@@ -128,7 +131,7 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
       dataIndex: "status",
       sorter: (a, b) => a.status.localeCompare(b.status),
       render: (text: MINE_REPORT_SUBMISSION_CODES) => {
-        return <Badge status={statusSeverity(text)} text={MINE_REPORT_STATUS_HASH[text]} />;
+        return <Badge status={reportStatusSeverity(text)} text={MINE_REPORT_STATUS_HASH[text]} />;
       },
     };
 

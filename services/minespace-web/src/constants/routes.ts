@@ -1,7 +1,6 @@
 import React from "react";
 import queryString from "query-string";
 import ExplosivesPermit from "@/components/dashboard/mine/permits/ExplosivesPermit";
-import ReportSteps from "@mds/common/components/reports/ReportSteps";
 const DamsPage = React.lazy(() => import("@common/components/tailings/dam/DamsPage"));
 const InformationRequirementsTablePage = React.lazy(() =>
   import("@/components/pages/Project/InformationRequirementsTablePage")
@@ -31,6 +30,9 @@ const IncidentSuccessPage = React.lazy(() =>
   import("@/components/pages/Incidents/IncidentSuccessPage")
 );
 const UsersPage = React.lazy(() => import("@/components/pages/UsersPage"));
+
+const ReportPage = React.lazy(() => import("@/components/dashboard/mine/reports/ReportPage"));
+const ReportSteps = React.lazy(() => import("@mds/common/components/reports/ReportSteps"));
 
 export const HOME = {
   route: "/",
@@ -217,4 +219,11 @@ export const REPORTS_CREATE_NEW = {
   route: "/mines/:mineGuid/reports/new",
   dynamicRoute: (mineGuid) => `/mines/${mineGuid}/reports/new`,
   component: ReportSteps,
+};
+
+export const REPORT_VIEW_EDIT = {
+  route: "/mines/:mineGuid/reports/:reportGuid",
+  dynamicRoute: (mineGuid: string, reportGuid: string) =>
+    `/mines/${mineGuid}/reports/${reportGuid}`,
+  component: ReportPage,
 };

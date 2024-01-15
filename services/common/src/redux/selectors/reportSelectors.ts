@@ -5,6 +5,7 @@ export const {
   getReports,
   getReportsPageData,
   getMineReports,
+  getMineReportById,
   getMineReportComments,
 } = reportReducer;
 

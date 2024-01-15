@@ -21,7 +21,7 @@ import {
 } from "@mds/common/redux/utils/helpers";
 import RenderDate from "../forms/RenderDate";
 import RenderSelect from "../forms/RenderSelect";
-import FormWrapper from "../forms/FormWrapper";
+import FormWrapper, { FormConsumer } from "../forms/FormWrapper";
 import RenderField from "../forms/RenderField";
 import { IMineReport, IParty, IPartyAppt, MinePartyAppointmentTypeCodeEnum } from "../..";
 import RenderAutoSizeField from "../forms/RenderAutoSizeField";
@@ -33,46 +33,55 @@ import {
 import { getParties, getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
 
 const RenderContacts: FC<any> = ({ fields }) => (
-  <div>
-    {fields.map((contact, index) => (
-      <Row key={contact.id} gutter={[16, 8]}>
-        <Col span={24}>
-          <Row>
-            <Typography.Title level={5}>Report Contact #{index + 1}</Typography.Title>
-            <Button
-              icon={<FontAwesomeIcon icon={faTrash} />}
-              type="text"
-              onClick={() => fields.remove(index)}
-            />
-          </Row>
-        </Col>
-        <Col span={12}>
-          <Field
-            name={`${contact}.name`}
-            component={RenderField}
-            label={`Contact Name`}
-            placeholder="Enter name"
-            required
-            validate={[required]}
-          />
-        </Col>
-        <Col span={12}>
-          <Field
-            name={`${contact}.email`}
-            component={RenderField}
-            label={`Contact Email`}
-            required
-            placeholder="Enter email"
-            validate={[email, required]}
-          />
-        </Col>
-      </Row>
-    ))}
-  </div>
+  <FormConsumer>
+    {({ isEditMode }) => {
+      return (
+        <div>
+          {fields.map((contact, index) => (
+            <Row key={contact.id} gutter={[16, 8]}>
+              <Col span={24}>
+                <Row>
+                  <Typography.Title level={5}>Report Contact #{index + 1}</Typography.Title>
+                  {isEditMode && (
+                    <Button
+                      icon={<FontAwesomeIcon icon={faTrash} />}
+                      type="text"
+                      onClick={() => fields.remove(index)}
+                    />
+                  )}
+                </Row>
+              </Col>
+              <Col span={12}>
+                <Field
+                  name={`${contact}.name`}
+                  component={RenderField}
+                  label={`Contact Name`}
+                  placeholder="Enter name"
+                  required
+                  validate={[required]}
+                />
+              </Col>
+              <Col span={12}>
+                <Field
+                  name={`${contact}.email`}
+                  component={RenderField}
+                  label={`Contact Email`}
+                  required
+                  placeholder="Enter email"
+                  validate={[email, required]}
+                />
+              </Col>
+            </Row>
+          ))}
+        </div>
+      );
+    }}
+  </FormConsumer>
 );
 
 interface ReportDetailsFormProps {
   isEditMode?: boolean;
+  initialValues?: IMineReport;
   mineGuid: string;
   formButtons: ReactNode;
   handleSubmit: (values) => void;
@@ -80,6 +89,7 @@ interface ReportDetailsFormProps {
 
 const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   isEditMode = true,
+  initialValues,
   mineGuid,
   formButtons,
   handleSubmit,
@@ -194,21 +204,28 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
 
   return (
     <div>
-      <Alert
-        message=""
-        description={
-          <b>
-            Please submit only one report package per permit section. If multiple sections are
-            relevant, make separate submissions for each corresponding permit section.
-          </b>
-        }
-        type="warning"
-        showIcon
-        style={{ marginBottom: "32px" }}
-      />
+      {(isEditMode || !initialValues) && (
+        <Alert
+          message=""
+          description={
+            <b>
+              Please submit only one report package per permit section. If multiple sections are
+              relevant, make separate submissions for each corresponding permit section.
+            </b>
+          }
+          type="warning"
+          showIcon
+          style={{ marginBottom: "32px" }}
+        />
+      )}
       <Typography.Title level={3}>Report Type</Typography.Title>
 
-      <FormWrapper name={FORM.VIEW_EDIT_REPORT} onSubmit={handleSubmit} isEditMode={isEditMode}>
+      <FormWrapper
+        name={FORM.VIEW_EDIT_REPORT}
+        onSubmit={handleSubmit}
+        isEditMode={isEditMode}
+        initialValues={initialValues}
+      >
         <Row gutter={[16, 8]}>
           {/* TODO: this input is currently in the UI, and it controls the data for the next one
             but it is not intended to stay here! */}
@@ -246,9 +263,11 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
             {selectedReportCode ? (
               <BaseViewInput label="Report Code Requirements" value={selectedReportCode} />
             ) : (
-              <Typography.Paragraph>
-                Select the report type and name to view the required codes.
-              </Typography.Paragraph>
+              isEditMode && (
+                <Typography.Paragraph>
+                  Select the report type and name to view the required codes.
+                </Typography.Paragraph>
+              )
             )}
           </Col>
 
@@ -278,9 +297,11 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               component={RenderAutoSizeField}
               validate={[required, maxLength(500)]}
             />
-            <Typography.Text className="report-instructions">
-              Include a precise and descriptive title to the report.
-            </Typography.Text>
+            {isEditMode && (
+              <Typography.Text className="report-instructions">
+                Include a precise and descriptive title to the report.
+              </Typography.Text>
+            )}
           </Col>
 
           <Col span={24}>
@@ -371,12 +392,14 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
             <FieldArray name="contacts" component={RenderContacts} />
           </Col>
           <Col span={24}>
-            <Button
-              type="link"
-              onClick={() => dispatch(arrayPush(FORM.VIEW_EDIT_REPORT, "contacts", {}))}
-            >
-              + Add report contacts
-            </Button>
+            {isEditMode && (
+              <Button
+                type="link"
+                onClick={() => dispatch(arrayPush(FORM.VIEW_EDIT_REPORT, "contacts", {}))}
+              >
+                + Add report contacts
+              </Button>
+            )}
           </Col>
 
           <Col span={24}>
@@ -384,6 +407,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               Report File(s)
             </Typography.Title>
             <Alert
+              className="margin-large--bottom"
               message=""
               description={<b>This type of report submission will be posted online publicly.</b>}
               type="warning"
@@ -396,7 +420,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
                 updateMineReportSubmissions={updateMineReportSubmissions}
               />
             )}
-            <ReportFilesTable />
+            <ReportFilesTable report={formValues} />
           </Col>
         </Row>
         {formButtons}

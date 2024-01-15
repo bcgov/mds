@@ -105,3 +105,20 @@ export const updateMineReport = (mineGuid, mineReportGuid, payload) => (dispatch
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
+
+export const fetchMineReport = (mineGuid, mineReportGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.GET_MINE_REPORT));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(`${ENVIRONMENT.apiUrl}${API.MINE_REPORT(mineGuid, mineReportGuid)}`, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_MINE_REPORT));
+      dispatch(mineReportActions.storeMineReport(response.data));
+      return response.data;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.GET_MINE_REPORT));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
+};

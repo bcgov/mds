@@ -385,12 +385,30 @@ exports[`PrivateRoutes  renders properly 1`] = `
         Object {
           "$$typeof": Symbol(react.memo),
           "WrappedComponent": [Function],
+          "_ctor": [Function],
+          "_result": null,
+          "_status": -1,
           "compare": null,
           "displayName": "Connect(authenticationGuard)",
           "type": [Function],
         }
       }
       path="/mines/:mineGuid/reports/new"
+    />
+    <Route
+      component={
+        Object {
+          "$$typeof": Symbol(react.memo),
+          "WrappedComponent": [Function],
+          "_ctor": [Function],
+          "_result": null,
+          "_status": -1,
+          "compare": null,
+          "displayName": "Connect(authenticationGuard)",
+          "type": [Function],
+        }
+      }
+      path="/mines/:mineGuid/reports/:reportGuid"
     />
     <Route
       render={[Function]}

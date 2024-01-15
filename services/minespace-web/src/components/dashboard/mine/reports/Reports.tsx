@@ -14,7 +14,7 @@ import ReportsTable from "@/components/dashboard/mine/reports/ReportsTable";
 import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { IMine, IMineReport, Feature } from "@mds/common";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import * as routes from "@/constants/routes";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 
@@ -24,6 +24,7 @@ interface ReportsProps {
 
 export const Reports: FC<ReportsProps> = ({ mine, ...props }) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { isFeatureEnabled } = useFeatureFlag();
 
   const mineReports: IMineReport[] = useSelector(getMineReports);
@@ -84,6 +85,12 @@ export const Reports: FC<ReportsProps> = ({ mine, ...props }) => {
     await dispatch(updateMineReport(mine.mine_guid, report.mine_report_guid, payload));
     await dispatch(closeModal());
     return dispatch(fetchMineReports(mine.mine_guid));
+  };
+
+  const openReport = (reportRecord: IMineReport) => {
+    history.push(
+      routes.REPORT_VIEW_EDIT.dynamicRoute(mine.mine_guid, reportRecord.mine_report_guid)
+    );
   };
 
   const openAddReportModal = (event) => {
@@ -163,6 +170,7 @@ export const Reports: FC<ReportsProps> = ({ mine, ...props }) => {
         <Row gutter={[16, 32]}>
           <Col span={24}>
             <ReportsTable
+              openReport={openReport}
               openEditReportModal={openEditReportModal}
               mineReports={mineReports}
               isLoaded={isLoaded}

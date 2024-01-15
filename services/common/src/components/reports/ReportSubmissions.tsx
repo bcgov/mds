@@ -88,7 +88,7 @@ export const ReportSubmissions = (props) => {
       )}
       <Field
         id="ReportFileUpload"
-        name="ReportFileUpload"
+        name="documents"
         label="Upload Files"
         component={RenderFileUpload}
         // TODO:

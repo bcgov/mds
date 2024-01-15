@@ -14,4 +14,6 @@ export interface IMineReport {
   mine_report_submissions: IMineReportSubmission[];
   mine_guid: string;
   mine_name: string;
+  submitter_name: string;
+  submitter_email: string;
 }

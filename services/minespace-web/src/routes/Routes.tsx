@@ -119,6 +119,10 @@ const Routes = () => (
         path={routes.REPORTS_CREATE_NEW.route}
         component={AuthenticationGuard()(routes.REPORTS_CREATE_NEW.component)}
       />
+      <Route
+        path={routes.REPORT_VIEW_EDIT.route}
+        component={AuthenticationGuard()(routes.REPORT_VIEW_EDIT.component)}
+      />
       {/* 404 - PAGE NOT FOUND */}
       <Route
         render={() => (

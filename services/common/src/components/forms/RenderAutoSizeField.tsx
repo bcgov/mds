@@ -60,21 +60,23 @@ const RenderAutoSizeField: FC<AutoSizeProps> = ({
                 (props.meta.warning && <span>{props.meta.warning}</span>))
             }
           >
-            <Input.TextArea
-              disabled={disabled}
-              id={props.id}
-              {...props.input}
-              autoSize={{ minRows: minRows }}
-              placeholder={props.placeholder}
-              onChange={handleTextAreaChange}
-              value={inputValue}
-            />
-            {maximumCharacters > 0 && (
-              <Row justify="space-between">
-                <span>{`Maximum ${maximumCharacters} characters`}</span>
-                <span className="flex-end">{`${remainingChars} / ${maximumCharacters}`}</span>
-              </Row>
-            )}
+            <>
+              <Input.TextArea
+                disabled={disabled}
+                id={props.id}
+                {...props.input}
+                autoSize={{ minRows: minRows }}
+                placeholder={props.placeholder}
+                onChange={handleTextAreaChange}
+                value={inputValue}
+              />
+              {maximumCharacters > 0 && (
+                <Row justify="space-between">
+                  <span>{`Maximum ${maximumCharacters} characters`}</span>
+                  <span className="flex-end">{`${remainingChars} / ${maximumCharacters}`}</span>
+                </Row>
+              )}
+            </>
           </Form.Item>
         );
       }}
