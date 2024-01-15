@@ -108,7 +108,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
         (relationship) =>
           relationship.mine_party_appt_type_code === MinePartyAppointmentTypeCodeEnum.MMG
       );
-      if (mineManager) {
+      if (currentMineManager) {
         // Since the party relationships don't contain the required party data, fetch the party
         setMineManagerGuid(currentMineManager.party_guid);
         dispatch(fetchPartyById(currentMineManager.party_guid));
