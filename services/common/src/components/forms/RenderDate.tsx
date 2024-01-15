@@ -49,11 +49,11 @@ const RenderDate: FC<DateInputProps> = ({
 
         // this is to deal with a bug that surfaces with antd/moment/initialValues.
         // basically this issue: https://stackoverflow.com/questions/64527820/antd-datepicker-date-clone-date-load-is-not-a-function
-        const getMomentValue = (value) => {
-          if (!value) {
+        const getMomentValue = () => {
+          if (!input.value) {
             return null;
           }
-          const momentValue = yearMode ? moment(`${value}-01-01`) : moment(value);
+          const momentValue = yearMode ? moment(`${input.value}-01-01`) : moment(input.value);
           return { value: momentValue };
         };
 
@@ -81,7 +81,6 @@ const RenderDate: FC<DateInputProps> = ({
               onChange={(date, dateString) => {
                 input.onChange(dateString || null);
               }}
-              value={input.value ? moment(input.value) : null}
               disabledDate={!showTime && disabledDate}
               {...(!showTime && disabledDate)}
               {...extraProps}

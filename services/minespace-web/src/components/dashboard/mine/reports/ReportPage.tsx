@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
+import { getFormSubmitErrors, getFormValues, submit } from "redux-form";
 
 import { Button, Col, Row, Typography } from "antd";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 
+import { FORM } from "@mds/common/constants/forms";
 import ReportDetailsForm from "@mds/common/components/reports/ReportDetailsForm";
 import { fetchMineReport } from "@mds/common/redux/actionCreators/reportActionCreator";
 import { getMineReportById } from "@mds/common/redux/reducers/reportReducer";
@@ -23,6 +25,10 @@ const ReportPage = () => {
   const [loaded, setIsLoaded] = useState(mineReport && mine);
   const [isEditMode, setIsEditMode] = useState(false);
 
+  // get form data so we can submit it outside of the form
+  const formErrors = useSelector(getFormSubmitErrors(FORM.VIEW_EDIT_REPORT));
+  const formValues = useSelector(getFormValues(FORM.VIEW_EDIT_REPORT));
+
   useEffect(() => {
     if (!mine || mine.mine_guid !== mineGuid) {
       dispatch(fetchMineRecordById(mineGuid));
@@ -32,8 +38,8 @@ const ReportPage = () => {
   useEffect(() => {
     if (
       !mineReport ||
-      mineReport.mine_guid !== mineGuid ||
-      mineReport.mine_report_guid !== reportGuid
+      mineReport.mine_report_guid !== reportGuid ||
+      mineReport.mine_guid !== mineGuid
     ) {
       dispatch(fetchMineReport(mineGuid, reportGuid));
     }
@@ -80,8 +86,14 @@ const ReportPage = () => {
     console.log(values);
   };
 
+  const handleOtherSubmitButton = () => {
+    dispatch(submit(FORM.VIEW_EDIT_REPORT));
+    if (!formErrors) {
+      handleUpdateReport(formValues);
+    }
+  };
+
   const transformedReportData = transformData(mineReport);
-  console.log(transformedReportData);
   return (
     (loaded && (
       <div>
@@ -105,16 +117,13 @@ const ReportPage = () => {
               Edit Report
             </Button>
           ) : (
-            <Button htmlType="submit" type="primary">
+            <Button type="primary" onClick={handleOtherSubmitButton}>
               Save Changes
             </Button>
           )}
-          <Button onClick={() => setIsEditMode(!isEditMode)} type="primary">
-            Toggle edit
-          </Button>
         </Row>
 
-        {transformedReportData.status && (
+        {!isEditMode && transformedReportData?.status && (
           <Callout
             title={`Submission ${transformedReportData.status}`}
             message={

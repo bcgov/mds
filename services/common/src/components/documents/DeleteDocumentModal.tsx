@@ -1,10 +1,11 @@
-import React, { FC, FunctionComponent, ReactElement } from "react";
+import React, { FC, FunctionComponent } from "react";
 
 import { Alert, Button, Form, Typography } from "antd";
 import { MineDocument } from "@mds/common/models/documents/document";
 import DocumentTableProps from "@mds/common/interfaces/document/documentTableProps.interface";
 
 interface DeleteDocumentModalProps {
+  // TODO: DocumentTable is in common now. Use import instead of prop.
   DocumentTable: FunctionComponent<DocumentTableProps>;
   documents: MineDocument[];
   handleSubmit(documents: MineDocument[]): Promise<void>;
