@@ -5,6 +5,7 @@ import * as Mocks from "@/tests/mocks/dataMocks";
 const baseExpectedValue = {
   reports: [],
   reportsPageData: {},
+  mineReportGuid: "",
   mineReports: [],
   reportComments: [],
 };
