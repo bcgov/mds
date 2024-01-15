@@ -45,22 +45,22 @@ const RenderAutoSizeField: FC<AutoSizeProps> = ({
           return <BaseViewInput value={props.input.value} label={label} />;
         }
         return (
-          <>
-            <Form.Item
-              name={props.input.name}
-              required={required}
-              label={getFormItemLabel(label, required)}
-              validateStatus={
-                props.meta.touched
-                  ? (props.meta.error && "error") || (props.meta.warning && "warning")
-                  : ""
-              }
-              help={
-                props.meta.touched &&
-                ((props.meta.error && <span>{props.meta.error}</span>) ||
-                  (props.meta.warning && <span>{props.meta.warning}</span>))
-              }
-            >
+          <Form.Item
+            name={props.input.name}
+            required={required}
+            label={getFormItemLabel(label, required)}
+            validateStatus={
+              props.meta.touched
+                ? (props.meta.error && "error") || (props.meta.warning && "warning")
+                : ""
+            }
+            help={
+              props.meta.touched &&
+              ((props.meta.error && <span>{props.meta.error}</span>) ||
+                (props.meta.warning && <span>{props.meta.warning}</span>))
+            }
+          >
+            <>
               <Input.TextArea
                 disabled={disabled}
                 id={props.id}
@@ -70,14 +70,14 @@ const RenderAutoSizeField: FC<AutoSizeProps> = ({
                 onChange={handleTextAreaChange}
                 value={inputValue}
               />
-            </Form.Item>
-            {maximumCharacters > 0 && (
-              <Row justify="space-between">
-                <span>{`Maximum ${maximumCharacters} characters`}</span>
-                <span className="flex-end">{`${remainingChars} / ${maximumCharacters}`}</span>
-              </Row>
-            )}
-          </>
+              {maximumCharacters > 0 && (
+                <Row justify="space-between">
+                  <span>{`Maximum ${maximumCharacters} characters`}</span>
+                  <span className="flex-end">{`${remainingChars} / ${maximumCharacters}`}</span>
+                </Row>
+              )}
+            </>
+          </Form.Item>
         );
       }}
     </FormConsumer>

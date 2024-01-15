@@ -340,12 +340,23 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
                   class="ant-form-item-control-input-content"
                 >
                   <textarea
-                    aria-required="true"
                     class="ant-input"
                     id="description_comment"
                     name="description_comment"
                     style="height: 0px; resize: none; min-height: -12px;"
                   />
+                  <div
+                    class="ant-row ant-row-space-between"
+                  >
+                    <span>
+                      Maximum 500 characters
+                    </span>
+                    <span
+                      class="flex-end"
+                    >
+                      500 / 500
+                    </span>
+                  </div>
                 </div>
               </div>
               <div
@@ -363,18 +374,6 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
               </div>
             </div>
           </div>
-        </div>
-        <div
-          class="ant-row ant-row-space-between"
-        >
-          <span>
-            Maximum 500 characters
-          </span>
-          <span
-            class="flex-end"
-          >
-            500 / 500
-          </span>
         </div>
         <span
           class="ant-typography report-instructions"
