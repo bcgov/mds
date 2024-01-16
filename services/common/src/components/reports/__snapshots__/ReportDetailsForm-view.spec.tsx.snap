@@ -209,14 +209,7 @@ exports[`ReportDetailsForm renders view mode properly 1`] = `
         <div
           class="ant-typography"
         >
-          The mine manager and additional contacts provided will be notified regarding this report submission. If the mine manager information is incorrect, please
-           
-          <a
-            href="mailto:mds@gov.bc.ca"
-          >
-            contact us
-          </a>
-          .
+          The mine manager and additional contacts provided will be notified regarding this report submission. If the mine manager information is incorrect, please contact your Records Technician or Mines Authorization Analyst
         </div>
       </div>
       <div
