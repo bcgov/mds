@@ -23,13 +23,7 @@ import RenderDate from "../forms/RenderDate";
 import RenderSelect from "../forms/RenderSelect";
 import FormWrapper, { FormConsumer } from "../forms/FormWrapper";
 import RenderField from "../forms/RenderField";
-import {
-  IMineReport,
-  IParty,
-  IPartyAppt,
-  MDS_EMAIL,
-  MinePartyAppointmentTypeCodeEnum,
-} from "../..";
+import { IMineReport, IParty, IPartyAppt, MinePartyAppointmentTypeCodeEnum } from "../..";
 import RenderAutoSizeField from "../forms/RenderAutoSizeField";
 import { BaseViewInput } from "../forms/BaseInput";
 import {
@@ -382,8 +376,8 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
           <Col span={24}>
             <Typography.Paragraph>
               The mine manager and additional contacts provided will be notified regarding this
-              report submission. If the mine manager information is incorrect, please{" "}
-              <a href={`mailto:${MDS_EMAIL}`}>contact us</a>.
+              report submission. If the mine manager information is incorrect, please contact your
+              Records Technician or Mines Authorization Analyst
             </Typography.Paragraph>
           </Col>
           <Col span={12}>
