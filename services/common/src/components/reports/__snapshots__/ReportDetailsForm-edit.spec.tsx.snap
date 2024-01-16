@@ -724,7 +724,7 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
           The mine manager and additional contacts provided will be notified regarding this report submission. If the mine manager information is incorrect, please
            
           <a
-            href=""
+            href="mailto:mds@gov.bc.ca"
           >
             contact us
           </a>
