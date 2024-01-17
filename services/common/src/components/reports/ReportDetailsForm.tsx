@@ -138,6 +138,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
     setDropdownMineReportDefinitionOptionsFiltered,
   ] = useState([]);
 
+  const [mineReport, setMineReport] = useState<IMineReport | null>(null);
   const [mineReportSubmissions, setMineReportSubmissions] = useState([]);
 
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -199,6 +200,14 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   }, [mine_report_definition_guid]);
 
   const updateMineReportSubmissions = (updatedSubmissions) => {
+    setMineReport((prevState) => {
+      const updatedMineReport: IMineReport = { ...(prevState || null) };
+      updatedMineReport.mine_report_submissions = [
+        ...(prevState?.mine_report_submissions || []),
+        ...updatedSubmissions,
+      ];
+      return updatedMineReport;
+    });
     setMineReportSubmissions(updatedSubmissions);
   };
 
@@ -420,7 +429,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
                 updateMineReportSubmissions={updateMineReportSubmissions}
               />
             )}
-            <ReportFilesTable report={formValues} />
+            <ReportFilesTable report={mineReport} />
           </Col>
         </Row>
         {formButtons}
