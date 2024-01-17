@@ -336,11 +336,11 @@ export const formatComplianceCodeValueOrLabel = (code, showDescription) => {
 };
 
 export const formatComplianceCodeReportName = (report: IMineReportDefinition) => {
-  const { section, sub_section, paragraph, sub_paragraph } = report?.compliance_articles[0] ?? {};
+  const { section, sub_section, paragraph, sub_paragraph } = report?.compliance_articles[0];
   const formattedSubSection = sub_section ? `.${sub_section}` : "";
   const formattedParagraph = paragraph ? `.${paragraph}` : "";
   const formattedSubParagraph = sub_paragraph !== null ? `.${sub_paragraph}` : "";
-  const formattedReportName = report?.report_name ? ` - ${report.report_name}` : "";
+  const formattedReportName = ` - ${report.report_name}`;
 
   return `${section}${formattedSubSection}${formattedParagraph}${formattedSubParagraph}${formattedReportName}`;
 };
