@@ -182,7 +182,7 @@ export const DocumentTable: FC<DocumentTableProps> = ({
       label: FileOperations.View,
       icon: <FileOutlined />,
       clickFunction: (_event, record: MineDocument) =>
-        dispatch(openDocument(record.document_manager_guid, record.mine_document_guid)),
+        dispatch(openDocument(record.document_manager_guid, record.document_name)),
     },
     {
       key: "download",

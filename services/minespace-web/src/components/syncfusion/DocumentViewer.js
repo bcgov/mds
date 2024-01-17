@@ -5,7 +5,10 @@ import PropTypes from "prop-types";
 import { ENVIRONMENT } from "@mds/common";
 import { createRequestHeader } from "@common/utils/RequestHeaders";
 import { Modal, Skeleton } from "antd";
-import { closeDocumentViewer, openDocumentViewer } from "@mds/common/redux/actions/documentViewerActions";
+import {
+  closeDocumentViewer,
+  openDocumentViewer,
+} from "@mds/common/redux/actions/documentViewerActions";
 import {
   getDocumentPath,
   getDocumentName,
@@ -113,10 +116,10 @@ export class DocumentViewer extends Component {
         >
           <Suspense fallback={<Skeleton />}>
             <PdfViewer
-              serviceUrl={this.pdfViewerServiceUrl}
+              pdfViewerServiceUrl={this.pdfViewerServiceUrl}
               documentPath={this.props.documentPath}
-              ajaxRequestSettings={ajaxRequestSettings}>
-            </PdfViewer>
+              ajaxRequestSettings={ajaxRequestSettings}
+            ></PdfViewer>
           </Suspense>
         </Modal>
       </>
