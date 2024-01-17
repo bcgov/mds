@@ -25,17 +25,17 @@ exports[`ReportDetailsForm renders view mode properly 1`] = `
           <div
             class="ant-typography view-item-label"
           >
-            Report Type
+            Report Name
           </div>
           <div
             class="ant-typography view-item-value"
           >
-            
+            1.9.3 - OHSC Annual Report
           </div>
         </div>
       </div>
       <div
-        class="ant-col ant-col-12"
+        class="ant-col ant-col-24"
         style="padding: 4px 8px 4px 8px;"
       >
         <div
@@ -44,19 +44,15 @@ exports[`ReportDetailsForm renders view mode properly 1`] = `
           <div
             class="ant-typography view-item-label"
           >
-            Report Name
+            Report Code Requirements
           </div>
           <div
             class="ant-typography view-item-value"
           >
-            
+            1.9.3 - OHSC Annual Report
           </div>
         </div>
       </div>
-      <div
-        class="ant-col ant-col-24"
-        style="padding: 4px 8px 4px 8px;"
-      />
       <div
         class="ant-col ant-col-24"
         style="padding: 4px 8px 4px 8px;"
@@ -75,13 +71,14 @@ exports[`ReportDetailsForm renders view mode properly 1`] = `
                 You are submitting:
               </b>
               <br />
-              <b />
+              <b>
+                1.9.3 - OHSC Annual Report
+              </b>
                [TODO: plain language on what it is]
               <br />
-              <b />
-               [TODO: plain language on what it is]
-              <br />
-              <b />
+              <b>
+                1.9.3 - OHSC Annual Report
+              </b>
                [TODO: plain language on what it is]
             </div>
           </div>

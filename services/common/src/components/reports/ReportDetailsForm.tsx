@@ -5,25 +5,24 @@ import { arrayPush, change, Field, FieldArray, getFormValues } from "redux-form"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/pro-light-svg-icons";
 
-import {
-  getDropdownMineReportCategoryOptions,
-  getMineReportDefinitionOptions,
-} from "@mds/common/redux/selectors/staticContentSelectors";
+import { getMineReportDefinitionOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import { ReportSubmissions } from "@mds/common/components/reports/ReportSubmissions";
 
 import { FORM } from "@mds/common/constants/forms";
 import { email, maxLength, required, yearNotInFuture } from "@mds/common/redux/utils/Validate";
 import ReportFilesTable from "./ReportFilesTable";
-import {
-  createDropDownList,
-  formatComplianceCodeValueOrLabel,
-  nullableStringSorter,
-} from "@mds/common/redux/utils/helpers";
+import { formatComplianceCodeReportName } from "@mds/common/redux/utils/helpers";
 import RenderDate from "../forms/RenderDate";
 import RenderSelect from "../forms/RenderSelect";
 import FormWrapper, { FormConsumer } from "../forms/FormWrapper";
 import RenderField from "../forms/RenderField";
-import { IMineReport, IParty, IPartyAppt, MinePartyAppointmentTypeCodeEnum } from "../..";
+import {
+  IMineReport,
+  IMineReportDefinition,
+  IParty,
+  IPartyAppt,
+  MinePartyAppointmentTypeCodeEnum,
+} from "../..";
 import RenderAutoSizeField from "../forms/RenderAutoSizeField";
 import { BaseViewInput } from "../forms/BaseInput";
 import {
@@ -31,6 +30,7 @@ import {
   fetchPartyRelationships,
 } from "@mds/common/redux/actionCreators/partiesActionCreator";
 import { getParties, getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
+import { uniqBy } from "lodash";
 
 const RenderContacts: FC<any> = ({ fields }) => (
   <FormConsumer>
@@ -85,6 +85,7 @@ interface ReportDetailsFormProps {
   mineGuid: string;
   formButtons: ReactNode;
   handleSubmit: (values) => void;
+  currentReportDefinition?: IMineReportDefinition;
 }
 
 const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
@@ -93,6 +94,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   mineGuid,
   formButtons,
   handleSubmit,
+  currentReportDefinition,
 }) => {
   const dispatch = useDispatch();
   const formValues: IMineReport =
@@ -100,9 +102,14 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   const { mine_report_category = "", mine_report_definition_guid = "" } = formValues;
   const [mineManager, setMineManager] = useState<IParty>();
   const [mineManagerGuid, setMineManagerGuid] = useState<string>("");
+  const [selectedReportName, setSelectedReportName] = useState("");
+  const [selectedReportCode, setSelectedReportCode] = useState("");
+  const [formattedMineReportDefinitionOptions, setFormatMineReportDefinitionOptions] = useState([]);
+  const [mineReportSubmissions, setMineReportSubmissions] = useState([]);
 
   const partyRelationships: IPartyAppt[] = useSelector((state) => getPartyRelationships(state));
   const parties = useSelector((state) => getParties(state));
+  const mineReportDefinitionOptions = useSelector(getMineReportDefinitionOptions);
 
   useEffect(() => {
     if (!partyRelationships.length) {
@@ -110,6 +117,18 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
       dispatch(fetchPartyRelationships({ mine_guid: mineGuid }));
     }
   }, []);
+
+  useEffect(() => {
+    if (currentReportDefinition) {
+      dispatch(
+        change(
+          FORM.VIEW_EDIT_REPORT,
+          "mine_report_definition_guid",
+          currentReportDefinition.mine_report_definition_guid
+        )
+      );
+    }
+  }, [currentReportDefinition]);
 
   useEffect(() => {
     if (partyRelationships) {
@@ -133,55 +152,24 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
     }
   }, [parties]);
 
-  const [
-    dropdownMineReportDefinitionOptionsFiltered,
-    setDropdownMineReportDefinitionOptionsFiltered,
-  ] = useState([]);
-
-  const [mineReportSubmissions, setMineReportSubmissions] = useState([]);
-
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedReportName, setSelectedReportName] = useState("");
-  const [selectedReportCode, setSelectedReportCode] = useState("");
-
-  const dropdownMineReportCategoryOptions = useSelector(getDropdownMineReportCategoryOptions);
-  const mineReportDefinitionOptions = useSelector(getMineReportDefinitionOptions);
-
   useEffect(() => {
-    // update "Report Name" options when "Report Type" changes
-    const newCategory = dropdownMineReportCategoryOptions.find(
-      (reportCategory) => reportCategory.value === mine_report_category
-    );
-
-    if (newCategory) {
-      setSelectedCategory(newCategory.label);
-
-      const newReportDefinitionOptionsFiltered = mineReportDefinitionOptions
-        .filter((rd) => rd.categories.some((c) => c.mine_report_category === mine_report_category))
-        .sort(nullableStringSorter);
-
-      const newDropdownReportDefinitionOptions = createDropDownList(
-        newReportDefinitionOptionsFiltered,
-        "report_name",
-        "mine_report_definition_guid"
-      );
-      setDropdownMineReportDefinitionOptionsFiltered(newDropdownReportDefinitionOptions);
-    } else {
-      setSelectedCategory("");
-      setDropdownMineReportDefinitionOptionsFiltered([]);
-      // KNOWN BUG IN ANTD: when the data options change in Select,
-      // and there is no longer an option to match the value, Select does not update the label.
-      // see: https://github.com/ant-design/ant-design/issues/21161
-      // I attempted the "key" trick but this just shows the guid instead of label
-      dispatch(change(FORM.VIEW_EDIT_REPORT, "mine_report_definition_guid", ""));
-    }
-  }, [mine_report_category]);
+    // Format the mine report definition options for the search bar
+    const newFormattedMineReportDefinitionOptions = mineReportDefinitionOptions
+      .map((report) => {
+        return {
+          label: formatComplianceCodeReportName(report),
+          value: report.mine_report_definition_guid,
+        };
+      })
+      .sort((a, b) => a.label.localeCompare(b.label));
+    setFormatMineReportDefinitionOptions(uniqBy(newFormattedMineReportDefinitionOptions, "value"));
+  }, [mineReportDefinitionOptions]);
 
   useEffect(() => {
     // update compliance article options when "Report Name" changes
     if (mine_report_definition_guid) {
       const newReportName =
-        dropdownMineReportDefinitionOptionsFiltered.find(
+        formattedMineReportDefinitionOptions?.find(
           (opt) => opt.value === mine_report_definition_guid
         )?.label ?? "";
       setSelectedReportName(newReportName);
@@ -190,8 +178,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
         return opt.mine_report_definition_guid === mine_report_definition_guid;
       });
 
-      const newSelectedCode = newReportComplianceArticle?.compliance_articles[0] ?? {};
-      setSelectedReportCode(formatComplianceCodeValueOrLabel(newSelectedCode, true));
+      setSelectedReportCode(formatComplianceCodeReportName(newReportComplianceArticle));
     } else {
       setSelectedReportName("");
       setSelectedReportCode("");
@@ -227,23 +214,6 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
         initialValues={initialValues}
       >
         <Row gutter={[16, 8]}>
-          {/* TODO: this input is currently in the UI, and it controls the data for the next one
-            but it is not intended to stay here! */}
-          <Col span={12}>
-            <Field
-              component={RenderSelect}
-              id="mine_report_category"
-              name="mine_report_category"
-              label="Report Type"
-              props={{
-                data: dropdownMineReportCategoryOptions,
-              }}
-              required
-              placeholder="Select"
-              validate={[required]}
-            />
-          </Col>
-
           <Col span={12}>
             <Field
               component={RenderSelect}
@@ -251,7 +221,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               name="mine_report_definition_guid"
               label="Report Name"
               props={{
-                data: dropdownMineReportDefinitionOptionsFiltered,
+                data: formattedMineReportDefinitionOptions,
               }}
               required
               placeholder={mine_report_category ? "Select" : "Select a report type"}
@@ -276,8 +246,6 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               <Row>
                 <Col xs={24} md={18}>
                   <b>You are submitting:</b>
-                  <br />
-                  <b>{selectedCategory}</b> [TODO: plain language on what it is]
                   <br />
                   <b>{selectedReportName}</b> [TODO: plain language on what it is]
                   <br />
