@@ -15,7 +15,7 @@ export * from "./incidents/mineIncidentDocument.interface";
 export * from "./party";
 export * from "./tailingsStorageFacility";
 export * from "./document";
-export * from "./mine";
+export * from "./reports";
 export * from "./NoWDocument.interface";
 export * from "./NoWImportedApplicationDocument.interface";
 export * from "./permits";
