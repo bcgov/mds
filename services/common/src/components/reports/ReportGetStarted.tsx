@@ -36,6 +36,12 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
     setFormattedMineReportDefinitionOptions(
       uniqBy(newFormattedMineReportDefinitionOptions, "value")
     );
+
+    // Filter out common reports and sort alphabetically
+    const commonReportDefinitions = mineReportDefinitionOptions
+      .filter((report) => report.is_common)
+      .sort((a, b) => a.report_name.localeCompare(b.report_name));
+    setCommonReportDefinitionOptions(commonReportDefinitions);
   }, [mineReportDefinitionOptions]);
 
   const handleChange = (newValue: string) => {
@@ -45,14 +51,6 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
     );
     setSelectedReportDefinition(newReport);
   };
-
-  useEffect(() => {
-    // Filter out common reports and sort alphabetically
-    const commonReportDefinitions = mineReportDefinitionOptions
-      .filter((report) => report.is_common)
-      .sort((a, b) => a.report_name.localeCompare(b.report_name));
-    setCommonReportDefinitionOptions(commonReportDefinitions);
-  }, [mineReportDefinitionOptions]);
 
   return (
     <div>
