@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Row, Steps, Typography } from "antd";
 import { Link, useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { IMine } from "@mds/common/interfaces";
+import { IMine, IMineReportDefinition } from "@mds/common/interfaces";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import ReportGetStarted from "@mds/common/components/reports/ReportGetStarted";
@@ -17,6 +17,9 @@ const ReportSteps = () => {
 
   const { mineGuid } = useParams<{ mineGuid: string }>();
   const [currentStep, setCurrentStep] = useState(0);
+  const [selectedReportDefinition, setSelectedReportDefinition] = useState<IMineReportDefinition>(
+    null
+  );
 
   const mine: IMine = useSelector((state) => getMineById(state, mineGuid));
 
@@ -62,7 +65,10 @@ const ReportSteps = () => {
       case 0:
         return (
           <div>
-            <ReportGetStarted />
+            <ReportGetStarted
+              setSelectedReportDefinition={setSelectedReportDefinition}
+              selectedReportDefinition={selectedReportDefinition}
+            />
             {renderStepButtons({
               nextButtonTitle: "Add Report Details",
               previousButtonTitle: "Cancel",
@@ -76,6 +82,7 @@ const ReportSteps = () => {
           <div>
             <ReportDetailsForm
               mineGuid={mineGuid}
+              currentReportDefinition={selectedReportDefinition}
               handleSubmit={() => setCurrentStep(currentStep + 1)}
               formButtons={renderStepButtons({
                 nextButtonTitle: "Review & Submit",

@@ -9,15 +9,16 @@ import { createNumberMask } from "redux-form-input-masks";
 import moment from "moment-timezone";
 import { reset } from "redux-form";
 import { ItemMap } from "@mds/common";
+import { IMineReportDefinition } from "@mds/common/interfaces";
 
 /**
  * Helper function to clear redux form after submission
  *
  * Usage:
  *  export default (reduxForm({
-    form: formName,
-    onSubmitSuccess: resetForm(formName),
-  })(Component)
+ form: formName,
+ onSubmitSuccess: resetForm(formName),
+ })(Component)
  );
  *
  */
@@ -332,6 +333,16 @@ export const formatComplianceCodeValueOrLabel = (code, showDescription) => {
   const formattedDescription = showDescription ? ` - ${description}` : "";
 
   return `${section}${formattedSubSection}${formattedParagraph}${formattedSubParagraph}${formattedDescription}`;
+};
+
+export const formatComplianceCodeReportName = (report: IMineReportDefinition) => {
+  const { section, sub_section, paragraph, sub_paragraph } = report.compliance_articles[0];
+  const formattedSubSection = sub_section ? `.${sub_section}` : "";
+  const formattedParagraph = paragraph ? `.${paragraph}` : "";
+  const formattedSubParagraph = sub_paragraph !== null ? `.${sub_paragraph}` : "";
+  const formattedReportName = ` - ${report.report_name}`;
+
+  return `${section}${formattedSubSection}${formattedParagraph}${formattedSubParagraph}${formattedReportName}`;
 };
 
 // function to flatten an object for nested items in redux form

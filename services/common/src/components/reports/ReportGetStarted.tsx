@@ -1,52 +1,59 @@
-import { Col, Form, Input, Row, Typography } from "antd";
-import React from "react";
+import { Button, Col, Form, Row, Select, Typography } from "antd";
+import React, { FC, useEffect, useState } from "react";
 import ArrowRightOutlined from "@ant-design/icons/ArrowRightOutlined";
-import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { IMineReportDefinition } from "@mds/common/interfaces";
+import { getMineReportDefinitionOptions } from "@mds/common/redux/reducers/staticContentReducer";
+import { formatComplianceCodeReportName } from "@mds/common/redux/utils/helpers";
+import { uniqBy } from "lodash";
 
-const stubbedCommonReports = [
-  {
-    reportName: "Annual Reclamation Report",
-    reportLink: "",
-  },
-  {
-    reportName: "Annual Summary of Exploration Activities",
-    reportLink: "",
-  },
-  {
-    reportName: "Annual Summary of Placer Activities",
-    reportLink: "",
-  },
-  {
-    reportName: "Annual Summary of Work and Reclamation Report",
-    reportLink: "",
-  },
-  {
-    reportName: "Annual Dam Safety Inspection (DSI)",
-    reportLink: "",
-  },
-  {
-    reportName: "ITRB Activities Report",
-    reportLink: "",
-  },
-  {
-    reportName: "Mine Emergency Response Plan",
-    reportLink: "",
-  },
-  {
-    reportName: "Multi-Year Area Based Permit Updates",
-    reportLink: "",
-  },
-  {
-    reportName: "Notification To Start",
-    reportLink: "",
-  },
-  {
-    reportName: "Notification To Stop",
-    reportLink: "",
-  },
-];
+interface ReportGetStartedProps {
+  setSelectedReportDefinition: (report: IMineReportDefinition) => void;
+  selectedReportDefinition: IMineReportDefinition;
+}
 
-const ReportGetStarted = () => {
+const ReportGetStarted: FC<ReportGetStartedProps> = ({
+  setSelectedReportDefinition,
+  selectedReportDefinition,
+}) => {
+  const [commonReportDefinitionOptions, setCommonReportDefinitionOptions] = useState([]);
+  const [formattedMineReportDefinitionOptions, setFormattedMineReportDefinitionOptions] = useState(
+    []
+  );
+
+  const mineReportDefinitionOptions = useSelector(getMineReportDefinitionOptions);
+
+  useEffect(() => {
+    // Format the mine report definition options for the search bar
+    const newFormattedMineReportDefinitionOptions = mineReportDefinitionOptions
+      .map((report) => {
+        return {
+          label: formatComplianceCodeReportName(report),
+          value: report.mine_report_definition_guid,
+        };
+      })
+      .sort((a, b) => a.label.localeCompare(b.label));
+    setFormattedMineReportDefinitionOptions(
+      uniqBy(newFormattedMineReportDefinitionOptions, "value")
+    );
+  }, [mineReportDefinitionOptions]);
+
+  const handleChange = (newValue: string) => {
+    // Set the selected report definition to be displayed and used in the next step
+    const newReport = mineReportDefinitionOptions.find(
+      (report) => report.mine_report_definition_guid === newValue
+    );
+    setSelectedReportDefinition(newReport);
+  };
+
+  useEffect(() => {
+    // Filter out common reports and sort alphabetically
+    const commonReportDefinitions = mineReportDefinitionOptions
+      .filter((report) => report.is_common)
+      .sort((a, b) => a.report_name.localeCompare(b.report_name));
+    setCommonReportDefinitionOptions(commonReportDefinitions);
+  }, [mineReportDefinitionOptions]);
+
   return (
     <div>
       <Typography.Title level={3}>Getting Started with your Report Submission</Typography.Title>
@@ -71,31 +78,63 @@ const ReportGetStarted = () => {
         Quickly select a common report type or select another report type on the report details
         screen.
       </Typography.Paragraph>
-      <Row>
+      <Row gutter={24} className="margin-large--bottom">
         <Col span={12}>
-          <Typography.Paragraph strong className="margin-large--top">
-            Report Code Requirement
-          </Typography.Paragraph>
-          <Form layout="vertical">
-            <Form.Item label="Enter Code Section">
-              <Input placeholder="10.4.1" />
-            </Form.Item>
-          </Form>
-          <Typography.Paragraph strong className="margin-large--top">
-            Common Reports
-          </Typography.Paragraph>
-          {stubbedCommonReports.map((report) => (
-            <Link to={report.reportLink} key={report.reportName} className="report-link">
-              <Row gutter={16}>
-                <Col>
-                  <Typography.Text>{report.reportName}</Typography.Text>
-                </Col>
-                <Col>
-                  <ArrowRightOutlined />
+          <div className="light-grey-border padding-md--sides">
+            <Typography.Paragraph strong className="margin-large--top">
+              Report Code Requirement
+            </Typography.Paragraph>
+            <Form layout="vertical">
+              <Form.Item label="Enter Code Section">
+                <Select
+                  showSearch
+                  onChange={handleChange}
+                  filterOption={(input, option) =>
+                    (option?.label.toLowerCase() ?? "").includes(input.toLowerCase())
+                  }
+                  defaultActiveFirstOption={false}
+                  showArrow={false}
+                  placeholder="10.4.1"
+                  options={formattedMineReportDefinitionOptions}
+                />
+              </Form.Item>
+            </Form>
+            <Typography.Paragraph strong className="margin-large--top">
+              Common Reports
+            </Typography.Paragraph>
+            {commonReportDefinitionOptions.map((report) => (
+              <Row key={report.report_name}>
+                <Col span={24}>
+                  <Button
+                    onClick={() => setSelectedReportDefinition(report)}
+                    type="text"
+                    className="report-link"
+                  >
+                    <Typography.Text>{report.report_name}</Typography.Text>
+                    <span className="margin-large--left">
+                      <ArrowRightOutlined />
+                    </span>
+                  </Button>
                 </Col>
               </Row>
-            </Link>
-          ))}
+            ))}
+          </div>
+        </Col>
+        <Col span={12}>
+          <div className="report-info-box">
+            {selectedReportDefinition && (
+              <div>
+                <Typography.Title level={4}>You are submitting</Typography.Title>
+                <Typography.Title level={5}>
+                  {formatComplianceCodeReportName(selectedReportDefinition)}
+                </Typography.Title>
+                <Typography.Paragraph>{selectedReportDefinition.description}</Typography.Paragraph>
+                <Typography.Paragraph>
+                  TODO: Add plain language long description to reports
+                </Typography.Paragraph>
+              </div>
+            )}
+          </div>
         </Col>
       </Row>
     </div>
