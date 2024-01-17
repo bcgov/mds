@@ -92,8 +92,13 @@ const ReportSteps = () => {
               mineGuid={mineGuid}
               handleSubmit={(values) => {
                 const formValues = { received_date: moment().format("YYYY-MM-DD"), ...values };
-                dispatch(createMineReport(mineGuid, formValues)).then(() => {
-                  history.push(GLOBAL_ROUTES?.MINE_DASHBOARD.dynamicRoute(mineGuid, "reports"));
+                dispatch(createMineReport(mineGuid, formValues)).then((response) => {
+                  if (response.data) {
+                    const { mine_guid, mine_report_guid } = response.data;
+                    history.push(
+                      GLOBAL_ROUTES?.REPORT_VIEW_EDIT.dynamicRoute(mine_guid, mine_report_guid)
+                    );
+                  }
                 });
               }}
               formButtons={renderStepButtons({
