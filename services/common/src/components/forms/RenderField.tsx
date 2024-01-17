@@ -12,6 +12,7 @@ const RenderField: FC<BaseInputProps> = ({
   meta,
   input,
   disabled,
+  help,
   required,
   defaultValue,
   id,
@@ -38,14 +39,17 @@ const RenderField: FC<BaseInputProps> = ({
                 (meta.warning && <span>{meta.warning}</span>))
             }
           >
-            <Input
-              disabled={disabled}
-              defaultValue={defaultValue}
-              id={id}
-              placeholder={placeholder}
-              allowClear={allowClear}
-              {...input}
-            />
+            <>
+              <Input
+                disabled={disabled}
+                defaultValue={defaultValue}
+                id={id}
+                placeholder={placeholder}
+                allowClear={allowClear}
+                {...input}
+              />
+              {help && <div className={`form-item-help ${input.name}-form-help`}>{help}</div>}
+            </>
           </Form.Item>
         );
       }}

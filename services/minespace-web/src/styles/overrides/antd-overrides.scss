@@ -422,6 +422,10 @@ th.ant-descriptions-item.vertical-description {
   font-weight: normal;
 }
 
+.hide-optional-text .form-item-optional {
+  display: none;
+}
+
 .view-item {
   line-height: 22px;
 

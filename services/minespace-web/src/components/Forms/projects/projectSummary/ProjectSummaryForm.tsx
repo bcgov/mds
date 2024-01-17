@@ -25,6 +25,7 @@ import ProjectLinks from "@mds/common/components/projects/ProjectLinks";
 import { EDIT_PROJECT } from "@/constants/routes";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature, IProjectSummary, IProjectSummaryDocument } from "@mds/common";
+import { Agent } from "./Agent";
 
 interface ProjectSummaryFormProps {
   initialValues: IProjectSummary;
@@ -48,6 +49,7 @@ export const projectFormTabs = [
   "basic-information",
   "related-projects",
   "project-contacts",
+  "agent",
   "project-dates",
   "authorizations-involved",
   "document-upload",
@@ -68,6 +70,7 @@ export const ProjectSummaryForm: FC<ProjectSummaryFormProps &
       ),
       "project-contacts": <ProjectContacts initialValues={props.initialValues} />,
       "project-dates": <ProjectDates initialValues={props.initialValues} />,
+      agent: <Agent initialValues={props.initialValues} />,
       "authorizations-involved": (
         <AuthorizationsInvolved initialValues={props.initialValues} change={props.change} />
       ),
