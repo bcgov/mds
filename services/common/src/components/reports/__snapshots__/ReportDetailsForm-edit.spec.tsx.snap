@@ -70,113 +70,6 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
             >
               <label
                 class="ant-form-item-required"
-                for="VIEW_EDIT_REPORT_mine_report_category"
-                title="Report Type"
-              >
-                Report Type
-              </label>
-            </div>
-            <div
-              class="ant-col ant-form-item-control"
-            >
-              <div
-                class="ant-form-item-control-input"
-              >
-                <div
-                  class="ant-form-item-control-input-content"
-                >
-                  <div
-                    aria-required="true"
-                    class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
-                  >
-                    <div
-                      class="ant-select-selector"
-                    >
-                      <span
-                        class="ant-select-selection-search"
-                      >
-                        <input
-                          aria-activedescendant="mine_report_category_list_0"
-                          aria-autocomplete="list"
-                          aria-controls="mine_report_category_list"
-                          aria-haspopup="listbox"
-                          aria-owns="mine_report_category_list"
-                          aria-required="true"
-                          autocomplete="off"
-                          class="ant-select-selection-search-input"
-                          id="mine_report_category"
-                          role="combobox"
-                          type="search"
-                          value=""
-                        />
-                      </span>
-                      <span
-                        class="ant-select-selection-placeholder"
-                      >
-                        Select
-                      </span>
-                    </div>
-                    <span
-                      aria-hidden="true"
-                      class="ant-select-arrow"
-                      style="user-select: none;"
-                      unselectable="on"
-                    >
-                      <span
-                        aria-label="down"
-                        class="anticon anticon-down ant-select-suffix"
-                        role="img"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          data-icon="down"
-                          fill="currentColor"
-                          focusable="false"
-                          height="1em"
-                          viewBox="64 64 896 896"
-                          width="1em"
-                        >
-                          <path
-                            d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
-                          />
-                        </svg>
-                      </span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div
-                style="display: flex; flex-wrap: nowrap;"
-              >
-                <div
-                  class="ant-form-item-explain ant-form-item-explain-connected"
-                  id="VIEW_EDIT_REPORT_mine_report_category_help"
-                  role="alert"
-                >
-                  <div
-                    class=""
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="ant-col ant-col-12"
-        style="padding: 4px 8px 4px 8px;"
-      >
-        <div
-          class="ant-form-item ant-form-item-with-help"
-        >
-          <div
-            class="ant-row ant-form-item-row"
-          >
-            <div
-              class="ant-col ant-form-item-label"
-            >
-              <label
-                class="ant-form-item-required"
                 for="VIEW_EDIT_REPORT_mine_report_definition_guid"
                 title="Report Name"
               >
@@ -218,10 +111,9 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
                         />
                       </span>
                       <span
-                        class="ant-select-selection-placeholder"
-                      >
-                        Select a report type
-                      </span>
+                        class="ant-select-selection-item"
+                        title=""
+                      />
                     </div>
                     <span
                       aria-hidden="true"
@@ -245,6 +137,33 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
                         >
                           <path
                             d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                          />
+                        </svg>
+                      </span>
+                    </span>
+                    <span
+                      aria-hidden="true"
+                      class="ant-select-clear"
+                      style="user-select: none;"
+                      unselectable="on"
+                    >
+                      <span
+                        aria-label="close-circle"
+                        class="anticon anticon-close-circle"
+                        role="img"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          data-icon="close-circle"
+                          fill="currentColor"
+                          fill-rule="evenodd"
+                          focusable="false"
+                          height="1em"
+                          viewBox="64 64 896 896"
+                          width="1em"
+                        >
+                          <path
+                            d="M512 64c247.4 0 448 200.6 448 448S759.4 960 512 960 64 759.4 64 512 264.6 64 512 64zm127.98 274.82h-.04l-.08.06L512 466.75 384.14 338.88c-.04-.05-.06-.06-.08-.06a.12.12 0 00-.07 0c-.03 0-.05.01-.09.05l-45.02 45.02a.2.2 0 00-.05.09.12.12 0 000 .07v.02a.27.27 0 00.06.06L466.75 512 338.88 639.86c-.05.04-.06.06-.06.08a.12.12 0 000 .07c0 .03.01.05.05.09l45.02 45.02a.2.2 0 00.09.05.12.12 0 00.07 0c.02 0 .04-.01.08-.05L512 557.25l127.86 127.87c.04.04.06.05.08.05a.12.12 0 00.07 0c.03 0 .05-.01.09-.05l45.02-45.02a.2.2 0 00.05-.09.12.12 0 000-.07v-.02a.27.27 0 00-.05-.06L557.25 512l127.87-127.86c.04-.04.05-.06.05-.08a.12.12 0 000-.07c0-.03-.01-.05-.05-.09l-45.02-45.02a.2.2 0 00-.09-.05.12.12 0 00-.07 0z"
                           />
                         </svg>
                       </span>
@@ -296,9 +215,6 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
               <b>
                 You are submitting:
               </b>
-              <br />
-              <b />
-               [TODO: plain language on what it is]
               <br />
               <b />
                [TODO: plain language on what it is]
