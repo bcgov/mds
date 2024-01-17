@@ -46,7 +46,7 @@ class MineReportListResource(Resource, UserMixin):
     parser.add_argument('description_comment', type=str, location='json')
     parser.add_argument('submitter_name', type=str, location='json')
     parser.add_argument('submitter_email', type=str, location='json')
-    parser.add_argument('contacts', type=list, location='json')
+    parser.add_argument('mine_report_contacts', type=list, location='json')
 
     @api.marshal_with(MINE_REPORT_MODEL, envelope='records', code=200)
     @api.doc(description='returns the reports for a given mine.')
@@ -112,7 +112,7 @@ class MineReportListResource(Resource, UserMixin):
             submitter_name=data['submitter_name'],
             submitter_email=data['submitter_email'])
 
-        contacts = data.get('contacts')
+        contacts = data.get('mine_report_contacts')
         if contacts:
             mine_report_contacts = MineReportContact.create_from_list(contacts, mine_report.mine_report_id)
             if mine_report_contacts:

@@ -389,13 +389,15 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
             <Typography.Paragraph>{mineManager?.email ?? "-"}</Typography.Paragraph>
           </Col>
           <Col span={24}>
-            <FieldArray name="contacts" component={RenderContacts} />
+            <FieldArray name="mine_report_contacts" component={RenderContacts} />
           </Col>
           <Col span={24}>
             {isEditMode && (
               <Button
                 type="link"
-                onClick={() => dispatch(arrayPush(FORM.VIEW_EDIT_REPORT, "contacts", {}))}
+                onClick={() =>
+                  dispatch(arrayPush(FORM.VIEW_EDIT_REPORT, "mine_report_contacts", {}))
+                }
               >
                 + Add report contacts
               </Button>
