@@ -19,7 +19,6 @@ from werkzeug.exceptions import BadRequest, BadGateway, InternalServerError
 from flask import request, current_app
 
 from app.extensions import db
-from app.config import Config
 from app.services.object_store_storage_service import ObjectStoreStorageService
 from app.docman.models.document import Document
 from app.docman.models.document_version import DocumentVersion
@@ -220,7 +219,9 @@ class DocumentUploadHelper:
 
         # Copy the file to its new location
         try:
-            oss.copy_file(source_key=key, key=new_key)
+            key_prefix = Config.S3_PREFIX[:-1] if Config.S3_PREFIX and Config.S3_PREFIX !='/' else ''
+
+            oss.copy_file(source_key=key, key=key_prefix + new_key)
 
             if version_guid is not None and versions is None:
                 versions = oss.list_versions(new_key)['Versions']
@@ -237,6 +238,7 @@ class DocumentUploadHelper:
             if doc.object_store_path != new_key:
                 doc.object_store_path = new_key
                 doc.update_user = 'mds'
+                doc.upload_completed_date = datetime.utcnow()
 
                 db.session.add(doc)
 
