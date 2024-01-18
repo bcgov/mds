@@ -8,7 +8,7 @@ The core-api is enabled to send credential-offer messages to connected wallets a
 
 ## Governance Documentation
 
-The Mines Act Permit Verifiable Credentials has public [governance documentation](https://github.com/bcgov/bc-vcpedia/blob/main/credentials/credential-bc-mines-act-permit.md) that should be kept up-to-date with any technical or process changes.
+The Mines Act Permit Verifiable Credentials has public [governance documentation](https://github.com/bcgov/bc-vcpedia/blob/main/credentials/bc-mines-act-permit/1.1.1/governance.md) that should be kept up-to-date with any technical or process changes.
 
 ### Connection Establishment
 
@@ -51,7 +51,7 @@ Current Limitations:
 
 The Overlay Capture Architechture (OCA) bundle for this credential is hosted [here](https://github.com/bcgov/aries-oca-bundles/tree/main/OCABundles/schema). The OCA bundle provides infomation on how the credential should be presented, including backgroun colors, labels, data-typing, and localization. If the credential is updated, the OCA bundle may need to be updated to match.
 
-OCA bundles hosted here can be previewed on the [OCA Explorer](https://bcgov.github.io/aries-oca-bundles/)
+OCA bundles hosted here can be previewed on the [OCA Explorer](https://bcgov.github.io/aries-oca-explorer/)
 
 ### Permit Amendments and Revocation
 
