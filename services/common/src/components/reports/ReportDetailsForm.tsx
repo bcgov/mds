@@ -97,9 +97,9 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   const dispatch = useDispatch();
   const formValues: IMineReport =
     useSelector((state) => getFormValues(FORM.VIEW_EDIT_REPORT)(state)) ?? {};
-  const { mine_report_category = "", mine_report_definition_guid = "" } = formValues;
   const [mineManager, setMineManager] = useState<IParty>();
   const [mineManagerGuid, setMineManagerGuid] = useState<string>("");
+  const { mine_report_category = "", mine_report_definition_guid = "" } = formValues;
 
   const partyRelationships: IPartyAppt[] = useSelector((state) => getPartyRelationships(state));
   const parties = useSelector((state) => getParties(state));
@@ -138,7 +138,6 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
     setDropdownMineReportDefinitionOptionsFiltered,
   ] = useState([]);
 
-  const [mineReport, setMineReport] = useState<IMineReport | null>(null);
   const [mineReportSubmissions, setMineReportSubmissions] = useState([]);
 
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -200,16 +199,11 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   }, [mine_report_definition_guid]);
 
   const updateMineReportSubmissions = (updatedSubmissions) => {
-    setMineReport((prevState) => {
-      const updatedMineReport: IMineReport = { ...(prevState || null) };
-      updatedMineReport.mine_report_submissions = [
-        ...(prevState?.mine_report_submissions || []),
-        ...updatedSubmissions,
-      ];
-      return updatedMineReport;
-    });
+    dispatch(change(FORM.VIEW_EDIT_REPORT, "mine_report_submissions", updatedSubmissions));
     setMineReportSubmissions(updatedSubmissions);
   };
+
+  console.log("formValues", formValues);
 
   return (
     <div>
@@ -429,7 +423,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
                 updateMineReportSubmissions={updateMineReportSubmissions}
               />
             )}
-            <ReportFilesTable report={mineReport} />
+            <ReportFilesTable report={formValues} />
           </Col>
         </Row>
         {formButtons}
