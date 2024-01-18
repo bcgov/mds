@@ -1,4 +1,4 @@
-import React, { Component, FC, useEffect, useRef, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import L, { Map } from "leaflet";
 import LeafletWms from "leaflet.wms";
 
@@ -31,7 +31,10 @@ const checkValidityOfCoordinateInput = (coordinates) =>
 const getMajorMinePermittedAreas = () => {
   const majorMinesSource = LeafletWms.source(
     "https://openmaps.gov.bc.ca/geo/pub/WHSE_MINERAL_TENURE.HSP_MJR_MINES_PERMTTD_AREAS_SP/ows",
-    { ...leafletWMSTiledOptions, identify: false }
+    {
+      ...leafletWMSTiledOptions,
+      identify: false,
+    }
   );
   return majorMinesSource.getLayer("pub:WHSE_MINERAL_TENURE.HSP_MJR_MINES_PERMTTD_AREAS_SP");
 };
@@ -46,9 +49,8 @@ const ExplosivesPermitMap: FC<ExplosivesPermitMapProps> = ({ pin = [] }) => {
   const markerClusterGroupRef = useRef<L.MarkerClusterGroup | null>(null);
   const pinRef = useRef<L.Marker | null>(null);
 
-  const latLong = checkValidityOfCoordinateInput(pin)
-    ? // only add mine Pin if location exists
-      pin
+  const latLong = checkValidityOfCoordinateInput(pin) // only add mine Pin if location exists
+    ? pin
     : [Number(Strings.DEFAULT_LAT), Number(Strings.DEFAULT_LONG)];
 
   const createPin = () => {
@@ -57,6 +59,7 @@ const ExplosivesPermitMap: FC<ExplosivesPermitMapProps> = ({ pin = [] }) => {
       iconSize: [60, 60],
     });
     pin = L.marker(pin, { icon: customIcon });
+    pinRef.current = pin;
     markerClusterGroupRef.current?.addLayer(pin);
     mapRef.current?.fitBounds(markerClusterGroupRef.current?.getBounds());
     markerClusterGroupRef.current?.zoomToShowLayer(pin);
