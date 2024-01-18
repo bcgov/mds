@@ -203,8 +203,6 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
     setMineReportSubmissions(updatedSubmissions);
   };
 
-  console.log("formValues", formValues);
-
   return (
     <div>
       {(isEditMode || !initialValues) && (
