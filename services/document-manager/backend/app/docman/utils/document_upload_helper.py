@@ -203,9 +203,12 @@ class DocumentUploadHelper:
     def complete_multipart_upload(cls, upload_id, parts, document, version=None):
         ObjectStoreStorageService().complete_multipart_upload(upload_id, document.multipart_upload_path, parts)
 
+        # File has been uploaded to S3 in the {Config.S3_PREFIX}/multipart folder, now move it to its final destination
+        key_prefix = Config.S3_PREFIX[:-1] if Config.S3_PREFIX and Config.S3_PREFIX !='/' else ''
+        upload_destination_path = f'{key_prefix}{document.full_storage_path}'
         return cls.complete_upload(
             key=document.multipart_upload_path,
-            new_key=document.full_storage_path,
+            new_key=upload_destination_path,
             doc_guid=str(document.document_guid),
             versions=None,
             version_guid=str(version.id) if version is not None else None,
@@ -219,9 +222,8 @@ class DocumentUploadHelper:
 
         # Copy the file to its new location
         try:
-            key_prefix = Config.S3_PREFIX[:-1] if Config.S3_PREFIX and Config.S3_PREFIX !='/' else ''
 
-            oss.copy_file(source_key=key, key=key_prefix + new_key)
+            oss.copy_file(source_key=key, key=new_key)
 
             if version_guid is not None and versions is None:
                 versions = oss.list_versions(new_key)['Versions']
