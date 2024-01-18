@@ -58,37 +58,39 @@ export const DownloadDocumentPackageModal = (props) => {
         <h4>Application Documents</h4>
         <NOWSubmissionDocuments
           now_application_guid={props.noticeOfWorkGuid}
-          documents={props.noticeOfWork.filtered_submission_documents.concat(
-            props.noticeOfWork.documents
-              ?.filter(
-                ({
-                  now_application_document_sub_type_code,
-                  now_application_document_type_code,
-                  mine_document,
-                }) =>
-                  applicationFilesTypes.includes(now_application_document_sub_type_code) &&
-                  (now_application_document_type_code !== "PMT" ||
-                    now_application_document_type_code !== "PMA" ||
-                    mine_document.document_name.includes("DRAFT"))
-              )
-              .map((doc) => {
-                return {
-                  preamble_author: doc.preamble_author,
-                  preamble_date: doc.preamble_date,
-                  preamble_title: doc.preamble_title,
-                  now_application_document_xref_guid: doc.now_application_document_xref_guid,
-                  is_referral_package: doc.is_referral_package,
-                  is_final_package: doc.is_final_package,
-                  is_consultation_package: doc.is_consultation_package,
-                  description: doc.description,
-                  mine_document_guid: doc.mine_document.mine_document_guid,
-                  filename: doc.mine_document.document_name,
-                  document_manager_guid: doc.mine_document.document_manager_guid,
-                  notForImport: true,
-                  ...doc,
-                };
-              })
-          )}
+          documents={props.noticeOfWork.filtered_submission_documents
+            .filter((doc) => doc.mine_document_guid) //Filter out invalid files
+            .concat(
+              props.noticeOfWork.documents
+                ?.filter(
+                  ({
+                    now_application_document_sub_type_code,
+                    now_application_document_type_code,
+                    mine_document,
+                  }) =>
+                    applicationFilesTypes.includes(now_application_document_sub_type_code) &&
+                    (now_application_document_type_code !== "PMT" ||
+                      now_application_document_type_code !== "PMA" ||
+                      mine_document.document_name.includes("DRAFT"))
+                )
+                .map((doc) => {
+                  return {
+                    preamble_author: doc.preamble_author,
+                    preamble_date: doc.preamble_date,
+                    preamble_title: doc.preamble_title,
+                    now_application_document_xref_guid: doc.now_application_document_xref_guid,
+                    is_referral_package: doc.is_referral_package,
+                    is_final_package: doc.is_final_package,
+                    is_consultation_package: doc.is_consultation_package,
+                    description: doc.description,
+                    mine_document_guid: doc.mine_document.mine_document_guid,
+                    filename: doc.mine_document.document_name,
+                    document_manager_guid: doc.mine_document.document_manager_guid,
+                    notForImport: true,
+                    ...doc,
+                  };
+                })
+            )}
           importNowSubmissionDocumentsJob={props.importNowSubmissionDocumentsJob}
           selectedRows={{ selectedSubmissionRows, setSelectedSubmissionRows }}
           isAdminView
@@ -98,7 +100,7 @@ export const DownloadDocumentPackageModal = (props) => {
         <br />
         <h4>Government Documents</h4>
         <NOWDocuments
-          documents={props.coreDocuments}
+          documents={props.coreDocuments?.filter((doc) => doc.now_application_document_xref_guid)} //Filter out invalid files
           isViewMode
           selectedRows={{ selectedCoreRows, setSelectedCoreRows }}
           isPackageModal

@@ -70,14 +70,25 @@ export const ReferralConsultationPackage = (props) => {
   }, [zipFileToDownload]);
 
   const downloadDocumentPackage = (selectedCoreRows, selectedSubmissionRows) => {
-    const documentManagerGuids = [
-      ...props.noticeOfWork.filtered_submission_documents
-        .filter((doc) => selectedSubmissionRows.includes(doc.now_application_document_xref_guid))
-        .map((doc) => doc.document_manager_guid),
-      ...props.noticeOfWork.documents
-        .filter((doc) => selectedCoreRows.includes(doc.now_application_document_xref_guid))
-        .map((doc) => doc.mine_document.document_manager_guid),
-    ].filter(Boolean);
+    const allSelectedRows = [...selectedCoreRows, ...selectedSubmissionRows];
+
+    const coreDocuments = props.noticeOfWork.documents.map((doc) => ({
+      document_manager_guid: doc.mine_document.document_manager_guid,
+      selected_row_id: doc.now_application_document_xref_guid,
+    }));
+
+    const appDocuments = props.noticeOfWork.filtered_submission_documents.map((doc) => ({
+      document_manager_guid: doc.document_manager_guid,
+      selected_row_id: doc.mine_document_guid,
+    }));
+
+    const combineDocumentManagerGuids = [...coreDocuments, ...appDocuments]
+      .filter((item) => item.document_manager_guid && item.selected_row_id)
+      .filter((item) => allSelectedRows.includes(item.selected_row_id))
+      .map((item) => item.document_manager_guid);
+
+    //Making sure no duplicated guids, as the same file can be selected in both tables
+    const documentManagerGuids = [...new Set(combineDocumentManagerGuids)];
 
     const handleCloseCompressionNotification = () => {
       progressRef.current = false;
