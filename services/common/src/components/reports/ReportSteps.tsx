@@ -10,6 +10,7 @@ import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineAction
 import moment from "moment-timezone";
 import ReportDetailsForm from "@mds/common/components/reports/ReportDetailsForm";
 import { createMineReport } from "@mds/common/redux/actionCreators/reportActionCreator";
+import { MINE_REPORT_SUBMISSION_CODES } from "../..";
 
 const ReportSteps = () => {
   const history = useHistory();
@@ -91,7 +92,11 @@ const ReportSteps = () => {
               isEditMode={false}
               mineGuid={mineGuid}
               handleSubmit={(values) => {
-                const formValues = { received_date: moment().format("YYYY-MM-DD"), ...values };
+                const formValues = {
+                  mine_report_submission_status: MINE_REPORT_SUBMISSION_CODES.REC,
+                  received_date: moment().format("YYYY-MM-DD"),
+                  ...values,
+                };
                 dispatch(createMineReport(mineGuid, formValues)).then(() => {
                   history.push(GLOBAL_ROUTES?.MINE_DASHBOARD.dynamicRoute(mineGuid, "reports"));
                 });

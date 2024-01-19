@@ -1,4 +1,5 @@
 import { IMineReportSubmission } from "@mds/common/interfaces/mine/mineReportSubmission.interface";
+import { MINE_REPORT_SUBMISSION_CODES } from "../..";
 
 export interface IMineReport {
   mine_report_id: string;
@@ -16,4 +17,5 @@ export interface IMineReport {
   mine_name: string;
   submitter_name: string;
   submitter_email: string;
+  mine_report_submission_status?: MINE_REPORT_SUBMISSION_CODES;
 }

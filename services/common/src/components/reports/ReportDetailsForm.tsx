@@ -23,7 +23,13 @@ import RenderDate from "../forms/RenderDate";
 import RenderSelect from "../forms/RenderSelect";
 import FormWrapper, { FormConsumer } from "../forms/FormWrapper";
 import RenderField from "../forms/RenderField";
-import { IMineReport, IParty, IPartyAppt, MinePartyAppointmentTypeCodeEnum } from "../..";
+import {
+  IMineReport,
+  IMineReportSubmission,
+  IParty,
+  IPartyAppt,
+  MinePartyAppointmentTypeCodeEnum,
+} from "../..";
 import RenderAutoSizeField from "../forms/RenderAutoSizeField";
 import { BaseViewInput } from "../forms/BaseInput";
 import {
@@ -198,7 +204,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
     }
   }, [mine_report_definition_guid]);
 
-  const updateMineReportSubmissions = (updatedSubmissions) => {
+  const updateMineReportSubmissions = (updatedSubmissions: IMineReportSubmission[]) => {
     dispatch(change(FORM.VIEW_EDIT_REPORT, "mine_report_submissions", updatedSubmissions));
     setMineReportSubmissions(updatedSubmissions);
   };
