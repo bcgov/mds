@@ -56,6 +56,7 @@ export const RenderSelect: FC<SelectProps> = ({
                 (meta.warning && <span>{meta.warning}</span>))
             }
             id={id}
+            getValueProps={() => ({ value: input.value })}
           >
             <Select
               virtual={false}
@@ -70,9 +71,9 @@ export const RenderSelect: FC<SelectProps> = ({
               filterOption={caseInsensitiveLabelFilter}
               id={id}
               value={data.length && input.value ? input.value : null}
-              onChange={(value) => {
+              onChange={(changeValue) => {
                 setIsDirty(true);
-                input.onChange(value);
+                input.onChange(changeValue);
               }}
               onDropdownVisibleChange={(open) => {
                 if (!open) {

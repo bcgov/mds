@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import { connect } from "react-redux";
 import {
   createExplosivesPermit,
@@ -64,14 +64,10 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
   mines,
   inspectors,
   explosivesPermits,
-  explosivesPermitDocumentTypeDropdownOptions,
-  // eslint-disable-next-line @typescript-eslint/no-shadow
-  updateExplosivesPermit,
-  // eslint-disable-next-line @typescript-eslint/no-shadow
-  updateExplosivesPermitAmendment,
-  // eslint-disable-next-line @typescript-eslint/no-shadow
-  fetchExplosivesPermits,
-  // eslint-disable-next-line @typescript-eslint/no-shadow
+  explosivesPermitDocumentTypeDropdownOptions, // eslint-disable-next-line @typescript-eslint/no-shadow
+  updateExplosivesPermit, // eslint-disable-next-line @typescript-eslint/no-shadow
+  updateExplosivesPermitAmendment, // eslint-disable-next-line @typescript-eslint/no-shadow
+  fetchExplosivesPermits, // eslint-disable-next-line @typescript-eslint/no-shadow
   closeModal,
   ...props
 }) => {

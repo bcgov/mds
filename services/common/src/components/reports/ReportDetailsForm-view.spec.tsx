@@ -3,7 +3,7 @@ import { render } from "@testing-library/react";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import ReportDetailsForm from "./ReportDetailsForm";
 import { Button } from "antd";
-import { REPORTS } from "@mds/common/constants/reducerTypes";
+import { REPORTS, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { IMineReport } from "../..";
 
@@ -13,6 +13,9 @@ const initialState = {
     reports: MOCK.MINE_REPORTS,
     mineReportGuid: mineReport.mine_report_guid,
     mineReports: [mineReport],
+  },
+  [STATIC_CONTENT]: {
+    mineReportDefinitionOptions: MOCK.BULK_STATIC_CONTENT_RESPONSE.mineReportDefinitionOptions,
   },
 };
 

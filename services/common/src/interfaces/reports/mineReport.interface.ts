@@ -1,4 +1,5 @@
-import { IMineReportSubmission } from "@mds/common/interfaces/mine/mineReportSubmission.interface";
+import { IMineReportSubmission } from "@mds/common/interfaces/reports/mineReportSubmission.interface";
+import { IMineReportContact } from "./mineReportContact.interface";
 import { MINE_REPORT_SUBMISSION_CODES } from "../..";
 
 export interface IMineReport {
@@ -13,6 +14,7 @@ export interface IMineReport {
   created_by_idir: string;
   permit_guid: string;
   mine_report_submissions: IMineReportSubmission[];
+  mine_report_contacts: IMineReportContact[];
   mine_guid: string;
   mine_name: string;
   submitter_name: string;

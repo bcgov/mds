@@ -61,7 +61,7 @@ This application was originally developed in Javascript, and is being migrated t
 
 ## Verifiable Credentials
 
-This project support verifiable credential features compatible with [AnonCreds](https://www.hyperledger.org/projects/anoncreds) and [Hyperledger Aries](https://www.hyperledger.org/projects/aries) and serves as the [Administering Authority for the BC Mines Act Permit](https://github.com/bcgov/bc-vcpedia/blob/main/credentials/credential-bc-mines-act-permit.md#15-administering-authority).
+This project support verifiable credential features compatible with [AnonCreds](https://www.hyperledger.org/projects/anoncreds) and [Hyperledger Aries](https://www.hyperledger.org/projects/aries) and serves as the [Administering Authority for the BC Mines Act Permit](https://github.com/bcgov/bc-vcpedia/blob/main/credentials/bc-mines-act-permit/1.1.1/governance.md#15-administering-authority).
 
 See the [Verifiable Credential doc](docs/verifiable_credentials.md) for more detail.
 
