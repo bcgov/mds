@@ -19,6 +19,7 @@ import RenderField from "../forms/RenderField";
 import {
   IMineReport,
   IMineReportDefinition,
+  IMineReportSubmission,
   IParty,
   IPartyAppt,
   MinePartyAppointmentTypeCodeEnum,
@@ -99,10 +100,10 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   const dispatch = useDispatch();
   const formValues: IMineReport =
     useSelector((state) => getFormValues(FORM.VIEW_EDIT_REPORT)(state)) ?? {};
-  const { mine_report_category = "", mine_report_definition_guid = "" } = formValues;
   const [mineManager, setMineManager] = useState<IParty>();
   const [mineManagerGuid, setMineManagerGuid] = useState<string>("");
   const [selectedReportName, setSelectedReportName] = useState("");
+  const { mine_report_category = "", mine_report_definition_guid = "" } = formValues;
   const [selectedReportCode, setSelectedReportCode] = useState("");
   const [formattedMineReportDefinitionOptions, setFormatMineReportDefinitionOptions] = useState([]);
   const [mineReportSubmissions, setMineReportSubmissions] = useState([]);
@@ -185,7 +186,8 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
     }
   }, [mine_report_definition_guid]);
 
-  const updateMineReportSubmissions = (updatedSubmissions) => {
+  const updateMineReportSubmissions = (updatedSubmissions: IMineReportSubmission[]) => {
+    dispatch(change(FORM.VIEW_EDIT_REPORT, "mine_report_submissions", updatedSubmissions));
     setMineReportSubmissions(updatedSubmissions);
   };
 
