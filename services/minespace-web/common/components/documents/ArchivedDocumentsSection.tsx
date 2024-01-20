@@ -12,6 +12,7 @@ interface ArchivedDocumentsSectionProps {
   documentColumns?: ColumnType<MineDocument>[];
   titleLevel?: 1 | 2 | 3 | 4 | 5;
   additionalColumns?: ColumnType<MineDocument>[];
+  href?: string;
 }
 
 const ArchivedDocumentsSection = (props: ArchivedDocumentsSectionProps) => {
@@ -22,7 +23,7 @@ const ArchivedDocumentsSection = (props: ArchivedDocumentsSectionProps) => {
   }
 
   return (
-    <div id="archived-documents">
+    <div id={props.href ? props.href : "archived-documents"}>
       <Typography.Title level={props.titleLevel || 4}>
         <DeleteOutlined className="violet" />
         &nbsp;Archived Documents
