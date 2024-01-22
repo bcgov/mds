@@ -142,7 +142,11 @@ export const IncidentForm: FC<IncidentFormProps & InjectedFormProps> = (props) =
       <Row>
         <Col span={24}>{renderEditSaveControls()}</Col>
         <Col span={16} offset={4}>
-          <IncidentFormInitialReport incident={props.incident} isEditMode={isEditMode} />
+          <IncidentFormInitialReport
+            incident={props.incident}
+            isEditMode={isEditMode}
+            inspectorOptions={inspectorOptions}
+          />
           <br />
           <IncidentFormDocuments
             documents={documents}
