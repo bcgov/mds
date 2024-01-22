@@ -75,6 +75,12 @@ class MineReportListResource(Resource, UserMixin):
         permit_condition_category_code = None
         permit_guid = data['permit_guid']
 
+        is_first_submission = False
+        mine_report_guid = data.get('mine_report_guid', None)
+
+        if not mine_report_guid:
+            is_first_submission = True
+
         # Code Required Reports check
         if is_code_required_report:
             mine_report_definition = MineReportDefinition.find_by_mine_report_definition_guid(
@@ -141,6 +147,14 @@ class MineReportListResource(Resource, UserMixin):
                     report_submission.documents.append(mine_doc)
 
                 mine_report.mine_report_submissions.append(report_submission)
+        elif is_first_submission and is_code_required_report:
+            # If this is the initial report, create a submission with the status
+            # of INI (Received)
+            initial_submission = MineReportSubmission(
+                mine_report_submission_status_code='INI',
+                submission_date=datetime.utcnow())
+
+            mine_report.mine_report_submissions.append(initial_submission)
         try:
             mine_report.save()
         except Exception as e:

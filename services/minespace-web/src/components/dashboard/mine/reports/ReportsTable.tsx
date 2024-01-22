@@ -46,6 +46,8 @@ export const reportStatusSeverity = (status: MINE_REPORT_SUBMISSION_CODES) => {
       return "warning";
     case MINE_REPORT_SUBMISSION_CODES.NRQ:
       return "default";
+    case MINE_REPORT_SUBMISSION_CODES.INI:
+      return "default";
     default:
       return "default";
   }
