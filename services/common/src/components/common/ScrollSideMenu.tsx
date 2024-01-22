@@ -1,5 +1,5 @@
 import React, { FC, useEffect } from "react";
-import { withRouter } from "react-router-dom";
+import { useParams, useHistory, useLocation } from "react-router-dom";
 import { Anchor } from "antd";
 import { ISideMenuOption } from "../../interfaces/common/sideMenuOption.interface";
 
@@ -11,22 +11,24 @@ interface ScrollSideMenuProps {
   menuOptions: ISideMenuOption[];
   featureUrlRoute: any;
   featureUrlRouteArguments: (string | number)[];
-  history: any;
-  location: any;
-  match: any;
   tabSection?: string;
 }
 
 export const ScrollSideMenu: FC<ScrollSideMenuProps> = ({ tabSection = "", ...props }) => {
+  const history = useHistory();
+  const location = useLocation();
+  const { tab } = useParams<{
+    tab: string;
+  }>();
   let urlRoute = undefined;
 
   const updateUrlRoute = (route) => {
     urlRoute = props.featureUrlRoute(...props.featureUrlRouteArguments, route);
-    if (route === props.history.location.hash) {
+    if (route === history.location.hash) {
       return;
     }
 
-    props.history.push(urlRoute, { currentActiveLink: route });
+    history.push(urlRoute, { currentActiveLink: route });
   };
 
   useEffect(() => {
@@ -36,9 +38,7 @@ export const ScrollSideMenu: FC<ScrollSideMenuProps> = ({ tabSection = "", ...pr
     // to the feature section, so we must parse it out. If the hash is "#state", we must ignore it (see example).
     // For example: #blasting&state=bd74ea1c-09e5-4d7e-810f-d3558969293a&session_state=1c577088-15a8-4ae2-...
     let link =
-      props.location && props.location.hash && !props.location.hash.startsWith("#state")
-        ? props.location.hash
-        : undefined;
+      location && location.hash && !location.hash.startsWith("#state") ? location.hash : undefined;
     if (!link) {
       return;
     }
@@ -59,13 +59,13 @@ export const ScrollSideMenu: FC<ScrollSideMenuProps> = ({ tabSection = "", ...pr
 
   const handleAnchorOnChange = (currentActiveLink) => {
     if (
-      (props.history.action === "POP" && currentActiveLink === props.history.location.hash) ||
-      props.match.params.tab !== tabSection
+      (history.action === "POP" && currentActiveLink === history.location.hash) ||
+      tab !== tabSection
     ) {
       return;
     }
 
-    props.history.replace(urlRoute, { currentActiveLink });
+    history.replace(urlRoute, { currentActiveLink });
   };
 
   return (
@@ -97,4 +97,4 @@ export const ScrollSideMenu: FC<ScrollSideMenuProps> = ({ tabSection = "", ...pr
   );
 };
 
-export default withRouter(ScrollSideMenu);
+export default ScrollSideMenu;
