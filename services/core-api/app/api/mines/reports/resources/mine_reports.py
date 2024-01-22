@@ -141,6 +141,14 @@ class MineReportListResource(Resource, UserMixin):
                     report_submission.documents.append(mine_doc)
 
                 mine_report.mine_report_submissions.append(report_submission)
+        else:
+            # If this is the initial report, create a submission with the status
+            # of INI (Received)
+            initial_submission = MineReportSubmission(
+                mine_report_submission_status_code='INI',
+                submission_date=datetime.utcnow())
+
+            mine_report.mine_report_submissions.append(initial_submission)
         try:
             mine_report.save()
         except Exception as e:
