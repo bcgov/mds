@@ -157,7 +157,7 @@ const IncidentFormInitialReport: FC<IncidentFormInitialReportProps> = ({
             )}
           </Row>
           <Col span={24}>
-            <h4>Follow-Up Information</h4>
+            <h4>Ministry Inspector Details</h4>
           </Col>
           <Row gutter={16}>
             <Col md={12} xs={24}>

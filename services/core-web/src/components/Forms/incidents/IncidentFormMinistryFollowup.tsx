@@ -1,15 +1,14 @@
 import {
-  INCIDENT_CONTACT_METHOD_OPTIONS,
   INCIDENT_DETERMINATION_TYPES,
   INCIDENT_FOLLOWUP_ACTIONS,
 } from "@mds/common/constants/strings";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC } from "react";
 import { useSelector } from "react-redux";
 import { Field, FieldArray, getFormValues } from "redux-form";
 import { ADD_EDIT_INCIDENT } from "@/constants/forms";
 import { Button, Col, Row, Typography } from "antd";
 import { renderConfig } from "@/components/common/config";
-import { required, requiredRadioButton, validateSelectOptions } from "@common/utils/Validate";
+import { required, validateSelectOptions } from "@common/utils/Validate";
 import RenderDateTimeTz from "@/components/common/RenderDateTimeTz";
 import { normalizeDatetime } from "@mds/common/redux/utils/helpers";
 import { dateNotBeforeStrictOther, dateNotInFutureTZ } from "@mds/common/redux/utils/Validate";
@@ -31,15 +30,6 @@ const IncidentFormMinistryFollowup: FC<IncidentFormMinistryFollowupProps> = ({
   inspectorOptions,
 }) => {
   const formValues = useSelector((state) => getFormValues(ADD_EDIT_INCIDENT)(state));
-
-  //const [inspectorContactedValidation, setInspectorContactedValidation] = useState({});
-  //const [inspectorContacted, setInspectorContacted] = useState(null);
-
-  useEffect(() => {
-    //const inspectorSet = formValues?.reported_to_inspector_party_guid;
-    //setInspectorContactedValidation(inspectorSet ? { validate: [requiredRadioButton] } : {});
-    //setInspectorContacted(formValues?.reported_to_inspector_contacted);
-  }, [formValues]);
 
   const filteredFollowUpActions = incidentFollowUpActionOptions.filter(
     (act) => act.mine_incident_followup_investigation_type !== INCIDENT_FOLLOWUP_ACTIONS.unknown
