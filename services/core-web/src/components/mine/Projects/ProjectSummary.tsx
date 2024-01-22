@@ -32,7 +32,7 @@ import {
 import { flattenObject } from "@mds/common/redux/utils/helpers";
 import { clearProjectSummary } from "@mds/common/redux/actions/projectActions";
 import Loading from "@/components/common/Loading";
-import ScrollSideMenu from "@/components/common/ScrollSideMenu";
+import ScrollSideMenu from "@mds/common/components/common/ScrollSideMenu";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import ProjectSummaryForm from "@/components/Forms/projectSummaries/ProjectSummaryForm";
@@ -300,6 +300,18 @@ export const ProjectSummary: FC = () => {
     },
   ];
 
+  const menuOptions = [
+    { href: "project-details", title: "Project details" },
+    { href: "authorizations-involved", title: "Authorizations Involved" },
+    { href: "project-dates", title: "Project dates" },
+    { href: "project-contacts", title: "Project contacts" },
+    { href: "document-details", title: "Documents" },
+    isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE) && {
+      href: "archived-documents",
+      title: "Archived Documents",
+    },
+  ].filter(Boolean);
+
   return (
     <>
       <Prompt
@@ -347,17 +359,7 @@ export const ProjectSummary: FC = () => {
         </div>
         <div className={fixedTop ? "side-menu--fixed" : "side-menu top-100"}>
           <ScrollSideMenu
-            menuOptions={[
-              { href: "project-details", title: "Project details" },
-              { href: "authorizations-involved", title: "Authorizations Involved" },
-              { href: "project-dates", title: "Project dates" },
-              { href: "project-contacts", title: "Project contacts" },
-              { href: "document-details", title: "Documents" },
-              isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE) && {
-                href: "archived-documents",
-                title: "Archived Documents",
-              },
-            ].filter(Boolean)}
+            menuOptions={menuOptions}
             featureUrlRoute={routes.PRE_APPLICATIONS.hashRoute}
             featureUrlRouteArguments={[mineGuid, projectSummaryGuid]}
           />

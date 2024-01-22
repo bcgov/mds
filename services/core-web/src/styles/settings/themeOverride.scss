@@ -138,7 +138,8 @@
 .ant-btn,
 .ant-btn-sm,
 // secondary is deprecated --> move to default
-.ant-btn-secondary, .ant-btn-default {
+.ant-btn-secondary,
+.ant-btn-default {
   position: inherit;
   margin: 10px;
   padding: 0 16px;
@@ -235,7 +236,8 @@
   background-color: $primary-btn-color;
   border-color: $primary-btn-color;
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     color: $pure-white;
     background-color: $primary-btn-color-hover;
     border-color: $primary-btn-border-color-hover;
@@ -247,7 +249,8 @@
   border: 2px solid $primary-btn-color;
   background-color: $pure-white;
 
-  &:hover, &:active {
+  &:hover,
+  &:active {
     background-color: $transparent-violet;
     color: $hover-violet;
     border-color: $hover-violet;
@@ -652,13 +655,20 @@
 }
 
 // SIDE MENU NAVIGATION
+.ant-anchor {
+  padding-left: 0;
+}
+
 .ant-anchor-wrapper {
-  background-color: $lightest-grey;
   margin-bottom: 20px;
+  border: 1px solid $light-grey;
+  border-radius: 5px;
+  padding: 8px 0;
 }
 
 .ant-anchor-link-active {
-  border-left: 7px solid $violet;
+  border-left: 4px solid $violet;
+  background-color: $transparent-violet;
 }
 
 .ant-anchor-link-active>.ant-anchor-link-title {
@@ -668,6 +678,7 @@
 
 .ant-anchor-link-title {
   text-decoration: none;
+  margin-left: $default-margin-md;
 }
 
 .ant-anchor-link {
@@ -677,6 +688,10 @@
 
 .ant-anchor-link:last-child {
   border-bottom: none;
+}
+
+.ant-anchor-ink::before {
+  background-color: transparent;
 }
 
 // Having html input inherit the antd styling to keep everything consistent
@@ -836,6 +851,7 @@ select {
 .ant-legacy-form-item-control-wrapper {
   flex: 1 1 100%;
 }
+
 // same effect as above but not legacy
 .ant-form-item-row {
   flex-direction: column;

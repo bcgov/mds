@@ -31,6 +31,7 @@
       height: 80px;
       top: -80px;
       opacity: 0.9;
+
       @include large {
         padding: $default-padding-lg;
       }
@@ -56,13 +57,16 @@
     height: 30px;
     border-radius: 50%;
     margin-top: 10px;
+
     &.purple {
       background-color: $violet;
     }
+
     &.grey {
       background-color: $non-textual-grey;
     }
   }
+
   &--border {
     margin-left: 14px;
     height: 100%;
@@ -95,6 +99,7 @@
       z-index: 50;
       box-shadow: $default-box-shadow;
     }
+
     &--content {
       padding: 10px;
 
@@ -103,6 +108,7 @@
         padding-top: 10px;
       }
     }
+
     &--sub {
       font-size: $font-size-sm;
       color: $non-textual-grey;
@@ -129,7 +135,6 @@
 }
 
 .side-menu {
-  overflow: scroll;
   margin-left: 15px;
   margin-top: 15px;
   width: 240px;
@@ -193,6 +198,7 @@
 }
 
 .now-menu-link {
+
   a:hover,
   a:active {
     text-decoration: none;
@@ -200,7 +206,7 @@
   }
 
   &.ant-anchor-link {
-    line-height: 1.2;
+    line-height: 2.2;
     border-bottom: none;
     padding: 4px;
   }
@@ -208,6 +214,7 @@
 
 .now-menu-link.ant-anchor-link .ant-anchor-link {
   line-height: 1;
+
   & .ant-anchor-link-title {
     font-weight: lighter;
     padding-left: 5px;
@@ -223,8 +230,8 @@
   color: rgba(0, 0, 0, 0.65);
 }
 
-.ant-radio-disabled + span,
-.ant-checkbox-disabled + span {
+.ant-radio-disabled+span,
+.ant-checkbox-disabled+span {
   color: rgba(0, 0, 0, 0.65);
 }
 
@@ -247,6 +254,7 @@
   bottom: 0;
   height: 22px;
   z-index: 100;
+
   .ant-alert-message {
     position: relative;
     left: 150px;
@@ -256,6 +264,7 @@
 }
 
 .progress-steps {
+
   // remove active styling on progress steps as nothing is "active"
   .ant-steps-item-active .ant-steps-item-description {
     color: rgba(0, 0, 0, 0.45) !important;
@@ -285,16 +294,19 @@
 }
 
 .confirm-success {
-  .ant-result-icon > .anticon {
+  .ant-result-icon>.anticon {
     font-size: 40px;
   }
+
   .ant-result {
     padding: 20px 0;
     display: inline-flex;
   }
+
   .ant-result-icon {
     margin-bottom: 0;
   }
+
   .ant-result-title {
     margin-top: 6px;
     font-size: 15px;
@@ -309,8 +321,10 @@
   .ant-row {
     margin: 0;
   }
+
   &.ant-row:hover {
     background-color: rgb(244, 240, 240);
+
     .show-on-hover {
       display: inherit;
     }
@@ -323,6 +337,7 @@
   max-height: fit-content;
   padding: 10px;
   background-color: white;
+
   .null {
     @include center(true, true);
   }
@@ -333,10 +348,12 @@
     height: 100vh;
     padding: 20px 0;
     overflow-y: scroll;
+
     .ant-col {
       padding: 5px;
     }
   }
+
   background-color: #f3f0f0;
   padding: 25px;
   border-radius: 5px;

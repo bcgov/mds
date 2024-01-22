@@ -124,7 +124,7 @@ html {
     height: 50%;
   }
 
-  & > div {
+  &>div {
     margin-right: 5px;
   }
 
@@ -655,6 +655,11 @@ img.lessOpacity {
 .hidden {
   visibility: hidden;
   display: none;
+}
+
+.ellipsis-text {
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 // Styling for react-sortable-hoc

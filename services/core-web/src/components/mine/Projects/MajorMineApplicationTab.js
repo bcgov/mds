@@ -17,7 +17,7 @@ import * as routes from "@/constants/routes";
 import UpdateMajorMineAppStatusForm from "@/components/Forms/majorMineApplication/UpdateMajorMineAppStatusForm";
 import CustomPropTypes from "@/customPropTypes";
 import DocumentTable from "@/components/common/DocumentTable";
-import ScrollSideMenu from "@/components/common/ScrollSideMenu";
+import ScrollSideMenu from "@mds/common/components/common/ScrollSideMenu";
 import { fetchMineDocuments } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { getMineDocuments } from "@mds/common/redux/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
@@ -150,13 +150,13 @@ export class MajorMineApplicationTab extends Component {
             ? this.props.mineDocuments.map((doc) => new MajorMineApplicationDocument(doc))
             : []
         }
+        href="archived-documents-final-application"
       />
     );
   };
 
   render() {
     const { contacts, major_mine_application, project_guid } = this.props.project;
-
     const statusCode = major_mine_application?.status_code;
     const updateUser = major_mine_application?.update_user;
     const updateDate = formatDate(major_mine_application?.update_timestamp);
@@ -194,7 +194,7 @@ export class MajorMineApplicationTab extends Component {
         title: "Ministry Decision Documents",
       },
       this.props.isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE) && {
-        href: "archived-documents",
+        href: "archived-documents-final-application",
         title: "Archived Documents",
       },
     ].filter(Boolean);
@@ -301,7 +301,7 @@ export class MajorMineApplicationTab extends Component {
               &nbsp; Download All Application Files
             </div>
           </Button>
-          <Typography.Title level={4} id="major-mine-application">
+          <Typography.Title level={4} id="application-files">
             Application Files
           </Typography.Title>
           {this.renderDocumentSection(

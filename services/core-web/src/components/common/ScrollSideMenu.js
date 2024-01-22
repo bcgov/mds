@@ -30,6 +30,8 @@ const propTypes = {
 const defaultProps = { tabSection: "" };
 
 export class ScrollSideMenu extends Component {
+  // Can remove this component and it's Minespace equivalent, once Minespace is changed to use
+  // the common package ScrollSideMenu component.
   state = {};
 
   // eslint-disable-next-line react/sort-comp
@@ -43,8 +45,8 @@ export class ScrollSideMenu extends Component {
     // For example: #blasting&state=bd74ea1c-09e5-4d7e-810f-d3558969293a&session_state=1c577088-15a8-4ae2-...
     let link =
       this.props.location &&
-        this.props.location.hash &&
-        !this.props.location.hash.startsWith("#state")
+      this.props.location.hash &&
+      !this.props.location.hash.startsWith("#state")
         ? this.props.location.hash
         : undefined;
 
@@ -53,13 +55,13 @@ export class ScrollSideMenu extends Component {
     }
 
     // Extracts "#blasting" from "#blasting&state=bd74ea1c-09e5-4d7e-810f-d...", for example.
-    if (link.includes('&')) {
+    if (link.includes("&")) {
       link = link.substr(0, link.indexOf("&"));
     }
 
     this.updateUrlRoute(link);
 
-    document.querySelector(link)?.scrollIntoView()
+    document.querySelector(link)?.scrollIntoView();
   }
 
   handleAnchorOnClick = (e, link) => {

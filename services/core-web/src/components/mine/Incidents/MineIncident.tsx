@@ -15,7 +15,7 @@ import { clearMineIncident } from "@mds/common/redux/actions/incidentActions";
 import * as Strings from "@mds/common/constants/strings";
 import * as FORM from "@/constants/forms";
 import IncidentForm from "@/components/Forms/incidents/IncidentForm";
-import ScrollSideMenu from "@/components/common/ScrollSideMenu";
+import ScrollSideMenu from "@mds/common/components/common/ScrollSideMenu";
 import * as routes from "@/constants/routes";
 
 interface IParams {
@@ -179,6 +179,11 @@ export const MineIncident = (props) => {
       setIsFixedTop(false);
     }
   };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+  }, []);
 
   useEffect(() => {
     handleFetchData().then(() => {
