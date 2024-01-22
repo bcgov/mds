@@ -32,15 +32,13 @@ const IncidentFormMinistryFollowup: FC<IncidentFormMinistryFollowupProps> = ({
 }) => {
   const formValues = useSelector((state) => getFormValues(ADD_EDIT_INCIDENT)(state));
 
-  const [inspectorContactedValidation, setInspectorContactedValidation] = useState({});
-  const [inspectorContacted, setInspectorContacted] = useState(null);
+  //const [inspectorContactedValidation, setInspectorContactedValidation] = useState({});
+  //const [inspectorContacted, setInspectorContacted] = useState(null);
 
   useEffect(() => {
-    const inspectorSet = formValues?.reported_to_inspector_party_guid;
-
-    setInspectorContactedValidation(inspectorSet ? { validate: [requiredRadioButton] } : {});
-
-    setInspectorContacted(formValues?.reported_to_inspector_contacted);
+    //const inspectorSet = formValues?.reported_to_inspector_party_guid;
+    //setInspectorContactedValidation(inspectorSet ? { validate: [requiredRadioButton] } : {});
+    //setInspectorContacted(formValues?.reported_to_inspector_contacted);
   }, [formValues]);
 
   const filteredFollowUpActions = incidentFollowUpActionOptions.filter(
@@ -119,18 +117,6 @@ const IncidentFormMinistryFollowup: FC<IncidentFormMinistryFollowupProps> = ({
               />
             </Col>
           )}
-          <Col span={24}>
-            <h4>Verbal Notification</h4>
-          </Col>
-          <Col md={12} xs={24}>
-            <Field
-              label="Was verbal notification of the incident provided through the Mine Incident Reporting Line (1-888-348-0299)?"
-              id="verbal_notification_provided"
-              name="verbal_notification_provided"
-              component={renderConfig.RADIO}
-              disabled={!isEditMode}
-            />
-          </Col>
           {formValues.verbal_notification_provided && (
             <Col md={12} xs={24}>
               <Field
@@ -150,10 +136,10 @@ const IncidentFormMinistryFollowup: FC<IncidentFormMinistryFollowupProps> = ({
               />
             </Col>
           )}
-          <Col span={24}>
+          {/* <Col span={24}>
             <h4>Follow-Up Information</h4>
-          </Col>
-          <Col md={12} xs={24}>
+          </Col> */}
+          {/* <Col md={12} xs={24}>
             <Field
               label="Incident reported to"
               id="reported_to_inspector_party_guid"
@@ -164,7 +150,7 @@ const IncidentFormMinistryFollowup: FC<IncidentFormMinistryFollowupProps> = ({
               data={inspectorOptions}
               disabled={!isEditMode}
             />
-          </Col>
+          </Col> 
           <Col md={12} xs={24}>
             <Field
               label="Was this person contacted?"
@@ -176,7 +162,8 @@ const IncidentFormMinistryFollowup: FC<IncidentFormMinistryFollowupProps> = ({
               {...inspectorContactedValidation}
             />
           </Col>
-          {inspectorContacted && (
+          */}
+          {/* {inspectorContacted && (
             <>
               <Col md={12} xs={24}>
                 <Field
@@ -208,8 +195,8 @@ const IncidentFormMinistryFollowup: FC<IncidentFormMinistryFollowupProps> = ({
                 />
               </Col>
             </>
-          )}
-          <Col md={12} xs={24}>
+          )} */}
+          {/* <Col md={12} xs={24}>
             <Field
               label="Inspector responsible"
               id="responsible_inspector_party_guid"
@@ -246,7 +233,7 @@ const IncidentFormMinistryFollowup: FC<IncidentFormMinistryFollowupProps> = ({
               ]}
               disabled={!isEditMode}
             />
-          </Col>
+          </Col> */}
           <Col span={24}>
             <Field
               label="Was it escalated to EMLI investigation?"

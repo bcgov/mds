@@ -1,6 +1,6 @@
 import { Col, Divider, Form, Row, Typography } from "antd";
-import React, { FC } from "react";
-import { Field } from "redux-form";
+import React, { FC, useEffect, useState } from "react";
+import { Field, getFormValues } from "redux-form";
 import { renderConfig } from "@/components/common/config";
 import { useSelector } from "react-redux";
 import {
@@ -14,22 +14,28 @@ import {
   requiredList,
   requiredNotUndefined,
   wholeNumber,
+  requiredRadioButton,
 } from "@common/utils/Validate";
 import { normalizeDatetime, normalizePhone } from "@common/utils/helpers";
 import IncidentCategoryCheckboxGroup from "@/components/Forms/incidents/IncidentCategoryCheckboxGroup";
 import RenderDateTimeTz from "@/components/common/RenderDateTimeTz";
 import { getDropdownIncidentCategoryCodeOptions } from "@mds/common/redux/selectors/staticContentSelectors";
-import { IMineIncident } from "@mds/common";
+import { IMineIncident, INCIDENT_CONTACT_METHOD_OPTIONS } from "@mds/common";
+import { ADD_EDIT_INCIDENT } from "@/constants/forms";
+import { dateNotBeforeStrictOther } from "@mds/common/redux/utils/Validate";
 
 interface IncidentFormInitialReportProps {
   isEditMode: boolean;
   incident: IMineIncident;
+  inspectorOptions: any[];
 }
 
 const IncidentFormInitialReport: FC<IncidentFormInitialReportProps> = ({
   isEditMode,
   incident,
+  inspectorOptions,
 }) => {
+  const formValues = useSelector((state) => getFormValues(ADD_EDIT_INCIDENT)(state));
   const showUnspecified = incident.mine_incident_guid && !incident.incident_location;
 
   const locationOptions = [
@@ -42,6 +48,14 @@ const IncidentFormInitialReport: FC<IncidentFormInitialReportProps> = ({
   ];
 
   const incidentCategoryCodeOptions = useSelector(getDropdownIncidentCategoryCodeOptions);
+  const [inspectorContactedValidation, setInspectorContactedValidation] = useState({});
+  const [inspectorContacted, setInspectorContacted] = useState(null);
+
+  useEffect(() => {
+    const inspectorSet = formValues?.reported_to_inspector_party_guid;
+    setInspectorContactedValidation(inspectorSet ? { validate: [requiredRadioButton] } : {});
+    setInspectorContacted(formValues?.reported_to_inspector_contacted);
+  }, [formValues]);
 
   return (
     <div className="ant-form-vertical">
@@ -109,6 +123,137 @@ const IncidentFormInitialReport: FC<IncidentFormInitialReportProps> = ({
               </Form.Item>
             </Col>
           </Row>
+          <Row gutter={16}>
+            <Col span={24}>
+              <h4>Verbal Notification</h4>
+            </Col>
+            <Col md={12} xs={24}>
+              <Field
+                label="Was verbal notification of the incident provided through the Mine Incident Reporting Line (1-888-348-0299)?"
+                id="verbal_notification_provided"
+                name="verbal_notification_provided"
+                component={renderConfig.RADIO}
+                disabled={!isEditMode}
+              />
+            </Col>
+            {formValues.verbal_notification_provided && (
+              <Col md={12} xs={24}>
+                <Field
+                  label="Date and time"
+                  id="verbal_notification_timestamp"
+                  name="verbal_notification_timestamp"
+                  component={RenderDateTimeTz}
+                  normalize={normalizeDatetime}
+                  timezone={formValues.incident_timezone}
+                  showTime
+                  disabled={!isEditMode}
+                  placeholder="Please select date"
+                  validate={[
+                    dateNotInFutureTZ,
+                    dateNotBeforeStrictOther(formValues.incident_timestamp),
+                  ]}
+                />
+              </Col>
+            )}
+          </Row>
+          <Col span={24}>
+            <h4>Follow-Up Information</h4>
+          </Col>
+          <Col md={12} xs={24}>
+            <Field
+              label="Inspector reported to"
+              id="reported_to_inspector_party_guid"
+              name="reported_to_inspector_party_guid"
+              placeholder="Search for inspector..."
+              component={renderConfig.GROUPED_SELECT}
+              format={null}
+              data={inspectorOptions}
+              disabled={!isEditMode}
+            />
+          </Col>
+          <Col md={12} xs={24}>
+            <Field
+              label="Was this person contacted?"
+              id="reported_to_inspector_contacted"
+              name="reported_to_inspector_contacted"
+              component={renderConfig.RADIO}
+              disabled={!isEditMode}
+              validate={[]}
+              {...inspectorContactedValidation}
+            />
+          </Col>
+
+          {inspectorContacted && (
+            <>
+              <Col md={12} xs={24}>
+                <Field
+                  label="Date and time"
+                  id="reported_timestamp"
+                  name="reported_timestamp"
+                  component={RenderDateTimeTz}
+                  normalize={normalizeDatetime}
+                  timezone={formValues.incident_timezone}
+                  showTime
+                  disabled={!isEditMode}
+                  placeholder="Please select date"
+                  validate={[
+                    required,
+                    dateNotInFutureTZ,
+                    dateNotBeforeStrictOther(formValues.incident_timestamp),
+                  ]}
+                />
+              </Col>
+              <Col md={12} xs={24}>
+                <Field
+                  label="Initial Contact Method"
+                  id="reported_to_inspector_contact_method"
+                  name="reported_to_inspector_contact_method"
+                  component={renderConfig.SELECT}
+                  data={INCIDENT_CONTACT_METHOD_OPTIONS.filter((cm) => cm?.inspectorOnly)}
+                  disabled={!isEditMode}
+                  validate={[required]}
+                />
+              </Col>
+            </>
+          )}
+          <Col md={12} xs={24}>
+            <Field
+              label="Inspector responsible"
+              id="responsible_inspector_party_guid"
+              name="responsible_inspector_party_guid"
+              component={renderConfig.GROUPED_SELECT}
+              format={null}
+              placeholder="Search for responsible inspector..."
+              data={inspectorOptions}
+              disabled={!isEditMode}
+            />
+          </Col>
+          <Col md={12} xs={24}>
+            <Field
+              label="Was there a follow-up inspection?"
+              id="followup_inspection"
+              name="followup_inspection"
+              component={renderConfig.RADIO}
+              disabled={!isEditMode}
+            />
+          </Col>
+          <Col md={12} xs={24}>
+            <Field
+              label="Follow-up inspection date"
+              id="followup_inspection_date"
+              name="followup_inspection_date"
+              placeholder="Please select date..."
+              showTime={false}
+              component={RenderDateTimeTz}
+              normalize={normalizeDatetime}
+              timezone={formValues.incident_timezone}
+              validate={[
+                dateNotInFutureTZ,
+                dateNotBeforeStrictOther(formValues.incident_timestamp),
+              ]}
+              disabled={!isEditMode}
+            />
+          </Col>
           <br />
         </Col>
         {/* Incident Details */}
