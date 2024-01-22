@@ -164,6 +164,7 @@ export const FileUpload = (props: FileUploadProps) => {
         clearInterval(intervalId);
         if (response.data.status === "Success") {
           load(documentGuid);
+
           props.onFileLoad(file.name, documentGuid, versionGuid);
 
           if (props?.afterSuccess?.action) {
@@ -463,6 +464,7 @@ export const FileUpload = (props: FileUploadProps) => {
           allowMultiple={props.allowMultiple}
           onaddfilestart={props.addFileStart}
           allowReorder={props.allowReorder}
+          maxParallelUploads={1}
           maxFileSize={props.maxFileSize}
           // maxFiles={props.maxFiles || undefined}
           allowFileTypeValidation={acceptedFileTypes.length > 0}
@@ -470,7 +472,7 @@ export const FileUpload = (props: FileUploadProps) => {
           onaddfile={handleFileAdd}
           onprocessfiles={props.onProcessFiles}
           onprocessfileabort={props.onAbort}
-          // oninit={props.onInit}
+          oninit={props.onInit}
           labelIdle={props?.labelIdle}
           itemInsertLocation={props?.itemInsertLocation}
           credits={null}
