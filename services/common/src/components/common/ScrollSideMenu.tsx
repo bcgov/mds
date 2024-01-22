@@ -37,15 +37,14 @@ export const ScrollSideMenu: FC<ScrollSideMenuProps> = ({ tabSection = "", ...pr
     // will be contaminated with extra params that we don't need. All we want is the hash that corresponds
     // to the feature section, so we must parse it out. If the hash is "#state", we must ignore it (see example).
     // For example: #blasting&state=bd74ea1c-09e5-4d7e-810f-d3558969293a&session_state=1c577088-15a8-4ae2-...
-    let link =
-      location && location.hash && !location.hash.startsWith("#state") ? location.hash : undefined;
+    let link = !location.hash.startsWith("#state") ? location.hash : undefined;
     if (!link) {
       return;
     }
 
     // Extracts "#blasting" from "#blasting&state=bd74ea1c-09e5-4d7e-810f-d...", for example.
     if (link.includes("&")) {
-      link = link.substr(0, link.indexOf("&"));
+      link = link.substring(0, link.indexOf("&"));
     }
 
     updateUrlRoute(link);
