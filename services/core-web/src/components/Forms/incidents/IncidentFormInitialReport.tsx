@@ -159,32 +159,33 @@ const IncidentFormInitialReport: FC<IncidentFormInitialReportProps> = ({
           <Col span={24}>
             <h4>Follow-Up Information</h4>
           </Col>
-          <Col md={12} xs={24}>
-            <Field
-              label="Inspector reported to"
-              id="reported_to_inspector_party_guid"
-              name="reported_to_inspector_party_guid"
-              placeholder="Search for inspector..."
-              component={renderConfig.GROUPED_SELECT}
-              format={null}
-              data={inspectorOptions}
-              disabled={!isEditMode}
-            />
-          </Col>
-          <Col md={12} xs={24}>
-            <Field
-              label="Was this person contacted?"
-              id="reported_to_inspector_contacted"
-              name="reported_to_inspector_contacted"
-              component={renderConfig.RADIO}
-              disabled={!isEditMode}
-              validate={[]}
-              {...inspectorContactedValidation}
-            />
-          </Col>
-
+          <Row gutter={16}>
+            <Col md={12} xs={24}>
+              <Field
+                label="Inspector reported to"
+                id="reported_to_inspector_party_guid"
+                name="reported_to_inspector_party_guid"
+                placeholder="Search for inspector..."
+                component={renderConfig.GROUPED_SELECT}
+                format={null}
+                data={inspectorOptions}
+                disabled={!isEditMode}
+              />
+            </Col>
+            <Col md={12} xs={24}>
+              <Field
+                label="Was this person contacted?"
+                id="reported_to_inspector_contacted"
+                name="reported_to_inspector_contacted"
+                component={renderConfig.RADIO}
+                disabled={!isEditMode}
+                validate={[]}
+                {...inspectorContactedValidation}
+              />
+            </Col>
+          </Row>
           {inspectorContacted && (
-            <>
+            <Row gutter={16}>
               <Col md={12} xs={24}>
                 <Field
                   label="Date and time"
@@ -214,46 +215,48 @@ const IncidentFormInitialReport: FC<IncidentFormInitialReportProps> = ({
                   validate={[required]}
                 />
               </Col>
-            </>
+            </Row>
           )}
-          <Col md={12} xs={24}>
-            <Field
-              label="Inspector responsible"
-              id="responsible_inspector_party_guid"
-              name="responsible_inspector_party_guid"
-              component={renderConfig.GROUPED_SELECT}
-              format={null}
-              placeholder="Search for responsible inspector..."
-              data={inspectorOptions}
-              disabled={!isEditMode}
-            />
-          </Col>
-          <Col md={12} xs={24}>
-            <Field
-              label="Was there a follow-up inspection?"
-              id="followup_inspection"
-              name="followup_inspection"
-              component={renderConfig.RADIO}
-              disabled={!isEditMode}
-            />
-          </Col>
-          <Col md={12} xs={24}>
-            <Field
-              label="Follow-up inspection date"
-              id="followup_inspection_date"
-              name="followup_inspection_date"
-              placeholder="Please select date..."
-              showTime={false}
-              component={RenderDateTimeTz}
-              normalize={normalizeDatetime}
-              timezone={formValues.incident_timezone}
-              validate={[
-                dateNotInFutureTZ,
-                dateNotBeforeStrictOther(formValues.incident_timestamp),
-              ]}
-              disabled={!isEditMode}
-            />
-          </Col>
+          <Row gutter={16}>
+            <Col md={12} xs={24}>
+              <Field
+                label="Inspector responsible"
+                id="responsible_inspector_party_guid"
+                name="responsible_inspector_party_guid"
+                component={renderConfig.GROUPED_SELECT}
+                format={null}
+                placeholder="Search for responsible inspector..."
+                data={inspectorOptions}
+                disabled={!isEditMode}
+              />
+            </Col>
+            <Col md={12} xs={24}>
+              <Field
+                label="Was there a follow-up inspection?"
+                id="followup_inspection"
+                name="followup_inspection"
+                component={renderConfig.RADIO}
+                disabled={!isEditMode}
+              />
+            </Col>
+            <Col md={12} xs={24}>
+              <Field
+                label="Follow-up inspection date"
+                id="followup_inspection_date"
+                name="followup_inspection_date"
+                placeholder="Please select date..."
+                showTime={false}
+                component={RenderDateTimeTz}
+                normalize={normalizeDatetime}
+                timezone={formValues.incident_timezone}
+                validate={[
+                  dateNotInFutureTZ,
+                  dateNotBeforeStrictOther(formValues.incident_timestamp),
+                ]}
+                disabled={!isEditMode}
+              />
+            </Col>
+          </Row>
           <br />
         </Col>
         {/* Incident Details */}
