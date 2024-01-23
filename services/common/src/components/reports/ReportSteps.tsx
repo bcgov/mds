@@ -99,7 +99,11 @@ const ReportSteps = () => {
               isEditMode={false}
               mineGuid={mineGuid}
               handleSubmit={(values) => {
-                const formValues = { mine_report_submission_status: MINE_REPORT_SUBMISSION_CODES.REC, received_date: moment().format("YYYY-MM-DD"), ...values };
+                const formValues = {
+                  mine_report_submission_status: MINE_REPORT_SUBMISSION_CODES.INI,
+                  received_date: moment().format("YYYY-MM-DD"),
+                  ...values,
+                };
                 dispatch(createMineReport(mineGuid, formValues)).then((response) => {
                   if (response.data) {
                     const { mine_guid, mine_report_guid } = response.data;
