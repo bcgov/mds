@@ -148,7 +148,7 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
 
       return {
         ...report,
-        status: latestSubmission?.mine_report_submission_status_code,
+        status: latestSubmission?.mine_report_submission_status_code ?? "",
       };
     });
 

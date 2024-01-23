@@ -129,7 +129,7 @@ class MineReportListResource(Resource, UserMixin):
             submission = submissions[-1]
             if len(submission.get('documents')) > 0:
                 submission_status = data.get('mine_report_submission_status') if data.get(
-                    'mine_report_submission_status') else 'NRQ'
+                    'mine_report_submission_status') else 'INI'
                 report_submission = MineReportSubmission(
                     mine_report_submission_status_code=submission_status,
                     submission_date=datetime.utcnow())
