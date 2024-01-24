@@ -185,8 +185,9 @@ export const sortListObjectsByPropertyLocaleCompare = (list, property) =>
 export const sortListObjectsByPropertyDate = (list, property) => list.sort(dateSorter(property));
 
 // Case insensitive filter for a SELECT field by label string
+// NOTE: this is for the NEW ant design component in common, which has option.label, not option.children
 export const caseInsensitiveLabelFilter = (input, option) =>
-  option.children.toLowerCase().includes(input.toLowerCase());
+  option.label.toLowerCase().includes(input.toLowerCase());
 
 // function taken directly from redux-forms (https://redux-form.com/6.0.0-rc.1/examples/normalizing)
 // automatically adds dashes to phone number

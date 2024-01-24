@@ -138,7 +138,9 @@ export const lonNegative = (value) =>
 export const phoneNumber = (value) =>
   value && !Validate.checkPhone(value) ? "Invalid phone number e.g. xxx-xxx-xxxx" : undefined;
 
+// relies on provinceOptions being passed as props rather than through a selector
 export const postalCode = (value, allValues, formProps) => {
+  console.log(formProps);
   const { sub_division_code } = allValues;
   const country = formProps.provinceOptions.find((prov) => prov.value === sub_division_code)
     ?.subType;
@@ -146,6 +148,13 @@ export const postalCode = (value, allValues, formProps) => {
     ? "Invalid postal code or zip code"
     : undefined;
 };
+
+export const postalCodeWithCountry = memoize((address_type_code = "CAN") => (value) => {
+  const code_type = address_type_code === "USA" ? "zip code" : "postal code";
+  return value && !Validate.checkPostalCode(value, address_type_code)
+    ? `Invalid ${code_type}`
+    : undefined;
+});
 
 export const protocol = (value) =>
   value && !Validate.checkProtocol(value) ? "Invalid. Url must contain https://" : undefined;

@@ -181,6 +181,7 @@ class PartyListResource(Resource, UserMixin):
             job_title=data.get('job_title'),
             job_title_code=data.get('job_title_code'),
             organization_guid=data.get('organization_guid'),
+            address_type_code=data.get('address_type_code'),
             add_to_session=True)
 
         if not party:

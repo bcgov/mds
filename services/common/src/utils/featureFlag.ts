@@ -14,7 +14,7 @@ export enum Feature {
   REPORT_ERROR = "report_error",
   MAJOR_PROJECT_LINK_PROJECTS = "major_project_link_projects",
   CODE_REQUIRED_REPORTS = "code_required_reports",
-
+  AMS_AGENT = "ams_agent",
 }
 
 export const initializeFlagsmith = async (flagsmithUrl, flagsmithKey) => {

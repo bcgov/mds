@@ -16,7 +16,6 @@ from app.api.activity.models.activity_notification import ActivityType
 
 from app.api.activity.utils import trigger_notification
 from app.api.projects.project.project_util import ProjectUtil
-
 PAGE_DEFAULT = 1
 PER_PAGE_DEFAULT = 25
 
@@ -91,6 +90,14 @@ class ProjectSummaryResource(Resource, UserMixin):
         store_missing=False,
         required=False,
     )
+    parser.add_argument(
+        'agent', 
+        type=dict, 
+        location='json', 
+        store_missing=False, 
+        required=False
+        )
+    parser.add_argument('is_agent', type=bool, help="True if an agent is applying on behalf of the Applicant", location='json', store_missing=False, required=False)
     parser.add_argument('contacts', type=list, location='json', store_missing=False, required=False)
     parser.add_argument(
         'authorizations', type=list, location='json', store_missing=False, required=False)
@@ -119,7 +126,7 @@ class ProjectSummaryResource(Resource, UserMixin):
         })
     @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PROJECT_SUMMARIES])
     @api.marshal_with(PROJECT_SUMMARY_MODEL, code=200)
-    def put(self, project_guid, project_summary_guid):
+    def put(self, project_guid, project_summary_guid):        
         project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid,
                                                                       is_minespace_user())
         project = Project.find_by_project_guid(project_guid)
@@ -147,8 +154,8 @@ class ProjectSummaryResource(Resource, UserMixin):
                                data.get('expected_permit_receipt_date'),
                                data.get('expected_project_start_date'), data.get('status_code'),
                                data.get('project_lead_party_guid'),
-                               data.get('documents', []), data.get('authorizations',
-                                                                   []), submission_date)
+                               data.get('documents', []), data.get('authorizations',[]),
+                               submission_date, data.get('agent'), data.get('is_agent'))
 
         project_summary.save()
         if prev_status == 'DFT' and project_summary.status_code == 'SUB':

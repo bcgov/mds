@@ -1,6 +1,7 @@
 import { createSelector } from "reselect";
 import { isEmpty } from "lodash";
 import * as projectReducer from "../reducers/projectReducer";
+import { IParty } from "../..";
 
 export const {
   getProjectSummary,
@@ -16,10 +17,18 @@ export const {
   getProjectLinks,
 } = projectReducer;
 
+const formatProjectSummaryAgent = (agent): IParty => {
+  if (!agent || !agent.party_guid) {
+    return agent;
+  }
+  return { ...agent, address: agent.address[0] };
+};
+
 export const getFormattedProjectSummary = createSelector(
   [getProjectSummary, getProject],
   (summary, project) => {
-    let formattedSummary = { ...summary, authorizationOptions: [] };
+    const agent = formatProjectSummaryAgent(summary.agent);
+    let formattedSummary = { ...summary, agent, authorizationOptions: [] };
     if (!isEmpty(summary) && summary?.authorizations.length) {
       summary.authorizations.forEach((authorization) => {
         formattedSummary = {

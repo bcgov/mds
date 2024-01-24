@@ -10,6 +10,7 @@ import { IOption } from "@mds/common";
 interface RenderRadioButtonsProps extends BaseInputProps {
   label: string;
   customOptions?: IOption[];
+  optionType?: "default" | "button";
 }
 
 const RenderRadioButtons: FC<RenderRadioButtonsProps> = ({
@@ -20,6 +21,7 @@ const RenderRadioButtons: FC<RenderRadioButtonsProps> = ({
   id,
   customOptions,
   required = false,
+  optionType = "default",
 }) => {
   const options = customOptions ?? [
     { label: "Yes", value: true },
@@ -48,6 +50,8 @@ const RenderRadioButtons: FC<RenderRadioButtonsProps> = ({
         name={input.name}
         onChange={handleRadioChange}
         options={options}
+        optionType={optionType}
+        buttonStyle="solid"
       />
     </Form.Item>
   );

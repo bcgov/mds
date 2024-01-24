@@ -2,7 +2,7 @@ from app.extensions import api
 from flask_restplus import fields, marshal
 
 from app.api.mines.response_models import MINE_DOCUMENT_MODEL, MINES_MODEL
-
+from app.api.parties.response_models import PARTY
 
 class Requirement(fields.Raw):
     def format(self, value):
@@ -139,7 +139,9 @@ PROJECT_SUMMARY_MODEL = api.model(
         'update_user': fields.String,
         'update_timestamp': fields.DateTime,
         'create_user': fields.String,
-        'create_timestamp': fields.DateTime
+        'create_timestamp': fields.DateTime,
+        'agent': fields.Nested(PARTY),
+        'is_agent': fields.Boolean
     })
 
 PROJECT_CONTACT_MODEL = api.model(
