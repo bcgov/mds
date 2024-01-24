@@ -32,7 +32,7 @@ export const EditMinespaceUser = (props) => {
                 id="email_or_username"
                 name="email_or_username"
                 label="Email/BCeID username"
-                placeholder="Enter the users Email (BCeID username if email is not available)"
+                placeholder="Please enter a bceid in the format of user@bceid or a valid email address"
                 component={RenderField}
                 allowClear
               />
