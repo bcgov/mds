@@ -71,7 +71,7 @@ export const ScrollSideMenu: FC<ScrollSideMenuProps> = ({ tabSection = "", ...pr
     <div>
       <Anchor
         affix={false}
-        offsetTop={160}
+        offsetTop={180}
         onChange={handleAnchorOnChange}
         onClick={handleAnchorOnClick}
       >

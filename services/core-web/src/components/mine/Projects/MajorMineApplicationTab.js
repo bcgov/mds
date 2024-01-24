@@ -208,11 +208,7 @@ export class MajorMineApplicationTab extends Component {
             featureUrlRouteArguments={[project_guid]}
           />
         </div>
-        <div
-          className={
-            this.state.fixedTop ? "side-menu--content with-fixed-top top-125" : "side-menu--content"
-          }
-        >
+        <div className={this.state.fixedTop ? "side-menu--content top-125" : "side-menu--content"}>
           <Row>
             <Col lg={18}>
               <UpdateMajorMineAppStatusForm

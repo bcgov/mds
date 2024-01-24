@@ -213,11 +213,7 @@ export class ProjectDocumentsTab extends Component {
             featureUrlRouteArguments={[this.props.match?.params?.projectGuid]}
           />
         </div>
-        <div
-          className={
-            this.state.fixedTop ? "side-menu--content with-fixed-top top-125" : "side-menu--content"
-          }
-        >
+        <div className={this.state.fixedTop ? "side-menu--content top-125" : "side-menu--content"}>
           {this.renderDocumentSection(
             "Project Description",
             "project-description",
