@@ -11,7 +11,6 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPl
 const MomentTimezoneDataPlugin = require("moment-timezone-data-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const HtmlCriticalWebpackPlugin = require("html-critical-webpack-plugin");
 const parts = require("./webpack.parts");
 const DEVELOPMENT = "development";
 const PRODUCTION = "production";
@@ -100,8 +99,8 @@ const commonConfig = merge([
         ...PATH_ALIASES,
         ...(process.env.NODE_ENV === "development"
           ? {
-              "react-dom": "@hot-loader/react-dom",
-            }
+            "react-dom": "@hot-loader/react-dom",
+          }
           : {}),
         // Use lodash-es that supports proper tree-shaking
         lodash: "lodash-es",
@@ -231,19 +230,6 @@ const prodConfig = merge([
   parts.copy(PATHS.public, path.join(PATHS.build, "public")),
   {
     plugins: [
-      new HtmlCriticalWebpackPlugin({
-        base: PATHS.build,
-        src: "index.html",
-        dest: "index.html",
-        inline: true,
-        minify: true,
-        extract: true,
-        width: 375,
-        height: 565,
-        penthouse: {
-          blockJSRequests: false,
-        },
-      }),
       new BundleAnalyzerPlugin({
         analyzerMode: "static",
         generateStatsFile: true,
