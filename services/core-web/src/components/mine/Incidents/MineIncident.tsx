@@ -228,9 +228,7 @@ export const MineIncident = (props) => {
         <div className={fixedTop ? "side-menu--fixed" : "side-menu"}>
           <ScrollSideMenu {...scrollSideMenuProps} />
         </div>
-        <div
-          className={fixedTop ? "side-menu--content with-fixed-top top-125" : "side-menu--content"}
-        >
+        <div className={fixedTop ? "side-menu--content top-125" : "side-menu--content"}>
           <IncidentForm {...incidentFormProps} />
         </div>
       </div>
