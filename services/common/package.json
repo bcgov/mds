@@ -10,6 +10,7 @@
     "build": "webpack --env production",
     "watch": "webpack --watch --env development",
     "test": "jest --env=jsdom --runInBand",
+    "ci-test": "jest --env=jsdom --testResultsProcessor=jest-sonar-reporter --update-snapshot --runInBand --coverage",
     "test:updateAll": "jest --runInBand --env=jsdom -u --"
   },
   "dependencies": {
