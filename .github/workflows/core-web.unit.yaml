@@ -1,6 +1,7 @@
 name: CORE WEB - Unit Tests
 
 on:
+  workflow_dispatch:
   pull_request:
     paths:
       - services/common/**
