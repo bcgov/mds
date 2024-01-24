@@ -1,5 +1,5 @@
 from flask import current_app
-from flask_restplus import Resource, reqparse
+from flask_restx import Resource, reqparse
 from werkzeug.exceptions import BadRequest
 from app.extensions import api
 from app.config import Config

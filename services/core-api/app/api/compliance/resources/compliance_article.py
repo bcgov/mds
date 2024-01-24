@@ -1,4 +1,4 @@
-from flask_restplus import Resource, fields
+from flask_restx import Resource, fields
 from app.extensions import api
 from app.api.utils.access_decorators import (requires_any_of, VIEW_ALL, MINESPACE_PROPONENT)
 from app.api.utils.resources_mixins import UserMixin

@@ -1,5 +1,5 @@
 from flask import request
-from flask_restplus import Resource, reqparse
+from flask_restx import Resource, reqparse
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
 from app.extensions import api, db

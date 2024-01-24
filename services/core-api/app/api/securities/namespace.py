@@ -1,4 +1,4 @@
-from flask_restplus import Namespace
+from flask_restx import Namespace
 
 from app.api.securities.resources.bond import BondListResource, BondResource, BondTransferResource
 from app.api.securities.resources.bond_status import BondStatusResource

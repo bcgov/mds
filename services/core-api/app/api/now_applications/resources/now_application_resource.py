@@ -4,7 +4,7 @@ from datetime import datetime
 from dateutil.tz import UTC
 
 from flask import request, current_app
-from flask_restplus import Resource, marshal
+from flask_restx import Resource, marshal
 from werkzeug.exceptions import BadRequest, NotFound, NotImplemented
 
 from app.extensions import api, db

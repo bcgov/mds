@@ -6,7 +6,7 @@ import json
 from tusclient import client
 
 from flask import Response, current_app, request as flask_request
-from flask_restplus import marshal, fields
+from flask_restx import marshal, fields
 from app.config import Config
 from app.api.now_applications.response_models import NOW_SUBMISSION_DOCUMENT
 from app.api.now_applications.models.now_application_document_identity_xref import NOWApplicationDocumentIdentityXref

@@ -1,4 +1,4 @@
-from flask_restplus import Resource, inputs, reqparse
+from flask_restx import Resource, inputs, reqparse
 from werkzeug.exceptions import NotFound, BadRequest
 from datetime import timedelta, datetime as dt, timezone
 

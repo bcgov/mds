@@ -1,7 +1,7 @@
 import json
 
 from flask import request
-from flask_restplus import Resource, marshal, reqparse
+from flask_restx import Resource, marshal, reqparse
 from ..models.mine_summary_view import MineSummaryView
 
 from app.api.exports.response_models import MINE_SUMMARY_MODEL_LIST

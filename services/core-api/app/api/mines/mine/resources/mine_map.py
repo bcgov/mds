@@ -4,7 +4,7 @@ import json
 import threading
 
 from flask import request, make_response, current_app
-from flask_restplus import Resource, reqparse, inputs, fields
+from flask_restx import Resource, reqparse, inputs, fields
 
 from app.api.mines.location.models.mine_map_view_location import MineMapViewLocation
 from app.extensions import api, cache, db

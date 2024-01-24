@@ -1,5 +1,5 @@
 from werkzeug.exceptions import NotFound
-from flask_restplus import Resource
+from flask_restx import Resource
 from app.extensions import api
 
 from app.api.utils.access_decorators import (requires_any_of, EDIT_MAJOR_MINE_APPLICATIONS, MINE_ADMIN)

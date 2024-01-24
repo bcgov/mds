@@ -1,6 +1,6 @@
 import json
 import requests
-from flask_restplus import Resource
+from flask_restx import Resource
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound, BadGateway
 
 from app.extensions import api

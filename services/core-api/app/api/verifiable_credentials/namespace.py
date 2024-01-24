@@ -1,4 +1,4 @@
-from flask_restplus import Namespace
+from flask_restx import Namespace
 
 from app.api.verifiable_credentials.resources.verifiable_credential import VerifiableCredentialResource
 from app.api.verifiable_credentials.resources.verifiable_credential_connections import VerifiableCredentialConnectionResource

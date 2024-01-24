@@ -1,4 +1,4 @@
-from flask_restplus import Resource, marshal
+from flask_restx import Resource, marshal
 from flask import request
 from werkzeug.exceptions import BadRequest, NotFound
 from marshmallow.exceptions import MarshmallowError

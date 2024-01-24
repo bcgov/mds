@@ -1,4 +1,4 @@
-from flask_restplus import Namespace
+from flask_restx import Namespace
 from app.api.dams.resources.dam import DamResource
 from app.api.dams.resources.dam_list import DamListResource
 

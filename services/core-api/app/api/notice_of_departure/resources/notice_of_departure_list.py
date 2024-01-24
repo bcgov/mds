@@ -1,5 +1,5 @@
 from app.api.activity.models.activity_notification import ActivityType
-from flask_restplus import Resource, reqparse, inputs
+from flask_restx import Resource, reqparse, inputs
 from werkzeug.exceptions import NotFound
 from app.extensions import api
 from app.api.utils.resources_mixins import UserMixin

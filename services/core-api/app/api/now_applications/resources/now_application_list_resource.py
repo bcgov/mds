@@ -1,5 +1,5 @@
 from flask import request
-from flask_restplus import Resource, inputs
+from flask_restx import Resource, inputs
 from sqlalchemy import func, or_, and_
 from sqlalchemy_filters import apply_pagination, apply_sort
 from werkzeug.exceptions import BadRequest

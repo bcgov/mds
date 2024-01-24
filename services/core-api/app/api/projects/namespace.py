@@ -1,4 +1,4 @@
-from flask_restplus import Namespace
+from flask_restx import Namespace
 
 from app.api.projects.project.resources.project import ProjectResource, ProjectListResource, ProjectListDashboardResource
 from app.api.projects.project_link.resources.project_link_resource import ProjectLinkListResource

@@ -1,5 +1,5 @@
 from werkzeug.exceptions import NotFound
-from flask_restplus import Resource
+from flask_restx import Resource
 from flask import request
 from app.extensions import api
 from app.api.utils.resources_mixins import UserMixin

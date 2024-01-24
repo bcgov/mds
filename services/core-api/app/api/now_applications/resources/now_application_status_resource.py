@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta, timezone
-from flask_restplus import Resource, reqparse, inputs
+from flask_restx import Resource, reqparse, inputs
 from flask import current_app
 from operator import attrgetter
 from werkzeug.exceptions import BadRequest, NotFound, NotImplemented

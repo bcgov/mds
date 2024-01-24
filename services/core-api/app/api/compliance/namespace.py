@@ -1,5 +1,4 @@
-from flask_restplus import Namespace
-
+from flask_restx import Namespace
 from app.api.compliance.resources.compliance_article import ComplianceArticleResource
 from app.api.compliance.resources.compliance_document_resource import ComplianceDocumentResource, ComplianceDocumentTokenResource
 

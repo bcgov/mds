@@ -1,4 +1,4 @@
-from flask_restplus import Resource
+from flask_restx import Resource
 from flask import request
 from datetime import datetime
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters

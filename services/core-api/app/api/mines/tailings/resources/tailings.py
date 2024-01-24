@@ -5,7 +5,7 @@ from app.api.parties.party_appt.models.mine_party_appt import MinePartyAcknowled
 
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointmentStatus
 
-from flask_restplus import Resource, reqparse
+from flask_restx import Resource, reqparse
 from werkzeug.exceptions import NotFound
 
 from app.api.mines.mine.models.mine import Mine

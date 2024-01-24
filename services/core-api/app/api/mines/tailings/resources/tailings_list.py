@@ -1,7 +1,7 @@
 from decimal import Decimal
 from datetime import datetime, timezone
 from flask import current_app
-from flask_restplus import Resource, reqparse
+from flask_restx import Resource, reqparse
 from werkzeug.exceptions import InternalServerError, NotFound, BadRequest
 
 from app.extensions import api, db

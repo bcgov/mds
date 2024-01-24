@@ -6,7 +6,8 @@ from logging.config import dictConfig
 
 from flask import Flask, request, current_app
 from flask_cors import CORS
-from flask_restplus import Resource, apidoc
+from flask_restx import Resource
+from flask_restx.apidoc import apidoc
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -132,7 +133,7 @@ def register_extensions(app, test_config=None):
     root_api_namespace.app = app
 
     # Overriding swaggerUI base path to serve content under a prefix
-    apidoc.apidoc.static_url_path = '{}/swaggerui'.format(Config.BASE_PATH)
+    # apidoc.apidoc.static_url_path = '{}/swaggerui'.format(Config.BASE_PATH) [TODO] [MDS-5409]
 
     root_api_namespace.init_app(app)
 

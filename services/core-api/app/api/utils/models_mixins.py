@@ -18,7 +18,7 @@ from app.api.constants import STATE_MODIFIED_DELETE_ON_PUT
 from .include.user_info import User
 
 from sqlalchemy.inspection import inspect
-from flask_restplus import inputs
+from flask_restx import inputs
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.ext.associationproxy import association_proxy
 
@@ -27,6 +27,14 @@ from sqlalchemy.orm import validates
 
 class UserBoundQuery(db.Query):
     _user_bound = True
+
+    @property
+    def _mapper_zero(self):
+      # super().bind
+        # return db.Query._mapper_zero()
+        return self._mapper_zero
+        # return self._primary_entity.entity_zero
+        # return self.__.entity_zero
 
     # for use when intentionally needing to make an unsafe query
     def unbound_unsafe(self):
@@ -43,7 +51,13 @@ def ensure_constrained(query):
     if not query._user_bound or not auth.apply_security:
         return query
 
-    mzero = query._mapper_zero()
+    mzero = query._mapper_zero() # This is the issue
+    # mzero = query.session._mapper_zero()
+    
+    # mzero = query.session.get_bind(
+    #                 query.session._mapper_zero()
+    #         )
+    
     if mzero is not None:
         if has_request_context():
             user_security = auth.get_current_user_security()
@@ -257,7 +271,7 @@ class Base(db.Model):
                         continue
 
                     #for string or integer columns, consider empty strings as null
-                    if py_type in (str, int) and v is '':
+                    if py_type in (str, int) and v == '':
                         setattr(self, k, None)
 
                     # elif (v is not None) and not isinstance(v, py_type):

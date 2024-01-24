@@ -2,7 +2,7 @@ import requests
 
 from werkzeug.exceptions import BadRequest, NotFound, Conflict
 from flask import request, current_app
-from flask_restplus import Resource, reqparse
+from flask_restx import Resource, reqparse
 
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit, requires_any_of, VIEW_ALL
