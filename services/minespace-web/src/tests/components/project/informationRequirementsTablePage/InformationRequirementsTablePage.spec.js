@@ -14,6 +14,7 @@ const setupProps = () => {
 const setupDispatchProps = () => {
   dispatchProps.clearInformationRequirementsTable = jest.fn(() => Promise.resolve());
   dispatchProps.fetchProjectById = jest.fn(() => Promise.resolve());
+  dispatchProps.fetchRequirements = jest.fn(() => Promise.resolve());
 };
 
 beforeEach(() => {

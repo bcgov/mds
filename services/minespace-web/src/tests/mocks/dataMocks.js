@@ -685,6 +685,9 @@ export const COMPLIANCE = {
       overdue: false,
     },
   ],
+  year_to_date: {
+    num_inspections: 5,
+  },
 };
 
 export const MINE_TYPES = [

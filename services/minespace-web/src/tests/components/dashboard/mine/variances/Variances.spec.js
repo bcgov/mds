@@ -19,7 +19,7 @@ const setupProps = () => {
 
 const setupDispatchProps = () => {
   dispatchProps.fetchMineRecordById = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchVariancesByMine = jest.fn();
+  dispatchProps.fetchVariancesByMine = jest.fn(() => Promise.resolve());
 };
 
 beforeEach(() => {
