@@ -6,7 +6,6 @@ on:
     paths:
       - services/common/**
       - services/core-web/**
-      - .github/workflows/core-web.unit.yaml
 
 jobs:
   tests-unit-frontend:
