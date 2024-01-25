@@ -42,3 +42,10 @@ jobs:
 
       - name: Run integration tests
         run: docker-compose -f docker-compose.ci.yaml exec -T backend pytest
+  run-sonar-scan:
+    name: Run SonarCloud Scan
+    if: success()
+    uses: ./.github/workflows/sonarcloud-scan.yaml
+    with:
+      project-dir: services/core-api
+    secrets: inherit

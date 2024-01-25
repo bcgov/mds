@@ -39,3 +39,10 @@ jobs:
 
       - name: Run frontend tests
         run: yarn workspace @mds/common run test
+  run-sonar-scan:
+    name: Run SonarCloud Scan
+    if: success()
+    uses: ./.github/workflows/sonarcloud-scan.yaml
+    with:
+      project-dir: services/common
+    secrets: inherit
