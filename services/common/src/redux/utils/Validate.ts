@@ -151,6 +151,9 @@ export const postalCode = (value, allValues, formProps) => {
 
 export const postalCodeWithCountry = memoize((address_type_code = "CAN") => (value) => {
   const code_type = address_type_code === "USA" ? "zip code" : "postal code";
+  if (!["CAN", "USA"].includes(address_type_code)) {
+    return undefined;
+  }
   return value && !Validate.checkPostalCode(value, address_type_code)
     ? `Invalid ${code_type}`
     : undefined;

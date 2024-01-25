@@ -209,7 +209,7 @@ export const Agent: FC = () => {
                   name="agent.address.post_code"
                   label="Postal Code"
                   component={RenderField}
-                  validate={isInternational ? [] : [postalCodeWithCountry(address_type_code)]}
+                  validate={[postalCodeWithCountry(address_type_code)]}
                 />
               </Col>
             </Row>
