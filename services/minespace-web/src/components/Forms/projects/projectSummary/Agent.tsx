@@ -22,6 +22,7 @@ export const Agent: FC = () => {
   const { agent = {}, is_agent = false } = formValues;
   const { party_type_code, address = {} } = agent ?? {};
   const { address_type_code } = address ?? {};
+  const isInternational = address_type_code === "INT";
 
   const provinceOptions = useSelector(getDropdownProvinceOptions);
   // currently no endpoints, etc, for address_type_code
@@ -135,7 +136,7 @@ export const Agent: FC = () => {
                   name="agent.phone_no"
                   label="Contact Number"
                   required
-                  validate={address_type_code === "INT" ? [required] : [required, phoneNumber]}
+                  validate={isInternational ? [required] : [required, phoneNumber]}
                   component={RenderField}
                 />
               </Col>
@@ -185,9 +186,9 @@ export const Agent: FC = () => {
                 <Field
                   name="agent.address.sub_division_code"
                   label="Province"
-                  required={address_type_code !== "INT"}
+                  required={!isInternational}
                   data={provinceOptions.filter((p) => p.subType === address_type_code)}
-                  validate={address_type_code !== "INT" ? [required] : []}
+                  validate={!isInternational ? [required] : []}
                   component={RenderSelect}
                 />
               </Col>
@@ -208,7 +209,7 @@ export const Agent: FC = () => {
                   name="agent.address.post_code"
                   label="Postal Code"
                   component={RenderField}
-                  validate={[postalCodeWithCountry(address_type_code)]}
+                  validate={isInternational ? [] : [postalCodeWithCountry(address_type_code)]}
                 />
               </Col>
             </Row>
