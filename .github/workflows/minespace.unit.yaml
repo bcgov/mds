@@ -74,3 +74,10 @@ jobs:
         with:
           name: stats
           path: services/minespace-web/build/stats.json
+  run-sonar-scan:
+    name: Run SonarCloud Scan
+    if: success()
+    uses: ./.github/workflows/sonarcloud-scan.yaml
+    with:
+      project-dir: services/minespace-web
+    secrets: inherit

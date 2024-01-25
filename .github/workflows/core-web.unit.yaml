@@ -72,3 +72,10 @@ jobs:
         with:
           name: cypress-recording
           path: services/core-web/cypress/videos
+  run-sonar-scan:
+    name: Run SonarCloud Scan
+    if: success()
+    uses: ./.github/workflows/sonarcloud-scan.yaml
+    with:
+      project-dir: services/core-web
+    secrets: inherit

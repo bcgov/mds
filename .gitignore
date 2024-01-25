@@ -23,7 +23,7 @@ venv*
 *.local.*
 *.crt
 .github/act.secrets
-
+.scannerwork/
 act/
 
 # Terraform
