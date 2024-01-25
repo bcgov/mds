@@ -21,7 +21,7 @@ export const Agent: FC = () => {
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
   const { agent = {}, is_agent = false } = formValues;
   const { party_type_code, address = {} } = agent ?? {};
-  const { address_type_code } = address ?? {};
+  const { address_type_code, sub_division_code } = address ?? {};
   const isInternational = address_type_code === "INT";
 
   const provinceOptions = useSelector(getDropdownProvinceOptions);
@@ -44,7 +44,11 @@ export const Agent: FC = () => {
   }, [party_type_code]);
 
   useEffect(() => {
-    if (address_type_code === "INT") {
+    // clear out the province if country has changed and it no longer matchess
+    const selectedProvince = sub_division_code
+      ? provinceOptions.find((p) => p.value === sub_division_code)
+      : {};
+    if (address_type_code === "INT" || selectedProvince?.subType !== address_type_code) {
       dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.address.sub_division_code", null));
     }
   }, [address_type_code]);
