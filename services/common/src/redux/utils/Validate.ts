@@ -140,7 +140,6 @@ export const phoneNumber = (value) =>
 
 // relies on provinceOptions being passed as props rather than through a selector
 export const postalCode = (value, allValues, formProps) => {
-  console.log(formProps);
   const { sub_division_code } = allValues;
   const country = formProps.provinceOptions.find((prov) => prov.value === sub_division_code)
     ?.subType;
