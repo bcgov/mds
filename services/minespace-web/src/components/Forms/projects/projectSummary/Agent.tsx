@@ -213,7 +213,7 @@ export const Agent: FC = () => {
                   name="agent.address.post_code"
                   label="Postal Code"
                   component={RenderField}
-                  validate={[postalCodeWithCountry(address_type_code)]}
+                  validate={[postalCodeWithCountry(address_type_code), maxLength(10)]}
                 />
               </Col>
             </Row>
