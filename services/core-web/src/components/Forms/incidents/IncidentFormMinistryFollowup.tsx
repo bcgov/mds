@@ -11,7 +11,11 @@ import { renderConfig } from "@/components/common/config";
 import { required, validateSelectOptions } from "@common/utils/Validate";
 import RenderDateTimeTz from "@/components/common/RenderDateTimeTz";
 import { normalizeDatetime } from "@mds/common/redux/utils/helpers";
-import { dateNotBeforeStrictOther, dateNotInFutureTZ } from "@mds/common/redux/utils/Validate";
+import {
+  dateNotBeforeStrictOther,
+  dateNotInFutureTZ,
+  requiredList,
+} from "@mds/common/redux/utils/Validate";
 import { PlusOutlined } from "@ant-design/icons";
 
 interface IncidentFormMinistryFollowupProps {
@@ -34,9 +38,6 @@ const IncidentFormMinistryFollowup: FC<IncidentFormMinistryFollowupProps> = ({
   const filteredFollowUpActions = incidentFollowUpActionOptions.filter(
     (act) => act.mine_incident_followup_investigation_type !== INCIDENT_FOLLOWUP_ACTIONS.unknown
   );
-
-  const validateDoSubparagraphs = (value) =>
-    value?.length === 0 ? "This is a required field" : undefined;
 
   const renderRecommendations = ({ fields, isEditMode }) => (
     <div className="ant-form-vertical">
@@ -102,7 +103,7 @@ const IncidentFormMinistryFollowup: FC<IncidentFormMinistryFollowupProps> = ({
                 placeholder="Please choose one or more..."
                 component={renderConfig.MULTI_SELECT}
                 data={dangerousOccurenceSubparagraphOptions}
-                validate={[required, validateDoSubparagraphs]}
+                validate={[requiredList]}
                 disabled={!isEditMode}
               />
             </Col>
