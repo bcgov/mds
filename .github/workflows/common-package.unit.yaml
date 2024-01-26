@@ -39,10 +39,23 @@ jobs:
 
       - name: Run frontend tests
         run: yarn workspace @mds/common run ci-test
+
+      - name: Upload test coverage results
+        uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: common-test-results
+          path: |
+            services/common/coverage
+            services/common/reports/test-reporter.xml
+
   run-sonar-scan:
     name: Run SonarCloud Scan
     if: success()
+    needs: test-common-package
     uses: ./.github/workflows/sonarcloud-scan.yaml
     with:
       project-dir: services/common
+      test-report-artifact: common-test-results
+
     secrets: inherit
