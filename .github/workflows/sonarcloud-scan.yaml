@@ -22,6 +22,10 @@ jobs:
         with:
           name: ${{ inputs.test-report-artifact }}
           path: ${{ inputs.project-dir }}
+      - name: Fix test lcov paths
+        if: "${{ inputs.test-report-artifact != '' }}"
+        run: |
+          sed -i 's/home\/runner\/work\/mds\/mds/github\/workspace/g' ${{ inputs.project-dir }}/coverage/lcov.info
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2.1.1
