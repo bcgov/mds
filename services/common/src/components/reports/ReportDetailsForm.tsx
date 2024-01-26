@@ -207,7 +207,9 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
           style={{ marginBottom: "32px" }}
         />
       )}
-      <Typography.Title level={3}>Report Type</Typography.Title>
+      <Typography.Title level={3} id="report-type">
+        Report Type
+      </Typography.Title>
 
       <FormWrapper
         name={FORM.VIEW_EDIT_REPORT}
@@ -275,7 +277,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
           </Col>
 
           <Col span={24}>
-            <Typography.Title className="margin-large--top" level={3}>
+            <Typography.Title className="margin-large--top" level={3} id="report-information">
               Report Information
             </Typography.Title>
           </Col>
@@ -339,7 +341,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
             )}
           </Col>
           <Col span={24}>
-            <Typography.Title className="margin-large--top" level={3}>
+            <Typography.Title className="margin-large--top" level={3} id="contact-information">
               Contact Information
             </Typography.Title>
           </Col>
@@ -375,7 +377,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
           </Col>
 
           <Col span={24}>
-            <Typography.Title className="margin-large--top" level={3}>
+            <Typography.Title className="margin-large--top" level={3} id="documentation">
               Report File(s)
             </Typography.Title>
             <Alert

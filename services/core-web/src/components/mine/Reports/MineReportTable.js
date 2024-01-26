@@ -14,7 +14,7 @@ import {
   getMineReportStatusOptionsHash,
   getMineReportDefinitionHash,
 } from "@mds/common/redux/selectors/staticContentSelectors";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Badge, notification } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import DocumentLink from "@/components/common/DocumentLink";
@@ -65,7 +65,13 @@ export const MineReportTable = (props) => {
 
   const userIsAdmin = useSelector((state) => userHasRole(state, USER_ROLES.role_admin));
   const { isFeatureEnabled } = useFeatureFlag();
+  const history = useHistory();
 
+  const openReportPage = (mineReport) => {
+    history.push(
+      router.REPORT_VIEW_EDIT.dynamicRoute(mineReport.mine_guid, mineReport.mine_report_guid)
+    );
+  };
   // from DownloadAllDocumentsButton- I think there is a new way to accomplish this
   const handleDownloadAll = (mineReport) => {
     const documents = mineReport.documents;
@@ -93,13 +99,13 @@ export const MineReportTable = (props) => {
   };
 
   const getRecordActions = () => {
-    const allActions = [
+    return [
       isFeatureEnabled(Feature.CODE_REQUIRED_REPORTS) && {
         key: "view",
         label: "View",
         icon: <EyeOutlined />,
         clickFunction: (event, record) => {
-          console.log("VIEW CALLED", record, event);
+          openReportPage(record);
         },
       },
       {
@@ -130,7 +136,6 @@ export const MineReportTable = (props) => {
         },
       },
     ].filter(Boolean);
-    return allActions;
   };
 
   const getComplianceCodeValue = (guid) => {
