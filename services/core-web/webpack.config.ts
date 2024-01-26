@@ -71,6 +71,14 @@ const commonConfig = merge([
       main: PATHS.entry,
     },
     plugins: [
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: path.join(PATHS.public, "custom-script.js"),
+            to: path.join(PATHS.build, "custom-script.js"),
+          },
+        ],
+      }),
       //new webpack.optimize.ModuleConcatenationPlugin(),
       new HtmlWebpackPlugin({
         template: PATHS.template,
@@ -99,8 +107,8 @@ const commonConfig = merge([
         ...PATH_ALIASES,
         ...(process.env.NODE_ENV === "development"
           ? {
-            "react-dom": "@hot-loader/react-dom",
-          }
+              "react-dom": "@hot-loader/react-dom",
+            }
           : {}),
         // Use lodash-es that supports proper tree-shaking
         lodash: "lodash-es",
