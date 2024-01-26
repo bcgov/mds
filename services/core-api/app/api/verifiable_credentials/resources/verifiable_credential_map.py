@@ -53,7 +53,7 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
 
 
         # collect information
-        # https://github.com/bcgov/bc-vcpedia/blob/main/credentials/credential-bc-mines-act-permit.md#261-schema-definition
+        # https://github.com/bcgov/bc-vcpedia/blob/main/credentials/bc-mines-act-permit/1.1.1/governance.md#261-schema-definition
         credential_attrs={}
 
         mine_disturbance_list = [mtd.mine_disturbance_literal for mtd in permit_amendment.mine.mine_type[0].mine_type_detail if mtd.mine_disturbance_code]
@@ -69,7 +69,8 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
         credential_attrs["mine_disturbance"] = ", ".join(mine_disturbance_list) if mine_disturbance_list else None
         credential_attrs["mine_commodity"] =  ", ".join(mine_commodity_list) if mine_commodity_list else None
         credential_attrs["mine_no"] = permit_amendment.mine.mine_no
-        credential_attrs["issue_date"] = permit_amendment.issue_date
+        credential_attrs["issue_date"] = int(permit_amendment.issue_date.strftime("%Y%m%d")) #dateint for predicates link below
+        # https://github.com/hyperledger/aries-rfcs/tree/main/concepts/0441-present-proof-best-practices#dates-and-predicates
         credential_attrs["latitude"] = permit_amendment.mine.latitude
         credential_attrs["longitude"] = permit_amendment.mine.longitude
         credential_attrs["bond_total"] = permit_amendment.permit.active_bond_total
