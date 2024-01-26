@@ -35,7 +35,7 @@ jobs:
         run: yarn install
 
       - name: Run minespace tests
-        run: yarn workspace @mds/minespace-web test
+        run: yarn workspace @mds/minespace-web run ci-test
   run-sonar-scan:
     name: Run SonarCloud Scan
     if: success()

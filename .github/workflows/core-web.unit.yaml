@@ -39,11 +39,21 @@ jobs:
         run: yarn install
 
       - name: Run frontend tests
-        run: cd services/core-web/ && yarn && yarn test
+        run: yarn workspace @mds/core-web run ci-test
+      - name: Upload test coverage results
+        uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: core-web-test-results
+          path: |
+            services/core-web/coverage
+            services/core-web/reports/test-reporter.xml
   run-sonar-scan:
     name: Run SonarCloud Scan
+    needs: tests-unit-frontend
     if: success()
     uses: ./.github/workflows/sonarcloud-scan.yaml
     with:
       project-dir: services/core-web
+      test-report-artifact: core-web-test-results
     secrets: inherit

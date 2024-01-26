@@ -38,7 +38,7 @@ jobs:
         run: yarn install
 
       - name: Run frontend tests
-        run: yarn workspace @mds/common run test
+        run: yarn workspace @mds/common run ci-test
   run-sonar-scan:
     name: Run SonarCloud Scan
     if: success()
