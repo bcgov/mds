@@ -58,6 +58,7 @@ $nav-color: $darkest-grey;
 $nav-border-color: $medium-grey;
 $nav-height: 62px;
 $loading-bar-height: 2px;
+$header-height: $nav-height + $loading-bar-height;
 
 // Ant Component Overrides
 $h-divider-color: $darkest-grey;

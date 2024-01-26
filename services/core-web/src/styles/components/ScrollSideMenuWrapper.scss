@@ -1,0 +1,20 @@
+// overriding styles that weren't quite working, confining changes to where wrapper is used
+.scroll-side-menu-wrapper {
+    .view--header.fixed-scroll {
+        top: $header-height;
+    }
+
+    .side-menu--fixed,
+    .side-menu {
+        z-index: 1000;
+        margin-top: 15px;
+    }
+
+    .side-menu--content {
+        padding-top: 15px; // equal to the margin-top on side-menu to align them
+    }
+
+    .side-menu--content.with-fixed-top {
+        margin-top: 0;
+    }
+}
