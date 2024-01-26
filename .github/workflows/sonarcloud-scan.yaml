@@ -19,7 +19,8 @@ jobs:
       - name: Download test report
         uses: actions/download-artifact@v4
         with:
-          name: ${{inputs.project-dir}}/${{ inputs.test-report-artifact }}
+          name: ${{ inputs.test-report-artifact }}
+          path: ${{ inputs.project-dir }}
       - run: ls -R ${{inputs.project-dir}}
 
 
