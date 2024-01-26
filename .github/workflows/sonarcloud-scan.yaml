@@ -17,12 +17,11 @@ jobs:
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       - name: Download test report
+        if: "${{ inputs.test-report-artifact != '' }}"
         uses: actions/download-artifact@v4
         with:
           name: ${{ inputs.test-report-artifact }}
           path: ${{ inputs.project-dir }}
-      - run: ls -R ${{inputs.project-dir}}
-
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2.1.1
