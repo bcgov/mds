@@ -19,8 +19,8 @@ jobs:
       - name: Download test report
         uses: actions/download-artifact@v4
         with:
-          name: ${{ inputs.test-report-artifact }}
-      - run: ls -R
+          name: ${{inputs.project-dir}}/${{ inputs.test-report-artifact }}
+      - run: ls -R ${{inputs.project-dir}}
 
 
       - name: SonarCloud Scan
