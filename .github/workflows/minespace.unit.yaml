@@ -36,10 +36,20 @@ jobs:
 
       - name: Run minespace tests
         run: yarn workspace @mds/minespace-web run ci-test
+      - name: Upload test coverage results
+        uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: minespace-web-test-results
+          path: |
+            services/minespace-web/coverage
+            services/minespace-web/reports/test-reporter.xml
   run-sonar-scan:
     name: Run SonarCloud Scan
+    needs: tests-unit-minespace
     if: success()
     uses: ./.github/workflows/sonarcloud-scan.yaml
     with:
       project-dir: services/minespace-web
+      test-report-artifact: minespace-web-test-results
     secrets: inherit
