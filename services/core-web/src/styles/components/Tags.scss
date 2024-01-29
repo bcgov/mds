@@ -1,0 +1,22 @@
+.page-header-title-tag {
+    margin-left: 16px;
+    border-width: 2px;
+
+    svg {
+        margin-right: 4px;
+    }
+
+    a {
+        color: inherit;
+
+        &:hover {
+            color: inherit;
+        }
+    }
+}
+
+.tag-primary {
+    color: $violet;
+    border-color: $violet;
+    background-color: $lightest-violet;
+}

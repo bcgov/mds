@@ -13,7 +13,7 @@ import { getMineReportById } from "@mds/common/redux/reducers/reportReducer";
 import Loading from "@/components/common/Loading";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
-import { IMineReport, MINE_REPORT_STATUS_HASH, MINE_REPORT_SUBMISSION_CODES } from "@mds/common";
+import { MINE_REPORT_SUBMISSION_CODES, transformReportData } from "@mds/common";
 import Callout from "@mds/common/components/common/Callout";
 import { reportStatusSeverity } from "./ReportsTable";
 
@@ -52,28 +52,6 @@ const ReportPage = () => {
     return () => (isMounted = false);
   }, [mine, mineReport]);
 
-  const transformData = (report: IMineReport) => {
-    const submissionCount = report?.mine_report_submissions?.length ?? 0;
-    if (submissionCount > 0) {
-      const latestSubmission = report.mine_report_submissions[submissionCount - 1];
-
-      const { mine_report_submission_status_code, submission_date } = latestSubmission;
-      return {
-        ...report,
-        mine_report_submission_status_code,
-        status: MINE_REPORT_STATUS_HASH[mine_report_submission_status_code],
-        submission_date,
-      };
-    }
-    return {
-      ...report,
-      status: "",
-      mine_report_submission_status_code: "",
-      submission_date: "",
-      submitter_name: "",
-    };
-  };
-
   const handleUpdateReport = (values) => {
     console.log("HANDLE UPDATE REPORT");
     console.log(values);
@@ -86,7 +64,7 @@ const ReportPage = () => {
     }
   };
 
-  const transformedReportData = transformData(mineReport);
+  const transformedReportData = transformReportData(mineReport);
   return (
     (loaded && (
       <div>

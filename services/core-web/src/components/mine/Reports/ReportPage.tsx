@@ -3,20 +3,31 @@ import { Link, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getFormSubmitErrors, getFormValues, isDirty } from "redux-form";
 
-import { FORM, IMineReport, MINE_REPORT_STATUS_HASH } from "@mds/common";
+import {
+  FORM,
+  IMineReport,
+  MINE_REPORT_SUBMISSION_CODES,
+  reportStatusSeverityForDisplay,
+  transformReportData,
+} from "@mds/common";
 import { getMineReportById } from "@mds/common/redux/selectors/reportSelectors";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
-import { fetchMineReport } from "@mds/common/redux/actionCreators/reportActionCreator";
+import {
+  fetchMineReport,
+  updateMineReport,
+} from "@mds/common/redux/actionCreators/reportActionCreator";
 
 import ReportDetailsForm from "@mds/common/components/reports/ReportDetailsForm";
 import Loading from "@/components/common/Loading";
-import { Button, Row, Tag, Typography } from "antd";
+import { Alert, Button, Row, Tag, Typography } from "antd";
 import { ScrollSideMenuProps } from "@mds/common/components/common/ScrollSideMenu";
 import ScrollSidePageWrapper from "@mds/common/components/common/ScrollSidePageWrapper";
 
 import * as routes from "@/constants/routes";
 import { ArrowLeftOutlined } from "@ant-design/icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLocationDot } from "@fortawesome/pro-light-svg-icons";
 
 const ReportPage: FC = () => {
   const dispatch = useDispatch();
@@ -26,9 +37,6 @@ const ReportPage: FC = () => {
 
   const [loaded, setIsLoaded] = useState(Boolean(mineReport && mine));
   const [isEditMode, setIsEditMode] = useState(false);
-
-  const formErrors = useSelector(getFormSubmitErrors(FORM.VIEW_EDIT_REPORT));
-  const formValues = useSelector(getFormValues(FORM.VIEW_EDIT_REPORT));
 
   const isFormDirty = useSelector(isDirty(FORM.VIEW_EDIT_REPORT));
 
@@ -54,15 +62,14 @@ const ReportPage: FC = () => {
     return () => (isMounted = false);
   }, [mine, mineReport]);
 
+  const transformedReportData = transformReportData(mineReport);
+
   const getToggleEditButton = () => {
     return isEditMode ? (
       <Row justify="end">
-        <Button onClick={() => setIsEditMode(false)} disabled={isFormDirty}>
+        <Button onClick={() => setIsEditMode(false)} disabled={isFormDirty} type="ghost">
           View Report
         </Button>
-        {/* <Button htmlType="submit" type="primary">
-          Save Changes
-        </Button> */}
       </Row>
     ) : (
       <Row justify="end">
@@ -90,16 +97,29 @@ const ReportPage: FC = () => {
     featureUrlRouteArguments: sideBarRoute.params,
   };
 
-  const HeaderContent = (
+  const HeaderContent = (reportMine) => (
     <>
       <div className="padding-lg">
-        <Typography.Title level={1}>
-          Report Name
-          <span>
-            <Tag title="mine name">tag content</Tag>
-          </span>
-        </Typography.Title>
-        <Link to="https://www.google.ca">
+        <Row align="middle">
+          <Typography.Title level={1}>
+            <Row align="middle">
+              Report Name
+              <Tag
+                title={`Mine: ${reportMine.mine_name}`}
+                icon={<FontAwesomeIcon icon={faLocationDot} />}
+                className="page-header-title-tag tag-primary"
+              >
+                <Link
+                  to={routes.MINE_SUMMARY.dynamicRoute(reportMine.mine_guid)}
+                  style={{ textDecoration: "none" }}
+                >
+                  {reportMine.mine_name}
+                </Link>
+              </Tag>
+            </Row>
+          </Typography.Title>
+        </Row>
+        <Link to={routes.REPORTS_DASHBOARD.route}>
           <ArrowLeftOutlined />
           Back to: Reports
         </Link>
@@ -107,20 +127,46 @@ const ReportPage: FC = () => {
     </>
   );
 
+  const handleUpdateStatus = () => {
+    console.log("NOT IMPLEMENTED");
+  };
+
+  const handleSubmit = (values) => {
+    dispatch(updateMineReport(mine.mine_guid, mineReport.mine_report_guid, values));
+  };
+
+  console.log(transformedReportData);
   const PageContent = (
     <>
-      <div style={{ backgroundColor: "green", width: "100%", height: "40px" }}>test alignment</div>
+      <Alert
+        message={
+          <Row justify="space-between" align="middle">
+            <span>{transformedReportData.status}</span>
+            <Button type="ghost" onClick={handleUpdateStatus} style={{ margin: 0 }}>
+              Update Status
+            </Button>
+          </Row>
+        }
+        description="description"
+        type={reportStatusSeverityForDisplay(
+          transformedReportData.mine_report_submission_status_code as MINE_REPORT_SUBMISSION_CODES
+        )}
+        showIcon
+      />
       {getToggleEditButton()}
       <ReportDetailsForm
         mineGuid={mineGuid}
         initialValues={mineReport}
-        handleSubmit={(values) => console.log(values)}
+        handleSubmit={handleSubmit}
         isEditMode={isEditMode}
         formButtons={
           isEditMode ? (
-            <Button htmlType="submit" type="primary">
-              Save Changes
-            </Button>
+            <Row justify="space-between">
+              <Button type="ghost">View Report</Button>
+              <Button htmlType="submit" type="primary">
+                Save Changes
+              </Button>
+            </Row>
           ) : null
         }
       />
@@ -132,7 +178,7 @@ const ReportPage: FC = () => {
     <ScrollSidePageWrapper
       menuProps={scrollSideMenuProps}
       headerHeight={headerHeight}
-      header={HeaderContent}
+      header={HeaderContent(mine)}
       content={PageContent}
     />
   ) : (

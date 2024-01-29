@@ -22,7 +22,7 @@ const ScrollSidePageWrapper: FC<ScrollSidePageWrapperProps> = ({
     if (scrollHeight > 0 && !fixedTop) {
       setIsFixedTop(true);
       // oddly, fixedTop never ends up being true here, even though it seems to take effect,
-      // so took it fixedTop is true out from condition
+      // so took out fixedTop is true out from condition
     } else if (scrollHeight <= 0) {
       setIsFixedTop(false);
     }
