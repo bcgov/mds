@@ -19,10 +19,10 @@ from app.api.projects.project_summary.models.project_summary_contact import Proj
 from app.api.projects.project_summary.models.project_summary_authorization import ProjectSummaryAuthorization
 from app.api.projects.project_summary.models.project_summary_permit_type import ProjectSummaryPermitType
 from app.api.parties.party.models.party import Party
+from app.api.parties.party.models.address import Address
 from app.api.constants import PROJECT_SUMMARY_EMAILS, MDS_EMAIL
 from app.api.services.email_service import EmailService
 from app.config import Config
-
 
 class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'project_summary'
@@ -37,6 +37,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     expected_permit_application_date = db.Column(db.DateTime, nullable=True)
     expected_permit_receipt_date = db.Column(db.DateTime, nullable=True)
     expected_project_start_date = db.Column(db.DateTime, nullable=True)
+    agent_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=True)
+    is_agent = db.Column(db.Boolean, nullable=True)
 
     project_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('project.project_guid'), nullable=False)
@@ -49,6 +51,9 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     contacts = db.relationship(
         'ProjectContact',
         primaryjoin="and_(ProjectSummary.project_guid==foreign(ProjectContact.project_guid), ProjectContact.deleted_ind == False)"
+    )
+    agent = db.relationship(
+        'Party', lazy='joined', foreign_keys=agent_party_guid
     )
     authorizations = db.relationship(
         'ProjectSummaryAuthorization',
@@ -223,6 +228,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                documents=[],
                authorizations=[],
                submission_date=None,
+               agent=None,
+               is_agent=None,
                add_to_session=True):
 
         # Update simple properties.
@@ -250,6 +257,56 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         #     if str(doc.mine_document_guid) not in updated_document_guids:
         #         self.mine_documents.remove(doc.mine_document)
         #         doc.mine_document.delete(commit=False)
+
+        # Create or update Agent Party
+        # if updated values are received for party or their address,
+        # currently just updating existing values (ie: same guid) not assigning a new party/address
+        self.is_agent = is_agent   
+        if not is_agent or is_agent is None or not agent:
+            # unassign the agent party guid if previously set
+            self.agent_party_guid = None
+        else:
+            address = agent.get('address')
+            agent_party_guid = agent.get('party_guid')
+
+            # if updates are made to the existing party:
+            if self.agent_party_guid is not None and str(self.agent_party_guid) == agent_party_guid:
+                Party.validate_phone_no(agent.get('phone_no'), address.get('address_type_code'))
+                self.agent.deep_update_from_dict(agent)
+                agent_address = Address(
+                    suite_no=address.get('suite_no'),
+                    address_line_1=address.get('address_line_1'),
+                    city=address.get('city'),
+                    sub_division_code=address.get('sub_division_code'),
+                    post_code=address.get('post_code'),
+                    address_type_code=address.get('address_type_code'),
+                )
+
+                self.agent.address.append(agent_address)
+                self.agent.save()
+            else:
+                agent_party = Party.create(
+                    party_name=agent.get('party_name'),
+                    first_name=agent.get('first_name'),
+                    phone_no=agent.get('phone_no'),
+                    phone_ext=agent.get('phone_ext'),
+                    email=agent.get('email'),
+                    party_type_code=agent.get('party_type_code'),
+                    job_title=agent.get('job_title'),
+                    job_title_code='AGT',
+                    address_type_code=address.get('address_type_code')
+                )                
+                agent_address = Address.create(
+                    suite_no=address.get('suite_no'),
+                    address_line_1=address.get('address_line_1'),
+                    city=address.get('city'),
+                    sub_division_code=address.get('sub_division_code'),
+                    post_code=address.get('post_code'),
+                    address_type_code=address.get('address_type_code'),
+                )
+                agent_party.address.append(agent_address)
+                agent_party.save()
+                self.agent_party_guid = agent_party.party_guid
 
         # Create or update existing documents.
         for doc in documents:

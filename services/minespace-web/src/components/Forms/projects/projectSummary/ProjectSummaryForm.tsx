@@ -25,6 +25,7 @@ import ProjectLinks from "@mds/common/components/projects/ProjectLinks";
 import { EDIT_PROJECT } from "@/constants/routes";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature, IProjectSummary, IProjectSummaryDocument } from "@mds/common";
+import { Agent } from "./Agent";
 
 interface ProjectSummaryFormProps {
   initialValues: IProjectSummary;
@@ -44,14 +45,30 @@ interface StateProps {
   anyTouched: boolean;
 }
 
-export const projectFormTabs = [
-  "basic-information",
-  "related-projects",
-  "project-contacts",
-  "project-dates",
-  "authorizations-involved",
-  "document-upload",
-];
+// converted to a function to make feature flag easier to work with
+// when removing feature flag, convert back to array
+export const getProjectFormTabs = (amsFeatureEnabled: boolean) => {
+  const projectFormTabs = [
+    "basic-information",
+    "related-projects",
+    "project-contacts",
+    "agent",
+    "project-dates",
+    "authorizations-involved",
+    "document-upload",
+  ];
+
+  return amsFeatureEnabled
+    ? projectFormTabs
+    : [
+        "basic-information",
+        "related-projects",
+        "project-contacts",
+        "project-dates",
+        "authorizations-involved",
+        "document-upload",
+      ];
+};
 
 export const ProjectSummaryForm: FC<ProjectSummaryFormProps &
   StateProps &
@@ -59,6 +76,8 @@ export const ProjectSummaryForm: FC<ProjectSummaryFormProps &
   RouteComponentProps<any>> = ({ documents = [], ...props }) => {
   const { isFeatureEnabled } = useFeatureFlag();
   const majorProjectsFeatureEnabled = isFeatureEnabled(Feature.MAJOR_PROJECT_LINK_PROJECTS);
+  const amsFeatureEnabled = isFeatureEnabled(Feature.AMS_AGENT);
+  const projectFormTabs = getProjectFormTabs(amsFeatureEnabled);
 
   const renderTabComponent = (tab) =>
     ({
@@ -68,6 +87,7 @@ export const ProjectSummaryForm: FC<ProjectSummaryFormProps &
       ),
       "project-contacts": <ProjectContacts initialValues={props.initialValues} />,
       "project-dates": <ProjectDates initialValues={props.initialValues} />,
+      agent: <Agent />,
       "authorizations-involved": (
         <AuthorizationsInvolved initialValues={props.initialValues} change={props.change} />
       ),

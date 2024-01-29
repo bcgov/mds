@@ -40,10 +40,11 @@ import {
   EDIT_PROJECT,
 } from "@/constants/routes";
 import ProjectSummaryForm, {
-  projectFormTabs,
+  getProjectFormTabs,
 } from "@/components/Forms/projects/projectSummary/ProjectSummaryForm";
-import { IMine, IProjectSummary, IProject } from "@mds/common";
+import { IMine, IProjectSummary, IProject, Feature } from "@mds/common";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 
 interface ProjectSummaryPageProps {
   mines: Partial<IMine>[];
@@ -98,12 +99,14 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
     updateProject,
   } = props;
 
+  const { isFeatureEnabled } = useFeatureFlag();
+  const amsFeatureEnabled = isFeatureEnabled(Feature.AMS_AGENT);
   const { mineGuid, projectGuid, projectSummaryGuid, tab } = useParams<IParams>();
   const [isLoaded, setIsLoaded] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const history = useHistory();
   const location = useLocation();
-
+  const projectFormTabs = getProjectFormTabs(amsFeatureEnabled);
   const activeTab = tab ?? projectFormTabs[0];
 
   const handleFetchData = () => {
@@ -224,8 +227,8 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
       if (projectGuid && projectSummaryGuid) {
         handleUpdateProjectSummary(values, message);
       }
+      handleTabChange(newActiveTab);
     }
-    handleTabChange(newActiveTab);
   };
 
   const handleSaveDraft = () => {
