@@ -43,7 +43,7 @@ function mockFunction() {
 }
 jest.mock("react-router-dom", () => mockFunction());
 
-describe("ReportDetailsForm", () => {
+describe("ReportPage", () => {
   it("renders view mode properly", () => {
     const { container } = render(
       <ReduxWrapper initialState={initialState}>

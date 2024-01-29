@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ReportDetailsForm renders view mode properly 1`] = `
+exports[`ReportPage renders view mode properly 1`] = `
 <div
   class="scroll-side-menu-wrapper"
 >
