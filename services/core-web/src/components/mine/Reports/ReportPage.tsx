@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { getFormSubmitErrors, getFormValues, isDirty } from "redux-form";
+import { isDirty } from "redux-form";
 
 import {
   FORM,
@@ -135,7 +135,6 @@ const ReportPage: FC = () => {
     dispatch(updateMineReport(mine.mine_guid, mineReport.mine_report_guid, values));
   };
 
-  console.log(transformedReportData);
   const PageContent = (
     <>
       <Alert

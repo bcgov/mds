@@ -31,14 +31,6 @@ function mockFunction() {
       mineGuid: MOCK.MINE_REPORTS[0].mine_guid,
       reportGuid: MOCK.MINE_REPORTS[0].mine_report_guid,
     }),
-    // useLocation: jest.fn().mockReturnValue({
-    //     tab: "report-information",
-    //     hash: "#report-information"
-    // }),
-    // useHistory: jest.fn().mockReturnValue({
-    //     push: jest.fn(),
-    //     location: { hash: "#report-information" }
-    // })
     useLocation: jest.fn().mockReturnValue({
       tab: "",
       hash: "",
