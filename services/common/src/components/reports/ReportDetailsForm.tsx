@@ -327,12 +327,8 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               required
               component={RenderField}
               validate={[required]}
+              help="Your name is recorded for reference"
             />
-            {isEditMode && (
-              <Typography.Text className="report-instructions">
-                Your name is recorded for reference
-              </Typography.Text>
-            )}
           </Col>
           <Col span={12}>
             <Field
@@ -342,12 +338,8 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               placeholder="Enter email"
               component={RenderField}
               validate={[email]}
+              help="By providing your email, you agree to receive notification of the report"
             />
-            {isEditMode && (
-              <Typography.Text className="report-instructions">
-                By providing your email, you agree to receive notification of the report
-              </Typography.Text>
-            )}
           </Col>
           <Col span={24}>
             <Typography.Title className="margin-large--top" level={3} id="contact-information">
@@ -389,13 +381,15 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
             <Typography.Title className="margin-large--top" level={3} id="documentation">
               Report File(s)
             </Typography.Title>
-            <Alert
-              className="margin-large--bottom"
-              message=""
-              description={<b>This type of report submission will be posted online publicly.</b>}
-              type="warning"
-              showIcon
-            />
+            {system === SystemFlagEnum.ms && (
+              <Alert
+                className="margin-large--bottom"
+                message=""
+                description={<b>This type of report submission will be posted online publicly.</b>}
+                type="warning"
+                showIcon
+              />
+            )}
             {isEditMode && (
               <ReportSubmissions
                 mineGuid={mineGuid}

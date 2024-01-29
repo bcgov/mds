@@ -134,7 +134,11 @@ export const SUBSCRIBED_MINES = {
   ],
 };
 export const MINES = {
-  mineIds: ["18133c75-49ad-4101-85f3-a43e35ae989a", "18145c75-49ad-0101-85f3-a43e45ae989a"],
+  mineIds: [
+    "18133c75-49ad-4101-85f3-a43e35ae989a",
+    "18145c75-49ad-0101-85f3-a43e45ae989a",
+    "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
+  ],
   mines: {
     "18133c75-49ad-4101-85f3-a43e35ae989a": {
       mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
@@ -211,6 +215,44 @@ export const MINES = {
         mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
         mine_name: "mine2",
         healthy_ind: true,
+        verifying_user: null,
+        verifying_timestamp: null,
+      },
+    },
+    "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d": {
+      mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+      mine_name: "Abbot Inc",
+      mine_no: "BLAH9092",
+      mine_region: "NE",
+      mine_permit_numbers: [],
+      major_mine_ind: true,
+      mine_location: { longitude: null, latitude: null },
+      mine_tailings_storage_facilities: [
+        {
+          mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+          mine_tailings_storage_facility_guid: "e2629897-053e-4218-9299-479375e47f78",
+          mine_tailings_storage_facility_name: "MockTSF",
+          latitude: null,
+          longitude: null,
+          consequence_classification_status_code: "LOW",
+          tsf_operating_status_code: "OPT",
+          itrb_exemption_status_code: "YES",
+        },
+      ],
+      mine_type: [
+        { mine_tenure_type_code: "PLR", mine_type_detail: [] },
+        { mine_tenure_type_code: "MIN", mine_type_detail: [] },
+      ],
+      mine_status: {
+        statusvalue: ["CLD", "CM"],
+        status_labels: ["Closed", "Care & Maintenance"],
+        effective_date: "2018-10-16",
+        expiry_date: null,
+      },
+      verified_status: {
+        mine_guid: null,
+        mine_name: null,
+        healthy_ind: null,
         verifying_user: null,
         verifying_timestamp: null,
       },
