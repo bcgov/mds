@@ -35,7 +35,7 @@ const ReportPage: FC = () => {
   const mineReport: IMineReport = useSelector((state) => getMineReportById(state, reportGuid));
   const mine = useSelector((state) => getMineById(state, mineGuid));
 
-  const [loaded, setIsLoaded] = useState(Boolean(mineReport && mine));
+  const [isLoaded, setIsLoaded] = useState(Boolean(mineReport && mine));
   const [isEditMode, setIsEditMode] = useState(false);
 
   const isFormDirty = useSelector(isDirty(FORM.VIEW_EDIT_REPORT));
@@ -171,7 +171,7 @@ const ReportPage: FC = () => {
     </>
   );
 
-  return loaded ? (
+  return isLoaded ? (
     <ScrollSidePageWrapper
       menuProps={scrollSideMenuProps}
       headerHeight={headerHeight}
