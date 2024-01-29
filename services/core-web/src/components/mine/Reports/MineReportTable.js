@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { useSelector } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import * as Strings from "@mds/common/constants/strings";
 import {
   formatDate,

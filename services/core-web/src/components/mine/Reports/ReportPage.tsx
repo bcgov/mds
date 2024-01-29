@@ -97,34 +97,32 @@ const ReportPage: FC = () => {
     featureUrlRouteArguments: sideBarRoute.params,
   };
 
-  const HeaderContent = (reportMine) => (
-    <>
-      <div className="padding-lg">
-        <Row align="middle">
-          <Typography.Title level={1}>
-            <Row align="middle">
-              Report Name
-              <Tag
-                title={`Mine: ${reportMine.mine_name}`}
-                icon={<FontAwesomeIcon icon={faLocationDot} />}
-                className="page-header-title-tag tag-primary"
+  const HeaderContent = (
+    <div className="padding-lg">
+      <Row align="middle">
+        <Typography.Title level={1}>
+          <Row align="middle">
+            Report Name
+            <Tag
+              title={`Mine: ${mine?.mine_name}`}
+              icon={<FontAwesomeIcon icon={faLocationDot} />}
+              className="page-header-title-tag tag-primary"
+            >
+              <Link
+                to={routes.MINE_SUMMARY.dynamicRoute(mine?.mine_guid)}
+                style={{ textDecoration: "none" }}
               >
-                <Link
-                  to={routes.MINE_SUMMARY.dynamicRoute(reportMine.mine_guid)}
-                  style={{ textDecoration: "none" }}
-                >
-                  {reportMine.mine_name}
-                </Link>
-              </Tag>
-            </Row>
-          </Typography.Title>
-        </Row>
-        <Link to={routes.REPORTS_DASHBOARD.route}>
-          <ArrowLeftOutlined />
-          Back to: Reports
-        </Link>
-      </div>
-    </>
+                {mine?.mine_name}
+              </Link>
+            </Tag>
+          </Row>
+        </Typography.Title>
+      </Row>
+      <Link to={routes.REPORTS_DASHBOARD.route}>
+        <ArrowLeftOutlined />
+        Back to: Reports
+      </Link>
+    </div>
   );
 
   const handleUpdateStatus = () => {
@@ -177,7 +175,7 @@ const ReportPage: FC = () => {
     <ScrollSidePageWrapper
       menuProps={scrollSideMenuProps}
       headerHeight={headerHeight}
-      header={HeaderContent(mine)}
+      header={HeaderContent}
       content={PageContent}
     />
   ) : (
