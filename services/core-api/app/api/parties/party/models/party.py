@@ -227,8 +227,9 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
                job_title=None,
                job_title_code=None,
                organization_guid=None,
+               address_type_code='CAN',
                add_to_session=True):
-        Party.validate_phone_no(phone_no)
+        Party.validate_phone_no(phone_no, address_type_code)
         party = cls(
             party_name=party_name,
             phone_no=phone_no,
@@ -249,10 +250,13 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
         return party
 
     @classmethod
-    def validate_phone_no(cls, phone_no):
+    def validate_phone_no(cls, phone_no, address_type_code='CAN'):
         if not phone_no:
             raise AssertionError('Party phone number is not provided.')
-        if not re.match(r'[0-9]{3}-[0-9]{3}-[0-9]{4}', phone_no):
+        # TODO: this is an arbitrary limit for phone number characters, actual number depends on formatting decisions
+        if address_type_code == 'INT' and len(phone_no) > 50:
+            raise AssertionError('Invalid phone number, max 50 characters')
+        if address_type_code in ['CAN', 'USA'] and not re.match(r'[0-9]{3}-[0-9]{3}-[0-9]{4}', phone_no):
             raise AssertionError('Invalid phone number format, must be of XXX-XXX-XXXX.')
         return phone_no
 

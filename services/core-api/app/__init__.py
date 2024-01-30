@@ -70,9 +70,9 @@ def create_app(test_config=None):
         path = request.path
         ip_address = request.remote_addr
         http_version = request.environ.get('SERVER_PROTOCOL', 'HTTP/1.1')
-
-        # Log combined request and response information
-        current_app.logger.info(f'{ip_address} - - [{get_formatted_current_time()}] "{method} {path} {http_version}" {response.status_code} -')
+        if path != '/health':
+            # Log combined request and response information
+            current_app.logger.info(f'{ip_address} - - [{get_formatted_current_time()}] "{method} {path} {http_version}" {response.status_code} -')
 
         return response
 

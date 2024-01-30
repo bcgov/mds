@@ -520,7 +520,6 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
                   class="ant-form-item-control-input-content"
                 >
                   <input
-                    aria-required="true"
                     class="ant-input"
                     id="submitter_name"
                     name="submitter_name"
