@@ -28,14 +28,6 @@ from sqlalchemy.orm import validates
 class UserBoundQuery(db.Query):
     _user_bound = True
 
-    @property
-    def _mapper_zero(self):
-      # super().bind
-        # return db.Query._mapper_zero()
-        return self._mapper_zero
-        # return self._primary_entity.entity_zero
-        # return self.__.entity_zero
-
     # for use when intentionally needing to make an unsafe query
     def unbound_unsafe(self):
         rv = self._clone()
@@ -50,28 +42,23 @@ def ensure_constrained(query):
 
     if not query._user_bound or not auth.apply_security:
         return query
+    
+    mzero = query.column_descriptions[0]['type']
 
-    mzero = query._mapper_zero() # This is the issue
-    # mzero = query.session._mapper_zero()
-    
-    # mzero = query.session.get_bind(
-    #                 query.session._mapper_zero()
-    #         )
-    
     if mzero is not None:
         if has_request_context():
             user_security = auth.get_current_user_security()
 
             if user_security.is_restricted():
                 # use reflection to get current model
-                cls = mzero.class_
 
                 # if model includes mine_guid, apply filter on mine_guid.
-                mapper = inspect(cls)
+                mapper = inspect(mzero)
+                clz = mapper._class
 
                 if 'mine_guid' in [c.name for c in mapper.columns] and query._user_bound:
                     query = query.enable_assertions(False).filter(
-                        cls.mine_guid.in_(user_security.mine_ids))
+                        clz.mine_guid.in_(user_security.mine_ids))
 
     return query
 
