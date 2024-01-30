@@ -4,7 +4,7 @@ flagsmith==2.0.1
 Flask==2.3.2
 Flask-Caching==2.0.2
 Flask-Cors==3.0.10
-flask-restx==1.1.0
+flask-restx==1.3.0
 Flask-SQLAlchemy==2.5.1
 GeoAlchemy2==0.6.3
 ldap3==2.6
@@ -49,4 +49,4 @@ opentelemetry-instrumentation-redis==0.33b0
 opentelemetry-instrumentation-requests==0.33b0
 opentelemetry-instrumentation-sqlalchemy==0.33b0
 opentelemetry-instrumentation-urllib3==0.33b0
-Pillow==8.4.0
+Pillow==10.2.0
