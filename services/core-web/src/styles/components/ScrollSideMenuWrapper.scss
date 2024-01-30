@@ -6,7 +6,6 @@
 
     .side-menu--fixed,
     .side-menu {
-        z-index: 1000;
         margin-top: 15px;
     }
 
@@ -17,4 +16,10 @@
     .side-menu--content.with-fixed-top {
         margin-top: 0;
     }
+}
+
+// there is an issue where content (fade-in class?) renders in front of the menu, making it unclickable
+.side-menu--fixed,
+.side-menu {
+    z-index: 1000;
 }
