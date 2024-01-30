@@ -51,6 +51,7 @@ export const projectFormTabs = [
   "project-dates",
   "authorizations-involved",
   "document-upload",
+  "Legal Land Owner Information",
 ];
 
 export const ProjectSummaryForm: FC<ProjectSummaryFormProps &
