@@ -141,7 +141,16 @@ PROJECT_SUMMARY_MODEL = api.model(
         'create_user': fields.String,
         'create_timestamp': fields.DateTime,
         'agent': fields.Nested(PARTY),
-        'is_agent': fields.Boolean
+        'is_agent': fields.Boolean,
+        'is_legal_land_owner': fields.Boolean,
+        'is_crown_land_federal_or_provincial': fields.Boolean,
+        'is_landowner_aware_of_discharge_application': fields.Boolean,
+        'has_landowner_received_copy_of_application': fields.Boolean,
+        'legal_land_owner_name': fields.String,
+        'legal_land_owner_contact_number': fields.String,
+        'legal_land_owner_email_address': fields.String,
+        'latitude': fields.Fixed(decimals=7),
+        'longitude': fields.Fixed(decimals=7)
     })
 
 PROJECT_CONTACT_MODEL = api.model(
