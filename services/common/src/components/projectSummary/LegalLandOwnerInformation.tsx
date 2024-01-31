@@ -5,7 +5,6 @@ import { Field, getFormValues } from "redux-form";
 import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
 import {
   email,
-  maxLength,
   phoneNumber,
   required,
   requiredRadioButton,
@@ -38,8 +37,8 @@ export const LegalLandOwnerInformation: FC = () => {
               <Field
                 name="is_crown_land_federal_or_provincial"
                 id="is_crown_land_federal_or_provincial"
-                required
-                validate={[requiredRadioButton]}
+                required={!is_legal_land_owner}
+                validate={!is_legal_land_owner ? [requiredRadioButton] : []}
                 label="Is this federal or provincial Crown land?"
                 component={RenderRadioButtons}
               />
@@ -48,8 +47,8 @@ export const LegalLandOwnerInformation: FC = () => {
               <Field
                 name="is_landowner_aware_of_discharge_application"
                 id="is_landowner_aware_of_discharge_application"
-                required
-                validate={[requiredRadioButton]}
+                required={!is_legal_land_owner}
+                validate={!is_legal_land_owner ? [requiredRadioButton] : []}
                 label="Is the Legal Land Owner aware of the proposed application to discharge waste?"
                 component={RenderRadioButtons}
               />
@@ -63,7 +62,8 @@ export const LegalLandOwnerInformation: FC = () => {
                 id="legal_land_owner_name"
                 label="Legal Land Owner Name"
                 component={RenderField}
-                validate={[required]}
+                required={!is_legal_land_owner}
+                validate={!is_legal_land_owner ? [required] : []}
               />
             </Col>
 
@@ -71,8 +71,8 @@ export const LegalLandOwnerInformation: FC = () => {
               <Field
                 name="has_landowner_received_copy_of_application"
                 id="has_landowner_received_copy_of_application"
-                required
-                validate={[requiredRadioButton]}
+                required={!is_legal_land_owner}
+                validate={!is_legal_land_owner ? [requiredRadioButton] : []}
                 label="Has the Legal Land Owner received a copy of this application?"
                 component={RenderRadioButtons}
               />
@@ -85,7 +85,8 @@ export const LegalLandOwnerInformation: FC = () => {
                 id="legal_land_owner_contact_number"
                 label="Legal Land Owner Contact Number"
                 component={RenderField}
-                validate={[required, phoneNumber]}
+                required={!is_legal_land_owner}
+                validate={!is_legal_land_owner ? [required, phoneNumber] : []}
               />
             </Col>
             <Col md={12} sm={24}>
@@ -94,7 +95,8 @@ export const LegalLandOwnerInformation: FC = () => {
                 id="legal_land_owner_email_address"
                 label="Legal Land Owner Email Address"
                 component={RenderField}
-                validate={[required, email]}
+                required={!is_legal_land_owner}
+                validate={!is_legal_land_owner ? [required, email] : []}
               />
             </Col>
           </Row>
