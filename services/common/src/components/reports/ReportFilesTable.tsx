@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 
-import { IDocument, IMineReport, IMineReportSubmission } from "../..";
+import { IMineReport, getLatestReportSubmission } from "../..";
 import DocumentTable from "../documents/DocumentTable";
 import { MineDocument } from "@mds/common/models/documents/document";
 
@@ -8,13 +8,8 @@ interface ReportFilesTableProps {
   report: IMineReport;
 }
 export const ReportFilesTable: FC<ReportFilesTableProps> = ({ report }) => {
-  const documents =
-    report?.mine_report_submissions?.reduce(
-      (acc: IDocument[], submission: IMineReportSubmission) => {
-        return acc.concat(submission.documents);
-      },
-      []
-    ) ?? [];
+  const latestSubmission = getLatestReportSubmission(report);
+  const documents = latestSubmission?.documents ?? [];
 
   return (
     <DocumentTable

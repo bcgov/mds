@@ -340,11 +340,11 @@ export const MINE_PERMIT_REQUIRED_REPORTS = {
 };
 
 export const REPORT_VIEW_EDIT = {
-  route: "/dashboard/reporting/mine/:mineGuid/code-required-reports/:reportGuid",
+  route: "/dashboard/reporting/mine/:mineGuid/report/:reportGuid",
   dynamicRoute: (mineGuid: string, reportGuid: string) =>
-    `/dashboard/reporting/mine/${mineGuid}/code-required-reports/${reportGuid}`,
+    `/dashboard/reporting/mine/${mineGuid}/report/${reportGuid}`,
   hashRoute: (mineGuid: string, reportGuid: string, link) =>
-    `/dashboard/reporting/mine/${mineGuid}/code-required-reports/${reportGuid}/${link}`,
+    `/dashboard/reporting/mine/${mineGuid}/report/${reportGuid}/${link}`,
   component: ReportPage,
 };
 
