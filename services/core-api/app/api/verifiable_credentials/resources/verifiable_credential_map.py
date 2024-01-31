@@ -48,8 +48,8 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
             raise BadRequest(f"permit_amendment not found")
         
         existing_cred_exch = PartyVerifiableCredentialMinesActPermit.find_by_permit_amendment_guid(permit_amendment_guid=permit_amendment_guid)
-        if existing_cred_exch:
-            raise BadRequest(f"This permit_amendment has already been offered, cred_exch_id={existing_cred_exch.cred_exch_id}, cred_exch_state={existing_cred_exch.cred_exch_state}")
+        if existing_cred_exch and existing_cred_exch.cred_exch_state == "offer_sent":
+            raise BadRequest(f"There is a pending credential offer, resolve or delete that offer first, cred_exch_id={existing_cred_exch.cred_exch_id}, cred_exch_state={existing_cred_exch.cred_exch_state}")
 
 
         # collect information for schema
