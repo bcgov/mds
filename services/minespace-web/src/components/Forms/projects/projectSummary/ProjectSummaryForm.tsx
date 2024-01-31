@@ -26,6 +26,7 @@ import { EDIT_PROJECT } from "@/constants/routes";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature, IProjectSummary, IProjectSummaryDocument } from "@mds/common";
 import { Agent } from "./Agent";
+import { LegalLandOwnerInformation } from "@mds/common/components/projectSummary/LegalLandOwnerInformation";
 
 interface ProjectSummaryFormProps {
   initialValues: IProjectSummary;
@@ -53,6 +54,7 @@ export const getProjectFormTabs = (amsFeatureEnabled: boolean) => {
     "related-projects",
     "project-contacts",
     "agent",
+    "legal-land-owner-information",
     "project-dates",
     "authorizations-involved",
     "document-upload",
@@ -67,7 +69,6 @@ export const getProjectFormTabs = (amsFeatureEnabled: boolean) => {
         "project-dates",
         "authorizations-involved",
         "document-upload",
-        "Legal Land Owner Information",
       ];
 };
 
@@ -82,6 +83,7 @@ export const ProjectSummaryForm: FC<ProjectSummaryFormProps &
 
   const renderTabComponent = (tab) =>
     ({
+      "legal-land-owner-information": <LegalLandOwnerInformation />,
       "basic-information": <BasicInformation />,
       "related-projects": (
         <ProjectLinks viewProject={(p) => EDIT_PROJECT.dynamicRoute(p.project_guid)} />
