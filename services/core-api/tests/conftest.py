@@ -40,6 +40,9 @@ def auth_headers(app):
     proponent_only_auth_token = _jwt.create_jwt(PROPONENT_ONLY_AUTH_CLAIMS, TOKEN_HEADER)
     nros_vfcbc_only_auth_token = _jwt.create_jwt(NROS_VFCBC_AUTH_CLAIMS, TOKEN_HEADER)
     core_edit_parties_only_auth_token = _jwt.create_jwt(CORE_EDIT_PARTIES_AUTH_CLAIMS, TOKEN_HEADER)
+    incorrect_aud_auth_token = _jwt.create_jwt(FULL_AUTH_CLAIMS | {'aud': 'invalid_aud'}, TOKEN_HEADER)
+    incorrect_iss_auth_token = _jwt.create_jwt(FULL_AUTH_CLAIMS | {'iss': 'invalid_iss'}, TOKEN_HEADER)
+    expired_auth_token = _jwt.create_jwt(FULL_AUTH_CLAIMS | {'iat': 1675197826, 'exp': 1706647426}, TOKEN_HEADER)
 
     return {
         'base_auth_header': {
@@ -65,6 +68,15 @@ def auth_headers(app):
         },
         'core_edit_parties_only_auth_header': {
             'Authorization': 'Bearer ' + core_edit_parties_only_auth_token
+        },
+        'incorrect_aud_auth_header': {
+            'Authorization': 'Bearer ' + incorrect_aud_auth_token
+        },
+        'incorrect_iss_auth_header': {
+            'Authorization': 'Bearer ' + incorrect_iss_auth_token
+        },
+        'expired_auth_header': {
+            'Authorization': 'Bearer ' + expired_auth_token
         }
     }
 
