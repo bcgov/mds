@@ -44,6 +44,7 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
   </div>
   <h3
     class="ant-typography"
+    id="report-type"
   >
     Report Type
   </h3>
@@ -303,6 +304,7 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
       >
         <h3
           class="ant-typography margin-large--top"
+          id="report-information"
         >
           Report Information
         </h3>
@@ -527,6 +529,11 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
                     type="text"
                     value=""
                   />
+                  <div
+                    class="form-item-help submitter_name-form-help"
+                  >
+                    Your name is recorded for reference
+                  </div>
                 </div>
               </div>
               <div
@@ -545,11 +552,6 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
             </div>
           </div>
         </div>
-        <span
-          class="ant-typography report-instructions"
-        >
-          Your name is recorded for reference
-        </span>
       </div>
       <div
         class="ant-col ant-col-12"
@@ -595,6 +597,11 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
                     type="text"
                     value=""
                   />
+                  <div
+                    class="form-item-help submitter_email-form-help"
+                  >
+                    By providing your email, you agree to receive notification of the report
+                  </div>
                 </div>
               </div>
               <div
@@ -613,11 +620,6 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
             </div>
           </div>
         </div>
-        <span
-          class="ant-typography report-instructions"
-        >
-          By providing your email, you agree to receive notification of the report
-        </span>
       </div>
       <div
         class="ant-col ant-col-24"
@@ -625,6 +627,7 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
       >
         <h3
           class="ant-typography margin-large--top"
+          id="contact-information"
         >
           Contact Information
         </h3>
@@ -698,6 +701,7 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
       >
         <h3
           class="ant-typography margin-large--top"
+          id="documentation"
         >
           Report File(s)
         </h3>

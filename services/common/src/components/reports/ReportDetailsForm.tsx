@@ -23,6 +23,7 @@ import {
   IParty,
   IPartyAppt,
   MinePartyAppointmentTypeCodeEnum,
+  SystemFlagEnum,
 } from "../..";
 import RenderAutoSizeField from "../forms/RenderAutoSizeField";
 import { BaseViewInput } from "../forms/BaseInput";
@@ -32,6 +33,7 @@ import {
 } from "@mds/common/redux/actionCreators/partiesActionCreator";
 import { getParties, getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
 import { uniqBy } from "lodash";
+import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 
 const RenderContacts: FC<any> = ({ fields }) => (
   <FormConsumer>
@@ -111,6 +113,8 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   const partyRelationships: IPartyAppt[] = useSelector((state) => getPartyRelationships(state));
   const parties = useSelector((state) => getParties(state));
   const mineReportDefinitionOptions = useSelector(getMineReportDefinitionOptions);
+
+  const system = useSelector(getSystemFlag);
 
   useEffect(() => {
     if (!partyRelationships.length) {
@@ -207,7 +211,9 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
           style={{ marginBottom: "32px" }}
         />
       )}
-      <Typography.Title level={3}>Report Type</Typography.Title>
+      <Typography.Title level={3} id="report-type">
+        Report Type
+      </Typography.Title>
 
       <FormWrapper
         name={FORM.VIEW_EDIT_REPORT}
@@ -243,19 +249,24 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
             )}
           </Col>
 
-          <Col span={24}>
-            <div className="grey-box" style={{ backgroundColor: "#F2F2F2", padding: "16px 24px" }}>
-              <Row>
-                <Col xs={24} md={18}>
-                  <b>You are submitting:</b>
-                  <br />
-                  <b>{selectedReportName}</b> [TODO: plain language on what it is]
-                  <br />
-                  <b>{selectedReportCode}</b> [TODO: plain language on what it is]
-                </Col>
-              </Row>
-            </div>
-          </Col>
+          {system === SystemFlagEnum.ms && (
+            <Col span={24}>
+              <div
+                className="grey-box"
+                style={{ backgroundColor: "#F2F2F2", padding: "16px 24px" }}
+              >
+                <Row>
+                  <Col xs={24} md={18}>
+                    <b>You are submitting:</b>
+                    <br />
+                    <b>{selectedReportName}</b> [TODO: plain language on what it is]
+                    <br />
+                    <b>{selectedReportCode}</b> [TODO: plain language on what it is]
+                  </Col>
+                </Row>
+              </div>
+            </Col>
+          )}
 
           <Col span={24}>
             <Field
@@ -275,7 +286,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
           </Col>
 
           <Col span={24}>
-            <Typography.Title className="margin-large--top" level={3}>
+            <Typography.Title className="margin-large--top" level={3} id="report-information">
               Report Information
             </Typography.Title>
           </Col>
@@ -316,12 +327,8 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               required
               component={RenderField}
               validate={[required]}
+              help="Your name is recorded for reference"
             />
-            {isEditMode && (
-              <Typography.Text className="report-instructions">
-                Your name is recorded for reference
-              </Typography.Text>
-            )}
           </Col>
           <Col span={12}>
             <Field
@@ -331,15 +338,11 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               placeholder="Enter email"
               component={RenderField}
               validate={[email]}
+              help="By providing your email, you agree to receive notification of the report"
             />
-            {isEditMode && (
-              <Typography.Text className="report-instructions">
-                By providing your email, you agree to receive notification of the report
-              </Typography.Text>
-            )}
           </Col>
           <Col span={24}>
-            <Typography.Title className="margin-large--top" level={3}>
+            <Typography.Title className="margin-large--top" level={3} id="contact-information">
               Contact Information
             </Typography.Title>
           </Col>
@@ -375,16 +378,18 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
           </Col>
 
           <Col span={24}>
-            <Typography.Title className="margin-large--top" level={3}>
+            <Typography.Title className="margin-large--top" level={3} id="documentation">
               Report File(s)
             </Typography.Title>
-            <Alert
-              className="margin-large--bottom"
-              message=""
-              description={<b>This type of report submission will be posted online publicly.</b>}
-              type="warning"
-              showIcon
-            />
+            {system === SystemFlagEnum.ms && (
+              <Alert
+                className="margin-large--bottom"
+                message=""
+                description={<b>This type of report submission will be posted online publicly.</b>}
+                type="warning"
+                showIcon
+              />
+            )}
             {isEditMode && (
               <ReportSubmissions
                 mineGuid={mineGuid}

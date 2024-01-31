@@ -54,6 +54,7 @@ import MineIncident from "@/components/mine/Incidents/MineIncident";
 import MineReportTailingsInfo from "@/components/mine/Tailings/MineReportTailingsInfo";
 import MineTailingsDetailsPage from "@/components/mine/Tailings/MineTailingsDetailsPage";
 import DamsDetailsPage from "@/components/mine/Tailings/DamsDetailsPage";
+import ReportPage from "@/components/mine/Reports/ReportPage";
 
 const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));
@@ -336,6 +337,15 @@ export const MINE_PERMIT_REQUIRED_REPORTS = {
   dynamicRoute: (id, filterParams) =>
     `/mine-dashboard/${id}/reports/permit-required-reports?${queryString.stringify(filterParams)}`,
   component: PermitRequiredReports,
+};
+
+export const REPORT_VIEW_EDIT = {
+  route: "/dashboard/reporting/mine/:mineGuid/code-required-reports/:reportGuid",
+  dynamicRoute: (mineGuid: string, reportGuid: string) =>
+    `/dashboard/reporting/mine/${mineGuid}/code-required-reports/${reportGuid}`,
+  hashRoute: (mineGuid: string, reportGuid: string, link) =>
+    `/dashboard/reporting/mine/${mineGuid}/code-required-reports/${reportGuid}/${link}`,
+  component: ReportPage,
 };
 
 export const MINE_TAILINGS_REPORTS = {

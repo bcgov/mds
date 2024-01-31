@@ -1,0 +1,877 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MineReportTable renders properly 1`] = `
+<div
+  class="ant-table-wrapper mine-reports-table core-table"
+>
+  <div
+    class="ant-spin-nested-loading"
+  >
+    <div
+      class="ant-spin-container"
+    >
+      <div
+        class="ant-table"
+      >
+        <div
+          class="ant-table-container"
+        >
+          <div
+            class="ant-table-content"
+          >
+            <table
+              style="table-layout: auto;"
+            >
+              <colgroup />
+              <thead
+                class="ant-table-thead"
+              >
+                <tr>
+                  <th
+                    class="ant-table-cell column-hide"
+                  >
+                    Mine
+                  </th>
+                  <th
+                    aria-label="Report Name"
+                    class="ant-table-cell ant-table-column-has-sorters"
+                    tabindex="0"
+                  >
+                    <div
+                      class="ant-table-column-sorters"
+                    >
+                      <span
+                        class="ant-table-column-title"
+                      >
+                        Report Name
+                      </span>
+                      <span
+                        class="ant-table-column-sorter ant-table-column-sorter-full"
+                      >
+                        <span
+                          class="ant-table-column-sorter-inner"
+                        >
+                          <span
+                            aria-label="caret-up"
+                            class="anticon anticon-caret-up ant-table-column-sorter-up"
+                            role="presentation"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              data-icon="caret-up"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              viewBox="0 0 1024 1024"
+                              width="1em"
+                            >
+                              <path
+                                d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                              />
+                            </svg>
+                          </span>
+                          <span
+                            aria-label="caret-down"
+                            class="anticon anticon-caret-down ant-table-column-sorter-down"
+                            role="presentation"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              data-icon="caret-down"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              viewBox="0 0 1024 1024"
+                              width="1em"
+                            >
+                              <path
+                                d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </span>
+                    </div>
+                  </th>
+                  <th
+                    aria-label="Compliance Year"
+                    class="ant-table-cell ant-table-column-has-sorters"
+                    tabindex="0"
+                  >
+                    <div
+                      class="ant-table-column-sorters"
+                    >
+                      <span
+                        class="ant-table-column-title"
+                      >
+                        Compliance Year
+                      </span>
+                      <span
+                        class="ant-table-column-sorter ant-table-column-sorter-full"
+                      >
+                        <span
+                          class="ant-table-column-sorter-inner"
+                        >
+                          <span
+                            aria-label="caret-up"
+                            class="anticon anticon-caret-up ant-table-column-sorter-up"
+                            role="presentation"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              data-icon="caret-up"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              viewBox="0 0 1024 1024"
+                              width="1em"
+                            >
+                              <path
+                                d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                              />
+                            </svg>
+                          </span>
+                          <span
+                            aria-label="caret-down"
+                            class="anticon anticon-caret-down ant-table-column-sorter-down"
+                            role="presentation"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              data-icon="caret-down"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              viewBox="0 0 1024 1024"
+                              width="1em"
+                            >
+                              <path
+                                d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </span>
+                    </div>
+                  </th>
+                  <th
+                    aria-label="Status"
+                    class="ant-table-cell ant-table-column-has-sorters"
+                    tabindex="0"
+                  >
+                    <div
+                      class="ant-table-column-sorters"
+                    >
+                      <span
+                        class="ant-table-column-title"
+                      >
+                        Status
+                      </span>
+                      <span
+                        class="ant-table-column-sorter ant-table-column-sorter-full"
+                      >
+                        <span
+                          class="ant-table-column-sorter-inner"
+                        >
+                          <span
+                            aria-label="caret-up"
+                            class="anticon anticon-caret-up ant-table-column-sorter-up"
+                            role="presentation"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              data-icon="caret-up"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              viewBox="0 0 1024 1024"
+                              width="1em"
+                            >
+                              <path
+                                d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                              />
+                            </svg>
+                          </span>
+                          <span
+                            aria-label="caret-down"
+                            class="anticon anticon-caret-down ant-table-column-sorter-down"
+                            role="presentation"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              data-icon="caret-down"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              viewBox="0 0 1024 1024"
+                              width="1em"
+                            >
+                              <path
+                                d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </span>
+                    </div>
+                  </th>
+                  <th
+                    aria-label="Due"
+                    class="ant-table-cell ant-table-column-has-sorters"
+                    tabindex="0"
+                  >
+                    <div
+                      class="ant-table-column-sorters"
+                    >
+                      <span
+                        class="ant-table-column-title"
+                      >
+                        Due
+                      </span>
+                      <span
+                        class="ant-table-column-sorter ant-table-column-sorter-full"
+                      >
+                        <span
+                          class="ant-table-column-sorter-inner"
+                        >
+                          <span
+                            aria-label="caret-up"
+                            class="anticon anticon-caret-up ant-table-column-sorter-up"
+                            role="presentation"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              data-icon="caret-up"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              viewBox="0 0 1024 1024"
+                              width="1em"
+                            >
+                              <path
+                                d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                              />
+                            </svg>
+                          </span>
+                          <span
+                            aria-label="caret-down"
+                            class="anticon anticon-caret-down ant-table-column-sorter-down"
+                            role="presentation"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              data-icon="caret-down"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              viewBox="0 0 1024 1024"
+                              width="1em"
+                            >
+                              <path
+                                d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </span>
+                    </div>
+                  </th>
+                  <th
+                    aria-label="Received"
+                    class="ant-table-cell ant-table-column-has-sorters"
+                    tabindex="0"
+                  >
+                    <div
+                      class="ant-table-column-sorters"
+                    >
+                      <span
+                        class="ant-table-column-title"
+                      >
+                        Received
+                      </span>
+                      <span
+                        class="ant-table-column-sorter ant-table-column-sorter-full"
+                      >
+                        <span
+                          class="ant-table-column-sorter-inner"
+                        >
+                          <span
+                            aria-label="caret-up"
+                            class="anticon anticon-caret-up ant-table-column-sorter-up"
+                            role="presentation"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              data-icon="caret-up"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              viewBox="0 0 1024 1024"
+                              width="1em"
+                            >
+                              <path
+                                d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                              />
+                            </svg>
+                          </span>
+                          <span
+                            aria-label="caret-down"
+                            class="anticon anticon-caret-down ant-table-column-sorter-down"
+                            role="presentation"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              data-icon="caret-down"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              viewBox="0 0 1024 1024"
+                              width="1em"
+                            >
+                              <path
+                                d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </span>
+                    </div>
+                  </th>
+                  <th
+                    aria-label="Requested By"
+                    class="ant-table-cell ant-table-column-has-sorters"
+                    tabindex="0"
+                  >
+                    <div
+                      class="ant-table-column-sorters"
+                    >
+                      <span
+                        class="ant-table-column-title"
+                      >
+                        Requested By
+                      </span>
+                      <span
+                        class="ant-table-column-sorter ant-table-column-sorter-full"
+                      >
+                        <span
+                          class="ant-table-column-sorter-inner"
+                        >
+                          <span
+                            aria-label="caret-up"
+                            class="anticon anticon-caret-up ant-table-column-sorter-up"
+                            role="presentation"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              data-icon="caret-up"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              viewBox="0 0 1024 1024"
+                              width="1em"
+                            >
+                              <path
+                                d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                              />
+                            </svg>
+                          </span>
+                          <span
+                            aria-label="caret-down"
+                            class="anticon anticon-caret-down ant-table-column-sorter-down"
+                            role="presentation"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              data-icon="caret-down"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              viewBox="0 0 1024 1024"
+                              width="1em"
+                            >
+                              <path
+                                d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </span>
+                    </div>
+                  </th>
+                  <th
+                    class="ant-table-cell"
+                  >
+                    Documents
+                  </th>
+                  <th
+                    class="ant-table-cell actions-column"
+                  />
+                </tr>
+              </thead>
+              <tbody
+                class="ant-table-tbody"
+              >
+                <tr
+                  class="ant-table-row ant-table-row-level-0 fade-in"
+                  data-row-key="9f98a719-720a-40a5-ac5b-e91e8a526fad"
+                >
+                  <td
+                    class="ant-table-cell column-hide"
+                  >
+                    <div
+                      class="column-hide"
+                      title="Mine"
+                    >
+                      <a
+                        href="/mine-dashboard/aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d/"
+                      >
+                        Abbott Inc
+                      </a>
+                    </div>
+                  </td>
+                  <td
+                    class="ant-table-cell"
+                  >
+                    <div
+                      title="Report Name"
+                    >
+                      Underground Oil and Grease Storage Area Report
+                    </div>
+                  </td>
+                  <td
+                    class="ant-table-cell"
+                  >
+                    <div
+                      title="Compliance Year"
+                    >
+                      2020
+                    </div>
+                  </td>
+                  <td
+                    class="ant-table-cell"
+                  >
+                    <div
+                      title="Status"
+                    >
+                      <span
+                        class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                      >
+                        <span
+                          class="ant-badge-status-dot ant-badge-status-default"
+                        />
+                        <span
+                          class="ant-badge-status-text"
+                        >
+                          Not Requested
+                        </span>
+                      </span>
+                    </div>
+                  </td>
+                  <td
+                    class="ant-table-cell"
+                  >
+                    <div
+                      title="Due"
+                    >
+                      Jan 02 2020
+                    </div>
+                  </td>
+                  <td
+                    class="ant-table-cell"
+                  >
+                    <div
+                      title="Received"
+                    >
+                      Jan 10 2020
+                    </div>
+                  </td>
+                  <td
+                    class="ant-table-cell"
+                  >
+                    <div
+                      class=""
+                      title="Requested By"
+                    >
+                      idir\\TEST
+                    </div>
+                  </td>
+                  <td
+                    class="ant-table-cell"
+                  >
+                    <div
+                      class="cap-col-height"
+                      title="Documents"
+                    >
+                      <div
+                        title="0101581201901_APPLICATION_FORM (3) (2) (1).pdf"
+                      >
+                        <a
+                          class="ant-dropdown-trigger ant-dropdown-link"
+                          role="button"
+                          tabindex="0"
+                        >
+                          0101581201901_APPLICATION_FORM (3) (2) ([...].pdf
+                           
+                          <span
+                            aria-label="down"
+                            class="anticon anticon-down"
+                            role="img"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class=""
+                              data-icon="down"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              viewBox="64 64 896 896"
+                              width="1em"
+                            >
+                              <path
+                                d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                              />
+                            </svg>
+                          </span>
+                        </a>
+                      </div>
+                    </div>
+                  </td>
+                  <td
+                    class="ant-table-cell actions-column"
+                  >
+                    <div>
+                      <button
+                        class="ant-btn ant-btn-default ant-dropdown-trigger actions-dropdown-button "
+                        data-cy="menu-actions-button"
+                        type="button"
+                      >
+                        <span>
+                          Actions
+                        </span>
+                        <span
+                          alt="Menu"
+                          aria-label="caret-down"
+                          class="anticon anticon-caret-down"
+                          role="img"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class=""
+                            data-icon="caret-down"
+                            fill="currentColor"
+                            focusable="false"
+                            height="1em"
+                            viewBox="0 0 1024 1024"
+                            width="1em"
+                          >
+                            <path
+                              d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                            />
+                          </svg>
+                        </span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  class="ant-table-row ant-table-row-level-0 fade-in"
+                  data-row-key="b59a166e-749e-4e6c-a232-d4c55f1f227c"
+                >
+                  <td
+                    class="ant-table-cell column-hide"
+                  >
+                    <div
+                      class="column-hide"
+                      title="Mine"
+                    >
+                      <a
+                        href="/mine-dashboard/aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d/"
+                      >
+                        Abbott Inc
+                      </a>
+                    </div>
+                  </td>
+                  <td
+                    class="ant-table-cell"
+                  >
+                    <div
+                      title="Report Name"
+                    >
+                      TSF, WSF or Dam As-built Report
+                    </div>
+                  </td>
+                  <td
+                    class="ant-table-cell"
+                  >
+                    <div
+                      title="Compliance Year"
+                    >
+                      2020
+                    </div>
+                  </td>
+                  <td
+                    class="ant-table-cell"
+                  >
+                    <div
+                      title="Status"
+                    >
+                      <span
+                        class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                      >
+                        <span
+                          class="ant-badge-status-dot ant-badge-status-default"
+                        />
+                        <span
+                          class="ant-badge-status-text"
+                        >
+                          Not Requested
+                        </span>
+                      </span>
+                    </div>
+                  </td>
+                  <td
+                    class="ant-table-cell"
+                  >
+                    <div
+                      title="Due"
+                    >
+                      Mar 31 2020
+                    </div>
+                  </td>
+                  <td
+                    class="ant-table-cell"
+                  >
+                    <div
+                      title="Received"
+                    >
+                      Jan 02 2020
+                    </div>
+                  </td>
+                  <td
+                    class="ant-table-cell"
+                  >
+                    <div
+                      class=""
+                      title="Requested By"
+                    >
+                      idir\\TEST
+                    </div>
+                  </td>
+                  <td
+                    class="ant-table-cell"
+                  >
+                    <div
+                      class="cap-col-height"
+                      title="Documents"
+                    >
+                      <div
+                        title="0101581201901_APPLICATION_FORM (1) (1).pdf"
+                      >
+                        <a
+                          class="ant-dropdown-trigger ant-dropdown-link"
+                          role="button"
+                          tabindex="0"
+                        >
+                          0101581201901_APPLICATION_FORM (1) (1).pdf
+                           
+                          <span
+                            aria-label="down"
+                            class="anticon anticon-down"
+                            role="img"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class=""
+                              data-icon="down"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              viewBox="64 64 896 896"
+                              width="1em"
+                            >
+                              <path
+                                d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                              />
+                            </svg>
+                          </span>
+                        </a>
+                      </div>
+                    </div>
+                  </td>
+                  <td
+                    class="ant-table-cell actions-column"
+                  >
+                    <div>
+                      <button
+                        class="ant-btn ant-btn-default ant-dropdown-trigger actions-dropdown-button "
+                        data-cy="menu-actions-button"
+                        type="button"
+                      >
+                        <span>
+                          Actions
+                        </span>
+                        <span
+                          alt="Menu"
+                          aria-label="caret-down"
+                          class="anticon anticon-caret-down"
+                          role="img"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class=""
+                            data-icon="caret-down"
+                            fill="currentColor"
+                            focusable="false"
+                            height="1em"
+                            viewBox="0 0 1024 1024"
+                            width="1em"
+                          >
+                            <path
+                              d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                            />
+                          </svg>
+                        </span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  class="ant-table-row ant-table-row-level-0 fade-in"
+                  data-row-key="92327cd3-eec0-4e18-b898-25539ac408e9"
+                >
+                  <td
+                    class="ant-table-cell column-hide"
+                  >
+                    <div
+                      class="column-hide"
+                      title="Mine"
+                    >
+                      <a
+                        href="/mine-dashboard/aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d/"
+                      >
+                        Abbott Inc
+                      </a>
+                    </div>
+                  </td>
+                  <td
+                    class="ant-table-cell"
+                  >
+                    <div
+                      title="Report Name"
+                    >
+                      Annual DSI
+                    </div>
+                  </td>
+                  <td
+                    class="ant-table-cell"
+                  >
+                    <div
+                      title="Compliance Year"
+                    >
+                      2020
+                    </div>
+                  </td>
+                  <td
+                    class="ant-table-cell"
+                  >
+                    <div
+                      title="Status"
+                    >
+                      <span
+                        class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                      >
+                        <span
+                          class="ant-badge-status-dot ant-badge-status-default"
+                        />
+                        <span
+                          class="ant-badge-status-text"
+                        >
+                          N/A
+                        </span>
+                      </span>
+                    </div>
+                  </td>
+                  <td
+                    class="ant-table-cell"
+                  >
+                    <div
+                      title="Due"
+                    >
+                      Mar 31 2020
+                    </div>
+                  </td>
+                  <td
+                    class="ant-table-cell"
+                  >
+                    <div
+                      title="Received"
+                    >
+                      N/A
+                    </div>
+                  </td>
+                  <td
+                    class="ant-table-cell"
+                  >
+                    <div
+                      class=""
+                      title="Requested By"
+                    >
+                      idir\\TEST
+                    </div>
+                  </td>
+                  <td
+                    class="ant-table-cell"
+                  >
+                    <div
+                      class="cap-col-height"
+                      title="Documents"
+                    >
+                      N/A
+                    </div>
+                  </td>
+                  <td
+                    class="ant-table-cell actions-column"
+                  >
+                    <div>
+                      <button
+                        class="ant-btn ant-btn-default ant-dropdown-trigger actions-dropdown-button "
+                        data-cy="menu-actions-button"
+                        type="button"
+                      >
+                        <span>
+                          Actions
+                        </span>
+                        <span
+                          alt="Menu"
+                          aria-label="caret-down"
+                          class="anticon anticon-caret-down"
+                          role="img"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class=""
+                            data-icon="caret-down"
+                            fill="currentColor"
+                            focusable="false"
+                            height="1em"
+                            viewBox="0 0 1024 1024"
+                            width="1em"
+                          >
+                            <path
+                              d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                            />
+                          </svg>
+                        </span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
