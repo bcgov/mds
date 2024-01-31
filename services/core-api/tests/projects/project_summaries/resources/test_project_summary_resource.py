@@ -1,7 +1,7 @@
 import json
 
 from tests.factories import ProjectFactory, ProjectSummaryFactory, PartyFactory
-from flask_restplus import marshal
+from flask_restx import marshal
 from app.api.projects.response_models import PROJECT_SUMMARY_MODEL
 
 

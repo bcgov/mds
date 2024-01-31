@@ -1,5 +1,5 @@
 import json, decimal, pytest
-from flask_restplus import marshal, fields
+from flask_restx import marshal, fields
 
 from app.api.now_applications.response_models import NOW_APPLICATION_MODEL
 from tests.now_application_factories import NOWApplicationIdentityFactory, NOWApplicationFactory

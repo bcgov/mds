@@ -1,4 +1,5 @@
 
+from collections import defaultdict
 from app.api.utils.include.user_info import User
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.dialects.postgresql import UUID
@@ -24,7 +25,7 @@ class MineDocument(SoftDeleteMixin, AuditMixin, Base):
     document_manager_guid = db.Column(UUID(as_uuid=True))
     document_name = db.Column(db.String(255), nullable=False)
     document_date = db.Column(db.DateTime)
-    document_class = db.Column(db.String)
+    document_class = db.Column(db.String, default='mine_document', nullable=False)
     upload_date = db.Column(db.Date, nullable=False, default=datetime.utcnow)
 
     is_archived = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
@@ -60,7 +61,10 @@ class MineDocument(SoftDeleteMixin, AuditMixin, Base):
 
     mine_name = association_proxy('mine', 'mine_name')
 
-    __mapper_args__ = {'polymorphic_on': document_class}
+    __mapper_args__ = {
+        'polymorphic_on': document_class,
+        'polymorphic_identity': 'mine_document'
+    }
 
     @classmethod
     def find_by_mine_guid(cls, mine_guid):

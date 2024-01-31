@@ -37,7 +37,7 @@ class MineMapResource(Resource, UserMixin):
 
         # It's more efficient to store the json to avoid re-initializing all of the objects
         # and jsonifying on every request, so a flask response is returned to prevent
-        # flask_restplus from jsonifying the data again, which would mangle the json.
+        # flask_restx from jsonifying the data again, which would mangle the json.
         response = make_response(map_result)
         response.headers['content-type'] = 'application/json'
 

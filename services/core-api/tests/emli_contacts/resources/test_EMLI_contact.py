@@ -1,7 +1,7 @@
 import json, uuid
 from datetime import datetime
 
-from flask_restplus import marshal
+from flask_restx import marshal
 from tests.factories import EMLIContactFactory
 from app.api.EMLI_contacts.response_models import EMLI_CONTACT_MODEL
 

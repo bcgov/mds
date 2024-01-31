@@ -43,22 +43,21 @@ def ensure_constrained(query):
     if not query._user_bound or not auth.apply_security:
         return query
     
-    mzero = query.column_descriptions[0]['type']
-
+    mzero = query._entity_from_pre_ent_zero()
     if mzero is not None:
         if has_request_context():
             user_security = auth.get_current_user_security()
 
             if user_security.is_restricted():
                 # use reflection to get current model
+                cls = mzero.class_
 
                 # if model includes mine_guid, apply filter on mine_guid.
-                mapper = inspect(mzero)
-                clz = mapper._class
+                mapper = inspect(cls)
 
                 if 'mine_guid' in [c.name for c in mapper.columns] and query._user_bound:
                     query = query.enable_assertions(False).filter(
-                        clz.mine_guid.in_(user_security.mine_ids))
+                        cls.mine_guid.in_(user_security.mine_ids))
 
     return query
 
