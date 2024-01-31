@@ -3,9 +3,9 @@ import { render } from "@testing-library/react";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import ReportDetailsForm from "./ReportDetailsForm";
 import { Button } from "antd";
-import { REPORTS, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
+import { AUTHENTICATION, REPORTS, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
-import { IMineReport } from "../..";
+import { IMineReport, SystemFlagEnum } from "../..";
 
 const mineReport = MOCK.MINE_REPORTS[0];
 const initialState = {
@@ -16,6 +16,9 @@ const initialState = {
   },
   [STATIC_CONTENT]: {
     mineReportDefinitionOptions: MOCK.BULK_STATIC_CONTENT_RESPONSE.mineReportDefinitionOptions,
+  },
+  [AUTHENTICATION]: {
+    systemFlag: SystemFlagEnum.ms,
   },
 };
 

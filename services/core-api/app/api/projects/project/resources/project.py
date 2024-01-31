@@ -251,7 +251,7 @@ class ProjectListDashboardResource(Resource, UserMixin):
             if application_stage == 'ProjectSummary':
                 query = query.join(ProjectSummary)
         else:
-            query = query.join(ProjectSummary, isouter=True).join(InformationRequirementsTable, isouter=True). join(MajorMineApplication, isouter=True).join(Party, isouter=True)
+            query = query.join(ProjectSummary, isouter=True).join(InformationRequirementsTable, isouter=True). join(MajorMineApplication, isouter=True).join(Party, Project.project_lead_party_guid == Party.party_guid, isouter=True)
 
         if args["mine_commodity_code"]:
             conditions.append(self._build_filter('MineType', 'active_ind', '==', True))

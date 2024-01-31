@@ -246,8 +246,8 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
       if (projectGuid && projectSummaryGuid) {
         handleUpdateProjectSummary(values, message);
       }
+      handleTabChange(newActiveTab);
     }
-    handleTabChange(newActiveTab);
   };
 
   const mineName = isEditMode
