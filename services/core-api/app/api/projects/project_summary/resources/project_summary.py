@@ -127,18 +127,6 @@ class ProjectSummaryResource(Resource, UserMixin):
         store_missing=False,
         required=False,
     )
-    parser.add_argument(
-        'latitude',
-        type=lambda x: Decimal(x) if x else None,
-        store_missing=False,
-        required=False,
-    )
-    parser.add_argument(
-        'longitude',
-        type=lambda x: Decimal(x) if x else None,
-        store_missing=False,
-        required=False,
-    )
 
 
     @api.doc(
@@ -198,8 +186,7 @@ class ProjectSummaryResource(Resource, UserMixin):
                                data.get('is_legal_land_owner'), data.get('is_crown_land_federal_or_provincial'),
                                data.get('is_landowner_aware_of_discharge_application'), data.get('has_landowner_received_copy_of_application'),
                                data.get('legal_land_owner_name'), data.get('legal_land_owner_contact_number'),
-                               data.get('legal_land_owner_email_address'), data.get('latitude'),
-                               data.get('longitude'))
+                               data.get('legal_land_owner_email_address'))
 
         project_summary.save()
         if prev_status == 'DFT' and project_summary.status_code == 'SUB':

@@ -148,9 +148,7 @@ PROJECT_SUMMARY_MODEL = api.model(
         'has_landowner_received_copy_of_application': fields.Boolean,
         'legal_land_owner_name': fields.String,
         'legal_land_owner_contact_number': fields.String,
-        'legal_land_owner_email_address': fields.String,
-        'latitude': fields.Fixed(decimals=7),
-        'longitude': fields.Fixed(decimals=7)
+        'legal_land_owner_email_address': fields.String
     })
 
 PROJECT_CONTACT_MODEL = api.model(

@@ -46,8 +46,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     legal_land_owner_name = db.Column(db.String(200), nullable=True)
     legal_land_owner_contact_number = db.Column(db.String(20), nullable=True)
     legal_land_owner_email_address = db.Column(db.String(200), nullable=True)
-    latitude = db.Column(db.Numeric(9, 7), nullable=False)
-    longitude = db.Column(db.Numeric(11, 7), nullable=False)
 
     project_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('project.project_guid'), nullable=False)
@@ -246,8 +244,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                legal_land_owner_name=None,
                legal_land_owner_contact_number=None,
                legal_land_owner_email_address=None,
-               latitude=None,
-               longitude=None,
                add_to_session=True):
 
         # Update simple properties.
@@ -272,8 +268,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         self.legal_land_owner_name = legal_land_owner_name
         self.legal_land_owner_contact_number = legal_land_owner_contact_number
         self.legal_land_owner_email_address = legal_land_owner_email_address
-        self.latitude=latitude
-        self.longitude=longitude
+
         # TODO - Turn this on when document removal is activated on the front end.
         # Get the GUIDs of the updated documents.
         # updated_document_guids = [doc.get('mine_document_guid') for doc in documents]
