@@ -39,6 +39,13 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     expected_project_start_date = db.Column(db.DateTime, nullable=True)
     agent_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=True)
     is_agent = db.Column(db.Boolean, nullable=True)
+    is_legal_land_owner = db.Column(db.Boolean, nullable=True)
+    is_crown_land_federal_or_provincial = db.Column(db.Boolean, nullable=True)
+    is_landowner_aware_of_discharge_application = db.Column(db.Boolean, nullable=True)
+    has_landowner_received_copy_of_application = db.Column(db.Boolean, nullable=True)
+    legal_land_owner_name = db.Column(db.String(200), nullable=True)
+    legal_land_owner_contact_number = db.Column(db.String(20), nullable=True)
+    legal_land_owner_email_address = db.Column(db.String(200), nullable=True)
 
     project_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('project.project_guid'), nullable=False)
@@ -230,6 +237,13 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                submission_date=None,
                agent=None,
                is_agent=None,
+               is_legal_land_owner=None,
+               is_crown_land_federal_or_provincial=None,
+               is_landowner_aware_of_discharge_application=None,
+               has_landowner_received_copy_of_application=None,
+               legal_land_owner_name=None,
+               legal_land_owner_contact_number=None,
+               legal_land_owner_email_address=None,
                add_to_session=True):
 
         # Update simple properties.
@@ -247,6 +261,13 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         self.expected_permit_receipt_date = expected_permit_receipt_date
         self.expected_project_start_date = expected_project_start_date
         self.submission_date = submission_date
+        self.is_legal_land_owner = is_legal_land_owner
+        self.is_crown_land_federal_or_provincial = is_crown_land_federal_or_provincial
+        self.is_landowner_aware_of_discharge_application = is_landowner_aware_of_discharge_application
+        self.has_landowner_received_copy_of_application = has_landowner_received_copy_of_application
+        self.legal_land_owner_name = legal_land_owner_name
+        self.legal_land_owner_contact_number = legal_land_owner_contact_number
+        self.legal_land_owner_email_address = legal_land_owner_email_address
 
         # TODO - Turn this on when document removal is activated on the front end.
         # Get the GUIDs of the updated documents.
