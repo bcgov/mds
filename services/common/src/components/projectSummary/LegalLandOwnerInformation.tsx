@@ -1,5 +1,4 @@
-import React from "react";
-import { FC } from "react";
+import React, { FC } from "react";
 import { Col, Row, Typography } from "antd";
 import { Field, getFormValues } from "redux-form";
 import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
