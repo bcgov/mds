@@ -59,7 +59,8 @@ class Variance(SoftDeleteMixin, AuditMixin, Base):
         lazy='joined',
         secondary='variance_document_xref',
         secondaryjoin=
-        'and_(foreign(VarianceDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid),MineDocument.deleted_ind == False)'
+        'and_(foreign(VarianceDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid),MineDocument.deleted_ind == False)',
+        overlaps="mine_document,documents"
     )
     inspector = db.relationship('Party', lazy='joined', foreign_keys=[inspector_party_guid])
     mine = db.relationship('Mine', lazy='joined')

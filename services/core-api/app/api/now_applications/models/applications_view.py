@@ -82,13 +82,16 @@ class ApplicationsView(Base):
         lazy='selectin',
         primaryjoin=
         'and_(foreign(NOWApplicationDocumentXref.now_application_id)==ApplicationsView.now_application_id, NOWApplicationDocumentXref.now_application_review_id==None)',
-        order_by='desc(NOWApplicationDocumentXref.create_timestamp)')
+        order_by='desc(NOWApplicationDocumentXref.create_timestamp)',
+        overlaps='documents'
+    )
 
     permit_amendments = db.relationship(
         'PermitAmendment',
         lazy='select',
         primaryjoin=
-        'and_(foreign(PermitAmendment.now_application_guid)==ApplicationsView.now_application_guid )'
+        'and_(foreign(PermitAmendment.now_application_guid)==ApplicationsView.now_application_guid )',
+        overlaps="now_application_identity,now_identity"
     )
 
     application_reason_codes = db.relationship(
@@ -110,6 +113,7 @@ class ApplicationsView(Base):
         secondary=
         'join(NOWPartyAppointment, Party, foreign(NOWPartyAppointment.party_guid)==remote(Party.party_guid))',
         secondaryjoin='foreign(NOWPartyAppointment.party_guid)==remote(Party.party_guid)',
+        overlaps='now_party_appt,party,contacts,now_application'
     )
 
     def __repr__(self):

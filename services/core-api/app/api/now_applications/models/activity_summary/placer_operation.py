@@ -30,7 +30,7 @@ class PlacerOperation(ActivitySummaryBase):
                                                    db.ForeignKey('unit_type.unit_type_code'))
 
     details = db.relationship(
-        'PlacerOperationDetail', secondary='activity_summary_detail_xref', load_on_pending=True)
+        'PlacerOperationDetail', secondary='activity_summary_detail_xref', load_on_pending=True, overlaps='detail,detail_associations,summary,summary_associations')
 
     @hybrid_property
     def calculated_total_disturbance(self):

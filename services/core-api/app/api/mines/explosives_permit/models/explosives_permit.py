@@ -57,11 +57,14 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
     explosive_magazines = db.relationship('ExplosivesPermitMagazine', lazy='select',
         primaryjoin='and_(ExplosivesPermitMagazine.explosives_permit_id == ExplosivesPermit.explosives_permit_id, ExplosivesPermitMagazine.explosives_permit_magazine_type_code == "EXP", ExplosivesPermitMagazine.deleted_ind == False)')
     detonator_magazines = db.relationship('ExplosivesPermitMagazine', lazy='select',
-        primaryjoin='and_(ExplosivesPermitMagazine.explosives_permit_id == ExplosivesPermit.explosives_permit_id, ExplosivesPermitMagazine.explosives_permit_magazine_type_code == "DET", ExplosivesPermitMagazine.deleted_ind == False)')
+        primaryjoin='and_(ExplosivesPermitMagazine.explosives_permit_id == ExplosivesPermit.explosives_permit_id, ExplosivesPermitMagazine.explosives_permit_magazine_type_code == "DET", ExplosivesPermitMagazine.deleted_ind == False)',
+        overlaps='explosive_magazines')
 
     documents = db.relationship('ExplosivesPermitDocumentXref', lazy='select')
     mine_documents = db.relationship('MineDocument', lazy='select', secondary='explosives_permit_document_xref',
-        secondaryjoin='and_(foreign(ExplosivesPermitDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid), MineDocument.deleted_ind == False)')
+        secondaryjoin='and_(foreign(ExplosivesPermitDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid), MineDocument.deleted_ind == False)',
+        overlaps='mine_document, documents'
+    )
 
     mines_act_permit = db.relationship('Permit', lazy='select')
     now_application_identity = db.relationship('NOWApplicationIdentity', lazy='select')

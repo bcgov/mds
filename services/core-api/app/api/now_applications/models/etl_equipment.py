@@ -14,4 +14,4 @@ class ETLEquipment(Base):
     equipment_id = db.Column(db.Integer, db.ForeignKey('equipment.equipment_id'), primary_key=True)
     equipmentid = db.Column(db.Integer)
 
-    equipment = db.relationship('Equipment', uselist=False, load_on_pending=True)
+    equipment = db.relationship('Equipment', uselist=False, load_on_pending=True, back_populates='_etl_equipment')

@@ -30,7 +30,7 @@ class SettlingPond(ActivitySummaryBase):
     is_ponds_discharged = db.Column(db.Boolean)
 
     details = db.relationship(
-        'SettlingPondDetail', secondary='activity_summary_detail_xref', load_on_pending=True)
+        'SettlingPondDetail', secondary='activity_summary_detail_xref', load_on_pending=True, overlaps='detail,detail_associations,summary,summary_associations')
 
     @hybrid_property
     def calculated_total_disturbance(self):

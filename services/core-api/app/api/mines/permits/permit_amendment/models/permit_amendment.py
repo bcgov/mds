@@ -57,13 +57,14 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         UUID(as_uuid=True), db.ForeignKey('now_application_identity.now_application_guid'))
     now_identity = db.relationship(
         'NOWApplicationIdentity', lazy='select', foreign_keys=[now_application_guid])
-    mine = db.relationship('Mine', lazy='select')
+    mine = db.relationship('Mine', lazy='select', back_populates='_mine_permit_amendments')
     conditions = db.relationship(
         'PermitConditions',
         lazy='select',
         primaryjoin=
         "and_(PermitConditions.permit_amendment_id == PermitAmendment.permit_amendment_id, PermitConditions.deleted_ind == False, PermitConditions.parent_permit_condition_id.is_(None))",
-        order_by='asc(PermitConditions.display_order)')
+        order_by='asc(PermitConditions.display_order)',
+        back_populates='permit_amendment')
     permit_conditions_last_updated_date = db.Column(db.DateTime)
     permit_conditions_last_updated_by = db.Column(db.String(60))
     is_generated_in_core = db.Column(db.Boolean)
@@ -74,17 +75,22 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         'MinePermitXref',
         uselist=False,
         primaryjoin=
-        "and_(PermitAmendment.mine_guid==foreign(MinePermitXref.mine_guid), PermitAmendment.permit_id==foreign(MinePermitXref.permit_id))"
+        "and_(PermitAmendment.mine_guid==foreign(MinePermitXref.mine_guid), PermitAmendment.permit_id==foreign(MinePermitXref.permit_id))",
+        overlaps='mine'
     )
     all_mine_permit_xref = db.relationship(
         'MinePermitXref',
-        primaryjoin="PermitAmendment.permit_id==foreign(MinePermitXref.permit_id)")
+        primaryjoin="PermitAmendment.permit_id==foreign(MinePermitXref.permit_id)",
+        overlaps='mine_permit_xref'
+    )
 
     now_application_identity = db.relationship(
         'NOWApplicationIdentity',
         lazy='selectin',
         uselist=False,
-        foreign_keys=[now_application_guid])
+        foreign_keys=[now_application_guid],
+        overlaps='now_identity'
+    )
 
     vc_credential_exch = db.relationship(
         'PartyVerifiableCredentialMinesActPermit',

@@ -37,7 +37,9 @@ class UndergroundExploration(ActivitySummaryBase):
     details = db.relationship(
         'UndergroundExplorationDetail',
         secondary='activity_summary_detail_xref',
-        load_on_pending=True)
+        load_on_pending=True,
+        overlaps='detail,detail_associations,summary,summary_associations'
+    )
     
     @hybrid_property
     def calculated_total_disturbance(self):

@@ -64,11 +64,13 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         order_by='desc(Permit.create_timestamp)',
         lazy='select',
         secondary='mine_permit_xref',
-        secondaryjoin='and_(foreign(MinePermitXref.permit_id) == remote(Permit.permit_id),Permit.deleted_ind == False,MinePermitXref.deleted_ind == False)'
+        secondaryjoin='and_(foreign(MinePermitXref.permit_id) == remote(Permit.permit_id),Permit.deleted_ind == False,MinePermitXref.deleted_ind == False)',
+        back_populates='_all_mines',
+        overlaps='_mine_associations,all_mine_permit_xref,mine_permit_xref,mine'
     )
 
     # across all permit_identities
-    _mine_permit_amendments = db.relationship('PermitAmendment', lazy='selectin')
+    _mine_permit_amendments = db.relationship('PermitAmendment', lazy='selectin', back_populates='mine')
 
     mine_type = db.relationship(
         'MineType',
@@ -91,7 +93,7 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         lazy='select',
         primaryjoin='and_(MineIncident.mine_guid == Mine.mine_guid, MineIncident.deleted_ind == False)')
 
-    mine_reports = db.relationship('MineReport', lazy='select')
+    mine_reports = db.relationship('MineReport', lazy='select', back_populates='mine')
 
     explosives_permits = db.relationship(
         'ExplosivesPermit',
@@ -115,7 +117,8 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         'MineWorkInformation',
         lazy='selectin',
         order_by='desc(MineWorkInformation.created_timestamp)',
-        primaryjoin='and_(MineWorkInformation.mine_guid == Mine.mine_guid, MineWorkInformation.deleted_ind == False)'
+        primaryjoin='and_(MineWorkInformation.mine_guid == Mine.mine_guid, MineWorkInformation.deleted_ind == False)',
+        back_populates='mine'
     )
 
     comments = db.relationship(

@@ -1,6 +1,7 @@
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.schema import FetchedValue
+from sqlalchemy.orm import backref
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.extensions import db
 from sqlalchemy_filters import apply_pagination
@@ -19,7 +20,7 @@ class MineAlert(SoftDeleteMixin, AuditMixin, Base):
 
     end_date = db.Column(db.DateTime)
 
-    mine_table = db.relationship('MineMapViewLocation', lazy='joined', primaryjoin='and_(foreign(MineAlert.mine_guid) == remote(MineMapViewLocation.mine_guid))')
+    mine_table = db.relationship('MineMapViewLocation', lazy='joined', primaryjoin='and_(foreign(MineAlert.mine_guid) == remote(MineMapViewLocation.mine_guid))', overlaps='alerts')
     mine_name = association_proxy('mine_table', 'mine_name')
     mine_no = association_proxy('mine_table', 'mine_no')
 
