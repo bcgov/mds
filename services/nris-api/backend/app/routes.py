@@ -4,7 +4,7 @@ from .config import Config
 
 from flask_jwt_oidc.exceptions import AuthError
 
-from flask_restplus import Resource
+from flask_restx import Resource
 
 
 def register_routes(app):

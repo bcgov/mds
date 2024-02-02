@@ -1,4 +1,4 @@
-FROM python:3.6
+FROM python:3.11.4
 
 ENV LD_LIBRARY_PATH="/opt/oracle/instantclient:${LD_LIBRARY_PATH}" \
     PATH="/opt/oracle/instantclient:${PATH}" \

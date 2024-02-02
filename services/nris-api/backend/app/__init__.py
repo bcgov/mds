@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
 
-from flask_restplus.apidoc import apidoc
+from flask_restx.apidoc import apidoc
 
 from app.commands import register_commands
 from app.routes import register_routes
