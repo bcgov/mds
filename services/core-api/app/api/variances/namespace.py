@@ -1,4 +1,4 @@
-from flask_restplus import Namespace
+from flask_restx import Namespace
 
 from app.api.variances.resources.variance_resource import VarianceResource
 from app.api.variances.resources.variance_application_status_code import VarianceApplicationStatusCodeResource

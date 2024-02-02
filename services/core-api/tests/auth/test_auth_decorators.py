@@ -1,4 +1,4 @@
-from flask_restplus import Resource, Namespace
+from flask_restx import Resource, Namespace
 from app.extensions import api as app_api
 from app.api.utils.access_decorators import *
 

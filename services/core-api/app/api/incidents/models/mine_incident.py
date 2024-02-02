@@ -266,7 +266,7 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
                 raise AssertionError('reported_timestamp must not be in the future')
         return reported_timestamp
 
-    @validates(name=['reported_to_inspector_contact_method', 'johsc_worker_rep_contact_method', 'johsc_management_rep_contact_method'])
+    @validates('reported_to_inspector_contact_method', 'johsc_worker_rep_contact_method', 'johsc_management_rep_contact_method')
     def validates_contact_method(self, key, value):
         if value:
             if value not in ['PHN', 'EML', 'MRP', 'MRE']:

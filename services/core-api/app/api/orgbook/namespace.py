@@ -1,4 +1,4 @@
-from flask_restplus import Namespace
+from flask_restx import Namespace
 
 from app.api.orgbook.resources.orgbook_resources import SearchResource, CredentialResource
 

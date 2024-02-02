@@ -1,5 +1,5 @@
 from flask import request, current_app
-from flask_restplus import Resource, marshal
+from flask_restx import Resource, marshal
 from sqlalchemy_filters import apply_sort, apply_pagination
 from werkzeug.exceptions import BadRequest, InternalServerError
 from sqlalchemy import and_, or_

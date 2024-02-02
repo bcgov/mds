@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime
-from flask_restplus import fields
+from flask_restx import fields
 
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import validates

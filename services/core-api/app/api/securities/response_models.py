@@ -1,5 +1,5 @@
 from app.extensions import api
-from flask_restplus import fields
+from flask_restx import fields
 
 BOND_PARTY = api.model('Party', {
     'party_name': fields.String,

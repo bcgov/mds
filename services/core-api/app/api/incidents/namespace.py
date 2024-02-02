@@ -1,4 +1,4 @@
-from flask_restplus import Namespace
+from flask_restx import Namespace
 
 from app.api.incidents.resources.mine_incident_category import MineIncidentCategoryResource
 from app.api.incidents.resources.mine_incident_status_codes import MineIncidentStatusCodeResource

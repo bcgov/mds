@@ -7,7 +7,7 @@ from sqlalchemy.sql.sqltypes import Integer
 from sqlalchemy import select, func, and_
 from sqlalchemy.orm import aliased
 from app.extensions import db, api
-from flask_restplus import Resource, reqparse, inputs
+from flask_restx import Resource, reqparse, inputs
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
 from werkzeug.exceptions import BadRequest, NotFound
 

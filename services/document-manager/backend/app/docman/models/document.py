@@ -22,7 +22,7 @@ class Document(AuditMixin, Base):
     multipart_upload_id = db.Column(db.String(1024), nullable=True, default=None)
     multipart_upload_path = db.Column(db.String(4096), nullable=True, default=None)
 
-    versions = db.relationship('DocumentVersion', backref='document', lazy=True)
+    versions = db.relationship('DocumentVersion', backref='document', lazy='selectin')
 
     def __repr__(self):
         return '<Document %r>' % self.document_id

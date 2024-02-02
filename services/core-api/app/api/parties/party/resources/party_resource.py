@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 
 from flask import current_app
-from flask_restplus import Resource
+from flask_restx import Resource
 from sqlalchemy import exc as alch_exceptions
 from werkzeug.exceptions import NotFound, BadRequest
 

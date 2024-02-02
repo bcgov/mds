@@ -1,5 +1,5 @@
 from decimal import Decimal
-from flask_restplus import Resource, reqparse
+from flask_restx import Resource, reqparse
 from werkzeug.exceptions import NotFound
 
 from app.api.utils.resources_mixins import UserMixin

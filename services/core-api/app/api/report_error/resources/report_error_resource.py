@@ -1,5 +1,5 @@
 from app.api.services.email_service import EmailService
-from flask_restplus import Resource
+from flask_restx import Resource
 from flask import request
 
 from app.api.utils.access_decorators import (requires_any_of, VIEW_ALL)

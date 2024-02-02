@@ -1,7 +1,7 @@
 from datetime import date, datetime
 import pytz
 from flask import request
-from flask_restplus import Resource
+from flask_restx import Resource
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
 from werkzeug.exceptions import NotFound
 

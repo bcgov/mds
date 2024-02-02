@@ -2,7 +2,7 @@ import uuid
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from marshmallow import fields, validate
-from flask_restplus import marshal
+from flask_restx import marshal
 from flask import current_app
 
 from app.extensions import db

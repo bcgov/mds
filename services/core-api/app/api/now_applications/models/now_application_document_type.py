@@ -1,6 +1,6 @@
 import re
 from sqlalchemy.schema import FetchedValue
-from flask_restplus import marshal
+from flask_restx import marshal
 from app.api.utils.helpers import format_datetime_to_string, format_currency, create_image_with_aspect_ratio
 
 from app.extensions import db

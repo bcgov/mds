@@ -1,7 +1,7 @@
 import requests
 
 from flask import request
-from flask_restplus import Resource
+from flask_restx import Resource
 from werkzeug.exceptions import NotFound
 
 from app.api.utils.access_decorators import requires_role_mine_admin

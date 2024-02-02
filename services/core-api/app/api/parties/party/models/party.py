@@ -56,7 +56,7 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
 
     business_role_appts = db.relationship(
         'PartyBusinessRoleAppointment',
-        lazy='dynamic',
+        lazy='selectin',
         primaryjoin=
         'and_(PartyBusinessRoleAppointment.party_guid == Party.party_guid, PartyBusinessRoleAppointment.deleted_ind==False)'
     )

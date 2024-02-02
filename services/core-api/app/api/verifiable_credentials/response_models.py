@@ -1,4 +1,4 @@
-from flask_restplus import fields
+from flask_restx import fields
 from app.extensions import api
 
 PARTY_VERIFIABLE_CREDENTIAL_CONNECTION = api.model(

@@ -1,6 +1,6 @@
 import tempfile
 
-from flask_restplus import Resource
+from flask_restx import Resource
 from flask import request
 from sheet2dict import Worksheet
 from werkzeug.exceptions import BadRequest

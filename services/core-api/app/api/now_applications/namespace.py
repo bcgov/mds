@@ -1,4 +1,4 @@
-from flask_restplus import Namespace
+from flask_restx import Namespace
 
 from app.api.now_applications.resources.now_application_import_resource import NOWApplicationImportResource
 from app.api.now_applications.resources.now_application_resource import NOWApplicationResource

@@ -1,6 +1,4 @@
-from app.extensions import jwt
-from jose import jwt as jwt_jose
-from flask import has_request_context, request
+from flask import g, has_request_context, request
 
 VALID_REALM = ['idir']
 
@@ -21,8 +19,11 @@ class User:
     def get_user_raw_info(self):
         if self._test_mode:
             return DUMMY_AUTH_CLAIMS
-        token = jwt.get_token_auth_header()
-        return jwt_jose.get_unverified_claims(token)
+        
+        if hasattr(g, 'jwt_oidc_token_info'):
+            return g.jwt_oidc_token_info
+        else:
+            raise Exception('No user info found. Make sure to authenticate the user first.')
 
     def get_user_email(self):
         raw_info = self.get_user_raw_info()

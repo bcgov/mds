@@ -1,4 +1,4 @@
-from flask_restplus import Resource, inputs
+from flask_restx import Resource, inputs
 from flask import request, current_app
 from sqlalchemy_filters import apply_pagination, apply_sort
 from sqlalchemy import desc, func, or_, and_

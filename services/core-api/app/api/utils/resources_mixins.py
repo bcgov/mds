@@ -1,4 +1,4 @@
-from flask_restplus import abort
+from flask_restx import abort
 from .include.user_info import User
 
 

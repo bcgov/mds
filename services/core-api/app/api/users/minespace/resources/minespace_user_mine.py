@@ -1,6 +1,6 @@
 import uuid
 
-from flask_restplus import Resource, reqparse
+from flask_restx import Resource, reqparse
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
 from app.extensions import api, db
