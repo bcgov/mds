@@ -94,8 +94,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
 
     vc_credential_exch = db.relationship(
         'PartyVerifiableCredentialMinesActPermit',
-        lazy='selectin',
-        uselist=False)
+        lazy='selectin')
     
 
     @hybrid_property
@@ -144,8 +143,10 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     
     @hybrid_property
     def vc_credential_exch_state(self):
+        # TODO this assumes only one active credential for each mines act permit 
+        # this will need to be revisited to support additional issuances (wallet recovery) or multple schemas issued
         if self.vc_credential_exch:
-            return self.vc_credential_exch.cred_exch_state
+            return self.vc_credential_exch[0].cred_exch_state
         else:
             return None
 

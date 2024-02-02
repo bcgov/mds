@@ -2,7 +2,7 @@
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
-
+from typing import List
 from app.api.utils.models_mixins import AuditMixin, Base
 
 
@@ -28,5 +28,11 @@ class PartyVerifiableCredentialMinesActPermit(AuditMixin, Base):
         return cls.query.filter_by(party_guid=party_guid).all()
     
     @classmethod
-    def find_by_permit_amendment_guid(cls, permit_amendment_guid) -> "PartyVerifiableCredentialMinesActPermit":
-        return cls.query.filter_by(permit_amendment_guid=permit_amendment_guid).one_or_none()
+    def find_by_permit_amendment_guid(cls, permit_amendment_guid) -> List["PartyVerifiableCredentialMinesActPermit"]:
+        return cls.query.filter_by(permit_amendment_guid=permit_amendment_guid).all()
+
+    @classmethod
+    def find_issued_by_permit_amendment_guid(cls, permit_amendment_guid) -> List["PartyVerifiableCredentialMinesActPermit"]:
+        #https://github.com/hyperledger/aries-rfcs/blob/main/features/0036-issue-credential/README.md#states-for-issuer
+        return cls.query.filter_by(permit_amendment_guid=permit_amendment_guid).filter(PartyVerifiableCredentialMinesActPermit.cred_exch_state.in_(["credential_issued","done"])).all()
+    

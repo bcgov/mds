@@ -47,10 +47,13 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
         if not (permit_amendment):
             raise BadRequest(f"permit_amendment not found")
         
-        existing_cred_exch = PartyVerifiableCredentialMinesActPermit.find_by_permit_amendment_guid(permit_amendment_guid=permit_amendment_guid)
+        existing_cred_exch = PartyVerifiableCredentialMinesActPermit.find_by_permit_amendment_guid(permit_amendment_guid=permit_amendment_guid) or []
         
+        # If a user has deleted the credential from their wallet, they will need another copy so only limit on pending for UX reasons
+        pending_creds = [e for e in existing_cred_exch if e.cred_exch_state in ["offer_sent", "request_receieved"]]
+
         #https://github.com/hyperledger/aries-rfcs/tree/main/features/0036-issue-credential#states-for-issuer
-        if existing_cred_exch and existing_cred_exch.cred_exch_state in ["offer_sent", "request_receieved"]:
+        if pending_creds:
             raise BadRequest(f"There is a pending credential offer, accept or delete that offer first, cred_exch_id={existing_cred_exch.cred_exch_id}, cred_exch_state={existing_cred_exch.cred_exch_state}")
 
 
