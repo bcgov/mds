@@ -35,9 +35,6 @@ jobs:
           DOCKER_BUILDKIT: 1
         run: docker-compose -f docker-compose.ci.yaml up --force-recreate --exit-code-from flyway flyway
 
-      # - name: Create containers for integration tests
-      #   run: docker-compose -f docker-compose.ci.yaml up -d backend
-
       - name: Run integration tests
         env:
           DOCKER_BUILDKIT: 1
