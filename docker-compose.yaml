@@ -120,6 +120,7 @@ services:
       - jaeger
       - otelcollector
       - keycloak
+      - core_api_celery
     healthcheck:
       test: [ "CMD", "curl", "localhost:5000/health" ]
       interval: 5s
