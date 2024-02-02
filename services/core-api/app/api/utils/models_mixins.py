@@ -34,6 +34,9 @@ class UserBoundQuery(db.Query):
         rv._user_bound = False
         return rv
 
+    def paginate(self, page, per_page, error_out=True, max_per_page=None):
+        # flask-sqlalchemy 3.0+ changed page and per_page to be optional. This is in place to support current use of pagination
+        return super(UserBoundQuery, self).paginate(page=page, per_page=per_page, error_out=error_out, max_per_page=max_per_page)
 
 # add listener for the before_compile event on UserBoundQuery
 @db.event.listens_for(UserBoundQuery, 'before_compile', retval=True)

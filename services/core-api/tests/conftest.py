@@ -7,6 +7,7 @@ from app.config import TestConfig
 from app.extensions import db, jwt as _jwt
 from app.api.utils.include.user_info import User
 from app.api.utils.setup_marshmallow import setup_marshmallow
+from sqlalchemy.orm import scoped_session, sessionmaker
 
 from .constants import *
 from tests.factories import FACTORY_LIST
@@ -110,8 +111,7 @@ def db_session(test_client):
     conn = db.engine.connect()
     txn = conn.begin()
 
-    options = dict(bind=conn, binds={})
-    sess = db.create_scoped_session(options=options)
+    sess = scoped_session(sessionmaker(bind=conn))
     db.session = sess
 
     for factory in FACTORY_LIST:
