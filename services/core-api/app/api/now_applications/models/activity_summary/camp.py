@@ -25,13 +25,14 @@ class Camp(ActivitySummaryBase):
     volume_fuel_stored = db.Column(db.Numeric(14, 2))
 
     details = db.relationship(
-        'CampDetail', secondary='activity_summary_detail_xref', load_on_pending=True)
+        'CampDetail', secondary='activity_summary_detail_xref', load_on_pending=True, overlaps='building_detail_associations,detail,detail_associations,summary,summary_associations')
     staging_area_details = db.relationship(
         'StagingAreaDetail',
         secondary='activity_summary_staging_area_detail_xref',
-        load_on_pending=True)
+        load_on_pending=True,
+        overlaps='staging_area_detail_associations,staging_area_summary_associations,summary')
     building_details = db.relationship(
-        'BuildingDetail', secondary='activity_summary_building_detail_xref', load_on_pending=True)
+        'BuildingDetail', secondary='activity_summary_building_detail_xref', load_on_pending=True, overlaps='building_detail_associations,detail,building_summary_associations,summary')
 
     @hybrid_property
     def calculated_total_disturbance_camp(self):

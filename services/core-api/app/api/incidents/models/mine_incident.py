@@ -134,7 +134,8 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
         'MineDocument',
         lazy='selectin',
         secondary='mine_incident_document_xref',
-        secondaryjoin='and_(foreign(MineIncidentDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid),MineDocument.deleted_ind == False)'
+        secondaryjoin='and_(foreign(MineIncidentDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid),MineDocument.deleted_ind == False)',
+        overlaps='_documents'
     )
 
     categories = db.relationship(
@@ -146,7 +147,7 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
         primaryjoin='and_(MineIncidentNote.mine_incident_guid == MineIncident.mine_incident_guid, MineIncidentNote.deleted_ind == False)'
     )
 
-    mine_table = db.relationship('Mine', lazy='joined')
+    mine_table = db.relationship('Mine', lazy='joined', back_populates='mine_incidents', overlaps='mine,mine_incidents')
     mine_name = association_proxy('mine_table', 'mine_name')
     mine_region = association_proxy('mine_table', 'mine_region')
     major_mine_ind = association_proxy('mine_table', 'major_mine_ind')

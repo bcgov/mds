@@ -22,7 +22,7 @@ class PartyOrgBookEntity(AuditMixin, Base):
     association_user = db.Column(db.DateTime, nullable=False, default=User().get_user_username)
     association_timestamp = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
 
-    party = db.relationship('Party')
+    party = db.relationship('Party', overlaps='party')
 
     def __repr__(self):
         return f'{self.__class__.__name__} {self.party_orgbook_entity_id}'

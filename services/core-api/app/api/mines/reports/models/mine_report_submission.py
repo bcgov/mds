@@ -26,7 +26,7 @@ class MineReportSubmission(Base, AuditMixin):
         order_by='MineReportComment.comment_datetime',
         primaryjoin="and_(MineReportComment.mine_report_submission_id == MineReportSubmission.mine_report_submission_id, MineReportComment.deleted_ind==False)",
         lazy='joined')
-    report = db.relationship('MineReport', lazy='joined')
+    report = db.relationship('MineReport', lazy='joined', back_populates='mine_report_submissions')
 
     mine_report_guid = association_proxy('report', 'mine_report_guid')
 

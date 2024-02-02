@@ -57,7 +57,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     project = db.relationship("Project", back_populates="project_summary")
     contacts = db.relationship(
         'ProjectContact',
-        primaryjoin="and_(ProjectSummary.project_guid==foreign(ProjectContact.project_guid), ProjectContact.deleted_ind == False)"
+        primaryjoin="and_(ProjectSummary.project_guid==foreign(ProjectContact.project_guid), ProjectContact.deleted_ind == False)",
+        overlaps="contacts"
     )
     agent = db.relationship(
         'Party', lazy='joined', foreign_keys=agent_party_guid
@@ -78,7 +79,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         'MineDocument',
         lazy='select',
         secondary='project_summary_document_xref',
-        secondaryjoin='and_(and_(foreign(ProjectSummaryDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid), MineDocument.deleted_ind == False), MineDocument.is_archived == False)'
+        secondaryjoin='and_(and_(foreign(ProjectSummaryDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid), MineDocument.deleted_ind == False), MineDocument.is_archived == False)',
+        overlaps="mine_document,project_summary_document_xref,documents"
     )
 
     def __repr__(self):

@@ -33,7 +33,7 @@ class NOWApplicationDelay(Base, AuditMixin):
 
     now_application_guid = db.Column(
         db.Integer, db.ForeignKey('now_application_identity.now_application_guid'), nullable=False)
-    now_application = db.relationship('NOWApplicationIdentity')
+    now_application = db.relationship('NOWApplicationIdentity', back_populates='application_delays')
 
     #Reason for delay (behaves like type tables)
     delay_type_code = db.Column(

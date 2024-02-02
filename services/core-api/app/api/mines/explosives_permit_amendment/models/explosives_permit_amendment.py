@@ -49,7 +49,8 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
         'MineDocument',
         lazy='select',
         secondary='explosives_permit_amendment_document_xref',
-        secondaryjoin='and_(foreign(ExplosivesPermitAmendmentDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid), MineDocument.deleted_ind == False)'
+        secondaryjoin='and_(foreign(ExplosivesPermitAmendmentDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid), MineDocument.deleted_ind == False)',
+        overlaps='mine_document,documents'
     )
 
     mines_act_permit = db.relationship('Permit', lazy='select')
@@ -63,7 +64,8 @@ class ExplosivesPermitAmendment(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
     detonator_magazines = db.relationship(
         'ExplosivesPermitAmendmentMagazine',
         lazy='select',
-        primaryjoin='and_(ExplosivesPermitAmendmentMagazine.explosives_permit_amendment_id == ExplosivesPermitAmendment.explosives_permit_amendment_id, ExplosivesPermitAmendmentMagazine.explosives_permit_amendment_magazine_type_code == "DET", ExplosivesPermitAmendmentMagazine.deleted_ind == False)'
+        primaryjoin='and_(ExplosivesPermitAmendmentMagazine.explosives_permit_amendment_id == ExplosivesPermitAmendment.explosives_permit_amendment_id, ExplosivesPermitAmendmentMagazine.explosives_permit_amendment_magazine_type_code == "DET", ExplosivesPermitAmendmentMagazine.deleted_ind == False)',
+        overlaps='explosive_magazines'
     )
 
     def __repr__(self):

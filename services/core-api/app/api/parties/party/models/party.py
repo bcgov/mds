@@ -31,7 +31,7 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
     email = db.Column(db.String)
     email_sec = db.Column(db.String)
     party_type_code = db.Column(db.String, db.ForeignKey('party_type_code.party_type_code'))
-    address = db.relationship('Address', lazy='joined')
+    address = db.relationship('Address', lazy='joined', back_populates='party')
     job_title = db.Column(db.String)
     job_title_code = db.Column(db.String, db.ForeignKey('mine_party_appt_type_code.mine_party_appt_type_code'))
     postnominal_letters = db.Column(db.String)
@@ -44,25 +44,28 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
         'MinePartyAppointment',
         lazy='joined',
         primaryjoin=
-        'and_(MinePartyAppointment.party_guid == Party.party_guid, MinePartyAppointment.deleted_ind==False)'
+        'and_(MinePartyAppointment.party_guid == Party.party_guid, MinePartyAppointment.deleted_ind==False)',
+        back_populates='party'
     )
 
     now_party_appt = db.relationship(
         'NOWPartyAppointment',
         lazy='selectin',
         primaryjoin=
-        'and_(NOWPartyAppointment.party_guid == Party.party_guid, NOWPartyAppointment.deleted_ind==False)'
+        'and_(NOWPartyAppointment.party_guid == Party.party_guid, NOWPartyAppointment.deleted_ind==False)',
+        back_populates='party'
     )
 
     business_role_appts = db.relationship(
         'PartyBusinessRoleAppointment',
         lazy='selectin',
         primaryjoin=
-        'and_(PartyBusinessRoleAppointment.party_guid == Party.party_guid, PartyBusinessRoleAppointment.deleted_ind==False)'
+        'and_(PartyBusinessRoleAppointment.party_guid == Party.party_guid, PartyBusinessRoleAppointment.deleted_ind==False)',
+        back_populates='party'
     )
 
     party_orgbook_entity = db.relationship(
-        'PartyOrgBookEntity', backref='party_orgbook_entity', uselist=False, lazy='select')
+        'PartyOrgBookEntity', backref='party_orgbook_entity', uselist=False, lazy='select', overlaps='party')
 
     organization = db.relationship(
         'Party',
@@ -75,7 +78,8 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
         'PartyVerifiableCredentialConnection',
         lazy='select',
         uselist=True,
-        order_by='desc(PartyVerifiableCredentialConnection.update_timestamp)',)
+        order_by='desc(PartyVerifiableCredentialConnection.update_timestamp)',
+        overlaps='active_digital_wallet_connection')
         
     active_digital_wallet_connection = db.relationship(
         'PartyVerifiableCredentialConnection',
@@ -83,7 +87,8 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
         uselist=False,
         remote_side=[party_guid],
         primaryjoin=
-        'and_(PartyVerifiableCredentialConnection.party_guid == Party.party_guid, PartyVerifiableCredentialConnection.connection_state==\'active\')')
+        'and_(PartyVerifiableCredentialConnection.party_guid == Party.party_guid, PartyVerifiableCredentialConnection.connection_state==\'active\')',
+        overlaps='digital_wallet_invitations')
 
 
     @hybrid_property

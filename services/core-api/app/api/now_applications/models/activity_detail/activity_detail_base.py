@@ -43,10 +43,10 @@ class ActivityDetailBase(AuditMixin, Base):
     water_quantity = db.Column(db.Numeric(14, 2))
     water_quantity_unit_type_code = db.Column(db.String, db.ForeignKey('unit_type.unit_type_code'))
 
-    _etl_activity_details = db.relationship('ETLActivityDetail', load_on_pending=True)
+    _etl_activity_details = db.relationship('ETLActivityDetail', load_on_pending=True, back_populates='activity_detail')
     
-    activitySummaryBuildingDetailXrefChild = db.relationship('ActivitySummaryBuildingDetailXref', backref='activity_detail', cascade='all,delete-orphan')
-    activitySummaryStagingAreaDetailXrefChild = db.relationship('ActivitySummaryStagingAreaDetailXref', backref='activity_detail', cascade='all,delete-orphan')
+    activitySummaryBuildingDetailXrefChild = db.relationship('ActivitySummaryBuildingDetailXref', backref='activity_detail', cascade='all,delete-orphan', overlaps='building_detail_associations,building_details,detail')
+    activitySummaryStagingAreaDetailXrefChild = db.relationship('ActivitySummaryStagingAreaDetailXref', backref='activity_detail', cascade='all,delete-orphan', overlaps='detail,staging_area_detail_associations,staging_area_details')
 
     activity_type_code = db.column_property(
         func.coalesce(
