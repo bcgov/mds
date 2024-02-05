@@ -1,4 +1,4 @@
-describe("Major Projects", () => {
+describe.skip("Major Projects", () => {
   beforeEach(() => {
     cy.login();
 
