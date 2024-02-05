@@ -12,7 +12,7 @@ from app.extensions import db
 
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
-from app.api.verifiable_credentials.models.credentials import PartyVerifiableCredentialMinesActPermit
+from app.api.verifiable_credentials.aries_constants import IssueCredentialIssuerState
 
 from . import permit_amendment_status_code, permit_amendment_type_code
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
@@ -94,7 +94,8 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
 
     vc_credential_exch = db.relationship(
         'PartyVerifiableCredentialMinesActPermit',
-        lazy='selectin')
+        lazy='selectin',
+        order_by='desc(PartyVerifiableCredentialMinesActPermit.update_timestamp)')
     
 
     @hybrid_property
@@ -145,8 +146,16 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     def vc_credential_exch_state(self):
         # TODO this assumes only one active credential for each mines act permit 
         # this will need to be revisited to support additional issuances (wallet recovery) or multple schemas issued
-        if self.vc_credential_exch:
-            return self.vc_credential_exch[0].cred_exch_state
+
+        active = [x for x in self.vc_credential_exch if x.cred_exch_state in IssueCredentialIssuerState.active_credential_states]
+        pending = [x for x in self.vc_credential_exch if x.cred_exch_state in IssueCredentialIssuerState.pending_credential_states]
+
+        if active:
+            #if any active, return most recent
+            return active[0].cred_exch_state
+        elif pending:
+            #if none active, and pending, return most recent
+            return pending[0].cred_exch_state
         else:
             return None
 
