@@ -4,7 +4,7 @@ from flask import current_app
 from uuid import UUID
 from app.config import Config
 from app.api.parties.party.models.party import Party
-from app.api.verifiable_credentials.utils.aries_constants import DIDExchangeRequesterState
+from app.api.verifiable_credentials.aries_constants import DIDExchangeRequesterState
 from app.api.verifiable_credentials.models.connection import PartyVerifiableCredentialConnection
 
 
