@@ -4,6 +4,7 @@ from flask import current_app
 from uuid import UUID
 from app.config import Config
 from app.api.parties.party.models.party import Party
+from app.api.verifiable_credentials.utils.aries_constants import DIDExchangeRequesterState
 from app.api.verifiable_credentials.models.connection import PartyVerifiableCredentialConnection
 
 
@@ -35,7 +36,7 @@ class TractionService():
         https://github.com/hyperledger/aries-rfcs/blob/main/features/0023-did-exchange/README.md"""
 
         vc_invitations = PartyVerifiableCredentialConnection.find_by_party_guid(party.party_guid)
-        active_invitation = [inv for inv in vc_invitations if inv.connection_state == "completed"]
+        active_invitation = [inv for inv in vc_invitations if inv.connection_state == DIDExchangeRequesterState.COMPLETED]
         if active_invitation: 
             current_app.logger.error(f"party_guid={party.party_guid} already has wallet connection, do not create another one")
             raise VerificableCredentialWorkflowError("cannot make invitation if mine already has active connection")
