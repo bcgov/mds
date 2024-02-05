@@ -277,7 +277,7 @@ def register_routes(app):
                 return {'ready': False}, 503
 
     def get_database_status():
-        return db.session.query("up").from_statement(text("SELECT 1 as up")).all()[0][0] == 1
+        return db.session.query(text("up")).from_statement(text("SELECT 1 as up")).all()[0][0] == 1
 
     def get_cache_status():
         now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
