@@ -86,10 +86,10 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
 
   if (showVCColumn || isFeatureEnabled(Feature.MINESPACE_ESUPS)) {
     const colourMap = {
-      VC_CRED_ISSUE_STATES.null: "#D8292F",
-      VC_CRED_ISSUE_STATES.offer_sent: "#F1C21B",
-      VC_CRED_ISSUE_STATES.credential_acked: "#45A776",
-      VC_CRED_ISSUE_STATES.abandoned: "#D8292F",
+      [VC_CRED_ISSUE_STATES.null]: "#D8292F",
+      [VC_CRED_ISSUE_STATES.offer_sent]: "#F1C21B",
+      [VC_CRED_ISSUE_STATES.credential_acked]: "#45A776",
+      [VC_CRED_ISSUE_STATES.abandoned]: "#D8292F",
     };
     const issuanceStateColumn = {
       title: "Issuance State",
