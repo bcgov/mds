@@ -11,7 +11,7 @@ from app.api.services.traction_service import TractionService
 
 from app.api.verifiable_credentials.models.connection import PartyVerifiableCredentialConnection
 from app.api.verifiable_credentials.models.credentials import PartyVerifiableCredentialMinesActPermit
-from app.api.verifiable_credentials.utils.aries_constants import DIDExchangeRequesterState, IssueCredentialIssuerState
+from app.api.verifiable_credentials.aries_constants import DIDExchangeRequesterState, IssueCredentialIssuerState
 
 from app.api.utils.feature_flag import Feature, is_feature_enabled
 
