@@ -153,7 +153,7 @@
     "build": "webpack --env production",
     "production": "node server.js",
     "verify": "webpack --env production configtest webpack.config.ts",
-    "ci-test": "CI=true jest --env=jsdom --testResultsProcessor=jest-sonar-reporter --update-snapshot --runInBand --coverage",
+    "ci-test": "CI=true jest --env=jsdom --testResultsProcessor=jest-sonar-reporter --runInBand --coverage",
     "lint": "eslint ./src",
     "lint:file": "eslint",
     "format:check": "prettier",
