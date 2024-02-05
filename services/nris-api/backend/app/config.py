@@ -12,7 +12,7 @@ class Config(object):
     DB_PASS = os.environ.get('DB_PASS', 'pass')
     DB_PORT = os.environ.get('DB_PORT', 5432)
     DB_NAME = os.environ.get('DB_NAME', 'db_name')
-    DB_URL = f"postgres://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    DB_URL = f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
     ENVIRONMENT_NAME = os.environ.get('ENVIRONMENT_NAME', 'dev')
 
@@ -50,7 +50,7 @@ class TestConfig(Config):
     TESTING = os.environ.get('TESTING', True)
 
     DB_NAME = os.environ.get('DB_NAME_TEST', 'db_name_test')
-    DB_URL = f"postgres://{Config.DB_USER}:{Config.DB_PASS}@{Config.DB_HOST}:{Config.DB_PORT}/{DB_NAME}"
+    DB_URL = f"postgresql://{Config.DB_USER}:{Config.DB_PASS}@{Config.DB_HOST}:{Config.DB_PORT}/{DB_NAME}"
     SQLALCHEMY_DATABASE_URI = DB_URL
 
     NRIS_DB_USER = os.environ.get('NRIS_DB_USER', 'localhost')

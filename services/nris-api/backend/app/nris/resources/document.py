@@ -25,10 +25,14 @@ class DocumentListResource(Resource):
 
 @api.route(f'/{module_path}/<int:id>')
 class DocumentResource(Resource):
-    @api.marshal_with(RESPONSE_MODEL, code=200)
     @requires_role_nris_view
+    @api.marshal_with(RESPONSE_MODEL, code=200)
     def get(self, id):
         result = Model.query.filter_by(external_id=id).first()
+        print(result)
+        print(result.file_name)
+        
+
         if not result:
             raise NotFound(f"{Model.__name__} not found")
         return result
