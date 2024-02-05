@@ -15,6 +15,12 @@ global.requestAnimationFrame = (callback) => {
   setTimeout(callback, 0);
 };
 
+jest.mock("@mds/common/providers/featureFlags/useFeatureFlag", () => ({
+  useFeatureFlag: () => ({
+    isFeatureEnabled: () => true,
+  }),
+}));
+
 const location = JSON.stringify(window.location);
 delete window.location;
 

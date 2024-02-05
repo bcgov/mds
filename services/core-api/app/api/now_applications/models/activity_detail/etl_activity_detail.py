@@ -10,4 +10,4 @@ class ETLActivityDetail(Base):
     placeractivityid = db.Column(db.Integer)
     settlingpondid = db.Column(db.Integer)
 
-    activity_detail = db.relationship('ActivityDetailBase', uselist=False, load_on_pending=True)
+    activity_detail = db.relationship('ActivityDetailBase', uselist=False, load_on_pending=True, back_populates='_etl_activity_details')

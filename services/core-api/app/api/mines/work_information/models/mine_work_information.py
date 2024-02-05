@@ -33,7 +33,7 @@ class MineWorkInformation(SoftDeleteMixin, AuditMixin, Base):
     updated_by = db.Column(db.String, default=User().get_user_username, nullable=False)
     updated_timestamp = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
-    mine = db.relationship('Mine')
+    mine = db.relationship('Mine', back_populates='mine_work_informations')
 
     def __repr__(self):
         return f'<{self.__class__.__name__} {self.mine_work_information_id}>'

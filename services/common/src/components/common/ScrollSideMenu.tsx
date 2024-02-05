@@ -7,14 +7,19 @@ import { ISideMenuOption } from "../../interfaces/common/sideMenuOption.interfac
  * @constant ScrollSideMenu renders react children with an active indicator if the id is in the url.
  */
 
-interface ScrollSideMenuProps {
+export interface ScrollSideMenuProps {
   menuOptions: ISideMenuOption[];
   featureUrlRoute: any;
   featureUrlRouteArguments: (string | number)[];
   tabSection?: string;
+  offsetTop?: number;
 }
 
-export const ScrollSideMenu: FC<ScrollSideMenuProps> = ({ tabSection = "", ...props }) => {
+export const ScrollSideMenu: FC<ScrollSideMenuProps> = ({
+  tabSection = "",
+  offsetTop = 180,
+  ...props
+}) => {
   const history = useHistory();
   const location = useLocation();
   const { tab } = useParams<{
@@ -71,7 +76,7 @@ export const ScrollSideMenu: FC<ScrollSideMenuProps> = ({ tabSection = "", ...pr
     <div>
       <Anchor
         affix={false}
-        offsetTop={180}
+        offsetTop={offsetTop}
         onChange={handleAnchorOnChange}
         onClick={handleAnchorOnClick}
       >

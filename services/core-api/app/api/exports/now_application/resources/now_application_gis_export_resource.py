@@ -4,7 +4,7 @@ from io import StringIO
 from flask import stream_with_context, Response, current_app
 import csv
 from sqlalchemy.inspection import inspect
-from flask_restplus import Resource
+from flask_restx import Resource
 from ..models.now_application_gis_export import NowApplicationGisExport
 from app.extensions import api, cache
 from app.api.utils.access_decorators import VIEW_ALL, GIS, requires_any_of

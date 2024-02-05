@@ -1,4 +1,4 @@
-from flask_restplus import Resource
+from flask_restx import Resource
 from flask import request
 from datetime import datetime
 from sqlalchemy import desc, cast, NUMERIC, extract, asc

@@ -1,5 +1,5 @@
 from decimal import Decimal
-from flask_restplus import Resource, reqparse
+from flask_restx import Resource, reqparse
 from werkzeug.exceptions import NotFound
 
 from app.api.dams.dto import DAM_MODEL, CREATE_DAM_MODEL, DAM_MODEL_LIST

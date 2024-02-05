@@ -22,8 +22,8 @@ import ssl  # pylint: disable=unused-import # noqa: F401; for local hacks
 from functools import wraps
 
 from cachelib import SimpleCache
-from flask import _request_ctx_stack, current_app, g, jsonify, request
-from jose import jwt
+from flask import current_app, g, jsonify, request
+import jwt
 from six.moves.urllib.request import urlopen
 
 from .exceptions import AuthError
@@ -142,6 +142,11 @@ class JwtManager:  # pylint: disable=too-many-instance-attributes
         return parts[1]
 
     @staticmethod
+    def get_unverified_claims():
+        auth_header = JwtManager.get_token_auth_header()
+        return jwt.decode(auth_header, options={"verify_signature": False})
+
+    @staticmethod
     def _get_token_auth_cookie():
         """Obtain the access token from the cookie."""
         cookie_name = current_app.config.get('JWT_OIDC_AUTH_COOKIE_NAME', 'oidc-jwt')
@@ -158,8 +163,7 @@ class JwtManager:  # pylint: disable=too-many-instance-attributes
         Args:
             roles [str,]: Comma separated list of valid roles
         """
-        token = self.get_token_auth_header()
-        unverified_claims = jwt.get_unverified_claims(token)
+        unverified_claims = self.get_unverified_claims()
         roles_in_token = self.jwt_role_callback(
             unverified_claims)
         if any(elem in roles_in_token for elem in roles):
@@ -168,8 +172,7 @@ class JwtManager:  # pylint: disable=too-many-instance-attributes
 
     def get_bceid_user_name(self):
         """Get the bceid_username from the token."""
-        token = self.get_token_auth_header()
-        unverified_claims = jwt.get_unverified_claims(token)
+        unverified_claims = self.get_unverified_claims()
         return unverified_claims['bceid_username']
 
     def has_one_of_roles(self, roles):
@@ -196,8 +199,7 @@ class JwtManager:  # pylint: disable=too-many-instance-attributes
         Args:
             required_roles [str,]: Comma separated list of required roles
         """
-        token = self.get_token_auth_header()
-        unverified_claims = jwt.get_unverified_claims(token)
+        unverified_claims = self.get_unverified_claims()
         roles_in_token = self.jwt_role_callback(
             unverified_claims)
         if all(elem in roles_in_token for elem in required_roles):
@@ -206,8 +208,7 @@ class JwtManager:  # pylint: disable=too-many-instance-attributes
 
     def get_all_roles(self):
         """Get all roles from the token."""
-        token = self.get_token_auth_header()
-        unverified_claims = jwt.get_unverified_claims(token)
+        unverified_claims = self.get_unverified_claims()
         return self.jwt_role_callback(unverified_claims)
 
     def requires_roles(self, required_roles):
@@ -260,12 +261,12 @@ class JwtManager:  # pylint: disable=too-many-instance-attributes
     def _validate_token(self, token):
         try:
             unverified_header = jwt.get_unverified_header(token)
-        except jwt.JWTError as jerr:
+        except (jwt.DecodeError, jwt.InvalidTokenError) as jerr:
             raise AuthError({'code': 'invalid_header',
                              'description':
                                  'Invalid header. '
                                  'Use an RS256 signed JWT Access Token'}, 401) from jerr
-        if unverified_header['alg'] == 'HS256':
+        if unverified_header['alg'] != 'RS256':
             raise AuthError({'code': 'invalid_header',
                              'description':
                                  'Invalid header. '
@@ -289,18 +290,23 @@ class JwtManager:  # pylint: disable=too-many-instance-attributes
                              'description': 'Unable to find jwks key referenced in token'}, 401)
 
         try:
+            key = jwt.algorithms.RSAAlgorithm.from_jwk(rsa_key)
             payload = jwt.decode(
                 token,
-                rsa_key,
-                algorithms=self.algorithms,
+                key,
+                algorithms=[self.algorithms],
                 audience=self.audience,
-                issuer=self.issuer
+                issuer=self.issuer,
+                options={
+                    "require": ["exp", "iat", "sub", "aud", "iss"]
+                }
             )
-            _request_ctx_stack.top.current_user = g.jwt_oidc_token_info = payload
+            g.jwt_oidc_token_info = payload
         except jwt.ExpiredSignatureError as sig:
             raise AuthError({'code': 'token_expired',
                              'description': 'token has expired'}, 401) from sig
-        except jwt.JWTClaimsError as jwe:
+        
+        except (jwt.InvalidAudienceError, jwt.InvalidIssuerError) as jwe:
             raise AuthError({'code': 'invalid_claims',
                              'description':
                                  'incorrect claims,'

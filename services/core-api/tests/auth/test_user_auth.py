@@ -1,6 +1,6 @@
 import json
 import pytest
-from flask_restplus import Resource, Namespace
+from flask_restx import Resource, Namespace
 from app.extensions import api as app_api
 from app.api.utils.access_decorators import *
 from app import auth
@@ -119,3 +119,22 @@ def test_delete_view_auth_applies_user(test_client, db_session, auth_headers, se
 def test_delete_proponent_auth_applies_user(test_client, db_session, auth_headers, setup_info):
     resp = test_client.delete('/authtest', headers=auth_headers['proponent_only_auth_header'])
     assert json.loads(resp.data.decode()) == True
+
+# Test token validation
+def test_non_registered_aud_fails(test_client, db_session, auth_headers, setup_info):
+    resp = test_client.get('/authtest', headers=auth_headers['incorrect_aud_auth_header'])
+    assert resp.status_code == 403
+    data = json.loads(resp.data.decode())
+
+    assert data['message'] == '403 Forbidden: incorrect claims, please check the audience and issuer'
+
+def test_non_registered_iss_fails(test_client, db_session, auth_headers, setup_info):
+    resp = test_client.get('/authtest', headers=auth_headers['incorrect_iss_auth_header'])
+    assert resp.status_code == 401
+
+def test_expired_token_fails(test_client, db_session, auth_headers, setup_info):
+    resp = test_client.get('/authtest', headers=auth_headers['expired_auth_header'])
+    assert resp.status_code == 403
+    data = json.loads(resp.data.decode())
+
+    assert data['message'] == '403 Forbidden: token has expired'

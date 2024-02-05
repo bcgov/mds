@@ -7,7 +7,7 @@ from tests.constants import VIEW_ONLY_AUTH_CLAIMS, TOKEN_HEADER
 from tests.factories import MineFactory, PermitFactory, create_mine_and_permit
 from tests.now_application_factories import NOWApplicationIdentityFactory, CampDetailFactory
 
-from flask_restplus import marshal, fields
+from flask_restx import marshal, fields
 
 import app.api.now_applications.models
 from app.api.now_applications.models.now_application import NOWApplication

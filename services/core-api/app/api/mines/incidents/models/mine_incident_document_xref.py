@@ -18,7 +18,7 @@ class MineIncidentDocumentXref(Base):
         db.String,
         db.ForeignKey('mine_incident_document_type_code.mine_incident_document_type_code'),
         nullable=False)
-    mine_document = db.relationship('MineDocument', lazy='joined')
+    mine_document = db.relationship('MineDocument', lazy='joined', overlaps="mine_documents")
 
     mine_guid = association_proxy('mine_document', 'mine_guid')
     document_manager_guid = association_proxy('mine_document', 'document_manager_guid')

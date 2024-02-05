@@ -1,4 +1,4 @@
-from flask_restplus import Resource
+from flask_restx import Resource
 from app.extensions import api
 
 from app.api.variances.models.variance_document_category_code import VarianceDocumentCategoryCode

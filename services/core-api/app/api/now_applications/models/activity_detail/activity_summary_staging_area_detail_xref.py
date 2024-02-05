@@ -11,6 +11,6 @@ class ActivitySummaryStagingAreaDetailXref(Base):
         db.Integer, db.ForeignKey('activity_detail.activity_detail_id', ondelete='CASCADE'), primary_key=True)
 
     summary = db.relationship(
-        'ActivitySummaryBase', backref='staging_area_summary_associations', load_on_pending=True)
+        'ActivitySummaryBase', backref='staging_area_summary_associations', load_on_pending=True, overlaps='building_detail_associations,building_details,detail')
     detail = db.relationship(
-        'ActivityDetailBase', backref='staging_area_detail_associations', load_on_pending=True)
+        'ActivityDetailBase', backref='staging_area_detail_associations', load_on_pending=True, overlaps='detail,staging_area_detail_associations,staging_area_details')

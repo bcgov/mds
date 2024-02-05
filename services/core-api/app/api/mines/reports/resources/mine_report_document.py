@@ -6,7 +6,7 @@ import json
 
 from datetime import datetime
 from flask import request, current_app, Response
-from flask_restplus import Resource, reqparse
+from flask_restx import Resource, reqparse
 from werkzeug.datastructures import FileStorage
 from werkzeug.exceptions import BadRequest, NotFound
 from sqlalchemy.exc import DBAPIError

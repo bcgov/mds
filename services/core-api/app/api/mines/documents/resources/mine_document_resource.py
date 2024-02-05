@@ -7,7 +7,7 @@ from app.api.projects.project_summary.models.project_summary import ProjectSumma
 from app.api.projects.project_decision_package.models.project_decision_package import ProjectDecisionPackage
 from app.api.projects.information_requirements_table.models.information_requirements_table import InformationRequirementsTable
 
-from flask_restplus import Resource, reqparse, fields
+from flask_restx import Resource, reqparse, fields
 from datetime import datetime
 from werkzeug.exceptions import BadRequest, NotFound
 

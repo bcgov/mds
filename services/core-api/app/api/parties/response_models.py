@@ -1,6 +1,6 @@
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointmentStatus, MinePartyAcknowledgedStatus
 from app.extensions import api
-from flask_restplus import fields
+from flask_restx import fields
 
 
 class Date(fields.Raw):

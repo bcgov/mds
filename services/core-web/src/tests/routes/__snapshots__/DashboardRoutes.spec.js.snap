@@ -437,6 +437,12 @@ exports[`DashboardRoutes  renders properly 1`] = `
   <Route
     component={[Function]}
     exact={true}
+    key="/dashboard/reporting/mine/:mineGuid/code-required-reports/:reportGuid"
+    path="/dashboard/reporting/mine/:mineGuid/code-required-reports/:reportGuid"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
     key="/mine-dashboard/:id/reports/tailings-reports"
     path="/mine-dashboard/:id/reports/tailings-reports"
   />

@@ -1,7 +1,7 @@
 .stepped-form-menu-container {
   position: relative;
   padding-right: 10px;
-  border-right:1px solid #949494;
+  border-right: 1px solid #949494;
 }
 
 .stepped-form {
@@ -14,7 +14,7 @@
   border-right: unset !important;
 }
 
-.stepped-form > .ant-menu-item-selected {
+.stepped-form>.ant-menu-item-selected {
   border-left: 4px solid $gov-blue;
   background-color: #FFFFFF !important;
   border-right: unset !important;
@@ -33,13 +33,14 @@
   margin: 0 24px;
 }
 
-.draft-button, .draft-button:active {
+.draft-button,
+.draft-button:active {
   border: none;
   background-color: #FFFFFF;
   transition: 0.3s ease-in-out;
 }
 
-.draft-button > span {
+.draft-button>span {
   font-size: 14px;
   color: $gov-blue;
   text-decoration: underline;
@@ -50,4 +51,8 @@
   color: #000;
   background-color: #FFFFFF;
   border: none;
+}
+
+.form-item-help {
+  color: rgba(49, 49, 50, 0.55);
 }

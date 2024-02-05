@@ -7,7 +7,6 @@ from app.flask_jwt_oidc_local.exceptions import AuthError
 from app.flask_jwt_oidc_local import JwtManager
 from flask_sqlalchemy import SQLAlchemy
 from app.config import TestConfig
-from jose import jwt as jwt_jose
 from .config import Config
 from .helper import Api
 
@@ -66,8 +65,7 @@ jwt = JwtManager(None, test_config.JWT_OIDC_WELL_KNOWN_CONFIG, None, 'RS256', No
 
 def getJwtManager():
     legacy_token_issuer = 'oidc.gov.bc.ca'
-    auth_header = jwt.get_token_auth_header()
-    token = jwt_jose.get_unverified_claims(auth_header)
+    token = jwt.get_unverified_claims()
 
     iss = token.get('iss')
     aud = token.get('aud')

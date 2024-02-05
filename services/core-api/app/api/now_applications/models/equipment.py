@@ -16,8 +16,8 @@ class Equipment(AuditMixin, Base):
     description = db.Column(db.String)
     quantity = db.Column(db.Integer)
     capacity = db.Column(db.String)
-    _etl_equipment = db.relationship('ETLEquipment', load_on_pending=True)
-    activity_equipment_xref = db.relationship('ActivityEquipmentXref', load_on_pending=True)
+    _etl_equipment = db.relationship('ETLEquipment', load_on_pending=True, back_populates='equipment')
+    activity_equipment_xref = db.relationship('ActivityEquipmentXref', load_on_pending=True, overlaps='equipment')
 
     def __repr__(self):
         return '<Equipment %r>' % self.equipment_id

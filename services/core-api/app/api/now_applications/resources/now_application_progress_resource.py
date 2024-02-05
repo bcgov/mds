@@ -8,7 +8,7 @@ from app.extensions import api
 from app.api.utils.access_decorators import requires_role_edit_permit, can_edit_now_dates
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.now_applications.models.now_application_progress import NOWApplicationProgress
-from flask_restplus import Resource, reqparse
+from flask_restx import Resource, reqparse
 from app.api.utils.resources_mixins import UserMixin
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 from app.api.now_applications.response_models import NOW_APPLICATION_PROGRESS

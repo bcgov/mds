@@ -1,4 +1,4 @@
-from flask_restplus import Namespace
+from flask_restx import Namespace
 
 from app.api.exports.mines.resources.mine_summary_resource import MineSummaryResource
 from app.api.exports.mines.resources.mine_summary_csv_resource import MineSummaryCSVResource

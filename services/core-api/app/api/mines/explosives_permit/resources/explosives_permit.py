@@ -4,7 +4,7 @@ from flask.globals import current_app
 from app.api.mines.exceptions.mine_exceptions import MineException
 
 from werkzeug.exceptions import NotFound
-from flask_restplus import Resource, inputs
+from flask_restx import Resource, inputs
 
 from app.extensions import api
 from app.api.utils.access_decorators import requires_any_of, VIEW_ALL, MINESPACE_PROPONENT, MINE_ADMIN, requires_role_edit_explosives_permit

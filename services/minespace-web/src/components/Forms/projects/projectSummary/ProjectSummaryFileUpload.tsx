@@ -1,5 +1,4 @@
 import React, { FC, useEffect, useState } from "react";
-import PropTypes from "prop-types";
 import { Field, WrappedFieldProps } from "redux-form";
 import { useSelector } from "react-redux";
 import { NEW_VERSION_DOCUMENTS, PROJECT_SUMMARY_DOCUMENTS } from "@mds/common/constants/API";
@@ -8,14 +7,6 @@ import { Alert, Divider, Modal, Popconfirm, Table, Typography } from "antd";
 import { getUserInfo } from "@mds/common/redux/selectors/authenticationSelectors";
 import { FilePondFile } from "filepond";
 import { IDocument } from "@mds/common";
-import { HttpRequest, HttpResponse } from "tus-js-client";
-
-const propTypes = {
-  onFileLoad: PropTypes.func.isRequired,
-  onRemoveFile: PropTypes.func.isRequired,
-  acceptedFileTypesMap: PropTypes.objectOf(PropTypes.string).isRequired,
-  params: PropTypes.objectOf(PropTypes.string).isRequired,
-};
 
 const notificationDisabledStatusCodes = [409]; // Define the notification disabled status codes
 
@@ -50,13 +41,15 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
   const userInfo = useSelector(getUserInfo);
 
   const handleCloseModal = () => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    handleModalClose && handleModalClose();
+    if (handleModalClose) {
+      handleModalClose();
+    }
   };
 
   const handleNewVersionSubmit = () => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    handleModalSubmit && handleModalSubmit();
+    if (handleModalSubmit) {
+      handleModalSubmit();
+    }
   };
 
   const columns = [
@@ -307,7 +300,5 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
     </>
   );
 };
-
-ProjectSummaryFileUpload.propTypes = propTypes;
 
 export default ProjectSummaryFileUpload;

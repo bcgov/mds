@@ -1,5 +1,5 @@
 from app.extensions import api
-from flask_restplus import Resource, fields
+from flask_restx import Resource, fields
 from werkzeug.exceptions import BadRequest, NotFound
 
 from app.api.utils.resources_mixins import UserMixin

@@ -6,7 +6,7 @@ from app.api.mines.documents.dto import CREATE_DOCUMENT_VERSION
 from app.api.mines.documents.models.mine_document_version import MineDocumentVersion
 
 from flask import request
-from flask_restplus import Resource, reqparse, fields
+from flask_restx import Resource, reqparse, fields
 from datetime import datetime
 from werkzeug.exceptions import BadRequest, NotFound
 

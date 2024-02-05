@@ -1,5 +1,5 @@
 import json
-from flask_restplus import Resource, reqparse, inputs
+from flask_restx import Resource, reqparse, inputs
 from datetime import datetime
 from datetime import datetime, timezone
 from flask import current_app, request

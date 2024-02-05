@@ -1,5 +1,5 @@
 from app.extensions import api
-from flask_restplus import fields
+from flask_restx import fields
 
 from app.api.parties.response_models import PARTY
 from app.api.mines.response_models import MINE_DOCUMENT_MODEL, PERMIT_AMENDMENT_SHORT_MODEL, MINE_TYPE_MODEL

@@ -6,7 +6,8 @@ from logging.config import dictConfig
 
 from flask import Flask, request, current_app
 from flask_cors import CORS
-from flask_restplus import Resource, apidoc
+from flask_restx import Resource
+from flask_restx.apidoc import apidoc
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -70,9 +71,9 @@ def create_app(test_config=None):
         path = request.path
         ip_address = request.remote_addr
         http_version = request.environ.get('SERVER_PROTOCOL', 'HTTP/1.1')
-
-        # Log combined request and response information
-        current_app.logger.info(f'{ip_address} - - [{get_formatted_current_time()}] "{method} {path} {http_version}" {response.status_code} -')
+        if path != '/health':
+            # Log combined request and response information
+            current_app.logger.info(f'{ip_address} - - [{get_formatted_current_time()}] "{method} {path} {http_version}" {response.status_code} -')
 
         return response
 
@@ -132,7 +133,7 @@ def register_extensions(app, test_config=None):
     root_api_namespace.app = app
 
     # Overriding swaggerUI base path to serve content under a prefix
-    apidoc.apidoc.static_url_path = '{}/swaggerui'.format(Config.BASE_PATH)
+    apidoc.static_url_path = '{}/swaggerui'.format(Config.BASE_PATH)
 
     root_api_namespace.init_app(app)
 

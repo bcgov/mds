@@ -1,4 +1,4 @@
-from flask_restplus import Resource
+from flask_restx import Resource
 from flask import request, current_app
 from sqlalchemy import desc, func, or_
 from marshmallow.exceptions import MarshmallowError

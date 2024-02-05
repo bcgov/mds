@@ -1,38 +1,40 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import React, { FC } from "react";
 import { Checkbox, Form } from "antd";
+import { BaseInputProps } from "./BaseInput";
 /**
  * @constant RenderCheckbox - Ant Design `Checkbox` component for redux-form.
  */
 
-const propTypes = {
-  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  label: PropTypes.string.isRequired,
-  meta: PropTypes.objectOf(PropTypes.any).isRequired,
-  input: PropTypes.objectOf(PropTypes.string).isRequired,
-  disabled: PropTypes.bool.isRequired,
-};
+interface CheckboxProps extends BaseInputProps {
+  label: string;
+}
 
-const RenderCheckbox = (props) => {
-  const [checked, setChecked] = useState(props.input.value || false);
+const RenderCheckbox: FC<CheckboxProps> = ({
+  input,
+  meta,
+  id,
+  disabled = false,
+  label,
+  ...props
+}) => {
   const onChange = (e) => {
-    setChecked(e.target.checked);
+    input.onChange(e.target.checked);
   };
   return (
-    <Form.Item validateStatus={props.meta.touched ? props.meta.error && "error" : ""}>
-      <Checkbox
-        id={props.id}
-        {...props.input}
-        disabled={props.disabled}
-        checked={checked}
-        onChange={onChange}
-      >
-        {props.label}
+    <Form.Item
+      name={input.name}
+      validateStatus={meta.touched ? meta.error && "error" : ""}
+      required={props.required}
+      help={
+        meta.touched &&
+        ((meta.error && <span>{meta.error}</span>) || (meta.warning && <span>{meta.warning}</span>))
+      }
+    >
+      <Checkbox id={id} {...input} disabled={disabled} onChange={onChange}>
+        {label}
       </Checkbox>
     </Form.Item>
   );
 };
-
-RenderCheckbox.propTypes = propTypes;
 
 export default RenderCheckbox;

@@ -36,6 +36,8 @@ import { WrappedFieldProps, WrappedFieldMetaProps, WrappedFieldInputProps } from
           }
           return (
             <Form.Item
+              // getValueProps is very useful for solving bugs where it doesn't show the correct value, but not always necessary
+              getValueProps={() => ({ value: input.value })}
               name={input.name} 
               label={getFormItemLabel(label, required)}
               required={required}
@@ -68,6 +70,7 @@ export interface BaseInputProps extends WrappedFieldProps {
   required?: boolean;
   loading?: boolean;
   allowClear?: boolean;
+  help?: string;
 }
 
 interface BaseViewInputProps {

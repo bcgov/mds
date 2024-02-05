@@ -1,5 +1,5 @@
 from flask import current_app
-from flask_restplus import Resource
+from flask_restx import Resource
 from werkzeug.exceptions import NotFound, NotImplemented
 from app.extensions import api
 from app.api.utils.access_decorators import requires_any_of, EDIT_PARTY, MINESPACE_PROPONENT

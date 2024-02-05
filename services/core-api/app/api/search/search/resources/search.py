@@ -1,6 +1,6 @@
 import regex
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from flask_restplus import Resource
+from flask_restx import Resource
 from flask import request, current_app
 
 from app.extensions import db, api

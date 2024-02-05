@@ -1,7 +1,7 @@
 import csv
 from io import StringIO
 from flask import Response
-from flask_restplus import Resource
+from flask_restx import Resource
 from sqlalchemy.inspection import inspect
 from ..models.mine_summary_view import MineSummaryView
 

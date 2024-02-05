@@ -1,7 +1,7 @@
 from datetime import date, datetime
 import pytz
 from flask import request
-from flask_restplus import Resource
+from flask_restx import Resource
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
 from werkzeug.exceptions import NotFound
 
@@ -251,7 +251,7 @@ class ProjectListDashboardResource(Resource, UserMixin):
             if application_stage == 'ProjectSummary':
                 query = query.join(ProjectSummary)
         else:
-            query = query.join(ProjectSummary, isouter=True).join(InformationRequirementsTable, isouter=True). join(MajorMineApplication, isouter=True).join(Party, isouter=True)
+            query = query.join(ProjectSummary, isouter=True).join(InformationRequirementsTable, isouter=True). join(MajorMineApplication, isouter=True).join(Party, Project.project_lead_party_guid == Party.party_guid, isouter=True)
 
         if args["mine_commodity_code"]:
             conditions.append(self._build_filter('MineType', 'active_ind', '==', True))
