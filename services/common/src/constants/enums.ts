@@ -138,7 +138,7 @@ export enum VC_CRED_ISSUE_STATES {
   credential_issued = "Pending",
   credential_acked = "Active",
   deleted = "Active",
-  abandoned = "Offer Rejected"
+  abandoned = "Error"
 }
 
 export enum PROJECT_SUMMARY_STATUS_CODES {

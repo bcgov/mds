@@ -89,7 +89,7 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
       "Not Active": "#D8292F",
       Pending: "#F1C21B",
       Active: "#45A776",
-      "Offer Rejected": "#D8292F",
+      VC_CRED_ISSUE_STATES.abandoned: "#D8292F",
     };
     const issuanceStateColumn = {
       title: "Issuance State",

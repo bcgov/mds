@@ -12,11 +12,11 @@ class IssueCredentialIssuerState():
     #if problem report is received
     ABANDONED = "abandoned"
 
-    #acapy sends these... not sure why they don't match
+    #acapy sends these... not sure why they don't match the spec
     CREDENTIAL_ACKED = "credential_acked"
 
     pending_credential_states = [PROPOSAL_RECEIVED, OFFER_SENT, REQUEST_RECEIVED]
-    active_credential_states = [CREDENTIAL_ISSUED, DONE]
+    active_credential_states = [CREDENTIAL_ACKED, CREDENTIAL_ISSUED, DONE]
 
 
 class DIDExchangeRequesterState():
