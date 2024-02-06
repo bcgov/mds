@@ -73,7 +73,7 @@ exports[`AmazonS3Provider renders properly 1`] = `
       }
       view="Details"
     >
-      <t
+      <e
         services={
           Array [
             [Function],
