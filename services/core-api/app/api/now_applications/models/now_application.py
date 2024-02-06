@@ -108,7 +108,7 @@ class NOWApplication(Base, AuditMixin):
     proposed_annual_maximum_tonnage = db.Column(db.Numeric(14, 2))
     adjusted_annual_maximum_tonnage = db.Column(db.Numeric(14, 2))
 
-    now_application_identity = db.relationship('NOWApplicationIdentity', uselist=False, back_populates='now_application')
+    now_application_identity = db.relationship('NOWApplicationIdentity', uselist=False)
 
     first_aid_equipment_on_site = db.Column(db.String)
     first_aid_cert_level = db.Column(db.String)
@@ -130,8 +130,8 @@ class NOWApplication(Base, AuditMixin):
 
     reviews = db.relationship('NOWApplicationReview', lazy='select', backref='now_application')
 
-    blasting_operation = db.relationship('BlastingOperation', lazy='joined', uselist=False, back_populates='now_application')
-    state_of_land = db.relationship('StateOfLand', lazy='joined', uselist=False, back_populates='now_application')
+    blasting_operation = db.relationship('BlastingOperation', lazy='joined', uselist=False)
+    state_of_land = db.relationship('StateOfLand', lazy='joined', uselist=False)
 
     # Securities
     liability_adjustment = db.Column(db.Numeric(16, 2))
@@ -166,7 +166,7 @@ class NOWApplication(Base, AuditMixin):
         primaryjoin=
         'and_(NOWApplicationDocumentXref.now_application_id==NOWApplication.now_application_id, NOWApplicationDocumentXref.now_application_review_id==None, NOWApplicationDocumentXref.deleted_ind==False)',
         order_by='desc(NOWApplicationDocumentXref.create_timestamp)',
-        back_populates='now_application'
+
     )
 
     application_reason_codes = db.relationship(
@@ -198,7 +198,7 @@ class NOWApplication(Base, AuditMixin):
         lazy='selectin',
         primaryjoin=
         'and_(NOWPartyAppointment.now_application_id == NOWApplication.now_application_id, NOWPartyAppointment.deleted_ind==False)',
-        back_populates='now_application'
+
     )
 
     status = db.relationship(

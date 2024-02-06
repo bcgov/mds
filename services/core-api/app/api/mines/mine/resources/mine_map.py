@@ -55,14 +55,16 @@ class MineMapResource(Resource, UserMixin):
 
         def run_cache_rebuilding_thread():
             with app.request_context(environ):
-                return MineMapResource.rebuild_and_return_map_cache()
+                return MineMapResource.rebuild_and_return_map_cache(is_async=True)
 
         thread = threading.Thread(target=run_cache_rebuilding_thread)
         thread.start()
 
     @staticmethod
-    def rebuild_and_return_map_cache():
-        records = MineMapViewLocation.query.filter(MineMapViewLocation.latitude != None).all()
+    def rebuild_and_return_map_cache(is_async=False):
+        qry = MineMapViewLocation.query.unbound_unsafe() if is_async else MineMapViewLocation.query
+
+        records = qry.filter(MineMapViewLocation.latitude != None).all()
         last_modified = datetime.utcnow()
 
         # jsonify then store in cache
