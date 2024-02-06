@@ -15,9 +15,12 @@ import "antd/dist/antd.less";
 import "./styles/index.scss";
 import fetchEnv from "./fetchEnv";
 import FeatureFlagProvider from "@mds/common/providers/featureFlags/featureFlag.provider";
+import { registerLicense } from "@syncfusion/ej2-base";
 
 const idleTimeout = 5 * 60_000;
 const refreshTokenBufferSeconds = 60;
+
+registerLicense(process.env.SYNCFUSION_LICENSE);
 
 export const Index = () => {
   const [environment, setEnvironment] = useState(false);
