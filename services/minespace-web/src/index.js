@@ -14,11 +14,14 @@ import fetchEnv from "./fetchEnv";
 import keycloak, { keycloakInitConfig } from "@mds/common/keycloak";
 import { unAuthenticateUser } from "./actionCreators/authenticationActionCreator";
 import FeatureFlagProvider from "@mds/common/providers/featureFlags/featureFlag.provider";
+import { registerLicense } from "@syncfusion/ej2-base";
 
 // 5 minutes before user is inactive- across tabs
 const idleTimeout = 5 * 60_000;
 // seconds before expiry to request new access token
 const refreshTokenBufferSeconds = 60;
+
+registerLicense(process.env.SYNCFUSION_LICENSE);
 
 const Index = () => {
   const [environment, setEnvironment] = useState(false);
