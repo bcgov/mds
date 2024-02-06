@@ -6,7 +6,7 @@ const dispatchProps = {};
 const props = {};
 
 const setupDispatchProps = () => {
-  dispatchProps.fetchMineVerifiedStatuses = jest.fn(() => Promise.resolve());
+  dispatchProps.fetchMineVerifiedStatuses = jest.fn(() => Promise.resolve({ data: [] }));
 };
 
 const setupProps = () => {

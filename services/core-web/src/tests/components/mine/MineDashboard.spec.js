@@ -15,6 +15,7 @@ const setupDispatchProps = () => {
   dispatchProps.createVariance = jest.fn(() => Promise.resolve());
   dispatchProps.fetchVarianceDocumentCategoryOptions = jest.fn(() => Promise.resolve());
   dispatchProps.fetchMineComplianceCodes = jest.fn(() => Promise.resolve());
+  dispatchProps.fetchMineComplianceInfo = jest.fn(() => Promise.resolve());
   dispatchProps.fetchVariancesByMine = jest.fn(() => Promise.resolve());
   dispatchProps.fetchStatusOptions = jest.fn(() => Promise.resolve());
   dispatchProps.fetchMineDisturbanceOptions = jest.fn(() => Promise.resolve());
@@ -24,6 +25,8 @@ const setupDispatchProps = () => {
   dispatchProps.fetchRelationshipTypes = jest.fn(() => Promise.resolve());
   dispatchProps.fetchPartyRelationshipTypes = jest.fn(() => Promise.resolve());
   dispatchProps.fetchPartyRelationships = jest.fn(() => Promise.resolve());
+  dispatchProps.fetchPermits = jest.fn(() => Promise.resolve());
+  dispatchProps.fetchExplosivesPermits = jest.fn(() => Promise.resolve());
   dispatchProps.fetchPermitStatusOptions = jest.fn(() => Promise.resolve());
   dispatchProps.fetchInspectors = jest.fn(() => Promise.resolve());
   dispatchProps.updateVariance = jest.fn(() => Promise.resolve());
@@ -32,6 +35,7 @@ const setupDispatchProps = () => {
   dispatchProps.fetchMineReportStatusOptions = jest.fn(() => Promise.resolve());
   dispatchProps.fetchMineNoticeOfWorkApplications = jest.fn(() => Promise.resolve());
   dispatchProps.fetchAllPartyRelationships = jest.fn(() => Promise.resolve());
+  dispatchProps.fetchMineReclamationInvoices = jest.fn(() => Promise.resolve());
 };
 
 const setupReducerProps = () => {
@@ -65,7 +69,7 @@ describe("MineDashboard", () => {
       <MineDashboard
         {...dispatchProps}
         {...reducerProps}
-        match={{ params: { id: 1 }, isExact: true, path: "", url: "" }}
+        match={{ params: { id: MOCK.MINES.mineIds[0] }, isExact: true, path: "", url: "" }}
       />
     );
     expect(component).toMatchSnapshot();

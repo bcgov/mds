@@ -10,6 +10,10 @@ const setupProps = () => {
   props.mines = MOCK.MINES.mines;
   [props.mineGuid] = MOCK.MINES.mineIds;
   props.location = { search: "" };
+  props.history = {
+    replace: jest.fn(),
+  };
+  props.match = { params: { id: "18133c75-49ad-4101-85f3-a43e35ae989a" } };
 };
 
 const setupDispatchProps = () => {
