@@ -193,16 +193,6 @@ const prodConfig = merge([
     fileLoaderOptions: {
       name: BUILD_FILE_NAMES.assets,
     },
-    imageLoaderOptions: {
-      mozjpeg: {
-        progressive: true,
-        quality: 40,
-      },
-      pngquant: {
-        quality: [0.5, 0.6],
-        speed: 4,
-      },
-    },
   }),
   parts.bundleOptimization({
     options: {
