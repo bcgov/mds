@@ -36,7 +36,7 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
     submitter_email = db.Column(db.String, nullable=False)
 
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
-    mine = db.relationship('Mine', lazy='joined')
+    mine = db.relationship('Mine', lazy='joined', back_populates='mine_reports')
     mine_name = association_proxy('mine', 'mine_name')
     mine_region = association_proxy('mine', 'mine_region')
     major_mine_ind = association_proxy('mine', 'major_mine_ind')
@@ -54,7 +54,8 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
         'MineReportSubmission',
         lazy='joined',
         order_by='asc(MineReportSubmission.mine_report_submission_id)',
-        uselist=True)
+        uselist=True,
+        back_populates='report')
 
     mine_report_contacts = db.relationship(
         'MineReportContact',

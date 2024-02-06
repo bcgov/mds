@@ -1593,7 +1593,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cypress/request@npm:^2.88.10":
+"@cypress/request@npm:2.88.12":
   version: 2.88.12
   resolution: "@cypress/request@npm:2.88.12"
   dependencies:
@@ -2535,7 +2535,7 @@ __metadata:
     css-loader: 6.8.1
     css-minimizer-webpack-plugin: 5.0.1
     cssnano: 6.0.1
-    cypress: 12.13.0
+    cypress: 12.17.4
     cypress-file-upload: ^5.0.8
     date-fns: 2.28.0
     dotenv: 8.2.0
@@ -2708,7 +2708,7 @@ __metadata:
     cross-env: 5.2.1
     css-loader: 6.8.1
     cssnano: 6.0.1
-    cypress: 12.13.0
+    cypress: 12.17.4
     dotenv: 8.2.0
     enzyme: 3.11.0
     enzyme-adapter-react-16: 1.14.0
@@ -4108,10 +4108,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^14.14.31":
-  version: 14.18.63
-  resolution: "@types/node@npm:14.18.63"
-  checksum: be909061a54931778c71c49dc562586c32f909c4b6197e3d71e6dac726d8bd9fccb9f599c0df99f52742b68153712b5097c0f00cac4e279fa894b0ea6719a8fd
+"@types/node@npm:^16.18.39":
+  version: 16.18.79
+  resolution: "@types/node@npm:16.18.79"
+  checksum: 60450f0966efad08719d60052991691c7ec42174ac81f750876ce2798f5ba2fa298ab6b66ae427c557b6daad3e2c128c8c61059d0080578beefe2d0925a79d3f
   languageName: node
   linkType: hard
 
@@ -7942,13 +7942,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cypress@npm:12.13.0":
-  version: 12.13.0
-  resolution: "cypress@npm:12.13.0"
+"cypress@npm:12.17.4":
+  version: 12.17.4
+  resolution: "cypress@npm:12.17.4"
   dependencies:
-    "@cypress/request": ^2.88.10
+    "@cypress/request": 2.88.12
     "@cypress/xvfb": ^1.2.4
-    "@types/node": ^14.14.31
+    "@types/node": ^16.18.39
     "@types/sinonjs__fake-timers": 8.1.1
     "@types/sizzle": ^2.3.2
     arch: ^2.2.0
@@ -7981,16 +7981,17 @@ __metadata:
     minimist: ^1.2.8
     ospath: ^1.2.2
     pretty-bytes: ^5.6.0
+    process: ^0.11.10
     proxy-from-env: 1.0.0
     request-progress: ^3.0.0
-    semver: ^7.3.2
+    semver: ^7.5.3
     supports-color: ^8.1.1
     tmp: ~0.2.1
     untildify: ^4.0.0
     yauzl: ^2.10.0
   bin:
     cypress: bin/cypress
-  checksum: 8e73c7033dadc15caf17b106cd88665107c8bbf3ba66fc266de1f14a2c1401edfa99c222f2ae6070e1ffb8123eb255fb559dc3e5e24460fadf8e05ce74afa41b
+  checksum: c9c79f5493b23e9c8cfb92d45d50ea9d0fae54210dde203bfa794a79436faf60108d826fe9007a7d67fddf7919802ad8f006b7ae56c5c198c75d5bc85bbc851b
   languageName: node
   linkType: hard
 
@@ -20393,6 +20394,17 @@ __metadata:
   bin:
     semver: bin/semver.js
   checksum: 12d8ad952fa353b0995bf180cdac205a4068b759a140e5d3c608317098b3575ac2f1e09182206bf2eb26120e1c0ed8fb92c48c592f6099680de56bb071423ca3
+  languageName: node
+  linkType: hard
+
+"semver@npm:^7.5.3":
+  version: 7.6.0
+  resolution: "semver@npm:7.6.0"
+  dependencies:
+    lru-cache: ^6.0.0
+  bin:
+    semver: bin/semver.js
+  checksum: 7427f05b70786c696640edc29fdd4bc33b2acf3bbe1740b955029044f80575fc664e1a512e4113c3af21e767154a94b4aa214bf6cd6e42a1f6dba5914e0b208c
   languageName: node
   linkType: hard
 

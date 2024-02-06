@@ -1,4 +1,4 @@
-from flask_restplus import Resource, reqparse
+from flask_restx import Resource, reqparse
 
 from app.api.activity.models.activity_notification import ActivityNotification
 from app.api.utils.access_decorators import VIEW_ALL, requires_any_of, MINESPACE_PROPONENT

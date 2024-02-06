@@ -1,6 +1,6 @@
 import requests
 from flask import request, Response, stream_with_context, current_app
-from flask_restplus import Resource, marshal
+from flask_restx import Resource, marshal
 from werkzeug.exceptions import BadRequest, InternalServerError, BadGateway
 from app.extensions import api, cache
 

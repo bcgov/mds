@@ -1,4 +1,4 @@
-from flask_restplus import Namespace
+from flask_restx import Namespace
 
 from app.api.verify.permit.now.resources.verify_permit_now_resource import VerifyPermitNOWResource
 from app.api.verify.permit.mine.resources.verify_permit_mine_resource import VerifyPermitMineResource

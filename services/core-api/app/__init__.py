@@ -6,7 +6,8 @@ from logging.config import dictConfig
 
 from flask import Flask, request, current_app
 from flask_cors import CORS
-from flask_restplus import Resource, apidoc
+from flask_restx import Resource
+from flask_restx.apidoc import apidoc
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -132,7 +133,7 @@ def register_extensions(app, test_config=None):
     root_api_namespace.app = app
 
     # Overriding swaggerUI base path to serve content under a prefix
-    apidoc.apidoc.static_url_path = '{}/swaggerui'.format(Config.BASE_PATH)
+    apidoc.static_url_path = '{}/swaggerui'.format(Config.BASE_PATH)
 
     root_api_namespace.init_app(app)
 
@@ -276,7 +277,7 @@ def register_routes(app):
                 return {'ready': False}, 503
 
     def get_database_status():
-        return db.session.query("up").from_statement(text("SELECT 1 as up")).all()[0][0] == 1
+        return db.session.query(text("up")).from_statement(text("SELECT 1 as up")).all()[0][0] == 1
 
     def get_cache_status():
         now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')

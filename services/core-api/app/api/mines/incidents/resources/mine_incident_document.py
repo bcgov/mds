@@ -9,7 +9,7 @@ from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.utils.resources_mixins import UserMixin
 from app.extensions import api
 from flask import request
-from flask_restplus import Resource
+from flask_restx import Resource
 from werkzeug.exceptions import BadRequest, NotFound
 
 

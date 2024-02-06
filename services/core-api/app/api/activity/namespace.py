@@ -1,4 +1,4 @@
-from flask_restplus import Namespace
+from flask_restx import Namespace
 
 from app.api.activity.resource.activities_mark_as_read import ActivityMarkAsReadResource
 from app.api.activity.resource.activity_list import ActivityListResource

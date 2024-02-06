@@ -1,7 +1,7 @@
 import uuid
 from flask import request, current_app
 import requests
-from flask_restplus import Resource, fields, reqparse
+from flask_restx import Resource, fields, reqparse
 from werkzeug.exceptions import NotFound, InternalServerError, BadRequest
 
 from app.api.constants import TIMEOUT_5_MINUTES

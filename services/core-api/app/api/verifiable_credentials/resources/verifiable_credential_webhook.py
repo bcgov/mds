@@ -1,6 +1,6 @@
 from flask import current_app, request
 from werkzeug.exceptions import Forbidden
-from flask_restplus import Resource
+from flask_restx import Resource
 from app.api.utils.include.user_info import User
 
 from app.config import Config

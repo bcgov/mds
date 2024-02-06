@@ -1,6 +1,6 @@
 from werkzeug.exceptions import NotFound
 from flask import request
-from flask_restplus import Resource
+from flask_restx import Resource
 
 from app.extensions import api
 from app.api.utils.access_decorators import requires_any_of, MINE_EDIT, MINESPACE_PROPONENT

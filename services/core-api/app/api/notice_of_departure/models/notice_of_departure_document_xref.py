@@ -22,7 +22,7 @@ class NoticeOfDepartureDocumentXref(SoftDeleteMixin, AuditMixin, Base):
         db.ForeignKey('notice_of_departure.nod_guid'),
         server_default=FetchedValue())
     document_type = db.Column(db.Enum(DocumentType), nullable=False, default=DocumentType.checklist)
-    mine_document = db.relationship('MineDocument', lazy='joined')
+    mine_document = db.relationship('MineDocument', lazy='joined', overlaps="mine_documents,notice_of_departure")
 
     mine_guid = association_proxy('mine_document', 'mine_guid')
     document_manager_guid = association_proxy('mine_document', 'document_manager_guid')

@@ -1,7 +1,7 @@
 import uuid
 import json
 from flask import request, current_app
-from flask_restplus import Resource, fields, marshal
+from flask_restx import Resource, fields, marshal
 from werkzeug.exceptions import NotFound, BadRequest
 from datetime import datetime
 

@@ -1,4 +1,4 @@
-from flask_restplus import Resource
+from flask_restx import Resource
 
 from app.extensions import api
 from app.api.utils.access_decorators import requires_any_of, VIEW_ALL, MINESPACE_PROPONENT, MINE_ADMIN, requires_role_edit_explosives_permit

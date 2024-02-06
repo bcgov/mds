@@ -37,7 +37,8 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
         'MineDocument',
         lazy='select',
         secondary='major_mine_application_document_xref',
-        secondaryjoin='and_(foreign(MajorMineApplicationDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid), MineDocument.deleted_ind == False, MineDocument.is_archived == False)'
+        secondaryjoin='and_(foreign(MajorMineApplicationDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid), MineDocument.deleted_ind == False, MineDocument.is_archived == False)',
+        overlaps='major_mine_application_document_xref,mine_document,documents'
     )
 
     def __repr__(self):

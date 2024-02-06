@@ -3,7 +3,7 @@ from datetime import datetime
 from decimal import Decimal
 
 from flask import request, current_app
-from flask_restplus import Resource
+from flask_restx import Resource
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
 from app.extensions import api, db

@@ -1,4 +1,4 @@
-from flask_restplus import Resource, inputs
+from flask_restx import Resource, inputs
 from werkzeug.exceptions import NotFound, BadRequest
 from decimal import Decimal
 

@@ -7,6 +7,7 @@ from app.config import TestConfig
 from app.extensions import db, jwt as _jwt
 from app.api.utils.include.user_info import User
 from app.api.utils.setup_marshmallow import setup_marshmallow
+from sqlalchemy.orm import scoped_session, sessionmaker
 
 from .constants import *
 from tests.factories import FACTORY_LIST
@@ -40,6 +41,9 @@ def auth_headers(app):
     proponent_only_auth_token = _jwt.create_jwt(PROPONENT_ONLY_AUTH_CLAIMS, TOKEN_HEADER)
     nros_vfcbc_only_auth_token = _jwt.create_jwt(NROS_VFCBC_AUTH_CLAIMS, TOKEN_HEADER)
     core_edit_parties_only_auth_token = _jwt.create_jwt(CORE_EDIT_PARTIES_AUTH_CLAIMS, TOKEN_HEADER)
+    incorrect_aud_auth_token = _jwt.create_jwt(FULL_AUTH_CLAIMS | {'aud': 'invalid_aud'}, TOKEN_HEADER)
+    incorrect_iss_auth_token = _jwt.create_jwt(FULL_AUTH_CLAIMS | {'iss': 'invalid_iss'}, TOKEN_HEADER)
+    expired_auth_token = _jwt.create_jwt(FULL_AUTH_CLAIMS | {'iat': 1675197826, 'exp': 1706647426}, TOKEN_HEADER)
 
     return {
         'base_auth_header': {
@@ -65,6 +69,15 @@ def auth_headers(app):
         },
         'core_edit_parties_only_auth_header': {
             'Authorization': 'Bearer ' + core_edit_parties_only_auth_token
+        },
+        'incorrect_aud_auth_header': {
+            'Authorization': 'Bearer ' + incorrect_aud_auth_token
+        },
+        'incorrect_iss_auth_header': {
+            'Authorization': 'Bearer ' + incorrect_iss_auth_token
+        },
+        'expired_auth_header': {
+            'Authorization': 'Bearer ' + expired_auth_token
         }
     }
 
@@ -98,8 +111,7 @@ def db_session(test_client):
     conn = db.engine.connect()
     txn = conn.begin()
 
-    options = dict(bind=conn, binds={})
-    sess = db.create_scoped_session(options=options)
+    sess = scoped_session(sessionmaker(bind=conn))
     db.session = sess
 
     for factory in FACTORY_LIST:

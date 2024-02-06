@@ -1,5 +1,5 @@
 from app.extensions import api
-from flask_restplus import fields, marshal
+from flask_restx import fields, marshal
 
 from app.api.mines.response_models import MINE_DOCUMENT_MODEL, MINES_MODEL
 from app.api.parties.response_models import PARTY

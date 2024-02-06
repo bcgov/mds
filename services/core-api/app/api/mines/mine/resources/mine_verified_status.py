@@ -1,7 +1,7 @@
 import uuid, json
 from datetime import datetime
 from werkzeug.exceptions import *
-from flask_restplus import Resource, reqparse, inputs
+from flask_restx import Resource, reqparse, inputs
 from app.extensions import api
 from flask import request
 from app.api.utils.include.user_info import User

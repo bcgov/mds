@@ -1,5 +1,5 @@
 import dateutil.parser
-from flask_restplus import Resource, reqparse
+from flask_restx import Resource, reqparse
 from flask import request, current_app
 from datetime import datetime, timezone
 

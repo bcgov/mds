@@ -1,5 +1,5 @@
 import uuid
-from flask_restplus import Resource, reqparse, fields, inputs
+from flask_restx import Resource, reqparse, fields, inputs
 from flask import request, current_app
 from datetime import datetime, timedelta, timezone
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError

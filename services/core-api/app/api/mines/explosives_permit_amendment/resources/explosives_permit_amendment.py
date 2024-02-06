@@ -2,7 +2,7 @@ from decimal import Decimal
 from datetime import datetime
 
 from werkzeug.exceptions import NotFound
-from flask_restplus import Resource, inputs
+from flask_restx import Resource, inputs
 from flask import current_app
 
 from app.api.mines.explosives_permit.response_models import EXPLOSIVES_PERMIT_AMENDMENT_MODEL

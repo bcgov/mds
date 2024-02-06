@@ -14,28 +14,28 @@ Seeing as we're caching fontawesome packages ourselves, we need to manually upda
 
 ```bash
 npm config set "@fortawesome:registry" https://npm.fontawesome.com/
-npm config set "//npm.fontawesome.com/:_authToken" <FONT_AWESOME_TOKEN>
+npm config set "//npm.fontawesome.com/:_auth_" <FONT_AWESOME_TOKEN>
 ```
 
 2. Download fontawesome tarballs to your local machine
 
 ```bash
 npm pack \
-    @fortawesome/react-fontawesome \
-    @fortawesome/free-solid-svg-icons \
-    @fortawesome/free-regular-svg-icons \
-    @fortawesome/free-brands-svg-icons \
-    @fortawesome/pro-solid-svg-icons \
-    @fortawesome/pro-regular-svg-icons \
-    @fortawesome/pro-light-svg-icons \
-    @fortawesome/pro-thin-svg-icons \
-    @fortawesome/pro-duotone-svg-icons \
-    @fortawesome/sharp-solid-svg-icons \
-    @fortawesome/sharp-regular-svg-icons \
-    @fortawesome/sharp-light-svg-icons \
-    @fortawesome/fontawesome-svg-core \
-    @fortawesome/fontawesome-pro \
-    @fortawesome/fontawesome-common-types
+    @fortawesome/react-fontawesome@0.2.0 \
+    @fortawesome/free-solid-svg-icons@6.4.2 \
+    @fortawesome/free-regular-svg-icons@6.4.2 \
+    @fortawesome/free-brands-svg-icons@6.4.2 \
+    @fortawesome/pro-solid-svg-icons@6.4.2 \
+    @fortawesome/pro-regular-svg-icons@6.4.2 \
+    @fortawesome/pro-light-svg-icons@6.4.2 \
+    @fortawesome/pro-thin-svg-icons@6.4.2 \
+    @fortawesome/pro-duotone-svg-icons@6.4.2 \
+    @fortawesome/sharp-solid-svg-icons@6.4.2 \
+    @fortawesome/sharp-regular-svg-icons@6.4.2 \
+    @fortawesome/sharp-light-svg-icons@6.4.2 \
+    @fortawesome/fontawesome-svg-core@6.4.2 \
+    @fortawesome/fontawesome-pro@6.4.2 \
+    @fortawesome/fontawesome-common-types@6.4.2
 ```
 
 3. Upload them to artifactory. Log into artifactory [artifactory](https://artifacts.developer.gov.bc.ca/) and navigate to the `4cba9-tools-mds-npm-cache` project. Navigate to `Artifacts` -> `m4c2-mds`. Hit Deploy, upload the packages, and hit Deploy again. You're done!

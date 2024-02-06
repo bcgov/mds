@@ -1,6 +1,6 @@
 from app.api.mines.response_models import MINE_DOCUMENT_MODEL
 from app.extensions import api
-from flask_restplus import fields
+from flask_restx import fields
 
 EXPLOSIVES_PERMIT_AMENDMENT_MAGAZINE_MODEL = api.model(
     'ExplosivesPermitAmendmentMagazine', {

@@ -1,7 +1,7 @@
 from datetime import date, datetime
 import pytz
 from flask import request
-from flask_restplus import Resource
+from flask_restx import Resource
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
 from werkzeug.exceptions import NotFound
 
@@ -110,6 +110,7 @@ class ProjectListDashboardResource(Resource, UserMixin):
             'updated_date': 'Last updated date',
             'application_stage': 'Application stage (InformationRequirementsTable, MajorMineApplication, ProjectSummary) to filter the project list on',
         })
+    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     @api.marshal_with(PAGINATED_PROJECT_LIST, code=200)
     def get(self):
         args = {

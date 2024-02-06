@@ -1,5 +1,5 @@
 import json, decimal, pytest
-from flask_restplus import marshal, fields
+from flask_restx import marshal, fields
 
 from tests.factories import create_mine_and_permit
 

@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask_restplus import Resource, fields
+from flask_restx import Resource, fields
 from flask import request, current_app
 from app.extensions import api
 

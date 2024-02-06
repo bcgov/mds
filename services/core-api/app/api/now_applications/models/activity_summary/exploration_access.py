@@ -21,7 +21,7 @@ class ExplorationAccess(ActivitySummaryBase):
     bridge_culvert_crossing_description = db.Column(db.String)
 
     details = db.relationship(
-        'ExplorationAccessDetail', secondary='activity_summary_detail_xref', load_on_pending=True)
+        'ExplorationAccessDetail', secondary='activity_summary_detail_xref', load_on_pending=True, overlaps='detail,detail_associations,summary,summary_associations')
 
     @hybrid_property
     def calculated_total_disturbance(self):

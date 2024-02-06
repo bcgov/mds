@@ -1,4 +1,4 @@
-from flask_restplus import fields
+from flask_restx import fields
 from app.extensions import api
 
 from app.api.parties.response_models import PARTY_ORGBOOK_ENTITY, PARTY_BUSINESS_ROLE_APPT

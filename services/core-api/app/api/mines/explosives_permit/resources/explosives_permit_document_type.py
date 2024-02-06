@@ -1,6 +1,6 @@
 import uuid
 from flask import request
-from flask_restplus import Resource, fields
+from flask_restx import Resource, fields
 from werkzeug.exceptions import NotFound, BadRequest
 from flask.globals import current_app
 

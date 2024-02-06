@@ -1,7 +1,7 @@
 import json
 
 from flask import Response, current_app, make_response
-from flask_restplus import Resource, marshal
+from flask_restx import Resource, marshal
 from sqlalchemy.inspection import inspect
 
 from app.extensions import api, cache

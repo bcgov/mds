@@ -27,7 +27,7 @@ class InformationRequirementsTableDocumentXref(Base):
         ),
         nullable=False)
 
-    mine_document = db.relationship('MineDocument', lazy='select')
+    mine_document = db.relationship('MineDocument', lazy='select' , overlaps="mine_document,information_requirements_table_document_xref")
     mine_guid = association_proxy('mine_document', 'mine_guid')
     document_manager_guid = association_proxy('mine_document', 'document_manager_guid')
     document_name = association_proxy('mine_document', 'document_name')

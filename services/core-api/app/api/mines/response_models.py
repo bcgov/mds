@@ -1,4 +1,4 @@
-from flask_restplus import fields, marshal
+from flask_restx import fields, marshal
 
 from app.api.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
 from app.api.dams.dto import DAM_MODEL
