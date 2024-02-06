@@ -344,14 +344,20 @@ export const PARTY = {
       party_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
       party_name: "mock name",
       party_type_code: "PER",
+      first_name: "mock name",
+      name: "other mock name",
       address: [{}],
+      now_party_appt: [],
       business_role_appts: [{}],
     },
     "18145c75-49ad-0101-85f3-a43e45ae989a": {
       party_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
       party_name: "mock Two",
       party_type_code: "PER",
+      first_name: "mock Two",
+      name: "other mock Two",
       address: [{}],
+      now_party_appt: [],
       business_role_appts: [{}],
     },
   },
@@ -360,16 +366,30 @@ export const PARTY = {
       party_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
       party_name: "mock name",
       party_type_code: "PER",
+      first_name: "mock name",
+      name: "other mock name",
       address: [{}],
-      mine_party_appt: [],
+      mine_party_appt: [
+        {
+          mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+        },
+      ],
+      now_party_appt: [],
       business_role_appts: [{}],
     },
     "18145c75-49ad-0101-85f3-a43e45ae989a": {
       party_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
       party_name: "mock Two",
       party_type_code: "PER",
+      first_name: "mock Two",
+      name: "other mock Two",
       address: [{}],
-      mine_party_appt: [],
+      mine_party_appt: [
+        {
+          mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
+        },
+      ],
+      now_party_appt: [],
       business_role_appts: [
         {
           end_date: "2020-08-29T00:00:00",
