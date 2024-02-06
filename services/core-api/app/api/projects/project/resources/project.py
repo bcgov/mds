@@ -110,6 +110,7 @@ class ProjectListDashboardResource(Resource, UserMixin):
             'updated_date': 'Last updated date',
             'application_stage': 'Application stage (InformationRequirementsTable, MajorMineApplication, ProjectSummary) to filter the project list on',
         })
+    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     @api.marshal_with(PAGINATED_PROJECT_LIST, code=200)
     def get(self):
         args = {
