@@ -30,7 +30,7 @@ class MineMapResource(Resource, UserMixin):
         # TODO: Use some custom representation of this data vs JSON. The
         # json string is massive (with 50,000 points: 16mb uncompressed, 2.5mb compressed).
         # A quick test using delimented data brings this down to ~1mb compressed.
-        map_result = None #cache.get(MINE_MAP_CACHE)
+        map_result = cache.get(MINE_MAP_CACHE)
         last_modified = cache.get(MINE_MAP_CACHE + '_LAST_MODIFIED')
         if not map_result:
             map_result = MineMapResource.rebuild_and_return_map_cache()
