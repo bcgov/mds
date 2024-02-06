@@ -38,8 +38,8 @@ jobs:
       - name: Install Dependencies
         run: yarn install
 
-      # - name: Run frontend tests
-      #   run: cd services/core-web/ && yarn && yarn test
+      - name: Run frontend tests
+        run: cd services/core-web/ && yarn && yarn test
 
       - name: build-core-web
         run: |
