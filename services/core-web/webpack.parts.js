@@ -12,6 +12,7 @@ const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const { EsbuildPlugin } = require("esbuild-loader");
 const { WebpackManifestPlugin } = require("webpack-manifest-plugin");
 const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
+const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
 
 const postCSSLoader = {
   loader: "postcss-loader",
@@ -259,13 +260,19 @@ exports.loadImages = ({
       },
       {
         test: /\.(png|jpe?g)$/,
-        include,
-        exclude,
-        loader: "image-webpack-loader",
-        options: {
-          bypassOnDebug: true,
-          ...imageLoaderOptions,
-        },
+        use: [
+          {
+            loader: ImageMinimizerPlugin.loader,
+            options: {
+              minimizer: {
+                implementation: ImageMinimizerPlugin.imageminMinify,
+                options: {
+                  plugins: ["imagemin-mozjpeg", "imagemin-pngquant"],
+                },
+              },
+            },
+          },
+        ],
       },
     ],
   },
@@ -313,7 +320,7 @@ exports.bundleOptimization = ({ options, cssOptions } = {}) => ({
     splitChunks: options,
     minimizer: [
       new EsbuildPlugin({
-        target: 'es2016'
+        target: "es2016",
       }),
       new CssMinimizerPlugin({
         minimizerOptions: {

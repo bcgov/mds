@@ -172,7 +172,6 @@ const devConfig = merge([
     exclude: path.join(PATHS.src, "assets", "fonts"),
     urlLoaderOptions: undefined,
     fileLoaderOptions: undefined,
-    imageLoaderOptions: undefined,
     include: undefined,
   }),
   {
@@ -212,16 +211,6 @@ const prodConfig = merge([
     },
     fileLoaderOptions: {
       name: BUILD_FILE_NAMES.assets,
-    },
-    imageLoaderOptions: {
-      mozjpeg: {
-        progressive: true,
-        quality: 40,
-      },
-      pngquant: {
-        quality: [0.5, 0.6],
-        speed: 4,
-      },
     },
   }),
   parts.bundleOptimization({
