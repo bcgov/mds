@@ -7,10 +7,8 @@ import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import ReportGetStarted from "@mds/common/components/reports/ReportGetStarted";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
-import moment from "moment-timezone";
 import ReportDetailsForm from "@mds/common/components/reports/ReportDetailsForm";
-import { createMineReport } from "@mds/common/redux/actionCreators/reportActionCreator";
-import { MINE_REPORT_SUBMISSION_CODES } from "../..";
+import { createReportSubmission } from "./reportSubmissionSlice";
 
 const ReportSteps = () => {
   const history = useHistory();
@@ -100,13 +98,12 @@ const ReportSteps = () => {
               mineGuid={mineGuid}
               handleSubmit={(values) => {
                 const formValues = {
-                  mine_report_submission_status: MINE_REPORT_SUBMISSION_CODES.INI,
-                  received_date: moment().format("YYYY-MM-DD"),
+                  mine_guid: mineGuid,
                   ...values,
                 };
-                dispatch(createMineReport(mineGuid, formValues)).then((response) => {
-                  if (response.data) {
-                    const { mine_guid, mine_report_guid } = response.data;
+                dispatch(createReportSubmission(formValues)).then((response) => {
+                  if (response.payload) {
+                    const { mine_guid, mine_report_guid } = response.payload;
                     history.push(
                       GLOBAL_ROUTES?.REPORT_VIEW_EDIT.dynamicRoute(mine_guid, mine_report_guid)
                     );

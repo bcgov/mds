@@ -6,6 +6,7 @@ from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointme
 from app.api.parties.response_models import PARTY
 from app.extensions import api
 
+from app.api.utils.feature_flag import is_feature_enabled, Feature
 
 class DateTime(fields.Raw):
 
@@ -647,15 +648,6 @@ MINE_REPORT_COMMENT_MODEL = api.model(
         'from_latest_submission': fields.Boolean
     })
 
-MINE_REPORT_SUBMISSION_MODEL = api.model(
-    'MineReportSubmission', {
-        'mine_report_submission_guid': fields.String,
-        'submission_date': fields.Date,
-        'mine_report_submission_status_code': fields.String,
-        'documents': fields.List(fields.Nested(MINE_DOCUMENT_MODEL)),
-        'comments': fields.List(fields.Nested(MINE_REPORT_COMMENT_MODEL))
-    })
-
 MINE_REPORT_CONTACT_MODEL = api.model(
     'MineReportContact', {
         'mine_report_contact_id': fields.String,
@@ -663,6 +655,38 @@ MINE_REPORT_CONTACT_MODEL = api.model(
         'email': fields.String
     })
 
+MINE_REPORT_SUBMISSION_MODEL = api.model(
+    'MineReportSubmission', {
+        'mine_report_guid': fields.String,
+        'mine_report_id': fields.Integer,
+        'mine_report_submission_guid': fields.String,
+        'submission_date': fields.Date,
+        'mine_report_submission_status_code': fields.String,
+        'documents': fields.List(fields.Nested(MINE_DOCUMENT_MODEL)),
+        'comments': fields.List(fields.Nested(MINE_REPORT_COMMENT_MODEL)),
+        'mine_report_definition_guid': fields.String,
+        'mine_report_category':
+            fields.List(
+                fields.String(attribute='mine_report_category'),
+                attribute='mine_report_definition.categories'),
+        'report_name': fields.String,
+        'due_date': fields.Date,
+        'received_date': fields.Date,
+        'submission_year': fields.Integer,
+        'create_user': fields.String,
+        'create_timestamp': fields.DateTime,
+        'update_user': fields.String,
+        'update_timestamp': fields.DateTime,
+        'permit_guid': fields.String,
+        'permit_number': fields.String,
+        'mine_guid': fields.String,
+        'mine_name': fields.String,
+        'permit_condition_category_code': fields.String,
+        'description_comment': fields.String,
+        'submitter_name': fields.String,
+        'submitter_email': fields.String,
+        'mine_report_contacts': fields.List(fields.Nested(MINE_REPORT_CONTACT_MODEL)),
+    })
 
 MINE_REPORT_MODEL = api.model(
     'MineReportModel', {

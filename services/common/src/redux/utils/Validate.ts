@@ -92,6 +92,11 @@ export const requiredNotUndefined = (value) =>
 export const requiredList = (value) =>
   value && value.length > 0 ? undefined : "This is a required field";
 
+export const requiredNewFiles = (files: any[]) => {
+  const hasNewFiles = files.some((file) => file.document_manager_guid && !file.mine_document_guid);
+  return hasNewFiles ? undefined : "This is a required field";
+};
+
 export const notnone = (value) => (value === "None" ? "Please select an item" : undefined);
 
 export const maxLength = memoize((max) => (value) =>
