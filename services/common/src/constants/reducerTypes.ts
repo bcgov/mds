@@ -61,6 +61,7 @@ export const MERGE_PARTIES = "MERGE_PARTIES";
 export const ORGBOOK = "ORGBOOK";
 export const ORGBOOK_SEARCH = "ORGBOOK_SEARCH";
 export const ORGBOOK_CREDENTIAL = "ORGBOOK_CREDENTIAL";
+export const ORGBOOK_VERIFY = "ORGBOOK_VERIFY";
 
 // Compliance Orders
 export const COMPLIANCE = "COMPLIANCE";

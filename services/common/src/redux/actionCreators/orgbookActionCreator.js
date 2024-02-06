@@ -32,3 +32,16 @@ export const fetchOrgBookCredential = (credentialId) => (dispatch) => {
     .catch(() => dispatch(error(reducerTypes.ORGBOOK_CREDENTIAL)))
     .finally(() => dispatch(hideLoading()));
 };
+
+export const verifyOrgBookCredential = (credentialId) => (dispatch) => {
+  dispatch(request(reducerTypes.ORGBOOK_VERIFY));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(ENVIRONMENT.apiUrl + API.ORGBOOK_VERIFY(credentialId), createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.ORGBOOK_VERIFY));
+      return response.data;
+    })
+    .catch(() => dispatch(error(reducerTypes.ORGBOOK_VERIFY)))
+    .finally(() => dispatch(hideLoading()));
+};

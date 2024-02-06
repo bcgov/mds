@@ -40,3 +40,15 @@ class CredentialResource(Resource):
 
         credential = json.loads(resp.text)
         return credential
+
+class VerifyResource(Resource):
+    @requires_role_view_all
+    @api.doc(description='Verify an OrgBook credential.')
+    def get(self, credential_id):
+        resp = OrgBookService.verify_credential(credential_id)
+
+        if resp.status_code != requests.codes.ok:
+            raise BadGateway(f'OrgBook API responded with {resp.status_code}: {resp.reason}')
+
+        verification = json.loads(resp.text)
+        return verification
