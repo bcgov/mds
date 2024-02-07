@@ -22,13 +22,12 @@ const idleTimeout = 5 * 60_000;
 // seconds before expiry to request new access token
 const refreshTokenBufferSeconds = 60;
 
-registerLicense(ENVIRONMENT.syncfusionLicense);
-
 const Index = () => {
   const [environment, setEnvironment] = useState(false);
 
   fetchEnv().then(() => {
     setEnvironment(true);
+    registerLicense(ENVIRONMENT.syncfusionLicense);
   });
 
   const { isIdle } = useIdleTimer({
