@@ -85,9 +85,7 @@ export function setupEnvironment(
   if (!flagsmithUrl) {
     throw new Error("flagsmithUrl Is Mandatory");
   }
-  if (!syncfusionLicence) {
-    throw new Error("syncfusionLicence Is Mandatory");
-  }
+
   ENVIRONMENT.apiUrl = apiUrl;
   ENVIRONMENT.docManUrl = docManUrl;
   ENVIRONMENT.filesystemProviderUrl = filesystemProviderUrl;
