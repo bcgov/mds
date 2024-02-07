@@ -551,6 +551,23 @@ class MineReportSubmissionFactory(BaseFactory):
     class Params:
         report = factory.SubFactory('tests.factories.MineReportFactory')
 
+        permit_required_reports = factory.Trait(
+            mine_report_definition_id=None,
+            permit_condition_category_code=factory.LazyFunction(RandomConditionCategoryCode))
+
+        mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
+
+    mine_guid = factory.SelfAttribute('mine.mine_guid')
+    mine_report_definition_id = factory.LazyFunction(
+        RandomMineReportDefinition
+    )  # None if not factory.SelfAttribute('set_permit_condition_category_code') else factory.LazyFunction(RandomMineReportDefinition)
+    received_date = factory.Faker('date_between', start_date='-15d', end_date='+15d')
+    due_date = factory.Faker('future_datetime', end_date='+30d')
+    submission_year = factory.fuzzy.FuzzyInteger(datetime.utcnow().year - 2,
+                                                 datetime.utcnow().year + 11)
+    
+    permit_condition_category_code = None
+    submitter_name = factory.Faker('name')    
     mine_report_id = factory.SelfAttribute('report.mine_report_id')
     mine_report_submission_guid = GUID
     mine_report_submission_status_code = factory.LazyFunction(RandomMineReportSubmissionStatusCode)

@@ -176,7 +176,7 @@ const ReportPage: FC = () => {
             />
           </Row>
         }
-        type={reportStatusSeverityForDisplay(latestSubmission.mine_report_submission_status_code)}
+        type={reportStatusSeverityForDisplay(latestSubmission?.mine_report_submission_status_code)}
         showIcon
       />
       {getToggleEditButton()}

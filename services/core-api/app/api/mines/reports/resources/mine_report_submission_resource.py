@@ -17,7 +17,7 @@ from app.api.mines.documents.models.mine_document import MineDocument
 
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.mines.response_models import MINE_REPORT_SUBMISSION_MODEL
-
+from flask import current_app
 class ReportSubmissionResource(Resource, UserMixin):
 
     parser = CustomReqparser()
@@ -101,7 +101,6 @@ class ReportSubmissionResource(Resource, UserMixin):
             mine_report_id=getattr(previous_submission, "mine_report_id"),
             mine_report_submission_status_code=mine_report_submission_status_code,
             permit_condition_category_code=getattr(previous_submission, "permit_condition_category_code"),
-            permit_guid=getattr(previous_submission, "permit_guid"),
             permit_id=getattr(previous_submission, "permit_id"),
             received_date=getattr(previous_submission, "received_date"),
             submission_date=datetime.utcnow(),
@@ -196,7 +195,6 @@ class ReportSubmissionResource(Resource, UserMixin):
             mine_report_id=mine_report_id,
             mine_report_submission_status_code=mine_report_submission_status_code,
             permit_condition_category_code=permit_condition_category_code,
-            permit_guid=permit_guid,
             permit_id=permit_id,
             received_date=data.get('received_date', None),
             submission_date=datetime.utcnow(),
