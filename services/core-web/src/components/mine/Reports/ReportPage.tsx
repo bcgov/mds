@@ -8,7 +8,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/pro-light-svg-icons";
 
 import * as routes from "@/constants/routes";
-import { FORM, IMineReportSubmission, MINE_REPORT_STATUS_HASH } from "@mds/common";
+import {
+  FORM,
+  IMineReportSubmission,
+  MINE_REPORT_STATUS_HASH,
+  MINE_REPORT_SUBMISSION_CODES,
+  reportStatusSeverityForDisplay,
+} from "@mds/common";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { getDropdownMineReportStatusOptions } from "@mds/common/redux/selectors/staticContentSelectors";
@@ -30,7 +36,7 @@ const ReportPage: FC = () => {
   const mineReportStatusOptions = useSelector(getDropdownMineReportStatusOptions);
   const latestSubmission = useSelector((state) => getLatestReportSubmission(state, reportGuid));
 
-  const [selectedStatus, setSelectedStatus] = useState(
+  const [selectedStatus, setSelectedStatus] = useState<MINE_REPORT_SUBMISSION_CODES>(
     latestSubmission?.mine_report_submission_status_code
   );
   const [isLoaded, setIsLoaded] = useState(Boolean(latestSubmission && mine));
@@ -65,10 +71,11 @@ const ReportPage: FC = () => {
     !isFormDirty
       ? cancelFunction()
       : Modal.confirm({
-          title: "Cancel changes",
-          content: "Are you sure you want to cancel changes?",
+          title: "Discard changes?",
+          content: "All changes made will not be saved.",
           onOk: cancelFunction,
           cancelText: "Continue Editing",
+          okText: "Discard",
         });
 
   const revertChanges = () => {
@@ -137,13 +144,17 @@ const ReportPage: FC = () => {
     </div>
   );
 
-  const handleUpdateStatus = (value: string) => {
+  const handleUpdateStatus = (value: MINE_REPORT_SUBMISSION_CODES) => {
     dispatch(change(FORM.VIEW_EDIT_REPORT, "mine_report_submission_status_code", value));
     setSelectedStatus(value);
   };
 
   const handleSubmit = (values: IMineReportSubmission) => {
-    dispatch(createReportSubmission(values));
+    dispatch(createReportSubmission(values)).then((response) => {
+      if (response.payload) {
+        setIsEditMode(false);
+      }
+    });
   };
   const PageContent = (
     <>
@@ -165,9 +176,7 @@ const ReportPage: FC = () => {
             />
           </Row>
         }
-        // type={reportStatusSeverityForDisplay(
-        //   latestSubmission.mine_report_submission_status_code as MINE_REPORT_SUBMISSION_CODES
-        // )}
+        type={reportStatusSeverityForDisplay(latestSubmission.mine_report_submission_status_code)}
         showIcon
       />
       {getToggleEditButton()}

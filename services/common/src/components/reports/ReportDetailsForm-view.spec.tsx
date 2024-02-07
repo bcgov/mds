@@ -3,16 +3,15 @@ import { render } from "@testing-library/react";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import ReportDetailsForm from "./ReportDetailsForm";
 import { Button } from "antd";
-import { AUTHENTICATION, REPORTS, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
+import { AUTHENTICATION, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
-import { IMineReport, SystemFlagEnum } from "../..";
+import { IMineReportSubmission, SystemFlagEnum } from "../..";
 
-const mineReport = MOCK.MINE_REPORTS[0];
+const mineReportSubmission = MOCK.MINE_REPORT_SUBMISSIONS[0];
 const initialState = {
-  [REPORTS]: {
-    reports: MOCK.MINE_REPORTS,
-    mineReportGuid: mineReport.mine_report_guid,
-    mineReports: [mineReport],
+  reportSubmission: {
+    reportSubmission: mineReportSubmission,
+    mineReportGuid: mineReportSubmission.mine_report_guid,
   },
   [STATIC_CONTENT]: {
     mineReportDefinitionOptions: MOCK.BULK_STATIC_CONTENT_RESPONSE.mineReportDefinitionOptions,
@@ -27,7 +26,7 @@ describe("ReportDetailsForm", () => {
     const { container } = render(
       <ReduxWrapper initialState={initialState}>
         <ReportDetailsForm
-          initialValues={(mineReport as any) as IMineReport}
+          initialValues={(mineReportSubmission as any) as IMineReportSubmission}
           isEditMode={false}
           mineGuid={"123"}
           formButtons={

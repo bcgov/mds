@@ -4,16 +4,15 @@ import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import ReportDetailsForm from "./ReportDetailsForm";
 import { Button } from "antd";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
-import { REPORTS, AUTHENTICATION } from "@mds/common/constants/reducerTypes";
+import { AUTHENTICATION } from "@mds/common/constants/reducerTypes";
 import { SystemFlagEnum } from "../..";
 
-const mineReport = MOCK.MINE_REPORTS[0];
+const mineReportSubmission = MOCK.MINE_REPORT_SUBMISSIONS[0];
 
 const initialState = {
-  [REPORTS]: {
-    reports: MOCK.MINE_REPORTS,
-    mineReportGuid: mineReport.mine_report_guid,
-    mineReports: [mineReport],
+  reportSubmission: {
+    reportSubmission: mineReportSubmission,
+    mineReportGuid: mineReportSubmission.mine_report_guid,
   },
   [AUTHENTICATION]: {
     systemFlag: SystemFlagEnum.ms,

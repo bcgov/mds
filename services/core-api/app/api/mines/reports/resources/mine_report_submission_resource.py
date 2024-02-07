@@ -6,7 +6,7 @@ from datetime import datetime
 
 from app.extensions import api, db
 from app.api.utils.resources_mixins import UserMixin
-from app.api.utils.access_decorators import requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
+from app.api.utils.access_decorators import requires_any_of, VIEW_ALL, EDIT_REPORT, MINESPACE_PROPONENT
 from app import auth
 
 from app.api.mines.reports.models.mine_report import MineReport
@@ -115,7 +115,7 @@ class ReportSubmissionResource(Resource, UserMixin):
     @api.expect(parser)
     @api.doc(description="Create a new mine report submission")    
     @api.marshal_with(MINE_REPORT_SUBMISSION_MODEL, code=201)
-    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
+    @requires_any_of([EDIT_REPORT, MINESPACE_PROPONENT])
     def post(self):
         self.parser.add_argument('documents', type=list, location='json')
         self.parser.add_argument('description_comment', type=str, location='json')        
@@ -157,6 +157,9 @@ class ReportSubmissionResource(Resource, UserMixin):
         mine_report_definition_guid = data.get('mine_report_definition_guid', None)
         permit_guid = data.get('permit_guid', None)
         mine_report_submission_status_code = data.get('mine_report_submission_status_code', None)
+        mine_report_contacts = data.get('mine_report_contacts', None)
+
+        current_app.logger.info(mine_report_contacts)
 
         if not mine_report_submission_status_code or is_proponent:
             mine_report_submission_status_code = "INI"
@@ -183,7 +186,6 @@ class ReportSubmissionResource(Resource, UserMixin):
         # MS user only allowed to add documents
         if is_proponent and not is_first_submission:
             return self.create_submission_from_minespace(mine_report_guid, data, report_documents)
-        mine_report_contacts = data.get('mine_report_contacts', None)
         
         report_submission = MineReportSubmission(
             description_comment=data.get('description_comment', None),
