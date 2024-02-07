@@ -36,6 +36,8 @@ RUN mkdir -p /opt/app-root/src/wallet
 COPY cwallet.sso /opt/app-root/src/wallet
 COPY sqlnet.ora /opt/app-root/src/wallet
 
+ENV PYTHONUNBUFFERED=1
+
 # Run the server
 EXPOSE 5500
 CMD ["flask","run"]

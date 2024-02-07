@@ -1,5 +1,5 @@
 from flask import request
-from flask_restx import Resource
+from flask_restx import Resource, marshal
 
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
@@ -31,7 +31,6 @@ class DocumentResource(Resource):
         result = Model.query.filter_by(external_id=id).first()
         print(result)
         print(result.file_name)
-        
 
         if not result:
             raise NotFound(f"{Model.__name__} not found")

@@ -4,6 +4,42 @@ from dotenv import load_dotenv, find_dotenv
 
 
 class Config(object):
+
+    FLASK_LOGGING_LEVEL = os.environ.get('FLASK_LOGGING_LEVEL',
+                                         'INFO')                # ['DEBUG','INFO','WARN','ERROR','CRITICAL']
+    WERKZEUG_LOGGING_LEVEL = os.environ.get('WERKZEUG_LOGGING_LEVEL',
+                                         'CRITICAL')  # ['DEBUG','INFO','WARN','ERROR','CRITICAL']
+    DISPLAY_WERKZEUG_LOG = os.environ.get('DISPLAY_WERKZEUG_LOG',
+                                            True)
+
+    LOGGING_DICT_CONFIG = {
+        'version': 1,
+        'formatters': {
+            'default': {
+                'format': '%(asctime)s %(levelname)s [%(name)s] [%(filename)s:%(lineno)d]',
+            }
+        },
+        'handlers': {
+            'console': {
+                'class': 'logging.StreamHandler',
+                'stream': 'ext://sys.stdout',
+                'formatter': 'default',
+                'level': 'DEBUG'
+            }
+        },
+        'root': {
+            'level': FLASK_LOGGING_LEVEL,
+            'handlers': ['console']
+        },
+        'loggers': {
+            'werkzeug': {
+                'level': WERKZEUG_LOGGING_LEVEL,
+                'handlers': ['console'],
+                'propagate': DISPLAY_WERKZEUG_LOG
+            }
+        }
+    }
+
     # Environment config
     SECRET_KEY = os.environ.get('SECRET_KEY', 'dev')
     BASE_PATH = os.environ.get('BASE_PATH', '')

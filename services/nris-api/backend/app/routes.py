@@ -1,5 +1,6 @@
 from app.nris.utils.logger import get_logger
 from app.extensions import api
+from flask import current_app
 from .config import Config
 
 from flask_jwt_oidc.exceptions import AuthError
