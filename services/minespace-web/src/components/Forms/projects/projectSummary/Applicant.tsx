@@ -33,6 +33,10 @@ const Applicant = () => {
     }
   }, [credential]);
 
+  useEffect(() => {
+    setCredential(null);
+  }, [applicant_type]);
+
   const findBusinessNumber = (obj: any): string => {
     // Check if the object is a dictionary and has a "type" field with value of "business_number"
     if (
