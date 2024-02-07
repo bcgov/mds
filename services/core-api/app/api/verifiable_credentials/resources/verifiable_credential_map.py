@@ -8,6 +8,7 @@ from app.api.parties.party.models.party import Party
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.verifiable_credentials.models.connection import PartyVerifiableCredentialConnection
 from app.api.verifiable_credentials.models.credentials import PartyVerifiableCredentialMinesActPermit
+from app.api.verifiable_credentials.aries_constants import IssueCredentialIssuerState
 
 from app.api.services.traction_service import TractionService
 from app.api.utils.resources_mixins import UserMixin
@@ -47,9 +48,14 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
         if not (permit_amendment):
             raise BadRequest(f"permit_amendment not found")
         
-        existing_cred_exch = PartyVerifiableCredentialMinesActPermit.find_by_permit_amendment_guid(permit_amendment_guid=permit_amendment_guid)
-        if existing_cred_exch:
-            raise BadRequest(f"This permit_amendment has already been offered, cred_exch_id={existing_cred_exch.cred_exch_id}, cred_exch_state={existing_cred_exch.cred_exch_state}")
+        existing_cred_exch = PartyVerifiableCredentialMinesActPermit.find_by_permit_amendment_guid(permit_amendment_guid=permit_amendment_guid) or []
+        
+        # If a user has deleted the credential from their wallet, they will need another copy so only limit on pending for UX reasons
+        pending_creds = [e for e in existing_cred_exch if e.cred_exch_state in IssueCredentialIssuerState.pending_credential_states]
+
+        #https://github.com/hyperledger/aries-rfcs/tree/main/features/0036-issue-credential#states-for-issuer
+        if pending_creds:
+            raise BadRequest(f"There is a pending credential offer, accept or delete that offer first, cred_exch_id={existing_cred_exch.cred_exch_id}, cred_exch_state={existing_cred_exch.cred_exch_state}")
 
 
         # collect information for schema

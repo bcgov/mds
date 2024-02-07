@@ -11,6 +11,7 @@ from app.api.services.traction_service import TractionService
 
 from app.api.verifiable_credentials.models.connection import PartyVerifiableCredentialConnection
 from app.api.verifiable_credentials.models.credentials import PartyVerifiableCredentialMinesActPermit
+from app.api.verifiable_credentials.aries_constants import DIDExchangeRequesterState, IssueCredentialIssuerState
 
 from app.api.utils.feature_flag import Feature, is_feature_enabled
 
@@ -38,7 +39,7 @@ class VerifiableCredentialWebhookResource(Resource, UserMixin):
             assert vc_conn, f"connection.invitation_msg_id={invitation_id} not found. webhook_body={webhook_body}"
             vc_conn.connection_id = webhook_body["connection_id"]
             new_state = webhook_body["state"]
-            if new_state != vc_conn.connection_state and vc_conn.connection_state != 'completed':
+            if new_state != vc_conn.connection_state and vc_conn.connection_state != DIDExchangeRequesterState.COMPLETED:
                 # 'completed' is the final succesful state.
                 vc_conn.connection_state=new_state
                 vc_conn.save()
@@ -60,7 +61,7 @@ class VerifiableCredentialWebhookResource(Resource, UserMixin):
                 # 'deleted' or 'credential_acked' should both be considered successful
                 # 'deleted' is the final state, do not update 
                 cred_exch_record.cred_exch_state=new_state
-                if new_state == "credential_acked":
+                if new_state == IssueCredentialIssuerState.CREDENTIAL_ACKED:
                     cred_exch_record.rev_reg_id = webhook_body["revoc_reg_id"]
                     cred_exch_record.cred_rev_id = webhook_body["revocation_id"]
 
