@@ -21,7 +21,8 @@ export default function fetchEnv() {
         env.matomoUrl,
         env.environment,
         env.flagsmithKey,
-        env.flagsmithUrl
+        env.flagsmithUrl,
+        env.syncfusionLicense
       );
 
       setupKeycloak(

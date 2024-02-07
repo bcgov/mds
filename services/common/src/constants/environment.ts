@@ -12,7 +12,8 @@ export const DEFAULT_ENVIRONMENT = {
   keycloak_idpHint: "test",
   keycloak_url: "https://test.loginproxy.gov.bc.ca/auth",
   flagsmithKey: "4Eu9eEMDmWVEHKDaKoeWY7",
-  flagsmithUrl: "https://mds-flags-dev.apps.silver.devops.gov.bc.ca/api/v1/"
+  flagsmithUrl: "https://mds-flags-dev.apps.silver.devops.gov.bc.ca/api/v1/",
+  syncfusionLicense: "-",
 };
 
 export const ENVIRONMENT = {
@@ -23,6 +24,7 @@ export const ENVIRONMENT = {
   environment: "<ENV>",
   flagsmithKey: "<FLAGSMITH_KEY>",
   flagsmithUrl: "<FLAGSMITH_URL>",
+  syncfusionLicense: "<SYNCFUSION_LICENSE>",
   _loaded: false,
 };
 
@@ -55,7 +57,8 @@ export function setupEnvironment(
   matomoUrl,
   environment,
   flagsmithKey,
-  flagsmithUrl
+  flagsmithUrl,
+  syncfusionLicence
 ) {
   if (!apiUrl) {
     throw new Error("apiUrl Is Mandatory");
@@ -82,6 +85,9 @@ export function setupEnvironment(
   if (!flagsmithUrl) {
     throw new Error("flagsmithUrl Is Mandatory");
   }
+  if (!syncfusionLicence) {
+    throw new Error("syncfusionLicence Is Mandatory");
+  }
   ENVIRONMENT.apiUrl = apiUrl;
   ENVIRONMENT.docManUrl = docManUrl;
   ENVIRONMENT.filesystemProviderUrl = filesystemProviderUrl;
@@ -89,6 +95,7 @@ export function setupEnvironment(
   ENVIRONMENT.environment = environment || "development";
   ENVIRONMENT.flagsmithKey = flagsmithKey;
   ENVIRONMENT.flagsmithUrl = flagsmithUrl;
+  ENVIRONMENT.syncfusionLicense = syncfusionLicence;
 
   ENVIRONMENT._loaded = true;
 }
