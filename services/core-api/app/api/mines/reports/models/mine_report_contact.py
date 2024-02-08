@@ -7,6 +7,7 @@ class MineReportContact(SoftDeleteMixin, Base):
     __tablename__ = "mine_report_contact"
     mine_report_contact_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     mine_report_id = db.Column(db.Integer, db.ForeignKey('mine_report.mine_report_id'), nullable=False)
+    mine_report_submission_id = db.Column(db.Integer, db.ForeignKey('mine_report_submission.mine_report_submission_id'), nullable=False)
     name = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(255), nullable=False)
 
@@ -26,3 +27,12 @@ class MineReportContact(SoftDeleteMixin, Base):
         for contact in contact_list:
             contacts.append(cls.create(name=contact['name'], email=contact['email'], add_to_session=add_to_session))
         return contacts
+
+    def json(self):
+        return {
+            'mine_report_contact_id': self.mine_report_contact_id,
+            'mine_report_id': self.mine_report_id,
+            'mine_report_submission_id': mine_report_submission_id,
+            'name': str(self.name),
+            'email': str(self.email)
+        }

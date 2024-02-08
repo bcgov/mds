@@ -208,7 +208,7 @@ class ReportSubmissionResource(Resource, UserMixin):
     
     @api.doc(params={
         "mine_report_guid": "Report guid for the parent entity",
-        "latest_submission": "If true only return the latest report submission"
+        "latest_submission": "If true (default) only return the latest report submission"
     })
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     @api.marshal_with(MINE_REPORT_SUBMISSION_MODEL, code=200)
@@ -228,7 +228,7 @@ class ReportSubmissionResource(Resource, UserMixin):
 
         data = self.parser.parse_args()
         mine_report_guid = data.get('mine_report_guid', None)
-        latest_submission = data.get('latest_submission', False)
+        latest_submission = data.get('latest_submission', True)
 
         if mine_report_guid is None:
             # TODO: not actually required per se, more like Not Implemented-

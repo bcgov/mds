@@ -57,4 +57,28 @@ ALTER TABLE mine_report_submission
             ) = 1
         );
 
-    -- put an index on create date for report submission
+-- track contacts by submission
+ALTER TABLE mine_report_contact
+    ADD COLUMN IF NOT EXISTS mine_report_submission_id integer;
+
+    -- insert an entry for each contact for each submission
+    INSERT INTO mine_report_contact (name, email, mine_report_id, deleted_ind, mine_report_submission_id)
+    SELECT 
+            mine_report_contact.name, 
+            mine_report_contact.email, 
+            mine_report_contact.mine_report_id, 
+            mine_report_contact.deleted_ind, 
+            mine_report_submission.mine_report_submission_id
+        FROM mine_report_submission
+        LEFT JOIN mine_report_contact 
+        ON mine_report_submission.mine_report_id = mine_report_contact.mine_report_id 
+        WHERE mine_report_contact_id IS NOT NULL;
+
+    -- delete old records
+    DELETE FROM mine_report_contact WHERE mine_report_submission_id IS NULL;
+
+    -- add constraints to new column
+    ALTER TABLE mine_report_contact
+        ALTER COLUMN mine_report_submission_id SET NOT NULL,
+        ADD CONSTRAINT mine_report_contact_submission_fkey
+            FOREIGN KEY (mine_report_submission_id) REFERENCES mine_report_submission(mine_report_submission_id);

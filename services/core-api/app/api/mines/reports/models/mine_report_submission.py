@@ -1,13 +1,14 @@
 import uuid
+from datetime import datetime
+
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.ext.associationproxy import association_proxy
 
 from app.api.utils.models_mixins import Base, AuditMixin
 from app.extensions import db
-
-from sqlalchemy.ext.associationproxy import association_proxy
-
+from app.api.mines.reports.models.mine_report_contact import MineReportContact
 
 class MineReportSubmission(Base, AuditMixin):
     __tablename__ = "mine_report_submission"
@@ -65,6 +66,13 @@ class MineReportSubmission(Base, AuditMixin):
 
     mine_report_guid = association_proxy('report', 'mine_report_guid')
 
+    mine_report_contacts = db.relationship(
+        'MineReportContact',
+        lazy='joined',
+        order_by='asc(MineReportContact.mine_report_contact_id)',
+        uselist=True
+    )
+
     @hybrid_property
     def report_name(self):
         return self.mine_report_definition_report_name if self.mine_report_definition_report_name else self.permit_condition_category_description
@@ -95,3 +103,29 @@ class MineReportSubmission(Base, AuditMixin):
             return cls.query.filter_by(mine_report_submission_guid=_id).first()
         except ValueError:
             return None
+
+    def json(self):
+        return {
+            'comments': [comment.json() for comment in self.comments],
+            'create_timestamp': str(self.create_timestamp) if self.create_timestamp else None,
+            'description_comment': str(self.description_comment),
+            'documents': [doc.json() for doc in self.documents],
+            'due_date': str(self.due_date)[:10] if self.due_date else None,
+            'mine_guid': str(self.mine_guid),
+            'mine_name': str(self.mine_name),
+            'mine_report_contacts': [contact.json() for contact in self.mine_report_contacts],
+            'mine_report_definition_guid': str(self.mine_guid),
+            'mine_report_guid': str(self.mine_report_guid),
+            'mine_report_id': self.mine_report_id,
+            'mine_report_submission_guid': str(self.mine_report_submission_guid),
+            'mine_report_submission_status_code': str(self.mine_report_submission_status_code) if self.mine_report_submission_status_code else None,
+            'permit_condition_category_code': str(self.permit_condition_category_code) if self.permit_condition_category_code else None,
+            'permit_guid': str(self.permit_guid) if self.permit_guid else None,
+            'permit_number': self.permit_number,
+            'received_date': str(self.received_date)[:10],
+            'submission_date': str(self.submission_date),
+            'submitter_email': str(self.submitter_email),
+            'submitter_name': str(self.submitter_name),
+            'update_timestamp': str(self.update_timestamp),
+            'update_user': str(self.update_user)
+        }
