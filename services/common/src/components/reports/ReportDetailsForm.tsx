@@ -14,7 +14,7 @@ import ReportFilesTable from "./ReportFilesTable";
 import { formatComplianceCodeReportName } from "@mds/common/redux/utils/helpers";
 import RenderDate from "../forms/RenderDate";
 import RenderSelect from "../forms/RenderSelect";
-import FormWrapper, { FormConsumer } from "../forms/FormWrapper";
+import FormWrapper from "../forms/FormWrapper";
 import RenderField from "../forms/RenderField";
 import {
   IMineDocument,
@@ -35,52 +35,52 @@ import { getParties, getPartyRelationships } from "@mds/common/redux/selectors/p
 import { uniqBy } from "lodash";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 
-const RenderContacts: FC<any> = ({ fields }) => (
-  <FormConsumer>
-    {({ isEditMode }) => {
-      return (
-        <div>
-          {fields.map((contact, index) => (
-            <Row key={contact.id} gutter={[16, 8]}>
-              <Col span={24}>
-                <Row>
-                  <Typography.Title level={5}>Report Contact #{index + 1}</Typography.Title>
-                  {isEditMode && (
-                    <Button
-                      icon={<FontAwesomeIcon icon={faTrash} />}
-                      type="text"
-                      onClick={() => fields.remove(index)}
-                    />
-                  )}
-                </Row>
-              </Col>
-              <Col span={12}>
-                <Field
-                  name={`${contact}.name`}
-                  component={RenderField}
-                  label={`Contact Name`}
-                  placeholder="Enter name"
-                  required
-                  validate={[required]}
+const RenderContacts: FC<any> = ({ fields, isEditMode, mineSpaceEdit }) => {
+  const canEdit = isEditMode && !mineSpaceEdit;
+  return (
+    <div>
+      {fields.map((contact, index) => (
+        <Row key={contact.id} gutter={[16, 8]}>
+          <Col span={24}>
+            <Row>
+              <Typography.Title level={5}>Report Contact #{index + 1}</Typography.Title>
+              {canEdit && (
+                <Button
+                  style={{ marginTop: 0 }}
+                  icon={<FontAwesomeIcon icon={faTrash} />}
+                  type="text"
+                  onClick={() => fields.remove(index)}
                 />
-              </Col>
-              <Col span={12}>
-                <Field
-                  name={`${contact}.email`}
-                  component={RenderField}
-                  label={`Contact Email`}
-                  required
-                  placeholder="Enter email"
-                  validate={[email, required]}
-                />
-              </Col>
+              )}
             </Row>
-          ))}
-        </div>
-      );
-    }}
-  </FormConsumer>
-);
+          </Col>
+          <Col span={12}>
+            <Field
+              name={`${contact}.name`}
+              component={RenderField}
+              label={`Contact Name`}
+              placeholder="Enter name"
+              disabled={!canEdit}
+              required
+              validate={[required]}
+            />
+          </Col>
+          <Col span={12}>
+            <Field
+              name={`${contact}.email`}
+              component={RenderField}
+              label={`Contact Email`}
+              disabled={!canEdit}
+              required
+              placeholder="Enter email"
+              validate={[email, required]}
+            />
+          </Col>
+        </Row>
+      ))}
+    </div>
+  );
+};
 
 interface ReportDetailsFormProps {
   isEditMode?: boolean;
@@ -374,10 +374,14 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
             <Typography.Paragraph>{mineManager?.email ?? "-"}</Typography.Paragraph>
           </Col>
           <Col span={24}>
-            <FieldArray name="mine_report_contacts" component={RenderContacts} />
+            <FieldArray
+              name="mine_report_contacts"
+              component={RenderContacts}
+              props={{ isEditMode, mineSpaceEdit }}
+            />
           </Col>
           <Col span={24}>
-            {isEditMode && (
+            {isEditMode && !mineSpaceEdit && (
               <Button
                 type="link"
                 onClick={() =>

@@ -156,6 +156,14 @@
   }
 }
 
+.ant-btn-icon-only {
+  >svg.svg-inline--fa {
+    font-size: 1rem;
+    vertical-align: 2em;
+    margin-left: -0.35em
+  }
+}
+
 .ant-input-search-button {
   height: 34px;
   width: 46px;

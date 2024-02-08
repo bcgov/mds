@@ -12,6 +12,7 @@ from app import auth
 from app.api.mines.reports.models.mine_report import MineReport
 from app.api.mines.reports.models.mine_report_submission import MineReportSubmission
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
+from app.api.mines.reports.models.mine_report_contact import MineReportContact
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.documents.models.mine_document import MineDocument
 
@@ -22,6 +23,13 @@ class ReportSubmissionResource(Resource, UserMixin):
 
     parser = CustomReqparser()
 
+    @staticmethod
+    def get_mine_report_submission_contacts(contact_data, mine_report_id, mine_report_submission_id):
+        mine_report_contacts = []
+        if len(contact_data) > 0:
+            mine_report_contacts = MineReportContact.create_from_list(contact_data, mine_report_id, mine_report_submission_id)
+        return mine_report_contacts
+            
     @staticmethod 
     def get_check_mine_report_definition_id(mine_report_definition_guid):
         mine_report_definition = MineReportDefinition.find_by_mine_report_definition_guid(
@@ -97,6 +105,7 @@ class ReportSubmissionResource(Resource, UserMixin):
             due_date=getattr(previous_submission, "due_date"),
             documents=report_documents,
             mine_guid=getattr(previous_submission, "mine_guid"),
+            mine_report_contacts=getattr(previous_submission, "mine_report_contacts"),
             mine_report_definition_id=getattr(previous_submission, "mine_report_definition_id"),
             mine_report_id=getattr(previous_submission, "mine_report_id"),
             mine_report_submission_status_code=mine_report_submission_status_code,
@@ -156,9 +165,7 @@ class ReportSubmissionResource(Resource, UserMixin):
         mine_report_definition_guid = data.get('mine_report_definition_guid', None)
         permit_guid = data.get('permit_guid', None)
         mine_report_submission_status_code = data.get('mine_report_submission_status_code', None)
-        mine_report_contacts = data.get('mine_report_contacts', None)
-
-        current_app.logger.info(mine_report_contacts)
+        contacts = data.get('mine_report_contacts', [])        
 
         if not mine_report_submission_status_code or is_proponent:
             mine_report_submission_status_code = "INI"
@@ -169,7 +176,6 @@ class ReportSubmissionResource(Resource, UserMixin):
 
         is_first_submission = False if mine_report_guid else True        
         
-        # TODO: maybe throw an error if it's both
         if is_code_required_report:
             mine_report_definition_id = self.get_check_mine_report_definition_id(mine_report_definition_guid)
         else:
@@ -202,6 +208,10 @@ class ReportSubmissionResource(Resource, UserMixin):
             submitter_email=data.get('submitter_email', None),
             submitter_name=data.get('submitter_name', None)
         )
+
+        mine_report_contacts = self.get_mine_report_submission_contacts(
+            contacts, mine_report_id, report_submission.mine_report_submission_id)
+        report_submission.mine_report_contacts = mine_report_contacts
 
         report_submission.save()
         return report_submission, 201               

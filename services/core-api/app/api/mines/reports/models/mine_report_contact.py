@@ -22,7 +22,7 @@ class MineReportContact(SoftDeleteMixin, Base):
         return new_contact
 
     @classmethod
-    def create_from_list(cls, contact_list, mine_report_id, add_to_session=True):
+    def create_from_list(cls, contact_list, mine_report_id, mine_report_submission_id, add_to_session=True):
         contacts = []
         for contact in contact_list:
             contacts.append(cls.create(name=contact['name'], email=contact['email'], add_to_session=add_to_session))
