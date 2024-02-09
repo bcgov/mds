@@ -103,7 +103,11 @@ class NOWApplicationImportResource(Resource, UserMixin):
 
         # update application status to received once imported
         now_application_identity.now_application.previous_application_status_code = now_application_identity.now_application.now_application_status_code
+        current_app.logger.debug(f'now_application_status_code before change to REC: {now_application_identity.now_application.now_application_status_code}')
+        
         now_application_identity.now_application.now_application_status_code = "REC"
+
+        current_app.logger.debug(f'now_application_status_code after change to REC: {now_application_identity.now_application.now_application_status_code}')
         now_application_identity.save()
 
         NROSNOWStatusService.nros_now_status_update(
