@@ -83,11 +83,14 @@ const ReportPage: FC = () => {
     setIsEditMode(false);
   };
 
-  const getToggleEditButton = () => {
+  const getFormButtons = () => {
     return isEditMode ? (
-      <Row justify="end">
+      <Row justify="space-between">
         <Button onClick={() => cancelConfirmWrapper(revertChanges)} type="ghost">
           Cancel
+        </Button>
+        <Button htmlType="submit" type="primary" disabled={!isFormDirty}>
+          Save Changes
         </Button>
       </Row>
     ) : (
@@ -179,24 +182,14 @@ const ReportPage: FC = () => {
         type={reportStatusSeverityForDisplay(latestSubmission?.mine_report_submission_status_code)}
         showIcon
       />
-      {getToggleEditButton()}
+      {getFormButtons()}
       <ReportDetailsForm
         mineGuid={mineGuid}
         initialValues={latestSubmission}
         handleSubmit={handleSubmit}
         isEditMode={isEditMode}
-        formButtons={
-          isEditMode ? (
-            <Row justify="space-between">
-              <Button type="ghost">View Report</Button>
-              <Button htmlType="submit" type="primary">
-                Save Changes
-              </Button>
-            </Row>
-          ) : null
-        }
+        formButtons={getFormButtons()}
       />
-      {!isEditMode && getToggleEditButton()}
     </>
   );
 

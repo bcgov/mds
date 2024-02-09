@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { getFormSubmitErrors, getFormValues, submit } from "redux-form";
+import { getFormSubmitErrors, getFormValues, isDirty, submit } from "redux-form";
 
 import { Button, Col, Row, Typography } from "antd";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
@@ -38,6 +38,7 @@ const ReportPage = () => {
   // get form data so we can submit it outside of the form
   const formErrors = useSelector(getFormSubmitErrors(FORM.VIEW_EDIT_REPORT));
   const formValues = useSelector(getFormValues(FORM.VIEW_EDIT_REPORT));
+  const isFormDirty = useSelector(isDirty(FORM.VIEW_EDIT_REPORT));
 
   useEffect(() => {
     let isMounted = true;
@@ -98,7 +99,7 @@ const ReportPage = () => {
               Edit Report
             </Button>
           ) : (
-            <Button type="primary" onClick={handleOtherSubmitButton}>
+            <Button type="primary" disabled={!isFormDirty} onClick={handleOtherSubmitButton}>
               Save Changes
             </Button>
           )}
@@ -127,7 +128,7 @@ const ReportPage = () => {
           isEditMode={isEditMode}
           formButtons={
             isEditMode ? (
-              <Button htmlType="submit" type="primary">
+              <Button htmlType="submit" disabled={!isFormDirty} type="primary">
                 Save Changes
               </Button>
             ) : null

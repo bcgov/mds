@@ -203,7 +203,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
 
   return (
     <div>
-      {(isEditMode || !initialValues) && (
+      {(isEditMode || !initialValues) && system !== SystemFlagEnum.core && (
         <Alert
           message=""
           description={
