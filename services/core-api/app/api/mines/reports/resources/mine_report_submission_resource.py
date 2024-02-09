@@ -26,7 +26,7 @@ class ReportSubmissionResource(Resource, UserMixin):
     @staticmethod
     def get_mine_report_submission_contacts(contact_data, mine_report_id, mine_report_submission_id):
         mine_report_contacts = []
-        if len(contact_data) > 0:
+        if contact_data is not None and len(contact_data) > 0:
             mine_report_contacts = MineReportContact.create_from_list(contact_data, mine_report_id, mine_report_submission_id)
         return mine_report_contacts
             
@@ -97,10 +97,11 @@ class ReportSubmissionResource(Resource, UserMixin):
     @staticmethod
     def create_submission_from_minespace(mine_report_guid, request_data, report_documents):
         previous_submission = MineReportSubmission.find_latest_by_mine_report_guid(str(mine_report_guid))
-
-        mine_report_submission_status_code = "INI"
+        mine_report_submission_status_code = "NRQ"
 
         report_submission = MineReportSubmission(
+            create_timestamp=getattr(previous_submission, "create_timestamp"),
+            create_user=getattr(previous_submission, "create_user"),
             description_comment=getattr(previous_submission, "description_comment"),
             due_date=getattr(previous_submission, "due_date"),
             documents=report_documents,
@@ -143,7 +144,6 @@ class ReportSubmissionResource(Resource, UserMixin):
         self.parser.add_argument(
             'received_date', 
             type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None, 
-            default=datetime.utcnow(),
             location='json'
             )
         self.parser.add_argument('submission_date', type=str, location='json')
@@ -151,9 +151,6 @@ class ReportSubmissionResource(Resource, UserMixin):
         self.parser.add_argument('submitter_email', type=str, location='json')
         self.parser.add_argument('submitter_name', type=str, location='json')
 
-        # create_timestamp, create_user, update_timestamp, update_user
-        # received date? submission date?
-        
         data = self.parser.parse_args()
         is_proponent = auth.get_user_is_proponent()
 
@@ -192,7 +189,16 @@ class ReportSubmissionResource(Resource, UserMixin):
         if is_proponent and not is_first_submission:
             return self.create_submission_from_minespace(mine_report_guid, data, report_documents)
         
+        create_timestamp = None
+        create_user = None
+        if not is_proponent and not is_first_submission:
+            previous_submission = MineReportSubmission.find_latest_by_mine_report_guid(str(mine_report_guid))
+            create_timestamp = getattr(previous_submission, 'create_timestamp')
+            create_user = getattr(previous_submission, 'create_user')
+
         report_submission = MineReportSubmission(
+            create_timestamp=create_timestamp,
+            create_user=create_user,
             description_comment=data.get('description_comment', None),
             due_date=data.get('due_date', None),
             documents=report_documents,

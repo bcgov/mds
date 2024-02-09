@@ -4,6 +4,7 @@ import { createAppSlice } from "@mds/common/redux/createAppSlice";
 import CustomAxios from "@mds/common/redux/customAxios";
 import * as API from "@mds/common/constants/API";
 import { RootState } from "@mds/common/redux/rootState";
+import moment from "moment";
 
 interface ReportSubmissionState {
   reportSubmission: IMineReportSubmission;
@@ -56,9 +57,10 @@ const submissionSlice = createAppSlice({
           errorToastMessage: "default",
           successToastMessage: "Successfully created new report submission",
         };
+        const received_date = payload.received_date ?? moment().format("YYYY-MM-DD");
         const resp = await CustomAxios(messages).post(
           `${ENVIRONMENT.apiUrl}${API.REPORT_SUBMISSIONS()}`,
-          payload,
+          { ...payload, received_date },
           headers
         );
         thunkApi.dispatch(hideLoading());
