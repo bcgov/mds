@@ -51,7 +51,7 @@ class Config(object):
     DB_URL = f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
     ENVIRONMENT_NAME = os.environ.get('ENVIRONMENT_NAME', 'dev')
-
+    RESTX_MASK_SWAGGER = False
     # SqlAlchemy config
     SQLALCHEMY_DATABASE_URI = DB_URL
     SQLALCHEMY_TRACK_MODIFICATIONS = False
