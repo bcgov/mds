@@ -901,19 +901,19 @@ exports[`ReportPage renders view mode properly 1`] = `
             </div>
           </div>
         </div>
+        <div
+          class="ant-row ant-row-end"
+        >
+          <button
+            class="ant-btn ant-btn-primary"
+            type="button"
+          >
+            <span>
+              Edit Report
+            </span>
+          </button>
+        </div>
       </form>
-    </div>
-    <div
-      class="ant-row ant-row-end"
-    >
-      <button
-        class="ant-btn ant-btn-primary"
-        type="button"
-      >
-        <span>
-          Edit Report
-        </span>
-      </button>
     </div>
   </div>
 </div>

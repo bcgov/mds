@@ -244,7 +244,7 @@ class ReportSubmissionResource(Resource, UserMixin):
 
         data = self.parser.parse_args()
         mine_report_guid = data.get('mine_report_guid', None)
-        latest_submission = data.get('latest_submission', True)
+        latest_submission = data.get('latest_submission', None)
 
         if mine_report_guid is None:
             # TODO: not actually required per se, more like Not Implemented-
@@ -252,7 +252,7 @@ class ReportSubmissionResource(Resource, UserMixin):
             # from different mines and different reports
             raise BadRequest('Error: mine report guid is required')
 
-        if (latest_submission):
+        if (latest_submission == True):
             submission = MineReportSubmission.find_latest_by_mine_report_guid(mine_report_guid)
             return submission
 

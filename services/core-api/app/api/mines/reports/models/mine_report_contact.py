@@ -32,7 +32,7 @@ class MineReportContact(SoftDeleteMixin, Base):
         return {
             'mine_report_contact_id': self.mine_report_contact_id,
             'mine_report_id': self.mine_report_id,
-            'mine_report_submission_id': mine_report_submission_id,
+            'mine_report_submission_id': self.mine_report_submission_id,
             'name': str(self.name),
             'email': str(self.email)
         }
