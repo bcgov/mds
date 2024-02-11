@@ -45,6 +45,7 @@ import ProjectSummaryForm, {
 import { IMine, IProjectSummary, IProject, Feature } from "@mds/common";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { get } from "lodash";
 
 interface ProjectSummaryPageProps {
   mines: Partial<IMine>[];
@@ -163,8 +164,93 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
     return payloadValues;
   };
 
+  // const getLegalLandOwnerRequiredFields = (isLegalLandOwner, legalLandOwner) => {
+  //   const requiredFields = ["legal_land_owner.phone_no",
+  //     "legal_land_owner.email",
+  //     "legal_land_owner.address.address_line_1",
+  //     "legal_land_owner.address.address_type_code",
+  //     "legal_land_owner.address.city"];
+  //   if (isLegalLandOwner) {
+  //     if (legalLandOwner.party_type_code === "ORG") {
+  //       requiredFields.push("legal_land_owner.party_name");
+  //     } else {
+  //       requiredFields.push("legal_land_owner.first_name", "legal_land_owner.last_name");
+  //     }
+  //   }
+  //   return requiredFields;
+  // };
+
+  const getAgentRequiredFields = (isAgent, agent) => {
+    const requiredFields = [
+      "agent.phone_no",
+      "agent.email",
+      "agent.address.address_line_1",
+      "agent.address.address_type_code",
+      "agent.address.city",
+    ];
+    if (isAgent) {
+      if (agent && agent.party_type_code === "ORG") {
+        requiredFields.push("agent.party_name");
+      } else if (agent) {
+        requiredFields.push("agent.first_name", "agent.last_name");
+      }
+    }
+    return requiredFields;
+  };
+
+  const verifyRequiredFields = (payload) => {
+    const requiredFields = [
+      "project_summary_title",
+      "project_summary_description",
+      "is_agent",
+      "is_legal_land_owner",
+    ];
+
+    for (const field of requiredFields) {
+      const value = payload[field];
+      if (typeof value === "undefined" || value === "" || !value) {
+        return field; // Return the first missing value found in field
+      }
+    }
+
+    // Additional check for contacts
+    if (
+      payload.contacts &&
+      payload.contacts.length > 0 &&
+      (!payload.contacts[0].name || !payload.contacts[0].email || !payload.contacts[0].phone_number)
+    ) {
+      return "contacts";
+    }
+
+    // Additional check for agent
+    if (payload.is_agent === null || typeof payload.is_agent === "undefined") {
+      return "agent";
+    }
+
+    // Get agent information and party type code
+    const agent = payload.agent || {};
+    const partyTypeCode = agent.party_type_code;
+
+    // Define required fields based on party type
+    const agentRequiredFields =
+      partyTypeCode === "ORG"
+        ? ["party_name", "phone_no", "email", "address"]
+        : ["first_name", "last_name", "phone_no", "email", "address"];
+
+    // Check if all required fields are present and non-empty
+    for (const field of agentRequiredFields) {
+      if (payload.is_agent && !agent[field]) {
+        return "agent";
+      }
+    }
+
+    return null;
+  };
+
   const handleUpdateProjectSummary = (values, message) => {
     const payload = handleTransformPayload(values);
+    const result = verifyRequiredFields(payload);
+    console.log("verifyRequiredFields", result);
     setIsLoaded(false);
     return updateProjectSummary(
       {
