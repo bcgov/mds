@@ -164,38 +164,12 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
     return payloadValues;
   };
 
-  // const getLegalLandOwnerRequiredFields = (isLegalLandOwner, legalLandOwner) => {
-  //   const requiredFields = ["legal_land_owner.phone_no",
-  //     "legal_land_owner.email",
-  //     "legal_land_owner.address.address_line_1",
-  //     "legal_land_owner.address.address_type_code",
-  //     "legal_land_owner.address.city"];
-  //   if (isLegalLandOwner) {
-  //     if (legalLandOwner.party_type_code === "ORG") {
-  //       requiredFields.push("legal_land_owner.party_name");
-  //     } else {
-  //       requiredFields.push("legal_land_owner.first_name", "legal_land_owner.last_name");
-  //     }
-  //   }
-  //   return requiredFields;
-  // };
-
-  const getAgentRequiredFields = (isAgent, agent) => {
-    const requiredFields = [
-      "agent.phone_no",
-      "agent.email",
-      "agent.address.address_line_1",
-      "agent.address.address_type_code",
-      "agent.address.city",
-    ];
-    if (isAgent) {
-      if (agent && agent.party_type_code === "ORG") {
-        requiredFields.push("agent.party_name");
-      } else if (agent) {
-        requiredFields.push("agent.first_name", "agent.last_name");
-      }
+  const getFieldValue = (obj, field) => {
+    const value = obj[field];
+    if (typeof value === "undefined" || value === null || value === "") {
+      return null;
     }
-    return requiredFields;
+    return value;
   };
 
   const verifyRequiredFields = (payload) => {
@@ -207,9 +181,8 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
     ];
 
     for (const field of requiredFields) {
-      const value = payload[field];
-      if (typeof value === "undefined" || value === "" || !value) {
-        return field; // Return the first missing value found in field
+      if (getFieldValue(payload, field) === null) {
+        return field;
       }
     }
 
@@ -220,11 +193,6 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
       (!payload.contacts[0].name || !payload.contacts[0].email || !payload.contacts[0].phone_number)
     ) {
       return "contacts";
-    }
-
-    // Additional check for agent
-    if (payload.is_agent === null || typeof payload.is_agent === "undefined") {
-      return "agent";
     }
 
     // Get agent information and party type code
@@ -244,6 +212,24 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
       }
     }
 
+    // Additional check for legal land owner
+    if (!payload.is_legal_land_owner) {
+      const requiredLandOwnerFields = [
+        "is_legal_land_owner",
+        "is_crown_land_federal_or_provincial",
+        "is_landowner_aware_of_discharge_application",
+        "legal_land_owner_name",
+        "has_landowner_received_copy_of_application",
+        "legal_land_owner_contact_number",
+        "legal_land_owner_email_address",
+      ];
+      for (const field of requiredLandOwnerFields) {
+        if (getFieldValue(payload, field) === null) {
+          return "legal_land_owner";
+        }
+      }
+    }
+
     return null;
   };
 
@@ -251,6 +237,7 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
     const payload = handleTransformPayload(values);
     const result = verifyRequiredFields(payload);
     console.log("verifyRequiredFields", result);
+    console.log("payload", JSON.stringify(payload));
     setIsLoaded(false);
     return updateProjectSummary(
       {
