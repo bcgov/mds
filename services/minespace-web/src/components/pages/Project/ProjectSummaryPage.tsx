@@ -172,6 +172,19 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
     return value;
   };
 
+  const getRequiredFieldFormTab = (field: string) => {
+    const requiredFieldMap = {
+      project_summary_title: "basic-information",
+      project_summary_description: "basic-information",
+      agent: "agent",
+      is_agent: "agent",
+      legal_land_owner: "legal-land-owner-information",
+      is_legal_land_owner: "legal-land-owner-information",
+      contacts: "project-contacts",
+    };
+    return requiredFieldMap[field];
+  };
+
   const verifyRequiredFields = (payload) => {
     const requiredFields = [
       "project_summary_title",
@@ -229,15 +242,11 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
         }
       }
     }
-
     return null;
   };
 
   const handleUpdateProjectSummary = (values, message) => {
     const payload = handleTransformPayload(values);
-    const result = verifyRequiredFields(payload);
-    console.log("verifyRequiredFields", result);
-    console.log("payload", JSON.stringify(payload));
     setIsLoaded(false);
     return updateProjectSummary(
       {
@@ -290,6 +299,11 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
       ? "Successfully updated the project description."
       : "Successfully submitted a project description to the Province of British Columbia.";
     const values = { ...formValues, status_code: "SUB" };
+    const missingRequiredFields = verifyRequiredFields(handleTransformPayload(values));
+    if (missingRequiredFields) {
+      handleTabChange(getRequiredFieldFormTab(missingRequiredFields));
+      return;
+    }
     submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
     touch(FORM.ADD_EDIT_PROJECT_SUMMARY);
     const errors = Object.keys(flattenObject(formErrors));
