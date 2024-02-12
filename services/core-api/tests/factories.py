@@ -555,9 +555,7 @@ class MineReportSubmissionFactory(BaseFactory):
             mine_report_definition_id=None,
             permit_condition_category_code=factory.LazyFunction(RandomConditionCategoryCode))
 
-        mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
-
-    mine_guid = factory.SelfAttribute('mine.mine_guid')
+    mine_guid = factory.SelfAttribute('report.mine_guid')
     mine_report_definition_id = factory.LazyFunction(
         RandomMineReportDefinition
     )  # None if not factory.SelfAttribute('set_permit_condition_category_code') else factory.LazyFunction(RandomMineReportDefinition)

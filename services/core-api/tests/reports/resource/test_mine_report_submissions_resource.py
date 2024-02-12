@@ -10,7 +10,7 @@ from app.api.mines.reports.models.mine_report_definition import MineReportDefini
 from app.api.mines.reports.models.mine_report_submission_status_code import MineReportSubmissionStatusCode
 from app.api.constants import MINE_REPORT_TYPE
 
-from tests.factories import MineFactory, MineDocumentFactory, MineReportFactory, MineReportSubmissionFactory, PermitFactory, PermitAmendmentFactory, PartyFactory
+from tests.factories import MineFactory, MineDocumentFactory, MineReportFactory
 
 # GET
 def test_get_all_mine_report_submissions_for_report(test_client, db_session, auth_headers):
