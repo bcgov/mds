@@ -45,7 +45,6 @@ import ProjectSummaryForm, {
 import { IMine, IProjectSummary, IProject, Feature } from "@mds/common";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
-import { get } from "lodash";
 
 interface ProjectSummaryPageProps {
   mines: Partial<IMine>[];
