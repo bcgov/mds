@@ -130,7 +130,7 @@ exports[`ReportDetailsForm renders view mode properly 1`] = `
           <div
             class="ant-typography view-item-value"
           >
-            2020
+            2024
           </div>
         </div>
       </div>
@@ -149,7 +149,7 @@ exports[`ReportDetailsForm renders view mode properly 1`] = `
           <div
             class="ant-typography view-item-value"
           >
-            2020-01-02
+            2024-02-07
           </div>
         </div>
       </div>
@@ -591,7 +591,7 @@ exports[`ReportDetailsForm renders view mode properly 1`] = `
                         >
                           <tr
                             class="ant-table-row ant-table-row-level-0 table-row-align-middle no-sub-table-expandable-rows fade-in"
-                            data-row-key="98a9d9de-4feb-41a7-adda-842421462657"
+                            data-row-key="176ccc2e-f1fa-4ca2-a904-41d1a81d74fa"
                           >
                             <td
                               class="ant-table-cell ant-table-cell-with-append"
@@ -606,7 +606,7 @@ exports[`ReportDetailsForm renders view mode properly 1`] = `
                                 title="File Name"
                               >
                                 <a>
-                                  0101581201901_APPLICATION_FORM (3) (2) (1).pdf
+                                  document.pdf
                                 </a>
                                 <span
                                   class="file-history-container"
@@ -629,7 +629,7 @@ exports[`ReportDetailsForm renders view mode properly 1`] = `
                               <div
                                 title="Last Modified"
                               >
-                                N/A
+                                Feb 06 2024
                               </div>
                             </td>
                             <td
@@ -639,7 +639,7 @@ exports[`ReportDetailsForm renders view mode properly 1`] = `
                                 class="create_user-column"
                                 title="Created By"
                               >
-                                N/A
+                                test@bceid
                               </div>
                             </td>
                             <td

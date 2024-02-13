@@ -156,6 +156,14 @@
   }
 }
 
+.ant-btn-icon-only {
+  >svg.svg-inline--fa {
+    font-size: 1rem;
+    vertical-align: 2em;
+    margin-left: -0.35em
+  }
+}
+
 .ant-input-search-button {
   height: 34px;
   width: 46px;
@@ -396,20 +404,32 @@
 }
 
 // ALERTS
+
+// generic styling for alerts of any severity
+.ant-alert {
+  &.ant-alert-with-description {
+    .ant-alert-icon {
+      margin-top: 4px;
+    }
+  }
+
+  .ant-alert-content {
+    .ant-alert-message {
+      color: black;
+      font-weight: 800;
+    }
+
+    .ant-alert-description {
+      color: black;
+      line-height: 2rem;
+    }
+  }
+}
+
+
+
+
 .ant-alert-warning {
-  .ant-alert-message {
-    color: black !important;
-    font-weight: 800;
-  }
-
-  .ant-alert-description {
-    color: black !important;
-    line-height: 2rem;
-  }
-
-  .ant-alert-icon {
-    margin-top: 4px;
-  }
 
   &.ant-alert-warning-custom-with-red-icon {
     .ant-alert-icon {
@@ -423,30 +443,10 @@
 
 .ant-alert-error {
   margin: 0;
-
-  .ant-alert-message {
-    color: black !important;
-    font-weight: 800;
-  }
-
-  .ant-alert-description {
-    color: black !important;
-    line-height: 2rem;
-  }
 }
 
 .ant-alert-info {
   background-color: #ecf6fd;
-
-  .ant-alert-message {
-    color: black !important;
-    font-weight: 800;
-  }
-
-  .ant-alert-description {
-    color: black !important;
-    line-height: 2rem;
-  }
 
   .ant-alert-icon {
     background-color: #ecf6fd !important;

@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/pro-light-svg-icons";
 
 import { getMineReportDefinitionOptions } from "@mds/common/redux/selectors/staticContentSelectors";
-import { ReportSubmissions } from "@mds/common/components/reports/ReportSubmissions";
+import ReportFileUpload from "@mds/common/components/reports/ReportFileUpload";
 
 import { FORM } from "@mds/common/constants/forms";
 import { email, maxLength, required, yearNotInFuture } from "@mds/common/redux/utils/Validate";
@@ -14,10 +14,10 @@ import ReportFilesTable from "./ReportFilesTable";
 import { formatComplianceCodeReportName } from "@mds/common/redux/utils/helpers";
 import RenderDate from "../forms/RenderDate";
 import RenderSelect from "../forms/RenderSelect";
-import FormWrapper, { FormConsumer } from "../forms/FormWrapper";
+import FormWrapper from "../forms/FormWrapper";
 import RenderField from "../forms/RenderField";
 import {
-  IMineReport,
+  IMineDocument,
   IMineReportDefinition,
   IMineReportSubmission,
   IParty,
@@ -35,56 +35,56 @@ import { getParties, getPartyRelationships } from "@mds/common/redux/selectors/p
 import { uniqBy } from "lodash";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 
-const RenderContacts: FC<any> = ({ fields }) => (
-  <FormConsumer>
-    {({ isEditMode }) => {
-      return (
-        <div>
-          {fields.map((contact, index) => (
-            <Row key={contact.id} gutter={[16, 8]}>
-              <Col span={24}>
-                <Row>
-                  <Typography.Title level={5}>Report Contact #{index + 1}</Typography.Title>
-                  {isEditMode && (
-                    <Button
-                      icon={<FontAwesomeIcon icon={faTrash} />}
-                      type="text"
-                      onClick={() => fields.remove(index)}
-                    />
-                  )}
-                </Row>
-              </Col>
-              <Col span={12}>
-                <Field
-                  name={`${contact}.name`}
-                  component={RenderField}
-                  label={`Contact Name`}
-                  placeholder="Enter name"
-                  required
-                  validate={[required]}
+const RenderContacts: FC<any> = ({ fields, isEditMode, mineSpaceEdit }) => {
+  const canEdit = isEditMode && !mineSpaceEdit;
+  return (
+    <div>
+      {fields.map((contact, index) => (
+        <Row key={contact.id} gutter={[16, 8]}>
+          <Col span={24}>
+            <Row>
+              <Typography.Title level={5}>Report Contact #{index + 1}</Typography.Title>
+              {canEdit && (
+                <Button
+                  style={{ marginTop: 0 }}
+                  icon={<FontAwesomeIcon icon={faTrash} />}
+                  type="text"
+                  onClick={() => fields.remove(index)}
                 />
-              </Col>
-              <Col span={12}>
-                <Field
-                  name={`${contact}.email`}
-                  component={RenderField}
-                  label={`Contact Email`}
-                  required
-                  placeholder="Enter email"
-                  validate={[email, required]}
-                />
-              </Col>
+              )}
             </Row>
-          ))}
-        </div>
-      );
-    }}
-  </FormConsumer>
-);
+          </Col>
+          <Col span={12}>
+            <Field
+              name={`${contact}.name`}
+              component={RenderField}
+              label={`Contact Name`}
+              placeholder="Enter name"
+              disabled={!canEdit}
+              required
+              validate={[required]}
+            />
+          </Col>
+          <Col span={12}>
+            <Field
+              name={`${contact}.email`}
+              component={RenderField}
+              label={`Contact Email`}
+              disabled={!canEdit}
+              required
+              placeholder="Enter email"
+              validate={[email, required]}
+            />
+          </Col>
+        </Row>
+      ))}
+    </div>
+  );
+};
 
 interface ReportDetailsFormProps {
   isEditMode?: boolean;
-  initialValues?: IMineReport;
+  initialValues?: Partial<IMineReportSubmission>;
   mineGuid: string;
   formButtons: ReactNode;
   handleSubmit: (values) => void;
@@ -100,21 +100,28 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   currentReportDefinition,
 }) => {
   const dispatch = useDispatch();
-  const formValues: IMineReport =
+  const formValues: IMineReportSubmission =
     useSelector((state) => getFormValues(FORM.VIEW_EDIT_REPORT)(state)) ?? {};
   const [mineManager, setMineManager] = useState<IParty>();
   const [mineManagerGuid, setMineManagerGuid] = useState<string>("");
   const [selectedReportName, setSelectedReportName] = useState("");
-  const { mine_report_category = "", mine_report_definition_guid = "" } = formValues;
+  const {
+    mine_report_category = "",
+    mine_report_definition_guid = "",
+    documents = [],
+  } = formValues;
   const [selectedReportCode, setSelectedReportCode] = useState("");
   const [formattedMineReportDefinitionOptions, setFormatMineReportDefinitionOptions] = useState([]);
-  const [mineReportSubmissions, setMineReportSubmissions] = useState([]);
 
   const partyRelationships: IPartyAppt[] = useSelector((state) => getPartyRelationships(state));
   const parties = useSelector((state) => getParties(state));
   const mineReportDefinitionOptions = useSelector(getMineReportDefinitionOptions);
 
   const system = useSelector(getSystemFlag);
+
+  // minespace users are only allowed to add documents
+  const mineSpaceEdit =
+    system === SystemFlagEnum.ms && initialValues?.mine_report_guid && isEditMode;
 
   useEffect(() => {
     if (!partyRelationships.length) {
@@ -190,14 +197,13 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
     }
   }, [mine_report_definition_guid]);
 
-  const updateMineReportSubmissions = (updatedSubmissions: IMineReportSubmission[]) => {
-    dispatch(change(FORM.VIEW_EDIT_REPORT, "mine_report_submissions", updatedSubmissions));
-    setMineReportSubmissions(updatedSubmissions);
+  const updateDocuments = (docs: IMineDocument[]) => {
+    dispatch(change(FORM.VIEW_EDIT_REPORT, "documents", docs));
   };
 
   return (
     <div>
-      {(isEditMode || !initialValues) && (
+      {(isEditMode || !initialValues) && system !== SystemFlagEnum.core && (
         <Alert
           message=""
           description={
@@ -228,6 +234,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               id="mine_report_definition_guid"
               name="mine_report_definition_guid"
               label="Report Name"
+              disabled={mineSpaceEdit}
               props={{
                 data: formattedMineReportDefinitionOptions,
               }}
@@ -273,6 +280,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               id="description_comment"
               name="description_comment"
               label="Report Title and Additional Comment"
+              disabled={mineSpaceEdit}
               required
               props={{ maximumCharacters: 500, rows: 3 }}
               component={RenderAutoSizeField}
@@ -296,6 +304,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               id="submission_year"
               name="submission_year"
               label="Report Compliance Year/Period"
+              disabled={mineSpaceEdit}
               required
               placeholder="Select year"
               component={RenderDate}
@@ -312,6 +321,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               name="due_date"
               label="Due Date"
               placeholder="Select date"
+              disabled={mineSpaceEdit}
               required
               component={RenderDate}
               validate={[required]}
@@ -324,6 +334,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               name="submitter_name"
               label="Submitter Name"
               placeholder="Enter name"
+              disabled={mineSpaceEdit}
               required
               component={RenderField}
               validate={[required]}
@@ -336,6 +347,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               name="submitter_email"
               label="Submitter Email"
               placeholder="Enter email"
+              disabled={mineSpaceEdit}
               component={RenderField}
               validate={[email]}
               help="By providing your email, you agree to receive notification of the report"
@@ -362,10 +374,14 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
             <Typography.Paragraph>{mineManager?.email ?? "-"}</Typography.Paragraph>
           </Col>
           <Col span={24}>
-            <FieldArray name="mine_report_contacts" component={RenderContacts} />
+            <FieldArray
+              name="mine_report_contacts"
+              component={RenderContacts}
+              props={{ isEditMode, mineSpaceEdit }}
+            />
           </Col>
           <Col span={24}>
-            {isEditMode && (
+            {isEditMode && !mineSpaceEdit && (
               <Button
                 type="link"
                 onClick={() =>
@@ -391,13 +407,14 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               />
             )}
             {isEditMode && (
-              <ReportSubmissions
+              <ReportFileUpload
                 mineGuid={mineGuid}
-                mineReportSubmissions={mineReportSubmissions}
-                updateMineReportSubmissions={updateMineReportSubmissions}
+                isProponent={system === SystemFlagEnum.ms}
+                documents={documents}
+                updateDocuments={updateDocuments}
               />
             )}
-            <ReportFilesTable report={formValues} />
+            <ReportFilesTable documents={documents} />
           </Col>
         </Row>
         {formButtons}
