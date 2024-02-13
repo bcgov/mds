@@ -303,13 +303,16 @@ services:
   docgen-api:
     restart: always
     container_name: docgen_api
-    image: bcgovimages/common-document-generation-service:2.4.1
+    image: bcgovimages/common-document-generation-service:2.5.0
     command: [ "npm", "run", "start" ]
     environment:
       - SERVER_PORT=3030
       - APP_PORT=3030
       - CACHE_DIR=/tmp/tmp-reports
       - NODE_ENV=development
+      - KC_REALM=notused
+      - KC_CLIENT_ID=notused
+      - KC_SERVERURL=http://
     ports:
       - 3030:3030
 
