@@ -16,6 +16,7 @@ from app.api.now_applications.models.now_application_document_xref import NOWApp
 from app.api.services.document_generator_service import DocumentGeneratorService
 from app.api.services.document_manager_service import DocumentManagerService
 from app.api.now_applications.response_models import NOW_APPLICATION_DOCUMENT
+from app.api.utils.access_decorators import requires_role_edit_permit
 
 
 class NoticeOfWorkDocumentResource(Resource, UserMixin):
@@ -30,6 +31,7 @@ class NoticeOfWorkDocumentResource(Resource, UserMixin):
             'is_preview':
             'If true, returns the generated document without creating the document record.'
         })
+    @requires_role_edit_permit
     def get(self):
         token = request.args.get('token', '')
         return_record = request.args.get('return_record') == 'true'
