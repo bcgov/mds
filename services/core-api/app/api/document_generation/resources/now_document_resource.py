@@ -31,7 +31,6 @@ class NoticeOfWorkDocumentResource(Resource, UserMixin):
             'is_preview':
             'If true, returns the generated document without creating the document record.'
         })
-    @requires_role_edit_permit
     def get(self):
         token = request.args.get('token', '')
         return_record = request.args.get('return_record') == 'true'
@@ -92,7 +91,8 @@ class NoticeOfWorkDocumentResource(Resource, UserMixin):
             now_application_identity.now_application.documents.append(now_doc)
             now_application_identity.save()
 
-            now_application = NOWApplication.find_by_application_guid(now_application_guid)
+            now_application = NOWApplication.query.unbound_unsafe().filter_by(now_application_guid=now_application_guid).one_or_none()
+
             now_application_document_type.after_template_generated(template_data, now_doc,
                                                                    now_application)
 
