@@ -1,4 +1,5 @@
 from flask import g, has_request_context, request
+from app.api.utils.access_decorators import require_auth
 
 VALID_REALM = ['idir']
 
@@ -22,8 +23,10 @@ class User:
         
         if hasattr(g, 'jwt_oidc_token_info'):
             return g.jwt_oidc_token_info
-        else:
-            raise Exception('No user info found. Make sure to authenticate the user first.')
+        elif has_request_context() and "authorization" in request.headers:
+            require_auth()
+
+            return g.jwt_oidc_token_info
 
     def get_user_email(self):
         raw_info = self.get_user_raw_info()
