@@ -31,6 +31,8 @@ EDIT_INCIDENTS = "core_edit_incidents"
 EDIT_TSF = "core_edit_tsf"
 EDIT_PROJECT_DECISION_PACKAGES = "core_edit_project_decision_packages"
 
+def require_auth():
+    return getJwtManager()._require_auth_validation()
 
 def is_minespace_user():
     return getJwtManager().validate_roles([MINESPACE_PROPONENT])
