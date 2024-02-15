@@ -27,6 +27,7 @@ import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFla
 import { Feature, IProjectSummary, IProjectSummaryDocument } from "@mds/common";
 import { Agent } from "./Agent";
 import { LegalLandOwnerInformation } from "@mds/common/components/projectSummary/LegalLandOwnerInformation";
+import { FacilityOperator } from "@mds/common/components/projectSummary/FacilityOperator";
 import Applicant from "@/components/Forms/projects/projectSummary/Applicant";
 
 interface ProjectSummaryFormProps {
@@ -56,6 +57,7 @@ export const getProjectFormTabs = (amsFeatureEnabled: boolean) => {
     "project-contacts",
     "applicant-information",
     "agent",
+    "facility-operator-information",
     "legal-land-owner-information",
     "project-dates",
     "authorizations-involved",
@@ -94,6 +96,7 @@ export const ProjectSummaryForm: FC<ProjectSummaryFormProps &
       "project-dates": <ProjectDates initialValues={props.initialValues} />,
       "applicant-information": <Applicant />,
       agent: <Agent />,
+      "facility-operator-information": <FacilityOperator />,
       "authorizations-involved": (
         <AuthorizationsInvolved initialValues={props.initialValues} change={props.change} />
       ),
