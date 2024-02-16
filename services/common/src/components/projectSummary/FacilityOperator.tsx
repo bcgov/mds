@@ -25,17 +25,23 @@ import Map from "../common/Map";
 export const FacilityOperator: FC = () => {
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
   const formErrors = useSelector(getFormSyncErrors(FORM.ADD_EDIT_PROJECT_SUMMARY));
-  const { source_of_data, zoning, latitude, longitude } = formValues;
+  const {
+    facility_coords_source,
+    facility_zoning,
+    facility_latitude,
+    facility_longitude,
+  } = formValues;
   const [pin, setPin] = useState<Array<string>>([]);
+  console.log(formValues);
 
   useEffect(() => {
     // don't jump around the map while coords being entered and not yet valid
-    const invalidPin = Boolean(formErrors.longitude || formErrors.latitude);
+    const invalidPin = Boolean(formErrors.facility_longitude || formErrors.facility_latitude);
     if (!invalidPin) {
-      const latLng = [latitude, longitude];
+      const latLng = [facility_latitude, facility_longitude];
       setPin(latLng);
     }
-  }, [longitude, latitude]);
+  }, [facility_longitude, facility_latitude]);
 
   const dataSourceOptions = [
     { value: "GPS", label: "GPS" },
@@ -73,7 +79,7 @@ export const FacilityOperator: FC = () => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <Field
-            name="latitude"
+            name="facility_latitude"
             required
             validate={[required, lat, max(60), min(47)]}
             label="Latitude"
@@ -81,15 +87,16 @@ export const FacilityOperator: FC = () => {
             help="Must be between 47 and 60 with no more than 7 decimal places"
           />
           <Field
-            name="longitude"
+            name="facility_longitude"
             required
             validate={[required, lon, max(-113), min(-140)]}
             label="Longitude"
             component={RenderField}
             help="Must be between -113 and -140 with no more than 7 decimal places"
+            // -113.1234567
           />
           <Field
-            name="source_of_data"
+            name="facility_coords_source"
             required
             validate={[required]}
             label="Source of Data"
@@ -101,10 +108,10 @@ export const FacilityOperator: FC = () => {
           <Map controls additionalPins={[pin]} />
         </Col>
       </Row>
-      {source_of_data === "OTH" && (
+      {facility_coords_source === "OTH" && (
         <>
           <Field
-            name="data_source_desc"
+            name="facility_coords_source_desc"
             required
             validate={[required, maxLength(4000)]}
             label="Please specify if other"
@@ -114,7 +121,11 @@ export const FacilityOperator: FC = () => {
           />
         </>
       )}
-      <Field name="pid_pin_crown_file_no" label="PID/PIN/Crown File No" component={RenderField} />
+      <Field
+        name="facility_pid_pin_crown_file_no"
+        label="PID/PIN/Crown File No"
+        component={RenderField}
+      />
       <Field
         name="legal_land_desc"
         label="Legal land Description (Lot/Block/Plan)"
@@ -123,27 +134,37 @@ export const FacilityOperator: FC = () => {
         rows={3}
         component={RenderAutoSizeField}
       />
-      <Field name="lease_no" label="Mine Lease/Coal Lease Number" component={RenderField} />
+      <Field
+        name="facility_lease_no"
+        label="Mine Lease/Coal Lease Number"
+        component={RenderField}
+      />
 
       <Typography.Title level={4}>Facility Address</Typography.Title>
+      <Row gutter={16}>
+        <Col md={19} sm={24}>
+          <Field
+            name="facility_operator.address.address_line_1"
+            label="Street"
+            required
+            validate={[required]}
+            component={RenderField}
+            help="If no civic address, describe location (e.g. 3km north of Sechelt, BC, on Highway 101)"
+          />
+        </Col>
+        <Col md={5} sm={24}>
+          <Field name="facility_operator.address.suite_no" label="Unit #" component={RenderField} />
+        </Col>
+      </Row>
       <Field
-        name="address.address_line_1"
-        label="Street"
-        required
-        validate={[required]}
-        component={RenderField}
-        help="If no civic address, describe location (e.g. 3km north of Sechelt, BC, on Highway 101)"
-      />
-      <Field name="address.suite_no" label="Unit #" component={RenderField} />
-      <Field
-        name="address.city"
+        name="facility_operator.address.city"
         label="City"
         required
         validate={[required]}
         component={RenderField}
       />
       <Field
-        name="address.sub_division_code"
+        name="facility_operator.address.sub_division_code"
         label="Province"
         required
         validate={[required]}
@@ -151,7 +172,7 @@ export const FacilityOperator: FC = () => {
         component={RenderSelect}
       />
       <Field
-        name="address.post_code"
+        name="facility_operator.address.post_code"
         label="Postal Code"
         component={RenderField}
         required
@@ -165,7 +186,7 @@ export const FacilityOperator: FC = () => {
         validate={[requiredRadioButton]}
         component={RenderRadioButtons}
       />
-      {zoning === false && (
+      {facility_zoning === false && (
         <Field
           name="zoning_reason"
           label="If no, state the reason"
@@ -177,8 +198,8 @@ export const FacilityOperator: FC = () => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <Field
-            name="facility_operator_name"
-            label="Facility Operator Name"
+            name="facility_operator.first_name"
+            label="Facility Operator First Name"
             required
             validate={[required]}
             component={RenderField}
@@ -186,7 +207,16 @@ export const FacilityOperator: FC = () => {
         </Col>
         <Col md={12} sm={24}>
           <Field
-            name="facility_operator_title"
+            name="facility_operator.party_name"
+            label="Last Name"
+            required
+            validate={[required]}
+            component={RenderField}
+          />
+        </Col>
+        <Col md={12} sm={24}>
+          <Field
+            name="facility_operator.job_title"
             label="Facility Operator Title"
             component={RenderField}
           />
@@ -196,7 +226,7 @@ export const FacilityOperator: FC = () => {
       <Row gutter={16}>
         <Col md={8} sm={19}>
           <Field
-            name="phone_no"
+            name="facility_operator.phone_no"
             label="Facility Operator Contact Number"
             required
             validate={[required, phoneNumber]}
@@ -204,11 +234,11 @@ export const FacilityOperator: FC = () => {
           />
         </Col>
         <Col md={4} sm={5}>
-          <Field name="phone_ext" label="Ext." component={RenderField} />
+          <Field name="facility_operator.phone_ext" label="Ext." component={RenderField} />
         </Col>
         <Col md={12} sm={24}>
           <Field
-            name="email"
+            name="facility_operator.email"
             label="Facility Operator Email Address"
             validate={[email]}
             component={RenderField}

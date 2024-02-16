@@ -39,6 +39,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     expected_project_start_date = db.Column(db.DateTime, nullable=True)
     agent_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=True)
     is_agent = db.Column(db.Boolean, nullable=True)
+    facility_operator_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=True)
     is_legal_land_owner = db.Column(db.Boolean, nullable=True)
     is_crown_land_federal_or_provincial = db.Column(db.Boolean, nullable=True)
     is_landowner_aware_of_discharge_application = db.Column(db.Boolean, nullable=True)
@@ -46,6 +47,18 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     legal_land_owner_name = db.Column(db.String(200), nullable=True)
     legal_land_owner_contact_number = db.Column(db.String(20), nullable=True)
     legal_land_owner_email_address = db.Column(db.String(200), nullable=True)
+    facility_type = db.Column(db.String, nullable=True)
+    facility_desc = db.Column(db.String(4000), nullable=True)
+    facility_latitude = db.Column(db.Numeric(9,7), nullable=True)
+    facility_longitude = db.Column(db.Numeric(11,7), nullable=True)
+    facility_coords_source = db.Column(db.String(3), nullable=True)
+    facility_coords_source_desc = db.Column(db.String(4000), nullable=True)
+    facility_pid_pin_crown_file_no = db.Column(db.String(100), nullable=True)
+    legal_land_desc = db.Column(db.String(4000), nullable=True)
+    facility_lease_no = db.Column(db.String, nullable=True)
+    zoning = db.Column(db.Boolean, nullable=True)
+    zoning_reason = db.Column(db.String, nullable=True)
+
 
     project_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('project.project_guid'), nullable=False)
@@ -62,6 +75,9 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     )
     agent = db.relationship(
         'Party', lazy='joined', foreign_keys=agent_party_guid
+    )
+    facility_operator = db.relationship(
+        'Party', lazy='joined', foreign_keys=facility_operator_guid
     )
     authorizations = db.relationship(
         'ProjectSummaryAuthorization',
@@ -246,6 +262,18 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                legal_land_owner_name=None,
                legal_land_owner_contact_number=None,
                legal_land_owner_email_address=None,
+               facility_operator=None,
+               facility_type=None,
+               facility_desc=None,
+               facility_latitude=None,
+               facility_longitude=None,
+               facility_coords_source=None,
+               facility_coords_source_desc=None,
+               facility_pid_pin_crown_file_no=None,
+               legal_land_desc=None,
+               facility_lease_no=None,
+               zoning=None,
+               zoning_reason=None,
                add_to_session=True):
 
         # Update simple properties.
@@ -330,6 +358,49 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 agent_party.address.append(agent_address)
                 agent_party.save()
                 self.agent_party_guid = agent_party.party_guid
+         
+        if facility_operator:
+            f_address = facility_operator.get('address')
+            facility_operator_guid = facility_operator.get('party_guid')
+
+            # if updates are made to the existing party:
+            if self.facility_operator_guid is not None and str(self.facility_operator_guid) == facility_operator_guid:
+                Party.validate_phone_no(facility_operator.get('phone_no'))
+                self.facility_operator.deep_update_from_dict(facility_operator)
+                facility_address = Address(
+                    suite_no=f_address.get('suite_no'),
+                    address_line_1=f_address.get('address_line_1'),
+                    city=f_address.get('city'),
+                    sub_division_code=f_address.get('sub_division_code'),
+                    post_code=f_address.get('post_code'),
+                    address_type_code='CAN',
+                )
+
+                self.facility_operator.address.append(facility_address)
+                self.facility_operator.save()
+            else:
+                fop_party = Party.create(
+                    party_name=facility_operator.get('party_name'),
+                    first_name=facility_operator.get('first_name'),
+                    phone_no=facility_operator.get('phone_no'),
+                    phone_ext=facility_operator.get('phone_ext'),
+                    email=facility_operator.get('email'),
+                    party_type_code='PER',
+                    job_title=facility_operator.get('job_title'),
+                    job_title_code='FOP',
+                    address_type_code='FOP'
+                )                
+                facility_address = Address.create(
+                    suite_no=f_address.get('suite_no'),
+                    address_line_1=f_address.get('address_line_1'),
+                    city=f_address.get('city'),
+                    sub_division_code=f_address.get('sub_division_code'),
+                    post_code=f_address.get('post_code'),
+                    address_type_code='CAN',
+                )
+                fop_party.address.append(facility_address)
+                fop_party.save()
+                self.facility_operator_guid = fop_party.party_guid
 
         # Create or update existing documents.
         for doc in documents:

@@ -212,10 +212,11 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
     const partyTypeCode = agent.party_type_code;
 
     // Define required fields based on party type
+    const commonAgentRequiredFields = ["party_name", "phone_no", "email", "address"];
     const agentRequiredFields =
       partyTypeCode === "ORG"
-        ? ["party_name", "phone_no", "email", "address"]
-        : ["first_name", "last_name", "phone_no", "email", "address"];
+        ? commonAgentRequiredFields
+        : ["first_name", ...commonAgentRequiredFields];
 
     // Check if all required fields are present and non-empty
     for (const field of agentRequiredFields) {
