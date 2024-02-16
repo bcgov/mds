@@ -1,6 +1,6 @@
 from datetime import datetime
 from app.extensions import db, api
-from flask_restplus import fields
+from flask_restx import fields
 from sqlalchemy.orm import validates
 from sqlalchemy.ext.associationproxy import association_proxy
 from app.nris.utils.base_model import Base

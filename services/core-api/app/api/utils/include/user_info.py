@@ -1,4 +1,5 @@
 from flask import g, has_request_context, request
+from app.api.utils.access_decorators import require_auth
 
 VALID_REALM = ['idir']
 
@@ -21,9 +22,15 @@ class User:
             return DUMMY_AUTH_CLAIMS
         
         if hasattr(g, 'jwt_oidc_token_info'):
+            # The users token claims are set if role / auth checks have already been performed.
+            # This is the case for most API requests.
             return g.jwt_oidc_token_info
-        else:
-            raise Exception('No user info found. Make sure to authenticate the user first.')
+        elif has_request_context() and "authorization" in request.headers:
+            # In some cases (such as NoW document generation) the role / auth checks have not been performed yet,
+            # so we need to manually verify the users token before we can access the claims.
+            require_auth()
+
+            return g.jwt_oidc_token_info
 
     def get_user_email(self):
         raw_info = self.get_user_raw_info()

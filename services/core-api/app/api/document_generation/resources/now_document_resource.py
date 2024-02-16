@@ -16,6 +16,7 @@ from app.api.now_applications.models.now_application_document_xref import NOWApp
 from app.api.services.document_generator_service import DocumentGeneratorService
 from app.api.services.document_manager_service import DocumentManagerService
 from app.api.now_applications.response_models import NOW_APPLICATION_DOCUMENT
+from app.api.utils.access_decorators import requires_role_edit_permit
 
 
 class NoticeOfWorkDocumentResource(Resource, UserMixin):
@@ -90,7 +91,8 @@ class NoticeOfWorkDocumentResource(Resource, UserMixin):
             now_application_identity.now_application.documents.append(now_doc)
             now_application_identity.save()
 
-            now_application = NOWApplication.find_by_application_guid(now_application_guid)
+            now_application = NOWApplication.query.unbound_unsafe().filter_by(now_application_guid=now_application_guid).one_or_none()
+
             now_application_document_type.after_template_generated(template_data, now_doc,
                                                                    now_application)
 

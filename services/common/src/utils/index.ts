@@ -1,3 +1,3 @@
 export * from "./featureFlag";
-export * from "./reports";
+export * from "../components/reports/report_utils";
 export * from "./environmentUtils";

@@ -107,7 +107,7 @@ export const MineReportTable = (props) => {
           openReportPage(record);
         },
       },
-      {
+      !isFeatureEnabled(Feature.CODE_REQUIRED_REPORTS) && {
         key: "edit",
         label: "Edit",
         icon: <EditOutlined />,

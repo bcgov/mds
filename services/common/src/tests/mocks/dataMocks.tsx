@@ -5398,6 +5398,52 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
   ],
 };
 
+export const MINE_REPORT_SUBMISSIONS = [
+  {
+    mine_report_guid: "9ac75a07-7232-4f42-8c91-d43008dac91a",
+    mine_report_id: 53,
+    mine_report_submission_guid: "ed597cd0-5ccd-458f-87e2-d7f665b6b1db",
+    submission_date: "2024-02-07",
+    mine_report_submission_status_code: "REQ",
+    documents: [
+      {
+        mine_document_guid: "176ccc2e-f1fa-4ca2-a904-41d1a81d74fa",
+        mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+        document_manager_guid: "519ab034-9ad1-48b2-9969-4e39c8b68198",
+        document_name: "document.pdf",
+        upload_date: "2024-02-06 21:05:40.315908+00:00",
+        update_timestamp: "2024-02-06 21:05:40.315906+00:00",
+        create_user: "test@bceid",
+        is_archived: false,
+        archived_date: null,
+        archived_by: null,
+        versions: [],
+      },
+    ],
+    comments: [],
+    mine_report_definition_guid:
+      BULK_STATIC_CONTENT_RESPONSE.mineReportDefinitionOptions[0].mine_report_definition_guid,
+    mine_report_category: ["H&S"],
+    report_name: BULK_STATIC_CONTENT_RESPONSE.mineReportDefinitionOptions[0].report_name,
+    due_date: "2024-02-07",
+    received_date: "2024-02-06",
+    submission_year: 2024,
+    create_user: "test@bceid",
+    create_timestamp: "2024-02-07T19:15:38.505462+00:00",
+    update_user: "idir\\test",
+    update_timestamp: "2024-02-07T19:15:38.505482+00:00",
+    permit_guid: null,
+    permit_number: null,
+    mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+    mine_name: "Mine Name",
+    permit_condition_category_code: null,
+    description_comment: "This is the description comment field",
+    submitter_name: "Susan Strong",
+    submitter_email: "susan@strong.com",
+    mine_report_contacts: [],
+  },
+];
+
 export const MINE_REPORTS = [
   {
     mine_report_id: 123,
@@ -5483,7 +5529,7 @@ export const MINE_REPORTS = [
     created_by_idir: "idir\\TEST",
     permit_guid: null,
     mine_report_submissions: [],
-    mine_guid: "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
+    mine_guid: "aa3cpb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
     mine_name: "Abbott Inc",
   },
 ];

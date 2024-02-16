@@ -45,16 +45,27 @@ const notifymAdmin = (error) => {
     });
 };
 
-CustomAxios = ({ errorToastMessage = null, suppressErrorNotification = false } = {}) => {
+CustomAxios = ({
+  errorToastMessage = null,
+  suppressErrorNotification = false,
+  successToastMessage = null,
+} = {}) => {
   const instance = axios.create();
 
   instance.interceptors.response.use(
-    (response) => response,
+    (response) => {
+      if (successToastMessage) {
+        notification.success({
+          message: successToastMessage,
+          duration: 10,
+        });
+      }
+      return response;
+    },
     (error) => {
       if (axios.isCancel(error)) {
         return Promise.resolve(error.message);
       }
-
       const status = error.response ? error.response.status : null;
       if (status === UNAUTHORIZED || status === MAINTENANCE) {
         // @ts-ignore

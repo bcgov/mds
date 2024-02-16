@@ -55,3 +55,14 @@ class MineReportComment(SoftDeleteMixin, AuditMixin, Base):
     def find_public_by_report_submission_id(cls, _id):
         return cls.query.filter_by(mine_report_submission_id=_id).filter_by(
             deleted_ind=False).filter_by(comment_visibility_ind=True).all()
+
+    def json(self):
+        return {
+            'mine_report_comment_id': self.mine_report_comment_id,
+            'mine_report_comment_guid': str(self.mine_report_comment_guid),
+            'mine_report_submission_id': self.mine_report_submission_id,
+            'minespace_user_id': self.minespace_user_id,
+            'core_user_id': self.core_user_id,
+            'report_comment': self.report_comment,
+            'comment_visibility_ind': str(self.comment_visibility_ind)
+        }

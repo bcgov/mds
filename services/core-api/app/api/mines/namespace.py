@@ -31,6 +31,7 @@ from app.api.mines.region.resources.region import MineRegionResource
 from app.api.mines.reports.resources.mine_report_document import MineReportDocumentListResource
 from app.api.mines.reports.resources.reports_resource import ReportsResource
 from app.api.mines.reports.resources.mine_reports import MineReportListResource, MineReportResource
+from app.api.mines.reports.resources.mine_report_submission_resource import ReportSubmissionResource
 from app.api.mines.reports.resources.mine_report_definition import MineReportDefinitionListResource
 from app.api.mines.reports.resources.mine_report_submission_status import MineReportSubmissionStatusResource
 from app.api.mines.reports.resources.mine_report_category import MineReportCategoryListResource
@@ -117,6 +118,7 @@ api.add_resource(MineIncidentDocumentListResource, '/<string:mine_guid>/incident
 api.add_resource(ReportsResource, '/reports')
 api.add_resource(MineReportListResource, '/<string:mine_guid>/reports')
 api.add_resource(MineReportResource, '/<string:mine_guid>/reports/<string:mine_report_guid>')
+api.add_resource(ReportSubmissionResource, '/reports/submissions')
 api.add_resource(MineReportDefinitionListResource, '/reports/definitions')
 api.add_resource(MineReportCommentListResource,
                  '/<string:mine_guid>/reports/<string:mine_report_guid>/comments')

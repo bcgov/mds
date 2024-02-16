@@ -131,7 +131,18 @@ class MineReportListResource(Resource, UserMixin):
                 submission_status = data.get('mine_report_submission_status') if data.get(
                     'mine_report_submission_status') else 'INI'
                 report_submission = MineReportSubmission(
+                    description_comment=mine_report.description_comment,
+                    due_date=mine_report.due_date,
+                    mine_guid=mine_report.mine_guid,
+                    mine_report_definition_id=mine_report.mine_report_definition_id,
+                    mine_report_id=mine_report.mine_report_id,
                     mine_report_submission_status_code=submission_status,
+                    permit_condition_category_code=mine_report.permit_condition_category_code,
+                    permit_id=mine_report.permit_id,
+                    received_date=mine_report.received_date,
+                    submission_year=mine_report.submission_year,
+                    submitter_email=mine_report.submitter_email,
+                    submitter_name=mine_report.submitter_name,
                     submission_date=datetime.utcnow())
                 for submission_doc in submission.get('documents'):
                     mine_doc = MineDocument(
@@ -151,6 +162,17 @@ class MineReportListResource(Resource, UserMixin):
             # If this is the initial report, create a submission with the status
             # of INI (Received)
             initial_submission = MineReportSubmission(
+                description_comment=mine_report.description_comment,
+                due_date=mine_report.due_date,
+                mine_guid=mine_report.mine_guid,
+                mine_report_definition_id=mine_report.mine_report_definition_id,
+                mine_report_id=mine_report.mine_report_id,
+                permit_condition_category_code=mine_report.permit_condition_category_code,
+                permit_id=mine_report.permit_id,
+                received_date=mine_report.received_date,
+                submission_year=mine_report.submission_year,
+                submitter_email=mine_report.submitter_email,
+                submitter_name=mine_report.submitter_name,
                 mine_report_submission_status_code='INI',
                 submission_date=datetime.utcnow())
 
@@ -217,6 +239,17 @@ class MineReportResource(Resource, UserMixin):
             (x for x in submission_iterator if x.get('mine_report_submission_guid') is None), None)
         if new_submission is not None:
             new_report_submission = MineReportSubmission(
+                description_comment=mine_report.description_comment,
+                due_date=mine_report.due_date,
+                mine_guid=mine_report.mine_guid,
+                mine_report_definition_id=mine_report.mine_report_definition_id,
+                mine_report_id=mine_report.mine_report_id,
+                permit_condition_category_code=mine_report.permit_condition_category_code,
+                permit_id=mine_report.permit_id,
+                received_date=mine_report.received_date,
+                submission_year=mine_report.submission_year,
+                submitter_email=mine_report.submitter_email,
+                submitter_name=mine_report.submitter_name,
                 submission_date=datetime.now(),
                 mine_report_submission_status_code=mine_report_submission_status)
             # Copy the current list of documents for the report submission

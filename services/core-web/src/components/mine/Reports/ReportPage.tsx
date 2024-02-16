@@ -1,74 +1,96 @@
 import React, { FC, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { isDirty } from "redux-form";
+import { change, isDirty, reset } from "redux-form";
+import { Alert, Button, Modal, Row, Select, Tag, Typography } from "antd";
+import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLocationDot } from "@fortawesome/pro-light-svg-icons";
 
+import * as routes from "@/constants/routes";
 import {
   FORM,
-  IMineReport,
+  IMineReportSubmission,
+  MINE_REPORT_STATUS_HASH,
   MINE_REPORT_SUBMISSION_CODES,
   reportStatusSeverityForDisplay,
-  transformReportData,
 } from "@mds/common";
-import { getMineReportById } from "@mds/common/redux/selectors/reportSelectors";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
+import { getDropdownMineReportStatusOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import {
-  fetchMineReport,
-  updateMineReport,
-} from "@mds/common/redux/actionCreators/reportActionCreator";
+  fetchLatestReportSubmission,
+  getLatestReportSubmission,
+  createReportSubmission,
+} from "@mds/common/components/reports/reportSubmissionSlice";
 
 import ReportDetailsForm from "@mds/common/components/reports/ReportDetailsForm";
 import Loading from "@/components/common/Loading";
-import { Alert, Button, Row, Tag, Typography } from "antd";
 import { ScrollSideMenuProps } from "@mds/common/components/common/ScrollSideMenu";
 import ScrollSidePageWrapper from "@mds/common/components/common/ScrollSidePageWrapper";
-
-import * as routes from "@/constants/routes";
-import { ArrowLeftOutlined } from "@ant-design/icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLocationDot } from "@fortawesome/pro-light-svg-icons";
 
 const ReportPage: FC = () => {
   const dispatch = useDispatch();
   const { mineGuid, reportGuid } = useParams<{ mineGuid: string; reportGuid: string }>();
-  const mineReport: IMineReport = useSelector((state) => getMineReportById(state, reportGuid));
   const mine = useSelector((state) => getMineById(state, mineGuid));
+  const mineReportStatusOptions = useSelector(getDropdownMineReportStatusOptions);
+  const latestSubmission = useSelector((state) => getLatestReportSubmission(state, reportGuid));
 
-  const [isLoaded, setIsLoaded] = useState(Boolean(mineReport && mine));
+  const [selectedStatus, setSelectedStatus] = useState<MINE_REPORT_SUBMISSION_CODES>(
+    latestSubmission?.mine_report_submission_status_code
+  );
+  const [isLoaded, setIsLoaded] = useState(Boolean(latestSubmission && mine));
   const [isEditMode, setIsEditMode] = useState(false);
 
   const isFormDirty = useSelector(isDirty(FORM.VIEW_EDIT_REPORT));
 
   useEffect(() => {
+    let isMounted = true;
+    const loaded = Boolean(latestSubmission);
+    if (isMounted) {
+      setIsLoaded(loaded);
+    }
+
+    return () => (isMounted = false);
+  }, [latestSubmission]);
+
+  useEffect(() => {
+    if (!latestSubmission || latestSubmission.mine_report_guid !== reportGuid) {
+      dispatch(fetchLatestReportSubmission({ mine_report_guid: reportGuid }));
+    }
     if (!mine || mine.mine_guid !== mineGuid) {
       dispatch(fetchMineRecordById(mineGuid));
     }
-    if (
-      !mineReport ||
-      mineReport.mine_report_guid !== reportGuid ||
-      mineReport.mine_guid !== mineGuid
-    ) {
-      dispatch(fetchMineReport(mineGuid, reportGuid));
-    }
-  }, [reportGuid, mineGuid]);
+  }, [mineGuid, reportGuid]);
 
   useEffect(() => {
-    let isMounted = true;
-    const isLoaded = Boolean(mine && mineReport);
-    if (isMounted) {
-      setIsLoaded(isLoaded);
-    }
-    return () => (isMounted = false);
-  }, [mine, mineReport]);
+    setSelectedStatus(latestSubmission?.mine_report_submission_status_code);
+  }, [latestSubmission?.mine_report_submission_status_code]);
 
-  const transformedReportData = transformReportData(mineReport);
+  const cancelConfirmWrapper = (cancelFunction) =>
+    !isFormDirty
+      ? cancelFunction()
+      : Modal.confirm({
+          title: "Discard changes?",
+          content: "All changes made will not be saved.",
+          onOk: cancelFunction,
+          cancelText: "Continue Editing",
+          okText: "Discard",
+        });
 
-  const getToggleEditButton = () => {
+  const revertChanges = () => {
+    dispatch(reset(FORM.VIEW_EDIT_REPORT));
+    setIsEditMode(false);
+  };
+
+  const getFormButtons = () => {
     return isEditMode ? (
-      <Row justify="end">
-        <Button onClick={() => setIsEditMode(false)} disabled={isFormDirty} type="ghost">
-          View Report
+      <Row justify="space-between">
+        <Button onClick={() => cancelConfirmWrapper(revertChanges)} type="ghost">
+          Cancel
+        </Button>
+        <Button htmlType="submit" type="primary" disabled={!isFormDirty}>
+          Save Changes
         </Button>
       </Row>
     ) : (
@@ -103,7 +125,7 @@ const ReportPage: FC = () => {
       <Row align="middle">
         <Typography.Title level={1}>
           <Row align="middle">
-            Report Name
+            {latestSubmission?.report_name}
             <Tag
               title={`Mine: ${mine?.mine_name}`}
               icon={<FontAwesomeIcon icon={faLocationDot} />}
@@ -126,49 +148,49 @@ const ReportPage: FC = () => {
     </div>
   );
 
-  const handleUpdateStatus = () => {
-    console.log("NOT IMPLEMENTED");
+  const handleUpdateStatus = (value: MINE_REPORT_SUBMISSION_CODES) => {
+    dispatch(change(FORM.VIEW_EDIT_REPORT, "mine_report_submission_status_code", value));
+    setSelectedStatus(value);
   };
 
-  const handleSubmit = (values) => {
-    dispatch(updateMineReport(mine.mine_guid, mineReport.mine_report_guid, values));
+  const handleSubmit = (values: IMineReportSubmission) => {
+    dispatch(createReportSubmission(values)).then((response) => {
+      if (response.payload) {
+        setIsEditMode(false);
+      }
+    });
   };
-
   const PageContent = (
     <>
       <Alert
         message={
           <Row justify="space-between" align="middle">
-            <span>{transformedReportData.status}</span>
-            <Button type="ghost" onClick={handleUpdateStatus} style={{ margin: 0 }}>
-              Update Status
-            </Button>
+            <span>
+              {MINE_REPORT_STATUS_HASH[latestSubmission?.mine_report_submission_status_code]}
+            </span>
+            <Select
+              disabled={!isEditMode}
+              virtual={false}
+              dropdownMatchSelectWidth
+              allowClear={false}
+              value={selectedStatus}
+              options={mineReportStatusOptions}
+              onChange={handleUpdateStatus}
+              style={{ minWidth: "210px" }}
+            />
           </Row>
         }
-        description="description"
-        type={reportStatusSeverityForDisplay(
-          transformedReportData.mine_report_submission_status_code as MINE_REPORT_SUBMISSION_CODES
-        )}
+        type={reportStatusSeverityForDisplay(latestSubmission?.mine_report_submission_status_code)}
         showIcon
       />
-      {getToggleEditButton()}
+      {getFormButtons()}
       <ReportDetailsForm
         mineGuid={mineGuid}
-        initialValues={mineReport}
+        initialValues={latestSubmission}
         handleSubmit={handleSubmit}
         isEditMode={isEditMode}
-        formButtons={
-          isEditMode ? (
-            <Row justify="space-between">
-              <Button type="ghost">View Report</Button>
-              <Button htmlType="submit" type="primary">
-                Save Changes
-              </Button>
-            </Row>
-          ) : null
-        }
+        formButtons={getFormButtons()}
       />
-      {!isEditMode && getToggleEditButton()}
     </>
   );
 
