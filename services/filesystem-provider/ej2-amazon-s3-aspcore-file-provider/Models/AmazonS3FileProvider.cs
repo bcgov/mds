@@ -16,7 +16,7 @@ using Amazon.Runtime;
 
 namespace Syncfusion.EJ2.FileManager.AmazonS3FileProvider
 {
-    public class AmazonS3FileProvider : AmazonS3FileProviderBase
+    public class AmazonS3FileProvider : IAmazonS3FileProviderBase
     {
         protected static string bucketName;
         static IAmazonS3 client;
@@ -109,6 +109,12 @@ namespace Syncfusion.EJ2.FileManager.AmazonS3FileProvider
         public FileManagerResponse Delete(string path, string[] names, params FileManagerDirectoryContent[] data)
         {
             return AsyncDelete(path, names, data).Result;
+        }
+
+        public FileManagerResponse Rename(string path, string name, string newName, bool replace = false,
+            bool showFileExtension = true, params FileManagerDirectoryContent[] data)
+        {
+            throw new NotImplementedException();
         }
 
         // Delete async method
@@ -674,8 +680,13 @@ namespace Syncfusion.EJ2.FileManager.AmazonS3FileProvider
             catch (Exception ex) { throw ex; }
         }
 
-        // Download file(s) or folder(s)
         public virtual FileStreamResult Download(string path, string[] Names, params FileManagerDirectoryContent[] data)
+        {
+            return DownloadAsync(path, Names, data).Result; // or .GetAwaiter().GetResult();
+        }
+
+        // Download file(s) or folder(s)
+        public virtual async Task<FileStreamResult> DownloadAsync(string path, string[] Names, params FileManagerDirectoryContent[] data)
         {
             GetBucketList();
             FileStreamResult fileStreamResult = null;
@@ -690,7 +701,7 @@ namespace Syncfusion.EJ2.FileManager.AmazonS3FileProvider
                 {
                     GetBucketList();
                     ListingObjectsAsync("/", RootName.Replace("/", "") + path, false).Wait();
-                    Stream stream = fileTransferUtility.OpenStream(bucketName, RootName.Replace("/", "") + path + Names[0]);
+                    Stream stream = await fileTransferUtility.OpenStreamAsync(bucketName, RootName.Replace("/", "") + path + Names[0]);
                     fileStreamResult = new FileStreamResult(stream, "APPLICATION/octet-stream");
                     fileStreamResult.FileDownloadName = Names[0].Contains("/") ? Names[0].Split("/").Last() : Names[0];
                 }

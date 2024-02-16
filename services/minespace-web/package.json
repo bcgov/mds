@@ -24,7 +24,7 @@
     "@syncfusion/ej2-lists": "24.1.46",
     "@syncfusion/ej2-navigations": "24.1.46",
     "@syncfusion/ej2-notifications": "24.1.41",
-    "@syncfusion/ej2-pdfviewer": "24.1.46",
+    "@syncfusion/ej2-pdfviewer": "22.2.12",
     "@syncfusion/ej2-popups": "24.1.46",
     "@syncfusion/ej2-react-base": "24.1.46",
     "@syncfusion/ej2-react-filemanager": "24.1.47",
