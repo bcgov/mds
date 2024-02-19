@@ -1931,7 +1931,8 @@ INSERT INTO
         create_timestamp,
         update_user,
         update_timestamp,
-        long_description
+        long_description,
+        cim_or_cpo
     )
 VALUES
     (
@@ -1947,7 +1948,7 @@ VALUES
         current_timestamp,
         'system-mds',
         current_timestamp,
-        'Reported results of reclamation measures for submission to an inspector upon completion of reclamation work, this should be included with the final ASEA report (9.2.1(3)).'
+        'Reported results of reclamation measures for submission to an inspector upon completion of reclamation work, this should be included with the final ASEA report (9.2.1(3)).' 'CPO'
     );
 
 INSERT INTO
@@ -1985,9 +1986,158 @@ VALUES
 
 UPDATE compliance_article
 SET
+    cim_or_cpo = 'CPO',
     long_decription = 'Applications for proposed coal and mineral mines, major modifications to existing mines and major exploration and development should be submitted through the Applications reporting feature in MineSpace.'
 WHERE
     section = '10'
     AND sub_section = '1'
     and paragraph = '2'
     and description = 'Application Requirements';
+
+INSERT INTO
+    compliance_article (
+        article_act_code,
+        section,
+        sub_section,
+        paragraph,
+        sub_paragraph,
+        description,
+        effective_date,
+        expiry_date,
+        create_user,
+        create_timestamp,
+        update_user,
+        update_timestamp,
+        long_description,
+        cim_or_cpo
+    )
+VALUES
+    (
+        'HSRCM',
+        '10',
+        '1',
+        '3',
+        'a',
+        'Map',
+        '2024-02-15',
+        '9999-12-31',
+        'system-mds',
+        current_timestamp,
+        'system-mds',
+        current_timestamp,
+        'Applications for proposed coal and mineral mines, major modifications to existing mines and major exploration and development should be submitted through the Applications reporting feature in MineSpace.',
+        'CPO'
+    );
+
+UPDATE compliance_article
+SET
+    cim_or_cpo = 'CPO',
+    long_decription = 'Applications for proposed coal and mineral mines, major modifications to existing mines and major exploration and development should be submitted through the Applications reporting feature in MineSpace.'
+WHERE
+    section = '10'
+    AND sub_section = '1'
+    and paragraph = '3'
+    and description = 'Application Requirements';
+
+UPDATE compliance_article
+SET
+    cim_or_cpo = 'CIM'
+WHERE
+    section = '10'
+    AND sub_section = '1'
+    and paragraph = '6'
+    and description = 'Duty to Report Safety Issues at Tailings Storage Facilities';
+
+UPDATE compliance_article
+SET
+    cim_or_cpo = 'CPO',
+    long_decription = 'Design Slopes Justification'
+WHERE
+    section = '10'
+    AND sub_section = '1'
+    and paragraph = '9'
+    and description = 'Design Slopes';
+
+UPDATE compliance_article
+SET
+    cim_or_cpo = 'CPO',
+    long_decription = 'A tailings storage facility shall have a breach and inundation study or a failure runout assessment prior to commencing operation, or as required by the chief permitting officer.'
+WHERE
+    section = '10'
+    AND sub_section = '1'
+    and paragraph = '11'
+    and description = 'Breach and Inundation Study/Failure Runout Assessment';
+
+INSERT INTO
+    compliance_article (
+        article_act_code,
+        section,
+        sub_section,
+        paragraph,
+        description,
+        effective_date,
+        expiry_date,
+        create_user,
+        create_timestamp,
+        update_user,
+        update_timestamp,
+        long_description,
+        cim_or_cpo
+    )
+VALUES
+    (
+        'HSRCM',
+        '10',
+        '1',
+        '12',
+        'Water Balance and Water Management Plan',
+        '2024-02-15',
+        '9999-12-31',
+        'system-mds',
+        current_timestamp,
+        'system-mds',
+        current_timestamp,
+        'This section of the Code does not trigger a report submission requirement.  The reconciled Water Balance and Water Management Plan for Tailings Storage Facilities can be submitted under 10.4.5(a) of the Code. Water Balance and Water Quality Models and Water Management and Monitoring  Plans for mine sites should be submitted  through the Applications feature in MineSpace, or as a permit required report in MineSpace.',
+        'CIM'
+    );
+
+UPDATE compliance_article
+SET
+    cim_or_cpo = 'CPO',
+    long_decription = 'This section of the Code does not trigger a report submission requirement. Information related to Major Dumps should be submitted through the Applications feature in MineSpace.'
+WHERE
+    section = '10'
+    AND sub_section = '1'
+    and paragraph = '15'
+INSERT INTO
+    compliance_article (
+        article_act_code,
+        section,
+        sub_section,
+        paragraph,
+        description,
+        effective_date,
+        expiry_date,
+        create_user,
+        create_timestamp,
+        update_user,
+        update_timestamp,
+        long_description,
+        cim_or_cpo
+    )
+VALUES
+    (
+        'HSRCM',
+        '10',
+        '1',
+        '16',
+        'Metal Leaching and Acid Rock Drainage',
+        '2024-02-15',
+        '9999-12-31',
+        'system-mds',
+        current_timestamp,
+        'system-mds',
+        current_timestamp,
+        'This section of the Code does not trigger a report submission requirement. Documents related to Metal Leaching and Acid Rock Drainage should be submitted through the Applications feature on MineSpace, or as a permit required report in MineSpace.',
+        'CPO'
+    );
