@@ -40,7 +40,7 @@ import {
   createMineReportComment,
   fetchMineReportComments,
 } from "@mds/common/redux/actionCreators/reportCommentActionCreator";
-import AuthorizationWrapper from "@mds/common/wrappers/AuthorizationWrapper";
+// import AuthorizationWrapper from "@mds/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@mds/common/constants/permissions";
 
 const RenderContacts: FC<any> = ({ fields, isEditMode, mineSpaceEdit }) => {
@@ -471,15 +471,15 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
             </Typography.Title>
           </Col>
           <Col span={24}>
-            <AuthorizationWrapper permission={createPermission}>
-              <Typography.Paragraph>
-                <strong>
-                  These comments are for internal staff only and will not be shown to proponents.
-                </strong>
-                Add comments to this report submission for future reference. Anything written in
-                these comments may be requested under FOIPPA. Keep it professional and concise.
-              </Typography.Paragraph>
-            </AuthorizationWrapper>
+            {/* <AuthorizationWrapper permission={createPermission}> */}
+            <Typography.Paragraph>
+              <strong>
+                These comments are for internal staff only and will not be shown to proponents.
+              </strong>
+              Add comments to this report submission for future reference. Anything written in these
+              comments may be requested under FOIPPA. Keep it professional and concise.
+            </Typography.Paragraph>
+            {/* </AuthorizationWrapper> */}
             <MinistryCommentPanel
               renderEditor={true}
               onSubmit={handleAddComment}
