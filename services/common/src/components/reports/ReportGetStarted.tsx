@@ -127,8 +127,9 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
                   {formatComplianceCodeReportName(selectedReportDefinition)}
                 </Typography.Title>
                 <Typography.Paragraph>{selectedReportDefinition.description}</Typography.Paragraph>
+                <Typography.Title level={5}>About this submission type:</Typography.Title>
                 <Typography.Paragraph>
-                  TODO: Add plain language long description to reports
+                  {selectedReportDefinition.compliance_articles[0].long_description}
                 </Typography.Paragraph>
               </div>
             )}
