@@ -2108,7 +2108,8 @@ SET
 WHERE
     section = '10'
     AND sub_section = '1'
-    and paragraph = '15'
+    and paragraph = '15';
+
 INSERT INTO
     compliance_article (
         article_act_code,
@@ -2140,4 +2141,841 @@ VALUES
         current_timestamp,
         'This section of the Code does not trigger a report submission requirement. Documents related to Metal Leaching and Acid Rock Drainage should be submitted through the Applications feature on MineSpace, or as a permit required report in MineSpace.',
         'CPO'
+    );
+
+INSERT INTO
+    compliance_article (
+        article_act_code,
+        section,
+        sub_section,
+        paragraph,
+        sub_paragraph,
+        description,
+        effective_date,
+        expiry_date,
+        create_user,
+        create_timestamp,
+        update_user,
+        update_timestamp,
+        long_description,
+        cim_or_cpo
+    )
+VALUES
+    (
+        'HSRCM',
+        '10',
+        '4',
+        '1',
+        '3',
+        'Updated Plans',
+        '2024-02-15',
+        '9999-12-31',
+        'system-mds',
+        current_timestamp,
+        'system-mds',
+        current_timestamp,
+        'This section of the Code does not trigger a report submission requirement. The reconciled Water Balance and Water Management Plan for Tailings Storage Facilities can be submitted under 10.4.5(a) of the Code. Water Balance and Water Quality Models and Water Management and Monitoring Plans for mine sites should be submitted through the Applications feature in MineSpace, or as a permit required report in MineSpace.',
+        'Both'
+    );
+
+UPDATE compliance_article
+SET
+    help_reference_text = 'https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting',
+    help_reference_link = 'https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting',
+    long_decription = 'Updated Plans - Permitted Sites
+For regionally operated sand and gravel pits and construction aggregate quarries, refer to the Mine Plan Update Policy.'
+WHERE
+    section = '10'
+    and description = 'Updated Plans'
+    AND sub_section = '4'
+    and paragraph = '1';
+
+INSERT INTO
+    compliance_article (
+        article_act_code,
+        section,
+        sub_section,
+        paragraph,
+        sub_paragraph,
+        description,
+        effective_date,
+        expiry_date,
+        create_user,
+        create_timestamp,
+        update_user,
+        update_timestamp
+    )
+VALUES
+    (
+        'HSRCM',
+        '10',
+        '4',
+        '2',
+        '3',
+        'ITRB Terms of Reference',
+        '2024-02-15',
+        '9999-12-31',
+        'system-mds',
+        current_timestamp,
+        'system-mds',
+        current_timestamp
+    );
+
+INSERT INTO
+    compliance_article (
+        article_act_code,
+        section,
+        sub_section,
+        paragraph,
+        sub_paragraph,
+        description,
+        effective_date,
+        expiry_date,
+        create_user,
+        create_timestamp,
+        update_user,
+        update_timestamp
+    )
+VALUES
+    (
+        'HSRCM',
+        '10',
+        '4',
+        '2',
+        '(1)a',
+        'Tailings Management System',
+        '2024-02-15',
+        '9999-12-31',
+        'system-mds',
+        current_timestamp,
+        'system-mds',
+        current_timestamp
+    );
+
+INSERT INTO
+    compliance_article (
+        article_act_code,
+        section,
+        sub_section,
+        paragraph,
+        sub_paragraph,
+        description,
+        effective_date,
+        expiry_date,
+        create_user,
+        create_timestamp,
+        update_user,
+        update_timestamp
+    )
+VALUES
+    (
+        'HSRCM',
+        '10',
+        '4',
+        '2',
+        '(1)d',
+        'TSF Risk Assessment',
+        '2024-02-15',
+        '9999-12-31',
+        'system-mds',
+        current_timestamp,
+        'system-mds',
+        current_timestamp
+    );
+
+INSERT INTO
+    compliance_article (
+        article_act_code,
+        section,
+        sub_section,
+        paragraph,
+        sub_paragraph,
+        description,
+        effective_date,
+        expiry_date,
+        create_user,
+        create_timestamp,
+        update_user,
+        update_timestamp
+    )
+VALUES
+    (
+        'HSRCM',
+        '10',
+        '4',
+        '2',
+        '(1)e',
+        'TSF Emergency Preparedness and Response Plan',
+        '2024-02-15',
+        '9999-12-31',
+        'system-mds',
+        current_timestamp,
+        'system-mds',
+        current_timestamp
+    );
+
+UPDATE compliance_article
+SET
+    help_reference_text = 'Annual Reporting Forms',
+    help_reference_link = 'https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/reclamation-closure/annual-reporting-forms',
+    long_decription = 'As a condition of a permit, the permittee is responsible for submitting an annual report of the placer and reclamation activities completed on site. The form specified by the chief inspector can be found online and is called "ASPA." These reports must be submitted by March 31 of the following year as long as the permit is open.'
+WHERE
+    section = '10'
+    and description = 'Annual Reporting'
+    AND sub_section = '4'
+    and paragraph = '4';
+
+INSERT INTO
+    compliance_article (
+        article_act_code,
+        section,
+        sub_section,
+        paragraph,
+        sub_paragraph,
+        description,
+        effective_date,
+        expiry_date,
+        create_user,
+        create_timestamp,
+        update_user,
+        update_timestamp,
+        long_description,
+        cim_or_cpo,
+        help_reference_text,
+        help_reference_link
+    )
+VALUES
+    (
+        'HSRCM',
+        '10',
+        '4',
+        '4',
+        '(a)',
+        'Annual Reclamation and Environmental Monitoring Work Report',
+        '2024-02-15',
+        '9999-12-31',
+        'system-mds',
+        current_timestamp,
+        'system-mds',
+        current_timestamp,
+        'Permittees must submit Annual Reclamation Reports in compliance with the conditions of Mines Act permits and the Health, Safety, and Reclamation Code for Mines in British Columbia. These reports provide a summary of activities conducted on the mine property, including mine development, environmental protection programs, and reclamation programs. Geospatial files and specific tables must also be included, along with a detailed estimate of reclamation costs. Hardcover copies are no longer required for submission.',
+        'Both',
+        'Annual Reclamation Reports',
+        'https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/reclamation-closure/annual-reclamation-reports'
+    );
+
+INSERT INTO
+    compliance_article (
+        article_act_code,
+        section,
+        sub_section,
+        paragraph,
+        sub_paragraph,
+        description,
+        effective_date,
+        expiry_date,
+        create_user,
+        create_timestamp,
+        update_user,
+        update_timestamp,
+        long_description,
+        cim_or_cpo,
+        help_reference_text,
+        help_reference_link
+    )
+VALUES
+    (
+        'HSRCM',
+        '10',
+        '4',
+        '4',
+        '(b)',
+        'Annual Dam Safety Inspection',
+        '2024-02-15',
+        '9999-12-31',
+        'system-mds',
+        current_timestamp,
+        'system-mds',
+        current_timestamp,
+        'According to Part 10.5.3 of the Health, Safety and Reclamation Code for Mines in British Columbia, permitted mines must submit annual Dam Safety Inspections (DSIs). These inspections involve visits to the mines, interviews with inspectors and operators, visual inspections of facilities, and reviews of monitoring data.',
+        'CIM',
+        'Dam Safety Inspections',
+        'https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/geotechnical-information/dam-safety-inspections'
+    );
+
+INSERT INTO
+    compliance_article (
+        article_act_code,
+        section,
+        sub_section,
+        paragraph,
+        sub_paragraph,
+        description,
+        effective_date,
+        expiry_date,
+        create_user,
+        create_timestamp,
+        update_user,
+        update_timestamp,
+        long_description,
+        cim_or_cpo,
+        help_reference_text,
+        help_reference_link
+    )
+VALUES
+    (
+        'HSRCM',
+        '10',
+        '4',
+        '4',
+        '(c)',
+        'Independent Tailings Review Board Activities Report',
+        '2024-02-15',
+        '9999-12-31',
+        'system-mds',
+        current_timestamp,
+        'system-mds',
+        current_timestamp,
+        'The owner, agent, or manager is required to submit an annual report in a specified summary form by March 31 of the following year. This report should provide details on the activities of the Independent Tailings Review Board, including a summary of the reviews conducted, an assessment of whether the work reviewed meets the Board''s expectations, any conditions that compromise the integrity of the tailings storage facility or non-compliance with recommendations from the engineer of record, and a signed acknowledgement by the Board members confirming the accuracy of the report.',
+        'CIM',
+        'Part 10 - HSRC Guidance Document (2016)',
+        'https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/mineral-exploration-mining/documents/health-and-safety/part_10_guidance_doc_10_20july_2016.pdf'
+    );
+
+INSERT INTO
+    compliance_article (
+        article_act_code,
+        section,
+        sub_section,
+        paragraph,
+        sub_paragraph,
+        description,
+        effective_date,
+        expiry_date,
+        create_user,
+        create_timestamp,
+        update_user,
+        update_timestamp,
+        long_description,
+        cim_or_cpo,
+        help_reference_text,
+        help_reference_link
+    )
+VALUES
+    (
+        'HSRCM',
+        '10',
+        '4',
+        '4',
+        '(d)',
+        'Summary of Tailings Storage Facility or Dam Safety Recommendations',
+        '2024-02-15',
+        '9999-12-31',
+        'system-mds',
+        current_timestamp,
+        'system-mds',
+        current_timestamp,
+        'As part of the annual reporting requirements, the owner, agent, or manager of a mine is required to submit annual reports summarizing the tailings storage facility and dam safety recommendations, including a scheduled completion date. These reports must be submitted in a summary form specified by the chief inspector or the permit conditions by March 31 of the following year.',
+        'CIM',
+        'Dam Safety Inspections',
+        'https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/geotechnical-information/dam-safety-inspections'
+    );
+
+INSERT INTO
+    compliance_article (
+        article_act_code,
+        section,
+        sub_section,
+        paragraph,
+        sub_paragraph,
+        description,
+        effective_date,
+        expiry_date,
+        create_user,
+        create_timestamp,
+        update_user,
+        update_timestamp,
+        long_description,
+        cim_or_cpo,
+        help_reference_text,
+        help_reference_link
+    )
+VALUES
+    (
+        'HSRCM',
+        '10',
+        '4',
+        '4',
+        '(e)',
+        'Performance of High Risk Dumps',
+        '2024-02-15',
+        '9999-12-31',
+        'system-mds',
+        current_timestamp,
+        'system-mds',
+        current_timestamp,
+        'As part of the annual reporting requirements, the owner, agent, or manager of a mine must submit one or more annual reports summarizing the performance of high-risk dumps under section 10.5.5 of the code. These reports need to be submitted in a summary form determined by the chief inspector or the permit conditions by March 31 of the following year.',
+        'CIM',
+        'Geotechnical Information - Mined Rock and Overburden Piles',
+        'https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/geotechnical-information'
+    );
+
+INSERT INTO
+    compliance_article (
+        article_act_code,
+        section,
+        sub_section,
+        paragraph,
+        sub_paragraph,
+        description,
+        effective_date,
+        expiry_date,
+        create_user,
+        create_timestamp,
+        update_user,
+        update_timestamp,
+        long_description,
+        cim_or_cpo,
+        help_reference_text,
+        help_reference_link
+    )
+VALUES
+    (
+        'HSRCM',
+        '10',
+        '4',
+        '4',
+        '(f)',
+        'Tailings Storage Facility and Dam Registry',
+        '2024-02-15',
+        '9999-12-31',
+        'system-mds',
+        current_timestamp,
+        'system-mds',
+        current_timestamp,
+        'As part of the annual reporting requirements, the owner, agent, or manager of a mine is required to submit one or more annual reports summarizing updates to the tailings storage facilities register. These reports must be submitted in a specified summary form determined by the chief inspector or the permit conditions by March 31 of the following year.',
+        'CIM',
+        'Register of Tailings Storage Facilities and Dams Excel File User Guide',
+        'https://minespace.gov.bc.ca/src/assets/downloads/User%20Guide%20-%20Register%20of%20Tailings%20Storage%20Facilities%20and%20Dams.pdf'
+    );
+
+INSERT INTO
+    compliance_article (
+        article_act_code,
+        section,
+        sub_section,
+        paragraph,
+        sub_paragraph,
+        description,
+        effective_date,
+        expiry_date,
+        create_user,
+        create_timestamp,
+        update_user,
+        update_timestamp,
+        long_description,
+        cim_or_cpo,
+        help_reference_text,
+        help_reference_link
+    )
+VALUES
+    (
+        'HSRCM',
+        '10',
+        '4',
+        '4',
+        'g',
+        'Annual Summary of Work and Reclamation Report',
+        '2024-02-15',
+        '9999-12-31',
+        'system-mds',
+        current_timestamp,
+        'system-mds',
+        current_timestamp,
+        'An annually completed PDF fillable form called "Annual Summary of Work and Reclamation" and required maps for Sand and Gravel/Quarry Operations where required by permit condition.',
+        'CPO',
+        'Annual Reporting Forms',
+        'https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/reclamation-closure/annual-reporting-forms'
+    );
+
+INSERT INTO
+    compliance_article (
+        article_act_code,
+        section,
+        sub_section,
+        paragraph,
+        sub_paragraph,
+        description,
+        effective_date,
+        expiry_date,
+        create_user,
+        create_timestamp,
+        update_user,
+        update_timestamp,
+        long_description,
+        cim_or_cpo,
+        help_reference_text,
+        help_reference_link
+    )
+VALUES
+    (
+        'HSRCM',
+        '10',
+        '4',
+        '5',
+        'a(major mine)',
+        'Mine Plan, Reclamation and Closure Plan Updates',
+        '2024-02-15',
+        '9999-12-31',
+        'system-mds',
+        current_timestamp,
+        'system-mds',
+        current_timestamp,
+        'The owner, agent, or manager of a mine is required to submit periodic reports as part of the annual reporting process. These reports, which must be submitted by March 31 of the following year, include updates on mine plans, reclamation plans, and closure plans as outlined in section 10.4.1 of the code. According to this section, mine plans need to be updated every 5 years, while reclamation plans should outline progressive reclamation activities for the subsequent 5 years.',
+        'Both',
+        'Reclamation and Closure',
+        'https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/reclamation-closure'
+    );
+
+INSERT INTO
+    compliance_article (
+        article_act_code,
+        section,
+        sub_section,
+        paragraph,
+        sub_paragraph,
+        description,
+        effective_date,
+        expiry_date,
+        create_user,
+        create_timestamp,
+        update_user,
+        update_timestamp,
+        long_description,
+        cim_or_cpo,
+        help_reference_text,
+        help_reference_link
+    )
+VALUES
+    (
+        'HSRCM',
+        '10',
+        '4',
+        '5',
+        'a(regional mine)',
+        'Mine Plan, Reclamation and Closure Plan Updates',
+        '2024-02-15',
+        '9999-12-31',
+        'system-mds',
+        current_timestamp,
+        'system-mds',
+        current_timestamp,
+        'The owner, agent, or manager of a mine is required to submit periodic reports as part of the annual reporting process. These reports, which must be submitted by March 31 of the following year, include updates on mine plans, reclamation plans, and closure plans as outlined in section 10.4.1 of the code. According to this section, mine plans need to be updated every 5 years, while reclamation plans should outline progressive reclamation activities for the subsequent 5 years.',
+        'Both',
+        'Mines Act Permit: Mine Plan Update Policy',
+        'https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/mineral-exploration-mining/documents/permitting/mine_plan_update_policy_-_july_2022.pdf'
+    );
+
+INSERT INTO
+    compliance_article (
+        article_act_code,
+        section,
+        sub_section,
+        paragraph,
+        sub_paragraph,
+        description,
+        effective_date,
+        expiry_date,
+        create_user,
+        create_timestamp,
+        update_user,
+        update_timestamp,
+        long_description,
+        cim_or_cpo,
+        help_reference_text,
+        help_reference_link
+    )
+VALUES
+    (
+        'HSRCM',
+        '10',
+        '4',
+        '5',
+        'b',
+        'Dam Safety Review',
+        '2024-02-15',
+        '9999-12-31',
+        'system-mds',
+        current_timestamp,
+        'system-mds',
+        current_timestamp,
+        'As part of the annual reporting requirements, the owner, agent, or manager of a mine must submit dam safety review reports performed under section 10.5.4 of the Health, Safety, and Reclamation Code for Mines in British Columbia. These reports need to be submitted by March 31 of the year following their completion and in a form specified by the chief inspector or the permit conditions.',
+        'Both',
+        'Geotechnical Information - Dam and Water Management Infrastructure',
+        'https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/geotechnical-information'
+    );
+
+INSERT INTO
+    compliance_article (
+        article_act_code,
+        section,
+        sub_section,
+        paragraph,
+        sub_paragraph,
+        description,
+        effective_date,
+        expiry_date,
+        create_user,
+        create_timestamp,
+        update_user,
+        update_timestamp,
+        long_description,
+        cim_or_cpo
+    )
+VALUES
+    (
+        'HSRCM',
+        '10',
+        '5',
+        '1',
+        '1',
+        'Construction of Tailings and Water Management Facilities - IFC drawing package',
+        '2024-02-15',
+        '9999-12-31',
+        'system-mds',
+        current_timestamp,
+        'system-mds',
+        current_timestamp,
+        'Also known as Issued for Constructon (IFC) drawing package. The manager shall submit issued for construction drawings, specifications and quality assurance/quality control plans as well as a summary construction schedule to the chief inspector prior to commencing construction of a tailings storage or water management facility.',
+        'Both'
+    );
+
+UPDATE compliance_article
+SET
+    description = 'OMS Manual'
+WHERE
+    section = '10'
+    and description = 'Operations, Maintenance and Surveillance (OMS) Manual'
+    AND sub_section = '5'
+    and paragraph = '2';
+
+UPDATE compliance_article
+SET
+    description = 'Annual Dam Safety Inspection'
+WHERE
+    section = '10'
+    and description = 'Annual Tailings Facility and Dam Safety Inspection'
+    AND sub_section = '5'
+    and paragraph = '3';
+
+INSERT INTO
+    compliance_article (
+        article_act_code,
+        section,
+        sub_section,
+        paragraph,
+        sub_paragraph,
+        description,
+        effective_date,
+        expiry_date,
+        create_user,
+        create_timestamp,
+        update_user,
+        update_timestamp,
+        long_description,
+        cim_or_cpo
+    )
+VALUES
+    (
+        'HSRCM',
+        '10',
+        '5',
+        '7',
+        '2',
+        'Materials Inventory Report',
+        '2024-02-15',
+        '9999-12-31',
+        'system-mds',
+        current_timestamp,
+        'system-mds',
+        current_timestamp,
+        'Materials Inventory',
+        'CIM'
+    );
+
+INSERT INTO
+    compliance_article (
+        article_act_code,
+        section,
+        sub_section,
+        paragraph,
+        sub_paragraph,
+        description,
+        effective_date,
+        expiry_date,
+        create_user,
+        create_timestamp,
+        update_user,
+        update_timestamp,
+        long_description,
+        cim_or_cpo
+    )
+VALUES
+    (
+        'HSRCM',
+        '10',
+        '6',
+        '2',
+        '(2)(a)',
+        'Site Monitoring and Maintenance Program',
+        '2024-02-15',
+        '9999-12-31',
+        'system-mds',
+        current_timestamp,
+        'system-mds',
+        current_timestamp,
+        'If a mine ceases operation for a period longer than one year, the owner, agent, or manager shall shall apply for an amendment to the permit. For regional mines, a Notice of Work application must be submitted through vFCBC. For major mines, please submit an application for an amendment through the Applications feature on MineSpace.',
+        'CPO'
+    );
+
+UPDATE compliance_article
+SET
+    description = 'TSF Closure OMS'
+WHERE
+    section = '10'
+    and description = 'Tailings Storage Facility Closure OMS Manual'
+    AND sub_section = '6'
+    and paragraph = '8';
+
+UPDATE compliance_article
+SET
+    cim_or_cpo = 'CIM',
+    long_decription = 'On-going Management Requirements: Where a mine requires on-going mitigation, monitoring or maintenance, the owner, agent, or manager shall submit a closure management manual that:
+(a) describes and documents key aspects of the ongoing mitigation, monitoring and maintenance requirements, and
+(b) tracks important changes to components of the system that effect long-term mitigation, monitoring and maintenance requirements.'
+WHERE
+    section = '10'
+    and description = 'On-going Management Requirements'
+    AND sub_section = '6'
+    and paragraph = '9';
+
+INSERT INTO
+    compliance_article (
+        article_act_code,
+        section,
+        sub_section,
+        paragraph,
+        description,
+        effective_date,
+        expiry_date,
+        create_user,
+        create_timestamp,
+        update_user,
+        update_timestamp,
+        long_description,
+        cim_or_cpo
+    )
+VALUES
+    (
+        'HSRCM',
+        '10',
+        '7',
+        '17',
+        'Metal Uptake',
+        '2024-02-15',
+        '9999-12-31',
+        'system-mds',
+        current_timestamp,
+        'system-mds',
+        current_timestamp,
+        'When required by the chief inspector, vegetation shall be monitored for metal uptake.',
+        'CIM'
+    );
+
+INSERT INTO
+    compliance_article (
+        article_act_code,
+        section,
+        sub_section,
+        paragraph,
+        description,
+        effective_date,
+        expiry_date,
+        create_user,
+        create_timestamp,
+        update_user,
+        update_timestamp,
+        long_description,
+        cim_or_cpo
+    )
+VALUES
+    (
+        'HSRCM',
+        '10',
+        '7',
+        '18',
+        'Ecological Risk Assessment',
+        '2024-02-15',
+        '9999-12-31',
+        'system-mds',
+        current_timestamp,
+        'system-mds',
+        current_timestamp,
+        'Ecological Risk Assessment',
+        'CIM'
+    );
+
+UPDATE compliance_article
+SET
+    cim_or_cpo = 'CIM',
+    long_decription = 'Any reports submitted under this Section should be identified as a permit required report.'
+WHERE
+    section = '10'
+    and description = 'Monitoring'
+    AND sub_section = '7'
+    and paragraph = '21';
+
+UPDATE compliance_article
+SET
+    long_decription = 'An inspector may order the owner, agent, or manager of a mine to provide an independent study prepared by an engineer or licensed professional acceptable to the inspector. This study can address health and safety concerns, the safety of equipment, buildings, workings, or structures at the mine, or actual or potential environmental damage resulting from mining activity. It can also be requested in connection with an incident that the inspector is investigating. The cost of the study is to be borne by the owner.'
+WHERE
+    and description = 'Engineering report'
+    AND section = '18';
+
+UPDATE compliance_article
+SET
+    cim_or_cpo = 'CIM',
+    long_decription = 'A person who is adversely affected by a decision or order of an inspector or an order of the chief auditor may, within 30 days of its issue, appeal the decision or order to the chief inspector.'
+WHERE
+    section = '33'
+    and description = 'Appeal to the Chief Inspector'
+    AND sub_section = '1';
+
+INSERT INTO
+    compliance_article (
+        article_act_code,
+        section,
+        description,
+        effective_date,
+        expiry_date,
+        create_user,
+        create_timestamp,
+        update_user,
+        update_timestamp,
+        long_description,
+        cim_or_cpo
+    )
+VALUES
+    (
+        'MA',
+        '17',
+        'Chief Inspector''s authority to cause work to be done',
+        '2024-02-15',
+        '9999-12-31',
+        'system-mds',
+        current_timestamp,
+        'system-mds',
+        current_timestamp,
+        'Chief Inspector''s authority to cause work to be done',
+        'CIM'
     );
