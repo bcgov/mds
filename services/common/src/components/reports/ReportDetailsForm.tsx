@@ -1,4 +1,4 @@
-import { Alert, Button, Col, Row, Typography } from "antd";
+import { Alert, Button, Col, Row, Typography, Radio } from "antd";
 import React, { FC, ReactNode, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { arrayPush, change, Field, FieldArray, getFormValues } from "redux-form";
@@ -118,6 +118,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   const mineReportDefinitionOptions = useSelector(getMineReportDefinitionOptions);
 
   const system = useSelector(getSystemFlag);
+  const isPermitRequiredReport = formValues?.permit_condition_category_code ? 2 : 1;
 
   // minespace users are only allowed to add documents
   const mineSpaceEdit =
@@ -228,6 +229,19 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
         initialValues={initialValues}
       >
         <Row gutter={[16, 8]}>
+          {system === SystemFlagEnum.core && (
+            <Col span={24}>
+              <Typography.Paragraph>What is the type of the report?</Typography.Paragraph>
+              <Radio.Group
+                disabled={true}
+                className="vertical-radio-group"
+                value={isPermitRequiredReport}
+              >
+                <Radio value={1}>Code Required Report</Radio>
+                <Radio value={2}>Permit Required Report</Radio>
+              </Radio.Group>
+            </Col>
+          )}
           <Col span={12}>
             <Field
               component={RenderSelect}

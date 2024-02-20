@@ -298,6 +298,61 @@ exports[`ReportPage renders view mode properly 1`] = `
           style="margin: -4px -8px -4px -8px;"
         >
           <div
+            class="ant-col ant-col-24"
+            style="padding: 4px 8px 4px 8px;"
+          >
+            <div
+              class="ant-typography"
+            >
+              What is the type of the report?
+            </div>
+            <div
+              class="ant-radio-group ant-radio-group-outline vertical-radio-group"
+            >
+              <label
+                class="ant-radio-wrapper ant-radio-wrapper-checked ant-radio-wrapper-disabled"
+              >
+                <span
+                  class="ant-radio ant-radio-checked ant-radio-disabled"
+                >
+                  <input
+                    checked=""
+                    class="ant-radio-input"
+                    disabled=""
+                    type="radio"
+                    value="1"
+                  />
+                  <span
+                    class="ant-radio-inner"
+                  />
+                </span>
+                <span>
+                  Code Required Report
+                </span>
+              </label>
+              <label
+                class="ant-radio-wrapper ant-radio-wrapper-disabled"
+              >
+                <span
+                  class="ant-radio ant-radio-disabled"
+                >
+                  <input
+                    class="ant-radio-input"
+                    disabled=""
+                    type="radio"
+                    value="2"
+                  />
+                  <span
+                    class="ant-radio-inner"
+                  />
+                </span>
+                <span>
+                  Permit Required Report
+                </span>
+              </label>
+            </div>
+          </div>
+          <div
             class="ant-col ant-col-12"
             style="padding: 4px 8px 4px 8px;"
           >
