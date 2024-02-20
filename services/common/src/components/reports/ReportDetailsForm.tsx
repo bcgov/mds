@@ -97,7 +97,7 @@ interface ReportDetailsFormProps {
   formButtons: ReactNode;
   handleSubmit: (values) => void;
   currentReportDefinition?: IMineReportDefinition;
-  createPermission?: string;
+  createPermission: string;
 }
 
 const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
@@ -107,7 +107,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   formButtons,
   handleSubmit,
   currentReportDefinition,
-  createPermission = Permission.CORE_EDIT_INCIDENTS,
+  createPermission = Permission.EDIT_INCIDENTS,
 }) => {
   const dispatch = useDispatch();
   const formValues: IMineReportSubmission =

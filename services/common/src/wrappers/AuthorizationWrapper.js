@@ -61,6 +61,7 @@ const defaultProps = {
   inTesting: undefined,
   permission: undefined,
   showToolTip: true,
+  userRoles: [],
 };
 
 export const AuthorizationWrapper = (props) => {
@@ -71,7 +72,7 @@ export const AuthorizationWrapper = (props) => {
   const permissionCheck =
     props.permission === undefined || props.userRoles.includes(USER_ROLES[props.permission]);
   const isMajorMine = props.isMajorMine === undefined || props.isMajorMine;
-  const isAdmin = props.userRoles.includes(USER_ROLES[Permission.CORE_ADMIN]);
+  const isAdmin = props.userRoles.includes(USER_ROLES[Permission.ADMIN]);
 
   const title = () => {
     const permission = props.permission ? `${USER_ROLES[props.permission]}` : "";

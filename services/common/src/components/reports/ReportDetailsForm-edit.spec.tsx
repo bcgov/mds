@@ -32,6 +32,7 @@ describe("ReportDetailsForm", () => {
             </div>
           }
           handleSubmit={() => {}}
+          createPermission={"role_edit_incidents"}
         />
       </ReduxWrapper>
     );
