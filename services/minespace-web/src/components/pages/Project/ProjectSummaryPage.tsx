@@ -42,7 +42,7 @@ import {
 import ProjectSummaryForm, {
   getProjectFormTabs,
 } from "@/components/Forms/projects/projectSummary/ProjectSummaryForm";
-import { IMine, IProjectSummary, IProject, Feature } from "@mds/common";
+import { IMine, IProjectSummary, IProject, Feature, removeNullValuesRecursive } from "@mds/common";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 
@@ -126,9 +126,10 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
     };
   }, []);
 
-  const handleTransformPayload = (values) => {
+  const handleTransformPayload = (valuesFromForm: any) => {
     let payloadValues: any = {};
     const updatedAuthorizations = [];
+    const values = removeNullValuesRecursive(valuesFromForm);
     Object.keys(values).forEach((key) => {
       // Pull out form properties from request object that match known authorization types
       if (values[key] && projectSummaryAuthorizationTypesArray.includes(key)) {

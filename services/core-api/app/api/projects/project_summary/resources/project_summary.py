@@ -145,7 +145,7 @@ class ProjectSummaryResource(Resource, UserMixin):
     parser.add_argument('facility_pid_pin_crown_file_no', type=str, store_missing=False, required=False)
     parser.add_argument('legal_land_desc', type=str, store_missing=False, required=False)
     parser.add_argument('facility_lease_no', type=str, store_missing=False, required=False)
-    parser.add_argument('zoning', type=str, store_missing=False, required=False)
+    parser.add_argument('zoning', type=bool, store_missing=False, required=False)
     parser.add_argument('zoning_reason', type=str, store_missing=False, required=False)
 
     @api.doc(
