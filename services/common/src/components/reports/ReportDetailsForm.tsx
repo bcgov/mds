@@ -122,7 +122,6 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   } = formValues;
   const [selectedReportCode, setSelectedReportCode] = useState("");
   const [formattedMineReportDefinitionOptions, setFormatMineReportDefinitionOptions] = useState([]);
-  const [mineReportSubmissions, setMineReportSubmissions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const partyRelationships: IPartyAppt[] = useSelector((state) => getPartyRelationships(state));

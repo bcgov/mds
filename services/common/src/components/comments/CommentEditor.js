@@ -45,8 +45,6 @@ export class CommentEditor extends Component {
     this.setState({ [e.target.name]: e.target.checked });
   };
 
-  validate = () => !(this.props.submitting || this.state.comment === "");
-
   render() {
     const canAddComment = this.props.addCommentPermission
       ? this.props.userRoles.includes(USER_ROLES[this.props.addCommentPermission])
