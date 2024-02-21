@@ -24,7 +24,7 @@ export const ENVIRONMENT = {
   environment: "<ENV>",
   flagsmithKey: "<FLAGSMITH_KEY>",
   flagsmithUrl: "<FLAGSMITH_URL>",
-  syncfusionLicense: "<SYNCFUSION_LICENSE>",
+  syncfusionLicense: "<SYNCFUSION_LICENSE_KEY>",
   _loaded: false,
 };
 
