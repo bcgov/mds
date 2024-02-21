@@ -14,8 +14,6 @@ import fetchEnv from "./fetchEnv";
 import keycloak, { keycloakInitConfig } from "@mds/common/keycloak";
 import { unAuthenticateUser } from "./actionCreators/authenticationActionCreator";
 import FeatureFlagProvider from "@mds/common/providers/featureFlags/featureFlag.provider";
-import { registerLicense } from "@syncfusion/ej2-base";
-import { ENVIRONMENT } from "@mds/common";
 
 // 5 minutes before user is inactive- across tabs
 const idleTimeout = 5 * 60_000;
@@ -27,7 +25,6 @@ const Index = () => {
 
   fetchEnv().then(() => {
     setEnvironment(true);
-    registerLicense(ENVIRONMENT.syncfusionLicense);
   });
 
   const { isIdle } = useIdleTimer({

@@ -5,7 +5,7 @@ exports[`AmazonS3Provider renders properly 1`] = `
   <div
     className="control-section"
   >
-    <t
+    <n
       ajaxSettings={
         Object {
           "downloadUrl": "<FILESYSTEM_PROVIDER_URL>AmazonS3Download",
@@ -73,7 +73,7 @@ exports[`AmazonS3Provider renders properly 1`] = `
       }
       view="Details"
     >
-      <e
+      <t
         services={
           Array [
             [Function],
@@ -83,7 +83,7 @@ exports[`AmazonS3Provider renders properly 1`] = `
           ]
         }
       />
-    </t>
+    </n>
   </div>
 </div>
 `;
