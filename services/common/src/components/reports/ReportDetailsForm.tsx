@@ -275,7 +275,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               >
                 <Row>
                   <Col xs={24} md={18}>
-                    <Typography.Title level={4}>You are submitting</Typography.Title>
+                    <b>You are submitting:</b>
                     <br />
                     <b>{selectedReportName}</b>
                     <br />
