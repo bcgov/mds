@@ -298,6 +298,103 @@ exports[`ReportPage renders view mode properly 1`] = `
           style="margin: -4px -8px -4px -8px;"
         >
           <div
+            class="ant-col ant-col-24"
+            style="padding: 4px 8px 4px 8px;"
+          >
+            <div
+              class="ant-form-item ant-form-item-with-help"
+            >
+              <div
+                class="ant-row ant-form-item-row"
+              >
+                <div
+                  class="ant-col ant-form-item-label"
+                >
+                  <label
+                    class="ant-form-item-required"
+                    for="VIEW_EDIT_REPORT_report_type"
+                    title="What is the type of the report?"
+                  >
+                    What is the type of the report?
+                  </label>
+                </div>
+                <div
+                  class="ant-col ant-form-item-control"
+                >
+                  <div
+                    class="ant-form-item-control-input"
+                  >
+                    <div
+                      class="ant-form-item-control-input-content"
+                    >
+                      <div
+                        aria-required="true"
+                        class="ant-radio-group ant-radio-group-solid vertical-radio-group"
+                        id="VIEW_EDIT_REPORT_report_type"
+                      >
+                        <label
+                          class="ant-radio-wrapper ant-radio-wrapper-checked ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                        >
+                          <span
+                            class="ant-radio ant-radio-checked ant-radio-disabled"
+                          >
+                            <input
+                              class="ant-radio-input"
+                              disabled=""
+                              name="report_type"
+                              type="radio"
+                              value="CRR"
+                            />
+                            <span
+                              class="ant-radio-inner"
+                            />
+                          </span>
+                          <span>
+                            Code Required Report
+                          </span>
+                        </label>
+                        <label
+                          class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                        >
+                          <span
+                            class="ant-radio ant-radio-disabled"
+                          >
+                            <input
+                              class="ant-radio-input"
+                              disabled=""
+                              name="report_type"
+                              type="radio"
+                              value="PRR"
+                            />
+                            <span
+                              class="ant-radio-inner"
+                            />
+                          </span>
+                          <span>
+                            Permit Required Report
+                          </span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    style="display: flex; flex-wrap: nowrap;"
+                  >
+                    <div
+                      class="ant-form-item-explain ant-form-item-explain-connected"
+                      id="VIEW_EDIT_REPORT_report_type_help"
+                      role="alert"
+                    >
+                      <div
+                        class=""
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
             class="ant-col ant-col-12"
             style="padding: 4px 8px 4px 8px;"
           >
