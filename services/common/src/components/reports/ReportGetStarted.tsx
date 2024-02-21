@@ -21,7 +21,6 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
   const [formattedMineReportDefinitionOptions, setFormattedMineReportDefinitionOptions] = useState(
     []
   );
-  const [helpReferenceLink, setHelpReferenceLink] = useState("");
 
   const mineReportDefinitionOptions = useSelector(getMineReportDefinitionOptions);
 
@@ -52,13 +51,13 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
       (report) => report.mine_report_definition_guid === newValue
     );
     setSelectedReportDefinition(newReport);
-    if (newReport.compliance_articles[0].help_reference_link) {
-      setHelpReferenceLink(newReport.compliance_articles[0].help_reference_link);
-    }
   };
 
   const handleOpenMoreInformation = () => {
-    const newWindow = window.open(helpReferenceLink, "_blank");
+    const newWindow = window.open(
+      selectedReportDefinition.compliance_articles[0].help_reference_link,
+      "_blank"
+    );
     newWindow.opener = null;
   };
 
@@ -138,10 +137,12 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
                 </Typography.Title>
                 <Typography.Paragraph>{selectedReportDefinition.description}</Typography.Paragraph>
                 <Typography.Title level={5}>About this submission type:</Typography.Title>
-                <Typography.Paragraph>
-                  {selectedReportDefinition.compliance_articles[0].long_description}
-                </Typography.Paragraph>
-                {helpReferenceLink && (
+                {selectedReportDefinition.compliance_articles[0].long_description && (
+                  <Typography.Paragraph>
+                    {selectedReportDefinition.compliance_articles[0].long_description}
+                  </Typography.Paragraph>
+                )}
+                {selectedReportDefinition.compliance_articles[0].help_reference_link && (
                   <Button onClick={handleOpenMoreInformation} type="default">
                     More information <ExportOutlined />
                   </Button>

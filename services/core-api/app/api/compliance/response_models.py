@@ -14,6 +14,5 @@ COMPLIANCE_ARTICLE_MODEL = api.model(
         'effective_date': fields.Date,
         'expiry_date': fields.Date,
         'help_reference_link': fields.String,
-        'help_reference_text': fields.String,
         'cim_or_cpo': fields.String
     })

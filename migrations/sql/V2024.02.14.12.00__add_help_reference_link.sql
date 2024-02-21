@@ -1,10 +1,12 @@
 ALTER TABLE compliance_article
+ALTER COLUMN long_description TYPE VARCHAR(3000),
+ALTER COLUMN sub_paragraph TYPE VARCHAR(20),
 ADD COLUMN IF NOT EXISTS help_reference_link TEXT,
 ADD COLUMN IF NOT EXISTS cim_or_cpo varchar(50);
 
 UPDATE compliance_article
 SET
-    long_decription = 'Authority to Enter a Mine'
+    long_description = 'Authority to Enter a Mine'
 WHERE
     section = '1'
     AND sub_section = '3'
@@ -12,7 +14,7 @@ WHERE
 
 UPDATE compliance_article
 SET
-    long_decription = 'Committee Members - Occupational Health and Safety Committee'
+    long_description = 'Committee Members - Occupational Health and Safety Committee'
 WHERE
     section = '1'
     AND sub_section = '6'
@@ -20,7 +22,7 @@ WHERE
 
 UPDATE compliance_article
 SET
-    long_decription = 'Committee Members - Occupational Health and Safety Committee'
+    long_description = 'Committee Members - Occupational Health and Safety Committee'
 WHERE
     section = '1'
     AND sub_section = '6'
@@ -28,7 +30,7 @@ WHERE
 
 UPDATE compliance_article
 SET
-    long_decription = 'Inspection - Occupational Health and Safety Committee'
+    long_description = 'Inspection - Occupational Health and Safety Committee'
 WHERE
     section = '1'
     AND sub_section = '6'
@@ -37,7 +39,7 @@ WHERE
 UPDATE compliance_article
 SET
     description = 'OHSC Meeting Minutes',
-    long_decription = 'Must be filed with the manager and forwarded to local union, posted at the mine and made available to an inspector upon request.
+    long_description = 'Must be filed with the manager and forwarded to local union, posted at the mine and made available to an inspector upon request.
 '
 WHERE
     section = '1'
@@ -148,7 +150,7 @@ VALUES
 
 UPDATE compliance_article
 SET
-    long_decription = 'Notification of serious injury or loss of life must be reported to the Mine Incident Reporting Line: 1-888-348-0299.  Once reported verbally, documents can be submitted through the incident reporting feature in MineSpace.',
+    long_description = 'Notification of serious injury or loss of life must be reported to the Mine Incident Reporting Line: 1-888-348-0299.  Once reported verbally, documents can be submitted through the incident reporting feature in MineSpace.',
     cim_or_cpo = 'CIM'
 WHERE
     section = '1'
@@ -169,7 +171,7 @@ WHERE
 
 UPDATE compliance_article
 SET
-    long_decription = 'Reportable Incidents should be reported through the Incident reporting feature in MineSpace.'
+    long_description = 'Reportable Incidents should be reported through the Incident reporting feature in MineSpace.'
 WHERE
     description = 'Reportable Incidents'
     AND section = '1'
@@ -281,7 +283,7 @@ VALUES
 
 UPDATE compliance_article
 SET
-    long_decription = 'Submit incident investigation reports through the incident reporting feature in MineSpace.  Select the relevant open incident file to add attachments.',
+    long_description = 'Submit incident investigation reports through the incident reporting feature in MineSpace.  Select the relevant open incident file to add attachments.',
     cim_or_cpo = 'CIM'
 WHERE
     description = 'Investigation of a Reportable Incident'
@@ -359,7 +361,7 @@ VALUES
 
 UPDATE compliance_article
 SET
-    long_decription = 'Monthly Reporting',
+    long_description = 'Monthly Reporting',
     cim_or_cpo = 'CIM'
 WHERE
     description = 'Monthly Reporting'
@@ -472,7 +474,7 @@ VALUES
 
 UPDATE compliance_article
 SET
-    long_decription = 'Training - Employee training and education, general and adequate training to do their job',
+    long_description = 'Training - Employee training and education, general and adequate training to do their job',
     cim_or_cpo = 'CIM'
 WHERE
     section = '1'
@@ -481,7 +483,7 @@ WHERE
 
 UPDATE compliance_article
 SET
-    long_decription = 'Manager shall maintain a record and make it available to an inspector upon request.',
+    long_description = 'Manager shall maintain a record and make it available to an inspector upon request.',
     cim_or_cpo = 'CIM'
 WHERE
     section = '1'
@@ -822,7 +824,7 @@ VALUES
 
 UPDATE compliance_article
 SET
-    long_decription = 'Audiometric testing shall be carried out by a certified audiometric technician.'
+    long_description = 'Audiometric testing shall be carried out by a certified audiometric technician.'
 WHERE
     section = '2'
     AND sub_section = '12'
@@ -866,7 +868,7 @@ VALUES
 UPDATE compliance_article
 SET
     description = 'Application - WHMIS',
-    long_decription = 'Application - Workplace Hazardous Materials Information Systems (WHMIS)'
+    long_description = 'Application - Workplace Hazardous Materials Information Systems (WHMIS)'
 WHERE
     section = '2'
     AND sub_section = '13'
@@ -1105,7 +1107,7 @@ VALUES
 
 UPDATE compliance_article
 SET
-    long_decription = 'Elevator Maintenance Record'
+    long_description = 'Elevator Maintenance Record'
 WHERE
     section = '4'
     AND sub_section = '4'
@@ -1113,7 +1115,7 @@ WHERE
 
 UPDATE compliance_article
 SET
-    long_decription = 'Conveyor Belt Safe Work Procedures: Manager must develop safe work procedures for work or cleanup near moving conveyors.'
+    long_description = 'Conveyor Belt Safe Work Procedures: Manager must develop safe work procedures for work or cleanup near moving conveyors.'
 WHERE
     section = '4'
     AND sub_section = '4'
@@ -1194,7 +1196,7 @@ VALUES
 
 UPDATE compliance_article
 SET
-    long_decription = 'Fire Extinguisher - Mobile Equipment'
+    long_description = 'Fire Extinguisher - Mobile Equipment'
 WHERE
     section = '4'
     AND sub_section = '9'
@@ -1202,7 +1204,7 @@ WHERE
 
 UPDATE compliance_article
 SET
-    long_decription = 'Vehicle Requirements - Required Equipment'
+    long_description = 'Vehicle Requirements - Required Equipment'
 WHERE
     section = '4'
     AND sub_section = '9'
@@ -1210,7 +1212,7 @@ WHERE
 
 UPDATE compliance_article
 SET
-    long_decription = 'Vehicle Requirements - Vehicle Warning Flang and Light'
+    long_description = 'Vehicle Requirements - Vehicle Warning Flang and Light'
 WHERE
     section = '4'
     AND sub_section = '9'
@@ -1253,7 +1255,7 @@ VALUES
 
 UPDATE compliance_article
 SET
-    long_decription = 'Manager must develop a procedure and a written copy must be provided to trained persons.'
+    long_description = 'Manager must develop a procedure and a written copy must be provided to trained persons.'
 WHERE
     section = '4'
     AND sub_section = '11'
@@ -1261,7 +1263,7 @@ WHERE
 
 UPDATE compliance_article
 SET
-    long_decription = 'Controls - Building, Machinery, and Equipment'
+    long_description = 'Controls - Building, Machinery, and Equipment'
 WHERE
     section = '4'
     AND sub_section = '13'
@@ -1269,7 +1271,7 @@ WHERE
 
 UPDATE compliance_article
 SET
-    long_decription = 'Fire Extinguisher - Raise Climbers'
+    long_description = 'Fire Extinguisher - Raise Climbers'
 WHERE
     section = '4'
     AND sub_section = '13'
@@ -1277,7 +1279,7 @@ WHERE
 
 UPDATE compliance_article
 SET
-    long_decription = 'Requirements - Guardrails'
+    long_description = 'Requirements - Guardrails'
 WHERE
     section = '4'
     AND sub_section = '14'
@@ -1285,7 +1287,7 @@ WHERE
 
 UPDATE compliance_article
 SET
-    long_decription = 'Requirements - Suspension Slings'
+    long_description = 'Requirements - Suspension Slings'
 WHERE
     section = '4'
     AND sub_section = '14'
@@ -1293,7 +1295,7 @@ WHERE
 
 UPDATE compliance_article
 SET
-    long_decription = 'Inspection - Suspended Work Platform'
+    long_description = 'Inspection - Suspended Work Platform'
 WHERE
     section = '4'
     AND sub_section = '14'
@@ -1301,7 +1303,7 @@ WHERE
 
 UPDATE compliance_article
 SET
-    long_decription = 'Controls - Building, Machinery, and Equipment'
+    long_description = 'Controls - Building, Machinery, and Equipment'
 WHERE
     section = '4'
     AND sub_section = '18'
@@ -1309,7 +1311,7 @@ WHERE
 
 UPDATE compliance_article
 SET
-    long_decription = 'Requirements - Slings'
+    long_description = 'Requirements - Slings'
 WHERE
     section = '4'
     AND sub_section = '21'
@@ -1317,7 +1319,7 @@ WHERE
 
 UPDATE compliance_article
 SET
-    long_decription = 'Authority of Chief Inspector'
+    long_description = 'Authority of Chief Inspector'
 WHERE
     section = '4'
     AND description = 'Authority';
@@ -1391,7 +1393,7 @@ monitoring circuits.  A record of these tests shall be kept.'
 
 UPDATE compliance_article
 SET
-    long_decription = 'The manager shall give 10 days'' notice to an inspector of intention to start work in, at, or about a mine, including seasonal reactivation.',
+    long_description = 'The manager shall give 10 days'' notice to an inspector of intention to start work in, at, or about a mine, including seasonal reactivation.',
     cim_or_cpo = 'CIM'
 WHERE
     section = '6'
@@ -1400,7 +1402,7 @@ WHERE
 
 UPDATE compliance_article
 SET
-    long_decription = 'The manager shall give notice to an inspector of intention to stop work in, at, or about a mine, permanently, indefinitely, or for a definite period exceeding 30 days, and except in an emergency, the notice shall be not less than seven days.',
+    long_description = 'The manager shall give notice to an inspector of intention to stop work in, at, or about a mine, permanently, indefinitely, or for a definite period exceeding 30 days, and except in an emergency, the notice shall be not less than seven days.',
     cim_or_cpo = 'CIM'
 WHERE
     section = '6'
@@ -1409,7 +1411,7 @@ WHERE
 
 UPDATE compliance_article
 SET
-    long_decription = 'Record of flammable refuse/waste timber underground'
+    long_description = 'Record of flammable refuse/waste timber underground'
 WHERE
     section = '6'
     AND sub_section = '6'
@@ -1520,7 +1522,7 @@ conditions and shall be reviewed annually.
 
 UPDATE compliance_article
 SET
-    long_decription = 'Exceptions - Mine Design and Procedures'
+    long_description = 'Exceptions - Mine Design and Procedures'
 WHERE
     section = '6'
     AND sub_section = '14'
@@ -1529,7 +1531,7 @@ WHERE
 UPDATE compliance_article
 SET
     cim_or_cpo = 'CIM',
-    long_decription = 'Required to provide plan to CIM and have plan approved by CIM.'
+    long_description = 'Required to provide plan to CIM and have plan approved by CIM.'
 WHERE
     section = '6'
     AND sub_section = '18'
@@ -1537,7 +1539,7 @@ WHERE
 
 UPDATE compliance_article
 SET
-    long_decription = 'No water must be introduced without following an operating procedure approved by Chief Inspector.'
+    long_description = 'No water must be introduced without following an operating procedure approved by Chief Inspector.'
 WHERE
     section = '6'
     AND sub_section = '26'
@@ -1545,7 +1547,7 @@ WHERE
 
 UPDATE compliance_article
 SET
-    long_decription = 'Requirements - Stairways in Passageways'
+    long_description = 'Requirements - Stairways in Passageways'
 WHERE
     section = '6'
     AND sub_section = '27'
@@ -1553,7 +1555,7 @@ WHERE
 
 UPDATE compliance_article
 SET
-    long_decription = 'Recording - Ventillation Monitoring'
+    long_description = 'Recording - Ventillation Monitoring'
 WHERE
     section = '6'
     AND sub_section = '37'
@@ -1561,7 +1563,7 @@ WHERE
 
 UPDATE compliance_article
 SET
-    long_decription = 'Recording: Quantities, Slips, Measurement for Coal Mines'
+    long_description = 'Recording: Quantities, Slips, Measurement for Coal Mines'
 WHERE
     section = '6'
     AND sub_section = '39'
@@ -1569,7 +1571,7 @@ WHERE
 
 UPDATE compliance_article
 SET
-    long_decription = 'Flammable Gas Report'
+    long_description = 'Flammable Gas Report'
 WHERE
     section = '6'
     AND sub_section = '42'
@@ -1604,7 +1606,7 @@ VALUES
 
 UPDATE compliance_article
 SET
-    long_decription = 'Mine Hoist Letter of Certification'
+    long_description = 'Mine Hoist Letter of Certification'
 WHERE
     section = '7'
     AND sub_section = '2'
@@ -1612,7 +1614,7 @@ WHERE
 
 UPDATE compliance_article
 SET
-    long_decription = '(1) Commissioning tests shall be conducted on a new or reactivated mine
+    long_description = '(1) Commissioning tests shall be conducted on a new or reactivated mine
 hoisting plant to ensure compliance with the code.
 (2) The results of such tests shall be recorded and a copy sent to an inspector'
 WHERE
@@ -1622,7 +1624,7 @@ WHERE
 
 UPDATE compliance_article
 SET
-    long_decription = 'Records - Ropes'
+    long_description = 'Records - Ropes'
 WHERE
     section = '7'
     AND sub_section = '4'
@@ -1631,7 +1633,7 @@ WHERE
 UPDATE compliance_article
 SET
     description = 'Free Fall Tests Report',
-    long_decription = 'Free Fall tests'
+    long_description = 'Free Fall tests'
 WHERE
     section = '7'
     AND description = 'Free Fall Tests - Report'
@@ -1640,7 +1642,7 @@ WHERE
 
 UPDATE compliance_article
 SET
-    long_decription = 'Testing required annually. Inspectors may request these records.'
+    long_description = 'Testing required annually. Inspectors may request these records.'
 WHERE
     section = '7'
     AND sub_section = '6'
@@ -1648,7 +1650,7 @@ WHERE
 
 UPDATE compliance_article
 SET
-    long_decription = 'If used, special signals must be posted in at the mine and approved by an inspector'
+    long_description = 'If used, special signals must be posted in at the mine and approved by an inspector'
 WHERE
     section = '7'
     AND sub_section = '7'
@@ -1657,7 +1659,7 @@ WHERE
 UPDATE compliance_article
 SET
     description = 'Hoisting Equipment Non-destructive Tests',
-    long_decription = 'Without limiting section 7.4.6, every part of a hoist and hoisting equipment
+    long_description = 'Without limiting section 7.4.6, every part of a hoist and hoisting equipment
 the failure of which could endanger persons, shall be subjected to an
 annual non-destructive test conducted by a certified person, and a copy of
 the test results shall be forwarded to an inspector.'
@@ -1668,7 +1670,7 @@ WHERE
 
 UPDATE compliance_article
 SET
-    long_decription = 'Annual Inspection - Hoists and Shafts'
+    long_description = 'Annual Inspection - Hoists and Shafts'
 WHERE
     section = '7'
     AND sub_section = '9'
@@ -1736,7 +1738,7 @@ VALUES
 
 UPDATE compliance_article
 SET
-    long_decription = 'Careless Acts - Explosives'
+    long_description = 'Careless Acts - Explosives'
 WHERE
     section = '8'
     AND sub_section = '3'
@@ -1777,7 +1779,7 @@ VALUES
 
 UPDATE compliance_article
 SET
-    long_decription = 'Blasters that are continually handling nitro-glycerine based explosives
+    long_description = 'Blasters that are continually handling nitro-glycerine based explosives
 shall have a medical examination on a frequency of less than 3 year intervals to determine sensitivity to and any harmful health effects from the continued exposure to nitroglycerine.'
 WHERE
     section = '8'
@@ -1786,7 +1788,7 @@ WHERE
 
 UPDATE compliance_article
 SET
-    long_decription = 'Vehicle Requirements - Engine shut off while loading or unloading explosives'
+    long_description = 'Vehicle Requirements - Engine shut off while loading or unloading explosives'
 WHERE
     section = '8'
     AND sub_section = '4'
@@ -1794,7 +1796,7 @@ WHERE
 
 UPDATE compliance_article
 SET
-    long_decription = 'Written procedures shall be established for the use of all explosives accessories and blasting machines.'
+    long_description = 'Written procedures shall be established for the use of all explosives accessories and blasting machines.'
 WHERE
     section = '8'
     AND sub_section = '6'
@@ -1868,7 +1870,7 @@ UPDATE compliance_article
 SET
     cim_or_cpo = 'CPO',
     help_reference_link = 'https://j200.gov.bc.ca/pub/vfcbc/Default.aspx?PossePresentation=VFStartApplication&PosseObjectId=62225171',
-    long_decription = 'Applications for parties engaging in mineral and coal exploration activities should apply through virtual Front Counter BC.'
+    long_description = 'Applications for parties engaging in mineral and coal exploration activities should apply through virtual Front Counter BC.'
 WHERE
     section = '9'
     AND sub_section = '1'
@@ -2138,7 +2140,8 @@ VALUES
         current_timestamp,
         'system-mds',
         current_timestamp,
-        'Reported results of reclamation measures for submission to an inspector upon completion of reclamation work, this should be included with the final ASEA report (9.2.1(3)).' 'CPO'
+        'Reported results of reclamation measures for submission to an inspector upon completion of reclamation work, this should be included with the final ASEA report (9.2.1(3)).',
+        'CPO'
     );
 
 INSERT INTO
@@ -2177,7 +2180,7 @@ VALUES
 UPDATE compliance_article
 SET
     cim_or_cpo = 'CPO',
-    long_decription = 'Applications for proposed coal and mineral mines, major modifications to existing mines and major exploration and development should be submitted through the Applications reporting feature in MineSpace.'
+    long_description = 'Applications for proposed coal and mineral mines, major modifications to existing mines and major exploration and development should be submitted through the Applications reporting feature in MineSpace.'
 WHERE
     section = '10'
     AND sub_section = '1'
@@ -2222,7 +2225,7 @@ VALUES
 UPDATE compliance_article
 SET
     cim_or_cpo = 'CPO',
-    long_decription = 'Applications for proposed coal and mineral mines, major modifications to existing mines and major exploration and development should be submitted through the Applications reporting feature in MineSpace.'
+    long_description = 'Applications for proposed coal and mineral mines, major modifications to existing mines and major exploration and development should be submitted through the Applications reporting feature in MineSpace.'
 WHERE
     section = '10'
     AND sub_section = '1'
@@ -2241,7 +2244,7 @@ WHERE
 UPDATE compliance_article
 SET
     cim_or_cpo = 'CPO',
-    long_decription = 'Design Slopes Justification'
+    long_description = 'Design Slopes Justification'
 WHERE
     section = '10'
     AND sub_section = '1'
@@ -2251,7 +2254,7 @@ WHERE
 UPDATE compliance_article
 SET
     cim_or_cpo = 'CPO',
-    long_decription = 'A tailings storage facility shall have a breach and inundation study or a failure runout assessment prior to commencing operation, or as required by the chief permitting officer.'
+    long_description = 'A tailings storage facility shall have a breach and inundation study or a failure runout assessment prior to commencing operation, or as required by the chief permitting officer.'
 WHERE
     section = '10'
     AND sub_section = '1'
@@ -2294,7 +2297,7 @@ VALUES
 UPDATE compliance_article
 SET
     cim_or_cpo = 'CPO',
-    long_decription = 'This section of the Code does not trigger a report submission requirement. Information related to Major Dumps should be submitted through the Applications feature in MineSpace.'
+    long_description = 'This section of the Code does not trigger a report submission requirement. Information related to Major Dumps should be submitted through the Applications feature in MineSpace.'
 WHERE
     section = '10'
     AND sub_section = '1'
@@ -2336,7 +2339,7 @@ VALUES
 UPDATE compliance_article
 SET
     help_reference_link = 'https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting',
-    long_decription = 'Updated Plans - Permitted Sites
+    long_description = 'Updated Plans - Permitted Sites
 For regionally operated sand and gravel pits and construction aggregate quarries, refer to the Mine Plan Update Policy.'
 WHERE
     section = '10'
@@ -2506,7 +2509,7 @@ VALUES
 UPDATE compliance_article
 SET
     help_reference_link = 'https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/reclamation-closure/annual-reporting-forms',
-    long_decription = 'As a condition of a permit, the permittee is responsible for submitting an annual report of the placer and reclamation activities completed on site. The form specified by the chief inspector can be found online and is called "ASPA." These reports must be submitted by March 31 of the following year as long as the permit is open.'
+    long_description = 'As a condition of a permit, the permittee is responsible for submitting an annual report of the placer and reclamation activities completed on site. The form specified by the chief inspector can be found online and is called "ASPA." These reports must be submitted by March 31 of the following year as long as the permit is open.'
 WHERE
     section = '10'
     and description = 'Annual Reporting'
@@ -2638,7 +2641,9 @@ INSERT INTO
         create_timestamp,
         update_user,
         update_timestamp,
-        long_description help_reference_link
+        long_description,
+        cim_or_cpo,
+        help_reference_link
     )
 VALUES
     (
@@ -3015,7 +3020,7 @@ WHERE
 
 UPDATE compliance_article
 SET
-    long_decription = 'On-going Management Requirements: Where a mine requires on-going mitigation, monitoring or maintenance, the owner, agent, or manager shall submit a closure management manual that:
+    long_description = 'On-going Management Requirements: Where a mine requires on-going mitigation, monitoring or maintenance, the owner, agent, or manager shall submit a closure management manual that:
 (a) describes and documents key aspects of the ongoing mitigation, monitoring and maintenance requirements, and
 (b) tracks important changes to components of the system that effect long-term mitigation, monitoring and maintenance requirements.'
 WHERE
@@ -3093,7 +3098,7 @@ VALUES
 UPDATE compliance_article
 SET
     cim_or_cpo = 'CIM',
-    long_decription = 'Any reports submitted under this Section should be identified as a permit required report.'
+    long_description = 'Any reports submitted under this Section should be identified as a permit required report.'
 WHERE
     section = '10'
     and description = 'Monitoring'
@@ -3102,15 +3107,15 @@ WHERE
 
 UPDATE compliance_article
 SET
-    long_decription = 'An inspector may order the owner, agent, or manager of a mine to provide an independent study prepared by an engineer or licensed professional acceptable to the inspector. This study can address health and safety concerns, the safety of equipment, buildings, workings, or structures at the mine, or actual or potential environmental damage resulting from mining activity. It can also be requested in connection with an incident that the inspector is investigating. The cost of the study is to be borne by the owner.'
+    long_description = 'An inspector may order the owner, agent, or manager of a mine to provide an independent study prepared by an engineer or licensed professional acceptable to the inspector. This study can address health and safety concerns, the safety of equipment, buildings, workings, or structures at the mine, or actual or potential environmental damage resulting from mining activity. It can also be requested in connection with an incident that the inspector is investigating. The cost of the study is to be borne by the owner.'
 WHERE
-    and description = 'Engineering report'
+    description = 'Engineering report'
     AND section = '18';
 
 UPDATE compliance_article
 SET
     cim_or_cpo = 'CIM',
-    long_decription = 'A person who is adversely affected by a decision or order of an inspector or an order of the chief auditor may, within 30 days of its issue, appeal the decision or order to the chief inspector.'
+    long_description = 'A person who is adversely affected by a decision or order of an inspector or an order of the chief auditor may, within 30 days of its issue, appeal the decision or order to the chief inspector.'
 WHERE
     section = '33'
     and description = 'Appeal to the Chief Inspector'

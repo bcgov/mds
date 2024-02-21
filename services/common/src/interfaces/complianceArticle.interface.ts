@@ -10,6 +10,5 @@ export interface IComplianceArticle {
   effective_date: Date;
   expiry_date: Date;
   help_reference_link: string;
-  help_reference_text: string;
   cim_or_cpo: string;
 }
