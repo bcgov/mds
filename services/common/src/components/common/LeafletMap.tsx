@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import L from "leaflet";
-import { Map, LayerGroup, Marker } from "leaflet";
+import L, { Map, LayerGroup, Marker } from "leaflet";
 
 import "leaflet.markercluster";
 import "leaflet/dist/leaflet.css";
@@ -24,11 +23,11 @@ interface LeafletMapProps {
 
 const LeafletMap: FC<LeafletMapProps> = ({ mine, additionalPins = [], controls = true }) => {
   // if mine does not have a location, set a default to center the map
-  const latLong =
-    mine && mine.mine_location && mine.mine_location.latitude && mine.mine_location.longitude
-      ? // only add mine Pin if location exists
-        [mine.mine_location.latitude, mine.mine_location.longitude]
-      : [Number(Strings.DEFAULT_LAT), Number(Strings.DEFAULT_LONG)];
+  const hasMineLocation = mine?.mine_location?.latitude && mine?.mine_location?.longitude;
+  const latLong = hasMineLocation
+    ? // only add mine Pin if location exists
+      [mine.mine_location.latitude, mine.mine_location.longitude]
+    : [Number(Strings.DEFAULT_LAT), Number(Strings.DEFAULT_LONG)];
 
   const [map, setMap] = useState<Map>();
   const [layerGroup, setLayerGroup] = useState<LayerGroup>();
@@ -117,7 +116,7 @@ const LeafletMap: FC<LeafletMapProps> = ({ mine, additionalPins = [], controls =
 
   useEffect(() => {
     createMap();
-    if (mine && mine.mine_location && mine.mine_location.latitude && mine.mine_location.longitude) {
+    if (hasMineLocation) {
       createPin();
     }
     fitBounds();

@@ -8,8 +8,8 @@ interface MapProps {
   controls: boolean;
   additionalPins: string[][];
 }
-const Map: FC<MapProps> = (props) => {
+const CoreMap: FC<MapProps> = (props) => {
   return <Suspense fallback={<Skeleton />}>{<LeafletMap {...props} />}</Suspense>;
 };
 
-export default Map;
+export default CoreMap;

@@ -20,7 +20,7 @@ import { FORM } from "../..";
 import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import RenderRadioButtons from "../forms/RenderRadioButtons";
 import RenderAutoSizeField from "../forms/RenderAutoSizeField";
-import Map from "../common/Map";
+import CoreMap from "../common/Map";
 
 export const FacilityOperator: FC = () => {
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
@@ -100,21 +100,19 @@ export const FacilityOperator: FC = () => {
           />
         </Col>
         <Col md={12} sm={24}>
-          <Map controls additionalPins={[pin]} />
+          <CoreMap controls additionalPins={[pin]} />
         </Col>
       </Row>
       {facility_coords_source === "OTH" && (
-        <>
-          <Field
-            name="facility_coords_source_desc"
-            required
-            validate={[required, maxLength(4000)]}
-            label="Please specify if other"
-            maximumCharacters={4000}
-            rows={3}
-            component={RenderAutoSizeField}
-          />
-        </>
+        <Field
+          name="facility_coords_source_desc"
+          required
+          validate={[required, maxLength(4000)]}
+          label="Please specify if other"
+          maximumCharacters={4000}
+          rows={3}
+          component={RenderAutoSizeField}
+        />
       )}
       <Field
         name="facility_pid_pin_crown_file_no"

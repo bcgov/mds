@@ -18,7 +18,7 @@ export const {
 } = projectReducer;
 
 const formatProjectSummaryParty = (party): IParty => {
-  if (!party || !party.party_guid) {
+  if (!party?.party_guid) {
     return party;
   }
   console.log(
