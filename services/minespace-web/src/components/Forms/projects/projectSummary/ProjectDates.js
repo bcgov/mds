@@ -5,8 +5,8 @@ import { Typography } from "antd";
 import { connect } from "react-redux";
 import { dateNotBeforeOther, dateNotAfterOther } from "@common/utils/Validate";
 import Callout from "@/components/common/Callout";
-import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
+import RenderDate from "@mds/common/components/forms/RenderDate";
 
 const propTypes = {
   expected_permit_application_date: PropTypes.string,
@@ -27,11 +27,11 @@ export const ProjectDates = (props) => {
       <Callout
         message={
           <>
-            These dates are for guidance and planning purposes only and do not reflect actual delivery
-            dates. The{" "}
+            These dates are for guidance and planning purposes only and do not reflect actual
+            delivery dates. The{" "}
             <a
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               alt="Major Mines Permitting Office"
               href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/major-mines-permitting-office"
             >
@@ -44,37 +44,37 @@ export const ProjectDates = (props) => {
       <Field
         id="expected_draft_irt_submission_date"
         name="expected_draft_irt_submission_date"
-        label="When do you anticipate submitting a draft Information Requirements Table? (optional)"
+        label="When do you anticipate submitting a draft Information Requirements Table?"
         placeholder="Please select date"
-        component={renderConfig.DATE}
+        component={RenderDate}
         validate={[dateNotAfterOther(props.expected_permit_application_date)]}
       />
       <Field
         id="expected_permit_application_date"
         name="expected_permit_application_date"
-        label="When do you anticipate submitting a permit application? (optional)"
+        label="When do you anticipate submitting a permit application?"
         placeholder="Please select date"
-        component={renderConfig.DATE}
+        component={RenderDate}
         validate={[dateNotBeforeOther(props.expected_draft_irt_submission_date)]}
       />
       <Field
         id="expected_permit_receipt_date"
         name="expected_permit_receipt_date"
-        label="When do you hope to receive your permit/amendment(s)? (optional)"
+        label="When do you hope to receive your permit/amendment(s)?"
         placeholder="Please select date"
-        component={renderConfig.DATE}
+        component={RenderDate}
         validate={[dateNotBeforeOther(props.expected_permit_application_date)]}
       />
       <Field
         id="expected_project_start_date"
         name="expected_project_start_date"
-        label="When do you anticipate starting work on this project? (optional)"
+        label="When do you anticipate starting work on this project?"
         placeholder="Please select date"
-        component={renderConfig.DATE}
+        component={RenderDate}
         validate={[dateNotBeforeOther(props.expected_permit_receipt_date)]}
       />
     </>
-  )
+  );
 };
 
 ProjectDates.propTypes = propTypes;

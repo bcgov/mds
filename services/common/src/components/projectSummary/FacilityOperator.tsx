@@ -25,12 +25,7 @@ import Map from "../common/Map";
 export const FacilityOperator: FC = () => {
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
   const formErrors = useSelector(getFormSyncErrors(FORM.ADD_EDIT_PROJECT_SUMMARY));
-  const {
-    facility_coords_source,
-    facility_zoning,
-    facility_latitude,
-    facility_longitude,
-  } = formValues;
+  const { facility_coords_source, zoning, facility_latitude, facility_longitude } = formValues;
   const [pin, setPin] = useState<Array<string>>([]);
   console.log(formValues);
 
@@ -64,6 +59,7 @@ export const FacilityOperator: FC = () => {
         required
         validate={[required]}
         label="Facility Type"
+        labelSubtitle="List the proposed facility type and/or mining activity."
         component={RenderField}
       />
       <Field
@@ -71,6 +67,7 @@ export const FacilityOperator: FC = () => {
         required
         validate={[required, maxLength(4000)]}
         label="Facility Description"
+        labelSubtitle="Briefly describe: Overview of the project. The primary activity of the facility. If there is not enough space, you may attach additional information, including conceptual site plans."
         maximumCharacters={4000}
         rows={3}
         component={RenderAutoSizeField}
@@ -186,7 +183,7 @@ export const FacilityOperator: FC = () => {
         validate={[requiredRadioButton]}
         component={RenderRadioButtons}
       />
-      {facility_zoning === false && (
+      {zoning === false && (
         <Field
           name="zoning_reason"
           label="If no, state the reason"

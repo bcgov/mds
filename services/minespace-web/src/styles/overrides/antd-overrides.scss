@@ -410,6 +410,10 @@ th.ant-descriptions-item.vertical-description {
   font-weight: 600;
 }
 
+.ant-form-vertical .ant-form-item-label>label {
+  display: inherit;
+}
+
 .ant-form-vertical .ant-form-item {
   padding-bottom: 0px;
 }

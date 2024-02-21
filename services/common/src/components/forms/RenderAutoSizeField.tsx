@@ -14,6 +14,7 @@ interface AutoSizeProps extends BaseInputProps {
 
 const RenderAutoSizeField: FC<AutoSizeProps> = ({
   label = "",
+  labelSubtitle,
   disabled = false,
   maximumCharacters = 0,
   minRows = 3,
@@ -48,7 +49,7 @@ const RenderAutoSizeField: FC<AutoSizeProps> = ({
           <Form.Item
             name={props.input.name}
             required={required}
-            label={getFormItemLabel(label, required)}
+            label={getFormItemLabel(label, required, labelSubtitle)}
             validateStatus={
               props.meta.touched
                 ? (props.meta.error && "error") || (props.meta.warning && "warning")

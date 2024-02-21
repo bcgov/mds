@@ -9,6 +9,7 @@ import { FormConsumer } from "./FormWrapper";
 
 const RenderField: FC<BaseInputProps> = ({
   label,
+  labelSubtitle,
   meta,
   input,
   disabled,
@@ -29,7 +30,7 @@ const RenderField: FC<BaseInputProps> = ({
           <Form.Item
             name={input.name}
             required={required}
-            label={getFormItemLabel(label, required)}
+            label={getFormItemLabel(label, required, labelSubtitle)}
             validateStatus={
               meta.touched ? (meta.error && "error") || (meta.warning && "warning") : ""
             }

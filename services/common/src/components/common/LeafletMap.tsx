@@ -52,8 +52,8 @@ const LeafletMap: FC<LeafletMapProps> = ({ mine, additionalPins = [], controls =
       // including latLong with no mine (ie default values)
       // will always include "center of BC" and may not be centered around pin(s)
       const allPins = [latLong, ...additionalPins];
-      const latVals = allPins.map((pin) => Number(pin[0]));
-      const lngVals = allPins.map((pin) => Number(pin[1]));
+      const latVals = allPins.filter((pin) => pin[0] !== null).map((pin) => Number(pin[0]));
+      const lngVals = allPins.filter((pin) => pin[1] !== null).map((pin) => Number(pin[1]));
 
       if (latVals.length && lngVals.length) {
         const maxLat = Math.max(...latVals);
