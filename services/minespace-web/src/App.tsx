@@ -85,11 +85,11 @@ const App: FC<AppProps> = (props) => {
               </MediaQuery>
               <Row justify="center" align="top">
                 <Col xs={xs} lg={lg} xl={xl} xxl={xxl}>
+                  <DocumentViewer />
                   <Routes />
                 </Col>
               </Row>
               <ModalWrapper />
-              <DocumentViewer />
               <BackTop />
             </Layout.Content>
           </Layout>
