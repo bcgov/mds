@@ -6,6 +6,7 @@ import { IMineReportDefinition } from "@mds/common/interfaces";
 import { getMineReportDefinitionOptions } from "@mds/common/redux/reducers/staticContentReducer";
 import { formatComplianceCodeReportName } from "@mds/common/redux/utils/helpers";
 import { uniqBy } from "lodash";
+import ExportOutlined from "@ant-design/icons/ExportOutlined";
 
 interface ReportGetStartedProps {
   setSelectedReportDefinition: (report: IMineReportDefinition) => void;
@@ -20,6 +21,7 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
   const [formattedMineReportDefinitionOptions, setFormattedMineReportDefinitionOptions] = useState(
     []
   );
+  const [helpReferenceLink, setHelpReferenceLink] = useState("");
 
   const mineReportDefinitionOptions = useSelector(getMineReportDefinitionOptions);
 
@@ -50,6 +52,14 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
       (report) => report.mine_report_definition_guid === newValue
     );
     setSelectedReportDefinition(newReport);
+    if (newReport.compliance_articles[0].help_reference_link) {
+      setHelpReferenceLink(newReport.compliance_articles[0].help_reference_link);
+    }
+  };
+
+  const handleOpenMoreInformation = () => {
+    const newWindow = window.open(helpReferenceLink, "_blank");
+    newWindow.opener = null;
   };
 
   return (
@@ -131,6 +141,11 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
                 <Typography.Paragraph>
                   {selectedReportDefinition.compliance_articles[0].long_description}
                 </Typography.Paragraph>
+                {helpReferenceLink && (
+                  <Button onClick={handleOpenMoreInformation} type="default">
+                    More information <ExportOutlined />
+                  </Button>
+                )}
               </div>
             )}
           </div>
