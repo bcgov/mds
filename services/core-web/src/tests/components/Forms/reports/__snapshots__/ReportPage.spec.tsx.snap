@@ -313,7 +313,7 @@ exports[`ReportPage renders view mode properly 1`] = `
                   <label
                     class="ant-form-item-required"
                     for="VIEW_EDIT_REPORT_report_type"
-                    title="What is the type of the report?"
+                    title=""
                   >
                     What is the type of the report?
                   </label>
