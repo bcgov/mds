@@ -42,6 +42,7 @@ import {
 } from "@mds/common/redux/actionCreators/reportCommentActionCreator";
 import AuthorizationWrapper from "@mds/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@mds/common/constants/permissions";
+import * as PermissionEnv from "@mds/common/constants/environment";
 
 const RenderContacts: FC<any> = ({ fields, isEditMode, mineSpaceEdit }) => {
   const canEdit = isEditMode && !mineSpaceEdit;
@@ -97,7 +98,6 @@ interface ReportDetailsFormProps {
   formButtons: ReactNode;
   handleSubmit: (values) => void;
   currentReportDefinition?: IMineReportDefinition;
-  createPermission: string;
 }
 
 const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
@@ -107,8 +107,9 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   formButtons,
   handleSubmit,
   currentReportDefinition,
-  createPermission = Permission.EDIT_INCIDENTS,
 }) => {
+  const coreEditReportPermission = PermissionEnv.USER_ROLES.role_edit_reports;
+  const coreViewAllPermission = PermissionEnv.USER_ROLES.role_view;
   const dispatch = useDispatch();
   const formValues: IMineReportSubmission =
     useSelector((state) => getFormValues(FORM.VIEW_EDIT_REPORT)(state)) ?? {};
@@ -470,7 +471,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
             </Typography.Title>
           </Col>
           <Col span={24}>
-            <AuthorizationWrapper permission={createPermission}>
+            <AuthorizationWrapper permission={coreViewAllPermission}>
               <Typography.Paragraph>
                 <strong>
                   These comments are for internal staff only and will not be shown to proponents.
@@ -490,7 +491,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
                 actions: null,
                 datetime: comment.timestamp,
               }))}
-              createPermission={createPermission}
+              createPermission={coreEditReportPermission}
             />
           </Col>
         </Row>

@@ -6,7 +6,8 @@ import { startCase, camelCase } from "lodash";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import { USER_ROLES, detectDevelopmentEnvironment, detectProdEnvironment } from "@mds/common";
 import { Tooltip } from "antd";
-import * as Permission from "@mds/common/constants/permissions";
+// import * as Permission from "@mds/common/constants/permissions";
+import * as Permission from "@mds/common/constants/environment";
 
 /**
  * @constant AuthorizationWrapper conditionally renders react children depending
@@ -63,14 +64,25 @@ const defaultProps = {
 };
 
 export const AuthorizationWrapper = (props) => {
+  console.log("props....auth wrapper...: ", props);
   const inDevCheck =
     props.inDevelopment === undefined || (props.inDevelopment && detectDevelopmentEnvironment());
   const inTestCheck =
     props.inTesting === undefined || (props.inTesting && !detectProdEnvironment());
+  // const permissionCheck =
+  //   props.permission === undefined || props.userRoles.includes(USER_ROLES[props.permission]);
   const permissionCheck =
-    props.permission === undefined || props.userRoles.includes(USER_ROLES[props.permission]);
+    props.permission === undefined || Object.values(USER_ROLES).includes(props.permission);
+
   const isMajorMine = props.isMajorMine === undefined || props.isMajorMine;
-  const isAdmin = props.userRoles.includes(USER_ROLES[Permission.ADMIN]);
+  // const isAdmin = props.userRoles.includes(USER_ROLES[Permission.USER_ROLES.role_admin]);
+  const isAdmin = Object.values(USER_ROLES).includes(Permission.USER_ROLES.role_admin);
+
+  console.log("Auth Wrapper - props.userRoles: ", props.userRoles);
+  console.log("Auth Wrapper - props.permission: ", props.permission);
+  console.log("Auth Wrapper - USER_ROLES: ", USER_ROLES);
+  console.log("Auth Wrapper - USER_ROLES[props.permission]: ", USER_ROLES[props.permission]);
+  console.log("permissionCheck: ", permissionCheck);
 
   const title = () => {
     const permission = props.permission ? `${USER_ROLES[props.permission]}` : "";

@@ -47,8 +47,10 @@ export class CommentEditor extends Component {
 
   render() {
     const canAddComment = this.props.addCommentPermission
-      ? this.props.userRoles.includes(USER_ROLES[this.props.addCommentPermission])
+      ? Object.values(USER_ROLES).includes(this.props.addCommentPermission)
       : true;
+
+    const minespaceReadyForComments = false;
 
     return (
       <div>
@@ -65,8 +67,7 @@ export class CommentEditor extends Component {
             />
           </Form.Item>
         )}
-        {// TODO: Hide until Minespace is updated to display comments.
-        false && (
+        {minespaceReadyForComments && (
           <Form.Item>
             <Checkbox
               name="visible"
