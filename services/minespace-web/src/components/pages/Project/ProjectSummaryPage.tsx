@@ -246,7 +246,7 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
     return null;
   };
 
-  const handleUpdateProjectSummary = (values, message) => {
+  const handleUpdateProjectSummary = async (values, message) => {
     const payload = handleTransformPayload(values);
     setIsLoaded(false);
     return updateProjectSummary(
@@ -273,7 +273,7 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
       });
   };
 
-  const handleCreateProjectSummary = (values, message) => {
+  const handleCreateProjectSummary = async (values, message) => {
     return createProjectSummary(
       {
         mineGuid: mineGuid,
@@ -292,7 +292,7 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
     history.push(url);
   };
 
-  const handleSaveData = (e, newActiveTab) => {
+  const handleSaveData = async (e, newActiveTab) => {
     if (e) {
       e.preventDefault();
     }
@@ -310,16 +310,16 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
     const errors = Object.keys(flattenObject(formErrors));
     if (errors.length === 0) {
       if (!isEditMode) {
-        handleCreateProjectSummary(values, message);
+        await handleCreateProjectSummary(values, message);
       }
       if (projectGuid && projectSummaryGuid) {
-        handleUpdateProjectSummary(values, message);
+        await handleUpdateProjectSummary(values, message);
       }
       handleTabChange(newActiveTab);
     }
   };
 
-  const handleSaveDraft = () => {
+  const handleSaveDraft = async () => {
     const currentTabIndex = projectFormTabs.indexOf(activeTab);
     const newActiveTab = projectFormTabs[currentTabIndex + 1];
     const message = "Successfully saved a draft project description.";
@@ -329,10 +329,10 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
     const errors = Object.keys(flattenObject(formErrors));
     if (errors.length === 0) {
       if (!isEditMode) {
-        handleCreateProjectSummary(values, message);
+        await handleCreateProjectSummary(values, message);
       }
       if (projectGuid && projectSummaryGuid) {
-        handleUpdateProjectSummary(values, message);
+        await handleUpdateProjectSummary(values, message);
       }
       handleTabChange(newActiveTab);
     }
