@@ -265,6 +265,9 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
           false
         );
       })
+      .catch((err) => {
+        throw new Error(err);
+      })
       .then(async () => {
         return handleFetchData();
       })
@@ -281,7 +284,9 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
       handleTransformPayload(values),
       message
     ).then(({ data: { project_guid, project_summary_guid } }) => {
-      history.replace(EDIT_PROJECT_SUMMARY.dynamicRoute(project_guid, project_summary_guid));
+      history.replace(
+        EDIT_PROJECT_SUMMARY.dynamicRoute(project_guid, project_summary_guid, projectFormTabs[1])
+      );
     });
   };
 
@@ -309,13 +314,18 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
     touch(FORM.ADD_EDIT_PROJECT_SUMMARY);
     const errors = Object.keys(flattenObject(formErrors));
     if (errors.length === 0) {
-      if (!isEditMode) {
-        await handleCreateProjectSummary(values, message);
+      try {
+        if (!isEditMode) {
+          await handleCreateProjectSummary(values, message);
+        }
+        if (projectGuid && projectSummaryGuid) {
+          await handleUpdateProjectSummary(values, message);
+          handleTabChange(newActiveTab);
+        }
+      } catch (err) {
+        console.log(err);
+        setIsLoaded(true);
       }
-      if (projectGuid && projectSummaryGuid) {
-        await handleUpdateProjectSummary(values, message);
-      }
-      handleTabChange(newActiveTab);
     }
   };
 
@@ -328,13 +338,18 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
     touch(FORM.ADD_EDIT_PROJECT_SUMMARY);
     const errors = Object.keys(flattenObject(formErrors));
     if (errors.length === 0) {
-      if (!isEditMode) {
-        await handleCreateProjectSummary(values, message);
+      try {
+        if (!isEditMode) {
+          await handleCreateProjectSummary(values, message);
+        }
+        if (projectGuid && projectSummaryGuid) {
+          await handleUpdateProjectSummary(values, message);
+          handleTabChange(newActiveTab);
+        }
+      } catch (err) {
+        console.log(err);
+        setIsLoaded(true);
       }
-      if (projectGuid && projectSummaryGuid) {
-        await handleUpdateProjectSummary(values, message);
-      }
-      handleTabChange(newActiveTab);
     }
   };
 

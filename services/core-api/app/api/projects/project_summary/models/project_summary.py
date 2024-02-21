@@ -1,7 +1,5 @@
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.ext.associationproxy import association_proxy
-from sqlalchemy.orm import backref
 
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy import case
@@ -188,7 +186,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         address_data = party_data.get('address')
         party_guid = party_data.get('party_guid')
         Party.validate_phone_no(party_data.get('phone_no'), address_data.get('address_type_code'))
-        # always update the existing party
         if party_guid is not None and existing_party is not None:            
             existing_party.deep_update_from_dict(party_data)
             for key, value in address_data.items():
@@ -367,6 +364,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         self.zoning_reason = zoning_reason
 
         if facility_operator:
+            if not facility_operator['party_type_code']:
+                facility_operator["party_type_code"] = "PER"
             fop_party = self.create_or_update_party(facility_operator, 'FOP', self.facility_operator)
             fop_party.save()
             self.facility_operator_guid = fop_party.party_guid

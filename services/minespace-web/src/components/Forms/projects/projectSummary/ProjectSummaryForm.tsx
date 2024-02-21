@@ -12,14 +12,13 @@ import {
   getFormSyncErrors,
   InjectedFormProps,
 } from "redux-form";
-import "@ant-design/compatible/assets/index.css";
 import * as FORM from "@/constants/forms";
 import BasicInformation from "@/components/Forms/projects/projectSummary/BasicInformation";
 import DocumentUpload from "@/components/Forms/projects/projectSummary/DocumentUpload";
 import ProjectContacts from "@/components/Forms/projects/projectSummary/ProjectContacts";
 import ProjectDates from "@/components/Forms/projects/projectSummary/ProjectDates";
 import AuthorizationsInvolved from "@/components/Forms/projects/projectSummary/AuthorizationsInvolved";
-import SteppedForm from "@common/components/SteppedForm";
+import SteppedForm from "@mds/common/components/forms/SteppedForm";
 import Step from "@common/components/Step";
 import ProjectLinks from "@mds/common/components/projects/ProjectLinks";
 import { EDIT_PROJECT } from "@/constants/routes";

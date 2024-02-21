@@ -32,14 +32,17 @@ export const createProjectSummary = (
 ): Promise<AxiosResponse<IProjectSummary>> => {
   dispatch(request(reducerTypes.CREATE_MINE_PROJECT_SUMMARY));
   dispatch(showLoading());
-  return CustomAxios()
+  const messages = {
+    errorToastMessage: "default",
+    successToastMessage: message,
+  };
+  return CustomAxios(messages)
     .post(
       ENVIRONMENT.apiUrl + API.NEW_PROJECT_SUMMARY(),
       { ...payload, mine_guid: mineGuid },
       createRequestHeader()
     )
     .then((response: AxiosResponse<IProjectSummary>) => {
-      notification.success({ message, duration: 10 });
       dispatch(success(reducerTypes.CREATE_MINE_PROJECT_SUMMARY));
       dispatch(projectActions.storeProjectSummary(payload));
       return response;
@@ -60,17 +63,17 @@ export const updateProjectSummary = (
 ): Promise<AxiosResponse<IProjectSummary>> => {
   dispatch(request(reducerTypes.UPDATE_MINE_PROJECT_SUMMARY));
   dispatch(showLoading());
-  return CustomAxios()
+  const messages = {
+    errorToastMessage: "default",
+    successToastMessage: message,
+  };
+  return CustomAxios(messages)
     .put(
       ENVIRONMENT.apiUrl + API.PROJECT_SUMMARY(projectGuid, projectSummaryGuid),
       payload,
       createRequestHeader()
     )
     .then((response: AxiosResponse<IProjectSummary>) => {
-      notification.success({
-        message,
-        duration: 10,
-      });
       dispatch(success(reducerTypes.UPDATE_MINE_PROJECT_SUMMARY));
       dispatch(projectActions.storeProjectSummary(payload));
       return response;
@@ -90,15 +93,14 @@ export const updateProject = (
 ): AppThunk<Promise<IProject>> => (dispatch): Promise<IProject> => {
   dispatch(request(reducerTypes.UPDATE_PROJECT));
   dispatch(showLoading());
-  return CustomAxios()
+  const successToastMessage = showSuccessMessage ? message : null;
+  const messages = {
+    errorToastMessage: "default",
+    successToastMessage,
+  };
+  return CustomAxios(messages)
     .put(ENVIRONMENT.apiUrl + API.PROJECT(projectGuid), payload, createRequestHeader())
     .then((response: AxiosResponse<IProject>) => {
-      if (showSuccessMessage) {
-        notification.success({
-          message,
-          duration: 10,
-        });
-      }
       dispatch(success(reducerTypes.UPDATE_PROJECT));
       dispatch(projectActions.storeProject(payload));
       return response.data;

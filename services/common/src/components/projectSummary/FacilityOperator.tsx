@@ -27,7 +27,6 @@ export const FacilityOperator: FC = () => {
   const formErrors = useSelector(getFormSyncErrors(FORM.ADD_EDIT_PROJECT_SUMMARY));
   const { facility_coords_source, zoning, facility_latitude, facility_longitude } = formValues;
   const [pin, setPin] = useState<Array<string>>([]);
-  console.log(formValues);
 
   useEffect(() => {
     // don't jump around the map while coords being entered and not yet valid
@@ -52,7 +51,7 @@ export const FacilityOperator: FC = () => {
   );
 
   return (
-    <div className="ant-form-vertical">
+    <>
       <Typography.Title level={3}>Facility Location and Operator Information</Typography.Title>
       <Field
         name="facility_type"
@@ -90,7 +89,6 @@ export const FacilityOperator: FC = () => {
             label="Longitude"
             component={RenderField}
             help="Must be between -113 and -140 with no more than 7 decimal places"
-            // -113.1234567
           />
           <Field
             name="facility_coords_source"
@@ -242,6 +240,6 @@ export const FacilityOperator: FC = () => {
           />
         </Col>
       </Row>
-    </div>
+    </>
   );
 };

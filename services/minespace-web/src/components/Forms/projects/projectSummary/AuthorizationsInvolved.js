@@ -12,10 +12,12 @@ import {
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getFormattedProjectSummary } from "@mds/common/redux/selectors/projectSelectors";
 import { requiredRadioButton } from "@common/utils/Validate";
-import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import Callout from "@/components/common/Callout";
 import CustomPropTypes from "@/customPropTypes";
+import RenderField from "@mds/common/components/forms/RenderField";
+import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
+import RenderGroupCheckbox from "@mds/common/components/forms/RenderGroupCheckbox";
 
 const propTypes = {
   formattedProjectSummary: PropTypes.objectOf(
@@ -60,7 +62,7 @@ export const AuthorizationsInvolved = (props) => {
             formName={FORM.ADD_EDIT_PROJECT_SUMMARY}
             formValues={props.formattedProjectSummary}
             change={props.change}
-            component={renderConfig.GROUP_CHECK_BOX}
+            component={RenderGroupCheckbox}
             label="What type of permit is involved in your application?"
             setInitialValues={() => setInitialValues(code, props.formattedProjectSummary)}
           />
@@ -77,7 +79,7 @@ export const AuthorizationsInvolved = (props) => {
             <span className="light--sm">Please separate each permit number with a comma</span>
           </>
         }
-        component={renderConfig.FIELD}
+        component={RenderField}
       />
     </div>
   );
@@ -141,7 +143,8 @@ export const AuthorizationsInvolved = (props) => {
             </p>
           </>
         }
-        component={renderConfig.RADIO}
+        component={RenderRadioButtons}
+        required
         validate={[requiredRadioButton]}
       />
       <br />
