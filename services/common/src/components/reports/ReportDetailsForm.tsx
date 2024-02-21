@@ -1,4 +1,4 @@
-import { Alert, Button, Col, Row, Typography, Radio } from "antd";
+import { Alert, Button, Col, Row, Typography } from "antd";
 import React, { FC, ReactNode, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { arrayPush, change, Field, FieldArray, getFormValues } from "redux-form";
@@ -9,13 +9,20 @@ import { getMineReportDefinitionOptions } from "@mds/common/redux/selectors/stat
 import ReportFileUpload from "@mds/common/components/reports/ReportFileUpload";
 
 import { FORM } from "@mds/common/constants/forms";
-import { email, maxLength, required, yearNotInFuture } from "@mds/common/redux/utils/Validate";
+import {
+  email,
+  maxLength,
+  required,
+  yearNotInFuture,
+  requiredRadioButton,
+} from "@mds/common/redux/utils/Validate";
 import ReportFilesTable from "./ReportFilesTable";
 import { formatComplianceCodeReportName } from "@mds/common/redux/utils/helpers";
 import RenderDate from "../forms/RenderDate";
 import RenderSelect from "../forms/RenderSelect";
 import FormWrapper from "../forms/FormWrapper";
 import RenderField from "../forms/RenderField";
+import RenderRadioButtons from "../forms/RenderRadioButtons";
 import {
   IMineDocument,
   IMineReportDefinition,
@@ -118,7 +125,6 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   const mineReportDefinitionOptions = useSelector(getMineReportDefinitionOptions);
 
   const system = useSelector(getSystemFlag);
-  const isPermitRequiredReport = formValues?.permit_condition_category_code ? 2 : 1;
 
   // minespace users are only allowed to add documents
   const mineSpaceEdit =
@@ -130,6 +136,11 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
       dispatch(fetchPartyRelationships({ mine_guid: mineGuid }));
     }
   }, []);
+
+  useEffect(() => {
+    const reportType = initialValues?.permit_condition_category_code ? "PRR" : "CRR";
+    dispatch(change(FORM.VIEW_EDIT_REPORT, "report_type", reportType));
+  }, [!formValues?.report_type]);
 
   useEffect(() => {
     if (currentReportDefinition) {
@@ -231,15 +242,22 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
         <Row gutter={[16, 8]}>
           {system === SystemFlagEnum.core && (
             <Col span={24}>
-              <Typography.Paragraph>What is the type of the report?</Typography.Paragraph>
-              <Radio.Group
+              <Field
+                name="report_type"
+                id="report_type"
+                required
                 disabled={true}
-                className="vertical-radio-group"
-                value={isPermitRequiredReport}
-              >
-                <Radio value={1}>Code Required Report</Radio>
-                <Radio value={2}>Permit Required Report</Radio>
-              </Radio.Group>
+                props={{
+                  isVertical: true,
+                }}
+                label="What is the type of the report?"
+                component={RenderRadioButtons}
+                validate={[requiredRadioButton]}
+                customOptions={[
+                  { label: "Code Required Report", value: "CRR" },
+                  { label: "Permit Required Report", value: "PRR" },
+                ]}
+              />
             </Col>
           )}
           <Col span={12}>
