@@ -83,6 +83,7 @@ const SteppedForm = (props) => {
       if (handleSaveData) {
         await handleSaveData(null, tab);
       }
+
       if (errors.length > 0) return;
 
       setTabIndex(indexOf(tabs, tab));
@@ -119,9 +120,7 @@ const SteppedForm = (props) => {
       <Col span={18}>
         {children && (
           <div className="stepped-form-form-container">
-            <Form layout="vertical" className="ant-form-vertical">
-              {children.find((child) => child.key === tabs[tabIndex])}
-            </Form>
+            <Form layout="vertical">{children.find((child) => child.key === tabs[tabIndex])}</Form>
             <Row justify={isFirst && tabs.length > 1 ? "end" : "space-between"}>
               {!isFirst && (
                 <Button
