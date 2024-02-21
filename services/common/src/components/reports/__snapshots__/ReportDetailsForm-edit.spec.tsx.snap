@@ -72,7 +72,7 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
               <label
                 class="ant-form-item-required"
                 for="VIEW_EDIT_REPORT_mine_report_definition_guid"
-                title="Report Name"
+                title=""
               >
                 Report Name
               </label>
@@ -242,7 +242,7 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
               <label
                 class="ant-form-item-required"
                 for="VIEW_EDIT_REPORT_description_comment"
-                title="Report Title and Additional Comment"
+                title=""
               >
                 Report Title and Additional Comment
               </label>
@@ -325,7 +325,7 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
               <label
                 class="ant-form-item-required"
                 for="VIEW_EDIT_REPORT_submission_year"
-                title="Report Compliance Year/Period"
+                title=""
               >
                 Report Compliance Year/Period
               </label>
@@ -416,7 +416,7 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
               <label
                 class="ant-form-item-required"
                 for="VIEW_EDIT_REPORT_due_date"
-                title="Due Date"
+                title=""
               >
                 Due Date
               </label>
@@ -507,7 +507,7 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
               <label
                 class="ant-form-item-required"
                 for="VIEW_EDIT_REPORT_submitter_name"
-                title="Submitter Name"
+                title=""
               >
                 Submitter Name
               </label>

@@ -61,6 +61,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
       </React.Fragment>
     }
     name="mrc_review_required"
+    required={true}
     validate={
       Array [
         [Function],
