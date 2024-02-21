@@ -16,8 +16,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-    <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="24.2.6" />
-    <PackageReference Include="Syncfusion.EJ2.PdfViewer.AspNet.Core.Linux" Version="24.2.6" />
+    <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="19.1.0.57" />
+    <PackageReference Include="Syncfusion.EJ2.PdfViewer.AspNet.Core.Linux" Version="19.1.0.57" />
     <!-- NOTE: We may need these dependencies in the future if we implement the document/spreadsheet viewer -->
     <!-- <PackageReference Include="Syncfusion.EJ2.Spreadsheet.AspNet.Core" Version="19.1.0.57" /> -->
     <!-- <PackageReference Include="Syncfusion.EJ2.WordEditor.AspNet.Core" Version="19.1.0.57" /> -->
