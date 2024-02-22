@@ -28,9 +28,9 @@ Cypress.Commands.add("login", () => {
     flagsmithKey: Cypress.env("CYPRESS_FLAGSMITH_KEY"),
   };
 
-  // cy.intercept("GET", environmentUrl, (req) => {
-  //   req.reply(response);
-  // });
+  cy.intercept("GET", environmentUrl, (req) => {
+    req.reply(response);
+  });
   cy.visit(url);
   cy.get("#username").type(Cypress.env("CYPRESS_TEST_USER"));
   cy.get("#password").type(Cypress.env("CYPRESS_TEST_PASSWORD"));
