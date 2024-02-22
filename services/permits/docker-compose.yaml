@@ -1,4 +1,9 @@
 services:
+  tika:
+    image: "apache/tika:2.9.1.0"
+    container_name: tika
+    ports:
+      - 9998:9998
 
   haystack-api:
     container_name: haystack
@@ -17,14 +22,17 @@ services:
       - TOKENIZERS_PARALLELISM=false
       - ROOT_PATH=/haystack
       - FILE_UPLOAD_PATH=/file-uploads
-    networks:
-      - elastic
+      - HAYSTACK_TELEMETRY_ENABLED=False
     depends_on:
+      tika:
+        condition: service_started
+      kibana:
+        condition: service_healthy
       elasticsearch:
         condition: service_healthy
   
   elasticsearch:
-    image: "docker.elastic.co/elasticsearch/elasticsearch:8.11.1"
+    image: "docker.elastic.co/elasticsearch/elasticsearch:8.12.1"
     container_name: elasticsearch
     ports:
       - 9200:9200
@@ -34,11 +42,8 @@ services:
       - xpack.security.enabled=false
       - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
 
-    # volumes:
-    #   - ./elasticsearch-data:/usr/share/elasticsearch/data
-    networks:
-      - elastic
-
+    volumes:
+      - esdata01:/usr/share/elasticsearch/data
 
     healthcheck:
         test: curl --fail http://localhost:9200/_cat/health || exit 1
@@ -46,20 +51,25 @@ services:
         timeout: 1s
         retries: 10
   kibana:
-    image: "docker.elastic.co/kibana/kibana:8.11.1"
+    image: "docker.elastic.co/kibana/kibana:8.12.1"
     ports:
       - 5601:5601
     depends_on:
       - elasticsearch
     container_name: kibana
-    networks:
-      - elastic
 
     environment:
      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
-
+    healthcheck:
+        test: curl --fail http://localhost:5601/api/status || exit 1
+        interval: 10s
+        timeout: 1s
+        retries: 10
 networks:
-  elastic:
+  default:
+    driver: "bridge"
 
 volumes:
   fileuploads:
+  esdata01:
+    driver: local

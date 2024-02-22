@@ -19,7 +19,7 @@ rest_api.utils.pipelines = {
 }
 
 mds = FastAPI()
-mds.add_middleware(OpenIdConnectMiddleware)
+# mds.add_middleware(OpenIdConnectMiddleware)
 
 haystack_app = get_app()
 # Include the Haystack REST API in our app

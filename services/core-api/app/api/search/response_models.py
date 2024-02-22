@@ -128,6 +128,7 @@ SEARCH_RESULTS_LIST_MODEL = api.model(
         'permit': fields.List(fields.Nested(PERMIT_SEARCH_RESULT_MODEL)),
         'mine_documents': fields.List(fields.Nested(MINE_DOCUMENT_SEARCH_RESULT_MODEL)),
         'permit_documents': fields.List(fields.Nested(PERMIT_DOCUMENT_SEARCH_RESULT_MODEL)),
+        'mines_act_permits': fields.List(fields.Raw()),
     })
 
 SEARCH_RESULT_RETURN_MODEL = api.model(

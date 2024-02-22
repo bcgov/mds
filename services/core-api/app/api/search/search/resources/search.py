@@ -74,15 +74,21 @@ class SearchResource(Resource, UserMixin):
                     break
                 if result.type == type:
                     top_search_results_by_type[result.result['id']] = result
+            if search_targets[type].get('primary_column'):
+                full_results = db.session.query(search_targets[type]['model'])\
+                    .filter(
+                        search_targets[type]['primary_column'].in_(
+                            top_search_results_by_type.keys())
+                    )\
+                    .all()
 
-            full_results = db.session.query(search_targets[type]['model']).filter(
-                search_targets[type]['primary_column'].in_(
-                    top_search_results_by_type.keys())).all()
+                for full_result in full_results:
+                    top_search_results_by_type[getattr(
+                        full_result, search_targets[type]['id_field'])].result = full_result
 
-            for full_result in full_results:
-                top_search_results_by_type[getattr(
-                    full_result, search_targets[type]['id_field'])].result = full_result
-
-            all_search_results[type] = list(top_search_results_by_type.values())
+                all_search_results[type] = list(top_search_results_by_type.values())
+            else:
+                print(search_results)
+                all_search_results[type] = [res.json() for res in search_results if res.type == type]
 
         return {'search_terms': search_terms, 'search_results': all_search_results}

@@ -1,11 +1,12 @@
 from sqlalchemy import desc, or_, func
 from app.extensions import db
-
+import json
 from app.api.mines.mine.models.mine import Mine
 from app.api.parties.party.models.party import Party
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
+from app.api.search.search.permit_search_service import PermitSearchService
 
 common_search_targets = {
     'mine': {
@@ -99,6 +100,18 @@ full_additional_search_targets = {
         'document_name',
         'score_multiplier':
         250
+    },
+    'mines_act_permits': {
+        'model': None,
+        'primary_column': None,
+        'description': 'Mines Act Permit Documents',
+        'entities_to_return': [],
+        'columns_to_search': [],
+        'has_deleted_ind': True,
+        'id_field': 'answer',
+        'party_guid': None,
+        'value_field': 'answer',
+        'score_multiplier': 1000
     }
 }
 
@@ -132,29 +145,42 @@ def execute_search(app,
                    type_config,
                    limit_results=None):
     with app.app_context():
-        for term in search_terms:
-            if len(term) > 2:
-                for column in type_config['columns_to_search']:
+        print('searching', type, search_term)
+        if type == 'mines_act_permits':
+            results = PermitSearchService().search(search_term)
+            for res in results:
+                print('got res ', res)
 
-                    # Query should return with the calculated column "score", as well as the columns defined in the configuration
-                    similarity = db.session.query(type_config['model']).with_entities(
-                        func.similarity(column, term).label('score'),
-                        *type_config['entities_to_return']).filter(column.ilike(f'%{term}%'))
+                search_results.append(
+                    SearchResult(10, type, {
+                        'id': '',
+                        'value': res
+                    })
+                )
+        else:
+            for term in search_terms:
+                if len(term) > 2:
+                    for column in type_config['columns_to_search']:
 
-                    if type_config['has_deleted_ind']:
-                        similarity = similarity.filter_by(deleted_ind=False)
+                        # Query should return with the calculated column "score", as well as the columns defined in the configuration
+                        similarity = db.session.query(type_config['model']).with_entities(
+                            func.similarity(column, term).label('score'),
+                            *type_config['entities_to_return']).filter(column.ilike(f'%{term}%'))
 
-                    similarity = similarity.order_by(desc(func.similarity(column, term)))
+                        if type_config['has_deleted_ind']:
+                            similarity = similarity.filter_by(deleted_ind=False)
 
-                    if limit_results:
-                        similarity = similarity.limit(limit_results)
+                        similarity = similarity.order_by(desc(func.similarity(column, term)))
 
-                    similarity = similarity.all()
+                        if limit_results:
+                            similarity = similarity.limit(limit_results)
 
-                    for item in similarity:
-                        append_result(search_results, search_term, type, item,
-                                      type_config['id_field'], type_config['value_field'],
-                                      type_config['score_multiplier'])
+                        similarity = similarity.all()
+
+                        for item in similarity:
+                            append_result(search_results, search_term, type, item,
+                                        type_config['id_field'], type_config['value_field'],
+                                        type_config['score_multiplier'])
 
 
 class SearchResult:

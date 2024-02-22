@@ -9,7 +9,10 @@ import { Link } from "react-router-dom";
 import { sumBy, map, mapValues, keyBy } from "lodash";
 import { getSearchResults, getSearchTerms } from "@mds/common/redux/selectors/searchSelectors";
 import { getPartyRelationshipTypeHash } from "@mds/common/redux/selectors/staticContentSelectors";
-import { fetchSearchOptions, fetchSearchResults } from "@mds/common/redux/actionCreators/searchActionCreator";
+import {
+  fetchSearchOptions,
+  fetchSearchResults,
+} from "@mds/common/redux/actionCreators/searchActionCreator";
 import { getSearchOptions } from "@mds/common/redux/reducers/searchReducer";
 import { MineResultsTable } from "@/components/search/MineResultsTable";
 import { PermitResultsTable } from "@/components/search/PermitResultsTable";
@@ -17,6 +20,7 @@ import { ContactResultsTable } from "@/components/search/ContactResultsTable";
 import { DocumentResultsTable } from "@/components/search/DocumentResultsTable";
 import Loading from "@/components/common/Loading";
 import * as router from "@/constants/routes";
+import PermitSearchResults from "@mds/common/components/permits/PermitSearchResults";
 
 const propTypes = {
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
@@ -78,6 +82,13 @@ const TableForGroup = (
     ),
     permit_documents: (
       <DocumentResultsTable
+        header="Permit Documents"
+        highlightRegex={highlightRegex}
+        searchResults={group.results}
+      />
+    ),
+    mines_act_permits: (
+      <PermitSearchResults
         header="Permit Documents"
         highlightRegex={highlightRegex}
         searchResults={group.results}
