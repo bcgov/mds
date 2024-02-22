@@ -17,6 +17,7 @@ const propTypes = {
 const defaultProps = {
   submitting: false,
   addCommentPermission: null,
+  userRoles: [],
 };
 
 export class CommentEditor extends Component {
