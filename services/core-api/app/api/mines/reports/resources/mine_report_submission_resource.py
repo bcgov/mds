@@ -1,7 +1,6 @@
 import uuid
-from flask_restx import Resource, reqparse, fields, inputs
+from flask_restx import Resource
 from werkzeug.exceptions import BadRequest
-from sqlalchemy import desc
 from datetime import datetime
 
 from app.extensions import api, db
@@ -13,12 +12,13 @@ from app.api.mines.reports.models.mine_report import MineReport
 from app.api.mines.reports.models.mine_report_submission import MineReportSubmission
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
 from app.api.mines.reports.models.mine_report_contact import MineReportContact
+from app.api.mines.permits.permit_conditions.models.permit_condition_category import PermitConditionCategory
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.documents.models.mine_document import MineDocument
 
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.mines.response_models import MINE_REPORT_SUBMISSION_MODEL
-from flask import current_app
+
 class ReportSubmissionResource(Resource, UserMixin):
 
     parser = CustomReqparser()

@@ -41,6 +41,7 @@ import {
 import { getParties, getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
 import { uniqBy } from "lodash";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
+import ExportOutlined from "@ant-design/icons/ExportOutlined";
 
 const RenderContacts: FC<any> = ({ fields, isEditMode, mineSpaceEdit }) => {
   const canEdit = isEditMode && !mineSpaceEdit;
@@ -123,6 +124,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   const partyRelationships: IPartyAppt[] = useSelector((state) => getPartyRelationships(state));
   const parties = useSelector((state) => getParties(state));
   const mineReportDefinitionOptions = useSelector(getMineReportDefinitionOptions);
+  const [mineReportDefinition, setMineReportDefinition] = useState<IMineReportDefinition>(null);
 
   const system = useSelector(getSystemFlag);
 
@@ -201,6 +203,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
       const newReportComplianceArticle = mineReportDefinitionOptions.find((opt) => {
         return opt.mine_report_definition_guid === mine_report_definition_guid;
       });
+      setMineReportDefinition(newReportComplianceArticle);
 
       setSelectedReportCode(formatComplianceCodeReportName(newReportComplianceArticle));
     } else {
@@ -298,9 +301,23 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
                   <Col xs={24} md={18}>
                     <b>You are submitting:</b>
                     <br />
-                    <b>{selectedReportName}</b> [TODO: plain language on what it is]
+                    <b>{selectedReportName}</b>
                     <br />
-                    <b>{selectedReportCode}</b> [TODO: plain language on what it is]
+                    {mineReportDefinition && (
+                      <>
+                        <Typography.Paragraph>
+                          {mineReportDefinition.compliance_articles[0].long_description}
+                        </Typography.Paragraph>
+                        <Button
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          href={mineReportDefinition.compliance_articles[0].help_reference_link}
+                          type="default"
+                        >
+                          More information <ExportOutlined />
+                        </Button>
+                      </>
+                    )}
                   </Col>
                 </Row>
               </div>

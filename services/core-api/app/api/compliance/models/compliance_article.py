@@ -18,6 +18,8 @@ class ComplianceArticle(AuditMixin, Base):
     long_description = db.Column(db.String, nullable=False)
     effective_date = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
     expiry_date = db.Column(db.DateTime)
+    help_reference_link = db.Column(db.String, nullable=True)
+    cim_or_cpo = db.Column(db.String, nullable=True)
 
     article_act = db.relationship('ArticleActCode')
 
