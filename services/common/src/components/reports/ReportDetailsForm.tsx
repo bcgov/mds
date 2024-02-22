@@ -41,7 +41,7 @@ import {
   fetchMineReportComments,
 } from "@mds/common/redux/actionCreators/reportCommentActionCreator";
 import AuthorizationWrapper from "@mds/common/wrappers/AuthorizationWrapper";
-import * as Permission from "@mds/common/constants/environment";
+import { USER_ROLES } from "@mds/common/constants/environment";
 
 const RenderContacts: FC<any> = ({ fields, isEditMode, mineSpaceEdit }) => {
   const canEdit = isEditMode && !mineSpaceEdit;
@@ -107,8 +107,8 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   handleSubmit,
   currentReportDefinition,
 }) => {
-  const coreEditReportPermission = Permission.USER_ROLES.role_edit_reports;
-  const coreViewAllPermission = Permission.USER_ROLES.role_view;
+  const coreEditReportPermission = USER_ROLES.role_edit_reports;
+  const coreViewAllPermission = USER_ROLES.role_view;
   const dispatch = useDispatch();
   const formValues: IMineReportSubmission =
     useSelector((state) => getFormValues(FORM.VIEW_EDIT_REPORT)(state)) ?? {};
