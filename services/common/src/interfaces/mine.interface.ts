@@ -14,6 +14,8 @@ export interface IMine {
   ohsc_ind: boolean;
   union_ind: boolean;
   major_mine_ind: boolean;
+  // mine_location seems to be missing from BE response but necessary for map
+  mine_location?: { latitude: number; longitude: number };
   mine_permit_numbers: string[];
   mine_tailings_storage_facilities: ITailingsStorageFacility[];
   number_of_mine_employees: number;

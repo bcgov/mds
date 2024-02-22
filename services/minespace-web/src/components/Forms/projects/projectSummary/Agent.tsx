@@ -32,10 +32,14 @@ export const Agent: FC = () => {
     { value: "INT", label: "International" },
   ];
 
-  // set a value for party type code because required validation doesn't show
-  if (!party_type_code) {
-    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.party_type_code", "ORG"));
-  }
+  useEffect(() => {
+    // set a value for party type code because required validation doesn't show
+    if (!party_type_code && is_agent) {
+      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.party_type_code", "ORG"));
+    } else if (!is_agent) {
+      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent", {}));
+    }
+  }, [is_agent]);
 
   useEffect(() => {
     if (party_type_code === "ORG") {

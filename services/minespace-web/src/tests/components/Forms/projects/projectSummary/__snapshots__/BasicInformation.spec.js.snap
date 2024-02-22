@@ -12,6 +12,7 @@ exports[`BasicInformation renders properly 1`] = `
     id="project_summary_title"
     label="Project title"
     name="project_summary_title"
+    required={true}
     validate={
       Array [
         [Function],
@@ -22,17 +23,8 @@ exports[`BasicInformation renders properly 1`] = `
   <Field
     component={[Function]}
     id="proponent_project_id"
-    label={
-      <React.Fragment>
-        Proponent project tracking ID (optional)
-        <br />
-        <span
-          className="light--sm"
-        >
-          If your company uses a tracking number to identify projects, please provide it here.
-        </span>
-      </React.Fragment>
-    }
+    label="Proponent project tracking ID"
+    labelSubtitle="If your company uses a tracking number to identify projects, please provide it here."
     name="proponent_project_id"
     validate={
       Array [
@@ -43,20 +35,11 @@ exports[`BasicInformation renders properly 1`] = `
   <Field
     component={[Function]}
     id="project_summary_description"
-    label={
-      <React.Fragment>
-        Project overview 
-        <br />
-        <span
-          className="light--sm"
-        >
-           
-          Provide a 2-3 paragraph high-level description of your proposed project.
-        </span>
-      </React.Fragment>
-    }
+    label="Project overview"
+    labelSubtitle="Provide a 2-3 paragraph high-level description of your proposed project."
     minRows={10}
     name="project_summary_description"
+    required={true}
     validate={
       Array [
         [Function],
