@@ -1,7 +1,7 @@
 -- add party for facility operator
 ALTER TABLE project_summary
     ADD COLUMN IF NOT EXISTS facility_operator_guid UUID,
-    ADD COLUMN IF NOT EXISTS facility_type VARCHAR(150),
+    ADD COLUMN IF NOT EXISTS facility_type VARCHAR(4000),
     ADD COLUMN IF NOT EXISTS facility_desc VARCHAR(4000),
     ADD COLUMN IF NOT EXISTS facility_latitude NUMERIC(9,7),
     ADD COLUMN IF NOT EXISTS facility_longitude NUMERIC(11,7),
@@ -9,9 +9,9 @@ ALTER TABLE project_summary
     ADD COLUMN IF NOT EXISTS facility_coords_source_desc VARCHAR(4000),
     ADD COLUMN IF NOT EXISTS facility_pid_pin_crown_file_no VARCHAR(100),
     ADD COLUMN IF NOT EXISTS legal_land_desc VARCHAR(4000),
-    ADD COLUMN IF NOT EXISTS facility_lease_no VARCHAR(150),
+    ADD COLUMN IF NOT EXISTS facility_lease_no VARCHAR(100),
     ADD COLUMN IF NOT EXISTS zoning BOOLEAN,
-    ADD COLUMN IF NOT EXISTS zoning_reason VARCHAR(150),
+    ADD COLUMN IF NOT EXISTS zoning_reason VARCHAR(100),
 
     ADD CONSTRAINT facility_operator_guid_party_guid_fkey
         FOREIGN KEY (facility_operator_guid) REFERENCES party(party_guid);
