@@ -25,12 +25,12 @@ Cypress.Commands.add("login", () => {
     keycloak_idpHint: Cypress.env("CYPRESS_KEYCLOAK_IDP_HINT"),
     environment: Cypress.env("CYPRESS_ENVIRONMENT"),
     flagsmithUrl: Cypress.env("CYPRESS_FLAGSMITH_URL"),
-    flagsmithKey: Cypress.env("CYPRESS_FLAGSMITH_KEY")
+    flagsmithKey: Cypress.env("CYPRESS_FLAGSMITH_KEY"),
   };
 
-  cy.intercept("GET", environmentUrl, (req) => {
-    req.reply(response);
-  });
+  // cy.intercept("GET", environmentUrl, (req) => {
+  //   req.reply(response);
+  // });
   cy.visit(url);
   cy.get("#username").type(Cypress.env("CYPRESS_TEST_USER"));
   cy.get("#password").type(Cypress.env("CYPRESS_TEST_PASSWORD"));

@@ -41,13 +41,21 @@ all:
 	@docker compose $(DC_FILE) build --force-rm --no-cache --parallel
 	@docker compose $(DC_FILE) up -d
 
-be:
-	@echo "+\n++ Building only backend ...\n+"
+be-rebuild:
+	@echo "+\n++ Rebuilding backend container ...\n+"
 	@docker compose $(DC_FILE) build --force-rm --no-cache --parallel backend
-	@docker compose $(DC_FILE) up -d --build backend
+	@docker compose $(DC_FILE) up -d backend
 
-cypress-keycloak:
-	@docker compose $(DC_FILE) build --force-rm --no-cache keycloak
+be-minimal:
+	@echo "+\n++ Starting minimal backend ...\n+"
+	@docker compose $(DC_FILE) up -d --no-deps postgres redis flyway
+	@docker compose $(DC_FILE) up -d --no-deps backend document_manager_backend
+
+be:
+	@echo "+\n++ Starting backend ...\n+"
+	@docker compose $(DC_FILE) up -d backend
+
+keycloak:
 	@docker compose $(DC_FILE) up -d keycloak
 
 run-cypress-core:

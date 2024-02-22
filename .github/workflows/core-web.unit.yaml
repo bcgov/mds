@@ -27,10 +27,12 @@ jobs:
         run: |
           INPUT=yes LOAD_EXTERNAL=yes make env
 
+      - name: Run keycloak
+        run: |
+          make keycloak
       - name: Run backend
         run: |
-          make be
-          docker-compose up -d keycloak
+          make be-minimal
 
       - uses: actions/setup-node@v3
         with:
