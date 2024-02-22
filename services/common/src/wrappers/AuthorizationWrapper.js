@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -64,25 +63,14 @@ const defaultProps = {
 };
 
 export const AuthorizationWrapper = (props) => {
-  console.log("props....auth wrapper...: ", props);
   const inDevCheck =
     props.inDevelopment === undefined || (props.inDevelopment && detectDevelopmentEnvironment());
   const inTestCheck =
     props.inTesting === undefined || (props.inTesting && !detectProdEnvironment());
-  // const permissionCheck =
-  //   props.permission === undefined || props.userRoles.includes(USER_ROLES[props.permission]);
   const permissionCheck =
     props.permission === undefined || Object.values(USER_ROLES).includes(props.permission);
-
   const isMajorMine = props.isMajorMine === undefined || props.isMajorMine;
-  // const isAdmin = props.userRoles.includes(USER_ROLES[Permission.USER_ROLES.role_admin]);
   const isAdmin = Object.values(USER_ROLES).includes(Permission.USER_ROLES.role_admin);
-
-  console.log("Auth Wrapper - props.userRoles: ", props.userRoles);
-  console.log("Auth Wrapper - props.permission: ", props.permission);
-  console.log("Auth Wrapper - USER_ROLES: ", USER_ROLES);
-  console.log("Auth Wrapper - USER_ROLES[props.permission]: ", USER_ROLES[props.permission]);
-  console.log("permissionCheck: ", permissionCheck);
 
   const title = () => {
     const permission = props.permission ? `${USER_ROLES[props.permission]}` : "";
