@@ -9,11 +9,11 @@ import { AppThunk } from "@/store/appThunk.type";
  @typeparam R - A result type.
  @typeparam S - A state type.
  @return - Either a function that takes the same arguments as T, and returns a state of type S, or undefined.
- asds*/
+ */
 export type ActionCreator<T extends (...args: any[]) => any> = T extends (
   ...args: infer P
 ) => infer R
   ? R extends AppThunk<infer S>
-    ? (...args: P) => S
-    : undefined
+  ? (...args: P) => S
+  : undefined
   : undefined;

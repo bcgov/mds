@@ -14,12 +14,23 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         name: checkout
-      - uses: KengoTODA/actions-setup-docker-compose@v1
+      - name: Install oc
+        uses: redhat-actions/openshift-tools-installer@v1
         with:
-          version: "2.22.0"
-      - name: Login
+          oc: "4.7"
+
+      - name: oc login
         run: |
-          docker login -u ${{ secrets.CLUSTER_REGISTRY_USER }} -p ${{ secrets.BUILD_TOKEN }} ${{ secrets.CLUSTER_REGISTRY }}
+          oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
+
+      - name: Set up env variables
+        run: |
+          INPUT=yes LOAD_EXTERNAL=yes make env
+
+      - name: Run backend
+        run: |
+          make be
+          docker-compose up -d keycloak
 
       - uses: actions/setup-node@v3
         with:
@@ -39,15 +50,15 @@ jobs:
 
       # - name: Run frontend tests
       #   run: cd services/core-web/ && yarn && yarn test
-      - name: Run Migrations
-        env:
-          DOCKER_BUILDKIT: 1
-        run: docker-compose -f docker-compose.ci.yaml -f docker-compose.cypress.yaml up --force-recreate --exit-code-from flyway flyway
+      # - name: Run Migrations
+      #   env:
+      #     DOCKER_BUILDKIT: 1
+      #   run: docker-compose -f docker-compose.ci.yaml -f docker-compose.cypress.yaml up --force-recreate --exit-code-from flyway flyway
 
-      - name: Create containers for integration tests
-        env:
-          DOCKER_BUILDKIT: 1
-        run: docker-compose -f docker-compose.ci.yaml -f docker-compose.cypress.yaml up -d backend keycloak
+      # - name: Create containers for integration tests
+      #   env:
+      #     DOCKER_BUILDKIT: 1
+      #   run: docker-compose -f docker-compose.ci.yaml -f docker-compose.cypress.yaml up -d backend keycloak
       - name: build-core-web
         run: |
           NODE_OPTIONS=--max-old-space-size=5024 yarn workspace @mds/core-web build
