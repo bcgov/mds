@@ -224,6 +224,7 @@ class Config(object):
         'https://mines-permitting-issuer-a3e512-dev.apps.silver.devops.gov.bc.ca/')
     VCR_ISSUER_SECRET_KEY = os.environ.get('VCR_ISSUER_SECRET_KEY', 'super-secret-key')
 
+
     # Common Services
     COMMON_SERVICES_CLIENT_ID = os.environ.get('COMMON_SERVICES_CLIENT_ID')
     COMMON_SERVICES_CLIENT_SECRET = os.environ.get('COMMON_SERVICES_CLIENT_SECRET')
@@ -245,7 +246,7 @@ class Config(object):
     TEMPLATE_IRT = os.environ.get('TEMPLATE_IRT', 'IRT_Template.xlsx')
 
     # Celery settings
-    CELERY_RESULT_BACKEND = f'db+postgres://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+    CELERY_RESULT_BACKEND = f'db+postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
     CELERY_BROKER_URL = f'redis://:{CACHE_REDIS_PASS}@{CACHE_REDIS_HOST}:{CACHE_REDIS_PORT}'
     CELERY_READBEAT_BROKER_URL = f'{CELERY_BROKER_URL}'
     CELERY_DEFAULT_QUEUE = 'core_tasks'
