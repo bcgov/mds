@@ -51,8 +51,6 @@ export class CommentEditor extends Component {
       ? Object.values(USER_ROLES).includes(this.props.addCommentPermission)
       : true;
 
-    const minespaceReadyForComments = false;
-
     return (
       <div>
         {canAddComment && (
@@ -66,17 +64,6 @@ export class CommentEditor extends Component {
               value={this.state.comment}
               name="comment"
             />
-          </Form.Item>
-        )}
-        {minespaceReadyForComments && (
-          <Form.Item>
-            <Checkbox
-              name="visible"
-              checked={this.state.visible}
-              onChange={this.handleCheckboxChange}
-            >
-              Publish this comment on MineSpace for the proponent to see
-            </Checkbox>
           </Form.Item>
         )}
         {canAddComment && (
