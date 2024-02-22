@@ -204,14 +204,6 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
     dispatch(change(FORM.VIEW_EDIT_REPORT, "documents", docs));
   };
 
-  const handleOpenMoreInformation = () => {
-    const newWindow = window.open(
-      mineReportDefinition.compliance_articles[0].help_reference_link,
-      "_blank"
-    );
-    newWindow.opener = null;
-  };
-
   return (
     <div>
       {(isEditMode || !initialValues) && system !== SystemFlagEnum.core && (
@@ -284,7 +276,12 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
                         <Typography.Paragraph>
                           {mineReportDefinition.compliance_articles[0].long_description}
                         </Typography.Paragraph>
-                        <Button onClick={handleOpenMoreInformation} type="default">
+                        <Button
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          href={mineReportDefinition.compliance_articles[0].help_reference_link}
+                          type="default"
+                        >
                           More information <ExportOutlined />
                         </Button>
                       </>

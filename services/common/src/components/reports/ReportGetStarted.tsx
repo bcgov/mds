@@ -53,14 +53,6 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
     setSelectedReportDefinition(newReport);
   };
 
-  const handleOpenMoreInformation = () => {
-    const newWindow = window.open(
-      selectedReportDefinition.compliance_articles[0].help_reference_link,
-      "_blank"
-    );
-    newWindow.opener = null;
-  };
-
   return (
     <div>
       <Typography.Title level={3}>Getting Started with your Report Submission</Typography.Title>
@@ -143,7 +135,12 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
                   </Typography.Paragraph>
                 )}
                 {selectedReportDefinition.compliance_articles[0].help_reference_link && (
-                  <Button onClick={handleOpenMoreInformation} type="default">
+                  <Button
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={selectedReportDefinition.compliance_articles[0].help_reference_link}
+                    type="default"
+                  >
                     More information <ExportOutlined />
                   </Button>
                 )}

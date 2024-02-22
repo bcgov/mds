@@ -83,6 +83,8 @@ exports[`ReportDetailsForm renders view mode properly 1`] = `
               </div>
               <button
                 class="ant-btn ant-btn-default"
+                rel="noopener noreferrer"
+                target="_blank"
                 type="button"
               >
                 <span>
