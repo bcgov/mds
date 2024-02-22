@@ -56,7 +56,7 @@ export const FacilityOperator: FC = () => {
       <Field
         name="facility_type"
         required
-        validate={[required]}
+        validate={[required, maxLength(4000)]}
         label="Facility Type"
         labelSubtitle="List the proposed facility type and/or mining activity."
         component={RenderField}
@@ -118,6 +118,7 @@ export const FacilityOperator: FC = () => {
         name="facility_pid_pin_crown_file_no"
         label="PID/PIN/Crown File No"
         component={RenderField}
+        validate={[maxLength(100)]}
       />
       <Field
         name="legal_land_desc"
@@ -131,6 +132,7 @@ export const FacilityOperator: FC = () => {
         name="facility_lease_no"
         label="Mine Lease/Coal Lease Number"
         component={RenderField}
+        validate={[maxLength(100)]}
       />
 
       <Typography.Title level={4}>Facility Address</Typography.Title>
@@ -184,7 +186,7 @@ export const FacilityOperator: FC = () => {
           name="zoning_reason"
           label="If no, state the reason"
           required
-          validate={[required]}
+          validate={[required, maxLength(100)]}
           component={RenderField}
         />
       )}
