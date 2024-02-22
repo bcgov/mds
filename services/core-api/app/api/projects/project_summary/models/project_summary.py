@@ -1,7 +1,5 @@
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.ext.associationproxy import association_proxy
-from sqlalchemy.orm import backref
 
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy import case
@@ -39,6 +37,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     expected_project_start_date = db.Column(db.DateTime, nullable=True)
     agent_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=True)
     is_agent = db.Column(db.Boolean, nullable=True)
+    facility_operator_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=True)
     is_legal_land_owner = db.Column(db.Boolean, nullable=True)
     is_crown_land_federal_or_provincial = db.Column(db.Boolean, nullable=True)
     is_landowner_aware_of_discharge_application = db.Column(db.Boolean, nullable=True)
@@ -46,6 +45,18 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     legal_land_owner_name = db.Column(db.String(200), nullable=True)
     legal_land_owner_contact_number = db.Column(db.String(20), nullable=True)
     legal_land_owner_email_address = db.Column(db.String(200), nullable=True)
+    facility_type = db.Column(db.String, nullable=True)
+    facility_desc = db.Column(db.String(4000), nullable=True)
+    facility_latitude = db.Column(db.Numeric(9,7), nullable=True)
+    facility_longitude = db.Column(db.Numeric(11,7), nullable=True)
+    facility_coords_source = db.Column(db.String(3), nullable=True)
+    facility_coords_source_desc = db.Column(db.String(4000), nullable=True)
+    facility_pid_pin_crown_file_no = db.Column(db.String(100), nullable=True)
+    legal_land_desc = db.Column(db.String(4000), nullable=True)
+    facility_lease_no = db.Column(db.String, nullable=True)
+    zoning = db.Column(db.Boolean, nullable=True)
+    zoning_reason = db.Column(db.String, nullable=True)
+
 
     project_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('project.project_guid'), nullable=False)
@@ -62,6 +73,9 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     )
     agent = db.relationship(
         'Party', lazy='joined', foreign_keys=agent_party_guid
+    )
+    facility_operator = db.relationship(
+        'Party', lazy='joined', foreign_keys=facility_operator_guid
     )
     authorizations = db.relationship(
         'ProjectSummaryAuthorization',
@@ -166,6 +180,40 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         except ValueError:
             return None
 
+    # will update the existing party and address data if it exists, else create a new one
+    @classmethod
+    def create_or_update_party(cls, party_data, job_title_code, existing_party):
+        address_data = party_data.get('address')
+        party_guid = party_data.get('party_guid')
+        Party.validate_phone_no(party_data.get('phone_no'), address_data.get('address_type_code'))
+        if party_guid is not None and existing_party is not None:            
+            existing_party.deep_update_from_dict(party_data)
+            for key, value in address_data.items():
+                setattr(existing_party.address[0], key, value)
+            return existing_party
+        else:
+            new_party = Party.create(
+                party_name=party_data.get('party_name'),
+                first_name=party_data.get('first_name'),
+                phone_no=party_data.get('phone_no'),
+                phone_ext=party_data.get('phone_ext'),
+                email=party_data.get('email'),
+                party_type_code=party_data.get('party_type_code'),
+                job_title=party_data.get('job_title'),
+                job_title_code=job_title_code,
+                address_type_code=address_data.get('address_type_code')
+            )
+            new_address = Address.create(
+                suite_no=address_data.get('suite_no'),
+                address_line_1=address_data.get('address_line_1'),
+                city=address_data.get('city'),
+                sub_division_code=address_data.get('sub_division_code'),
+                post_code=address_data.get('post_code'),
+                address_type_code=address_data.get('address_type_code'),
+            )
+            new_party.address.append(new_address)
+            return new_party
+        
     @classmethod
     def create(cls,
                project,
@@ -246,6 +294,18 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                legal_land_owner_name=None,
                legal_land_owner_contact_number=None,
                legal_land_owner_email_address=None,
+               facility_operator=None,
+               facility_type=None,
+               facility_desc=None,
+               facility_latitude=None,
+               facility_longitude=None,
+               facility_coords_source=None,
+               facility_coords_source_desc=None,
+               facility_pid_pin_crown_file_no=None,
+               legal_land_desc=None,
+               facility_lease_no=None,
+               zoning=None,
+               zoning_reason=None,
                add_to_session=True):
 
         # Update simple properties.
@@ -282,54 +342,33 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         #         doc.mine_document.delete(commit=False)
 
         # Create or update Agent Party
-        # if updated values are received for party or their address,
-        # currently just updating existing values (ie: same guid) not assigning a new party/address
         self.is_agent = is_agent   
         if not is_agent or is_agent is None or not agent:
             # unassign the agent party guid if previously set
             self.agent_party_guid = None
         else:
-            address = agent.get('address')
-            agent_party_guid = agent.get('party_guid')
+            agent_party = self.create_or_update_party(agent, 'AGT', self.agent)
+            agent_party.save()
+            self.agent_party_guid = agent_party.party_guid
 
-            # if updates are made to the existing party:
-            if self.agent_party_guid is not None and str(self.agent_party_guid) == agent_party_guid:
-                Party.validate_phone_no(agent.get('phone_no'), address.get('address_type_code'))
-                self.agent.deep_update_from_dict(agent)
-                agent_address = Address(
-                    suite_no=address.get('suite_no'),
-                    address_line_1=address.get('address_line_1'),
-                    city=address.get('city'),
-                    sub_division_code=address.get('sub_division_code'),
-                    post_code=address.get('post_code'),
-                    address_type_code=address.get('address_type_code'),
-                )
+        self.facility_type = facility_type
+        self.facility_desc = facility_desc
+        self.facility_latitude = facility_latitude
+        self.facility_longitude = facility_longitude
+        self.facility_coords_source = facility_coords_source
+        self.facility_coords_source_desc = facility_coords_source_desc
+        self.facility_pid_pin_crown_file_no = facility_pid_pin_crown_file_no
+        self.legal_land_desc = legal_land_desc
+        self.facility_lease_no = facility_lease_no
+        self.zoning = zoning
+        self.zoning_reason = zoning_reason
 
-                self.agent.address.append(agent_address)
-                self.agent.save()
-            else:
-                agent_party = Party.create(
-                    party_name=agent.get('party_name'),
-                    first_name=agent.get('first_name'),
-                    phone_no=agent.get('phone_no'),
-                    phone_ext=agent.get('phone_ext'),
-                    email=agent.get('email'),
-                    party_type_code=agent.get('party_type_code'),
-                    job_title=agent.get('job_title'),
-                    job_title_code='AGT',
-                    address_type_code=address.get('address_type_code')
-                )                
-                agent_address = Address.create(
-                    suite_no=address.get('suite_no'),
-                    address_line_1=address.get('address_line_1'),
-                    city=address.get('city'),
-                    sub_division_code=address.get('sub_division_code'),
-                    post_code=address.get('post_code'),
-                    address_type_code=address.get('address_type_code'),
-                )
-                agent_party.address.append(agent_address)
-                agent_party.save()
-                self.agent_party_guid = agent_party.party_guid
+        if facility_operator:
+            if not facility_operator['party_type_code']:
+                facility_operator["party_type_code"] = "PER"
+            fop_party = self.create_or_update_party(facility_operator, 'FOP', self.facility_operator)
+            fop_party.save()
+            self.facility_operator_guid = fop_party.party_guid
 
         # Create or update existing documents.
         for doc in documents:

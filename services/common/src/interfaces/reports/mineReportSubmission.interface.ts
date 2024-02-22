@@ -23,6 +23,7 @@ export interface IMineReportSubmission {
   permit_number?: any;
   received_date: string;
   report_name?: string;
+  report_type?: string;
   submission_date: string;
   submission_year: number;
   submitter_email: string;

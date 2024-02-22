@@ -17,18 +17,26 @@ export const {
   getProjectLinks,
 } = projectReducer;
 
-const formatProjectSummaryAgent = (agent): IParty => {
-  if (!agent || !agent.party_guid) {
-    return agent;
+const formatProjectSummaryParty = (party): IParty => {
+  if (!party?.party_guid) {
+    return party;
   }
-  return { ...agent, address: agent.address[0] };
+  console.log(
+    party,
+    party.job_title_code,
+    party.first_name,
+    party.party_name,
+    party.address.length
+  );
+  return { ...party, address: party.address[0] };
 };
 
 export const getFormattedProjectSummary = createSelector(
   [getProjectSummary, getProject],
   (summary, project) => {
-    const agent = formatProjectSummaryAgent(summary.agent);
-    let formattedSummary = { ...summary, agent, authorizationOptions: [] };
+    const agent = formatProjectSummaryParty(summary.agent);
+    const facility_operator = formatProjectSummaryParty(summary.facility_operator);
+    let formattedSummary = { ...summary, agent, facility_operator, authorizationOptions: [] };
     if (!isEmpty(summary) && summary?.authorizations.length) {
       summary.authorizations.forEach((authorization) => {
         formattedSummary = {

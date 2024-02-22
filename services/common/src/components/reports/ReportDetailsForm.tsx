@@ -9,13 +9,20 @@ import { getMineReportDefinitionOptions } from "@mds/common/redux/selectors/stat
 import ReportFileUpload from "@mds/common/components/reports/ReportFileUpload";
 
 import { FORM } from "@mds/common/constants/forms";
-import { email, maxLength, required, yearNotInFuture } from "@mds/common/redux/utils/Validate";
+import {
+  email,
+  maxLength,
+  required,
+  yearNotInFuture,
+  requiredRadioButton,
+} from "@mds/common/redux/utils/Validate";
 import ReportFilesTable from "./ReportFilesTable";
 import { formatComplianceCodeReportName } from "@mds/common/redux/utils/helpers";
 import RenderDate from "../forms/RenderDate";
 import RenderSelect from "../forms/RenderSelect";
 import FormWrapper from "../forms/FormWrapper";
 import RenderField from "../forms/RenderField";
+import RenderRadioButtons from "../forms/RenderRadioButtons";
 import {
   IMineDocument,
   IMineReportDefinition,
@@ -133,6 +140,11 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   }, []);
 
   useEffect(() => {
+    const reportType = initialValues?.permit_condition_category_code ? "PRR" : "CRR";
+    dispatch(change(FORM.VIEW_EDIT_REPORT, "report_type", reportType));
+  }, [!formValues?.report_type]);
+
+  useEffect(() => {
     if (currentReportDefinition) {
       dispatch(
         change(
@@ -231,6 +243,26 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
         initialValues={initialValues}
       >
         <Row gutter={[16, 8]}>
+          {system === SystemFlagEnum.core && (
+            <Col span={24}>
+              <Field
+                name="report_type"
+                id="report_type"
+                required
+                disabled={true}
+                props={{
+                  isVertical: true,
+                }}
+                label="What is the type of the report?"
+                component={RenderRadioButtons}
+                validate={[requiredRadioButton]}
+                customOptions={[
+                  { label: "Code Required Report", value: "CRR" },
+                  { label: "Permit Required Report", value: "PRR" },
+                ]}
+              />
+            </Col>
+          )}
           <Col span={12}>
             <Field
               component={RenderSelect}

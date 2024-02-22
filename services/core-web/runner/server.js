@@ -75,7 +75,6 @@ app.get(`${BASE_PATH}/env`, (req, res) => {
     environment: process.env.NODE_ENV,
     flagsmithKey: process.env.FLAGSMITH_KEY,
     flagsmithUrl: process.env.FLAGSMITH_URL,
-    syncfusionLicense: process.env.SYNCFUSION_LICENSE_KEY,
   });
 });
 

@@ -127,7 +127,26 @@ class ProjectSummaryResource(Resource, UserMixin):
         store_missing=False,
         required=False,
     )
+    parser.add_argument(
+        'facility_operator', 
+        type=dict, 
+        location='json', 
+        store_missing=False, 
+        required=False
+    )
+    parser.add_argument('facility_type', type=str, store_missing=False, required=False)
+    parser.add_argument('facility_desc', type=str, store_missing=False, required=False)
 
+    parser.add_argument('facility_latitude', type=lambda x: Decimal(x) if x else None, store_missing=False, required=False)
+    parser.add_argument('facility_longitude', type=lambda x: Decimal(x) if x else None, store_missing=False, required=False)
+    
+    parser.add_argument('facility_coords_source', type=str, store_missing=False, required=False)
+    parser.add_argument('facility_coords_source_desc', type=str, store_missing=False, required=False)
+    parser.add_argument('facility_pid_pin_crown_file_no', type=str, store_missing=False, required=False)
+    parser.add_argument('legal_land_desc', type=str, store_missing=False, required=False)
+    parser.add_argument('facility_lease_no', type=str, store_missing=False, required=False)
+    parser.add_argument('zoning', type=bool, store_missing=False, required=False)
+    parser.add_argument('zoning_reason', type=str, store_missing=False, required=False)
 
     @api.doc(
         description='Get a Project Description.',
@@ -186,7 +205,13 @@ class ProjectSummaryResource(Resource, UserMixin):
                                data.get('is_legal_land_owner'), data.get('is_crown_land_federal_or_provincial'),
                                data.get('is_landowner_aware_of_discharge_application'), data.get('has_landowner_received_copy_of_application'),
                                data.get('legal_land_owner_name'), data.get('legal_land_owner_contact_number'),
-                               data.get('legal_land_owner_email_address'))
+                               data.get('legal_land_owner_email_address'), data.get('facility_operator'),
+                               data.get('facility_type'), data.get('facility_desc'),
+                               data.get('facility_latitude'), data.get('facility_longitude'),
+                               data.get('facility_coords_source'), data.get('facility_coords_source_desc'),
+                               data.get('facility_pid_pin_crown_file_no'), data.get('legal_land_desc'),
+                               data.get('facility_lease_no'), data.get('zoning'),
+                               data.get('zoning_reason'))
 
         project_summary.save()
         if prev_status == 'DFT' and project_summary.status_code == 'SUB':

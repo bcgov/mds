@@ -10,9 +10,9 @@ import { Field, FieldArray, arrayPush, formValueSelector } from "redux-form";
 
 import { maxLength, phoneNumber, required, email } from "@common/utils/Validate";
 import { normalizePhone } from "@common/utils/helpers";
-import { renderConfig } from "@/components/common/config";
 import LinkButton from "@/components/common/LinkButton";
 import * as FORM from "@/constants/forms";
+import RenderField from "@mds/common/components/forms/RenderField";
 
 const propTypes = {
   arrayPush: PropTypes.func.isRequired,
@@ -62,26 +62,28 @@ const contacts = ({ fields }) => {
               name={`${field}.name`}
               id={`${field}.name`}
               label="Name"
-              component={renderConfig.FIELD}
+              required
+              component={RenderField}
               validate={[required]}
             />
             <Field
               name={`${field}.job_title`}
               id={`${field}.job_title`}
-              label="Job Title (optional)"
-              component={renderConfig.FIELD}
+              label="Job Title"
+              component={RenderField}
             />
             <Field
               name={`${field}.company_name`}
               id={`${field}.company_name`}
-              label="Company name (optional)"
-              component={renderConfig.FIELD}
+              label="Company name"
+              component={RenderField}
             />
             <Field
               name={`${field}.email`}
               id={`${field}.email`}
               label="Email"
-              component={renderConfig.FIELD}
+              required
+              component={RenderField}
               validate={[required, email]}
             />
             <Row gutter={16}>
@@ -90,7 +92,8 @@ const contacts = ({ fields }) => {
                   name={`${field}.phone_number`}
                   id={`${field}.phone_number`}
                   label="Phone Number"
-                  component={renderConfig.FIELD}
+                  required
+                  component={RenderField}
                   validate={[phoneNumber, maxLength(12), required]}
                   normalize={normalizePhone}
                 />
@@ -99,8 +102,8 @@ const contacts = ({ fields }) => {
                 <Field
                   name={`${field}.phone_extension`}
                   id={`${field}.phone_extension`}
-                  label="Ext. (optional)"
-                  component={renderConfig.FIELD}
+                  label="Ext."
+                  component={RenderField}
                   validate={[maxLength(6)]}
                 />
               </Col>
