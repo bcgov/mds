@@ -65,6 +65,10 @@ jobs:
         run: |
           NODE_OPTIONS=--max-old-space-size=5024 yarn workspace @mds/core-web build
 
+      - name: Seed database
+        run: |
+          make seeddb
+
       - name: start-core-web
         run: yarn workspace @mds/core-web run http-server-spa build /index.html 3000 &
 
