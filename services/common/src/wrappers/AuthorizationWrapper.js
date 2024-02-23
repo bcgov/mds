@@ -2,11 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { startCase, camelCase } from "lodash";
-import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import { USER_ROLES, detectDevelopmentEnvironment, detectProdEnvironment } from "@mds/common";
 import { Tooltip } from "antd";
+import { useSelector } from "react-redux";
+import { userHasRole } from "@mds/common/redux/reducers/authenticationReducer";
 // import * as Permission from "@mds/common/constants/permissions";
-import * as Permission from "@mds/common/constants/environment";
+// import * as Permission from "@mds/common/constants/environment";
 
 /**
  * @constant AuthorizationWrapper conditionally renders react children depending
@@ -67,10 +68,9 @@ export const AuthorizationWrapper = (props) => {
     props.inDevelopment === undefined || (props.inDevelopment && detectDevelopmentEnvironment());
   const inTestCheck =
     props.inTesting === undefined || (props.inTesting && !detectProdEnvironment());
-  const permissionCheck =
-    props.permission === undefined || Object.values(USER_ROLES).includes(props.permission);
+  const permissionCheck = useSelector((state) => userHasRole(state, props.permission));
   const isMajorMine = props.isMajorMine === undefined || props.isMajorMine;
-  const isAdmin = Object.values(USER_ROLES).includes(Permission.USER_ROLES.role_admin);
+  const isAdmin = useSelector((state) => userHasRole(state, USER_ROLES.role_admin));
 
   const title = () => {
     const permission = props.permission ? `${USER_ROLES[props.permission]}` : "";
@@ -108,8 +108,4 @@ export const AuthorizationWrapper = (props) => {
 AuthorizationWrapper.propTypes = propTypes;
 AuthorizationWrapper.defaultProps = defaultProps;
 
-const mapStateToProps = (state) => ({
-  userRoles: getUserAccessData(state),
-});
-
-export default connect(mapStateToProps)(AuthorizationWrapper);
+export default connect()(AuthorizationWrapper);

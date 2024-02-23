@@ -1,15 +1,13 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Input, Button, Checkbox } from "antd";
+import { Input, Button } from "antd";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
-import { USER_ROLES } from "@mds/common";
+import { useSelector } from "react-redux";
+import { userHasRole } from "@mds/common/redux/reducers/authenticationReducer";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
-  userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
   submitting: PropTypes.bool,
   addCommentPermission: PropTypes.string,
 };
@@ -17,70 +15,57 @@ const propTypes = {
 const defaultProps = {
   submitting: false,
   addCommentPermission: null,
-  userRoles: [],
 };
 
-export class CommentEditor extends Component {
-  initialState = { comment: "", visible: false, submitting: false };
+const CommentEditor = ({ onSubmit, addCommentPermission }) => {
+  const initialState = { comment: "", visible: false, submitting: false };
+  const [state, setState] = useState(initialState);
 
-  constructor(props) {
-    super(props);
-    this.state = this.initialState;
-  }
-
-  handleReset = () => {
-    this.setState(this.initialState);
+  const handleReset = () => {
+    setState(initialState);
   };
 
-  handleSubmit = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    this.setState({ submitting: true });
-    this.props.onSubmit({ comment: this.state.comment, visible: this.state.visible }).then(() => {
-      this.handleReset();
+    setState({ ...state, submitting: true });
+    onSubmit({ comment: state.comment, visible: state.visible }).then(() => {
+      handleReset();
     });
   };
 
-  handleChange = (e) => this.setState({ [e.target.name]: e.target.value });
+  const handleChange = (e) => setState({ ...state, [e.target.name]: e.target.value });
 
-  handleCheckboxChange = (e) => {
-    this.setState({ [e.target.name]: e.target.checked });
-  };
+  const canAddComment = addCommentPermission
+    ? useSelector((state) => userHasRole(state, addCommentPermission))
+    : true;
 
-  render() {
-    const canAddComment = this.props.addCommentPermission
-      ? Object.values(USER_ROLES).includes(this.props.addCommentPermission)
-      : true;
-
-    return (
-      <div>
-        {canAddComment && (
-          <Form.Item>
-            <Input.TextArea
-              rows={4}
-              placeholder="Enter your comment here"
-              showCount
-              maxLength={100}
-              onChange={this.handleChange}
-              value={this.state.comment}
-              name="comment"
-            />
-          </Form.Item>
-        )}
-        {canAddComment && (
-          <Button
-            disabled={this.state.comment === ""}
-            htmlType="button"
-            loading={this.state.submitting}
-            onClick={this.handleSubmit}
-            type="primary"
-          >
-            Add Comment
-          </Button>
-        )}
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      {canAddComment && (
+        <Input.TextArea
+          rows={4}
+          placeholder="Enter your comment here"
+          showCount
+          maxLength={100}
+          onChange={handleChange}
+          value={state.comment}
+          name="comment"
+        />
+      )}
+      {canAddComment && (
+        <Button
+          disabled={state.comment === ""}
+          htmlType="button"
+          loading={state.submitting}
+          onClick={handleSubmit}
+          type="primary"
+        >
+          Add Comment
+        </Button>
+      )}
+    </div>
+  );
+};
 
 const mapStateToProps = (state) => ({
   userRoles: getUserAccessData(state),
