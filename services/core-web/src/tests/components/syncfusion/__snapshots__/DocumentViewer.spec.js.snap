@@ -40,7 +40,7 @@ exports[`DocumentViewer renders properly 1`] = `
         }
       }
     >
-      <e
+      <t
         services={
           Array [
             [Function],

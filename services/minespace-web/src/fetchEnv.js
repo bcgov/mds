@@ -1,5 +1,5 @@
 import axios from "axios";
-import { setupEnvironment, setupKeycloak } from "@mds/common";
+import { setupEnvironment, setupKeycloak, ENVIRONMENT, KEYCLOAK } from "@mds/common";
 import { DEFAULT_ENVIRONMENT } from "@/constants/environment";
 
 export default function fetchEnv() {
@@ -22,8 +22,7 @@ export default function fetchEnv() {
         env.matomoUrl,
         env.environment,
         env.flagsmithKey,
-        env.flagsmithUrl,
-        env.syncfusionLicense
+        env.flagsmithUrl
       );
 
       setupKeycloak(

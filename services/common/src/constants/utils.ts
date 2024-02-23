@@ -30,6 +30,25 @@ export const removeNullValues = (obj) => {
   return obj;
 };
 
+export const removeNullValuesRecursive = (values: any) => {
+  // spread to prevent unwanted state mutation
+  const obj = { ...values };
+  Object.keys(obj).forEach((key) => {
+    const val = obj[key];
+    if (val === null) {
+      delete obj[key];
+      // if the property is an object, allow empty array
+    } else if (val instanceof Object === true && !Array.isArray(val)) {
+      const temp = removeNullValuesRecursive(val);
+      // and if none left, delete it
+      if (Object.keys(temp).length === 0) {
+        delete obj[key];
+      }
+    }
+  });
+  return obj;
+};
+
 export const getProjectStatusDescription = (
   projectSummaryStatusCode,
   majorMineApplicationStatusCode,

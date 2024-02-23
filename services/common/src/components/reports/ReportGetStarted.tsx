@@ -6,6 +6,7 @@ import { IMineReportDefinition } from "@mds/common/interfaces";
 import { getMineReportDefinitionOptions } from "@mds/common/redux/reducers/staticContentReducer";
 import { formatComplianceCodeReportName } from "@mds/common/redux/utils/helpers";
 import { uniqBy } from "lodash";
+import ExportOutlined from "@ant-design/icons/ExportOutlined";
 
 interface ReportGetStartedProps {
   setSelectedReportDefinition: (report: IMineReportDefinition) => void;
@@ -127,9 +128,22 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
                   {formatComplianceCodeReportName(selectedReportDefinition)}
                 </Typography.Title>
                 <Typography.Paragraph>{selectedReportDefinition.description}</Typography.Paragraph>
-                <Typography.Paragraph>
-                  TODO: Add plain language long description to reports
-                </Typography.Paragraph>
+                <Typography.Title level={5}>About this submission type:</Typography.Title>
+                {selectedReportDefinition.compliance_articles[0].long_description && (
+                  <Typography.Paragraph>
+                    {selectedReportDefinition.compliance_articles[0].long_description}
+                  </Typography.Paragraph>
+                )}
+                {selectedReportDefinition.compliance_articles[0].help_reference_link && (
+                  <Button
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={selectedReportDefinition.compliance_articles[0].help_reference_link}
+                    type="default"
+                  >
+                    More information <ExportOutlined />
+                  </Button>
+                )}
               </div>
             )}
           </div>

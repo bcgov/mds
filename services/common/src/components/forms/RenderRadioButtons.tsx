@@ -11,6 +11,7 @@ interface RenderRadioButtonsProps extends BaseInputProps {
   label: string;
   customOptions?: IOption[];
   optionType?: "default" | "button";
+  isVertical?: boolean;
 }
 
 const RenderRadioButtons: FC<RenderRadioButtonsProps> = ({
@@ -22,6 +23,7 @@ const RenderRadioButtons: FC<RenderRadioButtonsProps> = ({
   customOptions,
   required = false,
   optionType = "default",
+  isVertical = false,
 }) => {
   const options = customOptions ?? [
     { label: "Yes", value: true },
@@ -52,6 +54,7 @@ const RenderRadioButtons: FC<RenderRadioButtonsProps> = ({
         options={options}
         optionType={optionType}
         buttonStyle="solid"
+        {...(isVertical && { className: "vertical-radio-group" })}
       />
     </Form.Item>
   );

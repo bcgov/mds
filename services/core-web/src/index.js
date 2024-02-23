@@ -15,8 +15,6 @@ import "antd/dist/antd.less";
 import "./styles/index.scss";
 import fetchEnv from "./fetchEnv";
 import FeatureFlagProvider from "@mds/common/providers/featureFlags/featureFlag.provider";
-import { registerLicense } from "@syncfusion/ej2-base";
-import { ENVIRONMENT } from "@mds/common";
 
 const idleTimeout = 5 * 60_000;
 const refreshTokenBufferSeconds = 60;
@@ -26,7 +24,6 @@ export const Index = () => {
 
   fetchEnv().then(() => {
     setEnvironment(true);
-    registerLicense(ENVIRONMENT.syncfusionLicense);
   });
 
   const { isIdle } = useIdleTimer({

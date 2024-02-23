@@ -148,7 +148,19 @@ PROJECT_SUMMARY_MODEL = api.model(
         'has_landowner_received_copy_of_application': fields.Boolean,
         'legal_land_owner_name': fields.String,
         'legal_land_owner_contact_number': fields.String,
-        'legal_land_owner_email_address': fields.String
+        'legal_land_owner_email_address': fields.String,
+        'facility_operator': fields.Nested(PARTY),
+        'facility_type': fields.String,
+        'facility_desc': fields.String,
+        'facility_latitude': fields.Fixed(decimals=7),
+        'facility_longitude': fields.Fixed(decimals=7),
+        'facility_coords_source': fields.String,
+        'facility_coords_source_desc': fields.String,
+        'facility_pid_pin_crown_file_no': fields.String,
+        'legal_land_desc': fields.String,
+        'facility_lease_no': fields.String,
+        'zoning': fields.Boolean,
+        'zoning_reason': fields.String,
     })
 
 PROJECT_CONTACT_MODEL = api.model(

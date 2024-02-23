@@ -63,6 +63,7 @@ export interface BaseInputProps extends WrappedFieldProps {
   meta: WrappedFieldMetaProps;
   input: WrappedFieldInputProps;
   label?: string;
+  labelSubtitle?: string;
   id: string;
   defaultValue?: any;
   placeholder?: string;
@@ -89,16 +90,32 @@ export const BaseViewInput: FC<BaseViewInputProps> = ({ label = "", value = "" }
 };
 
 // for consistent formatting of optional field indicator
-export const getFormItemLabel = (label: string, isRequired: boolean) => {
+export const getFormItemLabel = (label: string, isRequired: boolean, labelSubtitle?: string) => {
   if (!label) {
     return "";
   }
   if (isRequired) {
-    return label;
+    return (
+      <>
+        {label}
+        {labelSubtitle && (
+          <>
+            <br />
+            <span className="light--sm">{labelSubtitle}</span>
+          </>
+        )}
+      </>
+    );
   }
   return (
     <>
       {label} <span className="form-item-optional">&nbsp;(optional)</span>
+      {labelSubtitle && (
+        <>
+          <br />
+          <span className="light--sm">{labelSubtitle}</span>
+        </>
+      )}
     </>
   );
 };
