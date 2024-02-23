@@ -431,6 +431,13 @@ th.ant-descriptions-item.vertical-description {
   flex-direction: column;
 }
 
+.radio-two-column-container {
+  .ant-radio-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 .view-item {
   line-height: 22px;
 

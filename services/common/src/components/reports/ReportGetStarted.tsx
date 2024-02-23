@@ -62,14 +62,17 @@ const RenderPRRFields: FC<any> = ({ mineGuid }) => {
           component={RenderSelect}
         />
       </Col>
-      <Field
-        name="permit_condition_category_code"
-        required
-        validate={[required]}
-        label="Permit Condition Category"
-        component={RenderRadioButtons}
-        customOptions={dropdownPermitConditionCategoryOptions}
-      />
+      <Col span={24} className="radio-two-column-container">
+        <Field
+          name="permit_condition_category_code"
+          required
+          validate={[required]}
+          label="Permit Condition Category"
+          className="responsive-2-column"
+          component={RenderRadioButtons}
+          customOptions={dropdownPermitConditionCategoryOptions}
+        />
+      </Col>
     </>
   );
 };

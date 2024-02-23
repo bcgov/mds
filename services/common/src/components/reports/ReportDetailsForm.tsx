@@ -267,32 +267,29 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
         onSubmit={handleSubmit}
         isEditMode={isEditMode}
         initialValues={initialValues}
-        // reduxFormConfig={{ enableReinitialize: true }}
       >
         {system === SystemFlagEnum.ms && (
-          <>
-            <Row gutter={[16, 8]}>
+          <Row gutter={[16, 8]}>
+            <Col md={12} sm={24}>
+              <BaseViewInput
+                label="Report Type"
+                value={report_type && MINE_REPORTS_ENUM[report_type]}
+              />
+            </Col>
+            {isPRR && (
               <Col md={12} sm={24}>
-                <BaseViewInput
-                  label="Report Type"
-                  value={report_type && MINE_REPORTS_ENUM[report_type]}
-                />
+                <BaseViewInput label="Permit Number" value={permit?.permit_no} />
               </Col>
-              {isPRR && (
-                <Col md={12} sm={24}>
-                  <BaseViewInput label="Permit Number" value={permit?.permit_no} />
-                </Col>
-              )}
-            </Row>
+            )}
             {selectedPermitCategory && (
-              <Row>
+              <Col md={12} sm={24}>
                 <BaseViewInput
                   label="Permit Condition Category"
                   value={selectedPermitCategory.label}
                 />
-              </Row>
+              </Col>
             )}
-          </>
+          </Row>
         )}
         <Row gutter={[16, 8]}>
           {system === SystemFlagEnum.core && (
@@ -315,7 +312,6 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               />
             </Col>
           )}
-
           {isCRR && (
             <Col span={12}>
               <Field
