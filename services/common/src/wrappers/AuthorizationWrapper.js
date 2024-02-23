@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
 import { startCase, camelCase } from "lodash";
 import { USER_ROLES, detectDevelopmentEnvironment, detectProdEnvironment } from "@mds/common";
 import { Tooltip } from "antd";
@@ -106,4 +105,4 @@ export const AuthorizationWrapper = (props) => {
 AuthorizationWrapper.propTypes = propTypes;
 AuthorizationWrapper.defaultProps = defaultProps;
 
-export default connect()(AuthorizationWrapper);
+export default AuthorizationWrapper;
