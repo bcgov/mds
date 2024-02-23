@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Input, Button } from "antd";
-import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import { useSelector } from "react-redux";
 import { userHasRole } from "@mds/common/redux/reducers/authenticationReducer";
 
@@ -67,11 +65,7 @@ const CommentEditor = ({ onSubmit, addCommentPermission }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  userRoles: getUserAccessData(state),
-});
-
 CommentEditor.propTypes = propTypes;
 CommentEditor.defaultProps = defaultProps;
 
-export default connect(mapStateToProps)(CommentEditor);
+export default CommentEditor;
