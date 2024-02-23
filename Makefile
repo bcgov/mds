@@ -30,7 +30,7 @@ endif
 
 lite:
 	@echo "+\n++ Building minimum topology for local dev ...\n+"
-	@docker-compose $(DC_FILE) up -d --build frontend
+	@docker compose $(DC_FILE) up -d frontend
 
 rebuild:
 	@echo "+\n++ Rebuilding your current in-use containers ...\n+"
@@ -38,67 +38,67 @@ rebuild:
 
 all:
 	@echo "+\n++ Performing project build ...\n+"
-	@docker-compose $(DC_FILE) build --force-rm --no-cache --parallel
-	@docker-compose $(DC_FILE) up -d
+	@docker compose $(DC_FILE) build --force-rm --no-cache --parallel
+	@docker compose $(DC_FILE) up -d
 
 be:
 	@echo "+\n++ Building only backend ...\n+"
-	@docker-compose $(DC_FILE) build --force-rm --no-cache --parallel backend
-	@docker-compose $(DC_FILE) up -d --build backend
+	@docker compose $(DC_FILE) build --force-rm --no-cache --parallel backend
+	@docker compose $(DC_FILE) up -d --build backend
 
 cypress-keycloak:
-	@docker-compose $(DC_FILE) build --force-rm --no-cache keycloak
-	@docker-compose $(DC_FILE) up -d keycloak
+	@docker compose $(DC_FILE) build --force-rm --no-cache keycloak
+	@docker compose $(DC_FILE) up -d keycloak
 
 run-cypress-core:
 	cd services/core-web && npx cypress open
 
 testbe:
 	@echo "+\n++ Running tests in backend container ...\n+"
-	@docker-compose $(DC_FILE) exec backend pytest
+	@docker compose $(DC_FILE) exec backend pytest
 
 testbe_folder:
 	@echo "+\n++ Running $f tests in backend container ...\n+"
-	@docker-compose $(DC_FILE) exec backend pytest -s --disable-warnings tests/$f
+	@docker compose $(DC_FILE) exec backend pytest -s --disable-warnings tests/$f
 
 testfe:
 	@echo "+\n++ Running tests in frontend container ...\n+"
-	@docker-compose $(DC_FILE) exec frontend yarn test
+	@docker compose $(DC_FILE) exec frontend yarn test
 
 testms:
 	@echo "+\n++ Running tests in minespace container ...\n+"
-	@docker-compose $(DC_FILE) exec minespace yarn test
+	@docker compose $(DC_FILE) exec minespace yarn test
 
 ms:
 	@echo "+\n++ Building minespace ...\n+"
-	@docker-compose $(DC_FILE) up -d minespace
+	@docker compose $(DC_FILE) up -d minespace
 
 permits:
 	@echo "+\n++ Running Permit Service ...\n+"
-	@docker-compose -f services/permits/docker-compose.yaml up -d
+	@docker compose $(DC_FILE) up -d haystack-api
 
 extra:
 	@echo "+\n++ Building tertiary services ...\n+"
-	@docker-compose $(DC_FILE) up -d docgen-api
+	@docker compose $(DC_FILE) up -d docgen-api
 
 # Simply for legacy support, this command will be retired shortly
 fe:
 	@echo "+\n++ Removing frontend docker container and building local dev version ...\n+"
-	@docker-compose $(DC_FILE) rm -f -v -s frontend
+	@docker compose $(DC_FILE) rm -f -v -s frontend
 	@rm -rf ./services/core-web/node_modules/
 	@cd ./services/core-web/; yarn; yarn serve; cd ..
 
 db:
 	@echo "+\n++ Performing postgres build ...\n+"
-	@docker-compose $(DC_FILE) up -d postgres flyway
+	@docker compose $(DC_FILE) up -d postgres flyway
 
 cleandb:
 	@echo "+\n++ Cleaning database ...\n+"
-	@docker-compose $(DC_FILE) stop postgres flyway
-	@docker-compose $(DC_FILE) rm -f -v -s postgres flyway
+	@docker compose $(DC_FILE) stop postgres flyway
+	@docker compose $(DC_FILE) rm -f -v -s postgres flyway
 	@docker rmi -f mds_postgres mds_flyway
 	@docker volume rm mds_postgres_data -f
-	@docker-compose $(DC_FILE) up -d postgres flyway
+	@docker compose $(DC_FILE) up -d postgres flyway
 
 reglogin:
 	@echo "+\n++ Initiating Openshift registry login...\n+"
@@ -106,14 +106,14 @@ reglogin:
 
 mig:
 	@echo "+\n++ Applying migrations...\n+"
-	@docker-compose $(DC_FILE) stop flyway
-	@docker-compose $(DC_FILE) build --force-rm --no-cache flyway
-	@docker-compose $(DC_FILE) up --always-recreate-deps --force-recreate -d flyway
+	@docker compose $(DC_FILE) stop flyway
+	@docker compose $(DC_FILE) build --force-rm --no-cache flyway
+	@docker compose $(DC_FILE) up --always-recreate-deps --force-recreate -d flyway
 
 #TODO: unstable command - need to review relationship checks among factories
 seeddb:
 	@echo "+\n++ Seeding db with factory data...\n+"
-	@docker-compose $(DC_FILE) exec -d backend bash -c "flask create-data 25;"
+	@docker compose $(DC_FILE) exec -d backend bash -c "flask create-data 2500;"
 
 env:
 	@echo "+\n++ Creating boilerplate local dev .env files...\n+"
@@ -121,11 +121,11 @@ env:
 
 stop:
 	@echo "+\n++ Stopping all containers...\n+"
-	@docker-compose $(DC_FILE) down
+	@docker compose $(DC_FILE) down
 
 clean: stop |
 	@echo "+\n++ Cleaning ...\n+"
-	@docker-compose $(DC_FILE) rm -f -v -s
+	@docker compose $(DC_FILE) rm -f -v -s
 	@docker rmi -f mds_postgres mds_backend mds_frontend mds_flyway
 	@docker volume rm mds_postgres_data -f
 
