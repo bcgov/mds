@@ -37,6 +37,7 @@ export const CONTACT_ADMIN = [
   <b>mds@gov.bc.ca</b>,
   " to request access",
 ];
+export const MMO_EMAIL = "permrecl@gov.bc.ca";
 export const EMPTY_FIELD = "N/A";
 export const EMPTY = "";
 export const ZERO = "0.00";
@@ -107,6 +108,11 @@ export const MINE_REPORTS_TYPE = {
   permitRequiredReports: "PRR",
   tailingsReports: "TAR",
 };
+
+export enum MINE_REPORTS_ENUM {
+  PRR = "Permit Required Report",
+  CRR = "Code Required Report",
+}
 
 export const E_REFERRALS_URL =
   "https://j200.gov.bc.ca/int/ereferral/Default.aspx?PosseMenuName=EIMain";

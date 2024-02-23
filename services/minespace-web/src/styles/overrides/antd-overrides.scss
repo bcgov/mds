@@ -426,6 +426,11 @@ th.ant-descriptions-item.vertical-description {
   font-weight: normal;
 }
 
+.vertical-radio-group {
+  display: flex;
+  flex-direction: column;
+}
+
 .view-item {
   line-height: 22px;
 

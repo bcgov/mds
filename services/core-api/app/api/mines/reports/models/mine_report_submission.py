@@ -74,6 +74,10 @@ class MineReportSubmission(Base, AuditMixin):
     )
 
     @hybrid_property
+    def report_type(self):
+        return "PRR" if self.permit_condition_category else "CRR"
+
+    @hybrid_property
     def report_name(self):
         return self.mine_report_definition_report_name if self.mine_report_definition_report_name else self.permit_condition_category_description
 

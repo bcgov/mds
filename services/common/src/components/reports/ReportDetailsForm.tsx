@@ -5,7 +5,10 @@ import { arrayPush, change, Field, FieldArray, getFormValues } from "redux-form"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/pro-light-svg-icons";
 
-import { getMineReportDefinitionOptions } from "@mds/common/redux/selectors/staticContentSelectors";
+import {
+  getDropdownPermitConditionCategoryOptions,
+  getMineReportDefinitionOptions,
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import ReportFileUpload from "@mds/common/components/reports/ReportFileUpload";
 
 import { FORM } from "@mds/common/constants/forms";
@@ -29,6 +32,7 @@ import {
   IMineReportSubmission,
   IParty,
   IPartyAppt,
+  MINE_REPORTS_ENUM,
   MinePartyAppointmentTypeCodeEnum,
   SystemFlagEnum,
 } from "../..";
@@ -42,6 +46,8 @@ import { getParties, getPartyRelationships } from "@mds/common/redux/selectors/p
 import { uniqBy } from "lodash";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import ExportOutlined from "@ant-design/icons/ExportOutlined";
+import { getPermitByGuid } from "@mds/common/redux/selectors/permitSelectors";
+import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 
 const RenderContacts: FC<any> = ({ fields, isEditMode, mineSpaceEdit }) => {
   const canEdit = isEditMode && !mineSpaceEdit;
@@ -62,17 +68,19 @@ const RenderContacts: FC<any> = ({ fields, isEditMode, mineSpaceEdit }) => {
               )}
             </Row>
           </Col>
-          <Col span={12}>
-            <Field
-              name={`${contact}.name`}
-              component={RenderField}
-              label={`Contact Name`}
-              placeholder="Enter name"
-              disabled={!canEdit}
-              required
-              validate={[required]}
-            />
-          </Col>
+          {
+            <Col span={12}>
+              <Field
+                name={`${contact}.name`}
+                component={RenderField}
+                label={`Contact Name`}
+                placeholder="Enter name"
+                disabled={!canEdit}
+                required
+                validate={[required]}
+              />
+            </Col>
+          }
           <Col span={12}>
             <Field
               name={`${contact}.email`}
@@ -117,6 +125,9 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
     mine_report_category = "",
     mine_report_definition_guid = "",
     documents = [],
+    report_type,
+    permit_condition_category_code,
+    permit_guid,
   } = formValues;
   const [selectedReportCode, setSelectedReportCode] = useState("");
   const [formattedMineReportDefinitionOptions, setFormatMineReportDefinitionOptions] = useState([]);
@@ -128,9 +139,29 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
 
   const system = useSelector(getSystemFlag);
 
+  // PRR
+  const permit = useSelector(getPermitByGuid(permit_guid));
+  const dropdownPermitConditionCategoryOptions = useSelector(
+    getDropdownPermitConditionCategoryOptions
+  );
+  const selectedPermitCategory =
+    permit_condition_category_code &&
+    dropdownPermitConditionCategoryOptions.find(
+      (opt) => opt.value === permit_condition_category_code
+    );
+
+  const isCRR = report_type === "CRR";
+  const isPRR = report_type === "PRR";
+
   // minespace users are only allowed to add documents
   const mineSpaceEdit =
     system === SystemFlagEnum.ms && initialValues?.mine_report_guid && isEditMode;
+
+  useEffect(() => {
+    if (permit_guid && !permit) {
+      dispatch(fetchPermits(mineGuid));
+    }
+  });
 
   useEffect(() => {
     if (!partyRelationships.length) {
@@ -138,11 +169,6 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
       dispatch(fetchPartyRelationships({ mine_guid: mineGuid }));
     }
   }, []);
-
-  useEffect(() => {
-    const reportType = initialValues?.permit_condition_category_code ? "PRR" : "CRR";
-    dispatch(change(FORM.VIEW_EDIT_REPORT, "report_type", reportType));
-  }, [!formValues?.report_type]);
 
   useEffect(() => {
     if (currentReportDefinition) {
@@ -218,7 +244,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
 
   return (
     <div>
-      {(isEditMode || !initialValues) && system !== SystemFlagEnum.core && (
+      {(isEditMode || !formValues.mine_report_guid) && system !== SystemFlagEnum.core && (
         <Alert
           message=""
           description={
@@ -241,7 +267,33 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
         onSubmit={handleSubmit}
         isEditMode={isEditMode}
         initialValues={initialValues}
+        // reduxFormConfig={{ enableReinitialize: true }}
       >
+        {system === SystemFlagEnum.ms && (
+          <>
+            <Row gutter={[16, 8]}>
+              <Col md={12} sm={24}>
+                <BaseViewInput
+                  label="Report Type"
+                  value={report_type && MINE_REPORTS_ENUM[report_type]}
+                />
+              </Col>
+              {isPRR && (
+                <Col md={12} sm={24}>
+                  <BaseViewInput label="Permit Number" value={permit?.permit_no} />
+                </Col>
+              )}
+            </Row>
+            {selectedPermitCategory && (
+              <Row>
+                <BaseViewInput
+                  label="Permit Condition Category"
+                  value={selectedPermitCategory.label}
+                />
+              </Row>
+            )}
+          </>
+        )}
         <Row gutter={[16, 8]}>
           {system === SystemFlagEnum.core && (
             <Col span={24}>
@@ -263,27 +315,31 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               />
             </Col>
           )}
-          <Col span={12}>
-            <Field
-              component={RenderSelect}
-              id="mine_report_definition_guid"
-              name="mine_report_definition_guid"
-              label="Report Name"
-              disabled={mineSpaceEdit}
-              props={{
-                data: formattedMineReportDefinitionOptions,
-              }}
-              required
-              placeholder={mine_report_category ? "Select" : "Select a report type"}
-              validate={[required]}
-            />
-          </Col>
+
+          {isCRR && (
+            <Col span={12}>
+              <Field
+                component={RenderSelect}
+                id="mine_report_definition_guid"
+                name="mine_report_definition_guid"
+                label="Report Name"
+                disabled={mineSpaceEdit}
+                props={{
+                  data: formattedMineReportDefinitionOptions,
+                }}
+                required
+                placeholder={mine_report_category ? "Select" : "Select a report type"}
+                validate={[required]}
+              />
+            </Col>
+          )}
 
           <Col span={24}>
             {selectedReportCode ? (
               <BaseViewInput label="Report Code Requirements" value={selectedReportCode} />
             ) : (
-              isEditMode && (
+              isEditMode &&
+              isCRR && (
                 <Typography.Paragraph>
                   Select the report type and name to view the required codes.
                 </Typography.Paragraph>
@@ -291,7 +347,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
             )}
           </Col>
 
-          {system === SystemFlagEnum.ms && (
+          {system === SystemFlagEnum.ms && isCRR && (
             <Col span={24}>
               <div
                 className="grey-box"
