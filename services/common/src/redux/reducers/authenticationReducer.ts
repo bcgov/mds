@@ -87,8 +87,11 @@ export const getSystemFlag = (state: RootState) => state[AUTHENTICATION].systemF
 export const isAuthenticated = (state: RootState) => state[AUTHENTICATION].isAuthenticated;
 export const getUserAccessData = (state: RootState) => state[AUTHENTICATION].userAccessData;
 export const getUserInfo = (state: RootState) => state[AUTHENTICATION].userInfo;
-export const userHasRole = (state: RootState, role: string) =>
-  state[AUTHENTICATION].userAccessData.includes(USER_ROLES[role] ?? role);
+export const userHasRole = (state: RootState, role: string) => {
+  const userAccessData = state[AUTHENTICATION]?.userAccessData;
+  if (!userAccessData) return false;
+  return userAccessData.includes(USER_ROLES[role] ?? role);
+};
 export const getRedirect = (state) => state[ReducerTypes.AUTHENTICATION].redirect;
 export const isProponent = (state) => state[ReducerTypes.AUTHENTICATION].isProponent;
 
