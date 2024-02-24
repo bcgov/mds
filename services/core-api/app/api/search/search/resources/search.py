@@ -75,6 +75,8 @@ class SearchResource(Resource, UserMixin):
                 if result.type == type:
                     top_search_results_by_type[result.result['id']] = result
             if search_targets[type].get('primary_column'):
+                # Look up result data from the DB if the search type has a primary column
+                # specified. Otherwise, just return the JSON representation of the result (in the case of the permit search service).
                 full_results = db.session.query(search_targets[type]['model'])\
                     .filter(
                         search_targets[type]['primary_column'].in_(

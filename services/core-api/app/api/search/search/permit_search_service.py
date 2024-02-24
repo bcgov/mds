@@ -16,6 +16,9 @@ class PermitSearchService:
         
 
     def search(self, search_term):
+        """
+        Performs a search against the permit service by the `search_term`.
+        """
         results = self.session.post(SEARCH_ENDPOINT, json={'query': search_term,'debug': False, 'params': {}}).json()
 
         return results['documents']
