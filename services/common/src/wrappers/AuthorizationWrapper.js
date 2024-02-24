@@ -103,7 +103,4 @@ export const AuthorizationWrapper = (props) => {
 AuthorizationWrapper.propTypes = propTypes;
 AuthorizationWrapper.defaultProps = defaultProps;
 
-AuthorizationWrapper.propTypes = propTypes;
-AuthorizationWrapper.defaultProps = defaultProps;
-
 export default connect()(AuthorizationWrapper);
