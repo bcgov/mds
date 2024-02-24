@@ -5,7 +5,6 @@ import { USER_ROLES, detectDevelopmentEnvironment, detectProdEnvironment } from 
 import { Tooltip } from "antd";
 import { useSelector } from "react-redux";
 import { userHasRole } from "@mds/common/redux/reducers/authenticationReducer";
-import { connect } from "react-redux";
 
 /**
  * @constant AuthorizationWrapper conditionally renders react children depending
@@ -103,4 +102,4 @@ export const AuthorizationWrapper = (props) => {
 AuthorizationWrapper.propTypes = propTypes;
 AuthorizationWrapper.defaultProps = defaultProps;
 
-export default connect()(AuthorizationWrapper);
+export default AuthorizationWrapper;
