@@ -42,12 +42,6 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
       </div>
     </div>
   </div>
-  <h3
-    class="ant-typography"
-    id="report-type"
-  >
-    Report Type
-  </h3>
   <form
     class="ant-form ant-form-vertical edit"
     id="VIEW_EDIT_REPORT"
@@ -56,6 +50,17 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
       class="ant-row"
       style="margin: -4px -8px -4px -8px;"
     >
+      <div
+        class="ant-col ant-col-24"
+        style="padding: 4px 8px 4px 8px;"
+      >
+        <h3
+          class="ant-typography margin-large--top"
+          id="report-type"
+        >
+          Report Type
+        </h3>
+      </div>
       <div
         class="ant-col ant-col-12"
         style="padding: 4px 8px 4px 8px;"

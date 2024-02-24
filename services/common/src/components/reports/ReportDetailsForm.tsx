@@ -212,6 +212,15 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
     }
   }, [mine_report_definition_guid]);
 
+  useEffect(() => {
+    if (system === SystemFlagEnum.core) {
+      const selection = mineReportDefinition?.compliance_articles[0]?.cim_or_cpo;
+      dispatch(
+        change(FORM.VIEW_EDIT_REPORT, "report_for", selection ? selection : "Not specified")
+      );
+    }
+  }, [mineReportDefinition, !formValues?.report_for]);
+
   const updateDocuments = (docs: IMineDocument[]) => {
     dispatch(change(FORM.VIEW_EDIT_REPORT, "documents", docs));
   };
@@ -232,9 +241,6 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
           style={{ marginBottom: "32px" }}
         />
       )}
-      <Typography.Title level={3} id="report-type">
-        Report Type
-      </Typography.Title>
 
       <FormWrapper
         name={FORM.VIEW_EDIT_REPORT}
@@ -243,6 +249,39 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
         initialValues={initialValues}
       >
         <Row gutter={[16, 8]}>
+          {system === SystemFlagEnum.core && (
+            <Col span={24}>
+              <Typography.Title level={3} id="regulatory-authority">
+                Regulatory Authority
+              </Typography.Title>
+
+              <Field
+                name="report_for"
+                id="report_for"
+                required
+                disabled={true}
+                props={{
+                  isVertical: true,
+                }}
+                label="Who is the report for?"
+                component={RenderRadioButtons}
+                validate={[requiredRadioButton]}
+                customOptions={[
+                  { label: "Chief Permitting Officer", value: "CPO" },
+                  { label: "Chief Inspector of Mines", value: "CIM" },
+                  { label: "Both", value: "Both" },
+                  { label: "Not specified", value: "Not specified" },
+                ]}
+              />
+            </Col>
+          )}
+
+          <Col span={24}>
+            <Typography.Title className="margin-large--top" level={3} id="report-type">
+              Report Type
+            </Typography.Title>
+          </Col>
+
           {system === SystemFlagEnum.core && (
             <Col span={24}>
               <Field

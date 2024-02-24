@@ -24,6 +24,7 @@ export interface IMineReportSubmission {
   received_date: string;
   report_name?: string;
   report_type?: string;
+  report_for?: string;
   submission_date: string;
   submission_year: number;
   submitter_email: string;
