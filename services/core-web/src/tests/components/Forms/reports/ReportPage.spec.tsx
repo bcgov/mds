@@ -3,7 +3,7 @@ import { render } from "@testing-library/react";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { AUTHENTICATION, MINES, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
-import { SystemFlagEnum } from "@mds/common";
+import { SystemFlagEnum, USER_ROLES } from "@mds/common";
 import ReportPage from "@/components/mine/Reports/ReportPage";
 import { BrowserRouter } from "react-router-dom";
 
@@ -20,6 +20,7 @@ const initialState = {
   },
   [AUTHENTICATION]: {
     systemFlag: SystemFlagEnum.core,
+    userAccessData: [USER_ROLES.role_edit_reports],
   },
 };
 
