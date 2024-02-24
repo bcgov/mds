@@ -49,7 +49,7 @@ This takes in a PDF file and run it through the `indexing` pipeline defined in `
 
 _Query_
 `POST http://localhost:8004/haystack/query`
-This endpoint receives the question as a string and allows the requester to set additional parameters that will be passed on to the Haystack query pipeline defined in `app/app.py`.
+This endpoint receives the question as a string and allows the requester to set additional parameters that will be passed on to the Haystack query pipeline defined in `app/app.py`. The endpoint performs a Keyword search on indexed documents.
 
 ### Kibana
 
@@ -61,3 +61,34 @@ In order to view documents in Kibana:
 
 1. Navigate to `Analytics -> Discover`
 2. Create a Data View with the Index pattern `permits`
+
+### Permit indexing
+
+The `import_permits.py` utility script is provided to index Permits in bulk from a `csv` file. This script will download the given files
+from the source S3 bucket, index the files with the target permit service, and associate the given metadata with the record.
+
+Example usage:
+
+```python
+python import_permits.py permits.csv
+```
+
+The following environment variables are required:
+
+- OBJECT_STORE_ACCESS_KEY_ID <- ID of S3 access key of the bucket the PDF should be downloaded from
+- OBJECT_STORE_ACCESS_KEY <- S3 secret key of the bucket the PDF should be downloaded from
+- OBJECT_STORE_HOST
+- OBJECT_STORE_BUCKET <- Name of bucket the permit PDFs should be downloaded from
+- PERMIT_SERVICE_ENDPOINT <- Endpoint of permit service documents should be indexed with
+- PERMITS_CLIENT_ID
+- PERMITS_CLIENT_SECRET
+- JWT_OIDC_WELL_KNOWN_CONFIG
+
+Example CSV format:
+
+```csv
+mine_no,mine_name,permit_no,object_store_path,issue_date,document_name,permit_amendment_guid,permit_amendment_id,description
+123,mine1,1234,permits/1234/1234.pdf,2021-01-01,1234.pdf,1234,1234,This is a permit
+```
+
+An example query to generate this CSV can be found in the [Metabase Permit Digitization Candidates Metabase collection](https://metabase-4c2ba9-prod.apps.silver.devops.gov.bc.ca/question/2890-mds-permit-digitization-candidates)

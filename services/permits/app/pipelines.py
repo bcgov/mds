@@ -22,31 +22,7 @@ host = os.environ.get('ELASTICSEARCH_HOST', 'elasticsearch')
 username = os.environ.get('ELASTICSEARCH_USERNAME', '')
 password = os.environ.get('ELASTICSEARCH_PASSWORD', '')
 
-
-class EDS(ElasticsearchDocumentStore):
-    def _construct_dense_query_body(
-        self, query_emb, return_embedding, filters = None, top_k = 10
-    ):
-        qry = super(EDS,self)._construct_dense_query_body(query_emb=query_emb, return_embedding=return_embedding, filters=filters, top_k=top_k)
-        qry['highlight'] = {
-            "encoder": "html",
-            "fields": {
-                "content": {
-                    "pre_tags" : ["<b><u>"],
-                    "post_tags" : ["</u></b>"]
-                },
-                "title": {
-                    "pre_tags" : ["<b><u>"],
-                    "post_tags" : ["</u></b>"]
-                }
-            }
-        }
-
-        print(qry)
-
-        return qry
-
-document_store = EDS(
+document_store = ElasticsearchDocumentStore(
     host=host,
     username=username,
     password=password,
@@ -65,10 +41,40 @@ def query_pipeline():
         3. runs the documents through the `deepset/roberta-base-squad2` ML model https://huggingface.co/deepset/roberta-base-squad2
         4. returns ranked answers to the given query
     """
+    return keyword_search_query_pipeline()
+
+def sematic_search_query_pipeline():
+    """
+    This pipeline is a work in progress and just used for testing purposes, but it is intended to be a pipeline that combines a keyword search with a semantic search.
+    1. Perform a keyword search using BM25
+    2. Permoform a semantic search using a dense embedding model
+    3. Combine the results of the two searches using a reciprocal rank fusion
+    4. Rank the documents using a cross-encoder model
+    """
+    dense_retriever = EmbeddingRetriever(document_store=document_store, embedding_model='sentence-transformers/all-MiniLM-L6-v2', scale_score=False)
+    document_store.update_embeddings(retriever=dense_retriever, update_existing_embeddings=False)
+
+    sparse_retriever = BM25Retriever(document_store=document_store)
+    join_documents = JoinDocuments(join_mode='reciprocal_rank_fusion')
+    ranker = SentenceTransformersRanker(model_name_or_path="cross-encoder/ms-marco-MiniLM-L-12-v2")
+    
     querying_pipeline = Pipeline()
+    querying_pipeline.add_node(component=sparse_retriever, name="SparseRetriever", inputs=["Query"])
+    querying_pipeline.add_node(component=dense_retriever, name="DenseRetriever", inputs=["Query"])
+    querying_pipeline.add_node(component=join_documents, name="JoinDocuments", inputs=["SparseRetriever", "DenseRetriever"])
+    querying_pipeline.add_node(component=ranker, name="Ranker", inputs=["JoinDocuments"])
 
-    retriever = EmbeddingRetriever(document_store=document_store, embedding_model='sentence-transformers/all-MiniLM-L6-v2', scale_score=False)
+    return querying_pipeline
 
+
+def keyword_search_query_pipeline():
+    """
+    This pipeline performs a keyword search using BM25 and highlights the search terms in the returned documents
+    1. Perform a keyword search using BM25
+    2. Re-rank the documents using a cross-encoder model
+    """
+
+    # Modify the query sent to elasticsearch to include highlighting of results
     query_with_highligting = {
         "size": 10,
         "query": {
@@ -100,61 +106,12 @@ def query_pipeline():
     }
 
     sparse_retriever = BM25Retriever(document_store=document_store, custom_query=json.dumps(query_with_highligting).replace('"${query}"', '${query}'))
-    # document_store.update_embeddings(retriever=retriever)
-
-    # document_store.delete_all_documents()
-
-    # reader = FARMReader(model_name_or_path="deepset/roberta-base-squad2", use_gpu=False)
-    join_documents = JoinDocuments(join_mode='reciprocal_rank_fusion')
     ranker = SentenceTransformersRanker(model_name_or_path="cross-encoder/ms-marco-MiniLM-L-12-v2")
-    reader = FARMReader(model_name_or_path="deepset/roberta-base-squad2", use_gpu=False)
     querying_pipeline = Pipeline()
     querying_pipeline.add_node(component=sparse_retriever, name="SparseRetriever", inputs=["Query"])
-    # querying_pipeline.add_node(component=retriever, name="DenseRetriever", inputs=["Query"])
-    # querying_pipeline.add_node(component=join_documents, name="JoinDocuments", inputs=["SparseRetriever", "DenseRetriever"])
     querying_pipeline.add_node(component=ranker, name="Ranker", inputs=["SparseRetriever"])
 
     return querying_pipeline
-
-class PDFConv(PDFToTextConverter):
-    def convert(
-        self,
-        file_path = None,
-        meta = None,
-        remove_numeric_tables = None,
-        valid_languages = None,
-        encoding = None,
-        id_hash_keys = None,
-        start_page = None,
-        end_page = None,
-        keep_physical_layout = None,
-        sort_by_position = None,
-        ocr = None,
-        ocr_language = None,
-        multiprocessing = None,
-        tika_url=None
-    ):
-        elements = partition_pdf(file_path, stategy='hi_res', hi_res_model_name='detectron2_onnx', include_page_breaks=True)
-
-        content = "\n\n".join([str(el) for el in elements])
-
-        # with open(f'/code/app/{meta["name"]}.txt', 'w') as f:
-        #     f.write(content)
-
-        document = Document(content=content, meta=meta, id_hash_keys=id_hash_keys)
-        return [document]
-
-class PrePr(PreProcessor):
-    def process(self, documents, clean_whitespace=None, clean_header_footer = None, clean_empty_lines= None, remove_substrings = None, split_by= None, split_length = None, split_overlap = None, split_respect_sentence_boundary = None, tokenizer = None, id_hash_keys = None):
-        docs = super().process(documents, clean_whitespace, clean_header_footer, clean_empty_lines, remove_substrings, split_by, split_length, split_overlap, split_respect_sentence_boundary, tokenizer, id_hash_keys)
-
-        # content = "\n\n".join([doc.content for doc in docs])
-        
-        # with open(f'/code/app/{docs[0].meta["name"]}.txt', 'w') as f:
-        #     f.write(content)
-
-        return docs
-
 
 def indexing_pipeline():
     """
@@ -165,10 +122,9 @@ def indexing_pipeline():
     4. Stores the document in Elasticsearch
     """
     index_pipeline = Pipeline()
-    # text_converter = TikaConverter(tika_url='http://tika:9998/tika', timeout=1000)
     
     text_converter = PDFToTextConverter(ocr='auto')
-    preprocessor = PrePr(
+    preprocessor = PreProcessor(
         clean_whitespace=True,
         clean_header_footer=True,
         clean_empty_lines=True,
