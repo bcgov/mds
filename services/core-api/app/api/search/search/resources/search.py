@@ -88,7 +88,6 @@ class SearchResource(Resource, UserMixin):
 
                 all_search_results[type] = list(top_search_results_by_type.values())
             else:
-                print(search_results)
                 all_search_results[type] = [res.json() for res in search_results if res.type == type]
 
         return {'search_terms': search_terms, 'search_results': all_search_results}

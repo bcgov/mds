@@ -7,6 +7,7 @@ from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from app.api.search.search.permit_search_service import PermitSearchService
+from app.api.utils.feature_flag import is_feature_enabled, Feature
 
 common_search_targets = {
     'mine': {
@@ -100,8 +101,11 @@ full_additional_search_targets = {
         'document_name',
         'score_multiplier':
         250
-    },
-    'mines_act_permits': {
+    }
+}
+
+if is_feature_enabled(Feature.PERMIT_DOCUMENT_KEYWORD_SEARCH):
+    full_additional_search_targets['mines_act_permits'] = {
         'model': None,
         'primary_column': None,
         'description': 'Mines Act Permit Documents',
@@ -113,7 +117,6 @@ full_additional_search_targets = {
         'value_field': 'answer',
         'score_multiplier': 1000
     }
-}
 
 simple_search_targets = dict(**common_search_targets, **simple_additional_search_targets)
 search_targets = dict(**common_search_targets, **full_additional_search_targets)
@@ -144,13 +147,28 @@ def execute_search(app,
                    type,
                    type_config,
                    limit_results=None):
+    """
+    Executes a search based on the provided parameters.
+
+    Args:
+        app (Flask): The Flask application object.
+        search_results (list): The list to store the search results.
+        search_term (str): The search term to be used.
+        search_terms (list): The list of search terms to be used.
+        type (str): The type of search to be performed.
+        type_config (dict): The configuration for the search type.
+        limit_results (int, optional): The maximum number of results to return.
+
+    Returns:
+        None
+    """
+
     with app.app_context():
-        print('searching', type, search_term)
-        if type == 'mines_act_permits':
+        if type == 'mines_act_permits' and is_feature_enabled(Feature.PERMIT_DOCUMENT_KEYWORD_SEARCH):
+            # Mines act permit document search happens in the permit search service,
+            # so proxy the request through instead of performing a search against the database.
             results = PermitSearchService().search(search_term)
             for res in results:
-                print('got res ', res)
-
                 search_results.append(
                     SearchResult(10, type, {
                         'id': '',
