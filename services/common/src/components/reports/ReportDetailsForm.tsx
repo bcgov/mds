@@ -303,11 +303,15 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
                     <br />
                     <b>{selectedReportName}</b>
                     <br />
-                    {mineReportDefinition && (
-                      <>
+
+                    {mineReportDefinition &&
+                      mineReportDefinition.compliance_articles[0].long_description && (
                         <Typography.Paragraph>
                           {mineReportDefinition.compliance_articles[0].long_description}
                         </Typography.Paragraph>
+                      )}
+                    {mineReportDefinition &&
+                      mineReportDefinition.compliance_articles[0].help_reference_link && (
                         <Button
                           target="_blank"
                           rel="noopener noreferrer"
@@ -316,8 +320,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
                         >
                           More information <ExportOutlined />
                         </Button>
-                      </>
-                    )}
+                      )}
                   </Col>
                 </Row>
               </div>
