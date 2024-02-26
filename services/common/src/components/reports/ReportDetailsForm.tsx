@@ -48,6 +48,7 @@ import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelecto
 import ExportOutlined from "@ant-design/icons/ExportOutlined";
 import { getPermitByGuid } from "@mds/common/redux/selectors/permitSelectors";
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
+import { RenderPRRFields } from "./ReportGetStarted";
 
 const RenderContacts: FC<any> = ({ fields, isEditMode, mineSpaceEdit }) => {
   const canEdit = isEditMode && !mineSpaceEdit;
@@ -308,24 +309,27 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
         )}
         <Row gutter={[16, 8]}>
           {system === SystemFlagEnum.core && (
-            <Col span={24}>
-              <Field
-                name="report_type"
-                id="report_type"
-                required
-                disabled={true}
-                props={{
-                  isVertical: true,
-                }}
-                label="What is the type of the report?"
-                component={RenderRadioButtons}
-                validate={[requiredRadioButton]}
-                customOptions={[
-                  { label: "Code Required Report", value: "CRR" },
-                  { label: "Permit Required Report", value: "PRR" },
-                ]}
-              />
-            </Col>
+            <>
+              <Col span={24}>
+                <Field
+                  name="report_type"
+                  id="report_type"
+                  required
+                  disabled={true}
+                  props={{
+                    isVertical: true,
+                  }}
+                  label="What is the type of the report?"
+                  component={RenderRadioButtons}
+                  validate={[requiredRadioButton]}
+                  customOptions={[
+                    { label: "Code Required Report", value: "CRR" },
+                    { label: "Permit Required Report", value: "PRR" },
+                  ]}
+                />
+              </Col>
+              {isPRR && <RenderPRRFields mineGuid={initialValues?.mine_guid} />}
+            </>
           )}
           {isCRR && (
             <Col span={12}>

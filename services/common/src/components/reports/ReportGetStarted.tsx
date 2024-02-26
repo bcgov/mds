@@ -11,7 +11,7 @@ import {
 } from "@mds/common/redux/utils/helpers";
 import { uniqBy } from "lodash";
 import ExportOutlined from "@ant-design/icons/ExportOutlined";
-import { FORM, MINE_REPORTS_ENUM, MMO_EMAIL } from "../..";
+import { FORM, MINE_REPORTS_ENUM, MMO_EMAIL, SystemFlagEnum } from "../..";
 import FormWrapper from "../forms/FormWrapper";
 import RenderRadioButtons from "../forms/RenderRadioButtons";
 import { required, requiredRadioButton } from "@mds/common/redux/utils/Validate";
@@ -19,6 +19,7 @@ import RenderSelect from "../forms/RenderSelect";
 import { getDropdownPermitConditionCategoryOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
+import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 
 interface ReportGetStartedProps {
   setSelectedReportDefinition: (report: IMineReportDefinition) => void;
@@ -29,6 +30,7 @@ interface ReportGetStartedProps {
 }
 
 export const RenderPRRFields: FC<{ mineGuid: string }> = ({ mineGuid }) => {
+  const system = useSelector(getSystemFlag);
   const dispatch = useDispatch();
   const dropdownPermitConditionCategoryOptions = useSelector(
     getDropdownPermitConditionCategoryOptions
@@ -36,6 +38,8 @@ export const RenderPRRFields: FC<{ mineGuid: string }> = ({ mineGuid }) => {
   const permits = useSelector(getPermits);
   const permitDropdown = createDropDownList(permits, "permit_no", "permit_guid");
   const [loaded, setLoaded] = useState(permits.length > 0);
+
+  const isCore = system === SystemFlagEnum.core;
 
   useEffect(() => {
     if (!loaded) {
@@ -45,13 +49,17 @@ export const RenderPRRFields: FC<{ mineGuid: string }> = ({ mineGuid }) => {
 
   return (
     <>
-      <Typography.Title level={5}>Select permit condition category</Typography.Title>
-      <Typography.Paragraph>
-        Newer regional permits have sections A to E, which are the same categories shown for
-        permit-required report. If your permit does not contain the categories below, select the
-        most fitting category. If you are unsure about category selection, please contact the
-        permitting inspector or your regional office for assistance.
-      </Typography.Paragraph>
+      {!isCore && (
+        <>
+          <Typography.Title level={5}>Select permit condition category</Typography.Title>
+          <Typography.Paragraph>
+            Newer regional permits have sections A to E, which are the same categories shown for
+            permit-required report. If your permit does not contain the categories below, select the
+            most fitting category. If you are unsure about category selection, please contact the
+            permitting inspector or your regional office for assistance.
+          </Typography.Paragraph>
+        </>
+      )}
       <Col md={12} sm={24}>
         <Field
           name="permit_guid"
@@ -63,15 +71,27 @@ export const RenderPRRFields: FC<{ mineGuid: string }> = ({ mineGuid }) => {
         />
       </Col>
       <Col span={24} className="radio-two-column-container">
-        <Field
-          name="permit_condition_category_code"
-          required
-          validate={[required]}
-          label="Permit Condition Category"
-          className="responsive-2-column"
-          component={RenderRadioButtons}
-          customOptions={dropdownPermitConditionCategoryOptions}
-        />
+        {!isCore && (
+          <Field
+            name="permit_condition_category_code"
+            required
+            validate={[required]}
+            label="Permit Condition Category"
+            className="responsive-2-column"
+            component={RenderRadioButtons}
+            customOptions={dropdownPermitConditionCategoryOptions}
+          />
+        )}
+        {isCore && (
+          <Field
+            name="permit_condition_category_code"
+            required
+            validate={[required]}
+            label="Permit Condition Category"
+            component={RenderSelect}
+            data={dropdownPermitConditionCategoryOptions}
+          />
+        )}
       </Col>
     </>
   );
