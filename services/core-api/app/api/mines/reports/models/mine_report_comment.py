@@ -6,6 +6,8 @@ from app.extensions import db
 
 from app.api.utils.include.user_info import User
 from datetime import datetime
+from app.api.mines.reports.models.mine_report import MineReport
+from app.api.mines.reports.models.mine_report_submission import MineReportSubmission
 
 
 class MineReportComment(SoftDeleteMixin, AuditMixin, Base):
@@ -55,6 +57,14 @@ class MineReportComment(SoftDeleteMixin, AuditMixin, Base):
     def find_public_by_report_submission_id(cls, _id):
         return cls.query.filter_by(mine_report_submission_id=_id).filter_by(
             deleted_ind=False).filter_by(comment_visibility_ind=True).all()
+
+    @classmethod
+    def find_by_mine_report_guid(cls, guid):
+        return cls.query\
+            .join(MineReportSubmission)\
+            .join(MineReport)\
+            .filter(MineReport.mine_report_guid == guid) \
+            .all()
 
     def json(self):
         return {
