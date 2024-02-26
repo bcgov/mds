@@ -2,7 +2,7 @@ import { RootState } from "@mds/common/redux/rootState";
 import * as actionTypes from "@mds/common/constants/actionTypes";
 import { MINES } from "@mds/common/constants/reducerTypes";
 import { createItemMap, createItemIdsArray } from "../utils/helpers";
-import { IMine, IMineComment, IMineDocument, ItemMap } from "@mds/common";
+import { IMine, IMineComment, IMineDocument, ItemMap } from "@mds/common/interfaces";
 /**
  * @file mineReducer.js
  * all data associated with new mine/existing mine records is handled witnin this reducer.

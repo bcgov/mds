@@ -32,7 +32,6 @@ import MineIncidents from "@/components/mine/Incidents/MineIncidents";
 import MineTailingsInfo from "@/components/mine/Tailings/MineTailingsInfo";
 import MineReportInfo from "@/components/mine/Reports/MineReportInfo";
 import MineDocuments from "@/components/mine/Documents/MineDocuments";
-import PermitRequiredReports from "@/components/mine/Reports/PermitRequiredReports";
 import MineApplications from "@/components/mine/NoticeOfWork/MineApplications";
 import MineProject from "@/components/mine/Projects/MineProject";
 import ProjectSummary from "@/components/mine/Projects/ProjectSummary";
@@ -55,6 +54,7 @@ import MineReportTailingsInfo from "@/components/mine/Tailings/MineReportTailing
 import MineTailingsDetailsPage from "@/components/mine/Tailings/MineTailingsDetailsPage";
 import DamsDetailsPage from "@/components/mine/Tailings/DamsDetailsPage";
 import ReportPage from "@/components/mine/Reports/ReportPage";
+import ReportSteps from "@mds/common/components/reports/ReportSteps";
 
 const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));
@@ -325,18 +325,17 @@ export const MINE_INSPECTIONS = {
   component: MineComplianceInfo,
 };
 
-export const MINE_REPORTS = {
-  route: "/mine-dashboard/:id/reports/code-required-reports",
-  dynamicRoute: (id, filterParams) =>
-    `/mine-dashboard/${id}/reports/code-required-reports?${queryString.stringify(filterParams)}`,
-  component: MineReportInfo,
+export const MINE_TAILINGS_REPORTS = {
+  route: "/mine-dashboard/:id/reports/tailings-reports",
+  dynamicRoute: (id) => `/mine-dashboard/${id}/reports/tailings-reports`,
+  component: MineReportTailingsInfo,
 };
 
-export const MINE_PERMIT_REQUIRED_REPORTS = {
-  route: "/mine-dashboard/:id/reports/permit-required-reports",
-  dynamicRoute: (id, filterParams) =>
-    `/mine-dashboard/${id}/reports/permit-required-reports?${queryString.stringify(filterParams)}`,
-  component: PermitRequiredReports,
+export const MINE_REPORTS = {
+  route: "/mine-dashboard/:id/required-reports/:reportType",
+  dynamicRoute: (id, reportType, filterParams) =>
+    `/mine-dashboard/${id}/required-reports/${reportType}?${queryString.stringify(filterParams)}`,
+  component: MineReportInfo,
 };
 
 export const REPORT_VIEW_EDIT = {
@@ -348,10 +347,10 @@ export const REPORT_VIEW_EDIT = {
   component: ReportPage,
 };
 
-export const MINE_TAILINGS_REPORTS = {
-  route: "/mine-dashboard/:id/reports/tailings-reports",
-  dynamicRoute: (id) => `/mine-dashboard/${id}/reports/tailings-reports`,
-  component: MineReportTailingsInfo,
+export const REPORTS_CREATE_NEW = {
+  route: "/mines/:mineGuid/reports/new/:reportType",
+  dynamicRoute: (mineGuid, reportType) => `/mines/${mineGuid}/reports/new/${reportType}`,
+  component: ReportSteps,
 };
 
 export const PARTY_PROFILE = {

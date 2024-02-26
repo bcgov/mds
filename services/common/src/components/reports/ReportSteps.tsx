@@ -10,9 +10,12 @@ import ReportGetStarted from "@mds/common/components/reports/ReportGetStarted";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
 import ReportDetailsForm from "@mds/common/components/reports/ReportDetailsForm";
 import { createReportSubmission } from "./reportSubmissionSlice";
+import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
+import { SystemFlagEnum } from "@mds/common/constants";
 import { FORM } from "../..";
 
 const ReportSteps = () => {
+  const system = useSelector(getSystemFlag);
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -141,7 +144,7 @@ const ReportSteps = () => {
   ];
 
   return (
-    <div>
+    <div className="report-steps-page">
       <Row>
         <Col span={24}>
           <Typography.Title>Report - {mine?.mine_name ?? ""}</Typography.Title>
@@ -149,7 +152,13 @@ const ReportSteps = () => {
       </Row>
       <Row>
         <Col span={24}>
-          <Link to={GLOBAL_ROUTES?.MINE_DASHBOARD.dynamicRoute(mineGuid, "reports")}>
+          <Link
+            to={
+              system === SystemFlagEnum.core
+                ? GLOBAL_ROUTES?.MINE_REPORTS.dynamicRoute(mineGuid)
+                : GLOBAL_ROUTES?.MINE_DASHBOARD.dynamicRoute(mineGuid, "reports")
+            }
+          >
             <ArrowLeftOutlined className="padding-sm--right" />
             {`Back to: ${mine?.mine_name} reports`}
           </Link>
