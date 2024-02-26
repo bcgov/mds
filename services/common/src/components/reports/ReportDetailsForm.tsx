@@ -34,6 +34,7 @@ import {
   IPartyAppt,
   MINE_REPORTS_ENUM,
   MinePartyAppointmentTypeCodeEnum,
+  REPORT_TYPE_CODES,
   SystemFlagEnum,
 } from "../..";
 import RenderAutoSizeField from "../forms/RenderAutoSizeField";
@@ -69,19 +70,17 @@ const RenderContacts: FC<any> = ({ fields, isEditMode, mineSpaceEdit }) => {
               )}
             </Row>
           </Col>
-          {
-            <Col span={12}>
-              <Field
-                name={`${contact}.name`}
-                component={RenderField}
-                label={`Contact Name`}
-                placeholder="Enter name"
-                disabled={!canEdit}
-                required
-                validate={[required]}
-              />
-            </Col>
-          }
+          <Col span={12}>
+            <Field
+              name={`${contact}.name`}
+              component={RenderField}
+              label={`Contact Name`}
+              placeholder="Enter name"
+              disabled={!canEdit}
+              required
+              validate={[required]}
+            />
+          </Col>
           <Col span={12}>
             <Field
               name={`${contact}.email`}
@@ -151,8 +150,8 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
       (opt) => opt.value === permit_condition_category_code
     );
 
-  const isCRR = report_type === "CRR";
-  const isPRR = report_type === "PRR";
+  const isCRR = report_type === REPORT_TYPE_CODES.CRR;
+  const isPRR = report_type === REPORT_TYPE_CODES.PRR;
 
   // minespace users are only allowed to add documents
   const mineSpaceEdit =
@@ -162,14 +161,11 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
     if (permit_guid && !permit) {
       dispatch(fetchPermits(mineGuid));
     }
-  });
-
-  useEffect(() => {
     if (!partyRelationships.length) {
       // fetch all party relationships for the mine
       dispatch(fetchPartyRelationships({ mine_guid: mineGuid }));
     }
-  }, []);
+  }, [mineGuid]);
 
   useEffect(() => {
     if (currentReportDefinition) {
@@ -324,8 +320,8 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
                   component={RenderRadioButtons}
                   validate={[requiredRadioButton]}
                   customOptions={[
-                    { label: "Code Required Report", value: "CRR" },
-                    { label: "Permit Required Report", value: "PRR" },
+                    { label: MINE_REPORTS_ENUM.CRR, value: REPORT_TYPE_CODES.CRR },
+                    { label: MINE_REPORTS_ENUM.PRR, value: REPORT_TYPE_CODES.PRR },
                   ]}
                 />
               </Col>

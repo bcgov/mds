@@ -11,7 +11,7 @@ import {
 } from "@mds/common/redux/utils/helpers";
 import { uniqBy } from "lodash";
 import ExportOutlined from "@ant-design/icons/ExportOutlined";
-import { FORM, MINE_REPORTS_ENUM, MMO_EMAIL, SystemFlagEnum } from "../..";
+import { FORM, MINE_REPORTS_ENUM, MMO_EMAIL, REPORT_TYPE_CODES, SystemFlagEnum } from "../..";
 import FormWrapper from "../forms/FormWrapper";
 import RenderRadioButtons from "../forms/RenderRadioButtons";
 import { required, requiredRadioButton } from "@mds/common/redux/utils/Validate";
@@ -148,7 +148,7 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
       name={FORM.VIEW_EDIT_REPORT}
       onSubmit={handleSubmit}
       reduxFormConfig={{ destroyOnUnmount: false }}
-      initialValues={{ report_type: "CRR" }}
+      initialValues={{ report_type: REPORT_TYPE_CODES.CRR }}
     >
       <div>
         <Typography.Title level={3}>Getting Started with your Report Submission</Typography.Title>
@@ -182,7 +182,7 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
                   Safety and Reclamation Code for Mines in British Columbia (HSRC).
                 </>
               ),
-              value: "CRR",
+              value: REPORT_TYPE_CODES.CRR,
             },
             {
               label: (
@@ -193,11 +193,11 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
                   in site-specific Mines Act permits.
                 </>
               ),
-              value: "PRR",
+              value: REPORT_TYPE_CODES.PRR,
             },
           ]}
         />
-        {mine.major_mine_ind && formValues?.report_type === "PRR" && (
+        {mine.major_mine_ind && formValues?.report_type === REPORT_TYPE_CODES.PRR && (
           <Alert
             description={
               <>
@@ -213,8 +213,10 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
             className="margin-small--bottom"
           />
         )}
-        {formValues?.report_type === "PRR" && <RenderPRRFields mineGuid={mine.mine_guid} />}
-        {formValues?.report_type === "CRR" && (
+        {formValues?.report_type === REPORT_TYPE_CODES.PRR && (
+          <RenderPRRFields mineGuid={mine.mine_guid} />
+        )}
+        {formValues?.report_type === REPORT_TYPE_CODES.CRR && (
           <>
             <Typography.Title level={5}>
               Enter code section or choose from the submission list or select report type in the

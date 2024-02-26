@@ -8,7 +8,7 @@ from sqlalchemy.ext.associationproxy import association_proxy
 
 from app.api.utils.models_mixins import Base, AuditMixin
 from app.extensions import db
-from app.api.mines.reports.models.mine_report_contact import MineReportContact
+from app.api.constants import MINE_REPORT_TYPE
 
 class MineReportSubmission(Base, AuditMixin):
     __tablename__ = "mine_report_submission"
@@ -75,7 +75,7 @@ class MineReportSubmission(Base, AuditMixin):
 
     @hybrid_property
     def report_type(self):
-        return "PRR" if self.permit_condition_category else "CRR"
+        return MINE_REPORT_TYPE['PERMIT REQUIRED REPORTS'] if self.permit_condition_category else MINE_REPORT_TYPE['CODE REQUIRED REPORTS']
 
     @hybrid_property
     def report_name(self):

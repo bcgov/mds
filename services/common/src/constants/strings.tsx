@@ -109,11 +109,6 @@ export const MINE_REPORTS_TYPE = {
   tailingsReports: "TAR",
 };
 
-export enum MINE_REPORTS_ENUM {
-  PRR = "Permit Required Report",
-  CRR = "Code Required Report",
-}
-
 export const E_REFERRALS_URL =
   "https://j200.gov.bc.ca/int/ereferral/Default.aspx?PosseMenuName=EIMain";
 
