@@ -245,18 +245,33 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   return (
     <div>
       {(isEditMode || !formValues.mine_report_guid) && system !== SystemFlagEnum.core && (
-        <Alert
-          message=""
-          description={
-            <b>
-              Please submit only one report package per permit section. If multiple sections are
-              relevant, make separate submissions for each corresponding permit section.
-            </b>
-          }
-          type="warning"
-          showIcon
-          style={{ marginBottom: "32px" }}
-        />
+        <>
+          {isPRR && (
+            <Alert
+              message=""
+              description={
+                <b>
+                  You are submitting a permit required report. If you intended to submit a code
+                  required report, please go back and select it on the report type screen.
+                </b>
+              }
+              type="warning"
+              showIcon
+            />
+          )}
+          <Alert
+            message=""
+            description={
+              <b>
+                If your report package relates to more than one Code requirement, please submit as
+                separate report submissions.
+              </b>
+            }
+            type="info"
+            showIcon
+            style={{ marginBottom: "32px" }}
+          />
+        </>
       )}
       <Typography.Title level={3} id="report-type">
         Report Type

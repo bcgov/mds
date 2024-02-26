@@ -28,7 +28,7 @@ interface ReportGetStartedProps {
   formButtons: ReactNode;
 }
 
-const RenderPRRFields: FC<any> = ({ mineGuid }) => {
+export const RenderPRRFields: FC<{ mineGuid: string }> = ({ mineGuid }) => {
   const dispatch = useDispatch();
   const dropdownPermitConditionCategoryOptions = useSelector(
     getDropdownPermitConditionCategoryOptions
@@ -125,6 +125,7 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
       name={FORM.VIEW_EDIT_REPORT}
       onSubmit={handleSubmit}
       reduxFormConfig={{ destroyOnUnmount: false }}
+      initialValues={{ report_type: "CRR" }}
     >
       <div>
         <Typography.Title level={3}>Getting Started with your Report Submission</Typography.Title>
@@ -143,22 +144,6 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
           .
         </Typography.Paragraph>
         <Typography.Title level={5}>What type of report are you submitting today?</Typography.Title>
-        {mine.major_mine_ind && (
-          <Alert
-            description={
-              <>
-                Please note that the Major Mines Office (MMO) is currently unable to receive
-                permit-required reports through MineSpace. You must submit your permit-required
-                report to the MMO general intake inbox at {MMO_EMAIL}. Please request assistance for
-                transferring large files by contacting{" "}
-                <a href={`mailto:${MMO_EMAIL}`}>{MMO_EMAIL}</a>
-              </>
-            }
-            type="warning"
-            showIcon
-            className="margin-small--bottom"
-          />
-        )}
         <Field
           name="report_type"
           component={RenderRadioButtons}
@@ -189,6 +174,22 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
             },
           ]}
         />
+        {mine.major_mine_ind && formValues?.report_type === "PRR" && (
+          <Alert
+            description={
+              <>
+                Please note that the Major Mines Office (MMO) is currently unable to receive
+                permit-required reports through MineSpace. You must submit your permit-required
+                report to the MMO general intake inbox at {MMO_EMAIL}. Please request assistance for
+                transferring large files by contacting{" "}
+                <a href={`mailto:${MMO_EMAIL}`}>{MMO_EMAIL}</a>
+              </>
+            }
+            type="warning"
+            showIcon
+            className="margin-small--bottom"
+          />
+        )}
         {formValues?.report_type === "PRR" && <RenderPRRFields mineGuid={mine.mine_guid} />}
         {formValues?.report_type === "CRR" && (
           <>
