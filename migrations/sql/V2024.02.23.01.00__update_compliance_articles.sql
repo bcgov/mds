@@ -25,19 +25,6 @@ WHERE
 UPDATE compliance_article
 SET
     update_timestamp = current_timestamp,
-    description = 'Mine Emergency Response Plan (MERP)',
-    sub_paragraph = '1',
-    long_description = '',
-    cim_or_cpo = 'CIM'
-WHERE
-    section = '3'
-    AND description = 'Mine Emergency Response Plan'
-    AND sub_section = '7'
-    AND paragraph = '1';
-
-UPDATE compliance_article
-SET
-    update_timestamp = current_timestamp,
     description = 'Defective Explosives Report',
     long_description = ''
 WHERE
