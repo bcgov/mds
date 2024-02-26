@@ -432,3 +432,23 @@ WHERE
     section = '2'
     AND sub_section = '2'
     AND paragraph = '1';
+
+UPDATE compliance_article
+SET
+    update_timestamp = current_timestamp,
+    description = 'Duty to Keep Plans - Surface Mine Plans',
+    long_description = 'Accurate mine plans that are updated in accordance with good engineering practices and are prepared on a scale that accords with good engineering practice.'
+WHERE
+    section = '6'
+    AND sub_section = '8'
+    AND paragraph = '1';
+
+UPDATE compliance_article
+SET
+    update_timestamp = current_timestamp,
+    description = 'Haul Roads Plan',
+    long_description = 'Haul Roads Plan'
+WHERE
+    section = '6'
+    AND sub_section = '9'
+    AND paragraph = '1';
