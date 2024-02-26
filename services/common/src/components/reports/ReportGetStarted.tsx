@@ -70,8 +70,9 @@ export const RenderPRRFields: FC<{ mineGuid: string }> = ({ mineGuid }) => {
           component={RenderSelect}
         />
       </Col>
-      <Col span={24} className="radio-two-column-container">
-        {!isCore && (
+
+      {!isCore && (
+        <Col span={24} className="radio-two-column-container">
           <Field
             name="permit_condition_category_code"
             required
@@ -81,8 +82,10 @@ export const RenderPRRFields: FC<{ mineGuid: string }> = ({ mineGuid }) => {
             component={RenderRadioButtons}
             customOptions={dropdownPermitConditionCategoryOptions}
           />
-        )}
-        {isCore && (
+        </Col>
+      )}
+      {isCore && (
+        <Col md={12} sm={24}>
           <Field
             name="permit_condition_category_code"
             required
@@ -91,8 +94,8 @@ export const RenderPRRFields: FC<{ mineGuid: string }> = ({ mineGuid }) => {
             component={RenderSelect}
             data={dropdownPermitConditionCategoryOptions}
           />
-        )}
-      </Col>
+        </Col>
+      )}
     </>
   );
 };

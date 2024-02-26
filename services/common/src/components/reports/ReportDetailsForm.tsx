@@ -285,30 +285,30 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
         <Typography.Title level={3} id="report-type">
           Report Type
         </Typography.Title>
-        {system === SystemFlagEnum.ms && (
-          <Row gutter={[16, 8]}>
-            <Col md={12} sm={24}>
-              <BaseViewInput
-                label="Report Type"
-                value={report_type && MINE_REPORTS_ENUM[report_type]}
-              />
-            </Col>
-            {isPRR && (
-              <Col md={12} sm={24}>
-                <BaseViewInput label="Permit Number" value={permit?.permit_no} />
-              </Col>
-            )}
-            {selectedPermitCategory && (
+        <Row gutter={[16, 8]}>
+          {system === SystemFlagEnum.ms && (
+            <>
               <Col md={12} sm={24}>
                 <BaseViewInput
-                  label="Permit Condition Category"
-                  value={selectedPermitCategory.label}
+                  label="Report Type"
+                  value={report_type && MINE_REPORTS_ENUM[report_type]}
                 />
               </Col>
-            )}
-          </Row>
-        )}
-        <Row gutter={[16, 8]}>
+              {isPRR && (
+                <Col md={12} sm={24}>
+                  <BaseViewInput label="Permit Number" value={permit?.permit_no} />
+                </Col>
+              )}
+              {selectedPermitCategory && (
+                <Col md={12} sm={24}>
+                  <BaseViewInput
+                    label="Permit Condition Category"
+                    value={selectedPermitCategory.label}
+                  />
+                </Col>
+              )}
+            </>
+          )}
           {system === SystemFlagEnum.core && (
             <>
               <Col span={24}>

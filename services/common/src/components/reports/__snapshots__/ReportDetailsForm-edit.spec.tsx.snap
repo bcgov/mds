@@ -75,11 +75,6 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
           </div>
         </div>
       </div>
-    </div>
-    <div
-      class="ant-row"
-      style="margin: -4px -8px -4px -8px;"
-    >
       <div
         class="ant-col ant-col-24"
         style="padding: 4px 8px 4px 8px;"
