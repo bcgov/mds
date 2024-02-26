@@ -614,7 +614,10 @@ WHERE
     section = '9'
     AND sub_section = '10'
     AND paragraph = '1'
-    AND sub_paragraph;
+    AND (
+        sub_paragraph IS NULL
+        OR sub_paragraph = '3'
+    );
 
 UPDATE compliance_article
 SET
