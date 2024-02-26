@@ -12,19 +12,6 @@ WHERE
 UPDATE compliance_article
 SET
     update_timestamp = current_timestamp,
-    cim_or_cpo = 'CIM',
-    description = 'Mine Manager Investigates Right to Refuse Unsafe Work',
-    sub_paragraph = '1',
-    long_description = 'The Mine Manager''s plan that will allow the work to proceed safely or decision to suspend further work.  This is developed after the mine manager has nvestigated the right to refuse unsafe work'
-WHERE
-    section = '1'
-    AND description = 'Manager Investigates'
-    AND sub_section = '10'
-    AND paragraph = '7';
-
-UPDATE compliance_article
-SET
-    update_timestamp = current_timestamp,
     description = 'Defective Explosives Report',
     long_description = ''
 WHERE
@@ -37,7 +24,7 @@ UPDATE compliance_article
 SET
     update_timestamp = current_timestamp,
     description = 'Terrain Stability Remediation Plan',
-    long_description = ''
+    long_description = 'Terrain Stability Remediation Plan'
 WHERE
     section = '9'
     AND description = 'Terrain'
@@ -214,28 +201,6 @@ SET
 WHERE
     section = '2'
     AND sub_section = '12'
-    AND paragraph = '1';
-
-UPDATE compliance_article
-SET
-    update_timestamp = current_timestamp,
-    cim_or_cpo = 'CIM',
-    description = 'Thermal Environment (Heat or Cold Stress Program)',
-    long_description = 'A thermal stress program or a heat and/or cold stress program.  Submissions can also include training material and records for employees on thermal stress, monitoring results of thermal conditions and controls or protective measures.'
-WHERE
-    section = '2'
-    AND sub_section = '10'
-    AND paragraph = '1';
-
-UPDATE compliance_article
-SET
-    update_timestamp = current_timestamp,
-    cim_or_cpo = 'CIM',
-    description = 'Workplace to Be Hazard Free',
-    long_description = 'Housekeeping Program'
-WHERE
-    section = '2'
-    AND sub_section = '10'
     AND paragraph = '1';
 
 UPDATE compliance_article
@@ -452,3 +417,242 @@ WHERE
     section = '6'
     AND sub_section = '9'
     AND paragraph = '1';
+
+UPDATE compliance_article
+SET
+    update_timestamp = current_timestamp,
+    cim_or_cpo = 'CIM',
+    sub_paragraph = '2',
+    description = 'Hearing Conservation Program',
+    long_description = 'A program that includes the recogntiion, evaluation and control of noise risks to prevent hearing loss.'
+WHERE
+    section = '2'
+    AND sub_section = '12'
+    AND paragraph = '4';
+
+UPDATE compliance_article
+SET
+    update_timestamp = current_timestamp,
+    cim_or_cpo = 'CIM',
+    description = 'Thermal Environment (Heat or Cold Stress Program)',
+    long_description = 'A thermal stress program or a heat and/or cold stress program.  Submissions can also include training material and records for employees on thermal stress, monitoring results of thermal conditions and controls or protective measures.'
+WHERE
+    section = '2'
+    AND sub_section = '10'
+    AND paragraph = '1';
+
+UPDATE compliance_article
+SET
+    update_timestamp = current_timestamp,
+    cim_or_cpo = 'CIM',
+    sub_paragraph = '5',
+    long_description = 'Industrial Hygiene Standards for use at uranium drill sites'
+WHERE
+    section = '2'
+    AND sub_section = '3'
+    AND paragraph = '11';
+
+UPDATE compliance_article
+SET
+    update_timestamp = current_timestamp,
+    sub_paragraph = '7',
+    description = 'Dump Runout Zone Procedure',
+    long_description = 'A procedure for controlling access to areas within the
+potential run-out zone of all dumps; this procedure will prohibit
+extended activities below active dumps and provide for a program
+of monitoring to allow work below inactive and dormant dumps, the
+procedure will include provisions for signage, work under adverse
+conditions and shall be reviewed annually.
+'
+WHERE
+    section = '6'
+    AND sub_section = '10'
+    AND paragraph = '1';
+
+UPDATE compliance_article
+SET
+    update_timestamp = current_timestamp,
+    description = 'Construction of Tailings and Water Management Facilities - IFC drawing package',
+    cim_or_cpo = 'Both',
+    sub_paragraph = '1',
+    long_description = 'Also known as Issued for Constructon (IFC) drawing package. The manager shall submit issued for construction drawings, specifications and quality assurance/quality control plans as well as a summary construction schedule to the chief inspector prior to commencing construction of a tailings storage or water management facility.'
+WHERE
+    section = '10'
+    AND sub_section = '5'
+    AND paragraph = '1';
+
+UPDATE compliance_article
+SET
+    update_timestamp = current_timestamp,
+    description = 'Site Monitoring and Maintenance Program',
+    cim_or_cpo = 'CPO',
+    sub_paragraph = '(2)(a)',
+    long_description = 'If a mine ceases operation for a period longer than one year, the owner, agent, or manager shall shall apply for an amendment to the permit. For regional mines, a Notice of Work application must be submitted through vFCBC. For major mines, please submit an application for an amendment through the Applications feature on MineSpace.'
+WHERE
+    section = '10'
+    AND sub_section = '6'
+    AND paragraph = '2';
+
+UPDATE compliance_article
+SET
+    update_timestamp = current_timestamp,
+    sub_paragraph = '(c)',
+    long_description = 'Minutes shall be kept for crew safety meetings and made available to an inspector upon request.'
+WHERE
+    section = '1'
+    AND sub_section = '6'
+    AND paragraph = '12';
+
+UPDATE compliance_article
+SET
+    cim_or_cpo = 'CIM',
+    update_timestamp = current_timestamp,
+    sub_paragraph = '2',
+    description = 'Reversal Procedure for Trains',
+    long_description = 'If trains are required to reverse frequently and for lengthy distances, a procedure must be followed that is acceptable to the inspector.'
+WHERE
+    section = '4'
+    AND sub_section = '10'
+    AND paragraph = '1';
+
+UPDATE compliance_article
+SET
+    update_timestamp = current_timestamp,
+    sub_paragraph = '2',
+    description = 'Equipment Around Surface Misfires Procedure',
+    long_description = 'Use of equipment restricted within 8m distance around the collar of misfired hole except as provided in s.8.7.1 or under a procedure approved by the inspector.'
+WHERE
+    section = '8'
+    AND sub_section = '8'
+    AND paragraph = '1';
+
+UPDATE compliance_article
+SET
+    cim_or_cpo = 'CIM',
+    update_timestamp = current_timestamp,
+    sub_paragraph = '4',
+    long_description = 'Report of MERP Test'
+WHERE
+    section = '3'
+    AND sub_section = '7'
+    AND paragraph = '1';
+
+UPDATE compliance_article
+SET
+    cim_or_cpo = 'CIM',
+    update_timestamp = current_timestamp,
+    sub_paragraph = '1',
+    description = 'Underground Fueling Station Notification',
+    long_description = 'Notification of the intention to construct an underground fueling station.'
+WHERE
+    section = '4'
+    AND sub_section = '3'
+    AND paragraph = '3'
+    AND sub_paragraph IS NULL;
+
+UPDATE compliance_article
+SET
+    cim_or_cpo = 'CIM',
+    update_timestamp = current_timestamp,
+    sub_paragraph = '1',
+    description = 'Underground Oil and Grease Storage Area Notification',
+    long_description = 'Notification of the intention to construct an underground oil and grease storge enclosure for quantities in excess of those outlined in section 4.8.1(2)(b).'
+WHERE
+    section = '4'
+    AND sub_section = '3'
+    AND paragraph = '4'
+    AND sub_paragraph IS NULL;
+
+UPDATE compliance_article
+SET
+    update_timestamp = current_timestamp,
+    sub_paragraph = '2',
+    long_description = 'Careless Acts Report (Explosives)'
+WHERE
+    section = '8'
+    AND sub_section = '3'
+    AND paragraph = '9';
+
+UPDATE compliance_article
+SET
+    update_timestamp = current_timestamp,
+    sub_paragraph = '2',
+    description = 'Drilling Precaution Procedures Report',
+    long_description = ''
+WHERE
+    section = '8'
+    AND sub_section = '7'
+    AND paragraph = '2';
+
+UPDATE compliance_article
+SET
+    update_timestamp = current_timestamp,
+    sub_paragraph = '3',
+    description = 'Annual Summary of Exploration Activities OR ASEA',
+    long_description = 'As required by the Code, the permittee is responsible for submitting an annual report of the exploration and reclamation activities completed on site. The form specified by the chief inspector can be found online and is called “ASEA”. These reports must be submitted by March 31 of the following year, as long as the permit is open.'
+WHERE
+    section = '9'
+    AND sub_section = '2'
+    AND paragraph = '1'
+    AND sub_paragraph IS NULL;
+
+UPDATE compliance_article
+SET
+    update_timestamp = current_timestamp,
+    sub_paragraph = '3',
+    description = 'Management Plan for Riparian Area OR Drilling in Stream/Lake/Wetland Management Plan',
+    long_description = 'Management Plan for Riparian Area OR Drilling in Stream/Lake/Wetland Management Plan'
+WHERE
+    section = '9'
+    AND sub_section = '5'
+    AND paragraph = '1'
+    AND sub_paragraph IS NULL;
+
+UPDATE compliance_article
+SET
+    update_timestamp = current_timestamp,
+    sub_paragraph = '3',
+    description = 'ARD Surface Material Request',
+    long_description = 'Material known to be capable of generating acid rock drainage shall not be used for exploration access surfacing or ballasting unless approved by an inspector.'
+WHERE
+    section = '9'
+    AND sub_section = '10'
+    AND paragraph = '1'
+    AND sub_paragraph IS NULL;
+
+UPDATE compliance_article
+SET
+    update_timestamp = current_timestamp,
+    sub_paragraph = '1',
+    description = 'Cessation of Exploration Reclamation Report',
+    long_description = ''
+WHERE
+    section = '9'
+    AND sub_section = '13'
+    AND paragraph = '1'
+    AND sub_paragraph IS NULL;
+
+UPDATE compliance_article
+SET
+    update_timestamp = current_timestamp,
+    sub_paragraph = '3',
+    description = 'ITRB Terms of Reference',
+    long_description = ''
+WHERE
+    section = '10'
+    AND sub_section = '4'
+    AND paragraph = '2'
+    AND sub_paragraph IS NULL;
+
+UPDATE compliance_article
+SET
+    update_timestamp = current_timestamp,
+    cim_or_cpo = 'CIM',
+    description = 'Mine Manager''s Right to Refuse Unsafe Work Report',
+    sub_paragraph = '2',
+    long_description = 'Mine Manager''s report that describes the incident, shows compliance with the code and describes any remedial actions taken.
+'
+WHERE
+    section = '1'
+    AND sub_section = '10'
+    AND paragraph = '7';
