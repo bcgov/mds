@@ -547,8 +547,7 @@ SET
 WHERE
     section = '4'
     AND sub_section = '3'
-    AND paragraph = '3'
-    AND sub_paragraph IS NULL;
+    AND paragraph = '3';
 
 UPDATE compliance_article
 SET
@@ -560,8 +559,7 @@ SET
 WHERE
     section = '4'
     AND sub_section = '3'
-    AND paragraph = '4'
-    AND sub_paragraph IS NULL;
+    AND paragraph = '4';
 
 UPDATE compliance_article
 SET
@@ -593,8 +591,7 @@ SET
 WHERE
     section = '9'
     AND sub_section = '2'
-    AND paragraph = '1'
-    AND sub_paragraph IS NULL;
+    AND paragraph = '1';
 
 UPDATE compliance_article
 SET
@@ -605,8 +602,7 @@ SET
 WHERE
     section = '9'
     AND sub_section = '5'
-    AND paragraph = '1'
-    AND sub_paragraph IS NULL;
+    AND paragraph = '1';
 
 UPDATE compliance_article
 SET
@@ -618,7 +614,7 @@ WHERE
     section = '9'
     AND sub_section = '10'
     AND paragraph = '1'
-    AND sub_paragraph IS NULL;
+    AND sub_paragraph;
 
 UPDATE compliance_article
 SET
@@ -630,7 +626,10 @@ WHERE
     section = '9'
     AND sub_section = '13'
     AND paragraph = '1'
-    AND sub_paragraph IS NULL;
+    AND (
+        sub_paragraph IS NULL
+        OR sub_paragraph = '1'
+    );
 
 UPDATE compliance_article
 SET
@@ -642,7 +641,10 @@ WHERE
     section = '10'
     AND sub_section = '4'
     AND paragraph = '2'
-    AND sub_paragraph IS NULL;
+    AND (
+        sub_paragraph IS NULL
+        OR sub_paragraph = '3'
+    );
 
 UPDATE compliance_article
 SET
