@@ -1,4 +1,4 @@
-#!/usr/bin/python3.9
+#!/usr/bin/python3.11
 import json
 import logging
 import urllib3
@@ -48,7 +48,8 @@ def lambda_handler(event, context):
     event_details =  body.get("event", "")
     condition = body.get("condition", "")
     entities = body.get("entities", "")
-    
+    labels = alert.get("labels", {})
+
     if entities:
       entities = entities[0].get("metricValues", "")
     
@@ -77,6 +78,9 @@ def lambda_handler(event, context):
 
     if alert.get("scope"):
       condition_scope_str = str(str(condition) + "\n for " + str(alert.get("scope", "")))
+
+
+    title = f'{labels.get("kube_workload_name", "")}: {labels.get("kube_namespace_label_environment")} - {alert.get("name", " ")}'[:255] # limit of 256 characters
     
     msg = {
 
@@ -87,7 +91,7 @@ def lambda_handler(event, context):
             "name": "Sysdig Monitor",
             "url": "https://app.sysdigcloud.com/api/oauth/openid/bcdevops",
           },
-          "title": alert.get("name", " ")[:255], # limit of 256 characters
+          "title": title,
           "url": event_details.get("url", " "),
           "color": alert_colour,
           "fields": [
@@ -97,9 +101,18 @@ def lambda_handler(event, context):
               "inline": "true"
             },
             {
-              "name": "Condition and Scope",
-              "value": condition_scope_str[:1023], # limit of 1024 characters
+              "name": "Namespace",
+              "value": labels.get("kube_namespace_name", "")[:1023], # limit of 1024 characters
               "inline": "true"
+            },
+            {
+              "name": "Service",
+              "value": labels.get("kube_workload_name", "")[:1203], # limit of 1024 characters
+              "inline": "true"
+            },
+            {
+              "name": "Condition and Scope",
+              "value": condition_scope_str[:1023] # limit of 1024 characters
             },
             {
               "name": "Metric Values",
