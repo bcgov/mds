@@ -274,9 +274,6 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
           />
         </>
       )}
-      <Typography.Title level={3} id="report-type">
-        Report Type
-      </Typography.Title>
 
       <FormWrapper
         name={FORM.VIEW_EDIT_REPORT}
@@ -284,6 +281,10 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
         isEditMode={isEditMode}
         initialValues={initialValues}
       >
+        {system === SystemFlagEnum.core && formButtons}
+        <Typography.Title level={3} id="report-type">
+          Report Type
+        </Typography.Title>
         {system === SystemFlagEnum.ms && (
           <Row gutter={[16, 8]}>
             <Col md={12} sm={24}>
