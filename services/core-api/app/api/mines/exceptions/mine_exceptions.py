@@ -40,13 +40,3 @@ class ExplosivePermitNumberAlreadyExistExeption(MineException):
     def __init__(self, message = "A record already exists with the provided 'Explosives Permit Number'", **kwargs):
         super().__init__(message, **kwargs)
         self.code = int(kwargs.get("status_code", 422))
-
-class MineReportCommentExeption(MineException):
-    """Generic Exception for Mine Report Comments"""
-
-    description = (
-        "Generic Exception for Mine Report Comments"
-    )
-    def __init__(self, message = "Exception occurred in Mine Report Comments", **kwargs):
-        super().__init__(message, **kwargs)
-        self.code = int(kwargs.get("status_code", 500))

@@ -58,14 +58,6 @@ class MineReportComment(SoftDeleteMixin, AuditMixin, Base):
         return cls.query.filter_by(mine_report_submission_id=_id).filter_by(
             deleted_ind=False).filter_by(comment_visibility_ind=True).all()
 
-    @classmethod
-    def find_by_mine_report_guid(cls, guid):
-        return cls.query\
-            .join(MineReportSubmission)\
-            .join(MineReport)\
-            .filter(MineReport.mine_report_guid == guid) \
-            .all()
-
     def json(self):
         return {
             'mine_report_comment_id': self.mine_report_comment_id,
