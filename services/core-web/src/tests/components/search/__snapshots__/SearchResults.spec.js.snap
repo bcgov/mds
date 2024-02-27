@@ -4,9 +4,137 @@ exports[`Search renders properly 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    <div />
+    <div>
+      <div
+        class="landing-page"
+      >
+        <div>
+          <div
+            class="landing-page__header"
+          >
+            <h1
+              class="padding-sm--bottom"
+            >
+              Search results for 
+            </h1>
+            <div>
+              <p>
+                <span
+                  class="padding-lg--right"
+                >
+                  Just show me:
+                </span>
+              </p>
+            </div>
+          </div>
+          <div
+            class="landing-page__content"
+          >
+            <div
+              class="tab__content"
+            >
+              <div
+                class="ant-row ant-row-center"
+              >
+                <div
+                  class="ant-col padding-xxl--top ant-col-sm-22 ant-col-md-18 ant-col-lg-8"
+                >
+                  <h2>
+                    No Results Found.
+                  </h2>
+                  <p>
+                    At least one word in your search needs to be a minimum of three characters.
+                  </p>
+                  <p>
+                    Please try another search.
+                  </p>
+                </div>
+              </div>
+              <div
+                class="ant-row ant-row-center"
+              >
+                <div
+                  class="ant-col padding-lg--top padding-xxl--bottom ant-col-sm-22 ant-col-md-18 ant-col-lg-8"
+                >
+                  <h2>
+                    Can't find it?
+                  </h2>
+                  <p>
+                    Try clicking to see more results, or select the advanced lookup if available. Also, double check your spelling to ensure it is correct. If you feel there is a problem, contact the Core administrator to ask for assistance.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>,
-  "container": <div />,
+  "container": <div>
+    <div
+      class="landing-page"
+    >
+      <div>
+        <div
+          class="landing-page__header"
+        >
+          <h1
+            class="padding-sm--bottom"
+          >
+            Search results for 
+          </h1>
+          <div>
+            <p>
+              <span
+                class="padding-lg--right"
+              >
+                Just show me:
+              </span>
+            </p>
+          </div>
+        </div>
+        <div
+          class="landing-page__content"
+        >
+          <div
+            class="tab__content"
+          >
+            <div
+              class="ant-row ant-row-center"
+            >
+              <div
+                class="ant-col padding-xxl--top ant-col-sm-22 ant-col-md-18 ant-col-lg-8"
+              >
+                <h2>
+                  No Results Found.
+                </h2>
+                <p>
+                  At least one word in your search needs to be a minimum of three characters.
+                </p>
+                <p>
+                  Please try another search.
+                </p>
+              </div>
+            </div>
+            <div
+              class="ant-row ant-row-center"
+            >
+              <div
+                class="ant-col padding-lg--top padding-xxl--bottom ant-col-sm-22 ant-col-md-18 ant-col-lg-8"
+              >
+                <h2>
+                  Can't find it?
+                </h2>
+                <p>
+                  Try clicking to see more results, or select the advanced lookup if available. Also, double check your spelling to ensure it is correct. If you feel there is a problem, contact the Core administrator to ask for assistance.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
   "debug": [Function],
   "findAllByAltText": [Function],
   "findAllByDisplayValue": [Function],

@@ -31,6 +31,7 @@ interface SearchResultsProps {
   searchResults: { [key: string]: any };
   searchTerms: string[];
   partyRelationshipTypeHash: { [key: string]: string };
+  hideLoadingIndicator?: boolean;
 }
 
 const TableForGroup = (
@@ -171,7 +172,7 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
 
   const type_filter = params.t;
 
-  if (isSearching) return <Loading />;
+  if (isSearching && !props.hideLoadingIndicator) return <Loading />;
 
   return hasSearchTerm ? (
     <div className="landing-page">

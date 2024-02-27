@@ -18,11 +18,12 @@ const setupReducerProps = () => {
   reducerProps.searchResults = MOCK.SEARCH_RESULTS;
   reducerProps.searchTerms = ["Abb"];
   reducerProps.partyRelationshipTypeHash = MOCK.MINE_INFO_HASH;
-  reducerProps.location = { search: " " };
+  reducerProps.location = { search: "q=test" };
   reducerProps.history = {
     push: jest.fn(),
-    location: {},
   };
+  reducerProps.searchResults = MOCK.SEARCH_RESULTS;
+  reducerProps.hideLoadingIndicator = true;
 };
 
 beforeEach(() => {
