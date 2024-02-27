@@ -23,10 +23,10 @@ class NOWPartyAppointment(SoftDeleteMixin, AuditMixin, Base):
     merged_from_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
 
     # Relationships
-    party = db.relationship('Party', lazy='joined', foreign_keys=party_guid, back_populates='now_party_appt')
+    party = db.relationship('Party', lazy='joined', foreign_keys=party_guid, overlaps='now_party_appt')
     merged_from_party = db.relationship('Party', foreign_keys=merged_from_party_guid)
     mine_party_appt_type = db.relationship('MinePartyAppointmentType', lazy='joined')
-    now_application = db.relationship('NOWApplication', lazy='selectin', back_populates='contacts')
+    now_application = db.relationship('NOWApplication', lazy='selectin', overlaps='contacts')
 
     mine_party_appt_type_code_description = association_proxy('mine_party_appt_type', 'description')
     party_name = association_proxy('party', 'party_name')
