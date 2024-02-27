@@ -118,7 +118,7 @@ const CantFindIt = () => (
   </Row>
 );
 
-const SearchResults: React.FC<SearchResultsProps> = (props) => {
+export const SearchResults: React.FC<SearchResultsProps> = (props) => {
   const [isSearching, setIsSearching] = useState(false);
   const [hasSearchTerm, setHasSearchTerm] = useState(false);
   const [params, setParams] = useState<{ [key: string]: string }>({});
