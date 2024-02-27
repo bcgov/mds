@@ -26,6 +26,7 @@ class MineReportCommentListResource(Resource, UserMixin):
     @api.marshal_with(MINE_REPORT_COMMENT_MODEL, envelope='records', code=200)
     @requires_role_view_all
     def get(self, mine_guid, mine_report_guid):
+
         mine_report = MineReport.find_by_mine_report_guid(mine_report_guid)
 
         if not mine_report:

@@ -6,8 +6,6 @@ from app.extensions import db
 
 from app.api.utils.include.user_info import User
 from datetime import datetime
-from app.api.mines.reports.models.mine_report import MineReport
-from app.api.mines.reports.models.mine_report_submission import MineReportSubmission
 
 
 class MineReportComment(SoftDeleteMixin, AuditMixin, Base):
