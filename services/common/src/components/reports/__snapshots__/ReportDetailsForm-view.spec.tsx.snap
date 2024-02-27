@@ -2,12 +2,6 @@
 
 exports[`ReportDetailsForm renders view mode properly 1`] = `
 <div>
-  <h3
-    class="ant-typography"
-    id="report-type"
-  >
-    Report Type
-  </h3>
   <form
     class="ant-form ant-form-vertical edit"
     id="VIEW_EDIT_REPORT"
@@ -114,6 +108,36 @@ exports[`ReportDetailsForm renders view mode properly 1`] = `
         </div>
       </div>
       <div
+        class="ant-col ant-col-24"
+        style="padding: 4px 8px 4px 8px;"
+      >
+        <h3
+          class="ant-typography margin-large--top"
+          id="report-type"
+        >
+          Report Type
+        </h3>
+      </div>
+      <div
+        class="ant-col ant-col-sm-24 ant-col-md-12"
+        style="padding: 4px 8px 4px 8px;"
+      >
+        <div
+          class="view-item"
+        >
+          <div
+            class="ant-typography view-item-label"
+          >
+            Report Type
+          </div>
+          <div
+            class="ant-typography view-item-value"
+          >
+            Code Required Report
+          </div>
+        </div>
+      </div>
+      <div
         class="ant-col ant-col-12"
         style="padding: 4px 8px 4px 8px;"
       >
@@ -148,6 +172,37 @@ exports[`ReportDetailsForm renders view mode properly 1`] = `
             class="ant-typography view-item-value"
           >
             1.9.3 - OHSC Annual Report
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-col ant-col-24"
+        style="padding: 4px 8px 4px 8px;"
+      >
+        <div
+          class="grey-box"
+          style="background-color: rgb(242, 242, 242); padding: 16px 24px;"
+        >
+          <div
+            class="ant-row"
+          >
+            <div
+              class="ant-col ant-col-xs-24 ant-col-md-18"
+            >
+              <b>
+                You are submitting:
+              </b>
+              <br />
+              <b>
+                1.9.3 - OHSC Annual Report
+              </b>
+              <br />
+              <div
+                class="ant-typography"
+              >
+                General
+              </div>
+            </div>
           </div>
         </div>
       </div>

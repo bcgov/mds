@@ -110,6 +110,7 @@ const ReportPage: FC = () => {
 
   const scrollSideMenuProps: ScrollSideMenuProps = {
     menuOptions: [
+      { href: "regulatory-authority", title: "Regulatory Authority" },
       { href: "report-type", title: "Report Type" },
       { href: "report-information", title: "Report Information" },
       { href: "contact-information", title: "Contact Information" },
@@ -183,7 +184,6 @@ const ReportPage: FC = () => {
         type={reportStatusSeverityForDisplay(latestSubmission?.mine_report_submission_status_code)}
         showIcon
       />
-      {getFormButtons()}
       <ReportDetailsForm
         mineGuid={mineGuid}
         initialValues={latestSubmission}

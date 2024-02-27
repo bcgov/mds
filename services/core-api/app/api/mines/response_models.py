@@ -669,6 +669,7 @@ MINE_REPORT_SUBMISSION_MODEL = api.model(
             fields.List(
                 fields.String(attribute='mine_report_category'),
                 attribute='mine_report_definition.categories'),
+        'report_type': fields.String,
         'report_name': fields.String,
         'due_date': fields.Date,
         'received_date': fields.Date,

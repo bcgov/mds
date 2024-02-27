@@ -16,6 +16,8 @@ const initialState = {
   },
   [STATIC_CONTENT]: {
     mineReportDefinitionOptions: MOCK.BULK_STATIC_CONTENT_RESPONSE.mineReportDefinitionOptions,
+    permitConditionCategoryOptions:
+      MOCK.BULK_STATIC_CONTENT_RESPONSE.permitConditionCategoryOptions,
   },
   [AUTHENTICATION]: {
     systemFlag: SystemFlagEnum.core,

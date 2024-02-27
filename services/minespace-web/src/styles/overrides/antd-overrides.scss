@@ -426,6 +426,18 @@ th.ant-descriptions-item.vertical-description {
   font-weight: normal;
 }
 
+.vertical-radio-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.radio-two-column-container {
+  .ant-radio-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 .view-item {
   line-height: 22px;
 
@@ -516,7 +528,6 @@ th.ant-descriptions-item.vertical-description {
 
 .ant-alert-info {
   background-color: $card-bg;
-  border-width: 0;
 }
 
 .ant-alert+.ant-alert {

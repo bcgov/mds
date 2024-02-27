@@ -3,11 +3,11 @@ import { render } from "@testing-library/react";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { AUTHENTICATION, MINES, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
-import { SystemFlagEnum, USER_ROLES } from "@mds/common";
+import { SystemFlagEnum } from "@mds/common";
 import ReportPage from "@/components/mine/Reports/ReportPage";
 import { BrowserRouter } from "react-router-dom";
 
-const mineReportSubmission = MOCK.MINE_REPORT_SUBMISSIONS[0];
+const mineReportSubmission = MOCK.MINE_REPORT_SUBMISSIONS[1];
 const initialState = {
   reportSubmission: {
     reportSubmission: mineReportSubmission,
@@ -22,7 +22,6 @@ const initialState = {
   },
   [AUTHENTICATION]: {
     systemFlag: SystemFlagEnum.core,
-    userAccessData: [USER_ROLES.role_edit_reports],
   },
 };
 
@@ -31,8 +30,8 @@ function mockFunction() {
   return {
     ...original,
     useParams: jest.fn().mockReturnValue({
-      mineGuid: MOCK.MINE_REPORT_SUBMISSIONS[0].mine_guid,
-      reportGuid: MOCK.MINE_REPORT_SUBMISSIONS[0].mine_report_guid,
+      mineGuid: MOCK.MINE_REPORT_SUBMISSIONS[1].mine_guid,
+      reportGuid: MOCK.MINE_REPORT_SUBMISSIONS[1].mine_report_guid,
     }),
     useLocation: jest.fn().mockReturnValue({
       tab: "",
