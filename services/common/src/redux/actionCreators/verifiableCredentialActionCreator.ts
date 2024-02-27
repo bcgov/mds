@@ -54,7 +54,7 @@ export const createVCWalletInvitation = (
   dispatch(request(reducerTypes.CREATE_VC_WALLET_CONNECTION_INVITATION));
   return CustomAxios()
     .post(
-      `${ENVIRONMENT.apiUrl}/verifiable-credentials/oob-invitation/${partyGuid}`,
+      `${ENVIRONMENT.apiUrl}/verifiable-credentials/${partyGuid}/oob-invitation`,
       null,
       createRequestHeader()
     )
