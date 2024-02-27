@@ -11,7 +11,7 @@ export interface IMineReportSubmission {
   mine_guid: string;
   mine_name: string;
   mine_report_category: string[];
-  // mine_report_contacts: any;
+  mine_report_contacts: any[];
   mine_report_definition_guid: string;
   mine_report_guid: string;
   mine_report_id: string;

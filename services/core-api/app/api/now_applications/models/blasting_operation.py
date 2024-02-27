@@ -15,7 +15,7 @@ class BlastingOperation(Base):
 
     now_application_id = db.Column(
         db.Integer, db.ForeignKey('now_application.now_application_id'), primary_key=True)
-    now_application = db.relationship('NOWApplication', back_populates='blasting_operation')
+    now_application = db.relationship('NOWApplication', overlaps='blasting_operation')
 
     has_storage_explosive_on_site = db.Column(db.Boolean)
     explosive_permit_issued = db.Column(db.Boolean)
