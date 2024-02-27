@@ -5,9 +5,7 @@ exports[`MineReportInfo renders properly 1`] = `
   class="tab__content"
 >
   <div>
-    <h2>
-      Code Required Reports
-    </h2>
+    <h2 />
     <div
       class="ant-divider ant-divider-horizontal"
       role="separator"
