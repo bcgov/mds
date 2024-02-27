@@ -1,7 +1,6 @@
 import uuid
-from flask_restx import Resource, reqparse, fields, inputs
-from werkzeug.exceptions import BadRequest
-from sqlalchemy import desc
+from flask_restx import Resource
+from werkzeug.exceptions import BadRequest, NotFound
 from datetime import datetime
 
 from app.extensions import api, db
@@ -13,12 +12,14 @@ from app.api.mines.reports.models.mine_report import MineReport
 from app.api.mines.reports.models.mine_report_submission import MineReportSubmission
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
 from app.api.mines.reports.models.mine_report_contact import MineReportContact
+from app.api.mines.permits.permit_conditions.models.permit_condition_category import PermitConditionCategory
 from app.api.mines.permits.permit.models.permit import Permit
+from app.api.mines.mine.models.mine import Mine
 from app.api.mines.documents.models.mine_document import MineDocument
 
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.mines.response_models import MINE_REPORT_SUBMISSION_MODEL
-from flask import current_app
+
 class ReportSubmissionResource(Resource, UserMixin):
 
     parser = CustomReqparser()
@@ -50,7 +51,11 @@ class ReportSubmissionResource(Resource, UserMixin):
         permit = Permit.find_by_permit_guid_or_no(permit_guid)
         if not permit:
             raise BadRequest(permit_error_message)
-        if mine_guid != permit.mine_guid:
+        mine = Mine.find_by_mine_guid(mine_guid)
+        if not mine:
+            raise NotFound('Mine not found')
+        permit._context_mine = mine
+        if mine.mine_guid != permit.mine.mine_guid:
             raise BadRequest('The permit must be associated with the selected mine.')
         return permit.permit_id
 

@@ -182,7 +182,6 @@ const ReportPage: FC = () => {
         type={reportStatusSeverityForDisplay(latestSubmission?.mine_report_submission_status_code)}
         showIcon
       />
-      {getFormButtons()}
       <ReportDetailsForm
         mineGuid={mineGuid}
         initialValues={latestSubmission}

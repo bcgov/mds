@@ -9,4 +9,6 @@ export interface IComplianceArticle {
   long_description: string;
   effective_date: Date;
   expiry_date: Date;
+  help_reference_link: string;
+  cim_or_cpo: string;
 }

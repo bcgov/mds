@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { createSelector } from "reselect";
 import { getNoticeOfWork } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import * as permitReducer from "../reducers/permitReducer";
@@ -42,29 +41,37 @@ export const getDraftPermitAmendmentForNOW = createSelector(
   }
 );
 
-export const getPermits = createSelector([getUnformattedPermits], (permits) => {
-  const formattedPermits = permits.map((permit) => {
-    const site_properties = {
-      mine_tenure_type_code: "",
-      mine_commodity_code: [],
-      mine_disturbance_code: [],
-    };
+const formatPermit = (permit) => {
+  const site_properties = {
+    mine_tenure_type_code: "",
+    mine_commodity_code: [],
+    mine_disturbance_code: [],
+  };
 
-    let activePermitSiteProperty = site_properties;
-    if (permit.site_properties.length > 0) {
-      activePermitSiteProperty = permit.site_properties.map((type) => {
-        site_properties.mine_tenure_type_code = type.mine_tenure_type_code;
-        type.mine_type_detail.forEach((detail) => {
-          if (detail.mine_commodity_code) {
-            site_properties.mine_commodity_code.push(detail.mine_commodity_code);
-          } else if (detail.mine_disturbance_code) {
-            site_properties.mine_disturbance_code.push(detail.mine_disturbance_code);
-          }
-        });
-        return site_properties;
-      })[0];
-    }
-    return { ...permit, site_properties: activePermitSiteProperty };
+  let activePermitSiteProperty = site_properties;
+  if (permit.site_properties.length > 0) {
+    activePermitSiteProperty = permit.site_properties.map((type) => {
+      site_properties.mine_tenure_type_code = type.mine_tenure_type_code;
+      type.mine_type_detail.forEach((detail) => {
+        if (detail.mine_commodity_code) {
+          site_properties.mine_commodity_code.push(detail.mine_commodity_code);
+        } else if (detail.mine_disturbance_code) {
+          site_properties.mine_disturbance_code.push(detail.mine_disturbance_code);
+        }
+      });
+      return site_properties;
+    })[0];
+  }
+  return { ...permit, site_properties: activePermitSiteProperty };
+};
+
+export const getPermitByGuid = (permitGuid) =>
+  createSelector([getUnformattedPermits], (permits) => {
+    const permit = permits.find((p) => p.permit_guid === permitGuid);
+    return permit && formatPermit(permit);
   });
+
+export const getPermits = createSelector([getUnformattedPermits], (permits) => {
+  const formattedPermits = permits.map((permit) => formatPermit(permit));
   return formattedPermits;
 });

@@ -37,6 +37,7 @@ export const CONTACT_ADMIN = [
   <b>mds@gov.bc.ca</b>,
   " to request access",
 ];
+export const MMO_EMAIL = "permrecl@gov.bc.ca";
 export const EMPTY_FIELD = "N/A";
 export const EMPTY = "";
 export const ZERO = "0.00";
