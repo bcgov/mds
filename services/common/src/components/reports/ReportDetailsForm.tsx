@@ -270,7 +270,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   useEffect(() => {
     setIsLoading(true);
     fetchComments();
-    setIsLoading(true);
+    setIsLoading(false);
   }, [formValues.mine_report_guid]);
 
   const handleAddComment = async (values) => {
