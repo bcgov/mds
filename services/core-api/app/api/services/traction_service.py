@@ -11,6 +11,7 @@ from app.api.verifiable_credentials.models.connection import PartyVerifiableCred
 traction_token_url = Config.TRACTION_HOST+"/multitenancy/tenant/"+Config.TRACTION_TENANT_ID+"/token"
 traction_oob_create_invitation = Config.TRACTION_HOST+"/out-of-band/create-invitation"
 traction_offer_credential = Config.TRACTION_HOST+"/issue-credential/send-offer"
+revoke_credential_url = Config.TRACTION_HOST+"/revocation/revoke"
 
 class VerificableCredentialWorkflowError(Exception):
     pass
@@ -60,12 +61,13 @@ class TractionService():
         }
 
         oob_create_resp = requests.post(traction_oob_create_invitation, json=payload,headers=self.get_headers())
+        assert oob_create_resp.status_code == 200, f"oob_create_resp={oob_create_resp.json()}"
 
         response = oob_create_resp.json()
         current_app.logger.info(f"oob invitation create reponse from traction = {response}")
         new_traction_connection = PartyVerifiableCredentialConnection(party_guid = party.party_guid, invitation_id = response["invitation"]["@id"])
         new_traction_connection.save()
-
+        
         return response
     
     def offer_mines_act_permit(self, connection_id, attributes):
@@ -83,5 +85,16 @@ class TractionService():
         }
 
         cred_offer_resp = requests.post(traction_offer_credential, json=payload,headers=self.get_headers())
-
+        assert cred_offer_resp.status_code == 200, f"cred_offer_resp={cred_offer_resp.json()}"
         return cred_offer_resp.json()
+
+    def revoke_credential(self,connection_id, rev_reg_id, cred_rev_id, comment):
+        payload = {
+            "comment":comment,
+            "connection_id":connection_id, 
+            "rev_reg_id":rev_reg_id,
+            "cred_rev_id":cred_rev_id
+        }
+        revoke_resp = requests.post(revoke_credential_url, json=payload,headers=self.get_headers())
+        assert revoke_resp.status_code == 200, f"revoke_resp={revoke_resp.json()}"
+        return revoke_resp.json()

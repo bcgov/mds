@@ -17,7 +17,6 @@ export const issueVCDigitalCredForPermit = (
   dispatch
 ): Promise<AxiosResponse<IVCInvitation>> => {
   const payload = {
-    party_guid: partyGuid,
     permit_amendment_guid: permitAmendmentGuid,
   };
 
@@ -25,7 +24,7 @@ export const issueVCDigitalCredForPermit = (
   dispatch(request(reducerTypes.ISSUE_VC));
   return CustomAxios()
     .post(
-      `${ENVIRONMENT.apiUrl}/verifiable-credentials/mines-act-permits`,
+      `${ENVIRONMENT.apiUrl}/verifiable-credentials/${partyGuid}/mines-act-permits`,
       payload,
       createRequestHeader()
     )
