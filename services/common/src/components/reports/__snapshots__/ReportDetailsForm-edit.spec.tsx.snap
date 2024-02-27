@@ -2,68 +2,180 @@
 
 exports[`ReportDetailsForm renders edit mode properly 1`] = `
 <div>
-  <div
-    class="ant-alert ant-alert-info ant-alert-with-description"
-    data-show="true"
-    role="alert"
-    style="margin-bottom: 32px;"
+  <form
+    class="ant-form ant-form-vertical edit"
+    id="VIEW_EDIT_REPORT"
   >
-    <span
-      aria-label="info-circle"
-      class="anticon anticon-info-circle ant-alert-icon"
-      role="img"
-    >
-      <svg
-        aria-hidden="true"
-        data-icon="info-circle"
-        fill="currentColor"
-        focusable="false"
-        height="1em"
-        viewBox="64 64 896 896"
-        width="1em"
+    <div>
+      <button
+        class="ant-btn ant-btn-default"
+        type="submit"
       >
-        <path
-          d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
-        />
-        <path
-          d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"
-        />
-      </svg>
-    </span>
+        <span>
+          Submit
+        </span>
+      </button>
+    </div>
     <div
-      class="ant-alert-content"
+      class="ant-row"
+      style="margin: -4px -8px -4px -8px;"
     >
       <div
-        class="ant-alert-description"
+        class="ant-col ant-col-24"
+        style="padding: 4px 8px 4px 8px;"
       >
-        <b>
-          If your report package relates to more than one Code requirement, please submit as separate report submissions.
-        </b>
+        <h3
+          class="ant-typography"
+          id="regulatory-authority"
+        >
+          Regulatory Authority
+        </h3>
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class="ant-form-item-required"
+                for="VIEW_EDIT_REPORT_report_for"
+                title=""
+              >
+                Who is the report for?
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <div
+                    aria-required="true"
+                    class="ant-radio-group ant-radio-group-solid vertical-radio-group"
+                    id="VIEW_EDIT_REPORT_report_for"
+                  >
+                    <label
+                      class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                    >
+                      <span
+                        class="ant-radio ant-radio-disabled"
+                      >
+                        <input
+                          class="ant-radio-input"
+                          disabled=""
+                          name="report_for"
+                          type="radio"
+                          value="CPO"
+                        />
+                        <span
+                          class="ant-radio-inner"
+                        />
+                      </span>
+                      <span>
+                        Chief Permitting Officer
+                      </span>
+                    </label>
+                    <label
+                      class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                    >
+                      <span
+                        class="ant-radio ant-radio-disabled"
+                      >
+                        <input
+                          class="ant-radio-input"
+                          disabled=""
+                          name="report_for"
+                          type="radio"
+                          value="CIM"
+                        />
+                        <span
+                          class="ant-radio-inner"
+                        />
+                      </span>
+                      <span>
+                        Chief Inspector of Mines
+                      </span>
+                    </label>
+                    <label
+                      class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                    >
+                      <span
+                        class="ant-radio ant-radio-disabled"
+                      >
+                        <input
+                          class="ant-radio-input"
+                          disabled=""
+                          name="report_for"
+                          type="radio"
+                          value="Both"
+                        />
+                        <span
+                          class="ant-radio-inner"
+                        />
+                      </span>
+                      <span>
+                        Both
+                      </span>
+                    </label>
+                    <label
+                      class="ant-radio-wrapper ant-radio-wrapper-checked ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                    >
+                      <span
+                        class="ant-radio ant-radio-checked ant-radio-disabled"
+                      >
+                        <input
+                          class="ant-radio-input"
+                          disabled=""
+                          name="report_for"
+                          type="radio"
+                          value="Not specified"
+                        />
+                        <span
+                          class="ant-radio-inner"
+                        />
+                      </span>
+                      <span>
+                        Not specified
+                      </span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="VIEW_EDIT_REPORT_report_for_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-  <form
-    class="ant-form ant-form-vertical edit"
-    id="VIEW_EDIT_REPORT"
-  >
-    <div
-      class="ant-row"
-      style="margin: -4px -8px -4px -8px;"
-    >
-  <h3
-    class="ant-typography"
-    id="report-type"
-  >
-    Report Type
-  </h3>
-  <form
-    class="ant-form ant-form-vertical edit"
-    id="VIEW_EDIT_REPORT"
-  >
-    <div
-      class="ant-row"
-      style="margin: -4px -8px -4px -8px;"
-    >
+      <div
+        class="ant-col ant-col-24"
+        style="padding: 4px 8px 4px 8px;"
+      >
+        <h3
+          class="ant-typography margin-large--top"
+          id="report-type"
+        >
+          Report Type
+        </h3>
+      </div>
       <div
         class="ant-col ant-col-24"
         style="padding: 4px 8px 4px 8px;"
@@ -100,10 +212,10 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
                     id="VIEW_EDIT_REPORT_report_type"
                   >
                     <label
-                      class="ant-radio-wrapper ant-radio-wrapper-checked ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                      class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
                     >
                       <span
-                        class="ant-radio ant-radio-checked ant-radio-disabled"
+                        class="ant-radio ant-radio-disabled"
                       >
                         <input
                           class="ant-radio-input"
@@ -164,44 +276,7 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
       <div
         class="ant-col ant-col-24"
         style="padding: 4px 8px 4px 8px;"
-      >
-        <h3
-          class="ant-typography margin-large--top"
-          id="report-type"
-        >
-          Report Type
-        </h3>
-      </div>
-      <div
-        class="ant-col ant-col-sm-24 ant-col-md-12"
-        style="padding: 4px 8px 4px 8px;"
-      >
-        <div
-          class="view-item"
-        >
-          <div
-            class="ant-typography view-item-label"
-          >
-            Report Type
-          </div>
-          <div
-            class="ant-typography view-item-value"
-          >
-            
-          </div>
-        </div>
-      </div>
-      <div
-        class="ant-col ant-col-24"
-        style="padding: 4px 8px 4px 8px;"
       />
-      >
-        <div
-          class="ant-typography"
-        >
-          Select the report type and name to view the required codes.
-        </div>
-      </div>
       <div
         class="ant-col ant-col-24"
         style="padding: 4px 8px 4px 8px;"
