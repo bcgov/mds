@@ -19,25 +19,6 @@ const initialState = {
   },
 };
 
-function mockFunction() {
-  const original = jest.requireActual("react-router-dom");
-  return {
-    ...original,
-    useParams: jest.fn().mockReturnValue({
-      id: "1234",
-      reportType: "code-required-report",
-    }),
-    useLocation: jest.fn().mockReturnValue({
-      search: "",
-    }),
-    useHistory: jest.fn().mockReturnValue({
-      push: jest.fn(),
-      location: { hash: "" },
-    }),
-  };
-}
-jest.mock("react-router-dom", () => mockFunction());
-
 describe("ReportDetailsForm", () => {
   it("renders edit mode properly", () => {
     const { container } = render(

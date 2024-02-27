@@ -22,7 +22,7 @@ import MineReportTable from "@/components/mine/Reports/MineReportTable";
 import ReportFilterForm from "@/components/Forms/reports/ReportFilterForm";
 import * as routes from "@/constants/routes";
 import { modalConfig } from "@/components/modalContent/config";
-import { Feature, IMine, MineReportParams, MineReportType } from "@mds/common";
+import { Feature, IMine, MINE_REPORTS_ENUM, MineReportParams, MineReportType } from "@mds/common";
 import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
@@ -237,21 +237,10 @@ export const MineReportInfo: FC = () => {
     history.replace(routes.MINE_REPORTS.dynamicRoute(mineGuid, reportType, defaultParams));
   };
 
-  const renderTitle = () => {
-    switch (mine_reports_type) {
-      case MineReportType["code-required-reports"]:
-        return "Code Required Reports";
-      case MineReportType["permit-required-reports"]:
-        return "Permit Required Reports";
-      default:
-        return "Code Required Reports";
-    }
-  };
-
   return (
     <div className="tab__content">
       <div>
-        <h2>{renderTitle()}</h2>
+        <h2>{MINE_REPORTS_ENUM[mine_reports_type]}</h2>
         <Divider />
       </div>
       <div className="inline-flex flex-end">
