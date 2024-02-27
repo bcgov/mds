@@ -183,3 +183,15 @@ export enum MINE_INCIDENT_DOCUMENT_TYPE_CODE {
   FIN = "FIN",
   INI = "INI",
 }
+
+export enum REPORT_REGULATORY_AUTHORITY_CODES {
+  CPO = "CPO",
+  CIM = "CIM",
+  BOTH = "Both",
+  NONE = "Not specified",
+}
+
+export enum REPORT_REGULATORY_AUTHORITY_ENUM {
+  CPO = "Chief Permitting Officer",
+  CIM = "Chief Inspector of Mines",
+}

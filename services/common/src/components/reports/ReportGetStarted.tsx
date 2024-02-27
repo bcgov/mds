@@ -276,14 +276,14 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
                       <Typography.Title level={5}>
                         {formatComplianceCodeReportName(selectedReportDefinition)}
                       </Typography.Title>
-                      <Typography.Paragraph>
-                        {selectedReportDefinition.description}
-                      </Typography.Paragraph>
-                      <Typography.Title level={5}>About this submission type:</Typography.Title>
+
                       {selectedReportDefinition.compliance_articles[0].long_description && (
-                        <Typography.Paragraph>
-                          {selectedReportDefinition.compliance_articles[0].long_description}
-                        </Typography.Paragraph>
+                        <>
+                          <Typography.Title level={5}>About this submission type:</Typography.Title>
+                          <Typography.Paragraph>
+                            {selectedReportDefinition.compliance_articles[0].long_description}
+                          </Typography.Paragraph>
+                        </>
                       )}
                       {selectedReportDefinition.compliance_articles[0].help_reference_link && (
                         <Button
