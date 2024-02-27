@@ -9,6 +9,7 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment import Permi
 from app.api.verifiable_credentials.models.connection import PartyVerifiableCredentialConnection
 from app.api.verifiable_credentials.models.credentials import PartyVerifiableCredentialMinesActPermit
 from app.api.verifiable_credentials.aries_constants import IssueCredentialIssuerState
+from app.api.verifiable_credentials.response_models import PARTY_VERIFIABLE_CREDENTIAL_MINES_ACT_PERMIT_LIST
 
 from app.api.services.traction_service import TractionService
 from app.api.utils.resources_mixins import UserMixin
@@ -22,6 +23,7 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
         'permit_amendment_guid', location='json', type=str, store_missing=False)
     
     @requires_any_of([EDIT_PARTY, MINESPACE_PROPONENT])
+    @api.marshal_with(PARTY_VERIFIABLE_CREDENTIAL_MINES_ACT_PERMIT_LIST, code=200)
     def get(self, party_guid):
         if not party_guid:
             raise BadRequest("party_guid required")
