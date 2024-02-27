@@ -1,4 +1,4 @@
-#!/usr/bin/python3.11
+#!/usr/bin/python3.9
 import json
 import logging
 import urllib3

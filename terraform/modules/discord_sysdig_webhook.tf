@@ -47,7 +47,7 @@ resource "aws_lambda_function" "discord_notify" {
   s3_bucket = aws_s3_bucket.lambda_bucket.id
   s3_key = aws_s3_object.lambda_notification.key
 
-  runtime = "python3.11"
+  runtime = "python3.9"
   handler = "notify.lambda_handler"
 
   layers        = ["arn:aws:lambda:ca-central-1:017000801446:layer:AWSLambdaPowertoolsPython:36"]
