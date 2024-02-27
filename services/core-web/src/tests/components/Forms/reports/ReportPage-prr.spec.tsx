@@ -7,7 +7,7 @@ import { SystemFlagEnum } from "@mds/common";
 import ReportPage from "@/components/mine/Reports/ReportPage";
 import { BrowserRouter } from "react-router-dom";
 
-const mineReportSubmission = MOCK.MINE_REPORT_SUBMISSIONS[0];
+const mineReportSubmission = MOCK.MINE_REPORT_SUBMISSIONS[1];
 const initialState = {
   reportSubmission: {
     reportSubmission: mineReportSubmission,
@@ -30,8 +30,8 @@ function mockFunction() {
   return {
     ...original,
     useParams: jest.fn().mockReturnValue({
-      mineGuid: MOCK.MINE_REPORT_SUBMISSIONS[0].mine_guid,
-      reportGuid: MOCK.MINE_REPORT_SUBMISSIONS[0].mine_report_guid,
+      mineGuid: MOCK.MINE_REPORT_SUBMISSIONS[1].mine_guid,
+      reportGuid: MOCK.MINE_REPORT_SUBMISSIONS[1].mine_report_guid,
     }),
     useLocation: jest.fn().mockReturnValue({
       tab: "",
