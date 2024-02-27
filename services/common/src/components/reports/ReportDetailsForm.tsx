@@ -36,6 +36,8 @@ import {
   MinePartyAppointmentTypeCodeEnum,
   REPORT_TYPE_CODES,
   SystemFlagEnum,
+  REPORT_REGULATORY_AUTHORITY_CODES,
+  REPORT_REGULATORY_AUTHORITY_ENUM,
 } from "../..";
 import RenderAutoSizeField from "../forms/RenderAutoSizeField";
 import { BaseViewInput } from "../forms/BaseInput";
@@ -235,6 +237,15 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
     }
   }, [mine_report_definition_guid]);
 
+  useEffect(() => {
+    if (system === SystemFlagEnum.core) {
+      const selection = mineReportDefinition?.compliance_articles[0]?.cim_or_cpo;
+      dispatch(
+        change(FORM.VIEW_EDIT_REPORT, "report_for", selection ? selection : "Not specified")
+      );
+    }
+  }, [mineReportDefinition, !formValues?.report_for]);
+
   const updateDocuments = (docs: IMineDocument[]) => {
     dispatch(change(FORM.VIEW_EDIT_REPORT, "documents", docs));
   };
@@ -278,10 +289,52 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
         initialValues={initialValues}
       >
         {system === SystemFlagEnum.core && formButtons}
-        <Typography.Title level={3} id="report-type">
-          Report Type
-        </Typography.Title>
         <Row gutter={[16, 8]}>
+          {system === SystemFlagEnum.core && (
+            <Col span={24}>
+              <Typography.Title level={3} id="regulatory-authority">
+                Regulatory Authority
+              </Typography.Title>
+
+              <Field
+                name="report_for"
+                id="report_for"
+                required
+                disabled={true}
+                props={{
+                  isVertical: true,
+                }}
+                label="Who is the report for?"
+                component={RenderRadioButtons}
+                validate={[requiredRadioButton]}
+                customOptions={[
+                  {
+                    label: REPORT_REGULATORY_AUTHORITY_ENUM.CPO,
+                    value: REPORT_REGULATORY_AUTHORITY_CODES.CPO,
+                  },
+                  {
+                    label: REPORT_REGULATORY_AUTHORITY_ENUM.CIM,
+                    value: REPORT_REGULATORY_AUTHORITY_CODES.CIM,
+                  },
+                  {
+                    label: REPORT_REGULATORY_AUTHORITY_CODES.BOTH,
+                    value: REPORT_REGULATORY_AUTHORITY_CODES.BOTH,
+                  },
+                  {
+                    label: REPORT_REGULATORY_AUTHORITY_CODES.NONE,
+                    value: REPORT_REGULATORY_AUTHORITY_CODES.NONE,
+                  },
+                ]}
+              />
+            </Col>
+          )}
+
+          <Col span={24}>
+            <Typography.Title className="margin-large--top" level={3} id="report-type">
+              Report Type
+            </Typography.Title>
+          </Col>
+
           {system === SystemFlagEnum.ms && (
             <>
               <Col md={12} sm={24}>
