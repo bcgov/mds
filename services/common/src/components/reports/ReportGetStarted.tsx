@@ -11,7 +11,14 @@ import {
 } from "@mds/common/redux/utils/helpers";
 import { uniqBy } from "lodash";
 import ExportOutlined from "@ant-design/icons/ExportOutlined";
-import { FORM, MINE_REPORTS_ENUM, MMO_EMAIL, REPORT_TYPE_CODES, SystemFlagEnum } from "../..";
+import {
+  FORM,
+  MINE_REPORTS_ENUM,
+  MineReportType,
+  MMO_EMAIL,
+  REPORT_TYPE_CODES,
+  SystemFlagEnum,
+} from "../..";
 import FormWrapper from "../forms/FormWrapper";
 import RenderRadioButtons from "../forms/RenderRadioButtons";
 import { required, requiredRadioButton } from "@mds/common/redux/utils/Validate";
@@ -20,6 +27,7 @@ import { getDropdownPermitConditionCategoryOptions } from "@mds/common/redux/sel
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
+import { useParams } from "react-router-dom";
 
 interface ReportGetStartedProps {
   setSelectedReportDefinition: (report: IMineReportDefinition) => void;
@@ -107,6 +115,8 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
   handleSubmit,
   formButtons,
 }) => {
+  const { reportType } = useParams<{ reportType?: string }>();
+
   const formValues = useSelector(getFormValues(FORM.VIEW_EDIT_REPORT));
   const [commonReportDefinitionOptions, setCommonReportDefinitionOptions] = useState([]);
   const [formattedMineReportDefinitionOptions, setFormattedMineReportDefinitionOptions] = useState(
@@ -148,7 +158,9 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
       name={FORM.VIEW_EDIT_REPORT}
       onSubmit={handleSubmit}
       reduxFormConfig={{ destroyOnUnmount: false }}
-      initialValues={{ report_type: REPORT_TYPE_CODES.CRR }}
+      initialValues={{
+        report_type: reportType ? MineReportType[reportType] : REPORT_TYPE_CODES.CRR,
+      }}
     >
       <div>
         <Typography.Title level={3}>Getting Started with your Report Submission</Typography.Title>
