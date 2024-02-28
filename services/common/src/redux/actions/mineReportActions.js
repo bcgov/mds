@@ -10,6 +10,10 @@ export const storeMineReports = (payload) => ({
   payload,
 });
 
+export const clearMineReports = () => ({
+  type: ActionTypes.CLEAR_MINE_REPORTS,
+});
+
 export const storeMineReport = (payload) => ({
   type: ActionTypes.STORE_MINE_REPORT,
   payload,

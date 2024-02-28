@@ -5,7 +5,9 @@ exports[`MineReportInfo renders properly 1`] = `
   class="tab__content"
 >
   <div>
-    <h2 />
+    <h2>
+      Code Required Report
+    </h2>
     <div
       class="ant-divider ant-divider-horizontal"
       role="separator"
@@ -89,6 +91,94 @@ exports[`MineReportInfo renders properly 1`] = `
                           class="ant-select-selection-placeholder"
                         >
                           Select report type
+                        </span>
+                      </div>
+                      <span
+                        aria-hidden="true"
+                        class="ant-select-arrow"
+                        style="user-select: none;"
+                        unselectable="on"
+                      >
+                        <span
+                          aria-label="down"
+                          class="anticon anticon-down ant-select-suffix"
+                          role="img"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            data-icon="down"
+                            fill="currentColor"
+                            focusable="false"
+                            height="1em"
+                            viewBox="64 64 896 896"
+                            width="1em"
+                          >
+                            <path
+                              d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                            />
+                          </svg>
+                        </span>
+                      </span>
+                    </div>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="ant-col ant-col-sm-24 ant-col-md-8"
+            style="padding-left: 8px; padding-right: 8px;"
+          >
+            <div
+              class="ant-row ant-legacy-form-item"
+            >
+              <div
+                class="ant-col ant-legacy-form-item-label"
+              >
+                <label
+                  class=""
+                  for="report_name"
+                  title="Report Name"
+                >
+                  Report Name
+                </label>
+              </div>
+              <div
+                class="ant-col ant-legacy-form-item-control-wrapper"
+              >
+                <div
+                  class="ant-legacy-form-item-control"
+                >
+                  <span
+                    class="ant-legacy-form-item-children"
+                  >
+                    <div
+                      class="ant-select ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                    >
+                      <div
+                        class="ant-select-selector"
+                      >
+                        <span
+                          class="ant-select-selection-search"
+                        >
+                          <input
+                            aria-activedescendant="report_name_list_0"
+                            aria-autocomplete="list"
+                            aria-controls="report_name_list"
+                            aria-haspopup="listbox"
+                            aria-owns="report_name_list"
+                            autocomplete="off"
+                            class="ant-select-selection-search-input"
+                            id="report_name"
+                            role="combobox"
+                            type="search"
+                            value=""
+                          />
+                        </span>
+                        <span
+                          class="ant-select-selection-placeholder"
+                        >
+                          Select report name
                         </span>
                       </div>
                       <span
@@ -824,6 +914,7 @@ exports[`MineReportInfo renders properly 1`] = `
         </button>
       </div>
     </form>
+    CRR
   </div>
   <div
     class="ant-table-wrapper"
@@ -860,6 +951,11 @@ exports[`MineReportInfo renders properly 1`] = `
                       class="ant-table-cell"
                     >
                       Report Name
+                    </th>
+                    <th
+                      class="ant-table-cell"
+                    >
+                      Code Section
                     </th>
                     <th
                       class="ant-table-cell"

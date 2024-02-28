@@ -41,7 +41,7 @@ describe("`fetchMineReports` action creator", () => {
     )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(5);
+      expect(dispatch).toHaveBeenCalledTimes(6);
     });
   });
 
@@ -50,7 +50,7 @@ describe("`fetchMineReports` action creator", () => {
     return fetchMineReports(mineGuid)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(4);
+      expect(dispatch).toHaveBeenCalledTimes(5);
     });
   });
 });
