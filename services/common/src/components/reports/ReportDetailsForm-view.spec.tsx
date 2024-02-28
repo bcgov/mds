@@ -5,7 +5,8 @@ import ReportDetailsForm from "./ReportDetailsForm";
 import { Button } from "antd";
 import { AUTHENTICATION, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
-import { IMineReportSubmission, SystemFlagEnum } from "../..";
+import { IMineReportSubmission } from "../..";
+import { SystemFlagEnum, USER_ROLES } from "@mds/common";
 
 const mineReportSubmission = MOCK.MINE_REPORT_SUBMISSIONS[0];
 const initialState = {
@@ -19,7 +20,8 @@ const initialState = {
       MOCK.BULK_STATIC_CONTENT_RESPONSE.permitConditionCategoryOptions,
   },
   [AUTHENTICATION]: {
-    systemFlag: SystemFlagEnum.ms,
+    systemFlag: SystemFlagEnum.core,
+    userAccessData: [USER_ROLES.role_edit_reports],
   },
 };
 

@@ -115,6 +115,7 @@ const ReportPage: FC = () => {
       { href: "report-information", title: "Report Information" },
       { href: "contact-information", title: "Contact Information" },
       { href: "documentation", title: "Documentation" },
+      { href: "internal-ministry-comments", title: "Comments" },
     ],
     featureUrlRoute: sideBarRoute.url.hashRoute,
     featureUrlRouteArguments: sideBarRoute.params,

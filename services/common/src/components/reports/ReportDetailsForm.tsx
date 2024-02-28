@@ -52,6 +52,14 @@ import ExportOutlined from "@ant-design/icons/ExportOutlined";
 import { getPermitByGuid } from "@mds/common/redux/selectors/permitSelectors";
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { RenderPRRFields } from "./ReportGetStarted";
+import MinistryCommentPanel from "@mds/common/components/comments/MinistryCommentPanel";
+import { getMineReportComments } from "@mds/common/redux/selectors//reportSelectors";
+import {
+  createMineReportComment,
+  fetchMineReportComments,
+} from "@mds/common/redux/actionCreators/reportCommentActionCreator";
+import AuthorizationWrapper from "@mds/common/wrappers/AuthorizationWrapper";
+import { USER_ROLES } from "@mds/common/constants/environment";
 
 const RenderContacts: FC<any> = ({ fields, isEditMode, mineSpaceEdit }) => {
   const canEdit = isEditMode && !mineSpaceEdit;
@@ -117,6 +125,8 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   handleSubmit,
   currentReportDefinition,
 }) => {
+  const coreEditReportPermission = USER_ROLES.role_edit_reports;
+  const coreViewAllPermission = USER_ROLES.role_view;
   const dispatch = useDispatch();
   const formValues: IMineReportSubmission =
     useSelector((state) => getFormValues(FORM.VIEW_EDIT_REPORT)(state)) ?? {};
@@ -133,6 +143,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   } = formValues;
   const [selectedReportCode, setSelectedReportCode] = useState("");
   const [formattedMineReportDefinitionOptions, setFormatMineReportDefinitionOptions] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const partyRelationships: IPartyAppt[] = useSelector((state) => getPartyRelationships(state));
   const parties = useSelector((state) => getParties(state));
@@ -249,6 +260,42 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   const updateDocuments = (docs: IMineDocument[]) => {
     dispatch(change(FORM.VIEW_EDIT_REPORT, "documents", docs));
   };
+
+  const fetchComments = async () => {
+    setIsLoading(true);
+    await dispatch(fetchMineReportComments(mineGuid, formValues.mine_report_guid));
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    setIsLoading(true);
+    fetchComments();
+    setIsLoading(false);
+  }, [formValues.mine_report_guid]);
+
+  const handleAddComment = async (values) => {
+    const formVals = {
+      report_comment: values.comment,
+      comment_visibility_ind: values.visible,
+    };
+    await dispatch(createMineReportComment(mineGuid, formValues.mine_report_guid, formVals));
+    fetchComments();
+  };
+
+  const notes = useSelector(getMineReportComments);
+
+  const comments = notes
+    .sort(
+      (first, second) =>
+        new Date(second.comment_datetime).getTime() - new Date(first.comment_datetime).getTime()
+    )
+    .map((comment) => ({
+      content: comment.report_comment,
+      timestamp: comment.comment_datetime,
+      create_user: comment.comment_user,
+      mine_report_comment_guid: comment.mine_report_comment_guid,
+      mine_incident_note_guid: comment.report_comment,
+    }));
 
   return (
     <div>
@@ -588,6 +635,36 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               />
             )}
             <ReportFilesTable documents={documents} />
+          </Col>
+
+          <Col span={24}>
+            <Typography.Title level={3} id="internal-ministry-comments">
+              Internal Ministry Comments
+            </Typography.Title>
+          </Col>
+          <Col span={24}>
+            <AuthorizationWrapper permission={coreViewAllPermission}>
+              <Typography.Paragraph>
+                <strong>
+                  These comments are for internal staff only and will not be shown to proponents.
+                </strong>
+                Add comments to this report submission for future reference. Anything written in
+                these comments may be requested under FOIPPA. Keep it professional and concise.
+              </Typography.Paragraph>
+            </AuthorizationWrapper>
+            <MinistryCommentPanel
+              renderEditor={true}
+              onSubmit={handleAddComment}
+              loading={isLoading}
+              comments={comments?.map((comment) => ({
+                key: comment.mine_report_comment_guid,
+                author: comment.create_user,
+                content: comment.content,
+                actions: null,
+                datetime: comment.timestamp,
+              }))}
+              createPermission={coreEditReportPermission}
+            />
           </Col>
         </Row>
         {formButtons}
