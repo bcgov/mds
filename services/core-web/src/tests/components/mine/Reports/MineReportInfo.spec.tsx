@@ -23,13 +23,14 @@ function mockFunction() {
     ...original,
     useParams: jest.fn().mockReturnValue({
       id: "1234",
-      reportType: "code-required-report",
+      reportType: "code-required-reports",
     }),
     useLocation: jest.fn().mockReturnValue({
       search: "",
     }),
     useHistory: jest.fn().mockReturnValue({
       push: jest.fn(),
+      replace: jest.fn(),
       location: { hash: "" },
     }),
   };

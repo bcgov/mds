@@ -19,7 +19,7 @@ const ReportSteps = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const { mineGuid } = useParams<{ mineGuid: string }>();
+  const { mineGuid, reportType } = useParams<{ mineGuid: string; reportType: string }>();
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedReportDefinition, setSelectedReportDefinition] = useState<IMineReportDefinition>(
     null
@@ -155,7 +155,7 @@ const ReportSteps = () => {
           <Link
             to={
               system === SystemFlagEnum.core
-                ? GLOBAL_ROUTES?.MINE_REPORTS.dynamicRoute(mineGuid)
+                ? GLOBAL_ROUTES?.MINE_REPORTS.dynamicRoute(mineGuid, reportType)
                 : GLOBAL_ROUTES?.MINE_DASHBOARD.dynamicRoute(mineGuid, "reports")
             }
           >
