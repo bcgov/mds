@@ -271,7 +271,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
 
   useEffect(() => {
     fetchComments();
-  }, [formValues.mine_report_guid, mineGuid]);
+  }, [formValues.mine_report_guid]);
 
   const handleAddComment = async (values) => {
     const formVals = {
