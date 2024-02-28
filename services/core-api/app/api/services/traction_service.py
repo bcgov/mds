@@ -91,9 +91,11 @@ class TractionService():
     def revoke_credential(self,connection_id, rev_reg_id, cred_rev_id, comment):
         payload = {
             "comment":comment,
-            "connection_id":connection_id, 
+            "connection_id":str(connection_id), 
             "rev_reg_id":rev_reg_id,
-            "cred_rev_id":cred_rev_id
+            "cred_rev_id":cred_rev_id,
+            "notify": True,
+            "publish": False
         }
         revoke_resp = requests.post(revoke_credential_url, json=payload,headers=self.get_headers())
         assert revoke_resp.status_code == 200, f"revoke_resp={revoke_resp.json()}"

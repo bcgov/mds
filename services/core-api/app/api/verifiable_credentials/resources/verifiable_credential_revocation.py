@@ -1,12 +1,13 @@
 from flask import current_app
 from flask_restx import Resource, reqparse
-from werkzeug.exceptions import NotFound, NotImplemented
+from werkzeug.exceptions import BadRequest, NotImplemented
 from app.extensions import api
 from app.api.utils.access_decorators import requires_any_of, EDIT_PARTY, MINESPACE_PROPONENT
 
 from app.api.parties.party.models.party import Party
 from app.api.verifiable_credentials.models.connection import PartyVerifiableCredentialConnection
-from app.api.services.traction_service import TractionService
+from app.api.verifiable_credentials.models.credentials import PartyVerifiableCredentialMinesActPermit
+from app.api.services.traction_service import TractionService, VerificableCredentialWorkflowError
 from app.api.verifiable_credentials.response_models import PARTY_VERIFIABLE_CREDENTIAL_CONNECTION
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.feature_flag import Feature, is_feature_enabled
@@ -28,7 +29,7 @@ class VerifiableCredentialRevocationResource(Resource, UserMixin):
             store_missing=False)
 
 
-    @api.doc(description='Create a connection invitation for a party by guid',body=api.model("Revocation", {
+    @api.doc(description='Revokes a verifiable credential by party_guid and credential_exchange_id',body=api.model("Revocation", {
         "credential_exchange_id": "GUID of the credential exchange to revoke",
         "comment": "optional comment to add to the revocation"
     }))
@@ -47,11 +48,11 @@ class VerifiableCredentialRevocationResource(Resource, UserMixin):
         if not credential_exchange:
             raise BadRequest(f"credential_exchange_id {credential_exchange_id} not found")
 
-        if credential_exchange.cred_exch_state not in ["credential_issued","done"]:
+        if credential_exchange.cred_exch_state not in ["credential_acked","done"]:
             raise VerificableCredentialWorkflowError(f"credential_exchange_id {credential_exchange_id} is not in a state where it can be revoked")
         
 
         traction_svc = TractionService()
-        invitation = traction_svc.revoke_credential(party.connection_id,credential_exchange.rev_reg_id, credential_exchange.cred_rev_id, data.comment)
+        traction_svc.revoke_credential(party.active_digital_wallet_connection.connection_id,credential_exchange.rev_reg_id, credential_exchange.cred_rev_id, data["comment"])
         
-        return invitation
+        return "", 204
