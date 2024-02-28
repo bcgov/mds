@@ -5,7 +5,7 @@ WORKDIR /code
 COPY . /code
 
 RUN apt-get update \
-    && apt-get -y install tesseract-ocr # required for pytesseract
+    && apt-get -y install tesseract-ocr ffmpeg libsm6 libxext6 poppler-utils
 
 ENV TESSDATA_PREFIX /usr/share/tesseract-ocr/5/tessdata
 

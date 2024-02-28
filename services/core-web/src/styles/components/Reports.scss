@@ -1,0 +1,61 @@
+/* Minespace is wrapped with antD Row/Col components to control max width, since Core
+   isn't, this needed to be added to keep display in line with the design on Core.
+ */
+.report-steps-page {
+  width: 100%;
+  margin: 0 auto;
+}
+
+@media (min-width: 992px) {
+  .report-steps-page {
+    max-width: calc(992px * 22 / 24);
+  }
+}
+
+@media (min-width: 1200px) {
+  .report-steps-page {
+    max-width: calc(1200px * 20 / 24);
+  }
+}
+
+@media (min-width: 1600px) {
+  .report-steps-page {
+    max-width: calc(1600px * 18 / 24);
+  }
+}
+
+.report-steps-page h5 {
+  text-transform: none !important;
+  font-weight: bold;
+}
+
+.report-title {
+  margin-bottom: 36px !important;
+  margin-top: 16px;
+}
+
+.report-steps {
+  margin-bottom: 36px;
+  margin-top: 36px;
+}
+
+.report-link {
+  text-decoration: none;
+  line-height: 32px;
+  border: none !important;
+  margin: 0 !important;
+}
+
+.report-instructions {
+  color: rgba(49, 49, 50, 0.55);
+}
+
+.report-info-box {
+  height: 100%;
+  padding: 16px;
+  border: 1px solid $background;
+}
+
+.light-grey-background {
+  background-color: $light-grey;
+}

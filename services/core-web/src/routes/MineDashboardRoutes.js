@@ -51,11 +51,6 @@ const MineDashboardRoutes = () => (
     <Route exact path={routes.MINE_REPORTS.route} component={routes.MINE_REPORTS.component} />
     <Route
       exact
-      path={routes.MINE_PERMIT_REQUIRED_REPORTS.route}
-      component={routes.MINE_PERMIT_REQUIRED_REPORTS.component}
-    />
-    <Route
-      exact
       path={routes.MINE_TAILINGS_REPORTS.route}
       component={routes.MINE_TAILINGS_REPORTS.component}
     />

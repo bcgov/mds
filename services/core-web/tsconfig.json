@@ -10,6 +10,7 @@
       "@mds/common/*": ["../common/src/*"],
       "@/*": ["src/*"]
     },
+    "module": "ESNext",
     "moduleResolution": "node",
     "sourceMap": true,
     "allowJs": true /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */,
