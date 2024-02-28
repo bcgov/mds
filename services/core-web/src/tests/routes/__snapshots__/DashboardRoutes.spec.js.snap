@@ -407,32 +407,16 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/mine-dashboard/:id/oversight/inspections-and-audits"
   />
   <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(MineReportInfo)",
-        "type": [Function],
-      }
-    }
+    component={[Function]}
     exact={true}
-    key="/mine-dashboard/:id/reports/code-required-reports"
-    path="/mine-dashboard/:id/reports/code-required-reports"
+    key="/mine-dashboard/:id/reports/tailings-reports"
+    path="/mine-dashboard/:id/reports/tailings-reports"
   />
   <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(PermitRequiredReports)",
-        "type": [Function],
-      }
-    }
+    component={[Function]}
     exact={true}
-    key="/mine-dashboard/:id/reports/permit-required-reports"
-    path="/mine-dashboard/:id/reports/permit-required-reports"
+    key="/mine-dashboard/:id/required-reports/:reportType"
+    path="/mine-dashboard/:id/required-reports/:reportType"
   />
   <Route
     component={[Function]}
@@ -443,8 +427,8 @@ exports[`DashboardRoutes  renders properly 1`] = `
   <Route
     component={[Function]}
     exact={true}
-    key="/mine-dashboard/:id/reports/tailings-reports"
-    path="/mine-dashboard/:id/reports/tailings-reports"
+    key="/mines/:mineGuid/reports/new/:reportType"
+    path="/mines/:mineGuid/reports/new/:reportType"
   />
   <Route
     component={

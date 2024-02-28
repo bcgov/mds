@@ -33,6 +33,10 @@ exports[`Routes  renders properly 1`] = `
       }
       path="/"
     />
+    <Route
+      component={[Function]}
+      path="/mines/:mineGuid/reports/new/:reportType"
+    />
   </Switch>
 </div>
 `;

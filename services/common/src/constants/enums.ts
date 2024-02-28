@@ -195,3 +195,9 @@ export enum REPORT_REGULATORY_AUTHORITY_ENUM {
   CPO = "Chief Permitting Officer",
   CIM = "Chief Inspector of Mines",
 }
+
+export enum MineReportType {
+  "code-required-reports" = "CRR",
+  "permit-required-reports" = "PRR",
+  "tailings-reports" = "TAR",
+}
