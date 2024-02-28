@@ -262,16 +262,16 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   };
 
   const fetchComments = async () => {
-    setIsLoading(true);
-    await dispatch(fetchMineReportComments(mineGuid, formValues.mine_report_guid));
-    setIsLoading(false);
+    if (mineGuid && formValues.mine_report_guid) {
+      setIsLoading(true);
+      await dispatch(fetchMineReportComments(mineGuid, formValues.mine_report_guid));
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
-    setIsLoading(true);
     fetchComments();
-    setIsLoading(false);
-  }, [formValues.mine_report_guid]);
+  }, [formValues.mine_report_guid, mineGuid]);
 
   const handleAddComment = async (values) => {
     const formVals = {
