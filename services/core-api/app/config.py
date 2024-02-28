@@ -214,6 +214,11 @@ class Config(object):
     NRPTI_API_URL = os.environ.get(
         'NRPTI_API_URL', 'https://nrpti-api-f00029-prod.apps.silver.devops.gov.bc.ca/api/public/')
 
+    # Permit Search Service
+    PERMITS_ENDPOINT = os.environ.get('PERMITS_ENDPOINT', None)
+    PERMITS_CLIENT_ID = os.environ.get('PERMITS_CLIENT_ID', None)
+    PERMITS_CLIENT_SECRET = os.environ.get('PERMITS_CLIENT_SECRET', None)
+
     # EPIC
     EPIC_API_URL = os.environ.get('EPIC_API_URL', 'https://projects.eao.gov.bc.ca/api/v2/')
     EPIC_LINK_URL = os.environ.get('EPIC_LINK_URL', 'https://projects.eao.gov.bc.ca/p/')

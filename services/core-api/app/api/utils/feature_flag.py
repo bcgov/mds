@@ -12,6 +12,7 @@ class Feature(Enum):
     #if enabled the credential offer will be the current development state of all the 2.0 changes, Q1 2024
     VC_MINES_ACT_PERMIT_20='vc_mines_act_permit_20'
     CODE_REQUIRED_REPORTS='code_required-reports'
+    PERMIT_DOCUMENT_KEYWORD_SEARCH='permit_document_keyword_search'
 
     def __str__(self):
         return self.value

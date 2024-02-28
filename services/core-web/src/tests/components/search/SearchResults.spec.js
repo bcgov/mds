@@ -1,7 +1,8 @@
 import React from "react";
-import { shallow } from "enzyme";
-import { SearchResults } from "@/components/search/SearchResults";
 import * as MOCK from "@/tests/mocks/dataMocks";
+import SearchResults from "@/components/search/SearchResults";
+import { render } from "@testing-library/react";
+import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 
 const dispatchProps = {};
 const reducerProps = {};
@@ -17,11 +18,12 @@ const setupReducerProps = () => {
   reducerProps.searchResults = MOCK.SEARCH_RESULTS;
   reducerProps.searchTerms = ["Abb"];
   reducerProps.partyRelationshipTypeHash = MOCK.MINE_INFO_HASH;
-  reducerProps.location = { search: " " };
+  reducerProps.location = { search: "q=test" };
   reducerProps.history = {
     push: jest.fn(),
-    location: {},
   };
+  reducerProps.searchResults = MOCK.SEARCH_RESULTS;
+  reducerProps.hideLoadingIndicator = true;
 };
 
 beforeEach(() => {
@@ -31,7 +33,11 @@ beforeEach(() => {
 
 describe("Search", () => {
   it("renders properly", () => {
-    const component = shallow(<SearchResults {...dispatchProps} {...reducerProps} />);
+    const component = render(
+      <ReduxWrapper>
+        <SearchResults {...dispatchProps} {...reducerProps} />
+      </ReduxWrapper>
+    );
     expect(component).toMatchSnapshot();
   });
 });
