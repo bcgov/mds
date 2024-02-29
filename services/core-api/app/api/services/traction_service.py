@@ -61,7 +61,6 @@ class TractionService():
         }
 
         oob_create_resp = requests.post(traction_oob_create_invitation, json=payload,headers=self.get_headers())
-        assert oob_create_resp.status_code == 200, f"oob_create_resp={oob_create_resp.json()}"
 
         response = oob_create_resp.json()
         current_app.logger.info(f"oob invitation create reponse from traction = {response}")
