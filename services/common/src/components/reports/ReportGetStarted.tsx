@@ -1,6 +1,6 @@
-import { Alert, Button, Col, Form, Row, Select, Typography } from "antd";
+import { Alert, Button, Col, Row, Typography } from "antd";
 import React, { FC, ReactNode, useEffect, useState } from "react";
-import { Field, getFormValues } from "redux-form";
+import { Field, getFormValues, change } from "redux-form";
 import ArrowRightOutlined from "@ant-design/icons/ArrowRightOutlined";
 import { useSelector, useDispatch } from "react-redux";
 import { IMine, IMineReportDefinition, IMineReportSubmission } from "@mds/common/interfaces";
@@ -30,8 +30,6 @@ import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelecto
 import { useParams } from "react-router-dom";
 
 interface ReportGetStartedProps {
-  setSelectedReportDefinition: (report: IMineReportDefinition) => void;
-  selectedReportDefinition: IMineReportDefinition;
   mine: IMine;
   handleSubmit: (values: Partial<IMineReportSubmission>) => void;
   formButtons: ReactNode;
@@ -108,16 +106,11 @@ export const RenderPRRFields: FC<{ mineGuid: string }> = ({ mineGuid }) => {
   );
 };
 
-const ReportGetStarted: FC<ReportGetStartedProps> = ({
-  setSelectedReportDefinition,
-  selectedReportDefinition,
-  mine,
-  handleSubmit,
-  formButtons,
-}) => {
+const ReportGetStarted: FC<ReportGetStartedProps> = ({ mine, handleSubmit, formButtons }) => {
+  const dispatch = useDispatch();
   const { reportType } = useParams<{ reportType?: string }>();
-
   const formValues = useSelector(getFormValues(FORM.VIEW_EDIT_REPORT));
+  const [selectedReportDefinition, setSelectedReportDefinition] = useState<IMineReportDefinition>();
   const [commonReportDefinitionOptions, setCommonReportDefinitionOptions] = useState([]);
   const [formattedMineReportDefinitionOptions, setFormattedMineReportDefinitionOptions] = useState(
     []
@@ -145,12 +138,13 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
     setCommonReportDefinitionOptions(commonReportDefinitions);
   }, [mineReportDefinitionOptions]);
 
-  const handleChange = (newValue: string) => {
+  const handleReportDefinitionChange = (newValue: string) => {
     // Set the selected report definition to be displayed and used in the next step
     const newReport = mineReportDefinitionOptions.find(
       (report) => report.mine_report_definition_guid === newValue
     );
     setSelectedReportDefinition(newReport);
+    dispatch(change(FORM.VIEW_EDIT_REPORT, "mine_report_definition_guid", newValue));
   };
 
   return (
@@ -241,34 +235,40 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
             <Row gutter={24} className="margin-large--bottom">
               <Col span={12}>
                 <div className="light-grey-border padding-md--sides">
-                  <Typography.Paragraph strong className="margin-large--top">
-                    Report Code Requirement
-                  </Typography.Paragraph>
-                  <Form layout="vertical">
-                    <Form.Item label="Enter Code Section">
-                      <Select
-                        showSearch
-                        onChange={handleChange}
-                        filterOption={(input, option) =>
-                          (option?.label.toLowerCase() ?? "").includes(input.toLowerCase())
-                        }
-                        defaultActiveFirstOption={false}
-                        showArrow={false}
-                        placeholder="10.4.1"
-                        options={formattedMineReportDefinitionOptions}
-                      />
-                    </Form.Item>
-                  </Form>
-                  <Typography.Paragraph strong className="margin-large--top">
+                  <Field
+                    name="mine_report_definition_guid"
+                    placeholder="Enter a code section or report name"
+                    required
+                    validate={[required]}
+                    props={{
+                      label: (
+                        <Typography.Title level={5} style={{ display: "inline" }}>
+                          Report Code Requirement
+                        </Typography.Title>
+                      ),
+                      labelSubtitle:
+                        "Search for a code section or the report name you would like to submit",
+                      data: formattedMineReportDefinitionOptions,
+                    }}
+                    component={RenderSelect}
+                    onChange={(value) => handleReportDefinitionChange(value)}
+                  />
+                  <Typography.Paragraph
+                    strong
+                    className="margin-large--top"
+                    style={{ marginBottom: 0 }}
+                  >
                     Common Reports
                   </Typography.Paragraph>
                   {commonReportDefinitionOptions.map((report) => (
                     <Row key={report.report_name}>
                       <Col span={24}>
                         <Button
-                          onClick={() => setSelectedReportDefinition(report)}
+                          onClick={() =>
+                            handleReportDefinitionChange(report.mine_report_definition_guid)
+                          }
                           type="text"
-                          className="report-link"
+                          className="report-link btn-sm-padding"
                         >
                           <Typography.Text>{report.report_name}</Typography.Text>
                           <span className="margin-large--left">

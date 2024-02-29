@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FC } from "react";
+import React, { FC } from "react";
 import { Input, Form, Row } from "antd";
 import { BaseInputProps, BaseViewInput, getFormItemLabel } from "./BaseInput";
 import { FormConsumer, IFormContext } from "./FormWrapper";
@@ -15,30 +15,13 @@ interface AutoSizeProps extends BaseInputProps {
 const RenderAutoSizeField: FC<AutoSizeProps> = ({
   label = "",
   labelSubtitle,
+  help,
   disabled = false,
   maximumCharacters = 0,
   minRows = 3,
   required = false,
   ...props
 }) => {
-  const [remainingChars, setRemainingChars] = useState(maximumCharacters);
-  const [inputValue, setValue] = useState(props.input.value ?? "");
-
-  const handleTextAreaChange = (event) => {
-    setValue(event.target.value);
-    if (maximumCharacters > 0) {
-      const input = event.target.value;
-      const remaining = maximumCharacters - input.length;
-      setRemainingChars(remaining);
-    }
-  };
-
-  useEffect(() => {
-    const input = props.input.value;
-    const remaining = maximumCharacters - input.length;
-    setRemainingChars(remaining);
-  }, []);
-
   return (
     <FormConsumer>
       {(value: IFormContext) => {
@@ -68,13 +51,19 @@ const RenderAutoSizeField: FC<AutoSizeProps> = ({
                 {...props.input}
                 autoSize={{ minRows: minRows }}
                 placeholder={props.placeholder}
-                onChange={handleTextAreaChange}
-                value={inputValue}
               />
               {maximumCharacters > 0 && (
-                <Row justify="space-between">
-                  <span>{`Maximum ${maximumCharacters} characters`}</span>
-                  <span className="flex-end">{`${remainingChars} / ${maximumCharacters}`}</span>
+                <Row
+                  justify="space-between"
+                  className={`form-item-help ${props.input.name}-form-help`}
+                >
+                  {help ? (
+                    <span>{help}</span>
+                  ) : (
+                    <span>{`Maximum ${maximumCharacters} characters`}</span>
+                  )}
+                  <span className="flex-end">{`${maximumCharacters -
+                    props.input.value.length} / ${maximumCharacters}`}</span>
                 </Row>
               )}
             </>

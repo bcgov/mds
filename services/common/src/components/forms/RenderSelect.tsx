@@ -19,6 +19,7 @@ interface SelectProps extends BaseInputProps {
 
 export const RenderSelect: FC<SelectProps> = ({
   label = "",
+  labelSubtitle,
   id,
   meta,
   input,
@@ -45,7 +46,7 @@ export const RenderSelect: FC<SelectProps> = ({
         return (
           <Form.Item
             name={input.name}
-            label={getFormItemLabel(label, required)}
+            label={getFormItemLabel(label, required, labelSubtitle)}
             required={required}
             validateStatus={
               isDirty || meta.touched ? (meta.error && "error") || (meta.warning && "warning") : ""
@@ -56,7 +57,7 @@ export const RenderSelect: FC<SelectProps> = ({
                 (meta.warning && <span>{meta.warning}</span>))
             }
             id={id}
-            getValueProps={() => ({ value: input.value })}
+            getValueProps={() => input.value !== "" && { value: input.value }}
           >
             <Select
               virtual={false}
@@ -70,7 +71,6 @@ export const RenderSelect: FC<SelectProps> = ({
               optionFilterProp="children"
               filterOption={caseInsensitiveLabelFilter}
               id={id}
-              value={data.length && input.value ? input.value : null}
               onChange={(changeValue) => {
                 setIsDirty(true);
                 input.onChange(changeValue);

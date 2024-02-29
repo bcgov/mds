@@ -1,5 +1,5 @@
 import { Typography } from "antd";
-import React, { FC } from "react";
+import React, { FC, ReactNode } from "react";
 import { WrappedFieldProps, WrappedFieldMetaProps, WrappedFieldInputProps } from "redux-form";
 
 /**
@@ -62,8 +62,8 @@ import { WrappedFieldProps, WrappedFieldMetaProps, WrappedFieldInputProps } from
 export interface BaseInputProps extends WrappedFieldProps {
   meta: WrappedFieldMetaProps;
   input: WrappedFieldInputProps;
-  label?: string;
-  labelSubtitle?: string;
+  label?: string | ReactNode;
+  labelSubtitle?: string | ReactNode;
   id: string;
   defaultValue?: any;
   placeholder?: string;
@@ -75,13 +75,13 @@ export interface BaseInputProps extends WrappedFieldProps {
 }
 
 interface BaseViewInputProps {
-  label?: string;
+  label?: string | ReactNode;
   value: string | number;
 }
 export const BaseViewInput: FC<BaseViewInputProps> = ({ label = "", value = "" }) => {
   return (
     <div className="view-item">
-      {label.length && (
+      {label && label !== "" && (
         <Typography.Paragraph className="view-item-label">{label}</Typography.Paragraph>
       )}
       <Typography.Paragraph className="view-item-value">{value.toString()}</Typography.Paragraph>
@@ -90,7 +90,11 @@ export const BaseViewInput: FC<BaseViewInputProps> = ({ label = "", value = "" }
 };
 
 // for consistent formatting of optional field indicator
-export const getFormItemLabel = (label: string, isRequired: boolean, labelSubtitle?: string) => {
+export const getFormItemLabel = (
+  label: string | ReactNode,
+  isRequired: boolean,
+  labelSubtitle?: string | ReactNode
+) => {
   if (!label) {
     return "";
   }
@@ -101,7 +105,7 @@ export const getFormItemLabel = (label: string, isRequired: boolean, labelSubtit
         {labelSubtitle && (
           <>
             <br />
-            <span className="light--sm">{labelSubtitle}</span>
+            <span className="label-subtitle">{labelSubtitle}</span>
           </>
         )}
       </>
@@ -113,7 +117,7 @@ export const getFormItemLabel = (label: string, isRequired: boolean, labelSubtit
       {labelSubtitle && (
         <>
           <br />
-          <span className="light--sm">{labelSubtitle}</span>
+          <span className="label-subtitle">{labelSubtitle}</span>
         </>
       )}
     </>

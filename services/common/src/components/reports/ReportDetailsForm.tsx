@@ -3,7 +3,7 @@ import React, { FC, ReactNode, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { arrayPush, change, Field, FieldArray, getFormValues } from "redux-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/pro-light-svg-icons";
+import { faTrashAlt } from "@fortawesome/pro-light-svg-icons";
 
 import {
   getDropdownPermitConditionCategoryOptions,
@@ -33,6 +33,7 @@ import {
   IParty,
   IPartyAppt,
   MINE_REPORTS_ENUM,
+  MMO_EMAIL,
   MinePartyAppointmentTypeCodeEnum,
   REPORT_TYPE_CODES,
   SystemFlagEnum,
@@ -68,15 +69,22 @@ const RenderContacts: FC<any> = ({ fields, isEditMode, mineSpaceEdit }) => {
       {fields.map((contact, index) => (
         <Row key={contact.id} gutter={[16, 8]}>
           <Col span={24}>
-            <Row>
-              <Typography.Title level={5}>Report Contact #{index + 1}</Typography.Title>
+            <Row gutter={16}>
+              <Col>
+                <Typography.Title level={5}>Report Contact #{index + 1}</Typography.Title>
+              </Col>
               {canEdit && (
-                <Button
-                  style={{ marginTop: 0 }}
-                  icon={<FontAwesomeIcon icon={faTrash} />}
-                  type="text"
-                  onClick={() => fields.remove(index)}
-                />
+                <Col>
+                  <Button
+                    style={{ marginTop: 0 }}
+                    className="fa-icon-container btn-sm-padding"
+                    icon={<FontAwesomeIcon icon={faTrashAlt} />}
+                    type="default"
+                    onClick={() => fields.remove(index)}
+                  >
+                    Delete
+                  </Button>
+                </Col>
               )}
             </Row>
           </Col>
@@ -114,7 +122,6 @@ interface ReportDetailsFormProps {
   mineGuid: string;
   formButtons: ReactNode;
   handleSubmit: (values) => void;
-  currentReportDefinition?: IMineReportDefinition;
 }
 
 const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
@@ -123,7 +130,6 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   mineGuid,
   formButtons,
   handleSubmit,
-  currentReportDefinition,
 }) => {
   const coreEditReportPermission = USER_ROLES.role_edit_reports;
   const coreViewAllPermission = USER_ROLES.role_view;
@@ -162,13 +168,15 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
     dropdownPermitConditionCategoryOptions.find(
       (opt) => opt.value === permit_condition_category_code
     );
+  console.log(selectedReportName);
+  // const contactEmail =
 
   const isCRR = report_type === REPORT_TYPE_CODES.CRR;
   const isPRR = report_type === REPORT_TYPE_CODES.PRR;
+  const isMS = system === SystemFlagEnum.ms;
 
   // minespace users are only allowed to add documents
-  const mineSpaceEdit =
-    system === SystemFlagEnum.ms && initialValues?.mine_report_guid && isEditMode;
+  const mineSpaceEdit = isMS && initialValues?.mine_report_guid && isEditMode;
 
   useEffect(() => {
     if (permit_guid && !permit) {
@@ -179,18 +187,6 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
       dispatch(fetchPartyRelationships({ mine_guid: mineGuid }));
     }
   }, [mineGuid]);
-
-  useEffect(() => {
-    if (currentReportDefinition) {
-      dispatch(
-        change(
-          FORM.VIEW_EDIT_REPORT,
-          "mine_report_definition_guid",
-          currentReportDefinition.mine_report_definition_guid
-        )
-      );
-    }
-  }, [currentReportDefinition]);
 
   useEffect(() => {
     if (partyRelationships) {
@@ -299,7 +295,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
 
   return (
     <div>
-      {(isEditMode || !formValues.mine_report_guid) && system !== SystemFlagEnum.core && (
+      {(isEditMode || !formValues.mine_report_guid) && isMS && (
         <>
           {isPRR && (
             <Alert
@@ -335,55 +331,96 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
         isEditMode={isEditMode}
         initialValues={initialValues}
       >
-        {system === SystemFlagEnum.core && formButtons}
+        {!isMS && formButtons}
         <Row gutter={[16, 8]}>
-          {system === SystemFlagEnum.core && (
-            <Col span={24}>
-              <Typography.Title level={3} id="regulatory-authority">
-                Regulatory Authority
-              </Typography.Title>
-
-              <Field
-                name="report_for"
-                id="report_for"
-                required
-                disabled={true}
-                props={{
-                  isVertical: true,
-                }}
-                label="Who is the report for?"
-                component={RenderRadioButtons}
-                validate={[requiredRadioButton]}
-                customOptions={[
-                  {
-                    label: REPORT_REGULATORY_AUTHORITY_ENUM.CPO,
-                    value: REPORT_REGULATORY_AUTHORITY_CODES.CPO,
-                  },
-                  {
-                    label: REPORT_REGULATORY_AUTHORITY_ENUM.CIM,
-                    value: REPORT_REGULATORY_AUTHORITY_CODES.CIM,
-                  },
-                  {
-                    label: REPORT_REGULATORY_AUTHORITY_CODES.BOTH,
-                    value: REPORT_REGULATORY_AUTHORITY_CODES.BOTH,
-                  },
-                  {
-                    label: REPORT_REGULATORY_AUTHORITY_CODES.NONE,
-                    value: REPORT_REGULATORY_AUTHORITY_CODES.NONE,
-                  },
-                ]}
-              />
-            </Col>
-          )}
-
-          <Col span={24}>
-            <Typography.Title className="margin-large--top" level={3} id="report-type">
-              Report Type
-            </Typography.Title>
-          </Col>
-
-          {system === SystemFlagEnum.ms && (
+          {!isMS && (
             <>
+              <Col span={24}>
+                <Typography.Title level={3} id="regulatory-authority">
+                  Regulatory Authority
+                </Typography.Title>
+
+                <Field
+                  name="report_for"
+                  id="report_for"
+                  required
+                  disabled={true}
+                  props={{
+                    isVertical: true,
+                  }}
+                  label="Who is the report for?"
+                  component={RenderRadioButtons}
+                  validate={[requiredRadioButton]}
+                  customOptions={[
+                    {
+                      label: REPORT_REGULATORY_AUTHORITY_ENUM.CPO,
+                      value: REPORT_REGULATORY_AUTHORITY_CODES.CPO,
+                    },
+                    {
+                      label: REPORT_REGULATORY_AUTHORITY_ENUM.CIM,
+                      value: REPORT_REGULATORY_AUTHORITY_CODES.CIM,
+                    },
+                    {
+                      label: REPORT_REGULATORY_AUTHORITY_CODES.BOTH,
+                      value: REPORT_REGULATORY_AUTHORITY_CODES.BOTH,
+                    },
+                    {
+                      label: REPORT_REGULATORY_AUTHORITY_CODES.NONE,
+                      value: REPORT_REGULATORY_AUTHORITY_CODES.NONE,
+                    },
+                  ]}
+                />
+              </Col>
+              <Col span={24}>
+                <Typography.Title className="margin-large--top" level={3} id="report-type">
+                  Report Type
+                </Typography.Title>
+              </Col>
+              <Col span={24}>
+                <Field
+                  name="report_type"
+                  id="report_type"
+                  required
+                  disabled={true}
+                  props={{
+                    isVertical: true,
+                  }}
+                  label="What is the type of the report?"
+                  component={RenderRadioButtons}
+                  validate={[requiredRadioButton]}
+                  customOptions={[
+                    { label: MINE_REPORTS_ENUM.CRR, value: REPORT_TYPE_CODES.CRR },
+                    { label: MINE_REPORTS_ENUM.PRR, value: REPORT_TYPE_CODES.PRR },
+                  ]}
+                />
+              </Col>
+              {isPRR && <RenderPRRFields mineGuid={initialValues?.mine_guid} />}
+              {isCRR && (
+                <Col span={12}>
+                  <Field
+                    component={RenderSelect}
+                    id="mine_report_definition_guid"
+                    name="mine_report_definition_guid"
+                    label="Report Name"
+                    disabled={mineSpaceEdit}
+                    props={{
+                      data: formattedMineReportDefinitionOptions,
+                    }}
+                    required
+                    placeholder={mine_report_category ? "Select" : "Select a report type"}
+                    validate={[required]}
+                  />
+                </Col>
+              )}
+            </>
+          )}
+          {isMS && (
+            <>
+              <Col span={24}>
+                <Typography.Title className="margin-large--top" level={3} id="report-type">
+                  Report Type
+                </Typography.Title>
+              </Col>
               <Col md={12} sm={24}>
                 <BaseViewInput
                   label="Report Type"
@@ -405,61 +442,13 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               )}
             </>
           )}
-          {system === SystemFlagEnum.core && (
-            <>
-              <Col span={24}>
-                <Field
-                  name="report_type"
-                  id="report_type"
-                  required
-                  disabled={true}
-                  props={{
-                    isVertical: true,
-                  }}
-                  label="What is the type of the report?"
-                  component={RenderRadioButtons}
-                  validate={[requiredRadioButton]}
-                  customOptions={[
-                    { label: MINE_REPORTS_ENUM.CRR, value: REPORT_TYPE_CODES.CRR },
-                    { label: MINE_REPORTS_ENUM.PRR, value: REPORT_TYPE_CODES.PRR },
-                  ]}
-                />
-              </Col>
-              {isPRR && <RenderPRRFields mineGuid={initialValues?.mine_guid} />}
-            </>
-          )}
-          {isCRR && (
+          {selectedReportCode && (
             <Col span={12}>
-              <Field
-                component={RenderSelect}
-                id="mine_report_definition_guid"
-                name="mine_report_definition_guid"
-                label="Report Name"
-                disabled={mineSpaceEdit}
-                props={{
-                  data: formattedMineReportDefinitionOptions,
-                }}
-                required
-                placeholder={mine_report_category ? "Select" : "Select a report type"}
-                validate={[required]}
-              />
+              <BaseViewInput label="Code Section / Report Name" value={selectedReportCode} />
             </Col>
           )}
 
-          <Col span={24}>
-            {selectedReportCode ? (
-              <BaseViewInput label="Report Code Requirements" value={selectedReportCode} />
-            ) : (
-              isEditMode &&
-              isCRR && (
-                <Typography.Paragraph>
-                  Select the report type and name to view the required codes.
-                </Typography.Paragraph>
-              )
-            )}
-          </Col>
-
-          {system === SystemFlagEnum.ms && isCRR && (
+          {isMS && isCRR && (
             <Col span={24}>
               <div
                 className="grey-box"
@@ -469,26 +458,23 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
                   <Col xs={24} md={18}>
                     <b>You are submitting:</b>
                     <br />
-                    <b>{selectedReportName}</b>
+                    <b>{selectedReportCode}</b>
                     <br />
-
-                    {mineReportDefinition &&
-                      mineReportDefinition.compliance_articles[0].long_description && (
-                        <Typography.Paragraph>
-                          {mineReportDefinition.compliance_articles[0].long_description}
-                        </Typography.Paragraph>
-                      )}
-                    {mineReportDefinition &&
-                      mineReportDefinition.compliance_articles[0].help_reference_link && (
-                        <Button
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          href={mineReportDefinition.compliance_articles[0].help_reference_link}
-                          type="default"
-                        >
-                          More information <ExportOutlined />
-                        </Button>
-                      )}
+                    {mineReportDefinition?.compliance_articles[0]?.long_description && (
+                      <Typography.Paragraph>
+                        {mineReportDefinition.compliance_articles[0].long_description}
+                      </Typography.Paragraph>
+                    )}
+                    {mineReportDefinition?.compliance_articles[0]?.help_reference_link && (
+                      <Button
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={mineReportDefinition.compliance_articles[0].help_reference_link}
+                        type="default"
+                      >
+                        More information <ExportOutlined />
+                      </Button>
+                    )}
                   </Col>
                 </Row>
               </div>
@@ -499,18 +485,14 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
             <Field
               id="description_comment"
               name="description_comment"
-              label="Report Title and Additional Comment"
+              label="Report Description"
               disabled={mineSpaceEdit}
-              required
+              placeholder={`Example: "Mine X's Annual Reclamation Report, as per section 10.4.4. Spatial files included."`}
               props={{ maximumCharacters: 500, rows: 3 }}
               component={RenderAutoSizeField}
-              validate={[required, maxLength(500)]}
+              validate={[maxLength(500)]}
+              help="Briefly describe your report to clarify its purpose and scope for reviewers."
             />
-            {isEditMode && (
-              <Typography.Text className="report-instructions">
-                Include a precise and descriptive title to the report.
-              </Typography.Text>
-            )}
           </Col>
 
           <Col span={24}>
@@ -542,9 +524,9 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               label="Due Date"
               placeholder="Select date"
               disabled={mineSpaceEdit}
-              required
+              required={!isMS}
               component={RenderDate}
-              validate={[required]}
+              validate={isMS ? [] : [required]}
             />
           </Col>
 
@@ -555,9 +537,9 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               label="Submitter Name"
               placeholder="Enter name"
               disabled={mineSpaceEdit}
-              required
+              required={isMS}
               component={RenderField}
-              validate={[required]}
+              validate={isMS ? [required] : []}
               help="Your name is recorded for reference"
             />
           </Col>
@@ -569,29 +551,31 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               placeholder="Enter email"
               disabled={mineSpaceEdit}
               component={RenderField}
-              validate={[email]}
-              help="By providing your email, you agree to receive notification of the report"
+              required={isMS}
+              validate={isMS ? [required, email] : [email]}
+              help="This email will be used for notifications relating to this report"
             />
           </Col>
           <Col span={24}>
             <Typography.Title className="margin-large--top" level={3} id="contact-information">
-              Contact Information
+              Report Contact Information
             </Typography.Title>
           </Col>
           <Col span={24}>
             <Typography.Paragraph>
-              The mine manager and additional contacts provided will be notified regarding this
-              report submission. If the mine manager information is incorrect, please contact your
-              Records Technician or Mines Authorization Analyst
+              Report contacts will be notified of the submission and any status changes of this
+              report.
+            </Typography.Paragraph>
+            <Typography.Paragraph>
+              If the mine manager information is incorrect, please{" "}
+              <a href={`mailto:${MMO_EMAIL}`}>contact us</a>.
             </Typography.Paragraph>
           </Col>
           <Col span={12}>
-            <Typography.Paragraph strong>Mine Manager</Typography.Paragraph>
-            <Typography.Paragraph>{mineManager?.name ?? "-"}</Typography.Paragraph>
+            <BaseViewInput label="Mine Manager" value={mineManager?.name ?? "-"} />
           </Col>
           <Col span={12}>
-            <Typography.Paragraph strong>Mine Manager Email</Typography.Paragraph>
-            <Typography.Paragraph>{mineManager?.email ?? "-"}</Typography.Paragraph>
+            <BaseViewInput label="Mine Manager Email" value={mineManager?.email ?? "-"} />
           </Col>
           <Col span={24}>
             <FieldArray
@@ -603,12 +587,13 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
           <Col span={24}>
             {isEditMode && !mineSpaceEdit && (
               <Button
-                type="link"
+                type="primary"
+                className="btn-sm-padding"
                 onClick={() =>
                   dispatch(arrayPush(FORM.VIEW_EDIT_REPORT, "mine_report_contacts", {}))
                 }
               >
-                + Add report contacts
+                + Add additional contact
               </Button>
             )}
           </Col>
@@ -620,9 +605,13 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
             {system === SystemFlagEnum.ms && (
               <Alert
                 className="margin-large--bottom"
-                message=""
-                description={<b>This type of report submission will be posted online publicly.</b>}
-                type="warning"
+                message="This type of report submission may be posted online publicly."
+                description="The Ministry publishes Regulatory Documents on its website for the purpose of research, public education,
+                and to provide transparency in the administration of environmental laws. The permittee acknowledges that the Province may
+                publish any Regulatory Document submitted by the permittee, excluding information that would be excepted from
+                disclosure if the document was disclosed pursuant to a request under section 5 of the Freedom of Information and Protection
+                of Privacy Act, and the permittee consents to such publication by the province."
+                type="info"
                 showIcon
               />
             )}

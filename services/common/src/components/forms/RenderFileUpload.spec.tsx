@@ -2,6 +2,7 @@ import React from "react";
 import { render } from "enzyme";
 import RenderFileUpload from "./RenderFileUpload";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
+import { PDF } from "../..";
 
 jest.mock("filepond", () => {
   const filepond = jest.requireActual("filepond");
@@ -16,7 +17,7 @@ test("RenderFileUpload component renders correctly", () => {
   const props = {
     shouldAbortUpload: false,
     shouldReplaceFile: false,
-    acceptedFileTypesMap: {},
+    acceptedFileTypesMap: PDF,
     beforeDropFile: jest.fn(),
     beforeAddFile: jest.fn(),
     allowRevert: true,
@@ -27,7 +28,7 @@ test("RenderFileUpload component renders correctly", () => {
     maxFileSize: 1024,
     onProcessFiles: jest.fn(),
     onAbort: jest.fn(),
-    labelIdle: "Drag and drop your files here",
+    listedFileTypes: [Object.keys(PDF)],
     itemInsertLocation: "before",
   };
 
