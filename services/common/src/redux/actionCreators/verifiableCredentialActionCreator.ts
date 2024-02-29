@@ -17,7 +17,6 @@ export const issueVCDigitalCredForPermit = (
   dispatch
 ): Promise<AxiosResponse<IVCInvitation>> => {
   const payload = {
-    party_guid: partyGuid,
     permit_amendment_guid: permitAmendmentGuid,
   };
 
@@ -25,7 +24,7 @@ export const issueVCDigitalCredForPermit = (
   dispatch(request(reducerTypes.ISSUE_VC));
   return CustomAxios()
     .post(
-      `${ENVIRONMENT.apiUrl}/verifiable-credentials/mines-act-permits`,
+      `${ENVIRONMENT.apiUrl}/verifiable-credentials/${partyGuid}/mines-act-permits`,
       payload,
       createRequestHeader()
     )
@@ -55,7 +54,7 @@ export const createVCWalletInvitation = (
   dispatch(request(reducerTypes.CREATE_VC_WALLET_CONNECTION_INVITATION));
   return CustomAxios()
     .post(
-      `${ENVIRONMENT.apiUrl}/verifiable-credentials/oob-invitation/${partyGuid}`,
+      `${ENVIRONMENT.apiUrl}/verifiable-credentials/${partyGuid}/oob-invitation`,
       null,
       createRequestHeader()
     )
