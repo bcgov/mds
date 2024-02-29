@@ -44,6 +44,16 @@ const ReportPage: FC = () => {
 
   const isFormDirty = useSelector(isDirty(FORM.VIEW_EDIT_REPORT));
 
+  const MINE_REPORT_STATUS_DESCRIPTION_HASH = {
+    [MINE_REPORT_SUBMISSION_CODES.ACC]:
+      "The Ministry has reviewed the report, no more revision is required",
+    [MINE_REPORT_SUBMISSION_CODES.REC]:
+      "Ministry has reviewed changes after requesting for more information. The revised information has not been reviewed.",
+    [MINE_REPORT_SUBMISSION_CODES.REQ]: `Requesting more information from the proponent through MineSpace.\nRequested by ${latestSubmission?.create_user} on ${latestSubmission?.create_timestamp}`,
+    [MINE_REPORT_SUBMISSION_CODES.INI]: "The report has been submitted successfully",
+    [MINE_REPORT_SUBMISSION_CODES.WTD]: `The report has been withdrawn.\nWithdrew by ${latestSubmission?.update_user} on ${latestSubmission?.update_timestamp}`,
+  };
+
   useEffect(() => {
     let isMounted = true;
     const loaded = Boolean(latestSubmission);
@@ -165,24 +175,18 @@ const ReportPage: FC = () => {
     <>
       <Alert
         message={
-          <Row justify="space-between" align="middle">
+          <Row justify="space-between" align="middle" className="alert-container">
             <span>
               {MINE_REPORT_STATUS_HASH[latestSubmission?.mine_report_submission_status_code]}
             </span>
-            <Select
-              disabled={!isEditMode}
-              virtual={false}
-              dropdownMatchSelectWidth
-              allowClear={false}
-              value={selectedStatus}
-              options={mineReportStatusOptions}
-              onChange={handleUpdateStatus}
-              style={{ minWidth: "210px" }}
-            />
+            <Button className="full-mobile">Update Status</Button>
           </Row>
         }
-        type={reportStatusSeverityForDisplay(latestSubmission?.mine_report_submission_status_code)}
+        type={"warning"}
         showIcon
+        description={
+          MINE_REPORT_STATUS_DESCRIPTION_HASH[latestSubmission?.mine_report_submission_status_code]
+        }
       />
       <ReportDetailsForm
         mineGuid={mineGuid}
