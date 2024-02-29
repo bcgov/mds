@@ -131,3 +131,18 @@ These values could be used for local development, however you will not receive w
 ## Race Conditions
 
 Webhook processing may be inconsistent, causing messages to be processed incorrectly. Some protection should be added to ensure that if a message state is going to send a protocol backwards, it should be ignored. Discussions are ongoing with Traction to see if the webhook can provide some timing data to help this processing.
+
+## Local development testing
+
+Traction DEV is configured to send webhooks to MDS DEV, and to this website for inspection
+https://webhook.site/#!/view/4c0e7827-505e-47dc-9b6c-1288ac43bff5/9666e4da-5cd8-4bda-8950-6c90aa8aa29f/1
+
+You can configure your local MDS to use the CPO Wallet on Traction dev as well (with env variables), but there is no way for the webhooks to get back to your local machine, so to manually test, we need to manually update our local data with the corresponding data from the webhooks.
+
+After connection invitation acceptance:
+connection_id=<UUID> and connection_state='active' need to be updated
+
+After credential offer acceptance:
+credential_state="credential_acked" and rev_reg_id=<str> and cred_rev_id=<str>
+
+These processes did complete between the two wallet successfully, but the MDS app running on your local machine isn't getting the updates.
