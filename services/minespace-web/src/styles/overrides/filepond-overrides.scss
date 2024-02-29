@@ -4,8 +4,9 @@
 }
 
 /* the text color of the drop label*/
-.filepond--drop-label {
+.ant-form-item .filepond--drop-label {
   color: $font-colour;
+  padding-top: 1.5em;
 }
 
 /* underline color for "Browse" button */
@@ -71,4 +72,10 @@
 
 .filepond--root {
   max-height: 260px;
+}
+
+.filepond-popover-container {
+  text-align: center;
+  padding-bottom: 1.5em;
+  text-decoration: underline;
 }

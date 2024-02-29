@@ -91,7 +91,6 @@ const defaultProps = {
   itemInsertLocation: "before" as ItemInsertLocationType,
   labelInstruction:
     '<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong>',
-  listedFileTypes: [".kmz", ".doc", ".docx", ".xlsx", ".pdf"],
   abbrevLabel: false,
   beforeAddFile: () => {},
   beforeDropFile: () => {},
@@ -116,13 +115,21 @@ export const FileUpload = (props: FileUploadProps) => {
   const [uploadData, setUploadData] = useState<{ [fileId: string]: MultipartDocumentUpload }>({});
 
   const getFilePondLabel = () => {
-    const { labelIdle, labelInstruction, listedFileTypes, abbrevLabel } = props;
+    const {
+      labelIdle,
+      labelInstruction,
+      listedFileTypes,
+      abbrevLabel,
+      acceptedFileTypesMap,
+    } = props;
     if (labelIdle) {
       return labelIdle;
     }
-    const fileTypeDisplayString = listedFileTypes.join(", ");
+    const fileTypeDisplayString = listedFileTypes
+      ? listedFileTypes.join(", ")
+      : Object.keys(acceptedFileTypesMap).join(", ");
     const secondLine = abbrevLabel
-      ? `<div>We accept most common ${fileTypeDisplayString} files</div><div id="taratest"></div>`
+      ? `<div>We accept most common ${fileTypeDisplayString} files</div>`
       : `<div>Accepted filetypes: ${fileTypeDisplayString}</div>`;
     return `${labelInstruction}<br>${secondLine}`;
   };
@@ -462,7 +469,6 @@ export const FileUpload = (props: FileUploadProps) => {
         name={props.input?.name}
         required={props.required}
         label={props.label}
-        className={props.abbrevLabel && "filepond-container-with-popover"}
         validateStatus={
           props.meta?.touched
             ? (props.meta?.error && "error") || (props.meta?.warning && "warning")
@@ -487,7 +493,6 @@ export const FileUpload = (props: FileUploadProps) => {
           allowReorder={props.allowReorder}
           maxParallelUploads={1}
           maxFileSize={props.maxFileSize}
-          className={props.abbrevLabel && "filepond-with-popover"}
           allowFileTypeValidation={acceptedFileTypes.length > 0}
           acceptedFileTypes={acceptedFileTypes}
           onaddfile={handleFileAdd}

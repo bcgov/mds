@@ -39,3 +39,4 @@ export * from "./verifiableCredentials";
 export * from "./mineComplianceInfo.interface";
 export * from "./complianceOrder.interface";
 export * from "./variance";
+export * from "./emli_contact.interface";

@@ -33,12 +33,13 @@ import {
   IParty,
   IPartyAppt,
   MINE_REPORTS_ENUM,
-  MMO_EMAIL,
   MinePartyAppointmentTypeCodeEnum,
   REPORT_TYPE_CODES,
   SystemFlagEnum,
   REPORT_REGULATORY_AUTHORITY_CODES,
   REPORT_REGULATORY_AUTHORITY_ENUM,
+  IMine,
+  IEmliContact,
 } from "../..";
 import RenderAutoSizeField from "../forms/RenderAutoSizeField";
 import { BaseViewInput } from "../forms/BaseInput";
@@ -61,6 +62,9 @@ import {
 } from "@mds/common/redux/actionCreators/reportCommentActionCreator";
 import AuthorizationWrapper from "@mds/common/wrappers/AuthorizationWrapper";
 import { USER_ROLES } from "@mds/common/constants/environment";
+import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
+import { fetchEMLIContactsByRegion } from "@mds/common/redux/actionCreators/minespaceActionCreator";
+import { getEMLIContactsByRegion } from "@mds/common/redux/selectors/minespaceSelector";
 
 const RenderContacts: FC<any> = ({ fields, isEditMode, mineSpaceEdit }) => {
   const canEdit = isEditMode && !mineSpaceEdit;
@@ -138,7 +142,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
     useSelector((state) => getFormValues(FORM.VIEW_EDIT_REPORT)(state)) ?? {};
   const [mineManager, setMineManager] = useState<IParty>();
   const [mineManagerGuid, setMineManagerGuid] = useState<string>("");
-  const [selectedReportName, setSelectedReportName] = useState("");
+
   const {
     mine_report_category = "",
     mine_report_definition_guid = "",
@@ -147,6 +151,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
     permit_condition_category_code,
     permit_guid,
   } = formValues;
+
   const [selectedReportCode, setSelectedReportCode] = useState("");
   const [formattedMineReportDefinitionOptions, setFormatMineReportDefinitionOptions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -157,6 +162,11 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   const [mineReportDefinition, setMineReportDefinition] = useState<IMineReportDefinition>(null);
 
   const system = useSelector(getSystemFlag);
+  const mine: IMine = useSelector((state) => getMineById(state, mineGuid));
+  const EMLIContactsByRegion: IEmliContact[] = useSelector(getEMLIContactsByRegion);
+  const [contactEmail, setContactEmail] = useState<string>();
+  console.log("initialValues", initialValues);
+  console.log("formValues", formValues);
 
   // PRR
   const permit = useSelector(getPermitByGuid(permit_guid));
@@ -168,7 +178,6 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
     dropdownPermitConditionCategoryOptions.find(
       (opt) => opt.value === permit_condition_category_code
     );
-  console.log(selectedReportName);
   // const contactEmail =
 
   const isCRR = report_type === REPORT_TYPE_CODES.CRR;
@@ -179,6 +188,14 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   const mineSpaceEdit = isMS && initialValues?.mine_report_guid && isEditMode;
 
   useEffect(() => {
+    if (isMS && mine && EMLIContactsByRegion.length) {
+      const contactCode = mine.major_mine_ind ? "MMO" : "ROE";
+      const contact = EMLIContactsByRegion.find((c) => c.emli_contact_type_code === contactCode);
+      setContactEmail(contact?.email);
+    }
+  }, [EMLIContactsByRegion, mine]);
+
+  useEffect(() => {
     if (permit_guid && !permit) {
       dispatch(fetchPermits(mineGuid));
     }
@@ -187,6 +204,10 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
       dispatch(fetchPartyRelationships({ mine_guid: mineGuid }));
     }
   }, [mineGuid]);
+
+  useEffect(() => {
+    dispatch(fetchEMLIContactsByRegion(mine.mine_region, mine.major_mine_ind));
+  }, [mine]);
 
   useEffect(() => {
     if (partyRelationships) {
@@ -226,12 +247,6 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   useEffect(() => {
     // update compliance article options when "Report Name" changes
     if (mine_report_definition_guid) {
-      const newReportName =
-        formattedMineReportDefinitionOptions?.find(
-          (opt) => opt.value === mine_report_definition_guid
-        )?.label ?? "";
-      setSelectedReportName(newReportName);
-
       const newReportComplianceArticle = mineReportDefinitionOptions.find((opt) => {
         return opt.mine_report_definition_guid === mine_report_definition_guid;
       });
@@ -239,7 +254,6 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
 
       setSelectedReportCode(formatComplianceCodeReportName(newReportComplianceArticle));
     } else {
-      setSelectedReportName("");
       setSelectedReportCode("");
     }
   }, [mine_report_definition_guid]);
@@ -566,10 +580,12 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               Report contacts will be notified of the submission and any status changes of this
               report.
             </Typography.Paragraph>
-            <Typography.Paragraph>
-              If the mine manager information is incorrect, please{" "}
-              <a href={`mailto:${MMO_EMAIL}`}>contact us</a>.
-            </Typography.Paragraph>
+            {contactEmail && (
+              <Typography.Paragraph>
+                If the mine manager information is incorrect, please{" "}
+                <a href={`mailto:${contactEmail}`}>contact us</a>.
+              </Typography.Paragraph>
+            )}
           </Col>
           <Col span={12}>
             <BaseViewInput label="Mine Manager" value={mineManager?.name ?? "-"} />
