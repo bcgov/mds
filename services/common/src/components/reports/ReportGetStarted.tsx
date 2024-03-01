@@ -109,6 +109,7 @@ export const RenderPRRFields: FC<{ mineGuid: string }> = ({ mineGuid }) => {
 const ReportGetStarted: FC<ReportGetStartedProps> = ({ mine, handleSubmit, formButtons }) => {
   const dispatch = useDispatch();
   const { reportType } = useParams<{ reportType?: string }>();
+  const system = useSelector(getSystemFlag);
   const formValues = useSelector(getFormValues(FORM.VIEW_EDIT_REPORT));
   const [selectedReportDefinition, setSelectedReportDefinition] = useState<IMineReportDefinition>();
   const [commonReportDefinitionOptions, setCommonReportDefinitionOptions] = useState([]);
@@ -203,22 +204,24 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({ mine, handleSubmit, formB
             },
           ]}
         />
-        {mine.major_mine_ind && formValues?.report_type === REPORT_TYPE_CODES.PRR && (
-          <Alert
-            description={
-              <>
-                Please note that the Major Mines Office (MMO) is currently unable to receive
-                permit-required reports through MineSpace. You must submit your permit-required
-                report to the MMO general intake inbox at {MMO_EMAIL}. Please request assistance for
-                transferring large files by contacting{" "}
-                <a href={`mailto:${MMO_EMAIL}`}>{MMO_EMAIL}</a>
-              </>
-            }
-            type="warning"
-            showIcon
-            className="margin-small--bottom"
-          />
-        )}
+        {system !== SystemFlagEnum.core &&
+          mine.major_mine_ind &&
+          formValues?.report_type === REPORT_TYPE_CODES.PRR && (
+            <Alert
+              description={
+                <>
+                  Please note that the Major Mines Office (MMO) is currently unable to receive
+                  permit-required reports through MineSpace. You must submit your permit-required
+                  report to the MMO general intake inbox at {MMO_EMAIL}. Please request assistance
+                  for transferring large files by contacting{" "}
+                  <a href={`mailto:${MMO_EMAIL}`}>{MMO_EMAIL}</a>
+                </>
+              }
+              type="warning"
+              showIcon
+              className="margin-small--bottom"
+            />
+          )}
         {formValues?.report_type === REPORT_TYPE_CODES.PRR && (
           <RenderPRRFields mineGuid={mine.mine_guid} />
         )}
