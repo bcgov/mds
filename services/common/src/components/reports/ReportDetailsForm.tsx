@@ -65,6 +65,7 @@ import { USER_ROLES } from "@mds/common/constants/environment";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import { fetchEMLIContactsByRegion } from "@mds/common/redux/actionCreators/minespaceActionCreator";
 import { getEMLIContactsByRegion } from "@mds/common/redux/selectors/minespaceSelector";
+import { useParams } from "react-router-dom";
 
 const RenderContacts: FC<any> = ({ fields, isEditMode, mineSpaceEdit }) => {
   const canEdit = isEditMode && !mineSpaceEdit;
@@ -135,6 +136,8 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   formButtons,
   handleSubmit,
 }) => {
+  const { reportGuid } = useParams<{ reportGuid?: string }>();
+
   const coreEditReportPermission = USER_ROLES.role_edit_reports;
   const coreViewAllPermission = USER_ROLES.role_view;
   const dispatch = useDispatch();
@@ -342,6 +345,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
         name={FORM.VIEW_EDIT_REPORT}
         onSubmit={handleSubmit}
         isEditMode={isEditMode}
+        reduxFormConfig={{ enableReinitialize: !!reportGuid }}
         initialValues={initialValues}
       >
         {!isMS && formButtons}
