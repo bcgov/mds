@@ -142,5 +142,5 @@ def test_post_additional_mine_report_submission(test_client, db_session, auth_he
     
     # fields that should not change
     assert previous_submission['received_date'] == latest_submission['received_date']    
-    assert previous_submission['create_timestamp'] == latest_submission['create_timestamp']
+    assert previous_submission['create_timestamp'] + '+00:00' == latest_submission['create_timestamp']
     
