@@ -43,7 +43,6 @@ const ReportPage: FC = () => {
   const [isEditMode, setIsEditMode] = useState(false);
 
   const isFormDirty = useSelector(isDirty(FORM.VIEW_EDIT_REPORT));
-  console.log("isFormDirty", isFormDirty);
 
   useEffect(() => {
     let isMounted = true;

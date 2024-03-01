@@ -165,8 +165,6 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   const mine: IMine = useSelector((state) => getMineById(state, mineGuid));
   const EMLIContactsByRegion: IEmliContact[] = useSelector(getEMLIContactsByRegion);
   const [contactEmail, setContactEmail] = useState<string>();
-  console.log("initialValues", initialValues);
-  console.log("formValues", formValues);
 
   // PRR
   const permit = useSelector(getPermitByGuid(permit_guid));
@@ -178,7 +176,6 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
     dropdownPermitConditionCategoryOptions.find(
       (opt) => opt.value === permit_condition_category_code
     );
-  // const contactEmail =
 
   const isCRR = report_type === REPORT_TYPE_CODES.CRR;
   const isPRR = report_type === REPORT_TYPE_CODES.PRR;
