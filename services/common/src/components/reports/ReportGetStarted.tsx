@@ -45,15 +45,17 @@ export const RenderPRRFields: FC<{ mineGuid: string }> = ({ mineGuid }) => {
   );
   const permits = useSelector(getPermits);
   const permitDropdown = createDropDownList(permits, "permit_no", "permit_guid");
-  const [loaded, setLoaded] = useState(permits.length > 0);
+  const permitMineGuid = permits[0]?.mine_guid;
+  const [loaded, setLoaded] = useState(permits.length > 0 && permitMineGuid === mineGuid);
 
   const isCore = system === SystemFlagEnum.core;
 
   useEffect(() => {
-    if (!loaded) {
+    if (!loaded || permitMineGuid !== mineGuid) {
+      setLoaded(false);
       dispatch(fetchPermits(mineGuid)).then(() => setLoaded(true));
     }
-  });
+  }, [mineGuid]);
 
   return (
     <>
