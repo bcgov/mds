@@ -234,7 +234,7 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({ mine, handleSubmit, formB
             </Typography.Paragraph>
             <Row gutter={24} className="margin-large--bottom">
               <Col span={12}>
-                <div className="light-grey-border padding-md--sides">
+                <div className="light-grey-border">
                   <Field
                     name="mine_report_definition_guid"
                     placeholder="Enter a code section or report name"
