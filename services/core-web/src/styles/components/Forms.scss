@@ -38,12 +38,28 @@
   }
 }
 
+.ant-form-vertical .ant-form-item-label>label {
+  display: inherit;
+}
+
 .ant-form-vertical .ant-form-item {
   padding-bottom: 0;
 }
 
 .ant-form-item {
   margin-bottom: 10px;
+}
+
+.vertical-radio-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.radio-two-column-container {
+  .ant-radio-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 .ant-form-item-label label:after {
