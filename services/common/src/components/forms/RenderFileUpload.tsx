@@ -62,7 +62,7 @@ interface FileUploadProps extends BaseInputProps {
   labelIdle?: string;
   // otherwise- can set the "Drag & drop" text,
   labelInstruction?: string;
-  // and the accepted file types to display
+  // and the accepted file types to display (empty will use extensions from acceptedFileTypesMap)
   listedFileTypes?: string[];
   // true for "We accept most common ${listedFileTypes.join()} files" language + popover
   abbrevLabel?: boolean;
@@ -480,62 +480,64 @@ export const FileUpload = (props: FileUploadProps) => {
             (props.meta?.warning && <span>{props.meta?.warning}</span>))
         }
       >
-        <FilePond
-          ref={(ref) => (filepond = ref)}
-          server={server}
-          name="file"
-          beforeDropFile={props.beforeDropFile}
-          beforeAddFile={props.beforeAddFile}
-          allowRevert={props.allowRevert}
-          onremovefile={props.onRemoveFile}
-          allowMultiple={props.allowMultiple}
-          onaddfilestart={props.addFileStart}
-          allowReorder={props.allowReorder}
-          maxParallelUploads={1}
-          maxFileSize={props.maxFileSize}
-          allowFileTypeValidation={acceptedFileTypes.length > 0}
-          acceptedFileTypes={acceptedFileTypes}
-          onaddfile={handleFileAdd}
-          onprocessfiles={props.onProcessFiles}
-          onprocessfileabort={props.onAbort}
-          oninit={props.onInit}
-          labelIdle={getFilePondLabel()}
-          itemInsertLocation={props?.itemInsertLocation}
-          credits={null}
-          fileValidateTypeLabelExpectedTypesMap={fileValidateTypeLabelExpectedTypesMap}
-          fileValidateTypeDetectType={(source, type) =>
-            new Promise((resolve, reject) => {
-              // If the browser can't automatically detect the file's MIME type, use the one stored in the "accepted file types" map.
-              if (!type) {
-                const exts = source.name.split(".");
-                const ext = exts && exts.length > 0 && `.${exts.pop()}`;
-                if (ext && ext in props.acceptedFileTypesMap) {
-                  type = props.acceptedFileTypesMap[ext];
-                } else {
-                  reject(type);
+        <>
+          <FilePond
+            ref={(ref) => (filepond = ref)}
+            server={server}
+            name="file"
+            beforeDropFile={props.beforeDropFile}
+            beforeAddFile={props.beforeAddFile}
+            allowRevert={props.allowRevert}
+            onremovefile={props.onRemoveFile}
+            allowMultiple={props.allowMultiple}
+            onaddfilestart={props.addFileStart}
+            allowReorder={props.allowReorder}
+            maxParallelUploads={1}
+            maxFileSize={props.maxFileSize}
+            allowFileTypeValidation={acceptedFileTypes.length > 0}
+            acceptedFileTypes={acceptedFileTypes}
+            onaddfile={handleFileAdd}
+            onprocessfiles={props.onProcessFiles}
+            onprocessfileabort={props.onAbort}
+            oninit={props.onInit}
+            labelIdle={getFilePondLabel()}
+            itemInsertLocation={props?.itemInsertLocation}
+            credits={null}
+            fileValidateTypeLabelExpectedTypesMap={fileValidateTypeLabelExpectedTypesMap}
+            fileValidateTypeDetectType={(source, type) =>
+              new Promise((resolve, reject) => {
+                // If the browser can't automatically detect the file's MIME type, use the one stored in the "accepted file types" map.
+                if (!type) {
+                  const exts = source.name.split(".");
+                  const ext = exts && exts.length > 0 && `.${exts.pop()}`;
+                  if (ext && ext in props.acceptedFileTypesMap) {
+                    type = props.acceptedFileTypesMap[ext];
+                  } else {
+                    reject(type);
+                  }
                 }
-              }
-              resolve(type);
-            })
-          }
-        />
-        {props.abbrevLabel && (
-          <div className="filepond-popover-container">
-            <Popover
-              content={
-                <>
-                  <strong>Accepted File Types:</strong>
-                  <p>{Object.keys(props.acceptedFileTypesMap).join(", ")}</p>
-                </>
-              }
-              placement="topRight"
-              color="white"
-              overlayClassName="filepond-filetypes-popover"
-            >
-              View accepted file types
-            </Popover>
-          </div>
-        )}
+                resolve(type);
+              })
+            }
+          />
+          {props.abbrevLabel && (
+            <div className="filepond-popover-container">
+              <Popover
+                content={
+                  <>
+                    <strong>Accepted File Types:</strong>
+                    <p>{Object.keys(props.acceptedFileTypesMap).join(", ")}</p>
+                  </>
+                }
+                placement="topRight"
+                color="white"
+                overlayClassName="filepond-filetypes-popover"
+              >
+                View accepted file types
+              </Popover>
+            </div>
+          )}
+        </>
       </Form.Item>
     </div>
   );

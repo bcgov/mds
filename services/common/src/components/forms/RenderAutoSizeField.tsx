@@ -9,7 +9,7 @@ import { FormConsumer, IFormContext } from "./FormWrapper";
 
 interface AutoSizeProps extends BaseInputProps {
   minRows?: number;
-  maximumCharacters?: number;
+  maximumCharacters: number;
 }
 
 const RenderAutoSizeField: FC<AutoSizeProps> = ({
@@ -17,7 +17,7 @@ const RenderAutoSizeField: FC<AutoSizeProps> = ({
   labelSubtitle,
   help,
   disabled = false,
-  maximumCharacters = 0,
+  maximumCharacters,
   minRows = 3,
   required = false,
   ...props
@@ -52,20 +52,18 @@ const RenderAutoSizeField: FC<AutoSizeProps> = ({
                 autoSize={{ minRows: minRows }}
                 placeholder={props.placeholder}
               />
-              {maximumCharacters > 0 && (
-                <Row
-                  justify="space-between"
-                  className={`form-item-help ${props.input.name}-form-help`}
-                >
-                  {help ? (
-                    <span>{help}</span>
-                  ) : (
-                    <span>{`Maximum ${maximumCharacters} characters`}</span>
-                  )}
-                  <span className="flex-end">{`${maximumCharacters -
-                    props.input.value.length} / ${maximumCharacters}`}</span>
-                </Row>
-              )}
+              <Row
+                justify="space-between"
+                className={`form-item-help ${props.input.name}-form-help`}
+              >
+                {help ? (
+                  <span>{help}</span>
+                ) : (
+                  <span>{`Maximum ${maximumCharacters} characters`}</span>
+                )}
+                <span className="flex-end">{`${maximumCharacters -
+                  props.input.value.length} / ${maximumCharacters}`}</span>
+              </Row>
             </>
           </Form.Item>
         );

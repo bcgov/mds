@@ -10,6 +10,7 @@
     background-color: $pure-white;
   }
 }
+
 // copied corresponding styles from .has-error .ant-input, added border details
 .has-error .ant-checkbox-group,
 .has-error .ant-checkbox-group:hover {
@@ -27,4 +28,55 @@
 
 .has-error .ant-checkbox-group:not([disabled]):hover {
   border-color: #ff4d4f;
+}
+
+// FORMS
+.ant-form-item-required,
+.ant-form-item-label>label.ant-form-item-required:not(.ant-form-item-required-mark-optional) {
+  &::before {
+    font-family: $font-family;
+  }
+}
+
+.ant-form-vertical .ant-form-item {
+  padding-bottom: 0;
+}
+
+.ant-form-item {
+  margin-bottom: 10px;
+}
+
+.ant-form-item-label label:after {
+  content: none;
+}
+
+.view-item {
+  line-height: 22px;
+
+  .ant-typography.view-item-label {
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+
+  .ant-typography.view-item-value {
+    margin-bottom: 0;
+  }
+}
+
+.form-item-help {
+  color: rgba(49, 49, 50, 0.55);
+}
+
+// DATE PICKER
+.ant-picker {
+  width: 100%;
+  padding: 4px 11px;
+}
+
+.ant-picker-today-btn {
+  color: $a-color;
+
+  &:hover {
+    color: $violet;
+  }
 }

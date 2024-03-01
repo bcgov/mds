@@ -28,7 +28,6 @@ test("RenderFileUpload component renders correctly", () => {
     maxFileSize: 1024,
     onProcessFiles: jest.fn(),
     onAbort: jest.fn(),
-    listedFileTypes: [Object.keys(PDF)],
     itemInsertLocation: "before",
   };
 

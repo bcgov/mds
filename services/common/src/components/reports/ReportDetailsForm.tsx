@@ -206,7 +206,9 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   }, [mineGuid]);
 
   useEffect(() => {
-    dispatch(fetchEMLIContactsByRegion(mine.mine_region, mine.major_mine_ind));
+    if (mine?.mine_region) {
+      dispatch(fetchEMLIContactsByRegion(mine.mine_region, mine.major_mine_ind));
+    }
   }, [mine]);
 
   useEffect(() => {
@@ -278,9 +280,9 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   };
 
   useEffect(() => {
-    setIsLoading(true);
-    fetchComments();
-    setIsLoading(false);
+    if (formValues.mine_report_guid) {
+      fetchComments();
+    }
   }, [formValues.mine_report_guid]);
 
   const handleAddComment = async (values) => {
@@ -456,43 +458,45 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               )}
             </>
           )}
-          {selectedReportCode && (
-            <Col span={12}>
-              <BaseViewInput label="Code Section / Report Name" value={selectedReportCode} />
-            </Col>
-          )}
 
           {isMS && isCRR && (
-            <Col span={24}>
-              <div
-                className="grey-box"
-                style={{ backgroundColor: "#F2F2F2", padding: "16px 24px" }}
-              >
-                <Row>
-                  <Col xs={24} md={18}>
-                    <b>You are submitting:</b>
-                    <br />
-                    <b>{selectedReportCode}</b>
-                    <br />
-                    {mineReportDefinition?.compliance_articles[0]?.long_description && (
-                      <Typography.Paragraph>
-                        {mineReportDefinition.compliance_articles[0].long_description}
-                      </Typography.Paragraph>
-                    )}
-                    {mineReportDefinition?.compliance_articles[0]?.help_reference_link && (
-                      <Button
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        href={mineReportDefinition.compliance_articles[0].help_reference_link}
-                        type="default"
-                      >
-                        More information <ExportOutlined />
-                      </Button>
-                    )}
-                  </Col>
-                </Row>
-              </div>
-            </Col>
+            <>
+              {selectedReportCode && (
+                <Col span={12}>
+                  <BaseViewInput label="Code Section / Report Name" value={selectedReportCode} />
+                </Col>
+              )}
+              <Col span={24}>
+                <div
+                  className="grey-box"
+                  style={{ backgroundColor: "#F2F2F2", padding: "16px 24px" }}
+                >
+                  <Row>
+                    <Col xs={24} md={18}>
+                      <b>You are submitting:</b>
+                      <br />
+                      <b>{selectedReportCode}</b>
+                      <br />
+                      {mineReportDefinition?.compliance_articles[0]?.long_description && (
+                        <Typography.Paragraph>
+                          {mineReportDefinition.compliance_articles[0].long_description}
+                        </Typography.Paragraph>
+                      )}
+                      {mineReportDefinition?.compliance_articles[0]?.help_reference_link && (
+                        <Button
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          href={mineReportDefinition.compliance_articles[0].help_reference_link}
+                          type="default"
+                        >
+                          More information <ExportOutlined />
+                        </Button>
+                      )}
+                    </Col>
+                  </Row>
+                </div>
+              </Col>
+            </>
           )}
 
           <Col span={24}>
