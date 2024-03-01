@@ -28,7 +28,7 @@ def test_search_party(test_client, db_session, auth_headers):
     assert len([
         key for key, value in get_data['search_results'].items()
         if key is not 'party' and len(value) is 0
-    ]) == 4
+    ]) == 5
     assert get_resp.status_code == 200
 
 
