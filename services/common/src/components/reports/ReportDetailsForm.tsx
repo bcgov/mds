@@ -641,7 +641,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
             <ReportFilesTable documents={documents} />
           </Col>
           {system === SystemFlagEnum.core && (
-            <AuthorizationWrapper permission={coreViewAllPermission}>
+            <AuthorizationWrapper permission={coreViewAllPermission} showToolTip={false}>
               <Col span={24}>
                 <Typography.Title level={3} id="internal-ministry-comments">
                   Internal Ministry Comments

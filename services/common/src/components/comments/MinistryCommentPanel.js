@@ -31,7 +31,7 @@ export const MinistryCommentPanel = (props) => {
   return (
     <>
       {renderEditor && (
-        <AuthorizationWrapper permission={createPermission}>
+        <AuthorizationWrapper permission={createPermission} showToolTip={false}>
           <Row>
             <Col span={2}>
               <Avatar size="small" icon={<UserOutlined />} />
