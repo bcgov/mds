@@ -470,10 +470,10 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
                 >
                   <Row>
                     <Col xs={24} md={18}>
-                      <b>You are submitting:</b>
-                      <br />
-                      <b>{selectedReportCode}</b>
-                      <br />
+                      <Typography.Paragraph strong className="primary-colour">
+                        You are submitting:
+                      </Typography.Paragraph>
+                      <Typography.Paragraph strong>{selectedReportCode}</Typography.Paragraph>
                       {mineReportDefinition?.compliance_articles[0]?.long_description && (
                         <Typography.Paragraph>
                           {mineReportDefinition.compliance_articles[0].long_description}
