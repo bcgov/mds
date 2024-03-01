@@ -271,15 +271,15 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   };
 
   const fetchComments = async () => {
-    setIsLoading(true);
-    await dispatch(fetchMineReportComments(mineGuid, formValues.mine_report_guid));
-    setIsLoading(false);
+    if (mineGuid && formValues.mine_report_guid) {
+      setIsLoading(true);
+      await dispatch(fetchMineReportComments(mineGuid, formValues.mine_report_guid));
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
-    if (formValues.mine_report_guid) {
-      fetchComments();
-    }
+    fetchComments();
   }, [formValues.mine_report_guid]);
 
   const handleAddComment = async (values) => {
@@ -642,36 +642,37 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
             )}
             <ReportFilesTable documents={documents} />
           </Col>
-
-          <Col span={24}>
-            <Typography.Title level={3} id="internal-ministry-comments">
-              Internal Ministry Comments
-            </Typography.Title>
-          </Col>
-          <Col span={24}>
+          {system === SystemFlagEnum.core && (
             <AuthorizationWrapper permission={coreViewAllPermission}>
-              <Typography.Paragraph>
-                <strong>
-                  These comments are for internal staff only and will not be shown to proponents.
-                </strong>
-                Add comments to this report submission for future reference. Anything written in
-                these comments may be requested under FOIPPA. Keep it professional and concise.
-              </Typography.Paragraph>
+              <Col span={24}>
+                <Typography.Title level={3} id="internal-ministry-comments">
+                  Internal Ministry Comments
+                </Typography.Title>
+              </Col>
+              <Col span={24}>
+                <Typography.Paragraph>
+                  <strong>
+                    These comments are for internal staff only and will not be shown to proponents.
+                  </strong>
+                  Add comments to this report submission for future reference. Anything written in
+                  these comments may be requested under FOIPPA. Keep it professional and concise.
+                </Typography.Paragraph>
+                <MinistryCommentPanel
+                  renderEditor={true}
+                  onSubmit={handleAddComment}
+                  loading={isLoading}
+                  comments={comments?.map((comment) => ({
+                    key: comment.mine_report_comment_guid,
+                    author: comment.create_user,
+                    content: comment.content,
+                    actions: null,
+                    datetime: comment.timestamp,
+                  }))}
+                  createPermission={coreEditReportPermission}
+                />
+              </Col>
             </AuthorizationWrapper>
-            <MinistryCommentPanel
-              renderEditor={true}
-              onSubmit={handleAddComment}
-              loading={isLoading}
-              comments={comments?.map((comment) => ({
-                key: comment.mine_report_comment_guid,
-                author: comment.create_user,
-                content: comment.content,
-                actions: null,
-                datetime: comment.timestamp,
-              }))}
-              createPermission={coreEditReportPermission}
-            />
-          </Col>
+          )}
         </Row>
         {formButtons}
       </FormWrapper>

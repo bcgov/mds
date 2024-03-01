@@ -21,7 +21,7 @@ class VerifiableCredentialConnectionResource(Resource, UserMixin):
         if not party:
             raise NotFound(f"party not found with party_guid {party_guid}")
         
-        traction_svc=TractionService()
+        traction_svc = TractionService()
         invitation = traction_svc.create_oob_connection_invitation(party)
         
         return invitation

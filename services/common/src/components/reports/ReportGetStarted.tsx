@@ -151,7 +151,7 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({ mine, handleSubmit, formB
     <FormWrapper
       name={FORM.VIEW_EDIT_REPORT}
       onSubmit={handleSubmit}
-      reduxFormConfig={{ destroyOnUnmount: false }}
+      reduxFormConfig={{ destroyOnUnmount: false, enableReinitialize: true }}
       initialValues={{
         report_type: reportType ? MineReportType[reportType] : REPORT_TYPE_CODES.CRR,
       }}
