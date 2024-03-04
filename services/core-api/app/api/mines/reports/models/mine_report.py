@@ -80,7 +80,11 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
         if self.mine_report_submissions:
             return self.mine_report_submissions[-1].mine_report_submission_status_code
         else:
-            return None
+            return "NON"
+        
+    @hybrid_property
+    def report_type(self):
+        return "PRR" if self.permit_condition_category_code else "CRR"
 
     @hybrid_property
     def report_name(self):
