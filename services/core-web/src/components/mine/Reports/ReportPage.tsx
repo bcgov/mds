@@ -28,6 +28,8 @@ import ReportDetailsForm from "@mds/common/components/reports/ReportDetailsForm"
 import Loading from "@/components/common/Loading";
 import { ScrollSideMenuProps } from "@mds/common/components/common/ScrollSideMenu";
 import ScrollSidePageWrapper from "@mds/common/components/common/ScrollSidePageWrapper";
+import modalConfig from "@/components/modalContent/config";
+import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 
 const ReportPage: FC = () => {
   const dispatch = useDispatch();
@@ -48,10 +50,11 @@ const ReportPage: FC = () => {
     [MINE_REPORT_SUBMISSION_CODES.ACC]:
       "The Ministry has reviewed the report, no more revision is required",
     [MINE_REPORT_SUBMISSION_CODES.REC]:
-      "Ministry has reviewed changes after requesting for more information. The revised information has not been reviewed.",
+      "Ministry has received changes after requesting for more information. The revised information has not been reviewed.",
     [MINE_REPORT_SUBMISSION_CODES.REQ]: `Requesting more information from the proponent through MineSpace.\nRequested by ${latestSubmission?.create_user} on ${latestSubmission?.create_timestamp}`,
     [MINE_REPORT_SUBMISSION_CODES.INI]: "The report has been submitted successfully",
     [MINE_REPORT_SUBMISSION_CODES.WTD]: `The report has been withdrawn.\nWithdrew by ${latestSubmission?.update_user} on ${latestSubmission?.update_timestamp}`,
+    [MINE_REPORT_SUBMISSION_CODES.NRQ]: "This report is not requested",
   };
 
   useEffect(() => {
@@ -91,6 +94,25 @@ const ReportPage: FC = () => {
   const revertChanges = () => {
     dispatch(reset(FORM.VIEW_EDIT_REPORT));
     setIsEditMode(false);
+  };
+
+  const handleCloseModal = () => {
+    dispatch(closeModal());
+  };
+
+  const openUpdateMineReportStatusModal = () => {
+    dispatch(
+      openModal({
+        props: {
+          title: "Update Report Status",
+          closeModal: handleCloseModal,
+          currentStatus:
+            MINE_REPORT_STATUS_HASH[latestSubmission?.mine_report_submission_status_code],
+          mineReportStatusOptions: mineReportStatusOptions,
+        },
+        content: modalConfig.UPDATE_MINE_REPORT_STATUS_MODAL,
+      })
+    );
   };
 
   const getFormButtons = () => {
@@ -179,7 +201,9 @@ const ReportPage: FC = () => {
             <span>
               {MINE_REPORT_STATUS_HASH[latestSubmission?.mine_report_submission_status_code]}
             </span>
-            <Button className="full-mobile">Update Status</Button>
+            <Button className="full-mobile" onClick={openUpdateMineReportStatusModal}>
+              Update Status
+            </Button>
           </Row>
         }
         type={"warning"}

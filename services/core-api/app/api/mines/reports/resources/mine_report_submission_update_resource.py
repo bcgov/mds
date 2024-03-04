@@ -6,8 +6,7 @@ from app.api.mines.response_models import MINE_REPORT_SUBMISSION_MODEL
 from app.extensions import api
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
-from app.api.utils.access_decorators import requires_any_of, VIEW_ALL, EDIT_REPORT, MINESPACE_PROPONENT, MINE_ADMIN, \
-    EDIT_PROJECT_SUMMARIES
+from app.api.utils.access_decorators import requires_any_of, EDIT_REPORT, MINE_ADMIN
 
 
 class MineReportSubmissionUpdateResource(Resource, UserMixin):
@@ -32,6 +31,7 @@ class MineReportSubmissionUpdateResource(Resource, UserMixin):
             'mine_report_submission_guid': 'The GUID of the Mine Report Submission to update.'
         })
     @api.marshal_with(MINE_REPORT_SUBMISSION_MODEL, code=201)
+    @requires_any_of([EDIT_REPORT, MINE_ADMIN])
     def patch(self, mine_report_submission_guid):
 
         mine_report_submission = MineReportSubmission.find_by_mine_report_submission_guid(mine_report_submission_guid)
