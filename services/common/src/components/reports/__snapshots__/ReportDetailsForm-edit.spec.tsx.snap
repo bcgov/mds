@@ -276,10 +276,6 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
       <div
         class="ant-col ant-col-24"
         style="padding: 4px 8px 4px 8px;"
-      />
-      <div
-        class="ant-col ant-col-24"
-        style="padding: 4px 8px 4px 8px;"
       >
         <div
           class="ant-form-item ant-form-item-with-help"
@@ -291,11 +287,17 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
               class="ant-col ant-form-item-label"
             >
               <label
-                class="ant-form-item-required"
+                class=""
                 for="VIEW_EDIT_REPORT_description_comment"
                 title=""
               >
-                Report Title and Additional Comment
+                Report Description
+                 
+                <span
+                  class="form-item-optional"
+                >
+                   (optional)
+                </span>
               </label>
             </div>
             <div
@@ -311,13 +313,14 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
                     class="ant-input"
                     id="description_comment"
                     name="description_comment"
+                    placeholder="Example: \\"Mine X's Annual Reclamation Report, as per section 10.4.4. Spatial files included.\\""
                     style="height: 0px; resize: none; min-height: -12px;"
                   />
                   <div
-                    class="ant-row ant-row-space-between"
+                    class="ant-row ant-row-space-between form-item-help description_comment-form-help"
                   >
                     <span>
-                      Maximum 500 characters
+                      Briefly describe your report to clarify its purpose and scope for reviewers.
                     </span>
                     <span
                       class="flex-end"
@@ -343,11 +346,6 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
             </div>
           </div>
         </div>
-        <span
-          class="ant-typography report-instructions"
-        >
-          Include a precise and descriptive title to the report.
-        </span>
       </div>
       <div
         class="ant-col ant-col-24"
@@ -556,11 +554,17 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
               class="ant-col ant-form-item-label"
             >
               <label
-                class="ant-form-item-required"
+                class=""
                 for="VIEW_EDIT_REPORT_submitter_name"
                 title=""
               >
                 Submitter Name
+                 
+                <span
+                  class="form-item-optional"
+                >
+                   (optional)
+                </span>
               </label>
             </div>
             <div
@@ -651,7 +655,7 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
                   <div
                     class="form-item-help submitter_email-form-help"
                   >
-                    By providing your email, you agree to receive notification of the report
+                    This email will be used for notifications relating to this report
                   </div>
                 </div>
               </div>
@@ -680,7 +684,7 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
           class="ant-typography margin-large--top"
           id="contact-information"
         >
-          Contact Information
+          Report Contact Information
         </h3>
       </div>
       <div
@@ -690,7 +694,7 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
         <div
           class="ant-typography"
         >
-          The mine manager and additional contacts provided will be notified regarding this report submission. If the mine manager information is incorrect, please contact your Records Technician or Mines Authorization Analyst
+          Report contacts will be notified of the submission and any status changes of this report.
         </div>
       </div>
       <div
@@ -698,16 +702,18 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
         style="padding: 4px 8px 4px 8px;"
       >
         <div
-          class="ant-typography"
+          class="view-item"
         >
-          <strong>
+          <div
+            class="ant-typography view-item-label"
+          >
             Mine Manager
-          </strong>
-        </div>
-        <div
-          class="ant-typography"
-        >
-          -
+          </div>
+          <div
+            class="ant-typography view-item-value"
+          >
+            -
+          </div>
         </div>
       </div>
       <div
@@ -715,16 +721,18 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
         style="padding: 4px 8px 4px 8px;"
       >
         <div
-          class="ant-typography"
+          class="view-item"
         >
-          <strong>
+          <div
+            class="ant-typography view-item-label"
+          >
             Mine Manager Email
-          </strong>
-        </div>
-        <div
-          class="ant-typography"
-        >
-          -
+          </div>
+          <div
+            class="ant-typography view-item-value"
+          >
+            -
+          </div>
         </div>
       </div>
       <div
@@ -738,11 +746,11 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
         style="padding: 4px 8px 4px 8px;"
       >
         <button
-          class="ant-btn ant-btn-link"
+          class="ant-btn ant-btn-primary btn-sm-padding"
           type="button"
         >
           <span>
-            + Add report contacts
+            + Add additional contact
           </span>
         </button>
       </div>
@@ -825,11 +833,17 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
                       >
                         <input
                           accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,application/vnd.oasis.opendocument.text,application/vnd.oasis.opendocument.text-template,application/vnd.oasis.opendocument.text-web,application/vnd.oasis.opendocument.text-master,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,image/jpg,image/jpeg,image/png,image/jp2,image/tiff,image/heic,image/heif,application/dbf,application/vnd.geo+json,application/gml+xml,application/vnd.google-earth.kml+xml,application/vnd.google-earth.kmz,application/octet-stream,text/csv,application/xml,text/xml"
-                          id="VIEW_EDIT_REPORT_documents"
                           multiple=""
                           name="file"
                           type="file"
                         />
+                      </div>
+                      <div
+                        class="filepond-popover-container"
+                      >
+                        <span>
+                          View accepted file types
+                        </span>
                       </div>
                     </div>
                   </div>

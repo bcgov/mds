@@ -153,7 +153,7 @@ exports[`ReportPage renders view mode properly 1`] = `
               <div
                 class="ellipsis-text"
               >
-                Contact Information
+                Report Contact Information
               </div>
             </a>
           </div>
@@ -613,10 +613,6 @@ exports[`ReportPage renders view mode properly 1`] = `
           <div
             class="ant-col ant-col-24"
             style="padding: 4px 8px 4px 8px;"
-          />
-          <div
-            class="ant-col ant-col-24"
-            style="padding: 4px 8px 4px 8px;"
           >
             <div
               class="view-item"
@@ -624,7 +620,7 @@ exports[`ReportPage renders view mode properly 1`] = `
               <div
                 class="ant-typography view-item-label"
               >
-                Report Title and Additional Comment
+                Report Description
               </div>
               <div
                 class="ant-typography view-item-value"
@@ -728,7 +724,7 @@ exports[`ReportPage renders view mode properly 1`] = `
               class="ant-typography margin-large--top"
               id="contact-information"
             >
-              Contact Information
+              Report Contact Information
             </h3>
           </div>
           <div
@@ -738,7 +734,7 @@ exports[`ReportPage renders view mode properly 1`] = `
             <div
               class="ant-typography"
             >
-              The mine manager and additional contacts provided will be notified regarding this report submission. If the mine manager information is incorrect, please contact your Records Technician or Mines Authorization Analyst
+              Report contacts will be notified of the submission and any status changes of this report.
             </div>
           </div>
           <div
@@ -746,16 +742,18 @@ exports[`ReportPage renders view mode properly 1`] = `
             style="padding: 4px 8px 4px 8px;"
           >
             <div
-              class="ant-typography"
+              class="view-item"
             >
-              <strong>
+              <div
+                class="ant-typography view-item-label"
+              >
                 Mine Manager
-              </strong>
-            </div>
-            <div
-              class="ant-typography"
-            >
-              -
+              </div>
+              <div
+                class="ant-typography view-item-value"
+              >
+                -
+              </div>
             </div>
           </div>
           <div
@@ -763,16 +761,18 @@ exports[`ReportPage renders view mode properly 1`] = `
             style="padding: 4px 8px 4px 8px;"
           >
             <div
-              class="ant-typography"
+              class="view-item"
             >
-              <strong>
+              <div
+                class="ant-typography view-item-label"
+              >
                 Mine Manager Email
-              </strong>
-            </div>
-            <div
-              class="ant-typography"
-            >
-              -
+              </div>
+              <div
+                class="ant-typography view-item-value"
+              >
+                -
+              </div>
             </div>
           </div>
           <div

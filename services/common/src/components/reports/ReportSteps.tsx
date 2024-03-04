@@ -3,7 +3,7 @@ import { Button, Col, Row, Steps, Typography } from "antd";
 import { Link, useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { reset } from "redux-form";
-import { IMine, IMineReportDefinition, IMineReportSubmission } from "@mds/common/interfaces";
+import { IMine, IMineReportSubmission } from "@mds/common/interfaces";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import ReportGetStarted from "@mds/common/components/reports/ReportGetStarted";
@@ -21,9 +21,6 @@ const ReportSteps = () => {
 
   const { mineGuid, reportType } = useParams<{ mineGuid: string; reportType: string }>();
   const [currentStep, setCurrentStep] = useState(0);
-  const [selectedReportDefinition, setSelectedReportDefinition] = useState<IMineReportDefinition>(
-    null
-  );
   const [initialValues, setInitialValues] = useState<Partial<IMineReportSubmission>>({});
 
   const mine: IMine = useSelector((state) => getMineById(state, mineGuid));
@@ -71,8 +68,6 @@ const ReportSteps = () => {
         return (
           <div>
             <ReportGetStarted
-              setSelectedReportDefinition={setSelectedReportDefinition}
-              selectedReportDefinition={selectedReportDefinition}
               mine={mine}
               handleSubmit={(values) => {
                 setInitialValues(values);
@@ -96,7 +91,6 @@ const ReportSteps = () => {
             <ReportDetailsForm
               mineGuid={mineGuid}
               initialValues={initialValues}
-              currentReportDefinition={selectedReportDefinition}
               handleSubmit={() => setCurrentStep(currentStep + 1)}
               formButtons={renderStepButtons({
                 nextButtonTitle: "Review & Submit",
