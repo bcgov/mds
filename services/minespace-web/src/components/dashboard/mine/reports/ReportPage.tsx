@@ -99,6 +99,13 @@ const ReportPage = () => {
               Save Changes
             </Button>
           )}
+          {!isEditMode &&
+            latestSubmission.mine_report_submission_status_code ==
+              MINE_REPORT_SUBMISSION_CODES.NON && (
+              <Button onClick={() => setIsEditMode(true)} type="primary">
+                Submit Report
+              </Button>
+            )}
         </Row>
 
         {!isEditMode && status && (
