@@ -6,7 +6,7 @@ import { Button } from "antd";
 import { AUTHENTICATION, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { IMineReportSubmission } from "../..";
-import { SystemFlagEnum, USER_ROLES } from "@mds/common";
+import { SystemFlagEnum, USER_ROLES } from "@mds/common/constants";
 
 const mineReportSubmission = MOCK.MINE_REPORT_SUBMISSIONS[0];
 const initialState = {
@@ -24,6 +24,17 @@ const initialState = {
     userAccessData: [USER_ROLES.role_edit_reports],
   },
 };
+
+function mockFunction() {
+  const original = jest.requireActual("react-router-dom");
+  return {
+    ...original,
+    useParams: jest.fn().mockReturnValue({
+      reportGuid: "1234",
+    }),
+  };
+}
+jest.mock("react-router-dom", () => mockFunction());
 
 describe("ReportDetailsForm", () => {
   it("renders view mode properly", () => {

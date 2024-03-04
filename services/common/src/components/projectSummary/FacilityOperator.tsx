@@ -70,7 +70,6 @@ export const FacilityOperator: FC = () => {
         maximumCharacters={4000}
         rows={3}
         component={RenderAutoSizeField}
-        help="Briefly describe: Overview of the project. The primary activity of the facility. If there is not enough space, you may attach additional information, including conceptual site plans."
       />
       <Row gutter={16}>
         <Col md={12} sm={24}>

@@ -113,7 +113,7 @@ const ReportPage: FC = () => {
       { href: "regulatory-authority", title: "Regulatory Authority" },
       { href: "report-type", title: "Report Type" },
       { href: "report-information", title: "Report Information" },
-      { href: "contact-information", title: "Contact Information" },
+      { href: "contact-information", title: "Report Contact Information" },
       { href: "documentation", title: "Documentation" },
       { href: "internal-ministry-comments", title: "Comments" },
     ],

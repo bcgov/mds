@@ -7,6 +7,7 @@
 @import "./settings/variables.scss";
 @import "./settings/theme.scss";
 @import "./settings/themeOverride.scss";
+@import "./settings/filepond-overrides.scss";
 
 // TOOLS - globally used mixins and functions. (ie gradient mixins, font-sizing mixins)
 @import "./tools/mixins.scss";
@@ -54,5 +55,6 @@
 @import "./components/ScrollSideMenuWrapper.scss";
 @import "./components/Tags.scss";
 @import "./components/Reports.scss";
+@import "./components/FontAwesomeIcon.scss";
 
 // UTILITIES - utilities and helper classes. This layer has the highest specificity.

@@ -36,7 +36,6 @@ exports[`ExplosivesPermitFileUpload renders properly 1`] = `
                     >
                       <input
                         accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,application/vnd.oasis.opendocument.text,application/vnd.oasis.opendocument.text-template,application/vnd.oasis.opendocument.text-web,application/vnd.oasis.opendocument.text-master,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                        id="fileUpload"
                         multiple=""
                         name="file"
                         type="file"
