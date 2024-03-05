@@ -1,19 +1,21 @@
 import React, { FC } from "react";
 import { Field, getFormValues } from "redux-form";
 
-import { MINE_REPORT_SUBMISSION_CODES, MINE_REPORT_STATUS_HASH } from "@mds/common";
+import { MINE_REPORT_STATUS_HASH, IMineReportSubmission } from "@mds/common";
 
 import { Button, Col, Row, Alert } from "antd";
 
 import * as FORM from "@/constants/forms";
-import { maxLength, required } from "@mds/common/redux/utils/Validate";
+import { required } from "@mds/common/redux/utils/Validate";
 
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import { useSelector } from "react-redux";
 // import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
+import { getMineReportStatusDescription } from "@mds/common/redux/utils/helpers";
 
 interface UpdateMineReportSubmissionStatusModalProps {
+  latestSubmission: IMineReportSubmission;
   currentStatus: string;
   mineReportStatusOptions: any;
   handleSubmit: (values) => void;
@@ -21,20 +23,12 @@ interface UpdateMineReportSubmissionStatusModalProps {
 }
 
 const UpdateMineReportSubmissionStatusModal: FC<UpdateMineReportSubmissionStatusModalProps> = ({
+  latestSubmission,
   currentStatus,
   mineReportStatusOptions,
   handleSubmit,
   closeModal,
 }) => {
-  const MINE_REPORT_STATUS_DESCRIPTION_HASH = {
-    [MINE_REPORT_SUBMISSION_CODES.ACC]:
-      "Report submission meets requirement and is ready for review",
-    [MINE_REPORT_SUBMISSION_CODES.REQ]:
-      "Requesting more information from proponents through MineSpace. This will allow proponents to edit previously submitted information or files",
-    [MINE_REPORT_SUBMISSION_CODES.INI]:
-      "Proponent has submitted a new report through Minespace. No changes could be made at this stage",
-  };
-
   const formValues =
     useSelector((state) => getFormValues(FORM.UPDATE_MINE_REPORT_SUBMISSION_STATUS)(state)) ?? {};
 
@@ -60,9 +54,10 @@ const UpdateMineReportSubmissionStatusModal: FC<UpdateMineReportSubmissionStatus
               }
               type={"warning"}
               showIcon
-              description={
-                MINE_REPORT_STATUS_DESCRIPTION_HASH[formValues?.mine_report_submission_status_code]
-              }
+              description={getMineReportStatusDescription(
+                formValues?.mine_report_submission_status_code,
+                latestSubmission
+              )}
             />
           )}
           <Row className="margin-medium--top">
@@ -71,13 +66,7 @@ const UpdateMineReportSubmissionStatusModal: FC<UpdateMineReportSubmissionStatus
                 id="mine_report_submission_status_code"
                 name="mine_report_submission_status_code"
                 component={RenderSelect}
-                data={mineReportStatusOptions.filter((item) =>
-                  [
-                    MINE_REPORT_SUBMISSION_CODES.ACC,
-                    MINE_REPORT_SUBMISSION_CODES.REQ,
-                    MINE_REPORT_SUBMISSION_CODES.INI,
-                  ].includes(item.value)
-                )}
+                data={mineReportStatusOptions}
                 required
                 validate={[required]}
               />

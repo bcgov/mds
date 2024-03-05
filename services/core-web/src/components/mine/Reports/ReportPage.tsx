@@ -32,7 +32,7 @@ import ScrollSidePageWrapper from "@mds/common/components/common/ScrollSidePageW
 import modalConfig from "@/components/modalContent/config";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 
-import { formatDate } from "@mds/common/redux/utils/helpers";
+import { formatDate, getMineReportStatusDescription } from "@mds/common/redux/utils/helpers";
 
 const ReportPage: FC = () => {
   const dispatch = useDispatch();
@@ -48,21 +48,6 @@ const ReportPage: FC = () => {
   const [isEditMode, setIsEditMode] = useState(false);
 
   const isFormDirty = useSelector(isDirty(FORM.VIEW_EDIT_REPORT));
-
-  const MINE_REPORT_STATUS_DESCRIPTION_HASH = {
-    [MINE_REPORT_SUBMISSION_CODES.ACC]:
-      "The Ministry has reviewed the report, no more revision is required",
-    [MINE_REPORT_SUBMISSION_CODES.REC]:
-      "Ministry has received changes after requesting for more information. The revised information has not been reviewed.",
-    [MINE_REPORT_SUBMISSION_CODES.REQ]: `Requesting more information from the proponent through MineSpace. Requested by ${
-      latestSubmission?.create_user
-    } on ${formatDate(latestSubmission?.create_timestamp)}`,
-    [MINE_REPORT_SUBMISSION_CODES.INI]: "The report has been submitted successfully",
-    [MINE_REPORT_SUBMISSION_CODES.WTD]: `The report has been withdrawn. Withdrew by ${
-      latestSubmission?.update_user
-    } on ${formatDate(latestSubmission?.update_timestamp)}`,
-    [MINE_REPORT_SUBMISSION_CODES.NRQ]: "This report is not requested",
-  };
 
   useEffect(() => {
     let isMounted = true;
@@ -129,6 +114,7 @@ const ReportPage: FC = () => {
           currentStatus:
             MINE_REPORT_STATUS_HASH[latestSubmission?.mine_report_submission_status_code],
           mineReportStatusOptions: mineReportStatusOptions,
+          latestSubmission: latestSubmission,
         },
         content: modalConfig.UPDATE_MINE_REPORT_STATUS_MODAL,
       })
@@ -223,9 +209,10 @@ const ReportPage: FC = () => {
         }
         type={"warning"}
         showIcon
-        description={
-          MINE_REPORT_STATUS_DESCRIPTION_HASH[latestSubmission?.mine_report_submission_status_code]
-        }
+        description={getMineReportStatusDescription(
+          latestSubmission?.mine_report_submission_status_code,
+          latestSubmission
+        )}
       />
       <ReportDetailsForm
         mineGuid={mineGuid}

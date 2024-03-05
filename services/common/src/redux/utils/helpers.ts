@@ -9,7 +9,8 @@ import { createNumberMask } from "redux-form-input-masks";
 import moment from "moment-timezone";
 import { reset } from "redux-form";
 import { ItemMap } from "@mds/common";
-import { IMineReportDefinition } from "@mds/common/interfaces";
+import { IMineReportDefinition, IMineReportSubmission } from "@mds/common/interfaces";
+import { MINE_REPORT_SUBMISSION_CODES } from "../..";
 
 /**
  * Helper function to clear redux form after submission
@@ -615,4 +616,25 @@ export const getHighestConsequence = (tsf) => {
     CONSEQUENCE_CLASSIFICATION_RANK_HASH[tsf.consequence_classification_status_code]
     ? CONSEQUENCE_CLASSIFICATION_CODE_HASH[highestRankedDam.consequence_classification]
     : CONSEQUENCE_CLASSIFICATION_CODE_HASH[tsf.consequence_classification_status_code];
+};
+
+export const getMineReportStatusDescription = (
+  statusCode: MINE_REPORT_SUBMISSION_CODES,
+  latestSubmission: IMineReportSubmission
+) => {
+  const MINE_REPORT_STATUS_DESCRIPTION_HASH = {
+    [MINE_REPORT_SUBMISSION_CODES.ACC]:
+      "The Ministry has reviewed the report, no more revision is required",
+    [MINE_REPORT_SUBMISSION_CODES.REC]:
+      "Ministry has received changes after requesting for more information. The revised information has not been reviewed.",
+    [MINE_REPORT_SUBMISSION_CODES.REQ]: `Requesting more information from the proponent through MineSpace. Requested by ${
+      latestSubmission?.create_user
+    } on ${formatDate(latestSubmission?.create_timestamp)}`,
+    [MINE_REPORT_SUBMISSION_CODES.INI]: "The report has been submitted successfully",
+    [MINE_REPORT_SUBMISSION_CODES.WTD]: `The report has been withdrawn. Withdrew by ${
+      latestSubmission?.update_user
+    } on ${formatDate(latestSubmission?.update_timestamp)}`,
+    [MINE_REPORT_SUBMISSION_CODES.NRQ]: "This report is not requested",
+  };
+  return MINE_REPORT_STATUS_DESCRIPTION_HASH[statusCode] || "";
 };

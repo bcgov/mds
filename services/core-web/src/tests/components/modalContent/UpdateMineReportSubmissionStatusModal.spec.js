@@ -1,5 +1,5 @@
 import React from "react";
-import { fireEvent, render } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import UpdateMineReportSubmissionStatusModal from "@/components/modalContent/UpdateMineReportSubmissionStatusModal";
@@ -31,6 +31,13 @@ describe("UpdateMineReportSubmissionStatusModal Component", () => {
       <Provider store={store}>
         <WrappedUpdateMineReportSubmissionModal
           currentStatus={"Received"}
+          latestSubmission={{
+            create_user: "testUser",
+            update_user: "testUser",
+            mine_report_submission_guid: "abcde123",
+            create_timestamp: "2023-04-10 22:35:20.000",
+            update_timestamp: "2023-04-10 22:35:20.000",
+          }}
           mineReportStatusOptions={MOCK.BULK_STATIC_CONTENT_RESPONSE.mineReportStatusOptions}
         />
       </Provider>
