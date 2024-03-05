@@ -1,4 +1,5 @@
 // Styling types for various document/application status codes
+import { MINE_REPORT_STATUS_HASH } from "@mds/common/constants";
 
 const undefinedStatusStyleType = "default";
 
@@ -26,10 +27,11 @@ const badgeStatusTypes = {
     Withdrawn: "warning",
   },
   report: {
-    Accepted: "success",
-    "Changes Received": "warning",
-    "Changes Requested": "processing",
-    "Not Requested": "default",
+    [MINE_REPORT_STATUS_HASH.ACC]: "success",
+    [MINE_REPORT_STATUS_HASH.REC]: "warning",
+    [MINE_REPORT_STATUS_HASH.REQ]: "processing",
+    [MINE_REPORT_STATUS_HASH.NRQ]: "default",
+    [MINE_REPORT_STATUS_HASH.NON]: "warning",
   },
   workInformation: {
     Unknown: "default",

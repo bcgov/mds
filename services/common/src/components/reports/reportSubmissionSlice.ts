@@ -53,7 +53,7 @@ const submissionSlice = createAppSlice({
       async (payload: IMineReportSubmission, thunkApi) => {
         const headers = createRequestHeader();
         thunkApi.dispatch(showLoading());
-        const successMessage = payload.mine_report_guid
+        const successMessage = payload.mine_report_submission_guid
           ? "Report successfully resubmitted"
           : "Successfully created new report submission";
 

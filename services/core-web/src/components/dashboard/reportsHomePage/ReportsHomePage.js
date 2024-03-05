@@ -136,11 +136,7 @@ export class ReportsHomePage extends Component {
       props: {
         initialValues: {
           ...report,
-          mine_report_submission_status:
-            report.mine_report_submissions.length > 0
-              ? report.mine_report_submissions[report.mine_report_submissions.length - 1]
-                  .mine_report_submission_status_code
-              : "NRQ",
+          mine_report_submission_status: report.mine_report_status_code,
         },
         title: `Edit ${report.submission_year} ${report.report_name}`,
         mineGuid: report.mine_guid,
