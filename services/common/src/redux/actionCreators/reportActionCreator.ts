@@ -1,6 +1,6 @@
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
-import { ENVIRONMENT } from "@mds/common";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
 import { request, success, error } from "../actions/genericActions";
 import * as reducerTypes from "@mds/common/constants/reducerTypes";
 import * as mineReportActions from "../actions/mineReportActions";
@@ -56,6 +56,7 @@ export const fetchMineReports = (
   mineGuid,
   reportsType = Strings.MINE_REPORTS_TYPE.codeRequiredReports
 ) => (dispatch) => {
+  dispatch(mineReportActions.clearMineReports());
   dispatch(request(reducerTypes.GET_MINE_REPORTS));
   dispatch(showLoading());
   return CustomAxios()

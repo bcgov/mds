@@ -7,7 +7,7 @@ from app.api.utils.resources_mixins import UserMixin
 from app.api.services.traction_service import TractionService
 
 class VerifiableCredentialResource(Resource, UserMixin):
-    @api.doc(description='test authorization with traction', params={})
+    @api.doc(description='test authorization with traction')
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def get(self):
         traction_svc=TractionService()

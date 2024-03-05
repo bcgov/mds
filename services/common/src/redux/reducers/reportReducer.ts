@@ -23,6 +23,11 @@ export const reportReducer = (state = initialState, action) => {
         mineReports: action.payload.records,
         mineReportGuid: "",
       };
+    case actionTypes.CLEAR_MINE_REPORTS:
+      return {
+        ...state,
+        mineReports: initialState.mineReports,
+      };
     case actionTypes.STORE_MINE_REPORT:
       return {
         ...state,

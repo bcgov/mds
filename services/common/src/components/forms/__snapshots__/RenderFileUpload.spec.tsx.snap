@@ -23,7 +23,7 @@ exports[`RenderFileUpload component renders correctly 1`] = `
               class="filepond--wrapper"
             >
               <input
-                accept=""
+                accept="application/pdf"
                 multiple=""
                 name="file"
                 type="file"

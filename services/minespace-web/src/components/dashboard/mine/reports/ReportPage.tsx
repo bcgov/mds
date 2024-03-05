@@ -32,7 +32,7 @@ const ReportPage = () => {
     getLatestReportSubmission(state, reportGuid)
   );
   const mine: IMine = useSelector((state) => getMineById(state, mineGuid));
-  const [loaded, setIsLoaded] = useState(Boolean(latestSubmission && mine));
+  const [loaded, setLoaded] = useState(Boolean(latestSubmission && mine));
   const [isEditMode, setIsEditMode] = useState(false);
 
   // get form data so we can submit it outside of the form
@@ -44,7 +44,7 @@ const ReportPage = () => {
     let isMounted = true;
     const isLoaded = Boolean(mine && latestSubmission);
     if (isMounted) {
-      setIsLoaded(isLoaded);
+      setLoaded(isLoaded);
     }
     return () => (isMounted = false);
   }, [mine, latestSubmission]);
@@ -107,11 +107,7 @@ const ReportPage = () => {
         </Row>
         <Row align="middle" justify="space-between">
           <Typography.Title level={2}>{latestSubmission.report_name}</Typography.Title>
-          {!isEditMode ? (
-            <Button onClick={() => setIsEditMode(true)} type="primary">
-              Edit Report
-            </Button>
-          ) : (
+          {isEditMode && (
             <Button type="primary" disabled={!isFormDirty} onClick={handleOtherSubmitButton}>
               Save Changes
             </Button>

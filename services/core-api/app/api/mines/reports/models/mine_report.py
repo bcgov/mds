@@ -195,7 +195,7 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
                 cls.due_date.asc())
             if reports_type == MINE_REPORT_TYPE['PERMIT REQUIRED REPORTS']:
                 reports = reports.filter(MineReport.permit_condition_category_code.isnot(None))
-            else:
+            elif reports_type == MINE_REPORT_TYPE['CODE REQUIRED REPORTS']:
                 reports = reports.filter(MineReport.permit_condition_category_code.is_(None))
             return reports.all()
         except ValueError:

@@ -53,9 +53,13 @@ const submissionSlice = createAppSlice({
       async (payload: IMineReportSubmission, thunkApi) => {
         const headers = createRequestHeader();
         thunkApi.dispatch(showLoading());
+        const successMessage = payload.mine_report_guid
+          ? "Report successfully resubmitted"
+          : "Successfully created new report submission";
+
         const messages = {
           errorToastMessage: "default",
-          successToastMessage: "Successfully created new report submission",
+          successToastMessage: successMessage,
         };
         const received_date = payload.received_date ?? moment().format("YYYY-MM-DD");
         const resp = await CustomAxios(messages).post(

@@ -139,6 +139,16 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
     columns = [...columns, ...newColumns];
   }
 
+  if (props.mineReports.some((report) => report.permit_guid)) {
+    columns = columns.map((col) => {
+      if (col.key === "code_section") {
+        return renderTextColumn("permit_number", "Permit #", true, null, 5);
+      } else {
+        return col;
+      }
+    });
+  }
+
   const transformRowData = (reports: IMineReport[]): IMineReport[] =>
     reports.map((report) => {
       const { mine_report_submissions } = report;

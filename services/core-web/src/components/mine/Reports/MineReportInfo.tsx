@@ -60,22 +60,25 @@ export const MineReportInfo: FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
-  const { reportType } = useParams<{ reportType: string }>();
+  const { reportType = "code-required-reports" } = useParams<{ reportType: string }>();
 
   const mine_reports_type: MineReportType = MineReportType[reportType];
 
   useEffect(() => {
     setMine(mines[mineGuid]);
     const params: MineReportParams = queryString.parse(location.search);
+    const newParams = { ...defaultParams, ...params };
+    history.replace(routes.MINE_REPORTS.dynamicRoute(mineGuid, reportType, newParams));
 
     dispatch(fetchMineReports(mineGuid, mine_reports_type)).then(() => {
       setIsLoaded(true);
-      const newParams = { ...defaultParams, ...params };
       setStateParams(newParams);
-      setFilteredReports(mineReports);
-      history.replace(routes.MINE_REPORTS.dynamicRoute(mineGuid, reportType, newParams));
     });
   }, [reportType]);
+
+  useEffect(() => {
+    setFilteredReports(mineReports);
+  }, [mineReports]);
 
   const handleFiltering = (reports, params: MineReportParams) => {
     const reportDefinitionGuids = params.report_type

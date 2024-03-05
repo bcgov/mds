@@ -49,6 +49,8 @@ export const ReportFileUpload: FC<ReportFileUploadProps> = ({
         allowRevert
         allowMultiple
         acceptedFileTypesMap={acceptedFileTypesMap}
+        listedFileTypes={["document", "image", "spreadsheet", "spatial"]}
+        abbrevLabel={true}
         uploadUrl={MINE_REPORT_DOCUMENT(mineGuid)}
         onFileLoad={handleFileLoad}
         onRemoveFile={handleRemoveFile}
