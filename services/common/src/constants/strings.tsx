@@ -353,8 +353,8 @@ export const PARTY_APPOINTMENT_STATUS = {
 };
 
 export const ESUP_DOCUMENT_GENERATED_TYPES = {
-  LET: "Explosives Storage and Use Permit",
-  PER: "Permit Enclosed Letter",
+  PER: "Explosives Storage and Use Permit",
+  LET: "Permit Enclosed Letter",
 };
 
 export const BC_TIMEZONE_NAMES = ["Canada/Pacific", "Canada/Mountain", "Canada/Yukon"];
