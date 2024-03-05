@@ -480,7 +480,7 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
         render: (text, record) => (
           <div
             className="underline"
-            onClick={(event) => handleOpenViewMagazineModal(event, record, "DET")}
+            onClick={(event) => handleOpenViewMagazineModal(event, record, "EXP")}
           >
             {text || "0"} kg
           </div>
