@@ -52,5 +52,5 @@ class VerifiableCredentialRevocationResource(Resource, UserMixin):
 
         traction_svc = TractionService()
         revoke_resp = traction_svc.revoke_credential(party.active_digital_wallet_connection.connection_id,credential_exchange.rev_reg_id, credential_exchange.cred_rev_id, data["comment"])
-        
+        current_app.logger.info(f"traction revocation response={revoke_resp}")
         return revoke_resp

@@ -731,6 +731,7 @@ MINE_REPORT_MODEL = api.model(
             fields.String,
         'mine_report_contacts':
             fields.List(fields.Nested(MINE_REPORT_CONTACT_MODEL)),
+        'mine_report_status_code': fields.String,
     })
 
 MINE_REPORT_DEFINITION_CATEGORIES = api.model('MineReportDefinitionCategoriesModel', {

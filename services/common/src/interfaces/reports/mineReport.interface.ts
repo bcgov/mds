@@ -19,5 +19,5 @@ export interface IMineReport {
   mine_name: string;
   submitter_name: string;
   submitter_email: string;
-  mine_report_submission_status?: MINE_REPORT_SUBMISSION_CODES;
+  mine_report_status_code: MINE_REPORT_SUBMISSION_CODES;
 }

@@ -1837,6 +1837,7 @@ export const MINE_REPORTS = [
     submission_year: 2020,
     created_by_idir: "idir\\TEST",
     permit_guid: null,
+    mine_report_status_code: "NRQ",
     mine_report_submissions: [
       {
         mine_report_submission_guid: "fed32646-5db7-495a-acbb-b6b8ad333ee1",
@@ -1868,6 +1869,7 @@ export const MINE_REPORTS = [
     submission_year: 2020,
     created_by_idir: "idir\\TEST",
     permit_guid: null,
+    mine_report_status_code: "NRQ",
     mine_report_submissions: [
       {
         mine_report_submission_guid: "d0149d1b-845d-4011-a731-3f951c7d8219",
@@ -1902,6 +1904,7 @@ export const MINE_REPORTS = [
     mine_report_submissions: [],
     mine_guid: "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
     mine_name: "Abbott Inc",
+    mine_report_status_code: "NON",
   },
 ];
 

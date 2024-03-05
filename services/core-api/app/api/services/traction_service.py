@@ -94,7 +94,7 @@ class TractionService():
             "rev_reg_id":rev_reg_id,
             "cred_rev_id":cred_rev_id,
             "notify": True,
-            "publish": False
+            "publish": True
         }
         revoke_resp = requests.post(revoke_credential_url, json=payload,headers=self.get_headers())
         assert revoke_resp.status_code == 200, f"revoke_resp={revoke_resp.json()}"

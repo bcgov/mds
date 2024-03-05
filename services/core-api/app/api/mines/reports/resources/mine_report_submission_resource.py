@@ -97,11 +97,43 @@ class ReportSubmissionResource(Resource, UserMixin):
         )
         mine_report.save()
         return mine_report
+    
+    # case when report has been requested
+    @staticmethod
+    def create_initial_submission_from_minespace(request_data, report_documents):
+        mine_report = MineReport.find_by_mine_report_guid(request_data.get('mine_report_guid'))
+        mine_report_id = getattr(mine_report, "mine_report_id")
+
+        report_submission = MineReportSubmission(
+            create_timestamp=getattr(mine_report, "create_timestamp"),
+            description_comment=request_data.get("description_comment", None),
+            due_date=getattr(mine_report, "due_date"),
+            documents=report_documents,
+            mine_guid=getattr(mine_report, "mine_guid"),
+            mine_report_definition_id=getattr(mine_report, "mine_report_definition_id"),
+            mine_report_id=mine_report_id,
+            mine_report_submission_status_code="INI",
+            permit_condition_category_code=getattr(mine_report, "permit_condition_category_code"),
+            permit_id=getattr(mine_report, "permit_id"),
+            received_date=request_data.get("received_date", None),
+            submission_date=datetime.utcnow(),
+            submission_year=getattr(mine_report, "submission_year"),
+            submitter_email=request_data.get("submitter_email", None),
+            submitter_name=request_data.get("submitter_name", None),
+        )
+        mine_report_contacts = ReportSubmissionResource.get_mine_report_submission_contacts(
+            request_data.get('mine_report_contacts'), mine_report_id, report_submission.mine_report_submission_id)
+        report_submission.mine_report_contacts = mine_report_contacts
+
+        report_submission.save()
+        return report_submission
 
     # not for first submission, for subsequent
     @staticmethod
     def create_submission_from_minespace(mine_report_guid, request_data, report_documents):
         previous_submission = MineReportSubmission.find_latest_by_mine_report_guid(str(mine_report_guid))
+        if not previous_submission or request_data.get('mine_report_submission_status_code') == "NON":
+            return ReportSubmissionResource.create_initial_submission_from_minespace(request_data, report_documents)
         mine_report_submission_status_code = "NRQ"
 
         report_submission = MineReportSubmission(
@@ -123,6 +155,7 @@ class ReportSubmissionResource(Resource, UserMixin):
             submitter_email=getattr(previous_submission, "submitter_email"),
             submitter_name=getattr(previous_submission, "submitter_name"),
         )
+        
         report_submission.save()
         return report_submission
 
@@ -143,6 +176,7 @@ class ReportSubmissionResource(Resource, UserMixin):
         self.parser.add_argument('mine_report_definition_guid', type=str, location='json')
         self.parser.add_argument('mine_report_id', type=str, location='json')
         self.parser.add_argument('mine_report_guid', type=str, location='json')
+        self.parser.add_argument('mine_report_submission_guid', type=str, location='json')
         self.parser.add_argument('mine_report_submission_status_code', type=str, location='json')
         self.parser.add_argument('permit_condition_category_code', type=str, location='json')
         self.parser.add_argument('permit_guid', type=str, location='json')
@@ -161,6 +195,7 @@ class ReportSubmissionResource(Resource, UserMixin):
 
         mine_guid = data.get('mine_guid', None)
         mine_report_guid = data.get('mine_report_guid', None)
+        mine_report_submission_guid = data.get('mine_report_submission_guid', None)
         mine_report_id = data.get('mine_report_id', None)
         permit_condition_category_code = data.get('permit_condition_category_code', None)
         documents = data.get('documents', [])
@@ -176,8 +211,9 @@ class ReportSubmissionResource(Resource, UserMixin):
         mine_report_definition_id = None
         permit_id = None
 
-        is_first_submission = False if mine_report_guid else True        
-        
+        create_initial_report = False if mine_report_guid else True
+        is_first_submission = False if mine_report_submission_guid else True       
+
         if is_code_required_report:
             mine_report_definition_id = self.get_check_mine_report_definition_id(mine_report_definition_guid)
         else:
@@ -185,13 +221,13 @@ class ReportSubmissionResource(Resource, UserMixin):
 
         report_documents = ReportSubmissionResource.get_updated_documents(documents, is_proponent, mine_guid)        
         
-        if is_first_submission:
+        if create_initial_report:
             mine_report = self.create_initial_mine_report(data, permit_id, mine_report_definition_id)
             mine_report_guid = mine_report.mine_report_guid
             mine_report_id = mine_report.mine_report_id
         
-        # MS user only allowed to add documents
-        if is_proponent and not is_first_submission:
+        # MS user only allowed to add documents unless new report has been requested
+        if is_proponent and not create_initial_report:
             return self.create_submission_from_minespace(mine_report_guid, data, report_documents)
         
         create_timestamp = None
@@ -259,6 +295,11 @@ class ReportSubmissionResource(Resource, UserMixin):
 
         if (latest_submission == True):
             submission = MineReportSubmission.find_latest_by_mine_report_guid(mine_report_guid)
+            if not submission: 
+                report = MineReport.find_by_mine_report_guid(mine_report_guid)
+                # different names for same property
+                report.mine_report_submission_status_code = "NON"
+                return report
             return submission
 
         return MineReportSubmission.find_by_mine_report_guid(mine_report_guid)

@@ -1,0 +1,43 @@
+.filepond--root {
+    font-family: $default-font;
+    font-size: 0.7rem;
+
+    &,
+    .filepond--drop-label {
+        min-height: 84.6px;
+    }
+}
+
+.whirlpool-container {
+    position: relative;
+
+    .ant-switch {
+        position: absolute;
+        top: 6px;
+        right: 8px;
+        z-index: 10;
+    }
+}
+
+.whirlpool-on {
+    .filepond--drip {
+        background-image: url("../assets/images/whirlpool.gif");
+        background-blend-mode: screen;
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        background-size: cover;
+        border-radius: 10px;
+        background-color: $blue;
+        opacity: 0.9;
+    }
+
+    .filepond--drop-label {
+        color: white;
+    }
+}
+
+.filepond-popover-container {
+    text-align: center;
+    padding-bottom: 1.5em;
+    text-decoration: underline;
+}

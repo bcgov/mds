@@ -17,7 +17,7 @@ jobs:
       - name: Check for PR Title for Jira link
         uses: gsactions/commit-message-checker@8c8c0d18ba9b1fcfed6e7385fd2bf357dfc8dccb
         with:
-          pattern: '(\W)+(MDS)+-[0-9]+(\W)|(\W)(CHORE|FIX)(\W)'
+          pattern: '(\W)+(MDS)+-[0-9]+(\W)|(\W)(CHORE|FIX|Snyk)(\W)'
           excludeTitle: "false" # optional: this excludes the title of a pull request
           excludeDescription: "true" # optional: this excludes the description body of a pull request
           checkAllCommitMessages: "false" # optional: this checks all commits associated with a pull request
