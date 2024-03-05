@@ -175,7 +175,6 @@ def test_post_additional_mine_report_submission(test_client, db_session, auth_he
     assert len(previous_submission['mine_report_contacts']) + 1 == len(latest_submission['mine_report_contacts'])
 
     # fields that should be changed
-    assert previous_submission['update_timestamp'][:19] == latest_submission['update_timestamp'][:19]
     assert previous_submission['update_timestamp'] != latest_submission['update_timestamp']
     assert previous_submission['submission_date'] != latest_submission['submission_date']
     assert previous_submission['mine_report_submission_status_code'] != latest_submission['mine_report_submission_status_code']
