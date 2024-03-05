@@ -35,6 +35,5 @@ export interface IMineReportSubmission {
 
 export interface IUpdateMineReportSubmissionStatus {
   mine_report_submission_guid: string;
-  description_comment: string;
   mine_report_submission_status_code: MINE_REPORT_SUBMISSION_CODES;
 }

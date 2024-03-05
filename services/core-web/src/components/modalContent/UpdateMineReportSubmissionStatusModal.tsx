@@ -10,7 +10,7 @@ import { maxLength, required } from "@mds/common/redux/utils/Validate";
 
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import { useSelector } from "react-redux";
-import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
+// import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 
 interface UpdateMineReportSubmissionStatusModalProps {
@@ -78,10 +78,12 @@ const UpdateMineReportSubmissionStatusModal: FC<UpdateMineReportSubmissionStatus
                     MINE_REPORT_SUBMISSION_CODES.INI,
                   ].includes(item.value)
                 )}
+                required
+                validate={[required]}
               />
             </Col>
           </Row>
-          <Field
+          {/* <Field
             id="description_comment"
             name="description_comment"
             label="Additional Comment"
@@ -90,7 +92,7 @@ const UpdateMineReportSubmissionStatusModal: FC<UpdateMineReportSubmissionStatus
             component={RenderAutoSizeField}
             validate={[required, maxLength(1000)]}
             props={{ maximumCharacters: 1000, rows: 3 }}
-          />
+          /> */}
         </Col>
       </Row>
       <div className="right center-mobile" style={{ paddingTop: "14px" }}>

@@ -13,12 +13,6 @@ class ReportSubmissionUpdateResource(Resource, UserMixin):
     parser = CustomReqparser()
 
     parser.add_argument(
-        'description_comment',
-        type=str,
-        store_missing=False,
-        required=True,
-    )
-    parser.add_argument(
         'mine_report_submission_status_code',
         type=str,
         store_missing=False,
@@ -35,14 +29,13 @@ class ReportSubmissionUpdateResource(Resource, UserMixin):
     def patch(self, mine_report_submission_guid):
 
         mine_report_submission = MineReportSubmission.find_by_mine_report_submission_guid(mine_report_submission_guid)
-        print(mine_report_submission)
+
         data = self.parser.parse_args()
 
         if mine_report_submission is None:
             raise NotFound('Mine Report Submission not found')
 
-        mine_report_submission.patch(data.get('mine_report_submission_status_code'),
-                                     data.get('description_comment'))
+        mine_report_submission.patch(data.get('mine_report_submission_status_code'))
 
         mine_report_submission.save()
 

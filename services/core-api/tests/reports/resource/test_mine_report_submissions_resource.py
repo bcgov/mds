@@ -149,7 +149,6 @@ def test_patch_mine_report_submission_status(test_client, db_session, auth_heade
     mine_report_submission = MineReportSubmissionFactory()
 
     submission_data = {
-        'description_comment': "test description comment",
         'mine_report_submission_status_code': 'ACC',
     }
 

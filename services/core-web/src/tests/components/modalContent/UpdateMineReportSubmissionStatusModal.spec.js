@@ -23,7 +23,6 @@ describe("UpdateMineReportSubmissionStatusModal Component", () => {
         UPDATE_MINE_REPORT_SUBMISSION_STATUS: {
           values: {
             mine_report_submission_status_code: "INI",
-            description_comment: "test description comment",
           },
         },
       },

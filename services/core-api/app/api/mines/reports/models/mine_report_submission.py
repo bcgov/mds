@@ -140,9 +140,8 @@ class MineReportSubmission(Base, AuditMixin):
             'update_user': str(self.update_user)
         }
 
-    def patch(self, mine_report_submission_status_code, description_comment, add_to_session=True):
+    def patch(self, mine_report_submission_status_code, add_to_session=True):
         self.mine_report_submission_status_code = mine_report_submission_status_code
-        self.description_comment = description_comment
 
         if add_to_session:
             self.save(commit=False)
