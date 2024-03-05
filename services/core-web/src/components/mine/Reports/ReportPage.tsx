@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { change, isDirty, reset } from "redux-form";
-import { Alert, Button, Modal, Row, Select, Tag, Typography } from "antd";
+import { Alert, Button, Modal, Row, Tag, Typography } from "antd";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/pro-light-svg-icons";
@@ -13,7 +13,6 @@ import {
   IMineReportSubmission,
   MINE_REPORT_STATUS_HASH,
   MINE_REPORT_SUBMISSION_CODES,
-  reportStatusSeverityForDisplay,
 } from "@mds/common";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
@@ -22,6 +21,7 @@ import {
   fetchLatestReportSubmission,
   getLatestReportSubmission,
   createReportSubmission,
+  updateReportSubmission,
 } from "@mds/common/components/reports/reportSubmissionSlice";
 
 import ReportDetailsForm from "@mds/common/components/reports/ReportDetailsForm";
@@ -30,6 +30,8 @@ import { ScrollSideMenuProps } from "@mds/common/components/common/ScrollSideMen
 import ScrollSidePageWrapper from "@mds/common/components/common/ScrollSidePageWrapper";
 import modalConfig from "@/components/modalContent/config";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
+import * as FORMS from "@/constants/forms";
+import { formatDate } from "@mds/common/redux/utils/helpers";
 
 const ReportPage: FC = () => {
   const dispatch = useDispatch();
@@ -51,9 +53,13 @@ const ReportPage: FC = () => {
       "The Ministry has reviewed the report, no more revision is required",
     [MINE_REPORT_SUBMISSION_CODES.REC]:
       "Ministry has received changes after requesting for more information. The revised information has not been reviewed.",
-    [MINE_REPORT_SUBMISSION_CODES.REQ]: `Requesting more information from the proponent through MineSpace.\nRequested by ${latestSubmission?.create_user} on ${latestSubmission?.create_timestamp}`,
+    [MINE_REPORT_SUBMISSION_CODES.REQ]: `Requesting more information from the proponent through MineSpace. Requested by ${
+      latestSubmission?.create_user
+    } on ${formatDate(latestSubmission?.create_timestamp)}`,
     [MINE_REPORT_SUBMISSION_CODES.INI]: "The report has been submitted successfully",
-    [MINE_REPORT_SUBMISSION_CODES.WTD]: `The report has been withdrawn.\nWithdrew by ${latestSubmission?.update_user} on ${latestSubmission?.update_timestamp}`,
+    [MINE_REPORT_SUBMISSION_CODES.WTD]: `The report has been withdrawn. Withdrew by ${
+      latestSubmission?.update_user
+    } on ${formatDate(latestSubmission?.update_timestamp)}`,
     [MINE_REPORT_SUBMISSION_CODES.NRQ]: "This report is not requested",
   };
 
@@ -100,12 +106,27 @@ const ReportPage: FC = () => {
     dispatch(closeModal());
   };
 
-  const openUpdateMineReportStatusModal = () => {
+  const handleUpdateMineSubmissionStatus = (values: IMineReportSubmission) => {
+    //dispatch(change(FORM.VIEW_EDIT_REPORT, "mine_report_submission_status_code", value));
+    console.log("values", values);
+    console.log("latestSubmission", latestSubmission);
+    handleCloseModal();
+    // dispatch(updateReportSubmission(values)).then((response) => {
+    //   console.log("response", response);
+    //   // if (response.payload) {
+    //   //   setIsEditMode(false);
+    //   // }
+    // });
+  };
+
+  const openUpdateMineReportStatusModal = (event) => {
+    event.preventDefault();
     dispatch(
       openModal({
         props: {
           title: "Update Report Status",
           closeModal: handleCloseModal,
+          handleSubmit: handleUpdateMineSubmissionStatus,
           currentStatus:
             MINE_REPORT_STATUS_HASH[latestSubmission?.mine_report_submission_status_code],
           mineReportStatusOptions: mineReportStatusOptions,

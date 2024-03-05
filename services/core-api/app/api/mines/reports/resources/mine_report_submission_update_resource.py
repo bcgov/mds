@@ -9,7 +9,7 @@ from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.utils.access_decorators import requires_any_of, EDIT_REPORT, MINE_ADMIN
 
 
-class MineReportSubmissionUpdateResource(Resource, UserMixin):
+class ReportSubmissionUpdateResource(Resource, UserMixin):
     parser = CustomReqparser()
 
     parser.add_argument(
