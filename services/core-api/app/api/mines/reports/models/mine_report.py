@@ -5,7 +5,7 @@ from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
-from sqlalchemy import select, and_, desc
+from sqlalchemy import select, and_, desc, func, literal
 from app.api.mines.reports.models.mine_report_contact import MineReportContact
 from app.api.mines.reports.models.mine_report_submission import MineReportSubmission
 from app.api.mines.reports.models.mine_report_submission_status_code import MineReportSubmissionStatusCode
@@ -80,7 +80,11 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
         if self.mine_report_submissions:
             return self.mine_report_submissions[-1].mine_report_submission_status_code
         else:
-            return None
+            return "NON"
+        
+    @hybrid_property
+    def report_type(self):
+        return "PRR" if self.permit_condition_category_code else "CRR"
 
     @hybrid_property
     def report_name(self):
@@ -88,10 +92,11 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
 
     @mine_report_status_code.expression
     def mine_report_status_code(cls):
-        return select([
+        return func.coalesce(select([
             MineReportSubmission.mine_report_submission_status_code
         ]).where(MineReportSubmission.mine_report_id == cls.mine_report_id).order_by(
-            desc(MineReportSubmission.mine_report_submission_id)).limit(1).as_scalar()
+            desc(MineReportSubmission.mine_report_submission_id)).limit(1).as_scalar(),
+            literal("NON"))
 
     @hybrid_property
     def mine_report_status_description(self):

@@ -353,8 +353,8 @@ export const PARTY_APPOINTMENT_STATUS = {
 };
 
 export const ESUP_DOCUMENT_GENERATED_TYPES = {
-  LET: "Explosives Storage and Use Permit",
-  PER: "Permit Enclosed Letter",
+  PER: "Explosives Storage and Use Permit",
+  LET: "Permit Enclosed Letter",
 };
 
 export const BC_TIMEZONE_NAMES = ["Canada/Pacific", "Canada/Mountain", "Canada/Yukon"];
@@ -409,5 +409,6 @@ export const MINE_REPORT_STATUS_HASH = {
   [MINE_REPORT_SUBMISSION_CODES.REC]: "Changes Received",
   [MINE_REPORT_SUBMISSION_CODES.ACC]: "Accepted",
   [MINE_REPORT_SUBMISSION_CODES.INI]: "Received",
+  [MINE_REPORT_SUBMISSION_CODES.NON]: "Report Requested",
   [MINE_REPORT_SUBMISSION_CODES.WTD]: "Withdrawn",
 };

@@ -129,13 +129,7 @@ export const MineReportInfo: FC = () => {
       const received_only =
         !params.received_only || params.received_only === "false" || report.received_date;
       const status =
-        isEmpty(params.status) ||
-        (report.mine_report_submissions &&
-          report.mine_report_submissions.length > 0 &&
-          params.status.includes(
-            report.mine_report_submissions[report.mine_report_submissions.length - 1]
-              .mine_report_submission_status_code
-          ));
+        isEmpty(params.status) || params.status.includes(report.mine_report_status_code);
       return (
         report_name &&
         report_type &&

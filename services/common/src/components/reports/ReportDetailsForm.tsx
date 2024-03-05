@@ -40,6 +40,7 @@ import {
   REPORT_REGULATORY_AUTHORITY_ENUM,
   IMine,
   IEmliContact,
+  MINE_REPORT_SUBMISSION_CODES,
 } from "../..";
 import RenderAutoSizeField from "../forms/RenderAutoSizeField";
 import { BaseViewInput } from "../forms/BaseInput";
@@ -67,8 +68,8 @@ import { fetchEMLIContactsByRegion } from "@mds/common/redux/actionCreators/mine
 import { getEMLIContactsByRegion } from "@mds/common/redux/selectors/minespaceSelector";
 import { useParams } from "react-router-dom";
 
-const RenderContacts: FC<any> = ({ fields, isEditMode, mineSpaceEdit }) => {
-  const canEdit = isEditMode && !mineSpaceEdit;
+const RenderContacts: FC<any> = ({ fields, isEditMode, mineSpaceEdit, hasSubmissions }) => {
+  const canEdit = isEditMode && (!mineSpaceEdit || !hasSubmissions);
   return (
     <div>
       {fields.map((contact, index) => (
@@ -149,6 +150,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   const {
     mine_report_category = "",
     mine_report_definition_guid = "",
+    mine_report_submission_status_code,
     documents = [],
     report_type,
     permit_condition_category_code,
@@ -184,6 +186,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   const isPRR = report_type === REPORT_TYPE_CODES.PRR;
   const isMS = system === SystemFlagEnum.ms;
 
+  const hasSubmissions = mine_report_submission_status_code !== MINE_REPORT_SUBMISSION_CODES.NON;
   // minespace users are only allowed to add documents
   const mineSpaceEdit = isMS && initialValues?.mine_report_guid && isEditMode;
 
@@ -263,9 +266,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   useEffect(() => {
     if (system === SystemFlagEnum.core) {
       const selection = mineReportDefinition?.compliance_articles[0]?.cim_or_cpo;
-      dispatch(
-        change(FORM.VIEW_EDIT_REPORT, "report_for", selection ? selection : "Not specified")
-      );
+      dispatch(change(FORM.VIEW_EDIT_REPORT, "report_for", selection ?? "Not specified"));
     }
   }, [mineReportDefinition, !formValues?.report_for]);
 
@@ -505,7 +506,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               id="description_comment"
               name="description_comment"
               label="Report Description"
-              disabled={mineSpaceEdit}
+              disabled={mineSpaceEdit && hasSubmissions}
               placeholder={`Example: "Mine X's Annual Reclamation Report, as per section 10.4.4. Spatial files included."`}
               props={{ maximumCharacters: 500, rows: 3 }}
               component={RenderAutoSizeField}
@@ -555,7 +556,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               name="submitter_name"
               label="Submitter Name"
               placeholder="Enter name"
-              disabled={mineSpaceEdit}
+              disabled={mineSpaceEdit && hasSubmissions}
               required={isMS}
               component={RenderField}
               validate={isMS ? [required] : []}
@@ -568,7 +569,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               name="submitter_email"
               label="Submitter Email"
               placeholder="Enter email"
-              disabled={mineSpaceEdit}
+              disabled={mineSpaceEdit && hasSubmissions}
               component={RenderField}
               required={isMS}
               validate={isMS ? [required, email] : [email]}
@@ -602,11 +603,11 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
             <FieldArray
               name="mine_report_contacts"
               component={RenderContacts}
-              props={{ isEditMode, mineSpaceEdit }}
+              props={{ isEditMode, mineSpaceEdit, hasSubmissions }}
             />
           </Col>
           <Col span={24}>
-            {isEditMode && !mineSpaceEdit && (
+            {isEditMode && (!mineSpaceEdit || !hasSubmissions) && (
               <Button
                 type="primary"
                 className="btn-sm-padding"
@@ -640,11 +641,11 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
               <ReportFileUpload
                 mineGuid={mineGuid}
                 isProponent={system === SystemFlagEnum.ms}
-                documents={documents}
+                documents={documents ?? []}
                 updateDocuments={updateDocuments}
               />
             )}
-            <ReportFilesTable documents={documents} />
+            {(hasSubmissions || documents) && <ReportFilesTable documents={documents} />}
           </Col>
           {system === SystemFlagEnum.core && (
             <AuthorizationWrapper permission={coreViewAllPermission} showToolTip={false}>
@@ -658,8 +659,9 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
                   <strong>
                     These comments are for internal staff only and will not be shown to proponents.
                   </strong>
-                  Add comments to this report submission for future reference. Anything written in
-                  these comments may be requested under FOIPPA. Keep it professional and concise.
+                  &nbsp;Add comments to this report submission for future reference. Anything
+                  written in these comments may be requested under FOIPPA. Keep it professional and
+                  concise.
                 </Typography.Paragraph>
                 <MinistryCommentPanel
                   renderEditor={true}

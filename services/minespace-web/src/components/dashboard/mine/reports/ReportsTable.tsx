@@ -128,8 +128,8 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
     columns = columns.filter((column) => !["", "Documents"].includes(column.title as string));
     const statusColumn = {
       title: "Status",
-      dataIndex: "status",
-      sorter: (a, b) => a.status.localeCompare(b.status),
+      dataIndex: "mine_report_status_code",
+      sorter: (a, b) => a.mine_report_status_code.localeCompare(b.mine_report_status_code),
       render: (text: MINE_REPORT_SUBMISSION_CODES) => {
         return <Badge status={reportStatusSeverity(text)} text={MINE_REPORT_STATUS_HASH[text]} />;
       },
@@ -149,17 +149,6 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
     });
   }
 
-  const transformRowData = (reports: IMineReport[]): IMineReport[] =>
-    reports.map((report) => {
-      const { mine_report_submissions } = report;
-      const latestSubmission = mine_report_submissions?.[mine_report_submissions?.length - 1];
-
-      return {
-        ...report,
-        status: latestSubmission?.mine_report_submission_status_code ?? "",
-      };
-    });
-
   const pagination: TablePaginationConfig = {
     defaultPageSize: DEFAULT_PAGE_SIZE,
     total: props.mineReports.length,
@@ -173,7 +162,7 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
       columns={columns}
       rowKey={(record) => record.mine_report_guid}
       emptyText="This mine has no report data."
-      dataSource={transformRowData(props.mineReports)}
+      dataSource={props.mineReports}
       pagination={pagination}
     />
   );

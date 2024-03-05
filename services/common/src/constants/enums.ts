@@ -165,6 +165,7 @@ export enum MINE_REPORT_SUBMISSION_CODES {
   REC = "REC",
   ACC = "ACC",
   INI = "INI",
+  NON = "NON",
   WTD = "WTD",
 }
 
