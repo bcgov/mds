@@ -266,9 +266,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   useEffect(() => {
     if (system === SystemFlagEnum.core) {
       const selection = mineReportDefinition?.compliance_articles[0]?.cim_or_cpo;
-      dispatch(
-        change(FORM.VIEW_EDIT_REPORT, "report_for", selection ? selection : "Not specified")
-      );
+      dispatch(change(FORM.VIEW_EDIT_REPORT, "report_for", selection ?? "Not specified"));
     }
   }, [mineReportDefinition, !formValues?.report_for]);
 
@@ -661,8 +659,9 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
                   <strong>
                     These comments are for internal staff only and will not be shown to proponents.
                   </strong>
-                  Add comments to this report submission for future reference. Anything written in
-                  these comments may be requested under FOIPPA. Keep it professional and concise.
+                  &nbsp;Add comments to this report submission for future reference. Anything
+                  written in these comments may be requested under FOIPPA. Keep it professional and
+                  concise.
                 </Typography.Paragraph>
                 <MinistryCommentPanel
                   renderEditor={true}
