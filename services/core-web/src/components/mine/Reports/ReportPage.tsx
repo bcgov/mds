@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { change, isDirty, reset } from "redux-form";
+import { isDirty, reset } from "redux-form";
 import { Alert, Button, Modal, Row, Tag, Typography } from "antd";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,6 +11,7 @@ import * as routes from "@/constants/routes";
 import {
   FORM,
   IMineReportSubmission,
+  IUpdateMineReportSubmissionStatus,
   MINE_REPORT_STATUS_HASH,
   MINE_REPORT_SUBMISSION_CODES,
 } from "@mds/common";
@@ -30,7 +31,7 @@ import { ScrollSideMenuProps } from "@mds/common/components/common/ScrollSideMen
 import ScrollSidePageWrapper from "@mds/common/components/common/ScrollSidePageWrapper";
 import modalConfig from "@/components/modalContent/config";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
-import * as FORMS from "@/constants/forms";
+
 import { formatDate } from "@mds/common/redux/utils/helpers";
 
 const ReportPage: FC = () => {
@@ -106,17 +107,15 @@ const ReportPage: FC = () => {
     dispatch(closeModal());
   };
 
-  const handleUpdateMineSubmissionStatus = (values: IMineReportSubmission) => {
-    //dispatch(change(FORM.VIEW_EDIT_REPORT, "mine_report_submission_status_code", value));
-    console.log("values", values);
-    console.log("latestSubmission", latestSubmission);
+  const handleUpdateMineSubmissionStatus = (values: IUpdateMineReportSubmissionStatus) => {
+    values.mine_report_submission_guid = latestSubmission.mine_report_submission_guid;
     handleCloseModal();
-    // dispatch(updateReportSubmission(values)).then((response) => {
-    //   console.log("response", response);
-    //   // if (response.payload) {
-    //   //   setIsEditMode(false);
-    //   // }
-    // });
+    dispatch(updateReportSubmission(values)).then((response) => {
+      if (response.payload) {
+        dispatch(fetchLatestReportSubmission({ mine_report_guid: reportGuid }));
+        dispatch(fetchMineRecordById(mineGuid));
+      }
+    });
   };
 
   const openUpdateMineReportStatusModal = (event) => {
@@ -201,11 +200,6 @@ const ReportPage: FC = () => {
       </Link>
     </div>
   );
-
-  const handleUpdateStatus = (value: MINE_REPORT_SUBMISSION_CODES) => {
-    dispatch(change(FORM.VIEW_EDIT_REPORT, "mine_report_submission_status_code", value));
-    setSelectedStatus(value);
-  };
 
   const handleSubmit = (values: IMineReportSubmission) => {
     dispatch(createReportSubmission(values)).then((response) => {

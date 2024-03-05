@@ -1,5 +1,5 @@
 import { hideLoading, showLoading } from "react-redux-loading-bar";
-import { ENVIRONMENT, IMineReportSubmission } from "../..";
+import { ENVIRONMENT, IMineReportSubmission, IUpdateMineReportSubmissionStatus } from "../..";
 import { createAppSlice } from "@mds/common/redux/createAppSlice";
 import CustomAxios from "@mds/common/redux/customAxios";
 import * as API from "@mds/common/constants/API";
@@ -80,7 +80,7 @@ const submissionSlice = createAppSlice({
       }
     ),
     updateReportSubmission: create.asyncThunk(
-      async (payload: IMineReportSubmission, thunkApi) => {
+      async (payload: IUpdateMineReportSubmissionStatus, thunkApi) => {
         const headers = createRequestHeader();
         thunkApi.dispatch(showLoading());
         const messages = {

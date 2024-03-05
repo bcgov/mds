@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from "react";
+import React, { FC } from "react";
 import { Field, getFormValues } from "redux-form";
 
 import { MINE_REPORT_SUBMISSION_CODES, MINE_REPORT_STATUS_HASH } from "@mds/common";
@@ -6,11 +6,12 @@ import { MINE_REPORT_SUBMISSION_CODES, MINE_REPORT_STATUS_HASH } from "@mds/comm
 import { Button, Col, Row, Alert } from "antd";
 
 import * as FORM from "@/constants/forms";
-import { maxLength, required } from "@common/utils/Validate";
-import RenderSelect from "../common/RenderSelect";
-import RenderAutoSizeField from "../common/RenderAutoSizeField";
+import { maxLength, required } from "@mds/common/redux/utils/Validate";
+
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import { useSelector } from "react-redux";
+import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
+import RenderSelect from "@mds/common/components/forms/RenderSelect";
 
 interface UpdateMineReportSubmissionStatusModalProps {
   currentStatus: string;
@@ -87,7 +88,8 @@ const UpdateMineReportSubmissionStatusModal: FC<UpdateMineReportSubmissionStatus
             required
             help="Additional comments will be sent to the report submitter and mine manager"
             component={RenderAutoSizeField}
-            validate={[required]}
+            validate={[required, maxLength(1000)]}
+            props={{ maximumCharacters: 1000, rows: 3 }}
           />
         </Col>
       </Row>

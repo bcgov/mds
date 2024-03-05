@@ -10,7 +10,8 @@ from app.api.mines.reports.models.mine_report_definition import MineReportDefini
 from app.api.mines.reports.models.mine_report_submission_status_code import MineReportSubmissionStatusCode
 from app.api.constants import MINE_REPORT_TYPE
 
-from tests.factories import MineFactory, MineDocumentFactory, MineReportFactory
+from tests.factories import MineFactory, MineDocumentFactory, MineReportFactory, MineReportSubmissionFactory
+
 
 # GET
 def test_get_all_mine_report_submissions_for_report(test_client, db_session, auth_headers):
@@ -143,4 +144,17 @@ def test_post_additional_mine_report_submission(test_client, db_session, auth_he
     # fields that should not change
     assert previous_submission['received_date'] == latest_submission['received_date']    
     assert previous_submission['create_timestamp'] + '+00:00' == latest_submission['create_timestamp']
+
+def test_patch_mine_report_submission_status(test_client, db_session, auth_headers):
+    mine_report_submission = MineReportSubmissionFactory()
+
+    submission_data = {
+        'description_comment': "test description comment",
+        'mine_report_submission_status_code': 'ACC',
+    }
+
+    post_resp = test_client.patch(
+        f'mines/reports/submissions/{mine_report_submission.mine_report_submission_guid}', headers=auth_headers['full_auth_header'], json=submission_data)
+
+    assert post_resp.status_code == 200
     

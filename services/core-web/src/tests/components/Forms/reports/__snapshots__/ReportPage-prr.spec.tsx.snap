@@ -195,18 +195,18 @@ exports[`ReportPage renders view mode properly 1`] = `
     class="side-menu--content"
   >
     <div
-      class="ant-alert ant-alert-info"
+      class="ant-alert ant-alert-warning ant-alert-with-description"
       data-show="true"
       role="alert"
     >
       <span
-        aria-label="info-circle"
-        class="anticon anticon-info-circle ant-alert-icon"
+        aria-label="exclamation-circle"
+        class="anticon anticon-exclamation-circle ant-alert-icon"
         role="img"
       >
         <svg
           aria-hidden="true"
-          data-icon="info-circle"
+          data-icon="exclamation-circle"
           fill="currentColor"
           focusable="false"
           height="1em"
@@ -214,7 +214,10 @@ exports[`ReportPage renders view mode properly 1`] = `
           width="1em"
         >
           <path
-            d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm32 664c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V456c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v272zm-32-344a48.01 48.01 0 010-96 48.01 48.01 0 010 96z"
+            d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+          />
+          <path
+            d="M464 688a48 48 0 1096 0 48 48 0 10-96 0zm24-112h48c4.4 0 8-3.6 8-8V296c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8z"
           />
         </svg>
       </span>
@@ -225,75 +228,25 @@ exports[`ReportPage renders view mode properly 1`] = `
           class="ant-alert-message"
         >
           <div
-            class="ant-row ant-row-space-between ant-row-middle"
+            class="ant-row ant-row-space-between ant-row-middle alert-container"
           >
             <span>
               Received
             </span>
-            <div
-              class="ant-select ant-select-single ant-select-show-arrow ant-select-disabled"
-              style="min-width: 210px;"
+            <button
+              class="ant-btn ant-btn-default full-mobile"
+              type="button"
             >
-              <div
-                class="ant-select-selector"
-              >
-                <span
-                  class="ant-select-selection-search"
-                >
-                  <input
-                    aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
-                    aria-autocomplete="list"
-                    aria-controls="rc_select_TEST_OR_SSR_list"
-                    aria-expanded="false"
-                    aria-haspopup="listbox"
-                    aria-owns="rc_select_TEST_OR_SSR_list"
-                    autocomplete="off"
-                    class="ant-select-selection-search-input"
-                    disabled=""
-                    id="rc_select_TEST_OR_SSR"
-                    readonly=""
-                    role="combobox"
-                    style="opacity: 0;"
-                    type="search"
-                    unselectable="on"
-                    value=""
-                  />
-                </span>
-                <span
-                  class="ant-select-selection-item"
-                  title="INI"
-                >
-                  INI
-                </span>
-              </div>
-              <span
-                aria-hidden="true"
-                class="ant-select-arrow"
-                style="user-select: none;"
-                unselectable="on"
-              >
-                <span
-                  aria-label="down"
-                  class="anticon anticon-down ant-select-suffix"
-                  role="img"
-                >
-                  <svg
-                    aria-hidden="true"
-                    data-icon="down"
-                    fill="currentColor"
-                    focusable="false"
-                    height="1em"
-                    viewBox="64 64 896 896"
-                    width="1em"
-                  >
-                    <path
-                      d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
-                    />
-                  </svg>
-                </span>
+              <span>
+                Update Status
               </span>
-            </div>
+            </button>
           </div>
+        </div>
+        <div
+          class="ant-alert-description"
+        >
+          The report has been submitted successfully
         </div>
       </div>
     </div>
