@@ -629,7 +629,7 @@ export const getMineReportStatusDescription = (
       "Ministry has received changes after requesting for more information. The revised information has not been reviewed.",
     [MINE_REPORT_SUBMISSION_CODES.REQ]: `Requesting more information from the proponent through MineSpace. Requested by ${
       latestSubmission?.update_user
-    } on ${formatDate(latestSubmission?.create_timestamp)}`,
+    } on ${formatDate(latestSubmission?.update_timestamp)}`,
     [MINE_REPORT_SUBMISSION_CODES.INI]: "The report has been submitted successfully",
     [MINE_REPORT_SUBMISSION_CODES.WTD]: `The report has been withdrawn. Withdrew by ${
       latestSubmission?.update_user
