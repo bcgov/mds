@@ -6,13 +6,13 @@ from app.api.mines.reports.models.mine_report_definition import MineReportDefini
 from app.api.mines.reports.models.mine_report_submission_status_code import MineReportSubmissionStatusCode
 from app.api.constants import MINE_REPORT_TYPE
 
-from tests.factories import MineFactory, MineDocumentFactory, MineReportFactory, MineReportSubmissionFactory
+from tests.factories import MineFactory, MineDocumentFactory, MineReportFactory
 
 
 # GET
 def test_get_all_mine_report_submissions_for_report(test_client, db_session, auth_headers):
     mine_report = MineReportFactory()
-    
+
     params = f'?mine_report_guid={mine_report.mine_report_guid}'
     get_resp = test_client.get(
         f'mines/reports/submissions{params}', headers=auth_headers['full_auth_header'])
@@ -21,6 +21,7 @@ def test_get_all_mine_report_submissions_for_report(test_client, db_session, aut
     assert len(mine_report.mine_report_submissions) == len(get_data)
     assert str(mine_report.mine_report_guid) == get_data[0]['mine_report_guid']
     assert get_resp.status_code == 200
+
 
 def test_get_mine_report_with_no_submissions(test_client, db_session, auth_headers):
     mine_report = MineReportFactory(mine_report_submissions=0)
@@ -33,12 +34,13 @@ def test_get_mine_report_with_no_submissions(test_client, db_session, auth_heade
     assert get_resp.status_code == 200
     assert get_data['mine_report_guid'] == str(mine_report.mine_report_guid)
     assert get_data['mine_report_submission_status_code'] == "NON"
-    assert get_data['mine_report_submission_guid'] == None    
-    assert get_data['documents'] == None 
+    assert get_data['mine_report_submission_guid'] == None
+    assert get_data['documents'] == None
+
 
 def test_get_latest_mine_report_submission_for_report(test_client, db_session, auth_headers):
     mine_report = MineReportFactory()
-    
+
     params = f'?latest_submission=true&mine_report_guid={mine_report.mine_report_guid}'
     get_resp = test_client.get(
         f'mines/reports/submissions{params}', headers=auth_headers['full_auth_header'])
@@ -49,13 +51,14 @@ def test_get_latest_mine_report_submission_for_report(test_client, db_session, a
 
 
 def test_get_latest_report_submission_without_mine_report_guid(test_client, db_session, auth_headers):
-    # TODO: in the end this is not desired behaviour, 
-    # this is just a reminder to write a real test when implementing 
+    # TODO: in the end this is not desired behaviour,
+    # this is just a reminder to write a real test when implementing
     params = '?latest_submission=true'
     get_resp = test_client.get(
         f'mines/reports/submissions{params}', headers=auth_headers['full_auth_header'])
 
     assert get_resp.status_code == 400
+
 
 # # POST
 def test_post_initial_crr_mine_report_submission(test_client, db_session, auth_headers):
@@ -77,7 +80,7 @@ def test_post_initial_crr_mine_report_submission(test_client, db_session, auth_h
         'received_date': "2024-02-09",
         'submission_year': "2024",
         'submitter_email': "email@email.com",
-        'submitter_name': "Submitter Name",        
+        'submitter_name': "Submitter Name",
     }
 
     # post from Minespace
@@ -92,6 +95,7 @@ def test_post_initial_crr_mine_report_submission(test_client, db_session, auth_h
 
     assert num_submissions == 1
     assert latest_submission['mine_report_submission_status_code'] == "INI"
+
 
 def test_post_requested_report(test_client, db_session, auth_headers):
     mine_report = MineReportFactory(mine_report_submissions=0)
@@ -112,7 +116,7 @@ def test_post_requested_report(test_client, db_session, auth_headers):
         'received_date': "2024-02-09",
         'submission_year': "2024",
         'submitter_email': "email@email.com",
-        'submitter_name': "Submitter Name",        
+        'submitter_name': "Submitter Name",
     }
 
     # post from Minespace
@@ -124,6 +128,7 @@ def test_post_requested_report(test_client, db_session, auth_headers):
     assert post_data['mine_report_submission_status_code'] == "INI"
     assert post_data['mine_report_submission_guid'] is not None
     assert post_data['mine_report_definition_guid'] == str(mine_report_definition.mine_report_definition_guid)
+
 
 def test_post_additional_mine_report_submission(test_client, db_session, auth_headers):
     mine_report = MineReportFactory(mine_report_submissions=1)
@@ -160,7 +165,7 @@ def test_post_additional_mine_report_submission(test_client, db_session, auth_he
         if x.mine_report_submission_status_code != first_submission.mine_report_submission_status_code
     ][0]
     submission_data['mine_report_submission_status_code'] = new_status_code.mine_report_submission_status_code
-    
+
     submission_data['description_comment'] = "New description comment"
 
     post_resp = test_client.post(
@@ -178,22 +183,10 @@ def test_post_additional_mine_report_submission(test_client, db_session, auth_he
     # fields that should be changed
     assert previous_submission['update_timestamp'] != latest_submission['update_timestamp']
     assert previous_submission['submission_date'] != latest_submission['submission_date']
-    assert previous_submission['mine_report_submission_status_code'] != latest_submission['mine_report_submission_status_code']
+    assert previous_submission['mine_report_submission_status_code'] != latest_submission[
+        'mine_report_submission_status_code']
     assert previous_submission['description_comment'] != latest_submission['description_comment']
-    
+
     # fields that should not change
-    assert previous_submission['received_date'] == latest_submission['received_date']    
+    assert previous_submission['received_date'] == latest_submission['received_date']
     assert previous_submission['create_timestamp'] + '+00:00' == latest_submission['create_timestamp']
-
-def test_patch_mine_report_submission_status(test_client, db_session, auth_headers):
-    mine_report_submission = MineReportSubmissionFactory()
-
-    submission_data = {
-        'mine_report_submission_status_code': 'ACC',
-    }
-
-    post_resp = test_client.patch(
-        f'mines/reports/submissions/{mine_report_submission.mine_report_submission_guid}', headers=auth_headers['full_auth_header'], json=submission_data)
-
-    assert post_resp.status_code == 200
-    

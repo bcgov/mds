@@ -29,7 +29,6 @@ from app.api.mines.explosives_permit.resources.explosives_permit_document_upload
 from app.api.mines.explosives_permit.resources.explosives_permit_document_type import ExplosivesPermitDocumentTypeResource, ExplosivesPermitDocumentTypeListResource, ExplosivesPermitDocumentGenerateResource
 from app.api.mines.region.resources.region import MineRegionResource
 from app.api.mines.reports.resources.mine_report_document import MineReportDocumentListResource
-from app.api.mines.reports.resources.mine_report_submission_update_resource import ReportSubmissionUpdateResource
 from app.api.mines.reports.resources.reports_resource import ReportsResource
 from app.api.mines.reports.resources.mine_reports import MineReportListResource, MineReportResource
 from app.api.mines.reports.resources.mine_report_submission_resource import ReportSubmissionResource
@@ -120,7 +119,6 @@ api.add_resource(ReportsResource, '/reports')
 api.add_resource(MineReportListResource, '/<string:mine_guid>/reports')
 api.add_resource(MineReportResource, '/<string:mine_guid>/reports/<string:mine_report_guid>')
 api.add_resource(ReportSubmissionResource, '/reports/submissions')
-api.add_resource(ReportSubmissionUpdateResource, '/reports/submissions/<string:mine_report_submission_guid>')
 api.add_resource(MineReportDefinitionListResource, '/reports/definitions')
 api.add_resource(MineReportCommentListResource,
                  '/<string:mine_guid>/reports/<string:mine_report_guid>/comments')

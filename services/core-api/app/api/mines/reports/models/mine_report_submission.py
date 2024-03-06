@@ -108,12 +108,6 @@ class MineReportSubmission(Base, AuditMixin):
         except ValueError:
             return None
 
-    @classmethod
-    def find_by_mine_report_submission_guid(cls, mine_report_submission_guid):
-            return cls.query.filter_by(
-                mine_report_submission_guid=mine_report_submission_guid).one_or_none()
-
-
     def json(self):
         return {
             'comments': [comment.json() for comment in self.comments],
@@ -139,10 +133,3 @@ class MineReportSubmission(Base, AuditMixin):
             'update_timestamp': str(self.update_timestamp),
             'update_user': str(self.update_user)
         }
-
-    def patch(self, mine_report_submission_status_code, add_to_session=True):
-        self.mine_report_submission_status_code = mine_report_submission_status_code
-
-        if add_to_session:
-            self.save(commit=False)
-        return self

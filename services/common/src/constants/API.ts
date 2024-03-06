@@ -246,19 +246,12 @@ export const MINE_REPORTS = (mineGuid, reportsType?) =>
 export const MINE_REPORT = (mineGuid, mineReportGuid) =>
   `/mines/${mineGuid}/reports/${mineReportGuid}`;
 export const MINE_REPORT_SUBMISSIONS = (
-  params: { mine_report_guid?: string; mine_report_submission_guid?: string },
+  params: { mine_report_guid?: string },
   latest_submission = true
 ) => {
   const queryParams = latest_submission ? { latest_submission, ...params } : params;
-  const baseURI = "/mines/reports/submissions";
-
-  if (params?.mine_report_submission_guid) {
-    return `${baseURI}/${params.mine_report_submission_guid}`;
-  }
-
-  return `${baseURI}?${queryString.stringify(queryParams)}`;
+  return `/mines/reports/submissions?${queryString.stringify(queryParams)}`;
 };
-
 export const MINE_REPORT_DOCUMENT = (mineGuid) => `/mines/${mineGuid}/reports/documents`;
 export const MINE_REPORT_COMMENTS = (mineGuid, reportGuid) =>
   `/mines/${mineGuid}/reports/${reportGuid}/comments`;

@@ -11,7 +11,6 @@ import * as routes from "@/constants/routes";
 import {
   FORM,
   IMineReportSubmission,
-  IUpdateMineReportSubmissionStatus,
   MINE_REPORT_STATUS_HASH,
   MINE_REPORT_SUBMISSION_CODES,
 } from "@mds/common";
@@ -22,7 +21,6 @@ import {
   fetchLatestReportSubmission,
   getLatestReportSubmission,
   createReportSubmission,
-  updateReportSubmission,
 } from "@mds/common/components/reports/reportSubmissionSlice";
 
 import ReportDetailsForm from "@mds/common/components/reports/ReportDetailsForm";
@@ -32,7 +30,7 @@ import ScrollSidePageWrapper from "@mds/common/components/common/ScrollSidePageW
 import modalConfig from "@/components/modalContent/config";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 
-import { formatDate, getMineReportStatusDescription } from "@mds/common/redux/utils/helpers";
+import { getMineReportStatusDescription } from "@mds/common/redux/utils/helpers";
 
 const ReportPage: FC = () => {
   const dispatch = useDispatch();
@@ -92,10 +90,13 @@ const ReportPage: FC = () => {
     dispatch(closeModal());
   };
 
-  const handleUpdateMineSubmissionStatus = (values: IUpdateMineReportSubmissionStatus) => {
-    values.mine_report_submission_guid = latestSubmission.mine_report_submission_guid;
+  const handleUpdateMineSubmissionStatus = (values) => {
+    const payload = {
+      ...latestSubmission,
+      mine_report_submission_status_code: values.mine_report_submission_status_code,
+    };
     handleCloseModal();
-    dispatch(updateReportSubmission(values)).then((response) => {
+    dispatch(createReportSubmission(payload)).then((response) => {
       if (response.payload) {
         dispatch(fetchLatestReportSubmission({ mine_report_guid: reportGuid }));
         dispatch(fetchMineRecordById(mineGuid));

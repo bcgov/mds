@@ -1,5 +1,5 @@
 import { hideLoading, showLoading } from "react-redux-loading-bar";
-import { ENVIRONMENT, IMineReportSubmission, IUpdateMineReportSubmissionStatus } from "../..";
+import { ENVIRONMENT, IMineReportSubmission } from "../..";
 import { createAppSlice } from "@mds/common/redux/createAppSlice";
 import CustomAxios from "@mds/common/redux/customAxios";
 import * as API from "@mds/common/constants/API";
@@ -79,34 +79,6 @@ const submissionSlice = createAppSlice({
         },
       }
     ),
-    updateReportSubmission: create.asyncThunk(
-      async (payload: IUpdateMineReportSubmissionStatus, thunkApi) => {
-        const headers = createRequestHeader();
-        thunkApi.dispatch(showLoading());
-        const messages = {
-          errorToastMessage: "default",
-          successToastMessage: "Successfully updated report submission",
-        };
-        const params = {
-          mine_report_submission_guid: payload.mine_report_submission_guid,
-        };
-        const resp = await CustomAxios(messages).patch(
-          `${ENVIRONMENT.apiUrl}${API.MINE_REPORT_SUBMISSIONS(params)}`,
-          { ...payload },
-          headers
-        );
-        thunkApi.dispatch(hideLoading());
-        return resp.data;
-      },
-      {
-        fulfilled: (state, action) => {
-          state.reportSubmission = action.payload;
-        },
-        rejected: (_state, action) => {
-          rejectHandler(action);
-        },
-      }
-    ),
   }),
   selectors: {
     getLatestReportSubmission: (state, mineReportGuid): IMineReportSubmission => {
@@ -118,11 +90,7 @@ const submissionSlice = createAppSlice({
   },
 });
 
-export const {
-  fetchLatestReportSubmission,
-  createReportSubmission,
-  updateReportSubmission,
-} = submissionSlice.actions;
+export const { fetchLatestReportSubmission, createReportSubmission } = submissionSlice.actions;
 export const { getLatestReportSubmission } = submissionSlice.getSelectors(
   (rootState: RootState) => rootState.reportSubmission
 );
