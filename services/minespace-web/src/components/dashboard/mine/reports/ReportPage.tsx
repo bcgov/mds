@@ -77,6 +77,8 @@ const ReportPage = () => {
   const status = MINE_REPORT_STATUS_HASH[latestSubmission?.mine_report_submission_status_code];
 
   const MINE_REPORT_STATUS_DESCRIPTION_HASH = {
+    [MINE_REPORT_SUBMISSION_CODES.NON]:
+      "This ministry has requested the report below. Please finish and submit this submission.",
     [MINE_REPORT_SUBMISSION_CODES.ACC]:
       "This report has been submitted and has been reviewed by ministry staff.",
     [MINE_REPORT_SUBMISSION_CODES.REC]:

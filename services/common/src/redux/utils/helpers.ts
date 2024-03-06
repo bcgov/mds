@@ -624,6 +624,9 @@ export const getMineReportStatusDescription = (
 ) => {
   const currentDate = moment().format("YYYY-MM-DD");
   const MINE_REPORT_STATUS_DESCRIPTION_HASH = {
+    [MINE_REPORT_SUBMISSION_CODES.NON]: `The ministry has requested for the report from the proponent through MineSpace. Requested by ${
+      latestSubmission?.update_user
+    } on ${formatDate(currentDate)}`,
     [MINE_REPORT_SUBMISSION_CODES.ACC]:
       "The Ministry has reviewed the report, no more revision is required",
     [MINE_REPORT_SUBMISSION_CODES.REC]:
