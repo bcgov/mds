@@ -622,6 +622,7 @@ export const getMineReportStatusDescription = (
   statusCode: MINE_REPORT_SUBMISSION_CODES,
   latestSubmission: IMineReportSubmission
 ) => {
+  const currentDate = moment().format("YYYY-MM-DD");
   const MINE_REPORT_STATUS_DESCRIPTION_HASH = {
     [MINE_REPORT_SUBMISSION_CODES.ACC]:
       "The Ministry has reviewed the report, no more revision is required",
@@ -629,11 +630,11 @@ export const getMineReportStatusDescription = (
       "Ministry has received changes after requesting for more information. The revised information has not been reviewed.",
     [MINE_REPORT_SUBMISSION_CODES.REQ]: `Requesting more information from the proponent through MineSpace. Requested by ${
       latestSubmission?.update_user
-    } on ${formatDate(latestSubmission?.update_timestamp)}`,
+    } on ${formatDate(currentDate)}`,
     [MINE_REPORT_SUBMISSION_CODES.INI]: "The report has been submitted successfully",
     [MINE_REPORT_SUBMISSION_CODES.WTD]: `The report has been withdrawn. Withdrew by ${
       latestSubmission?.update_user
-    } on ${formatDate(latestSubmission?.update_timestamp)}`,
+    } on ${formatDate(currentDate)}`,
     [MINE_REPORT_SUBMISSION_CODES.NRQ]: "This report is not requested",
   };
   return MINE_REPORT_STATUS_DESCRIPTION_HASH[statusCode] || "";

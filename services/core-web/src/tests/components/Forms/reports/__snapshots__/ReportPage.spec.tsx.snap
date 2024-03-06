@@ -248,7 +248,7 @@ exports[`ReportPage renders view mode properly 1`] = `
         <div
           class="ant-alert-description"
         >
-          Requesting more information from the proponent through MineSpace. Requested by test@bceid on Feb 07 2024
+          Requesting more information from the proponent through MineSpace. Requested by idir\\test on Mar 06 2024
         </div>
       </div>
     </div>
