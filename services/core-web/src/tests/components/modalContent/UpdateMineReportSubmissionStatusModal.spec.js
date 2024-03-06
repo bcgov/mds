@@ -1,35 +1,22 @@
 import React from "react";
-import { render } from "@testing-library/react";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
+import { render, cleanup } from "@testing-library/react";
 import UpdateMineReportSubmissionStatusModal from "@/components/modalContent/UpdateMineReportSubmissionStatusModal";
+import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import * as MOCK from "@/tests/mocks/dataMocks";
-import { reduxForm, reducer as formReducer } from "redux-form";
-
-const mockStore = configureStore({
-  form: formReducer,
-});
-
-const WrappedUpdateMineReportSubmissionModal = reduxForm({
-  form: "UPDATE_MINE_REPORT_SUBMISSION_STATUS",
-})(UpdateMineReportSubmissionStatusModal);
 
 describe("UpdateMineReportSubmissionStatusModal Component", () => {
-  let store;
+  const initialState = {
+    mine_report_submission_status_code: "INI",
+  };
+
+  afterEach(cleanup);
 
   test("renders UpdateMineReportSubmissionStatusModal component", () => {
-    store = mockStore({
-      form: {
-        UPDATE_MINE_REPORT_SUBMISSION_STATUS: {
-          values: {
-            mine_report_submission_status_code: "INI",
-          },
-        },
-      },
-    });
     const { getByText } = render(
-      <Provider store={store}>
-        <WrappedUpdateMineReportSubmissionModal
+      <ReduxWrapper initialState={initialState}>
+        <UpdateMineReportSubmissionStatusModal
+          closeModal={() => {}}
+          handleSubmit={() => {}}
           currentStatus={"Received"}
           latestSubmission={{
             create_user: "testUser",
@@ -40,10 +27,12 @@ describe("UpdateMineReportSubmissionStatusModal Component", () => {
           }}
           mineReportStatusOptions={MOCK.BULK_STATIC_CONTENT_RESPONSE.mineReportStatusOptions}
         />
-      </Provider>
+      </ReduxWrapper>
     );
+    const currentStatusLabel = getByText("Current status");
+    expect(currentStatusLabel).toBeDefined();
 
-    const currentStatusText = getByText("Current status");
+    const currentStatusText = getByText("Received");
     expect(currentStatusText).toBeDefined();
   });
 });
