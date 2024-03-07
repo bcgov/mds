@@ -202,6 +202,9 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
     if (permit_guid && !permit) {
       dispatch(fetchPermits(mineGuid));
     }
+  }, [mineGuid, permit_guid]);
+
+  useEffect(() => {
     if (!partyRelationships.length) {
       // fetch all party relationships for the mine
       dispatch(fetchPartyRelationships({ mine_guid: mineGuid }));

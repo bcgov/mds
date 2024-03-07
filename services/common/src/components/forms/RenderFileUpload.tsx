@@ -125,9 +125,9 @@ export const FileUpload = (props: FileUploadProps) => {
     if (labelIdle) {
       return labelIdle;
     }
-    const fileTypeDisplayString = listedFileTypes
-      ? listedFileTypes.join(", ")
-      : Object.keys(acceptedFileTypesMap).join(", ");
+    const fileTypeList = listedFileTypes ?? Object.keys(acceptedFileTypesMap);
+    const fileTypeDisplayString =
+      fileTypeList.slice(0, -1).join(", ") + ", and " + fileTypeList.slice(-1);
     const secondLine = abbrevLabel
       ? `<div>We accept most common ${fileTypeDisplayString} files</div>`
       : `<div>Accepted filetypes: ${fileTypeDisplayString}</div>`;
