@@ -148,8 +148,7 @@ export const NOWSubmissionDocuments = (props) => {
         preamble_title: values?.preamble_title,
         preamble_author: values?.preamble_author,
         mine_document: {
-          document_manager_guid: file[0],
-          document_name: file[1],
+          ...file,
           mine_guid: props.noticeOfWork.mine_guid,
         },
       };

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, connect } from "react-redux";
 import "filepond-polyfill";
 import { FilePond, registerPlugin } from "react-filepond";
 import { Form, Popover, Switch, notification } from "antd";
@@ -11,7 +11,6 @@ import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import * as tus from "tus-js-client";
 import { APPLICATION_OCTET_STREAM, ENVIRONMENT, SystemFlagEnum } from "@mds/common/index";
 import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
 import { pollDocumentUploadStatus } from "@mds/common/redux/actionCreators/documentActionCreator";
 import { FileUploadHelper } from "@mds/common/utils/fileUploadHelper";
 import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
@@ -125,9 +124,9 @@ export const FileUpload = (props: FileUploadProps) => {
     if (labelIdle) {
       return labelIdle;
     }
-    const fileTypeDisplayString = listedFileTypes
-      ? listedFileTypes.join(", ")
-      : Object.keys(acceptedFileTypesMap).join(", ");
+    const fileTypeList = listedFileTypes ?? Object.keys(acceptedFileTypesMap);
+    const fileTypeDisplayString =
+      fileTypeList.slice(0, -1).join(", ") + ", and " + fileTypeList.slice(-1);
     const secondLine = abbrevLabel
       ? `<div>We accept most common ${fileTypeDisplayString} files</div>`
       : `<div>Accepted filetypes: ${fileTypeDisplayString}</div>`;
