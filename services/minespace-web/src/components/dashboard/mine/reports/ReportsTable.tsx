@@ -40,6 +40,7 @@ export const reportStatusSeverity = (status: MINE_REPORT_SUBMISSION_CODES) => {
   switch (status) {
     case MINE_REPORT_SUBMISSION_CODES.REQ:
     case MINE_REPORT_SUBMISSION_CODES.REC:
+    case MINE_REPORT_SUBMISSION_CODES.NON:
       return "warning";
     case MINE_REPORT_SUBMISSION_CODES.ACC:
     case MINE_REPORT_SUBMISSION_CODES.NRQ:
