@@ -5500,10 +5500,8 @@ export const MINE_REPORT_SUBMISSIONS = [
 export const MINE_REPORTS = [
   {
     mine_report_id: 123,
-    compliance_articles: [BULK_STATIC_CONTENT_RESPONSE.mineReportDefinitionOptions[0]],
     mine_report_guid: "9f98a719-720a-40a5-ac5b-e91e8a526fad",
-    mine_report_definition_guid:
-      BULK_STATIC_CONTENT_RESPONSE.mineReportDefinitionOptions[0].mine_report_definition_guid,
+    mine_report_definition_guid: "baa01f9f-c9b2-485d-96f3-12a9c8fe637b",
     mine_report_category: ["GSC", "GTC"],
     report_name: "Underground Oil and Grease Storage Area Report",
     due_date: "2020-01-02",
@@ -5511,6 +5509,7 @@ export const MINE_REPORTS = [
     submission_year: 2020,
     created_by_idir: "idir\\TEST",
     permit_guid: null,
+    mine_report_status_code: "NRQ",
     mine_report_submissions: [
       {
         mine_report_submission_guid: "fed32646-5db7-495a-acbb-b6b8ad333ee1",
@@ -5528,19 +5527,17 @@ export const MINE_REPORTS = [
         comments: [],
       },
     ],
+    create_user: "test@bceid",
+    create_timestamp: "2024-02-07T19:15:38.505462+00:00",
+    update_user: "idir\\test",
+    update_timestamp: "2024-02-07T19:15:38.505482+00:00",
     mine_guid: "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
     mine_name: "Abbott Inc",
-    permit_condition_category_code: null,
-    description_comment: "This is the description comment field",
-    submitter_name: "Susan Strong",
-    submitter_email: "susan@strong.com",
   },
   {
     mine_report_id: 124,
-    compliance_articles: [BULK_STATIC_CONTENT_RESPONSE.mineReportDefinitionOptions[0]],
-    mine_report_definition_guid:
-      BULK_STATIC_CONTENT_RESPONSE.mineReportDefinitionOptions[1].mine_report_definition_guid,
     mine_report_guid: "b59a166e-749e-4e6c-a232-d4c55f1f227c",
+    mine_report_definition_guid: "5f4f4727-4ecd-4a04-8929-2e8a5e03996d",
     mine_report_category: ["GTC", "TSF"],
     report_name: "TSF, WSF or Dam As-built Report",
     due_date: "2020-03-31",
@@ -5548,6 +5545,7 @@ export const MINE_REPORTS = [
     submission_year: 2020,
     created_by_idir: "idir\\TEST",
     permit_guid: null,
+    mine_report_status_code: "NRQ",
     mine_report_submissions: [
       {
         mine_report_submission_guid: "d0149d1b-845d-4011-a731-3f951c7d8219",
@@ -5565,15 +5563,17 @@ export const MINE_REPORTS = [
         comments: [],
       },
     ],
+    create_user: "test@bceid",
+    create_timestamp: "2024-02-07T19:15:38.505462+00:00",
+    update_user: "idir\\test",
+    update_timestamp: "2024-02-07T19:15:38.505482+00:00",
     mine_guid: "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
     mine_name: "Abbott Inc",
   },
   {
     mine_report_id: 125,
-    compliance_articles: [BULK_STATIC_CONTENT_RESPONSE.mineReportDefinitionOptions[0]],
     mine_report_guid: "92327cd3-eec0-4e18-b898-25539ac408e9",
-    mine_report_definition_guid:
-      BULK_STATIC_CONTENT_RESPONSE.mineReportDefinitionOptions[0].mine_report_definition_guid,
+    mine_report_definition_guid: "6eda0c36-8748-4072-83c9-0fcdf270d36f",
     mine_report_category: ["GTC", "TSF"],
     report_name: "Annual DSI",
     due_date: "2020-03-31",
@@ -5582,8 +5582,13 @@ export const MINE_REPORTS = [
     created_by_idir: "idir\\TEST",
     permit_guid: null,
     mine_report_submissions: [],
-    mine_guid: "aa3cpb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
+    create_user: "test@bceid",
+    create_timestamp: "2024-02-07T19:15:38.505462+00:00",
+    update_user: "idir\\test",
+    update_timestamp: "2024-02-07T19:15:38.505482+00:00",
+    mine_guid: "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
     mine_name: "Abbott Inc",
+    mine_report_status_code: "NON",
   },
 ];
 
