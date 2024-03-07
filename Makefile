@@ -130,7 +130,7 @@ mig:
 #TODO: unstable command - need to review relationship checks among factories
 seeddb:
 	@echo "+\n++ Seeding db with factory data...\n+"
-	@docker compose $(DC_FILE) exec -d backend bash -c "flask create-data 2500;"
+	@docker compose $(DC_FILE) exec backend bash -c "flask create-data 2500;"
 
 env:
 	@echo "+\n++ Creating boilerplate local dev .env files...\n+"
