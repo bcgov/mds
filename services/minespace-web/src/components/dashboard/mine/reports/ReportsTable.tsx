@@ -39,15 +39,14 @@ const DEFAULT_PAGE_SIZE = 10;
 export const reportStatusSeverity = (status: MINE_REPORT_SUBMISSION_CODES) => {
   switch (status) {
     case MINE_REPORT_SUBMISSION_CODES.REQ:
-      return "processing";
-    case MINE_REPORT_SUBMISSION_CODES.ACC:
-      return "success";
     case MINE_REPORT_SUBMISSION_CODES.REC:
+    case MINE_REPORT_SUBMISSION_CODES.NON:
       return "warning";
+    case MINE_REPORT_SUBMISSION_CODES.ACC:
     case MINE_REPORT_SUBMISSION_CODES.NRQ:
-      return "default";
     case MINE_REPORT_SUBMISSION_CODES.INI:
-      return "default";
+      return "success";
+    case MINE_REPORT_SUBMISSION_CODES.WTD:
     default:
       return "default";
   }

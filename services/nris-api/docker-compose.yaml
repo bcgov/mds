@@ -23,8 +23,7 @@ services:
     restart: always
     container_name: nris_postgres
     build:
-      context: postgres
-      dockerfile: Dockerfile.dev
+      context: ../postgres
     environment:
       - POSTGRES_USER=nris
       - POSTGRES_PASSWORD=VsPJAuMJHu3IVMEv

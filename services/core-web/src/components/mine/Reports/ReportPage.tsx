@@ -1,8 +1,8 @@
 import React, { FC, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { change, isDirty, reset } from "redux-form";
-import { Alert, Button, Modal, Row, Select, Tag, Typography } from "antd";
+import { isDirty, reset } from "redux-form";
+import { Alert, Button, Modal, Row, Tag, Typography } from "antd";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/pro-light-svg-icons";
@@ -13,7 +13,6 @@ import {
   IMineReportSubmission,
   MINE_REPORT_STATUS_HASH,
   MINE_REPORT_SUBMISSION_CODES,
-  reportStatusSeverityForDisplay,
 } from "@mds/common";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
@@ -28,6 +27,10 @@ import ReportDetailsForm from "@mds/common/components/reports/ReportDetailsForm"
 import Loading from "@/components/common/Loading";
 import { ScrollSideMenuProps } from "@mds/common/components/common/ScrollSideMenu";
 import ScrollSidePageWrapper from "@mds/common/components/common/ScrollSidePageWrapper";
+import modalConfig from "@/components/modalContent/config";
+import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
+
+import { getMineReportStatusDescription } from "@mds/common/redux/utils/helpers";
 
 const ReportPage: FC = () => {
   const dispatch = useDispatch();
@@ -81,6 +84,42 @@ const ReportPage: FC = () => {
   const revertChanges = () => {
     dispatch(reset(FORM.VIEW_EDIT_REPORT));
     setIsEditMode(false);
+  };
+
+  const handleCloseModal = () => {
+    dispatch(closeModal());
+  };
+
+  const handleUpdateMineSubmissionStatus = (values) => {
+    const payload = {
+      ...latestSubmission,
+      mine_report_submission_status_code: values.mine_report_submission_status_code,
+    };
+    handleCloseModal();
+    dispatch(createReportSubmission(payload)).then((response) => {
+      if (response.payload) {
+        dispatch(fetchLatestReportSubmission({ mine_report_guid: reportGuid }));
+        dispatch(fetchMineRecordById(mineGuid));
+      }
+    });
+  };
+
+  const openUpdateMineReportStatusModal = (event) => {
+    event.preventDefault();
+    dispatch(
+      openModal({
+        props: {
+          title: "Update Report Status",
+          closeModal: handleCloseModal,
+          handleSubmit: handleUpdateMineSubmissionStatus,
+          currentStatus:
+            MINE_REPORT_STATUS_HASH[latestSubmission?.mine_report_submission_status_code],
+          mineReportStatusOptions: mineReportStatusOptions,
+          latestSubmission: latestSubmission,
+        },
+        content: modalConfig.UPDATE_MINE_REPORT_STATUS_MODAL,
+      })
+    );
   };
 
   const getFormButtons = () => {
@@ -149,11 +188,6 @@ const ReportPage: FC = () => {
     </div>
   );
 
-  const handleUpdateStatus = (value: MINE_REPORT_SUBMISSION_CODES) => {
-    dispatch(change(FORM.VIEW_EDIT_REPORT, "mine_report_submission_status_code", value));
-    setSelectedStatus(value);
-  };
-
   const handleSubmit = (values: IMineReportSubmission) => {
     dispatch(createReportSubmission(values)).then((response) => {
       if (response.payload) {
@@ -165,24 +199,21 @@ const ReportPage: FC = () => {
     <>
       <Alert
         message={
-          <Row justify="space-between" align="middle">
+          <Row justify="space-between" align="middle" className="alert-container">
             <span>
               {MINE_REPORT_STATUS_HASH[latestSubmission?.mine_report_submission_status_code]}
             </span>
-            <Select
-              disabled={!isEditMode}
-              virtual={false}
-              dropdownMatchSelectWidth
-              allowClear={false}
-              value={selectedStatus}
-              options={mineReportStatusOptions}
-              onChange={handleUpdateStatus}
-              style={{ minWidth: "210px" }}
-            />
+            <Button className="full-mobile" onClick={openUpdateMineReportStatusModal}>
+              Update Status
+            </Button>
           </Row>
         }
-        type={reportStatusSeverityForDisplay(latestSubmission?.mine_report_submission_status_code)}
+        type={"warning"}
         showIcon
+        description={getMineReportStatusDescription(
+          latestSubmission?.mine_report_submission_status_code,
+          latestSubmission
+        )}
       />
       <ReportDetailsForm
         mineGuid={mineGuid}

@@ -166,6 +166,7 @@ export enum MINE_REPORT_SUBMISSION_CODES {
   ACC = "ACC",
   INI = "INI",
   NON = "NON",
+  WTD = "WTD",
 }
 
 export enum REPORT_TYPE_CODES {

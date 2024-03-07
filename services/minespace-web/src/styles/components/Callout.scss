@@ -25,6 +25,11 @@
     @include base-callout;
     border-left: 10px solid #d9534f;
   }
+
+  &--default {
+    @include base-callout;
+    border-left: 10px solid #d9534f;
+  }
 }
 
 .bcgov-callout--success>p,
