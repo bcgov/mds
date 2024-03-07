@@ -67,7 +67,7 @@ jobs:
 
       - name: Seed database
         run: |
-          make seeddb
+          make ENTRIES=10 seeddb
 
       - name: start-core-web
         run: yarn workspace @mds/core-web run http-server-spa build /index.html 3000 &
