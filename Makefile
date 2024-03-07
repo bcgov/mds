@@ -49,7 +49,7 @@ be-rebuild:
 be-minimal:
 	@echo "+\n++ Starting minimal backend ...\n+"
 	@docker compose $(DC_FILE) up -d --no-deps postgres redis flyway
-	@docker compose $(DC_FILE) up -d --no-deps backend document_manager_backend
+	@docker compose $(DC_FILE) up -d --no-deps backend document_manager_backend nris_backend
 
 be:
 	@echo "+\n++ Starting backend ...\n+"
