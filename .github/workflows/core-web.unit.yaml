@@ -33,22 +33,24 @@ jobs:
       - name: Run backend
         run: |
           make be-minimal
-
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 20.x
-
-      - name: Upgrade yarn
-        run: npm install -g yarn
-
-      - name: Set Fontawesome token
+      - name: Run frontend
         run: |
-          yarn config set 'npmScopes["fortawesome"].npmAuthIdent' "${{ secrets.ARTIFACTORY_TOKEN }}"
-          yarn config set 'npmScopes["fortawesome"].npmAlwaysAuth' true
-          yarn config set 'npmScopes["fortawesome"].npmRegistryServer' "https://artifacts.developer.gov.bc.ca/artifactory/api/npm/m4c2-mds/"
+          make fe-minimal
+      # - uses: actions/setup-node@v3
+      #   with:
+      #     node-version: 20.x
 
-      - name: Install Dependencies
-        run: yarn install
+      # - name: Upgrade yarn
+      #   run: npm install -g yarn
+
+      # - name: Set Fontawesome token
+      #   run: |
+      #     yarn config set 'npmScopes["fortawesome"].npmAuthIdent' "${{ secrets.ARTIFACTORY_TOKEN }}"
+      #     yarn config set 'npmScopes["fortawesome"].npmAlwaysAuth' true
+      #     yarn config set 'npmScopes["fortawesome"].npmRegistryServer' "https://artifacts.developer.gov.bc.ca/artifactory/api/npm/m4c2-mds/"
+
+      # - name: Install Dependencies
+      #   run: yarn install
 
       # - name: Run frontend tests
       #   run: cd services/core-web/ && yarn && yarn test
@@ -61,16 +63,16 @@ jobs:
       #   env:
       #     DOCKER_BUILDKIT: 1
       #   run: docker-compose -f docker-compose.ci.yaml -f docker-compose.cypress.yaml up -d backend keycloak
-      - name: build-core-web
-        run: |
-          NODE_OPTIONS=--max-old-space-size=5024 yarn workspace @mds/core-web build
+      # - name: build-core-web
+      #   run: |
+      #     NODE_OPTIONS=--max-old-space-size=5024 yarn workspace @mds/core-web build
 
       - name: Seed database
         run: |
           make ENTRIES=10 seeddb
 
-      - name: start-core-web
-        run: yarn workspace @mds/core-web run http-server-spa build /index.html 3000 &
+      # - name: start-core-web
+      #   run: yarn workspace @mds/core-web run http-server-spa build /index.html 3000 &
 
       - name: Run cypress tests
         run: yarn workspace @mds/core-web cypress run
