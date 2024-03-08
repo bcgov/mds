@@ -32,10 +32,7 @@ jobs:
           make keycloak
       - name: Run backend
         run: |
-          make be-minimal
-      - name: Run frontend
-        run: |
-          make fe-minimal
+          ARTIFACTORY_TOKEN=${{ secrets.ARTIFACTORY_TOKEN }} make be-minimal
       # - uses: actions/setup-node@v3
       #   with:
       #     node-version: 20.x
