@@ -19,7 +19,7 @@ from app.api.mines.documents.models.mine_document import MineDocument
 
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.mines.response_models import MINE_REPORT_SUBMISSION_MODEL
-
+from flask import current_app
 class ReportSubmissionResource(Resource, UserMixin):
 
     parser = CustomReqparser()
@@ -120,11 +120,10 @@ class ReportSubmissionResource(Resource, UserMixin):
             submission_year=getattr(mine_report, "submission_year"),
             submitter_email=request_data.get("submitter_email", None),
             submitter_name=request_data.get("submitter_name", None),
-        )
+        )        
         mine_report_contacts = ReportSubmissionResource.get_mine_report_submission_contacts(
             request_data.get('mine_report_contacts'), mine_report_id, report_submission.mine_report_submission_id)
         report_submission.mine_report_contacts = mine_report_contacts
-
         report_submission.save()
         return report_submission
 
@@ -157,6 +156,8 @@ class ReportSubmissionResource(Resource, UserMixin):
         )
         
         report_submission.save()
+        previous_submission.is_latest = False
+        previous_submission.save()
         return report_submission
 
     @api.expect(parser)
@@ -213,7 +214,9 @@ class ReportSubmissionResource(Resource, UserMixin):
 
         create_initial_report = False if mine_report_guid else True
         is_first_submission = False if mine_report_submission_guid else True       
-
+        current_app.logger.info('==========================')
+        current_app.logger.info('is first submission?')
+        current_app.logger.info(is_first_submission)
         if is_code_required_report:
             mine_report_definition_id = self.get_check_mine_report_definition_id(mine_report_definition_guid)
         else:
@@ -228,10 +231,12 @@ class ReportSubmissionResource(Resource, UserMixin):
         
         # MS user only allowed to add documents unless new report has been requested
         if is_proponent and not create_initial_report:
+            current_app.logger.info('========== PART 1 ============')
             return self.create_submission_from_minespace(mine_report_guid, data, report_documents)
         
         create_timestamp = None
         create_user = None
+        previous_submission = None
         if not is_proponent and not is_first_submission:
             previous_submission = MineReportSubmission.find_latest_by_mine_report_guid(str(mine_report_guid))
             create_timestamp = getattr(previous_submission, 'create_timestamp')
@@ -261,6 +266,9 @@ class ReportSubmissionResource(Resource, UserMixin):
         report_submission.mine_report_contacts = mine_report_contacts
 
         report_submission.save()
+        if previous_submission:
+            previous_submission.is_latest = False
+            previous_submission.save()
         return report_submission, 201               
     
     @api.doc(params={

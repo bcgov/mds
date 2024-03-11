@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import { MineReportInfo } from "@/components/mine/Reports/MineReportInfo";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { AUTHENTICATION, STATIC_CONTENT, SystemFlagEnum } from "@mds/common";
 import { MINES, REPORTS } from "@mds/common/constants/reducerTypes";

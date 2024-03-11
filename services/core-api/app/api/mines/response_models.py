@@ -663,7 +663,6 @@ MINE_REPORT_SUBMISSION_MODEL = api.model(
         'submission_date': fields.Date,
         'mine_report_submission_status_code': fields.String,
         'documents': fields.List(fields.Nested(MINE_DOCUMENT_MODEL)),
-        'comments': fields.List(fields.Nested(MINE_REPORT_COMMENT_MODEL)),
         'mine_report_definition_guid': fields.String,
         'mine_report_category':
             fields.List(
@@ -715,8 +714,8 @@ MINE_REPORT_MODEL = api.model(
             fields.String,
         'permit_number':
             fields.String,
-        'mine_report_submissions':
-            fields.List(fields.Nested(MINE_REPORT_SUBMISSION_MODEL)),
+        'latest_submission':
+            fields.Nested(MINE_REPORT_SUBMISSION_MODEL),
         'mine_guid':
             fields.String,
         'mine_name':

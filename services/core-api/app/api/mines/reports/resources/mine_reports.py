@@ -43,6 +43,7 @@ class MineReportListResource(Resource, UserMixin):
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
     parser.add_argument('mine_report_submissions', type=list, location='json')
     parser.add_argument('permit_condition_category_code', type=str, location='json')
+    parser.add_argument('mine_report_status_code', type=str, location='json')
     parser.add_argument('description_comment', type=str, location='json')
     parser.add_argument('submitter_name', type=str, location='json')
     parser.add_argument('submitter_email', type=str, location='json')
@@ -70,6 +71,7 @@ class MineReportListResource(Resource, UserMixin):
 
         data = self.parser.parse_args()
         permit_condition_type_code = data.get('permit_condition_category_code', None)
+        is_report_request = data.get('mine_report_status_code', None) == "NON"
 
         is_code_required_report = permit_condition_type_code == None
         permit_condition_category_code = None
@@ -124,6 +126,7 @@ class MineReportListResource(Resource, UserMixin):
             if mine_report_contacts:
                 mine_report.mine_report_contacts = mine_report_contacts
 
+        # TODO: remove following with CODE_REQUIRED_REPORTS feature flag (submissions, if submissions)
         submissions = data.get('mine_report_submissions')
         if submissions:
             submission = submissions[-1]
@@ -158,7 +161,8 @@ class MineReportListResource(Resource, UserMixin):
                     report_submission.documents.append(mine_doc)
 
                 mine_report.mine_report_submissions.append(report_submission)
-        elif is_first_submission and is_code_required_report:
+                # TODO: remove following with CODE_REQUIRED_REPORTS feature flag (submissions, if submissions)
+        elif is_first_submission and is_code_required_report and not is_report_request:
             # If this is the initial report, create a submission with the status
             # of INI (Received)
             initial_submission = MineReportSubmission(
