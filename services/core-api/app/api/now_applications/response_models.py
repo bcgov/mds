@@ -1,3 +1,4 @@
+from app.api.EMLI_contacts.response_models import EMLI_CONTACT_MODEL
 from app.extensions import api
 from flask_restx import fields
 
@@ -82,25 +83,25 @@ NOW_APPLICATION_BUILDING_DETAIL = api.inherit('NOWApplicationBuildingDetail',
 NOW_APPLICATION_CAMP = api.inherit(
     'NOWApplicationCamp', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE, {
         'health_authority_consent':
-        fields.Boolean,
+            fields.Boolean,
         'health_authority_notified':
-        fields.Boolean,
+            fields.Boolean,
         'has_fuel_stored':
-        fields.Boolean,
+            fields.Boolean,
         'has_fuel_stored_in_bulk':
-        fields.Boolean,
+            fields.Boolean,
         'has_fuel_stored_in_barrels':
-        fields.Boolean,
+            fields.Boolean,
         'volume_fuel_stored':
-        fields.Fixed(decimals=2),
+            fields.Fixed(decimals=2),
         'calculated_total_disturbance':
-        fields.Fixed(decimals=5),
+            fields.Fixed(decimals=5),
         'details':
-        fields.List(fields.Nested(NOW_APPLICATION_CAMP_DETAIL, skip_none=True)),
+            fields.List(fields.Nested(NOW_APPLICATION_CAMP_DETAIL, skip_none=True)),
         'building_details':
-        fields.List(fields.Nested(NOW_APPLICATION_BUILDING_DETAIL, skip_none=True)),
+            fields.List(fields.Nested(NOW_APPLICATION_BUILDING_DETAIL, skip_none=True)),
         'staging_area_details':
-        fields.List(fields.Nested(NOW_APPLICATION_STAGING_AREA_DETAIL, skip_none=True)),
+            fields.List(fields.Nested(NOW_APPLICATION_STAGING_AREA_DETAIL, skip_none=True)),
     })
 
 NOW_APPLICATION_BLASTING_OPERATION = api.inherit(
@@ -243,41 +244,41 @@ NOW_APPLICATION_UNDERGROUND_EXPLORATION_DETAIL = api.inherit(
 NOW_APPLICATION_UNDERGROUND_EXPLORATION = api.inherit(
     'NOWApplicationUndergroundExploration', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE, {
         'total_ore_amount':
-        fields.Fixed(decimals=2),
+            fields.Fixed(decimals=2),
         'total_ore_unit_type_code':
-        fields.String,
+            fields.String,
         'total_waste_amount':
-        fields.Fixed(decimals=2),
+            fields.Fixed(decimals=2),
         'total_waste_unit_type_code':
-        fields.String,
+            fields.String,
         'proposed_bulk_sample':
-        fields.Boolean,
+            fields.Boolean,
         'proposed_de_watering':
-        fields.Boolean,
+            fields.Boolean,
         'proposed_diamond_drilling':
-        fields.Boolean,
+            fields.Boolean,
         'proposed_mapping_chip_sampling':
-        fields.Boolean,
+            fields.Boolean,
         'proposed_new_development':
-        fields.Boolean,
+            fields.Boolean,
         'proposed_rehab':
-        fields.Boolean,
+            fields.Boolean,
         'proposed_underground_fuel_storage':
-        fields.Boolean,
+            fields.Boolean,
         'surface_total_ore_amount':
-        fields.Fixed(decimals=2),
+            fields.Fixed(decimals=2),
         'surface_total_ore_unit_type_code':
-        fields.String,
+            fields.String,
         'surface_total_waste_amount':
-        fields.Fixed(decimals=2),
+            fields.Fixed(decimals=2),
         'surface_total_waste_unit_type_code':
-        fields.String,
+            fields.String,
         'proposed_activity':
-        fields.String,
+            fields.String,
         'calculated_total_disturbance':
-        fields.Fixed(decimals=5),
+            fields.Fixed(decimals=5),
         'details':
-        fields.List(fields.Nested(NOW_APPLICATION_UNDERGROUND_EXPLORATION_DETAIL, skip_none=True)),
+            fields.List(fields.Nested(NOW_APPLICATION_UNDERGROUND_EXPLORATION_DETAIL, skip_none=True)),
     })
 
 NOW_APPLICATION_WATER_SUPPLY_DETAIL = api.inherit(
@@ -437,205 +438,207 @@ APPLICATION_REASON_CODE_XREF = api.model(
 NOW_APPLICATION_MODEL = api.model(
     'NOW_APPLICATION_MODEL', {
         'now_application_guid':
-        fields.String,
+            fields.String,
         'now_number':
-        fields.String,
+            fields.String,
         'now_tracking_number':
-        fields.Integer,
+            fields.Integer,
         'mine_guid':
-        fields.String,
+            fields.String,
         'mine_name':
-        fields.String,
+            fields.String,
         'mine_no':
-        fields.String,
+            fields.String,
         'mine_region':
-        fields.String,
+            fields.String,
         'lead_inspector_party_guid':
-        fields.String,
+            fields.String,
         'lead_inspector':
-        fields.Nested(PARTY),
+            fields.Nested(PARTY),
         'issuing_inspector_party_guid':
-        fields.String,
+            fields.String,
         'issuing_inspector':
-        fields.Nested(PARTY),
+            fields.Nested(PARTY),
         'imported_to_core':
-        fields.Boolean,
+            fields.Boolean,
         'is_historic':
-        fields.Boolean,
+            fields.Boolean,
         'imported_date':
-        Date,
+            Date,
         'imported_by':
-        fields.String,
+            fields.String,
         'notice_of_work_type_code':
-        fields.String,
+            fields.String,
         'now_application_status_code':
-        fields.String,
+            fields.String,
         'previous_application_status_code':
-        fields.String,
+            fields.String,
         'status_updated_date':
-        Date,
+            Date,
         'status_reason':
-        fields.String,
+            fields.String,
         'submitted_date':
-        Date,
+            Date,
         'received_date':
-        Date,
+            Date,
         'verified_by_user_date':
-        Date,
+            Date,
         'decision_by_user_date':
-        Date,
+            Date,
         'latitude':
-        fields.Fixed(decimals=7),
+            fields.Fixed(decimals=7),
         'longitude':
-        fields.Fixed(decimals=7),
+            fields.Fixed(decimals=7),
         'gate_latitude':
-        fields.Fixed(decimals=7),
+            fields.Fixed(decimals=7),
         'gate_longitude':
-        fields.Fixed(decimals=7),
+            fields.Fixed(decimals=7),
         'property_name':
-        fields.String,
+            fields.String,
         'tenure_number':
-        fields.String,
+            fields.String,
         'description_of_land':
-        fields.String,
+            fields.String,
         'application_permit_type_code':
-        fields.String,
+            fields.String,
         'proposed_start_date':
-        Date,
+            Date,
         'proposed_end_date':
-        Date,
+            Date,
         'directions_to_site':
-        fields.String,
+            fields.String,
         'work_plan':
-        fields.String,
+            fields.String,
         'type_of_application':
-        fields.String,
+            fields.String,
         'proposed_annual_maximum_tonnage':
-        fields.Fixed(decimals=2),
+            fields.Fixed(decimals=2),
         'adjusted_annual_maximum_tonnage':
-        fields.Fixed(decimals=2),
+            fields.Fixed(decimals=2),
         'crown_grant_or_district_lot_numbers':
-        fields.String,
+            fields.String,
         'req_access_authorization_numbers':
-        fields.String,
+            fields.String,
         'has_surface_disturbance_outside_tenure':
-        fields.Boolean,
+            fields.Boolean,
         'is_access_gated':
-        fields.Boolean,
+            fields.Boolean,
         'has_key_for_inspector':
-        fields.Boolean,
+            fields.Boolean,
         'has_req_access_authorizations':
-        fields.Boolean,
+            fields.Boolean,
         'application_progress':
-        fields.Nested(NOW_APPLICATION_PROGRESS, skip_none=True),
+            fields.Nested(NOW_APPLICATION_PROGRESS, skip_none=True),
         'state_of_land':
-        fields.Nested(NOW_APPLICATION_STATE_OF_LAND, skip_none=True),
+            fields.Nested(NOW_APPLICATION_STATE_OF_LAND, skip_none=True),
         'first_aid_equipment_on_site':
-        fields.String,
+            fields.String,
         'first_aid_cert_level':
-        fields.String,
+            fields.String,
         'blasting_operation':
-        fields.Nested(NOW_APPLICATION_BLASTING_OPERATION, skip_none=True),
+            fields.Nested(NOW_APPLICATION_BLASTING_OPERATION, skip_none=True),
         'camp':
-        fields.Nested(NOW_APPLICATION_CAMP, skip_none=True),
+            fields.Nested(NOW_APPLICATION_CAMP, skip_none=True),
         'cut_lines_polarization_survey':
-        fields.Nested(NOW_APPLICATION_CUT_LINES, skip_none=True),
+            fields.Nested(NOW_APPLICATION_CUT_LINES, skip_none=True),
         'exploration_access':
-        fields.Nested(NOW_APPLICATION_EXP_ACCESS, skip_none=True),
+            fields.Nested(NOW_APPLICATION_EXP_ACCESS, skip_none=True),
         'exploration_surface_drilling':
-        fields.Nested(NOW_APPLICATION_EXP_SURFACE_DRILL, skip_none=True),
+            fields.Nested(NOW_APPLICATION_EXP_SURFACE_DRILL, skip_none=True),
         'mechanical_trenching':
-        fields.Nested(NOW_APPLICATION_MECH_TRENCHING, skip_none=True),
+            fields.Nested(NOW_APPLICATION_MECH_TRENCHING, skip_none=True),
         'placer_operation':
-        fields.Nested(NOW_APPLICATION_PLACER_OPS, skip_none=True),
+            fields.Nested(NOW_APPLICATION_PLACER_OPS, skip_none=True),
         'sand_gravel_quarry_operation':
-        fields.Nested(NOW_APPLICATION_SAND_GRAVEL_QUARRY_OPERATION, skip_none=True),
+            fields.Nested(NOW_APPLICATION_SAND_GRAVEL_QUARRY_OPERATION, skip_none=True),
         'settling_pond':
-        fields.Nested(NOW_APPLICATION_SETTLING_POND, skip_none=True),
+            fields.Nested(NOW_APPLICATION_SETTLING_POND, skip_none=True),
         'surface_bulk_sample':
-        fields.Nested(NOW_APPLICATION_SURFACE_BULK, skip_none=True),
+            fields.Nested(NOW_APPLICATION_SURFACE_BULK, skip_none=True),
         'underground_exploration':
-        fields.Nested(NOW_APPLICATION_UNDERGROUND_EXPLORATION, skip_none=True),
+            fields.Nested(NOW_APPLICATION_UNDERGROUND_EXPLORATION, skip_none=True),
         'water_supply':
-        fields.Nested(NOW_APPLICATION_WATER_SUPPLY, skip_none=True),
+            fields.Nested(NOW_APPLICATION_WATER_SUPPLY, skip_none=True),
         'documents':
-        fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT), skip_none=True),
+            fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT), skip_none=True),
         'submission_documents':
-        fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT), skip_none=True),
+            fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT), skip_none=True),
         'contacts':
-        fields.List(fields.Nested(NOW_PARTY_APPOINTMENT), skip_none=True),
+            fields.List(fields.Nested(NOW_PARTY_APPOINTMENT), skip_none=True),
         'liability_adjustment':
-        fields.Fixed(decimals=2),
+            fields.Fixed(decimals=2),
         'security_received_date':
-        Date,
+            Date,
         'security_not_required':
-        fields.Boolean,
+            fields.Boolean,
         'security_not_required_reason':
-        fields.String,
+            fields.String,
         'last_updated_date':
-        DateTime,
+            DateTime,
         'last_updated_by':
-        fields.String,
+            fields.String,
         'permit_status':
-        fields.String,
+            fields.String,
         'term_of_application':
-        fields.Integer,
+            fields.Integer,
         'is_applicant_individual_or_company':
-        fields.String,
+            fields.String,
         'relationship_to_applicant':
-        fields.String,
+            fields.String,
         'merchantable_timber_volume':
-        fields.Fixed(decimals=2),
+            fields.Fixed(decimals=2),
         'total_merchantable_timber_volume':
-        fields.Fixed(decimals=2),
+            fields.Fixed(decimals=2),
         'imported_submission_documents':
-        fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT)),
+            fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT)),
         'filtered_submission_documents':
-        fields.List(fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT)),
+            fields.List(fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT)),
         'is_pre_launch':
-        fields.Boolean,
+            fields.Boolean,
         'application_type_code':
-        fields.String,
+            fields.String,
         'application_source_type_code':
-        fields.String,
+            fields.String,
         'application_reason_codes':
-        fields.List(fields.Nested(APPLICATION_REASON_CODE)),
+            fields.List(fields.Nested(APPLICATION_REASON_CODE)),
         'source_permit_guid':
-        fields.String,
+            fields.String,
         'source_permit_amendment_guid':
-        fields.String,
+            fields.String,
         'is_source_permit_generated_in_core':
-        fields.Boolean,
+            fields.Boolean,
         'proponent_submitted_permit_number':
-        fields.String,
+            fields.String,
         'annual_summary_submitted':
-        fields.Boolean,
+            fields.Boolean,
         'is_first_year_of_multi':
-        fields.Boolean,
+            fields.Boolean,
         'mine_purpose':
-        fields.String,
+            fields.String,
         'ats_authorization_number':
-        fields.Integer,
+            fields.Integer,
         'ats_project_number':
-        fields.Integer,
+            fields.Integer,
         'other_information':
-        fields.String,
+            fields.String,
         'unreclaimed_disturbance_previous_year':
-        fields.Fixed(decimals=2),
+            fields.Fixed(decimals=2),
         'disturbance_planned_reclamation':
-        fields.Fixed(decimals=2),
+            fields.Fixed(decimals=2),
         'original_start_date':
-        Date,
+            Date,
         'site_property':
-        fields.Nested(MINE_TYPE_MODEL),
+            fields.Nested(MINE_TYPE_MODEL),
         'equipment':
-        fields.List(fields.Nested(NOW_APPLICATION_EQUIPMENT)),
+            fields.List(fields.Nested(NOW_APPLICATION_EQUIPMENT)),
         'mine_latitude':
-        fields.Fixed(decimals=7),
+            fields.Fixed(decimals=7),
         'mine_longitude':
-        fields.Fixed(decimals=7),
+            fields.Fixed(decimals=7),
         'permittee':
-        fields.Nested(PARTY, skip_none=True)
+            fields.Nested(PARTY, skip_none=True),
+        'regional_contacts': fields.List(fields.Nested(EMLI_CONTACT_MODEL)),
+        'reviews': fields.Nested(NOW_APPLICATION_REVIEW_MODEL)
     })
 
 NOW_APPLICATION_MODEL_EXPORT = api.model(
@@ -720,79 +723,79 @@ NOW_APPLICATION_MODEL_EXPORT = api.model(
 NOW_VIEW_MODEL = api.model(
     'NOW_VIEW_MODEL', {
         'now_application_guid':
-        fields.String,
+            fields.String,
         'mine_guid':
-        fields.String,
+            fields.String,
         'mine_no':
-        fields.String,
+            fields.String,
         'mine_name':
-        fields.String,
+            fields.String,
         'mine_region':
-        fields.String,
+            fields.String,
         'mine_latitude':
-        fields.Fixed(decimals=7),
+            fields.Fixed(decimals=7),
         'mine_longitude':
-        fields.Fixed(decimals=7),
+            fields.Fixed(decimals=7),
         'contacts':
-        fields.List(fields.Nested(NOW_PARTY_APPOINTMENT), skip_none=True),
+            fields.List(fields.Nested(NOW_PARTY_APPOINTMENT), skip_none=True),
         'now_number':
-        fields.String,
+            fields.String,
         'permit_no':
-        fields.String,
+            fields.String,
         'party':
-        fields.String,
+            fields.String,
         'lead_inspector_party_guid':
-        fields.String,
+            fields.String,
         'lead_inspector_name':
-        fields.String,
+            fields.String,
         'notice_of_work_type_description':
-        fields.String,
+            fields.String,
         'now_application_status_description':
-        fields.String,
+            fields.String,
         'received_date':
-        Date,
+            Date,
         'is_historic':
-        fields.Boolean,
+            fields.Boolean,
         'originating_system':
-        fields.String,
+            fields.String,
         'application_documents':
-        fields.List(fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT), skip_none=True),
+            fields.List(fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT), skip_none=True),
         'import_timestamp':
-        DateTime,
+            DateTime,
         'update_timestamp':
-        DateTime,
+            DateTime,
         'application_type_code':
-        fields.String,
+            fields.String,
         'application_type_description':
-        fields.String,
+            fields.String,
         'permit_amendment':
-        fields.Nested(PERMIT_AMENDMENT_SHORT_MODEL),
+            fields.Nested(PERMIT_AMENDMENT_SHORT_MODEL),
         'application_reason_codes':
-        fields.List(fields.Nested(APPLICATION_REASON_CODE)),
+            fields.List(fields.Nested(APPLICATION_REASON_CODE)),
         'permittee':
-        fields.Nested(PARTY, skip_none=True),
+            fields.Nested(PARTY, skip_none=True),
         'status_reason':
-        fields.String,
+            fields.String,
         'documents':
-        fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT)),
+            fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT)),
         'issuing_inspector_party_guid':
-        fields.String,
+            fields.String,
         'issuing_inspector_name':
-        fields.String,
+            fields.String,
         'now_application_status_code':
-        fields.String,
+            fields.String,
         'decision_date':
-        Date,
+            Date,
         'source_permit_no':
-        fields.String,
+            fields.String,
         'source_permit_amendment_issue_date':
-        fields.Date,
+            fields.Date,
         'latest_response_date':
-        fields.Date,
+            fields.Date,
         'regional_contact':
-        fields.String,
+            fields.String,
         'mine_purpose':
-        fields.String,
+            fields.String,
     })
 
 PAGINATED_LIST = api.model(

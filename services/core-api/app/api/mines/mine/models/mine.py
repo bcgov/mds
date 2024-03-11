@@ -8,6 +8,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates, reconstructor
 from sqlalchemy.schema import FetchedValue
 
+from app.api.EMLI_contacts.models.EMLI_contact import EMLIContact
 from app.api.constants import *
 from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
 from app.api.mines.permits.permit.models.permit import Permit
@@ -137,6 +138,12 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
 
     government_agency_type_code = db.Column(
         db.String, db.ForeignKey('government_agency_type.government_agency_type_code'))
+
+    @classmethod
+    def get_regional_contacts(cls, mine_region_code):
+        regional_contacts = db.session.query(EMLIContact).filter(EMLIContact.mine_region_code == mine_region_code).all()
+        print("mineRegionCode", mine_region_code)
+        return regional_contacts
 
     def __repr__(self):
         return '<Mine %r>' % self.mine_guid

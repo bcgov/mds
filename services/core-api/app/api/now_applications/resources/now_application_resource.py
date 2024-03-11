@@ -53,6 +53,9 @@ class NOWApplicationResource(Resource, UserMixin):
             now_application_guid=application.now_application_guid).one().is_historic
         application.filtered_submission_documents = NOWApplication.get_filtered_submissions_documents(
             now_application=application)
+
+        mine = Mine.find_by_mine_guid(application.mine_guid)
+        application.regional_contacts = mine.get_regional_contacts(mine.mine_region)
         return application
 
     @api.doc(
