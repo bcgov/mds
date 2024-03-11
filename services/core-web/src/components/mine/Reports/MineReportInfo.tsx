@@ -2,7 +2,8 @@ import React, { FC, useEffect, useState } from "react";
 import moment from "moment";
 import queryString from "query-string";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Divider, Row } from "antd";
+import { Button, Divider, Row, Dropdown } from "antd";
+import { MenuProps } from "antd";
 import { isEmpty } from "lodash";
 import {
   createMineReport,
@@ -26,6 +27,7 @@ import { Feature, IMine, MINE_REPORTS_ENUM, MineReportParams, MineReportType } f
 import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { RequestReportForm } from "@/components/Forms/reports/RequestReportForm";
 
 const defaultParams: MineReportParams = {
   report_name: undefined,
@@ -147,8 +149,8 @@ export const MineReportInfo: FC = () => {
 
   const renderDataFromURL = (params) => {
     const parsedParams = queryString.parse(params);
-    const filteredReports = handleFiltering(mineReports, parsedParams);
-    setFilteredReports(filteredReports);
+    const reports = handleFiltering(mineReports, parsedParams);
+    setFilteredReports(reports);
     setStateParams(parsedParams);
   };
 
@@ -158,30 +160,30 @@ export const MineReportInfo: FC = () => {
     }
   }, [location]);
 
-  const fetchReports = () => {
-    return dispatch(fetchMineReports(mineGuid, mine_reports_type)).then(() => {
-      setFilteredReports(mineReports);
-    });
+  const refreshReportData = () => {
+    return dispatch(fetchMineReports(mineGuid, mine_reports_type));
   };
 
   const handleEditReport = (report) => {
     return dispatch(updateMineReport(report.mine_guid, report.mine_report_guid, report))
       .then(() => dispatch(closeModal()))
-      .then(() => dispatch(fetchReports()));
+      .then(() => refreshReportData());
   };
 
   const handleAddReport = (values) => {
+    console.log("values", values);
     return dispatch(createMineReport(mineGuid, values))
       .then(() => dispatch(closeModal()))
-      .then(() => dispatch(fetchReports()));
+      .then(() => refreshReportData());
   };
 
   const handleRemoveReport = (report) => {
     return dispatch(deleteMineReport(report.mine_guid, report.mine_report_guid)).then(() =>
-      dispatch(fetchReports())
+      refreshReportData()
     );
   };
 
+  // TODO: remove with CODE_REQUIRED_REPORTS flag
   const openAddReportModal = (event) => {
     event.preventDefault();
     dispatch(
@@ -198,6 +200,7 @@ export const MineReportInfo: FC = () => {
     );
   };
 
+  // TODO: remove with CODE_REQUIRED_REPORTS feature flag
   const openEditReportModal = (event, onSubmit, report) => {
     event.preventDefault();
     dispatch(
@@ -234,6 +237,44 @@ export const MineReportInfo: FC = () => {
     history.replace(routes.MINE_REPORTS.dynamicRoute(mineGuid, reportType, defaultParams));
   };
 
+  const handleOpenRequestReportModal = (event) => {
+    // event.preventDefault();
+    console.log(mine_reports_type); // CRR or PRR
+    dispatch(
+      openModal({
+        props: {
+          onSubmit: handleAddReport,
+          title: `Request ${MINE_REPORTS_ENUM[mine_reports_type]}`,
+          mineGuid: mineGuid,
+          mineReportsType: mine_reports_type,
+        },
+        content: RequestReportForm,
+      })
+    );
+  };
+
+  const items: MenuProps["items"] = [
+    {
+      key: "request",
+      label: (
+        <Button onClick={handleOpenRequestReportModal} className="full actions-dropdown-button">
+          Request Report
+        </Button>
+      ),
+    },
+    {
+      key: "add",
+      label: (
+        <Link
+          to={routes.REPORTS_CREATE_NEW.dynamicRoute(mineGuid, reportType)}
+          className="full actions-dropdown-button"
+        >
+          Add a Report
+        </Link>
+      ),
+    },
+  ];
+
   return (
     <div className="tab__content">
       <div>
@@ -244,13 +285,16 @@ export const MineReportInfo: FC = () => {
         <Row>
           <AuthorizationWrapper permission={Permission.EDIT_REPORTS}>
             {isFeatureEnabled(Feature.CODE_REQUIRED_REPORTS) ? (
-              <Link to={routes.REPORTS_CREATE_NEW.dynamicRoute(mineGuid, reportType)}>
-                <Button style={{ zIndex: 1 }} className="submit-report-button" type="primary">
-                  <PlusCircleFilled />
-                  Submit Report
-                </Button>
-              </Link>
+              <Dropdown trigger={["click"]} menu={{ items }}>
+                <Button type="primary" /*icon={Plus sign no outline}*/>Add a Report</Button>
+              </Dropdown>
             ) : (
+              // <Link to={routes.REPORTS_CREATE_NEW.dynamicRoute(mineGuid, reportType)}>
+              //   <Button style={{ zIndex: 1 }} className="submit-report-button" type="primary">
+              //     <PlusCircleFilled />
+              //     Submit Report
+              //   </Button>
+              // </Link>
               <AddButton onClick={(event) => openAddReportModal(event)}>Add a Report</AddButton>
             )}
           </AuthorizationWrapper>
