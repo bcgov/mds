@@ -55,7 +55,7 @@ export const RequestReportForm: FC<RequestReportFormProps> = ({
               <Field
                 name="mine_report_definition_guid"
                 label="Search by Code Section or Report Name"
-                placeholder="Select report name"
+                placeholder="Enter a code section or report name"
                 required
                 validate={[required]}
                 component={RenderSelect}
