@@ -21,12 +21,6 @@ export const FormContext = React.createContext<IFormContext>({
   formName: null,
 });
 export const { Provider: FormProvider, Consumer: FormConsumer } = FormContext;
-// export const { Provider: FormProvider, Consumer: FormConsumer } = React.createContext<IFormContext>(
-//   {
-//     isEditMode: true,
-//     isModal: false,
-//   }
-// );
 
 // FormWrapper EXAMPLE USAGE:
 /** 

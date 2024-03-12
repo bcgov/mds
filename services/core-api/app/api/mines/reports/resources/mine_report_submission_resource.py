@@ -19,7 +19,6 @@ from app.api.mines.documents.models.mine_document import MineDocument
 
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.mines.response_models import MINE_REPORT_SUBMISSION_MODEL
-from flask import current_app
 class ReportSubmissionResource(Resource, UserMixin):
 
     parser = CustomReqparser()
@@ -213,10 +212,7 @@ class ReportSubmissionResource(Resource, UserMixin):
         permit_id = None
 
         create_initial_report = False if mine_report_guid else True
-        is_first_submission = False if mine_report_submission_guid else True       
-        current_app.logger.info('==========================')
-        current_app.logger.info('is first submission?')
-        current_app.logger.info(is_first_submission)
+        is_first_submission = False if mine_report_submission_guid else True    
         if is_code_required_report:
             mine_report_definition_id = self.get_check_mine_report_definition_id(mine_report_definition_guid)
         else:
@@ -231,7 +227,6 @@ class ReportSubmissionResource(Resource, UserMixin):
         
         # MS user only allowed to add documents unless new report has been requested
         if is_proponent and not create_initial_report:
-            current_app.logger.info('========== PART 1 ============')
             return self.create_submission_from_minespace(mine_report_guid, data, report_documents)
         
         create_timestamp = None
