@@ -635,7 +635,11 @@ NOW_APPLICATION_MODEL = api.model(
         'mine_longitude':
         fields.Fixed(decimals=7),
         'permittee':
-        fields.Nested(PARTY, skip_none=True)
+        fields.Nested(PARTY, skip_none=True),
+        'latest_response_date':
+        fields.Date,
+        'regional_contact':
+        fields.String,
     })
 
 NOW_APPLICATION_MODEL_EXPORT = api.model(

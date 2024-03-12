@@ -49,10 +49,16 @@ class NOWApplicationResource(Resource, UserMixin):
             application = transmogrify_now(now_application_identity, include_contacts=original)
             application.imported_to_core = False
 
-        application.is_historic = ApplicationsView.query.filter_by(
-            now_application_guid=application.now_application_guid).one().is_historic
         application.filtered_submission_documents = NOWApplication.get_filtered_submissions_documents(
             now_application=application)
+
+        applications_view = ApplicationsView.query.filter_by(
+            now_application_guid=application.now_application_guid).one()
+
+        application.is_historic = applications_view.is_historic
+        application.regional_contact = applications_view.regional_contact
+        application.latest_response_date = applications_view.latest_response_date
+
         return application
 
     @api.doc(
