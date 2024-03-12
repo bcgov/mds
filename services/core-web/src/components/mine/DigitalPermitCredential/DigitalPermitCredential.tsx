@@ -28,12 +28,6 @@ export const DigitalPermitCredential = () => {
         )
       );
     }
-    console.log(
-      permits.filter(
-        ({ current_permittee_digital_wallet_connection_state }) =>
-          !!current_permittee_digital_wallet_connection_state
-      )
-    );
   }, [permits]);
 
   const COLUMNS: ColumnsType<IPermit> = [

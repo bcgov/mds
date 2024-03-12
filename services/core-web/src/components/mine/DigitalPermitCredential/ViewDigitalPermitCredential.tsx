@@ -163,8 +163,6 @@ export const ViewDigitalPermitCredential: FC = () => {
     );
   };
 
-  console.log("mine", mine);
-
   return (
     <div className="tab__content margin-large--top">
       {VC_CRED_ISSUE_STATES[connectionDetails[0]?.cred_exch_state] ===
