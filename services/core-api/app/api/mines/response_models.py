@@ -714,6 +714,9 @@ MINE_REPORT_MODEL = api.model(
             fields.String,
         'permit_number':
             fields.String,
+        # TODO: Remove with CODE_REQUIRED_REPORTS feature flag- slows down API dramatically
+        'mine_report_submissions':
+            fields.List(fields.Nested(MINE_REPORT_SUBMISSION_MODEL)),
         'latest_submission':
             fields.Nested(MINE_REPORT_SUBMISSION_MODEL),
         'mine_guid':

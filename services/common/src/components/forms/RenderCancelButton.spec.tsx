@@ -46,6 +46,7 @@ describe("RenderCancelButton component", () => {
     expect(cancelFunction).toHaveBeenCalledTimes(0);
     expect(container).toMatchSnapshot();
   });
+
   test("shows modal on dirty form", () => {
     const { getByText } = render(
       <ReduxWrapper initialState={unchangedState}>{renderedForm}</ReduxWrapper>
