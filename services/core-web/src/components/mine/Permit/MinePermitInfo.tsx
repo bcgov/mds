@@ -435,7 +435,7 @@ export const MinePermitInfo: FC<MinePermitInfoProps> = (props) => {
             <ExplosivesPermit isPermitTab />
           </>
         </Tabs.TabPane>
-        {isFeatureEnabled(Feature.VERIFIABLE_CREDENTIALS) && (
+        {isFeatureEnabled(Feature.VERIFIABLE_CREDENTIALS_2) && (
           <Tabs.TabPane
             tab={`Digital Permit Credentials (${
               props.permits.filter(
