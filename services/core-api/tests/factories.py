@@ -589,8 +589,10 @@ class AddressFactory(BaseFactory):
 
     class Params:
         party = factory.SubFactory('tests.factories.PartyFactory', person=True)
+        project_contact = factory.SubFactory('tests.factories.ProjectContactFactory')
 
-    party_guid = factory.SelfAttribute('party.party_guid')
+    party_guid = factory.Maybe('party.party_guid', factory.SelfAttribute('party.party_guid'), None)
+    project_contact_guid = factory.Maybe('project_contact.project_contact_guid', factory.SelfAttribute('project_contact.project_contact_guid'), None)
     address_line_1 = factory.Faker('street_address')
     suite_no = factory.Iterator([None, None, '123', '123'])
     address_line_2 = factory.Iterator([None, 'Apt. 123', None, 'Apt. 123'])
@@ -641,7 +643,7 @@ class PartyFactory(BaseFactory):
         if not isinstance(extracted, int):
             extracted = 1
 
-        AddressFactory.create_batch(size=extracted, party=obj, **kwargs)
+        AddressFactory.create_batch(size=extracted, party=obj, project_contact=None, **kwargs)
 
 
 class PartyBusinessRoleFactory(BaseFactory):
@@ -1266,7 +1268,6 @@ class ProjectContactFactory(BaseFactory):
     project_guid = factory.SelfAttribute('project.project_guid')
     email = factory.Faker('email')
     phone_number = factory.Faker('numerify', text='###-###-####')
-    # name = factory.Faker('name')
     first_name = factory.Faker('first_name')
     last_name = factory.Faker('last_name')
     is_primary = True
@@ -1276,15 +1277,15 @@ class ProjectContactFactory(BaseFactory):
     job_title = None
     company_name = None
 
-    # @factory.post_generation
-    # def address(obj, create, extracted, **kwargs):
-    #     if not create:
-    #         return
+    @factory.post_generation
+    def address(obj, create, extracted, **kwargs):
+        if not create:
+            return
 
-    #     if not isinstance(extracted, int):
-    #         extracted = 1
+        if not isinstance(extracted, int):
+            extracted = 1
 
-    #     AddressFactory.create_batch(size=extracted, party=obj, **kwargs)
+        AddressFactory.create_batch(size=extracted, party=None, project_contact=obj **kwargs)
 
 
 class ProjectSummaryAuthorizationFactory(BaseFactory):
