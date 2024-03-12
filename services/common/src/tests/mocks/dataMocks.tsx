@@ -5578,7 +5578,7 @@ export const MINE_REPORTS = [
     created_by_idir: "idir\\TEST",
     permit_guid: null,
     latest_submission: {},
-    mine_guid: "aa3cpb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
+    mine_guid: "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
     create_user: "test@bceid",
     create_timestamp: "2024-02-07T19:15:38.505462+00:00",
     update_user: "idir\\test",
