@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RenderCancelButton component renders properly, does not show confirm on pristine form 1`] = `
+<div>
+  <form
+    class="ant-form ant-form-vertical edit"
+    id="FORM_NAME"
+  >
+    <button
+      ant-click-animating-without-extra-node="false"
+      class="ant-btn ant-btn-default"
+      type="button"
+    >
+      <span>
+        Cancel Edit
+      </span>
+    </button>
+  </form>
+</div>
+`;

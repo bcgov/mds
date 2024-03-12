@@ -59,6 +59,11 @@
   height: 100%;
   padding: 16px;
   border: 1px solid $light-violet;
+
+  h5 {
+    text-transform: none;
+    font-weight: bold;
+  }
 }
 
 .light-grey-background {

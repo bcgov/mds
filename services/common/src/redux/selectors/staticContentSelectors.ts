@@ -1,8 +1,14 @@
 import { chain } from "lodash";
 import { createSelector } from "reselect";
 import * as staticContentReducer from "../reducers/staticContentReducer";
-import { createLabelHash, createDropDownList, compareCodes } from "../utils/helpers";
+import {
+  createLabelHash,
+  createDropDownList,
+  compareCodes,
+  formatComplianceCodeReportName,
+} from "../utils/helpers";
 import { RootState } from "@mds/common/redux/rootState";
+import { IMineReportDefinition } from "../..";
 
 export const {
   getStaticContentLoadingIsComplete,
@@ -459,6 +465,28 @@ export const getDropdownMineReportDefinitionOptions = createSelectorWrapper(
   createDropDownList,
   ["report_name", "mine_report_definition_guid", "active_ind"]
 );
+
+export const getFormattedMineReportDefinitionOptions = createSelectorWrapper(
+  getMineReportDefinitionOptions,
+  (options: IMineReportDefinition[]) => {
+    return options
+      .map((item) => {
+        return {
+          label: formatComplianceCodeReportName(item),
+          value: item.mine_report_definition_guid,
+          isActive: item.active_ind,
+          is_common: item.is_common,
+          report_name: item.report_name,
+        };
+      })
+      .sort((a, b) => a.label.localeCompare(b.label));
+  }
+);
+
+export const getMineReportDefinitionByGuid = (mineReportDefinitionGuid: string) =>
+  createSelector([getMineReportDefinitionOptions], (reportDefs) => {
+    return reportDefs.find((r) => r.mine_report_definition_guid === mineReportDefinitionGuid);
+  });
 
 export const getMineReportDefinitionHash = createSelector(
   getMineReportDefinitionOptions,

@@ -1,6 +1,6 @@
 import { reportReducer } from "@mds/common/redux/reducers/reportReducer";
 import { storeMineReports, storeReports } from "@mds/common/redux/actions/mineReportActions";
-import * as Mocks from "@/tests/mocks/dataMocks";
+import * as Mocks from "@mds/common/tests/mocks/dataMocks";
 
 const baseExpectedValue = {
   reports: [],

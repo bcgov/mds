@@ -524,6 +524,18 @@
   margin: 0;
 }
 
+// menu where the whole item should be clickable
+.full-click-menu {
+  .ant-dropdown-menu-item {
+    padding: 0;
+
+    .menu-item-inner {
+      padding: 5px 12px;
+      display: block;
+    }
+  }
+}
+
 // MENU.ITEM
 // Same styling as the default for .ant-dropdown-menu-item,
 // included the ant design class in this CSS block our custom class stays insync with .ant-dropdowm-menu-item updates.
@@ -541,9 +553,19 @@
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
   line-height: 22px;
+  text-align: left;
 
   &:hover {
     background-color: $light-grey;
+  }
+
+  a {
+    text-decoration: none;
+    font-size: inherit;
+
+    &:hover {
+      text-decoration: none;
+    }
   }
 }
 

@@ -297,20 +297,13 @@ export const MineReportTable = (props) => {
         Strings.EMPTY_FIELD,
       report_name: report.report_name,
       due_date: formatDate(report.due_date),
-      received_date: formatDate(report.received_date),
+      received_date: formatDate(report.latest_submission?.received_date),
       submission_year: Number(report.submission_year),
       created_by_idir: report.created_by_idir,
       permit_guid: report.permit_guid || Strings.EMPTY_FIELD,
       mine_report_status:
         props.mineReportStatusOptionsHash[report.mine_report_status_code] || Strings.EMPTY_FIELD,
-      documents:
-        report.mine_report_submissions &&
-        report.mine_report_submissions.length > 0 &&
-        report.mine_report_submissions[report.mine_report_submissions.length - 1].documents &&
-        report.mine_report_submissions[report.mine_report_submissions.length - 1].documents.length >
-          0
-          ? report.mine_report_submissions[report.mine_report_submissions.length - 1].documents
-          : [],
+      documents: report.latest_submission?.documents ?? [],
       mine_guid: report.mine_guid,
       mine_name: report.mine_name,
       report,

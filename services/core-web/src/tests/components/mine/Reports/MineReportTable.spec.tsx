@@ -1,6 +1,6 @@
 import React from "react";
 import { MineReportTable } from "@/components/mine/Reports/MineReportTable";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { AUTHENTICATION } from "@mds/common";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { render } from "@testing-library/react";

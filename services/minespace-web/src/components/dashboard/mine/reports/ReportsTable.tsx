@@ -85,6 +85,8 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
     renderTextColumn("due_date", "Due", true, null, 5),
     renderTextColumn("received_date", "Submitted On", true),
     renderTextColumn("created_by_idir", "Requested By", true),
+
+    // TODO: remove documents column with CODE_REQUIRED_REPORTS feature flag
     {
       title: "Documents",
       dataIndex: "mine_report_submissions",
