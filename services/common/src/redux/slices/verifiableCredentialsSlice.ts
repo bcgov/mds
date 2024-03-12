@@ -1,7 +1,7 @@
 import { createAppSlice } from "@mds/common/redux/createAppSlice";
 import { hideLoading, showLoading } from "react-redux-loading-bar";
 import CustomAxios from "@mds/common/redux/customAxios";
-import { ENVIRONMENT } from "@mds/common/constants";
+import { ENVIRONMENT, VERIFIABLE_CREDENTIALS_ISSUANCE_RECORDS } from "@mds/common/constants";
 import * as API from "@mds/common/constants/API";
 import { RootState } from "@mds/common/redux/rootState";
 
@@ -38,7 +38,7 @@ const reducers = (create) => ({
 
       const response = await CustomAxios({
         errorToastMessage: "default",
-      }).get(`${ENVIRONMENT.apiUrl}${API.VERIFIABLE_CREDENTIALS_CONNECTIONS(partyGuid)}`, headers);
+      }).get(`${ENVIRONMENT.apiUrl}${VERIFIABLE_CREDENTIALS_ISSUANCE_RECORDS(partyGuid)}`, headers);
 
       thunkAPI.dispatch(hideLoading());
 
@@ -61,7 +61,6 @@ const reducers = (create) => ({
       const headers = createRequestHeader();
       thunkAPI.dispatch(showLoading());
       const { partyGuid, credential_exchange_id, comment } = payload;
-      console.log("payload", payload);
 
       const response = await CustomAxios({
         errorToastMessage: "default",

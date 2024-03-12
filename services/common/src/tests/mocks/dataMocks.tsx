@@ -7797,7 +7797,7 @@ export const ACTIVITIES = {
   },
 };
 
-export const VERIFIABLE_CREDENTIALS_CONNECTIONS = [
+export const VERIFIABLE_CREDENTIALS_ISSUANCE_RECORDS = [
   {
     party_guid: "1234",
     permit_amendment_guid: "1234",
