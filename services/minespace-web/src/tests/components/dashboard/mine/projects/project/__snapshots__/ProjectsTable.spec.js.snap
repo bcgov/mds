@@ -47,7 +47,7 @@ exports[`ProjectsTable renders properly 1`] = `
         "documents": undefined,
         "key": "8132462392222",
         "mine_guid": "60300a07-376c-46f1-a984-88a813f91438",
-        "primary_contact": "",
+        "primary_contact": " ",
         "project": Object {
           "contacts": Array [],
           "information_requirements_table": Object {

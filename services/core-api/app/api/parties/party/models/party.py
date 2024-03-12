@@ -13,6 +13,8 @@ from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.parties.party.models.address import Address
 from app.api.verifiable_credentials.models.connection import PartyVerifiableCredentialConnection
 
+from app.api.utils.helpers import validate_phone_no
+
 MAX_NAME_LENGTH = 100
 
 
@@ -234,7 +236,7 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
                organization_guid=None,
                address_type_code='CAN',
                add_to_session=True):
-        Party.validate_phone_no(phone_no, address_type_code)
+        validate_phone_no(phone_no, address_type_code)
         party = cls(
             party_name=party_name,
             phone_no=phone_no,
@@ -254,16 +256,6 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
             party.save(commit=False)
         return party
 
-    @classmethod
-    def validate_phone_no(cls, phone_no, address_type_code='CAN'):
-        if not phone_no:
-            raise AssertionError('Party phone number is not provided.')
-        # TODO: this is an arbitrary limit for phone number characters, actual number depends on formatting decisions
-        if address_type_code == 'INT' and len(phone_no) > 50:
-            raise AssertionError('Invalid phone number, max 50 characters')
-        if address_type_code in ['CAN', 'USA'] and not re.match(r'[0-9]{3}-[0-9]{3}-[0-9]{4}', phone_no):
-            raise AssertionError('Invalid phone number format, must be of XXX-XXX-XXXX.')
-        return phone_no
 
     @validates('party_type_code')
     def validate_party_type_code(self, key, party_type_code):

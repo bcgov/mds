@@ -20,7 +20,9 @@ const propTypes = {
 const transformRowData = (projects) => {
   return projects?.map((project) => {
     const contact = project?.contacts?.find((c) => c.is_primary);
-
+    const firstName = contact?.first_name || "";
+    const lastName = contact?.last_name || "";
+    const name = `${firstName} ${lastName}`;
     return {
       key: project.project_guid,
       project,
@@ -29,7 +31,7 @@ const transformRowData = (projects) => {
       project_id: project.project_id || Strings.EMPTY_FIELD,
       project_name: project.project_title,
       proponent_project_id: project.proponent_project_id || Strings.EMPTY_FIELD,
-      project_contact: contact?.name || Strings.EMPTY_FIELD,
+      project_contact: name || Strings.EMPTY_FIELD,
       project_lead_name: project.project_lead_name,
       last_updated_date: formatDate(project.update_timestamp),
     };

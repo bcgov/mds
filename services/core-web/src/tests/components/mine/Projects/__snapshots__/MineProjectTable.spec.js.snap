@@ -75,7 +75,7 @@ exports[`MineProjectTable renders properly 1`] = `
           },
           "project_title": "Test Project Title",
         },
-        "project_contact": "N/A",
+        "project_contact": " ",
         "project_id": "N/A",
         "project_lead_name": undefined,
         "project_name": "Test Project Title",

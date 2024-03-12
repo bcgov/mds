@@ -16,21 +16,20 @@ import {
 } from "@mds/common/redux/utils/Validate";
 import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 
-export const Agent: FC = () => {
+interface AgentProps {
+  countryOptions: any;
+}
+
+export const Agent: FC<AgentProps> = (props) => {
   const dispatch = useDispatch();
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
   const { agent = {}, is_agent = false } = formValues;
   const { party_type_code, address = {} } = agent ?? {};
   const { address_type_code, sub_division_code } = address ?? {};
   const isInternational = address_type_code === "INT";
-
-  const provinceOptions = useSelector(getDropdownProvinceOptions);
   // currently no endpoints, etc, for address_type_code
-  const countryOptions = [
-    { value: "CAN", label: "Canada" },
-    { value: "USA", label: "United States" },
-    { value: "INT", label: "International" },
-  ];
+  const { countryOptions } = props;
+  const provinceOptions = useSelector(getDropdownProvinceOptions);
 
   useEffect(() => {
     // set a value for party type code because required validation doesn't show
@@ -52,6 +51,7 @@ export const Agent: FC = () => {
     const selectedProvince = sub_division_code
       ? provinceOptions.find((p) => p.value === sub_division_code)
       : {};
+
     if (address_type_code === "INT" || selectedProvince?.subType !== address_type_code) {
       dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.address.sub_division_code", null));
     }

@@ -17,17 +17,22 @@ const propTypes = {
 export class ProjectsTable extends Component {
   transformRowData = (projects) =>
     projects &&
-    projects.map((project) => ({
-      key: project.project_guid,
-      project,
-      primary_contact: project.contacts.find((c) => c.is_primary)?.name || "",
-      mine_guid: project.mine_guid,
-      proponent_project_id: project.proponent_project_id,
-      project_title: project.project_title,
-      update_user: project.update_user,
-      update_timestamp: formatDate(project.update_timestamp),
-      documents: project.documents,
-    }));
+    projects.map((project) => {
+      const primaryContact = project.contacts.find((c) => c.is_primary);
+      const firstName = primaryContact?.first_name || "";
+      const lastName = primaryContact?.last_name || "";
+      return {
+        key: project.project_guid,
+        project,
+        primary_contact: `${firstName} ${lastName}`,
+        mine_guid: project.mine_guid,
+        proponent_project_id: project.proponent_project_id,
+        project_title: project.project_title,
+        update_user: project.update_user,
+        update_timestamp: formatDate(project.update_timestamp),
+        documents: project.documents,
+      };
+    });
 
   columns = () => [
     {
