@@ -5278,6 +5278,26 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
       display_order: 50,
     },
   ],
+  permitAmendmentTypeCodeOptions: [
+    {
+      permit_amendment_type_code: "OGP",
+      description: "Original Permit",
+      display_order: 10,
+      active_ind: true,
+    },
+    {
+      permit_amendment_type_code: "AMD",
+      description: "Permit Amendment",
+      display_order: 20,
+      active_ind: true,
+    },
+    {
+      permit_amendment_type_code: "ALG",
+      description: "Amalgamated Permit",
+      display_order: 30,
+      active_ind: true,
+    },
+  ],
   noticeOfWorkApplicationDelayOptions: [],
   applicationReasonCodeOptions: [],
   applicationSourceTypeCodeOptions: [],
