@@ -140,10 +140,9 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         db.String, db.ForeignKey('government_agency_type.government_agency_type_code'))
 
     @classmethod
-    def get_regional_contacts(cls, mine_region_code):
-        regional_contacts = db.session.query(EMLIContact).filter(EMLIContact.mine_region_code == mine_region_code).all()
-        print("mineRegionCode", mine_region_code)
-        return regional_contacts
+    def get_emli_contacts(cls, mine_region_code):
+        emli_contacts = db.session.query(EMLIContact).filter(EMLIContact.mine_region_code == mine_region_code).all()
+        return emli_contacts
 
     def __repr__(self):
         return '<Mine %r>' % self.mine_guid

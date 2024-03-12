@@ -55,7 +55,7 @@ class NOWApplicationResource(Resource, UserMixin):
             now_application=application)
 
         mine = Mine.find_by_mine_guid(application.mine_guid)
-        application.regional_contacts = mine.get_regional_contacts(mine.mine_region)
+        application.regional_contacts = mine.get_emli_contacts(mine.mine_region)
         return application
 
     @api.doc(
