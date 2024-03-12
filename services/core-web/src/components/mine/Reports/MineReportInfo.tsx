@@ -171,7 +171,6 @@ export const MineReportInfo: FC = () => {
   };
 
   const handleAddReport = (values) => {
-    console.log("values", values);
     return dispatch(createMineReport(mineGuid, values))
       .then(() => dispatch(closeModal()))
       .then(() => refreshReportData());
