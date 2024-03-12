@@ -37,6 +37,7 @@ exports[`BasicInformation renders properly 1`] = `
     id="project_summary_description"
     label="Project overview"
     labelSubtitle="Provide a 2-3 paragraph high-level description of your proposed project."
+    maxCharacters={4000}
     minRows={10}
     name="project_summary_description"
     required={true}
