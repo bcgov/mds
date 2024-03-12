@@ -61,6 +61,7 @@ import ArchiveDocumentModal from "@common/components/documents/ArchiveDocumentMo
 import DeleteDocumentModal from "@mds/common/components/documents/DeleteDocumentModal";
 import ReplaceDocumentModal from "@mds/common/components/documents/ReplaceDocumentModal";
 import UpdateMineReportSubmissionStatusModal from "./UpdateMineReportSubmissionStatusModal";
+import RevokeCredentialModal from "@/components/mine/DigitalPermitCredential/RevokeCredentialModal";
 
 export const modalConfig = {
   MINE_RECORD: MineRecordModal,
@@ -126,6 +127,7 @@ export const modalConfig = {
   ADD_MINE_ALERT: AddMineAlertModal,
   VIEW_PAST_MINE_ALERTS: ViewPastMineAlertModal,
   UPDATE_MINE_REPORT_STATUS_MODAL: UpdateMineReportSubmissionStatusModal,
+  REVOKE_CREDENTIAL_MODAL: RevokeCredentialModal,
 };
 
 export default modalConfig;

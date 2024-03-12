@@ -30,8 +30,10 @@ import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
 import { getExplosivesPermits } from "@mds/common/redux/selectors/explosivesPermitSelectors";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
-import { IPermit, IMine, IPermitPartyRelationship, IExplosivesPermit } from "@mds/common";
+import { IPermit, IMine, IPermitPartyRelationship, IExplosivesPermit, Feature } from "@mds/common";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { DigitalPermitCredential } from "@/components/mine/DigitalPermitCredential/DigitalPermitCredential";
 /**
  * @class  MinePermitInfo - contains all permit information
  */
@@ -70,6 +72,8 @@ export const MinePermitInfo: FC<MinePermitInfoProps> = (props) => {
   const [modifiedPermits, setModifiedPermits] = useState(false);
   const [modifiedPermitGuid, setModifiedPermitGuid] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
+
+  const { isFeatureEnabled } = useFeatureFlag();
 
   const handleFetchData = () => {
     const { id } = props.match.params;
@@ -431,6 +435,21 @@ export const MinePermitInfo: FC<MinePermitInfoProps> = (props) => {
             <ExplosivesPermit isPermitTab />
           </>
         </Tabs.TabPane>
+        {isFeatureEnabled(Feature.VERIFIABLE_CREDENTIALS) && (
+          <Tabs.TabPane
+            tab={`Digital Permit Credentials (${
+              props.permits.filter(
+                ({ current_permittee_digital_wallet_connection_state }) =>
+                  !!current_permittee_digital_wallet_connection_state
+              ).length
+            })`}
+            key="3"
+          >
+            <>
+              <DigitalPermitCredential />
+            </>
+          </Tabs.TabPane>
+        )}
       </Tabs>
     </div>
   );
