@@ -7,6 +7,7 @@ import { reduxForm, submit, getFormSubmitErrors, InjectedFormProps, ConfigProps 
 export interface IFormContext {
   isEditMode: boolean;
   isModal: boolean;
+  formName: string;
 }
 /**
  * The values in FormProvider (from FormWrapper props) will be passed down to child components
@@ -14,12 +15,18 @@ export interface IFormContext {
  * Import FormConsumer to access these values within an input component
  * More attributes can be added if necessary, but it should be kept minimal
  */
-export const { Provider: FormProvider, Consumer: FormConsumer } = React.createContext<IFormContext>(
-  {
-    isEditMode: true,
-    isModal: false,
-  }
-);
+export const FormContext = React.createContext<IFormContext>({
+  isEditMode: true,
+  isModal: false,
+  formName: null,
+});
+export const { Provider: FormProvider, Consumer: FormConsumer } = FormContext;
+// export const { Provider: FormProvider, Consumer: FormConsumer } = React.createContext<IFormContext>(
+//   {
+//     isEditMode: true,
+//     isModal: false,
+//   }
+// );
 
 // FormWrapper EXAMPLE USAGE:
 /** 
@@ -77,6 +84,7 @@ const FormWrapper: FC<FormWrapperProps & InjectedFormProps<any>> = ({
   const providerValues = {
     isEditMode,
     isModal,
+    formName: props.name,
   };
   const dispatch = useDispatch();
   const formErrors = useSelector(getFormSubmitErrors(props.name));

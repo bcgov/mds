@@ -37,7 +37,49 @@ interface ReportGetStartedProps {
   formButtons: ReactNode;
 }
 
-export const RenderPRRFields: FC<{ mineGuid: string }> = ({ mineGuid }) => {
+export const ReportInfoBox: FC<{ mineReportDefinition: IMineReportDefinition; verb: string }> = ({
+  mineReportDefinition,
+  verb,
+}) => {
+  return (
+    <div className="report-info-box">
+      {mineReportDefinition && (
+        <div>
+          <Typography.Title level={4} className="primary-colour">
+            You are {verb}
+          </Typography.Title>
+          <Typography.Title level={5}>
+            {formatComplianceCodeReportName(mineReportDefinition)}
+          </Typography.Title>
+
+          {mineReportDefinition.compliance_articles[0].long_description && (
+            <>
+              <Typography.Title level={5}>About this submission type:</Typography.Title>
+              <Typography.Paragraph>
+                {mineReportDefinition.compliance_articles[0].long_description}
+              </Typography.Paragraph>
+            </>
+          )}
+          {mineReportDefinition.compliance_articles[0].help_reference_link && (
+            <Button
+              target="_blank"
+              rel="noopener noreferrer"
+              href={mineReportDefinition.compliance_articles[0].help_reference_link}
+              type="default"
+            >
+              More information <ExportOutlined />
+            </Button>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export const RenderPRRFields: FC<{ mineGuid: string; fullWidth?: boolean }> = ({
+  mineGuid,
+  fullWidth = false,
+}) => {
   const system = useSelector(getSystemFlag);
   const dispatch = useDispatch();
   const dropdownPermitConditionCategoryOptions = useSelector(
@@ -70,7 +112,7 @@ export const RenderPRRFields: FC<{ mineGuid: string }> = ({ mineGuid }) => {
           </Typography.Paragraph>
         </>
       )}
-      <Col md={12} sm={24}>
+      <Col md={!fullWidth && 12} sm={24}>
         <Field
           name="permit_guid"
           label="Permit Number"
@@ -95,7 +137,7 @@ export const RenderPRRFields: FC<{ mineGuid: string }> = ({ mineGuid }) => {
         </Col>
       )}
       {isCore && (
-        <Col md={12} sm={24}>
+        <Col md={!fullWidth && 12} sm={24}>
           <Field
             name="permit_condition_category_code"
             required
@@ -266,35 +308,7 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({ mine, handleSubmit, formB
                 </div>
               </Col>
               <Col span={12}>
-                <div className="report-info-box">
-                  {selectedReportDefinition && (
-                    <div>
-                      <Typography.Title level={4}>You are submitting</Typography.Title>
-                      <Typography.Title level={5}>
-                        {formatComplianceCodeReportName(selectedReportDefinition)}
-                      </Typography.Title>
-
-                      {selectedReportDefinition.compliance_articles[0].long_description && (
-                        <>
-                          <Typography.Title level={5}>About this submission type:</Typography.Title>
-                          <Typography.Paragraph>
-                            {selectedReportDefinition.compliance_articles[0].long_description}
-                          </Typography.Paragraph>
-                        </>
-                      )}
-                      {selectedReportDefinition.compliance_articles[0].help_reference_link && (
-                        <Button
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          href={selectedReportDefinition.compliance_articles[0].help_reference_link}
-                          type="default"
-                        >
-                          More information <ExportOutlined />
-                        </Button>
-                      )}
-                    </div>
-                  )}
-                </div>
+                <ReportInfoBox mineReportDefinition={selectedReportDefinition} verb="submitting" />
               </Col>
             </Row>
           </>

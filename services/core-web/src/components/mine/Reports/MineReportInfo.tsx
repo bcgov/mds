@@ -1,9 +1,9 @@
 import React, { FC, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useHistory, useLocation, useParams } from "react-router-dom";
+import { Button, Divider, Row, Dropdown, MenuProps } from "antd";
 import moment from "moment";
 import queryString from "query-string";
-import { useDispatch, useSelector } from "react-redux";
-import { Button, Divider, Row, Dropdown } from "antd";
-import { MenuProps } from "antd";
 import { isEmpty } from "lodash";
 import {
   createMineReport,
@@ -24,8 +24,8 @@ import ReportFilterForm from "@/components/Forms/reports/ReportFilterForm";
 import * as routes from "@/constants/routes";
 import { modalConfig } from "@/components/modalContent/config";
 import { Feature, IMine, MINE_REPORTS_ENUM, MineReportParams, MineReportType } from "@mds/common";
-import { Link, useHistory, useLocation, useParams } from "react-router-dom";
-import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
+
+import PlusOutlined from "@ant-design/icons/PlusOutlined";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { RequestReportForm } from "@/components/Forms/reports/RequestReportForm";
 
@@ -237,9 +237,7 @@ export const MineReportInfo: FC = () => {
     history.replace(routes.MINE_REPORTS.dynamicRoute(mineGuid, reportType, defaultParams));
   };
 
-  const handleOpenRequestReportModal = (event) => {
-    // event.preventDefault();
-    console.log(mine_reports_type); // CRR or PRR
+  const handleOpenRequestReportModal = () => {
     dispatch(
       openModal({
         props: {
@@ -257,9 +255,9 @@ export const MineReportInfo: FC = () => {
     {
       key: "request",
       label: (
-        <Button onClick={handleOpenRequestReportModal} className="full actions-dropdown-button">
+        <span onClick={handleOpenRequestReportModal} className="menu-item-inner">
           Request Report
-        </Button>
+        </span>
       ),
     },
     {
@@ -267,7 +265,7 @@ export const MineReportInfo: FC = () => {
       label: (
         <Link
           to={routes.REPORTS_CREATE_NEW.dynamicRoute(mineGuid, reportType)}
-          className="full actions-dropdown-button"
+          className="menu-item-inner"
         >
           Add a Report
         </Link>
@@ -285,16 +283,12 @@ export const MineReportInfo: FC = () => {
         <Row>
           <AuthorizationWrapper permission={Permission.EDIT_REPORTS}>
             {isFeatureEnabled(Feature.CODE_REQUIRED_REPORTS) ? (
-              <Dropdown trigger={["click"]} menu={{ items }}>
-                <Button type="primary" /*icon={Plus sign no outline}*/>Add a Report</Button>
+              <Dropdown trigger={["click"]} menu={{ items }} overlayClassName="full-click-menu">
+                <Button type="primary" icon={<PlusOutlined />}>
+                  Add a Report
+                </Button>
               </Dropdown>
             ) : (
-              // <Link to={routes.REPORTS_CREATE_NEW.dynamicRoute(mineGuid, reportType)}>
-              //   <Button style={{ zIndex: 1 }} className="submit-report-button" type="primary">
-              //     <PlusCircleFilled />
-              //     Submit Report
-              //   </Button>
-              // </Link>
               <AddButton onClick={(event) => openAddReportModal(event)}>Add a Report</AddButton>
             )}
           </AuthorizationWrapper>
