@@ -18,14 +18,18 @@ const ScrollSidePageWrapper: FC<ScrollSidePageWrapperProps> = ({
 }) => {
   const [fixedTop, setIsFixedTop] = useState(false);
   const handleScroll = () => {
-    const scrollHeight = window.scrollY ?? window.pageYOffset;
-    if (scrollHeight > 0 && !fixedTop) {
-      setIsFixedTop(true);
-      // oddly, fixedTop never ends up being true here, even though it seems to take effect,
-      // so took out fixedTop is true out from condition
-    } else if (scrollHeight <= 0) {
-      setIsFixedTop(false);
+    let isMounted = true;
+    if (isMounted) {
+      const scrollHeight = window.scrollY ?? window.pageYOffset;
+      if (scrollHeight > 0 && !fixedTop) {
+        setIsFixedTop(true);
+        // oddly, fixedTop never ends up being true here, even though it seems to take effect,
+        // so took out fixedTop is true out from condition
+      } else if (scrollHeight <= 0) {
+        setIsFixedTop(false);
+      }
     }
+    return () => (isMounted = false);
   };
 
   useEffect(() => {

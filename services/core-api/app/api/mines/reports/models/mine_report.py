@@ -52,10 +52,18 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
 
     mine_report_submissions = db.relationship(
         'MineReportSubmission',
-        lazy='joined',
+        lazy='select',
         order_by='asc(MineReportSubmission.mine_report_submission_id)',
         uselist=True,
         back_populates='report')
+    
+    latest_submission = db.relationship(
+        'MineReportSubmission',
+        primaryjoin="and_(MineReportSubmission.mine_report_id == MineReport.mine_report_id, MineReportSubmission.is_latest==True)",
+        lazy='joined',
+        overlaps="mine_report_submissions,report",
+        uselist=False,
+    )
 
     mine_report_contacts = db.relationship(
         'MineReportContact',
@@ -77,8 +85,8 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
 
     @hybrid_property
     def mine_report_status_code(self):
-        if self.mine_report_submissions:
-            return self.mine_report_submissions[-1].mine_report_submission_status_code
+        if self.latest_submission:
+            return self.latest_submission.mine_report_submission_status_code
         else:
             return "NON"
         
@@ -94,13 +102,13 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
     def mine_report_status_code(cls):
         return func.coalesce(select([
             MineReportSubmission.mine_report_submission_status_code
-        ]).where(MineReportSubmission.mine_report_id == cls.mine_report_id).order_by(
-            desc(MineReportSubmission.mine_report_submission_id)).limit(1).as_scalar(),
+        ]).where(and_(MineReportSubmission.mine_report_id == cls.mine_report_id,
+                      MineReportSubmission.is_latest == True)).as_scalar(),
             literal("NON"))
 
     @hybrid_property
     def mine_report_status_description(self):
-        if self.mine_report_submissions:
+        if self.latest_submission:
             return MineReportSubmissionStatusCode.find_by_mine_report_submission_status_code(
                 self.mine_report_status_code).description
         else:
@@ -111,9 +119,9 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
         return select([MineReportSubmissionStatusCode.description]).where(
             and_(
                 MineReportSubmission.mine_report_id == cls.mine_report_id,
+                MineReportSubmission.is_latest == True,
                 MineReportSubmissionStatusCode.mine_report_submission_status_code ==
-                MineReportSubmission.mine_report_submission_status_code)).order_by(
-                    desc(MineReportSubmission.mine_report_submission_id)).limit(1).as_scalar()
+                MineReportSubmission.mine_report_submission_status_code)).as_scalar()
 
     def __repr__(self):
         return '<MineReport %r>' % self.mine_report_guid

@@ -73,6 +73,8 @@ class MineReportSubmission(Base, AuditMixin):
         uselist=True
     )
 
+    is_latest = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
+
     @hybrid_property
     def report_type(self):
         return MINE_REPORT_TYPE['PERMIT REQUIRED REPORTS'] if self.permit_condition_category else MINE_REPORT_TYPE['CODE REQUIRED REPORTS']
@@ -88,7 +90,7 @@ class MineReportSubmission(Base, AuditMixin):
     def find_latest_by_mine_report_guid(cls, _id):
         try:
             uuid.UUID(_id, version=4)
-            return cls.query.filter_by(mine_report_guid=_id).order_by(cls.mine_report_submission_id.desc()).first()
+            return cls.query.filter_by(mine_report_guid=_id, is_latest=True).order_by(cls.mine_report_submission_id.desc()).first()
         except ValueError:
             return None
 
@@ -131,5 +133,6 @@ class MineReportSubmission(Base, AuditMixin):
             'submitter_email': str(self.submitter_email),
             'submitter_name': str(self.submitter_name),
             'update_timestamp': str(self.update_timestamp),
-            'update_user': str(self.update_user)
+            'update_user': str(self.update_user),
+            'is_latest': str(self.is_latest)
         }
