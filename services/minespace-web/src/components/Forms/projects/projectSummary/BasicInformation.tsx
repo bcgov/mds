@@ -5,8 +5,6 @@ import { maxLength, required } from "@common/utils/Validate";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
 
-const propTypes = {};
-
 export const BasicInformation = () => {
   return (
     <>
@@ -35,12 +33,11 @@ export const BasicInformation = () => {
         required
         component={RenderAutoSizeField}
         minRows={10}
+        maxCharacters={4000}
         validate={[maxLength(4000), required]}
       />
     </>
   );
 };
-
-BasicInformation.propTypes = propTypes;
 
 export default BasicInformation;
