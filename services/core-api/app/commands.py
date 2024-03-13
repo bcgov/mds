@@ -57,6 +57,7 @@ def register_commands(app):
     def _create_data(num):
         User._test_mode = True
         with app.app_context():
+            MineFactory(major_mine_ind=True) # Ensure there is at least one major mine
             for _ in range(int(num)):
                 mine = MineFactory()
                 MinePartyAppointmentFactory(mine=mine, mine_party_appt_type_code='EOR')

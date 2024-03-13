@@ -162,15 +162,17 @@ services:
     user: 1000:1000
     container_name: mds_frontend
     build:
-      context: services/core-web
-    command: [ "npm", "run", "serve" ]
+      context: .
+      dockerfile: services/core-web/Dockerfile.ci
+      args:
+        ARTIFACTORY_TOKEN: $ARTIFACTORY_TOKEN
+
     volumes:
       - ./services/core-web/src:/app/src
     ports:
       - 3000:3000
-    depends_on:
-      - backend
     env_file: ./services/core-web/.env
+    network_mode: "host"
     healthcheck:
       test: [ "CMD", "curl", "localhost:3000/health" ]
       interval: 15s
@@ -184,20 +186,23 @@ services:
     user: 1000:1000
     container_name: mds_minespace
     build:
-      context: services/minespace-web
-    command: [ "npm", "run", "serve" ]
+      context: .
+      dockerfile: services/minespace-web/Dockerfile.ci
+      args:
+        ARTIFACTORY_TOKEN: $ARTIFACTORY_TOKEN
+    environment:
+      - NODE_ENV=production
     volumes:
       - ./services/minespace-web/src:/app/src
     ports:
       - 3020:3020
-    depends_on:
-      - backend
     env_file: ./services/minespace-web/.env
     healthcheck:
       test: [ "CMD", "curl", "localhost:3020/health" ]
       interval: 5s
       timeout: 5s
       retries: 5
+    network_mode: "host"
 
   ####################### NRIS_BACKEND Definition #######################
   nris_backend:

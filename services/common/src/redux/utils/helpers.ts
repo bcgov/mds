@@ -8,7 +8,7 @@ import { get, isEmpty, isNil, sortBy } from "lodash";
 import { createNumberMask } from "redux-form-input-masks";
 import moment from "moment-timezone";
 import { reset } from "redux-form";
-import { ItemMap } from "@mds/common";
+import { ItemMap } from "@mds/common/interfaces";
 import { IMineReportDefinition, IMineReportSubmission } from "@mds/common/interfaces";
 import { MINE_REPORT_SUBMISSION_CODES } from "../..";
 

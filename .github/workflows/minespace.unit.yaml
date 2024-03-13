@@ -36,44 +36,6 @@ jobs:
 
       - name: Run minespace tests
         run: yarn workspace @mds/minespace-web test
-
-      - name: build-minespace-web
-        run: |
-          NODE_OPTIONS=--max-old-space-size=5024 yarn workspace @mds/minespace-web build
-
-      - name: start-minespace-web
-        run: yarn workspace @mds/minespace-web run http-server-spa build /index.html 3020 &
-
-      - name: Run cypress tests
-        run: yarn workspace @mds/minespace-web cypress run
-        env:
-          CYPRESS_TEST_USER: ${{ secrets.CYPRESS_MINESPACE_USER }}
-          CYPRESS_TEST_PASSWORD: ${{ secrets.CYPRESS_MINESPACE_PASSWORD }}
-          CYPRESS_MINESPACE_WEB_TEST_URL: ${{ secrets.CYPRESS_MINESPACE_WEB_TEST_URL }}
-          CYPRESS_BACKEND: ${{ secrets.CYPRESS_BACKEND }}
-          CYPRESS_API_URL: ${{ secrets.CYPRESS_API_URL }}
-          CYPRESS_KEYCLOAK_URL: ${{ secrets.CYPRESS_KEYCLOAK_URL }}
-          CYPRESS_ENVIRONMENT: ${{ secrets.CYPRESS_ENVIRONMENT }}
-          CYPRESS_DOC_MAN_URL: ${{ secrets.CYPRESS_DOC_MAN_URL }}
-          CYPRESS_FILE_SYSTEM_PROVIDER_URL: ${{ secrets.CYPRESS_FILE_SYSTEM_PROVIDER_URL }}
-          CYPRESS_MATOMO_URL: ${{ secrets.CYPRESS_MATOMO_URL }}
-          CYPRESS_KEYCLOAK_CLIENT_ID: ${{ secrets.CYPRESS_KEYCLOAK_CLIENT_ID }}
-          CYPRESS_KEYCLOAK_IDP_HINT: ${{ secrets.CYPRESS_KEYCLOAK_IDP_HINT }}
-          CYPRESS_KEYCLOAK_RESOURCE: ${{ secrets.CYPRESS_KEYCLOAK_RESOURCE }}
-          CYPRESS_FLAGSMITH_URL: ${{ secrets.CYPRESS_FLAGSMITH_URL }}
-          CYPRESS_FLAGSMITH_KEY: ${{ secrets.CYPRESS_FLAGSMITH_KEY }}
-
-      - name: Upload cypress video
-        uses: actions/upload-artifact@v3
-        if: failure()
-        with:
-          name: cypress-recording
-          path: services/minespace-web/cypress/videos
-      - name: Upload stats file
-        uses: actions/upload-artifact@v3
-        with:
-          name: stats
-          path: services/minespace-web/build/stats.json
   run-sonar-scan:
     name: Run SonarCloud Scan
     if: success()

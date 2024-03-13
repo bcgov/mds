@@ -183,6 +183,12 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/mine-dashboard/:id/permits-and-approvals/permits"
   />
   <Route
+    component={[Function]}
+    exact={true}
+    key="/mine-dashboard/:id/permits-and-approvals/digital-credentials/:permitGuid"
+    path="/mine-dashboard/:id/permits-and-approvals/digital-credentials/:permitGuid"
+  />
+  <Route
     component={
       Object {
         "$$typeof": Symbol(react.memo),

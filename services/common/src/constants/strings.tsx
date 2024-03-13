@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-key */
 import React from "react";
-import { MINE_REPORT_SUBMISSION_CODES } from "./enums";
+import { MINE_REPORT_SUBMISSION_CODES, VC_CRED_ISSUE_STATES } from "./enums";
 // reusable messages for error handling, validations, null-screens, etc.
 export const ERROR = "Error.";
 export const ERROR_CANCELED =
@@ -412,3 +412,9 @@ export const MINE_REPORT_STATUS_HASH = {
   [MINE_REPORT_SUBMISSION_CODES.NON]: "Report Requested",
   [MINE_REPORT_SUBMISSION_CODES.WTD]: "Withdrawn",
 };
+
+export const VC_ACTIVE_CONNECTION_STATES = [
+  VC_CRED_ISSUE_STATES.credential_acked,
+  VC_CRED_ISSUE_STATES.issued,
+  VC_CRED_ISSUE_STATES.done,
+];
