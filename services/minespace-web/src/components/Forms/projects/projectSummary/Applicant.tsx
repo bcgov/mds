@@ -1,8 +1,8 @@
-import { Typography } from "antd";
+import { Col, Row, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Field, getFormValues } from "redux-form";
-import { requiredRadioButton } from "@common/utils/Validate";
+import { Field, getFormValues, change } from "redux-form";
+import { maxLength, required, requiredRadioButton } from "@common/utils/Validate";
 import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
 import { FORM, IOrgbookCredential } from "@mds/common";
 import OrgBookSearch from "@mds/common/components/parties/OrgBookSearch";
@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck, faCircleX, faSpinner } from "@fortawesome/pro-light-svg-icons";
 import { isEmpty } from "lodash";
 import { verifyOrgBookCredential } from "@mds/common/redux/actionCreators/orgbookActionCreator";
+import RenderField from "@mds/common/components/forms/RenderField";
 
 const { Title, Paragraph } = Typography;
 
@@ -20,7 +21,7 @@ const Applicant = () => {
   const [checkingStatus, setCheckingStatus] = useState(false);
 
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
-  const { applicant_type = "" } = formValues;
+  const { applicant_type = "", company_legal_name } = formValues;
 
   useEffect(() => {
     setVerified(false);
@@ -30,6 +31,8 @@ const Applicant = () => {
         setVerified(response.success);
         setCheckingStatus(false);
       });
+      const businessName = credential?.local_name ? credential?.local_name.text : null;
+      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "company_legal_name", businessName));
     }
   }, [credential]);
 
@@ -59,7 +62,6 @@ const Applicant = () => {
         }
       }
     }
-
     // Return '-' if no business_number is found
     return "-";
   };
@@ -107,30 +109,64 @@ const Applicant = () => {
         label="Applicant Type"
         component={RenderRadioButtons}
         customOptions={[
-          { label: "Business", value: "BUS" },
           { label: "Company", value: "ORG" },
           {
             label: "Individual",
             value: "IND",
           },
         ]}
+        optionType="button"
       />
-      {["BUS", "ORG"].includes(applicant_type) && (
+      {applicant_type === "ORG" && (
         <div>
           <OrgBookSearch setCredential={setCredential} />
           {!isEmpty(credential) && (
-            <div className="table-summary-card">
-              {renderStatus()}
-              {findBusinessNumber(credential) !== "-" && (
+            <>
+              <Field
+                id="company_legal_name"
+                name="company_legal_name"
+                label="Company Legal Name"
+                required
+                validate={[required, maxLength(100)]}
+                component={RenderField}
+                help="as registered with the BC Registar of Companies"
+              />
+              <div className="table-summary-card">
+                {renderStatus()}
+                {findBusinessNumber(credential) !== "-" && (
+                  <Paragraph className="light margin-none">
+                    Business Number: {findBusinessNumber(credential)}
+                  </Paragraph>
+                )}
                 <Paragraph className="light margin-none">
-                  Business Number: {findBusinessNumber(credential)}
+                  BC Registries ID: {credential.id}
                 </Paragraph>
-              )}
-              <Paragraph className="light margin-none">BC Registries ID: {credential.id}</Paragraph>
-              <Paragraph className="light margin-none">
-                BC Registration Status {credential.inactive ? "Inactive" : "Active"}
-              </Paragraph>
-            </div>
+                <Paragraph className="light margin-none">
+                  BC Registration Status {credential.inactive ? "Inactive" : "Active"}
+                </Paragraph>
+              </div>
+              <Row gutter={16}>
+                <Col md={12} sm={24}>
+                  <Field
+                    id="company_alias"
+                    name="company_alias"
+                    label="Doing Business As"
+                    component={RenderField}
+                  />
+                </Col>
+
+                <Col md={12} sm={24}>
+                  <Field
+                    id="incorporation_number"
+                    name="incorporation_number"
+                    label="Incorporation Number"
+                    required
+                    validate={[required]}
+                    component={RenderField}
+                  />
+                </Col>
+              </Row>
+            </>
           )}
         </div>
       )}
