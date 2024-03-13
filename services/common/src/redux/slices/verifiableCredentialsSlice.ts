@@ -75,12 +75,12 @@ const reducers = (create) => ({
       return response.data;
     },
     {
-      fulfilled: (state: RootState, action) => {
+      fulfilled: (state: VerifiableCredentialsState, action) => {
         // There is no return from the endpoint, so if the request has successfully fulfilled,
         // set the status of the connection to revoked
         state.verifiableCredentialConnections = state.verifiableCredentialConnections.map(
           (connection) => {
-            if (connection.credential_exchange_id === action.payload.credential_exch_id) {
+            if (connection.cred_exch_id === action.payload.cred_exch_id) {
               return {
                 ...connection,
                 cred_exch_state: "revoked",
