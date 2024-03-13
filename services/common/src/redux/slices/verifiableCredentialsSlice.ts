@@ -45,10 +45,10 @@ const reducers = (create) => ({
       return response.data;
     },
     {
-      fulfilled: (state: RootState, action) => {
+      fulfilled: (state: VerifiableCredentialsState, action) => {
         state.verifiableCredentialConnections = action.payload.records;
       },
-      rejected: (state, action) => {
+      rejected: (state: VerifiableCredentialsState, action) => {
         rejectHandler(action);
       },
     }

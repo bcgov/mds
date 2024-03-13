@@ -19,7 +19,7 @@ import {
 } from "@mds/common/components/common/CoreTableCommonColumns";
 import { useSelector, useDispatch } from "react-redux";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
-import { getMines } from "@mds/common/redux/selectors/mineSelectors";
+import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import ExplosivesPermitMap from "@mds/common/components/explosivespermits/ExplosivesPermitMap";
 import {
   getMineCommodityOptions,
@@ -44,7 +44,7 @@ const permitAmendmentLike = (permit: IPermit): any => ({
 
 export const ViewDigitalPermitCredential: FC = () => {
   const dispatch = useDispatch();
-  const permits = useSelector((state) => getPermits(state));
+  const permits = useSelector(getPermits);
 
   const { permitGuid, id: mineGuid } = useParams<{
     permitGuid: string;
@@ -53,16 +53,11 @@ export const ViewDigitalPermitCredential: FC = () => {
 
   const connectionDetails = useSelector((state) => getCredentialConnections(state));
   const digitalPermitCredential: IPermit = permits.find((p) => p.permit_guid === permitGuid);
-  const mines = useSelector((state) => getMines(state));
-  const mine: IMine = mines[mineGuid];
+  const mine: IMine = useSelector((state) => getMineById(state, mineGuid));
 
-  const mineCommodityOptions: IMineCommodityOption[] = useSelector((state) =>
-    getMineCommodityOptions(state)
-  );
+  const mineCommodityOptions: IMineCommodityOption[] = useSelector(getMineCommodityOptions);
 
-  const mineDisturbanceOptions: IMineDisturbanceOption[] = useSelector((state) =>
-    getMineDisturbanceOptions(state)
-  );
+  const mineDisturbanceOptions: IMineDisturbanceOption[] = useSelector(getMineDisturbanceOptions);
 
   useEffect(() => {
     if (digitalPermitCredential) {
