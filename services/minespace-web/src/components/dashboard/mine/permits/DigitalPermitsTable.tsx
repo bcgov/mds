@@ -23,8 +23,7 @@ import {
   renderTextColumn,
 } from "@mds/common/components/common/CoreTableCommonColumns";
 import IssuePermitDigitalCredential from "@/components/modalContent/verifiableCredentials/IssuePermitDigitalCredential";
-import { useHistory } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 
 const draftAmendment = "DFT";
 

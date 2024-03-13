@@ -36,7 +36,6 @@ export const PermitTabContainer: FC<PermitTabContainerProps> = ({
   ...props
 }) => {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  const [activeTab] = useState<string>(null);
 
   useEffect(() => {
     if (!isLoaded) {
