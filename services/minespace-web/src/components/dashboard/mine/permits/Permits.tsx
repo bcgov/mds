@@ -31,10 +31,7 @@ export const Permits: FC<PermitsProps> = ({ mine, permits, explosivesPermits, ..
 
   useEffect(() => {
     if (!isLoaded) {
-      Promise.all([
-        props.fetchPermits(mine.mine_guid),
-        props.fetchExplosivesPermits(mine.mine_guid),
-      ]).then(() => {
+      Promise.all([props.fetchExplosivesPermits(mine.mine_guid)]).then(() => {
         setIsLoaded(true);
       });
     }

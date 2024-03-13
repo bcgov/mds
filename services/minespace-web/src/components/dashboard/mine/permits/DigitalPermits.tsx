@@ -29,10 +29,7 @@ export const Permits: FC<DigitalPermitsProps> = ({
 
   useEffect(() => {
     if (!isLoaded) {
-      Promise.all([
-        props.fetchPermits(mine.mine_guid),
-        props.fetchExplosivesPermits(mine.mine_guid),
-      ]).then(() => {
+      Promise.all([props.fetchExplosivesPermits(mine.mine_guid)]).then(() => {
         setIsLoaded(true);
       });
     }
@@ -82,27 +79,24 @@ export const Permits: FC<DigitalPermitsProps> = ({
     );
     return (
       <>
-        {showDigitalWalletInfo && (
-          <div className="light-grey-background padding-md">
-            <Typography.Title level={5}>Generate your digital wallet connection</Typography.Title>
-            <Typography.Paragraph>
-              A digital wallet is a digital version of a physical wallet that enables organizations
-              to store, send and receive digital credentials. Digital credentials are
-              cryptographically protected to prevent the data from being altered and are exchanged
-              with digital wallets. Digital credentials enable mines to share data, certifications,
-              and credentials with investors, purchasers, regulators and more securely and in
-              seconds.{" "}
-              <a
-                href="https://digital.gov.bc.ca/learning/case-studies/energy-mines-digital-trust-pilot/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Learn more
-              </a>
-            </Typography.Paragraph>
-          </div>
-        )}
-
+        <div className="light-grey-background padding-md">
+          <Typography.Title level={5}>Generate your digital wallet connection</Typography.Title>
+          <Typography.Paragraph>
+            A digital wallet is a digital version of a physical wallet that enables organizations to
+            store, send and receive digital credentials. Digital credentials are cryptographically
+            protected to prevent the data from being altered and are exchanged with digital wallets.
+            Digital credentials enable mines to share data, certifications, and credentials with
+            investors, purchasers, regulators and more securely and in seconds.{" "}
+            <a
+              href="https://digital.gov.bc.ca/learning/case-studies/energy-mines-digital-trust-pilot/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Learn more
+            </a>
+          </Typography.Paragraph>
+        </div>
+        <br />
         <Typography.Title level={5}>Permittee Digital Wallet Connection Status</Typography.Title>
         {permittees.map((permittee) => (
           <Row
@@ -149,9 +143,9 @@ export const Permits: FC<DigitalPermitsProps> = ({
         <Typography.Title level={4}>Digital Permit Credentials</Typography.Title>
 
         <Typography.Paragraph>
-          The below table displays all of the <strong>permit applications</strong> associated with
-          this mine.Major mines operators in B.C. can now use digital credentials to prove that they
-          hold a valid Mines Act Permit from the Government of B.C.
+          The below table displays all of the digital credentials that have been issued to represent{" "}
+          <strong>permit applications</strong>. Major mines operators in B.C. can now use digital
+          credentials to prove that they hold a valid Mines Act Permit from the Government of B.C.
         </Typography.Paragraph>
         <DigitalWalletSection />
         <DigitalPermitsTable
