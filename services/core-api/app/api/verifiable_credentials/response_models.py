@@ -21,7 +21,3 @@ PARTY_VERIFIABLE_CREDENTIAL_MINES_ACT_PERMIT = api.model(
         "cred_rev_id": fields.String,
     }
 )
-
-PARTY_VERIFIABLE_CREDENTIAL_MINES_ACT_PERMIT_LIST = api.inherit('PartyVerifiableCredentialMinesActPermit',{
-    'records': fields.List(fields.Nested(PARTY_VERIFIABLE_CREDENTIAL_MINES_ACT_PERMIT))
-})
