@@ -7797,7 +7797,7 @@ export const ACTIVITIES = {
   },
 };
 
-export const VERIFIABLE_CREDENTIALS_ISSUANCE_RECORDS = [
+export const MINES_ACT_PERMITS_VC_LIST = [
   {
     party_guid: "1234",
     permit_amendment_guid: "1234",

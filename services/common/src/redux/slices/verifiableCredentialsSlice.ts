@@ -1,7 +1,7 @@
 import { createAppSlice } from "@mds/common/redux/createAppSlice";
 import { hideLoading, showLoading } from "react-redux-loading-bar";
 import CustomAxios from "@mds/common/redux/customAxios";
-import { ENVIRONMENT, VERIFIABLE_CREDENTIALS_ISSUANCE_RECORDS } from "@mds/common/constants";
+import { ENVIRONMENT, MINES_ACT_PERMITS_VC_LIST } from "@mds/common/constants";
 import * as API from "@mds/common/constants/API";
 import { RootState } from "@mds/common/redux/rootState";
 
@@ -38,7 +38,7 @@ const reducers = (create) => ({
 
       const response = await CustomAxios({
         errorToastMessage: "default",
-      }).get(`${ENVIRONMENT.apiUrl}${VERIFIABLE_CREDENTIALS_ISSUANCE_RECORDS(partyGuid)}`, headers);
+      }).get(`${ENVIRONMENT.apiUrl}${MINES_ACT_PERMITS_VC_LIST(partyGuid)}`, headers);
 
       thunkAPI.dispatch(hideLoading());
 

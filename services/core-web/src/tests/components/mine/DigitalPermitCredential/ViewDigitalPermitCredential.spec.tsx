@@ -12,7 +12,7 @@ const initialState = {
     mineDisturbanceOptions: MOCK.BULK_STATIC_CONTENT_RESPONSE.mineDisturbanceOptions,
   },
   verifiableCredentialConnections: {
-    verifiableCredentialConnections: MOCK.VERIFIABLE_CREDENTIALS_ISSUANCE_RECORDS,
+    verifiableCredentialConnections: MOCK.MINES_ACT_PERMITS_VC_LIST,
   },
 };
 
