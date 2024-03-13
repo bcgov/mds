@@ -1,8 +1,7 @@
-import React, { FC, useEffect, useState, useRef } from "react";
-import PropTypes from "prop-types";
+import React, { FC, useEffect, useState } from "react";
 import { connect } from "react-redux";
 
-import { Col, Row, Tabs, Typography } from "antd";
+import { Tabs } from "antd";
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 
@@ -10,7 +9,7 @@ import Permits from "@/components/dashboard/mine/permits/Permits";
 import DigitalPermits from "@/components/dashboard/mine/permits/DigitalPermits";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 
-import { IMine, IPermit, VC_CONNECTION_STATES, isFeatureEnabled } from "@mds/common";
+import { IMine, IPermit, VC_CONNECTION_STATES } from "@mds/common";
 
 interface IParams {
   id: string;
