@@ -1,5 +1,3 @@
-import "@ant-design/compatible/assets/index.css";
-
 import { Alert, Button, Col, Row, Table, Typography } from "antd";
 import {
   VC_ACTIVE_CONNECTION_STATES,
