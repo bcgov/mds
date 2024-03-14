@@ -3,7 +3,7 @@ import {
   VC_ACTIVE_CONNECTION_STATES,
   VC_CONNECTION_STATES,
   VC_CRED_ISSUE_STATES,
-} from "@mds/common";
+} from "@mds/common/constants";
 import {
   IMine,
   IMineCommodityOption,
@@ -290,7 +290,8 @@ export const ViewDigitalPermitCredential: FC = () => {
             <Row align="middle" justify="space-between">
               <Col span={8}>
                 <Paragraph className="margin-none">
-                  {VC_CRED_ISSUE_STATES[connectionDetails[0]?.cred_exch_state]}
+                  {VC_CRED_ISSUE_STATES[connectionDetails[0]?.cred_exch_state] ??
+                    "No Credential Issued"}
                 </Paragraph>
               </Col>
               <Col span={16}>
