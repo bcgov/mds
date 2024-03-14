@@ -15,12 +15,9 @@ import {
   requiredRadioButton,
 } from "@mds/common/redux/utils/Validate";
 import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
+import { CONTACTS_COUNTRY_OPTIONS } from "@mds/common";
 
-interface AgentProps {
-  countryOptions: any;
-}
-
-export const Agent: FC<AgentProps> = (props) => {
+export const Agent: FC = () => {
   const dispatch = useDispatch();
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
   const { agent = {}, is_agent = false } = formValues;
@@ -28,7 +25,6 @@ export const Agent: FC<AgentProps> = (props) => {
   const { address_type_code, sub_division_code } = address ?? {};
   const isInternational = address_type_code === "INT";
   // currently no endpoints, etc, for address_type_code
-  const { countryOptions } = props;
   const provinceOptions = useSelector(getDropdownProvinceOptions);
 
   useEffect(() => {
@@ -51,7 +47,6 @@ export const Agent: FC<AgentProps> = (props) => {
     const selectedProvince = sub_division_code
       ? provinceOptions.find((p) => p.value === sub_division_code)
       : {};
-
     if (address_type_code === "INT" || selectedProvince?.subType !== address_type_code) {
       dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.address.sub_division_code", null));
     }
@@ -184,7 +179,7 @@ export const Agent: FC<AgentProps> = (props) => {
                 label="Country"
                 required
                 validate={[required]}
-                data={countryOptions}
+                data={CONTACTS_COUNTRY_OPTIONS}
                 component={RenderSelect}
               />
             </Col>

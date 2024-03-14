@@ -8,6 +8,7 @@ import CustomPropTypes from "@/customPropTypes";
 import * as routes from "@/constants/routes";
 import { EDIT_PENCIL } from "@/constants/assets";
 import CoreTable from "@mds/common/components/common/CoreTable";
+import * as Strings from "@mds/common/constants/strings";
 
 const propTypes = {
   projects: PropTypes.arrayOf(CustomPropTypes.project).isRequired,
@@ -19,12 +20,11 @@ export class ProjectsTable extends Component {
     projects &&
     projects.map((project) => {
       const primaryContact = project.contacts.find((c) => c.is_primary);
-      const firstName = primaryContact?.first_name || "";
-      const lastName = primaryContact?.last_name || "";
+      const name = [primaryContact?.first_name, primaryContact?.last_name].join(" ").trim();
       return {
         key: project.project_guid,
         project,
-        primary_contact: `${firstName} ${lastName}`,
+        primary_contact: name || Strings.EMPTY_FIELD,
         mine_guid: project.mine_guid,
         proponent_project_id: project.proponent_project_id,
         project_title: project.project_title,

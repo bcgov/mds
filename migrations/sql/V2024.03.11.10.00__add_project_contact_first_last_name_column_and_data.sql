@@ -1,12 +1,11 @@
 ALTER TABLE project_contact
-    ALTER COLUMN name DROP NOT NULL,
     ADD COLUMN IF NOT EXISTS first_name varchar,
     ADD COLUMN IF NOT EXISTS last_name varchar;
 
 UPDATE project_contact 
     SET 
     first_name = SPLIT_PART(name, ' ', 1),
-    last_name = substring(name,(length(split_part(name,' ',1)))+1,(length(name)) - (length(split_part(name,' ',1))));
+    last_name = substring(name,(length(split_part(name,' ',1)))+2,(length(name)) - (length(split_part(name,' ',1))));
 
 ALTER TABLE project_contact
     DROP COLUMN IF EXISTS name;

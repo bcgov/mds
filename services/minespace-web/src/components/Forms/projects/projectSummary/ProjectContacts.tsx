@@ -1,13 +1,10 @@
 import React, { FC, useEffect } from "react";
-import PropTypes from "prop-types";
-import { connect, useSelector, useDispatch } from "react-redux";
-import { bindActionCreators } from "redux";
+import { useSelector, useDispatch } from "react-redux";
 import { isNil } from "lodash";
 import { Typography, Button, Row, Col, Popconfirm } from "antd";
 import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
 import PlusOutlined from "@ant-design/icons/PlusOutlined";
-import { Field, FieldArray, arrayPush, formValueSelector, getFormValues, change } from "redux-form";
-
+import { Field, FieldArray, arrayPush, getFormValues, change } from "redux-form";
 import {
   maxLength,
   phoneNumber,
@@ -20,23 +17,14 @@ import LinkButton from "@/components/common/LinkButton";
 import * as FORM from "@/constants/forms";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
-import { IProjectContact } from "@mds/common";
+import { CONTACTS_COUNTRY_OPTIONS } from "@mds/common";
 
 import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 
-interface ContactsProps {
-  arrayPush: (form: string, field: string, value: any) => void;
-  contacts: IProjectContact[];
-  countryOptions: any;
-}
-
-const contacts = (props) => {
-  const { fields, countryOptions } = props;
+const RenderContacts = (props) => {
+  const { fields, contacts } = props;
   const dispatch = useDispatch();
   const provinceOptions = useSelector(getDropdownProvinceOptions);
-
-  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
-  const { contacts = {} } = formValues;
   const handleClearProvince = (currentCountry, addressTypeCode, subDivisionCode, field) => {
     // clear out the province if country has changed and it no longer matches
     if (addressTypeCode !== currentCountry) {
@@ -189,7 +177,7 @@ const contacts = (props) => {
                   label="Country"
                   required={isPrimary}
                   validate={isPrimary ? [required] : []}
-                  data={countryOptions}
+                  data={CONTACTS_COUNTRY_OPTIONS}
                   component={RenderSelect}
                   onSelect={(e) =>
                     handleClearProvince(e, address_type_code, sub_division_code, field)
@@ -253,32 +241,23 @@ const contacts = (props) => {
   );
 };
 
-export const ProjectContacts: FC<ContactsProps> = (props) => {
+export const ProjectContacts: FC = () => {
+  const dispatch = useDispatch();
+  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
+  const { contacts = {} } = formValues;
+
   useEffect(() => {
-    if (isNil(props.contacts) || props.contacts.length === 0) {
-      props.arrayPush(FORM.ADD_EDIT_PROJECT_SUMMARY, "contacts", { is_primary: true });
+    if (isNil(contacts) || contacts.length === 0) {
+      dispatch(arrayPush(FORM.ADD_EDIT_PROJECT_SUMMARY, "contacts", { is_primary: true }));
     }
   }, []);
 
   return (
     <>
       <Typography.Title level={3}>Project Contacts</Typography.Title>
-      <FieldArray name="contacts" countryOptions={props.countryOptions} component={contacts} />
+      <FieldArray name="contacts" contacts={contacts} component={RenderContacts} />
     </>
   );
 };
 
-const selector = formValueSelector(FORM.ADD_EDIT_PROJECT_SUMMARY);
-const mapStateToProps = (state) => ({
-  contacts: selector(state, "contacts"),
-});
-
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      arrayPush,
-    },
-    dispatch
-  );
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectContacts);
+export default ProjectContacts;

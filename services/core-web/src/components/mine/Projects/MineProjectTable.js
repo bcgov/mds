@@ -20,9 +20,7 @@ const propTypes = {
 const transformRowData = (projects) => {
   return projects?.map((project) => {
     const contact = project?.contacts?.find((c) => c.is_primary);
-    const firstName = contact?.first_name || "";
-    const lastName = contact?.last_name || "";
-    const name = `${firstName} ${lastName}`;
+    const name = [contact?.first_name, contact?.last_name].join(" ").trim();
     return {
       key: project.project_guid,
       project,

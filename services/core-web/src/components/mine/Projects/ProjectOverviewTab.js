@@ -37,9 +37,7 @@ export class ProjectOverviewTab extends Component {
           const isPrimary = c.is_primary;
           const hasJobTitle = c.job_title;
           const isProjectLeadContact = c.is_project_lead_contact;
-          const firstName = c.first_name || "";
-          const lastName = c.last_name || "";
-
+          const name = [c?.first_name, c?.last_name].join(" ").trim();
           let title;
           if (isProjectLeadContact) {
             title = "EMLI Project Lead";
@@ -60,7 +58,7 @@ export class ProjectOverviewTab extends Component {
                 <Typography.Text>Project Lead has not been assigned</Typography.Text>
               ) : (
                 <>
-                  <Typography.Text>{`${firstName} ${lastName}`}</Typography.Text>
+                  <Typography.Text>{name || Strings.EMPTY_FIELD}</Typography.Text>
                   <br />
                   <Typography.Text>{c.phone_no || c.phone_number}</Typography.Text>
                   <br />

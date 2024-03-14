@@ -33,8 +33,7 @@ const formatProjectContact = (contacts): IProjectContact[] => {
   const primaryContact = contacts.filter((contact) => contact.is_primary);
   const secondaryContacts = contacts.filter((contact) => !contact.is_primary);
   const formattedContacts = [...primaryContact, ...secondaryContacts].map((contact) => {
-    const address = contact?.address;
-    return { ...contact, address: address?.length > 0 ? address[0] : null };
+    return { ...contact, address: contact?.address?.[0] || null };
   });
 
   return formattedContacts;

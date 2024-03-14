@@ -84,12 +84,6 @@ export const ProjectSummaryForm: FC<ProjectSummaryFormProps &
   const amsFeatureEnabled = isFeatureEnabled(Feature.AMS_AGENT);
   const projectFormTabs = getProjectFormTabs(amsFeatureEnabled);
 
-  const countryOptions = [
-    { value: "CAN", label: "Canada" },
-    { value: "USA", label: "United States" },
-    { value: "INT", label: "International" },
-  ];
-
   const renderTabComponent = (tab) =>
     ({
       "legal-land-owner-information": <LegalLandOwnerInformation />,
@@ -97,12 +91,10 @@ export const ProjectSummaryForm: FC<ProjectSummaryFormProps &
       "related-projects": (
         <ProjectLinks viewProject={(p) => EDIT_PROJECT.dynamicRoute(p.project_guid)} />
       ),
-      "project-contacts": (
-        <ProjectContacts initialValues={props.initialValues} countryOptions={countryOptions} />
-      ),
+      "project-contacts": <ProjectContacts />,
       "project-dates": <ProjectDates initialValues={props.initialValues} />,
       "applicant-information": <Applicant />,
-      agent: <Agent countryOptions={countryOptions} />,
+      agent: <Agent />,
       "facility-operator-information": <FacilityOperator />,
       "authorizations-involved": (
         <AuthorizationsInvolved initialValues={props.initialValues} change={props.change} />
