@@ -11,17 +11,7 @@ import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 
 import { IMine, IPermit, VC_CONNECTION_STATES } from "@mds/common";
 
-interface IParams {
-  id: string;
-  activeTab: string;
-}
-
-interface IMatch {
-  params: IParams;
-}
-
 interface PermitTabContainerProps {
-  match: IMatch;
   mine: IMine;
   permits: IPermit[];
   fetchPermits: ActionCreator<typeof fetchPermits>;
@@ -29,12 +19,7 @@ interface PermitTabContainerProps {
 
 const initialTab = "all_permits";
 
-export const PermitTabContainer: FC<PermitTabContainerProps> = ({
-  match,
-  mine,
-  permits,
-  ...props
-}) => {
+export const PermitTabContainer: FC<PermitTabContainerProps> = ({ mine, permits, ...props }) => {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   useEffect(() => {
@@ -69,12 +54,12 @@ export const PermitTabContainer: FC<PermitTabContainerProps> = ({
   return (
     <Tabs type="card">
       <Tabs.TabPane tab="All Permits" key={initialTab}>
-        <Permits mine={mine} match={match} permits={permits} />
+        <Permits mine={mine} permits={permits} />
       </Tabs.TabPane>
 
       {showDigitalWalletSection && (
         <Tabs.TabPane tab="Digital Permit Credentials" key={"digital_permit_credentials"}>
-          <DigitalPermits mine={mine} match={match} permits={permits} />
+          <DigitalPermits mine={mine} permits={permits} />
         </Tabs.TabPane>
       )}
     </Tabs>
