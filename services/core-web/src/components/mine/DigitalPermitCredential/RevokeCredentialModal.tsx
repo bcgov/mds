@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Popconfirm, Typography } from "antd";
 import { closeModal } from "@mds/common/redux/actions/modalActions";
 import { useDispatch } from "react-redux";
@@ -10,14 +10,25 @@ import { FORM } from "@mds/common";
 
 const { Paragraph, Title } = Typography;
 
-const RevokeCredentialModal = ({ submitting = false, onSubmit }) => {
+const RevokeCredentialModal = ({ onSubmit }) => {
+  const [submitting, setSubmitting] = useState(false);
   const dispatch = useDispatch();
+
+  const handleSubmit = async (values) => {
+    setSubmitting(true);
+    await onSubmit(values);
+
+    setSubmitting(false);
+    dispatch(closeModal());
+  };
+
   return (
     <div>
       <FormWrapper
         name={FORM.REVOKE_DIGITAL_CREDENTIAL}
-        onSubmit={onSubmit}
+        onSubmit={handleSubmit}
         initialValues={{ comment: "" }}
+        loading={submitting}
       >
         <Title level={2}>Revoke Credential</Title>
         <Paragraph>
@@ -34,15 +45,18 @@ const RevokeCredentialModal = ({ submitting = false, onSubmit }) => {
         />
         <div className="right center-mobile" style={{ paddingTop: "14px" }}>
           <Popconfirm
+            disabled={submitting}
             placement="topRight"
             title="Are you sure you want to cancel?"
             onConfirm={() => dispatch(closeModal())}
             okText="Yes"
             cancelText="No"
           >
-            <Button className="full-mobile">Cancel</Button>
+            <Button disabled={submitting} className="full-mobile">
+              Cancel
+            </Button>
           </Popconfirm>
-          <Button className="full-mobile" type="primary" htmlType="submit" loading={submitting}>
+          <Button loading={submitting} className="full-mobile" type="primary" htmlType="submit">
             Revoke Credential
           </Button>
         </div>
