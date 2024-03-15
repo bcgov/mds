@@ -38,7 +38,12 @@ export const PartyOrgBookForm: FC<PartyOrgBookFormProps> = ({ party }) => {
   return (
     <Row>
       <Col span={24}>
-        <OrgBookSearch isDisabled={isAssociating} setCredential={setCredential} />
+        <OrgBookSearch
+          input={null}
+          meta={null}
+          isDisabled={isAssociating}
+          setCredential={setCredential}
+        />
       </Col>
       <Col span={24}>
         <Button

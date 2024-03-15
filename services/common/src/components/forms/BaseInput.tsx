@@ -64,7 +64,7 @@ export interface BaseInputProps extends WrappedFieldProps {
   input: WrappedFieldInputProps;
   label?: string | ReactNode;
   labelSubtitle?: string | ReactNode;
-  id: string;
+  id?: string;
   defaultValue?: any;
   placeholder?: string;
   disabled?: boolean;
