@@ -9,7 +9,7 @@ import Permits from "@/components/dashboard/mine/permits/Permits";
 import DigitalPermits from "@/components/dashboard/mine/permits/DigitalPermits";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 
-import { IMine, IPermit, VC_CONNECTION_STATES } from "@mds/common";
+import { Feature, IMine, IPermit, VC_CONNECTION_STATES, isFeatureEnabled } from "@mds/common";
 
 interface PermitTabContainerProps {
   mine: IMine;
@@ -30,26 +30,15 @@ export const PermitTabContainer: FC<PermitTabContainerProps> = ({ mine, permits,
     }
   }, []);
 
-  const showDigitalWalletSection = () => {
+  const showDigitalWalletTab = () => {
     // list of permittees from open permits with no duplicates
-    const permittees: any[] = [];
-    permits
-      .filter((p) => p.permit_status_code === "O")
-      .forEach((permit) => {
-        if (!permittees.find((p) => p.current_permittee_guid === permit.current_permittee_guid)) {
-          const permittee = {
-            name: permit.current_permittee,
-            current_permittee_guid: permit.current_permittee_guid,
-            status: permit.current_permittee_digital_wallet_connection_state,
-          };
-          permittees.push(permittee);
-        }
-      });
+    const open_permits = permits.filter((p) => p.permit_status_code === "O");
 
-    const showDigitalWalletInfo = permittees.some(
-      (p) => VC_CONNECTION_STATES[p.status] !== VC_CONNECTION_STATES.active
-    );
-    return showDigitalWalletInfo;
+    const result =
+      mine.major_mine_ind &&
+      isFeatureEnabled(Feature.VERIFIABLE_CREDENTIALS) &&
+      open_permits.length > 0;
+    return result;
   };
   return (
     <Tabs type="card">
@@ -57,7 +46,7 @@ export const PermitTabContainer: FC<PermitTabContainerProps> = ({ mine, permits,
         <Permits mine={mine} permits={permits} />
       </Tabs.TabPane>
 
-      {showDigitalWalletSection && (
+      {showDigitalWalletTab && (
         <Tabs.TabPane tab="Digital Permit Credentials" key={"digital_permit_credentials"}>
           <DigitalPermits mine={mine} permits={permits} />
         </Tabs.TabPane>
