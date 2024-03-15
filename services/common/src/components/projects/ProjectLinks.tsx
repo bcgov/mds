@@ -14,6 +14,7 @@ import {
 } from "@mds/common/redux/actionCreators/projectActionCreator";
 import { dateSorter } from "@mds/common/redux/utils/helpers";
 import RenderMultiSelect from "../forms/RenderMultiSelect";
+import * as Strings from "@mds/common/constants/strings";
 
 interface ProjectLinksProps {
   viewProject: (record: ILinkedProject) => string;
@@ -90,7 +91,6 @@ const ProjectLinks: FC<ProjectLinksProps> = ({ viewProject, tableOnly = false })
   const separateProjectLists = (projects: IProject[]): [ILinkedProject[], IProject[]] => {
     // guids to filter out from the input as options
     const relatedProjectGuids = [project.project_guid];
-
     const { project_links = [] } = project;
     const related: ILinkedProject[] = project_links.map((link) => {
       const relatedProject =
@@ -101,11 +101,12 @@ const ProjectLinks: FC<ProjectLinksProps> = ({ viewProject, tableOnly = false })
         relatedProject.major_mine_application.status_code,
         relatedProject.information_requirements_table.status_code
       );
-      const primary_contact = relatedProject.contacts.find((c: any) => c.name)?.name || "";
+      const primary_contact = relatedProject.contacts.find((c: any) => c.is_primary);
+      const name = [primary_contact?.first_name, primary_contact?.last_name].join(" ").trim();
       const { project_summary_guid } = relatedProject.project_summary;
       return {
         ...relatedProject,
-        primary_contact,
+        primary_contact: name || Strings.EMPTY_FIELD,
         status_description,
         project_summary_guid,
         project_link_guid: link.project_link_guid,

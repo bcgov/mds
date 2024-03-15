@@ -37,7 +37,8 @@ describe("Major Projects", () => {
     cy.get("#mrc_review_required")
       .contains("No")
       .click({ force: true });
-    cy.get("#contacts\\[0\\]\\.name").type("Cypress", { force: true });
+    cy.get("#contacts\\[0\\]\\.first_name").type("Cypress", { force: true });
+    cy.get("#contacts\\[0\\]\\.last_name").type("Test", { force: true });
     cy.get("#contacts\\[0\\]\\.email").type("cypress@mds.com", { force: true });
     cy.get("#contacts\\[0\\]\\.phone_number").type("1234567890", { force: true });
 

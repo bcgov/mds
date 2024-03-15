@@ -1,6 +1,6 @@
 import {
   IProjectSummaryDocument,
-  IProjectSummaryContact,
+  IProjectContact,
   IProjectSummaryAuthorization,
   IParty,
 } from "@mds/common/index";
@@ -21,7 +21,7 @@ export interface IProjectSummary {
   expected_permit_receipt_date?: string;
   expected_project_start_date?: string;
   documents: Partial<IProjectSummaryDocument>[];
-  contacts: IProjectSummaryContact[];
+  contacts: IProjectContact[];
   authorizations: IProjectSummaryAuthorization[];
   update_user: string;
   update_timestamp: string;

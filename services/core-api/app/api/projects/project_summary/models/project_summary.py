@@ -22,6 +22,8 @@ from app.api.constants import PROJECT_SUMMARY_EMAILS, MDS_EMAIL
 from app.api.services.email_service import EmailService
 from app.config import Config
 
+from app.api.utils.helpers import validate_phone_no
+
 class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'project_summary'
 
@@ -185,7 +187,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     def create_or_update_party(cls, party_data, job_title_code, existing_party):
         address_data = party_data.get('address')
         party_guid = party_data.get('party_guid')
-        Party.validate_phone_no(party_data.get('phone_no'), address_data.get('address_type_code'))
+        validate_phone_no(party_data.get('phone_no'), address_data.get('address_type_code'))
         if party_guid is not None and existing_party is not None:            
             existing_party.deep_update_from_dict(party_data)
             for key, value in address_data.items():
@@ -363,7 +365,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         self.zoning = zoning
         self.zoning_reason = zoning_reason
 
-        if facility_operator:
+        if facility_operator and facility_type:
             if not facility_operator['party_type_code']:
                 facility_operator["party_type_code"] = "PER"
             fop_party = self.create_or_update_party(facility_operator, 'FOP', self.facility_operator)

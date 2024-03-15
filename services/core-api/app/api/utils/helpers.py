@@ -79,3 +79,16 @@ def create_image_with_aspect_ratio(source, width=None, height=None):
         width = width / 96
 
     return {'source': source, 'width': width, 'height': height}
+
+def validate_phone_no(phone_no, address_type_code='CAN'):
+    current_app.logger.info("inside validate_phone_no")
+    current_app.logger.info(phone_no)
+    current_app.logger.info(address_type_code)
+    if not phone_no:
+        raise AssertionError('Phone number is not provided.')
+    # TODO: this is an arbitrary limit for phone number characters, actual number depends on formatting decisions
+    if address_type_code == 'INT' and len(phone_no) > 50:
+        raise AssertionError('Invalid phone number, max 50 characters')
+    if address_type_code in ['CAN', 'USA'] and not re.match(r'[0-9]{3}-[0-9]{3}-[0-9]{4}', phone_no):
+        raise AssertionError('Invalid phone number format, must be of XXX-XXX-XXXX.')
+    return phone_no

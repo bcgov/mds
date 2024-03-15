@@ -4,7 +4,9 @@ import {
 } from "@mds/common/constants/enums";
 
 interface IProjectLinkContact {
-  name: string;
+  first_name: string;
+  last_name: string;
+  is_primary: boolean;
 }
 
 interface IProjectLinkSummary {

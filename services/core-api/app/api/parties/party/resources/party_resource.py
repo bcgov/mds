@@ -19,6 +19,8 @@ from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.utils.resources_mixins import UserMixin
 from app.extensions import api, jwt, cache
 
+from app.api.utils.helpers import validate_phone_no
+
 
 class PartyResource(Resource, UserMixin):
     parser = CustomReqparser()
@@ -233,7 +235,7 @@ class PartyResource(Resource, UserMixin):
                 continue  # non-editable fields from put
             setattr(existing_party, key, value)
 
-        Party.validate_phone_no(existing_party.phone_no)
+        validate_phone_no(existing_party.phone_no)
 
         # We are now allowing parties to be created without an address
         if (data.get('suite_no') or data.get('address_line_1') or data.get('address_line_2')

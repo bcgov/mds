@@ -40,6 +40,7 @@ export class ProjectOverviewTab extends Component {
         {contacts.map((c) => {
           const isPrimary = c.is_primary;
           const hasJobTitle = c.job_title;
+          const name = [c?.first_name, c?.last_name].join(" ").trim();
           let title;
           if (isPrimary) {
             title = "Primary Contact";
@@ -54,7 +55,7 @@ export class ProjectOverviewTab extends Component {
                 </Typography.Text>
               )}
               <br />
-              <Typography.Text>{c.name}</Typography.Text>
+              <Typography.Text>{name || Strings.EMPTY_FIELD}</Typography.Text>
               <br />
               <Typography.Text>{c.phone_number}</Typography.Text>
               <br />

@@ -27,6 +27,8 @@ from app.api.now_applications.transmogrify_now import transmogrify_now
 from app.api.services.nros_now_status_service import NROSNOWStatusService
 from app.api.now_applications.models.now_application_status import NOWApplicationStatus
 
+from app.api.utils.helpers import validate_phone_no
+
 
 class NOWApplicationImportResource(Resource, UserMixin):
     parser = CustomReqparser()
@@ -72,7 +74,7 @@ class NOWApplicationImportResource(Resource, UserMixin):
             if not now_party:
                 raise NotFound(f'No party found for party with guid {party_guid}')
 
-            Party.validate_phone_no(now_party.phone_no)
+            validate_phone_no(now_party.phone_no)
 
             mine_party_appt_type_code = contact['mine_party_appt_type_code']
             mine_party_appt_type = MinePartyAppointmentType.find_by_mine_party_appt_type_code(

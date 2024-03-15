@@ -1266,7 +1266,8 @@ class ProjectContactFactory(BaseFactory):
     project_guid = factory.SelfAttribute('project.project_guid')
     email = factory.Faker('email')
     phone_number = factory.Faker('numerify', text='###-###-####')
-    name = factory.Faker('name')
+    first_name = factory.Faker('first_name')
+    last_name = factory.Faker('last_name')
     is_primary = True
     deleted_ind = False
 
