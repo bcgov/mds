@@ -4,10 +4,15 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import { reduxForm, reducer as formReducer } from "redux-form";
 import { LegalLandOwnerInformation } from "@mds/common/components/projectSummary/LegalLandOwnerInformation";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
 const mockStore = configureStore({
   form: formReducer,
 });
+
+const STATIC_CONTENT = {
+  municipalityOptions: MOCK.BULK_STATIC_CONTENT_RESPONSE.municipalityOptions,
+};
 
 const WrappedLegalLandOwnerInformation = reduxForm({
   form: "ADD_EDIT_PROJECT_SUMMARY",
@@ -23,6 +28,7 @@ describe("LegalLandOwnerInformation Component", () => {
           values: {},
         },
       },
+      STATIC_CONTENT,
     });
     const { container, getByText } = render(
       <Provider store={store}>
@@ -41,6 +47,7 @@ describe("LegalLandOwnerInformation Component", () => {
           values: { is_legal_land_owner: false },
         },
       },
+      STATIC_CONTENT,
     });
     const { getByText } = render(
       <Provider store={store}>
@@ -68,6 +75,7 @@ describe("LegalLandOwnerInformation Component", () => {
           values: { is_legal_land_owner: true },
         },
       },
+      STATIC_CONTENT,
     });
     const { getByText } = render(
       <Provider store={store}>
