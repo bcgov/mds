@@ -4,6 +4,7 @@ from flask import Response, current_app, make_response
 from flask_restx import Resource, marshal
 from sqlalchemy.inspection import inspect
 
+from app.api.municipalities.models.municipality import Municipality
 from app.extensions import api, cache
 
 from app.api.utils.access_decorators import requires_role_view_all
@@ -87,7 +88,7 @@ MODELS_GET_ACTIVE = [
     ExplosivesPermitMagazineType, ExplosivesPermitDocumentType, ProjectSummaryDocumentType,
     ProjectSummaryStatusCode, EMLIContactType, ProjectSummaryAuthorizationType,
     ProjectSummaryPermitType, InformationRequirementsTableStatusCode, InformationRequirementsTableDocumentType,
-    MajorMineApplicationStatusCode, MajorMineApplicationDocumentType, ProjectDecisionPackageStatusCode, ProjectDecisionPackageDocumentType
+    MajorMineApplicationStatusCode, MajorMineApplicationDocumentType, ProjectDecisionPackageStatusCode, ProjectDecisionPackageDocumentType, Municipality
 ]
 
 

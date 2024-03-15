@@ -1,9 +1,12 @@
+from flask import current_app
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.dialects.postgresql import UUID
 
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy import case
 from werkzeug.exceptions import BadRequest
+
+from app.api.municipalities.models.municipality import Municipality
 from app.extensions import db
 
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
@@ -58,6 +61,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     facility_lease_no = db.Column(db.String, nullable=True)
     zoning = db.Column(db.Boolean, nullable=True)
     zoning_reason = db.Column(db.String, nullable=True)
+    nearest_municipality_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('municipality.municipality_guid'))
 
 
     project_guid = db.Column(
@@ -78,6 +82,9 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     )
     facility_operator = db.relationship(
         'Party', lazy='joined', foreign_keys=facility_operator_guid
+    )
+    nearest_municipality = db.relationship(
+        'Municipality', lazy='joined', foreign_keys=nearest_municipality_guid
     )
     authorizations = db.relationship(
         'ProjectSummaryAuthorization',
@@ -308,6 +315,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                facility_lease_no=None,
                zoning=None,
                zoning_reason=None,
+               nearest_municipality=None,
                add_to_session=True):
 
         # Update simple properties.
@@ -371,6 +379,11 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             fop_party = self.create_or_update_party(facility_operator, 'FOP', self.facility_operator)
             fop_party.save()
             self.facility_operator_guid = fop_party.party_guid
+
+        municipality = Municipality.find_by_guid(nearest_municipality)
+        if not municipality:
+            raise Exception('Municipality ID provided does not exist in the municipalities table')
+        self.nearest_municipality_guid = nearest_municipality
 
         # Create or update existing documents.
         for doc in documents:

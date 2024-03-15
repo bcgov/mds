@@ -9,13 +9,17 @@ import {
   requiredRadioButton,
 } from "@mds/common/redux/utils/Validate";
 import { useSelector } from "react-redux";
-import { FORM } from "@mds/common";
+import { FORM } from "@mds/common/constants";
 import RenderField from "../forms/RenderField";
+import { getDropdownMunicipalities } from "@mds/common/redux/selectors/staticContentSelectors";
+import RenderSelect from "@mds/common/components/forms/RenderSelect";
 
 export const LegalLandOwnerInformation: FC = () => {
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
 
   const { is_legal_land_owner = false } = formValues;
+
+  const municipalityOptions = useSelector(getDropdownMunicipalities);
 
   return (
     <div className="ant-form-vertical">
@@ -96,6 +100,18 @@ export const LegalLandOwnerInformation: FC = () => {
                 component={RenderField}
                 required={!is_legal_land_owner}
                 validate={!is_legal_land_owner ? [required, email] : []}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col md={12} sm={24}>
+              <Field
+                name="nearest_municipality"
+                id="nearest_municipality"
+                label="Nearest Municipality to Facility/Site"
+                required
+                component={RenderSelect}
+                data={municipalityOptions}
               />
             </Col>
           </Row>

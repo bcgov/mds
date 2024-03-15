@@ -3938,6 +3938,52 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
     { mine_report_category: "TSF", description: "Tailings Storage Facility" },
     { mine_report_category: "OTH", description: "Other" },
   ],
+  municipalityOptions: [
+    {
+      municipality_name: "Village of Valemount",
+      municipality_guid: "a331b2b2-dad4-45b4-834f-f974b87decd1",
+    },
+    {
+      municipality_name: "District of Kitimat",
+      municipality_guid: "f191717b-a853-4a13-9237-4188a58e966e",
+    },
+    {
+      municipality_name: "The Corporation of the Village of Hazelton",
+      municipality_guid: "43790a4f-9c0f-4162-8657-926a07189384",
+    },
+    {
+      municipality_name: "District of New Hazelton",
+      municipality_guid: "756baa54-ac67-469f-b40f-1075cf7c5bd9",
+    },
+    {
+      municipality_name: "District of Stewart",
+      municipality_guid: "731968e3-e27d-4237-9068-c989f233aecf",
+    },
+    {
+      municipality_name: "City of Terrace",
+      municipality_guid: "a26439cd-13a3-442d-82fd-b5a6524e7f3e",
+    },
+    {
+      municipality_name: "Northern Rockies Regional Municipality",
+      municipality_guid: "3d6aeebe-e11a-4c22-b30e-133a2e7172b3",
+    },
+    {
+      municipality_name: "District of Tumbler Ridge",
+      municipality_guid: "171b7cbc-1079-44c2-9b61-ae1cb31be3d2",
+    },
+    {
+      municipality_name: "District of Chetwynd",
+      municipality_guid: "8e5cb07c-ae1a-4c10-bcd5-8e63cda7ce18",
+    },
+    {
+      municipality_name: "Village of Anmore",
+      municipality_guid: "0db4299f-efd1-4618-b8a2-171583355603",
+    },
+    {
+      municipality_name: "Village of Belcarra",
+      municipality_guid: "abbadb49-446d-49ab-8500-8352a9da46be",
+    },
+  ],
   partyRelationshipTypes: [],
   partyBusinessRoleOptions: [],
   noticeOfWorkActivityTypeOptions: [
