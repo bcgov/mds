@@ -1,6 +1,6 @@
 ALTER TABLE project_contact
-    ADD COLUMN IF NOT EXISTS first_name varchar,
-    ADD COLUMN IF NOT EXISTS last_name varchar;
+    ADD COLUMN IF NOT EXISTS first_name varchar(200),
+    ADD COLUMN IF NOT EXISTS last_name varchar(200);
 
 UPDATE project_contact 
     SET 
