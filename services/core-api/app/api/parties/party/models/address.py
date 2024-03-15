@@ -22,8 +22,11 @@ class Address(SoftDeleteMixin, AuditMixin, Base):
     post_code = db.Column(db.String, nullable=True)
     address_type_code = db.Column(db.String, nullable=False, server_default=FetchedValue())
 
-    party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=False)
+    party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
     party = db.relationship('Party', lazy='joined', back_populates='address')
+
+    project_contact_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('project_contact.project_contact_guid'))
+    project_contact = db.relationship('ProjectContact', lazy='joined', back_populates='address')
 
     def __repr__(self):
         return '<Address %r>' % self.address_id

@@ -91,7 +91,7 @@ export const ProjectSummaryForm: FC<ProjectSummaryFormProps &
       "related-projects": (
         <ProjectLinks viewProject={(p) => EDIT_PROJECT.dynamicRoute(p.project_guid)} />
       ),
-      "project-contacts": <ProjectContacts initialValues={props.initialValues} />,
+      "project-contacts": <ProjectContacts />,
       "project-dates": <ProjectDates initialValues={props.initialValues} />,
       "applicant-information": <Applicant />,
       agent: <Agent />,

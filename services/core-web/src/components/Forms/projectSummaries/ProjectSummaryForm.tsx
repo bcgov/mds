@@ -95,14 +95,29 @@ const contactFields = ({ fields, isNewProject, isEditMode }) => {
             )}
             <Row gutter={16}>
               <Col span={18}>
-                <Field
-                  name={`${field}.name`}
-                  id={`${field}.name`}
-                  label="Name"
-                  component={renderConfig.FIELD}
-                  validate={[required]}
-                  disabled={!isNewProject && !isEditMode}
-                />
+                <Row gutter={16}>
+                  <Col md={12} sm={24}>
+                    <Field
+                      name={`${field}.first_name`}
+                      id={`${field}.first_name`}
+                      label="First Name"
+                      component={renderConfig.FIELD}
+                      validate={[required]}
+                      disabled={!isNewProject && !isEditMode}
+                    />
+                  </Col>
+                  <Col md={12} sm={24}>
+                    <Field
+                      name={`${field}.last_name`}
+                      id={`${field}.last_name`}
+                      label="Last Name"
+                      component={renderConfig.FIELD}
+                      validate={[required]}
+                      disabled={!isNewProject && !isEditMode}
+                    />
+                  </Col>
+                </Row>
+
                 <Field
                   name={`${field}.job_title`}
                   id={`${field}.job_title`}

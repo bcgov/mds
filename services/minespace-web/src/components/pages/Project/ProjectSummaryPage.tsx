@@ -200,12 +200,17 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
     }
 
     // Additional check for contacts
-    if (
-      payload.contacts &&
-      payload.contacts.length > 0 &&
-      (!payload.contacts[0].name || !payload.contacts[0].email || !payload.contacts[0].phone_number)
-    ) {
-      return "contacts";
+    if (payload.contacts && payload.contacts.length > 0) {
+      for (let i = 0; i < payload.contacts.length; i++) {
+        const contact = payload?.contacts[i];
+        const address = contact?.address;
+        const verifyPersonInfo =
+          !contact.first_name || !contact.last_name || !contact.email || !contact.phone_number;
+        const verifyAddressInfoForPrimary = contact.is_primary && !address;
+        if (verifyPersonInfo || verifyAddressInfoForPrimary) {
+          return "contacts";
+        }
+      }
     }
 
     // Get agent information and party type code
