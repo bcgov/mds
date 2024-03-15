@@ -278,7 +278,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   };
 
   const fetchComments = async () => {
-    if (mineGuid && formValues.mine_report_guid) {
+    if (mineGuid && formValues.mine_report_guid && system === SystemFlagEnum.core) {
       setIsLoading(true);
       await dispatch(fetchMineReportComments(mineGuid, formValues.mine_report_guid));
       setIsLoading(false);

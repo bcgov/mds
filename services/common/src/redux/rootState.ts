@@ -14,6 +14,7 @@ export const getStore = (preloadedState = {}) =>
 
 export const store = getStore();
 
+// @ts-ignore
 type RootState = ReturnType<typeof store.getState>;
 
 export { RootState };

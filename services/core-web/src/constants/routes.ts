@@ -55,6 +55,7 @@ import MineTailingsDetailsPage from "@/components/mine/Tailings/MineTailingsDeta
 import DamsDetailsPage from "@/components/mine/Tailings/DamsDetailsPage";
 import ReportPage from "@/components/mine/Reports/ReportPage";
 import ReportSteps from "@mds/common/components/reports/ReportSteps";
+import ViewDigitalPermitCredential from "@/components/mine/DigitalPermitCredential/ViewDigitalPermitCredential";
 
 const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));
@@ -151,6 +152,13 @@ export const MINE_PERMITS = {
   route: "/mine-dashboard/:id/permits-and-approvals/permits",
   dynamicRoute: (id) => `/mine-dashboard/${id}/permits-and-approvals/permits`,
   component: MinePermitInfo,
+};
+
+export const MINE_PERMIT_DIGITAL_CREDENTIALS = {
+  route: "/mine-dashboard/:id/permits-and-approvals/digital-credentials/:permitGuid",
+  dynamicRoute: (id, permitGuid) =>
+    `/mine-dashboard/${id}/permits-and-approvals/digital-credentials/${permitGuid}`,
+  component: ViewDigitalPermitCredential,
 };
 
 export const MINE_SECURITIES = {

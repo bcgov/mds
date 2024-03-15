@@ -8,7 +8,7 @@ import DownloadOutlined from "@ant-design/icons/DownloadOutlined";
 import FileOutlined from "@ant-design/icons/FileOutlined";
 import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
-import { USER_ROLES } from "@mds/common";
+import { USER_ROLES } from "@mds/common/constants";
 import { truncateFilename } from "@mds/common/redux/utils/helpers";
 import { openDocument, isDocumentOpenable } from "../syncfusion/DocumentViewer";
 import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls";

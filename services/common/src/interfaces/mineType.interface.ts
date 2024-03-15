@@ -7,4 +7,6 @@ export interface IMineType {
   now_application_guid: string | null;
   mine_tenure_type_code: string;
   mine_type_detail: IMineTypeDetail[];
+  mine_commodity_code?: string[];
+  mine_disturbance_code?: string[];
 }

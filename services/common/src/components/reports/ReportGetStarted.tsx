@@ -4,12 +4,10 @@ import { Field, getFormValues, change } from "redux-form";
 import ArrowRightOutlined from "@ant-design/icons/ArrowRightOutlined";
 import { useSelector, useDispatch } from "react-redux";
 import { IMine, IMineReportDefinition, IMineReportSubmission } from "@mds/common/interfaces";
-import { getMineReportDefinitionOptions } from "@mds/common/redux/reducers/staticContentReducer";
 import {
   createDropDownList,
   formatComplianceCodeReportName,
 } from "@mds/common/redux/utils/helpers";
-import { uniqBy } from "lodash";
 import ExportOutlined from "@ant-design/icons/ExportOutlined";
 import {
   FORM,
@@ -23,7 +21,11 @@ import FormWrapper from "../forms/FormWrapper";
 import RenderRadioButtons from "../forms/RenderRadioButtons";
 import { required, requiredRadioButton } from "@mds/common/redux/utils/Validate";
 import RenderSelect from "../forms/RenderSelect";
-import { getDropdownPermitConditionCategoryOptions } from "@mds/common/redux/selectors/staticContentSelectors";
+import {
+  getDropdownPermitConditionCategoryOptions,
+  getFormattedMineReportDefinitionOptions,
+  getMineReportDefinitionByGuid,
+} from "@mds/common/redux/selectors/staticContentSelectors";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
@@ -35,7 +37,49 @@ interface ReportGetStartedProps {
   formButtons: ReactNode;
 }
 
-export const RenderPRRFields: FC<{ mineGuid: string }> = ({ mineGuid }) => {
+export const ReportInfoBox: FC<{ mineReportDefinition: IMineReportDefinition; verb: string }> = ({
+  mineReportDefinition,
+  verb,
+}) => {
+  return (
+    <div className="report-info-box">
+      {mineReportDefinition && (
+        <div>
+          <Typography.Title level={4} className="primary-colour">
+            You are {verb}
+          </Typography.Title>
+          <Typography.Title level={5}>
+            {formatComplianceCodeReportName(mineReportDefinition)}
+          </Typography.Title>
+
+          {mineReportDefinition.compliance_articles[0].long_description && (
+            <>
+              <Typography.Title level={5}>About this submission type:</Typography.Title>
+              <Typography.Paragraph>
+                {mineReportDefinition.compliance_articles[0].long_description}
+              </Typography.Paragraph>
+            </>
+          )}
+          {mineReportDefinition.compliance_articles[0].help_reference_link && (
+            <Button
+              target="_blank"
+              rel="noopener noreferrer"
+              href={mineReportDefinition.compliance_articles[0].help_reference_link}
+              type="default"
+            >
+              More information <ExportOutlined />
+            </Button>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export const RenderPRRFields: FC<{ mineGuid: string; fullWidth?: boolean }> = ({
+  mineGuid,
+  fullWidth = false,
+}) => {
   const system = useSelector(getSystemFlag);
   const dispatch = useDispatch();
   const dropdownPermitConditionCategoryOptions = useSelector(
@@ -68,7 +112,7 @@ export const RenderPRRFields: FC<{ mineGuid: string }> = ({ mineGuid }) => {
           </Typography.Paragraph>
         </>
       )}
-      <Col md={12} sm={24}>
+      <Col md={!fullWidth && 12} sm={24}>
         <Field
           name="permit_guid"
           label="Permit Number"
@@ -93,7 +137,7 @@ export const RenderPRRFields: FC<{ mineGuid: string }> = ({ mineGuid }) => {
         </Col>
       )}
       {isCore && (
-        <Col md={12} sm={24}>
+        <Col md={!fullWidth && 12} sm={24}>
           <Field
             name="permit_condition_category_code"
             required
@@ -113,27 +157,13 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({ mine, handleSubmit, formB
   const { reportType } = useParams<{ reportType?: string }>();
   const system = useSelector(getSystemFlag);
   const formValues = useSelector(getFormValues(FORM.VIEW_EDIT_REPORT));
-  const [selectedReportDefinition, setSelectedReportDefinition] = useState<IMineReportDefinition>();
   const [commonReportDefinitionOptions, setCommonReportDefinitionOptions] = useState([]);
-  const [formattedMineReportDefinitionOptions, setFormattedMineReportDefinitionOptions] = useState(
-    []
+  const mineReportDefinitionOptions = useSelector(getFormattedMineReportDefinitionOptions);
+  const selectedReportDefinition: IMineReportDefinition = useSelector(
+    getMineReportDefinitionByGuid(formValues?.mine_report_definition_guid)
   );
-  const mineReportDefinitionOptions = useSelector(getMineReportDefinitionOptions);
 
   useEffect(() => {
-    // Format the mine report definition options for the search bar
-    const newFormattedMineReportDefinitionOptions = mineReportDefinitionOptions
-      .map((report) => {
-        return {
-          label: formatComplianceCodeReportName(report),
-          value: report.mine_report_definition_guid,
-        };
-      })
-      .sort((a, b) => a.label.localeCompare(b.label));
-    setFormattedMineReportDefinitionOptions(
-      uniqBy(newFormattedMineReportDefinitionOptions, "value")
-    );
-
     // Filter out common reports and sort alphabetically
     const commonReportDefinitions = mineReportDefinitionOptions
       .filter((report) => report.is_common)
@@ -142,11 +172,6 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({ mine, handleSubmit, formB
   }, [mineReportDefinitionOptions]);
 
   const handleReportDefinitionChange = (newValue: string) => {
-    // Set the selected report definition to be displayed and used in the next step
-    const newReport = mineReportDefinitionOptions.find(
-      (report) => report.mine_report_definition_guid === newValue
-    );
-    setSelectedReportDefinition(newReport);
     dispatch(change(FORM.VIEW_EDIT_REPORT, "mine_report_definition_guid", newValue));
   };
 
@@ -253,10 +278,9 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({ mine, handleSubmit, formB
                       ),
                       labelSubtitle:
                         "Search for a code section or the report name you would like to submit",
-                      data: formattedMineReportDefinitionOptions,
+                      data: mineReportDefinitionOptions,
                     }}
                     component={RenderSelect}
-                    onChange={(value) => handleReportDefinitionChange(value)}
                   />
                   <Typography.Paragraph
                     strong
@@ -269,9 +293,7 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({ mine, handleSubmit, formB
                     <Row key={report.report_name}>
                       <Col span={24}>
                         <Button
-                          onClick={() =>
-                            handleReportDefinitionChange(report.mine_report_definition_guid)
-                          }
+                          onClick={() => handleReportDefinitionChange(report.value)}
                           type="text"
                           className="report-link btn-sm-padding"
                         >
@@ -286,35 +308,7 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({ mine, handleSubmit, formB
                 </div>
               </Col>
               <Col span={12}>
-                <div className="report-info-box">
-                  {selectedReportDefinition && (
-                    <div>
-                      <Typography.Title level={4}>You are submitting</Typography.Title>
-                      <Typography.Title level={5}>
-                        {formatComplianceCodeReportName(selectedReportDefinition)}
-                      </Typography.Title>
-
-                      {selectedReportDefinition.compliance_articles[0].long_description && (
-                        <>
-                          <Typography.Title level={5}>About this submission type:</Typography.Title>
-                          <Typography.Paragraph>
-                            {selectedReportDefinition.compliance_articles[0].long_description}
-                          </Typography.Paragraph>
-                        </>
-                      )}
-                      {selectedReportDefinition.compliance_articles[0].help_reference_link && (
-                        <Button
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          href={selectedReportDefinition.compliance_articles[0].help_reference_link}
-                          type="default"
-                        >
-                          More information <ExportOutlined />
-                        </Button>
-                      )}
-                    </div>
-                  )}
-                </div>
+                <ReportInfoBox mineReportDefinition={selectedReportDefinition} verb="submitting" />
               </Col>
             </Row>
           </>

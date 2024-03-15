@@ -59,6 +59,7 @@ export const Reports: FC<ReportsProps> = ({ mine, ...props }) => {
     };
   }, []);
 
+  // TODO: remove with CODE_REQUIRED_REPORTS feature flag
   const handleAddReport = async (values) => {
     const formValues = values;
     if (values.mine_report_submissions && values.mine_report_submissions.length > 0) {
@@ -70,6 +71,7 @@ export const Reports: FC<ReportsProps> = ({ mine, ...props }) => {
     return dispatch(fetchMineReports(mine.mine_guid, null));
   };
 
+  // TODO: remove with CODE_REQUIRED_REPORTS feature flag
   const handleEditReport = async (values) => {
     if (!values.mine_report_submissions || values.mine_report_submissions.length === 0) {
       dispatch(closeModal());
@@ -104,6 +106,7 @@ export const Reports: FC<ReportsProps> = ({ mine, ...props }) => {
     );
   };
 
+  // TODO: remove with CODE_REQUIRED_REPORTS feature flag
   const openAddReportModal = (event) => {
     event.preventDefault();
     dispatch(
@@ -119,6 +122,7 @@ export const Reports: FC<ReportsProps> = ({ mine, ...props }) => {
     );
   };
 
+  // TODO: remove with CODE_REQUIRED_REPORTS feature flag
   const openEditReportModal = (event, report) => {
     event.preventDefault();
     setReport(report);
