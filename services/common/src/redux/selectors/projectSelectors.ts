@@ -21,13 +21,6 @@ const formatProjectSummaryParty = (party): IParty => {
   if (!party?.party_guid) {
     return party;
   }
-  console.log(
-    party,
-    party.job_title_code,
-    party.first_name,
-    party.party_name,
-    party.address.length
-  );
   return { ...party, address: party.address[0] };
 };
 

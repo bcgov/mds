@@ -39,9 +39,14 @@ const OrgBookSearch: FC<OrgBookSearchProps> = ({
 
   const [options, setOptions] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [isDirty, setIsDirty] = useState(meta?.touched);
 
-  const handleChange = () => {
+  const handleChange = (changeValue) => {
     setIsSearching(false);
+    if (meta) {
+      setIsDirty(true);
+      input?.onChange(changeValue);
+    }
   };
 
   const handleSearch = async (search) => {
@@ -95,11 +100,14 @@ const OrgBookSearch: FC<OrgBookSearchProps> = ({
     <Form.Item
       name={input?.name}
       label={getFormItemLabel(label, required, labelSubtitle)}
-      validateStatus={meta?.touched ? (meta?.error && "error") || (meta?.warning && "warning") : ""}
+      validateStatus={
+        (meta && isDirty) || meta.touched
+          ? (meta.error && "error") || (meta.warning && "warning")
+          : ""
+      }
       help={
-        meta?.touched &&
-        ((meta?.error && <span>{meta?.error}</span>) ||
-          (meta?.warning && <span>{meta?.warning}</span>))
+        ((meta && isDirty) || meta.touched) &&
+        ((meta.error && <span>{meta.error}</span>) || (meta.warning && <span>{meta.warning}</span>))
       }
       id={id}
       required={required}
