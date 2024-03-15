@@ -29,82 +29,89 @@ const initialState: VerifiableCredentialsState = {
   verifiableCredentialConnections: [],
 };
 
-const reducers = (create) => ({
-  fetchCredentialConnections: create.asyncThunk(
-    async (payload: { partyGuid: string }, thunkAPI) => {
-      const headers = createRequestHeader();
-      thunkAPI.dispatch(showLoading());
-      const { partyGuid } = payload;
-
-      const response = await CustomAxios({
-        errorToastMessage: "default",
-      }).get(`${ENVIRONMENT.apiUrl}${MINES_ACT_PERMITS_VC_LIST(partyGuid)}`, headers);
-
-      thunkAPI.dispatch(hideLoading());
-
-      return response.data;
-    },
-    {
-      fulfilled: (state: VerifiableCredentialsState, action) => {
-        state.verifiableCredentialConnections = action.payload.records;
-      },
-      rejected: (state: VerifiableCredentialsState, action) => {
-        rejectHandler(action);
-      },
-    }
-  ),
-  revokeCredential: create.asyncThunk(
-    async (
-      payload: { partyGuid: string; credential_exchange_id: string; comment: string },
-      thunkAPI
-    ) => {
-      const headers = createRequestHeader();
-      thunkAPI.dispatch(showLoading());
-      const { partyGuid, credential_exchange_id, comment } = payload;
-
-      const response = await CustomAxios({
-        errorToastMessage: "default",
-      }).post(
-        `${ENVIRONMENT.apiUrl}${API.REVOKE_VERIFIABLE_CREDENTIAL(partyGuid)}`,
-        { credential_exchange_id, comment },
-        headers
-      );
-
-      thunkAPI.dispatch(hideLoading());
-
-      return response.data;
-    },
-    {
-      fulfilled: (state: VerifiableCredentialsState, action) => {
-        // There is no return from the endpoint, so if the request has successfully fulfilled,
-        // set the status of the connection to revoked
-        state.verifiableCredentialConnections = state.verifiableCredentialConnections.map(
-          (connection) => {
-            if (connection.cred_exch_id === action.payload.cred_exch_id) {
-              return {
-                ...connection,
-                cred_exch_state: "revoked",
-              };
-            }
-            return connection;
-          }
-        );
-      },
-    }
-  ),
-});
-
-const selectors = {
-  getCredentialConnections: (state): VerifiableCredentialsConnection[] => {
-    return state.verifiableCredentialConnections;
-  },
-};
-
 const verifiableCredentialsSlice = createAppSlice({
   name: "verifiableCredentialsSlice",
   initialState,
-  reducers,
-  selectors,
+  reducers: (create) => ({
+    fetchCredentialConnections: create.asyncThunk(
+      async (payload: { partyGuid: string }, thunkAPI) => {
+        const headers = createRequestHeader();
+        thunkAPI.dispatch(showLoading());
+        const { partyGuid } = payload;
+
+        const response = await CustomAxios({
+          errorToastMessage: "default",
+        }).get(`${ENVIRONMENT.apiUrl}${MINES_ACT_PERMITS_VC_LIST(partyGuid)}`, headers);
+
+        thunkAPI.dispatch(hideLoading());
+
+        return response.data;
+      },
+      {
+        fulfilled: (state, action) => {
+          state.verifiableCredentialConnections = action.payload.records;
+        },
+        rejected: (state: VerifiableCredentialsState, action) => {
+          rejectHandler(action);
+        },
+      }
+    ),
+    revokeCredential: create.asyncThunk(
+      async (
+        payload: {
+          partyGuid: string;
+          credential_exchange_id: string;
+          comment: string;
+        },
+        thunkAPI
+      ) => {
+        const headers = createRequestHeader();
+        thunkAPI.dispatch(showLoading());
+        const { partyGuid, credential_exchange_id, comment } = payload;
+
+        const response = await CustomAxios({
+          errorToastMessage: "default",
+        }).post(
+          `${ENVIRONMENT.apiUrl}${API.REVOKE_VERIFIABLE_CREDENTIAL(partyGuid)}`,
+          {
+            credential_exchange_id,
+            comment,
+          },
+          headers
+        );
+
+        thunkAPI.dispatch(hideLoading());
+
+        return { ...response.data, credential_exchange_id: credential_exchange_id };
+      },
+      {
+        rejected: (state: VerifiableCredentialsState, action) => {
+          rejectHandler(action);
+        },
+        fulfilled: (state, action) => {
+          // The state here is a proxy "WritableDraft" object, so we need to convert it to a plain object
+          // to be able to get the current values and update the state
+          const verifiableCredentialConnectionsState = JSON.parse(
+            JSON.stringify(state.verifiableCredentialConnections)
+          );
+
+          state.verifiableCredentialConnections = verifiableCredentialConnectionsState.map(
+            (conn) => {
+              if (conn.cred_exch_id === action.payload.credential_exchange_id) {
+                return { ...conn, cred_exch_state: "credential_revoked" };
+              }
+              return conn;
+            }
+          );
+        },
+      }
+    ),
+  }),
+  selectors: {
+    getCredentialConnections: (state): VerifiableCredentialsConnection[] => {
+      return state.verifiableCredentialConnections;
+    },
+  },
 });
 
 export const { fetchCredentialConnections, revokeCredential } = verifiableCredentialsSlice.actions;
