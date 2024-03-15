@@ -46,7 +46,7 @@ export const PermitTabContainer: FC<PermitTabContainerProps> = ({ mine, permits,
         <Permits mine={mine} permits={permits} />
       </Tabs.TabPane>
 
-      {showDigitalWalletTab && (
+      {showDigitalWalletTab() && (
         <Tabs.TabPane tab="Digital Permit Credentials" key={"digital_permit_credentials"}>
           <DigitalPermits mine={mine} permits={permits} />
         </Tabs.TabPane>
