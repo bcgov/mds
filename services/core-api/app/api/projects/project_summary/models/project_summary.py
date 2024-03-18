@@ -449,9 +449,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             fop_party.save()
             self.facility_operator_guid = fop_party.party_guid
 
-        municipality = Municipality.find_by_guid(nearest_municipality)
-        if not municipality:
-            raise Exception('Municipality ID provided does not exist in the municipalities table')
         self.nearest_municipality_guid = nearest_municipality
 
         # Create or update existing documents.
