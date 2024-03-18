@@ -59,7 +59,9 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
         if pending_creds:
             raise BadRequest(f"There is a pending credential offer, accept or delete that offer first, cred_exch_id={existing_cred_exch.cred_exch_id}, cred_exch_state={existing_cred_exch.cred_exch_state}")
 
-
+        if permit_amendment.permit.mines_act_permit_vc_locked:
+            raise BadRequest(f"This permit cannot be offered as a credential")
+         
         # collect information for schema
         # https://github.com/bcgov/bc-vcpedia/blob/main/credentials/bc-mines-act-permit/1.1.1/governance.md#261-schema-definition
         credential_attrs={}

@@ -16,6 +16,9 @@ class PartyVerifiableCredentialMinesActPermit(AuditMixin, Base):
     rev_reg_id = db.Column(db.String, nullable=True)
     cred_rev_id = db.Column(db.String, nullable=True)
 
+
+    permit_amendment = db.relationship('PermitAmendment', lazy='select', back_populates='mines_act_permit_vc')
+    
     def __repr__(self):
         return '<PartyVerifiableCredentialMinesActPermit cred_exch_id=%r, party_guid=%r, permit_amendment_id=%r>' % self.cred_exch_id, self.party_guid, self.permit_amendment_id
         
