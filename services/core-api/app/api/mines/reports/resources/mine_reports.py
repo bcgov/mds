@@ -1,27 +1,25 @@
 import uuid
-from flask_restx import Resource, reqparse, fields, inputs
-from flask import request, current_app
+from flask_restx import Resource
+from flask import request
 from datetime import datetime
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
 from app.api.mines.reports.models.mine_report_contact import MineReportContact
-from app.extensions import api, db
+from app.extensions import api
 from app.api.utils.resources_mixins import UserMixin
-from app.api.utils.access_decorators import requires_role_view_all, requires_any_of, requires_role_edit_report, EDIT_REPORT, MINESPACE_PROPONENT, VIEW_ALL, is_minespace_user
+from app.api.utils.access_decorators import requires_any_of, requires_role_edit_report, EDIT_REPORT, MINESPACE_PROPONENT, VIEW_ALL, is_minespace_user
+from app.api.activity.models.activity_notification import ActivityType
+from app.api.activity.models.activity_notification import ActivityRecipients
+from app.api.activity.utils import trigger_notification
 
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.reports.models.mine_report import MineReport
 from app.api.mines.reports.models.mine_report_submission import MineReportSubmission
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
-from app.api.mines.reports.models.mine_report_category_xref import MineReportCategoryXref
 from app.api.mines.reports.models.mine_report_document_xref import MineReportDocumentXref
 from app.api.mines.documents.models.mine_document import MineDocument
-from app.api.mines.reports.models.mine_report_submission_status_code import MineReportSubmissionStatusCode
-from app.api.mines.reports.models.mine_report_category import MineReportCategory
-from app.api.mines.reports.models.mine_report_due_date_type import MineReportDueDateType
 from app.api.mines.permits.permit_conditions.models.permit_condition_category import PermitConditionCategory
-from app.api.mines.reports.models.mine_report_definition_compliance_article_xref import MineReportDefinitionComplianceArticleXref
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.mines.response_models import MINE_REPORT_MODEL
 
@@ -188,6 +186,9 @@ class MineReportListResource(Resource, UserMixin):
 
         if is_minespace_user():
             mine_report.send_report_update_email(False)
+
+        if is_report_request:
+            trigger_notification(f'Report requested', ActivityType.report_requested, mine, 'MineReport', mine_report.mine_report_guid, None, None, ActivityRecipients.minespace_users)
 
         return mine_report, 201
 

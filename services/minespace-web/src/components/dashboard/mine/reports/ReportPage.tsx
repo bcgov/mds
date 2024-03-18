@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { getFormSubmitErrors, getFormValues, isDirty, submit } from "redux-form";
 
 import { Button, Col, Row, Typography } from "antd";
@@ -27,13 +27,16 @@ import {
 
 const ReportPage = () => {
   const dispatch = useDispatch();
+  const { state: routeState } = useLocation<{ isEditMode: boolean }>();
+  const defaultEditMode = routeState?.isEditMode ?? false;
+
   const { mineGuid, reportGuid } = useParams<{ mineGuid: string; reportGuid: string }>();
   const latestSubmission: IMineReportSubmission = useSelector((state) =>
     getLatestReportSubmission(state, reportGuid)
   );
   const mine: IMine = useSelector((state) => getMineById(state, mineGuid));
   const [loaded, setLoaded] = useState(Boolean(latestSubmission && mine));
-  const [isEditMode, setIsEditMode] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(defaultEditMode);
 
   // get form data so we can submit it outside of the form
   const formErrors = useSelector(getFormSubmitErrors(FORM.VIEW_EDIT_REPORT));
