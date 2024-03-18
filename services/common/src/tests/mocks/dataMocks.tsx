@@ -2,11 +2,14 @@ import {
   IExplosivesPermit,
   INoticeOfDeparture,
   INoticeOfWork,
-  NoDTypeSaveEnum,
-  NodStatusSaveEnum,
   IMineIncident,
+} from "@mds/common/interfaces";
+import {
   MINE_INCIDENT_DOCUMENT_TYPE_CODE,
-} from "@mds/common";
+  NodStatusSaveEnum,
+  NoDTypeSaveEnum,
+  VC_CRED_ISSUE_STATES,
+} from "@mds/common/constants";
 
 export const createMockHeader = () => ({
   headers: {
@@ -164,11 +167,31 @@ export const MINES = {
         { mine_tenure_type_code: "PLR", mine_type_detail: [] },
         { mine_tenure_type_code: "MIN", mine_type_detail: [] },
       ],
-      mine_status: {
-        statusvalue: ["CLD", "CM"],
-        status_labels: ["Closed", "Care & Maintenance"],
-        effective_date: "2018-10-16",
+      mine_status: [
+        {
+          mine_status_guid: "aac99c4d-9d96-4f5a-ab6c-cc816c64ca93",
+          mine_guid: "3b118b13-7397-4512-8021-c11ed90ce14c",
+          mine_status_xref_guid: "4924b221-f895-479d-ad0d-7fde81795813",
+          status_values: ["OP", "SEA"],
+          status_labels: ["Operating", "Seasonal"],
+          effective_date: "2024-03-07T15:49:45.989485+00:00",
+          expiry_date: null,
+          status_date: null,
+          status_description:
+            "This mine operates seasonally. Dates shown are from the most recently approved NoW application. Confirm operating dates with operator or permittee before visiting.",
+        },
+      ],
+      latest_mine_status: {
+        mine_status_guid: "aac99c4d-9d96-4f5a-ab6c-cc816c64ca93",
+        mine_guid: "3b118b13-7397-4512-8021-c11ed90ce14c",
+        mine_status_xref_guid: "4924b221-f895-479d-ad0d-7fde81795813",
+        status_values: ["OP", "SEA"],
+        status_labels: ["Operating", "Seasonal"],
+        effective_date: "2024-03-07T15:49:45.989485+00:00",
         expiry_date: null,
+        status_date: null,
+        status_description:
+          "This mine operates seasonally. Dates shown are from the most recently approved NoW application. Confirm operating dates with operator or permittee before visiting.",
       },
       verified_status: {
         mine_guid: null,
@@ -1149,6 +1172,82 @@ export const PERMITS = [
         ],
       },
     ],
+    site_properties: [
+      {
+        mine_type_guid: "2cf4cd5c-c7f8-4607-afe4-245ee0fd20db",
+        mine_guid: "3b118b13-7397-4512-8021-c11ed90ce14c",
+        permit_guid: "67074e37-b7c6-475d-ade6-eb24fdbd1e13",
+        now_application_guid: null,
+        mine_tenure_type_code: "MIN",
+        mine_type_detail: [
+          {
+            mine_type_detail_xref_guid: "467cf2f1-7707-4acd-8c58-a385b3acc16f",
+            mine_type_guid: "2cf4cd5c-c7f8-4607-afe4-245ee0fd20db",
+            mine_disturbance_code: null,
+            mine_commodity_code: "AL",
+          },
+          {
+            mine_type_detail_xref_guid: "2bab57dd-d5d0-49bd-bd31-774fa40779db",
+            mine_type_guid: "2cf4cd5c-c7f8-4607-afe4-245ee0fd20db",
+            mine_disturbance_code: "UND",
+            mine_commodity_code: null,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    permit_id: 2484,
+    permit_guid: "67074e37-b7c6-475d-ade6-eb24fdbd1e13",
+    permit_no: "M-12345",
+    permit_status_code: "O",
+    current_permittee: "TEST corp",
+    current_permittee_guid: "c391c1ab-3652-4804-80ae-7b81b8d05ed9",
+    current_permittee_digital_wallet_connection_state: "active",
+    project_id: null,
+    permit_amendments: [
+      {
+        permit_amendment_id: 2484,
+        permit_no: "M-12345",
+        permit_amendment_guid: "b056f07b-08ac-47ef-8ba9-98b97a060b3d",
+        permit_amendment_status_code: "ACT",
+        permit_amendment_type_code: "OGP",
+        received_date: null,
+        issue_date: "2024-03-07T00:00:00",
+        authorization_end_date: "2026-03-26T00:00:00",
+        liability_adjustment: "1000000.00",
+        security_received_date: "2024-03-07T00:00:00",
+        security_not_required: null,
+        security_not_required_reason: null,
+        description: "Initial permit issued.",
+        issuing_inspector_title: null,
+        regional_office: null,
+        now_application_guid: null,
+        now_application_documents: [],
+        imported_now_application_documents: [],
+        related_documents: [],
+        permit_conditions_last_updated_by: null,
+        permit_conditions_last_updated_date: null,
+        has_permit_conditions: false,
+        vc_credential_exch_state: null,
+        conditions: [],
+        is_generated_in_core: false,
+        preamble_text: null,
+      },
+    ],
+    remaining_static_liability: null,
+    assessed_liability_total: 1000000,
+    confiscated_bond_total: 0,
+    active_bond_total: 0,
+    bonds: [],
+    exemption_fee_status_code: "MIM",
+    exemption_fee_status_note: null,
+    site_properties: {
+      mine_tenure_type_code: "MIN",
+      mine_commodity_code: ["AL"],
+      mine_disturbance_code: ["UND"],
+    },
+    permit_prefix: "M",
   },
 ];
 
@@ -3839,6 +3938,52 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
     { mine_report_category: "TSF", description: "Tailings Storage Facility" },
     { mine_report_category: "OTH", description: "Other" },
   ],
+  municipalityOptions: [
+    {
+      municipality_name: "Village of Valemount",
+      municipality_guid: "a331b2b2-dad4-45b4-834f-f974b87decd1",
+    },
+    {
+      municipality_name: "District of Kitimat",
+      municipality_guid: "f191717b-a853-4a13-9237-4188a58e966e",
+    },
+    {
+      municipality_name: "The Corporation of the Village of Hazelton",
+      municipality_guid: "43790a4f-9c0f-4162-8657-926a07189384",
+    },
+    {
+      municipality_name: "District of New Hazelton",
+      municipality_guid: "756baa54-ac67-469f-b40f-1075cf7c5bd9",
+    },
+    {
+      municipality_name: "District of Stewart",
+      municipality_guid: "731968e3-e27d-4237-9068-c989f233aecf",
+    },
+    {
+      municipality_name: "City of Terrace",
+      municipality_guid: "a26439cd-13a3-442d-82fd-b5a6524e7f3e",
+    },
+    {
+      municipality_name: "Northern Rockies Regional Municipality",
+      municipality_guid: "3d6aeebe-e11a-4c22-b30e-133a2e7172b3",
+    },
+    {
+      municipality_name: "District of Tumbler Ridge",
+      municipality_guid: "171b7cbc-1079-44c2-9b61-ae1cb31be3d2",
+    },
+    {
+      municipality_name: "District of Chetwynd",
+      municipality_guid: "8e5cb07c-ae1a-4c10-bcd5-8e63cda7ce18",
+    },
+    {
+      municipality_name: "Village of Anmore",
+      municipality_guid: "0db4299f-efd1-4618-b8a2-171583355603",
+    },
+    {
+      municipality_name: "Village of Belcarra",
+      municipality_guid: "abbadb49-446d-49ab-8500-8352a9da46be",
+    },
+  ],
   partyRelationshipTypes: [],
   partyBusinessRoleOptions: [],
   noticeOfWorkActivityTypeOptions: [
@@ -5177,6 +5322,26 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
       condition_category_code: "RCC",
       description: "Reclamation and Closure Program Conditions",
       display_order: 50,
+    },
+  ],
+  permitAmendmentTypeCodeOptions: [
+    {
+      permit_amendment_type_code: "OGP",
+      description: "Original Permit",
+      display_order: 10,
+      active_ind: true,
+    },
+    {
+      permit_amendment_type_code: "AMD",
+      description: "Permit Amendment",
+      display_order: 20,
+      active_ind: true,
+    },
+    {
+      permit_amendment_type_code: "ALG",
+      description: "Amalgamated Permit",
+      display_order: 30,
+      active_ind: true,
     },
   ],
   noticeOfWorkApplicationDelayOptions: [],
@@ -7677,3 +7842,14 @@ export const ACTIVITIES = {
     total: 3,
   },
 };
+
+export const MINES_ACT_PERMITS_VC_LIST = [
+  {
+    party_guid: "1234",
+    permit_amendment_guid: "1234",
+    cred_exch_id: "1234",
+    cred_exch_state: VC_CRED_ISSUE_STATES.credential_acked,
+    rev_reg_id: "1234",
+    cred_rev_id: "1234",
+  },
+];

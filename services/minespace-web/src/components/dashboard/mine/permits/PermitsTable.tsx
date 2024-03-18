@@ -6,8 +6,6 @@ import {
   IExplosivesPermitAmendment,
   IPermit,
   IPermitAmendment,
-  VC_CONNECTION_STATES,
-  VC_CRED_ISSUE_STATES,
   isFeatureEnabled,
 } from "@mds/common";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
@@ -17,14 +15,12 @@ import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetwork
 import LinkButton from "@/components/common/LinkButton";
 import * as Strings from "@/constants/strings";
 import CoreTable from "@mds/common/components/common/CoreTable";
-import { Badge } from "antd";
 import {
   renderActionsColumn,
   renderCategoryColumn,
   renderDateColumn,
   renderTextColumn,
 } from "@mds/common/components/common/CoreTableCommonColumns";
-import IssuePermitDigitalCredential from "@/components/modalContent/verifiableCredentials/IssuePermitDigitalCredential";
 import { SortOrder } from "antd/lib/table/interface";
 import { VIEW_ESUP } from "@/constants/routes";
 import { useHistory } from "react-router-dom";
@@ -44,12 +40,6 @@ interface PermitsTableProps {
   majorMineInd: boolean;
   openModal: (value: any) => void;
   closeModal: (value: any) => void;
-  openVCWalletInvitationModal: (
-    event,
-    partyGuid: string,
-    partyName: string,
-    connectionState: string
-  ) => void;
 }
 
 export const PermitsTable: FC<PermitsTableProps> = (props) => {
@@ -69,60 +59,14 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
     },
   ];
 
-  const showVCColumn =
-    isFeatureEnabled(Feature.VERIFIABLE_CREDENTIALS) &&
-    props.majorMineInd &&
-    props.permits.some((p) => {
-      // look for *any* active wallet connections to show the issuance column/action
-      const walletStatus = p.current_permittee_digital_wallet_connection_state;
-      return VC_CONNECTION_STATES[walletStatus] === VC_CONNECTION_STATES.active;
-    });
-
   const handleOpenViewEsup = (event, record: any) => {
     event.preventDefault();
     event.stopPropagation();
     history.push(VIEW_ESUP.dynamicRoute(id, record.key));
   };
 
-  if (showVCColumn || isFeatureEnabled(Feature.MINESPACE_ESUPS)) {
-    const colourMap = {
-      [VC_CRED_ISSUE_STATES.null]: "#D8292F",
-      [VC_CRED_ISSUE_STATES.offer_sent]: "#F1C21B",
-      [VC_CRED_ISSUE_STATES.credential_acked]: "#45A776",
-      [VC_CRED_ISSUE_STATES.abandoned]: "#D8292F",
-    };
-    const issuanceStateColumn = {
-      title: "Issuance State",
-      key: "lastAmendedVC",
-      dataIndex: "lastAmendedVC",
-      render: (text) => {
-        const badgeText = text ? VC_CRED_ISSUE_STATES[text] : "N/A";
-        const colour = colourMap[badgeText] ?? "transparent";
-        return <Badge color={colour} text={badgeText} />;
-      },
-    };
-
-    const openIssuanceModal = (event, permit) => {
-      event.preventDefault();
-      props.openModal({
-        props: {
-          title: "Issue Digital Credential",
-          issuanceState: permit.lastAmendedVC,
-          connectionState: permit.current_permittee_digital_wallet_connection_state,
-          permitAmendmentGuid: permit.lastAmendedGuid,
-          permit: permit,
-          openVCWalletInvitationModal: props.openVCWalletInvitationModal,
-        },
-        content: IssuePermitDigitalCredential,
-      });
-    };
-
+  if (isFeatureEnabled(Feature.MINESPACE_ESUPS)) {
     const actions = [
-      {
-        key: "vc_issue",
-        label: "Issue as digital credential",
-        clickFunction: openIssuanceModal,
-      },
       {
         key: "view_esup",
         label: "View",
@@ -135,11 +79,6 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
     const filterActions = (record, actionList) => {
       let filteredActionList = actionList;
 
-      // filter for permit type and vc_issue key
-      if (record.permit_type !== permitTypes.Permit || !showVCColumn) {
-        filteredActionList = filteredActionList.filter((a) => a.key !== "vc_issue");
-      }
-
       // filter for feature flag and view_esup key
       if (!isFeatureEnabled(Feature.MINESPACE_ESUPS) || record.permit_type !== permitTypes.ESUP) {
         filteredActionList = filteredActionList.filter((a) => a.key !== "view_esup");
@@ -149,7 +88,6 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
     };
 
     const actionColumn = renderActionsColumn({ actions, recordActionsFilter: filterActions });
-    columns.splice(3, 0, issuanceStateColumn);
     columns.push(actionColumn);
   }
 
@@ -189,7 +127,6 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
       authorization_end_date: latestAmendment?.authorization_end_date,
       firstIssued: firstAmendment?.issue_date,
       lastAmended: latestAmendment?.issue_date,
-      lastAmendedVC: latestAmendment?.vc_credential_exch_state,
       lastAmendedGuid: latestAmendment?.permit_amendment_guid,
       permit_amendments: filteredAmendments.map((amendment, index) =>
         transformExpandedPermitRowData(amendment, permit.permit_amendments.length - index)

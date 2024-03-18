@@ -9,6 +9,7 @@ import {
 } from "../utils/helpers";
 import { RootState } from "@mds/common/redux/rootState";
 import { IMineReportDefinition } from "../..";
+import { getMunicipalityOptions } from "../reducers/staticContentReducer";
 
 export const {
   getStaticContentLoadingIsComplete,
@@ -1007,4 +1008,10 @@ export const getProjectSummaryAuthorizationTypesArray = createSelector(
 
     return arr;
   }
+);
+
+export const getDropdownMunicipalities = createSelectorWrapper(
+  getMunicipalityOptions,
+  createDropDownList,
+  ["municipality_name", "municipality_guid"]
 );

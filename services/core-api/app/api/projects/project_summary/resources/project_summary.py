@@ -1,3 +1,4 @@
+from flask import current_app
 from flask_restx import Resource, inputs
 from datetime import datetime, timezone
 from werkzeug.exceptions import BadRequest, NotFound
@@ -147,6 +148,7 @@ class ProjectSummaryResource(Resource, UserMixin):
     parser.add_argument('facility_lease_no', type=str, store_missing=False, required=False)
     parser.add_argument('zoning', type=bool, store_missing=False, required=False)
     parser.add_argument('zoning_reason', type=str, store_missing=False, required=False)
+    parser.add_argument('nearest_municipality', type=str, store_missing=False, required=False)
 
     @api.doc(
         description='Get a Project Description.',
@@ -211,7 +213,8 @@ class ProjectSummaryResource(Resource, UserMixin):
                                data.get('facility_coords_source'), data.get('facility_coords_source_desc'),
                                data.get('facility_pid_pin_crown_file_no'), data.get('legal_land_desc'),
                                data.get('facility_lease_no'), data.get('zoning'),
-                               data.get('zoning_reason'))
+                               data.get('zoning_reason'),
+                               data.get('nearest_municipality'))
 
         project_summary.save()
         if prev_status == 'DFT' and project_summary.status_code == 'SUB':

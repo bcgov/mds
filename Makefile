@@ -41,13 +41,23 @@ all:
 	@docker compose $(DC_FILE) build --force-rm --no-cache --parallel
 	@docker compose $(DC_FILE) up -d
 
-be:
-	@echo "+\n++ Building only backend ...\n+"
+be-rebuild:
+	@echo "+\n++ Rebuilding backend container ...\n+"
 	@docker compose $(DC_FILE) build --force-rm --no-cache --parallel backend
-	@docker compose $(DC_FILE) up -d --build backend
+	@docker compose $(DC_FILE) up -d backend
 
-cypress-keycloak:
-	@docker compose $(DC_FILE) build --force-rm --no-cache keycloak
+EXTRA_SERVICES?=
+
+be-minimal:
+	@echo "+\n++ Starting minimal backend ...\n+"
+	@docker compose $(DC_FILE) up -d --no-deps postgres redis flyway document_manager_migrate $(EXTRA_SERVICES)
+	@docker compose $(DC_FILE) up -d --no-deps backend document_manager_backend
+
+be:
+	@echo "+\n++ Starting backend ...\n+"
+	@docker compose $(DC_FILE) up -d backend
+
+keycloak:
 	@docker compose $(DC_FILE) up -d keycloak
 
 run-cypress-core:
@@ -110,10 +120,12 @@ mig:
 	@docker compose $(DC_FILE) build --force-rm --no-cache flyway
 	@docker compose $(DC_FILE) up --always-recreate-deps --force-recreate -d flyway
 
+ENTRIES?=2500
 #TODO: unstable command - need to review relationship checks among factories
 seeddb:
-	@echo "+\n++ Seeding db with factory data...\n+"
-	@docker compose $(DC_FILE) exec -d backend bash -c "flask create-data 2500;"
+	@echo "+\n++ Seeding db with factory data... # Entries: ${ENTRIES}\n+"
+
+	@docker compose $(DC_FILE) exec backend bash -c "flask create-data ${ENTRIES};"
 
 env:
 	@echo "+\n++ Creating boilerplate local dev .env files...\n+"

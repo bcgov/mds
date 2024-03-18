@@ -8,10 +8,14 @@ describe("Major Projects", () => {
 
     // Navigate to the mines page
     cy.get('[data-cy="mines-button"]', { timeout: 10000 }).click({ force: true });
+    cy.get('[data-cy="expand-filters-button"]').click({ force: true });
+    cy.contains("Select Mine Classification").click({ force: true });
+    cy.get('[title="Major Mine"]').click({ force: true });
+    cy.contains("Apply Filters").click({ force: true });
 
-    // Navigate to the second mine
+    // // Navigate to the second mine
     cy.get('[data-cy="mine-link"]', { timeout: 10000 })
-      .eq(4)
+      .first()
       .click({ force: true });
 
     // Hover over the permits and approvals menu
@@ -33,7 +37,8 @@ describe("Major Projects", () => {
     cy.get("#mrc_review_required")
       .contains("No")
       .click({ force: true });
-    cy.get("#contacts\\[0\\]\\.name").type("Cypress", { force: true });
+    cy.get("#contacts\\[0\\]\\.first_name").type("Cypress", { force: true });
+    cy.get("#contacts\\[0\\]\\.last_name").type("Test", { force: true });
     cy.get("#contacts\\[0\\]\\.email").type("cypress@mds.com", { force: true });
     cy.get("#contacts\\[0\\]\\.phone_number").type("1234567890", { force: true });
 
@@ -47,14 +52,14 @@ describe("Major Projects", () => {
     // Navigate back to major projects
     cy.get('[data-cy="back-to-major-project-link"]').click({ force: true });
     // wait for table to load data
-    cy.wait(15000);
+    cy.wait(15000); // wait for table to load data
     // Find the newly created project in the table and assert
-    // cy.get("[data-cy=project-name-column]", { timeout: 10000 })
-    //   .contains(uniqueProjectName)
-    //   .closest("tr")
-    //   .as("targetRow");
-    //
+    cy.get("[data-cy=project-name-column]", { timeout: 10000 })
+      .contains(uniqueProjectName)
+      .closest("tr")
+      .as("targetRow");
+
     // // Assert that the row contains the expected data
-    // cy.get("@targetRow", { timeout: 10000 }).should("contain", uniqueProjectName);
+    cy.get("@targetRow", { timeout: 10000 }).should("contain", uniqueProjectName);
   });
 });

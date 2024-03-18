@@ -13,7 +13,7 @@ import { getMines } from "@mds/common/redux/selectors/mineSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import Loading from "@/components/common/Loading";
 import Overview from "@/components/dashboard/mine/overview/Overview";
-import Permits from "@/components/dashboard/mine/permits/Permits";
+import PermitTabContainer from "@/components/dashboard/mine/permits/PermitTabContainer";
 import Variances from "@/components/dashboard/mine/variances/Variances";
 import Inspections from "@/components/dashboard/mine/inspections/Inspections";
 import Incidents from "@/components/dashboard/mine/incidents/Incidents";
@@ -174,7 +174,7 @@ export class MineDashboard extends Component {
                     </Tabs.TabPane>
                   )}
                   <Tabs.TabPane tab="Permits" key="permits">
-                    <Permits mine={mine} match={this.props.match} />
+                    <PermitTabContainer mine={mine} match={this.props.match} />
                   </Tabs.TabPane>
 
                   <Tabs.TabPane tab="Notices of Departure" key="nods">

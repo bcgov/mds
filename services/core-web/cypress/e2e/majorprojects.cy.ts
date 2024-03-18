@@ -46,7 +46,7 @@ describe("Major Projects", () => {
 
       cy.intercept(
         "PATCH",
-        /.*\/(api\/)?document-manager\/documents\/332d6f13-cd09-4b55-93d7-52bd7e557fa4\/complete-upload$/,
+        /.*\/(api\/)?(document-manager\/)?documents\/332d6f13-cd09-4b55-93d7-52bd7e557fa4\/complete-upload$/,
         {
           statusCode: 204,
         }

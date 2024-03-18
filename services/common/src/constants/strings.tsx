@@ -412,3 +412,11 @@ export const MINE_REPORT_STATUS_HASH = {
   [MINE_REPORT_SUBMISSION_CODES.NON]: "Report Requested",
   [MINE_REPORT_SUBMISSION_CODES.WTD]: "Withdrawn",
 };
+
+export const VC_ACTIVE_CONNECTION_STATES = ["credential_acked", "credential-issued", "done"];
+
+export const CONTACTS_COUNTRY_OPTIONS = [
+  { value: "CAN", label: "Canada" },
+  { value: "USA", label: "United States" },
+  { value: "INT", label: "International" },
+];

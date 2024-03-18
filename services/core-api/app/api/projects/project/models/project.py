@@ -6,8 +6,11 @@ from app.extensions import db
 
 from app.api.utils.models_mixins import AuditMixin, Base
 from app.api.projects.project_contact.models.project_contact import ProjectContact
+from app.api.parties.party.models.address import Address
 from app.api.mines.mine.models.mine import Mine
 from app.api.parties.party.models.party import Party
+
+from app.api.utils.helpers import validate_phone_no
 
 
 class Project(AuditMixin, Base):
@@ -96,14 +99,16 @@ class Project(AuditMixin, Base):
 
         # Create contacts.
         for contact in contacts:
+            validate_phone_no(contact.get('phone_number'))
             new_contact = ProjectContact(
                 project_guid=project.project_guid,
-                name=contact.get('name'),
                 job_title=contact.get('job_title'),
                 company_name=contact.get('company_name'),
                 email=contact.get('email'),
                 phone_number=contact.get('phone_number'),
                 phone_extension=contact.get('phone_extension'),
+                first_name=contact.get('first_name'),
+                last_name=contact.get('last_name'),
                 is_primary=contact.get('is_primary'))
             project.contacts.append(new_contact)
 
@@ -134,9 +139,16 @@ class Project(AuditMixin, Base):
         # Create or update existing contacts.
         for contact in contacts:
             updated_contact_guid = contact.get('project_contact_guid')
+            new_address_data = contact.get('address', None)
+            if new_address_data:
+                validate_phone_no(contact.get('phone_number'), new_address_data.get('address_type_code', "CAN"))
+            else:
+                validate_phone_no(contact.get('phone_number'))
+
             if updated_contact_guid:
                 updated_contact = ProjectContact.find_project_contact_by_guid(updated_contact_guid)
-                updated_contact.name = contact.get('name')
+                updated_contact.first_name = contact.get('first_name')
+                updated_contact.last_name = contact.get('last_name')
                 updated_contact.job_title = contact.get('job_title')
                 updated_contact.company_name = contact.get('company_name')
                 updated_contact.email = contact.get('email')
@@ -144,16 +156,42 @@ class Project(AuditMixin, Base):
                 updated_contact.phone_extension = contact.get('phone_extension')
                 updated_contact.is_primary = contact.get('is_primary')
 
+                if new_address_data:
+                    if len(updated_contact.address) > 0:
+                        for key, value in new_address_data.items():
+                            setattr(updated_contact.address[0], key, value)
+                    elif len(updated_contact.address) == 0:
+                        new_address = Address.create(
+                            suite_no=new_address_data.get('suite_no', None),
+                            address_line_1=new_address_data.get('address_line_1', None),
+                            city=new_address_data.get('city', None),
+                            sub_division_code=new_address_data.get('sub_division_code', None),
+                            post_code=new_address_data.get('post_code', None),
+                            address_type_code=new_address_data.get('address_type_code', None),
+                        )
+                        updated_contact.address.append(new_address)
             else:
                 new_contact = ProjectContact(
                     project_guid=self.project_guid,
-                    name=contact.get('name'),
+                    first_name =contact.get('first_name'),
+                    last_name =contact.get('last_name'),
                     job_title=contact.get('job_title'),
                     company_name=contact.get('company_name'),
                     email=contact.get('email'),
                     phone_number=contact.get('phone_number'),
                     phone_extension=contact.get('phone_extension'),
                     is_primary=contact.get('is_primary'))
+
+                if new_address_data:
+                    new_address = Address.create(
+                        suite_no=new_address_data.get('suite_no', None),
+                        address_line_1=new_address_data.get('address_line_1', None),
+                        city=new_address_data.get('city', None),
+                        sub_division_code=new_address_data.get('sub_division_code', None),
+                        post_code=new_address_data.get('post_code', None),
+                        address_type_code=new_address_data.get('address_type_code', None),
+                    )
+                    new_contact.address.append(new_address)
                 self.contacts.append(new_contact)
 
         if add_to_session:

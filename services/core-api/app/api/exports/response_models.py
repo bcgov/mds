@@ -77,6 +77,11 @@ MINE_SUMMARY_MODEL_LIST = api.model('MineSummaryList', {
     'per_page': fields.Integer
 })
 
+MUNICIPALITY_MODEL = api.model('Municipality', {
+    'municipality_name': fields.String,
+    'municipality_guid': fields.String
+})
+
 STATIC_CONTENT_MODEL = api.model(
     'StaticContentModel', {
         'mineDisturbanceOptions':
@@ -248,5 +253,7 @@ STATIC_CONTENT_MODEL = api.model(
         'EMLIContactTypes':
         fields.List(
             fields.Nested(EMLI_CONTACT_TYPE),
-            attribute='EMLIContactType')
+            attribute='EMLIContactType'),
+        'municipalityOptions':
+        fields.List(fields.Nested(MUNICIPALITY_MODEL), attribute='Municipality')
     })

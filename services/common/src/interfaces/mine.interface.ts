@@ -1,4 +1,5 @@
 import {
+  IMineStatus,
   IMineType,
   IMineVerifiedStatus,
   IMineWorkInformation,
@@ -25,4 +26,6 @@ export interface IMine {
   has_minespace_users: boolean;
   mms_alias: string;
   mine_work_information: IMineWorkInformation[];
+  latest_mine_status: IMineStatus;
+  mine_status: IMineStatus[];
 }
