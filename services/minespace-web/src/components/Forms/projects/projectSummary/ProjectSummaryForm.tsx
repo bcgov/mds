@@ -53,13 +53,13 @@ export const getProjectFormTabs = (amsFeatureEnabled: boolean) => {
   const projectFormTabs = [
     "basic-information",
     "related-projects",
+    "authorizations-involved",
     "project-contacts",
     "applicant-information",
     "agent",
     "facility-operator-information",
     "legal-land-owner-information",
     "project-dates",
-    "authorizations-involved",
     "document-upload",
   ];
 
@@ -96,9 +96,7 @@ export const ProjectSummaryForm: FC<ProjectSummaryFormProps &
       "applicant-information": <Applicant />,
       agent: <Agent />,
       "facility-operator-information": <FacilityOperator />,
-      "authorizations-involved": (
-        <AuthorizationsInvolved initialValues={props.initialValues} change={props.change} />
-      ),
+      "authorizations-involved": <AuthorizationsInvolved />,
       "document-upload": (
         <DocumentUpload initialValues={props.initialValues} {...props} documents={documents} />
       ),
