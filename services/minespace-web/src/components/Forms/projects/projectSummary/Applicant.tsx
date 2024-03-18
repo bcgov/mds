@@ -11,7 +11,7 @@ import {
   requiredRadioButton,
 } from "@mds/common/redux/utils/Validate";
 import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
-import { FORM, IOrgbookCredential } from "@mds/common";
+import { CONTACTS_COUNTRY_OPTIONS, FORM, IOrgbookCredential } from "@mds/common";
 import OrgBookSearch from "@mds/common/components/parties/OrgBookSearch";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck, faCircleX, faSpinner } from "@fortawesome/pro-light-svg-icons";
@@ -45,12 +45,6 @@ const Applicant = () => {
   const isBillingAddressInternational = billing_address.address_type_code === "INT";
 
   const provinceOptions = useSelector(getDropdownProvinceOptions);
-
-  const countryOptions = [
-    { value: "CAN", label: "Canada" },
-    { value: "USA", label: "United States" },
-    { value: "INT", label: "International" },
-  ];
 
   useEffect(() => {
     // clear out the province if country has changed and it no longer matches
@@ -225,8 +219,8 @@ const Applicant = () => {
               <Row gutter={16}>
                 <Col md={12} sm={24}>
                   <Field
-                    id="applicant.company_alias"
-                    name="applicant.company_alias"
+                    id="company_alias"
+                    name="company_alias"
                     label="Doing Business As"
                     component={RenderField}
                   />
@@ -263,7 +257,7 @@ const Applicant = () => {
           </Col>
           <Col md={8} sm={24}>
             <Field
-              name="applicant.last_name"
+              name="applicant.party_name"
               label="Last Name"
               required
               validate={[required]}
@@ -318,7 +312,7 @@ const Applicant = () => {
             label="Country"
             required
             validate={[required]}
-            data={countryOptions}
+            data={CONTACTS_COUNTRY_OPTIONS}
             component={RenderSelect}
           />
         </Col>
@@ -390,7 +384,7 @@ const Applicant = () => {
                 label="Country"
                 required
                 validate={[required]}
-                data={countryOptions}
+                data={CONTACTS_COUNTRY_OPTIONS}
                 component={RenderSelect}
               />
             </Col>
@@ -477,7 +471,7 @@ const Applicant = () => {
                 label="Country"
                 required
                 validate={[required]}
-                data={countryOptions}
+                data={CONTACTS_COUNTRY_OPTIONS}
                 component={RenderSelect}
               />
             </Col>
