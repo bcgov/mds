@@ -305,6 +305,14 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             project_summary.save(commit=False)
         return project_summary
 
+    def _get_party_name(self, data):
+        if isinstance(data, dict):
+            return data.get("value")
+        elif isinstance(data, str):
+            return data
+        else:
+            return None
+
     def update(self,
                project,
                project_summary_description,
@@ -383,11 +391,11 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         if applicant is not None:
             # Create or update Applicant Party
             self.company_alias = company_alias
-            self.incorporation_number= incorporation_number
+            self.incorporation_number = incorporation_number
             self.is_legal_address_same_as_mailing_address = is_legal_address_same_as_mailing_address
             self.is_billing_address_same_as_legal_address = is_billing_address_same_as_legal_address
             self.is_billing_address_same_as_mailing_address = is_billing_address_same_as_mailing_address
-
+            applicant["party_name"] = self._get_party_name(applicant.get('party_name'))
             applicant["address"] = applicant.pop("mailing_address")
             applicant_party = self.create_or_update_party(applicant, 'APP', self.applicant_mailing_info)
             self.applicant_mailing_party_guid = applicant_party.party_guid
@@ -406,7 +414,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 applicant_billing_info = {}
                 applicant_billing_info.update(applicant)
                 applicant_billing_info["address"] = applicant_billing_info.pop("billing_address")
-                applicant_billing_party = self.create_or_update_party(applicant_billing_info, 'APP',self.applicant_billing_party_guid)
+                applicant_billing_party = self.create_or_update_party(applicant_billing_info, 'APP', self.applicant_billing_party_guid)
                 applicant_billing_party.save()
                 self.applicant_billing_party_guid = applicant_billing_party.party_guid
             else:

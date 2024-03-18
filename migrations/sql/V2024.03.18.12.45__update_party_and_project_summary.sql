@@ -15,7 +15,36 @@ ADD
 ADD
   COLUMN IF NOT EXISTS applicant_legal_party_guid UUID NULL,
 ADD
-  COLUMN IF NOT EXISTS applicant_billing_party_guid UUID NULL;
+  COLUMN IF NOT EXISTS applicant_billing_party_guid UUID NULL,
+ADD
+  CONSTRAINT applicant_mailing_guid_party_guid_fkey FOREIGN KEY (applicant_mailing_party_guid) REFERENCES party(party_guid),
+ADD
+  CONSTRAINT applicant_legal_guid_party_guid_fkey FOREIGN KEY (applicant_legal_party_guid) REFERENCES party(party_guid),
+ADD
+  CONSTRAINT applicant_billing_guid_party_guid_fkey FOREIGN KEY (applicant_billing_party_guid) REFERENCES party(party_guid);
+
+INSERT INTO
+  mine_party_appt_type_code (
+    mine_party_appt_type_code,
+    description,
+    display_order,
+    create_user,
+    update_user,
+    person,
+    organization,
+    grouping_level
+  )
+VALUES
+  (
+    'APP',
+    'Applicant',
+    290,
+    'system-mds',
+    'system-mds',
+    'true',
+    'false',
+    1
+  );
 
 ALTER TABLE
   party
