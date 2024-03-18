@@ -116,15 +116,15 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         overlaps="mine_document,project_summary_document_xref,documents"
     )
 
-    applicant_mailing_info = db.relationship(
+    applicant_mailing = db.relationship(
         'Party', lazy='joined', foreign_keys=applicant_mailing_party_guid
     )
 
-    applicant_billing_info = db.relationship(
+    applicant_billing = db.relationship(
         'Party', lazy='joined', foreign_keys=applicant_billing_party_guid
     )
 
-    applicant_legal_info = db.relationship(
+    applicant_legal = db.relationship(
         'Party', lazy='joined', foreign_keys=applicant_legal_party_guid
     )
 
@@ -353,6 +353,9 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                is_legal_address_same_as_mailing_address=None,
                is_billing_address_same_as_mailing_address=None,
                is_billing_address_same_as_legal_address=None,
+               applicant_mailing=None,
+               applicant_billing=None,
+               applicant_legal=None,
                add_to_session=True):
 
         # Update simple properties.
@@ -396,14 +399,14 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             self.is_billing_address_same_as_legal_address = is_billing_address_same_as_legal_address
             self.is_billing_address_same_as_mailing_address = is_billing_address_same_as_mailing_address
             applicant["party_name"] = self._get_party_name(applicant.get('party_name'))
-            applicant["address"] = applicant.pop("mailing_address")
+            applicant["address"] = applicant_mailing
             applicant_party = self.create_or_update_party(applicant, 'APP', self.applicant_mailing_info)
             self.applicant_mailing_party_guid = applicant_party.party_guid
 
             if not is_legal_address_same_as_mailing_address:
                 applicant_legal_info = {}
                 applicant_legal_info.update(applicant)
-                applicant_legal_info["address"] = applicant_legal_info.pop("legal_address")
+                applicant_legal_info["address"] = applicant_legal
                 applicant_legal_party = self.create_or_update_party(applicant_legal_info, 'APP', self.applicant_legal_info)
                 applicant_legal_party.save()
                 self.applicant_legal_party_guid = applicant_legal_party.party_guid
@@ -413,7 +416,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             if not is_billing_address_same_as_mailing_address:
                 applicant_billing_info = {}
                 applicant_billing_info.update(applicant)
-                applicant_billing_info["address"] = applicant_billing_info.pop("billing_address")
+                applicant_billing_info["address"] = applicant_billing
                 applicant_billing_party = self.create_or_update_party(applicant_billing_info, 'APP', self.applicant_billing_party_guid)
                 applicant_billing_party.save()
                 self.applicant_billing_party_guid = applicant_billing_party.party_guid
