@@ -186,12 +186,9 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
   };
 
   const verifyRequiredFields = (payload) => {
-    const requiredFields = [
-      "project_summary_title",
-      "project_summary_description",
-      "is_agent",
-      "is_legal_land_owner",
-    ];
+    const requiredFields = amsFeatureEnabled
+      ? ["project_summary_title", "project_summary_description", "is_agent", "is_legal_land_owner"]
+      : ["project_summary_title", "project_summary_description"];
 
     for (const field of requiredFields) {
       if (getFieldValue(payload, field) === null) {
@@ -232,7 +229,7 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
     }
 
     // Additional check for legal land owner
-    if (!payload.is_legal_land_owner) {
+    if (!payload.is_legal_land_owner && amsFeatureEnabled) {
       const requiredLandOwnerFields = [
         "is_legal_land_owner",
         "is_crown_land_federal_or_provincial",
