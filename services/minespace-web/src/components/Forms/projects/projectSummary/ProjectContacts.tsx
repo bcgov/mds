@@ -244,7 +244,7 @@ const RenderContacts = (props) => {
 export const ProjectContacts: FC = () => {
   const dispatch = useDispatch();
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
-  const { contacts = {} } = formValues;
+  const { contacts } = formValues;
 
   useEffect(() => {
     if (isNil(contacts) || contacts.length === 0) {
