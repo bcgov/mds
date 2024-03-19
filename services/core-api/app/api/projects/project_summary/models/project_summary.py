@@ -69,10 +69,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     is_billing_address_same_as_mailing_address = db.Column(db.Boolean, nullable=True)
     is_billing_address_same_as_legal_address = db.Column(db.Boolean, nullable=True)
 
-    applicant_mailing_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=True)
-    applicant_legal_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=True)
-    applicant_billing_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=True)
-
+    applicant_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=True)
 
     project_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('project.project_guid'), nullable=False)
@@ -116,16 +113,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         overlaps="mine_document,project_summary_document_xref,documents"
     )
 
-    applicant_mailing = db.relationship(
-        'Party', lazy='joined', foreign_keys=applicant_mailing_party_guid
-    )
-
-    applicant_billing = db.relationship(
-        'Party', lazy='joined', foreign_keys=applicant_billing_party_guid
-    )
-
-    applicant_legal = db.relationship(
-        'Party', lazy='joined', foreign_keys=applicant_legal_party_guid
+    applicant = db.relationship(
+        'Party', lazy='joined', foreign_keys=applicant_party_guid
     )
 
     def __repr__(self):
@@ -353,9 +342,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                is_legal_address_same_as_mailing_address=None,
                is_billing_address_same_as_mailing_address=None,
                is_billing_address_same_as_legal_address=None,
-               applicant_mailing=None,
-               applicant_billing=None,
-               applicant_legal=None,
                add_to_session=True):
 
         # Update simple properties.
@@ -391,37 +377,37 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         #         self.mine_documents.remove(doc.mine_document)
         #         doc.mine_document.delete(commit=False)
 
-        if applicant is not None:
-            # Create or update Applicant Party
-            self.company_alias = company_alias
-            self.incorporation_number = incorporation_number
-            self.is_legal_address_same_as_mailing_address = is_legal_address_same_as_mailing_address
-            self.is_billing_address_same_as_legal_address = is_billing_address_same_as_legal_address
-            self.is_billing_address_same_as_mailing_address = is_billing_address_same_as_mailing_address
-            applicant["party_name"] = self._get_party_name(applicant.get('party_name'))
-            applicant["address"] = applicant_mailing
-            applicant_party = self.create_or_update_party(applicant, 'APP', self.applicant_mailing_info)
-            self.applicant_mailing_party_guid = applicant_party.party_guid
-
-            if not is_legal_address_same_as_mailing_address:
-                applicant_legal_info = {}
-                applicant_legal_info.update(applicant)
-                applicant_legal_info["address"] = applicant_legal
-                applicant_legal_party = self.create_or_update_party(applicant_legal_info, 'APP', self.applicant_legal_info)
-                applicant_legal_party.save()
-                self.applicant_legal_party_guid = applicant_legal_party.party_guid
-            else:
-                self.applicant_legal_party_guid = self.applicant_mailing_party_guid
-
-            if not is_billing_address_same_as_mailing_address:
-                applicant_billing_info = {}
-                applicant_billing_info.update(applicant)
-                applicant_billing_info["address"] = applicant_billing
-                applicant_billing_party = self.create_or_update_party(applicant_billing_info, 'APP', self.applicant_billing_party_guid)
-                applicant_billing_party.save()
-                self.applicant_billing_party_guid = applicant_billing_party.party_guid
-            else:
-                self.applicant_billing_party_guid = self.applicant_mailing_party_guid
+        # if applicant is not None:
+        #     # Create or update Applicant Party
+        #     self.company_alias = company_alias
+        #     self.incorporation_number = incorporation_number
+        #     self.is_legal_address_same_as_mailing_address = is_legal_address_same_as_mailing_address
+        #     self.is_billing_address_same_as_legal_address = is_billing_address_same_as_legal_address
+        #     self.is_billing_address_same_as_mailing_address = is_billing_address_same_as_mailing_address
+        #     applicant["party_name"] = self._get_party_name(applicant.get('party_name'))
+        #     applicant["address"] = applicant_mailing
+        #     applicant_party = self.create_or_update_party(applicant, 'APP', self.applicant_mailing)
+        #     self.applicant_mailing_party_guid = applicant_party.party_guid
+        #
+        #     if not is_legal_address_same_as_mailing_address:
+        #         applicant_legal_info = {}
+        #         applicant_legal_info.update(applicant)
+        #         applicant_legal_info["address"] = applicant_legal
+        #         applicant_legal_party = self.create_or_update_party(applicant_legal_info, 'APP', self.applicant_legal)
+        #         applicant_legal_party.save()
+        #         self.applicant_legal_party_guid = applicant_legal_party.party_guid
+        #     else:
+        #         self.applicant_legal_party_guid = self.applicant_mailing_party_guid
+        #
+        #     if not is_billing_address_same_as_mailing_address:
+        #         applicant_billing_info = {}
+        #         applicant_billing_info.update(applicant)
+        #         applicant_billing_info["address"] = applicant_billing
+        #         applicant_billing_party = self.create_or_update_party(applicant_billing_info, 'APP', self.applicant_billing)
+        #         applicant_billing_party.save()
+        #         self.applicant_billing_party_guid = applicant_billing_party.party_guid
+        #     else:
+        #         self.applicant_billing_party_guid = self.applicant_mailing_party_guid
 
         # Create or update Agent Party
         self.is_agent = is_agent   

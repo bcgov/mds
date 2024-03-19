@@ -11,17 +11,9 @@ ADD
 ADD
   COLUMN IF NOT EXISTS is_billing_address_same_as_legal_address BOOLEAN NULL,
 ADD
-  COLUMN IF NOT EXISTS applicant_mailing_party_guid UUID NULL,
+  COLUMN IF NOT EXISTS applicant_party_guid UUID NULL,
 ADD
-  COLUMN IF NOT EXISTS applicant_legal_party_guid UUID NULL,
-ADD
-  COLUMN IF NOT EXISTS applicant_billing_party_guid UUID NULL,
-ADD
-  CONSTRAINT applicant_mailing_guid_party_guid_fkey FOREIGN KEY (applicant_mailing_party_guid) REFERENCES party(party_guid),
-ADD
-  CONSTRAINT applicant_legal_guid_party_guid_fkey FOREIGN KEY (applicant_legal_party_guid) REFERENCES party(party_guid),
-ADD
-  CONSTRAINT applicant_billing_guid_party_guid_fkey FOREIGN KEY (applicant_billing_party_guid) REFERENCES party(party_guid);
+  CONSTRAINT applicant_guid_party_guid_fkey FOREIGN KEY (applicant_mailing_party_guid) REFERENCES party(party_guid);
 
 INSERT INTO
   mine_party_appt_type_code (
