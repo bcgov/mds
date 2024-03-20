@@ -20,6 +20,7 @@ CONNECTIONS = "connections"
 CREDENTIAL_OFFER = "issue_credential"
 OUT_OF_BAND = "out_of_band"
 PING = "ping"
+ISSUER_CREDENTIAL_REVOKED = "issuer_cred_rev"
 
 class VerifiableCredentialWebhookResource(Resource, UserMixin):
     @api.doc(description='Endpoint to recieve webhooks from Traction.', params={})
@@ -67,7 +68,12 @@ class VerifiableCredentialWebhookResource(Resource, UserMixin):
 
                 cred_exch_record.save()
                 current_app.logger.info(f"Updated cred_exch_record cred_exch_id={cred_exch_id} with state={new_state}")
+        elif topic == ISSUER_CREDENTIAL_REVOKED:
+            current_app.logger.info(f"CREDENTIAL SUCCESSFULLY REVOKED received={request.get_json()}")
+            cred_exch = PartyVerifiableCredentialMinesActPermit.find_by_cred_exch_id(webhook_body["cred_ex_id"], unsafe=True)
+            cred_exch.permit_amendment.permit.mines_act_permit_vc_locked = True
+            cred_exch.save()
         elif topic == PING:
-                current_app.logger.info(f"TrustPing received={request.get_json()}")
+            current_app.logger.info(f"TrustPing received={request.get_json()}")
         else:
             current_app.logger.info(f"unknown topic '{topic}', webhook_body={webhook_body}")

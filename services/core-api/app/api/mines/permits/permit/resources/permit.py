@@ -322,6 +322,12 @@ class PermitResource(Resource, UserMixin):
         location='json',
         store_missing=False,
         help='{ mine_commodity_code, mine_disturbance_code}.')
+    
+    parser.add_argument(
+        'mines_act_permit_vc_locked',
+        type=json.dumps,
+        location='json',
+        store_missing=False)
 
     @api.doc(params={'permit_guid': 'Permit guid.'})
     @requires_role_view_all
