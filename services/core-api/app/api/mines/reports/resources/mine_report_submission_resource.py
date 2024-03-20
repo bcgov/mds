@@ -202,7 +202,8 @@ class ReportSubmissionResource(Resource, UserMixin):
         mine_report_definition_guid = data.get('mine_report_definition_guid', None)
         permit_guid = data.get('permit_guid', None)
         mine_report_submission_status_code = data.get('mine_report_submission_status_code', None)
-        contacts = data.get('mine_report_contacts', [])        
+        contacts = data.get('mine_report_contacts', [])
+        report_type = data.get('report_type', None)
 
         if not mine_report_submission_status_code or is_proponent:
             mine_report_submission_status_code = "INI"
@@ -264,6 +265,10 @@ class ReportSubmissionResource(Resource, UserMixin):
         if previous_submission:
             previous_submission.is_latest = False
             previous_submission.save()
+
+        if create_initial_report:
+            mine_report.send_report_update_email(False, is_proponent, report_type)
+
         return report_submission, 201               
     
     @api.doc(params={
