@@ -89,7 +89,8 @@ PARTY_ORGBOOK_ENTITY = api.model(
         'credential_id': fields.Integer,
         'party_guid': fields.String,
         'association_user': fields.String,
-        'association_timestamp': fields.DateTime
+        'association_timestamp': fields.DateTime,
+        'company_alias': fields.String
     })
 
 PARTY_BUSINESS_ROLE_APPT = api.model(

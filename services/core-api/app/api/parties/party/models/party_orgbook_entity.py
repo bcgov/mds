@@ -16,6 +16,7 @@ class PartyOrgBookEntity(AuditMixin, Base):
     name_id = db.Column(db.Integer, nullable=False, unique=True)
     name_text = db.Column(db.String, nullable=False, unique=True)
     credential_id = db.Column(db.Integer, nullable=False, unique=True)
+    company_alias = db.Column(db.String(200), nullable=True)
 
     party_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=False, unique=True)
@@ -37,7 +38,7 @@ class PartyOrgBookEntity(AuditMixin, Base):
 
     @classmethod
     def create(cls, registration_id, registration_status, registration_date, name_id, name_text,
-               credential_id, party_guid):
+               credential_id, party_guid, company_alias=None):
         party_orgbook_entity = cls(
             registration_id=registration_id,
             registration_status=registration_status,
@@ -45,6 +46,7 @@ class PartyOrgBookEntity(AuditMixin, Base):
             name_id=name_id,
             name_text=name_text,
             credential_id=credential_id,
-            party_guid=party_guid)
+            party_guid=party_guid,
+            company_alias=company_alias)
         party_orgbook_entity.save()
         return party_orgbook_entity

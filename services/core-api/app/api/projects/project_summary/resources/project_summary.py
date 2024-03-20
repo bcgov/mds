@@ -157,33 +157,10 @@ class ProjectSummaryResource(Resource, UserMixin):
         store_missing=False,
         required=False
     )
-    parser.add_argument('company_alias', type=str, store_missing=False, required=False)
-    parser.add_argument('incorporation_number', type=str, store_missing=False, required=False)
+
     parser.add_argument('is_legal_address_same_as_mailing_address', type=bool, store_missing=False, required=False)
     parser.add_argument('is_billing_address_same_as_mailing_address', type=bool, store_missing=False, required=False)
     parser.add_argument('is_billing_address_same_as_legal_address', type=bool, store_missing=False, required=False)
-
-    parser.add_argument(
-        'applicant_mailing',
-        type=dict,
-        location='json',
-        store_missing=False,
-        required=False
-    )
-    parser.add_argument(
-        'applicant_billing',
-        type=dict,
-        location='json',
-        store_missing=False,
-        required=False
-    )
-    parser.add_argument(
-        'applicant_legal',
-        type=dict,
-        location='json',
-        store_missing=False,
-        required=False
-    )
 
 
     @api.doc(
@@ -252,8 +229,6 @@ class ProjectSummaryResource(Resource, UserMixin):
                                data.get('zoning_reason'),
                                data.get('nearest_municipality'),
                                data.get('applicant'),
-                               data.get('company_alias'),
-                               data.get('incorporation_number'),
                                data.get('is_legal_address_same_as_mailing_address'),
                                data.get('is_billing_address_same_as_mailing_address'),
                                data.get('is_billing_address_same_as_legal_address'))

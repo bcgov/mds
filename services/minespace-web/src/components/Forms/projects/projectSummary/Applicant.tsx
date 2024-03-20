@@ -75,6 +75,13 @@ const Applicant = () => {
       dispatch(
         change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.party_orgbook_entity", orgBookEntity)
       );
+      dispatch(
+        change(
+          FORM.ADD_EDIT_PROJECT_SUMMARY,
+          "applicant.party_name",
+          credential.topic.local_name.text
+        )
+      );
     }
   }, [credential]);
 
@@ -217,8 +224,8 @@ const Applicant = () => {
               <Row gutter={16}>
                 <Col md={12} sm={24}>
                   <Field
-                    id="company_alias"
-                    name="company_alias"
+                    id="applicant.party_orgbook_entity.company_alias"
+                    name="applicant.party_orgbook_entity.company_alias"
                     label="Doing Business As"
                     component={RenderField}
                   />
@@ -226,8 +233,8 @@ const Applicant = () => {
 
                 <Col md={12} sm={24}>
                   <Field
-                    id="incorporation_number"
-                    name="incorporation_number"
+                    id="applicant.party_orgbook_entity.registration_id"
+                    name="applicant.party_orgbook_entity.registration_id"
                     label="Incorporation Number"
                     required
                     validate={[required]}

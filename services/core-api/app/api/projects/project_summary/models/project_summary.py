@@ -63,8 +63,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     zoning_reason = db.Column(db.String, nullable=True)
     nearest_municipality_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('municipality.municipality_guid'))
 
-    company_alias = db.Column(db.String(200), nullable=True)
-    incorporation_number = db.Column(db.String(50), nullable=True)
     is_legal_address_same_as_mailing_address = db.Column(db.Boolean, nullable=True)
     is_billing_address_same_as_mailing_address = db.Column(db.Boolean, nullable=True)
     is_billing_address_same_as_legal_address = db.Column(db.Boolean, nullable=True)
@@ -116,6 +114,12 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     applicant = db.relationship(
         'Party', lazy='joined', foreign_keys=applicant_party_guid
     )
+
+    @classmethod
+    def __get_address_type_code(cls, address_data):
+        if isinstance(address_data, list):
+            return address_data[0].get('address_type_code')
+        return address_data.get('address_type_code')
 
     def __repr__(self):
         return f'{self.__class__.__name__} {self.project_summary_id}'
@@ -205,11 +209,21 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     def create_or_update_party(cls, party_data, job_title_code, existing_party):
         address_data = party_data.get('address')
         party_guid = party_data.get('party_guid')
-        validate_phone_no(party_data.get('phone_no'), address_data.get('address_type_code'))
-        if party_guid is not None and existing_party is not None:            
+        if isinstance(address_data, list):
+            # Validate only the phone number used for the mailing address
+            validate_phone_no(party_data.get('phone_no'), address_data[0].get('address_type_code'))
+        else:
+            validate_phone_no(party_data.get('phone_no'), address_data.get('address_type_code'))
+        if party_guid is not None and existing_party is not None:
             existing_party.deep_update_from_dict(party_data)
-            for key, value in address_data.items():
-                setattr(existing_party.address[0], key, value)
+            if isinstance(address_data, list):
+                for index, address_item in enumerate(address_data):
+                    for key, value in address_item.items():
+                        setattr(existing_party.address[index], key, value)
+            else:
+                for key, value in address_data.items():
+                    setattr(existing_party.address[0], key, value)
+
             return existing_party
         else:
             new_party = Party.create(
@@ -221,20 +235,34 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 party_type_code=party_data.get('party_type_code'),
                 job_title=party_data.get('job_title'),
                 job_title_code=job_title_code,
-                address_type_code=address_data.get('address_type_code'),
+                address_type_code= cls.__get_address_type_code(address_data),
                 middle_name=party_data.get('middle_name')
             )
-            new_address = Address.create(
-                suite_no=address_data.get('suite_no'),
-                address_line_1=address_data.get('address_line_1'),
-                city=address_data.get('city'),
-                sub_division_code=address_data.get('sub_division_code'),
-                post_code=address_data.get('post_code'),
-                address_type_code=address_data.get('address_type_code'),
-            )
-            new_party.address.append(new_address)
+            if isinstance(address_data, list):
+                for addr in address_data:
+                    new_address = Address.create(
+                        suite_no=addr.get('suite_no'),
+                        address_line_1=addr.get('address_line_1'),
+                        city=addr.get('city'),
+                        sub_division_code=addr.get('sub_division_code'),
+                        post_code=addr.get('post_code'),
+                        address_type_code=addr.get('address_type_code'),
+                    )
+                    new_party.address.append(new_address)
+            else:
+                new_address = Address.create(
+                    suite_no=address_data.get('suite_no'),
+                    address_line_1=address_data.get('address_line_1'),
+                    city=address_data.get('city'),
+                    sub_division_code=address_data.get('sub_division_code'),
+                    post_code=address_data.get('post_code'),
+                    address_type_code=address_data.get('address_type_code'),
+                )
+                new_party.address.append(new_address)
             return new_party
-        
+
+
+
     @classmethod
     def create(cls,
                project,
@@ -337,8 +365,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                zoning_reason=None,
                nearest_municipality=None,
                applicant=None,
-               company_alias=None,
-               incorporation_number=None,
                is_legal_address_same_as_mailing_address=None,
                is_billing_address_same_as_mailing_address=None,
                is_billing_address_same_as_legal_address=None,
@@ -366,6 +392,9 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         self.legal_land_owner_name = legal_land_owner_name
         self.legal_land_owner_contact_number = legal_land_owner_contact_number
         self.legal_land_owner_email_address = legal_land_owner_email_address
+        self.is_legal_address_same_as_mailing_address = is_legal_address_same_as_mailing_address
+        self.is_billing_address_same_as_mailing_address = is_billing_address_same_as_mailing_address
+        self.is_billing_address_same_as_legal_address = is_billing_address_same_as_legal_address
 
         # TODO - Turn this on when document removal is activated on the front end.
         # Get the GUIDs of the updated documents.
@@ -377,40 +406,13 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         #         self.mine_documents.remove(doc.mine_document)
         #         doc.mine_document.delete(commit=False)
 
-        # if applicant is not None:
-        #     # Create or update Applicant Party
-        #     self.company_alias = company_alias
-        #     self.incorporation_number = incorporation_number
-        #     self.is_legal_address_same_as_mailing_address = is_legal_address_same_as_mailing_address
-        #     self.is_billing_address_same_as_legal_address = is_billing_address_same_as_legal_address
-        #     self.is_billing_address_same_as_mailing_address = is_billing_address_same_as_mailing_address
-        #     applicant["party_name"] = self._get_party_name(applicant.get('party_name'))
-        #     applicant["address"] = applicant_mailing
-        #     applicant_party = self.create_or_update_party(applicant, 'APP', self.applicant_mailing)
-        #     self.applicant_mailing_party_guid = applicant_party.party_guid
-        #
-        #     if not is_legal_address_same_as_mailing_address:
-        #         applicant_legal_info = {}
-        #         applicant_legal_info.update(applicant)
-        #         applicant_legal_info["address"] = applicant_legal
-        #         applicant_legal_party = self.create_or_update_party(applicant_legal_info, 'APP', self.applicant_legal)
-        #         applicant_legal_party.save()
-        #         self.applicant_legal_party_guid = applicant_legal_party.party_guid
-        #     else:
-        #         self.applicant_legal_party_guid = self.applicant_mailing_party_guid
-        #
-        #     if not is_billing_address_same_as_mailing_address:
-        #         applicant_billing_info = {}
-        #         applicant_billing_info.update(applicant)
-        #         applicant_billing_info["address"] = applicant_billing
-        #         applicant_billing_party = self.create_or_update_party(applicant_billing_info, 'APP', self.applicant_billing)
-        #         applicant_billing_party.save()
-        #         self.applicant_billing_party_guid = applicant_billing_party.party_guid
-        #     else:
-        #         self.applicant_billing_party_guid = self.applicant_mailing_party_guid
+
+        applicant_party = self.create_or_update_party(applicant, 'APP', self.applicant)
+        applicant_party.save()
+        self.applicant_party_guid = applicant_party.party_guid
 
         # Create or update Agent Party
-        self.is_agent = is_agent   
+        self.is_agent = is_agent
         if not is_agent or is_agent is None or not agent:
             # unassign the agent party guid if previously set
             self.agent_party_guid = None
