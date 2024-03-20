@@ -20,6 +20,7 @@ const RenderRadioButtons: FC<RenderRadioButtonsProps> = ({
   disabled = false,
   input,
   id,
+  help,
   customOptions,
   required = false,
   optionType = "default",
@@ -47,15 +48,18 @@ const RenderRadioButtons: FC<RenderRadioButtonsProps> = ({
       }
       label={getFormItemLabel(label, required)}
     >
-      <Radio.Group
-        disabled={disabled}
-        name={input.name}
-        onChange={handleRadioChange}
-        options={options}
-        optionType={optionType}
-        buttonStyle="solid"
-        {...(isVertical && { className: "vertical-radio-group" })}
-      />
+      <>
+        <Radio.Group
+          disabled={disabled}
+          name={input.name}
+          onChange={handleRadioChange}
+          options={options}
+          optionType={optionType}
+          buttonStyle="solid"
+          {...(isVertical && { className: "vertical-radio-group" })}
+        />
+        {help && <div className={`form-item-help ${input.name}-form-help`}>{help}</div>}
+      </>
     </Form.Item>
   );
 };

@@ -9,41 +9,256 @@ import {
   change,
   getFormValues,
 } from "redux-form";
-import { Typography, Checkbox, Tooltip } from "antd";
-import DownOutlined from "@ant-design/icons/DownOutlined";
-import InfoCircleOutlined from "@ant-design/icons/InfoCircleOutlined";
+import { Typography, Checkbox, Tooltip, Alert, Button, Row, Col } from "antd";
+import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import {
   getTransformedProjectSummaryAuthorizationTypes,
   getDropdownProjectSummaryPermitTypes,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getFormattedProjectSummary } from "@mds/common/redux/selectors/projectSelectors";
-import { required, requiredRadioButton } from "@mds/common/redux/utils/Validate";
+import { maxLength, required, requiredRadioButton } from "@mds/common/redux/utils/Validate";
 import * as FORM from "@/constants/forms";
-import Callout from "@mds/common/components/common/Callout";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
 import RenderGroupCheckbox, {
   normalizeGroupCheckBox,
 } from "@mds/common/components/forms/RenderGroupCheckbox";
-import RenderCheckbox from "@/components/common/RenderCheckbox";
+import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
 
-const RenderAuthPermitSection: FC<{ permitTypes: string[] }> = ({ permitTypes = [] }) => {
-  if (!(permitTypes?.length > 0)) {
-    return null;
-  }
-  console.log(permitTypes, permitTypes.includes("NEW"));
+const RenderEMAPermitCommonSections = ({ isAmendment }) => {
+  const purposeLabel = isAmendment
+    ? "Additional Amendment Request Information"
+    : "Purpose of Application";
+  const [showDocSection, setShowDocSection] = useState(false);
+
+  const onChange = (value, _newVal, _prevVal, fieldName) => {
+    console.log("radio val", value, fieldName);
+    setShowDocSection(value);
+  };
   return (
-    <div>
-      {permitTypes.includes("AMENDMENT") && <div>amendment stuff</div>}
-      {permitTypes.includes("NEW") && <div>new stuff</div>}
+    <>
+      <Field
+        label={purposeLabel}
+        name="additional_info"
+        required
+        validate={[required, maxLength(4000)]}
+        maximumCharacters={4000}
+        minRows={2}
+        component={RenderAutoSizeField}
+        placeholder="e.g. To Discharge air emissions from x number of stacks at a sawmill."
+      />
+      <Field
+        component={RenderRadioButtons}
+        name="exemption_request"
+        required
+        onChange={onChange}
+        validate={[requiredRadioButton]}
+        label={<>Pre-Application Exemption Request for Environmental Management Act application</>}
+      />
+      {showDocSection && (
+        <Alert
+          description={
+            <>
+              If yes, please attach a <b>letter with rationale</b> to support this exemption at{" "}
+              <b>Document Upload</b> section. Please note that requests may not always be granted.
+              Incomplete applications may be returned if they don&apos;t meet Ministry requirements
+              and the application fee may not be refunded.
+            </>
+          }
+          showIcon
+        />
+      )}
+    </>
+  );
+};
+const RenderEMANewPermitSection = () => {
+  return (
+    <div style={{ border: "1px solid deeppink" }}>
+      <FormSection name="new_permit">
+        <Field
+          name="authorization_type"
+          isVertical
+          label="Authorization Type"
+          customOptions={[
+            {
+              label: (
+                <>
+                  Permit
+                  <br />
+                  <span className="label-subtitle">
+                    Authorization to discharge waste to the environment; an ongoing authorization.
+                  </span>
+                </>
+              ),
+              value: "permit",
+            },
+            {
+              label: (
+                <>
+                  Approval
+                  <br />
+                  <span className="label-subtitle">
+                    Temporary authorization to discharge waste to the environment for a maximum of
+                    15 months.
+                  </span>
+                </>
+              ),
+              value: "approval",
+            },
+          ]}
+          component={RenderRadioButtons}
+          required
+          validate={[requiredRadioButton]}
+        />
+        <RenderEMAPermitCommonSections isAmendment={false} />
+      </FormSection>
     </div>
   );
 };
-const RenderAuthCodeFormSection = ({ code, authIndex }) => {
+
+const RenderEMAAmendFieldArray = ({ fields }) => {
+  return (
+    <>
+      {fields.map((amendment: string) => (
+        <FormSection name={amendment} key={amendment}>
+          <Field
+            label="Authorization Number"
+            name="authorization_number"
+            required
+            // TODO: number only
+            validate={[required]}
+            help="Number only (e.g. PC1234 should be entered as 1234)"
+            component={RenderField}
+          />
+          <Field
+            label="Amendment Type"
+            name="amendment_type"
+            help="As defined in the Environmental Management Act Public Notification Regulation"
+            required
+            validate={[requiredRadioButton]}
+            component={RenderRadioButtons}
+            customOptions={[
+              { label: "Significant", value: "significant" },
+              { label: "Minor", value: "minor" },
+            ]}
+          />
+          <Field
+            label="Amendment Changes Requested that relate to the British Columbia Environmental Act (Select all that apply)"
+            name="amendment_changes"
+            required
+            validate={[required]}
+            component={RenderGroupCheckbox}
+            normalize={normalizeGroupCheckBox}
+            options={[
+              { label: "Increase Discharge Limit (<10%)", value: "ILT" },
+              { label: "Increase Discharge Limit (>10%)", value: "IGT" },
+              { label: "Decrease Discharge Limit", value: "DDL" },
+              { label: "Name Change", value: "NAM" },
+              { label: "Transfer", value: "TRA" },
+              { label: "Modify Monitoring Requirements", value: "MMR" },
+              { label: "Regulatory Change", value: "RCH" },
+              { label: "Other", value: "OTH" },
+            ]}
+          />
+          <Field
+            label="Is this Authorization required for remediation of a contaminated site?"
+            name="contaminated_site"
+            required
+            validate={[requiredRadioButton]}
+            component={RenderRadioButtons}
+          />
+          <RenderEMAPermitCommonSections isAmendment={true} />
+        </FormSection>
+      ))}
+    </>
+  );
+};
+
+const RenderEMAAuthCodeFormSection = ({ authorization, authIndex }) => {
+  console.log("EMA authorization", authorization);
+  const dispatch = useDispatch();
+
+  const addAmendment = () => {
+    dispatch(
+      arrayPush(FORM.ADD_EDIT_PROJECT_SUMMARY, `authorizations[${authIndex}].amend_permits`, {})
+    );
+  };
+
+  const handleChangeAmendment = (value) => {
+    if (value.includes("AMENDMENT")) {
+      addAmendment();
+    } else {
+      dispatch(
+        change(FORM.ADD_EDIT_PROJECT_SUMMARY, `authorizations[${authIndex}].amend_permits`, null)
+      );
+    }
+  };
+
+  return (
+    <>
+      <Field
+        name="project_summary_permit_type"
+        component={RenderGroupCheckbox}
+        label="What type of authorization is involved in your application?"
+        required
+        validate={[required]}
+        normalize={normalizeGroupCheckBox}
+        onChange={handleChangeAmendment}
+        options={[
+          {
+            label: (
+              <>
+                Amendment to an existing authorization
+                {authorization.project_summary_permit_type.includes("AMENDMENT") && (
+                  <Row style={{ border: "1px solid deeppink" }} gutter={[16, 16]}>
+                    <Col span={24}>
+                      <FieldArray
+                        name="amend_permits"
+                        component={RenderEMAAmendFieldArray}
+                        props={{}}
+                      />
+                    </Col>
+                    <Button
+                      onClick={addAmendment}
+                      icon={<PlusCircleFilled />}
+                      className="btn-sm-padding"
+                    >
+                      Add another amendment
+                    </Button>
+                  </Row>
+                )}
+              </>
+            ),
+            value: "AMENDMENT",
+          },
+          {
+            label: (
+              <>
+                New
+                {authorization.project_summary_permit_type.includes("NEW") && (
+                  <RenderEMANewPermitSection />
+                )}
+              </>
+            ),
+            value: "NEW",
+          },
+        ]}
+      />
+    </>
+  );
+};
+
+const RenderAuthCodeFormSection = ({ authorizationType, code, authIndex }) => {
   const dropdownProjectSummaryPermitTypes = useSelector(getDropdownProjectSummaryPermitTypes);
   const { authorizations } = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
-  const { project_summary_permit_type } = authorizations[authIndex];
-  console.log(authorizations[authIndex], project_summary_permit_type);
+  if (authorizationType === "ENVIRONMENTAL_MANAGMENT_ACT") {
+    return (
+      <RenderEMAAuthCodeFormSection
+        authorization={authorizations[authIndex]}
+        authIndex={authIndex}
+      />
+    );
+  }
   return (
     <>
       <Field
@@ -57,7 +272,12 @@ const RenderAuthCodeFormSection = ({ code, authIndex }) => {
         validate={[required]}
         normalize={normalizeGroupCheckBox}
       />
-      <RenderAuthPermitSection permitTypes={project_summary_permit_type} />
+      <Field
+        name="existing_permits_authorizations"
+        component={RenderField}
+        label="If your application involved a change to an existing permit, please list the numbers of the permits involved."
+        help="Please separate each permit with a comma"
+      />
     </>
   );
 };
@@ -66,7 +286,6 @@ export const AuthorizationsInvolved = () => {
   const transformedProjectSummaryAuthorizationTypes = useSelector(
     getTransformedProjectSummaryAuthorizationTypes
   );
-  // const dropdownProjectSummaryPermitTypes = useSelector(getDropdownProjectSummaryPermitTypes);
   const formattedProjectSummary = useSelector(getFormattedProjectSummary);
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
 
@@ -82,7 +301,6 @@ export const AuthorizationsInvolved = () => {
       dispatch(arrayPush(FORM.ADD_EDIT_PROJECT_SUMMARY, "authorizations", formVal));
     } else {
       setAuthorizationOptions(authorizationOptions.filter((item) => item !== code));
-      // dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, code, null));
       dispatch(arrayRemove(FORM.ADD_EDIT_PROJECT_SUMMARY, "authorizations", authIndex));
     }
   };
@@ -93,15 +311,13 @@ export const AuthorizationsInvolved = () => {
 
   return (
     <>
-      <Typography.Title level={3}>
-        Authorizations potentially involved in the project
-      </Typography.Title>
-      <Callout
-        message="Please select the authorizations that you anticipate needing for this project, based
-        on your current understanding. This is to assist in planning and may not be the
-        complete list for the final application."
+      <Typography.Title level={3}>Purpose & Authorization</Typography.Title>
+      <Alert
+        description="Select the authorization that you anticipate needing for this project. This is to assist in planning and may not be the complete list for the final application."
+        type="warning"
+        showIcon
       />
-      <br />
+      {/* <br />
       <Typography.Title level={5}>
         Mines Review Committee
         <Tooltip
@@ -124,7 +340,7 @@ export const AuthorizationsInvolved = () => {
         >
           <InfoCircleOutlined className="padding-sm" />
         </Tooltip>
-      </Typography.Title>
+      </Typography.Title> */}
       <Field
         id="mrc_review_required"
         name="mrc_review_required"
@@ -155,35 +371,60 @@ export const AuthorizationsInvolved = () => {
       <br />
       {transformedProjectSummaryAuthorizationTypes.map((authorization) => {
         return (
-          <React.Fragment key={authorization.code}>
+          <div key={authorization.code}>
             <Typography.Title level={5}>{authorization.description}</Typography.Title>
             {authorization.children.map((child) => {
               const authIndex = authorizationOptions.indexOf(child.code);
               const checked = authIndex > -1;
               return (
                 <FormSection key={child.code} name={`authorizations[${authIndex}]`}>
-                  <>
+                  <Row gutter={[0, 16]}>
                     <Checkbox
                       value={child.code}
                       checked={checked}
                       onChange={(e) => handleChange(e, child.code, authIndex)}
                     >
-                      {checked ? (
-                        <>
-                          {child.description} <DownOutlined />
-                        </>
-                      ) : (
-                        child.description
-                      )}
+                      <b>{child.description}</b>
                     </Checkbox>
                     {checked && (
-                      <RenderAuthCodeFormSection code={child.code} authIndex={authIndex} />
+                      <>
+                        {child.code === "MINES_ACT_PERMIT" && (
+                          <Alert
+                            message="You are submitting a Major Mine Application to the Chief Permitting Officer"
+                            description={
+                              <ul>
+                                <li>
+                                  For changes to existing activities, submit Notice of Departure
+                                  through MineSpace.
+                                </li>
+                                <li>
+                                  For exploration work outside the permit mine area without
+                                  expanding the production area, submit a Notice of Work application
+                                  via FrountCounter BC to amend your MX or CX permit.
+                                </li>
+                                <li>
+                                  For induced polarization surveys or exploration drilling within
+                                  the permit mine area, submit a Notification of Deemed
+                                  Authorixation application via FrountCounter BC.
+                                </li>
+                              </ul>
+                            }
+                            type="info"
+                            showIcon
+                          />
+                        )}
+                        <RenderAuthCodeFormSection
+                          code={child.code}
+                          authIndex={authIndex}
+                          authorizationType={authorization.code}
+                        />
+                      </>
                     )}
-                  </>
+                  </Row>
                 </FormSection>
               );
             })}
-          </React.Fragment>
+          </div>
         );
       })}
     </>
