@@ -298,6 +298,7 @@ PERMIT_MODEL = api.model(
         'current_permittee': fields.String,
         'current_permittee_guid': fields.String,
         'current_permittee_digital_wallet_connection_state': fields.String,
+        'mines_act_permit_vc_locked': fields.Boolean,
         'project_id': fields.String,
         'permit_amendments': fields.List(fields.Nested(PERMIT_AMENDMENT_MODEL)),
         'remaining_static_liability': fields.Float,
