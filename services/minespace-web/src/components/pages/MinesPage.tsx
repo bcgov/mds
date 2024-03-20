@@ -90,7 +90,7 @@ export const MinesPage = () => {
         <Divider />
         <Typography.Title level={4}>Welcome, {userInfo.preferred_username}.</Typography.Title>
 
-        {isLoaded && mines.length === 0 && renderNoMines()}
+        {isLoaded && mines?.length === 0 && renderNoMines()}
 
         {(!isLoaded || (isLoaded && mines?.length > 0)) && (
           <Row gutter={32}>

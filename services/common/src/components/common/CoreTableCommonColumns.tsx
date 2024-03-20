@@ -8,16 +8,17 @@ import { CaretDownOutlined } from "@ant-design/icons";
 import { generateActionMenuItems } from "./ActionMenu";
 
 export const renderTextColumn = (
-  dataIndex: string,
+  dataIndex: string | string[],
   title: string,
   sortable = false,
   placeHolder = EMPTY_FIELD,
   width?: number | string
 ): ColumnType<any> => {
+  const key = Array.isArray(dataIndex) ? dataIndex.join(".") : dataIndex;
   return {
     title,
     dataIndex,
-    key: dataIndex,
+    key: key,
     render: (text: string) => (
       <div title={title} className={`${dataIndex}-column`}>
         {text ?? placeHolder}

@@ -1,7 +1,7 @@
 import React from "react";
 import { Typography } from "antd";
 import { Field } from "redux-form";
-import { maxLength, required } from "@common/utils/Validate";
+import { maxLength, required } from "@mds/common/redux/utils/Validate";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
 
@@ -33,7 +33,7 @@ export const BasicInformation = () => {
         required
         component={RenderAutoSizeField}
         minRows={10}
-        maxCharacters={4000}
+        maximumCharacters={4000}
         validate={[maxLength(4000), required]}
       />
     </>
