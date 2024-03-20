@@ -72,6 +72,7 @@ class MineReportListResource(Resource, UserMixin):
         is_report_request = data.get('mine_report_status_code', None) == "NON"
 
         is_code_required_report = permit_condition_type_code == None
+        permit_condition_category = None
         permit_condition_category_code = None
         permit_guid = data['permit_guid']
 
@@ -188,7 +189,8 @@ class MineReportListResource(Resource, UserMixin):
             mine_report.send_report_update_email(False)
 
         if is_report_request:
-            trigger_notification(f'Report requested', ActivityType.report_requested, mine, 'MineReport', mine_report.mine_report_guid, None, None, ActivityRecipients.minespace_users)
+            report_name = mine_report_definition.report_name if is_code_required_report else permit_condition_category.description
+            trigger_notification(f'A report has been requested by the ministry: {report_name}', ActivityType.report_requested, mine, 'MineReport', mine_report.mine_report_guid, None, None, ActivityRecipients.minespace_users)
 
         return mine_report, 201
 
