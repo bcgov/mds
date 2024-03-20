@@ -184,10 +184,7 @@ PROJECT_SUMMARY_MODEL = api.model(
         'is_legal_address_same_as_mailing_address': fields.Boolean,
         'is_billing_address_same_as_mailing_address': fields.Boolean,
         'is_billing_address_same_as_legal_address': fields.Boolean,
-        'applicant': fields.Nested(PARTY),
-        'applicant_mailing': fields.Nested(PARTY),
-        'applicant_billing': fields.Nested(PARTY),
-        'applicant_legal': fields.Nested(PARTY),
+        'applicant': fields.Nested(PARTY)
     })
 
 REQUIREMENTS_MODEL = api.model(

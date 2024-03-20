@@ -25,194 +25,32 @@ import { normalizePhone } from "@common/utils/helpers";
 
 const { Title, Paragraph } = Typography;
 
-const RenderAddress = (props) => {
-  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
-  const {
-    is_legal_address_same_as_mailing_address = false,
-    is_billing_address_same_as_mailing_address = false,
-    is_billing_address_same_as_legal_address = false,
-  } = formValues;
-
-  const { fields, applicant } = props;
-  const addressType = ["Mailing Address", "Legal Address", "Billing Address"];
-
-  const dispatch = useDispatch();
-  const provinceOptions = useSelector(getDropdownProvinceOptions);
-  const handleClearProvince = (currentCountry, addressTypeCode, subDivisionCode, field) => {
-    // clear out the province if country has changed and it no longer matches
-    if (addressTypeCode !== currentCountry) {
-      const selectedProvince = currentCountry
-        ? provinceOptions.find((p) => p.value === subDivisionCode)
-        : {};
-
-      const contactFieldToBeChanged = `${field}.sub_division_code`;
-      if (addressTypeCode === "INT" || selectedProvince?.subType !== currentCountry) {
-        dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, contactFieldToBeChanged, null));
-      }
-    }
-  };
-
-  const renderAddressFields = (field, address_type_code, sub_division_code, isInternational) => (
-    <>
-      <Row gutter={16}>
-        <Col md={19} sm={24}>
-          <Field
-            name={`${field}.address_line_1`}
-            label="Street"
-            required
-            validate={[required]}
-            component={RenderField}
-          />
-        </Col>
-        <Col md={5} sm={24}>
-          <Field name={`${field}.suite_no`} label="Unit #" component={RenderField} />
-        </Col>
-      </Row>
-
-      <Row gutter={16}>
-        <Col md={12} sm={24}>
-          <Field
-            name={`${field}.address_type_code`}
-            label="Country"
-            required
-            validate={[required]}
-            data={CONTACTS_COUNTRY_OPTIONS}
-            component={RenderSelect}
-            onSelect={(e) => handleClearProvince(e, address_type_code, sub_division_code, field)}
-          />
-        </Col>
-        <Col md={12} sm={24}>
-          <Field
-            name={`${field}.sub_division_code`}
-            label="Province"
-            required
-            data={provinceOptions.filter((p) => p.subType === address_type_code)}
-            validate={!isInternational ? [required] : []}
-            component={RenderSelect}
-          />
-        </Col>
-      </Row>
-
-      <Row gutter={16}>
-        <Col md={12} sm={24}>
-          <Field
-            name={`${field}.city`}
-            label="City"
-            required
-            validate={[required]}
-            component={RenderField}
-          />
-        </Col>
-        <Col md={12} sm={24}>
-          <Field
-            name={`${field}.post_code`}
-            label="Postal Code"
-            component={RenderField}
-            required
-            validate={[postalCodeWithCountry(address_type_code), maxLength(10)]}
-          />
-        </Col>
-      </Row>
-    </>
-  );
-
-  return (
-    <>
-      {fields.map((field, index) => {
-        const { address } = applicant?.address[index] ?? {};
-        const { address_type_code, sub_division_code } = address ?? {};
-        const isInternational = address_type_code === "INT";
-
-        return (
-          <div key={index}>
-            <Typography.Title level={5}>{addressType[index]}</Typography.Title>
-            {index === 1 && (
-              <Field
-                id="is_legal_address_same_as_mailing_address"
-                name="is_legal_address_same_as_mailing_address"
-                component={RenderCheckbox}
-                label="Same as mailing address"
-                type="checkbox"
-              />
-            )}
-            {index === 2 && (
-              <Row gutter={16}>
-                <Col md={8} sm={24}>
-                  <Field
-                    id="is_billing_address_same_as_mailing_address"
-                    name="is_billing_address_same_as_mailing_address"
-                    label="Same as mailing address"
-                    disabled={is_billing_address_same_as_legal_address}
-                    component={RenderCheckbox}
-                    type="checkbox"
-                  />
-                </Col>
-                <Col md={8} sm={24}>
-                  <Field
-                    id="is_billing_address_same_as_legal_address"
-                    name="is_billing_address_same_as_legal_address"
-                    label="Same as legal address"
-                    disabled={is_billing_address_same_as_mailing_address}
-                    component={RenderCheckbox}
-                    type="checkbox"
-                  />
-                </Col>
-              </Row>
-            )}
-            {(index === 0 ||
-              (index === 1 && !is_legal_address_same_as_mailing_address) ||
-              (index === 2 &&
-                !is_billing_address_same_as_mailing_address &&
-                !is_billing_address_same_as_legal_address)) &&
-              renderAddressFields(field, address_type_code, sub_division_code, isInternational)}
-          </div>
-        );
-      })}
-    </>
-  );
-};
-
 const Applicant = () => {
   const dispatch = useDispatch();
+  const provinceOptions = useSelector(getDropdownProvinceOptions);
   const [credential, setCredential] = useState<IOrgbookCredential>(null);
   const [verified, setVerified] = useState(false);
   const [checkingStatus, setCheckingStatus] = useState(false);
 
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
-  const { applicant = {} } = formValues;
-  const { party_type_code } = applicant ?? {};
+  const {
+    applicant = {},
+    is_legal_address_same_as_mailing_address = false,
+    is_billing_address_same_as_mailing_address = false,
+    is_billing_address_same_as_legal_address = false,
+  } = formValues;
+  const { party_type_code, address = [] } = applicant ?? {};
+
+  const [mailingAddress, legalAddress, businessAddress] = address || [];
+  const isMailingInternational = mailingAddress?.address_type_code === "INT";
+  const isLegalInternational = legalAddress?.address_type_code === "INT";
+  const isBusinessInternational = businessAddress?.address_type_code === "INT";
 
   useEffect(() => {
-    if (!applicant?.address) {
-      dispatch(
-        change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.address", [
-          {
-            address_line_1: "",
-            suite_no: "",
-            address_type_code: "",
-            sub_division_code: "",
-            city: "",
-            post_code: "",
-          },
-          {
-            address_line_1: "",
-            suite_no: "",
-            address_type_code: "",
-            sub_division_code: "",
-            city: "",
-            post_code: "",
-          },
-          {
-            address_line_1: "",
-            suite_no: "",
-            address_type_code: "",
-            sub_division_code: "",
-            city: "",
-            post_code: "",
-          },
-        ])
-      );
-    }
+    const defaultPartyTypeCode = party_type_code || "ORG";
+    dispatch(
+      change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.party_type_code", defaultPartyTypeCode)
+    );
   }, []);
 
   useEffect(() => {
@@ -223,18 +61,26 @@ const Applicant = () => {
         setVerified(response.success);
         setCheckingStatus(false);
       });
+
       const incorporationNumber = credential.topic.source_id ? credential.topic.source_id : null;
       dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "incorporation_number", incorporationNumber));
+      const orgBookEntity = {
+        registration_id: credential.topic.source_id,
+        registration_status: credential.attributes[2].value,
+        registration_date: credential.attributes[0].value,
+        name_id: credential.topic.local_name.id,
+        name_text: credential.topic.local_name.text,
+        credential_id: credential.topic.local_name.credential_id,
+      };
+      dispatch(
+        change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.party_orgbook_entity", orgBookEntity)
+      );
     }
   }, [credential]);
 
   useEffect(() => {
     setCredential(null);
   }, [party_type_code]);
-
-  useEffect(() => {
-    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.party_type_code", "ORG"));
-  }, []);
 
   const findBusinessNumber = (obj: any): string => {
     // Check if the object is a dictionary and has a "type" field with value of "business_number"
@@ -293,6 +139,32 @@ const Applicant = () => {
     );
   };
 
+  const updateAddressSubDivisionCode = (index: number) => {
+    const selectedProvince = address?.[index]?.sub_division_code
+      ? provinceOptions.find((p) => p.value === address?.[index]?.sub_division_code)
+      : {};
+    if (
+      address?.[index]?.address_type_code === "INT" ||
+      selectedProvince?.subType !== address?.[index]?.address_type_code
+    ) {
+      dispatch(
+        change(FORM.ADD_EDIT_PROJECT_SUMMARY, `applicant.address[${index}].sub_division_code`, null)
+      );
+    }
+  };
+
+  useEffect(() => {
+    updateAddressSubDivisionCode(0);
+  }, [address?.[0]?.address_type_code]);
+
+  useEffect(() => {
+    updateAddressSubDivisionCode(1);
+  }, [address?.[1]?.address_type_code]);
+
+  useEffect(() => {
+    updateAddressSubDivisionCode(2);
+  }, [address?.[2]?.address_type_code]);
+
   return (
     <div className="ant-form-vertical">
       <Title level={3}>Applicant Information</Title>
@@ -317,8 +189,8 @@ const Applicant = () => {
       {party_type_code === "ORG" && (
         <div>
           <Field
-            name="applicant.party_name"
-            id="applicant.party_name"
+            name="applicant.party_orgbook_entity"
+            id="applicant.party_orgbook_entity"
             required
             validate={[required]}
             label="Company Legal Name"
@@ -416,8 +288,8 @@ const Applicant = () => {
           />
         </Col>
       </Row>
-      <FieldArray name="applicant.address" component={RenderAddress} />
-      {/* <Row gutter={16}>
+      <Typography.Title level={5}>Mailing Address</Typography.Title>
+      <Row gutter={16}>
         <Col md={19} sm={24}>
           <Field
             name="applicant.address[0].address_line_1"
@@ -430,9 +302,8 @@ const Applicant = () => {
         <Col md={5} sm={24}>
           <Field name="applicant.address[0].suite_no" label="Unit #" component={RenderField} />
         </Col>
-      </Row> */}
-
-      {/* <Row gutter={16}>
+      </Row>
+      <Row gutter={16}>
         <Col md={12} sm={24}>
           <Field
             name="applicant.address[0].address_type_code"
@@ -443,22 +314,21 @@ const Applicant = () => {
             component={RenderSelect}
           />
         </Col>
-
         <Col md={12} sm={24}>
           <Field
             name="applicant.address[0].sub_division_code"
             label="Province"
-            required={!isMailingAddressInternational}
+            required={!isMailingInternational}
+            validate={!isMailingInternational ? [required] : []}
             data={provinceOptions.filter(
-              (p) => p.subType === applicant.address[0].address_type_code
+              (p) => p.subType === applicant?.address?.[0]?.address_type_code
             )}
-            validate={!isMailingAddressInternational ? [required] : []}
             component={RenderSelect}
           />
         </Col>
-      </Row> */}
+      </Row>
 
-      {/* <Row gutter={16}>
+      <Row gutter={16}>
         <Col md={12} sm={24}>
           <Field
             name="applicant.address[0].city"
@@ -473,22 +343,23 @@ const Applicant = () => {
             name="applicant.address[0].post_code"
             label="Postal Code"
             component={RenderField}
+            required
             validate={[
-              postalCodeWithCountry(applicant.address[0].address_type_code),
+              postalCodeWithCountry(applicant?.address?.[0]?.address_type_code),
               maxLength(10),
             ]}
           />
         </Col>
-      </Row> */}
-      {/* <Typography.Title level={4}>Legal Address</Typography.Title>
+      </Row>
+      <Typography.Title level={5}>Legal Address</Typography.Title>
       <Field
         id="is_legal_address_same_as_mailing_address"
         name="is_legal_address_same_as_mailing_address"
         component={RenderCheckbox}
         label="Same as mailing address"
         type="checkbox"
-      /> */}
-      {/* {/* {!is_legal_address_same_as_mailing_address && (
+      />
+      {!is_legal_address_same_as_mailing_address && (
         <>
           <Row gutter={16}>
             <Col md={19} sm={24}>
@@ -516,16 +387,15 @@ const Applicant = () => {
                 component={RenderSelect}
               />
             </Col>
-
             <Col md={12} sm={24}>
               <Field
                 name="applicant.address[1].sub_division_code"
                 label="Province"
-                required={!isLegalAddressInternational}
+                required={!isLegalInternational}
+                validate={!isLegalInternational ? [required] : []}
                 data={provinceOptions.filter(
-                  (p) => p.subType === applicant.address[1].address_type_code
+                  (p) => p.subType === applicant?.address?.[1]?.address_type_code
                 )}
-                validate={!isLegalAddressInternational ? [required] : []}
                 component={RenderSelect}
               />
             </Col>
@@ -546,22 +416,24 @@ const Applicant = () => {
                 name="applicant.address[1].post_code"
                 label="Postal Code"
                 component={RenderField}
+                required
                 validate={[
-                  postalCodeWithCountry(applicant.address[1].address_type_code),
+                  postalCodeWithCountry(applicant?.address?.[1]?.address_type_code),
                   maxLength(10),
                 ]}
               />
             </Col>
           </Row>
         </>
-      )} */}
-      {/* <Typography.Title level={4}>Billing Address</Typography.Title> */}
-      {/* <Row gutter={16}>
+      )}
+      <Typography.Title level={5}>Billing Address</Typography.Title>
+      <Row gutter={16}>
         <Col md={8} sm={24}>
           <Field
             id="is_billing_address_same_as_mailing_address"
             name="is_billing_address_same_as_mailing_address"
             label="Same as mailing address"
+            disabled={is_billing_address_same_as_legal_address}
             component={RenderCheckbox}
             type="checkbox"
           />
@@ -571,6 +443,7 @@ const Applicant = () => {
             id="is_billing_address_same_as_legal_address"
             name="is_billing_address_same_as_legal_address"
             label="Same as legal address"
+            disabled={is_billing_address_same_as_mailing_address}
             component={RenderCheckbox}
             type="checkbox"
           />
@@ -592,7 +465,6 @@ const Applicant = () => {
               <Field name="applicant.address[2].suite_no" label="Unit #" component={RenderField} />
             </Col>
           </Row>
-
           <Row gutter={16}>
             <Col md={12} sm={24}>
               <Field
@@ -604,16 +476,15 @@ const Applicant = () => {
                 component={RenderSelect}
               />
             </Col>
-
             <Col md={12} sm={24}>
               <Field
                 name="applicant.address[2].sub_division_code"
                 label="Province"
-                required={!isBillingAddressInternational}
+                required={!isBusinessInternational}
+                validate={!isBusinessInternational ? [required] : []}
                 data={provinceOptions.filter(
-                  (p) => p.subType === applicant.address[2].address_type_code
+                  (p) => p.subType === applicant?.address?.[2]?.address_type_code
                 )}
-                validate={!isBillingAddressInternational ? [required] : []}
                 component={RenderSelect}
               />
             </Col>
@@ -634,15 +505,16 @@ const Applicant = () => {
                 name="applicant.address[2].post_code"
                 label="Postal Code"
                 component={RenderField}
+                required
                 validate={[
-                  postalCodeWithCountry(applicant.address[2].address_type_code),
+                  postalCodeWithCountry(applicant?.address?.[2]?.address_type_code),
                   maxLength(10),
                 ]}
               />
             </Col>
           </Row>
         </>
-      )} */}
+      )}
     </div>
   );
 };
