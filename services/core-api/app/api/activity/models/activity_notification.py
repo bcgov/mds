@@ -102,6 +102,7 @@ class ActivityType(str, Enum):
     incident_report_submitted = 'incident_report_submitted'
     mine_incident_created = 'mine_incident_created'
     mine_incident_updated = 'mine_incident_updated'
+    mine_report_submitted = 'mine_report_submitted'
     nod_status_changed = 'nod_status_changed'
     eor_created = 'eor_created'
     qfp_created = 'qfp_created'

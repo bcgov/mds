@@ -31,4 +31,5 @@ INSERT INTO emli_contact
   ('RDC', null, null, null, 'mine.occhealth@gov.bc.ca', null, null, null, null, false, false, false, 'system-mds', 'system-mds'),
   ('RDC', null, null, null, 'mine.safety@gov.bc.ca', null, null, null, null, false, false, false, 'system-mds', 'system-mds'),
   ('RDC', null, null, null, 'Abandoned.Mines@gov.bc.ca', null, null, null, null, false, false, false, 'system-mds', 'system-mds')
+  ('RDC', null, null, null, 'mds@gov.bc.ca', null, null, null, null, false, false, false, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;

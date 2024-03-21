@@ -269,7 +269,7 @@ class ReportSubmissionResource(Resource, UserMixin):
         if create_initial_report:
             mine_report.send_report_update_email(False, is_proponent, report_type)
 
-        return report_submission, 201               
+        return report_submission, 201
     
     @api.doc(params={
         "mine_report_guid": "Report guid for the parent entity",

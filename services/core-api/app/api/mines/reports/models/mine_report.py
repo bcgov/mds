@@ -181,6 +181,9 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
             report_type = f'{c_article.section}.{c_article.sub_section}.{c_article.paragraph} - {self.mine.mine_name}'
 
             recieved_date = self.mine_report_submissions[0].received_date
+            due_date = "N/A"
+            if self.due_date:
+                due_date = (self.due_date).strftime("%b %d %Y")
 
             email_context = {
               "report_submision": {
@@ -189,7 +192,7 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
                   "report_name": self.mine_report_definition_report_name,
                   "report_type": report_type,
                   "report_compliance_year": self.mine_report_submissions[0].submission_year,
-                  "report_due_date": (self.due_date).strftime("%b %d %Y"),
+                  "report_due_date": due_date,
                   "report_recieved_date": (recieved_date).strftime("%b %d %Y at %I:%M %p"),
               },
               "minespace_login_link": Config.MINESPACE_PRODUCTION_URL,
@@ -198,8 +201,8 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
             }
 
             trigger_notification(f'Your ({self.mine_report_definition_report_name}) report has been recieved',
-                                 ActivityType.incident_report_submitted, self.mine,
-                                 'MineReportSubmission', self.mine_report_guid, {}, None, core_recipients)
+                                 ActivityType.mine_report_submitted, self.mine,
+                                 'MineReportSubmission', self.mine_report_guid)
 
             core_email_body = open("app/templates/email/report/core_new_report_submitted_email.html", "r").read()
             EmailService.send_template_email(subject, core_recipients, core_email_body, email_context, cc=None)
@@ -231,14 +234,15 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
             for ntf in notificaiton_list:
                 notifiy_email = ntf[0]
                 if notifiy_email not in unique_recipients:
-                  unique_recipients.append(notifiy_email)
+                    unique_recipients.add(notifiy_email)
 
                 if ntf[1]:
                     if PERM_RECL_EMAIL not in unique_recipients:
-                        unique_recipients.append(PERM_RECL_EMAIL)
+                        unique_recipients.add(PERM_RECL_EMAIL)
                 if ntf[2]:
                     if regional_email not in unique_recipients:
-                        unique_recipients.append(regional_email)
+                        unique_recipients.add(regional_email)
+
             return list(unique_recipients)
 
     @classmethod
