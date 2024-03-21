@@ -1,7 +1,7 @@
 import { Col, Row, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Field, getFormValues, change, FieldArray } from "redux-form";
+import { Field, getFormValues, change } from "redux-form";
 import {
   email,
   maxLength,
@@ -24,6 +24,11 @@ import RenderCheckbox from "@mds/common/components/forms/RenderCheckbox";
 import { normalizePhone } from "@common/utils/helpers";
 
 const { Title, Paragraph } = Typography;
+interface IVerifiedCredential {
+  businessNumber: string;
+  registrationStatus: string;
+  registriesId: number;
+}
 
 const Applicant = () => {
   const dispatch = useDispatch();
@@ -31,6 +36,8 @@ const Applicant = () => {
   const [credential, setCredential] = useState<IOrgbookCredential>(null);
   const [verified, setVerified] = useState(false);
   const [checkingStatus, setCheckingStatus] = useState(false);
+  const [orgBookOptions, setOrgBookOptions] = useState([]);
+  const [verifiedCredential, setVerifiedCredential] = useState<IVerifiedCredential>(null);
 
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
   const {
@@ -39,7 +46,7 @@ const Applicant = () => {
     is_billing_address_same_as_mailing_address = false,
     is_billing_address_same_as_legal_address = false,
   } = formValues;
-  const { party_type_code, address = [] } = applicant ?? {};
+  const { party_type_code, address = [], party_orgbook_entity = {} } = applicant ?? {};
 
   const [mailingAddress, legalAddress, businessAddress] = address || [];
   const isMailingInternational = mailingAddress?.address_type_code === "INT";
@@ -54,34 +61,53 @@ const Applicant = () => {
   }, []);
 
   useEffect(() => {
+    if (party_orgbook_entity && party_orgbook_entity?.credential_id) {
+      const options = [
+        { text: party_orgbook_entity.name_text, value: party_orgbook_entity.credential_id },
+      ];
+      setOrgBookOptions(options);
+      const payload = {
+        businessNumber: party_orgbook_entity.registration_id || "-",
+        registrationStatus: !party_orgbook_entity.registration_status ? "Inactive" : "Active",
+        registriesId: party_orgbook_entity.credential_id,
+      };
+      setVerifiedCredential(payload);
+    }
+  }, [party_orgbook_entity]);
+
+  useEffect(() => {
     setVerified(false);
     setCheckingStatus(true);
     if (credential) {
       dispatch(verifyOrgBookCredential(credential.id)).then((response) => {
         setVerified(response.success);
         setCheckingStatus(false);
+        const payload = {
+          businessNumber: credential.topic.source_id || "-",
+          registrationStatus: credential.inactive ? "Inactive" : "Active",
+          registriesId: credential.id,
+        };
+        setVerifiedCredential(payload);
       });
 
-      const incorporationNumber = credential.topic.source_id ? credential.topic.source_id : null;
-      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "incorporation_number", incorporationNumber));
       const orgBookEntity = {
         registration_id: credential.topic.source_id,
-        registration_status: credential.attributes[2].value,
+        registration_status: !credential.inactive,
         registration_date: credential.attributes[0].value,
         name_id: credential.topic.local_name.id,
         name_text: credential.topic.local_name.text,
         credential_id: credential.topic.local_name.credential_id,
+        company_alias: party_orgbook_entity?.company_alias,
       };
       dispatch(
         change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.party_orgbook_entity", orgBookEntity)
       );
-      dispatch(
-        change(
-          FORM.ADD_EDIT_PROJECT_SUMMARY,
-          "applicant.party_name",
-          credential.topic.local_name.text
-        )
-      );
+    }
+    if (party_orgbook_entity && party_orgbook_entity?.credential_id) {
+      const options = [
+        { text: party_orgbook_entity.name_text, value: party_orgbook_entity.credential_id },
+      ];
+      setOrgBookOptions(options);
     }
   }, [credential]);
 
@@ -89,47 +115,19 @@ const Applicant = () => {
     setCredential(null);
   }, [party_type_code]);
 
-  const findBusinessNumber = (obj: any): string => {
-    // Check if the object is a dictionary and has a "type" field with value of "business_number"
-    if (
-      typeof obj === "object" &&
-      obj !== null &&
-      Object.prototype.hasOwnProperty.call(obj, "type") &&
-      obj.type === "business_number"
-    ) {
-      return obj.text;
-    }
-
-    // Iterate over all keys of the object, go deeper if the value is an object itself or an array
-    for (const key in obj) {
-      if (typeof obj[key] === "object" && obj[key] !== null) {
-        const result = findBusinessNumber(obj[key]);
-
-        // return the result if 'result' is not null
-        if (result) {
-          return result;
-        }
-      }
-    }
-    // Return '-' if no business_number is found
-    return "-";
-  };
-
   const renderStatus = () => {
     let icon = faSpinner;
     let color = undefined;
     let text = undefined;
 
-    if (!checkingStatus) {
-      if (verified) {
-        icon = faCircleCheck;
-        color = "#45A766";
-        text = "Verified on Orgbook BC";
-      } else {
-        icon = faCircleX;
-        color = "#D8292F";
-        text = "Not registered on Orgbook BC";
-      }
+    if ((!checkingStatus && verified) || verifiedCredential) {
+      icon = faCircleCheck;
+      color = "#45A766";
+      text = "Verified on Orgbook BC";
+    } else {
+      icon = faCircleX;
+      color = "#D8292F";
+      text = "Not registered on Orgbook BC";
     }
 
     return (
@@ -196,54 +194,53 @@ const Applicant = () => {
       {party_type_code === "ORG" && (
         <div>
           <Field
-            name="applicant.party_orgbook_entity"
-            id="applicant.party_orgbook_entity"
+            name="applicant.party_name"
+            id="applicant.party_name"
             required
             validate={[required]}
             label="Company Legal Name"
             setCredential={setCredential}
-            component={OrgBookSearch}
+            data={orgBookOptions}
             help={"as registered with the BC Registar of Companies"}
+            component={OrgBookSearch}
           />
-          {!isEmpty(credential) && (
-            <>
-              <div className="table-summary-card">
-                {renderStatus()}
-                {findBusinessNumber(credential) !== "-" && (
-                  <Paragraph className="light margin-none">
-                    Business Number: {findBusinessNumber(credential)}
-                  </Paragraph>
-                )}
-                <Paragraph className="light margin-none">
-                  BC Registries ID: {credential.id}
-                </Paragraph>
-                <Paragraph className="light margin-none">
-                  BC Registration Status {credential.inactive ? "Inactive" : "Active"}
-                </Paragraph>
-              </div>
-              <Row gutter={16}>
-                <Col md={12} sm={24}>
-                  <Field
-                    id="applicant.party_orgbook_entity.company_alias"
-                    name="applicant.party_orgbook_entity.company_alias"
-                    label="Doing Business As"
-                    component={RenderField}
-                  />
-                </Col>
+          {verifiedCredential && (
+            <div className="table-summary-card">
+              {renderStatus()}
 
-                <Col md={12} sm={24}>
-                  <Field
-                    id="applicant.party_orgbook_entity.registration_id"
-                    name="applicant.party_orgbook_entity.registration_id"
-                    label="Incorporation Number"
-                    required
-                    validate={[required]}
-                    component={RenderField}
-                  />
-                </Col>
-              </Row>
-            </>
+              <Paragraph className="light margin-none">
+                Business Number: {verifiedCredential.businessNumber}
+              </Paragraph>
+
+              <Paragraph className="light margin-none">
+                BC Registries ID: {verifiedCredential.registriesId}
+              </Paragraph>
+              <Paragraph className="light margin-none">
+                BC Registration Status {verifiedCredential.registrationStatus}
+              </Paragraph>
+            </div>
           )}
+          <Row gutter={16}>
+            <Col md={12} sm={24}>
+              <Field
+                id="applicant.party_orgbook_entity.company_alias"
+                name="applicant.party_orgbook_entity.company_alias"
+                label="Doing Business As"
+                component={RenderField}
+              />
+            </Col>
+
+            <Col md={12} sm={24}>
+              <Field
+                id="applicant.party_orgbook_entity.registration_id"
+                name="applicant.party_orgbook_entity.registration_id"
+                label="Incorporation Number"
+                required
+                validate={[required]}
+                component={RenderField}
+              />
+            </Col>
+          </Row>
         </div>
       )}
       {party_type_code === "IND" && (

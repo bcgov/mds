@@ -15,11 +15,13 @@ import { IOrgbookCredential } from "@mds/common/interfaces";
 import { BaseInputProps, getFormItemLabel } from "../forms/BaseInput";
 
 interface OrgBookSearchProps extends BaseInputProps {
+  data?: any;
   isDisabled?: boolean;
   setCredential: (credential: IOrgbookCredential) => void;
 }
 
 const OrgBookSearch: FC<OrgBookSearchProps> = ({
+  data,
   help,
   label = "",
   labelSubtitle,
@@ -82,6 +84,12 @@ const OrgBookSearch: FC<OrgBookSearchProps> = ({
     }
   }, [searchOrgBookResults]);
 
+  useEffect(() => {
+    if (data) {
+      setOptions(data);
+    }
+  }, [data]);
+
   const handleSelect = async (value) => {
     const credentialId = value.key;
     await dispatch(fetchOrgBookCredential(credentialId));
@@ -111,6 +119,7 @@ const OrgBookSearch: FC<OrgBookSearchProps> = ({
       }
       id={id}
       required={required}
+      getValueProps={() => input?.value !== "" && { value: input?.value }}
     >
       <Select
         virtual={false}
@@ -125,6 +134,7 @@ const OrgBookSearch: FC<OrgBookSearchProps> = ({
         onSelect={handleSelect}
         style={{ width: "100%" }}
         disabled={isDisabled}
+        value={options.length === 1 ? { key: options[0].text } : null}
       >
         {options.map((option) => (
           <Select.Option key={option.value}>{option.text}</Select.Option>

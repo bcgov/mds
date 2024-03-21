@@ -7,6 +7,7 @@ from sqlalchemy import case
 from werkzeug.exceptions import BadRequest
 
 from app.api.municipalities.models.municipality import Municipality
+from app.api.parties.party import PartyOrgBookEntity
 from app.extensions import db
 
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
@@ -209,18 +210,16 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     def create_or_update_party(cls, party_data, job_title_code, existing_party):
         address_data = party_data.get('address')
         party_guid = party_data.get('party_guid')
+
         if isinstance(address_data, list):
             # Validate only the phone number used for the mailing address
             validate_phone_no(party_data.get('phone_no'), address_data[0].get('address_type_code'))
         else:
             validate_phone_no(party_data.get('phone_no'), address_data.get('address_type_code'))
+
         if party_guid is not None and existing_party is not None:
             existing_party.deep_update_from_dict(party_data)
-            if isinstance(address_data, list):
-                for index, address_item in enumerate(address_data):
-                    for key, value in address_item.items():
-                        setattr(existing_party.address[index], key, value)
-            else:
+            if not isinstance(address_data, list):
                 for key, value in address_data.items():
                     setattr(existing_party.address[0], key, value)
 
@@ -238,6 +237,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 address_type_code= cls.__get_address_type_code(address_data),
                 middle_name=party_data.get('middle_name')
             )
+
             if isinstance(address_data, list):
                 for addr in address_data:
                     new_address = Address.create(
@@ -261,7 +261,21 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 new_party.address.append(new_address)
             return new_party
 
-
+    @classmethod
+    def create_or_update_party_orgbook(cls, party_orgbook_data, party_guid):
+        existing_party_orgbook = PartyOrgBookEntity.find_by_party_guid(party_guid)
+        if existing_party_orgbook is not None:
+            return existing_party_orgbook
+        else:
+            party_orgbook = PartyOrgBookEntity.create(party_orgbook_data.get('registration_id'),
+                                                      party_orgbook_data.get('registration_status'),
+                                                      party_orgbook_data.get('registration_date'),
+                                                      party_orgbook_data.get('name_id'),
+                                                      party_orgbook_data.get('name_text'),
+                                                      party_orgbook_data.get('credential_id'),
+                                                      party_guid,
+                                                      party_orgbook_data.get('company_alias'))
+            return party_orgbook
 
     @classmethod
     def create(cls,
@@ -410,6 +424,9 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         applicant_party = self.create_or_update_party(applicant, 'APP', self.applicant)
         applicant_party.save()
         self.applicant_party_guid = applicant_party.party_guid
+
+        if applicant.get('party_type_code') == "ORG":
+           self.create_or_update_party_orgbook(applicant.get('party_orgbook_entity'), self.applicant_party_guid)
 
         # Create or update Agent Party
         self.is_agent = is_agent

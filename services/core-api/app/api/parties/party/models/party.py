@@ -34,7 +34,7 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
     email = db.Column(db.String)
     email_sec = db.Column(db.String)
     party_type_code = db.Column(db.String, db.ForeignKey('party_type_code.party_type_code'))
-    address = db.relationship('Address', lazy='joined', back_populates='party')
+    address = db.relationship('Address', lazy='joined', back_populates='party', order_by='Address.address_id.asc()')
     job_title = db.Column(db.String)
     job_title_code = db.Column(db.String, db.ForeignKey('mine_party_appt_type_code.mine_party_appt_type_code'))
     postnominal_letters = db.Column(db.String)
