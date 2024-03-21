@@ -12,10 +12,9 @@ import {
 } from "@mds/common/redux/utils/Validate";
 import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
 import { CONTACTS_COUNTRY_OPTIONS, FORM, IOrgbookCredential } from "@mds/common";
-import OrgBookSearch from "@mds/common/components/parties/OrgBookSearch";
+import RenderOrgBookSearch from "@mds/common/components/forms/RenderOrgBookSearch";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck, faCircleX, faSpinner } from "@fortawesome/pro-light-svg-icons";
-import { isEmpty } from "lodash";
 import { verifyOrgBookCredential } from "@mds/common/redux/actionCreators/orgbookActionCreator";
 import RenderField from "@mds/common/components/forms/RenderField";
 import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
@@ -170,6 +169,18 @@ const Applicant = () => {
     updateAddressSubDivisionCode(2);
   }, [address?.[2]?.address_type_code]);
 
+  const handleResetParty = () => {
+    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.party_name", null));
+    if (party_type_code === "PER") {
+      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.party_orgbook_entity", null));
+      setVerifiedCredential(null);
+      setOrgBookOptions(null);
+    } else {
+      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.first_name", null));
+      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.middle_name", null));
+    }
+  };
+
   return (
     <div className="ant-form-vertical">
       <Title level={3}>Applicant Information</Title>
@@ -186,10 +197,11 @@ const Applicant = () => {
           { label: "Company", value: "ORG" },
           {
             label: "Individual",
-            value: "IND",
+            value: "PER",
           },
         ]}
         optionType="button"
+        onChange={handleResetParty}
       />
       {party_type_code === "ORG" && (
         <div>
@@ -202,7 +214,7 @@ const Applicant = () => {
             setCredential={setCredential}
             data={orgBookOptions}
             help={"as registered with the BC Registar of Companies"}
-            component={OrgBookSearch}
+            component={RenderOrgBookSearch}
           />
           {verifiedCredential && (
             <div className="table-summary-card">
@@ -243,7 +255,7 @@ const Applicant = () => {
           </Row>
         </div>
       )}
-      {party_type_code === "IND" && (
+      {party_type_code === "PER" && (
         <Row gutter={16}>
           <Col md={8} sm={24}>
             <Field
@@ -255,7 +267,7 @@ const Applicant = () => {
             />
           </Col>
           <Col md={8} sm={24}>
-            <Field name="middle_name" label="Middle Name" component={RenderField} />
+            <Field name="applicant.middle_name" label="Middle Name" component={RenderField} />
           </Col>
           <Col md={8} sm={24}>
             <Field

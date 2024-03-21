@@ -12,13 +12,26 @@ import {
 } from "@mds/common/redux/actionCreators/orgbookActionCreator";
 import { LoadingOutlined } from "@ant-design/icons";
 import { IOrgbookCredential } from "@mds/common/interfaces";
+import { BaseInputProps, getFormItemLabel } from "./BaseInput";
 
-interface OrgBookSearchProps {
+interface OrgBookSearchProps extends BaseInputProps {
+  data?: any;
   isDisabled?: boolean;
   setCredential: (credential: IOrgbookCredential) => void;
 }
 
-const OrgBookSearch: FC<OrgBookSearchProps> = ({ isDisabled = false, setCredential }) => {
+const RenderOrgBookSearch: FC<OrgBookSearchProps> = ({
+  data,
+  help,
+  label = "",
+  labelSubtitle,
+  id = "",
+  input,
+  meta,
+  required,
+  isDisabled = false,
+  setCredential,
+}) => {
   const dispatch = useDispatch();
 
   const searchOrgBookResults = useSelector(getSearchOrgBookResults);
@@ -28,9 +41,14 @@ const OrgBookSearch: FC<OrgBookSearchProps> = ({ isDisabled = false, setCredenti
 
   const [options, setOptions] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [isDirty, setIsDirty] = useState(meta?.touched);
 
-  const handleChange = () => {
+  const handleChange = (changeValue) => {
     setIsSearching(false);
+    if (meta) {
+      setIsDirty(true);
+      input?.onChange(changeValue);
+    }
   };
 
   const handleSearch = async (search) => {
@@ -66,6 +84,12 @@ const OrgBookSearch: FC<OrgBookSearchProps> = ({ isDisabled = false, setCredenti
     }
   }, [searchOrgBookResults]);
 
+  useEffect(() => {
+    if (data) {
+      setOptions(data);
+    }
+  }, [data]);
+
   const handleSelect = async (value) => {
     const credentialId = value.key;
     await dispatch(fetchOrgBookCredential(credentialId));
@@ -81,7 +105,22 @@ const OrgBookSearch: FC<OrgBookSearchProps> = ({ isDisabled = false, setCredenti
   const handleSearchDebounced = useRef(debouncedSearch).current;
 
   return (
-    <Form.Item>
+    <Form.Item
+      name={input?.name}
+      label={getFormItemLabel(label, required, labelSubtitle)}
+      validateStatus={
+        (meta && isDirty) || meta.touched
+          ? (meta.error && "error") || (meta.warning && "warning")
+          : ""
+      }
+      help={
+        ((meta && isDirty) || meta.touched) &&
+        ((meta.error && <span>{meta.error}</span>) || (meta.warning && <span>{meta.warning}</span>))
+      }
+      id={id}
+      required={required}
+      getValueProps={() => input?.value !== "" && { value: input?.value }}
+    >
       <Select
         virtual={false}
         showSearch
@@ -95,13 +134,15 @@ const OrgBookSearch: FC<OrgBookSearchProps> = ({ isDisabled = false, setCredenti
         onSelect={handleSelect}
         style={{ width: "100%" }}
         disabled={isDisabled}
+        value={options.length === 1 ? { key: options[0].text } : null}
       >
         {options.map((option) => (
           <Select.Option key={option.value}>{option.text}</Select.Option>
         ))}
       </Select>
+      {help && <div className={`form-item-help ${input?.name}-form-help`}>{help}</div>}
     </Form.Item>
   );
 };
 
-export default OrgBookSearch;
+export default RenderOrgBookSearch;
