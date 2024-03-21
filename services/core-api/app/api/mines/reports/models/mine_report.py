@@ -130,27 +130,17 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
         return '<MineReport %r>' % self.mine_report_guid
 
     def send_report_update_email(self, is_edit, is_proponent, crr_or_prr):
-        report_type_title = ""
-        report_type_url = ""
-        if crr_or_prr == "CRR":
-            report_type_title = "Code Required Report"
-            report_type_url = "code"
 
-        if crr_or_prr == "PRR":
-            report_type_title = "Permit Required Report"
-            report_type_url = "permit"
-
-        subject_verb = 'Updated' if is_edit else 'Submitted'
-        subject = f'{report_type_title} {subject_verb} for mine {self.mine.mine_name}'
+        report_code = "code" if crr_or_prr == "CRR" else "permit"
+        subject = f'Code Required Report Submitted for mine {self.mine.mine_name}'
         core_recipients = [MDS_EMAIL]
         ms_recipients = []
 
         if not is_edit:
             core_recipients, ms_recipients = self.collectRecipients(is_proponent)
-
             core_recipients.extend(self.getReportSpecificEmailsByReportType())
 
-            core_report_page_link =  f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/required-reports/{report_type_url}-required-reports'
+            core_report_page_link =  f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/required-reports/{report_code}-required-reports'
             ms_report_page_link = f'{Config.MINESPACE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/reports'
             c_article = self.mine_report_definition.compliance_articles[0]
             report_type = f'{c_article.section}.{c_article.sub_section}.{c_article.paragraph} - {self.mine.mine_name}'
