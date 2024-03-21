@@ -4,6 +4,7 @@ import {
   VC_CONNECTION_STATES,
   VC_CRED_ISSUE_STATES,
 } from "@mds/common/constants";
+import { patchPermitVCLocked } from "@mds/common/redux/actionCreators/permitActionCreator";
 import {
   IMine,
   IMineCommodityOption,
@@ -156,6 +157,10 @@ export const ViewDigitalPermitCredential: FC = () => {
     );
   };
 
+  const releasePermitVCLock = async (data) => {
+    await dispatch(patchPermitVCLocked(mineGuid, permitGuid, { mines_act_permit_vc_locked: true }));
+  };
+
   return (
     <div className="tab__content margin-large--top">
       {VC_CRED_ISSUE_STATES[connectionDetails[0]?.cred_exch_state] ===
@@ -165,7 +170,7 @@ export const ViewDigitalPermitCredential: FC = () => {
           description={
             <Row justify="space-between" align="middle">
               <Paragraph strong>This digital credential was revoked</Paragraph>
-              <Button type="default" className="no-bg">
+              <Button type="default" className="no-bg" onClick={releasePermitVCLock}>
                 Re-offer Credential
               </Button>
             </Row>
