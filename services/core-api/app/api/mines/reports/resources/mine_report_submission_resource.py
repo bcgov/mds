@@ -1,7 +1,7 @@
 import uuid
 from flask_restx import Resource
 from werkzeug.exceptions import BadRequest, NotFound
-from datetime import datetime
+from datetime import datetime, timezone
 
 from app.extensions import api, db
 from app.api.utils.resources_mixins import UserMixin
@@ -148,7 +148,7 @@ class ReportSubmissionResource(Resource, UserMixin):
             permit_condition_category_code=getattr(previous_submission, "permit_condition_category_code"),
             permit_id=getattr(previous_submission, "permit_id"),
             received_date=getattr(previous_submission, "received_date"),
-            submission_date=datetime.utcnow(),
+            submission_date=datetime.now(timezone.utc),
             submission_year=getattr(previous_submission, "submission_year"),
             submitter_email=getattr(previous_submission, "submitter_email"),
             submitter_name=getattr(previous_submission, "submitter_name"),
@@ -251,7 +251,7 @@ class ReportSubmissionResource(Resource, UserMixin):
             permit_condition_category_code=permit_condition_category_code,
             permit_id=permit_id,
             received_date=data.get('received_date', None),
-            submission_date=datetime.utcnow(),
+            submission_date=datetime.now(timezone.utc),
             submission_year=data.get('submission_year', None),
             submitter_email=data.get('submitter_email', None),
             submitter_name=data.get('submitter_name', None)
