@@ -97,7 +97,7 @@ const Applicant = () => {
         name_id: credential.topic.local_name.id,
         name_text: credential.topic.local_name.text,
         credential_id: credential.topic.local_name.credential_id,
-        company_alias: party_orgbook_entity?.company_alias,
+        company_alias: null,
       };
       dispatch(
         change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.party_orgbook_entity", orgBookEntity)
@@ -136,7 +136,7 @@ const Applicant = () => {
           size="lg"
           color={color}
           icon={icon}
-          spin={checkingStatus}
+          spin={checkingStatus && !verifiedCredential}
           className="margin-medium--right"
         />
         {text}

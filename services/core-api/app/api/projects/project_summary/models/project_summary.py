@@ -211,6 +211,11 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         address_data = party_data.get('address')
         party_guid = party_data.get('party_guid')
 
+        # Check if party_name is a dictionary (JSON object). Applicable to data coming from orgbook component
+        if isinstance(party_data.get('party_name'), dict):
+            # Update party_name with the label if it exists
+            party_data['party_name'] = party_data['party_name'].get('label')
+
         if isinstance(address_data, list):
             # Validate only the phone number used for the mailing address
             validate_phone_no(party_data.get('phone_no'), address_data[0].get('address_type_code'))
@@ -219,7 +224,12 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
         if party_guid is not None and existing_party is not None:
             existing_party.deep_update_from_dict(party_data)
-            if not isinstance(address_data, list):
+            if isinstance(address_data, list):
+                for idx, address_item in enumerate(address_data):
+                    if idx < len(existing_party.address):
+                        for key, value in address_item.items():
+                            setattr(existing_party.address[idx], key, value)
+            else:
                 for key, value in address_data.items():
                     setattr(existing_party.address[0], key, value)
 
@@ -265,6 +275,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     def create_or_update_party_orgbook(cls, party_orgbook_data, party_guid):
         existing_party_orgbook = PartyOrgBookEntity.find_by_party_guid(party_guid)
         if existing_party_orgbook is not None:
+            existing_party_orgbook.deep_update_from_dict(party_orgbook_data)
             return existing_party_orgbook
         else:
             party_orgbook = PartyOrgBookEntity.create(party_orgbook_data.get('registration_id'),
