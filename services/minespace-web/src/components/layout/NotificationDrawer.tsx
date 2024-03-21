@@ -19,6 +19,7 @@ import {
   MINE_DASHBOARD,
   REVIEW_INFORMATION_REQUIREMENTS_TABLE,
   REVIEW_MAJOR_MINE_APPLICATION,
+  REPORT_VIEW_EDIT,
 } from "@/constants/routes";
 import { IActivity } from "@mds/common";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
@@ -98,6 +99,12 @@ const NotificationDrawer: FC<INotificationDrawerProps> = (props) => {
 
   const navigationHandler = (notification: IActivity) => {
     switch (notification.notification_document.metadata.entity) {
+      case "MineReport":
+        const { metadata } = notification.notification_document;
+        return {
+          route: REPORT_VIEW_EDIT.dynamicRoute(metadata.mine.mine_guid, metadata.entity_guid),
+          state: { isEditMode: true },
+        };
       case "NoticeOfDeparture":
         return {
           route: MINE_DASHBOARD.dynamicRoute(
