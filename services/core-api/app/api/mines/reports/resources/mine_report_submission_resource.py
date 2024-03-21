@@ -189,6 +189,7 @@ class ReportSubmissionResource(Resource, UserMixin):
         self.parser.add_argument('submission_year', type=str, location='json')
         self.parser.add_argument('submitter_email', type=str, location='json')
         self.parser.add_argument('submitter_name', type=str, location='json')
+        self.parser.add_argument('report_type', type=str, location='json')
 
         data = self.parser.parse_args()
         is_proponent = auth.get_user_is_proponent()

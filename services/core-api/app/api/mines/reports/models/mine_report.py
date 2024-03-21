@@ -141,7 +141,7 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
             report_type_url = "permit"
 
         subject_verb = 'Updated' if is_edit else 'Submitted'
-        subject = f'{report_type_title} {subject_verb} for {self.mine.mine_name}'
+        subject = f'{report_type_title} {subject_verb} for mine {self.mine.mine_name}'
         core_recipients = [MDS_EMAIL]
         ms_recipients = []
 
