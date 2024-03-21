@@ -148,16 +148,12 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         # this will need to be revisited to support additional issuances (wallet recovery) or multple schemas issued
 
         active = [x for x in self.vc_credential_exch if x.cred_exch_state in IssueCredentialIssuerState.active_credential_states]
-        pending = [x for x in self.vc_credential_exch if x.cred_exch_state in IssueCredentialIssuerState.pending_credential_states]
 
         if active:
             #if any active, return most recent
             return active[0].cred_exch_state
-        elif pending:
-            #if none active, and pending, return most recent
-            return pending[0].cred_exch_state
         else:
-            return None
+            return self.vc_credential_exch[0].cred_exch_state
 
 
     def __repr__(self):

@@ -157,8 +157,15 @@ export const ViewDigitalPermitCredential: FC = () => {
     );
   };
 
-  const releasePermitVCLock = async (data) => {
-    await dispatch(patchPermitVCLocked(mineGuid, permitGuid, { mines_act_permit_vc_locked: true }));
+  const releasePermitVCLock = (event) => {
+    event.preventDefault();
+    console.log(mineGuid);
+    console.log(digitalPermitCredential.permit_guid);
+    dispatch(
+      patchPermitVCLocked(digitalPermitCredential.permit_guid, mineGuid, {
+        mines_act_permit_vc_locked: false,
+      })
+    );
   };
 
   return (
