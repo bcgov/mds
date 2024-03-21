@@ -14,26 +14,26 @@ CREATE TABLE IF NOT EXISTS mine_report_notification
 ALTER TABLE mine_report_notification OWNER TO mds;
 
 CREATE TEMP TABLE IF NOT EXISTS temp_article_section_email_mapping (
-	mapping_guid              	uuid DEFAULT gen_random_uuid(),
-	"section"              	varchar,
-	sub_section              	varchar,
-	paragraph					varchar,
+	mapping_guid        uuid      DEFAULT gen_random_uuid(),
+	"section"           varchar,
+	sub_section         varchar,
+	paragraph					  varchar,
 	sub_paragraph				varchar,
-	is_major					boolean,
+	is_major					  boolean,
 	is_regional					boolean,
-	email						varchar
+	email						    varchar
 );
 
- INSERT INTO temp_article_section_email_mapping(
+INSERT INTO temp_article_section_email_mapping(
     "section",
     sub_section,
-	paragraph,
-	sub_paragraph,
-	is_major,
-	is_regional,
-	email
+	  paragraph,
+	  sub_paragraph,
+	  is_major,
+	  is_regional,
+	  email
 ) 
-values	-- Mapping compliance_article(section,sub_section,paragraph,sub_paragraph) and mine detials: (is_major,is_regional,email): mds@gov.bc.ca is used as the default email
+VALUES	-- Mapping compliance_article(section,sub_section,paragraph,sub_paragraph) and mine detials: (is_major,is_regional,email): mds@gov.bc.ca is used as the default email
 	('1','6','4',NULL,'false','false','mines.inquiries@gov.bc.ca'),
 	('1','6','4',NULL,'false','false','mine.ergonomics@gov.bc.ca'),
 	('1','6','5',NULL,'false','false','mines.inquiries@gov.bc.ca'),
@@ -286,6 +286,6 @@ INSERT INTO mine_report_notification (
 
 	        	WHEN tmp.sub_section IS NOT NULL
 	        		THEN ca.sub_section = tmp.sub_section 
-			END);
+			    END);
 
-drop table temp_article_section_email_mapping;
+DROP TABLE temp_article_section_email_mapping;
