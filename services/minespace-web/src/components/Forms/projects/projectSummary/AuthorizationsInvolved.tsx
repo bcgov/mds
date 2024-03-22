@@ -1,4 +1,4 @@
-import React, { useState, FC, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Field,
@@ -10,6 +10,7 @@ import {
   getFormValues,
 } from "redux-form";
 import { Typography, Checkbox, Tooltip, Alert, Button, Row, Col } from "antd";
+import InfoCircleOutlined from "@ant-design/icons/InfoCircleOutlined";
 import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import {
   getTransformedProjectSummaryAuthorizationTypes,
@@ -31,15 +32,14 @@ const RenderEMAPermitCommonSections = ({ isAmendment }) => {
     : "Purpose of Application";
   const [showDocSection, setShowDocSection] = useState(false);
 
-  const onChange = (value, _newVal, _prevVal, fieldName) => {
-    console.log("radio val", value, fieldName);
+  const onChange = (value, _newVal, _prevVal, _fieldName) => {
     setShowDocSection(value);
   };
   return (
     <>
       <Field
         label={purposeLabel}
-        name="additional_info"
+        name="authorization_description"
         required
         validate={[required, maxLength(4000)]}
         maximumCharacters={4000}
@@ -49,11 +49,18 @@ const RenderEMAPermitCommonSections = ({ isAmendment }) => {
       />
       <Field
         component={RenderRadioButtons}
-        name="exemption_request"
+        name="pre_app_exemption_request"
         required
         onChange={onChange}
         validate={[requiredRadioButton]}
-        label={<>Pre-Application Exemption Request for Environmental Management Act application</>}
+        label={
+          <>
+            Pre-Application Exemption Request for Environmental Management Act application
+            <Tooltip title="This request for an exemption is an option intended for applicants that have previous experience with permitting under the Environmental Management Act and do not require a meeting with the Ministry to clarify requirements.">
+              <InfoCircleOutlined />
+            </Tooltip>
+          </>
+        }
       />
       {showDocSection && (
         <Alert
@@ -162,7 +169,7 @@ const RenderEMAAmendFieldArray = ({ fields }) => {
           />
           <Field
             label="Is this Authorization required for remediation of a contaminated site?"
-            name="contaminated_site"
+            name="is_contaminated_site"
             required
             validate={[requiredRadioButton]}
             component={RenderRadioButtons}
@@ -180,7 +187,11 @@ const RenderEMAAuthCodeFormSection = ({ authorization, authIndex }) => {
 
   const addAmendment = () => {
     dispatch(
-      arrayPush(FORM.ADD_EDIT_PROJECT_SUMMARY, `authorizations[${authIndex}].amend_permits`, {})
+      arrayPush(
+        FORM.ADD_EDIT_PROJECT_SUMMARY,
+        `authorizations[${authIndex}].existing_permits_authorizations`,
+        {}
+      )
     );
   };
 
@@ -189,7 +200,11 @@ const RenderEMAAuthCodeFormSection = ({ authorization, authIndex }) => {
       addAmendment();
     } else {
       dispatch(
-        change(FORM.ADD_EDIT_PROJECT_SUMMARY, `authorizations[${authIndex}].amend_permits`, null)
+        change(
+          FORM.ADD_EDIT_PROJECT_SUMMARY,
+          `authorizations[${authIndex}].existing_permits_authorizations`,
+          null
+        )
       );
     }
   };
@@ -213,7 +228,7 @@ const RenderEMAAuthCodeFormSection = ({ authorization, authIndex }) => {
                   <Row style={{ border: "1px solid deeppink" }} gutter={[16, 16]}>
                     <Col span={24}>
                       <FieldArray
-                        name="amend_permits"
+                        name="existing_permits_authorizations"
                         component={RenderEMAAmendFieldArray}
                         props={{}}
                       />
