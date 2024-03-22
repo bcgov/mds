@@ -226,13 +226,12 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             existing_party.deep_update_from_dict(party_data)
             if isinstance(address_data, list):
                 for idx, address_item in enumerate(address_data):
-                    if idx < len(existing_party.address):
+                    if idx < len(address_data):
                         for key, value in address_item.items():
                             setattr(existing_party.address[idx], key, value)
             else:
                 for key, value in address_data.items():
                     setattr(existing_party.address[0], key, value)
-
             return existing_party
         else:
             new_party = Party.create(
@@ -250,15 +249,16 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
             if isinstance(address_data, list):
                 for addr in address_data:
-                    new_address = Address.create(
-                        suite_no=addr.get('suite_no'),
-                        address_line_1=addr.get('address_line_1'),
-                        city=addr.get('city'),
-                        sub_division_code=addr.get('sub_division_code'),
-                        post_code=addr.get('post_code'),
-                        address_type_code=addr.get('address_type_code'),
-                    )
-                    new_party.address.append(new_address)
+                    if addr is not None:
+                        new_address = Address.create(
+                            suite_no=addr.get('suite_no'),
+                            address_line_1=addr.get('address_line_1'),
+                            city=addr.get('city'),
+                            sub_division_code=addr.get('sub_division_code'),
+                            post_code=addr.get('post_code'),
+                            address_type_code=addr.get('address_type_code'),
+                        )
+                        new_party.address.append(new_address)
             else:
                 new_address = Address.create(
                     suite_no=address_data.get('suite_no'),
@@ -272,8 +272,9 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             return new_party
 
     @classmethod
-    def create_or_update_party_orgbook(cls, party_orgbook_data, party_guid):
-        existing_party_orgbook = PartyOrgBookEntity.find_by_party_guid(party_guid)
+    def create_or_update_party_orgbook(cls, party_data, party_guid, existing_party):
+        party_orgbook_data = party_data.get('party_orgbook_entity')
+        existing_party_orgbook = existing_party.party_orgbook_entity
         if existing_party_orgbook is not None:
             existing_party_orgbook.deep_update_from_dict(party_orgbook_data)
             return existing_party_orgbook
@@ -431,13 +432,13 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         #         self.mine_documents.remove(doc.mine_document)
         #         doc.mine_document.delete(commit=False)
 
+        if applicant is not None:
+            applicant_party = self.create_or_update_party(applicant, 'APP', self.applicant)
+            applicant_party.save()
+            self.applicant_party_guid = applicant_party.party_guid
 
-        applicant_party = self.create_or_update_party(applicant, 'APP', self.applicant)
-        applicant_party.save()
-        self.applicant_party_guid = applicant_party.party_guid
-
-        if applicant.get('party_type_code') == "ORG":
-           self.create_or_update_party_orgbook(applicant.get('party_orgbook_entity'), self.applicant_party_guid)
+            if applicant.get('party_type_code') == "ORG":
+               self.create_or_update_party_orgbook(applicant, self.applicant_party_guid, self.applicant)
 
         # Create or update Agent Party
         self.is_agent = is_agent

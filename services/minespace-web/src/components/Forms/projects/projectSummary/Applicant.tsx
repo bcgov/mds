@@ -181,6 +181,73 @@ const Applicant = () => {
     }
   };
 
+  const handleUpdateAddressEntries = (
+    event: any,
+    sourceAddressIndex: number,
+    destinationAddressIndex: number
+  ) => {
+    if (event) {
+      dispatch(
+        change(
+          FORM.ADD_EDIT_PROJECT_SUMMARY,
+          `applicant.address[${destinationAddressIndex}].address_line_1`,
+          address[sourceAddressIndex].address_line_1
+        )
+      );
+      dispatch(
+        change(
+          FORM.ADD_EDIT_PROJECT_SUMMARY,
+          `applicant.address[${destinationAddressIndex}].address_type_code`,
+          address[sourceAddressIndex].address_type_code
+        )
+      );
+      dispatch(
+        change(
+          FORM.ADD_EDIT_PROJECT_SUMMARY,
+          `applicant.address[${destinationAddressIndex}].city`,
+          address[sourceAddressIndex].city
+        )
+      );
+      dispatch(
+        change(
+          FORM.ADD_EDIT_PROJECT_SUMMARY,
+          `applicant.address[${destinationAddressIndex}].post_code`,
+          address[sourceAddressIndex].post_code
+        )
+      );
+      dispatch(
+        change(
+          FORM.ADD_EDIT_PROJECT_SUMMARY,
+          `applicant.address[${destinationAddressIndex}].sub_division_code`,
+          address[sourceAddressIndex].sub_division_code
+        )
+      );
+      dispatch(
+        change(
+          FORM.ADD_EDIT_PROJECT_SUMMARY,
+          `applicant.address[${destinationAddressIndex}].suite_no`,
+          address[sourceAddressIndex].suite_no
+        )
+      );
+    }
+  };
+
+  const areAllAddressFieldsValid = (isAddressInternational: boolean, index: number) => {
+    if (!address?.[index]) {
+      return false;
+    }
+
+    const { address_line_1, address_type_code, city, post_code, sub_division_code } = address[
+      index
+    ];
+
+    if (!isAddressInternational) {
+      return address_line_1 && address_type_code && city && post_code && sub_division_code;
+    } else {
+      return address_line_1 && address_type_code && city && post_code;
+    }
+  };
+
   return (
     <div className="ant-form-vertical">
       <Title level={3}>Applicant Information</Title>
@@ -374,6 +441,8 @@ const Applicant = () => {
         component={RenderCheckbox}
         label="Same as mailing address"
         type="checkbox"
+        disabled={!areAllAddressFieldsValid(isMailingInternational, 0)}
+        onChange={(e) => handleUpdateAddressEntries(e, 0, 1)}
       />
       {!is_legal_address_same_as_mailing_address && (
         <>
@@ -449,9 +518,13 @@ const Applicant = () => {
             id="is_billing_address_same_as_mailing_address"
             name="is_billing_address_same_as_mailing_address"
             label="Same as mailing address"
-            disabled={is_billing_address_same_as_legal_address}
+            disabled={
+              !areAllAddressFieldsValid(isMailingInternational, 0) ||
+              is_billing_address_same_as_legal_address
+            }
             component={RenderCheckbox}
             type="checkbox"
+            onChange={(e) => handleUpdateAddressEntries(e, 0, 2)}
           />
         </Col>
         <Col md={8} sm={24}>
@@ -459,9 +532,14 @@ const Applicant = () => {
             id="is_billing_address_same_as_legal_address"
             name="is_billing_address_same_as_legal_address"
             label="Same as legal address"
-            disabled={is_billing_address_same_as_mailing_address}
+            disabled={
+              is_billing_address_same_as_mailing_address ||
+              (!areAllAddressFieldsValid(isLegalInternational, 1) &&
+                !is_legal_address_same_as_mailing_address)
+            }
             component={RenderCheckbox}
             type="checkbox"
+            onChange={(e) => handleUpdateAddressEntries(e, 1, 2)}
           />
         </Col>
       </Row>
