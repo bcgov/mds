@@ -150,6 +150,19 @@ class ProjectSummaryResource(Resource, UserMixin):
     parser.add_argument('zoning_reason', type=str, store_missing=False, required=False)
     parser.add_argument('nearest_municipality', type=str, store_missing=False, required=False)
 
+    parser.add_argument(
+        'applicant',
+        type=dict,
+        location='json',
+        store_missing=False,
+        required=False
+    )
+
+    parser.add_argument('is_legal_address_same_as_mailing_address', type=bool, store_missing=False, required=False)
+    parser.add_argument('is_billing_address_same_as_mailing_address', type=bool, store_missing=False, required=False)
+    parser.add_argument('is_billing_address_same_as_legal_address', type=bool, store_missing=False, required=False)
+
+
     @api.doc(
         description='Get a Project Description.',
         params={
@@ -214,7 +227,11 @@ class ProjectSummaryResource(Resource, UserMixin):
                                data.get('facility_pid_pin_crown_file_no'), data.get('legal_land_desc'),
                                data.get('facility_lease_no'), data.get('zoning'),
                                data.get('zoning_reason'),
-                               data.get('nearest_municipality'))
+                               data.get('nearest_municipality'),
+                               data.get('applicant'),
+                               data.get('is_legal_address_same_as_mailing_address'),
+                               data.get('is_billing_address_same_as_mailing_address'),
+                               data.get('is_billing_address_same_as_legal_address'))
 
         project_summary.save()
         if prev_status == 'DFT' and project_summary.status_code == 'SUB':
