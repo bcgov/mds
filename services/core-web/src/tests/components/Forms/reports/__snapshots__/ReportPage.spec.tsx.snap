@@ -53,7 +53,7 @@ exports[`ReportPage renders view mode properly 1`] = `
         </h1>
       </div>
       <a
-        href="/dashboard/reporting/reports"
+        href="/mine-dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/required-reports/code-required-reports"
       >
         <span
           aria-label="arrow-left"
