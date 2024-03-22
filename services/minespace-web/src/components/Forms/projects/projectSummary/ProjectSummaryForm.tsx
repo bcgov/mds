@@ -13,7 +13,6 @@ import {
   InjectedFormProps,
 } from "redux-form";
 import * as FORM from "@/constants/forms";
-import BasicInformation from "@/components/Forms/projects/projectSummary/BasicInformation";
 import DocumentUpload from "@/components/Forms/projects/projectSummary/DocumentUpload";
 import ProjectContacts from "@/components/Forms/projects/projectSummary/ProjectContacts";
 import ProjectDates from "@/components/Forms/projects/projectSummary/ProjectDates";
@@ -27,6 +26,7 @@ import { Feature, IProjectSummary, IProjectSummaryDocument } from "@mds/common";
 import { Agent } from "./Agent";
 import { LegalLandOwnerInformation } from "@mds/common/components/projectSummary/LegalLandOwnerInformation";
 import { FacilityOperator } from "@mds/common/components/projectSummary/FacilityOperator";
+import BasicInformation from "@mds/common/components/projectSummary/BasicInformation";
 import Applicant from "@/components/Forms/projects/projectSummary/Applicant";
 
 interface ProjectSummaryFormProps {

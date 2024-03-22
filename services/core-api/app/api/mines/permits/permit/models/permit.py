@@ -32,6 +32,9 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
     status_changed_timestamp = db.Column(db.DateTime)
     project_id = db.Column(db.String)
 
+    #if true, this permit is locked from any vc'ed issued for it. 
+    mines_act_permit_vc_locked = db.Column(db.Boolean, default=False) 
+
     _all_permit_amendments = db.relationship(
         'PermitAmendment',
         backref='permit',

@@ -8,7 +8,7 @@ from flask import current_app
 from app.api.utils.include.user_info import User
 from app.extensions import db
 
-from tests.factories import MineFactory, MinePartyAppointmentFactory, NOWSubmissionFactory, NOWApplicationIdentityFactory
+from tests.factories import MineFactory, MinePartyAppointmentFactory, MinespaceSubscriptionFactory, MinespaceUserFactory, NOWSubmissionFactory, NOWApplicationIdentityFactory
 
 
 def register_commands(app):
@@ -37,6 +37,8 @@ def register_commands(app):
         """
         User._test_mode = True
 
+        _create_cypress_data()
+
         if threading:
             batch_size = 25
             num = int(num)
@@ -54,10 +56,41 @@ def register_commands(app):
         else:
             _create_data(num)
 
-    def _create_data(num):
+    def _create_cypress_data():
         User._test_mode = True
+
         with app.app_context():
-            MineFactory(major_mine_ind=True) # Ensure there is at least one major mine
+            # Set up data to be used in cypress tests
+
+            ## Ensure there is at least one major mine
+            mine = MineFactory(
+                major_mine_ind=True,
+                mine_name='Evergreen Cypress Mine'
+            ) 
+
+            ## Create a minespace user with data corresponding to 
+            ## the Cypress test user (cypress/keycloak-users.json)
+            minespace_user = MinespaceUserFactory(
+                email_or_username='cypress@bceid',
+                keycloak_guid='a28dfc3a-5e5c-4501-ab2f-399d8e64f2c8'
+            )
+
+            ## Subscribe the minespace user to a mine so we have a mine to test with
+            ## for Minespace cypress tests
+            MinespaceSubscriptionFactory(mine=mine, minespace_user=minespace_user)
+
+            try:
+                db.session.commit()
+                print(f'Created Data used for cypress testing.')
+            except DBAPIError:
+                print(f'Failed to create data used for cypress testing.')
+                db.session.rollback()
+                raise
+
+
+    def _create_data(num):
+
+        with app.app_context():
             for _ in range(int(num)):
                 mine = MineFactory()
                 MinePartyAppointmentFactory(mine=mine, mine_party_appt_type_code='EOR')

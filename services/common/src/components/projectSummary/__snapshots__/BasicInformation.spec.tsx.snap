@@ -1,0 +1,198 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BasicInformation renders properly 1`] = `
+<div>
+  <form
+    class="ant-form ant-form-vertical edit"
+    id="ADD_EDIT_PROJECT_SUMMARY"
+  >
+    <h3
+      class="ant-typography"
+    >
+      Basic Information
+    </h3>
+    <div
+      class="ant-form-item ant-form-item-with-help"
+    >
+      <div
+        class="ant-row ant-form-item-row"
+      >
+        <div
+          class="ant-col ant-form-item-label"
+        >
+          <label
+            class="ant-form-item-required"
+            for="ADD_EDIT_PROJECT_SUMMARY_project_summary_title"
+            title=""
+          >
+            Project title
+          </label>
+        </div>
+        <div
+          class="ant-col ant-form-item-control"
+        >
+          <div
+            class="ant-form-item-control-input"
+          >
+            <div
+              class="ant-form-item-control-input-content"
+            >
+              <input
+                class="ant-input"
+                id="project_summary_title"
+                name="project_summary_title"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            style="display: flex; flex-wrap: nowrap;"
+          >
+            <div
+              class="ant-form-item-explain ant-form-item-explain-connected"
+              id="ADD_EDIT_PROJECT_SUMMARY_project_summary_title_help"
+              role="alert"
+            >
+              <div
+                class=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-form-item ant-form-item-with-help"
+    >
+      <div
+        class="ant-row ant-form-item-row"
+      >
+        <div
+          class="ant-col ant-form-item-label"
+        >
+          <label
+            class=""
+            for="ADD_EDIT_PROJECT_SUMMARY_proponent_project_id"
+            title=""
+          >
+            Proponent project tracking ID
+             
+            <span
+              class="form-item-optional"
+            >
+               (optional)
+            </span>
+            <br />
+            <span
+              class="label-subtitle"
+            >
+              If your company uses a tracking number to identify projects, please provide it here.
+            </span>
+          </label>
+        </div>
+        <div
+          class="ant-col ant-form-item-control"
+        >
+          <div
+            class="ant-form-item-control-input"
+          >
+            <div
+              class="ant-form-item-control-input-content"
+            >
+              <input
+                class="ant-input"
+                id="proponent_project_id"
+                name="proponent_project_id"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            style="display: flex; flex-wrap: nowrap;"
+          >
+            <div
+              class="ant-form-item-explain ant-form-item-explain-connected"
+              id="ADD_EDIT_PROJECT_SUMMARY_proponent_project_id_help"
+              role="alert"
+            >
+              <div
+                class=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-form-item ant-form-item-with-help"
+    >
+      <div
+        class="ant-row ant-form-item-row"
+      >
+        <div
+          class="ant-col ant-form-item-label"
+        >
+          <label
+            class="ant-form-item-required"
+            for="ADD_EDIT_PROJECT_SUMMARY_project_summary_description"
+            title=""
+          >
+            Project overview
+            <br />
+            <span
+              class="label-subtitle"
+            >
+              Provide a 2-3 paragraph high-level description of your proposed project.
+            </span>
+          </label>
+        </div>
+        <div
+          class="ant-col ant-form-item-control"
+        >
+          <div
+            class="ant-form-item-control-input"
+          >
+            <div
+              class="ant-form-item-control-input-content"
+            >
+              <textarea
+                class="ant-input"
+                id="project_summary_description"
+                name="project_summary_description"
+                style="height: 0px; resize: none; min-height: -40px;"
+              />
+              <div
+                class="ant-row ant-row-space-between form-item-help project_summary_description-form-help"
+              >
+                <span>
+                  Maximum 4000 characters
+                </span>
+                <span
+                  class="flex-end"
+                >
+                  4000 / 4000
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            style="display: flex; flex-wrap: nowrap;"
+          >
+            <div
+              class="ant-form-item-explain ant-form-item-explain-connected"
+              id="ADD_EDIT_PROJECT_SUMMARY_project_summary_description_help"
+              role="alert"
+            >
+              <div
+                class=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+`;

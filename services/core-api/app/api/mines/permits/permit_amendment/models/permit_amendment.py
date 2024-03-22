@@ -96,7 +96,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         'PartyVerifiableCredentialMinesActPermit',
         lazy='selectin',
         order_by='desc(PartyVerifiableCredentialMinesActPermit.update_timestamp)')
-    
+    mines_act_permit_vc_locked = association_proxy("permit", 'mines_act_permit_vc_locked')
 
     @hybrid_property
     def issuing_inspector_name(self):
