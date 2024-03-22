@@ -177,14 +177,11 @@ const Applicant = () => {
 
   const handleResetParty = () => {
     dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.party_name", null));
-    if (party_type_code === "PER") {
-      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.party_orgbook_entity", null));
-      setVerifiedCredential(null);
-      setOrgBookOptions(null);
-    } else {
-      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.first_name", null));
-      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.middle_name", null));
-    }
+    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.party_orgbook_entity", null));
+    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.first_name", null));
+    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.middle_name", null));
+    setVerifiedCredential(null);
+    setOrgBookOptions(null);
   };
 
   const handleUpdateAddress = (
@@ -410,7 +407,9 @@ const Applicant = () => {
             required={!isMailingInternational}
             validate={!isMailingInternational ? [required] : []}
             data={provinceOptions.filter(
-              (p) => p.subType === applicant?.address?.[0]?.address_type_code
+              (p) =>
+                p.subType ===
+                applicant?.address?.[applicantAddress.mailingAddress]?.address_type_code
             )}
             component={RenderSelect}
           />
@@ -434,7 +433,9 @@ const Applicant = () => {
             component={RenderField}
             required
             validate={[
-              postalCodeWithCountry(applicant?.address?.[0]?.address_type_code),
+              postalCodeWithCountry(
+                applicant?.address?.[applicantAddress.mailingAddress]?.address_type_code
+              ),
               maxLength(10),
             ]}
           />
@@ -447,9 +448,11 @@ const Applicant = () => {
         component={RenderCheckbox}
         label="Same as mailing address"
         type="checkbox"
-        disabled={!areAllAddressFieldsValid(isMailingInternational, 0)}
+        disabled={
+          !areAllAddressFieldsValid(isMailingInternational, applicantAddress.mailingAddress)
+        }
         onChange={(e) =>
-          handleUpdateAddress(e, applicantAddress[mailingAddress], applicantAddress[legalAddress])
+          handleUpdateAddress(e, applicantAddress.mailingAddress, applicantAddress.legalAddress)
         }
       />
       {!is_legal_address_same_as_mailing_address && (
@@ -487,7 +490,9 @@ const Applicant = () => {
                 required={!isLegalInternational}
                 validate={!isLegalInternational ? [required] : []}
                 data={provinceOptions.filter(
-                  (p) => p.subType === applicant?.address?.[1]?.address_type_code
+                  (p) =>
+                    p.subType ===
+                    applicant?.address?.[applicantAddress.legalAddress]?.address_type_code
                 )}
                 component={RenderSelect}
               />
@@ -511,7 +516,9 @@ const Applicant = () => {
                 component={RenderField}
                 required
                 validate={[
-                  postalCodeWithCountry(applicant?.address?.[1]?.address_type_code),
+                  postalCodeWithCountry(
+                    applicant?.address?.[applicantAddress.legalAddress]?.address_type_code
+                  ),
                   maxLength(10),
                 ]}
               />
@@ -527,7 +534,7 @@ const Applicant = () => {
             name="is_billing_address_same_as_mailing_address"
             label="Same as mailing address"
             disabled={
-              !areAllAddressFieldsValid(isMailingInternational, 0) ||
+              !areAllAddressFieldsValid(isMailingInternational, applicantAddress.mailingAddress) ||
               is_billing_address_same_as_legal_address
             }
             component={RenderCheckbox}
@@ -535,8 +542,8 @@ const Applicant = () => {
             onChange={(e) =>
               handleUpdateAddress(
                 e,
-                applicantAddress[mailingAddress],
-                applicantAddress[billingAddress]
+                applicantAddress.mailingAddress,
+                applicantAddress.billingAddress
               )
             }
           />
@@ -548,17 +555,13 @@ const Applicant = () => {
             label="Same as legal address"
             disabled={
               is_billing_address_same_as_mailing_address ||
-              (!areAllAddressFieldsValid(isLegalInternational, 1) &&
+              (!areAllAddressFieldsValid(isLegalInternational, applicantAddress.legalAddress) &&
                 !is_legal_address_same_as_mailing_address)
             }
             component={RenderCheckbox}
             type="checkbox"
             onChange={(e) =>
-              handleUpdateAddress(
-                e,
-                applicantAddress[legalAddress],
-                applicantAddress[billingAddress]
-              )
+              handleUpdateAddress(e, applicantAddress.legalAddress, applicantAddress.billingAddress)
             }
           />
         </Col>
@@ -597,7 +600,9 @@ const Applicant = () => {
                 required={!isBusinessInternational}
                 validate={!isBusinessInternational ? [required] : []}
                 data={provinceOptions.filter(
-                  (p) => p.subType === applicant?.address?.[2]?.address_type_code
+                  (p) =>
+                    p.subType ===
+                    applicant?.address?.[applicantAddress.billingAddress]?.address_type_code
                 )}
                 component={RenderSelect}
               />
@@ -621,7 +626,9 @@ const Applicant = () => {
                 component={RenderField}
                 required
                 validate={[
-                  postalCodeWithCountry(applicant?.address?.[2]?.address_type_code),
+                  postalCodeWithCountry(
+                    applicant?.address?.[applicantAddress.billingAddress]?.address_type_code
+                  ),
                   maxLength(10),
                 ]}
               />
