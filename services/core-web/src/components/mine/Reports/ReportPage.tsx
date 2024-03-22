@@ -13,6 +13,7 @@ import {
   IMineReportSubmission,
   MINE_REPORT_STATUS_HASH,
   MINE_REPORT_SUBMISSION_CODES,
+  MineReportTypeUrlParam,
 } from "@mds/common";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
@@ -37,7 +38,9 @@ const ReportPage: FC = () => {
   const { mineGuid, reportGuid } = useParams<{ mineGuid: string; reportGuid: string }>();
   const mine = useSelector((state) => getMineById(state, mineGuid));
   const mineReportStatusOptions = useSelector(getDropdownMineReportStatusOptions);
-  const latestSubmission = useSelector((state) => getLatestReportSubmission(state, reportGuid));
+  const latestSubmission: IMineReportSubmission = useSelector((state) =>
+    getLatestReportSubmission(state, reportGuid)
+  );
 
   const [selectedStatus, setSelectedStatus] = useState<MINE_REPORT_SUBMISSION_CODES>(
     latestSubmission?.mine_report_submission_status_code
@@ -181,7 +184,13 @@ const ReportPage: FC = () => {
           </Row>
         </Typography.Title>
       </Row>
-      <Link to={routes.REPORTS_DASHBOARD.route}>
+      <Link
+        to={routes.MINE_REPORTS.dynamicRoute(
+          mineGuid,
+          MineReportTypeUrlParam[latestSubmission?.report_type],
+          {}
+        )}
+      >
         <ArrowLeftOutlined />
         Back to: Reports
       </Link>
