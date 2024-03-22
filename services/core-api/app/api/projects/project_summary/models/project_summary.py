@@ -249,16 +249,15 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
             if isinstance(address_data, list):
                 for addr in address_data:
-                    if addr is not None:
-                        new_address = Address.create(
-                            suite_no=addr.get('suite_no'),
-                            address_line_1=addr.get('address_line_1'),
-                            city=addr.get('city'),
-                            sub_division_code=addr.get('sub_division_code'),
-                            post_code=addr.get('post_code'),
-                            address_type_code=addr.get('address_type_code'),
-                        )
-                        new_party.address.append(new_address)
+                    new_address = Address.create(
+                        suite_no=addr.get('suite_no'),
+                        address_line_1=addr.get('address_line_1'),
+                        city=addr.get('city'),
+                        sub_division_code=addr.get('sub_division_code'),
+                        post_code=addr.get('post_code'),
+                        address_type_code=addr.get('address_type_code'),
+                    )
+                    new_party.address.append(new_address)
             else:
                 new_address = Address.create(
                     suite_no=address_data.get('suite_no'),
