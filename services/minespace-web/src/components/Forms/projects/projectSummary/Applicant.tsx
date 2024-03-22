@@ -47,10 +47,16 @@ const Applicant = () => {
   } = formValues;
   const { party_type_code, address = [], party_orgbook_entity = {} } = applicant ?? {};
 
-  const [mailingAddress, legalAddress, businessAddress] = address || [];
+  const [mailingAddress, legalAddress, billingAddress] = address || [];
   const isMailingInternational = mailingAddress?.address_type_code === "INT";
   const isLegalInternational = legalAddress?.address_type_code === "INT";
-  const isBusinessInternational = businessAddress?.address_type_code === "INT";
+  const isBusinessInternational = billingAddress?.address_type_code === "INT";
+
+  const applicantAddress = {
+    mailingAddress: 0,
+    legalAddress: 1,
+    billingAddress: 2,
+  };
 
   useEffect(() => {
     const defaultPartyTypeCode = party_type_code || "ORG";
@@ -181,7 +187,7 @@ const Applicant = () => {
     }
   };
 
-  const handleUpdateAddressEntries = (
+  const handleUpdateAddress = (
     event: any,
     sourceAddressIndex: number,
     destinationAddressIndex: number
@@ -442,7 +448,9 @@ const Applicant = () => {
         label="Same as mailing address"
         type="checkbox"
         disabled={!areAllAddressFieldsValid(isMailingInternational, 0)}
-        onChange={(e) => handleUpdateAddressEntries(e, 0, 1)}
+        onChange={(e) =>
+          handleUpdateAddress(e, applicantAddress[mailingAddress], applicantAddress[legalAddress])
+        }
       />
       {!is_legal_address_same_as_mailing_address && (
         <>
@@ -524,7 +532,13 @@ const Applicant = () => {
             }
             component={RenderCheckbox}
             type="checkbox"
-            onChange={(e) => handleUpdateAddressEntries(e, 0, 2)}
+            onChange={(e) =>
+              handleUpdateAddress(
+                e,
+                applicantAddress[mailingAddress],
+                applicantAddress[billingAddress]
+              )
+            }
           />
         </Col>
         <Col md={8} sm={24}>
@@ -539,7 +553,13 @@ const Applicant = () => {
             }
             component={RenderCheckbox}
             type="checkbox"
-            onChange={(e) => handleUpdateAddressEntries(e, 1, 2)}
+            onChange={(e) =>
+              handleUpdateAddress(
+                e,
+                applicantAddress[legalAddress],
+                applicantAddress[billingAddress]
+              )
+            }
           />
         </Col>
       </Row>
