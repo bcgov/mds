@@ -21,7 +21,7 @@ class PartyOrgBookEntity(AuditMixin, Base):
     party_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=False, unique=True)
     association_user = db.Column(db.String, nullable=False, default=User().get_user_username)
-    association_timestamp = db.Column(db.String, nullable=False, server_default=FetchedValue())
+    association_timestamp = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
 
     party = db.relationship('Party', overlaps='party')
 
