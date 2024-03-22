@@ -163,13 +163,14 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
 
                 transformed_magazines = []
                 for magazine in magazines:
-                    transformed_magazine = {
-                        'type_label': get_type_label(magazine),
-                        'type_no': magazine.type_no,
-                        'tag_no': f'Tag #{magazine.tag_no}',
-                        'quantity_label': get_quantity_label(magazine),
-                    }
-                    transformed_magazines.append(transformed_magazine)
+                    if magazine.deleted_ind == None or magazine.deleted_ind == False:
+                        transformed_magazine = {
+                            'type_label': get_type_label(magazine),
+                            'type_no': magazine.type_no,
+                            'tag_no': f'Tag #{magazine.tag_no}',
+                            'quantity_label': get_quantity_label(magazine),
+                        }
+                        transformed_magazines.append(transformed_magazine)
                 return transformed_magazines
 
             explosive_magazines = transform_magazines(explosives_permit.explosive_magazines or [])
