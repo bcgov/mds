@@ -206,3 +206,9 @@ export enum MineReportType {
   "permit-required-reports" = "PRR",
   "tailings-reports" = "TAR",
 }
+
+export enum MineReportTypeUrlParam {
+  "CRR" = "code-required-reports",
+  "PRR" = "permit-required-reports",
+  "TAR" = "tailings-reports",
+}
