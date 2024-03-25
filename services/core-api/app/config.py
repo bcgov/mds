@@ -238,6 +238,9 @@ class Config(object):
     EMAIL_ENABLED = os.environ.get('EMAIL_ENABLED', False)
     EMAIL_RECIPIENT_OVERRIDE = os.environ.get('EMAIL_RECIPIENT_OVERRIDE')
 
+    # AMS API
+    AMS_API_TOKEN = os.environ.get('AMS_API_TOKEN')
+
     # CSS Keycloak SSO
     CSS_CLIENT_ID = os.environ.get('CSS_CLIENT_ID')
     CSS_CLIENT_SECRET = os.environ.get('CSS_CLIENT_SECRET')
