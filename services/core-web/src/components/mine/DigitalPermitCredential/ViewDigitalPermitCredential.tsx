@@ -22,6 +22,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import ExplosivesPermitMap from "@mds/common/components/explosivespermits/ExplosivesPermitMap";
+import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import {
   getMineCommodityOptions,
   getMineDisturbanceOptions,
@@ -159,33 +160,34 @@ export const ViewDigitalPermitCredential: FC = () => {
 
   const releasePermitVCLock = (event) => {
     event.preventDefault();
-    console.log(mineGuid);
-    console.log(digitalPermitCredential.permit_guid);
     dispatch(
       patchPermitVCLocked(digitalPermitCredential.permit_guid, mineGuid, {
         mines_act_permit_vc_locked: false,
       })
-    );
+    ).then(() => {
+      dispatch(fetchPermits(mineGuid));
+    });
   };
 
   return (
     <div className="tab__content margin-large--top">
       {VC_CRED_ISSUE_STATES[connectionDetails[0]?.cred_exch_state] ===
-        VC_CRED_ISSUE_STATES.credential_revoked && (
-        <Alert
-          className="margin-large--bottom"
-          description={
-            <Row justify="space-between" align="middle">
-              <Paragraph strong>This digital credential was revoked</Paragraph>
-              <Button type="default" className="no-bg" onClick={releasePermitVCLock}>
-                Re-offer Credential
-              </Button>
-            </Row>
-          }
-          type="error"
-          showIcon
-        />
-      )}
+        VC_CRED_ISSUE_STATES.credential_revoked &&
+        digitalPermitCredential.mines_act_permit_vc_locked && (
+          <Alert
+            className="margin-large--bottom"
+            description={
+              <Row justify="space-between" align="middle">
+                <Paragraph strong>This digital credential was revoked</Paragraph>
+                <Button type="default" className="no-bg" onClick={releasePermitVCLock}>
+                  Re-offer Credential
+                </Button>
+              </Row>
+            }
+            type="error"
+            showIcon
+          />
+        )}
       <Title level={2}>Digital Permit Credential</Title>
       <Row gutter={48}>
         <Col md={12} sm={24}>

@@ -77,7 +77,11 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
     title: "Issuance State",
     key: "lastAmendedVC",
     dataIndex: "lastAmendedVC",
-    render: (text) => {
+    render: (text, record) => {
+      if (text == "credential_revoked" && !record.mines_act_permit_vc_locked) {
+        // if revoked by not locked, treat as 'available'.
+        text = null;
+      }
       const badgeText = text ? VC_CRED_ISSUE_STATES[text] : "Available";
       const colour = colourMap[badgeText] ?? "#F1C21B";
       return <Badge color={colour} text={badgeText} />;
