@@ -39,6 +39,7 @@ const Applicant = () => {
   const [verifiedCredential, setVerifiedCredential] = useState<IVerifiedCredential>(null);
 
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
+
   const {
     applicant = {},
     is_legal_address_same_as_mailing_address = false,
@@ -189,49 +190,35 @@ const Applicant = () => {
     sourceAddressIndex: number,
     destinationAddressIndex: number
   ) => {
+    const properties = [
+      "address_line_1",
+      "address_type_code",
+      "city",
+      "post_code",
+      "sub_division_code",
+      "suite_no",
+    ];
+
     if (event) {
-      dispatch(
-        change(
-          FORM.ADD_EDIT_PROJECT_SUMMARY,
-          `applicant.address[${destinationAddressIndex}].address_line_1`,
-          address[sourceAddressIndex].address_line_1
-        )
-      );
-      dispatch(
-        change(
-          FORM.ADD_EDIT_PROJECT_SUMMARY,
-          `applicant.address[${destinationAddressIndex}].address_type_code`,
-          address[sourceAddressIndex].address_type_code
-        )
-      );
-      dispatch(
-        change(
-          FORM.ADD_EDIT_PROJECT_SUMMARY,
-          `applicant.address[${destinationAddressIndex}].city`,
-          address[sourceAddressIndex].city
-        )
-      );
-      dispatch(
-        change(
-          FORM.ADD_EDIT_PROJECT_SUMMARY,
-          `applicant.address[${destinationAddressIndex}].post_code`,
-          address[sourceAddressIndex].post_code
-        )
-      );
-      dispatch(
-        change(
-          FORM.ADD_EDIT_PROJECT_SUMMARY,
-          `applicant.address[${destinationAddressIndex}].sub_division_code`,
-          address[sourceAddressIndex].sub_division_code
-        )
-      );
-      dispatch(
-        change(
-          FORM.ADD_EDIT_PROJECT_SUMMARY,
-          `applicant.address[${destinationAddressIndex}].suite_no`,
-          address[sourceAddressIndex].suite_no
-        )
-      );
+      properties.forEach((property) => {
+        dispatch(
+          change(
+            FORM.ADD_EDIT_PROJECT_SUMMARY,
+            `applicant.address[${destinationAddressIndex}].${property}`,
+            address[sourceAddressIndex][property]
+          )
+        );
+      });
+    } else {
+      properties.forEach((property) => {
+        dispatch(
+          change(
+            FORM.ADD_EDIT_PROJECT_SUMMARY,
+            `applicant.address[${destinationAddressIndex}].${property}`,
+            ""
+          )
+        );
+      });
     }
   };
 
