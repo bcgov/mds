@@ -1,6 +1,6 @@
 import { Alert, Button, Col, Row, Table, Typography } from "antd";
 import {
-  VC_ACTIVE_CONNECTION_STATES,
+  VC_ACTIVE_CREDENTIAL_STATES,
   VC_CONNECTION_STATES,
   VC_CRED_ISSUE_STATES,
 } from "@mds/common/constants";
@@ -31,7 +31,7 @@ import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import modalConfig from "@/components/modalContent/config";
 import {
   fetchCredentialConnections,
-  getCredentialConnections,
+  getMinesActPermitIssuance,
   revokeCredential,
 } from "@mds/common/redux/slices/verifiableCredentialsSlice";
 
@@ -53,7 +53,13 @@ export const ViewDigitalPermitCredential: FC = () => {
     id: string;
   }>();
 
-  const connectionDetails = useSelector((state) => getCredentialConnections(state));
+  const minesActPermitIssuance = useSelector((state) => getMinesActPermitIssuance(state));
+  console.log(minesActPermitIssuance);
+  const minesActPermitIssuancesort = minesActPermitIssuance
+    .slice()
+    .sort((a, b) => a.last_webhook_timestamp - b.last_webhook_timestamp);
+  console.log(minesActPermitIssuancesort);
+
   const digitalPermitCredential: IPermit = permits.find((p) => p.permit_guid === permitGuid);
   const mine: IMine = useSelector((state) => getMineById(state, mineGuid));
 
@@ -129,13 +135,13 @@ export const ViewDigitalPermitCredential: FC = () => {
   };
 
   const handleRevoke = async (data) => {
-    if (connectionDetails.length < 1) return;
+    if (minesActPermitIssuance.length < 1) return;
 
     await dispatch(
       revokeCredential({
         partyGuid: digitalPermitCredential.current_permittee_guid,
         comment: data.comment,
-        credential_exchange_id: connectionDetails[0].cred_exch_id,
+        credential_exchange_id: minesActPermitIssuance[0].cred_exch_id,
       })
     );
 
@@ -171,7 +177,7 @@ export const ViewDigitalPermitCredential: FC = () => {
 
   return (
     <div className="tab__content margin-large--top">
-      {VC_CRED_ISSUE_STATES[connectionDetails[0]?.cred_exch_state] ===
+      {VC_CRED_ISSUE_STATES[minesActPermitIssuance[0]?.cred_exch_state] ===
         VC_CRED_ISSUE_STATES.credential_revoked &&
         digitalPermitCredential.mines_act_permit_vc_locked && (
           <Alert
@@ -304,12 +310,14 @@ export const ViewDigitalPermitCredential: FC = () => {
             <Row align="middle" justify="space-between">
               <Col span={8}>
                 <Paragraph className="margin-none">
-                  {VC_CRED_ISSUE_STATES[connectionDetails[0]?.cred_exch_state] ??
+                  {VC_CRED_ISSUE_STATES[minesActPermitIssuance[0]?.cred_exch_state] ??
                     "No Credential Issued"}
                 </Paragraph>
               </Col>
               <Col span={16}>
-                {VC_ACTIVE_CONNECTION_STATES.includes(connectionDetails[0]?.cred_exch_state) && (
+                {VC_ACTIVE_CREDENTIAL_STATES.includes(
+                  minesActPermitIssuance[0]?.cred_exch_state
+                ) && (
                   <Button
                     onClick={openRevokeDigitalCredentialModal}
                     type="ghost"

@@ -153,7 +153,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
             #if any active, return most recent
             return active[0].cred_exch_state
         else:
-            return self.vc_credential_exch[0].cred_exch_state
+            return self.vc_credential_exch[0].cred_exch_state if len(self.vc_credential_exch) > 0 else None
 
 
     def __repr__(self):

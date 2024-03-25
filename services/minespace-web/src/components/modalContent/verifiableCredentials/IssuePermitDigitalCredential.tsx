@@ -50,9 +50,12 @@ export const IssuePermitDigitalCredential: FC<IssuePermitDigitalCredentialProps>
       case VC_CRED_ISSUE_STATES.offer_sent:
         contentKey = "pending";
         break;
-      case VC_CRED_ISSUE_STATES.credential_revoked && permit.mines_act_permit_vc_locked:
-        contentKey = "revoked";
-        break;
+      case VC_CRED_ISSUE_STATES.credential_revoked:
+        if (permit.mines_act_permit_vc_locked) {
+          contentKey = "revoked";
+          break;
+        } // else default to issueReady
+      // eslint-disable-next-line no-fallthrough
       default:
         contentKey = "issueReady";
     }
