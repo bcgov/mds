@@ -267,8 +267,8 @@ class ReportSubmissionResource(Resource, UserMixin):
             previous_submission.is_latest = False
             previous_submission.save()
 
-        if create_initial_report:
-            mine_report.send_report_update_email(False, is_proponent, report_type)
+        if create_initial_report and report_type == "CRR":
+            mine_report.send_crr_add_notification_email(False, is_proponent)
 
         return report_submission, 201
     

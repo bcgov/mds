@@ -129,9 +129,7 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
     def __repr__(self):
         return '<MineReport %r>' % self.mine_report_guid
 
-    def send_report_update_email(self, is_edit, is_proponent, crr_or_prr):
-
-        report_code = "code" if crr_or_prr == "CRR" else "permit"
+    def send_crr_add_notification_email(self, is_edit, is_proponent):
         subject = f'Code Required Report Submitted for mine {self.mine.mine_name}'
         core_recipients = [MDS_EMAIL]
         ms_recipients = []
@@ -140,7 +138,7 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
             core_recipients, ms_recipients = self.collectRecipients(is_proponent)
             core_recipients.extend(self.getReportSpecificEmailsByReportType())
 
-            core_report_page_link =  f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/required-reports/{report_code}-required-reports'
+            core_report_page_link =  f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/required-reports/code-required-reports'
             ms_report_page_link = f'{Config.MINESPACE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/reports'
             c_article = self.mine_report_definition.compliance_articles[0]
             report_type = f'{c_article.section}.{c_article.sub_section}.{c_article.paragraph} - {self.mine.mine_name}'
@@ -175,7 +173,7 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
             ms_email_body = open("app/templates/email/report/ms_new_report_submitted_email.html", "r").read()
             EmailService.send_template_email(subject, ms_recipients, ms_email_body, email_context, cc=None)
 
-        else:
+    def send_report_update_email(self, is_edit):
             recipients = [self.mine.region.regional_contact_office.email, MDS_EMAIL]
             if self.mine.major_mine_ind:
                 recipients = [MAJOR_MINES_OFFICE_EMAIL, MDS_EMAIL]
