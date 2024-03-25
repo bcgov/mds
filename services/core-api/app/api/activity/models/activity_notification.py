@@ -14,7 +14,7 @@ from app.api.utils.include.user_info import User
 from app.api.mines.subscription.models.subscription import Subscription
 from app.api.users.minespace.models.minespace_user import MinespaceUser
 from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 
 def validate_document(document):
@@ -102,6 +102,7 @@ class ActivityType(str, Enum):
     incident_report_submitted = 'incident_report_submitted'
     mine_incident_created = 'mine_incident_created'
     mine_incident_updated = 'mine_incident_updated'
+    mine_report_submitted = 'mine_report_submitted'
     nod_status_changed = 'nod_status_changed'
     eor_created = 'eor_created'
     qfp_created = 'qfp_created'
@@ -171,7 +172,7 @@ class ActivityNotification(AuditMixin, Base):
         expired_unread_notification_user_list = []
         if(renotify_period_minutes > 0):
           # Calculate the datetime that was renotify_period_minutes minutes ago
-          renotify_timestamp = datetime.utcnow() - timedelta(minutes=renotify_period_minutes)
+          renotify_timestamp = datetime.now(timezone.utc) - timedelta(minutes=renotify_period_minutes)
 
           # Filter to retrived unread records for renotifying and notify for read user if the same activity type
           expired_unread_notification_query = cls.query.with_entities(cls.notification_recipient)\

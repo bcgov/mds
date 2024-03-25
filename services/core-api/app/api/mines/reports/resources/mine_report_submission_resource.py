@@ -1,7 +1,7 @@
 import uuid
 from flask_restx import Resource
 from werkzeug.exceptions import BadRequest, NotFound
-from datetime import datetime
+from datetime import datetime, timezone
 
 from app.extensions import api, db
 from app.api.utils.resources_mixins import UserMixin
@@ -148,7 +148,7 @@ class ReportSubmissionResource(Resource, UserMixin):
             permit_condition_category_code=getattr(previous_submission, "permit_condition_category_code"),
             permit_id=getattr(previous_submission, "permit_id"),
             received_date=getattr(previous_submission, "received_date"),
-            submission_date=datetime.utcnow(),
+            submission_date=datetime.now(timezone.utc),
             submission_year=getattr(previous_submission, "submission_year"),
             submitter_email=getattr(previous_submission, "submitter_email"),
             submitter_name=getattr(previous_submission, "submitter_name"),
@@ -189,6 +189,7 @@ class ReportSubmissionResource(Resource, UserMixin):
         self.parser.add_argument('submission_year', type=str, location='json')
         self.parser.add_argument('submitter_email', type=str, location='json')
         self.parser.add_argument('submitter_name', type=str, location='json')
+        self.parser.add_argument('report_type', type=str, location='json')
 
         data = self.parser.parse_args()
         is_proponent = auth.get_user_is_proponent()
@@ -202,7 +203,8 @@ class ReportSubmissionResource(Resource, UserMixin):
         mine_report_definition_guid = data.get('mine_report_definition_guid', None)
         permit_guid = data.get('permit_guid', None)
         mine_report_submission_status_code = data.get('mine_report_submission_status_code', None)
-        contacts = data.get('mine_report_contacts', [])        
+        contacts = data.get('mine_report_contacts', [])
+        report_type = data.get('report_type', None)
 
         if not mine_report_submission_status_code or is_proponent:
             mine_report_submission_status_code = "INI"
@@ -250,7 +252,7 @@ class ReportSubmissionResource(Resource, UserMixin):
             permit_condition_category_code=permit_condition_category_code,
             permit_id=permit_id,
             received_date=data.get('received_date', None),
-            submission_date=datetime.utcnow(),
+            submission_date=datetime.now(timezone.utc),
             submission_year=data.get('submission_year', None),
             submitter_email=data.get('submitter_email', None),
             submitter_name=data.get('submitter_name', None)
@@ -264,7 +266,11 @@ class ReportSubmissionResource(Resource, UserMixin):
         if previous_submission:
             previous_submission.is_latest = False
             previous_submission.save()
-        return report_submission, 201               
+
+        if create_initial_report:
+            mine_report.send_report_update_email(False, is_proponent, report_type)
+
+        return report_submission, 201
     
     @api.doc(params={
         "mine_report_guid": "Report guid for the parent entity",

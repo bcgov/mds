@@ -178,7 +178,13 @@ PROJECT_SUMMARY_MODEL = api.model(
         'facility_lease_no': fields.String,
         'zoning': fields.Boolean,
         'zoning_reason': fields.String,
-        'nearest_municipality': fields.String(attribute='nearest_municipality_guid')
+        'nearest_municipality': fields.String(attribute='nearest_municipality_guid'),
+        'company_alias': fields.String,
+        'incorporation_number': fields.String,
+        'is_legal_address_same_as_mailing_address': fields.Boolean,
+        'is_billing_address_same_as_mailing_address': fields.Boolean,
+        'is_billing_address_same_as_legal_address': fields.Boolean,
+        'applicant': fields.Nested(PARTY)
     })
 
 REQUIREMENTS_MODEL = api.model(

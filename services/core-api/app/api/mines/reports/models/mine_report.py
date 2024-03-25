@@ -1,3 +1,4 @@
+import datetime
 import uuid
 
 from sqlalchemy.dialects.postgresql import UUID
@@ -15,8 +16,10 @@ from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.utils.include.user_info import User
 from app.api.services.email_service import EmailService
 from app.config import Config
-from app.api.constants import MAJOR_MINES_OFFICE_EMAIL, MDS_EMAIL
-
+from app.api.constants import MAJOR_MINES_OFFICE_EMAIL, MDS_EMAIL, PERM_RECL_EMAIL
+from app.api.activity.utils import trigger_notification
+from app.api.activity.models.activity_notification import ActivityType
+from app.api.mines.reports.models.mine_report_notification import MineReportNotification
 
 class MineReport(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = "mine_report"
@@ -126,20 +129,116 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
     def __repr__(self):
         return '<MineReport %r>' % self.mine_report_guid
 
-    def send_report_update_email(self, is_edit):
-        recipients = [self.mine.region.regional_contact_office.email, MDS_EMAIL]
-        if self.mine.major_mine_ind:
-            recipients = [MAJOR_MINES_OFFICE_EMAIL, MDS_EMAIL]
+    def send_report_update_email(self, is_edit, is_proponent, crr_or_prr):
 
-        subject_verb = 'Updated' if is_edit else 'Submitted'
-        subject = f'Code Required Report {subject_verb} for {self.mine.mine_name}'
+        report_code = "code" if crr_or_prr == "CRR" else "permit"
+        subject = f'Code Required Report Submitted for mine {self.mine.mine_name}'
+        core_recipients = [MDS_EMAIL]
+        ms_recipients = []
 
-        body_verb = 'uploaded document(s) to' if is_edit else 'submitted'
-        body = f'<p>{self.mine.mine_name} (Mine no: {self.mine.mine_no}) has {body_verb} a "{self.mine_report_definition_report_name}" report.</p>'
+        if not is_edit:
+            core_recipients, ms_recipients = self.collectRecipients(is_proponent)
+            core_recipients.extend(self.getReportSpecificEmailsByReportType())
 
-        link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/reports/code-required-reports'
-        body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
-        EmailService.send_email(subject, recipients, body)
+            core_report_page_link =  f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/required-reports/{report_code}-required-reports'
+            ms_report_page_link = f'{Config.MINESPACE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/reports'
+            c_article = self.mine_report_definition.compliance_articles[0]
+            report_type = f'{c_article.section}.{c_article.sub_section}.{c_article.paragraph} - {self.mine.mine_name}'
+
+            recieved_date = self.mine_report_submissions[0].received_date
+            due_date = "N/A"
+            if self.due_date:
+                due_date = (self.due_date).strftime("%b %d %Y")
+
+            email_context = {
+              "report_submision": {
+                  "mine_number": self.mine.mine_no,
+                  "mine_name": self.mine.mine_name,
+                  "report_name": self.mine_report_definition_report_name,
+                  "report_type": report_type,
+                  "report_compliance_year": self.mine_report_submissions[0].submission_year,
+                  "report_due_date": due_date,
+                  "report_recieved_date": (recieved_date).strftime("%b %d %Y at %I:%M %p"),
+              },
+              "minespace_login_link": Config.MINESPACE_PRODUCTION_URL,
+              "core_report_page_link": core_report_page_link,
+              "ms_report_page_link": ms_report_page_link
+            }
+
+            trigger_notification(f'Your ({self.mine_report_definition_report_name}) report has been recieved',
+                                 ActivityType.mine_report_submitted, self.mine,
+                                 'MineReportSubmission', self.mine_report_guid)
+
+            core_email_body = open("app/templates/email/report/core_new_report_submitted_email.html", "r").read()
+            EmailService.send_template_email(subject, core_recipients, core_email_body, email_context, cc=None)
+
+            ms_email_body = open("app/templates/email/report/ms_new_report_submitted_email.html", "r").read()
+            EmailService.send_template_email(subject, ms_recipients, ms_email_body, email_context, cc=None)
+
+        else:
+            recipients = [self.mine.region.regional_contact_office.email, MDS_EMAIL]
+            if self.mine.major_mine_ind:
+                recipients = [MAJOR_MINES_OFFICE_EMAIL, MDS_EMAIL]
+
+            subject_verb = 'Updated' if is_edit else 'Submitted'
+            subject = f'Code Required Report {subject_verb} for {self.mine.mine_name}'
+
+            body_verb = 'uploaded document(s) to' if is_edit else 'submitted'
+            body = f'<p>{self.mine.mine_name} (Mine no: {self.mine.mine_no}) has {body_verb} a "{self.mine_report_definition_report_name}" report.</p>'
+
+            link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/reports/code-required-reports'
+            body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
+            EmailService.send_email(subject, recipients, body)
+
+    def collectRecipients(self, is_proponent):
+        core_recipients = [MDS_EMAIL]
+        ms_recipients = []
+        # Adding submitter's email
+        if self.submitter_email:
+            if is_proponent:
+                ms_recipients.append(self.submitter_email)
+            else:
+                core_recipients.append(self.submitter_email)
+
+        # Adding submitter's email
+        contacts_email = [contact.email for contact in self.mine_report_submissions[0].mine_report_contacts]
+        if contacts_email:
+            if is_proponent:
+                ms_recipients.extend(contacts_email)
+            else:
+                core_recipients.extend(contacts_email)
+
+        # Adding mine manager's email.
+        if self.mine.mine_party_appt:
+            for party in self.mine.mine_party_appt:
+
+                if party.mine_party_appt_type_code == "MMG" and party.party.email:
+                    ms_recipients.append(party.party.email)
+
+        # If no core_recipients found yet
+        if len(core_recipients) == 0:
+            core_recipients = PERM_RECL_EMAIL
+
+        return core_recipients, ms_recipients
+
+    def getReportSpecificEmailsByReportType(self):
+        art = self.mine_report_definition.compliance_articles[0]
+        notificaiton_list = MineReportNotification.find_contact_by_compliance_article(art.section, art.sub_section, art.paragraph, art.sub_paragraph)
+        unique_recipients = set()
+        regional_email = self.mine.region.regional_contact_office.email
+
+        for ntf in notificaiton_list:
+            notifiy_email = ntf[0]
+            if notifiy_email not in unique_recipients:
+                unique_recipients.add(notifiy_email)
+
+            if ntf[1] and PERM_RECL_EMAIL not in unique_recipients:
+                unique_recipients.add(PERM_RECL_EMAIL)
+
+            if ntf[2] and regional_email not in unique_recipients:
+                unique_recipients.add(regional_email)
+
+        return list(unique_recipients)
 
     @classmethod
     def create(cls,
