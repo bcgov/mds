@@ -128,59 +128,58 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
     def __repr__(self):
         return '<MineReport %r>' % self.mine_report_guid
 
-    def send_crr_and_prr_add_notification_email(self, is_edit, is_proponent, crr_or_prr):
+    def send_crr_and_prr_add_notification_email(self, is_proponent, crr_or_prr):
         is_crr = crr_or_prr == "CRR"
         report_code = "Code" if is_crr else "Permit"
         subject = f'{report_code} Required Report Submitted for mine {self.mine.mine_name}'
         core_recipients = [MDS_EMAIL]
         ms_recipients = []
 
-        if not is_edit:
-            core_recipients, ms_recipients = self.collectRecipients(is_proponent)
+        core_recipients, ms_recipients = self.collectRecipients(is_proponent)
 
-            due_date = due_date = (self.due_date).strftime("%b %d %Y") if self.due_date else "N/A"
-            core_report_page_link =  f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/required-reports/{report_code.lower()}-required-reports'
-            ms_report_page_link = f'{Config.MINESPACE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/reports'
+        due_date = due_date = (self.due_date).strftime("%b %d %Y") if self.due_date else "N/A"
+        core_report_page_link =  f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/required-reports/{report_code.lower()}-required-reports'
+        ms_report_page_link = f'{Config.MINESPACE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/reports'
 
-            if is_crr:
-                report_type = "Code Required Report"
-                compliance_details = self.mine_report_definition.compliance_articles[0]
-                report_name = f'{compliance_details.section}.{compliance_details.sub_section}.{compliance_details.paragraph} - {compliance_details.description}'
-                core_recipients.extend(self.getReportSpecificEmailsByReportType(compliance_details))
+        if is_crr:
+            report_type = "Code Required Report"
+            compliance_details = self.mine_report_definition.compliance_articles[0]
+            report_name = f'{compliance_details.section}.{compliance_details.sub_section}.{compliance_details.paragraph} - {compliance_details.description}'
+            core_recipients.extend(self.getReportSpecificEmailsByReportType(compliance_details))
 
-            else: #PRR
-                report_type = "Permit Required Report"
-                report_name = self.report_name
-                regional_email = self.mine.region.regional_contact_office.email
-                if self.mine.major_mine_ind:
-                    core_recipients.append(PERM_RECL_EMAIL)
-                else:
-                    core_recipients.append(regional_email)
+        else: #PRR
+            report_type = "Permit Required Report"
+            report_name = self.report_name
+            regional_email = self.mine.region.regional_contact_office.email
+            if self.mine.major_mine_ind:
+                core_recipients.append(PERM_RECL_EMAIL)
+            else:
+                core_recipients.append(regional_email)
 
-            email_context = {
-              "report_submision": {
-                  "mine_number": self.mine.mine_no,
-                  "mine_name": self.mine.mine_name,
-                  "report_name": report_name,
-                  "report_type": report_type,
-                  "report_compliance_year": self.submission_year,
-                  "report_due_date": due_date,
-                  "report_recieved_date": (self.received_date).strftime("%b %d %Y at %I:%M %p"),
-              },
-              "minespace_login_link": Config.MINESPACE_PRODUCTION_URL,
-              "core_report_page_link": core_report_page_link,
-              "ms_report_page_link": ms_report_page_link
-            }
+        email_context = {
+          "report_submision": {
+              "mine_number": self.mine.mine_no,
+              "mine_name": self.mine.mine_name,
+              "report_name": report_name,
+              "report_type": report_type,
+              "report_compliance_year": self.submission_year,
+              "report_due_date": due_date,
+              "report_recieved_date": (self.received_date).strftime("%b %d %Y at %I:%M %p"),
+          },
+          "minespace_login_link": Config.MINESPACE_PRODUCTION_URL,
+          "core_report_page_link": core_report_page_link,
+          "ms_report_page_link": ms_report_page_link
+        }
 
-            trigger_notification(f'Your ({self.mine_report_definition_report_name}) report has been recieved',
-                                 ActivityType.mine_report_submitted, self.mine,
-                                 'MineReportSubmission', self.mine_report_guid)
+        trigger_notification(f'Your ({self.mine_report_definition_report_name}) report has been recieved',
+                              ActivityType.mine_report_submitted, self.mine,
+                              'MineReportSubmission', self.mine_report_guid)
 
-            core_email_body = open("app/templates/email/report/core_new_report_submitted_email.html", "r").read()
-            EmailService.send_template_email(subject, core_recipients, core_email_body, email_context, cc=None)
+        core_email_body = open("app/templates/email/report/core_new_report_submitted_email.html", "r").read()
+        EmailService.send_template_email(subject, core_recipients, core_email_body, email_context, cc=None)
 
-            ms_email_body = open("app/templates/email/report/ms_new_report_submitted_email.html", "r").read()
-            EmailService.send_template_email(subject, ms_recipients, ms_email_body, email_context, cc=None)
+        ms_email_body = open("app/templates/email/report/ms_new_report_submitted_email.html", "r").read()
+        EmailService.send_template_email(subject, ms_recipients, ms_email_body, email_context, cc=None)
 
     def collectRecipients(self, is_proponent):
         core_recipients = [MDS_EMAIL]
