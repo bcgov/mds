@@ -41,7 +41,7 @@ export const PermitCard: FC<MinePermitCardProps> = (props) => {
       <br />
       <h6>
         Inspection Fee Exemption
-        <CoreTooltip title="Is this mine exempted from filing inspection fees?" />
+        <CoreTooltip title="Indicates whether an Inspection Fee filing is exempt for this permit" />
       </h6>
       <span>{props.permit.exemption_fee_status_code === "Y" ? "Yes" : "No"}</span>
       <br />
