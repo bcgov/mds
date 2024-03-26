@@ -140,6 +140,7 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
         due_date = due_date = (self.due_date).strftime("%b %d %Y") if self.due_date else "N/A"
         core_report_page_link =  f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/required-reports/{report_code.lower()}-required-reports'
         ms_report_page_link = f'{Config.MINESPACE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/reports'
+        report_name = ""
 
         if is_crr:
             report_type = "Code Required Report"
@@ -171,13 +172,13 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
           "ms_report_page_link": ms_report_page_link
         }
 
-        trigger_notification(f'Your ({self.mine_report_definition_report_name}) report has been recieved',
+        trigger_notification(f'Your {report_name} report has been recieved',
                               ActivityType.mine_report_submitted, self.mine,
-                              'MineReportSubmission', self.mine_report_guid, recipients=ActivityRecipients.minespace_users)
+                              'MineReport', self.mine_report_guid, recipients=ActivityRecipients.minespace_users)
 
-        trigger_notification(f'A ({self.mine_report_definition_report_name}) report has been recieved',
+        trigger_notification(f'A {report_name} report has been recieved',
                               ActivityType.mine_report_submitted, self.mine,
-                              'MineReportSubmission', self.mine_report_guid, recipients=ActivityRecipients.core_users)
+                              'MineReport', self.mine_report_guid, recipients=ActivityRecipients.core_users)
 
         core_email_body = open("app/templates/email/report/core_new_report_submitted_email.html", "r").read()
         EmailService.send_template_email(subject, core_recipients, core_email_body, email_context, cc=None)
