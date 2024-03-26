@@ -37,7 +37,8 @@ class VerifiableCredentialWebhookResource(Resource, UserMixin):
         current_app.logger.debug(f"webhook received <topic={topic}>: {webhook_body}")
         if "updated_at" not in webhook_body:
             current_app.logger.warn(f"webhook missing updated_at, {webhook_body}")
-        webhook_timestamp = datetime.fromisoformat(webhook_body["updated_at"])
+        else:
+            webhook_timestamp = datetime.fromisoformat(webhook_body["updated_at"])
 
         if topic == CONNECTIONS:
             invitation_id = webhook_body['invitation_msg_id']
