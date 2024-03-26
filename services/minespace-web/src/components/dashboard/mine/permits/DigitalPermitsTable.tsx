@@ -35,7 +35,6 @@ interface PermitsTableProps {
   permits: IPermit[];
   majorMineInd: boolean;
   openModal: (value: any) => void;
-  closeModal: (value: any) => void;
   openVCWalletInvitationModal: (
     event,
     partyGuid: string,
@@ -239,7 +238,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   openModal,
-  closeModal,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PermitsTable);
