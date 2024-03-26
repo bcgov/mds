@@ -174,11 +174,11 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
 
         trigger_notification(f'Your {report_name} report has been recieved',
                               ActivityType.mine_report_submitted, self.mine,
-                              'MineReportSubmission', self.mine_report_guid, recipients=ActivityRecipients.minespace_users)
+                              'MineReport', self.mine_report_guid, recipients=ActivityRecipients.minespace_users)
 
         trigger_notification(f'A {report_name} report has been recieved',
                               ActivityType.mine_report_submitted, self.mine,
-                              'MineReportSubmission', self.mine_report_guid, recipients=ActivityRecipients.core_users)
+                              'MineReport', self.mine_report_guid, recipients=ActivityRecipients.core_users)
 
         core_email_body = open("app/templates/email/report/core_new_report_submitted_email.html", "r").read()
         EmailService.send_template_email(subject, core_recipients, core_email_body, email_context, cc=None)
