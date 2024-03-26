@@ -17,7 +17,7 @@ from app.api.services.email_service import EmailService
 from app.config import Config
 from app.api.constants import MAJOR_MINES_OFFICE_EMAIL, MDS_EMAIL, PERM_RECL_EMAIL
 from app.api.activity.utils import trigger_notification
-from app.api.activity.models.activity_notification import ActivityType
+from app.api.activity.models.activity_notification import ActivityType, ActivityRecipients
 from app.api.mines.reports.models.mine_report_notification import MineReportNotification
 
 class MineReport(SoftDeleteMixin, AuditMixin, Base):
@@ -173,7 +173,11 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
 
         trigger_notification(f'Your ({self.mine_report_definition_report_name}) report has been recieved',
                               ActivityType.mine_report_submitted, self.mine,
-                              'MineReportSubmission', self.mine_report_guid)
+                              'MineReportSubmission', self.mine_report_guid, recipients=ActivityRecipients.minespace_users)
+
+        trigger_notification(f'A ({self.mine_report_definition_report_name}) report has been recieved',
+                              ActivityType.mine_report_submitted, self.mine,
+                              'MineReportSubmission', self.mine_report_guid, recipients=ActivityRecipients.core_users)
 
         core_email_body = open("app/templates/email/report/core_new_report_submitted_email.html", "r").read()
         EmailService.send_template_email(subject, core_recipients, core_email_body, email_context, cc=None)
