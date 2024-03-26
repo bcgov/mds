@@ -54,13 +54,10 @@ export const ViewDigitalPermitCredential: FC = () => {
   }>();
 
   const minesActPermitIssuance = useSelector((state) => getMinesActPermitIssuance(state));
-  console.log(minesActPermitIssuance);
-  const minesActPermitIssuancesort = minesActPermitIssuance
-    .slice()
-    .sort((a, b) => a.last_webhook_timestamp - b.last_webhook_timestamp);
-  console.log(minesActPermitIssuancesort);
-
-  const digitalPermitCredential: IPermit = permits.find((p) => p.permit_guid === permitGuid);
+  const permitRecord: IPermit = permits.find((p) => p.permit_guid === permitGuid);
+  const activePermitCredential = minesActPermitIssuance.find((mapi) =>
+    VC_ACTIVE_CREDENTIAL_STATES.includes(mapi.cred_exch_state)
+  );
   const mine: IMine = useSelector((state) => getMineById(state, mineGuid));
 
   const mineCommodityOptions: IMineCommodityOption[] = useSelector(getMineCommodityOptions);
@@ -68,15 +65,13 @@ export const ViewDigitalPermitCredential: FC = () => {
   const mineDisturbanceOptions: IMineDisturbanceOption[] = useSelector(getMineDisturbanceOptions);
 
   useEffect(() => {
-    if (digitalPermitCredential) {
-      dispatch(
-        fetchCredentialConnections({ partyGuid: digitalPermitCredential.current_permittee_guid })
-      );
+    if (permitRecord) {
+      dispatch(fetchCredentialConnections({ partyGuid: permitRecord.current_permittee_guid }));
     }
-  }, [digitalPermitCredential]);
+  }, [permitRecord]);
 
   const getLatestIssueDate = () => {
-    const latestAmendment = digitalPermitCredential?.permit_amendments?.filter(
+    const latestAmendment = permitRecord?.permit_amendments?.filter(
       (a) => a.permit_amendment_status_code !== "DFT"
     )[0];
 
@@ -96,7 +91,7 @@ export const ViewDigitalPermitCredential: FC = () => {
   ];
 
   const transformPermitHistoryData = () => {
-    const amendments = digitalPermitCredential?.permit_amendments
+    const amendments = permitRecord?.permit_amendments
       ?.sort((a, b) => a.permit_amendment_id - b.permit_amendment_id)
       .map((a, index) => {
         return {
@@ -104,10 +99,7 @@ export const ViewDigitalPermitCredential: FC = () => {
           amendment_no: index + 1,
         };
       });
-    const permitHistory: any[] = [
-      permitAmendmentLike(digitalPermitCredential),
-      ...(amendments ?? []),
-    ];
+    const permitHistory: any[] = [permitAmendmentLike(permitRecord), ...(amendments ?? [])];
 
     return permitHistory.reverse();
   };
@@ -135,13 +127,13 @@ export const ViewDigitalPermitCredential: FC = () => {
   };
 
   const handleRevoke = async (data) => {
-    if (minesActPermitIssuance.length < 1) return;
+    if (!activePermitCredential) return;
 
     await dispatch(
       revokeCredential({
-        partyGuid: digitalPermitCredential.current_permittee_guid,
+        partyGuid: permitRecord.current_permittee_guid,
         comment: data.comment,
-        credential_exchange_id: minesActPermitIssuance[0].cred_exch_id,
+        credential_exchange_id: activePermitCredential.cred_exch_id,
       })
     );
 
@@ -167,7 +159,7 @@ export const ViewDigitalPermitCredential: FC = () => {
   const releasePermitVCLock = (event) => {
     event.preventDefault();
     dispatch(
-      patchPermitVCLocked(digitalPermitCredential.permit_guid, mineGuid, {
+      patchPermitVCLocked(permitRecord.permit_guid, mineGuid, {
         mines_act_permit_vc_locked: false,
       })
     ).then(() => {
@@ -177,9 +169,10 @@ export const ViewDigitalPermitCredential: FC = () => {
 
   return (
     <div className="tab__content margin-large--top">
-      {VC_CRED_ISSUE_STATES[minesActPermitIssuance[0]?.cred_exch_state] ===
-        VC_CRED_ISSUE_STATES.credential_revoked &&
-        digitalPermitCredential.mines_act_permit_vc_locked && (
+      {VC_CRED_ISSUE_STATES[
+        minesActPermitIssuance[minesActPermitIssuance.length - 1]?.cred_exch_state
+      ] === VC_CRED_ISSUE_STATES.credential_revoked &&
+        permitRecord.mines_act_permit_vc_locked && (
           <Alert
             className="margin-large--bottom"
             description={
@@ -204,7 +197,7 @@ export const ViewDigitalPermitCredential: FC = () => {
             <Row gutter={6}>
               <Col span={12}>
                 <Paragraph strong>Permittee Name</Paragraph>
-                <Paragraph>{digitalPermitCredential?.current_permittee}</Paragraph>
+                <Paragraph>{permitRecord?.current_permittee}</Paragraph>
               </Col>
               <Col span={12}>
                 <Paragraph strong>Issue Date</Paragraph>
@@ -216,7 +209,7 @@ export const ViewDigitalPermitCredential: FC = () => {
           <Row gutter={6}>
             <Col span={12}>
               <Paragraph strong>Permit Number</Paragraph>
-              <Paragraph>{digitalPermitCredential?.permit_no}</Paragraph>
+              <Paragraph>{permitRecord?.permit_no}</Paragraph>
             </Col>
 
             <Col span={12}>
@@ -249,22 +242,18 @@ export const ViewDigitalPermitCredential: FC = () => {
             <Col span={8}>
               <Paragraph>Mine Disturbance</Paragraph>
               <Paragraph>
-                {getMineDisturbanceFromCode(
-                  digitalPermitCredential?.site_properties.mine_disturbance_code
-                )}
+                {getMineDisturbanceFromCode(permitRecord?.site_properties.mine_disturbance_code)}
               </Paragraph>
             </Col>
             <Col span={8}>
               <Paragraph>Mine Commodity</Paragraph>
               <Paragraph>
-                {getCommodityDescriptionFromCode(
-                  digitalPermitCredential?.site_properties.mine_commodity_code
-                )}
+                {getCommodityDescriptionFromCode(permitRecord?.site_properties.mine_commodity_code)}
               </Paragraph>
             </Col>
             <Col span={8}>
               <Paragraph>Bond Total</Paragraph>
-              <Paragraph>{digitalPermitCredential?.active_bond_total}</Paragraph>
+              <Paragraph>{permitRecord?.active_bond_total}</Paragraph>
             </Col>
           </Row>
           <Row gutter={6}>
@@ -298,8 +287,7 @@ export const ViewDigitalPermitCredential: FC = () => {
             <Row>
               <Col
                 span={
-                  digitalPermitCredential?.current_permittee_digital_wallet_connection_state ===
-                  "Inactive"
+                  permitRecord?.current_permittee_digital_wallet_connection_state === "Inactive"
                     ? 12
                     : 24
                 }
@@ -310,14 +298,12 @@ export const ViewDigitalPermitCredential: FC = () => {
             <Row align="middle" justify="space-between">
               <Col span={8}>
                 <Paragraph className="margin-none">
-                  {VC_CRED_ISSUE_STATES[minesActPermitIssuance[0]?.cred_exch_state] ??
+                  {VC_CRED_ISSUE_STATES[activePermitCredential?.cred_exch_state] ??
                     "No Credential Issued"}
                 </Paragraph>
               </Col>
               <Col span={16}>
-                {VC_ACTIVE_CREDENTIAL_STATES.includes(
-                  minesActPermitIssuance[0]?.cred_exch_state
-                ) && (
+                {activePermitCredential && (
                   <Button
                     onClick={openRevokeDigitalCredentialModal}
                     type="ghost"

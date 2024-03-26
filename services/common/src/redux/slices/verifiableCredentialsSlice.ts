@@ -22,7 +22,7 @@ interface MinesActPermitVerifiableCredentialsIssuance {
   cred_exch_state: string;
   rev_reg_id: string;
   cred_rev_id: string;
-  last_webhook_timestamp: date;
+  last_webhook_timestamp: Date;
 }
 
 interface VerifiableCredentialsState {
