@@ -20,7 +20,7 @@ import {
   PROJECTS,
   VIEW_MINE_INCIDENT,
   PROJECT_DOCUMENT_MANAGEMENT,
-  MINE_REPORT_VIEW_EDIT,
+  REPORT_VIEW_EDIT,
 } from "@/constants/routes";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { IActivity } from "@mds/common";
@@ -101,7 +101,7 @@ const NotificationDrawer: FC<INotificationDrawerProps> = (props) => {
   const navigationHandler = async (notification: IActivity) => {
     switch (notification.notification_document.metadata.entity) {
       case "MineReport":
-        return MINE_REPORT_VIEW_EDIT.dynamicRoute(
+        return REPORT_VIEW_EDIT.dynamicRoute(
           notification.notification_document.metadata.mine.mine_guid,
           notification.notification_document.metadata.entity_guid
         );

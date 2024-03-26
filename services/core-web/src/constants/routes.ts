@@ -355,13 +355,6 @@ export const REPORT_VIEW_EDIT = {
   component: ReportPage,
 };
 
-export const MINE_REPORT_VIEW_EDIT = {
-  route: "/mines/:mineGuid/reports/:reportGuid",
-  dynamicRoute: (mineGuid: string, reportGuid: string) =>
-    `/mines/${mineGuid}/reports/${reportGuid}`,
-  component: ReportPage,
-};
-
 export const REPORTS_CREATE_NEW = {
   route: "/mines/:mineGuid/reports/new/:reportType",
   dynamicRoute: (mineGuid, reportType) => `/mines/${mineGuid}/reports/new/${reportType}`,
