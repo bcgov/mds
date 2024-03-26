@@ -9,6 +9,7 @@ import {
   IPermitCondition,
   IUpdatePermitAmendmentPayload,
   IPatchPermitNumber,
+  IPatchPermitVCLocked,
   IStandardPermitCondition,
 } from "@mds/common";
 import { request, success, error, IDispatchError } from "../actions/genericActions";
@@ -435,6 +436,33 @@ export const patchPermitNumber = (
       createRequestHeader()
     )
     .then((response: AxiosResponse<IPatchPermitNumber>) => {
+      notification.success({
+        message: "Successfully updated permit",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.PATCH_PERMIT));
+      return response.data;
+    })
+    .catch(() => dispatch(error(reducerTypes.PATCH_PERMIT)))
+    .finally(() => dispatch(hideLoading("modal")));
+};
+
+export const patchPermitVCLocked = (
+  permitGuid: string,
+  mineGuid: string,
+  payload: { mines_act_permit_vc_locked: boolean }
+): AppThunk<Promise<IPatchPermitVCLocked | IDispatchError>> => (
+  dispatch
+): Promise<IPatchPermitVCLocked | IDispatchError> => {
+  dispatch(request(reducerTypes.PATCH_PERMIT));
+  dispatch(showLoading("modal"));
+  return CustomAxios()
+    .patch(
+      `${ENVIRONMENT.apiUrl}${API.PERMITS(mineGuid)}/${permitGuid}`,
+      payload,
+      createRequestHeader()
+    )
+    .then((response: AxiosResponse<IPatchPermitVCLocked>) => {
       notification.success({
         message: "Successfully updated permit",
         duration: 10,
