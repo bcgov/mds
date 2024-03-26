@@ -4,9 +4,6 @@ import CustomAxios from "@mds/common/redux/customAxios";
 import { ENVIRONMENT, MINES_ACT_PERMITS_VC_LIST } from "@mds/common/constants";
 import * as API from "@mds/common/constants/API";
 import { RootState } from "@mds/common/redux/rootState";
-import { DataSourceItemType } from "antd/lib/auto-complete";
-import { debug } from "webpack";
-import { a } from "@mds/common/tests/mocks/dataMocks";
 
 const createRequestHeader = REQUEST_HEADER.createRequestHeader;
 
