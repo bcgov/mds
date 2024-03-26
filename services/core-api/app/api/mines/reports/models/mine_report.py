@@ -234,7 +234,7 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
 
         return list(unique_recipients)
 
-    def send_report_update_email(self, is_edit):
+    def send_crr_report_update_email(self, is_edit):
             recipients = [self.mine.region.regional_contact_office.email, MDS_EMAIL]
             if self.mine.major_mine_ind:
                 recipients = [MAJOR_MINES_OFFICE_EMAIL, MDS_EMAIL]
