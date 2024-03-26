@@ -62,7 +62,7 @@ class VerifiableCredentialWebhookResource(Resource, UserMixin):
                 if new_state == "deleted":
                     # if deleted in the wallet (either in traction, or by the other agent)
                     vc_conn.connection_state=new_state
-                    vc_conn.save()
+                    vc_conn.save() 
                     current_app.logger.info(f"party_vc_conn connection_id={vc_conn.connection_id} was deleted")
                  
         elif topic == OUT_OF_BAND:
