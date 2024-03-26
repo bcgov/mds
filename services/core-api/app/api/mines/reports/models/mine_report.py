@@ -172,11 +172,11 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
           "ms_report_page_link": ms_report_page_link
         }
 
-        trigger_notification(f'Your ({report_name}) report has been recieved',
+        trigger_notification(f'Your {report_name} report has been recieved',
                               ActivityType.mine_report_submitted, self.mine,
                               'MineReportSubmission', self.mine_report_guid, recipients=ActivityRecipients.minespace_users)
 
-        trigger_notification(f'A ({report_name}) report has been recieved',
+        trigger_notification(f'A {report_name} report has been recieved',
                               ActivityType.mine_report_submitted, self.mine,
                               'MineReportSubmission', self.mine_report_guid, recipients=ActivityRecipients.core_users)
 
