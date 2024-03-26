@@ -23,7 +23,6 @@ import {
   renderTextColumn,
 } from "@mds/common/components/common/CoreTableCommonColumns";
 import IssuePermitDigitalCredential from "@/components/modalContent/verifiableCredentials/IssuePermitDigitalCredential";
-import { useHistory, useParams } from "react-router-dom";
 
 const draftAmendment = "DFT";
 
@@ -46,9 +45,6 @@ interface PermitsTableProps {
 }
 
 export const PermitsTable: FC<PermitsTableProps> = (props) => {
-  const history = useHistory();
-  const { id } = useParams<{ id: string }>();
-
   const columns = [
     renderTextColumn("permit_no", "Permit No.", true),
     renderTextColumn("current_permittee", "Permittee"),

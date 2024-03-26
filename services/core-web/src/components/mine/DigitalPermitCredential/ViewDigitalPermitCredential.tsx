@@ -179,7 +179,7 @@ export const ViewDigitalPermitCredential: FC = () => {
               <Row justify="space-between" align="middle">
                 <Paragraph strong>This digital credential was revoked</Paragraph>
                 <Button type="default" className="no-bg" onClick={releasePermitVCLock}>
-                  Re-offer Credential
+                  Make Available
                 </Button>
               </Row>
             }
@@ -299,6 +299,9 @@ export const ViewDigitalPermitCredential: FC = () => {
               <Col span={8}>
                 <Paragraph className="margin-none">
                   {VC_CRED_ISSUE_STATES[activePermitCredential?.cred_exch_state] ??
+                    VC_CRED_ISSUE_STATES[
+                      minesActPermitIssuance[minesActPermitIssuance.length - 1]?.cred_exch_state
+                    ] ??
                     "No Credential Issued"}
                 </Paragraph>
               </Col>
