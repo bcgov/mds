@@ -35,6 +35,7 @@ interface ReportGetStartedProps {
   mine: IMine;
   handleSubmit: (values: Partial<IMineReportSubmission>) => void;
   formButtons: ReactNode;
+  setDisableNextButton?: (value: boolean) => void;
 }
 
 export const ReportInfoBox: FC<{ mineReportDefinition: IMineReportDefinition; verb: string }> = ({
@@ -45,6 +46,14 @@ export const ReportInfoBox: FC<{ mineReportDefinition: IMineReportDefinition; ve
     <div className="report-info-box">
       {mineReportDefinition && (
         <div>
+          {mineReportDefinition.is_prr_only && (
+            <Alert
+              showIcon
+              description="Please submit this report as a permit required report."
+              type="warning"
+              className="margin-large--bottom"
+            />
+          )}
           <Typography.Title level={4} className="primary-colour">
             You are {verb}
           </Typography.Title>
@@ -152,7 +161,12 @@ export const RenderPRRFields: FC<{ mineGuid: string; fullWidth?: boolean }> = ({
   );
 };
 
-const ReportGetStarted: FC<ReportGetStartedProps> = ({ mine, handleSubmit, formButtons }) => {
+const ReportGetStarted: FC<ReportGetStartedProps> = ({
+  mine,
+  handleSubmit,
+  formButtons,
+  setDisableNextButton,
+}) => {
   const dispatch = useDispatch();
   const { reportType } = useParams<{ reportType?: string }>();
   const system = useSelector(getSystemFlag);
@@ -162,6 +176,14 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({ mine, handleSubmit, formB
   const selectedReportDefinition: IMineReportDefinition = useSelector(
     getMineReportDefinitionByGuid(formValues?.mine_report_definition_guid)
   );
+
+  useEffect(() => {
+    if (selectedReportDefinition && selectedReportDefinition.is_prr_only) {
+      setDisableNextButton(true);
+    } else {
+      setDisableNextButton(false);
+    }
+  }, [selectedReportDefinition, setDisableNextButton]);
 
   useEffect(() => {
     // Filter out common reports and sort alphabetically
