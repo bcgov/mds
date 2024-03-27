@@ -116,6 +116,10 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         'Party', lazy='joined', foreign_keys=applicant_party_guid
     )
 
+    municipality = db.relationship(
+        'Municipality', lazy='joined', foreign_keys=nearest_municipality_guid
+    )
+
     @classmethod
     def __get_address_type_code(cls, address_data):
         if isinstance(address_data, list):

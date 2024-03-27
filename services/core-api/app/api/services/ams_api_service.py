@@ -21,9 +21,8 @@ class AMSApiService():
             },
             'authorizationnumber': 'TEST1',
             'receiveddate': '2023-01-23',
-            'purposeofapplication': 'testing our new REST interface',
             'majorcentre': {
-                'name': 'Campbell River'
+                'name': project_summary_data['municipality']['municipality_name']
             },
             'applicant': {
                 'applicanttype': cls.__get_transformed_party_code(project_summary_data['applicant']['party_type_code']),
@@ -46,9 +45,6 @@ class AMSApiService():
             },
             'preappexemptionrequest': 'No',
             'iscontaminatedsite': 'No',
-            'memnumber': '12345',
-            'memdescription': 'This is a description of the MEM. This is only visible when a BCENIC is selected that contains a mine.',
-            'majorminespermitnumber': '123456',
             'contact': {
                 'em_lastname': project_summary_data['contacts'][0]['last_name'],
                 'em_firstname': project_summary_data['contacts'][0]['first_name'],
@@ -58,15 +54,11 @@ class AMSApiService():
             },
             'facilitytype': project_summary_data['facility_type'],
             'facilitydescription': project_summary_data['facility_desc'],
-            'regionaldistrict': {
-                'name': 'Cariboo'
-            },
             'facilitylocationlatitude': project_summary_data['facility_latitude'],
             'facilitylocationlongitude': project_summary_data['facility_longitude'],
             'sourceofdata': project_summary_data['facility_coords_source'],
             'sourceofdatadescription': project_summary_data['facility_coords_source_desc'],
             'legallanddescription': project_summary_data['legal_land_desc'],
-            'pidpincrownnumber': '123123123',
             'facilityaddress': {
                 'addresstype': 'Civic',
                 'suitenumber': project_summary_data['facility_operator']['address'][0]['suite_no'],
@@ -74,20 +66,18 @@ class AMSApiService():
                 'street': project_summary_data['facility_operator']['address'][0]['address_line_1'],
                 'line2': project_summary_data['facility_operator']['address'][0]['address_line_2'],
                 'municipality': project_summary_data['facility_operator']['address'][0]['city'],
-                'province': project_summary_data['facility_operator']['address'][0]['sub_division_code'],
-                'country': project_summary_data['facility_operator']['address'][0]['address_type_code'],
+                'province': 'British Columbia',
+                'country': 'Canada',
                 'postalcode': project_summary_data['facility_operator']['address'][0]['post_code']
             },
             'facilityopname': project_summary_data['facility_operator']['name'],
             'facilityopphonenumber': project_summary_data['facility_operator']['phone_no'],
             'facilityopphonenumberext': project_summary_data['facility_operator']['phone_ext'],
             'facilityopemail': project_summary_data['facility_operator']['email'],
-            'landownerapplicant': 'No',
-            'landownername': 'Jim Bob',
-            'landownerphonenumber': '1234567890',
-            'landownerphonenumberext': '333',
-            'landowneremail': 'test@test.ca',
-            'istheapplicantthelandowner': 'Yes'
+            'landownername': project_summary_data['legal_land_owner_name'],
+            'landownerphonenumber': project_summary_data['legal_land_owner_contact_number'],
+            'landowneremail': project_summary_data['legal_land_owner_email_address'],
+            'istheapplicantthelandowner': 'Yes' if project_summary_data['is_legal_land_owner'] else 'No'
         }
 
 

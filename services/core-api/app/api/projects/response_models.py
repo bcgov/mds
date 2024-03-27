@@ -134,6 +134,12 @@ PROJECT_CONTACT_MODEL = api.model(
         'address': fields.List(fields.Nested(ADDRESS)),
     })
 
+MUNICIPALITY_MODEL = api.model(
+    'Municipality', {
+        'municipality_guid': fields.String,
+        'municipality_name': fields.String
+    })
+
 PROJECT_SUMMARY_MODEL = api.model(
     'ProjectSummary', {
         'project_guid': fields.String,
@@ -184,7 +190,8 @@ PROJECT_SUMMARY_MODEL = api.model(
         'is_legal_address_same_as_mailing_address': fields.Boolean,
         'is_billing_address_same_as_mailing_address': fields.Boolean,
         'is_billing_address_same_as_legal_address': fields.Boolean,
-        'applicant': fields.Nested(PARTY)
+        'applicant': fields.Nested(PARTY),
+        'municipality': fields.Nested(MUNICIPALITY_MODEL)
     })
 
 REQUIREMENTS_MODEL = api.model(
