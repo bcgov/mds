@@ -71,7 +71,7 @@ export const IssuePermitForm = (props) => {
             <Field
               id="exemption_fee_status_code"
               name="exemption_fee_status_code"
-              label="Inspection Fee Status"
+              label="Is this mine exempted from filing inspection fees?"
               placeholder="Inspection Fee Status will be automatically populated."
               component={renderConfig.SELECT}
               disabled
