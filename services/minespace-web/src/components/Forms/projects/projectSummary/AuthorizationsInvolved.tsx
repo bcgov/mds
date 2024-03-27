@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Field,
@@ -16,8 +16,13 @@ import {
   getTransformedProjectSummaryAuthorizationTypes,
   getDropdownProjectSummaryPermitTypes,
 } from "@mds/common/redux/selectors/staticContentSelectors";
-import { getFormattedProjectSummary } from "@mds/common/redux/selectors/projectSelectors";
-import { maxLength, required, requiredRadioButton } from "@mds/common/redux/utils/Validate";
+import { getAmsAuthorizationTypes } from "@mds/common/redux/selectors/projectSelectors";
+import {
+  digitCharactersOnly,
+  maxLength,
+  required,
+  requiredRadioButton,
+} from "@mds/common/redux/utils/Validate";
 import * as FORM from "@/constants/forms";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
@@ -25,6 +30,7 @@ import RenderGroupCheckbox, {
   normalizeGroupCheckBox,
 } from "@mds/common/components/forms/RenderGroupCheckbox";
 import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
+import { exactLength, number } from "@common/utils/Validate";
 
 const RenderEMAPermitCommonSections = ({ isAmendment }) => {
   const purposeLabel = isAmendment
@@ -49,7 +55,7 @@ const RenderEMAPermitCommonSections = ({ isAmendment }) => {
       />
       <Field
         component={RenderRadioButtons}
-        name="pre_app_exemption_request"
+        name="exemption_requested"
         required
         onChange={onChange}
         validate={[requiredRadioButton]}
@@ -78,12 +84,12 @@ const RenderEMAPermitCommonSections = ({ isAmendment }) => {
     </>
   );
 };
-const RenderEMANewPermitSection = () => {
+const RenderEMANewPermitSection = ({ code }) => {
   return (
-    <div style={{ border: "1px solid deeppink" }}>
-      <FormSection name="new_permit">
+    <div className="grey-box">
+      <FormSection name={`${code}.NEW[0]`}>
         <Field
-          name="authorization_type"
+          name="new_type"
           isVertical
           label="Authorization Type"
           customOptions={[
@@ -97,7 +103,7 @@ const RenderEMANewPermitSection = () => {
                   </span>
                 </>
               ),
-              value: "permit",
+              value: "PER",
             },
             {
               label: (
@@ -110,7 +116,7 @@ const RenderEMANewPermitSection = () => {
                   </span>
                 </>
               ),
-              value: "approval",
+              value: "APP",
             },
           ]}
           component={RenderRadioButtons}
@@ -124,29 +130,39 @@ const RenderEMANewPermitSection = () => {
 };
 
 const RenderEMAAmendFieldArray = ({ fields }) => {
+  const handleRemoveAmendment = (index: number) => {
+    fields.remove(index);
+  };
+
   return (
-    <>
-      {fields.map((amendment: string) => (
+    <div className="grey-box">
+      {fields.map((amendment: string, index) => (
         <FormSection name={amendment} key={amendment}>
           <Field
-            label="Authorization Number"
-            name="authorization_number"
+            label={
+              <Row justify="space-between" style={{ flexBasis: "100%" }}>
+                <Col>Authorization Number</Col>
+                <Col>
+                  <Button onClick={() => handleRemoveAmendment(index)}>Cancel</Button>
+                </Col>
+              </Row>
+            }
+            name="existing_permits_authorizations[0]"
             required
-            // TODO: number only
-            validate={[required]}
+            validate={[required, exactLength(4), digitCharactersOnly]}
             help="Number only (e.g. PC1234 should be entered as 1234)"
             component={RenderField}
           />
           <Field
             label="Amendment Type"
-            name="amendment_type"
+            name="amendment_severity"
             help="As defined in the Environmental Management Act Public Notification Regulation"
             required
             validate={[requiredRadioButton]}
             component={RenderRadioButtons}
             customOptions={[
-              { label: "Significant", value: "significant" },
-              { label: "Minor", value: "minor" },
+              { label: "Significant", value: "SIG" },
+              { label: "Minor", value: "MIN" },
             ]}
           />
           <Field
@@ -169,7 +185,7 @@ const RenderEMAAmendFieldArray = ({ fields }) => {
           />
           <Field
             label="Is this Authorization required for remediation of a contaminated site?"
-            name="is_contaminated_site"
+            name="is_contaminated"
             required
             validate={[requiredRadioButton]}
             component={RenderRadioButtons}
@@ -177,58 +193,60 @@ const RenderEMAAmendFieldArray = ({ fields }) => {
           <RenderEMAPermitCommonSections isAmendment={true} />
         </FormSection>
       ))}
-    </>
+    </div>
   );
 };
 
-const RenderEMAAuthCodeFormSection = ({ authorization, authIndex }) => {
-  console.log("EMA authorization", authorization);
+const RenderEMAAuthCodeFormSection = ({ code }) => {
+  const { authorizations } = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
+  const codeAuthorizations = authorizations[code] ?? [];
+  const hasAmendments = codeAuthorizations.AMENDMENT?.length > 0;
+  const hasNew = codeAuthorizations.NEW?.length > 0;
+
+  const permitTypes = ["AMENDMENT", "NEW"];
+
   const dispatch = useDispatch();
 
   const addAmendment = () => {
-    dispatch(
-      arrayPush(
-        FORM.ADD_EDIT_PROJECT_SUMMARY,
-        `authorizations[${authIndex}].existing_permits_authorizations`,
-        {}
-      )
-    );
+    dispatch(arrayPush(FORM.ADD_EDIT_PROJECT_SUMMARY, `authorizations.${code}.AMENDMENT`, {}));
   };
 
-  const handleChangeAmendment = (value) => {
-    if (value.includes("AMENDMENT")) {
-      addAmendment();
-    } else {
-      dispatch(
-        change(
-          FORM.ADD_EDIT_PROJECT_SUMMARY,
-          `authorizations[${authIndex}].existing_permits_authorizations`,
-          null
-        )
-      );
-    }
+  const handleChangeAuthType = (value, _newVal, prevVal, _fieldName) => {
+    console.log(value, _newVal, prevVal, _fieldName);
+
+    permitTypes.forEach((type) => {
+      if (value.includes(type) && !prevVal.includes(type)) {
+        dispatch(arrayPush(FORM.ADD_EDIT_PROJECT_SUMMARY, `authorizations.${code}.${type}`, {}));
+      } else if (!value.includes(type) && prevVal.includes(type)) {
+        dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, `authorizations.${code}.${type}`, []));
+      }
+    });
   };
 
   return (
     <>
       <Field
-        name="project_summary_permit_type"
+        name={`${code}.types`}
         component={RenderGroupCheckbox}
         label="What type of authorization is involved in your application?"
         required
         validate={[required]}
         normalize={normalizeGroupCheckBox}
-        onChange={handleChangeAmendment}
+        onChange={handleChangeAuthType}
         options={[
           {
+            disabled: hasAmendments,
             label: (
               <>
                 Amendment to an existing authorization
-                {authorization.project_summary_permit_type.includes("AMENDMENT") && (
-                  <Row style={{ border: "1px solid deeppink" }} gutter={[16, 16]}>
+                {hasAmendments && (
+                  <Row
+                    style={{ marginLeft: "-24px", marginRight: "-16px", cursor: "default" }}
+                    gutter={[0, 16]}
+                  >
                     <Col span={24}>
                       <FieldArray
-                        name="existing_permits_authorizations"
+                        name={`${code}.AMENDMENT`}
                         component={RenderEMAAmendFieldArray}
                         props={{}}
                       />
@@ -247,53 +265,45 @@ const RenderEMAAuthCodeFormSection = ({ authorization, authIndex }) => {
             value: "AMENDMENT",
           },
           {
-            label: (
-              <>
-                New
-                {authorization.project_summary_permit_type.includes("NEW") && (
-                  <RenderEMANewPermitSection />
-                )}
-              </>
-            ),
+            label: "New",
             value: "NEW",
           },
         ]}
       />
+      {hasNew && <RenderEMANewPermitSection code={code} />}
     </>
   );
 };
 
-const RenderAuthCodeFormSection = ({ authorizationType, code, authIndex }) => {
+const RenderAuthCodeFormSection = ({ authorizationType, code }) => {
   const dropdownProjectSummaryPermitTypes = useSelector(getDropdownProjectSummaryPermitTypes);
-  const { authorizations } = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
   if (authorizationType === "ENVIRONMENTAL_MANAGMENT_ACT") {
-    return (
-      <RenderEMAAuthCodeFormSection
-        authorization={authorizations[authIndex]}
-        authIndex={authIndex}
-      />
-    );
+    // AMS authorizations, have options of amend/new with more details
+    return <RenderEMAAuthCodeFormSection code={code} />;
   }
+  // other authorizations, have single record so index with [0]
   return (
-    <>
-      <Field
-        name="project_summary_permit_type"
-        props={{
-          options: dropdownProjectSummaryPermitTypes,
-          label: "What type of permit is involved in your application?",
-        }}
-        component={RenderGroupCheckbox}
-        required
-        validate={[required]}
-        normalize={normalizeGroupCheckBox}
-      />
-      <Field
-        name="existing_permits_authorizations"
-        component={RenderField}
-        label="If your application involved a change to an existing permit, please list the numbers of the permits involved."
-        help="Please separate each permit with a comma"
-      />
-    </>
+    <FormSection name={`${code}[0]`}>
+      <Row>
+        <Field
+          name="project_summary_permit_type"
+          props={{
+            options: dropdownProjectSummaryPermitTypes,
+            label: "What type of permit is involved in your application?",
+          }}
+          component={RenderGroupCheckbox}
+          required
+          validate={[required]}
+          normalize={normalizeGroupCheckBox}
+        />
+        <Field
+          name="existing_permits_authorizations"
+          component={RenderField}
+          label="If your application involved a change to an existing permit, please list the numbers of the permits involved."
+          help="Please separate each permit with a comma"
+        />
+      </Row>
+    </FormSection>
   );
 };
 export const AuthorizationsInvolved = () => {
@@ -301,31 +311,27 @@ export const AuthorizationsInvolved = () => {
   const transformedProjectSummaryAuthorizationTypes = useSelector(
     getTransformedProjectSummaryAuthorizationTypes
   );
-  const formattedProjectSummary = useSelector(getFormattedProjectSummary);
+  const amsAuthTypes = useSelector(getAmsAuthorizationTypes);
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
 
-  const [authorizationOptions, setAuthorizationOptions] = useState(
-    formattedProjectSummary?.authorizationOptions ?? []
-  );
-
-  const handleChange = (e, code, authIndex) => {
+  const handleChange = (e, code) => {
     if (e.target.checked) {
-      setAuthorizationOptions([...authorizationOptions, code]);
       const { project_summary_guid } = formValues;
-      const formVal = { project_summary_guid, project_summary_authorization_type: code };
-      dispatch(arrayPush(FORM.ADD_EDIT_PROJECT_SUMMARY, "authorizations", formVal));
+      const formVal = [{ project_summary_guid, project_summary_authorization_type: code }];
+      dispatch(arrayPush(FORM.ADD_EDIT_PROJECT_SUMMARY, `authorizationTypes`, code));
+      if (amsAuthTypes.includes(code)) {
+        console.log("now what");
+      } else {
+        dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, `authorizations[${code}]`, formVal));
+      }
     } else {
-      setAuthorizationOptions(authorizationOptions.filter((item) => item !== code));
-      dispatch(arrayRemove(FORM.ADD_EDIT_PROJECT_SUMMARY, "authorizations", authIndex));
+      const index = formValues.authorizationTypes.indexOf(code);
+      dispatch(arrayRemove(FORM.ADD_EDIT_PROJECT_SUMMARY, `authorizationTypes`, index));
     }
   };
 
-  useEffect(() => {
-    console.log("formValues", formValues);
-  }, [formValues]);
-
   return (
-    <>
+    <FormSection name="authorizations">
       <Typography.Title level={3}>Purpose & Authorization</Typography.Title>
       <Alert
         description="Select the authorization that you anticipate needing for this project. This is to assist in planning and may not be the complete list for the final application."
@@ -389,15 +395,14 @@ export const AuthorizationsInvolved = () => {
           <div key={authorization.code}>
             <Typography.Title level={5}>{authorization.description}</Typography.Title>
             {authorization.children.map((child) => {
-              const authIndex = authorizationOptions.indexOf(child.code);
-              const checked = authIndex > -1;
+              const checked = formValues.authorizationTypes.includes(child.code);
               return (
-                <FormSection key={child.code} name={`authorizations[${authIndex}]`}>
+                <div key={child.code}>
                   <Row gutter={[0, 16]}>
                     <Checkbox
                       value={child.code}
                       checked={checked}
-                      onChange={(e) => handleChange(e, child.code, authIndex)}
+                      onChange={(e) => handleChange(e, child.code)}
                     >
                       <b>{child.description}</b>
                     </Checkbox>
@@ -430,19 +435,18 @@ export const AuthorizationsInvolved = () => {
                         )}
                         <RenderAuthCodeFormSection
                           code={child.code}
-                          authIndex={authIndex}
                           authorizationType={authorization.code}
                         />
                       </>
                     )}
                   </Row>
-                </FormSection>
+                </div>
               );
             })}
           </div>
         );
       })}
-    </>
+    </FormSection>
   );
 };
 

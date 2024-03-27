@@ -115,6 +115,10 @@ export const exactLength = memoize((min) => (value) =>
 export const number = (value) =>
   value && Number.isNaN(Number(value)) ? "Input must be a number" : undefined;
 
+export const digitCharactersOnly = (value) => {
+  return /^\d+$/.test(value) ? undefined : "Input must contain only digits";
+};
+
 export const positiveNumber = (value) =>
   value && (Number.isNaN(Number(value)) || Number(value) <= 0)
     ? "Input must be a positive number"

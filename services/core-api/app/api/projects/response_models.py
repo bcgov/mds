@@ -116,7 +116,13 @@ PROJECT_SUMMARY_AUTHORIZATION_MODEL = api.model(
         'project_summary_guid': fields.String,
         'project_summary_permit_type': fields.List(fields.String),
         'project_summary_authorization_type': fields.String,
-        'existing_permits_authorizations': fields.List(fields.String)
+        'existing_permits_authorizations': fields.List(fields.String),
+        'amendment_changes': fields.List(fields.String),
+        'amendment_severity': fields.String,
+        'is_contaminated': fields.Boolean,
+        'new_type': fields.String,
+        'authorization_description': fields.String,
+        'exemption_requested': fields.Boolean,
     })
 
 PROJECT_CONTACT_MODEL = api.model(

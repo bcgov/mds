@@ -51,7 +51,7 @@ const RenderRadioButtons: FC<RenderRadioButtonsProps> = ({
       <>
         <Radio.Group
           disabled={disabled}
-          name={input.name}
+          {...input}
           onChange={handleRadioChange}
           options={options}
           optionType={optionType}

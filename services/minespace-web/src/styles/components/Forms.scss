@@ -27,7 +27,9 @@
 }
 
 .ant-form-vertical .ant-form-item-label>label {
-    display: inherit;
+    // to make * appear on the same line when label is an HTML element
+    display: flex;
+    align-items: baseline;
 }
 
 .ant-form-vertical .ant-form-item {

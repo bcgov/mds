@@ -18,6 +18,12 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
     project_summary_authorization_type = db.Column(
         db.ForeignKey('project_summary_authorization_type.project_summary_authorization_type'),
         nullable=False)
+    amendment_changes = db.Column(db.ARRAY(db.String), nullable=True)
+    amendment_severity = db.Column(db.String, nullable=True)
+    is_contaminated = db.Column(db.Boolean, nullable=True)
+    new_type = db.Column(db.String, nullable=True)
+    authorization_description = db.Column(db.String, nullable=True)
+    exemption_requested = db.Column(db.Boolean, nullable=True)
 
     def __repr__(self):
         return f'{self.__class__.__name__} {self.project_summary_authorization_guid}'
