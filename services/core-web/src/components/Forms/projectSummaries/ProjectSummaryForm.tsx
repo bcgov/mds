@@ -195,7 +195,7 @@ const renderNestedFields = (
   { change, isNewProject },
   isEditMode,
   dropdownProjectSummaryPermitTypes,
-  formattedProjectSummary
+  formValues
 ) => {
   return (
     <div>
@@ -207,7 +207,7 @@ const renderNestedFields = (
             fieldName={`${code}.project_summary_permit_type`}
             options={dropdownProjectSummaryPermitTypes}
             formName={FORM.ADD_EDIT_PROJECT_SUMMARY}
-            formValues={formattedProjectSummary}
+            formValues={formValues}
             change={change}
             component={renderConfig.GROUP_CHECK_BOX}
             label={
@@ -215,7 +215,7 @@ const renderNestedFields = (
                 <p>What type of permit is involved in your application?</p>
               </>
             }
-            setInitialValues={() => setInitialValues(code, formattedProjectSummary)}
+            setInitialValues={() => setInitialValues(code, formValues)}
             disabled={!isNewProject && !isEditMode}
           />
         </>
@@ -268,7 +268,9 @@ const ProjectSummaryForm: FC<InjectedFormProps<IProjectSummary> & ProjectSummary
 
   const projectLeadData = [unassignedProjectLeadEntry, ...projectLeads[0]?.opt];
   const [checked, setChecked] = useState(
-    formattedProjectSummary ? formattedProjectSummary.authorizationOptions : []
+    !props.isNewProject && formattedProjectSummary
+      ? formattedProjectSummary.authorizationOptions
+      : []
   );
   const { mineGuid } = useParams<{ mineGuid: string }>();
   const history = useHistory();
@@ -448,7 +450,7 @@ const ProjectSummaryForm: FC<InjectedFormProps<IProjectSummary> & ProjectSummary
                           props,
                           isEditMode,
                           dropdownProjectSummaryPermitTypes,
-                          formattedProjectSummary
+                          props.isNewProject ? props.initialValues : formattedProjectSummary
                         )}
                     </FormSection>
                   );

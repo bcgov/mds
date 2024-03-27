@@ -110,10 +110,10 @@ export const ProjectSummary: FC = () => {
     }
     return dispatch(fetchMineRecordById(projectMineGuid)).then(() => {
       const mine = mines[projectMineGuid];
+      setIsNewProject(true);
       setIsLoaded(true);
       setActiveTab(tab);
       setMineName(mine.mine_name);
-      setIsNewProject(true);
     });
   };
 
@@ -332,7 +332,9 @@ export const ProjectSummary: FC = () => {
           className={fixedTop ? "padding-lg view--header fixed-scroll" : " padding-lg view--header"}
         >
           <h1>
-            {formattedProjectSummary.project_summary_title ?? "New Project Description"}
+            {!isNewProject
+              ? formattedProjectSummary.project_summary_title
+              : "New Project Description"}
             <span className="padding-sm--left">
               <Tag title={`Mine: ${mineName}`}>
                 <Link
@@ -348,7 +350,7 @@ export const ProjectSummary: FC = () => {
           <Link
             data-cy="back-to-project-link"
             to={
-              formattedProjectSummary.project_guid
+              formattedProjectSummary.project_guid && !isNewProject
                 ? routes.PROJECTS.dynamicRoute(formattedProjectSummary.project_guid)
                 : routes.MINE_PRE_APPLICATIONS.dynamicRoute(mineGuid)
             }
