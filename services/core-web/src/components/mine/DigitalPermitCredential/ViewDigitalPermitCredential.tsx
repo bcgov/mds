@@ -33,6 +33,7 @@ import {
   fetchCredentialConnections,
   getMinesActPermitIssuance,
   revokeCredential,
+  fetchCredentialExchangeDetails,
 } from "@mds/common/redux/slices/verifiableCredentialsSlice";
 
 const { Paragraph, Title } = Typography;
@@ -327,7 +328,14 @@ export const ViewDigitalPermitCredential: FC = () => {
                 <Button
                   type="ghost"
                   className="margin-large--left"
-                  onClick={() => window.alert("This feature is not yet implemented.")}
+                  onClick={() => {
+                    dispatch(
+                      fetchCredentialExchangeDetails({
+                        partyGuid: permitRecord.current_permittee_guid,
+                        credentialExchangeGuid: minesActPermitIssuance[0].cred_exch_id,
+                      })
+                    );
+                  }}
                 >
                   View History
                 </Button>

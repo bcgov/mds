@@ -24,10 +24,12 @@ interface MinesActPermitVerifiableCredentialsIssuance {
 
 interface VerifiableCredentialsState {
   minesActPermitVerifiableCredentialsIssuance: MinesActPermitVerifiableCredentialsIssuance[];
+  credentialExchangeDetails: any[];
 }
 
 const initialState: VerifiableCredentialsState = {
   minesActPermitVerifiableCredentialsIssuance: [],
+  credentialExchangeDetails: [],
 };
 
 const verifiableCredentialsSlice = createAppSlice({
@@ -51,6 +53,35 @@ const verifiableCredentialsSlice = createAppSlice({
       {
         fulfilled: (state, action) => {
           state.minesActPermitVerifiableCredentialsIssuance = action.payload.records;
+        },
+        rejected: (state: VerifiableCredentialsState, action) => {
+          rejectHandler(action);
+        },
+      }
+    ),
+    fetchCredentialExchangeDetails: create.asyncThunk(
+      async (payload: { partyGuid: string; credentialExchangeGuid: string }, thunkAPI) => {
+        const headers = createRequestHeader();
+        thunkAPI.dispatch(showLoading());
+        const { partyGuid, credentialExchangeGuid } = payload;
+
+        const response = await CustomAxios({
+          errorToastMessage: "default",
+        }).get(
+          `${ENVIRONMENT.apiUrl}${API.CREDENTIAL_EXCHANGE_DETAIL(
+            partyGuid,
+            credentialExchangeGuid
+          )}`,
+          headers
+        );
+
+        thunkAPI.dispatch(hideLoading());
+
+        return response.data;
+      },
+      {
+        fulfilled: (state, action) => {
+          state.credentialExchangeDetails.push(action.payload);
         },
         rejected: (state: VerifiableCredentialsState, action) => {
           rejectHandler(action);
@@ -115,7 +146,11 @@ const verifiableCredentialsSlice = createAppSlice({
   },
 });
 
-export const { fetchCredentialConnections, revokeCredential } = verifiableCredentialsSlice.actions;
+export const {
+  fetchCredentialConnections,
+  revokeCredential,
+  fetchCredentialExchangeDetails,
+} = verifiableCredentialsSlice.actions;
 export const { getMinesActPermitIssuance } = verifiableCredentialsSlice.getSelectors(
   (rootState: RootState) => rootState.verifiableCredentials
 );
