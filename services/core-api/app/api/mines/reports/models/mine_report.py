@@ -1,4 +1,5 @@
 import uuid
+from datetime import datetime, timezone
 
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
@@ -205,10 +206,8 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
                 core_recipients.extend(contacts_email)
 
         # Adding mine manager's email.
-        if self.mine.mine_party_appt:
-            for party in self.mine.mine_party_appt:
-                if party.mine_party_appt_type_code == "MMG" and party.party.email:
-                    ms_recipients.append(party.party.email)
+        if self.mine.mine_manager:
+            ms_recipients.append(self.mine.mine_manager.party.email)
 
         # If no core_recipients found yet
         if len(core_recipients) == 0:
