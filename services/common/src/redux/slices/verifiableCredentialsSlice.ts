@@ -12,21 +12,22 @@ const rejectHandler = (action) => {
   console.log(action.error.stack);
 };
 
-interface VerifiableCredentialsConnection {
+interface MinesActPermitVerifiableCredentialsIssuance {
   party_guid: string;
   permit_amendment_guid: string;
   cred_exch_id: string;
   cred_exch_state: string;
   rev_reg_id: string;
   cred_rev_id: string;
+  last_webhook_timestamp: Date;
 }
 
 interface VerifiableCredentialsState {
-  verifiableCredentialConnections: VerifiableCredentialsConnection[];
+  minesActPermitVerifiableCredentialsIssuance: MinesActPermitVerifiableCredentialsIssuance[];
 }
 
 const initialState: VerifiableCredentialsState = {
-  verifiableCredentialConnections: [],
+  minesActPermitVerifiableCredentialsIssuance: [],
 };
 
 const verifiableCredentialsSlice = createAppSlice({
@@ -49,7 +50,7 @@ const verifiableCredentialsSlice = createAppSlice({
       },
       {
         fulfilled: (state, action) => {
-          state.verifiableCredentialConnections = action.payload.records;
+          state.minesActPermitVerifiableCredentialsIssuance = action.payload.records;
         },
         rejected: (state: VerifiableCredentialsState, action) => {
           rejectHandler(action);
@@ -91,32 +92,32 @@ const verifiableCredentialsSlice = createAppSlice({
         fulfilled: (state, action) => {
           // The state here is a proxy "WritableDraft" object, so we need to convert it to a plain object
           // to be able to get the current values and update the state
-          const verifiableCredentialConnectionsState = JSON.parse(
-            JSON.stringify(state.verifiableCredentialConnections)
+          const verifiableCredentialIssuaneState = JSON.parse(
+            JSON.stringify(state.minesActPermitVerifiableCredentialsIssuance)
           );
 
-          state.verifiableCredentialConnections = verifiableCredentialConnectionsState.map(
-            (conn) => {
+          state.minesActPermitVerifiableCredentialsIssuance = verifiableCredentialIssuaneState
+            .map((conn) => {
               if (conn.cred_exch_id === action.payload.credential_exchange_id) {
                 return { ...conn, cred_exch_state: "credential_revoked" };
               }
               return conn;
-            }
-          );
+            })
+            .sort((a, b) => a.last_webhook_timestamp - b.last_webhook_timestamp);
         },
       }
     ),
   }),
   selectors: {
-    getCredentialConnections: (state): VerifiableCredentialsConnection[] => {
-      return state.verifiableCredentialConnections;
+    getMinesActPermitIssuance: (state): MinesActPermitVerifiableCredentialsIssuance[] => {
+      return state.minesActPermitVerifiableCredentialsIssuance;
     },
   },
 });
 
 export const { fetchCredentialConnections, revokeCredential } = verifiableCredentialsSlice.actions;
-export const { getCredentialConnections } = verifiableCredentialsSlice.getSelectors(
-  (rootState: RootState) => rootState.verifiableCredentialConnections
+export const { getMinesActPermitIssuance } = verifiableCredentialsSlice.getSelectors(
+  (rootState: RootState) => rootState.verifiableCredentials
 );
 
 const verifiableCredentialsReducer = verifiableCredentialsSlice.reducer;

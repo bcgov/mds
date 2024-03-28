@@ -1,9 +1,10 @@
 import { Alert, Button, Col, Row, Table, Typography } from "antd";
 import {
-  VC_ACTIVE_CONNECTION_STATES,
+  VC_ACTIVE_CREDENTIAL_STATES,
   VC_CONNECTION_STATES,
   VC_CRED_ISSUE_STATES,
 } from "@mds/common/constants";
+import { patchPermitVCLocked } from "@mds/common/redux/actionCreators/permitActionCreator";
 import {
   IMine,
   IMineCommodityOption,
@@ -21,6 +22,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import ExplosivesPermitMap from "@mds/common/components/explosivespermits/ExplosivesPermitMap";
+import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import {
   getMineCommodityOptions,
   getMineDisturbanceOptions,
@@ -29,7 +31,7 @@ import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import modalConfig from "@/components/modalContent/config";
 import {
   fetchCredentialConnections,
-  getCredentialConnections,
+  getMinesActPermitIssuance,
   revokeCredential,
 } from "@mds/common/redux/slices/verifiableCredentialsSlice";
 
@@ -51,8 +53,11 @@ export const ViewDigitalPermitCredential: FC = () => {
     id: string;
   }>();
 
-  const connectionDetails = useSelector((state) => getCredentialConnections(state));
-  const digitalPermitCredential: IPermit = permits.find((p) => p.permit_guid === permitGuid);
+  const minesActPermitIssuance = useSelector((state) => getMinesActPermitIssuance(state));
+  const permitRecord: IPermit = permits.find((p) => p.permit_guid === permitGuid);
+  const activePermitCredential = minesActPermitIssuance.find((mapi) =>
+    VC_ACTIVE_CREDENTIAL_STATES.includes(mapi.cred_exch_state)
+  );
   const mine: IMine = useSelector((state) => getMineById(state, mineGuid));
 
   const mineCommodityOptions: IMineCommodityOption[] = useSelector(getMineCommodityOptions);
@@ -60,15 +65,13 @@ export const ViewDigitalPermitCredential: FC = () => {
   const mineDisturbanceOptions: IMineDisturbanceOption[] = useSelector(getMineDisturbanceOptions);
 
   useEffect(() => {
-    if (digitalPermitCredential) {
-      dispatch(
-        fetchCredentialConnections({ partyGuid: digitalPermitCredential.current_permittee_guid })
-      );
+    if (permitRecord) {
+      dispatch(fetchCredentialConnections({ partyGuid: permitRecord.current_permittee_guid }));
     }
-  }, [digitalPermitCredential]);
+  }, [permitRecord]);
 
   const getLatestIssueDate = () => {
-    const latestAmendment = digitalPermitCredential?.permit_amendments?.filter(
+    const latestAmendment = permitRecord?.permit_amendments?.filter(
       (a) => a.permit_amendment_status_code !== "DFT"
     )[0];
 
@@ -88,7 +91,7 @@ export const ViewDigitalPermitCredential: FC = () => {
   ];
 
   const transformPermitHistoryData = () => {
-    const amendments = digitalPermitCredential?.permit_amendments
+    const amendments = permitRecord?.permit_amendments
       ?.sort((a, b) => a.permit_amendment_id - b.permit_amendment_id)
       .map((a, index) => {
         return {
@@ -96,10 +99,7 @@ export const ViewDigitalPermitCredential: FC = () => {
           amendment_no: index + 1,
         };
       });
-    const permitHistory: any[] = [
-      permitAmendmentLike(digitalPermitCredential),
-      ...(amendments ?? []),
-    ];
+    const permitHistory: any[] = [permitAmendmentLike(permitRecord), ...(amendments ?? [])];
 
     return permitHistory.reverse();
   };
@@ -127,13 +127,13 @@ export const ViewDigitalPermitCredential: FC = () => {
   };
 
   const handleRevoke = async (data) => {
-    if (connectionDetails.length < 1) return;
+    if (!activePermitCredential) return;
 
     await dispatch(
       revokeCredential({
-        partyGuid: digitalPermitCredential.current_permittee_guid,
+        partyGuid: permitRecord.current_permittee_guid,
         comment: data.comment,
-        credential_exchange_id: connectionDetails[0].cred_exch_id,
+        credential_exchange_id: activePermitCredential.cred_exch_id,
       })
     );
 
@@ -156,24 +156,37 @@ export const ViewDigitalPermitCredential: FC = () => {
     );
   };
 
+  const releasePermitVCLock = (event) => {
+    event.preventDefault();
+    dispatch(
+      patchPermitVCLocked(permitRecord.permit_guid, mineGuid, {
+        mines_act_permit_vc_locked: false,
+      })
+    ).then(() => {
+      dispatch(fetchPermits(mineGuid));
+    });
+  };
+
   return (
     <div className="tab__content margin-large--top">
-      {VC_CRED_ISSUE_STATES[connectionDetails[0]?.cred_exch_state] ===
-        VC_CRED_ISSUE_STATES.credential_revoked && (
-        <Alert
-          className="margin-large--bottom"
-          description={
-            <Row justify="space-between" align="middle">
-              <Paragraph strong>This digital credential was revoked</Paragraph>
-              <Button type="default" className="no-bg">
-                Re-offer Credential
-              </Button>
-            </Row>
-          }
-          type="error"
-          showIcon
-        />
-      )}
+      {VC_CRED_ISSUE_STATES[
+        minesActPermitIssuance[minesActPermitIssuance.length - 1]?.cred_exch_state
+      ] === VC_CRED_ISSUE_STATES.credential_revoked &&
+        permitRecord.mines_act_permit_vc_locked && (
+          <Alert
+            className="margin-large--bottom"
+            description={
+              <Row justify="space-between" align="middle">
+                <Paragraph strong>This digital credential was revoked</Paragraph>
+                <Button type="default" className="no-bg" onClick={releasePermitVCLock}>
+                  Make Available
+                </Button>
+              </Row>
+            }
+            type="error"
+            showIcon
+          />
+        )}
       <Title level={2}>Digital Permit Credential</Title>
       <Row gutter={48}>
         <Col md={12} sm={24}>
@@ -184,7 +197,7 @@ export const ViewDigitalPermitCredential: FC = () => {
             <Row gutter={6}>
               <Col span={12}>
                 <Paragraph strong>Permittee Name</Paragraph>
-                <Paragraph>{digitalPermitCredential?.current_permittee}</Paragraph>
+                <Paragraph>{permitRecord?.current_permittee}</Paragraph>
               </Col>
               <Col span={12}>
                 <Paragraph strong>Issue Date</Paragraph>
@@ -196,7 +209,7 @@ export const ViewDigitalPermitCredential: FC = () => {
           <Row gutter={6}>
             <Col span={12}>
               <Paragraph strong>Permit Number</Paragraph>
-              <Paragraph>{digitalPermitCredential?.permit_no}</Paragraph>
+              <Paragraph>{permitRecord?.permit_no}</Paragraph>
             </Col>
 
             <Col span={12}>
@@ -229,22 +242,18 @@ export const ViewDigitalPermitCredential: FC = () => {
             <Col span={8}>
               <Paragraph>Mine Disturbance</Paragraph>
               <Paragraph>
-                {getMineDisturbanceFromCode(
-                  digitalPermitCredential?.site_properties.mine_disturbance_code
-                )}
+                {getMineDisturbanceFromCode(permitRecord?.site_properties.mine_disturbance_code)}
               </Paragraph>
             </Col>
             <Col span={8}>
               <Paragraph>Mine Commodity</Paragraph>
               <Paragraph>
-                {getCommodityDescriptionFromCode(
-                  digitalPermitCredential?.site_properties.mine_commodity_code
-                )}
+                {getCommodityDescriptionFromCode(permitRecord?.site_properties.mine_commodity_code)}
               </Paragraph>
             </Col>
             <Col span={8}>
               <Paragraph>Bond Total</Paragraph>
-              <Paragraph>{digitalPermitCredential?.active_bond_total}</Paragraph>
+              <Paragraph>{permitRecord?.active_bond_total}</Paragraph>
             </Col>
           </Row>
           <Row gutter={6}>
@@ -278,8 +287,7 @@ export const ViewDigitalPermitCredential: FC = () => {
             <Row>
               <Col
                 span={
-                  digitalPermitCredential?.current_permittee_digital_wallet_connection_state ===
-                  "Inactive"
+                  permitRecord?.current_permittee_digital_wallet_connection_state === "Inactive"
                     ? 12
                     : 24
                 }
@@ -290,12 +298,15 @@ export const ViewDigitalPermitCredential: FC = () => {
             <Row align="middle" justify="space-between">
               <Col span={8}>
                 <Paragraph className="margin-none">
-                  {VC_CRED_ISSUE_STATES[connectionDetails[0]?.cred_exch_state] ??
+                  {VC_CRED_ISSUE_STATES[activePermitCredential?.cred_exch_state] ??
+                    VC_CRED_ISSUE_STATES[
+                      minesActPermitIssuance[minesActPermitIssuance.length - 1]?.cred_exch_state
+                    ] ??
                     "No Credential Issued"}
                 </Paragraph>
               </Col>
               <Col span={16}>
-                {VC_ACTIVE_CONNECTION_STATES.includes(connectionDetails[0]?.cred_exch_state) && (
+                {activePermitCredential && (
                   <Button
                     onClick={openRevokeDigitalCredentialModal}
                     type="ghost"

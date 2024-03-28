@@ -192,7 +192,7 @@ class EmailService():
             current_app.logger.error(message)
             return
 
-        current_app.logger.debug(
+        current_app.logger.info(
             f'Common Services email request successful.\nEmail Subject: {subject}\nResponse: {resp_data}\nRecipients: {original_recipients}'
         )
 
@@ -280,6 +280,6 @@ class EmailService():
             current_app.logger.error(message)
             return
 
-        current_app.logger.debug(
+        current_app.logger.info(
             f'Common Services email request successful.\nEmail Subject: {subject}\nResponse: {resp_data}\nRecipients: {original_recipients}'
         )

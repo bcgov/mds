@@ -75,5 +75,5 @@ export const sharedReducer = {
   form: formReducer,
   loadingBar: loadingBarReducer,
   reportSubmission: reportSubmissionReducer,
-  verifiableCredentialConnections: verifiableCredentialsReducer,
+  verifiableCredentials: verifiableCredentialsReducer,
 };

@@ -186,7 +186,7 @@ class MineReportListResource(Resource, UserMixin):
             raise InternalServerError(f'Error when saving: {e}')
 
         if is_minespace_user():
-            mine_report.send_report_update_email(False)
+            mine_report.send_crr_report_update_email(False)
 
         if is_report_request:
             report_name = mine_report_definition.report_name if is_code_required_report else permit_condition_category.description
@@ -310,7 +310,7 @@ class MineReportResource(Resource, UserMixin):
             raise InternalServerError(f'Error when saving: {e}')
 
         if is_minespace_user():
-            mine_report.send_report_update_email(True)
+            mine_report.send_crr_report_update_email(True)
 
         return mine_report
 

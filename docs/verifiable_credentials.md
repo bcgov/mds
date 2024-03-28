@@ -134,15 +134,6 @@ Webhook processing may be inconsistent, causing messages to be processed incorre
 
 ## Local development testing
 
-Traction DEV is configured to send webhooks to MDS DEV, and to this website for inspection
-https://webhook.site/#!/view/4c0e7827-505e-47dc-9b6c-1288ac43bff5/9666e4da-5cd8-4bda-8950-6c90aa8aa29f/1
+Traction DEV is configured to send webhooks to MDS DEV, and to this website for inspection https://webhook.site, after 100 requests, you must create a new testing webhook url and add that to the CPO Dev wallet on traction dev.
 
-You can configure your local MDS to use the CPO Wallet on Traction dev as well (with env variables), but there is no way for the webhooks to get back to your local machine, so to manually test, we need to manually update our local data with the corresponding data from the webhooks.
-
-After connection invitation acceptance:
-connection_id=<UUID> and connection_state='active' need to be updated
-
-After credential offer acceptance:
-credential_state="credential_acked" and rev_reg_id=<str> and cred_rev_id=<str>
-
-These processes did complete between the two wallet successfully, but the MDS app running on your local machine isn't getting the updates.
+You can configure your local MDS to use the CPO Wallet on Traction dev as well (with env variables), but there is no way for the webhooks to get back to your local machine, so to manually test, we need to manually pass the webhook payload from traction, which will send it to webhook.site, then can be copied into Postman (or similar http client) and passed to your localhost api at `http://localhost:5000/verifiable-credentials/webhook/topic/<TOPIC>` as a json body, the topic is parameterized.

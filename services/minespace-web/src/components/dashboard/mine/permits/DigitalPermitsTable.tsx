@@ -23,7 +23,6 @@ import {
   renderTextColumn,
 } from "@mds/common/components/common/CoreTableCommonColumns";
 import IssuePermitDigitalCredential from "@/components/modalContent/verifiableCredentials/IssuePermitDigitalCredential";
-import { useHistory, useParams } from "react-router-dom";
 
 const draftAmendment = "DFT";
 
@@ -36,7 +35,6 @@ interface PermitsTableProps {
   permits: IPermit[];
   majorMineInd: boolean;
   openModal: (value: any) => void;
-  closeModal: (value: any) => void;
   openVCWalletInvitationModal: (
     event,
     partyGuid: string,
@@ -46,9 +44,6 @@ interface PermitsTableProps {
 }
 
 export const PermitsTable: FC<PermitsTableProps> = (props) => {
-  const history = useHistory();
-  const { id } = useParams<{ id: string }>();
-
   const columns = [
     renderTextColumn("permit_no", "Permit No.", true),
     renderTextColumn("current_permittee", "Permittee"),
@@ -71,12 +66,17 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
     [VC_CRED_ISSUE_STATES.offer_sent]: "#F1C21B",
     [VC_CRED_ISSUE_STATES.credential_acked]: "#45A776",
     [VC_CRED_ISSUE_STATES.abandoned]: "#D8292F",
+    [VC_CRED_ISSUE_STATES.credential_revoked]: "#D8292F",
   };
   const issuanceStateColumn = {
     title: "Issuance State",
     key: "lastAmendedVC",
     dataIndex: "lastAmendedVC",
-    render: (text) => {
+    render: (text, record) => {
+      if (text == "credential_revoked" && !record.mines_act_permit_vc_locked) {
+        // if revoked by not locked, treat as 'available'.
+        text = null;
+      }
       const badgeText = text ? VC_CRED_ISSUE_STATES[text] : "Available";
       const colour = colourMap[badgeText] ?? "#F1C21B";
       return <Badge color={colour} text={badgeText} />;
@@ -238,7 +238,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   openModal,
-  closeModal,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PermitsTable);

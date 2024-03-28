@@ -22,6 +22,7 @@ const ReportSteps = () => {
   const { mineGuid, reportType } = useParams<{ mineGuid: string; reportType: string }>();
   const [currentStep, setCurrentStep] = useState(0);
   const [initialValues, setInitialValues] = useState<Partial<IMineReportSubmission>>({});
+  const [disableNextButton, setDisableNextButton] = useState(false);
 
   const mine: IMine = useSelector((state) => getMineById(state, mineGuid));
 
@@ -49,11 +50,11 @@ const ReportSteps = () => {
         )}
         <Col>
           {nextButtonFunction ? (
-            <Button type="primary" onClick={nextButtonFunction}>
+            <Button disabled={disableNextButton} type="primary" onClick={nextButtonFunction}>
               {nextButtonTitle ?? "Next"}
             </Button>
           ) : (
-            <Button type="primary" htmlType="submit">
+            <Button disabled={disableNextButton} type="primary" htmlType="submit">
               {nextButtonTitle ?? "Next"}
             </Button>
           )}
@@ -73,6 +74,7 @@ const ReportSteps = () => {
                 setInitialValues(values);
                 setCurrentStep(currentStep + 1);
               }}
+              setDisableNextButton={setDisableNextButton}
               formButtons={renderStepButtons({
                 nextButtonTitle: "Add Report Details",
                 previousButtonTitle: "Cancel",

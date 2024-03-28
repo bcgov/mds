@@ -50,6 +50,12 @@ export const IssuePermitDigitalCredential: FC<IssuePermitDigitalCredentialProps>
       case VC_CRED_ISSUE_STATES.offer_sent:
         contentKey = "pending";
         break;
+      case VC_CRED_ISSUE_STATES.credential_revoked:
+        if (permit.mines_act_permit_vc_locked) {
+          contentKey = "revoked";
+          break;
+        } // else default to issueReady
+      // eslint-disable-next-line no-fallthrough
       default:
         contentKey = "issueReady";
     }
@@ -80,6 +86,7 @@ export const IssuePermitDigitalCredential: FC<IssuePermitDigitalCredentialProps>
       issueReady: `Issue Digital Credential for ${current_permittee}.`,
       pending: "This digital credential has already been offered.",
       active: "This digital credential has been accepted.",
+      revoked: "This digital credential has been revoked.",
     },
     alertMessage: {
       noWallet:
@@ -87,6 +94,8 @@ export const IssuePermitDigitalCredential: FC<IssuePermitDigitalCredentialProps>
       issueReady: `Receive your digital credential by clicking the button below. The digital credential will be offered from the Chief Permitting Officer of B.C. for you to review, accept, and store in the digital wallet of ${current_permittee}.`,
       pending: `Please review this digital credential in the digital wallet of ${current_permittee}. If all data is accurate, accept the credential for it to be stored in your digital wallet.`,
       active: `Please review the details in the digital wallet of ${current_permittee}.`,
+      revoked:
+        "Your existing credential has been revoked and is not available as a digital credential, please contact your permitting inspector for more information.",
     },
     modalBody: {
       noWallet: null,
@@ -107,6 +116,7 @@ export const IssuePermitDigitalCredential: FC<IssuePermitDigitalCredentialProps>
       issueReady: `Issue Digital Credential for Permit ${permit_no}`,
       pending: `Digital Credential for Permit ${permit_no} has been offered`,
       active: `Digital Credential for Permit ${permit_no} accepted`,
+      revoked: `Digital Credential for Permit ${permit_no} is not available`,
     },
     credentialStatusText: {
       pending: (
