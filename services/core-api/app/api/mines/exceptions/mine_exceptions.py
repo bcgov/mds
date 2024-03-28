@@ -40,3 +40,13 @@ class ExplosivePermitNumberAlreadyExistExeption(MineException):
     def __init__(self, message = "A record already exists with the provided 'Explosives Permit Number'", **kwargs):
         super().__init__(message, **kwargs)
         self.code = int(kwargs.get("status_code", 422))
+
+class MineReportProcessingException(MineException):
+    """Exception for Mine report related exception"""
+
+    description = (
+        "Exception for Mine report related exception"
+    )
+    def __init__(self, message = "Error in processing the Mine Report'", **kwargs):
+        super().__init__(message, **kwargs)
+        self.code = int(kwargs.get("status_code", 422))
