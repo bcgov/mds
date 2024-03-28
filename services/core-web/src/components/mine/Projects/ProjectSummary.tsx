@@ -170,7 +170,7 @@ export const ProjectSummary: FC = () => {
     return dispatch(
       updateProjectSummary(
         { projectGuid: project_guid, projectSummaryGuid },
-        handleTransformPayload({ ...formValues }),
+        handleTransformPayload({ ...formValues, applicant: null }),
         message
       )
     )
