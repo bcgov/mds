@@ -1,6 +1,7 @@
 import { notification } from "antd";
 import { hideLoading, showLoading } from "react-redux-loading-bar";
-import { ENVIRONMENT, IExplosivesPermitAmendment } from "@mds/common";
+import { ENVIRONMENT } from "@mds/common/constants";
+import { IExplosivesPermitAmendment } from "@mds/common/interfaces";
 import { error, request, success } from "../actions/genericActions";
 import * as reducerTypes from "@mds/common/constants/reducerTypes";
 import * as API from "@mds/common/constants/API";
@@ -31,9 +32,8 @@ export const createExplosivesPermitAmendment = (
       dispatch(success(reducerTypes.CREATE_EXPLOSIVES_PERMIT_AMENDMENT));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.CREATE_EXPLOSIVES_PERMIT_AMENDMENT));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -63,9 +63,8 @@ export const updateExplosivesPermitAmendment = (
       dispatch(success(reducerTypes.UPDATE_EXPLOSIVES_PERMIT_AMENDMENT));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.UPDATE_EXPLOSIVES_PERMIT_AMENDMENT));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
 };

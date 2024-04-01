@@ -7,8 +7,8 @@ import * as projectActions from "../actions/projectActions";
 import * as API from "@mds/common/constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
+import { ENVIRONMENT } from "@mds/common/constants";
 import {
-  ENVIRONMENT,
   ICreateProjectSummary,
   IProjectSummary,
   IProject,
@@ -19,7 +19,7 @@ import {
   IMajorMinesApplication,
   IProjectDecisionPackage,
   IProjectPageData,
-} from "@mds/common";
+} from "@mds/common/interfaces";
 import { AppThunk } from "@mds/common/interfaces/appThunk.type";
 import { AxiosResponse } from "axios";
 
@@ -78,9 +78,8 @@ export const updateProjectSummary = (
       dispatch(projectActions.storeProjectSummary(payload));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.UPDATE_MINE_PROJECT_SUMMARY));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -105,9 +104,8 @@ export const updateProject = (
       dispatch(projectActions.storeProject(payload));
       return response.data;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.UPDATE_PROJECT));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -143,9 +141,8 @@ export const fetchProjectSummaryById = (
       dispatch(success(reducerTypes.GET_PROJECT_SUMMARY));
       dispatch(projectActions.storeProjectSummary(response.data));
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.GET_PROJECT_SUMMARY));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -171,9 +168,8 @@ export const removeDocumentFromProjectSummary = (
       dispatch(success(reducerTypes.REMOVE_DOCUMENT_FROM_PROJECT_SUMMARY));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.REMOVE_DOCUMENT_FROM_PROJECT_SUMMARY));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -226,9 +222,8 @@ export const fetchProjectById = (projectGuid: string): AppThunk<Promise<IProject
       dispatch(projectActions.storeMajorMinesApplication(response.data.major_mine_application));
       return response.data;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.GET_PROJECT));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -266,9 +261,8 @@ export const deleteProjectSummary = (
       dispatch(success(reducerTypes.DELETE_PROJECT_SUMMARY));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.DELETE_PROJECT_SUMMARY));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -361,9 +355,8 @@ export const updateInformationRequirementsTable = (
       dispatch(success(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -377,9 +370,8 @@ export const fetchRequirements = (): AppThunk => (dispatch) => {
       dispatch(success(reducerTypes.GET_REQUIREMENTS));
       dispatch(projectActions.storeRequirements(response.data));
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.GET_REQUIREMENTS));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -405,9 +397,8 @@ export const removeDocumentFromInformationRequirementsTable = (
       dispatch(success(reducerTypes.REMOVE_DOCUMENT_FROM_INFORMATION_REQUIREMENTS_TABLE));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.REMOVE_DOCUMENT_FROM_INFORMATION_REQUIREMENTS_TABLE));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -437,9 +428,8 @@ export const createMajorMineApplication = (
       dispatch(success(reducerTypes.CREATE_MAJOR_MINES_APPLICATION));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.CREATE_MAJOR_MINES_APPLICATION));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -469,9 +459,8 @@ export const updateMajorMineApplication = (
       dispatch(success(reducerTypes.UPDATE_MAJOR_MINES_APPLICATION));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.UPDATE_MAJOR_MINES_APPLICATION));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -501,9 +490,8 @@ export const removeDocumentFromMajorMineApplication = (
       dispatch(success(reducerTypes.REMOVE_DOCUMENT_FROM_MAJOR_MINE_APPLICATION));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.REMOVE_DOCUMENT_FROM_MAJOR_MINE_APPLICATION));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -528,9 +516,8 @@ export const createProjectDecisionPackage = (
       dispatch(success(reducerTypes.CREATE_PROJECT_DECISION_PACKAGE));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.CREATE_PROJECT_DECISION_PACKAGE));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -555,9 +542,8 @@ export const updateProjectDecisionPackage = (
       dispatch(success(reducerTypes.UPDATE_PROJECT_DECISION_PACKAGE));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.UPDATE_PROJECT_DECISION_PACKAGE));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -587,9 +573,8 @@ export const removeDocumentFromProjectDecisionPackage = (
       dispatch(success(reducerTypes.REMOVE_DOCUMENT_FROM_PROJECT_DECISION_PACKAGE));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.REMOVE_DOCUMENT_FROM_PROJECT_DECISION_PACKAGE));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -618,9 +603,8 @@ export const createProjectLinks = (
         return data;
       }
     )
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.CREATE_PROJECT_LINKS));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -645,9 +629,8 @@ export const deleteProjectLink = (
       dispatch(projectActions.removeProjectLink(projectLinkGuid));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.DELETE_PROJECT_LINK));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };

@@ -1,6 +1,6 @@
 from app.api.activity.models.activity_notification import ActivityType
 from flask_restx import Resource, reqparse, inputs
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import NotFound, BadRequest
 from app.extensions import api
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import (requires_any_of, VIEW_ALL, MINESPACE_PROPONENT,
@@ -69,6 +69,7 @@ class NoticeOfDepartureListResource(Resource, UserMixin):
     @api.expect(CREATE_NOD_MODEL)
     @api.marshal_with(NOD_MODEL, code=201)
     def post(self):
+        raise BadRequest('TEST this has been a bad request')
         parser = reqparse.RequestParser()
         parser.add_argument(
             'nod_title',

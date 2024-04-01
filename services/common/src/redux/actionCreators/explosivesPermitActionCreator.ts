@@ -1,6 +1,7 @@
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
-import { ENVIRONMENT, IExplosivesPermit } from "@mds/common";
+import { ENVIRONMENT } from "@mds/common/constants";
+import { IExplosivesPermit } from "@mds/common/interfaces";
 import { request, success, error } from "../actions/genericActions";
 import * as reducerTypes from "@mds/common/constants/reducerTypes";
 import * as explosivesPermitActions from "../actions/explosivesPermitActions";
@@ -29,9 +30,8 @@ export const createExplosivesPermit = (
       dispatch(success(reducerTypes.CREATE_EXPLOSIVES_PERMIT));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.CREATE_EXPLOSIVES_PERMIT));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -50,9 +50,8 @@ export const fetchExplosivesPermits = (
       dispatch(explosivesPermitActions.storeExplosivesPermits(response.data));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.GET_EXPLOSIVES_PERMITS));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -80,9 +79,8 @@ export const updateExplosivesPermit = (
       dispatch(success(reducerTypes.UPDATE_EXPLOSIVES_PERMIT));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.UPDATE_EXPLOSIVES_PERMIT));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -106,9 +104,8 @@ export const deleteExplosivesPermit = (
       dispatch(success(reducerTypes.DELETE_EXPLOSIVES_PERMIT));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.DELETE_EXPLOSIVES_PERMIT));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };

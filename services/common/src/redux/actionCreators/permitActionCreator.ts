@@ -1,7 +1,7 @@
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
+import { ENVIRONMENT } from "@mds/common/constants";
 import {
-  ENVIRONMENT,
   ICreatePermitPayload,
   IPermit,
   IPermitAmendment,
@@ -11,7 +11,7 @@ import {
   IPatchPermitNumber,
   IPatchPermitVCLocked,
   IStandardPermitCondition,
-} from "@mds/common";
+} from "@mds/common/interfaces";
 import { request, success, error, IDispatchError } from "../actions/genericActions";
 import * as reducerTypes from "@mds/common/constants/reducerTypes";
 import * as permitActions from "../actions/permitActions";
@@ -38,9 +38,8 @@ export const createPermit = (
       dispatch(success(reducerTypes.CREATE_PERMIT));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.CREATE_PERMIT));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -76,9 +75,8 @@ export const fetchDraftPermitByNOW = (
       dispatch(permitActions.storeDraftPermits(response.data));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.GET_PERMITS));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -104,9 +102,8 @@ export const updatePermit = (
       dispatch(success(reducerTypes.UPDATE_PERMIT));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.UPDATE_PERMIT));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -134,9 +131,8 @@ export const createPermitAmendment = (
       dispatch(success(reducerTypes.CREATE_PERMIT_AMENDMENT));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.CREATE_PERMIT_AMENDMENT));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -162,9 +158,8 @@ export const createPermitAmendmentVC = (
       dispatch(success(reducerTypes.PERMIT_AMENDMENT_VC));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.PERMIT_AMENDMENT_VC));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -197,9 +192,8 @@ export const updatePermitAmendment = (
       dispatch(success(reducerTypes.UPDATE_PERMIT_AMENDMENT));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.UPDATE_PERMIT_AMENDMENT));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -219,9 +213,8 @@ export const getPermitAmendment = (
       dispatch(success(reducerTypes.GET_PERMIT_AMENDMENT));
       return response.data;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.GET_PERMIT_AMENDMENT));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -252,9 +245,8 @@ export const removePermitAmendmentDocument = (
       dispatch(success(reducerTypes.UPDATE_PERMIT_AMENDMENT_DOCUMENT));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.UPDATE_PERMIT_AMENDMENT_DOCUMENT));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -278,9 +270,8 @@ export const deletePermit = (
       dispatch(success(reducerTypes.DELETE_PERMIT));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.DELETE_PERMIT));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -305,9 +296,8 @@ export const deletePermitAmendment = (
       dispatch(success(reducerTypes.DELETE_PERMIT_AMENDMENT));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.DELETE_PERMIT_AMENDMENT));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
