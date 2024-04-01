@@ -268,7 +268,7 @@ const mapDispatchToProps = (dispatch) =>
       createParty,
       updateParty,
       fetchParties: (...args) => debounce(() => dispatch(fetchParties(...args)), 1000),
-      initialize: (data) => initialize(FORM.ADD_CONTACT, data ?? {}),
+      initialize: (data) => initialize(FORM.ADD_CONTACT, data),
       reset,
       change,
     },
