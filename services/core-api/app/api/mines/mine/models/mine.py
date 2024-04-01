@@ -1,4 +1,5 @@
 import uuid
+from datetime import datetime, timezone
 
 import utm
 from geoalchemy2 import Geometry
@@ -180,9 +181,15 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
     @hybrid_property
     def mine_manager(self):
         if self.mine_party_appt:
-            return next(
-                (mpa for mpa in self.mine_party_appt if mpa.mine_party_appt_type_code == 'MMG'),
-                None)
+            today = datetime.now(timezone.utc)  # To filter out previous mine managers.
+            for party in self.mine_party_appt:
+                party_end_date = None
+                if party.end_date:
+                    party_end_date = datetime.strptime(str(party.end_date), '%Y-%m-%d').replace(tzinfo=timezone.utc)
+                if party.mine_party_appt_type_code == "MMG" and party.party.email \
+                    and (party_end_date == None or party_end_date > today) \
+                        and str(party.status).lower() != "inactive":  #There are mine managers with null status
+                    return party
         return None
 
     @hybrid_property

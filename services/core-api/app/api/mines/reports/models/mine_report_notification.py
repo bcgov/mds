@@ -10,6 +10,7 @@ from app.extensions import db
 from sqlalchemy.ext.hybrid import hybrid_property
 from app.extensions import db
 from sqlalchemy import func, and_
+from app.api.mines.exceptions.mine_exceptions import MineReportProcessingException
 
 # mine_report_notification (compliance_article_emli_contact_xref) table, 
 # cotains the parameters that needs to decide the notifications depending on the article section and mine types
@@ -35,23 +36,29 @@ class MineReportNotification(Base):
 
     @classmethod
     def find_contact_by_compliance_article(cls, _section, _sub_section, _paragraph, _sub_paragraph):
-
-        try:          
-            if _sub_section and _paragraph and _sub_paragraph:
+        try:
+            if _section and _sub_section and _paragraph and _sub_paragraph:
                 condition = and_(ComplianceArticle.section == _section,
                                   ComplianceArticle.sub_section == _sub_section,
                                   ComplianceArticle.paragraph == _paragraph,
                                   ComplianceArticle.sub_paragraph == _sub_paragraph)
-            elif _sub_section and _paragraph:
+            elif _section and _sub_section and _paragraph:
                 condition = and_(ComplianceArticle.section == _section,
                                   ComplianceArticle.sub_section == _sub_section,
                                   ComplianceArticle.paragraph == _paragraph,
                                   ComplianceArticle.sub_paragraph == None)
-            elif _sub_section:
+            elif _section and _sub_section:
                 condition = and_(ComplianceArticle.section == _section,
                                   ComplianceArticle.sub_section == _sub_section,
                                   ComplianceArticle.paragraph == None,
                                   ComplianceArticle.sub_paragraph == None)
+            elif _section:
+                condition = and_(ComplianceArticle.section == _section,
+                                  ComplianceArticle.sub_section == None,
+                                  ComplianceArticle.paragraph == None,
+                                  ComplianceArticle.sub_paragraph == None)
+            else:
+                raise MineReportProcessingException(message= "Atleast compliance article 'section' field is mandatory to continue")
 
             query_result = db.session.query(EMLIContact.email, MineReportNotification.is_major_mine, MineReportNotification.is_regional_mine).\
                 join(MineReportNotification, EMLIContact.contact_guid == MineReportNotification.contact_guid).\

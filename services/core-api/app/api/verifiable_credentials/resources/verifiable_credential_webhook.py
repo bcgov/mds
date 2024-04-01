@@ -37,7 +37,8 @@ class VerifiableCredentialWebhookResource(Resource, UserMixin):
         current_app.logger.debug(f"webhook received <topic={topic}>: {webhook_body}")
         if "updated_at" not in webhook_body:
             current_app.logger.warn(f"webhook missing updated_at, {webhook_body}")
-        webhook_timestamp = datetime.fromisoformat(webhook_body["updated_at"])
+        else:
+            webhook_timestamp = datetime.fromisoformat(webhook_body["updated_at"])
 
         if topic == CONNECTIONS:
             invitation_id = webhook_body['invitation_msg_id']
@@ -61,7 +62,7 @@ class VerifiableCredentialWebhookResource(Resource, UserMixin):
                 if new_state == "deleted":
                     # if deleted in the wallet (either in traction, or by the other agent)
                     vc_conn.connection_state=new_state
-                    vc_conn.save()
+                    vc_conn.save() 
                     current_app.logger.info(f"party_vc_conn connection_id={vc_conn.connection_id} was deleted")
                  
         elif topic == OUT_OF_BAND:

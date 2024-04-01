@@ -14,6 +14,7 @@ export interface IMineReportDefinition {
   description: string;
   due_date_period_months?: number;
   is_common: boolean;
+  is_prr_only: boolean;
   mine_report_definition_guid: string;
   mine_report_due_date_type: string;
   report_name: string;
