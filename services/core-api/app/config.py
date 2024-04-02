@@ -240,6 +240,7 @@ class Config(object):
 
     # AMS API Services
     AMS_BEARER_TOKEN = os.environ.get('AMS_BEARER_TOKEN')
+    AMS_URL = os.environ.get('AMS_URL')
 
     # CSS Keycloak SSO
     CSS_CLIENT_ID = os.environ.get('CSS_CLIENT_ID')
