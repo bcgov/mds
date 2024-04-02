@@ -4,7 +4,9 @@ ALTER TABLE project_summary_authorization
     ADD COLUMN IF NOT EXISTS is_contaminated boolean,
     ADD COLUMN IF NOT EXISTS new_type varchar(3), -- permit | approval
     ADD COLUMN IF NOT EXISTS authorization_description varchar(4000),
-    ADD COLUMN IF NOT EXISTS exemption_requested boolean
+    ADD COLUMN IF NOT EXISTS exemption_requested boolean,
+    ALTER COLUMN existing_permits_authorizations SET DEFAULT array[]::text[],
+    ALTER COLUMN existing_permits_authorizations DROP NOT NULL
     ;
 
 DO

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Field,
@@ -314,14 +314,18 @@ export const AuthorizationsInvolved = () => {
   const amsAuthTypes = useSelector(getAmsAuthorizationTypes);
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
 
+  useEffect(() => {
+    console.log("formValues", formValues);
+  }, [formValues]);
+
   const handleChange = (e, code) => {
     if (e.target.checked) {
-      const { project_summary_guid } = formValues;
-      const formVal = [{ project_summary_guid, project_summary_authorization_type: code }];
       dispatch(arrayPush(FORM.ADD_EDIT_PROJECT_SUMMARY, `authorizationTypes`, code));
       if (amsAuthTypes.includes(code)) {
-        console.log("now what");
+        const formVal = { AMENDMENT: [], NEW: [], types: [] };
+        dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, `authorizations[${code}]`, formVal));
       } else {
+        const formVal = [{ project_summary_authorization_type: code }];
         dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, `authorizations[${code}]`, formVal));
       }
     } else {
@@ -399,46 +403,48 @@ export const AuthorizationsInvolved = () => {
               return (
                 <div key={child.code}>
                   <Row gutter={[0, 16]}>
-                    <Checkbox
-                      value={child.code}
-                      checked={checked}
-                      onChange={(e) => handleChange(e, child.code)}
-                    >
-                      <b>{child.description}</b>
-                    </Checkbox>
-                    {checked && (
-                      <>
-                        {child.code === "MINES_ACT_PERMIT" && (
-                          <Alert
-                            message="You are submitting a Major Mine Application to the Chief Permitting Officer"
-                            description={
-                              <ul>
-                                <li>
-                                  For changes to existing activities, submit Notice of Departure
-                                  through MineSpace.
-                                </li>
-                                <li>
-                                  For exploration work outside the permit mine area without
-                                  expanding the production area, submit a Notice of Work application
-                                  via FrountCounter BC to amend your MX or CX permit.
-                                </li>
-                                <li>
-                                  For induced polarization surveys or exploration drilling within
-                                  the permit mine area, submit a Notification of Deemed
-                                  Authorixation application via FrountCounter BC.
-                                </li>
-                              </ul>
-                            }
-                            type="info"
-                            showIcon
+                    <Col>
+                      <Checkbox
+                        value={child.code}
+                        checked={checked}
+                        onChange={(e) => handleChange(e, child.code)}
+                      >
+                        <b>{child.description}</b>
+                      </Checkbox>
+                      {checked && (
+                        <>
+                          {child.code === "MINES_ACT_PERMIT" && (
+                            <Alert
+                              message="You are submitting a Major Mine Application to the Chief Permitting Officer"
+                              description={
+                                <ul>
+                                  <li>
+                                    For changes to existing activities, submit Notice of Departure
+                                    through MineSpace.
+                                  </li>
+                                  <li>
+                                    For exploration work outside the permit mine area without
+                                    expanding the production area, submit a Notice of Work
+                                    application via FrountCounter BC to amend your MX or CX permit.
+                                  </li>
+                                  <li>
+                                    For induced polarization surveys or exploration drilling within
+                                    the permit mine area, submit a Notification of Deemed
+                                    Authorixation application via FrountCounter BC.
+                                  </li>
+                                </ul>
+                              }
+                              type="info"
+                              showIcon
+                            />
+                          )}
+                          <RenderAuthCodeFormSection
+                            code={child.code}
+                            authorizationType={authorization.code}
                           />
-                        )}
-                        <RenderAuthCodeFormSection
-                          code={child.code}
-                          authorizationType={authorization.code}
-                        />
-                      </>
-                    )}
+                        </>
+                      )}
+                    </Col>
                   </Row>
                 </div>
               );

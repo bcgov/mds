@@ -1,4 +1,5 @@
 from app.extensions import db
+from sqlalchemy.orm import load_only
 from app.api.utils.models_mixins import AuditMixin, Base
 
 
@@ -18,3 +19,7 @@ class ProjectSummaryAuthorizationType(AuditMixin, Base):
     @classmethod
     def get_all(cls):
         return cls.query.all()
+    
+    @classmethod
+    def get_by_group_id(cls, group_id):
+        return cls.query.filter_by(project_summary_authorization_type_group_id=group_id).options(load_only("project_summary_authorization_type")).all()

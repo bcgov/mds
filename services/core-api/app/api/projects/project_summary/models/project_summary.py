@@ -288,6 +288,53 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                                                       party_orgbook_data.get('company_alias'))
             return party_orgbook
 
+        
+    def create_or_update_authorization(self, authorization, is_ams):
+            valid_permit_types = ProjectSummaryPermitType.validate_permit_types(
+                authorization['project_summary_permit_type'], is_ams)
+            if valid_permit_types != True:
+                raise BadRequest(valid_permit_types)
+            authorization_type = authorization.get('project_summary_authorization_type')
+            if is_ams and not ProjectSummaryAuthorization.validate_ams_authorization_type(
+                authorization_type):
+                raise BadRequest(f'Invalid code selected for Environmental Management Act authorization: {authorization_type}')
+            valid_authorization = ProjectSummaryAuthorization.validate_authorization(authorization, is_ams)
+            if valid_authorization != True:
+                raise BadRequest(valid_authorization)
+
+            updated_authorization_guid = authorization.get('project_summary_authorization_guid')
+
+            if updated_authorization_guid:
+                updated_authorization = ProjectSummaryAuthorization.find_by_project_summary_authorization_guid(
+                    updated_authorization_guid)
+                updated_authorization.project_summary_permit_type = authorization.get(
+                    'project_summary_permit_type')
+                updated_authorization.existing_permits_authorizations = authorization.get(
+                    'existing_permits_authorizations')
+                updated_authorization.amendment_changes = authorization.get('amendment_changes')
+                updated_authorization.amendment_severity = authorization.get('amendment_severity')
+                updated_authorization.is_contaminated = authorization.get('is_contaminated')
+                updated_authorization.new_type = authorization.get('new_type')
+                updated_authorization.authorization_description = authorization.get('authorization_description')
+                updated_authorization.exemption_requested = authorization.get('exemption_requested')
+                
+            else:
+                new_authorization = ProjectSummaryAuthorization(
+                    project_summary_guid=self.project_summary_guid,
+                    project_summary_authorization_type=authorization.get(
+                        'project_summary_authorization_type'),
+                    project_summary_permit_type=authorization.get('project_summary_permit_type'),
+                    existing_permits_authorizations=authorization.get(
+                        'existing_permits_authorizations'),
+                    amendment_changes=authorization.get('amendment_changes'),
+                    amendment_severity=authorization.get('amendment_severity'),
+                    is_contaminated=authorization.get('is_contaminated'),
+                    new_type=authorization.get('new_type'),
+                    authorization_description=authorization.get('authorization_description'),
+                    exemption_requested=authorization.get('exemption_requested')                    
+                )
+                self.authorizations.append(new_authorization)
+ 
     @classmethod
     def create(cls,
                project,
@@ -300,6 +347,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                status_code,
                documents=[],
                authorizations=[],
+               ams_authorizations=None,
                submission_date=None,
                add_to_session=True):
 
@@ -329,19 +377,15 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             project_summary.documents.append(project_summary_doc)
 
         for authorization in authorizations:
-            # Validate permit types
-            for permit_type in authorization['project_summary_permit_type']:
-                valid_permit_type = ProjectSummaryPermitType.validate_permit_type(permit_type)
-                if not valid_permit_type:
-                    raise BadRequest(f'Invalid project description permit type: {permit_type}')
+            project_summary.create_or_update_authorization(authorization, False)
 
-            new_authorization = ProjectSummaryAuthorization(
-                project_summary_guid=project_summary.project_summary_guid,
-                project_summary_authorization_type=authorization[
-                    'project_summary_authorization_type'],
-                project_summary_permit_type=authorization['project_summary_permit_type'],
-                existing_permits_authorizations=authorization['existing_permits_authorizations'])
-            project_summary.authorizations.append(new_authorization)
+        if ams_authorizations:
+            for authorization in ams_authorizations.get('amendments', []):
+                project_summary.create_or_update_authorization(authorization, True)
+
+            for authorization in ams_authorizations.get('new', []):
+                project_summary.create_or_update_authorization(authorization, True)
+        
 
         if add_to_session:
             project_summary.save(commit=False)
@@ -366,6 +410,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                project_lead_party_guid,
                documents=[],
                authorizations=[],
+               ams_authorizations=None,
                submission_date=None,
                agent=None,
                is_agent=None,
@@ -494,6 +539,18 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             authorization.get('project_summary_authorization_guid')
             for authorization in authorizations
         ]
+        if ams_authorizations:
+            ams_auth_amend_ids = [
+                authorization.get('project_summary_authorization_guid')
+                for authorization in ams_authorizations.get('amendments', None)
+            ]
+            ams_auth_new_ids = [
+                authorization.get('project_summary_authorization_guid')
+                for authorization in ams_authorizations.get('new', None)
+            ]
+        updated_authorization_ids.extend(ams_auth_amend_ids)
+        updated_authorization_ids.extend(ams_auth_new_ids)
+
         for deleted_authorization in self.authorizations:
             if str(deleted_authorization.project_summary_authorization_guid
                    ) not in updated_authorization_ids:
@@ -501,30 +558,14 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
         # Create or update existing authorizations.
         for authorization in authorizations:
-            # Validate permit types
-            for permit_type in authorization['project_summary_permit_type']:
-                valid_permit_type = ProjectSummaryPermitType.validate_permit_type(permit_type)
-                if not valid_permit_type:
-                    raise BadRequest(f'Invalid project description permit type: {permit_type}')
+            self.create_or_update_authorization(authorization, False)
 
-            updated_authorization_guid = authorization.get('project_summary_authorization_guid')
-            if updated_authorization_guid:
-                updated_authorization = ProjectSummaryAuthorization.find_by_project_summary_authorization_guid(
-                    updated_authorization_guid)
-                updated_authorization.project_summary_permit_type = authorization.get(
-                    'project_summary_permit_type')
-                updated_authorization.existing_permits_authorizations = authorization.get(
-                    'existing_permits_authorizations')
+        if ams_authorizations:
+            for authorization in ams_authorizations.get('amendments', []):
+                self.create_or_update_authorization(authorization, True)
 
-            else:
-                new_authorization = ProjectSummaryAuthorization(
-                    project_summary_guid=self.project_summary_guid,
-                    project_summary_authorization_type=authorization.get(
-                        'project_summary_authorization_type'),
-                    project_summary_permit_type=authorization.get('project_summary_permit_type'),
-                    existing_permits_authorizations=authorization.get(
-                        'existing_permits_authorizations'))
-                self.authorizations.append(new_authorization)
+            for authorization in ams_authorizations.get('new', []):
+                self.create_or_update_authorization(authorization, True)           
 
         if add_to_session:
             self.save(commit=False)
