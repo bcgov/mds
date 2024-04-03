@@ -66,16 +66,14 @@ export const ViewDigitalPermitCredential: FC = () => {
     return latestAmendment?.issue_date;
   };
 
-
-  const openCredentialContentsModal = (event) => {
+  const openCredentialContentsModal = (event, cred_exch_id) => {
     event.preventDefault();
-    console.log(minesActPermitIssuance[0].party_guid, minesActPermitIssuance[0].cred_exch_id);
     dispatch(
       openModal({
         props: {
           title: "Digital Credential Details",
           partyGuid: minesActPermitIssuance[0].party_guid,
-          credExchId: minesActPermitIssuance[0].cred_exch_id,
+          credExchId: cred_exch_id,
         },
         width: "50vw",
         content: modalConfig.CREDENTIAL_CONTENT_MODAL,
@@ -94,7 +92,9 @@ export const ViewDigitalPermitCredential: FC = () => {
       key: "details",
       title: "Details",
       dataIndex: "cred_exch_id",
-      render: () => <Button onClick={openCredentialContentsModal}> View </Button>,
+      render: (text) => (
+        <Button onClick={(event) => openCredentialContentsModal(event, text)}> View </Button>
+      ),
     },
   ];
 
@@ -149,7 +149,6 @@ export const ViewDigitalPermitCredential: FC = () => {
       })
     );
   };
-
 
   const releasePermitVCLock = (event) => {
     event.preventDefault();
@@ -293,7 +292,7 @@ export const ViewDigitalPermitCredential: FC = () => {
                 <Paragraph className="margin-none">
                   {VC_CRED_ISSUE_STATES[activePermitCredential?.cred_exch_state] ??
                     VC_CRED_ISSUE_STATES[
-                    minesActPermitIssuance[minesActPermitIssuance.length - 1]?.cred_exch_state
+                      minesActPermitIssuance[minesActPermitIssuance.length - 1]?.cred_exch_state
                     ] ??
                     "No Credential Issued"}
                 </Paragraph>
