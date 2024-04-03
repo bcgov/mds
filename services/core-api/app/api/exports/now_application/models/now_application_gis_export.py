@@ -23,6 +23,9 @@ class NowApplicationGisExport(Base):
     now_latitude = db.Column(db.String)
     now_longitude = db.Column(db.String)
     verified_date = db.Column(db.String)
+    mine_purpose = db.Column(db.String)
+    latest_response_date = db.Column(db.String)
+    regional_contact = db.Column(db.String)
 
     # Notice of Work Details
     is_applicant_individual_or_company = db.Column(db.String)
