@@ -237,13 +237,11 @@ exports[`ProjectSummaryForm renders properly 1`] = `
     </div>
   </div>
   <br />
-  <div
-    id="authorizations-involved"
-  >
+  <div>
     <h3
       class="ant-typography"
     >
-      Authorizations potentially involved in the project
+      Purpose & Authorization
     </h3>
     <div
       class="ant-alert ant-alert-warning ant-alert-with-description"
@@ -278,16 +276,10 @@ exports[`ProjectSummaryForm renders properly 1`] = `
         <div
           class="ant-alert-description"
         >
-          Please select the permits and authorizations that you anticipate needing for this project, based on your current understanding. This is to assist in planning and may not be complete list for the final application.
+          Select the authorization that you anticipate needing for this project. This is to assist in planning and may not be the complete list for the final application.
         </div>
       </div>
     </div>
-    <br />
-    <h3
-      class="ant-typography"
-    >
-      Mines Review Committee
-    </h3>
     <div
       class="ant-form-item ant-form-item-with-help"
     >
@@ -298,16 +290,13 @@ exports[`ProjectSummaryForm renders properly 1`] = `
           class="ant-col ant-form-item-label"
         >
           <label
-            class=""
+            class="ant-form-item-required"
+            for="authorizationTypes"
             title=""
           >
-            <p>
-              <b>
-                Does your project require a coordinated review by a Mine Review Committee, under Section 9 of the Mines Act?
-              </b>
-              <br />
-              This response will be reviewed by the Major Mines Office and confirmed by the Chief Permitting Officer.
-            </p>
+            <h4>
+              Regulatory Approval Type
+            </h4>
           </label>
         </div>
         <div
@@ -318,61 +307,14 @@ exports[`ProjectSummaryForm renders properly 1`] = `
           >
             <div
               class="ant-form-item-control-input-content"
-            >
-              <div
-                class="ant-radio-group ant-radio-group-outline"
-                id="mrc_review_required"
-              >
-                <label
-                  class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
-                >
-                  <span
-                    class="ant-radio ant-radio-disabled"
-                  >
-                    <input
-                      class="ant-radio-input"
-                      disabled=""
-                      name="mrc_review_required"
-                      type="radio"
-                      value="true"
-                    />
-                    <span
-                      class="ant-radio-inner"
-                    />
-                  </span>
-                  <span>
-                    Yes
-                  </span>
-                </label>
-                <label
-                  class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
-                >
-                  <span
-                    class="ant-radio ant-radio-disabled"
-                  >
-                    <input
-                      class="ant-radio-input"
-                      disabled=""
-                      name="mrc_review_required"
-                      type="radio"
-                      value="false"
-                    />
-                    <span
-                      class="ant-radio-inner"
-                    />
-                  </span>
-                  <span>
-                    No
-                  </span>
-                </label>
-              </div>
-            </div>
+            />
           </div>
           <div
             style="display: flex; flex-wrap: nowrap;"
           >
             <div
               class="ant-form-item-explain ant-form-item-explain-connected"
+              id="authorizationTypes_help"
               role="alert"
             >
               <div
@@ -383,7 +325,6 @@ exports[`ProjectSummaryForm renders properly 1`] = `
         </div>
       </div>
     </div>
-    <br />
   </div>
   <br />
   <div

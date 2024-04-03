@@ -15,17 +15,7 @@ class ProjectSummaryPermitType(SoftDeleteMixin, AuditMixin, Base):
     def get_all(cls):
         return cls.query.all()
     
-    # return true if valid, or error message if invalid
     @classmethod
-    def validate_permit_types(cls, permit_types, is_ams):
+    def validate_permit_types(cls, permit_type):
         valid_types = str(cls.query.all())
-
-        if not permit_types or len(permit_types) == 0:
-            return 'Permit type is required'
-        if is_ams and len(permit_types) > 1:
-            return 'Environmental Management Act authorization must have only one permit type'
-        for permit_type in permit_types:
-            if permit_type not in valid_types:
-                return f'Invalid project description permit type: {permit_type}'
-        
-        return True
+        return permit_type in valid_types

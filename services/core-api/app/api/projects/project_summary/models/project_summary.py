@@ -290,16 +290,10 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
         
     def create_or_update_authorization(self, authorization, is_ams):
-            valid_permit_types = ProjectSummaryPermitType.validate_permit_types(
-                authorization['project_summary_permit_type'], is_ams)
-            if valid_permit_types != True:
-                raise BadRequest(valid_permit_types)
-            authorization_type = authorization.get('project_summary_authorization_type')
-            if is_ams and not ProjectSummaryAuthorization.validate_ams_authorization_type(
-                authorization_type):
-                raise BadRequest(f'Invalid code selected for Environmental Management Act authorization: {authorization_type}')
             valid_authorization = ProjectSummaryAuthorization.validate_authorization(authorization, is_ams)
             if valid_authorization != True:
+                current_app.logger.info(f'Validation failed for the following authorization with error {valid_authorization}')
+                current_app.logger.info(authorization)
                 raise BadRequest(valid_authorization)
 
             updated_authorization_guid = authorization.get('project_summary_authorization_guid')

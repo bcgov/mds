@@ -143,9 +143,7 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
       if (authsOfType) {
         if (isArray(authsOfType)) {
           const formattedAuthorizations = authsOfType.map((a) => {
-            const existing_permits_authorizations =
-              a.existing_permits_authorizations?.split(",")?.map((p) => p.trim()) ?? [];
-            return transformAuthorization(type, { ...a, existing_permits_authorizations });
+            return transformAuthorization(type, a);
           });
           updatedAuthorizations = updatedAuthorizations.concat(formattedAuthorizations);
         } else {

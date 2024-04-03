@@ -7,12 +7,11 @@ import {
   Field,
   reduxForm,
   formValueSelector,
-  FormSection,
   InjectedFormProps,
   change,
 } from "redux-form";
-import { Alert, Button, Row, Col, Checkbox, Typography, Popconfirm } from "antd";
-import { DeleteOutlined, PlusOutlined, DownOutlined } from "@ant-design/icons";
+import { Alert, Button, Row, Col, Typography, Popconfirm } from "antd";
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import {
@@ -22,18 +21,15 @@ import {
   email,
   dateNotBeforeOther,
   dateNotAfterOther,
-  requiredRadioButton,
 } from "@common/utils/Validate";
 import {
-  getTransformedProjectSummaryAuthorizationTypes,
-  getDropdownProjectSummaryPermitTypes,
   getDropdownProjectSummaryStatusCodes,
   getProjectSummaryDocumentTypesHash,
 } from "@mds/common/redux/selectors/staticContentSelectors";
+import AuthorizationsInvolved from "@mds/common/components/projectSummary/AuthorizationsInvolved";
 import { getDropdownProjectLeads } from "@mds/common/redux/selectors/partiesSelectors";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import { Feature, IGroupedDropdownList, IProject, IProjectSummary, USER_ROLES } from "@mds/common";
-import { getFormattedProjectSummary } from "@mds/common/redux/selectors/projectSelectors";
 import { normalizePhone } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import * as routes from "@/constants/routes";
@@ -183,61 +179,6 @@ const contactFields = ({ fields, isNewProject, isEditMode }) => {
   );
 };
 
-const setInitialValues = (authorizationType, formValues) => {
-  const currentAuthorizationType = formValues?.authorizations?.find(
-    (val) => val?.project_summary_authorization_type === authorizationType
-  );
-  return currentAuthorizationType?.project_summary_permit_type ?? [];
-};
-
-const renderNestedFields = (
-  code,
-  { change, isNewProject },
-  isEditMode,
-  dropdownProjectSummaryPermitTypes,
-  formValues
-) => {
-  return (
-    <div>
-      {code !== "OTHER" && (
-        <>
-          <Field
-            id="project_summary_permit_type"
-            name="project_summary_permit_type"
-            fieldName={`${code}.project_summary_permit_type`}
-            options={dropdownProjectSummaryPermitTypes}
-            formName={FORM.ADD_EDIT_PROJECT_SUMMARY}
-            formValues={formValues}
-            change={change}
-            component={renderConfig.GROUP_CHECK_BOX}
-            label={
-              <>
-                <p>What type of permit is involved in your application?</p>
-              </>
-            }
-            setInitialValues={() => setInitialValues(code, formValues)}
-            disabled={!isNewProject && !isEditMode}
-          />
-        </>
-      )}
-      <Field
-        id={`${code}.existing_permits_authorizations`}
-        name="existing_permits_authorizations"
-        label={
-          <>
-            <p>
-              If your application involved a change to an existing permit, please list the numbers
-              of the permits involved.
-            </p>
-            <span className="light--sm">Please separate each permit number with a comma</span>
-          </>
-        }
-        component={renderConfig.FIELD}
-      />
-    </div>
-  );
-};
-
 const ProjectSummaryForm: FC<InjectedFormProps<IProjectSummary> & ProjectSummaryFormProps> = (
   props
 ) => {
@@ -258,20 +199,10 @@ const ProjectSummaryForm: FC<InjectedFormProps<IProjectSummary> & ProjectSummary
   );
   const documents = useSelector((state) => formSelector(state, "documents"));
 
-  const transformedProjectSummaryAuthorizationTypes = useSelector(
-    getTransformedProjectSummaryAuthorizationTypes
-  );
-  const dropdownProjectSummaryPermitTypes = useSelector(getDropdownProjectSummaryPermitTypes);
-  const formattedProjectSummary = useSelector(getFormattedProjectSummary);
   const projectSummaryStatusCodes = useSelector(getDropdownProjectSummaryStatusCodes);
   const projectSummaryDocumentTypesHash = useSelector(getProjectSummaryDocumentTypesHash);
 
   const projectLeadData = [unassignedProjectLeadEntry, ...projectLeads[0]?.opt];
-  const [checked, setChecked] = useState(
-    !props.isNewProject && formattedProjectSummary
-      ? formattedProjectSummary.authorizationOptions
-      : []
-  );
   const { mineGuid } = useParams<{ mineGuid: string }>();
   const history = useHistory();
 
@@ -370,96 +301,6 @@ const ProjectSummaryForm: FC<InjectedFormProps<IProjectSummary> & ProjectSummary
             </Col>
           )}
         </Row>
-      </div>
-    );
-  };
-
-  const handleChange = (e, code) => {
-    if (e.target.checked) {
-      setChecked((arr) => [code, ...arr]);
-    } else {
-      setChecked(checked.filter((item) => item !== code));
-      // @ts-ignore (expected 2 args got 3)
-      props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, code, null);
-    }
-  };
-
-  const renderAuthorizationsInvolved = () => {
-    return (
-      <div id="authorizations-involved">
-        <Typography.Title level={3}>
-          Authorizations potentially involved in the project
-        </Typography.Title>
-        <Alert
-          message=""
-          description="Please select the permits and authorizations that you anticipate needing for this project, based on your current understanding. This is to assist in planning and may not be complete list for the final application."
-          type="warning"
-          showIcon
-        />
-        <br />
-        <Typography.Title level={3}>Mines Review Committee</Typography.Title>
-        <Field
-          id="mrc_review_required"
-          name="mrc_review_required"
-          fieldName="mrc_review_required"
-          formName={FORM.ADD_EDIT_PROJECT_SUMMARY}
-          label={
-            <>
-              <p>
-                <b>
-                  Does your project require a coordinated review by a Mine Review Committee, under
-                  Section 9 of the Mines Act?
-                </b>
-                <br />
-                This response will be reviewed by the Major Mines Office and confirmed by the Chief
-                Permitting Officer.
-              </p>
-            </>
-          }
-          component={renderConfig.RADIO}
-          validate={[requiredRadioButton]}
-          disabled={!props.isNewProject && !isEditMode}
-        />
-        <br />
-        {transformedProjectSummaryAuthorizationTypes?.map((a) => {
-          return (
-            <React.Fragment key={a.code}>
-              <h2>{a.description}</h2>
-              <h4 className="padding-sm--bottom">
-                {a.children?.map((child) => {
-                  return (
-                    <FormSection name={child.code} key={`${a}.${child.code}`}>
-                      <Checkbox
-                        key={child.code}
-                        value={child.code}
-                        onChange={(e) => handleChange(e, child.code)}
-                        checked={checked.includes(child.code)}
-                        disabled={!props.isNewProject && !isEditMode}
-                      >
-                        {checked.includes(child.code) ? (
-                          <>
-                            {child.description} <DownOutlined />
-                          </>
-                        ) : (
-                          child.description
-                        )}
-                      </Checkbox>
-                      {checked.includes(child.code) &&
-                        renderNestedFields(
-                          child.code,
-                          props,
-                          isEditMode,
-                          dropdownProjectSummaryPermitTypes,
-                          props.isNewProject ? props.initialValues : formattedProjectSummary
-                        )}
-                    </FormSection>
-                  );
-                })}
-              </h4>
-              <br />
-            </React.Fragment>
-          );
-        })}
       </div>
     );
   };
@@ -649,7 +490,7 @@ const ProjectSummaryForm: FC<InjectedFormProps<IProjectSummary> & ProjectSummary
       </div>
       {renderProjectDetails()}
       <br />
-      {renderAuthorizationsInvolved()}
+      <AuthorizationsInvolved />
       <br />
       {renderProjectDates()}
       <br />

@@ -7,6 +7,7 @@ from app.extensions import db
 
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.projects.project_summary.models.project_summary_authorization_type import ProjectSummaryAuthorizationType
+from app.api.projects.project_summary.models.project_summary_permit_type import ProjectSummaryPermitType
 
 
 class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
@@ -38,7 +39,30 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
 
     @classmethod
     def validate_authorization(cls, authorization, is_ams):
+        valid_permit_types = list(map(lambda type: type.project_summary_permit_type, ProjectSummaryPermitType.get_all()))
+        ams_auth_types = ProjectSummaryAuthorizationType.get_by_group_id('ENVIRONMENTAL_MANAGMENT_ACT')
+        ams_auth_types_list = list(map(lambda auth_type: auth_type.project_summary_authorization_type, ams_auth_types))
 
+        # for "OTHER_LEGISLATION"
+        other_schema = {
+            'project_summary_authorization_guid': {
+                'type': 'string'
+            },
+            'authorization_description': {
+                'required': True,
+                'type': 'string',
+                'maxlength': 100
+            },
+            'project_summary_guid': {
+                'type': 'string',
+                'nullable': True,
+            },
+            'project_summary_authorization_type': {
+                'required': True,
+                'type': 'string'
+            }
+        }
+        # all other authorizations
         common_schema = {
             'project_summary_authorization_guid': {
                 'type': 'string'
@@ -55,14 +79,14 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
             'project_summary_permit_type': {
                 'required': True,
                 'type': 'list',
-                'schema': {'type': 'string'}
+                'allowed': valid_permit_types
             },
             'project_summary_authorization_type': {
                 'required': True,
                 'type': 'string'
             }
         }
-
+        # all AMS authorizations
         common_ams_schema = common_schema | {
             'project_summary_permit_type': {
                 'required': True,
@@ -80,6 +104,11 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
             'exemption_requested': {
                 'required': True,
                 'type': 'boolean'
+            },
+            'project_summary_authorization_type': {
+                'required': True,
+                'type': 'string',
+                'allowed': ams_auth_types_list
             }
         }
 
@@ -121,13 +150,17 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
         if is_ams:    
             permit_type = authorization.get('project_summary_permit_type')
 
+            if not permit_type or not isinstance(permit_type, list) or not permit_type[0]:
+                return f'Invalid authorization type {permit_type}'
             if permit_type[0] == 'AMENDMENT':
                 v = Validator(ams_amendment_schema, purge_unknown=True)
             elif permit_type[0] == 'NEW':
                 v = Validator(ams_new_schema, purge_unknown=True)
             else:
                 v = Validator(common_ams_schema, purge_unknown=True)        
-        
+        elif authorization.get('project_summary_authorization_type') == 'OTHER':
+            v = Validator(other_schema, purge_unknown=True)
+
         if not v.validate(authorization):
             return json.dumps(v.errors)
         return True
