@@ -143,6 +143,9 @@ const verifiableCredentialsSlice = createAppSlice({
     getMinesActPermitIssuance: (state): MinesActPermitVerifiableCredentialsIssuance[] => {
       return state.minesActPermitVerifiableCredentialsIssuance;
     },
+    getCredentialExchangeDetails: (state): any[] => {
+      return state.credentialExchangeDetails;
+    },
   },
 });
 
@@ -151,7 +154,10 @@ export const {
   revokeCredential,
   fetchCredentialExchangeDetails,
 } = verifiableCredentialsSlice.actions;
-export const { getMinesActPermitIssuance } = verifiableCredentialsSlice.getSelectors(
+export const {
+  getMinesActPermitIssuance,
+  getCredentialExchangeDetails,
+} = verifiableCredentialsSlice.getSelectors(
   (rootState: RootState) => rootState.verifiableCredentials
 );
 

@@ -1,9 +1,5 @@
 import { Alert, Button, Col, Row, Table, Typography } from "antd";
-import {
-  VC_ACTIVE_CREDENTIAL_STATES,
-  VC_CONNECTION_STATES,
-  VC_CRED_ISSUE_STATES,
-} from "@mds/common/constants";
+import { VC_ACTIVE_CREDENTIAL_STATES, VC_CRED_ISSUE_STATES } from "@mds/common/constants";
 import { patchPermitVCLocked } from "@mds/common/redux/actionCreators/permitActionCreator";
 import {
   IMine,
@@ -33,17 +29,9 @@ import {
   fetchCredentialConnections,
   getMinesActPermitIssuance,
   revokeCredential,
-  fetchCredentialExchangeDetails,
 } from "@mds/common/redux/slices/verifiableCredentialsSlice";
 
 const { Paragraph, Title } = Typography;
-
-const permitAmendmentLike = (permit: IPermit): any => ({
-  permit_amendment_id: undefined,
-  permit_amendment_guid: undefined,
-  amendment_no: 0,
-  ...permit,
-});
 
 export const ViewDigitalPermitCredential: FC = () => {
   const dispatch = useDispatch();
@@ -60,7 +48,6 @@ export const ViewDigitalPermitCredential: FC = () => {
     VC_ACTIVE_CREDENTIAL_STATES.includes(mapi.cred_exch_state)
   );
   const mine: IMine = useSelector((state) => getMineById(state, mineGuid));
-
   const mineCommodityOptions: IMineCommodityOption[] = useSelector(getMineCommodityOptions);
 
   const mineDisturbanceOptions: IMineDisturbanceOption[] = useSelector(getMineDisturbanceOptions);
@@ -79,31 +66,37 @@ export const ViewDigitalPermitCredential: FC = () => {
     return latestAmendment?.issue_date;
   };
 
-  const permitHistoryColumns = [
-    renderDateColumn("issue_date", "Issued"),
-    renderDateColumn("authorization_end_date", "Expiry"),
-    {
-      key: "current_permittee_digital_wallet_connection_state",
-      title: "Status",
-      dataIndex: "current_permittee_digital_wallet_connection_state",
-      render: (text) => <div>{VC_CONNECTION_STATES[text]}</div>,
-    },
-    renderTextColumn("amendment_no", "Issuance"),
-  ];
 
-  const transformPermitHistoryData = () => {
-    const amendments = permitRecord?.permit_amendments
-      ?.sort((a, b) => a.permit_amendment_id - b.permit_amendment_id)
-      .map((a, index) => {
-        return {
-          ...a,
-          amendment_no: index + 1,
-        };
-      });
-    const permitHistory: any[] = [permitAmendmentLike(permitRecord), ...(amendments ?? [])];
-
-    return permitHistory.reverse();
+  const openCredentialContentsModal = (event) => {
+    event.preventDefault();
+    console.log(minesActPermitIssuance[0].party_guid, minesActPermitIssuance[0].cred_exch_id);
+    dispatch(
+      openModal({
+        props: {
+          title: "Digital Credential Details",
+          partyGuid: minesActPermitIssuance[0].party_guid,
+          credExchId: minesActPermitIssuance[0].cred_exch_id,
+        },
+        width: "50vw",
+        content: modalConfig.CREDENTIAL_CONTENT_MODAL,
+      })
+    );
   };
+
+  const permitHistoryColumns = [
+    {
+      title: "Credential Type",
+      render: () => "AnonCreds",
+    },
+    renderDateColumn("last_webhook_timestamp", "Last Updated"),
+    renderTextColumn("cred_exch_state", "Status"),
+    {
+      key: "details",
+      title: "Details",
+      dataIndex: "cred_exch_id",
+      render: () => <Button onClick={openCredentialContentsModal}> View </Button>,
+    },
+  ];
 
   const getCommodityDescriptionFromCode = (codes: string[]) => {
     const commodityDescription = mineCommodityOptions.reduce(
@@ -157,6 +150,7 @@ export const ViewDigitalPermitCredential: FC = () => {
     );
   };
 
+
   const releasePermitVCLock = (event) => {
     event.preventDefault();
     dispatch(
@@ -188,24 +182,22 @@ export const ViewDigitalPermitCredential: FC = () => {
             showIcon
           />
         )}
-      <Title level={2}>Digital Permit Credential</Title>
+      <Title level={2}>Permit {permitRecord?.permit_no}</Title>
       <Row gutter={48}>
         <Col md={12} sm={24}>
           <Title level={3} className="primary-colour">
-            Credential Details
+            Permit Details
           </Title>
-          <>
-            <Row gutter={6}>
-              <Col span={12}>
-                <Paragraph strong>Permittee Name</Paragraph>
-                <Paragraph>{permitRecord?.current_permittee}</Paragraph>
-              </Col>
-              <Col span={12}>
-                <Paragraph strong>Issue Date</Paragraph>
-                <Paragraph>{formatDate(getLatestIssueDate())}</Paragraph>
-              </Col>
-            </Row>
-          </>
+          <Row gutter={6}>
+            <Col span={12}>
+              <Paragraph strong>Permittee Name</Paragraph>
+              <Paragraph>{permitRecord?.current_permittee}</Paragraph>
+            </Col>
+            <Col span={12}>
+              <Paragraph strong>Issue Date</Paragraph>
+              <Paragraph>{formatDate(getLatestIssueDate())}</Paragraph>
+            </Col>
+          </Row>
 
           <Row gutter={6}>
             <Col span={12}>
@@ -283,7 +275,7 @@ export const ViewDigitalPermitCredential: FC = () => {
         <Col md={12} sm={24} className="border--left--layout">
           <>
             <Title level={3} className="primary-colour margin-large-bottom">
-              Credential Status
+              Digital Credential Status
             </Title>
             <Row>
               <Col
@@ -301,7 +293,7 @@ export const ViewDigitalPermitCredential: FC = () => {
                 <Paragraph className="margin-none">
                   {VC_CRED_ISSUE_STATES[activePermitCredential?.cred_exch_state] ??
                     VC_CRED_ISSUE_STATES[
-                      minesActPermitIssuance[minesActPermitIssuance.length - 1]?.cred_exch_state
+                    minesActPermitIssuance[minesActPermitIssuance.length - 1]?.cred_exch_state
                     ] ??
                     "No Credential Issued"}
                 </Paragraph>
@@ -321,29 +313,13 @@ export const ViewDigitalPermitCredential: FC = () => {
             <Row align="middle" justify="space-between" className="margin-large--top">
               <Col>
                 <Title level={3} className="purple margin-none">
-                  Credential History
+                  Digital Credential History
                 </Title>
-              </Col>
-              <Col>
-                <Button
-                  type="ghost"
-                  className="margin-large--left"
-                  onClick={() => {
-                    dispatch(
-                      fetchCredentialExchangeDetails({
-                        partyGuid: permitRecord.current_permittee_guid,
-                        credentialExchangeGuid: minesActPermitIssuance[0].cred_exch_id,
-                      })
-                    );
-                  }}
-                >
-                  View History
-                </Button>
               </Col>
             </Row>
             <Table
               rowKey={(rec) => rec.explosives_permit_amendment_guid ?? rec.explosives_permit_guid}
-              dataSource={transformPermitHistoryData()}
+              dataSource={minesActPermitIssuance}
               pagination={false}
               columns={permitHistoryColumns}
             />
