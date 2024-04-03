@@ -1,7 +1,18 @@
 -- This materialized view is meant to exist only in the production environment.  It was manually added to the
 -- flyway_schema_history table in dev and test to prevent it being run in those environments
 
-DROP MATERIALIZED VIEW IF EXISTS public.now_application_gis_export_view;
+DO $$ BEGIN
+    IF EXISTS(
+        SELECT 1
+        FROM pg_matviews
+        WHERE schemaname = 'public'
+          AND matviewname = 'now_application_gis_export_view'
+    )
+    THEN
+        -- If it is a materialized view
+        EXECUTE 'DROP MATERIALIZED VIEW IF EXISTS public.now_application_gis_export_view';
+    END IF;
+END $$;
 
 CREATE MATERIALIZED VIEW public.now_application_gis_export_view
     TABLESPACE pg_default
