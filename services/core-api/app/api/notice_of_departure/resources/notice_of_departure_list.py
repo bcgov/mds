@@ -69,7 +69,6 @@ class NoticeOfDepartureListResource(Resource, UserMixin):
     @api.expect(CREATE_NOD_MODEL)
     @api.marshal_with(NOD_MODEL, code=201)
     def post(self):
-        raise BadRequest('TEST this has been a bad request')
         parser = reqparse.RequestParser()
         parser.add_argument(
             'nod_title',
