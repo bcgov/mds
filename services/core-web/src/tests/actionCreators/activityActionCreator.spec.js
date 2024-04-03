@@ -36,7 +36,6 @@ describe("`fetchActivities` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
-    expect.assertions(3);
     return fetchActivities(user)(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);

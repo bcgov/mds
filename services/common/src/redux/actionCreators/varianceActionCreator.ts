@@ -1,6 +1,6 @@
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
-import { ENVIRONMENT } from "@mds/common";
+import { ENVIRONMENT } from "@mds/common/constants";
 import { request, success, error, IDispatchError } from "../actions/genericActions";
 import * as reducerTypes from "@mds/common/constants/reducerTypes";
 import * as Strings from "@mds/common/constants/strings";
@@ -15,7 +15,7 @@ import {
   IVariance,
   IAddDocumentToVariancePayload,
   IFetchVariancesPayload,
-} from "@mds/common";
+} from "@mds/common/interfaces";
 
 export const createVariance = (
   { mineGuid },
@@ -34,9 +34,8 @@ export const createVariance = (
       dispatch(success(reducerTypes.CREATE_MINE_VARIANCE));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.CREATE_MINE_VARIANCE));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -57,9 +56,8 @@ export const updateVariance = (
       dispatch(success(reducerTypes.UPDATE_MINE_VARIANCE));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.UPDATE_MINE_VARIANCE));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -111,9 +109,8 @@ export const addDocumentToVariance = (
       dispatch(success(reducerTypes.ADD_DOCUMENT_TO_VARIANCE));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.ADD_DOCUMENT_TO_VARIANCE));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -134,9 +131,8 @@ export const removeDocumentFromVariance = (
       dispatch(success(reducerTypes.REMOVE_DOCUMENT_FROM_VARIANCE));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.REMOVE_DOCUMENT_FROM_VARIANCE));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -172,9 +168,8 @@ export const deleteVariance = (
       dispatch(success(reducerTypes.DELETE_VARIANCE));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.DELETE_VARIANCE));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };

@@ -1,6 +1,7 @@
 import { notification } from "antd";
 import { hideLoading, showLoading } from "react-redux-loading-bar";
-import { ENVIRONMENT, INoticeOfDeparture, ICreateNoD, INodDocumentPayload } from "@mds/common";
+import { INoticeOfDeparture, ICreateNoD, INodDocumentPayload } from "@mds/common/interfaces";
+import { ENVIRONMENT } from "@mds/common/constants";
 import { IDispatchError, error, request, success } from "../actions/genericActions";
 import {
   ADD_DOCUMENT_TO_NOTICE_OF_DEPARTURE,
@@ -42,11 +43,12 @@ export const createNoticeOfDeparture = (
       dispatch(success(CREATE_NOTICE_OF_DEPARTURE));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(CREATE_NOTICE_OF_DEPARTURE));
-      throw new Error(err);
     })
-    .finally(() => dispatch(hideLoading("modal")));
+    .finally(() => {
+      dispatch(hideLoading("modal"));
+    });
 };
 
 export const fetchNoticesOfDeparture = (
@@ -89,9 +91,8 @@ export const updateNoticeOfDeparture = (
       dispatch(success(UPDATE_NOTICE_OF_DEPARTURE));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(UPDATE_NOTICE_OF_DEPARTURE));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -138,7 +139,7 @@ export const addDocumentToNoticeOfDeparture = (
     })
     .catch((err) => {
       dispatch(error(ADD_DOCUMENT_TO_NOTICE_OF_DEPARTURE));
-      throw new Error(err);
+      return Promise.reject(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -167,6 +168,6 @@ export const removeFileFromDocumentManager = ({
       return response;
     })
     .catch((err) => {
-      throw new Error(err);
+      return Promise.reject(err);
     });
 };

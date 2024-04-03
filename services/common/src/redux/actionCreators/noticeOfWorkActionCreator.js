@@ -1,6 +1,6 @@
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
-import { ENVIRONMENT } from "@mds/common";
+import { ENVIRONMENT } from "@mds/common/constants";
 import { error, request, success } from "../actions/genericActions";
 import * as API from "@mds/common/constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
@@ -96,9 +96,8 @@ export const createNoticeOfWorkApplication = (payload) => (dispatch) => {
       });
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -124,11 +123,10 @@ export const createNoticeOfWorkApplicationImportSubmissionDocumentsJob = (applic
       });
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(
         error(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_IMPORT_SUBMISSION_DOCUMENTS_JOB)
       );
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -154,9 +152,8 @@ export const importNoticeOfWorkApplication = (
       dispatch(success(reducerTypes.IMPORT_NOTICE_OF_WORK_APPLICATION));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.IMPORT_NOTICE_OF_WORK_APPLICATION));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -216,9 +213,8 @@ export const updateNoticeOfWorkApplication = (
       dispatch(success(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -245,9 +241,8 @@ export const createNoticeOfWorkApplicationProgress = (applicationGuid, progressC
       dispatch(success(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -277,9 +272,8 @@ export const updateNoticeOfWorkApplicationProgress = (
       dispatch(success(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -318,9 +312,8 @@ export const createNoticeOfWorkApplicationReview = (applicationGuid, payload) =>
       dispatch(success(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_REVIEW));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_REVIEW));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -348,9 +341,8 @@ export const updateNoticeOfWorkApplicationReview = (
       dispatch(success(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_REVIEW));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_REVIEW));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -428,9 +420,8 @@ export const updateNoticeOfWorkStatus = (now_application_guid, payload) => (disp
       dispatch(success(reducerTypes.UPDATE_NOTICE_OF_WORK_STATUS));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.UPDATE_NOTICE_OF_WORK_STATUS));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -456,9 +447,8 @@ export const createApplicationDelay = (applicationGuid, payload) => (dispatch) =
       dispatch(success(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_DELAY));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_DELAY));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -480,9 +470,8 @@ export const updateApplicationDelay = (applicationGuid, delayGuid, payload) => (
       dispatch(success(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_DELAY));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_DELAY));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -500,9 +489,8 @@ export const fetchApplicationDelay = (applicationGuid) => (dispatch) => {
       dispatch(noticeOfWorkActions.storeNoticeOfWorkApplicationDelay(response.data));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.FETCH_NOTICE_OF_WORK_APPLICATION_DELAY));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -546,9 +534,8 @@ export const createAdminAmendmentApplication = (payload) => (dispatch) => {
       });
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.CREATE_ADMIN_AMENDMENT_APPLICATION));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
 };

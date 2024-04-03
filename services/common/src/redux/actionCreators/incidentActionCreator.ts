@@ -1,6 +1,6 @@
 import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { notification } from "antd";
-import { ENVIRONMENT } from "@mds/common";
+import { ENVIRONMENT } from "@mds/common/constants";
 import { request, success, error } from "../actions/genericActions";
 import * as reducerTypes from "@mds/common/constants/reducerTypes";
 import * as Strings from "@mds/common/constants/strings";
@@ -28,9 +28,8 @@ export const createMineIncident = (
       dispatch(success(reducerTypes.CREATE_MINE_INCIDENT));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.CREATE_MINE_INCIDENT));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -90,9 +89,8 @@ export const updateMineIncident = (
       dispatch(success(reducerTypes.UPDATE_MINE_INCIDENT));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.UPDATE_MINE_INCIDENT));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -115,9 +113,8 @@ export const removeDocumentFromMineIncident = (mineGuid, mineIncidentGuid, mineD
       dispatch(success(reducerTypes.REMOVE_DOCUMENT_FROM_MINE_INCIDENT));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.REMOVE_DOCUMENT_FROM_MINE_INCIDENT));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -151,9 +148,8 @@ export const deleteMineIncident = (mineGuid, mineIncidentGuid) => (dispatch) => 
       dispatch(success(reducerTypes.DELETE_MINE_INCIDENT));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.DELETE_MINE_INCIDENT));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -187,9 +183,8 @@ export const createMineIncidentNote = (mineIncidentGuid, payload) => (dispatch) 
       dispatch(success(reducerTypes.CREATE_MINE_INCIDENT_NOTE));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.CREATE_MINE_INCIDENT_NOTE));
-      throw new Error(err);
     });
 };
 
@@ -208,8 +203,7 @@ export const deleteMineIncidentNote = (mineIncidentGuid, mineIncidentNoteGuid) =
       dispatch(success(reducerTypes.DELETE_MINE_INCIDENT_NOTE));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.DELETE_MINE_INCIDENT_NOTE));
-      throw new Error(err);
     });
 };

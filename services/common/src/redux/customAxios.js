@@ -46,9 +46,9 @@ const notifymAdmin = (error) => {
 };
 
 CustomAxios = ({
-  errorToastMessage = null,
+  errorToastMessage = "default",
   suppressErrorNotification = false,
-  successToastMessage = null,
+  successToastMessage = undefined,
 } = {}) => {
   const instance = axios.create();
 

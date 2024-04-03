@@ -212,6 +212,9 @@ class PartyResource(Resource, UserMixin):
     def put(self, party_guid):
         if is_minespace_user():
             user = bceid_username()
+            current_app.logger.debug('**********************')
+            current_app.logger.debug(user)
+            current_app.logger.debug('**********************')
             minespace_user = MinespaceUser.find_by_email(user + "@bceid")
             if not minespace_user:
                 raise BadRequest('User not found.')

@@ -1,6 +1,6 @@
 import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { notification } from "antd";
-import { ENVIRONMENT } from "@mds/common";
+import { ENVIRONMENT } from "@mds/common/constants";
 import { request, success, error } from "../actions/genericActions";
 import * as securitiesActions from "../actions/securitiesActions";
 import * as reducerTypes from "@mds/common/constants/reducerTypes";
@@ -33,9 +33,8 @@ export const createBond = (payload) => (dispatch) => {
       dispatch(success(reducerTypes.CREATE_BOND));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.CREATE_BOND));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -53,9 +52,8 @@ export const updateBond = (payload, bondGuid) => (dispatch) => {
       dispatch(success(reducerTypes.UPDATE_BOND));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.UPDATE_BOND));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -73,9 +71,8 @@ export const transferBond = (payload, bondGuid) => (dispatch) => {
       dispatch(success(reducerTypes.TRANSFER_BOND));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.TRANSFER_BOND));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -105,9 +102,8 @@ export const createReclamationInvoice = (payload) => (dispatch) => {
       dispatch(success(reducerTypes.CREATE_RECLAMATION_INVOICE));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.CREATE_RECLAMATION_INVOICE));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -125,9 +121,8 @@ export const updateReclamationInvoice = (payload, invoiceGuid) => (dispatch) => 
       dispatch(success(reducerTypes.UPDATE_RECLAMATION_INVOICE));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.UPDATE_RECLAMATION_INVOICE));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
