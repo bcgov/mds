@@ -138,8 +138,8 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
         core_recipients, ms_recipients = self.collectRecipients(is_proponent)
 
         due_date = due_date = (self.due_date).strftime("%b %d %Y") if self.due_date else "N/A"
-        core_report_page_link =  f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/required-reports/{report_code.lower()}-required-reports'
-        ms_report_page_link = f'{Config.MINESPACE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/reports'
+        core_report_page_link =  f'{Config.CORE_PRODUCTION_URL}/dashboard/reporting/mine/{self.mine.mine_guid}/report/{self.mine_report_guid}'
+        ms_report_page_link = f'{Config.MINESPACE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/reports/{self.mine_report_guid}'
         report_name = ""
 
         if is_crr:
