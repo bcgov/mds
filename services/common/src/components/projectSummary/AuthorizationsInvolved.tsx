@@ -291,8 +291,7 @@ const RenderMinesActPermitSelect = () => {
   useEffect(() => {
     if (mine_guid && (!loaded || permitMineGuid !== mine_guid)) {
       setLoaded(false);
-      dispatch(fetchPermits(mine_guid)).then((resp) => {
-        console.log(resp);
+      dispatch(fetchPermits(mine_guid)).then(() => {
         setLoaded(true);
       });
     }
@@ -303,6 +302,7 @@ const RenderMinesActPermitSelect = () => {
       name="existing_permits_authorizations"
       component={RenderMultiSelect}
       data={permitDropdown}
+      loading={!loaded}
       label="If your application involved a change to an existing permit, please list the permits involved."
     />
   );

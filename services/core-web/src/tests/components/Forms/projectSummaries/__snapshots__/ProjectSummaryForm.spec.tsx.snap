@@ -2,7 +2,7 @@
 
 exports[`ProjectSummaryForm renders properly 1`] = `
 <form
-  class="ant-legacy-form ant-legacy-form-vertical"
+  class="ant-form ant-form-vertical"
 >
   <div
     class="right center-mobile"

@@ -13,6 +13,7 @@ interface MultiSelectProps extends BaseInputProps {
   data: IOption[];
   filterOption?: any;
   onSearch?: any;
+  loading?: boolean;
 }
 
 export const RenderMultiSelect: FC<MultiSelectProps> = (props) => {
