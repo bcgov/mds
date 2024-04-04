@@ -148,7 +148,7 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
         elif Config.ENVIRONMENT_NAME == 'dev':
             core_url = Config.CORE_DEV_URL
             ms_url = Config.MINESPACE_DEV_URL
-        else:
+        elif Config.ENVIRONMENT_NAME != 'prod':
             core_url = Config.CORE_TEST_URL
             ms_url = Config.MINESPACE_TEST_URL
 
