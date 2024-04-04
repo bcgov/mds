@@ -10,7 +10,6 @@ from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.verifiable_credentials.models.credentials import PartyVerifiableCredentialMinesActPermit
 from app.api.services.traction_service import TractionService
-from app.api.verifiable_credentials.manager import VerifiableCredentialManager
 
 class VerifiableCredentialManager(): 
     def __init__(self):
@@ -34,8 +33,8 @@ class VerifiableCredentialManager():
         attributes = VerifiableCredentialManager.collect_attributes_for_mines_act_permit_111(newest_amendment)
         traction_svc.offer_mines_act_permit_111(connection.connection_id, attributes)
  
-
-    def collect_attributes_for_mines_act_permit_111(self, permit_amendment: PermitAmendment) -> List[dict]:
+    @classmethod
+    def collect_attributes_for_mines_act_permit_111(cls, permit_amendment: PermitAmendment) -> List[dict]:
         # collect information for schema
         # https://github.com/bcgov/bc-vcpedia/blob/main/credentials/bc-mines-act-permit/1.1.1/governance.md#261-schema-definition
         credential_attrs={}
