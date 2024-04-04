@@ -322,6 +322,8 @@ const RenderAuthCodeFormSection = ({ authorizationType, code }) => {
             name="authorization_description"
             label="If the legislation you're seeking isn't listed, please provide the details here"
             maximumCharacters={100}
+            required
+            validate={[required, maxLength(100)]}
             component={RenderAutoSizeField}
           />
         </Row>

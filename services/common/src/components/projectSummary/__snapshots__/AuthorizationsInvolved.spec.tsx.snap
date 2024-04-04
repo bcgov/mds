@@ -2492,18 +2492,14 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                                     class="ant-col ant-form-item-label"
                                   >
                                     <label
-                                      class=""
+                                      class="ant-form-item-required"
                                       for="ADD_EDIT_PROJECT_SUMMARY_authorizations.OTHER[0].authorization_description"
                                       title=""
                                     >
-                                      <div>
+                                      <div
+                                        style="width: 100%;"
+                                      >
                                         If the legislation you're seeking isn't listed, please provide the details here
-                                         
-                                        <span
-                                          class="form-item-optional"
-                                        >
-                                           (optional)
-                                        </span>
                                       </div>
                                     </label>
                                   </div>

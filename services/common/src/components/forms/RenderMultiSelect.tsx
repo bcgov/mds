@@ -64,7 +64,6 @@ export const RenderMultiSelect: FC<MultiSelectProps> = (props) => {
                 id={props.id ?? props.input.name}
                 onSearch={onSearch}
                 options={data}
-                value={input.value ?? undefined}
                 onChange={input.onChange}
                 filterOption={filterOption || caseInsensitiveLabelFilter}
                 showArrow
