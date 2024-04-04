@@ -8,8 +8,6 @@ import {
   arrayRemove,
   change,
   getFormValues,
-  updateSyncErrors,
-  getFormSyncErrors,
 } from "redux-form";
 import { Typography, Checkbox, Tooltip, Alert, Button, Row, Col, Form } from "antd";
 import InfoCircleOutlined from "@ant-design/icons/InfoCircleOutlined";
@@ -24,6 +22,7 @@ import {
   exactLength,
   maxLength,
   required,
+  requiredList,
   requiredRadioButton,
 } from "@mds/common/redux/utils/Validate";
 import RenderField from "@mds/common/components/forms/RenderField";
@@ -37,6 +36,7 @@ import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { createDropDownList } from "@mds/common/redux/utils/helpers";
 import { FORM } from "@mds/common/constants/forms";
+import RenderHiddenField from "../forms/RenderHiddenField";
 
 const RenderEMAPermitCommonSections = ({ isAmendment }) => {
   const purposeLabel = isAmendment
@@ -367,42 +367,6 @@ export const AuthorizationsInvolved = () => {
   );
   const amsAuthTypes = useSelector(getAmsAuthorizationTypes);
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
-  const [formTouched, setFormTouched] = useState(false);
-  const errors = useSelector(getFormSyncErrors(FORM.ADD_EDIT_PROJECT_SUMMARY));
-  const { authorizationTypes = [] } = formValues;
-
-  useEffect(() => {
-    // console.log("formValues", formValues);
-  }, [formValues]);
-
-  useEffect(() => {
-    console.log("formValues.authorizationTypes", authorizationTypes);
-    if (!authorizationTypes || authorizationTypes.length === 0) {
-      dispatch(
-        updateSyncErrors(
-          FORM.ADD_EDIT_PROJECT_SUMMARY,
-          {
-            ...errors,
-            authorizationTypes: "Please select at least one authorization type",
-          },
-          null
-        )
-      );
-    } else if (authorizationTypes.length > 0 && errors.authorizationTypes) {
-      console.log("clearing error:", errors.authorizationTypes);
-      dispatch(
-        updateSyncErrors(
-          FORM.ADD_EDIT_PROJECT_SUMMARY,
-          {
-            ...errors,
-            authorizationTypes: null,
-          },
-          null
-        )
-      );
-    }
-    console.log("errors", errors);
-  }, [authorizationTypes]);
 
   const handleChange = (e, code) => {
     if (e.target.checked) {
@@ -412,7 +376,7 @@ export const AuthorizationsInvolved = () => {
         formVal = { AMENDMENT: [], NEW: [], types: [] };
       } else if (code === "OTHER") {
         formVal = [
-          { project_summary_authorization_type: code, project_summary_permit_type: "OTHER" },
+          { project_summary_authorization_type: code, project_summary_permit_type: ["OTHER"] },
         ];
       } else {
         formVal = [{ project_summary_authorization_type: code }];
@@ -422,85 +386,88 @@ export const AuthorizationsInvolved = () => {
       const index = formValues.authorizationTypes.indexOf(code);
       dispatch(arrayRemove(FORM.ADD_EDIT_PROJECT_SUMMARY, `authorizationTypes`, index));
     }
-    setFormTouched(true);
   };
 
   return (
-    <FormSection name="authorizations">
-      <Typography.Title level={3}>Purpose & Authorization</Typography.Title>
-      <Alert
-        description="Select the authorization that you anticipate needing for this project. This is to assist in planning and may not be the complete list for the final application."
-        type="warning"
-        showIcon
-      />
-      <Form.Item
-        required
-        label={<h4>Regulatory Approval Type</h4>}
-        name="authorizationTypes"
-        validateStatus={formTouched && errors.authorizationTypes && "error"}
-        help={formTouched && errors.authorizationTypes}
-      >
-        {transformedProjectSummaryAuthorizationTypes.map((authorization) => {
-          return (
-            <div key={authorization.code}>
-              <Typography.Title level={5}>{authorization.description}</Typography.Title>
-              {authorization.children.map((child) => {
-                const checked = formValues.authorizationTypes.includes(child.code);
-                return (
-                  <div key={child.code}>
-                    <Row gutter={[0, 16]}>
-                      <Col>
-                        <Checkbox
-                          value={child.code}
-                          checked={checked}
-                          onChange={(e) => handleChange(e, child.code)}
-                        >
-                          <b>{child.description}</b>
-                        </Checkbox>
-                        {checked && (
-                          <>
-                            {child.code === "MINES_ACT_PERMIT" && (
-                              <Alert
-                                message="You are submitting a Major Mine Application to the Chief Permitting Officer"
-                                description={
-                                  <ul>
-                                    <li>
-                                      For changes to existing activities, submit Notice of Departure
-                                      through MineSpace.
-                                    </li>
-                                    <li>
-                                      For exploration work outside the permit mine area without
-                                      expanding the production area, submit a Notice of Work
-                                      application via FrountCounter BC to amend your MX or CX
-                                      permit.
-                                    </li>
-                                    <li>
-                                      For induced polarization surveys or exploration drilling
-                                      within the permit mine area, submit a Notification of Deemed
-                                      Authorixation application via FrountCounter BC.
-                                    </li>
-                                  </ul>
-                                }
-                                type="info"
-                                showIcon
-                              />
+    <div id="authorizations-involved">
+      <Row gutter={[0, 16]}>
+        <Typography.Title level={3}>Purpose & Authorization</Typography.Title>
+        <Alert
+          description="Select the authorization that you anticipate needing for this project. This is to assist in planning and may not be the complete list for the final application."
+          type="warning"
+          showIcon
+        />
+        <Field
+          name="authorizationTypes"
+          component={RenderHiddenField}
+          required
+          validate={[requiredList]}
+          label={<Typography.Title level={4}>Regulatory Approval Type</Typography.Title>}
+        >
+          <FormSection name="authorizations">
+            {transformedProjectSummaryAuthorizationTypes.map((authorization) => {
+              return (
+                <div key={authorization.code}>
+                  <Typography.Title level={5}>{authorization.description}</Typography.Title>
+                  {authorization.children.map((child) => {
+                    const checked = formValues.authorizationTypes.includes(child.code);
+                    return (
+                      <div key={child.code}>
+                        <Row gutter={[0, 16]}>
+                          <Col>
+                            <Checkbox
+                              value={child.code}
+                              checked={checked}
+                              onChange={(e) => handleChange(e, child.code)}
+                            >
+                              <b>{child.description}</b>
+                            </Checkbox>
+                            {checked && (
+                              <>
+                                {child.code === "MINES_ACT_PERMIT" && (
+                                  <Alert
+                                    message="You are submitting a Major Mine Application to the Chief Permitting Officer"
+                                    description={
+                                      <ul>
+                                        <li>
+                                          For changes to existing activities, submit Notice of
+                                          Departure through MineSpace.
+                                        </li>
+                                        <li>
+                                          For exploration work outside the permit mine area without
+                                          expanding the production area, submit a Notice of Work
+                                          application via FrountCounter BC to amend your MX or CX
+                                          permit.
+                                        </li>
+                                        <li>
+                                          For induced polarization surveys or exploration drilling
+                                          within the permit mine area, submit a Notification of
+                                          Deemed Authorixation application via FrountCounter BC.
+                                        </li>
+                                      </ul>
+                                    }
+                                    type="info"
+                                    showIcon
+                                  />
+                                )}
+                                <RenderAuthCodeFormSection
+                                  code={child.code}
+                                  authorizationType={authorization.code}
+                                />
+                              </>
                             )}
-                            <RenderAuthCodeFormSection
-                              code={child.code}
-                              authorizationType={authorization.code}
-                            />
-                          </>
-                        )}
-                      </Col>
-                    </Row>
-                  </div>
-                );
-              })}
-            </div>
-          );
-        })}
-      </Form.Item>
-    </FormSection>
+                          </Col>
+                        </Row>
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })}
+          </FormSection>
+        </Field>
+      </Row>
+    </div>
   );
 };
 

@@ -1,112 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AuthorizationsInvolved renders properly 1`] = `
-Object {
-  "asFragment": [Function],
-  "baseElement": <body>
-    <div>
-      <form
-        class="ant-form ant-form-vertical edit"
-        id="ADD_EDIT_PROJECT_SUMMARY"
-      >
-        <div>
-          <h3
-            class="ant-typography"
-          >
-            Purpose & Authorization
-          </h3>
-          <div
-            class="ant-alert ant-alert-warning ant-alert-with-description"
-            data-show="true"
-            role="alert"
-          >
-            <span
-              aria-label="exclamation-circle"
-              class="anticon anticon-exclamation-circle ant-alert-icon"
-              role="img"
-            >
-              <svg
-                aria-hidden="true"
-                data-icon="exclamation-circle"
-                fill="currentColor"
-                focusable="false"
-                height="1em"
-                viewBox="64 64 896 896"
-                width="1em"
-              >
-                <path
-                  d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
-                />
-                <path
-                  d="M464 688a48 48 0 1096 0 48 48 0 10-96 0zm24-112h48c4.4 0 8-3.6 8-8V296c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8z"
-                />
-              </svg>
-            </span>
-            <div
-              class="ant-alert-content"
-            >
-              <div
-                class="ant-alert-description"
-              >
-                Select the authorization that you anticipate needing for this project. This is to assist in planning and may not be the complete list for the final application.
-              </div>
-            </div>
-          </div>
-          <div
-            class="ant-form-item ant-form-item-with-help"
-          >
-            <div
-              class="ant-row ant-form-item-row"
-            >
-              <div
-                class="ant-col ant-form-item-label"
-              >
-                <label
-                  class="ant-form-item-required"
-                  for="ADD_EDIT_PROJECT_SUMMARY_authorizationTypes"
-                  title=""
-                >
-                  <h4>
-                    Regulatory Approval Type
-                  </h4>
-                </label>
-              </div>
-              <div
-                class="ant-col ant-form-item-control"
-              >
-                <div
-                  class="ant-form-item-control-input"
-                >
-                  <div
-                    class="ant-form-item-control-input-content"
-                  />
-                </div>
-                <div
-                  style="display: flex; flex-wrap: nowrap;"
-                >
-                  <div
-                    class="ant-form-item-explain ant-form-item-explain-connected"
-                    id="ADD_EDIT_PROJECT_SUMMARY_authorizationTypes_help"
-                    role="alert"
-                  >
-                    <div
-                      class=""
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </form>
-    </div>
-  </body>,
-  "container": <div>
-    <form
-      class="ant-form ant-form-vertical edit"
-      id="ADD_EDIT_PROJECT_SUMMARY"
+<div>
+  <form
+    class="ant-form ant-form-vertical edit"
+    id="ADD_EDIT_PROJECT_SUMMARY"
+  >
+    <div
+      id="authorizations-involved"
     >
-      <div>
+      <div
+        class="ant-row"
+        style="margin-top: -8px; margin-bottom: -8px;"
+      >
         <h3
           class="ant-typography"
         >
@@ -150,7 +56,7 @@ Object {
           </div>
         </div>
         <div
-          class="ant-form-item ant-form-item-with-help"
+          class="ant-form-item ant-form-item-with-help form-item-hidden"
         >
           <div
             class="ant-row ant-form-item-row"
@@ -163,9 +69,15 @@ Object {
                 for="ADD_EDIT_PROJECT_SUMMARY_authorizationTypes"
                 title=""
               >
-                <h4>
-                  Regulatory Approval Type
-                </h4>
+                <div
+                  style="width: 100%;"
+                >
+                  <h4
+                    class="ant-typography"
+                  >
+                    Regulatory Approval Type
+                  </h4>
+                </div>
               </label>
             </div>
             <div
@@ -176,7 +88,2432 @@ Object {
               >
                 <div
                   class="ant-form-item-control-input-content"
-                />
+                >
+                  <div
+                    style="display: none;"
+                  >
+                    <input
+                      class="ant-input"
+                      name="authorizationTypes"
+                      type="text"
+                      value="AIR_EMISSIONS_DISCHARGE_PERMIT,MINES_ACT_PERMIT,MUNICIPAL_WASTEWATER_REGULATION,OCCUPANT_CUT_LICENCE,OTHER,WATER_LICENCE"
+                    />
+                  </div>
+                  <div>
+                    <div>
+                      <h5
+                        class="ant-typography"
+                      >
+                        Mines Act
+                      </h5>
+                      <div>
+                        <div
+                          class="ant-row"
+                          style="margin-top: -8px; margin-bottom: -8px;"
+                        >
+                          <div
+                            class="ant-col"
+                            style="padding-top: 8px; padding-bottom: 8px;"
+                          >
+                            <label
+                              class="ant-checkbox-wrapper ant-checkbox-wrapper-checked ant-checkbox-wrapper-in-form-item"
+                            >
+                              <span
+                                class="ant-checkbox ant-checkbox-checked"
+                              >
+                                <input
+                                  checked=""
+                                  class="ant-checkbox-input"
+                                  type="checkbox"
+                                  value="MINES_ACT_PERMIT"
+                                />
+                                <span
+                                  class="ant-checkbox-inner"
+                                />
+                              </span>
+                              <span>
+                                <b>
+                                  Mines Act permit
+                                </b>
+                              </span>
+                            </label>
+                            <div
+                              class="ant-alert ant-alert-info ant-alert-with-description"
+                              data-show="true"
+                              role="alert"
+                            >
+                              <span
+                                aria-label="info-circle"
+                                class="anticon anticon-info-circle ant-alert-icon"
+                                role="img"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  data-icon="info-circle"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="64 64 896 896"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+                                  />
+                                  <path
+                                    d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"
+                                  />
+                                </svg>
+                              </span>
+                              <div
+                                class="ant-alert-content"
+                              >
+                                <div
+                                  class="ant-alert-message"
+                                >
+                                  You are submitting a Major Mine Application to the Chief Permitting Officer
+                                </div>
+                                <div
+                                  class="ant-alert-description"
+                                >
+                                  <ul>
+                                    <li>
+                                      For changes to existing activities, submit Notice of Departure through MineSpace.
+                                    </li>
+                                    <li>
+                                      For exploration work outside the permit mine area without expanding the production area, submit a Notice of Work application via FrountCounter BC to amend your MX or CX permit.
+                                    </li>
+                                    <li>
+                                      For induced polarization surveys or exploration drilling within the permit mine area, submit a Notification of Deemed Authorixation application via FrountCounter BC.
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              class="ant-row"
+                            >
+                              <div
+                                class="ant-form-item ant-form-item-with-help"
+                              >
+                                <div
+                                  class="ant-row ant-form-item-row"
+                                >
+                                  <div
+                                    class="ant-col ant-form-item-label"
+                                  >
+                                    <label
+                                      class="ant-form-item-required"
+                                      for="ADD_EDIT_PROJECT_SUMMARY_authorizations.MINES_ACT_PERMIT[0].project_summary_permit_type"
+                                      title="What type of permit is involved in your application?"
+                                    >
+                                      What type of permit is involved in your application?
+                                    </label>
+                                  </div>
+                                  <div
+                                    class="ant-col ant-form-item-control"
+                                  >
+                                    <div
+                                      class="ant-form-item-control-input"
+                                    >
+                                      <div
+                                        class="ant-form-item-control-input-content"
+                                      >
+                                        <div
+                                          aria-required="true"
+                                          class="ant-checkbox-group"
+                                          id="ADD_EDIT_PROJECT_SUMMARY_authorizations.MINES_ACT_PERMIT[0].project_summary_permit_type"
+                                          name="authorizations.MINES_ACT_PERMIT[0].project_summary_permit_type"
+                                        >
+                                          <label
+                                            class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                                          >
+                                            <span
+                                              class="ant-checkbox"
+                                            >
+                                              <input
+                                                class="ant-checkbox-input"
+                                                name="authorizations.MINES_ACT_PERMIT[0].project_summary_permit_type"
+                                                type="checkbox"
+                                                value="AMENDMENT"
+                                              />
+                                              <span
+                                                class="ant-checkbox-inner"
+                                              />
+                                            </span>
+                                            <span>
+                                              Amendment to an existing permit
+                                            </span>
+                                          </label>
+                                          <label
+                                            class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                                          >
+                                            <span
+                                              class="ant-checkbox"
+                                            >
+                                              <input
+                                                class="ant-checkbox-input"
+                                                name="authorizations.MINES_ACT_PERMIT[0].project_summary_permit_type"
+                                                type="checkbox"
+                                                value="CLOSURE"
+                                              />
+                                              <span
+                                                class="ant-checkbox-inner"
+                                              />
+                                            </span>
+                                            <span>
+                                              Closure of an existing permit
+                                            </span>
+                                          </label>
+                                          <label
+                                            class="ant-checkbox-wrapper ant-checkbox-wrapper-checked ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                                          >
+                                            <span
+                                              class="ant-checkbox ant-checkbox-checked"
+                                            >
+                                              <input
+                                                checked=""
+                                                class="ant-checkbox-input"
+                                                name="authorizations.MINES_ACT_PERMIT[0].project_summary_permit_type"
+                                                type="checkbox"
+                                                value="NEW"
+                                              />
+                                              <span
+                                                class="ant-checkbox-inner"
+                                              />
+                                            </span>
+                                            <span>
+                                              New
+                                            </span>
+                                          </label>
+                                          <label
+                                            class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                                          >
+                                            <span
+                                              class="ant-checkbox"
+                                            >
+                                              <input
+                                                class="ant-checkbox-input"
+                                                name="authorizations.MINES_ACT_PERMIT[0].project_summary_permit_type"
+                                                type="checkbox"
+                                                value="NOTIFICATION"
+                                              />
+                                              <span
+                                                class="ant-checkbox-inner"
+                                              />
+                                            </span>
+                                            <span>
+                                              Notification
+                                            </span>
+                                          </label>
+                                          <label
+                                            class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                                          >
+                                            <span
+                                              class="ant-checkbox"
+                                            >
+                                              <input
+                                                class="ant-checkbox-input"
+                                                name="authorizations.MINES_ACT_PERMIT[0].project_summary_permit_type"
+                                                type="checkbox"
+                                                value="OTHER"
+                                              />
+                                              <span
+                                                class="ant-checkbox-inner"
+                                              />
+                                            </span>
+                                            <span>
+                                              Other
+                                            </span>
+                                          </label>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div
+                                      style="display: flex; flex-wrap: nowrap;"
+                                    >
+                                      <div
+                                        class="ant-form-item-explain ant-form-item-explain-connected"
+                                        id="ADD_EDIT_PROJECT_SUMMARY_authorizations.MINES_ACT_PERMIT[0].project_summary_permit_type_help"
+                                        role="alert"
+                                      >
+                                        <div
+                                          class=""
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div
+                                class="form-multiselect"
+                              >
+                                <div
+                                  class="ant-form-item ant-form-item-with-help"
+                                >
+                                  <div
+                                    class="ant-row ant-form-item-row"
+                                  >
+                                    <div
+                                      class="ant-col ant-form-item-label"
+                                    >
+                                      <label
+                                        class=""
+                                        for="ADD_EDIT_PROJECT_SUMMARY_authorizations.MINES_ACT_PERMIT[0].existing_permits_authorizations"
+                                        title=""
+                                      >
+                                        <div>
+                                          If your application involved a change to an existing permit, please list the permits involved.
+                                           
+                                          <span
+                                            class="form-item-optional"
+                                          >
+                                             (optional)
+                                          </span>
+                                        </div>
+                                      </label>
+                                    </div>
+                                    <div
+                                      class="ant-col ant-form-item-control"
+                                    >
+                                      <div
+                                        class="ant-form-item-control-input"
+                                      >
+                                        <div
+                                          class="ant-form-item-control-input-content"
+                                        >
+                                          <div
+                                            class="ant-select ant-select-sm ant-select-in-form-item ant-select-multiple ant-select-show-arrow ant-select-show-search"
+                                            name="authorizations.MINES_ACT_PERMIT[0].existing_permits_authorizations"
+                                            style="width: 100%;"
+                                          >
+                                            <div
+                                              class="ant-select-selector"
+                                            >
+                                              <div
+                                                class="ant-select-selection-overflow"
+                                              >
+                                                <div
+                                                  class="ant-select-selection-overflow-item ant-select-selection-overflow-item-suffix"
+                                                  style="opacity: 1;"
+                                                >
+                                                  <div
+                                                    class="ant-select-selection-search"
+                                                    style="width: 0px;"
+                                                  >
+                                                    <input
+                                                      aria-activedescendant="ADD_EDIT_PROJECT_SUMMARY_authorizations.MINES_ACT_PERMIT[0].existing_permits_authorizations_list_0"
+                                                      aria-autocomplete="list"
+                                                      aria-controls="ADD_EDIT_PROJECT_SUMMARY_authorizations.MINES_ACT_PERMIT[0].existing_permits_authorizations_list"
+                                                      aria-haspopup="listbox"
+                                                      aria-owns="ADD_EDIT_PROJECT_SUMMARY_authorizations.MINES_ACT_PERMIT[0].existing_permits_authorizations_list"
+                                                      autocomplete="off"
+                                                      class="ant-select-selection-search-input"
+                                                      id="ADD_EDIT_PROJECT_SUMMARY_authorizations.MINES_ACT_PERMIT[0].existing_permits_authorizations"
+                                                      readonly=""
+                                                      role="combobox"
+                                                      style="opacity: 0;"
+                                                      type="search"
+                                                      unselectable="on"
+                                                      value=""
+                                                    />
+                                                    <span
+                                                      aria-hidden="true"
+                                                      class="ant-select-selection-search-mirror"
+                                                    >
+                                                      
+                                                       
+                                                    </span>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <span
+                                                class="ant-select-selection-placeholder"
+                                              />
+                                            </div>
+                                            <span
+                                              aria-hidden="true"
+                                              class="ant-select-arrow"
+                                              style="user-select: none;"
+                                              unselectable="on"
+                                            >
+                                              <span
+                                                aria-label="down"
+                                                class="anticon anticon-down ant-select-suffix"
+                                                role="img"
+                                              >
+                                                <svg
+                                                  aria-hidden="true"
+                                                  data-icon="down"
+                                                  fill="currentColor"
+                                                  focusable="false"
+                                                  height="1em"
+                                                  viewBox="64 64 896 896"
+                                                  width="1em"
+                                                >
+                                                  <path
+                                                    d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                                                  />
+                                                </svg>
+                                              </span>
+                                            </span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div
+                                        style="display: flex; flex-wrap: nowrap;"
+                                      >
+                                        <div
+                                          class="ant-form-item-explain ant-form-item-explain-connected"
+                                          id="ADD_EDIT_PROJECT_SUMMARY_authorizations.MINES_ACT_PERMIT[0].existing_permits_authorizations_help"
+                                          role="alert"
+                                        >
+                                          <div
+                                            class=""
+                                          />
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <h5
+                        class="ant-typography"
+                      >
+                        Environmental Management Act
+                      </h5>
+                      <div>
+                        <div
+                          class="ant-row"
+                          style="margin-top: -8px; margin-bottom: -8px;"
+                        >
+                          <div
+                            class="ant-col"
+                            style="padding-top: 8px; padding-bottom: 8px;"
+                          >
+                            <label
+                              class="ant-checkbox-wrapper ant-checkbox-wrapper-checked ant-checkbox-wrapper-in-form-item"
+                            >
+                              <span
+                                class="ant-checkbox ant-checkbox-checked"
+                              >
+                                <input
+                                  checked=""
+                                  class="ant-checkbox-input"
+                                  type="checkbox"
+                                  value="AIR_EMISSIONS_DISCHARGE_PERMIT"
+                                />
+                                <span
+                                  class="ant-checkbox-inner"
+                                />
+                              </span>
+                              <span>
+                                <b>
+                                  Air emissions discharge permit
+                                </b>
+                              </span>
+                            </label>
+                            <div
+                              class="ant-form-item ant-form-item-with-help"
+                            >
+                              <div
+                                class="ant-row ant-form-item-row"
+                              >
+                                <div
+                                  class="ant-col ant-form-item-label"
+                                >
+                                  <label
+                                    class="ant-form-item-required"
+                                    for="ADD_EDIT_PROJECT_SUMMARY_authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.types"
+                                    title="What type of authorization is involved in your application?"
+                                  >
+                                    What type of authorization is involved in your application?
+                                  </label>
+                                </div>
+                                <div
+                                  class="ant-col ant-form-item-control"
+                                >
+                                  <div
+                                    class="ant-form-item-control-input"
+                                  >
+                                    <div
+                                      class="ant-form-item-control-input-content"
+                                    >
+                                      <div
+                                        aria-required="true"
+                                        class="ant-checkbox-group"
+                                        id="ADD_EDIT_PROJECT_SUMMARY_authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.types"
+                                        name="authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.types"
+                                      >
+                                        <label
+                                          class="ant-checkbox-wrapper ant-checkbox-wrapper-checked ant-checkbox-wrapper-disabled ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                                        >
+                                          <span
+                                            class="ant-checkbox ant-checkbox-checked ant-checkbox-disabled"
+                                          >
+                                            <input
+                                              checked=""
+                                              class="ant-checkbox-input"
+                                              disabled=""
+                                              name="authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.types"
+                                              type="checkbox"
+                                              value="AMENDMENT"
+                                            />
+                                            <span
+                                              class="ant-checkbox-inner"
+                                            />
+                                          </span>
+                                          <span>
+                                            Amendment to an existing authorization
+                                            <div
+                                              class="ant-row"
+                                              style="margin: -8px -16px -8px -24px; cursor: default;"
+                                            >
+                                              <div
+                                                class="ant-col grey-box"
+                                                style="padding-top: 8px; padding-bottom: 8px;"
+                                              >
+                                                <div>
+                                                  <div
+                                                    class="ant-form-item ant-form-item-with-help"
+                                                  >
+                                                    <div
+                                                      class="ant-row ant-form-item-row"
+                                                    >
+                                                      <div
+                                                        class="ant-col ant-form-item-label"
+                                                      >
+                                                        <label
+                                                          class="ant-form-item-required"
+                                                          for="ADD_EDIT_PROJECT_SUMMARY_authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].existing_permits_authorizations[0]"
+                                                          title=""
+                                                        >
+                                                          <div
+                                                            style="width: 100%;"
+                                                          >
+                                                            <div
+                                                              class="ant-row ant-row-space-between"
+                                                              style="flex-basis: 100%;"
+                                                            >
+                                                              <div
+                                                                class="ant-col"
+                                                              >
+                                                                Authorization Number
+                                                              </div>
+                                                              <div
+                                                                class="ant-col"
+                                                              >
+                                                                <button
+                                                                  class="ant-btn ant-btn-default"
+                                                                  type="button"
+                                                                >
+                                                                  <span>
+                                                                    Cancel
+                                                                  </span>
+                                                                </button>
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                        </label>
+                                                      </div>
+                                                      <div
+                                                        class="ant-col ant-form-item-control"
+                                                      >
+                                                        <div
+                                                          class="ant-form-item-control-input"
+                                                        >
+                                                          <div
+                                                            class="ant-form-item-control-input-content"
+                                                          >
+                                                            <input
+                                                              class="ant-input"
+                                                              name="authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].existing_permits_authorizations[0]"
+                                                              type="text"
+                                                              value="1234"
+                                                            />
+                                                            <div
+                                                              class="form-item-help authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].existing_permits_authorizations[0]-form-help"
+                                                            >
+                                                              Number only (e.g. PC1234 should be entered as 1234)
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                        <div
+                                                          style="display: flex; flex-wrap: nowrap;"
+                                                        >
+                                                          <div
+                                                            class="ant-form-item-explain ant-form-item-explain-connected"
+                                                            id="ADD_EDIT_PROJECT_SUMMARY_authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].existing_permits_authorizations[0]_help"
+                                                            role="alert"
+                                                          >
+                                                            <div
+                                                              class=""
+                                                            />
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                  <div
+                                                    class="ant-form-item ant-form-item-with-help"
+                                                  >
+                                                    <div
+                                                      class="ant-row ant-form-item-row"
+                                                    >
+                                                      <div
+                                                        class="ant-col ant-form-item-label"
+                                                      >
+                                                        <label
+                                                          class="ant-form-item-required"
+                                                          for="ADD_EDIT_PROJECT_SUMMARY_authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].amendment_severity"
+                                                          title=""
+                                                        >
+                                                          <div
+                                                            style="width: 100%;"
+                                                          >
+                                                            Amendment Type
+                                                          </div>
+                                                        </label>
+                                                      </div>
+                                                      <div
+                                                        class="ant-col ant-form-item-control"
+                                                      >
+                                                        <div
+                                                          class="ant-form-item-control-input"
+                                                        >
+                                                          <div
+                                                            class="ant-form-item-control-input-content"
+                                                          >
+                                                            <div
+                                                              class="ant-radio-group ant-radio-group-solid"
+                                                            >
+                                                              <label
+                                                                class="ant-radio-wrapper ant-radio-wrapper-checked ant-radio-wrapper-in-form-item"
+                                                              >
+                                                                <span
+                                                                  class="ant-radio ant-radio-checked"
+                                                                >
+                                                                  <input
+                                                                    checked=""
+                                                                    class="ant-radio-input"
+                                                                    name="authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].amendment_severity"
+                                                                    type="radio"
+                                                                    value="SIG"
+                                                                  />
+                                                                  <span
+                                                                    class="ant-radio-inner"
+                                                                  />
+                                                                </span>
+                                                                <span>
+                                                                  Significant
+                                                                </span>
+                                                              </label>
+                                                              <label
+                                                                class="ant-radio-wrapper ant-radio-wrapper-in-form-item"
+                                                              >
+                                                                <span
+                                                                  class="ant-radio"
+                                                                >
+                                                                  <input
+                                                                    class="ant-radio-input"
+                                                                    name="authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].amendment_severity"
+                                                                    type="radio"
+                                                                    value="MIN"
+                                                                  />
+                                                                  <span
+                                                                    class="ant-radio-inner"
+                                                                  />
+                                                                </span>
+                                                                <span>
+                                                                  Minor
+                                                                </span>
+                                                              </label>
+                                                            </div>
+                                                            <div
+                                                              class="form-item-help authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].amendment_severity-form-help"
+                                                            >
+                                                              As defined in the Environmental Management Act Public Notification Regulation
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                        <div
+                                                          style="display: flex; flex-wrap: nowrap;"
+                                                        >
+                                                          <div
+                                                            class="ant-form-item-explain ant-form-item-explain-connected"
+                                                            id="ADD_EDIT_PROJECT_SUMMARY_authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].amendment_severity_help"
+                                                            role="alert"
+                                                          >
+                                                            <div
+                                                              class=""
+                                                            />
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                  <div
+                                                    class="ant-form-item ant-form-item-with-help"
+                                                  >
+                                                    <div
+                                                      class="ant-row ant-form-item-row"
+                                                    >
+                                                      <div
+                                                        class="ant-col ant-form-item-label"
+                                                      >
+                                                        <label
+                                                          class="ant-form-item-required"
+                                                          for="ADD_EDIT_PROJECT_SUMMARY_authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].amendment_changes"
+                                                          title="Amendment Changes Requested that relate to the British Columbia Environmental Act (Select all that apply)"
+                                                        >
+                                                          Amendment Changes Requested that relate to the British Columbia Environmental Act (Select all that apply)
+                                                        </label>
+                                                      </div>
+                                                      <div
+                                                        class="ant-col ant-form-item-control"
+                                                      >
+                                                        <div
+                                                          class="ant-form-item-control-input"
+                                                        >
+                                                          <div
+                                                            class="ant-form-item-control-input-content"
+                                                          >
+                                                            <div
+                                                              aria-required="true"
+                                                              class="ant-checkbox-group"
+                                                              id="ADD_EDIT_PROJECT_SUMMARY_authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].amendment_changes"
+                                                              name="authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].amendment_changes"
+                                                            >
+                                                              <label
+                                                                class="ant-checkbox-wrapper ant-checkbox-wrapper-checked ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                                                              >
+                                                                <span
+                                                                  class="ant-checkbox ant-checkbox-checked"
+                                                                >
+                                                                  <input
+                                                                    checked=""
+                                                                    class="ant-checkbox-input"
+                                                                    name="authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].amendment_changes"
+                                                                    type="checkbox"
+                                                                    value="ILT"
+                                                                  />
+                                                                  <span
+                                                                    class="ant-checkbox-inner"
+                                                                  />
+                                                                </span>
+                                                                <span>
+                                                                  Increase Discharge Limit (&lt;10%)
+                                                                </span>
+                                                              </label>
+                                                              <label
+                                                                class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                                                              >
+                                                                <span
+                                                                  class="ant-checkbox"
+                                                                >
+                                                                  <input
+                                                                    class="ant-checkbox-input"
+                                                                    name="authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].amendment_changes"
+                                                                    type="checkbox"
+                                                                    value="IGT"
+                                                                  />
+                                                                  <span
+                                                                    class="ant-checkbox-inner"
+                                                                  />
+                                                                </span>
+                                                                <span>
+                                                                  Increase Discharge Limit (&gt;10%)
+                                                                </span>
+                                                              </label>
+                                                              <label
+                                                                class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                                                              >
+                                                                <span
+                                                                  class="ant-checkbox"
+                                                                >
+                                                                  <input
+                                                                    class="ant-checkbox-input"
+                                                                    name="authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].amendment_changes"
+                                                                    type="checkbox"
+                                                                    value="DDL"
+                                                                  />
+                                                                  <span
+                                                                    class="ant-checkbox-inner"
+                                                                  />
+                                                                </span>
+                                                                <span>
+                                                                  Decrease Discharge Limit
+                                                                </span>
+                                                              </label>
+                                                              <label
+                                                                class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                                                              >
+                                                                <span
+                                                                  class="ant-checkbox"
+                                                                >
+                                                                  <input
+                                                                    class="ant-checkbox-input"
+                                                                    name="authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].amendment_changes"
+                                                                    type="checkbox"
+                                                                    value="NAM"
+                                                                  />
+                                                                  <span
+                                                                    class="ant-checkbox-inner"
+                                                                  />
+                                                                </span>
+                                                                <span>
+                                                                  Name Change
+                                                                </span>
+                                                              </label>
+                                                              <label
+                                                                class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                                                              >
+                                                                <span
+                                                                  class="ant-checkbox"
+                                                                >
+                                                                  <input
+                                                                    class="ant-checkbox-input"
+                                                                    name="authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].amendment_changes"
+                                                                    type="checkbox"
+                                                                    value="TRA"
+                                                                  />
+                                                                  <span
+                                                                    class="ant-checkbox-inner"
+                                                                  />
+                                                                </span>
+                                                                <span>
+                                                                  Transfer
+                                                                </span>
+                                                              </label>
+                                                              <label
+                                                                class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                                                              >
+                                                                <span
+                                                                  class="ant-checkbox"
+                                                                >
+                                                                  <input
+                                                                    class="ant-checkbox-input"
+                                                                    name="authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].amendment_changes"
+                                                                    type="checkbox"
+                                                                    value="MMR"
+                                                                  />
+                                                                  <span
+                                                                    class="ant-checkbox-inner"
+                                                                  />
+                                                                </span>
+                                                                <span>
+                                                                  Modify Monitoring Requirements
+                                                                </span>
+                                                              </label>
+                                                              <label
+                                                                class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                                                              >
+                                                                <span
+                                                                  class="ant-checkbox"
+                                                                >
+                                                                  <input
+                                                                    class="ant-checkbox-input"
+                                                                    name="authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].amendment_changes"
+                                                                    type="checkbox"
+                                                                    value="RCH"
+                                                                  />
+                                                                  <span
+                                                                    class="ant-checkbox-inner"
+                                                                  />
+                                                                </span>
+                                                                <span>
+                                                                  Regulatory Change
+                                                                </span>
+                                                              </label>
+                                                              <label
+                                                                class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                                                              >
+                                                                <span
+                                                                  class="ant-checkbox"
+                                                                >
+                                                                  <input
+                                                                    class="ant-checkbox-input"
+                                                                    name="authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].amendment_changes"
+                                                                    type="checkbox"
+                                                                    value="OTH"
+                                                                  />
+                                                                  <span
+                                                                    class="ant-checkbox-inner"
+                                                                  />
+                                                                </span>
+                                                                <span>
+                                                                  Other
+                                                                </span>
+                                                              </label>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                        <div
+                                                          style="display: flex; flex-wrap: nowrap;"
+                                                        >
+                                                          <div
+                                                            class="ant-form-item-explain ant-form-item-explain-connected"
+                                                            id="ADD_EDIT_PROJECT_SUMMARY_authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].amendment_changes_help"
+                                                            role="alert"
+                                                          >
+                                                            <div
+                                                              class=""
+                                                            />
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                  <div
+                                                    class="ant-form-item ant-form-item-with-help"
+                                                  >
+                                                    <div
+                                                      class="ant-row ant-form-item-row"
+                                                    >
+                                                      <div
+                                                        class="ant-col ant-form-item-label"
+                                                      >
+                                                        <label
+                                                          class="ant-form-item-required"
+                                                          for="ADD_EDIT_PROJECT_SUMMARY_authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].is_contaminated"
+                                                          title=""
+                                                        >
+                                                          <div
+                                                            style="width: 100%;"
+                                                          >
+                                                            Is this Authorization required for remediation of a contaminated site?
+                                                          </div>
+                                                        </label>
+                                                      </div>
+                                                      <div
+                                                        class="ant-col ant-form-item-control"
+                                                      >
+                                                        <div
+                                                          class="ant-form-item-control-input"
+                                                        >
+                                                          <div
+                                                            class="ant-form-item-control-input-content"
+                                                          >
+                                                            <div
+                                                              class="ant-radio-group ant-radio-group-solid"
+                                                            >
+                                                              <label
+                                                                class="ant-radio-wrapper ant-radio-wrapper-in-form-item"
+                                                              >
+                                                                <span
+                                                                  class="ant-radio"
+                                                                >
+                                                                  <input
+                                                                    class="ant-radio-input"
+                                                                    name="authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].is_contaminated"
+                                                                    type="radio"
+                                                                    value="true"
+                                                                  />
+                                                                  <span
+                                                                    class="ant-radio-inner"
+                                                                  />
+                                                                </span>
+                                                                <span>
+                                                                  Yes
+                                                                </span>
+                                                              </label>
+                                                              <label
+                                                                class="ant-radio-wrapper ant-radio-wrapper-checked ant-radio-wrapper-in-form-item"
+                                                              >
+                                                                <span
+                                                                  class="ant-radio ant-radio-checked"
+                                                                >
+                                                                  <input
+                                                                    checked=""
+                                                                    class="ant-radio-input"
+                                                                    name="authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].is_contaminated"
+                                                                    type="radio"
+                                                                    value="false"
+                                                                  />
+                                                                  <span
+                                                                    class="ant-radio-inner"
+                                                                  />
+                                                                </span>
+                                                                <span>
+                                                                  No
+                                                                </span>
+                                                              </label>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                        <div
+                                                          style="display: flex; flex-wrap: nowrap;"
+                                                        >
+                                                          <div
+                                                            class="ant-form-item-explain ant-form-item-explain-connected"
+                                                            id="ADD_EDIT_PROJECT_SUMMARY_authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].is_contaminated_help"
+                                                            role="alert"
+                                                          >
+                                                            <div
+                                                              class=""
+                                                            />
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                  <div
+                                                    class="ant-form-item ant-form-item-with-help"
+                                                  >
+                                                    <div
+                                                      class="ant-row ant-form-item-row"
+                                                    >
+                                                      <div
+                                                        class="ant-col ant-form-item-label"
+                                                      >
+                                                        <label
+                                                          class="ant-form-item-required"
+                                                          for="ADD_EDIT_PROJECT_SUMMARY_authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].authorization_description"
+                                                          title=""
+                                                        >
+                                                          <div
+                                                            style="width: 100%;"
+                                                          >
+                                                            Additional Amendment Request Information
+                                                          </div>
+                                                        </label>
+                                                      </div>
+                                                      <div
+                                                        class="ant-col ant-form-item-control"
+                                                      >
+                                                        <div
+                                                          class="ant-form-item-control-input"
+                                                        >
+                                                          <div
+                                                            class="ant-form-item-control-input-content"
+                                                          >
+                                                            <textarea
+                                                              class="ant-input"
+                                                              name="authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].authorization_description"
+                                                              placeholder="e.g. To Discharge air emissions from x number of stacks at a sawmill."
+                                                              style="height: 0px; resize: none; min-height: -8px;"
+                                                            >
+                                                              adsf
+                                                            </textarea>
+                                                            <div
+                                                              class="ant-row ant-row-space-between form-item-help authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].authorization_description-form-help"
+                                                            >
+                                                              <span>
+                                                                Maximum 4000 characters
+                                                              </span>
+                                                              <span
+                                                                class="flex-end"
+                                                              >
+                                                                3996 / 4000
+                                                              </span>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                        <div
+                                                          style="display: flex; flex-wrap: nowrap;"
+                                                        >
+                                                          <div
+                                                            class="ant-form-item-explain ant-form-item-explain-connected"
+                                                            id="ADD_EDIT_PROJECT_SUMMARY_authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].authorization_description_help"
+                                                            role="alert"
+                                                          >
+                                                            <div
+                                                              class=""
+                                                            />
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                  <div
+                                                    class="ant-form-item ant-form-item-with-help"
+                                                  >
+                                                    <div
+                                                      class="ant-row ant-form-item-row"
+                                                    >
+                                                      <div
+                                                        class="ant-col ant-form-item-label"
+                                                      >
+                                                        <label
+                                                          class="ant-form-item-required"
+                                                          for="ADD_EDIT_PROJECT_SUMMARY_authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].exemption_requested"
+                                                          title=""
+                                                        >
+                                                          <div
+                                                            style="width: 100%;"
+                                                          >
+                                                            Pre-Application Exemption Request for Environmental Management Act application
+                                                            <span
+                                                              aria-label="info-circle"
+                                                              class="anticon anticon-info-circle"
+                                                              role="img"
+                                                            >
+                                                              <svg
+                                                                aria-hidden="true"
+                                                                class=""
+                                                                data-icon="info-circle"
+                                                                fill="currentColor"
+                                                                focusable="false"
+                                                                height="1em"
+                                                                viewBox="64 64 896 896"
+                                                                width="1em"
+                                                              >
+                                                                <path
+                                                                  d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+                                                                />
+                                                                <path
+                                                                  d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"
+                                                                />
+                                                              </svg>
+                                                            </span>
+                                                          </div>
+                                                        </label>
+                                                      </div>
+                                                      <div
+                                                        class="ant-col ant-form-item-control"
+                                                      >
+                                                        <div
+                                                          class="ant-form-item-control-input"
+                                                        >
+                                                          <div
+                                                            class="ant-form-item-control-input-content"
+                                                          >
+                                                            <div
+                                                              class="ant-radio-group ant-radio-group-solid"
+                                                            >
+                                                              <label
+                                                                class="ant-radio-wrapper ant-radio-wrapper-checked ant-radio-wrapper-in-form-item"
+                                                              >
+                                                                <span
+                                                                  class="ant-radio ant-radio-checked"
+                                                                >
+                                                                  <input
+                                                                    checked=""
+                                                                    class="ant-radio-input"
+                                                                    name="authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].exemption_requested"
+                                                                    type="radio"
+                                                                    value="true"
+                                                                  />
+                                                                  <span
+                                                                    class="ant-radio-inner"
+                                                                  />
+                                                                </span>
+                                                                <span>
+                                                                  Yes
+                                                                </span>
+                                                              </label>
+                                                              <label
+                                                                class="ant-radio-wrapper ant-radio-wrapper-in-form-item"
+                                                              >
+                                                                <span
+                                                                  class="ant-radio"
+                                                                >
+                                                                  <input
+                                                                    class="ant-radio-input"
+                                                                    name="authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].exemption_requested"
+                                                                    type="radio"
+                                                                    value="false"
+                                                                  />
+                                                                  <span
+                                                                    class="ant-radio-inner"
+                                                                  />
+                                                                </span>
+                                                                <span>
+                                                                  No
+                                                                </span>
+                                                              </label>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                        <div
+                                                          style="display: flex; flex-wrap: nowrap;"
+                                                        >
+                                                          <div
+                                                            class="ant-form-item-explain ant-form-item-explain-connected"
+                                                            id="ADD_EDIT_PROJECT_SUMMARY_authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].exemption_requested_help"
+                                                            role="alert"
+                                                          >
+                                                            <div
+                                                              class=""
+                                                            />
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <button
+                                                class="ant-btn ant-btn-default btn-sm-padding"
+                                                type="button"
+                                              >
+                                                <span
+                                                  aria-label="plus-circle"
+                                                  class="anticon anticon-plus-circle"
+                                                  role="img"
+                                                >
+                                                  <svg
+                                                    aria-hidden="true"
+                                                    class=""
+                                                    data-icon="plus-circle"
+                                                    fill="currentColor"
+                                                    focusable="false"
+                                                    height="1em"
+                                                    viewBox="64 64 896 896"
+                                                    width="1em"
+                                                  >
+                                                    <path
+                                                      d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm192 472c0 4.4-3.6 8-8 8H544v152c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V544H328c-4.4 0-8-3.6-8-8v-48c0-4.4 3.6-8 8-8h152V328c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v152h152c4.4 0 8 3.6 8 8v48z"
+                                                    />
+                                                  </svg>
+                                                </span>
+                                                <span>
+                                                  Add another amendment
+                                                </span>
+                                              </button>
+                                            </div>
+                                          </span>
+                                        </label>
+                                        <label
+                                          class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                                        >
+                                          <span
+                                            class="ant-checkbox"
+                                          >
+                                            <input
+                                              class="ant-checkbox-input"
+                                              name="authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.types"
+                                              type="checkbox"
+                                              value="NEW"
+                                            />
+                                            <span
+                                              class="ant-checkbox-inner"
+                                            />
+                                          </span>
+                                          <span>
+                                            New
+                                          </span>
+                                        </label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div
+                                    style="display: flex; flex-wrap: nowrap;"
+                                  >
+                                    <div
+                                      class="ant-form-item-explain ant-form-item-explain-connected"
+                                      id="ADD_EDIT_PROJECT_SUMMARY_authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.types_help"
+                                      role="alert"
+                                    >
+                                      <div
+                                        class=""
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <div
+                          class="ant-row"
+                          style="margin-top: -8px; margin-bottom: -8px;"
+                        >
+                          <div
+                            class="ant-col"
+                            style="padding-top: 8px; padding-bottom: 8px;"
+                          >
+                            <label
+                              class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item"
+                            >
+                              <span
+                                class="ant-checkbox"
+                              >
+                                <input
+                                  class="ant-checkbox-input"
+                                  type="checkbox"
+                                  value="EFFLUENT_DISCHARGE_PERMIT"
+                                />
+                                <span
+                                  class="ant-checkbox-inner"
+                                />
+                              </span>
+                              <span>
+                                <b>
+                                  Effluent discharge permit
+                                </b>
+                              </span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <div
+                          class="ant-row"
+                          style="margin-top: -8px; margin-bottom: -8px;"
+                        >
+                          <div
+                            class="ant-col"
+                            style="padding-top: 8px; padding-bottom: 8px;"
+                          >
+                            <label
+                              class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item"
+                            >
+                              <span
+                                class="ant-checkbox"
+                              >
+                                <input
+                                  class="ant-checkbox-input"
+                                  type="checkbox"
+                                  value="REFUSE_DISCHARGE_PERMIT"
+                                />
+                                <span
+                                  class="ant-checkbox-inner"
+                                />
+                              </span>
+                              <span>
+                                <b>
+                                  Refuse discharge permit
+                                </b>
+                              </span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <div
+                          class="ant-row"
+                          style="margin-top: -8px; margin-bottom: -8px;"
+                        >
+                          <div
+                            class="ant-col"
+                            style="padding-top: 8px; padding-bottom: 8px;"
+                          >
+                            <label
+                              class="ant-checkbox-wrapper ant-checkbox-wrapper-checked ant-checkbox-wrapper-in-form-item"
+                            >
+                              <span
+                                class="ant-checkbox ant-checkbox-checked"
+                              >
+                                <input
+                                  checked=""
+                                  class="ant-checkbox-input"
+                                  type="checkbox"
+                                  value="MUNICIPAL_WASTEWATER_REGULATION"
+                                />
+                                <span
+                                  class="ant-checkbox-inner"
+                                />
+                              </span>
+                              <span>
+                                <b>
+                                  Municipal wastewater regulation
+                                </b>
+                              </span>
+                            </label>
+                            <div
+                              class="ant-form-item ant-form-item-with-help"
+                            >
+                              <div
+                                class="ant-row ant-form-item-row"
+                              >
+                                <div
+                                  class="ant-col ant-form-item-label"
+                                >
+                                  <label
+                                    class="ant-form-item-required"
+                                    for="ADD_EDIT_PROJECT_SUMMARY_authorizations.MUNICIPAL_WASTEWATER_REGULATION.types"
+                                    title="What type of authorization is involved in your application?"
+                                  >
+                                    What type of authorization is involved in your application?
+                                  </label>
+                                </div>
+                                <div
+                                  class="ant-col ant-form-item-control"
+                                >
+                                  <div
+                                    class="ant-form-item-control-input"
+                                  >
+                                    <div
+                                      class="ant-form-item-control-input-content"
+                                    >
+                                      <div
+                                        aria-required="true"
+                                        class="ant-checkbox-group"
+                                        id="ADD_EDIT_PROJECT_SUMMARY_authorizations.MUNICIPAL_WASTEWATER_REGULATION.types"
+                                        name="authorizations.MUNICIPAL_WASTEWATER_REGULATION.types"
+                                      >
+                                        <label
+                                          class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                                        >
+                                          <span
+                                            class="ant-checkbox"
+                                          >
+                                            <input
+                                              class="ant-checkbox-input"
+                                              name="authorizations.MUNICIPAL_WASTEWATER_REGULATION.types"
+                                              type="checkbox"
+                                              value="AMENDMENT"
+                                            />
+                                            <span
+                                              class="ant-checkbox-inner"
+                                            />
+                                          </span>
+                                          <span>
+                                            Amendment to an existing authorization
+                                          </span>
+                                        </label>
+                                        <label
+                                          class="ant-checkbox-wrapper ant-checkbox-wrapper-checked ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                                        >
+                                          <span
+                                            class="ant-checkbox ant-checkbox-checked"
+                                          >
+                                            <input
+                                              checked=""
+                                              class="ant-checkbox-input"
+                                              name="authorizations.MUNICIPAL_WASTEWATER_REGULATION.types"
+                                              type="checkbox"
+                                              value="NEW"
+                                            />
+                                            <span
+                                              class="ant-checkbox-inner"
+                                            />
+                                          </span>
+                                          <span>
+                                            New
+                                          </span>
+                                        </label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div
+                                    style="display: flex; flex-wrap: nowrap;"
+                                  >
+                                    <div
+                                      class="ant-form-item-explain ant-form-item-explain-connected"
+                                      id="ADD_EDIT_PROJECT_SUMMARY_authorizations.MUNICIPAL_WASTEWATER_REGULATION.types_help"
+                                      role="alert"
+                                    >
+                                      <div
+                                        class=""
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              class="grey-box"
+                            >
+                              <div>
+                                <div
+                                  class="ant-form-item ant-form-item-with-help"
+                                >
+                                  <div
+                                    class="ant-row ant-form-item-row"
+                                  >
+                                    <div
+                                      class="ant-col ant-form-item-label"
+                                    >
+                                      <label
+                                        class="ant-form-item-required"
+                                        for="ADD_EDIT_PROJECT_SUMMARY_authorizations.MUNICIPAL_WASTEWATER_REGULATION.NEW[0].new_type"
+                                        title=""
+                                      >
+                                        <div
+                                          style="width: 100%;"
+                                        >
+                                          Authorization Type
+                                        </div>
+                                      </label>
+                                    </div>
+                                    <div
+                                      class="ant-col ant-form-item-control"
+                                    >
+                                      <div
+                                        class="ant-form-item-control-input"
+                                      >
+                                        <div
+                                          class="ant-form-item-control-input-content"
+                                        >
+                                          <div
+                                            class="ant-radio-group ant-radio-group-solid vertical-radio-group"
+                                          >
+                                            <label
+                                              class="ant-radio-wrapper ant-radio-wrapper-in-form-item"
+                                            >
+                                              <span
+                                                class="ant-radio"
+                                              >
+                                                <input
+                                                  class="ant-radio-input"
+                                                  name="authorizations.MUNICIPAL_WASTEWATER_REGULATION.NEW[0].new_type"
+                                                  type="radio"
+                                                  value="PER"
+                                                />
+                                                <span
+                                                  class="ant-radio-inner"
+                                                />
+                                              </span>
+                                              <span>
+                                                Permit
+                                                <br />
+                                                <span
+                                                  class="label-subtitle"
+                                                >
+                                                  Authorization to discharge waste to the environment; an ongoing authorization.
+                                                </span>
+                                              </span>
+                                            </label>
+                                            <label
+                                              class="ant-radio-wrapper ant-radio-wrapper-checked ant-radio-wrapper-in-form-item"
+                                            >
+                                              <span
+                                                class="ant-radio ant-radio-checked"
+                                              >
+                                                <input
+                                                  checked=""
+                                                  class="ant-radio-input"
+                                                  name="authorizations.MUNICIPAL_WASTEWATER_REGULATION.NEW[0].new_type"
+                                                  type="radio"
+                                                  value="APP"
+                                                />
+                                                <span
+                                                  class="ant-radio-inner"
+                                                />
+                                              </span>
+                                              <span>
+                                                Approval
+                                                <br />
+                                                <span
+                                                  class="label-subtitle"
+                                                >
+                                                  Temporary authorization to discharge waste to the environment for a maximum of 15 months.
+                                                </span>
+                                              </span>
+                                            </label>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div
+                                        style="display: flex; flex-wrap: nowrap;"
+                                      >
+                                        <div
+                                          class="ant-form-item-explain ant-form-item-explain-connected"
+                                          id="ADD_EDIT_PROJECT_SUMMARY_authorizations.MUNICIPAL_WASTEWATER_REGULATION.NEW[0].new_type_help"
+                                          role="alert"
+                                        >
+                                          <div
+                                            class=""
+                                          />
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div
+                                  class="ant-form-item ant-form-item-with-help"
+                                >
+                                  <div
+                                    class="ant-row ant-form-item-row"
+                                  >
+                                    <div
+                                      class="ant-col ant-form-item-label"
+                                    >
+                                      <label
+                                        class="ant-form-item-required"
+                                        for="ADD_EDIT_PROJECT_SUMMARY_authorizations.MUNICIPAL_WASTEWATER_REGULATION.NEW[0].authorization_description"
+                                        title=""
+                                      >
+                                        <div
+                                          style="width: 100%;"
+                                        >
+                                          Purpose of Application
+                                        </div>
+                                      </label>
+                                    </div>
+                                    <div
+                                      class="ant-col ant-form-item-control"
+                                    >
+                                      <div
+                                        class="ant-form-item-control-input"
+                                      >
+                                        <div
+                                          class="ant-form-item-control-input-content"
+                                        >
+                                          <textarea
+                                            class="ant-input"
+                                            name="authorizations.MUNICIPAL_WASTEWATER_REGULATION.NEW[0].authorization_description"
+                                            placeholder="e.g. To Discharge air emissions from x number of stacks at a sawmill."
+                                            style="height: 0px; resize: none; min-height: -8px;"
+                                          >
+                                            purpose of application
+                                          </textarea>
+                                          <div
+                                            class="ant-row ant-row-space-between form-item-help authorizations.MUNICIPAL_WASTEWATER_REGULATION.NEW[0].authorization_description-form-help"
+                                          >
+                                            <span>
+                                              Maximum 4000 characters
+                                            </span>
+                                            <span
+                                              class="flex-end"
+                                            >
+                                              3978 / 4000
+                                            </span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div
+                                        style="display: flex; flex-wrap: nowrap;"
+                                      >
+                                        <div
+                                          class="ant-form-item-explain ant-form-item-explain-connected"
+                                          id="ADD_EDIT_PROJECT_SUMMARY_authorizations.MUNICIPAL_WASTEWATER_REGULATION.NEW[0].authorization_description_help"
+                                          role="alert"
+                                        >
+                                          <div
+                                            class=""
+                                          />
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div
+                                  class="ant-form-item ant-form-item-with-help"
+                                >
+                                  <div
+                                    class="ant-row ant-form-item-row"
+                                  >
+                                    <div
+                                      class="ant-col ant-form-item-label"
+                                    >
+                                      <label
+                                        class="ant-form-item-required"
+                                        for="ADD_EDIT_PROJECT_SUMMARY_authorizations.MUNICIPAL_WASTEWATER_REGULATION.NEW[0].exemption_requested"
+                                        title=""
+                                      >
+                                        <div
+                                          style="width: 100%;"
+                                        >
+                                          Pre-Application Exemption Request for Environmental Management Act application
+                                          <span
+                                            aria-label="info-circle"
+                                            class="anticon anticon-info-circle"
+                                            role="img"
+                                          >
+                                            <svg
+                                              aria-hidden="true"
+                                              class=""
+                                              data-icon="info-circle"
+                                              fill="currentColor"
+                                              focusable="false"
+                                              height="1em"
+                                              viewBox="64 64 896 896"
+                                              width="1em"
+                                            >
+                                              <path
+                                                d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+                                              />
+                                              <path
+                                                d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"
+                                              />
+                                            </svg>
+                                          </span>
+                                        </div>
+                                      </label>
+                                    </div>
+                                    <div
+                                      class="ant-col ant-form-item-control"
+                                    >
+                                      <div
+                                        class="ant-form-item-control-input"
+                                      >
+                                        <div
+                                          class="ant-form-item-control-input-content"
+                                        >
+                                          <div
+                                            class="ant-radio-group ant-radio-group-solid"
+                                          >
+                                            <label
+                                              class="ant-radio-wrapper ant-radio-wrapper-in-form-item"
+                                            >
+                                              <span
+                                                class="ant-radio"
+                                              >
+                                                <input
+                                                  class="ant-radio-input"
+                                                  name="authorizations.MUNICIPAL_WASTEWATER_REGULATION.NEW[0].exemption_requested"
+                                                  type="radio"
+                                                  value="true"
+                                                />
+                                                <span
+                                                  class="ant-radio-inner"
+                                                />
+                                              </span>
+                                              <span>
+                                                Yes
+                                              </span>
+                                            </label>
+                                            <label
+                                              class="ant-radio-wrapper ant-radio-wrapper-checked ant-radio-wrapper-in-form-item"
+                                            >
+                                              <span
+                                                class="ant-radio ant-radio-checked"
+                                              >
+                                                <input
+                                                  checked=""
+                                                  class="ant-radio-input"
+                                                  name="authorizations.MUNICIPAL_WASTEWATER_REGULATION.NEW[0].exemption_requested"
+                                                  type="radio"
+                                                  value="false"
+                                                />
+                                                <span
+                                                  class="ant-radio-inner"
+                                                />
+                                              </span>
+                                              <span>
+                                                No
+                                              </span>
+                                            </label>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div
+                                        style="display: flex; flex-wrap: nowrap;"
+                                      >
+                                        <div
+                                          class="ant-form-item-explain ant-form-item-explain-connected"
+                                          id="ADD_EDIT_PROJECT_SUMMARY_authorizations.MUNICIPAL_WASTEWATER_REGULATION.NEW[0].exemption_requested_help"
+                                          role="alert"
+                                        >
+                                          <div
+                                            class=""
+                                          />
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <h5
+                        class="ant-typography"
+                      >
+                        Water Sustainability Act
+                      </h5>
+                      <div>
+                        <div
+                          class="ant-row"
+                          style="margin-top: -8px; margin-bottom: -8px;"
+                        >
+                          <div
+                            class="ant-col"
+                            style="padding-top: 8px; padding-bottom: 8px;"
+                          >
+                            <label
+                              class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item"
+                            >
+                              <span
+                                class="ant-checkbox"
+                              >
+                                <input
+                                  class="ant-checkbox-input"
+                                  type="checkbox"
+                                  value="CHANGE_APPROVAL"
+                                />
+                                <span
+                                  class="ant-checkbox-inner"
+                                />
+                              </span>
+                              <span>
+                                <b>
+                                  Change approval
+                                </b>
+                              </span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <div
+                          class="ant-row"
+                          style="margin-top: -8px; margin-bottom: -8px;"
+                        >
+                          <div
+                            class="ant-col"
+                            style="padding-top: 8px; padding-bottom: 8px;"
+                          >
+                            <label
+                              class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item"
+                            >
+                              <span
+                                class="ant-checkbox"
+                              >
+                                <input
+                                  class="ant-checkbox-input"
+                                  type="checkbox"
+                                  value="USE_APPROVAL"
+                                />
+                                <span
+                                  class="ant-checkbox-inner"
+                                />
+                              </span>
+                              <span>
+                                <b>
+                                  Use approval
+                                </b>
+                              </span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <div
+                          class="ant-row"
+                          style="margin-top: -8px; margin-bottom: -8px;"
+                        >
+                          <div
+                            class="ant-col"
+                            style="padding-top: 8px; padding-bottom: 8px;"
+                          >
+                            <label
+                              class="ant-checkbox-wrapper ant-checkbox-wrapper-checked ant-checkbox-wrapper-in-form-item"
+                            >
+                              <span
+                                class="ant-checkbox ant-checkbox-checked"
+                              >
+                                <input
+                                  checked=""
+                                  class="ant-checkbox-input"
+                                  type="checkbox"
+                                  value="WATER_LICENCE"
+                                />
+                                <span
+                                  class="ant-checkbox-inner"
+                                />
+                              </span>
+                              <span>
+                                <b>
+                                  Water licence
+                                </b>
+                              </span>
+                            </label>
+                            <div
+                              class="ant-row"
+                            >
+                              <div
+                                class="ant-form-item ant-form-item-with-help"
+                              >
+                                <div
+                                  class="ant-row ant-form-item-row"
+                                >
+                                  <div
+                                    class="ant-col ant-form-item-label"
+                                  >
+                                    <label
+                                      class="ant-form-item-required"
+                                      for="ADD_EDIT_PROJECT_SUMMARY_authorizations.WATER_LICENCE[0].project_summary_permit_type"
+                                      title="What type of permit is involved in your application?"
+                                    >
+                                      What type of permit is involved in your application?
+                                    </label>
+                                  </div>
+                                  <div
+                                    class="ant-col ant-form-item-control"
+                                  >
+                                    <div
+                                      class="ant-form-item-control-input"
+                                    >
+                                      <div
+                                        class="ant-form-item-control-input-content"
+                                      >
+                                        <div
+                                          aria-required="true"
+                                          class="ant-checkbox-group"
+                                          id="ADD_EDIT_PROJECT_SUMMARY_authorizations.WATER_LICENCE[0].project_summary_permit_type"
+                                          name="authorizations.WATER_LICENCE[0].project_summary_permit_type"
+                                        >
+                                          <label
+                                            class="ant-checkbox-wrapper ant-checkbox-wrapper-checked ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                                          >
+                                            <span
+                                              class="ant-checkbox ant-checkbox-checked"
+                                            >
+                                              <input
+                                                checked=""
+                                                class="ant-checkbox-input"
+                                                name="authorizations.WATER_LICENCE[0].project_summary_permit_type"
+                                                type="checkbox"
+                                                value="AMENDMENT"
+                                              />
+                                              <span
+                                                class="ant-checkbox-inner"
+                                              />
+                                            </span>
+                                            <span>
+                                              Amendment to an existing permit
+                                            </span>
+                                          </label>
+                                          <label
+                                            class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                                          >
+                                            <span
+                                              class="ant-checkbox"
+                                            >
+                                              <input
+                                                class="ant-checkbox-input"
+                                                name="authorizations.WATER_LICENCE[0].project_summary_permit_type"
+                                                type="checkbox"
+                                                value="CLOSURE"
+                                              />
+                                              <span
+                                                class="ant-checkbox-inner"
+                                              />
+                                            </span>
+                                            <span>
+                                              Closure of an existing permit
+                                            </span>
+                                          </label>
+                                          <label
+                                            class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                                          >
+                                            <span
+                                              class="ant-checkbox"
+                                            >
+                                              <input
+                                                class="ant-checkbox-input"
+                                                name="authorizations.WATER_LICENCE[0].project_summary_permit_type"
+                                                type="checkbox"
+                                                value="NEW"
+                                              />
+                                              <span
+                                                class="ant-checkbox-inner"
+                                              />
+                                            </span>
+                                            <span>
+                                              New
+                                            </span>
+                                          </label>
+                                          <label
+                                            class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                                          >
+                                            <span
+                                              class="ant-checkbox"
+                                            >
+                                              <input
+                                                class="ant-checkbox-input"
+                                                name="authorizations.WATER_LICENCE[0].project_summary_permit_type"
+                                                type="checkbox"
+                                                value="NOTIFICATION"
+                                              />
+                                              <span
+                                                class="ant-checkbox-inner"
+                                              />
+                                            </span>
+                                            <span>
+                                              Notification
+                                            </span>
+                                          </label>
+                                          <label
+                                            class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                                          >
+                                            <span
+                                              class="ant-checkbox"
+                                            >
+                                              <input
+                                                class="ant-checkbox-input"
+                                                name="authorizations.WATER_LICENCE[0].project_summary_permit_type"
+                                                type="checkbox"
+                                                value="OTHER"
+                                              />
+                                              <span
+                                                class="ant-checkbox-inner"
+                                              />
+                                            </span>
+                                            <span>
+                                              Other
+                                            </span>
+                                          </label>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div
+                                      style="display: flex; flex-wrap: nowrap;"
+                                    >
+                                      <div
+                                        class="ant-form-item-explain ant-form-item-explain-connected"
+                                        id="ADD_EDIT_PROJECT_SUMMARY_authorizations.WATER_LICENCE[0].project_summary_permit_type_help"
+                                        role="alert"
+                                      >
+                                        <div
+                                          class=""
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div
+                                class="ant-form-item ant-form-item-with-help"
+                              >
+                                <div
+                                  class="ant-row ant-form-item-row"
+                                >
+                                  <div
+                                    class="ant-col ant-form-item-label"
+                                  >
+                                    <label
+                                      class=""
+                                      for="ADD_EDIT_PROJECT_SUMMARY_authorizations.WATER_LICENCE[0].existing_permits_authorizations"
+                                      title=""
+                                    >
+                                      <div>
+                                        If your application involved a change to an existing permit, please list the numbers of the permits involved.
+                                         
+                                        <span
+                                          class="form-item-optional"
+                                        >
+                                           (optional)
+                                        </span>
+                                      </div>
+                                    </label>
+                                  </div>
+                                  <div
+                                    class="ant-col ant-form-item-control"
+                                  >
+                                    <div
+                                      class="ant-form-item-control-input"
+                                    >
+                                      <div
+                                        class="ant-form-item-control-input-content"
+                                      >
+                                        <input
+                                          class="ant-input"
+                                          name="authorizations.WATER_LICENCE[0].existing_permits_authorizations"
+                                          type="text"
+                                          value="PX-1234,CX-5678"
+                                        />
+                                        <div
+                                          class="form-item-help authorizations.WATER_LICENCE[0].existing_permits_authorizations-form-help"
+                                        >
+                                          Please separate each permit with a comma
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div
+                                      style="display: flex; flex-wrap: nowrap;"
+                                    >
+                                      <div
+                                        class="ant-form-item-explain ant-form-item-explain-connected"
+                                        id="ADD_EDIT_PROJECT_SUMMARY_authorizations.WATER_LICENCE[0].existing_permits_authorizations_help"
+                                        role="alert"
+                                      >
+                                        <div
+                                          class=""
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <h5
+                        class="ant-typography"
+                      >
+                        Forestry Act
+                      </h5>
+                      <div>
+                        <div
+                          class="ant-row"
+                          style="margin-top: -8px; margin-bottom: -8px;"
+                        >
+                          <div
+                            class="ant-col"
+                            style="padding-top: 8px; padding-bottom: 8px;"
+                          >
+                            <label
+                              class="ant-checkbox-wrapper ant-checkbox-wrapper-checked ant-checkbox-wrapper-in-form-item"
+                            >
+                              <span
+                                class="ant-checkbox ant-checkbox-checked"
+                              >
+                                <input
+                                  checked=""
+                                  class="ant-checkbox-input"
+                                  type="checkbox"
+                                  value="OCCUPANT_CUT_LICENCE"
+                                />
+                                <span
+                                  class="ant-checkbox-inner"
+                                />
+                              </span>
+                              <span>
+                                <b>
+                                  Occupant licence to cut
+                                </b>
+                              </span>
+                            </label>
+                            <div
+                              class="ant-row"
+                            >
+                              <div
+                                class="ant-form-item ant-form-item-with-help"
+                              >
+                                <div
+                                  class="ant-row ant-form-item-row"
+                                >
+                                  <div
+                                    class="ant-col ant-form-item-label"
+                                  >
+                                    <label
+                                      class="ant-form-item-required"
+                                      for="ADD_EDIT_PROJECT_SUMMARY_authorizations.OCCUPANT_CUT_LICENCE[0].project_summary_permit_type"
+                                      title="What type of permit is involved in your application?"
+                                    >
+                                      What type of permit is involved in your application?
+                                    </label>
+                                  </div>
+                                  <div
+                                    class="ant-col ant-form-item-control"
+                                  >
+                                    <div
+                                      class="ant-form-item-control-input"
+                                    >
+                                      <div
+                                        class="ant-form-item-control-input-content"
+                                      >
+                                        <div
+                                          aria-required="true"
+                                          class="ant-checkbox-group"
+                                          id="ADD_EDIT_PROJECT_SUMMARY_authorizations.OCCUPANT_CUT_LICENCE[0].project_summary_permit_type"
+                                          name="authorizations.OCCUPANT_CUT_LICENCE[0].project_summary_permit_type"
+                                        >
+                                          <label
+                                            class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                                          >
+                                            <span
+                                              class="ant-checkbox"
+                                            >
+                                              <input
+                                                class="ant-checkbox-input"
+                                                name="authorizations.OCCUPANT_CUT_LICENCE[0].project_summary_permit_type"
+                                                type="checkbox"
+                                                value="AMENDMENT"
+                                              />
+                                              <span
+                                                class="ant-checkbox-inner"
+                                              />
+                                            </span>
+                                            <span>
+                                              Amendment to an existing permit
+                                            </span>
+                                          </label>
+                                          <label
+                                            class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                                          >
+                                            <span
+                                              class="ant-checkbox"
+                                            >
+                                              <input
+                                                class="ant-checkbox-input"
+                                                name="authorizations.OCCUPANT_CUT_LICENCE[0].project_summary_permit_type"
+                                                type="checkbox"
+                                                value="CLOSURE"
+                                              />
+                                              <span
+                                                class="ant-checkbox-inner"
+                                              />
+                                            </span>
+                                            <span>
+                                              Closure of an existing permit
+                                            </span>
+                                          </label>
+                                          <label
+                                            class="ant-checkbox-wrapper ant-checkbox-wrapper-checked ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                                          >
+                                            <span
+                                              class="ant-checkbox ant-checkbox-checked"
+                                            >
+                                              <input
+                                                checked=""
+                                                class="ant-checkbox-input"
+                                                name="authorizations.OCCUPANT_CUT_LICENCE[0].project_summary_permit_type"
+                                                type="checkbox"
+                                                value="NEW"
+                                              />
+                                              <span
+                                                class="ant-checkbox-inner"
+                                              />
+                                            </span>
+                                            <span>
+                                              New
+                                            </span>
+                                          </label>
+                                          <label
+                                            class="ant-checkbox-wrapper ant-checkbox-wrapper-checked ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                                          >
+                                            <span
+                                              class="ant-checkbox ant-checkbox-checked"
+                                            >
+                                              <input
+                                                checked=""
+                                                class="ant-checkbox-input"
+                                                name="authorizations.OCCUPANT_CUT_LICENCE[0].project_summary_permit_type"
+                                                type="checkbox"
+                                                value="NOTIFICATION"
+                                              />
+                                              <span
+                                                class="ant-checkbox-inner"
+                                              />
+                                            </span>
+                                            <span>
+                                              Notification
+                                            </span>
+                                          </label>
+                                          <label
+                                            class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item ant-checkbox-group-item"
+                                          >
+                                            <span
+                                              class="ant-checkbox"
+                                            >
+                                              <input
+                                                class="ant-checkbox-input"
+                                                name="authorizations.OCCUPANT_CUT_LICENCE[0].project_summary_permit_type"
+                                                type="checkbox"
+                                                value="OTHER"
+                                              />
+                                              <span
+                                                class="ant-checkbox-inner"
+                                              />
+                                            </span>
+                                            <span>
+                                              Other
+                                            </span>
+                                          </label>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div
+                                      style="display: flex; flex-wrap: nowrap;"
+                                    >
+                                      <div
+                                        class="ant-form-item-explain ant-form-item-explain-connected"
+                                        id="ADD_EDIT_PROJECT_SUMMARY_authorizations.OCCUPANT_CUT_LICENCE[0].project_summary_permit_type_help"
+                                        role="alert"
+                                      >
+                                        <div
+                                          class=""
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div
+                                class="ant-form-item ant-form-item-with-help"
+                              >
+                                <div
+                                  class="ant-row ant-form-item-row"
+                                >
+                                  <div
+                                    class="ant-col ant-form-item-label"
+                                  >
+                                    <label
+                                      class=""
+                                      for="ADD_EDIT_PROJECT_SUMMARY_authorizations.OCCUPANT_CUT_LICENCE[0].existing_permits_authorizations"
+                                      title=""
+                                    >
+                                      <div>
+                                        If your application involved a change to an existing permit, please list the numbers of the permits involved.
+                                         
+                                        <span
+                                          class="form-item-optional"
+                                        >
+                                           (optional)
+                                        </span>
+                                      </div>
+                                    </label>
+                                  </div>
+                                  <div
+                                    class="ant-col ant-form-item-control"
+                                  >
+                                    <div
+                                      class="ant-form-item-control-input"
+                                    >
+                                      <div
+                                        class="ant-form-item-control-input-content"
+                                      >
+                                        <input
+                                          class="ant-input"
+                                          name="authorizations.OCCUPANT_CUT_LICENCE[0].existing_permits_authorizations"
+                                          type="text"
+                                          value=""
+                                        />
+                                        <div
+                                          class="form-item-help authorizations.OCCUPANT_CUT_LICENCE[0].existing_permits_authorizations-form-help"
+                                        >
+                                          Please separate each permit with a comma
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div
+                                      style="display: flex; flex-wrap: nowrap;"
+                                    >
+                                      <div
+                                        class="ant-form-item-explain ant-form-item-explain-connected"
+                                        id="ADD_EDIT_PROJECT_SUMMARY_authorizations.OCCUPANT_CUT_LICENCE[0].existing_permits_authorizations_help"
+                                        role="alert"
+                                      >
+                                        <div
+                                          class=""
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <h5
+                        class="ant-typography"
+                      >
+                        Other legislation
+                      </h5>
+                      <div>
+                        <div
+                          class="ant-row"
+                          style="margin-top: -8px; margin-bottom: -8px;"
+                        >
+                          <div
+                            class="ant-col"
+                            style="padding-top: 8px; padding-bottom: 8px;"
+                          >
+                            <label
+                              class="ant-checkbox-wrapper ant-checkbox-wrapper-checked ant-checkbox-wrapper-in-form-item"
+                            >
+                              <span
+                                class="ant-checkbox ant-checkbox-checked"
+                              >
+                                <input
+                                  checked=""
+                                  class="ant-checkbox-input"
+                                  type="checkbox"
+                                  value="OTHER"
+                                />
+                                <span
+                                  class="ant-checkbox-inner"
+                                />
+                              </span>
+                              <span>
+                                <b>
+                                  Other legislation
+                                </b>
+                              </span>
+                            </label>
+                            <div
+                              class="ant-row"
+                            >
+                              <div
+                                class="ant-form-item ant-form-item-with-help"
+                              >
+                                <div
+                                  class="ant-row ant-form-item-row"
+                                >
+                                  <div
+                                    class="ant-col ant-form-item-label"
+                                  >
+                                    <label
+                                      class=""
+                                      for="ADD_EDIT_PROJECT_SUMMARY_authorizations.OTHER[0].authorization_description"
+                                      title=""
+                                    >
+                                      <div>
+                                        If the legislation you're seeking isn't listed, please provide the details here
+                                         
+                                        <span
+                                          class="form-item-optional"
+                                        >
+                                           (optional)
+                                        </span>
+                                      </div>
+                                    </label>
+                                  </div>
+                                  <div
+                                    class="ant-col ant-form-item-control"
+                                  >
+                                    <div
+                                      class="ant-form-item-control-input"
+                                    >
+                                      <div
+                                        class="ant-form-item-control-input-content"
+                                      >
+                                        <textarea
+                                          class="ant-input"
+                                          name="authorizations.OTHER[0].authorization_description"
+                                          style="height: 0px; resize: none; min-height: -12px;"
+                                        >
+                                          other legislation details
+                                        </textarea>
+                                        <div
+                                          class="ant-row ant-row-space-between form-item-help authorizations.OTHER[0].authorization_description-form-help"
+                                        >
+                                          <span>
+                                            Maximum 100 characters
+                                          </span>
+                                          <span
+                                            class="flex-end"
+                                          >
+                                            75 / 100
+                                          </span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div
+                                      style="display: flex; flex-wrap: nowrap;"
+                                    >
+                                      <div
+                                        class="ant-form-item-explain ant-form-item-explain-connected"
+                                        id="ADD_EDIT_PROJECT_SUMMARY_authorizations.OTHER[0].authorization_description_help"
+                                        role="alert"
+                                      >
+                                        <div
+                                          class=""
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div
                 style="display: flex; flex-wrap: nowrap;"
@@ -195,58 +2532,7 @@ Object {
           </div>
         </div>
       </div>
-    </form>
-  </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
-}
+    </div>
+  </form>
+</div>
 `;
