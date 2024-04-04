@@ -10,7 +10,7 @@ import {
   InjectedFormProps,
   change,
 } from "redux-form";
-import { Alert, Button, Row, Col, Typography, Popconfirm } from "antd";
+import { Alert, Button, Row, Col, Typography, Popconfirm, Form } from "antd";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import {
   maxLength,
@@ -38,13 +38,12 @@ import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocum
 import { MajorMineApplicationDocument } from "@mds/common/models/documents/document";
 import ProjectLinks from "@mds/common/components/projects/ProjectLinks";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
-import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 interface ProjectSummaryFormProps {
   project: IProject;
   initialValues: Partial<IProject>;
   onSubmit: any;
-  handleSaveData: (event, message: string) => Promise<void>;
+  handleSaveData: (message: string) => Promise<void>;
   removeDocument: (event, documentGuid: string) => Promise<void>;
   archivedDocuments: MajorMineApplicationDocument[];
   onArchivedDocuments: (mineGuid, projectSummaryGuid) => Promise<void>;
@@ -429,13 +428,13 @@ const ProjectSummaryForm: FC<InjectedFormProps<IProjectSummary> & ProjectSummary
   };
 
   return (
-    <FormWrapper
-      name={FORM.ADD_EDIT_PROJECT_SUMMARY}
-      onSubmit={(e) => {
+    <Form
+      layout="vertical"
+      onFinish={(_values) => {
         const message = props.isNewProject
           ? "Successfully submitted a project description to the Province of British Columbia."
           : "Successfully updated the project.";
-        props.handleSaveData(e, message);
+        props.handleSaveData(message);
       }}
     >
       <div className="right center-mobile">
@@ -532,7 +531,7 @@ const ProjectSummaryForm: FC<InjectedFormProps<IProjectSummary> & ProjectSummary
           </>
         )}
       </div>
-    </FormWrapper>
+    </Form>
   );
 };
 

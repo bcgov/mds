@@ -410,7 +410,7 @@ export const AuthorizationsInvolved = () => {
                 <div key={authorization.code}>
                   <Typography.Title level={5}>{authorization.description}</Typography.Title>
                   {authorization.children.map((child) => {
-                    const checked = formValues.authorizationTypes.includes(child.code);
+                    const checked = formValues.authorizationTypes?.includes(child.code);
                     return (
                       <div key={child.code}>
                         <Row gutter={[0, 16]}>
