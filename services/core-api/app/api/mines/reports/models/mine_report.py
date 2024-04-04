@@ -19,6 +19,7 @@ from app.api.constants import MAJOR_MINES_OFFICE_EMAIL, MDS_EMAIL, PERM_RECL_EMA
 from app.api.activity.utils import trigger_notification
 from app.api.activity.models.activity_notification import ActivityType, ActivityRecipients
 from app.api.mines.reports.models.mine_report_notification import MineReportNotification
+from app.api.utils.helpers import get_current_core_or_ms_env_url
 
 class MineReport(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = "mine_report"
@@ -139,18 +140,8 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
 
         due_date = due_date = (self.due_date).strftime("%b %d %Y") if self.due_date else "N/A"
 
-        core_url = Config.CORE_PRODUCTION_URL
-        ms_url = Config.MINESPACE_PRODUCTION_URL
-
-        if Config.ENVIRONMENT_NAME == 'local':
-            core_url = Config.CORE_LOCAL_URL
-            ms_url = Config.MINESPACE_LOCAL_URL
-        elif Config.ENVIRONMENT_NAME == 'dev':
-            core_url = Config.CORE_DEV_URL
-            ms_url = Config.MINESPACE_DEV_URL
-        elif Config.ENVIRONMENT_NAME != 'prod':
-            core_url = Config.CORE_TEST_URL
-            ms_url = Config.MINESPACE_TEST_URL
+        core_url = get_current_core_or_ms_env_url("core")
+        ms_url = get_current_core_or_ms_env_url("ms")
 
         core_report_page_link =  f'{core_url}/dashboard/reporting/mine/{self.mine.mine_guid}/report/{self.mine_report_guid}'
         ms_report_page_link = f'{ms_url}/mines/{self.mine.mine_guid}/reports/{self.mine_report_guid}'
@@ -258,7 +249,7 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
             body_verb = 'uploaded document(s) to' if is_edit else 'submitted'
             body = f'<p>{self.mine.mine_name} (Mine no: {self.mine.mine_no}) has {body_verb} a "{self.mine_report_definition_report_name}" report.</p>'
 
-            link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/reports/code-required-reports'
+            link = f'{Config.CORE_PROD_URL}/mine-dashboard/{self.mine.mine_guid}/reports/code-required-reports'
             body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
             EmailService.send_email(subject, recipients, body)
 

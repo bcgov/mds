@@ -5,6 +5,7 @@ from datetime import datetime
 from pytz import timezone, utc
 from PIL import Image
 from flask import current_app
+from app.config import Config
 
 
 def clean_HTML_string(raw_html):
@@ -81,9 +82,6 @@ def create_image_with_aspect_ratio(source, width=None, height=None):
     return {'source': source, 'width': width, 'height': height}
 
 def validate_phone_no(phone_no, address_type_code='CAN'):
-    current_app.logger.info("inside validate_phone_no")
-    current_app.logger.info(phone_no)
-    current_app.logger.info(address_type_code)
     if not phone_no:
         raise AssertionError('Phone number is not provided.')
     # TODO: this is an arbitrary limit for phone number characters, actual number depends on formatting decisions
@@ -92,3 +90,11 @@ def validate_phone_no(phone_no, address_type_code='CAN'):
     if address_type_code in ['CAN', 'USA'] and not re.match(r'[0-9]{3}-[0-9]{3}-[0-9]{4}', phone_no):
         raise AssertionError('Invalid phone number format, must be of XXX-XXX-XXXX.')
     return phone_no
+
+def get_current_core_or_ms_env_url(app):
+    if app == 'core':
+        core_config_property = f'CORE_{(Config.ENVIRONMENT_NAME).upper()}_URL'
+        return getattr(Config, core_config_property)
+    elif app == 'ms':
+        ms_config_property = f'MINESPACE_{(Config.ENVIRONMENT_NAME).upper()}_URL'
+        return getattr(Config, ms_config_property)
