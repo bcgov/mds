@@ -6,6 +6,7 @@ USER 0
 RUN apk add gettext
 
 COPY sql/* /flyway/sql/
+COPY sql-prod/* /flyway/sql-prod/
 COPY scripts/* /flyway/scripts/
 
 
@@ -13,6 +14,7 @@ ENV FLYWAY_VERSION=5.2.4
 
 # Copy over the SQL files and scripts
 COPY sql/* $FLYWAY_HOME/sql/
+COPY sql-prod/* $FLYWAY_HOME/sql-prod/
 COPY scripts/* $FLYWAY_HOME/scripts/
 
 RUN chmod -R 777 $FLYWAY_HOME
