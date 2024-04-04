@@ -14,8 +14,7 @@ class ProjectSummaryPermitType(SoftDeleteMixin, AuditMixin, Base):
     @classmethod
     def get_all(cls):
         return cls.query.all()
-    
+
     @classmethod
-    def validate_permit_types(cls, permit_type):
-        valid_types = str(cls.query.all())
-        return permit_type in valid_types
+    def validate_permit_type(cls, permit_type):
+        return permit_type in str(cls.query.all())
