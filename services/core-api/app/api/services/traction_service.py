@@ -69,8 +69,8 @@ class TractionService():
         
         return response
     
-    def offer_mines_act_permit(self, connection_id, attributes):
-
+    def offer_mines_act_permit_111(self, connection_id, attributes):
+        # https://github.com/bcgov/bc-vcpedia/blob/main/credentials/bc-mines-act-permit/1.1.1/governance.md#261-schema-definition
         payload = {
             "auto_issue": True,
             "comment": "VC to provide proof of a permit and some basic details",

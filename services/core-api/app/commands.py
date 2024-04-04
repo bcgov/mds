@@ -8,6 +8,9 @@ from flask import current_app
 from app.api.utils.include.user_info import User
 from app.extensions import db
 
+from app.api.verifiable_credentials.models.credentials import PartyVerifiableCredentialMinesActPermit
+from app.api.mines.permits.permit.models.permit import Permit
+
 from tests.factories import MineFactory, MinePartyAppointmentFactory, MinespaceSubscriptionFactory, MinespaceUserFactory, NOWSubmissionFactory, NOWApplicationIdentityFactory
 
 
@@ -132,3 +135,15 @@ def register_commands(app):
 
         with current_app.app_context():
             notify_and_update_expired_party_appointments()
+
+    @app.cli.command('revoke_mines_act_permit_vc_and_offer_newest')
+    def revoke_mines_act_permit_vc_and_offer_newest(credential_exchange_id, permit_guid):
+        from app.api.verifiable_credentials.manager import VerifiableCredentialManager
+        from app import auth
+        auth.apply_security = False
+
+        with current_app.app_context():
+            cred_exch = PartyVerifiableCredentialMinesActPermit.find_by_cred_exch_id(credential_exchange_id)
+            permit = Permit.find_by_mine_guid(permit_guid)
+            assert cred_exch and permit, "Invalid credential exchange or permit guid"
+            VerifiableCredentialManager.revoke_credential_and_offer_newest_amendment(cred_exch,permit.permit_guid)

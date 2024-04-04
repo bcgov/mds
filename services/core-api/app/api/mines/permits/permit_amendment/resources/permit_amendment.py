@@ -27,6 +27,8 @@ from app.api.mines.mine.resources.mine_type import MineType
 from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
 from app.api.utils.helpers import get_preamble_text
 
+from app.api.verifiable_credentials.manager import VerifiableCredentialManager
+
 ROLES_ALLOWED_TO_CREATE_HISTORICAL_AMENDMENTS = [MINE_ADMIN, EDIT_HISTORICAL_PERMIT_AMENDMENTS]
 
 
@@ -264,6 +266,8 @@ class PermitAmendmentListResource(Resource, UserMixin):
                             ])
 
         new_pa.save()
+        VerifiableCredentialManager.revoke_credential_and_offer_amendment()
+
         return new_pa
 
 

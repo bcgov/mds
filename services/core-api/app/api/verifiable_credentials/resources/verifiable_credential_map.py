@@ -10,7 +10,7 @@ from app.api.verifiable_credentials.models.connection import PartyVerifiableCred
 from app.api.verifiable_credentials.models.credentials import PartyVerifiableCredentialMinesActPermit
 from app.api.verifiable_credentials.aries_constants import IssueCredentialIssuerState
 from app.api.verifiable_credentials.response_models import PARTY_VERIFIABLE_CREDENTIAL_MINES_ACT_PERMIT
-
+from app.api.verifiable_credentials.manager import VerifiableCredentialManager
 from app.api.services.traction_service import TractionService
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import requires_any_of, MINESPACE_PROPONENT, EDIT_PARTY
@@ -62,38 +62,7 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
         if permit_amendment.permit.mines_act_permit_vc_locked:
             raise BadRequest(f"This permit cannot be offered as a credential")
          
-        # collect information for schema
-        # https://github.com/bcgov/bc-vcpedia/blob/main/credentials/bc-mines-act-permit/1.1.1/governance.md#261-schema-definition
-        credential_attrs={}
-
-        mine_disturbance_list = [mtd.mine_disturbance_literal for mtd in permit_amendment.mine.mine_type[0].mine_type_detail if mtd.mine_disturbance_code]
-        mine_commodity_list = [mtd.mine_commodity_literal for mtd in permit_amendment.mine.mine_type[0].mine_type_detail if mtd.mine_commodity_code]
-        mine_status_xref = permit_amendment.mine.mine_status[0].mine_status_xref
-
-        credential_attrs["permit_no"] = permit_amendment.permit_no
-        credential_attrs["permit_status"] = permit_amendment.permit.permit_status_code_description
-        credential_attrs["permittee_name"] = permit_amendment.permit.current_permittee
-        credential_attrs["mine_operation_status"] = mine_status_xref.mine_operation_status.description
-        credential_attrs["mine_operation_status_reason"] = mine_status_xref.mine_operation_status_reason.description if mine_status_xref.mine_operation_status_reason else None
-        credential_attrs["mine_operation_status_sub_reason"] = mine_status_xref.mine_operation_status_sub_reason.description if mine_status_xref.mine_operation_status_sub_reason else None
-        credential_attrs["mine_disturbance"] = ", ".join(mine_disturbance_list) if mine_disturbance_list else None
-        credential_attrs["mine_commodity"] =  ", ".join(mine_commodity_list) if mine_commodity_list else None
-        credential_attrs["mine_no"] = permit_amendment.mine.mine_no
-        credential_attrs["issue_date"] = int(permit_amendment.issue_date.strftime("%Y%m%d")) if is_feature_enabled(Feature.VC_MINES_ACT_PERMIT_20) else permit_amendment.issue_date
-        # https://github.com/hyperledger/aries-rfcs/tree/main/concepts/0441-present-proof-best-practices#dates-and-predicates
-        credential_attrs["latitude"] = permit_amendment.mine.latitude
-        credential_attrs["longitude"] = permit_amendment.mine.longitude
-        credential_attrs["bond_total"] = permit_amendment.permit.active_bond_total
-        credential_attrs["tsf_operating_count"] = len([tsf for tsf in permit_amendment.mine.mine_tailings_storage_facilities if tsf.tsf_operating_status_code == "OPT"])
-        credential_attrs["tsf_care_and_maintenance_count"] = len([tsf for tsf in permit_amendment.mine.mine_tailings_storage_facilities if tsf.tsf_operating_status_code == "CAM"])
-
-        # offer credential
-        attributes = [{
-            # "mime-type":"text/plain",
-            # NB Orbit does not expect this removing for now
-            "name":str(attr),
-            "value":str(val),
-        } for attr,val in credential_attrs.items()]
+        attributes = VerifiableCredentialManager.collect_attributes_for_mines_act_permit_111(permit_amendment)
 
         vc_conn = PartyVerifiableCredentialConnection.find_by_party_guid(party_guid)
         active_connections = [con for con in vc_conn if con.connection_state in ["active","completed"]] 

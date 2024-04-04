@@ -15,9 +15,10 @@ class PartyVerifiableCredentialMinesActPermit(AuditMixin, Base):
     cred_exch_state = db.Column(db.String, nullable=True)
     rev_reg_id = db.Column(db.String, nullable=True)
     cred_rev_id = db.Column(db.String, nullable=True)
+    last_webhook_timestamp = db.Column(db.DateTime, nullable=True)
 
     permit_amendment = db.relationship('PermitAmendment', lazy='select')
-    last_webhook_timestamp = db.Column(db.DateTime, nullable=True)
+    party = db.relationship('Party', lazy='select')
     
     
     def __repr__(self):
