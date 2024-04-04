@@ -416,7 +416,7 @@ export const AuthorizationsInvolved = () => {
                         <Row gutter={[0, 16]}>
                           <Col>
                             <Checkbox
-                              data-cy={`checkbox-${child.code}`}
+                              data-cy={`checkbox-authorization-${child.code}`}
                               value={child.code}
                               checked={checked}
                               onChange={(e) => handleChange(e, child.code)}
