@@ -34,9 +34,6 @@ describe("Major Projects", () => {
     cy.get("#project_summary_description").type("This is just a Cypress test project description", {
       force: true,
     });
-    cy.get("#mrc_review_required")
-      .contains("No")
-      .click({ force: true });
     cy.get("#contacts\\[0\\]\\.first_name").type("Cypress", { force: true });
     cy.get("#contacts\\[0\\]\\.last_name").type("Test", { force: true });
     cy.get("#contacts\\[0\\]\\.email").type("cypress@mds.com", { force: true });
