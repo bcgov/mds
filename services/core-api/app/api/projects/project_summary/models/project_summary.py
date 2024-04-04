@@ -542,8 +542,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 authorization.get('project_summary_authorization_guid')
                 for authorization in ams_authorizations.get('new', None)
             ]
-        updated_authorization_ids.extend(ams_auth_amend_ids)
-        updated_authorization_ids.extend(ams_auth_new_ids)
+            updated_authorization_ids.extend(ams_auth_amend_ids)
+            updated_authorization_ids.extend(ams_auth_new_ids)
 
         for deleted_authorization in self.authorizations:
             if str(deleted_authorization.project_summary_authorization_guid
