@@ -1,3 +1,7 @@
+/** 
+ Update municipalities that are similar to the ones from 
+ AMS list.
+ **/
 UPDATE
     municipality
 SET
@@ -196,7 +200,7 @@ SET
     update_timestamp = current_timestamp,
     municipality_name = 'Coquitlam'
 WHERE
-    municipality_name = 'City of Port Coquitlam';
+    municipality_name = 'City of Coquitlam';
 
 UPDATE
     municipality
@@ -285,6 +289,22 @@ SET
     municipality_name = 'Fernie'
 WHERE
     municipality_name = 'The Corporation of the City of Fernie';
+
+UPDATE
+    municipality
+SET
+    update_timestamp = current_timestamp,
+    municipality_name = 'Fort St. James'
+WHERE
+    municipality_name = 'District of Fort St James';
+
+UPDATE
+    municipality
+SET
+    update_timestamp = current_timestamp,
+    municipality_name = 'Fort St. John'
+WHERE
+    municipality_name = 'City of Fort St John';
 
 UPDATE
     municipality
@@ -692,7 +712,7 @@ SET
     update_timestamp = current_timestamp,
     municipality_name = 'North Vancouver'
 WHERE
-    municipality_name = 'The Corporation of the District of North Vancouver';
+    municipality_name = 'City of North Vancouver';
 
 UPDATE
     municipality
@@ -1229,3 +1249,272 @@ SET
     municipality_name = 'Zeballos'
 WHERE
     municipality_name = 'The Corporation of the Village of Zeballos';
+
+/** 
+ Update other municipalities that are not similar to the ones from 
+ AMS list.
+ **/
+UPDATE
+    municipality
+SET
+    update_timestamp = current_timestamp,
+    municipality_name = '70 Mile House'
+WHERE
+    municipality_name = 'Northern Rockies Regional Municipality';
+
+UPDATE
+    municipality
+SET
+    update_timestamp = current_timestamp,
+    municipality_name = 'Agassiz'
+WHERE
+    municipality_name = 'The Corporation of the District of North Vancouver';
+
+UPDATE
+    municipality
+SET
+    update_timestamp = current_timestamp,
+    municipality_name = 'Annacis Island'
+WHERE
+    municipality_name = 'The Corporation of the Township of Langley';
+
+UPDATE
+    municipality
+SET
+    update_timestamp = current_timestamp,
+    municipality_name = 'Atlin'
+WHERE
+    municipality_name = 'Village of Daajing Giids';
+
+/** 
+ Insert new municipalities from AMS list
+ **/
+INSERT INTO
+    municipality (municipality_name, create_user, update_user)
+VALUES
+    (
+        'Bella Bella',
+        'system-mds',
+        'system-mds'
+    ),
+    (
+        'Bella Coola',
+        'system-mds',
+        'system-mds'
+    ),
+    (
+        'Black Creek',
+        'system-mds',
+        'system-mds'
+    ),
+    (
+        'Boston Bar',
+        'system-mds',
+        'system-mds'
+    ),
+    (
+        'Britannia Beach',
+        'system-mds',
+        'system-mds'
+    ),
+    ('Cawston', 'system-mds', 'system-mds'),
+    (
+        'Chemainus',
+        'system-mds',
+        'system-mds'
+    ),
+    (
+        'Cloverdale',
+        'system-mds',
+        'system-mds'
+    ),
+    (
+        'Cobble Hill',
+        'system-mds',
+        'system-mds'
+    ),
+    ('Cowichan Bay', 'system-mds', 'system-mds'),
+    (
+        'Crofton',
+        'system-mds',
+        'system-mds'
+    ),
+    (
+        'Dease Lake',
+        'system-mds',
+        'system-mds'
+    ),
+    ('Egmont', 'system-mds', 'system-mds'),
+    ('Elko', 'system-mds', 'system-mds'),
+    ('Endako', 'system-mds', 'system-mds'),
+    (
+        'Fairmont Hot Springs',
+        'system-mds',
+        'system-mds'
+    ),
+    ('Falkland', 'system-mds', 'system-mds'),
+    ('Ferguson', 'system-mds', 'system-mds'),
+    ('Fort Nelson', 'system-mds', 'system-mds'),
+    (
+        'Fort St. John (OGC)',
+        'system-mds',
+        'system-mds'
+    ),
+    (
+        'Fraser Valley',
+        'system-mds',
+        'system-mds'
+    ),
+    ('Galloway', 'system-mds', 'system-mds'),
+    (
+        'Ganges',
+        'system-mds',
+        'system-mds'
+    ),
+    (
+        'Gold Bridge',
+        'system-mds',
+        'system-mds'
+    ),
+    (
+        'Harrison Mills',
+        'system-mds',
+        'system-mds'
+    ),
+    (
+        'Hedley',
+        'system-mds',
+        'system-mds'
+    ),
+    ('Iskut', 'system-mds', 'system-mds'),
+    (
+        'Jaffray',
+        'system-mds',
+        'system-mds'
+    ),
+    ('Juskatla', 'system-mds', 'system-mds'),
+    ('Kitkatla', 'system-mds', 'system-mds'),
+    ('Knutsford', 'system-mds', 'system-mds'),
+    (
+        'Lund',
+        'system-mds',
+        'system-mds'
+    ),
+    (
+        'Mara',
+        'system-mds',
+        'system-mds'
+    ),
+    (
+        'Matsqui',
+        'system-mds',
+        'system-mds'
+    ),
+    (
+        'Meadow Creek',
+        'system-mds',
+        'system-mds'
+    ),
+    (
+        'Merville',
+        'system-mds',
+        'system-mds'
+    ),
+    (
+        'Naramata',
+        'system-mds',
+        'system-mds'
+    ),
+    ('New Aiyansh', 'system-mds', 'system-mds'),
+    ('Ocean Falls', 'system-mds', 'system-mds'),
+    ('Okanagan Falls', 'system-mds', 'system-mds'),
+    (
+        'Ootsa Lake',
+        'system-mds',
+        'system-mds'
+    ),
+    (
+        'Parson',
+        'system-mds',
+        'system-mds'
+    ),
+    (
+        'Pender Harbour',
+        'system-mds',
+        'system-mds'
+    ),
+    (
+        'Pender Island',
+        'system-mds',
+        'system-mds'
+    ),
+    ('Port Mellon', 'system-mds', 'system-mds'),
+    ('Pritchard', 'system-mds', 'system-mds'),
+    (
+        'Queen Charlotte City',
+        'system-mds',
+        'system-mds'
+    ),
+    (
+        'Rolla',
+        'system-mds',
+        'system-mds'
+    ),
+    (
+        'Rosedale',
+        'system-mds',
+        'system-mds'
+    ),
+    (
+        'Ross Spur',
+        'system-mds',
+        'system-mds'
+    ),
+    (
+        'Shawnigan Lake',
+        'system-mds',
+        'system-mds'
+    ),
+    (
+        'Skidegate',
+        'system-mds',
+        'system-mds'
+    ),
+    (
+        'Thetis Island',
+        'system-mds',
+        'system-mds'
+    ),
+    (
+        'Tsawwassen',
+        'system-mds',
+        'system-mds'
+    ),
+    (
+        'Victoria ET',
+        'system-mds',
+        'system-mds'
+    ),
+    ('Ware', 'system-mds', 'system-mds'),
+    (
+        'Watson Lake',
+        'system-mds',
+        'system-mds'
+    ),
+    ('Westbank', 'system-mds', 'system-mds'),
+    (
+        'Westside',
+        'system-mds',
+        'system-mds'
+    ),
+    (
+        'Westwold',
+        'system-mds',
+        'system-mds'
+    ),
+    (
+        'Wonowon',
+        'system-mds',
+        'system-mds'
+    ),
+    ('Ymir', 'system-mds', 'system-mds');
