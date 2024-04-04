@@ -25,9 +25,8 @@ export const deleteMineReport = (mineGuid, mineReportGuid) => (dispatch) => {
       dispatch(success(reducerTypes.DELETE_MINE_REPORT));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.DELETE_MINE_REPORT));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -45,9 +44,8 @@ export const createMineReport = (mineGuid, payload) => (dispatch) => {
       dispatch(success(reducerTypes.CREATE_MINE_REPORT));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.CREATE_MINE_REPORT));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -100,9 +98,8 @@ export const updateMineReport = (mineGuid, mineReportGuid, payload) => (dispatch
       dispatch(success(reducerTypes.UPDATE_MINE_REPORT));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.UPDATE_MINE_REPORT));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -117,9 +114,8 @@ export const fetchMineReport = (mineGuid, mineReportGuid) => (dispatch) => {
       dispatch(mineReportActions.storeMineReport(response.data));
       return response.data;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.GET_MINE_REPORT));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };

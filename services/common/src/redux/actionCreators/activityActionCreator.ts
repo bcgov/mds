@@ -3,7 +3,7 @@ import { success, error, request } from "../actions/genericActions";
 import CustomAxios from "../customAxios";
 import { storeActivities } from "../actions/activityActions";
 import { AxiosResponse } from "axios";
-import { IActivity } from "@mds/common";
+import { IActivity } from "@mds/common/interfaces";
 import {
   ACTIVITIES,
   ACTIVITIES_MARK_AS_READ,
@@ -37,9 +37,8 @@ export const fetchActivities = (
       dispatch(storeActivities(response.data));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(GET_ACTIVITIES));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -54,9 +53,8 @@ export const markActivitiesAsRead = (activity_guids: string[]): AppThunk => (dis
     .then(() => {
       dispatch(success(GET_ACTIVITIES));
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(GET_ACTIVITIES));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };

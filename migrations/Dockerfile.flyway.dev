@@ -5,6 +5,7 @@ USER root
 RUN apk add gettext
 
 COPY sql/* /flyway/sql/
+COPY sql-prod/* /flyway/sql-prod/
 COPY scripts/* /flyway/scripts/
 
 ENTRYPOINT /flyway/scripts/run_migrations.sh

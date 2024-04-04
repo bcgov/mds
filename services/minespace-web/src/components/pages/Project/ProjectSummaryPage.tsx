@@ -267,9 +267,6 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
           false
         );
       })
-      .catch((err) => {
-        throw new Error(err);
-      })
       .then(async () => {
         return handleFetchData();
       })
