@@ -92,6 +92,7 @@ services:
       - PLATFORM=LOCAL
     volumes:
       - ./migrations/sql:/flyway/sql
+      - ./migrations/sql-prod:/flyway/sql-prod
       - ./migrations/scripts:/flyway/scripts
     depends_on:
       - postgres
