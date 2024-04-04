@@ -12,8 +12,6 @@ import {
 } from "redux-form";
 import { Alert, Button, Row, Col, Typography, Popconfirm } from "antd";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
 import {
   maxLength,
   phoneNumber,
@@ -40,6 +38,7 @@ import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocum
 import { MajorMineApplicationDocument } from "@mds/common/models/documents/document";
 import ProjectLinks from "@mds/common/components/projects/ProjectLinks";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 interface ProjectSummaryFormProps {
   project: IProject;
@@ -430,8 +429,8 @@ const ProjectSummaryForm: FC<InjectedFormProps<IProjectSummary> & ProjectSummary
   };
 
   return (
-    <Form
-      layout="vertical"
+    <FormWrapper
+      name={FORM.ADD_EDIT_PROJECT_SUMMARY}
       onSubmit={(e) => {
         const message = props.isNewProject
           ? "Successfully submitted a project description to the Province of British Columbia."
@@ -533,7 +532,7 @@ const ProjectSummaryForm: FC<InjectedFormProps<IProjectSummary> & ProjectSummary
           </>
         )}
       </div>
-    </Form>
+    </FormWrapper>
   );
 };
 
