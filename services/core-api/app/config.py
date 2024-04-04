@@ -119,8 +119,22 @@ class Config(object):
     ENVIRONMENT_NAME = os.environ.get('ENVIRONMENT_NAME', 'dev')
     CORE_PRODUCTION_URL = os.environ.get('CORE_PRODUCTION_URL',
                                          'https://minesdigitalservices.gov.bc.ca')
+    CORE_TEST_URL = os.environ.get('CORE_TEST_URL',
+                                         'https://mds-test.apps.silver.devops.gov.bc.ca')
+    CORE_DEV_URL = os.environ.get('CORE_DEV_URL',
+                                         'https://mds-dev.apps.silver.devops.gov.bc.ca')
+    CORE_LOCAL_URL = os.environ.get('CORE_LOCAL_URL',
+                                         'http://localhost:3000')
+    
     MINESPACE_PRODUCTION_URL = os.environ.get('MINESPACE_PRODUCTION_URL',
                                               'https://minespace.gov.bc.ca')
+    MINESPACE_TEST_URL = os.environ.get('MINESPACE_TEST_URL',
+                                              'https://minespace-test.apps.silver.devops.gov.bc.ca')
+    MINESPACE_DEV_URL = os.environ.get('MINESPACE_DEV_URL',
+                                              'https://minespace-dev.apps.silver.devops.gov.bc.ca')
+    MINESPACE_LOCAL_URL = os.environ.get('MINESPACE_LOCAL_URL',
+                                              'http://localhost:3020')
+    
     MDS_NO_REPLY_EMAIL = os.environ.get('MDS_NO_REPLY_EMAIL', 'noreply-mds@gov.bc.ca')
     MDS_EMAIL = os.environ.get('MDS_EMAIL', 'mds@gov.bc.ca')
     MAJOR_MINES_OFFICE_EMAIL = os.environ.get('MAJOR_MINES_OFFICE_EMAIL', 'PermRecl@gov.bc.ca')

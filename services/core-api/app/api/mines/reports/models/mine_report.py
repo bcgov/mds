@@ -138,8 +138,22 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
         core_recipients, ms_recipients = self.collectRecipients(is_proponent)
 
         due_date = due_date = (self.due_date).strftime("%b %d %Y") if self.due_date else "N/A"
-        core_report_page_link =  f'{Config.CORE_PRODUCTION_URL}/dashboard/reporting/mine/{self.mine.mine_guid}/report/{self.mine_report_guid}'
-        ms_report_page_link = f'{Config.MINESPACE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/reports/{self.mine_report_guid}'
+
+        core_url = Config.CORE_PRODUCTION_URL
+        ms_url = Config.MINESPACE_PRODUCTION_URL
+
+        if Config.ENVIRONMENT_NAME == 'local':
+            core_url = Config.CORE_LOCAL_URL
+            ms_url = Config.MINESPACE_LOCAL_URL
+        elif Config.ENVIRONMENT_NAME == 'dev':
+            core_url = Config.CORE_DEV_URL
+            ms_url = Config.MINESPACE_DEV_URL
+        else:
+            core_url = Config.CORE_TEST_URL
+            ms_url = Config.MINESPACE_TEST_URL
+
+        core_report_page_link =  f'{core_url}/dashboard/reporting/mine/{self.mine.mine_guid}/report/{self.mine_report_guid}'
+        ms_report_page_link = f'{ms_url}/mines/{self.mine.mine_guid}/reports/{self.mine_report_guid}'
         report_name = ""
 
         if is_crr:
@@ -167,7 +181,7 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
               "report_due_date": due_date,
               "report_recieved_date": (self.received_date).strftime("%b %d %Y at %I:%M %p"),
           },
-          "minespace_login_link": Config.MINESPACE_PRODUCTION_URL,
+          "minespace_login_link": ms_url,
           "core_report_page_link": core_report_page_link,
           "ms_report_page_link": ms_report_page_link
         }
