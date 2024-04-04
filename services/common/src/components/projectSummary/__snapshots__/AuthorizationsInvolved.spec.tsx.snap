@@ -124,6 +124,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                                 <input
                                   checked=""
                                   class="ant-checkbox-input"
+                                  data-cy="checkbox-MINES_ACT_PERMIT"
                                   type="checkbox"
                                   value="MINES_ACT_PERMIT"
                                 />
@@ -541,6 +542,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                                 <input
                                   checked=""
                                   class="ant-checkbox-input"
+                                  data-cy="checkbox-AIR_EMISSIONS_DISCHARGE_PERMIT"
                                   type="checkbox"
                                   value="AIR_EMISSIONS_DISCHARGE_PERMIT"
                                 />
@@ -1374,6 +1376,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                               >
                                 <input
                                   class="ant-checkbox-input"
+                                  data-cy="checkbox-EFFLUENT_DISCHARGE_PERMIT"
                                   type="checkbox"
                                   value="EFFLUENT_DISCHARGE_PERMIT"
                                 />
@@ -1407,6 +1410,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                               >
                                 <input
                                   class="ant-checkbox-input"
+                                  data-cy="checkbox-REFUSE_DISCHARGE_PERMIT"
                                   type="checkbox"
                                   value="REFUSE_DISCHARGE_PERMIT"
                                 />
@@ -1441,6 +1445,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                                 <input
                                   checked=""
                                   class="ant-checkbox-input"
+                                  data-cy="checkbox-MUNICIPAL_WASTEWATER_REGULATION"
                                   type="checkbox"
                                   value="MUNICIPAL_WASTEWATER_REGULATION"
                                 />
@@ -1868,6 +1873,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                               >
                                 <input
                                   class="ant-checkbox-input"
+                                  data-cy="checkbox-CHANGE_APPROVAL"
                                   type="checkbox"
                                   value="CHANGE_APPROVAL"
                                 />
@@ -1901,6 +1907,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                               >
                                 <input
                                   class="ant-checkbox-input"
+                                  data-cy="checkbox-USE_APPROVAL"
                                   type="checkbox"
                                   value="USE_APPROVAL"
                                 />
@@ -1935,6 +1942,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                                 <input
                                   checked=""
                                   class="ant-checkbox-input"
+                                  data-cy="checkbox-WATER_LICENCE"
                                   type="checkbox"
                                   value="WATER_LICENCE"
                                 />
@@ -2195,6 +2203,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                                 <input
                                   checked=""
                                   class="ant-checkbox-input"
+                                  data-cy="checkbox-OCCUPANT_CUT_LICENCE"
                                   type="checkbox"
                                   value="OCCUPANT_CUT_LICENCE"
                                 />
@@ -2456,6 +2465,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                                 <input
                                   checked=""
                                   class="ant-checkbox-input"
+                                  data-cy="checkbox-OTHER"
                                   type="checkbox"
                                   value="OTHER"
                                 />
