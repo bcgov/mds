@@ -1,5 +1,5 @@
 import { showLoading, hideLoading } from "react-redux-loading-bar";
-import { ENVIRONMENT } from "@mds/common";
+import { ENVIRONMENT } from "@mds/common/constants";
 import { request, success, error, clear } from "../actions/genericActions";
 import * as reducerTypes from "@mds/common/constants/reducerTypes";
 import * as searchActions from "../actions/searchActions";
@@ -21,9 +21,8 @@ export const fetchSearchResults = (searchTerm, searchTypes) => (dispatch) => {
       dispatch(hideLoading());
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.GET_SEARCH_RESULTS));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };

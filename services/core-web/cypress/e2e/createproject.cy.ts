@@ -34,13 +34,14 @@ describe("Major Projects", () => {
     cy.get("#project_summary_description").type("This is just a Cypress test project description", {
       force: true,
     });
-    cy.get("#mrc_review_required")
-      .contains("No")
-      .click({ force: true });
     cy.get("#contacts\\[0\\]\\.first_name").type("Cypress", { force: true });
     cy.get("#contacts\\[0\\]\\.last_name").type("Test", { force: true });
     cy.get("#contacts\\[0\\]\\.email").type("cypress@mds.com", { force: true });
     cy.get("#contacts\\[0\\]\\.phone_number").type("1234567890", { force: true });
+    cy.get('[data-cy="checkbox-authorization-OTHER"]').click({ force: true });
+    cy.get(
+      '[name="authorizations.OTHER[0].authorization_description"]'
+    ).type("legislation description", { force: true });
 
     // Submit the project
     cy.get('[data-cy="project-summary-submit-button"]').click({ force: true });

@@ -16,8 +16,16 @@ fi
 # Make flyway binary discoverable
 export PATH="$FLYWAY_HOME:$PATH"
 
+ENVIRONMENT_NAME="${ENVIRONMENT_NAME:-dev}"
+
 # Run migrations for mds database
-flyway -validateMigrationNaming=true migrate
+if [[ $ENVIRONMENT_NAME == 'prod' ]]; then
+    echo "---> Running prod migrations"
+    flyway -locations=filesystem:sql,filesystem:sql-prod -validateMigrationNaming=true migrate
+else
+    echo "---> Running common migrations"
+    flyway -locations=filesystem:sql -validateMigrationNaming=true migrate
+fi
 
 # Run migrations for mds_test database
 if [ "$PLATFORM" != "K8S" ]; then

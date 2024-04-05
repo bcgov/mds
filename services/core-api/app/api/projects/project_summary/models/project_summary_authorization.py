@@ -1,9 +1,13 @@
 from sqlalchemy.dialects.postgresql import UUID
+from cerberus import Validator
+import json
 
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
+from app.api.projects.project_summary.models.project_summary_authorization_type import ProjectSummaryAuthorizationType
+from app.api.projects.project_summary.models.project_summary_permit_type import ProjectSummaryPermitType
 
 
 class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
@@ -18,26 +22,191 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
     project_summary_authorization_type = db.Column(
         db.ForeignKey('project_summary_authorization_type.project_summary_authorization_type'),
         nullable=False)
+    amendment_changes = db.Column(db.ARRAY(db.String), nullable=True)
+    amendment_severity = db.Column(db.String, nullable=True)
+    is_contaminated = db.Column(db.Boolean, nullable=True)
+    new_type = db.Column(db.String, nullable=True)
+    authorization_description = db.Column(db.String, nullable=True)
+    exemption_requested = db.Column(db.Boolean, nullable=True)
 
     def __repr__(self):
         return f'{self.__class__.__name__} {self.project_summary_authorization_guid}'
+
+    @classmethod
+    def validate_ams_authorization_type(cls, authorization_type):
+        ams_auth_types = str(ProjectSummaryAuthorizationType.get_by_group_id('ENVIRONMENTAL_MANAGMENT_ACT'))
+        return authorization_type in ams_auth_types
+
+    @classmethod
+    def validate_authorization(cls, authorization, is_ams):
+        valid_permit_types = list(map(lambda type: type.project_summary_permit_type, ProjectSummaryPermitType.get_all()))
+        ams_auth_types = ProjectSummaryAuthorizationType.get_by_group_id('ENVIRONMENTAL_MANAGMENT_ACT')
+        ams_auth_types_list = list(map(lambda auth_type: auth_type.project_summary_authorization_type, ams_auth_types))
+
+        # for "OTHER_LEGISLATION"
+        other_schema = {
+            'project_summary_authorization_guid': {
+                'type': 'string'
+            },
+            'authorization_description': {
+                'required': True,
+                'type': 'string',
+                'maxlength': 100
+            },
+            'project_summary_guid': {
+                'type': 'string',
+                'nullable': True,
+            },
+            'project_summary_authorization_type': {
+                'required': True,
+                'type': 'string'
+            }
+        }
+        # all other authorizations
+        common_schema = {
+            'project_summary_authorization_guid': {
+                'type': 'string'
+            },
+            'existing_permits_authorizations': {
+                'type': 'list',
+                'schema': {'type': 'string'},
+                'nullable': True,
+            },
+            'project_summary_guid': {
+                'type': 'string',
+                'nullable': True,
+            },
+            'project_summary_permit_type': {
+                'required': True,
+                'type': 'list',
+                'allowed': valid_permit_types
+            },
+            'project_summary_authorization_type': {
+                'required': True,
+                'type': 'string'
+            }
+        }
+        # all AMS authorizations
+        common_ams_schema = common_schema | {
+            'project_summary_permit_type': {
+                'required': True,
+                'type': 'list',
+                'items': [{
+                    'type': 'string',
+                    'allowed': ['AMENDMENT', 'NEW']
+                }]
+            },
+            'authorization_description': {
+                'required': True,
+                'type': 'string',
+                'maxlength': 4000
+            },
+            'exemption_requested': {
+                'required': True,
+                'type': 'boolean'
+            },
+            'project_summary_authorization_type': {
+                'required': True,
+                'type': 'string',
+                'allowed': ams_auth_types_list
+            }
+        }
+
+        ams_amendment_schema = common_ams_schema | {
+            'existing_permits_authorizations': {
+                'required': True,
+                'type': 'list',
+                'schema': {'type': 'string'},
+                'items': [{
+                    'required': True,
+                    'type': 'string',
+                    'regex': '^[\d]{4}$'
+                }]
+            },
+            'amendment_severity': {
+                'required': True,
+                'type': 'string',
+                'allowed': ['SIG', 'MIN']
+            },
+            'amendment_changes': {
+                'required': True,
+                'type': 'list',
+                'allowed': ['ILT', 'IGT', 'DDL', 'NAM', 'TRA', 'MMR', 'RCH', 'OTH']
+            },
+            'is_contaminated': {
+                'required': True,
+                'type': 'boolean'
+            }
+        }
+        ams_new_schema = common_ams_schema | {
+            'new_type': {
+                'required': True,
+                'type': 'string',
+                'allowed': ['PER', 'APP']
+            }
+        }
+
+        v = Validator(common_schema, purge_unknown=True)
+        if is_ams:    
+            permit_type = authorization.get('project_summary_permit_type')
+
+            if not permit_type or not isinstance(permit_type, list) or not permit_type[0]:
+                return f'Invalid authorization type {permit_type}'
+            if permit_type[0] == 'AMENDMENT':
+                v = Validator(ams_amendment_schema, purge_unknown=True)
+            elif permit_type[0] == 'NEW':
+                v = Validator(ams_new_schema, purge_unknown=True)
+            else:
+                v = Validator(common_ams_schema, purge_unknown=True)        
+        elif authorization.get('project_summary_authorization_type') == 'OTHER':
+            v = Validator(other_schema, purge_unknown=True)
+
+        if not v.validate(authorization):
+            return json.dumps(v.errors)
+        return True
 
     @classmethod
     def create(cls,
                project_summary_guid,
                project_summary_permit_type,
                existing_permits_authorizations,
+               amendment_changes,
+               amendment_severity,
+               is_contaminated,
+               new_type,
+               authorization_description,
+               exemption_requested,
                add_to_session=True):
         new_authorization = cls(
             project_summary_guid=project_summary_guid,
             project_summary_permit_type=project_summary_permit_type,
-            existing_permits_authorizations=existing_permits_authorizations)
+            existing_permits_authorizations=existing_permits_authorizations,
+            amendment_changes=amendment_changes,
+            amendment_severity=amendment_severity,
+            is_contaminated=is_contaminated,
+            new_type=new_type,
+            authorization_description=authorization_description,
+            exemption_requested=exemption_requested)
         if add_to_session:
             new_authorization.save(commit=False)
         return new_authorization
 
-    def update(self, existing_permits_authorizations, add_to_session=True):
+    def update(self, 
+               existing_permits_authorizations, 
+               amendment_changes,
+               amendment_severity,
+               is_contaminated,
+               new_type,
+               authorization_description,
+               exemption_requested,
+               add_to_session=True):
         self.existing_permits_authorizations = existing_permits_authorizations
+        self.amendment_changes = amendment_changes
+        self.amendment_severity = amendment_severity
+        self.is_contaminated = is_contaminated
+        self.new_type = new_type
+        self.authorization_description = authorization_description
+        self.exemption_requested = exemption_requested
 
         if add_to_session:
             self.save(commit=True)

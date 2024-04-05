@@ -16,6 +16,7 @@ class PartyVerifiableCredentialConnection(AuditMixin, Base):
     connection_id = db.Column(db.String)
     connection_state = db.Column(db.String, server_default=FetchedValue()) 
     #ARIES-RFC 0023 https://github.com/hyperledger/aries-rfcs/tree/main/features/0023-did-exchange
+    last_webhook_timestamp = db.Column(db.DateTime, nullable=True)
 
     
     def __repr__(self):

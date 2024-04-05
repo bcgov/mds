@@ -3,9 +3,9 @@ import { notification, Button } from "antd";
 import * as String from "@mds/common/constants/strings";
 import React from "react";
 import * as API from "@mds/common/constants/API";
-import { ENVIRONMENT } from "@mds/common";
+import { ENVIRONMENT } from "@mds/common/constants";
 import { createRequestHeader } from "./utils/RequestHeaders";
-import { Feature, isFeatureEnabled } from "@mds/common";
+import { Feature, isFeatureEnabled } from "@mds/common/utils";
 
 // https://stackoverflow.com/questions/39696007/axios-with-promise-prototype-finally-doesnt-work
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -46,9 +46,9 @@ const notifymAdmin = (error) => {
 };
 
 CustomAxios = ({
-  errorToastMessage = null,
+  errorToastMessage = "default",
   suppressErrorNotification = false,
-  successToastMessage = null,
+  successToastMessage = undefined,
 } = {}) => {
   const instance = axios.create();
 
@@ -82,10 +82,16 @@ CustomAxios = ({
             key: notificationKey,
             message: formatErrorMessage(error?.response?.data?.message ?? String.ERROR),
             description: (
-              <p style={{ color: "grey" }}>
-                If you think this is a system error please help us to improve by informing the
-                system Admin
-              </p>
+              <div>
+                {error?.response?.data?.detailed_error &&
+                  error?.response?.data?.detailed_error !== "Not provided" && (
+                    <p className="margin-large--top">{error?.response?.data?.detailed_error}</p>
+                  )}
+                <p style={{ color: "grey" }}>
+                  If you think this is a system error please help us to improve by informing the
+                  system Admin
+                </p>
+              </div>
             ),
             duration: 10,
             btn: (

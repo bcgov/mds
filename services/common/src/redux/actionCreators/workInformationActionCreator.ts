@@ -1,6 +1,6 @@
 import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { notification } from "antd";
-import { ENVIRONMENT } from "@mds/common";
+import { ENVIRONMENT } from "@mds/common/constants";
 import { request, success, error } from "../actions/genericActions";
 import * as reducerTypes from "@mds/common/constants/reducerTypes";
 import * as workInformationActions from "../actions/workInformationActions";
@@ -9,7 +9,7 @@ import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
 import { AxiosResponse } from "axios";
 import { AppThunk } from "@mds/common/interfaces/appThunk.type";
-import { IMineWorkInformation } from "@mds/common";
+import { IMineWorkInformation } from "@mds/common/interfaces";
 
 export const createMineWorkInformation = (
   mineGuid: string,
@@ -33,9 +33,8 @@ export const createMineWorkInformation = (
       dispatch(success(reducerTypes.CREATE_MINE_WORK_INFORMATION));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.CREATE_MINE_WORK_INFORMATION));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -54,9 +53,8 @@ export const fetchMineWorkInformations = (
       dispatch(workInformationActions.storeMineWorkInformations(response.data));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.GET_MINE_WORK_INFORMATIONS));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -84,9 +82,8 @@ export const updateMineWorkInformation = (
       dispatch(success(reducerTypes.UPDATE_MINE_WORK_INFORMATION));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.UPDATE_MINE_WORK_INFORMATION));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -110,9 +107,8 @@ export const deleteMineWorkInformation = (
       dispatch(success(reducerTypes.DELETE_MINE_WORK_INFORMATION));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.DELETE_MINE_WORK_INFORMATION));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };

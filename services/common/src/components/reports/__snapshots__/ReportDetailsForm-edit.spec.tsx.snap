@@ -44,7 +44,11 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
                 for="VIEW_EDIT_REPORT_report_for"
                 title=""
               >
-                Who is the report for?
+                <div
+                  style="width: 100%;"
+                >
+                  Who is the report for?
+                </div>
               </label>
             </div>
             <div
@@ -57,9 +61,7 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
                   class="ant-form-item-control-input-content"
                 >
                   <div
-                    aria-required="true"
                     class="ant-radio-group ant-radio-group-solid vertical-radio-group"
-                    id="VIEW_EDIT_REPORT_report_for"
                   >
                     <label
                       class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
@@ -194,7 +196,11 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
                 for="VIEW_EDIT_REPORT_report_type"
                 title=""
               >
-                What is the type of the report?
+                <div
+                  style="width: 100%;"
+                >
+                  What is the type of the report?
+                </div>
               </label>
             </div>
             <div
@@ -207,9 +213,7 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
                   class="ant-form-item-control-input-content"
                 >
                   <div
-                    aria-required="true"
                     class="ant-radio-group ant-radio-group-solid vertical-radio-group"
-                    id="VIEW_EDIT_REPORT_report_type"
                   >
                     <label
                       class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
@@ -291,13 +295,15 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
                 for="VIEW_EDIT_REPORT_description_comment"
                 title=""
               >
-                Report Description
-                 
-                <span
-                  class="form-item-optional"
-                >
-                   (optional)
-                </span>
+                <div>
+                  Report Description
+                   
+                  <span
+                    class="form-item-optional"
+                  >
+                     (optional)
+                  </span>
+                </div>
               </label>
             </div>
             <div
@@ -376,7 +382,11 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
                 for="VIEW_EDIT_REPORT_submission_year"
                 title=""
               >
-                Report Compliance Year/Period
+                <div
+                  style="width: 100%;"
+                >
+                  Report Compliance Year/Period
+                </div>
               </label>
             </div>
             <div
@@ -467,7 +477,11 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
                 for="VIEW_EDIT_REPORT_due_date"
                 title=""
               >
-                Due Date
+                <div
+                  style="width: 100%;"
+                >
+                  Due Date
+                </div>
               </label>
             </div>
             <div
@@ -558,13 +572,15 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
                 for="VIEW_EDIT_REPORT_submitter_name"
                 title=""
               >
-                Submitter Name
-                 
-                <span
-                  class="form-item-optional"
-                >
-                   (optional)
-                </span>
+                <div>
+                  Submitter Name
+                   
+                  <span
+                    class="form-item-optional"
+                  >
+                     (optional)
+                  </span>
+                </div>
               </label>
             </div>
             <div
@@ -626,13 +642,15 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
                 for="VIEW_EDIT_REPORT_submitter_email"
                 title=""
               >
-                Submitter Email
-                 
-                <span
-                  class="form-item-optional"
-                >
-                   (optional)
-                </span>
+                <div>
+                  Submitter Email
+                   
+                  <span
+                    class="form-item-optional"
+                  >
+                     (optional)
+                  </span>
+                </div>
               </label>
             </div>
             <div

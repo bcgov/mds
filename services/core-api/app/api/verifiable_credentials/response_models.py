@@ -19,5 +19,6 @@ PARTY_VERIFIABLE_CREDENTIAL_MINES_ACT_PERMIT = api.model(
         "cred_exch_state": fields.String,
         "rev_reg_id": fields.String,
         "cred_rev_id": fields.String,
+        "last_webhook_timestamp": fields.DateTime,
     }
 )

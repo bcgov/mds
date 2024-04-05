@@ -1,7 +1,7 @@
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
 import queryString from "query-string";
-import { ENVIRONMENT, IUpdatePartyAppointment, removeNullValues } from "@mds/common";
+import { ENVIRONMENT, removeNullValues } from "@mds/common/constants";
 import { request, success, error } from "../actions/genericActions";
 import * as reducerTypes from "@mds/common/constants/reducerTypes";
 import * as partyActions from "../actions/partyActions";
@@ -21,7 +21,8 @@ import {
   ICreateOrgBookEntity,
   IPartyOrgBookEntity,
   IMergeParties,
-} from "@mds/common";
+  IUpdatePartyAppointment,
+} from "@mds/common/interfaces";
 import { AppThunk } from "@mds/common/interfaces/appThunk.type";
 import { AxiosResponse } from "axios";
 
@@ -42,9 +43,8 @@ export const createParty = (payload: ICreateParty): AppThunk<Promise<AxiosRespon
       dispatch(partyActions.storeLastCreatedParty(response.data));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.CREATE_PARTY));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -69,9 +69,8 @@ export const updateParty = (
       dispatch(success(reducerTypes.UPDATE_PARTY));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.UPDATE_PARTY));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -98,9 +97,8 @@ export const fetchPartyById = (id: string): AppThunk => (dispatch) => {
       dispatch(success(reducerTypes.GET_PARTY));
       dispatch(partyActions.storeParty(response.data, id));
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.GET_PARTY));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -123,9 +121,8 @@ export const addPartyRelationship = (
       dispatch(success(reducerTypes.ADD_PARTY_RELATIONSHIP));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.ADD_PARTY_RELATIONSHIP));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -154,9 +151,8 @@ export const updatePartyRelationship = (
       dispatch(success(reducerTypes.UPDATE_PARTY_RELATIONSHIP));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.UPDATE_PARTY_RELATIONSHIP));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -221,9 +217,8 @@ export const removePartyRelationship = (
       dispatch(success(reducerTypes.REMOVE_PARTY_RELATIONSHIP));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.REMOVE_PARTY_RELATIONSHIP));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -243,9 +238,8 @@ export const deleteParty = (party_guid: string): AppThunk<Promise<AxiosResponse<
       dispatch(success(reducerTypes.DELETE_PARTY));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.DELETE_PARTY));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -275,9 +269,8 @@ export const addDocumentToRelationship = (
       dispatch(success(reducerTypes.ADD_DOCUMENT_TO_RELATIONSHIP));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.ADD_DOCUMENT_TO_RELATIONSHIP));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -299,9 +292,8 @@ export const createPartyOrgBookEntity = (
       dispatch(success(reducerTypes.PARTY_ORGBOOK_ENTITY));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.PARTY_ORGBOOK_ENTITY));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -323,9 +315,8 @@ export const mergeParties = (payload: IMergeParties): AppThunk<Promise<AxiosResp
       dispatch(partyActions.storeLastCreatedParty(response.data));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.MERGE_PARTIES));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };

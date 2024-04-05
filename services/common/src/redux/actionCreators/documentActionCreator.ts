@@ -5,7 +5,8 @@ import * as reducerTypes from "@mds/common/constants/reducerTypes";
 import { hideLoading, showLoading } from "react-redux-loading-bar";
 
 import { notification } from "antd";
-import { ENVIRONMENT, IMineDocumentVersion } from "@mds/common";
+import { ENVIRONMENT } from "@mds/common/constants";
+import { IMineDocumentVersion } from "@mds/common/interfaces";
 import { error, request, success } from "@mds/common/redux/actions/genericActions";
 import CustomAxios from "@mds/common/redux/customAxios";
 import * as API from "@mds/common/constants/API";
@@ -43,9 +44,8 @@ export const postNewDocumentVersion = ({
       dispatch(success(reducerTypes.POST_NEW_DOCUMENT_VERSION));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.POST_NEW_DOCUMENT_VERSION));
-      throw new Error(err);
     })
     .finally(() => {
       dispatch(hideLoading());
@@ -69,9 +69,8 @@ export const pollDocumentUploadStatus = (
       dispatch(success(reducerTypes.POLL_DOCUMENT_UPLOAD_STATUS));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.POLL_DOCUMENT_UPLOAD_STATUS));
-      throw new Error(err);
     })
     .finally(() => {
       dispatch(hideLoading());
@@ -91,9 +90,8 @@ export const documentsCompression = (mineGuid, documentManagerGuids) => (dispatc
       dispatch(success(reducerTypes.DOCUMENTS_COMPRESSION));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.DOCUMENTS_COMPRESSION));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -111,9 +109,8 @@ export const pollDocumentsCompressionProgress = (taskId) => (dispatch) => {
       dispatch(documentActions.storeDocumentCompressionProgress(response.data));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.POLL_DOCUMENTS_COMPRESSION_PROGRESS));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };

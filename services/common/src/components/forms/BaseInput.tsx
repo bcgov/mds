@@ -100,7 +100,7 @@ export const getFormItemLabel = (
   }
   if (isRequired) {
     return (
-      <>
+      <div style={{ width: "100%" }}>
         {label}
         {labelSubtitle && (
           <>
@@ -108,11 +108,11 @@ export const getFormItemLabel = (
             <span className="label-subtitle">{labelSubtitle}</span>
           </>
         )}
-      </>
+      </div>
     );
   }
   return (
-    <>
+    <div>
       {label} <span className="form-item-optional">&nbsp;(optional)</span>
       {labelSubtitle && (
         <>
@@ -120,6 +120,6 @@ export const getFormItemLabel = (
           <span className="label-subtitle">{labelSubtitle}</span>
         </>
       )}
-    </>
+    </div>
   );
 };

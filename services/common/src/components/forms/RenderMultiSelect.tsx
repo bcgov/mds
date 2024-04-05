@@ -13,6 +13,7 @@ interface MultiSelectProps extends BaseInputProps {
   data: IOption[];
   filterOption?: any;
   onSearch?: any;
+  loading?: boolean;
 }
 
 export const RenderMultiSelect: FC<MultiSelectProps> = (props) => {
@@ -50,6 +51,7 @@ export const RenderMultiSelect: FC<MultiSelectProps> = (props) => {
                 ((meta.error && <span>{meta.error}</span>) ||
                   (meta.warning && <span>{meta.warning}</span>))
               }
+              getValueProps={() => input.value !== "" && { value: input.value }}
             >
               <Select
                 loading={props.loading}
@@ -59,11 +61,9 @@ export const RenderMultiSelect: FC<MultiSelectProps> = (props) => {
                 mode="multiple"
                 size="small"
                 placeholder={placeholder}
-                {...input}
-                id={props.id}
+                id={props.id ?? props.input.name}
                 onSearch={onSearch}
                 options={data}
-                value={input.value ?? undefined}
                 onChange={input.onChange}
                 filterOption={filterOption || caseInsensitiveLabelFilter}
                 showArrow

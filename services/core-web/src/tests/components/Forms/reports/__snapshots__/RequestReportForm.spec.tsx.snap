@@ -42,7 +42,11 @@ exports[`RequestReportForm renders form properly 1`] = `
                 for="REQUEST_REPORT_mine_report_definition_guid"
                 title=""
               >
-                Search by Code Section or Report Name
+                <div
+                  style="width: 100%;"
+                >
+                  Search by Code Section or Report Name
+                </div>
               </label>
             </div>
             <div
@@ -149,7 +153,11 @@ exports[`RequestReportForm renders form properly 1`] = `
                 for="REQUEST_REPORT_submission_year"
                 title=""
               >
-                Report Compliance Year/Period
+                <div
+                  style="width: 100%;"
+                >
+                  Report Compliance Year/Period
+                </div>
               </label>
             </div>
             <div
@@ -240,7 +248,11 @@ exports[`RequestReportForm renders form properly 1`] = `
                 for="REQUEST_REPORT_due_date"
                 title=""
               >
-                Due Date
+                <div
+                  style="width: 100%;"
+                >
+                  Due Date
+                </div>
               </label>
             </div>
             <div

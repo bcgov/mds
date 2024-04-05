@@ -236,6 +236,6 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
 
         subject = f'Notice of Departure Submitted for {self.mine.mine_name}'
         body = f'<p>{self.mine.mine_name} (Mine no: {self.mine.mine_no}) has submitted a "Notice of Departure from Approval" report.</p>'
-        link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/permits-and-approvals/notices-of-departure'
+        link = f'{Config.CORE_PROD_URL}/mine-dashboard/{self.mine.mine_guid}/permits-and-approvals/notices-of-departure'
         body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
         EmailService.send_email(subject, recipients, body, cc=cc)

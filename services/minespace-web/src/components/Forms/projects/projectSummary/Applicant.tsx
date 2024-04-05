@@ -446,7 +446,9 @@ const Applicant = () => {
         id="is_legal_address_same_as_mailing_address"
         name="is_legal_address_same_as_mailing_address"
         component={RenderCheckbox}
-        label="Same as mailing address"
+        props={{
+          label: "Same as mailing address",
+        }}
         type="checkbox"
         disabled={
           !areAllAddressFieldsValid(isMailingInternational, applicantAddress.mailingAddress)
@@ -532,7 +534,9 @@ const Applicant = () => {
           <Field
             id="is_billing_address_same_as_mailing_address"
             name="is_billing_address_same_as_mailing_address"
-            label="Same as mailing address"
+            props={{
+              label: "Same as mailing address",
+            }}
             disabled={
               !areAllAddressFieldsValid(isMailingInternational, applicantAddress.mailingAddress) ||
               is_billing_address_same_as_legal_address
@@ -552,7 +556,9 @@ const Applicant = () => {
           <Field
             id="is_billing_address_same_as_legal_address"
             name="is_billing_address_same_as_legal_address"
-            label="Same as legal address"
+            props={{
+              label: "Same as legal address",
+            }}
             disabled={
               is_billing_address_same_as_mailing_address ||
               (!areAllAddressFieldsValid(isLegalInternational, applicantAddress.legalAddress) &&

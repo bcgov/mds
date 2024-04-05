@@ -15,3 +15,4 @@ export * from "./permitPartyRelationship.interface";
 export * from "./updatePermitAmendmentPayload.interface";
 export * from "./patchPermitNumber.interface";
 export * from "./draftPermitAmendment.interface";
+export * from "./patchPermitVCLocked.interface";

@@ -756,6 +756,7 @@ MINE_REPORT_DEFINITION_MODEL = api.model(
         'categories': fields.List(fields.Nested(MINE_REPORT_DEFINITION_CATEGORIES)),
         'compliance_articles': fields.List(fields.Nested(COMPLIANCE_ARTICLE_MODEL)),
         'is_common': fields.Boolean,
+        'is_prr_only': fields.Boolean,
     })
 
 PAGINATED_LIST = api.model(

@@ -16,7 +16,7 @@ import * as FORM from "@/constants/forms";
 import DocumentUpload from "@/components/Forms/projects/projectSummary/DocumentUpload";
 import ProjectContacts from "@/components/Forms/projects/projectSummary/ProjectContacts";
 import ProjectDates from "@/components/Forms/projects/projectSummary/ProjectDates";
-import AuthorizationsInvolved from "@/components/Forms/projects/projectSummary/AuthorizationsInvolved";
+import AuthorizationsInvolved from "@mds/common/components/projectSummary/AuthorizationsInvolved";
 import SteppedForm from "@mds/common/components/forms/SteppedForm";
 import Step from "@common/components/Step";
 import ProjectLinks from "@mds/common/components/projects/ProjectLinks";
@@ -53,13 +53,13 @@ export const getProjectFormTabs = (amsFeatureEnabled: boolean) => {
   const projectFormTabs = [
     "basic-information",
     "related-projects",
+    "authorizations-involved",
     "project-contacts",
     "applicant-information",
     "agent",
     "facility-operator-information",
     "legal-land-owner-information",
     "project-dates",
-    "authorizations-involved",
     "document-upload",
   ];
 
@@ -96,9 +96,7 @@ export const ProjectSummaryForm: FC<ProjectSummaryFormProps &
       "applicant-information": <Applicant />,
       agent: <Agent />,
       "facility-operator-information": <FacilityOperator />,
-      "authorizations-involved": (
-        <AuthorizationsInvolved initialValues={props.initialValues} change={props.change} />
-      ),
+      "authorizations-involved": <AuthorizationsInvolved />,
       "document-upload": (
         <DocumentUpload initialValues={props.initialValues} {...props} documents={documents} />
       ),
