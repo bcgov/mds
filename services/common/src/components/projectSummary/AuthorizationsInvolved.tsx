@@ -236,7 +236,7 @@ const RenderEMAAuthCodeFormSection = ({ code }) => {
         component={RenderGroupCheckbox}
         label="What type of authorization is involved in your application?"
         required
-        validate={[required]}
+        validate={[requiredList]}
         normalize={normalizeGroupCheckBox}
         onChange={handleChangeAuthType}
         options={[
@@ -344,7 +344,7 @@ const RenderAuthCodeFormSection = ({ authorizationType, code }) => {
           }}
           component={RenderGroupCheckbox}
           required
-          validate={[required]}
+          validate={[requiredList]}
           normalize={normalizeGroupCheckBox}
         />
         {isMinesAct ? (
