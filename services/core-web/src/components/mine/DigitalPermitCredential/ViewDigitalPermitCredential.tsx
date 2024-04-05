@@ -1,28 +1,19 @@
 import { Alert, Button, Col, Row, Table, Typography } from "antd";
 import { VC_ACTIVE_CREDENTIAL_STATES, VC_CRED_ISSUE_STATES } from "@mds/common/constants";
-import { patchPermitVCLocked } from "@mds/common/redux/actionCreators/permitActionCreator";
 import {
-  IMine,
-  IMineCommodityOption,
-  IMineDisturbanceOption,
-  IPermit,
-} from "@mds/common/interfaces";
+  fetchPermits,
+  patchPermitVCLocked,
+} from "@mds/common/redux/actionCreators/permitActionCreator";
+import { IMine, IPermit } from "@mds/common/interfaces";
 import React, { FC, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { formatDate } from "@mds/common/redux/utils/helpers";
 import {
   renderDateColumn,
   renderTextColumn,
 } from "@mds/common/components/common/CoreTableCommonColumns";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
-import ExplosivesPermitMap from "@mds/common/components/explosivespermits/ExplosivesPermitMap";
-import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
-import {
-  getMineCommodityOptions,
-  getMineDisturbanceOptions,
-} from "@mds/common/redux/selectors/staticContentSelectors";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import modalConfig from "@/components/modalContent/config";
 import {
