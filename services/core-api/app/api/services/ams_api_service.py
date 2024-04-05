@@ -1,5 +1,7 @@
 import requests
 import json
+
+from app.api.municipalities.models.municipality import Municipality
 from app.config import Config
 from app.date_time_helper import get_date_iso8601_string
 
@@ -54,7 +56,28 @@ class AMSApiService():
             return value
 
     @classmethod
-    def create_ams_authorization(cls, project_summary_data):
+    def create_ams_authorization(cls,
+                                 authorizations,
+                                 applicant,
+                                 nearest_municipality,
+                                 agent,
+                                 contacts,
+                                 facility_type,
+                                 facility_desc,
+                                 facility_latitude,
+                                 facility_longitude,
+                                 facility_coords_source,
+                                 facility_coords_source_desc,
+                                 legal_land_desc,
+                                 facility_operator,
+                                 legal_land_owner_name,
+                                 legal_land_owner_contact_number,
+                                 legal_land_owner_email_address,
+                                 is_legal_land_owner,
+                                 is_crown_land_federal_or_provincial,
+                                 is_landowner_aware_of_discharge_application,
+                                 has_landowner_received_copy_of_application
+                                 ):
         """Creates a new AMS authorization application"""
 
         ams_results = []
@@ -62,9 +85,10 @@ class AMSApiService():
             'bearer': Config.AMS_BEARER_TOKEN,
             'Content-Type': 'application/json'
         }
-        authorizations = cls.__get_new_authorization_details(project_summary_data['authorizations'])
+        nearest_municipality_name = Municipality.find_by_guid(nearest_municipality).municipality_name
+        authorization_list = cls.__get_new_authorization_details(authorizations)
 
-        for authorization in authorizations:
+        for authorization in authorization_list:
             ams_authorization_data = {
                 'isauthamendment': 'No',
                 'authorizationtype': {
@@ -73,65 +97,67 @@ class AMSApiService():
                 'authorizationnumber': 'TEST1',
                 'receiveddate': get_date_iso8601_string(),
                 'majorcentre': {
-                    'name': project_summary_data['municipality']['municipality_name']
+                    'name': nearest_municipality_name
                 },
                 'applicant': {
-                    'applicanttype': cls.__get_transformed_party_code(
-                        project_summary_data['applicant']['party_type_code']),
-                    'em_companyname': project_summary_data['applicant']['party_name'],
-                    'em_businessphone': cls.__format_phone_number(project_summary_data['applicant']['phone_no']),
-                    'em_firstname': project_summary_data['applicant']['first_name'],
-                    'em_middlename': project_summary_data['applicant']['middle_name'],
-                    'em_lastname': project_summary_data['applicant']['party_name'],
-                    'em_email': project_summary_data['applicant']['email'],
+                    'applicanttype': cls.__get_transformed_party_code(applicant['party_type_code']),
+                    'em_companyname': applicant['party_name'],
+                    'em_businessphone': cls.__format_phone_number(applicant['phone_no']),
+                    'em_firstname': applicant['first_name'],
+                    'em_middlename': applicant['middle_name'],
+                    'em_lastname': applicant['party_name'],
+                    'em_email': applicant['email'],
                     'billingaddress': cls.__create_full_address(
-                        project_summary_data['applicant']['address'][2]['address_line_1'],
-                        project_summary_data['applicant']['address'][2]['city'],
-                        project_summary_data['applicant']['address'][2]['sub_division_code'],
-                        project_summary_data['applicant']['address'][2]['post_code'])
+                        applicant['address'][2]['address_line_1'],
+                        applicant['address'][2]['city'],
+                        applicant['address'][2]['sub_division_code'],
+                        applicant['address'][2]['post_code'])
                 },
                 'agent': {
-                    'em_lastname': project_summary_data['agent']['party_name'],
-                    'em_firstname': project_summary_data['agent']['first_name'],
-                    'em_email': project_summary_data['agent']['email'],
-                    'em_companyname': project_summary_data['agent']['party_name']
+                    'em_lastname': agent['party_name'],
+                    'em_firstname': agent['first_name'],
+                    'em_email': agent['email'],
+                    'em_companyname': agent['party_name']
                 },
                 'preappexemptionrequest': cls.__boolean_to_yes_no(authorization.get('exemption_requested')),
                 'preappexemptionrequestreason': 'Test',
                 'iscontaminatedsite': cls.__boolean_to_yes_no(authorization.get('is_contaminated')),
                 'contact': {
-                    'em_lastname': project_summary_data['contacts'][0]['last_name'],
-                    'em_firstname': project_summary_data['contacts'][0]['first_name'],
-                    'em_title': project_summary_data['contacts'][0]['job_title'],
-                    'em_businessphone': cls.__format_phone_number(project_summary_data['contacts'][0]['phone_number']),
-                    'em_email': project_summary_data['contacts'][0]['email']
+                    'em_lastname': contacts[0]['last_name'],
+                    'em_firstname': contacts[0]['first_name'],
+                    'em_title': contacts[0]['job_title'],
+                    'em_businessphone': cls.__format_phone_number(contacts[0]['phone_number']),
+                    'em_email': contacts[0]['email']
                 },
-                'facilitytype': project_summary_data['facility_type'],
-                'facilitydescription': project_summary_data['facility_desc'],
-                'facilitylocationlatitude': project_summary_data['facility_latitude'],
-                'facilitylocationlongitude': project_summary_data['facility_longitude'],
-                'sourceofdata': project_summary_data['facility_coords_source'],
-                'sourceofdatadescription': project_summary_data['facility_coords_source_desc'],
-                'legallanddescription': project_summary_data['legal_land_desc'],
+                'facilitytype': facility_type,
+                'facilitydescription': facility_desc,
+                'facilitylocationlatitude': facility_latitude,
+                'facilitylocationlongitude': facility_longitude,
+                'sourceofdata': facility_coords_source,
+                'sourceofdatadescription': facility_coords_source_desc,
+                'legallanddescription': legal_land_desc,
                 'facilityaddress': {
                     'addresstype': 'Civic',
-                    'suitenumber': project_summary_data['facility_operator']['address']['suite_no'],
-                    'streetnumber': project_summary_data['facility_operator']['address']['suite_no'],
-                    'street': project_summary_data['facility_operator']['address']['address_line_1'],
-                    'line2': project_summary_data['facility_operator']['address']['address_line_2'],
-                    'municipality': project_summary_data['facility_operator']['address']['city'],
+                    'suitenumber': facility_operator['address']['suite_no'],
+                    'streetnumber': facility_operator['address']['suite_no'],
+                    'street': facility_operator['address']['address_line_1'],
+                    'line2': facility_operator['address']['address_line_2'],
+                    'municipality': facility_operator['address']['city'],
                     'province': 'British Columbia',
                     'country': 'Canada',
-                    'postalcode': project_summary_data['facility_operator']['address']['post_code']
+                    'postalcode': facility_operator['address']['post_code']
                 },
-                'facilityopname': project_summary_data['facility_operator']['name'],
-                'facilityopphonenumber': cls.__format_phone_number(project_summary_data['facility_operator']['phone_no']),
-                'facilityopphonenumberext': project_summary_data['facility_operator']['phone_ext'],
-                'facilityopemail': project_summary_data['facility_operator']['email'],
-                'landownername': project_summary_data['legal_land_owner_name'],
-                'landownerphonenumber': cls.__format_phone_number(project_summary_data['legal_land_owner_contact_number']),
-                'landowneremail': project_summary_data['legal_land_owner_email_address'],
-                'istheapplicantthelandowner': cls.__boolean_to_yes_no(project_summary_data['is_legal_land_owner'])
+                'facilityopname': facility_operator['name'],
+                'facilityopphonenumber': cls.__format_phone_number(facility_operator['phone_no']),
+                'facilityopphonenumberext': facility_operator['phone_ext'],
+                'facilityopemail': facility_operator['email'],
+                'landownername': legal_land_owner_name,
+                'landownerphonenumber': cls.__format_phone_number(legal_land_owner_contact_number),
+                'landowneremail': legal_land_owner_email_address,
+                'istheapplicantthelandowner': cls.__boolean_to_yes_no(is_legal_land_owner),
+                'landfedorprov': cls.__boolean_to_yes_no(is_crown_land_federal_or_provincial),
+                'landownerawareofapplication': cls.__boolean_to_yes_no(is_landowner_aware_of_discharge_application),
+                'landownerreceivedcopy': cls.__boolean_to_yes_no(has_landowner_received_copy_of_application)
             }
             payload = json.dumps(ams_authorization_data)
             response = requests.post(Config.AMS_URL, data=payload, headers=headers)
