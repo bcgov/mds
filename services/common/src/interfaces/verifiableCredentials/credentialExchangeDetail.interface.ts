@@ -62,12 +62,6 @@ interface ICredentialRequest {
   nonce: string;
 }
 
-interface ICredential {
-  schema_id: string;
-  cred_def_id: string;
-  rev_reg_id: string;
-}
-
 export interface ICredentialExchange {
   state: string;
   created_at: string;
