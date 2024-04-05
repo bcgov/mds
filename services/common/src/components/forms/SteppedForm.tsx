@@ -110,7 +110,10 @@ const SteppedForm = (props) => {
         {children && (
           <div className="stepped-form-form-container">
             <Form layout="vertical">{children.find((child) => child.key === tabs[tabIndex])}</Form>
-            <Row justify={isFirst && tabs.length > 1 ? "end" : "space-between"}>
+            <Row
+              justify={isFirst && tabs.length > 1 ? "end" : "space-between"}
+              className="stepped-form-button-row"
+            >
               {!isFirst && (
                 <Button
                   type="default"
