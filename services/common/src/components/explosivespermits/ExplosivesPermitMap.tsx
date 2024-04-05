@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { FC, useEffect, useMemo, useRef, useState } from "react";
 import L, { Map } from "leaflet";
 import LeafletWms from "leaflet.wms";
 
@@ -10,6 +10,7 @@ import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import * as Strings from "@mds/common/constants/strings";
 import { Validate } from "@mds/common/redux/utils/Validate";
 import { SMALL_PIN_SELECTED } from "@mds/common/constants/assets";
+import { v4 as uuidv4 } from "uuid";
 
 /**
  * @class ExplosivesPermitMap.js is a Leaflet Map component.
@@ -66,19 +67,23 @@ const ExplosivesPermitMap: FC<ExplosivesPermitMapProps> = ({ pin = [] }) => {
     setContainsPin(true);
   };
 
-  const createMap = () => {
-    mapRef.current = L.map("leaflet-map", { attributionControl: false })
-      .setView(latLong, Strings.DEFAULT_ZOOM)
-      .setMaxZoom(12);
-    const majorMinePermittedAreas = getMajorMinePermittedAreas();
-    mapRef.current?.addLayer(majorMinePermittedAreas);
+  const id = useMemo(() => uuidv4(), []);
 
-    markerClusterGroupRef.current = L.markerClusterGroup({
-      animate: false,
-      spiderfyOnMaxZoom: true,
-      showCoverageOnHover: false,
-    });
-    mapRef.current?.addLayer(markerClusterGroupRef.current);
+  const createMap = () => {
+    if (!mapRef.current || !mapRef.current._leaflet_id) {
+      mapRef.current = L.map(id, { attributionControl: false })
+        .setView(latLong, Strings.DEFAULT_ZOOM)
+        .setMaxZoom(12);
+      const majorMinePermittedAreas = getMajorMinePermittedAreas();
+      mapRef.current?.addLayer(majorMinePermittedAreas);
+
+      markerClusterGroupRef.current = L.markerClusterGroup({
+        animate: false,
+        spiderfyOnMaxZoom: true,
+        showCoverageOnHover: false,
+      });
+      mapRef.current?.addLayer(markerClusterGroupRef.current);
+    }
   };
 
   const getBaseMaps = () => {
@@ -116,12 +121,7 @@ const ExplosivesPermitMap: FC<ExplosivesPermitMapProps> = ({ pin = [] }) => {
     }
   }, [pin, containsPin]);
 
-  return (
-    <div
-      style={{ height: "200px", width: "100%", zIndex: 1, position: "inherit" }}
-      id="leaflet-map"
-    />
-  );
+  return <div style={{ height: "200px", width: "100%", zIndex: 1, position: "inherit" }} id={id} />;
 };
 
 export default ExplosivesPermitMap;
