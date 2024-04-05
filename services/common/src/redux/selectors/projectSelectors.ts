@@ -1,7 +1,8 @@
 import { createSelector } from "reselect";
-import { isEmpty } from "lodash";
+import { uniq } from "lodash";
 import * as projectReducer from "../reducers/projectReducer";
 import { IParty, IProjectContact } from "../..";
+import { getTransformedProjectSummaryAuthorizationTypes } from "./staticContentSelectors";
 
 export const {
   getProjectSummary,
@@ -38,34 +39,52 @@ const formatProjectContact = (contacts): IProjectContact[] => {
 
   return formattedContacts;
 };
+const formatAuthorizations = (authorizations = [], authTypes) => {
+  const authorizationTypes = uniq(authorizations.map((a) => a.project_summary_authorization_type));
+  const formattedAuthorizations = {};
+
+  authorizationTypes.forEach((type) => {
+    const authsOfType = authorizations.filter((a) => a.project_summary_authorization_type === type);
+    if (authTypes.includes(type)) {
+      const amendAuths = authsOfType.filter(
+        (a) => a.project_summary_permit_type[0] === "AMENDMENT"
+      );
+      const newAuths = authsOfType.filter((a) => a.project_summary_permit_type[0] === "NEW");
+      const types = [amendAuths.length && "AMENDMENT", newAuths.length && "NEW"].filter(Boolean);
+
+      const authData = { types, NEW: newAuths, AMENDMENT: amendAuths };
+      formattedAuthorizations[type] = authData;
+    } else {
+      formattedAuthorizations[type] = authsOfType;
+    }
+  });
+  return { authorizations: formattedAuthorizations, authorizationTypes };
+};
+
+export const getAmsAuthorizationTypes = createSelector(
+  [getTransformedProjectSummaryAuthorizationTypes],
+  (authTypes) => {
+    return authTypes
+      ?.find((parent) => parent.code === "ENVIRONMENTAL_MANAGMENT_ACT")
+      ?.children?.map((c) => c.code);
+  }
+);
 
 export const getFormattedProjectSummary = createSelector(
-  [getProjectSummary, getProject],
-  (summary, project) => {
+  [getProjectSummary, getProject, getAmsAuthorizationTypes],
+  (summary, project, authTypes) => {
     const contacts = formatProjectContact(project.contacts);
     const agent = formatProjectSummaryParty(summary.agent);
     const facility_operator = formatProjectSummaryParty(summary.facility_operator);
-    let formattedSummary = {
+
+    const formattedSummary = {
       ...summary,
       contacts,
       agent,
       facility_operator,
-      authorizationOptions: [],
+      ...formatAuthorizations(summary.authorizations, authTypes),
     };
-    if (!isEmpty(summary) && summary?.authorizations.length) {
-      summary.authorizations.forEach((authorization) => {
-        formattedSummary = {
-          ...formattedSummary,
-          [authorization.project_summary_authorization_type]: {
-            ...authorization,
-            existing_permits_authorizations: authorization.existing_permits_authorizations.toString(),
-          },
-        };
-        return formattedSummary.authorizationOptions.push(
-          authorization.project_summary_authorization_type
-        );
-      });
-    }
+
     formattedSummary.project_lead_party_guid = project.project_lead_party_guid;
 
     return formattedSummary;
