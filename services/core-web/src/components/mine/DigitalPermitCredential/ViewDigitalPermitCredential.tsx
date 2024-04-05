@@ -30,6 +30,7 @@ import {
   getMinesActPermitIssuance,
   revokeCredential,
 } from "@mds/common/redux/slices/verifiableCredentialsSlice";
+import DigitalCredentialDetails from "@/components/mine/DigitalPermitCredential/DigitalCredentialDetails";
 
 const { Paragraph, Title } = Typography;
 
@@ -48,23 +49,12 @@ export const ViewDigitalPermitCredential: FC = () => {
     VC_ACTIVE_CREDENTIAL_STATES.includes(mapi.cred_exch_state)
   );
   const mine: IMine = useSelector((state) => getMineById(state, mineGuid));
-  const mineCommodityOptions: IMineCommodityOption[] = useSelector(getMineCommodityOptions);
-
-  const mineDisturbanceOptions: IMineDisturbanceOption[] = useSelector(getMineDisturbanceOptions);
 
   useEffect(() => {
     if (permitRecord) {
       dispatch(fetchCredentialConnections({ partyGuid: permitRecord.current_permittee_guid }));
     }
   }, [permitRecord]);
-
-  const getLatestIssueDate = () => {
-    const latestAmendment = permitRecord?.permit_amendments?.filter(
-      (a) => a.permit_amendment_status_code !== "DFT"
-    )[0];
-
-    return latestAmendment?.issue_date;
-  };
 
   const openCredentialContentsModal = (event, cred_exch_id) => {
     event.preventDefault();
@@ -74,6 +64,7 @@ export const ViewDigitalPermitCredential: FC = () => {
           title: "Digital Credential Details",
           partyGuid: minesActPermitIssuance[0].party_guid,
           credExchId: cred_exch_id,
+          mine,
         },
         width: "50vw",
         content: modalConfig.CREDENTIAL_CONTENT_MODAL,
@@ -97,28 +88,6 @@ export const ViewDigitalPermitCredential: FC = () => {
       ),
     },
   ];
-
-  const getCommodityDescriptionFromCode = (codes: string[]) => {
-    const commodityDescription = mineCommodityOptions.reduce(
-      (acc, option: IMineCommodityOption) => {
-        if (codes?.includes(option.mine_commodity_code)) acc.push(option.description);
-        return acc;
-      },
-      []
-    );
-    return commodityDescription.join(", ") ?? "";
-  };
-
-  const getMineDisturbanceFromCode = (codes: string[]) => {
-    const disturbanceDescriptions = mineDisturbanceOptions.reduce(
-      (acc, option: IMineDisturbanceOption) => {
-        if (codes?.includes(option.mine_disturbance_code)) acc.push(option.description);
-        return acc;
-      },
-      []
-    );
-    return disturbanceDescriptions.join(", ");
-  };
 
   const handleRevoke = async (data) => {
     if (!activePermitCredential) return;
@@ -184,92 +153,7 @@ export const ViewDigitalPermitCredential: FC = () => {
       <Title level={2}>Permit {permitRecord?.permit_no}</Title>
       <Row gutter={48}>
         <Col md={12} sm={24}>
-          <Title level={3} className="primary-colour">
-            Permit Details
-          </Title>
-          <Row gutter={6}>
-            <Col span={12}>
-              <Paragraph strong>Permittee Name</Paragraph>
-              <Paragraph>{permitRecord?.current_permittee}</Paragraph>
-            </Col>
-            <Col span={12}>
-              <Paragraph strong>Issue Date</Paragraph>
-              <Paragraph>{formatDate(getLatestIssueDate())}</Paragraph>
-            </Col>
-          </Row>
-
-          <Row gutter={6}>
-            <Col span={12}>
-              <Paragraph strong>Permit Number</Paragraph>
-              <Paragraph>{permitRecord?.permit_no}</Paragraph>
-            </Col>
-
-            <Col span={12}>
-              <Paragraph strong>Mine Number</Paragraph>
-              <Paragraph>{mine.mine_no}</Paragraph>
-            </Col>
-          </Row>
-          <Row gutter={6} className="margin-large--bottom">
-            <Col span={12}>
-              <Paragraph strong>Latitude</Paragraph>
-              <Paragraph>{mine.mine_location.latitude}</Paragraph>
-            </Col>
-            <Col span={12}>
-              <Paragraph strong>Longitude</Paragraph>
-              <Paragraph>{mine.mine_location.longitude}</Paragraph>
-            </Col>
-          </Row>
-          <ExplosivesPermitMap pin={[mine.mine_location.latitude, mine.mine_location.longitude]} />
-          <Row gutter={6} className="margin-large--top">
-            <Col span={24}>
-              <Paragraph strong>Mine Operation Status</Paragraph>
-              <Paragraph>{mine.latest_mine_status.status_labels.join(", ")}</Paragraph>
-            </Col>
-            <Col span={24}>
-              <Paragraph strong>Mine Operation Status Reason</Paragraph>
-              <Paragraph>{mine.latest_mine_status.status_description}</Paragraph>
-            </Col>
-          </Row>
-          <Row gutter={6}>
-            <Col span={8}>
-              <Paragraph>Mine Disturbance</Paragraph>
-              <Paragraph>
-                {getMineDisturbanceFromCode(permitRecord?.site_properties.mine_disturbance_code)}
-              </Paragraph>
-            </Col>
-            <Col span={8}>
-              <Paragraph>Mine Commodity</Paragraph>
-              <Paragraph>
-                {getCommodityDescriptionFromCode(permitRecord?.site_properties.mine_commodity_code)}
-              </Paragraph>
-            </Col>
-            <Col span={8}>
-              <Paragraph>Bond Total</Paragraph>
-              <Paragraph>{permitRecord?.active_bond_total}</Paragraph>
-            </Col>
-          </Row>
-          <Row gutter={6}>
-            <Col span={24}>
-              <Paragraph>TSF Operating Count</Paragraph>
-              <Paragraph>
-                {
-                  mine.mine_tailings_storage_facilities.filter(
-                    (tsf) => tsf.tsf_operating_status_code === "OPT"
-                  ).length
-                }
-              </Paragraph>
-            </Col>
-            <Col span={24}>
-              <Paragraph>TSF Care and Maintenance Count</Paragraph>
-              <Paragraph>
-                {
-                  mine.mine_tailings_storage_facilities.filter(
-                    (tsf) => tsf.tsf_operating_status_code === "CAM"
-                  ).length
-                }
-              </Paragraph>
-            </Col>
-          </Row>
+          <DigitalCredentialDetails permitRecord={permitRecord} mine={mine} />
         </Col>
         <Col md={12} sm={24} className="border--left--layout">
           <>
