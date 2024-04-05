@@ -7,10 +7,7 @@ import {
 import { IMine, IPermit } from "@mds/common/interfaces";
 import React, { FC, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import {
-  renderDateColumn,
-  renderTextColumn,
-} from "@mds/common/components/common/CoreTableCommonColumns";
+import { renderDateColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import { useDispatch, useSelector } from "react-redux";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
@@ -69,7 +66,13 @@ export const ViewDigitalPermitCredential: FC = () => {
       render: () => "AnonCreds",
     },
     renderDateColumn("last_webhook_timestamp", "Last Updated"),
-    renderTextColumn("cred_exch_state", "Status"),
+    // renderTextColumn("cred_exch_state", "Status"),
+    {
+      title: "Status",
+      key: "cred_exch_state",
+      dataIndex: "cred_exch_state",
+      render: (text) => VC_CRED_ISSUE_STATES[text],
+    },
     {
       key: "details",
       title: "Details",
@@ -172,7 +175,7 @@ export const ViewDigitalPermitCredential: FC = () => {
                     "No Credential Issued"}
                 </Paragraph>
               </Col>
-              <Col span={16}>
+              <Col xs={16} lg={10}>
                 {activePermitCredential && (
                   <Button
                     onClick={openRevokeDigitalCredentialModal}
