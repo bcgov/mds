@@ -553,7 +553,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 "mine_name": mine.mine_name,
                 "mine_no": mine.mine_no,
             },
-            "core_project_summary_link": f'{Config.CORE_PRODUCTION_URL}/pre-applications/{self.project.project_guid}/overview'
+            "core_project_summary_link": f'{Config.CORE_PROD_URL}/pre-applications/{self.project.project_guid}/overview'
         }
 
         minespace_context = {
@@ -561,7 +561,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 "mine_name": mine.mine_name,
                 "mine_no": mine.mine_no,
             },
-            "minespace_project_summary_link": f'{Config.MINESPACE_PRODUCTION_URL}/projects/{self.project.project_guid}/overview',
+            "minespace_project_summary_link": f'{Config.MINESPACE_PROD_URL}/projects/{self.project.project_guid}/overview',
             "ema_auth_link": f'{Config.EMA_AUTH_LINK}',
         }
 
