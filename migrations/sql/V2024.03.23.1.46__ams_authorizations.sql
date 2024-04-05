@@ -9,6 +9,10 @@ ALTER TABLE project_summary_authorization
     ALTER COLUMN existing_permits_authorizations DROP NOT NULL
     ;
 
+UPDATE project_summary_authorization
+    SET authorization_description = array_to_string(existing_permits_authorizations, ',')
+    WHERE project_summary_authorization_type = 'OTHER'; 
+    
 DO
 $$
 DECLARE 
