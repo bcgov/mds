@@ -304,7 +304,7 @@ def register_routes(app):
         app.logger.error('HEADERS\n ' + str(request.headers))
         return {
             'status': getattr(error, 'status_code', 401),
-            'message': "Authentication failed.",
+            'message': str(error),
             "trace_id": str(get_trace_id()),
         }, getattr(error, 'status_code', 401)
 
@@ -315,7 +315,7 @@ def register_routes(app):
         app.logger.error('HEADERS\n ' + str(request.headers))
         return {
             'status': getattr(error, 'status_code', 403),
-            'message': "Access Denied.",
+            'message': str(error),
             "trace_id": str(get_trace_id()),
         }, getattr(error, 'status_code', 403)
 
@@ -324,7 +324,7 @@ def register_routes(app):
         app.logger.error(str(error))
         return {
             'status': getattr(error, 'code', 400),
-            'message': "Encountered an unexpected error",
+            'message': str(error),
             "trace_id": str(get_trace_id()),
         }, getattr(error, 'code', 400)
 
