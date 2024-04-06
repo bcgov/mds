@@ -25,7 +25,11 @@ exports[`BasicInformation renders properly 1`] = `
             for="ADD_EDIT_PROJECT_SUMMARY_project_summary_title"
             title=""
           >
-            Project title
+            <div
+              style="width: 100%;"
+            >
+              Project title
+            </div>
           </label>
         </div>
         <div
@@ -76,19 +80,21 @@ exports[`BasicInformation renders properly 1`] = `
             for="ADD_EDIT_PROJECT_SUMMARY_proponent_project_id"
             title=""
           >
-            Proponent project tracking ID
-             
-            <span
-              class="form-item-optional"
-            >
-               (optional)
-            </span>
-            <br />
-            <span
-              class="label-subtitle"
-            >
-              If your company uses a tracking number to identify projects, please provide it here.
-            </span>
+            <div>
+              Proponent project tracking ID
+               
+              <span
+                class="form-item-optional"
+              >
+                 (optional)
+              </span>
+              <br />
+              <span
+                class="label-subtitle"
+              >
+                If your company uses a tracking number to identify projects, please provide it here.
+              </span>
+            </div>
           </label>
         </div>
         <div
@@ -139,13 +145,17 @@ exports[`BasicInformation renders properly 1`] = `
             for="ADD_EDIT_PROJECT_SUMMARY_project_summary_description"
             title=""
           >
-            Project overview
-            <br />
-            <span
-              class="label-subtitle"
+            <div
+              style="width: 100%;"
             >
-              Provide a 2-3 paragraph high-level description of your proposed project.
-            </span>
+              Project overview
+              <br />
+              <span
+                class="label-subtitle"
+              >
+                Provide a 2-3 paragraph high-level description of your proposed project.
+              </span>
+            </div>
           </label>
         </div>
         <div

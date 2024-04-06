@@ -5,7 +5,7 @@ import { CALLOUT_SEVERITY } from "@mds/common/constants/strings";
 interface CallOutProps {
   message: string | ReactNode;
   title?: string;
-  severity: string;
+  severity?: string;
 }
 
 const Callout: FC<CallOutProps> = ({ message, title, severity = CALLOUT_SEVERITY.info }) => {

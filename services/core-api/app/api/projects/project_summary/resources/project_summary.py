@@ -104,6 +104,7 @@ class ProjectSummaryResource(Resource, UserMixin):
     parser.add_argument('contacts', type=list, location='json', store_missing=False, required=False)
     parser.add_argument(
         'authorizations', type=list, location='json', store_missing=False, required=False)
+    parser.add_argument('ams_authorizations', type=dict, location='json', store_missing=False, required=False)
     parser.add_argument('is_legal_land_owner', type=bool,location='json', store_missing=False, required=False)
     parser.add_argument('is_crown_land_federal_or_provincial', type=bool, location='json', store_missing=False, required=False)
     parser.add_argument('is_landowner_aware_of_discharge_application', type=bool, location='json', store_missing=False,
@@ -216,6 +217,7 @@ class ProjectSummaryResource(Resource, UserMixin):
                                data.get('expected_project_start_date'), data.get('status_code'),
                                data.get('project_lead_party_guid'),
                                data.get('documents', []), data.get('authorizations',[]),
+                               data.get('ams_authorizations', None),
                                submission_date, data.get('agent'), data.get('is_agent'),
                                data.get('is_legal_land_owner'), data.get('is_crown_land_federal_or_provincial'),
                                data.get('is_landowner_aware_of_discharge_application'), data.get('has_landowner_received_copy_of_application'),

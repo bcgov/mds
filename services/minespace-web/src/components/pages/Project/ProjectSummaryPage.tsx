@@ -45,6 +45,7 @@ import ProjectSummaryForm, {
 import { IMine, IProjectSummary, IProject, Feature, removeNullValuesRecursive } from "@mds/common";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { isArray } from "lodash";
 
 interface ProjectSummaryPageProps {
   mines: Partial<IMine>[];
@@ -126,41 +127,55 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
     };
   }, []);
 
-  const handleTransformPayload = (valuesFromForm: any) => {
-    let payloadValues: any = {};
-    const updatedAuthorizations = [];
-    const values = removeNullValuesRecursive(valuesFromForm);
-    Object.keys(values).forEach((key) => {
-      // Pull out form properties from request object that match known authorization types
-      if (values[key] && projectSummaryAuthorizationTypesArray.includes(key)) {
-        const project_summary_guid = values?.project_summary_guid;
-        const authorization = values?.authorizations?.find(
-          (auth) => auth?.project_summary_authorization_type === key
-        );
-        updatedAuthorizations.push({
-          ...values[key],
-          // Conditionally add project_summary_guid and project_summary_authorization_guid properties if this a pre-existing authorization
-          // ... otherwise treat it as a new one which won't have those two properties yet.
-          ...(project_summary_guid && { project_summary_guid }),
-          ...(authorization && {
-            project_summary_authorization_guid: authorization?.project_summary_authorization_guid,
-          }),
-          project_summary_authorization_type: key,
-          project_summary_permit_type:
-            key === "OTHER" ? ["OTHER"] : values[key]?.project_summary_permit_type,
-          existing_permits_authorizations:
-            values[key]?.existing_permits_authorizations?.split(",") || [],
-        });
-        // eslint-disable-next-line no-param-reassign
-        delete values[key];
+  const transformAuthorizations = (valuesFromForm: any) => {
+    const { authorizations = {}, project_summary_guid } = valuesFromForm;
+
+    const transformAuthorization = (type, authorization) => {
+      return { ...authorization, project_summary_authorization_type: type, project_summary_guid };
+    };
+
+    let updatedAuthorizations = [];
+    let newAmsAuthorizations = [];
+    let amendAmsAuthorizations = [];
+
+    projectSummaryAuthorizationTypesArray.forEach((type) => {
+      const authsOfType = authorizations[type];
+      if (authsOfType) {
+        if (isArray(authsOfType)) {
+          const formattedAuthorizations = authsOfType.map((a) => {
+            return transformAuthorization(type, a);
+          });
+          updatedAuthorizations = updatedAuthorizations.concat(formattedAuthorizations);
+        } else {
+          newAmsAuthorizations = newAmsAuthorizations.concat(
+            authsOfType?.NEW.map((a) =>
+              transformAuthorization(type, { ...a, project_summary_permit_type: ["NEW"] })
+            )
+          );
+          amendAmsAuthorizations = amendAmsAuthorizations.concat(
+            authsOfType?.AMENDMENT.map((a) =>
+              transformAuthorization(type, { ...a, project_summary_permit_type: ["AMENDMENT"] })
+            )
+          );
+        }
       }
     });
+    return {
+      authorizations: updatedAuthorizations,
+      ams_authorizations: { amendments: amendAmsAuthorizations, new: newAmsAuthorizations },
+    };
+  };
+
+  const handleTransformPayload = (valuesFromForm: any) => {
+    let payloadValues: any = {};
+    const updatedAuthorizations = transformAuthorizations(valuesFromForm);
+    const values = removeNullValuesRecursive(valuesFromForm);
     payloadValues = {
       ...values,
-      authorizations: updatedAuthorizations,
+      ...updatedAuthorizations,
     };
     // eslint-disable-next-line no-param-reassign
-    delete payloadValues.authorizationOptions;
+    delete payloadValues.authorizationTypes;
     return payloadValues;
   };
 

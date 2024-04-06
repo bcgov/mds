@@ -1,54 +1,59 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { change } from "redux-form";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import React, { FC } from "react";
 import { Checkbox, Form } from "antd";
+import { BaseInputProps } from "./BaseInput";
 
 /**
  * @constant RenderGroupCheckbox - Ant Design `Checkbox` component for redux-form.
+ * NOTE ABOUT A REDUX BUG AFFECTING THIS COMPONENT:
+ * Exactly what's happening here: https://github.com/redux-form/redux-form/issues/2768
+ * - When onBlur is called, it calls onChange to update the value
+ * - but with a group checkbox, it does it with the value of the individual checkbox,
+ * - not with the value of the group
+ * - so it will call onChange(true | false) instead of onChange(["val1", "val2"])
+ * - which causes an error.
+ * - And event.preventDefault() on the onBlur also prevents validation
+ * - The best and easiest solution I found was to put a normalize function on the <Field />
+ * - to not update the value if it's not an array (normalize gets called first)
+ * - It is exported here as normalizeGroupCheckBox
  */
 
-const propTypes = {
-  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  label: PropTypes.string.isRequired,
-  meta: PropTypes.objectOf(PropTypes.any).isRequired,
-  input: PropTypes.objectOf(PropTypes.string).isRequired,
-  disabled: PropTypes.bool.isRequired,
-  options: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
-  change: PropTypes.func.isRequired,
-  name: PropTypes.string.isRequired,
-  setInitialValues: PropTypes.func,
-};
+interface CheckboxProps extends BaseInputProps {
+  label: string;
+  options: any;
+  defaultValue: any[];
+}
 
-const onChange = (checkedValues, change, form, name) => {
-  change(form, name, checkedValues);
-};
+export const normalizeGroupCheckBox = (val, prev) => (Array.isArray(val) ? val : prev);
 
-const RenderGroupCheckbox = (props) => {
+const RenderGroupCheckbox: FC<CheckboxProps> = ({
+  meta,
+  input,
+  label,
+  options,
+  required,
+  ...props
+}) => {
   return (
     <Form.Item
-      label={props.label}
-      validateStatus={props.meta.touched ? props.meta.error && "error" : ""}
+      name={input.name}
+      label={label}
+      required={required}
+      validateStatus={meta.touched ? meta.error && "error" : ""}
+      help={
+        meta.touched &&
+        ((meta.error && <span>{meta.error}</span>) || (meta.warning && <span>{meta.warning}</span>))
+      }
+      getValueProps={() => ({ value: input.value })}
     >
       <Checkbox.Group
-        // apparently id & checked do not exist on Checkbox.Group
-        // id={props.id}
-        name={props.name}
-        // checked={props.input.value}
-        options={props.options}
+        name={input.name}
+        options={options}
         disabled={props.disabled}
-        defaultValue={props.formValues[props.fieldName]}
-        value={
-          props.setInitialValues && !props.meta.dirty ? props.setInitialValues() : props.input.value
-        }
-        onChange={(values) => onChange(values, props.change, props.formName, props.fieldName)}
+        defaultValue={props.defaultValue}
+        {...input}
       />
     </Form.Item>
   );
 };
 
-RenderGroupCheckbox.propTypes = propTypes;
-
-const mapDispatchToProps = (dispatch) => bindActionCreators({ change }, dispatch);
-export default connect(null, mapDispatchToProps)(RenderGroupCheckbox);
+export default RenderGroupCheckbox;
