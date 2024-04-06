@@ -10,6 +10,7 @@ from datetime import datetime
 from app.api.utils.include.user_info import User
 from app.api.constants import MDS_EMAIL
 from flask.globals import current_app
+from app import auth
 
 class ReportErrorResource(Resource, UserMixin):
 
@@ -29,7 +30,11 @@ class ReportErrorResource(Resource, UserMixin):
             email_title = "[ERROR_REPORT] [" + environment + "] - " + reported_date + " - " + business_error
             kibana_link = f'{Config.KIBANA_BASE_URL}/app/kibana#/discover?_g=()&_a=(query:(language:kuery,query:%22trace_id%3D{trace_id}%22))'
 
-            email_body = open("app/templates/email/report_error/error_report_email.html", "r").read()
+            if auth.get_user_is_proponent():
+                email_body = open("app/templates/email/report_error/ms_error_report_email.html", "r").read()
+            else:
+                email_body = open("app/templates/email/report_error/core_error_report_email.html", "r").read()
+
             email_context = {
                     "reporter": {
                         "name": reporter_name,

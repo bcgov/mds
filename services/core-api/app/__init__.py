@@ -290,6 +290,13 @@ def register_routes(app):
         res = requests.get(url)
         return res.status_code == 200
 
+    def get_trace_id():
+        trace_id = ""
+        current_span = trace.get_current_span()
+        if current_span:
+            trace_id = current_span.get_span_context().trace_id
+        return trace_id
+
     @root_api_namespace.errorhandler(AuthError)
     def jwt_oidc_auth_error_handler(error):
         app.logger.error(str(error))
@@ -297,7 +304,8 @@ def register_routes(app):
         app.logger.error('HEADERS\n ' + str(request.headers))
         return {
             'status': getattr(error, 'status_code', 401),
-            'message': str(error),
+            'message': "Authentication failed.",
+            "trace_id": str(get_trace_id()),
         }, getattr(error, 'status_code', 401)
 
     @root_api_namespace.errorhandler(Forbidden)
@@ -307,7 +315,8 @@ def register_routes(app):
         app.logger.error('HEADERS\n ' + str(request.headers))
         return {
             'status': getattr(error, 'status_code', 403),
-            'message': str(error),
+            'message': "Access Denied.",
+            "trace_id": str(get_trace_id()),
         }, getattr(error, 'status_code', 403)
 
     @root_api_namespace.errorhandler(AssertionError)
@@ -315,7 +324,8 @@ def register_routes(app):
         app.logger.error(str(error))
         return {
             'status': getattr(error, 'code', 400),
-            'message': str(error),
+            'message': "Encountered an unexpected error",
+            "trace_id": str(get_trace_id()),
         }, getattr(error, 'code', 400)
 
     # Recursively add handler to every SQLAlchemy Error
@@ -325,7 +335,8 @@ def register_routes(app):
         app.logger.error(traceback.format_exc())
         return {
             'status': getattr(error, 'status_code', 400),
-            'message': str(error),
+            'message': "Encountered an unexpected error",
+            "trace_id": str(get_trace_id()),
         }, getattr(error, 'status_code', 400)
 
     def _add_sqlalchemy_error_handlers(classname):
@@ -339,21 +350,16 @@ def register_routes(app):
 
     @root_api_namespace.errorhandler(Exception)
     def default_error_handler(error):
-        trace_id = ""
-        current_span = trace.get_current_span()
-        if current_span:
-            trace_id = current_span.get_span_context().trace_id
-
         app.logger.error(traceback.format_exc())
         if isinstance(error, MDSCoreAPIException):
             return {
                 "status": getattr(error, "code", 500),
                 "message": str(getattr(error, "message", "")),
-                "trace_id": str(trace_id),
+                "trace_id": str(get_trace_id()),
             }, getattr(error, 'code', 500)
         else:
             return {
                 "status": getattr(error, "code", 500),
                 "message": str("Ooops! Unexpected error occurred"),
-                "trace_id": str(trace_id),
+                "trace_id": str(get_trace_id()),
             }, getattr(error, 'code', 500)
