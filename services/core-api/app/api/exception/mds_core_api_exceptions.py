@@ -9,4 +9,3 @@ class MDSCoreAPIException(Exception):
         super().__init__(message)
         self.code = int(kwargs.get("status_code", 500))
         self.message = message
-        self.detailed_error = kwargs.get("detailed_error", "")

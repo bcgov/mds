@@ -339,16 +339,21 @@ def register_routes(app):
 
     @root_api_namespace.errorhandler(Exception)
     def default_error_handler(error):
-        app.logger.error(str(error))
+        trace_id = ""
+        current_span = trace.get_current_span()
+        if current_span:
+            trace_id = current_span.get_span_context().trace_id
+
+        app.logger.error(traceback.format_exc())
         if isinstance(error, MDSCoreAPIException):
             return {
                 "status": getattr(error, "code", 500),
                 "message": str(getattr(error, "message", "")),
-                "detailed_error": str(getattr(error, "detailed_error", "")),
+                "trace_id": str(trace_id),
             }, getattr(error, 'code', 500)
         else:
             return {
                 "status": getattr(error, "code", 500),
-                "message": str(error),
-                "detailed_error": str(getattr(error, "detailed_error", "Not provided")),
+                "message": str("Ooops! Unexpected error occurred"),
+                "trace_id": str(trace_id),
             }, getattr(error, 'code', 500)

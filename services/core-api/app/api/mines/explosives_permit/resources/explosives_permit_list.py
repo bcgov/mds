@@ -149,8 +149,7 @@ class ExplosivesPermitListResource(Resource, UserMixin):
 
         except Exception as e:
             current_app.logger.error(e)
-            raise MineException("Oops!, Something went wrong while retrieving the mine information",
-                                detailed_error = e)
+            raise MineException("Something went wrong while retrieving the mine information")
 
         else:
             return explosives_permits
@@ -193,14 +192,13 @@ class ExplosivesPermitListResource(Resource, UserMixin):
                 "duplicate key value violates unique constraint \"explosives_permit_permit_number_key\"" \
                 in str(intgErr.__cause__)
             if is_duplicate_permit_number:
-                raise ExplosivePermitNumberAlreadyExistExeption(detailed_error = intgErr)
+                raise ExplosivePermitNumberAlreadyExistExeption()
             else:
-                raise MineException("Unexpected error occurred, when creating the esup",
-                                    detailed_error = intgErr)
+                raise MineException("Something went wrong while creating the new ESUP")
 
         except Exception as e:
             current_app.logger.error(e)
-            raise MineException(detailed_error = e)
+            raise MineException("Something went wrong while creating the new ESUP")
 
         else:
             return explosives_permit, 201

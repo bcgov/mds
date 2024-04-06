@@ -193,6 +193,9 @@ class Config(object):
     # Enable flag caching and evalutation. If set to True, FLAGSMITH_KEY must be set to a server side FLAGSMITH_KEY
     FLAGSMITH_ENABLE_LOCAL_EVALUTION=os.environ.get('FLAGSMITH_ENABLE_LOCAL_EVALUTION', 'false') == 'true'
 
+    # Kibana
+    KIBANA_BASE_URL = os.environ.get('KIBANA_BASE_URL', 'https://kibana-openshift-logging.apps.silver.devops.gov.bc.ca')
+
     # NROS
     NROS_CLIENT_SECRET = os.environ.get('NROS_CLIENT_SECRET', None)
     NROS_CLIENT_ID = os.environ.get('NROS_CLIENT_ID', None)

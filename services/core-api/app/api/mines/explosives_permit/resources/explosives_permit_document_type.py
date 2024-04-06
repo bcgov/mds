@@ -28,7 +28,7 @@ class ExplosivesPermitDocumentTypeListResource(Resource, UserMixin):
             return ExplosivesPermitDocumentType.get_all()
         except Exception as e:
             current_app.logger.error(e)
-            raise MineException(detailed_error = e)
+            raise MineException("Something went wrong while retrieving explosive permit document types.")
 
 class ExplosivesPermitDocumentTypeResource(Resource, UserMixin):
     @api.doc(description=
@@ -41,7 +41,7 @@ class ExplosivesPermitDocumentTypeResource(Resource, UserMixin):
             return ExplosivesPermitDocumentType.get_with_context(document_type_code, context_guid)
         except Exception as e:
             current_app.logger.error(e)
-            raise MineException(detailed_error = e)
+            raise MineException("Something went wrong while retrieving the requested explosive permit document type")
 
 
 class ExplosivesPermitDocumentGenerateResource(Resource, UserMixin):
@@ -95,7 +95,7 @@ class ExplosivesPermitDocumentGenerateResource(Resource, UserMixin):
 
         except Exception as e:
             current_app.logger.error(e)
-            raise MineException(detailed_error = e)
+            raise MineException("Something went wrong while generating explosive permit document.")
 
         else:
             return {'token': token}
@@ -117,4 +117,4 @@ class ExplosivesPermitDocumentGenerateResource(Resource, UserMixin):
 
         except Exception as e:
             current_app.logger.error(e)
-            raise MineException(detailed_error = e)
+            raise MineException("Something went wrong while downloading document")

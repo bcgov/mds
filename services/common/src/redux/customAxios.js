@@ -24,11 +24,11 @@ let CustomAxios;
 
 const notifymAdmin = (error) => {
   const business_message = error?.response?.data?.message;
-  const detailed_error = error?.response?.data?.detailed_error;
+  const trace_id = error?.response?.data?.trace_id;
 
   const payload = {
     business_error: business_message,
-    detailed_error: detailed_error,
+    trace_id: trace_id,
   };
 
   CustomAxios()
@@ -74,18 +74,25 @@ CustomAxios = ({
         (errorToastMessage === "default" || errorToastMessage === undefined) &&
         !suppressErrorNotification
       ) {
-        console.error("Detailed Error: ", error?.response?.data?.detailed_error);
+        console.error("Trace Id: ", error?.response?.data?.trace_id);
         const notificationKey = "errorNotification";
+        const display_error_msg = formatErrorMessage(
+          error?.response?.data?.message ?? String.ERROR
+        );
+        const trace_id = error?.response?.data?.trace_id ?? String.EMPTY;
 
         if (isFeatureEnabled(Feature.REPORT_ERROR)) {
           notification.error({
             key: notificationKey,
-            message: formatErrorMessage(error?.response?.data?.message ?? String.ERROR),
+            message: display_error_msg,
             description: (
-              <p style={{ color: "grey" }}>
-                If you think this is a system error please help us to improve by informing the
-                system Admin
-              </p>
+              <div>
+                <p style={{ color: "grey" }}>
+                  If you think this is a system error please help us to improve by informing the
+                  system Admin{" "}
+                </p>
+                <p style={{ color: "grey", fontSize: "smaller" }}>Trace Id: {trace_id}</p>
+              </div>
             ),
             duration: 10,
             btn: (

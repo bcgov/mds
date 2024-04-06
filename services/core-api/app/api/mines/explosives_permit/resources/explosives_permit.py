@@ -173,8 +173,7 @@ class ExplosivesPermitResource(Resource, UserMixin):
                 raise NotFound('Explosives Permit not found')
         except Exception as e:
             current_app.logger.error(e)
-            raise MineException("Oops!, Something went wrong while retrieving the explosive permit information",
-                                detailed_error = e)
+            raise MineException("Something went wrong while retrieving the explosive permit information")
         else:
             return explosives_permit
 
@@ -221,8 +220,7 @@ class ExplosivesPermitResource(Resource, UserMixin):
             explosives_permit.save()
         except Exception as e:
             current_app.logger.error(e)
-            raise MineException("Oops!, Something went wrong while updaitng the explosive permit information",
-                                detailed_error = e)
+            raise MineException("Something went wrong while updaitng the explosive permit information")
         else:
             return explosives_permit
 
@@ -243,7 +241,6 @@ class ExplosivesPermitResource(Resource, UserMixin):
             explosives_permit.delete()
         except Exception as e:
             current_app.logger.error(e)
-            raise MineException("Oops!, Something went wrong while deleting the explosive permit",
-                                detailed_error = e)
+            raise MineException("Something went wrong while deleting the explosive permit")
         else:
             return None, 204
