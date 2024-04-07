@@ -11,7 +11,7 @@ class AMSApiService():
 
     @classmethod
     def __get_transformed_party_code(cls, data):
-        if data.lower() == "ORG":
+        if data and data.lower() == "ORG":
             return "Business"
         else:
             return "Individual"
@@ -22,24 +22,25 @@ class AMSApiService():
 
     @classmethod
     def __get_new_authorization_details(cls, authorizations_data):
-        new_authorization_values = [
-            {
-                'project_summary_authorization_guid': item.get('project_summary_authorization_guid'),
-                'authorization_type': auth_type,
-                'authorization_description': item.get('authorization_description'),
-                'new_type': item.get('new_type'),
-                'exemption_requested': item.get('exemption_requested'),
-                'is_contaminated': item.get('is_contaminated')
-            }
-            for auth_type, auth_data in authorizations_data.items()
-            for item in auth_data.get('NEW', [])
-        ]
+        new_authorization_values = []
+
+        if len(authorizations_data['new']) > 0:
+            for item in authorizations_data['new']:
+                new_authorization_values.append({
+                    'project_summary_guid': item.get('project_summary_guid'),
+                    'project_summary_authorization_type': item.get('project_summary_authorization_type'),
+                    'authorization_type': item.get('new_type'),
+                    'authorization_description': item.get('authorization_description'),
+                    'new_type': item.get('new_type'),
+                    'exemption_requested': item.get('exemption_requested'),
+                    'is_contaminated': item.get('is_contaminated')
+                })
 
         return new_authorization_values
 
     @classmethod
     def __get_permit_type(cls, data):
-        if data.lower() == "PER":
+        if data and data.lower() == "PER":
             return "Permit"
         else:
             return "Approval"
@@ -52,12 +53,11 @@ class AMSApiService():
     def __boolean_to_yes_no(cls, value):
         if isinstance(value, bool):
             return 'Yes' if value else 'No'
-        elif value.lower() in ['yes', 'no']:
-            return value
+        return 'No'
 
     @classmethod
-    def create_ams_authorization(cls,
-                                 authorizations,
+    def create_new_ams_authorization(cls,
+                                 ams_authorizations,
                                  applicant,
                                  nearest_municipality,
                                  agent,
@@ -86,7 +86,7 @@ class AMSApiService():
             'Content-Type': 'application/json'
         }
         nearest_municipality_name = Municipality.find_by_guid(nearest_municipality).municipality_name
-        authorization_list = cls.__get_new_authorization_details(authorizations)
+        authorization_list = cls.__get_new_authorization_details(ams_authorizations)
 
         for authorization in authorization_list:
             ams_authorization_data = {
@@ -131,8 +131,8 @@ class AMSApiService():
                 },
                 'facilitytype': facility_type,
                 'facilitydescription': facility_desc,
-                'facilitylocationlatitude': facility_latitude,
-                'facilitylocationlongitude': facility_longitude,
+                'facilitylocationlatitude': str(facility_latitude),
+                'facilitylocationlongitude': str(facility_longitude),
                 'sourceofdata': facility_coords_source,
                 'sourceofdatadescription': facility_coords_source_desc,
                 'legallanddescription': legal_land_desc,
@@ -162,7 +162,7 @@ class AMSApiService():
             payload = json.dumps(ams_authorization_data)
             response = requests.post(Config.AMS_URL, data=payload, headers=headers)
             ams_result = response.json()
-            ams_result['project_summary_authorization_guid'] = authorization['project_summary_authorization_guid']
+            ams_result['project_summary_guid'] = authorization['project_summary_guid']
+            ams_result['project_summary_authorization_type'] = authorization['project_summary_authorization_type']
             ams_results.append(ams_result)
-
         return ams_results

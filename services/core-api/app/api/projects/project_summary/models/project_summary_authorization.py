@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sqlalchemy.dialects.postgresql import UUID
 from cerberus import Validator
 import json
@@ -28,6 +30,10 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
     new_type = db.Column(db.String, nullable=True)
     authorization_description = db.Column(db.String, nullable=True)
     exemption_requested = db.Column(db.Boolean, nullable=True)
+    ams_tracking_number = db.Column(db.String, nullable=True)
+    ams_outcome = db.Column(db.String, nullable=True)
+    ams_submission_timestamp = db.Column(
+        db.DateTime, nullable=True, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     def __repr__(self):
         return f'{self.__class__.__name__} {self.project_summary_authorization_guid}'
@@ -176,6 +182,8 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
                new_type,
                authorization_description,
                exemption_requested,
+               ams_tracking_number=None,
+               ams_outcome=None,
                add_to_session=True):
         new_authorization = cls(
             project_summary_guid=project_summary_guid,
@@ -186,7 +194,9 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
             is_contaminated=is_contaminated,
             new_type=new_type,
             authorization_description=authorization_description,
-            exemption_requested=exemption_requested)
+            exemption_requested=exemption_requested,
+            ams_tracking_number=ams_tracking_number,
+            ams_outcome=ams_outcome)
         if add_to_session:
             new_authorization.save(commit=False)
         return new_authorization
@@ -199,6 +209,8 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
                new_type,
                authorization_description,
                exemption_requested,
+               ams_tracking_number=None,
+               ams_outcome=None,
                add_to_session=True):
         self.existing_permits_authorizations = existing_permits_authorizations
         self.amendment_changes = amendment_changes
@@ -207,6 +219,11 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
         self.new_type = new_type
         self.authorization_description = authorization_description
         self.exemption_requested = exemption_requested
+        self.ams_tracking_number = ams_tracking_number
+        self.ams_outcome = ams_outcome
+        if add_to_session:
+            self.save(commit=True)
+        return self
 
         if add_to_session:
             self.save(commit=True)

@@ -233,7 +233,8 @@ class ProjectSummaryResource(Resource, UserMixin):
                                data.get('applicant'),
                                data.get('is_legal_address_same_as_mailing_address'),
                                data.get('is_billing_address_same_as_mailing_address'),
-                               data.get('is_billing_address_same_as_legal_address'))
+                               data.get('is_billing_address_same_as_legal_address'),
+                               data.get('contacts'))
 
         project_summary.save()
         if prev_status == 'DFT' and project_summary.status_code == 'SUB':
