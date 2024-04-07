@@ -602,11 +602,11 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
             for authorization in ams_authorizations.get('new', []):
                 ams_tracking_details = self.get_ams_tracking_details(ams_results,
-                                                                     authorization['project_summary_guid'],
-                                                                     authorization['project_summary_authorization_type'])
+                                                                     authorization.get('project_summary_guid'),
+                                                                     authorization.get('project_summary_authorization_type'))
                 if ams_tracking_details:
-                    authorization['ams_tracking_number'] = ams_tracking_details['trackingnumber']
-                    authorization['ams_outcome'] = ams_tracking_details['outcome']
+                    authorization['ams_tracking_number'] = ams_tracking_details.get('trackingnumber')
+                    authorization['ams_outcome'] = ams_tracking_details.get('outcome')
 
                 self.create_or_update_authorization(authorization, True)
 
