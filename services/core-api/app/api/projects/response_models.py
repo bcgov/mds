@@ -123,6 +123,9 @@ PROJECT_SUMMARY_AUTHORIZATION_MODEL = api.model(
         'new_type': fields.String,
         'authorization_description': fields.String,
         'exemption_requested': fields.Boolean,
+        'ams_tracking_number': fields.String,
+        'ams_outcome': fields.String,
+        'ams_submission_timestamp': fields.DateTime,
     })
 
 PROJECT_CONTACT_MODEL = api.model(
