@@ -63,14 +63,11 @@ const CredentialContentModal: FC<CredentialContentModalProps> = ({
     }
   }, [credentialExchangeDetail]);
 
+  const alert_text = `You are viewing data as it was issued in the digital credential. Last updated to the state ${credentialExchangeDetail.state} on ${credentialExchangeDetail.updated_at}.`;
+
   return (
     <div>
-      <Alert
-        type="warning"
-        description="Please note that you are viewing a previously issued digital credential. The information contained within may not be up to date."
-        showIcon
-        className="margin-large--bottom"
-      />
+      <Alert type="warning" description={alert_text} showIcon className="margin-large--bottom" />
       <DigitalCredentialDetails permitRecord={details} mine={mine} />
     </div>
   );
