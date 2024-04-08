@@ -66,6 +66,8 @@ export const PERMIT_AMENDMENT_VC = (mineGuid, permitGuid, permitAmendmentGuid) =
   `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}/verifiable-credential`;
 export const MINES_ACT_PERMITS_VC_LIST = (partyGuid: string) =>
   `/verifiable-credentials/${partyGuid}/mines-act-permits`;
+export const CREDENTIAL_EXCHANGE_DETAIL = (partyGuid: string, credExchId: string) =>
+  `/verifiable-credentials/${partyGuid}/mines-act-permits/${credExchId}/details`;
 export const REVOKE_VERIFIABLE_CREDENTIAL = (partyGuid: string) =>
   `/verifiable-credentials/${partyGuid}/mines-act-permits/revoke`;
 
