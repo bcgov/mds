@@ -2,7 +2,12 @@ import { Col, Row, Skeleton, Typography } from "antd";
 import { formatDate } from "@mds/common/redux/utils/helpers";
 import ExplosivesPermitMap from "@mds/common/components/explosivespermits/ExplosivesPermitMap";
 import React, { FC } from "react";
-import { IMine, IMineCommodityOption, IMineDisturbanceOption, IPermit } from "@mds/common";
+import {
+  DigitalCredentialPermit,
+  IMine,
+  IMineCommodityOption,
+  IMineDisturbanceOption,
+} from "@mds/common";
 import {
   getMineCommodityOptions,
   getMineDisturbanceOptions,
@@ -10,21 +15,6 @@ import {
 import { useSelector } from "react-redux";
 
 const { Title, Paragraph } = Typography;
-
-interface DigitalCredentialPermit extends IPermit {
-  mine_operation_status?: string;
-  mine_operation_status_reason?: string;
-  mine_operation_status_sub_reason?: string;
-  mine_disturbance: string;
-  mine_commodity: string;
-  mine_no: string;
-  issue_date: string;
-  latitude: number;
-  longitude: number;
-  bond_total: string;
-  tsf_operating_count: string;
-  tsf_care_and_maintenance_count: string;
-}
 
 interface DigitalCredentialDetailsProps {
   permitRecord: Partial<DigitalCredentialPermit>;

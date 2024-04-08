@@ -66,7 +66,6 @@ export const ViewDigitalPermitCredential: FC = () => {
       render: () => "AnonCreds",
     },
     renderDateColumn("last_webhook_timestamp", "Last Updated"),
-    // renderTextColumn("cred_exch_state", "Status"),
     {
       title: "Status",
       key: "cred_exch_state",

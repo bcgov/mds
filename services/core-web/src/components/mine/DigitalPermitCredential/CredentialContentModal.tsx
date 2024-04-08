@@ -6,6 +6,7 @@ import {
 } from "@mds/common/redux/slices/verifiableCredentialsSlice";
 import { ICredentialExchange, IMine } from "@mds/common";
 import DigitalCredentialDetails from "@/components/mine/DigitalPermitCredential/DigitalCredentialDetails";
+import { formatTractionDate } from "@mds/common/redux/utils/helpers";
 
 interface CredentialContentModalProps {
   partyGuid: string;
@@ -30,14 +31,6 @@ const CredentialContentModal: FC<CredentialContentModalProps> = ({
   useEffect(() => {
     dispatch(fetchCredentialExchangeDetails({ partyGuid, credentialExchangeGuid: credExchId }));
   }, []);
-
-  const formatTractionDate = (dateString: string) => {
-    const year = dateString.slice(0, 4);
-    const month = dateString.slice(4, 6);
-    const day = dateString.slice(6, 8);
-
-    return `${year}-${month}-${day}T00:00:00`;
-  };
 
   const convertAttributesToObject = (attributes: { name: string; value: string }[]) => {
     const attributesObject: any = {};
