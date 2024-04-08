@@ -10,11 +10,20 @@ class AMSApiService():
     """Service wrapper for the AMS API Service."""
 
     @classmethod
-    def __get_transformed_party_code(cls, data):
-        if data and data.lower() == "ORG":
-            return "Business"
-        else:
-            return "Individual"
+    def __get_mapped_party_type(cls, data):
+        party_type_code_mapping = {
+            "ORG": "Business",
+            "PER": "Individual"
+        }
+        return party_type_code_mapping[data]
+
+    @classmethod
+    def __get_mapped_permit_type(cls, data):
+        permit_type_mapping = {
+            "PER": "Permit",
+            "APP": "Approval"
+        }
+        return permit_type_mapping[data]
 
     @classmethod
     def __create_full_address(cls, address_line1, city, sub_division_code, post_code):
@@ -37,13 +46,6 @@ class AMSApiService():
                 })
 
         return new_authorization_values
-
-    @classmethod
-    def __get_permit_type(cls, data):
-        if data and data.lower() == "PER":
-            return "Permit"
-        else:
-            return "Approval"
 
     @classmethod
     def __format_phone_number(cls, phone_no):
@@ -92,14 +94,14 @@ class AMSApiService():
             ams_authorization_data = {
                 'isauthamendment': 'No',
                 'authorizationtype': {
-                    'authorizationname': cls.__get_permit_type(authorization.get('new_type')),
+                    'authorizationname': cls.__get_mapped_permit_type(authorization.get('new_type')),
                 },
                 'receiveddate': get_date_iso8601_string(),
                 'majorcentre': {
                     'name': nearest_municipality_name
                 },
                 'applicant': {
-                    'applicanttype': cls.__get_transformed_party_code(applicant.get('party_type_code')),
+                    'applicanttype': cls.__get_mapped_party_type(applicant.get('party_type_code')),
                     'em_companyname': applicant.get('party_name'),
                     'em_businessphone': cls.__format_phone_number(applicant.get('phone_no')),
                     'em_firstname': applicant.get('first_name'),
