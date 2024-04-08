@@ -23,6 +23,7 @@ const ReportSteps = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [initialValues, setInitialValues] = useState<Partial<IMineReportSubmission>>({});
   const [disableNextButton, setDisableNextButton] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const mine: IMine = useSelector((state) => getMineById(state, mineGuid));
 
@@ -50,11 +51,21 @@ const ReportSteps = () => {
         )}
         <Col>
           {nextButtonFunction ? (
-            <Button disabled={disableNextButton} type="primary" onClick={nextButtonFunction}>
+            <Button
+              loading={submitting}
+              disabled={disableNextButton}
+              type="primary"
+              onClick={nextButtonFunction}
+            >
               {nextButtonTitle ?? "Next"}
             </Button>
           ) : (
-            <Button disabled={disableNextButton} type="primary" htmlType="submit">
+            <Button
+              loading={submitting}
+              disabled={disableNextButton}
+              type="primary"
+              htmlType="submit"
+            >
               {nextButtonTitle ?? "Next"}
             </Button>
           )}
@@ -108,18 +119,23 @@ const ReportSteps = () => {
               isEditMode={false}
               mineGuid={mineGuid}
               handleSubmit={(values) => {
+                setSubmitting(true);
                 const formValues = {
                   mine_guid: mineGuid,
                   ...values,
                 };
-                dispatch(createReportSubmission(formValues)).then((response) => {
-                  if (response.payload) {
-                    const { mine_guid, mine_report_guid } = response.payload;
-                    history.push(
-                      GLOBAL_ROUTES?.REPORT_VIEW_EDIT.dynamicRoute(mine_guid, mine_report_guid)
-                    );
-                  }
-                });
+                dispatch(createReportSubmission(formValues))
+                  .then((response) => {
+                    if (response.payload) {
+                      const { mine_guid, mine_report_guid } = response.payload;
+                      history.push(
+                        GLOBAL_ROUTES?.REPORT_VIEW_EDIT.dynamicRoute(mine_guid, mine_report_guid)
+                      );
+                    }
+                  })
+                  .finally(() => {
+                    setSubmitting(false);
+                  });
               }}
               formButtons={renderStepButtons({
                 nextButtonTitle: "Submit",
