@@ -225,10 +225,6 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
             self.save(commit=True)
         return self
 
-        if add_to_session:
-            self.save(commit=True)
-        return self
-
     def delete(self, commit=True):
         return super(ProjectSummaryAuthorization, self).delete(commit)
 
