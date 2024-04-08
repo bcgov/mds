@@ -449,7 +449,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                is_legal_address_same_as_mailing_address=None,
                is_billing_address_same_as_mailing_address=None,
                is_billing_address_same_as_legal_address=None,
-               contacts=[],
+               contacts=None,
                add_to_session=True):
 
         # Update simple properties.
