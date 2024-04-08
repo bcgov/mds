@@ -7,6 +7,7 @@ import {
 import { ICredentialExchange, IMine } from "@mds/common";
 import DigitalCredentialDetails from "@/components/mine/DigitalPermitCredential/DigitalCredentialDetails";
 import { formatTractionDate } from "@mds/common/redux/utils/helpers";
+import { Alert } from "antd";
 
 interface CredentialContentModalProps {
   partyGuid: string;
@@ -62,7 +63,17 @@ const CredentialContentModal: FC<CredentialContentModalProps> = ({
     }
   }, [credentialExchangeDetail]);
 
-  return <DigitalCredentialDetails permitRecord={details} mine={mine} />;
+  return (
+    <div>
+      <Alert
+        type="warning"
+        description="Please note that you are viewing a previously issued digital credential. The information contained within may not be up to date."
+        showIcon
+        className="margin-large--bottom"
+      />
+      <DigitalCredentialDetails permitRecord={details} mine={mine} />
+    </div>
+  );
 };
 
 export default CredentialContentModal;
