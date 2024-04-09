@@ -1,6 +1,8 @@
 from flask_restx import Namespace
 
 from app.api.now_applications.resources.now_application_import_resource import NOWApplicationImportResource
+from app.api.now_applications.resources.now_application_now_numbers_list_resource import \
+    NOWApplicationNOWNumbersListResource
 from app.api.now_applications.resources.now_application_resource import NOWApplicationResource
 from app.api.now_applications.resources.now_application_list_resource import NOWApplicationListResource
 from app.api.now_applications.resources.now_activity_type_resource import NOWActivityTypeResource
@@ -24,6 +26,7 @@ from app.api.now_applications.resources.now_application_import_submission_docume
 api = Namespace('now-applications', description='Core Notice of Work operations')
 
 api.add_resource(NOWApplicationListResource, '')
+api.add_resource(NOWApplicationNOWNumbersListResource, '/now-numbers')
 api.add_resource(NOWApplicationImportResource, '/<string:application_guid>/import')
 api.add_resource(NOWApplicationImportSubmissionDocumentsJobResource,
                  '/<string:application_guid>/import-submission-documents-job')

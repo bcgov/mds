@@ -1,17 +1,9 @@
 from flask import request
 from flask_restx import Resource, inputs
-from sqlalchemy import func, or_, and_
-from sqlalchemy_filters import apply_pagination, apply_sort
-from werkzeug.exceptions import BadRequest
 
-from app.api.mines.mine.models.mine import Mine
-from app.api.mines.permits.permit.models.permit import Permit
-from app.api.now_applications.models.applications_view import ApplicationsView
-from app.api.now_applications.models.now_application import NOWApplication
-from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.now_applications.resources.now_application_base_list_resource import NowApplicationBaseListResource
-from app.api.now_applications.response_models import NOW_VIEW_LIST, NOW_APPLICATION_MODEL
-from app.api.utils.access_decorators import requires_role_edit_permit, requires_any_of, VIEW_ALL, GIS
+from app.api.now_applications.response_models import NOW_VIEW_LIST
+from app.api.utils.access_decorators import requires_any_of, VIEW_ALL, GIS
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.utils.resources_mixins import UserMixin
 from app.extensions import api
@@ -22,21 +14,11 @@ SORT_FIELD_DEFAULT = 'received_date'
 SORT_DIR_DEFAULT = 'desc'
 
 
-class NOWApplicationListResource(NowApplicationBaseListResource):
+class NOWApplicationNOWNumbersListResource(NowApplicationBaseListResource):
     parser = CustomReqparser()
-    parser.add_argument('permit_guid', type=str, required=True)
-    # required because only allowed on Major Mine Permit Amendment Application
-    parser.add_argument('mine_guid', type=str, required=True)
-    parser.add_argument('notice_of_work_type_code', type=str, required=True)
-    parser.add_argument('submitted_date', type=str, required=True)
-    parser.add_argument('received_date', type=str, required=True)
-    parser.add_argument('import_timestamp_since', type=str)
-    parser.add_argument('update_timestamp_since', type=str)
-    parser.add_argument('application_type', type=str)
+    parser.add_argument('now_numbers', type=list, location='json', required=False)
 
-    @api.doc(
-        description='Get a list of Core Notice of Work applications. Order: received_date DESC',
-        params={
+    @api.doc(description='Fetch NoW applications by list of now_numbers.', params={
             'page': f'The page number of paginated records to return. Default: {PAGE_DEFAULT}',
             'per_page': f'The number of records to return per page. Default: {PER_PAGE_DEFAULT}',
             'sort_field': f'The field to sort on. Default: {SORT_FIELD_DEFAULT}',
@@ -62,7 +44,9 @@ class NOWApplicationListResource(NowApplicationBaseListResource):
         })
     @requires_any_of([VIEW_ALL, GIS])
     @api.marshal_with(NOW_VIEW_LIST, code=200)
-    def get(self):
+    def post(self):
+        now_numbers = self.parser.parse_args()['now_numbers']
+
         records, pagination_details = self._apply_filters_and_pagination(
             page_number=request.args.get('page', PAGE_DEFAULT, type=int),
             page_size=request.args.get('per_page', PER_PAGE_DEFAULT, type=int),
@@ -90,6 +74,7 @@ class NOWApplicationListResource(NowApplicationBaseListResource):
             application_type=request.args.get('application_type', type=str),
             permit_no=request.args.get('permit_no', type=str),
             party=request.args.get('party', type=str),
+            now_numbers=now_numbers,
         )
 
         data = records.all()
@@ -101,29 +86,3 @@ class NOWApplicationListResource(NowApplicationBaseListResource):
             'items_per_page': pagination_details.page_size,
             'total': pagination_details.total_results,
         }
-
-    @api.doc(description='Adds a Notice of Work to a mine/permit.', params={})
-    @requires_role_edit_permit
-    @api.marshal_with(NOW_APPLICATION_MODEL, code=201)
-    def post(self):
-        data = self.parser.parse_args()
-        mine = Mine.find_by_mine_guid(data['mine_guid'])
-        permit = Permit.find_by_permit_guid(data['permit_guid'])
-        err_str = ''
-        if not mine:
-            err_str += 'Mine not found. '
-        if not permit:
-            err_str += 'Permit not found. '
-        if mine and not mine.major_mine_ind:
-            err_str += 'Permit applications can only be created for major mines.'
-        if err_str:
-            raise BadRequest(err_str)
-        new_now = NOWApplicationIdentity(mine_guid=data['mine_guid'], permit=permit)
-        new_now.now_application = NOWApplication(
-            notice_of_work_type_code=data['notice_of_work_type_code'],
-            now_application_status_code='REC',
-            submitted_date=data['submitted_date'],
-            received_date=data['received_date'])
-        new_now.originating_system = 'Core'
-        new_now.save()
-        return new_now, 201
