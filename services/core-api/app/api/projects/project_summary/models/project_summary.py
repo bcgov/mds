@@ -8,6 +8,7 @@ from werkzeug.exceptions import BadRequest
 
 from app.api.municipalities.models.municipality import Municipality
 from app.api.parties.party import PartyOrgBookEntity
+from app.api.services.ams_api_service import AMSApiService
 from app.extensions import db
 
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
@@ -114,6 +115,10 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
     applicant = db.relationship(
         'Party', lazy='joined', foreign_keys=applicant_party_guid
+    )
+
+    municipality = db.relationship(
+        'Municipality', lazy='joined', foreign_keys=nearest_municipality_guid
     )
 
     @classmethod
@@ -311,7 +316,9 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 updated_authorization.new_type = authorization.get('new_type')
                 updated_authorization.authorization_description = authorization.get('authorization_description')
                 updated_authorization.exemption_requested = authorization.get('exemption_requested')
-                
+                updated_authorization.ams_tracking_number = authorization.get('ams_tracking_number')
+                updated_authorization.ams_outcome = authorization.get('ams_outcome')
+                updated_authorization.ams_status_code = authorization.get('ams_status_code')
             else:
                 new_authorization = ProjectSummaryAuthorization(
                     project_summary_guid=self.project_summary_guid,
@@ -325,10 +332,21 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                     is_contaminated=authorization.get('is_contaminated'),
                     new_type=authorization.get('new_type'),
                     authorization_description=authorization.get('authorization_description'),
-                    exemption_requested=authorization.get('exemption_requested')                    
+                    exemption_requested=authorization.get('exemption_requested'),
+                    ams_tracking_number=authorization.get('ams_tracking_number'),
+                    ams_outcome=authorization.get('ams_outcome')
                 )
                 self.authorizations.append(new_authorization)
- 
+
+    def get_ams_tracking_details(self, ams_tracking_results, project_summary_guid, project_summary_authorization_type):
+        if not ams_tracking_results:
+            return None
+
+        ams_tracking_result = next((item for item in ams_tracking_results if item.get(
+            'project_summary_guid') == project_summary_guid and item.get(
+            'project_summary_authorization_type') == project_summary_authorization_type), None)
+        return ams_tracking_result
+
     @classmethod
     def create(cls,
                project,
@@ -432,6 +450,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                is_legal_address_same_as_mailing_address=None,
                is_billing_address_same_as_mailing_address=None,
                is_billing_address_same_as_legal_address=None,
+               contacts=None,
                add_to_session=True):
 
         # Update simple properties.
@@ -555,11 +574,46 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             self.create_or_update_authorization(authorization, False)
 
         if ams_authorizations:
+            ams_results = []
+            if self.status_code == 'SUB':
+                ams_results = AMSApiService.create_new_ams_authorization(
+                    ams_authorizations,
+                    applicant,
+                    nearest_municipality,
+                    agent,
+                    contacts,
+                    facility_type,
+                    facility_desc,
+                    facility_latitude,
+                    facility_longitude,
+                    facility_coords_source,
+                    facility_coords_source_desc,
+                    legal_land_desc,
+                    facility_operator,
+                    legal_land_owner_name,
+                    legal_land_owner_contact_number,
+                    legal_land_owner_email_address,
+                    is_legal_land_owner,
+                    is_crown_land_federal_or_provincial,
+                    is_landowner_aware_of_discharge_application,
+                    has_landowner_received_copy_of_application)
+
             for authorization in ams_authorizations.get('amendments', []):
                 self.create_or_update_authorization(authorization, True)
 
             for authorization in ams_authorizations.get('new', []):
-                self.create_or_update_authorization(authorization, True)           
+                if ams_results:
+                    ams_tracking_details = self.get_ams_tracking_details(ams_results,
+                                                                         authorization.get('project_summary_guid'),
+                                                                         authorization.get('project_summary_authorization_type'))
+                    if ams_tracking_details:
+                        # if result does not have a statusCode attribute, it means the outcome is successful.
+                        authorization['ams_status_code'] = ams_tracking_details.get('statusCode', '200')
+                        authorization['ams_tracking_number'] = ams_tracking_details.get('trackingnumber', '0')
+                        authorization['ams_outcome'] = ams_tracking_details.get('outcome', ams_tracking_details.get(
+                            'errorMessage'))
+
+                self.create_or_update_authorization(authorization, True)
 
         if add_to_session:
             self.save(commit=False)

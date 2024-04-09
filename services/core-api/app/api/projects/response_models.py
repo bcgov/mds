@@ -123,6 +123,10 @@ PROJECT_SUMMARY_AUTHORIZATION_MODEL = api.model(
         'new_type': fields.String,
         'authorization_description': fields.String,
         'exemption_requested': fields.Boolean,
+        'ams_tracking_number': fields.String,
+        'ams_outcome': fields.String,
+        'ams_status_code': fields.String,
+        'ams_submission_timestamp': fields.DateTime,
     })
 
 PROJECT_CONTACT_MODEL = api.model(
@@ -138,6 +142,12 @@ PROJECT_CONTACT_MODEL = api.model(
         'first_name': fields.String,
         'last_name': fields.String,
         'address': fields.List(fields.Nested(ADDRESS)),
+    })
+
+MUNICIPALITY_MODEL = api.model(
+    'Municipality', {
+        'municipality_guid': fields.String,
+        'municipality_name': fields.String
     })
 
 PROJECT_SUMMARY_MODEL = api.model(
@@ -190,7 +200,8 @@ PROJECT_SUMMARY_MODEL = api.model(
         'is_legal_address_same_as_mailing_address': fields.Boolean,
         'is_billing_address_same_as_mailing_address': fields.Boolean,
         'is_billing_address_same_as_legal_address': fields.Boolean,
-        'applicant': fields.Nested(PARTY)
+        'applicant': fields.Nested(PARTY),
+        'municipality': fields.Nested(MUNICIPALITY_MODEL)
     })
 
 REQUIREMENTS_MODEL = api.model(
