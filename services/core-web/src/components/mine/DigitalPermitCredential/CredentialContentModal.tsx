@@ -4,10 +4,13 @@ import {
   fetchCredentialExchangeDetails,
   getCredentialExchangeDetails,
 } from "@mds/common/redux/slices/verifiableCredentialsSlice";
-import { ICredentialExchange, IMine } from "@mds/common";
+import { ICredentialExchange, IMine, VC_CRED_ISSUE_STATES } from "@mds/common";
 import DigitalCredentialDetails from "@/components/mine/DigitalPermitCredential/DigitalCredentialDetails";
 import { formatTractionDate } from "@mds/common/redux/utils/helpers";
-import { Alert } from "antd";
+import { Alert, Typography } from "antd";
+import { formatDateTime } from "@common/utils/helpers";
+
+const { Paragraph, Text } = Typography;
 
 interface CredentialContentModalProps {
   partyGuid: string;
@@ -25,7 +28,7 @@ const CredentialContentModal: FC<CredentialContentModalProps> = ({
   const credentialExchangeDetails: ICredentialExchange[] = useSelector(
     getCredentialExchangeDetails
   );
-  const credentialExchangeDetail: ICredentialExchange = credentialExchangeDetails.find(
+  const credentialExchangeDetail: ICredentialExchange = credentialExchangeDetails?.find(
     (ced) => ced.credential_exchange_id === credExchId
   );
 
@@ -57,17 +60,28 @@ const CredentialContentModal: FC<CredentialContentModalProps> = ({
     if (credentialExchangeDetail) {
       setDetails(
         convertAttributesToObject(
-          credentialExchangeDetail.credential_proposal_dict.credential_proposal.attributes
+          credentialExchangeDetail?.credential_proposal_dict.credential_proposal.attributes
         )
       );
     }
   }, [credentialExchangeDetail]);
 
-  const alert_text = `You are viewing data as it was issued in the digital credential. Last updated to the state ${credentialExchangeDetail.state} on ${credentialExchangeDetail.updated_at}.`;
+  const alertText = (
+    <div>
+      <Paragraph>You are viewing data as it was issued in the digital credential.</Paragraph>
+      {credentialExchangeDetail && (
+        <Paragraph>
+          Last updated to the state of{" "}
+          <Text strong>{VC_CRED_ISSUE_STATES[credentialExchangeDetail.state]}</Text> on{" "}
+          <Text strong>{formatDateTime(credentialExchangeDetail.updated_at)}</Text>
+        </Paragraph>
+      )}
+    </div>
+  );
 
   return (
     <div>
-      <Alert type="warning" description={alert_text} showIcon className="margin-large--bottom" />
+      <Alert type="warning" description={alertText} showIcon className="margin-large--bottom" />
       <DigitalCredentialDetails permitRecord={details} mine={mine} />
     </div>
   );
