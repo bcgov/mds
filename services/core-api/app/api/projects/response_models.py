@@ -125,6 +125,7 @@ PROJECT_SUMMARY_AUTHORIZATION_MODEL = api.model(
         'exemption_requested': fields.Boolean,
         'ams_tracking_number': fields.String,
         'ams_outcome': fields.String,
+        'ams_status_code': fields.String,
         'ams_submission_timestamp': fields.DateTime,
     })
 

@@ -32,6 +32,7 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
     exemption_requested = db.Column(db.Boolean, nullable=True)
     ams_tracking_number = db.Column(db.String, nullable=True)
     ams_outcome = db.Column(db.String, nullable=True)
+    ams_status_code = db.Column(db.String, nullable=True)
     ams_submission_timestamp = db.Column(
         db.DateTime, nullable=True, default=datetime.utcnow, onupdate=datetime.utcnow)
 
@@ -184,6 +185,7 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
                exemption_requested,
                ams_tracking_number=None,
                ams_outcome=None,
+               ams_status_code=None,
                add_to_session=True):
         new_authorization = cls(
             project_summary_guid=project_summary_guid,
@@ -196,7 +198,8 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
             authorization_description=authorization_description,
             exemption_requested=exemption_requested,
             ams_tracking_number=ams_tracking_number,
-            ams_outcome=ams_outcome)
+            ams_outcome=ams_outcome,
+            ams_status_code=ams_status_code)
         if add_to_session:
             new_authorization.save(commit=False)
         return new_authorization
@@ -211,6 +214,7 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
                exemption_requested,
                ams_tracking_number=None,
                ams_outcome=None,
+               ams_status_code=None,
                add_to_session=True):
         self.existing_permits_authorizations = existing_permits_authorizations
         self.amendment_changes = amendment_changes
@@ -221,6 +225,7 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
         self.exemption_requested = exemption_requested
         self.ams_tracking_number = ams_tracking_number
         self.ams_outcome = ams_outcome
+        self.ams_status_code=ams_status_code,
         if add_to_session:
             self.save(commit=True)
         return self

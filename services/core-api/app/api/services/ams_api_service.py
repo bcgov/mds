@@ -145,7 +145,7 @@ class AMSApiService():
                         'suitenumber': facility_operator.get('address').get('suite_no'),
                         'streetnumber': facility_operator.get('address').get('suite_no'),
                         'street': facility_operator.get('address').get('address_line_1'),
-                        'line2': facility_operator['address']['address_line_2'],
+                        'line2': facility_operator.get('address').get('address_line_2'),
                         'municipality': facility_operator.get('address').get('city'),
                         'province': 'British Columbia',
                         'country': 'Canada',

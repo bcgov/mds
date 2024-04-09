@@ -318,6 +318,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 updated_authorization.exemption_requested = authorization.get('exemption_requested')
                 updated_authorization.ams_tracking_number = authorization.get('ams_tracking_number')
                 updated_authorization.ams_outcome = authorization.get('ams_outcome')
+                updated_authorization.ams_status_code = authorization.get('ams_status_code')
             else:
                 new_authorization = ProjectSummaryAuthorization(
                     project_summary_guid=self.project_summary_guid,
@@ -606,8 +607,11 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                                                                          authorization.get('project_summary_guid'),
                                                                          authorization.get('project_summary_authorization_type'))
                     if ams_tracking_details:
-                        authorization['ams_tracking_number'] = ams_tracking_details.get('trackingnumber')
-                        authorization['ams_outcome'] = ams_tracking_details.get('outcome')
+                        # if result does not have a statusCode attribute, it means the outcome is successful.
+                        authorization['ams_status_code'] = ams_tracking_details.get('statusCode', '200')
+                        authorization['ams_tracking_number'] = ams_tracking_details.get('trackingnumber', '0')
+                        authorization['ams_outcome'] = ams_tracking_details.get('outcome', ams_tracking_details.get(
+                            'errorMessage'))
 
                 self.create_or_update_authorization(authorization, True)
 
