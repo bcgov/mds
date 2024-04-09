@@ -5,7 +5,7 @@ from flask import current_app
 from app.api.services.ams_api_service import AMSApiService
 
 
-def test_create_new_ams_authorization_successful_unsuccessful_outcome(test_client):
+def test_create_new_ams_authorization_unsuccessful_outcome(test_client):
     data = {}
 
     mock_return_value = [
