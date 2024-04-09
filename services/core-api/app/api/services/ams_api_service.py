@@ -89,95 +89,93 @@ class AMSApiService():
             'bearer': Config.AMS_BEARER_TOKEN,
             'Content-Type': 'application/json'
         }
-        nearest_municipality_name = Municipality.find_by_guid(nearest_municipality).municipality_name
-        authorization_list = cls.__get_new_authorization_details(ams_authorizations)
+        try:
+            nearest_municipality_name = Municipality.find_by_guid(nearest_municipality).municipality_name
+            authorization_list = cls.__get_new_authorization_details(ams_authorizations)
 
-        for authorization in authorization_list:
-            try:
-                ams_authorization_data = {
-                    'isauthamendment': 'No',
-                    'authorizationtype': {
-                        'authorizationname': cls.__get_mapped_permit_type(authorization.get('new_type')),
-                    },
-                    'receiveddate': get_date_iso8601_string(),
-                    'majorcentre': {
-                        'name': nearest_municipality_name
-                    },
-                    'applicant': {
-                        'applicanttype': cls.__get_mapped_party_type(applicant.get('party_type_code')),
-                        'em_companyname': applicant.get('party_name'),
-                        'em_businessphone': cls.__format_phone_number(applicant.get('phone_no')),
-                        'em_firstname': applicant.get('first_name'),
-                        'em_middlename': applicant.get('middle_name'),
-                        'em_lastname': applicant.get('party_name'),
-                        'em_email': applicant.get('email'),
-                        'billingaddress': cls.__create_full_address(
-                            applicant.get('address')[2].get('address_line_1'),
-                            applicant.get('address')[2].get('city'),
-                            applicant.get('address')[2].get('sub_division_code'),
-                            applicant.get('address')[2].get('post_code'))
-                    },
-                    'agent': {
-                        'em_lastname': agent.get('party_name'),
-                        'em_firstname': agent.get('first_name'),
-                        'em_email': agent.get('email'),
-                        'em_companyname': agent.get('party_name')
-                    },
-                    'preappexemptionrequest': cls.__boolean_to_yes_no(authorization.get('exemption_requested')),
-                    'preappexemptionrequestreason': 'Test',
-                    'iscontaminatedsite': cls.__boolean_to_yes_no(authorization.get('is_contaminated')),
-                    'contact': {
-                        'em_lastname': contacts[0].get('last_name'),
-                        'em_firstname': contacts[0].get('first_name'),
-                        'em_title': contacts[0].get('job_title'),
-                        'em_businessphone': cls.__format_phone_number(contacts[0].get('phone_number')),
-                        'em_email': contacts[0].get('email')
-                    },
-                    'facilitytype': facility_type,
-                    'facilitydescription': facility_desc,
-                    'facilitylocationlatitude': str(facility_latitude),
-                    'facilitylocationlongitude': str(facility_longitude),
-                    'sourceofdata': facility_coords_source,
-                    'sourceofdatadescription': facility_coords_source_desc,
-                    'legallanddescription': legal_land_desc,
-                    'facilityaddress': {
-                        'addresstype': 'Civic',
-                        'suitenumber': facility_operator.get('address').get('suite_no'),
-                        'streetnumber': facility_operator.get('address').get('suite_no'),
-                        'street': facility_operator.get('address').get('address_line_1'),
-                        'line2': facility_operator.get('address').get('address_line_2'),
-                        'municipality': facility_operator.get('address').get('city'),
-                        'province': 'British Columbia',
-                        'country': 'Canada',
-                        'postalcode': facility_operator.get('address').get('post_code')
-                    },
-                    'facilityopname': facility_operator.get('name'),
-                    'facilityopphonenumber': cls.__format_phone_number(facility_operator.get('phone_no')),
-                    'facilityopphonenumberext': facility_operator.get('phone_ext'),
-                    'facilityopemail': facility_operator.get('email'),
-                    'landownername': legal_land_owner_name,
-                    'landownerphonenumber': cls.__format_phone_number(legal_land_owner_contact_number),
-                    'landowneremail': legal_land_owner_email_address,
-                    'istheapplicantthelandowner': cls.__boolean_to_yes_no(is_legal_land_owner),
-                    'landfedorprov': cls.__boolean_to_yes_no(is_crown_land_federal_or_provincial),
-                    'landownerawareofapplication': cls.__boolean_to_yes_no(is_landowner_aware_of_discharge_application),
-                    'landownerreceivedcopy': cls.__boolean_to_yes_no(has_landowner_received_copy_of_application)
-                }
-                payload = json.dumps(ams_authorization_data)
-                response = requests.post(Config.AMS_URL, data=payload, headers=headers)
-                ams_result = response.json()
-                ams_result['project_summary_guid'] = authorization.get('project_summary_guid')
-                ams_result['project_summary_authorization_type'] = authorization.get('project_summary_authorization_type')
-                ams_results.append(ams_result)
-            except requests.exceptions.HTTPError as http_err:
-                current_app.logger.error(f'AMS Service HTTP error occurred for POST request: {http_err}')
-                break
-            except requests.exceptions.ConnectionError as conn_err:
-                current_app.logger.error(f'AMS Service Connection error occurred for POST request: {conn_err}')
-                break
-            except requests.exceptions.Timeout as timeout_err:
-                current_app.logger.error(f'AMS Service Timeout error occurred for POST request: {timeout_err}')
-                break
-            except Exception as err:
-                current_app.logger.error(f'AMS Input Exception error occurred for POST request: {err}')
+            for authorization in authorization_list:
+
+                    ams_authorization_data = {
+                        'isauthamendment': 'No',
+                        'authorizationtype': {
+                            'authorizationname': cls.__get_mapped_permit_type(authorization.get('new_type')),
+                        },
+                        'receiveddate': get_date_iso8601_string(),
+                        'majorcentre': {
+                            'name': nearest_municipality_name
+                        },
+                        'applicant': {
+                            'applicanttype': cls.__get_mapped_party_type(applicant.get('party_type_code')),
+                            'em_companyname': applicant.get('party_name'),
+                            'em_businessphone': cls.__format_phone_number(applicant.get('phone_no')),
+                            'em_firstname': applicant.get('first_name'),
+                            'em_middlename': applicant.get('middle_name'),
+                            'em_lastname': applicant.get('party_name'),
+                            'em_email': applicant.get('email'),
+                            'billingaddress': cls.__create_full_address(
+                                applicant.get('address')[2].get('address_line_1'),
+                                applicant.get('address')[2].get('city'),
+                                applicant.get('address')[2].get('sub_division_code'),
+                                applicant.get('address')[2].get('post_code'))
+                        },
+                        'agent': {
+                            'em_lastname': agent.get('party_name'),
+                            'em_firstname': agent.get('first_name'),
+                            'em_email': agent.get('email'),
+                            'em_companyname': agent.get('party_name')
+                        },
+                        'preappexemptionrequest': cls.__boolean_to_yes_no(authorization.get('exemption_requested')),
+                        'preappexemptionrequestreason': 'Test',
+                        'iscontaminatedsite': cls.__boolean_to_yes_no(authorization.get('is_contaminated')),
+                        'contact': {
+                            'em_lastname': contacts[0].get('last_name'),
+                            'em_firstname': contacts[0].get('first_name'),
+                            'em_title': contacts[0].get('job_title'),
+                            'em_businessphone': cls.__format_phone_number(contacts[0].get('phone_number')),
+                            'em_email': contacts[0].get('email')
+                        },
+                        'facilitytype': facility_type,
+                        'facilitydescription': facility_desc,
+                        'facilitylocationlatitude': str(facility_latitude),
+                        'facilitylocationlongitude': str(facility_longitude),
+                        'sourceofdata': facility_coords_source,
+                        'sourceofdatadescription': facility_coords_source_desc,
+                        'legallanddescription': legal_land_desc,
+                        'facilityaddress': {
+                            'addresstype': 'Civic',
+                            'suitenumber': facility_operator.get('address').get('suite_no'),
+                            'streetnumber': facility_operator.get('address').get('suite_no'),
+                            'street': facility_operator.get('address').get('address_line_1'),
+                            'line2': facility_operator.get('address').get('address_line_2'),
+                            'municipality': facility_operator.get('address').get('city'),
+                            'province': 'British Columbia',
+                            'country': 'Canada',
+                            'postalcode': facility_operator.get('address').get('post_code')
+                        },
+                        'facilityopname': facility_operator.get('name'),
+                        'facilityopphonenumber': cls.__format_phone_number(facility_operator.get('phone_no')),
+                        'facilityopphonenumberext': facility_operator.get('phone_ext'),
+                        'facilityopemail': facility_operator.get('email'),
+                        'landownername': legal_land_owner_name,
+                        'landownerphonenumber': cls.__format_phone_number(legal_land_owner_contact_number),
+                        'landowneremail': legal_land_owner_email_address,
+                        'istheapplicantthelandowner': cls.__boolean_to_yes_no(is_legal_land_owner),
+                        'landfedorprov': cls.__boolean_to_yes_no(is_crown_land_federal_or_provincial),
+                        'landownerawareofapplication': cls.__boolean_to_yes_no(is_landowner_aware_of_discharge_application),
+                        'landownerreceivedcopy': cls.__boolean_to_yes_no(has_landowner_received_copy_of_application)
+                    }
+                    payload = json.dumps(ams_authorization_data)
+                    response = requests.post(Config.AMS_URL, data=payload, headers=headers)
+                    ams_result = response.json()
+                    ams_result['project_summary_guid'] = authorization.get('project_summary_guid')
+                    ams_result['project_summary_authorization_type'] = authorization.get('project_summary_authorization_type')
+                    ams_results.append(ams_result)
+        except requests.exceptions.HTTPError as http_err:
+            current_app.logger.error(f'AMS Service HTTP error occurred for POST request: {http_err}')
+        except requests.exceptions.ConnectionError as conn_err:
+            current_app.logger.error(f'AMS Service Connection error occurred for POST request: {conn_err}')
+        except requests.exceptions.Timeout as timeout_err:
+            current_app.logger.error(f'AMS Service Timeout error occurred for POST request: {timeout_err}')
+        except Exception as err:
+            current_app.logger.error(f'AMS Input Exception error occurred for POST request: {err}')
         return ams_results
