@@ -134,7 +134,7 @@ const LeafletMap: FC<LeafletMapProps> = ({ mine, additionalPins = [], controls =
           pin.remove();
         }
       });
-      createAdditionalPins(additionalPins);
+      if (layerGroup) createAdditionalPins(additionalPins);
     }
   }, [additionalPins]);
 
