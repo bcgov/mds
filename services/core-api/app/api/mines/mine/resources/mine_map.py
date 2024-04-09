@@ -4,7 +4,7 @@ import json
 import threading
 
 from flask import request, make_response, current_app
-from flask_restplus import Resource, reqparse, inputs, fields
+from flask_restx import Resource, reqparse, inputs, fields
 
 from app.api.mines.location.models.mine_map_view_location import MineMapViewLocation
 from app.extensions import api, cache, db
@@ -37,7 +37,7 @@ class MineMapResource(Resource, UserMixin):
 
         # It's more efficient to store the json to avoid re-initializing all of the objects
         # and jsonifying on every request, so a flask response is returned to prevent
-        # flask_restplus from jsonifying the data again, which would mangle the json.
+        # flask_restx from jsonifying the data again, which would mangle the json.
         response = make_response(map_result)
         response.headers['content-type'] = 'application/json'
 
@@ -55,14 +55,16 @@ class MineMapResource(Resource, UserMixin):
 
         def run_cache_rebuilding_thread():
             with app.request_context(environ):
-                return MineMapResource.rebuild_and_return_map_cache()
+                return MineMapResource.rebuild_and_return_map_cache(is_async=True)
 
         thread = threading.Thread(target=run_cache_rebuilding_thread)
         thread.start()
 
     @staticmethod
-    def rebuild_and_return_map_cache():
-        records = MineMapViewLocation.query.filter(MineMapViewLocation.latitude != None).all()
+    def rebuild_and_return_map_cache(is_async=False):
+        qry = MineMapViewLocation.query.unbound_unsafe() if is_async else MineMapViewLocation.query
+
+        records = qry.filter(MineMapViewLocation.latitude != None).all()
         last_modified = datetime.utcnow()
 
         # jsonify then store in cache

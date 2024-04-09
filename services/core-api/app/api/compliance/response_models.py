@@ -1,5 +1,5 @@
 from app.extensions import api
-from flask_restplus import fields
+from flask_restx import fields
 
 COMPLIANCE_ARTICLE_MODEL = api.model(
     'ComplianceArticle', {
@@ -12,5 +12,7 @@ COMPLIANCE_ARTICLE_MODEL = api.model(
         'description': fields.String,
         'long_description': fields.String,
         'effective_date': fields.Date,
-        'expiry_date': fields.Date
+        'expiry_date': fields.Date,
+        'help_reference_link': fields.String,
+        'cim_or_cpo': fields.String
     })

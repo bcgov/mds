@@ -40,6 +40,7 @@ The following steps should only need to be completed **once**. Run the following
 - `make be` to spin up all backend dependencies.
 - `make seeddb` to seed the database with factory data.
 - **GitHub CodeSpaces**: `make init` can be run instead of the above commands to run all of them, but this feature is experimental and more likely to fail, especially outside of a CodeSpaces environment.
+- `make extra` may be required to setup docgen on your local environment
 
 #### Restarting the Project
 

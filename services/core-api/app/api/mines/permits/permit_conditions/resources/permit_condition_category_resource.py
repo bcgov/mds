@@ -1,4 +1,4 @@
-from flask_restplus import Resource, reqparse
+from flask_restx import Resource, reqparse
 from datetime import datetime
 from flask import current_app, request
 

@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from flask import request
 from app.api.activity.models.activity_notification import ActivityType
 from app.api.utils.access_decorators import is_minespace_user
-from flask_restplus import Resource
+from flask_restx import Resource
 from sqlalchemy import and_, exc as alch_exceptions
 from werkzeug.exceptions import BadRequest, NotFound, Forbidden
 
@@ -126,6 +126,9 @@ class MinePartyApptResource(Resource, UserMixin):
         start_date = data.get('start_date')
         end_date = data.get('end_date')
         union_rep_company = data.get('union_rep_company')
+
+        if start_date is None:
+            raise BadRequest("Start date not provided")
 
         party = Party.find_by_party_guid(party_guid)
         if party is None:

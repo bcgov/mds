@@ -32,7 +32,7 @@ import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import AddButton from "@/components/common/buttons/AddButton";
 import ReferralConsultationPackage from "@/components/noticeOfWork/applications/referals/ReferralConsultationPackage";
 import PermitPackage from "@/components/noticeOfWork/applications/PermitPackage";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 
 const propTypes = {
   openModal: PropTypes.func.isRequired,
@@ -148,8 +148,7 @@ export const NOWSubmissionDocuments = (props) => {
         preamble_title: values?.preamble_title,
         preamble_author: values?.preamble_author,
         mine_document: {
-          document_manager_guid: file[0],
-          document_name: file[1],
+          ...file,
           mine_guid: props.noticeOfWork.mine_guid,
         },
       };

@@ -7,7 +7,7 @@ import { useIdleTimer } from "react-idle-timer";
 import { render } from "react-dom";
 import { Provider } from "react-redux";
 import { logoutUser } from "@mds/common/redux/actions/authenticationActions";
-import keycloak, { keycloakInitConfig } from "./keycloak";
+import keycloak, { keycloakInitConfig } from "@mds/common/keycloak";
 import Loading from "@/components/common/Loading";
 
 import App, { store } from "./App";

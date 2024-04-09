@@ -17,7 +17,7 @@ def format_letter_date(datetime_string):
 
 
 def get_model_by_model_name(model_name):
-    for c in Base._decl_class_registry.values():
+    for c in Base.registry._class_registry.values():
         if hasattr(c, '__name__') and c.__name__ == model_name:
             return c
 

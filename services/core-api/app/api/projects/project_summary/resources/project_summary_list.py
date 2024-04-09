@@ -1,5 +1,5 @@
 from flask import request
-from flask_restplus import Resource, inputs
+from flask_restx import Resource, inputs
 from werkzeug.exceptions import NotFound, BadRequest
 from datetime import datetime, timezone
 
@@ -120,6 +120,7 @@ class ProjectSummaryListPostResource(Resource, UserMixin):
     parser.add_argument('contacts', type=list, location='json', store_missing=False, required=False)
     parser.add_argument(
         'authorizations', type=list, location='json', store_missing=False, required=False)
+    parser.add_argument('ams_authorizations', type=dict, location='json', store_missing=False, required=False)
 
     @api.doc(description='Create a new Project Description.')
     @api.expect(parser)
@@ -148,7 +149,8 @@ class ProjectSummaryListPostResource(Resource, UserMixin):
                                                 data.get('expected_permit_receipt_date'),
                                                 data.get('expected_project_start_date'),
                                                 data.get('status_code'), data.get('documents', []),
-                                                data.get('authorizations', []), submission_date)
+                                                data.get('authorizations', []), data.get('ams_authorizations', None),
+                                                submission_date)
 
         try:
             project_summary.save()

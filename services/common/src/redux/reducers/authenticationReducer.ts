@@ -1,9 +1,9 @@
 import * as ActionTypes from "@mds/common/constants/actionTypes";
 import { AUTHENTICATION } from "@mds/common/constants/reducerTypes";
 import { IUserInfo } from "@mds/common/interfaces";
-import { USER_ROLES } from "@mds/common/constants";
+import { SystemFlagEnum, USER_ROLES } from "@mds/common/constants";
 import { RootState } from "@mds/common/redux/rootState";
-import * as ReducerTypes from "@mds/minespace-web/src/constants/reducerTypes";
+import * as ReducerTypes from "@mds/common/constants/reducerTypes";
 
 interface IAuthenticationReducerState {
   isAuthenticated: boolean;
@@ -11,6 +11,7 @@ interface IAuthenticationReducerState {
   redirect: boolean;
   userAccessData: string[];
   isProponent: boolean;
+  systemFlag: SystemFlagEnum;
 }
 
 /**
@@ -23,6 +24,7 @@ const initialState: IAuthenticationReducerState = {
   userInfo: {} as IUserInfo,
   redirect: false,
   isProponent: undefined,
+  systemFlag: undefined,
 };
 
 const getUserName = (tokenParsed) => {
@@ -67,6 +69,11 @@ export const authenticationReducer = (state = initialState, action) => {
         userInfo: {},
         redirect: GLOBAL_ROUTES?.HOME?.route,
       };
+    case ActionTypes.STORE_SYSTEM_FLAG:
+      return {
+        ...state,
+        systemFlag: action.payload.flag,
+      };
     default:
       return state;
   }
@@ -76,11 +83,12 @@ const authenticationReducerObject = {
   [AUTHENTICATION]: authenticationReducer,
 };
 
+export const getSystemFlag = (state: RootState) => state[AUTHENTICATION].systemFlag;
 export const isAuthenticated = (state: RootState) => state[AUTHENTICATION].isAuthenticated;
 export const getUserAccessData = (state: RootState) => state[AUTHENTICATION].userAccessData;
 export const getUserInfo = (state: RootState) => state[AUTHENTICATION].userInfo;
 export const userHasRole = (state: RootState, role: string) =>
-  state[AUTHENTICATION].userAccessData.includes(USER_ROLES[role]);
+  state[AUTHENTICATION].userAccessData.includes(USER_ROLES[role] ?? role);
 export const getRedirect = (state) => state[ReducerTypes.AUTHENTICATION].redirect;
 export const isProponent = (state) => state[ReducerTypes.AUTHENTICATION].isProponent;
 

@@ -1,4 +1,4 @@
-FROM jboss/keycloak
+FROM quay.io/keycloak/keycloak:16.1.1
 
 USER 0
 USER 1000

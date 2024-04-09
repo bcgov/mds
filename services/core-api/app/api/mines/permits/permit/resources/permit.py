@@ -1,5 +1,5 @@
 import json
-from flask_restplus import Resource, reqparse, inputs
+from flask_restx import Resource, reqparse, inputs
 from datetime import datetime
 from datetime import datetime, timezone
 from flask import current_app, request
@@ -322,6 +322,12 @@ class PermitResource(Resource, UserMixin):
         location='json',
         store_missing=False,
         help='{ mine_commodity_code, mine_disturbance_code}.')
+    
+    parser.add_argument(
+        'mines_act_permit_vc_locked',
+        type=bool,
+        location='json',
+        store_missing=False)
 
     @api.doc(params={'permit_guid': 'Permit guid.'})
     @requires_role_view_all
@@ -397,15 +403,20 @@ class PermitResource(Resource, UserMixin):
         if not permit:
             raise NotFound('Permit not found.')
 
-        now_application_guid = self.parser.parse_args()['now_application_guid']
-        now_application = NOWApplication.find_by_application_guid(now_application_guid)
+        now_application_guid = self.parser.parse_args().get('now_application_guid')
+        if now_application_guid:
+            now_application = NOWApplication.find_by_application_guid(now_application_guid)
+            if not now_application:
+                raise NotFound('NoW application not found')
 
-        if not now_application:
-            raise NotFound('NoW application not found')
+            if permit.permit_status_code == 'D':
+                #assign permit_no
+                permit.assign_permit_no(now_application.notice_of_work_type_code[0])
 
-        if permit.permit_status_code == 'D':
-            #assign permit_no
-            permit.assign_permit_no(now_application.notice_of_work_type_code[0])
+        for key, value in self.parser.parse_args().items():
+            if key in ['permit_no', 'mine_guid', 'uploadedFiles', 'site_properties']:
+                continue     # non-editable fields from put or should be handled separately
+            setattr(permit, key, value)
 
         permit.save()
         return permit

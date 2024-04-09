@@ -1,4 +1,4 @@
-import { ENVIRONMENT } from "@mds/common";
+import { ENVIRONMENT } from "@mds/common/constants";
 import { request, success, error } from "../actions/genericActions";
 import * as reducerTypes from "@mds/common/constants/reducerTypes";
 import * as verfiableCredentialActions from "../actions/verfiableCredentialActions";
@@ -6,7 +6,7 @@ import { createRequestHeader } from "../utils/RequestHeaders";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
 import CustomAxios from "../customAxios";
 import { AppThunk } from "@mds/common/interfaces/appThunk.type";
-import { IVCInvitation } from "@mds/common";
+import { IVCInvitation } from "@mds/common/interfaces";
 import { AxiosResponse } from "axios";
 import { notification } from "antd";
 
@@ -17,7 +17,6 @@ export const issueVCDigitalCredForPermit = (
   dispatch
 ): Promise<AxiosResponse<IVCInvitation>> => {
   const payload = {
-    party_guid: partyGuid,
     permit_amendment_guid: permitAmendmentGuid,
   };
 
@@ -25,7 +24,7 @@ export const issueVCDigitalCredForPermit = (
   dispatch(request(reducerTypes.ISSUE_VC));
   return CustomAxios()
     .post(
-      `${ENVIRONMENT.apiUrl}/verifiable-credentials/mines-act-permits`,
+      `${ENVIRONMENT.apiUrl}/verifiable-credentials/${partyGuid}/mines-act-permits`,
       payload,
       createRequestHeader()
     )
@@ -39,10 +38,9 @@ export const issueVCDigitalCredForPermit = (
       dispatch(hideLoading("modal"));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.ISSUE_VC));
       dispatch(hideLoading("modal"));
-      throw new Error(err);
     });
 };
 
@@ -55,7 +53,7 @@ export const createVCWalletInvitation = (
   dispatch(request(reducerTypes.CREATE_VC_WALLET_CONNECTION_INVITATION));
   return CustomAxios()
     .post(
-      `${ENVIRONMENT.apiUrl}/verifiable-credentials/oob-invitation/${partyGuid}`,
+      `${ENVIRONMENT.apiUrl}/verifiable-credentials/${partyGuid}/oob-invitation`,
       null,
       createRequestHeader()
     )
@@ -90,9 +88,8 @@ export const fetchVCWalletInvitations = (
       dispatch(hideLoading("modal"));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.FETCH_VC_WALLET_CONNECTION_INVITATIONS));
       dispatch(hideLoading("modal"));
-      throw new Error(err);
     });
 };

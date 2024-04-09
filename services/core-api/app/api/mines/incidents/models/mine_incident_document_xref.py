@@ -18,13 +18,14 @@ class MineIncidentDocumentXref(Base):
         db.String,
         db.ForeignKey('mine_incident_document_type_code.mine_incident_document_type_code'),
         nullable=False)
-    mine_document = db.relationship('MineDocument', lazy='joined')
+    mine_document = db.relationship('MineDocument', lazy='joined', overlaps="mine_documents")
 
     mine_guid = association_proxy('mine_document', 'mine_guid')
     document_manager_guid = association_proxy('mine_document', 'document_manager_guid')
     document_name = association_proxy('mine_document', 'document_name')
     upload_date = association_proxy('mine_document', 'upload_date')
     update_user = association_proxy('mine_document', 'update_user')
+    deleted_ind = association_proxy('mine_document', 'deleted_ind')
 
     def __repr__(self):
         return '<MineIncidentDocumentXref %r>' % self.mine_incident_document_xref_guid

@@ -8,7 +8,7 @@ The core-api is enabled to send credential-offer messages to connected wallets a
 
 ## Governance Documentation
 
-The Mines Act Permit Verifiable Credentials has public [governance documentation](https://github.com/bcgov/bc-vcpedia/blob/main/credentials/credential-bc-mines-act-permit.md) that should be kept up-to-date with any technical or process changes.
+The Mines Act Permit Verifiable Credentials has public [governance documentation](https://github.com/bcgov/bc-vcpedia/blob/main/credentials/bc-mines-act-permit/1.1.1/governance.md) that should be kept up-to-date with any technical or process changes.
 
 ### Connection Establishment
 
@@ -51,7 +51,7 @@ Current Limitations:
 
 The Overlay Capture Architechture (OCA) bundle for this credential is hosted [here](https://github.com/bcgov/aries-oca-bundles/tree/main/OCABundles/schema). The OCA bundle provides infomation on how the credential should be presented, including backgroun colors, labels, data-typing, and localization. If the credential is updated, the OCA bundle may need to be updated to match.
 
-OCA bundles hosted here can be previewed on the [OCA Explorer](https://bcgov.github.io/aries-oca-bundles/)
+OCA bundles hosted here can be previewed on the [OCA Explorer](https://bcgov.github.io/aries-oca-explorer/)
 
 ### Permit Amendments and Revocation
 
@@ -131,3 +131,9 @@ These values could be used for local development, however you will not receive w
 ## Race Conditions
 
 Webhook processing may be inconsistent, causing messages to be processed incorrectly. Some protection should be added to ensure that if a message state is going to send a protocol backwards, it should be ignored. Discussions are ongoing with Traction to see if the webhook can provide some timing data to help this processing.
+
+## Local development testing
+
+Traction DEV is configured to send webhooks to MDS DEV, and to this website for inspection https://webhook.site, after 100 requests, you must create a new testing webhook url and add that to the CPO Dev wallet on traction dev.
+
+You can configure your local MDS to use the CPO Wallet on Traction dev as well (with env variables), but there is no way for the webhooks to get back to your local machine, so to manually test, we need to manually pass the webhook payload from traction, which will send it to webhook.site, then can be copied into Postman (or similar http client) and passed to your localhost api at `http://localhost:5000/verifiable-credentials/webhook/topic/<TOPIC>` as a json body, the topic is parameterized.

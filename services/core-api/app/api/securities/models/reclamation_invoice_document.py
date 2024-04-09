@@ -11,4 +11,4 @@ class ReclamationInvoiceDocument(MineDocument):
 
     reclamation_invoice_id = db.Column(db.Integer, db.ForeignKey('reclamation_invoice.reclamation_invoice_id'))
 
-    reclamation_invoice = db.relationship('ReclamationInvoice', lazy='joined')
+    reclamation_invoice = db.relationship('ReclamationInvoice', lazy='joined', back_populates='documents')

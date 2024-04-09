@@ -44,7 +44,9 @@ export class MineProject extends Component {
           <div>
             <AuthorizationWrapper permission={Permission.EDIT_MINES} inTesting>
               <Link to={routes.ADD_PROJECT_SUMMARY.dynamicRoute(this.props.mineGuid)}>
-                <Button type="primary">Create New Project</Button>
+                <Button data-cy="create-new-project" type="primary">
+                  Create New Project
+                </Button>
               </Link>
             </AuthorizationWrapper>
           </div>

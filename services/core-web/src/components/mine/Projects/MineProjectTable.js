@@ -8,7 +8,7 @@ import { formatDate, dateSorter } from "@common/utils/helpers";
 import * as Strings from "@mds/common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 
 const propTypes = {
   projects: PropTypes.arrayOf(CustomPropTypes.project).isRequired,
@@ -20,7 +20,7 @@ const propTypes = {
 const transformRowData = (projects) => {
   return projects?.map((project) => {
     const contact = project?.contacts?.find((c) => c.is_primary);
-
+    const name = [contact?.first_name, contact?.last_name].join(" ").trim();
     return {
       key: project.project_guid,
       project,
@@ -29,7 +29,7 @@ const transformRowData = (projects) => {
       project_id: project.project_id || Strings.EMPTY_FIELD,
       project_name: project.project_title,
       proponent_project_id: project.proponent_project_id || Strings.EMPTY_FIELD,
-      project_contact: contact?.name || Strings.EMPTY_FIELD,
+      project_contact: name || Strings.EMPTY_FIELD,
       project_lead_name: project.project_lead_name,
       last_updated_date: formatDate(project.update_timestamp),
     };
@@ -42,7 +42,11 @@ export const MineProjectTable = (props) => {
       key: "project_name",
       title: "Project name",
       dataIndex: "project_name",
-      render: (text) => <div title="Project name">{text}</div>,
+      render: (text) => (
+        <div data-cy="project-name-column" title="Project name">
+          {text}
+        </div>
+      ),
     },
     {
       key: "proponent_project_id",

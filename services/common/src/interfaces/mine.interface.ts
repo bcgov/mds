@@ -1,4 +1,5 @@
 import {
+  IMineStatus,
   IMineType,
   IMineVerifiedStatus,
   IMineWorkInformation,
@@ -14,6 +15,8 @@ export interface IMine {
   ohsc_ind: boolean;
   union_ind: boolean;
   major_mine_ind: boolean;
+  // mine_location seems to be missing from BE response but necessary for map
+  mine_location?: { latitude: number; longitude: number };
   mine_permit_numbers: string[];
   mine_tailings_storage_facilities: ITailingsStorageFacility[];
   number_of_mine_employees: number;
@@ -23,4 +26,6 @@ export interface IMine {
   has_minespace_users: boolean;
   mms_alias: string;
   mine_work_information: IMineWorkInformation[];
+  latest_mine_status: IMineStatus;
+  mine_status: IMineStatus[];
 }

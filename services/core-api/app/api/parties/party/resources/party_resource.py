@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 
 from flask import current_app
-from flask_restplus import Resource
+from flask_restx import Resource
 from sqlalchemy import exc as alch_exceptions
 from werkzeug.exceptions import NotFound, BadRequest
 
@@ -18,6 +18,8 @@ from app.api.utils.access_decorators import requires_role_view_all, requires_rol
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.utils.resources_mixins import UserMixin
 from app.extensions import api, jwt, cache
+
+from app.api.utils.helpers import validate_phone_no
 
 
 class PartyResource(Resource, UserMixin):
@@ -210,6 +212,9 @@ class PartyResource(Resource, UserMixin):
     def put(self, party_guid):
         if is_minespace_user():
             user = bceid_username()
+            current_app.logger.debug('**********************')
+            current_app.logger.debug(user)
+            current_app.logger.debug('**********************')
             minespace_user = MinespaceUser.find_by_email(user + "@bceid")
             if not minespace_user:
                 raise BadRequest('User not found.')
@@ -233,7 +238,7 @@ class PartyResource(Resource, UserMixin):
                 continue  # non-editable fields from put
             setattr(existing_party, key, value)
 
-        Party.validate_phone_no(existing_party.phone_no)
+        validate_phone_no(existing_party.phone_no)
 
         # We are now allowing parties to be created without an address
         if (data.get('suite_no') or data.get('address_line_1') or data.get('address_line_2')

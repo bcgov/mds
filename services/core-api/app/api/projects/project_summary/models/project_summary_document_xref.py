@@ -24,7 +24,7 @@ class ProjectSummaryDocumentXref(Base):
         db.ForeignKey('project_summary_document_type.project_summary_document_type_code'),
         nullable=False)
 
-    mine_document = db.relationship('MineDocument', lazy='select')
+    mine_document = db.relationship('MineDocument', lazy='select', overlaps="project_summary_document_xref")
     mine_guid = association_proxy('mine_document', 'mine_guid')
     document_manager_guid = association_proxy('mine_document', 'document_manager_guid')
     document_name = association_proxy('mine_document', 'document_name')

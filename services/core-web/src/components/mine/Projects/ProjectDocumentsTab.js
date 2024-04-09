@@ -14,7 +14,7 @@ import {
 } from "@mds/common/redux/actionCreators/projectActionCreator";
 import customPropTypes from "@/customPropTypes";
 import DocumentTable from "@/components/common/DocumentTable";
-import ScrollSideMenu from "@/components/common/ScrollSideMenu";
+import ScrollSideMenu from "@mds/common/components/common/ScrollSideMenu";
 import { fetchMineDocuments } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { getMineDocuments } from "@mds/common/redux/selectors/mineSelectors";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
@@ -182,11 +182,22 @@ export class ProjectDocumentsTab extends Component {
             ? archivedDocuments.map((doc) => new MajorMineApplicationDocument(doc))
             : []
         }
+        href="archived-documents-all-documents"
       />
     );
   };
 
   render() {
+    const menuOptions = [
+      { href: "project-description", title: "Project Description" },
+      { href: "irt", title: "IRT" },
+      { href: "major-mine-application", title: "Major Mine Application" },
+      this.props.isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE) && {
+        href: "archived-documents-all-documents",
+        title: "Archived Documents",
+      },
+    ].filter(Boolean);
+
     return (
       <>
         <Row>
@@ -197,24 +208,12 @@ export class ProjectDocumentsTab extends Component {
         <br />
         <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
           <ScrollSideMenu
-            menuOptions={[
-              { href: "project-description", title: "Project Description" },
-              { href: "irt", title: "IRT" },
-              { href: "major-mine-application", title: "Major Mine Application" },
-              this.props.isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE) && {
-                href: "archived-documents",
-                title: "Archived Documents",
-              },
-            ].filter(Boolean)}
+            menuOptions={menuOptions}
             featureUrlRoute={routes.PROJECT_ALL_DOCUMENTS.hashRoute}
             featureUrlRouteArguments={[this.props.match?.params?.projectGuid]}
           />
         </div>
-        <div
-          className={
-            this.state.fixedTop ? "side-menu--content with-fixed-top top-125" : "side-menu--content"
-          }
-        >
+        <div className={this.state.fixedTop ? "side-menu--content top-125" : "side-menu--content"}>
           {this.renderDocumentSection(
             "Project Description",
             "project-description",

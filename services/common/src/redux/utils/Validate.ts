@@ -92,6 +92,12 @@ export const requiredNotUndefined = (value) =>
 export const requiredList = (value) =>
   value && value.length > 0 ? undefined : "This is a required field";
 
+export const requiredNewFiles = (files: any[]) => {
+  const hasNewFiles =
+    files && files.some((file) => file.document_manager_guid && !file.mine_document_guid);
+  return hasNewFiles ? undefined : "This is a required field";
+};
+
 export const notnone = (value) => (value === "None" ? "Please select an item" : undefined);
 
 export const maxLength = memoize((max) => (value) =>
@@ -108,6 +114,10 @@ export const exactLength = memoize((min) => (value) =>
 
 export const number = (value) =>
   value && Number.isNaN(Number(value)) ? "Input must be a number" : undefined;
+
+export const digitCharactersOnly = (value) => {
+  return /^\d+$/.test(value) ? undefined : "Input must contain only digits";
+};
 
 export const positiveNumber = (value) =>
   value && (Number.isNaN(Number(value)) || Number(value) <= 0)
@@ -138,6 +148,7 @@ export const lonNegative = (value) =>
 export const phoneNumber = (value) =>
   value && !Validate.checkPhone(value) ? "Invalid phone number e.g. xxx-xxx-xxxx" : undefined;
 
+// relies on provinceOptions being passed as props rather than through a selector
 export const postalCode = (value, allValues, formProps) => {
   const { sub_division_code } = allValues;
   const country = formProps.provinceOptions.find((prov) => prov.value === sub_division_code)
@@ -146,6 +157,16 @@ export const postalCode = (value, allValues, formProps) => {
     ? "Invalid postal code or zip code"
     : undefined;
 };
+
+export const postalCodeWithCountry = memoize((address_type_code = "CAN") => (value) => {
+  const code_type = address_type_code === "USA" ? "zip code" : "postal code";
+  if (!["CAN", "USA"].includes(address_type_code)) {
+    return undefined;
+  }
+  return value && !Validate.checkPostalCode(value, address_type_code)
+    ? `Invalid ${code_type}`
+    : undefined;
+});
 
 export const protocol = (value) =>
   value && !Validate.checkProtocol(value) ? "Invalid. Url must contain https://" : undefined;

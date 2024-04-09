@@ -1,40 +1,67 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ExplosivesPermitFileUpload renders properly 1`] = `
-<FormItem
-  hasFeedback={false}
+<div
+  class="ant-row ant-legacy-form-item"
 >
-  <Field
-    acceptedFileTypesMap={
-      Object {
-        ".doc": "application/msword",
-        ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        ".odm": "application/vnd.oasis.opendocument.text-master",
-        ".odt": "application/vnd.oasis.opendocument.text",
-        ".oth": "application/vnd.oasis.opendocument.text-web",
-        ".ott": "application/vnd.oasis.opendocument.text-template",
-        ".pdf": "application/pdf",
-        ".rtf": "application/rtf",
-        ".xls": "application/vnd.ms-excel",
-        ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      }
-    }
-    allowMultiple={true}
-    allowRevert={true}
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(FileUpload)",
-        "type": [Function],
-      }
-    }
-    id="fileUpload"
-    name="fileUpload"
-    onFileLoad={[MockFunction]}
-    onRemoveFile={[MockFunction]}
-    uploadUrl="/mines/6234612345/explosives-permits/undefined/documents"
-  />
-</FormItem>
+  <div
+    class="ant-col ant-legacy-form-item-control-wrapper"
+  >
+    <div
+      class="ant-legacy-form-item-control"
+    >
+      <span
+        class="ant-legacy-form-item-children"
+      >
+        <div
+          class="whirlpool-container"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      class="filepond--wrapper"
+                    >
+                      <input
+                        accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,application/vnd.oasis.opendocument.text,application/vnd.oasis.opendocument.text-template,application/vnd.oasis.opendocument.text-web,application/vnd.oasis.opendocument.text-master,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                        multiple=""
+                        name="file"
+                        type="file"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="fileUpload_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </span>
+    </div>
+  </div>
+</div>
 `;

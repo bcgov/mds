@@ -1,231 +1,99 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ProjectOverviewTab renders properly 1`] = `
-<Row
-  gutter={
-    Array [
-      0,
-      16,
-    ]
+<ProjectOverviewTab
+  project={
+    Object {
+      "contacts": Array [],
+      "information_requirements_table": Object {
+        "documents": Array [],
+      },
+      "major_mine_application": Object {
+        "documents": Array [],
+      },
+      "mine_guid": "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
+      "mine_name": "Sample Mine",
+      "project_guid": "35633148-57f8-4967-be35-7f89abfbd02e",
+      "project_links": Array [
+        Object {
+          "create_timestamp": "2023-11-27T18:27:20.598193-07:00",
+          "create_user": "test@bctest",
+          "project": Object {
+            "contacts": Array [
+              Object {
+                "name": "Test Contact",
+              },
+            ],
+            "information_requirements_table": Object {
+              "irt_guid": "awxyz12345",
+              "status_code": "APV",
+            },
+            "major_mine_application": Object {
+              "major_mine_application_guid": "abcde12345",
+              "status_code": "DFT",
+            },
+            "project_guid": "8132462392222",
+            "project_summary": Object {
+              "project_summary_guid": "6bab1df6-e181-435a-abc0-e99466411880",
+              "status_code": "SUB",
+            },
+            "project_title": "Test Mine",
+            "proponent_project_id": "Test-123",
+            "update_timestamp": "2023-08-04T09:21:06.028471-06:00",
+          },
+          "project_guid": "8132462392222",
+          "project_link_guid": "90de19e1-7292-4646-af0a-260bd14b1d45",
+          "related_project": Object {
+            "contacts": Array [
+              Object {
+                "name": "Tom Tester",
+              },
+            ],
+            "information_requirements_table": Object {
+              "irt_guid": "awxyz12345",
+              "status_code": "APV",
+            },
+            "major_mine_application": Object {
+              "major_mine_application_guid": "abcde12345",
+              "status_code": "WDN",
+            },
+            "project_guid": "913246239223",
+            "project_summary": Object {
+              "project_summary_guid": "a2e76a72-f306-4973-bda8-37018d15baa2",
+              "status_code": "SUB",
+            },
+            "project_title": "Test Coal",
+            "proponent_project_id": "TEST-1001",
+            "update_timestamp": "2023-08-24T15:49:16.702250-06:00",
+          },
+          "related_project_guid": "d7411155-dc79-4fa9-8975-c22594aab7ec",
+          "update_timestamp": "2023-11-27T18:27:20.598307-07:00",
+          "update_user": "test@bctest",
+        },
+      ],
+      "project_summary": Object {
+        "documents": Array [],
+      },
+      "project_title": "Test Project Title",
+    }
   }
->
-  <Col
-    lg={
-      Object {
-        "span": 14,
-      }
+  projectSummaryDocumentTypesHash={
+    Object {
+      "GEN": "General",
     }
-    xl={
-      Object {
-        "span": 16,
-      }
+  }
+  projectSummaryStatusCodesHash={
+    Object {
+      "ASG": "Submitted",
+      "COM": "Complete",
+      "DFT": "Draft",
+      "IAT": "Inactive",
+      "OHD": "On Hold",
+      "SUB": "Submitted",
+      "UNP": "Under review",
+      "UNR": "Under review",
+      "WDN": "Withdrawn",
     }
-  >
-    <ForwardRef
-      level={4}
-    >
-      Overview
-    </ForwardRef>
-    <ForwardRef(Text)
-      strong={true}
-    >
-      PROJECT DESCRIPTION
-    </ForwardRef(Text)>
-    <ForwardRef />
-    <ForwardRef(Text)
-      strong={true}
-    >
-      KEY DATES
-    </ForwardRef(Text)>
-    <Row>
-      <Col
-        lg={12}
-      >
-        <Descriptions
-          column={2}
-          layout="vertical"
-        >
-          <DescriptionsItem
-            className="vertical-description"
-            label="Estimated IRT Submission"
-            span={12}
-          >
-            N/A
-          </DescriptionsItem>
-          <DescriptionsItem
-            className="vertical-description"
-            label="Desired date to receive permit/amendment(s)"
-            span={12}
-          >
-            N/A
-          </DescriptionsItem>
-        </Descriptions>
-      </Col>
-      <Col
-        lg={12}
-      >
-        <Descriptions
-          column={2}
-          layout="vertical"
-        >
-          <DescriptionsItem
-            className="vertical-description"
-            label="Estimated Permit Application Submission"
-            span={12}
-          >
-            N/A
-          </DescriptionsItem>
-          <DescriptionsItem
-            className="vertical-description"
-            label="Anticipated work start"
-            span={12}
-          >
-            N/A
-          </DescriptionsItem>
-        </Descriptions>
-      </Col>
-    </Row>
-    <ForwardRef
-      level={4}
-    >
-      Project Stages
-    </ForwardRef>
-    <ProjectStagesTable
-      projectStages={
-        Array [
-          Object {
-            "isTitle": true,
-            "key": "req-stages-id",
-            "status": "STATUS",
-            "title": "REQUIRED STAGES",
-          },
-          Object {
-            "key": "ps-undefined",
-            "link": <ForwardRef
-              data-cy="project-description-view-link"
-              to="/pre-applications/undefined/project-description/undefined"
-            >
-              <ForwardRef(InternalButton)
-                className="full-mobile margin-small"
-                type="secondary"
-              >
-                View
-              </ForwardRef(InternalButton)>
-            </ForwardRef>,
-            "payload": Object {
-              "documents": Array [],
-            },
-            "status": undefined,
-            "statusHash": Object {
-              "ASG": "Submitted",
-              "COM": "Complete",
-              "DFT": "Draft",
-              "IAT": "Inactive",
-              "OHD": "On Hold",
-              "SUB": "Submitted",
-              "UNP": "Under review",
-              "UNR": "Under review",
-              "WDN": "Withdrawn",
-            },
-            "title": "Project description",
-          },
-          Object {
-            "key": "ps-undefined",
-            "link": <ForwardRef
-              data-cy="final-application-view-link"
-              to="/pre-applications/undefined/final-app"
-            >
-              <ForwardRef(InternalButton)
-                className="full-mobile margin-small"
-                type="secondary"
-              >
-                View
-              </ForwardRef(InternalButton)>
-            </ForwardRef>,
-            "payload": Object {
-              "documents": Array [],
-            },
-            "status": undefined,
-            "statusHash": undefined,
-            "title": "Final Application",
-          },
-          Object {
-            "isOptional": true,
-            "isTitle": true,
-            "key": "opt-stages-id",
-            "status": "STATUS",
-            "title": "OPTIONAL STAGES",
-          },
-          Object {
-            "isOptional": true,
-            "key": "irt-0",
-            "link": <ForwardRef
-              data-cy="final-irt-view-link"
-              to="/pre-applications/undefined/information-requirements-table/undefined/intro-project-overview"
-            >
-              <ForwardRef(InternalButton)
-                className="full-mobile margin-small"
-                disabled={true}
-                type="secondary"
-              >
-                View
-              </ForwardRef(InternalButton)>
-            </ForwardRef>,
-            "payload": Object {
-              "documents": Array [],
-            },
-            "status": undefined,
-            "statusHash": undefined,
-            "title": "Final IRT",
-          },
-        ]
-      }
-    />
-    <br />
-  </Col>
-  <Col
-    lg={
-      Object {
-        "offset": 1,
-        "span": 9,
-      }
-    }
-    xl={
-      Object {
-        "offset": 1,
-        "span": 7,
-      }
-    }
-  >
-    <Row>
-      <Col
-        span={24}
-      >
-        <ForwardRef
-          headStyle={
-            Object {
-              "minHeight": "unset",
-            }
-          }
-          title="Project Contacts"
-        >
-          <ForwardRef
-            className="ministry-contact-item"
-          >
-            <ForwardRef(Text)
-              className="ministry-contact-title"
-              strong={true}
-            >
-              EMLI Project Lead
-            </ForwardRef(Text)>
-            <br />
-            <ForwardRef(Text)>
-              Project Lead has not been assigned
-            </ForwardRef(Text)>
-          </ForwardRef>
-        </ForwardRef>
-      </Col>
-    </Row>
-  </Col>
-</Row>
+  }
+/>
 `;

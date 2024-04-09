@@ -1,11 +1,12 @@
 from flask import Flask
 from flask_cors import CORS
 
-from flask_restplus.apidoc import apidoc
+from flask_restx.apidoc import apidoc
 
 from app.commands import register_commands
 from app.routes import register_routes
 from app.extensions import api, cache, db, jwt, migrate
+from logging.config import dictConfig
 
 from app.nris.models import *
 from app.nris.resources import *
@@ -15,10 +16,17 @@ from .config import Config
 
 def create_app(config_object=None):
     """Create and configure an instance of the Flask application."""
+    dictConfig(Config.LOGGING_DICT_CONFIG)
+
     app = Flask(__name__)
 
     config = config_object if config_object else Config
     app.config.from_object(config)
+    
+
+
+    # dictConfig(Config.LOGGING_DICT_CONFIG)
+
 
     register_extensions(app)
     register_routes(app)

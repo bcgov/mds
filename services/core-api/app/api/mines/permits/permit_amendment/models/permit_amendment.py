@@ -12,7 +12,7 @@ from app.extensions import db
 
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
-from app.api.verifiable_credentials.models.credentials import PartyVerifiableCredentialMinesActPermit
+from app.api.verifiable_credentials.aries_constants import IssueCredentialIssuerState
 
 from . import permit_amendment_status_code, permit_amendment_type_code
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
@@ -57,13 +57,14 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         UUID(as_uuid=True), db.ForeignKey('now_application_identity.now_application_guid'))
     now_identity = db.relationship(
         'NOWApplicationIdentity', lazy='select', foreign_keys=[now_application_guid])
-    mine = db.relationship('Mine', lazy='select')
+    mine = db.relationship('Mine', lazy='select', back_populates='_mine_permit_amendments')
     conditions = db.relationship(
         'PermitConditions',
         lazy='select',
         primaryjoin=
         "and_(PermitConditions.permit_amendment_id == PermitAmendment.permit_amendment_id, PermitConditions.deleted_ind == False, PermitConditions.parent_permit_condition_id.is_(None))",
-        order_by='asc(PermitConditions.display_order)')
+        order_by='asc(PermitConditions.display_order)',
+        back_populates='permit_amendment')
     permit_conditions_last_updated_date = db.Column(db.DateTime)
     permit_conditions_last_updated_by = db.Column(db.String(60))
     is_generated_in_core = db.Column(db.Boolean)
@@ -74,23 +75,28 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         'MinePermitXref',
         uselist=False,
         primaryjoin=
-        "and_(PermitAmendment.mine_guid==foreign(MinePermitXref.mine_guid), PermitAmendment.permit_id==foreign(MinePermitXref.permit_id))"
+        "and_(PermitAmendment.mine_guid==foreign(MinePermitXref.mine_guid), PermitAmendment.permit_id==foreign(MinePermitXref.permit_id))",
+        overlaps='mine'
     )
     all_mine_permit_xref = db.relationship(
         'MinePermitXref',
-        primaryjoin="PermitAmendment.permit_id==foreign(MinePermitXref.permit_id)")
+        primaryjoin="PermitAmendment.permit_id==foreign(MinePermitXref.permit_id)",
+        overlaps='mine_permit_xref'
+    )
 
     now_application_identity = db.relationship(
         'NOWApplicationIdentity',
         lazy='selectin',
         uselist=False,
-        foreign_keys=[now_application_guid])
+        foreign_keys=[now_application_guid],
+        overlaps='now_identity'
+    )
 
     vc_credential_exch = db.relationship(
         'PartyVerifiableCredentialMinesActPermit',
         lazy='selectin',
-        uselist=False)
-    
+        order_by='desc(PartyVerifiableCredentialMinesActPermit.update_timestamp)')
+    mines_act_permit_vc_locked = association_proxy("permit", 'mines_act_permit_vc_locked')
 
     @hybrid_property
     def issuing_inspector_name(self):
@@ -138,10 +144,16 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     
     @hybrid_property
     def vc_credential_exch_state(self):
-        if self.vc_credential_exch:
-            return self.vc_credential_exch.cred_exch_state
+        # TODO this assumes only one active credential for each mines act permit 
+        # this will need to be revisited to support additional issuances (wallet recovery) or multple schemas issued
+
+        active = [x for x in self.vc_credential_exch if x.cred_exch_state in IssueCredentialIssuerState.active_credential_states]
+
+        if active:
+            #if any active, return most recent
+            return active[0].cred_exch_state
         else:
-            return None
+            return self.vc_credential_exch[0].cred_exch_state if len(self.vc_credential_exch) > 0 else None
 
 
     def __repr__(self):
@@ -226,7 +238,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         return cls.query.filter_by(permit_amendment_id=_id).filter_by(deleted_ind=False).first()
 
     @classmethod
-    def find_by_permit_amendment_guid(cls, _guid):
+    def find_by_permit_amendment_guid(cls, _guid) -> "PermitAmendment":
         return cls.query.filter_by(permit_amendment_guid=_guid).filter_by(deleted_ind=False).first()
 
     @classmethod

@@ -2,7 +2,7 @@ import uuid, base64, requests
 from werkzeug.exceptions import BadRequest, NotFound
 
 from flask import request, current_app, Response
-from flask_restplus import Resource, fields
+from flask_restx import Resource, fields
 from app.extensions import api, db
 
 from app.api.utils.access_decorators import (requires_any_of, VIEW_ALL, MINE_EDIT, EDIT_VARIANCE,

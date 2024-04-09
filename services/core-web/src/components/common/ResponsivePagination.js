@@ -24,7 +24,7 @@ const ResponsivePagination = (props) => (
         defaultCurrent={props.currentPage}
         current={props.currentPage}
         total={props.pageTotal}
-        pageSizeOptions={["25", "50", "75", "100"]}
+        pageSizeOptions={["10", "25", "50", "75", "100"]}
         pageSize={props.itemsPerPage}
       />
     </MediaQuery>
@@ -36,7 +36,7 @@ const ResponsivePagination = (props) => (
         defaultCurrent={props.currentPage}
         current={props.currentPage}
         total={props.pageTotal}
-        pageSizeOptions={["25", "50", "75", "100"]}
+        pageSizeOptions={["10", "25", "50", "75", "100"]}
         pageSize={props.itemsPerPage}
         showTotal={(total) => `${total} Results`}
       />

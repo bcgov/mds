@@ -1,5 +1,5 @@
 from flask import current_app, request
-from flask_restplus import Resource, reqparse, fields, inputs
+from flask_restx import Resource, reqparse, fields, inputs
 
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_edit_permit, requires_role_view_all

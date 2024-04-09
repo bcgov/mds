@@ -40,7 +40,7 @@ class NOWApplicationDocumentXref(SoftDeleteMixin, AuditMixin, Base):
         db.Integer, db.ForeignKey('now_application_review.now_application_review_id'))
 
     now_application_document_type = db.relationship('NOWApplicationDocumentType', lazy='joined')
-    now_application = db.relationship('NOWApplication', lazy='select')
+    now_application = db.relationship('NOWApplication', lazy='select', overlaps="documents")
     now_application_document_sub_type_code = association_proxy(
         'now_application_document_type', 'now_application_document_sub_type_code')
 

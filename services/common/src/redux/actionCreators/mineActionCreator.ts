@@ -1,6 +1,6 @@
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
-import { ENVIRONMENT } from "@mds/common";
+import { ENVIRONMENT } from "@mds/common/constants";
 import { request, success, error } from "../actions/genericActions";
 import * as reducerTypes from "@mds/common/constants/reducerTypes";
 import * as mineActions from "../actions/mineActions";
@@ -9,7 +9,7 @@ import * as String from "@mds/common/constants/strings";
 import * as API from "@mds/common/constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
-import { ITailingsStorageFacility, ICreateTailingsStorageFacility } from "@mds/common";
+import { ITailingsStorageFacility, ICreateTailingsStorageFacility } from "@mds/common/interfaces";
 import { AppThunk } from "@mds/common/interfaces/appThunk.type";
 import { AxiosResponse } from "axios";
 
@@ -35,9 +35,8 @@ export const createMineRecord = (payload) => (dispatch) => {
       dispatch(success(reducerTypes.CREATE_MINE_RECORD));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.CREATE_MINE_RECORD));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -55,9 +54,8 @@ export const updateMineRecord = (id, payload, mineName) => (dispatch) => {
       dispatch(success(reducerTypes.UPDATE_MINE_RECORD));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.UPDATE_MINE_RECORD));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -88,9 +86,8 @@ export const removeMineType = (mineGuid, mineTypeGuid, tenure) => (dispatch) => 
       });
       dispatch(success(reducerTypes.REMOVE_MINE_TYPE));
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.REMOVE_MINE_TYPE));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -114,9 +111,8 @@ export const createTailingsStorageFacility = (
       dispatch(tsfActions.storeTsf(response.data));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.CREATE_TSF));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -141,9 +137,8 @@ export const updateTailingsStorageFacility = (
       dispatch(tsfActions.storeTsf(response.data));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.UPDATE_TSF));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -293,9 +288,8 @@ export const setMineVerifiedStatus = (mine_guid, payload) => (dispatch) => {
       dispatch(success(reducerTypes.SET_MINE_VERIFIED_STATUS));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.SET_MINE_VERIFIED_STATUS));
-      throw new Error(err);
     });
 };
 
@@ -371,9 +365,8 @@ export const createMineComment = (mineGuid, payload) => (dispatch) => {
       dispatch(success(reducerTypes.CREATE_MINE_COMMENTS));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.CREATE_MINE_COMMENTS));
-      throw new Error(err);
     });
 };
 
@@ -392,8 +385,7 @@ export const deleteMineComment = (mineGuid, commentGuid) => (dispatch) => {
       dispatch(success(reducerTypes.DELETE_MINE_COMMENT));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.DELETE_MINE_COMMENT));
-      throw new Error(err);
     });
 };

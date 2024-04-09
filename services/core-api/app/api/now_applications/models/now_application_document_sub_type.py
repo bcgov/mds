@@ -1,5 +1,5 @@
 from sqlalchemy.schema import FetchedValue
-from flask_restplus import marshal
+from flask_restx import marshal
 
 from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base

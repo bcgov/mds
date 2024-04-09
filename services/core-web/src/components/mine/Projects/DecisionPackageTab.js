@@ -17,7 +17,7 @@ import {
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import * as routes from "@/constants/routes";
 import customPropTypes from "@/customPropTypes";
-import ScrollSideMenu from "@/components/common/ScrollSideMenu";
+import ScrollSideMenu from "@mds/common/components/common/ScrollSideMenu";
 import DocumentTable from "@/components/common/DocumentTable";
 import UpdateDecisionPackageStatusForm from "@/components/Forms/majorMineApplication/UpdateDecisionPackageStatusForm";
 import { modalConfig } from "@/components/modalContent/config";
@@ -147,6 +147,7 @@ export class DecisionPackageTab extends Component {
             ? archivedDocuments.map((doc) => new MajorMineApplicationDocument(doc))
             : []
         }
+        href="archived-documents-decision-package"
       />
     );
   };
@@ -264,26 +265,26 @@ export class DecisionPackageTab extends Component {
       projectDecisionPackage?.status_code !== "NTS";
 
     const canArchiveDocuments = this.props.isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE);
+    const menuOptions = [
+      { href: "decision-package-documents", title: "Decision Package" },
+      { href: "additional-goverment-documents", title: "Government Documents" },
+      { href: "internal-ministry-documents", title: "Internal Documents" },
+      canArchiveDocuments && {
+        href: "archived-documents-decision-package",
+        title: "Archived Documents",
+      },
+    ].filter(Boolean);
 
     return (
       <>
         <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
           <ScrollSideMenu
-            menuOptions={[
-              { href: "decision-package-documents", title: "Decision Package" },
-              { href: "additional-goverment-documents", title: "Government Documents" },
-              { href: "internal-ministry-documents", title: "Internal Documents" },
-              canArchiveDocuments && { href: "archived-documents", title: "Archived Documents" },
-            ].filter(Boolean)}
+            menuOptions={menuOptions}
             featureUrlRoute={routes.PROJECT_DECISION_PACKAGE.hashRoute}
             featureUrlRouteArguments={[this.props.match?.params?.projectGuid]}
           />
         </div>
-        <div
-          className={
-            this.state.fixedTop ? "side-menu--content with-fixed-top top-125" : "side-menu--content"
-          }
-        >
+        <div className={this.state.fixedTop ? "side-menu--content top-125" : "side-menu--content"}>
           <Row>
             <UpdateDecisionPackageStatusForm
               initialValues={{

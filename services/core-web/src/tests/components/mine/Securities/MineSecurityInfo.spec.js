@@ -10,10 +10,10 @@ const setupDispatchProps = () => {
   dispatchProps.openModal = jest.fn();
   dispatchProps.closeModal = jest.fn();
   dispatchProps.fetchPermits = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchMineBonds = jest.fn();
+  dispatchProps.fetchMineBonds = jest.fn(() => Promise.resolve());
   dispatchProps.createBond = jest.fn();
   dispatchProps.updateBond = jest.fn();
-  dispatchProps.fetchMineReclamationInvoices = jest.fn();
+  dispatchProps.fetchMineReclamationInvoices = jest.fn(() => Promise.resolve());
   dispatchProps.createReclamationInvoice = jest.fn();
   dispatchProps.updateReclamationInvoice = jest.fn();
 };

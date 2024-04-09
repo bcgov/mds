@@ -1,6 +1,6 @@
 import jwt
 
-from flask_restplus import Resource
+from flask_restx import Resource
 from flask import request, current_app
 
 from app.extensions import db, api
@@ -31,5 +31,5 @@ class MetabaseDashboardResource(Resource, UserMixin):
                            algorithm="HS256")
 
         dashboard_url = current_app.config[
-            'METABASE_SITE_URL'] + f'/embed/{type}/' + token.decode("utf8")
+            'METABASE_SITE_URL'] + f'/embed/{type}/' + token
         return {'dashboard_url': dashboard_url}

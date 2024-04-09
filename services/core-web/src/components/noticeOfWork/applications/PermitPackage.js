@@ -20,7 +20,7 @@ import { EDIT_OUTLINE_VIOLET, EDIT_OUTLINE } from "@/constants/assets";
 import * as Permission from "@/constants/permissions";
 import { getDropdownNoticeOfWorkApplicationReviewTypeOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
-import DocumentCompression from "@/components/common/DocumentCompression";
+import DocumentCompression from "@mds/common/components/documents/DocumentCompression";
 import { MineDocument } from "@mds/common/models/documents/document";
 
 /**

@@ -1,7 +1,7 @@
 import json
 
 from tests.factories import ProjectFactory, ProjectSummaryFactory, PartyFactory
-from flask_restplus import marshal
+from flask_restx import marshal
 from app.api.projects.response_models import PROJECT_SUMMARY_MODEL
 
 
@@ -23,8 +23,9 @@ def test_get_project_summary_by_project_summary_guid(test_client, db_session, au
 
 def test_put_project_summary(test_client, db_session, auth_headers):
     project_summary = ProjectSummaryFactory()
-    data = marshal(project_summary, PROJECT_SUMMARY_MODEL)
 
+    data = {}
+    data['documents'] = []
     data['mine_guid'] = project_summary.project.mine_guid
     data['project_summary_title'] = 'Test Project Title - Updated'
     data['status_code'] = 'UNR'
@@ -44,8 +45,10 @@ def test_delete_project_summary_bad_status_code(test_client, db_session, auth_he
     '''Status code needs to be DFT in order to delete a project description'''
     project = ProjectFactory()
     project_summary = ProjectSummaryFactory(project=project)
-    data = marshal(project_summary, PROJECT_SUMMARY_MODEL)
 
+    data = {}
+    data['documents'] = []
+    data['mine_guid'] = project_summary.project.mine_guid
     data['project_summary_title'] = 'Test Title'
     data['status_code'] = 'SUB'
 
@@ -62,8 +65,11 @@ def test_update_project_summary_assign_project_lead(test_client, db_session, aut
     project = ProjectFactory(project_summary=0)
     project_summary = ProjectSummaryFactory(project=project)
     party = PartyFactory(person=True)
-    data = marshal(project_summary, PROJECT_SUMMARY_MODEL)
 
+    data = {}
+    data['documents'] = []
+    data['mine_guid'] = project_summary.project.mine_guid
+    data['project_summary_title'] = project_summary.project_summary_title
     data['status_code'] = 'SUB'
     data['project_lead_party_guid'] = party.party_guid
 

@@ -8,7 +8,7 @@ const props = {};
 
 const setupDispatchProps = () => {
   dispatchProps.onSubmit = jest.fn();
-  dispatchProps.fetchMineRecordById = jest.fn(() => Promise.resolve());
+  dispatchProps.fetchMineRecordById = jest.fn(() => Promise.resolve({}));
 };
 
 const setupProps = () => {

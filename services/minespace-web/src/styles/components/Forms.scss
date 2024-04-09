@@ -1,0 +1,91 @@
+// Forms
+.ant-input,
+.ant-select-selector,
+.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    border: 1px solid $normal-color;
+    border-radius: 2px;
+}
+
+.ant-form-item-required,
+.ant-form-item-label>label.ant-form-item-required:not(.ant-form-item-required-mark-optional) {
+    &::before {
+        font-family: $font-family;
+    }
+}
+
+.label-subtitle {
+    line-height: 24px;
+}
+
+.ant-legacy-form label,
+.ant-form-item-label label,
+.view-item .ant-typography.view-item-label {
+    font-size: 16px;
+    color: $font-colour;
+    font-weight: 400;
+    line-height: 22px;
+}
+
+.ant-form-vertical .ant-form-item-label>label {
+    // to make * appear on the same line when label is an HTML element
+    display: flex;
+    align-items: baseline;
+}
+
+.ant-form-vertical .ant-form-item {
+    padding-bottom: 0px;
+}
+
+.ant-form-item {
+    margin-bottom: 8px;
+}
+
+.form-item-optional {
+    font-weight: normal;
+}
+
+.vertical-radio-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.radio-two-column-container {
+    .ant-radio-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.view-item {
+    line-height: 22px;
+
+    .ant-typography.view-item-label {
+        margin-bottom: 4px;
+        font-weight: 600;
+    }
+
+    .ant-typography.view-item-value {
+        margin-bottom: 0;
+    }
+}
+
+.ant-steps-item-finish>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-title {
+    color: #036;
+}
+
+.ant-steps-item-icon {
+    line-height: 30px;
+}
+
+.ant-legacy-form-vertical .ant-legacy-form-item {
+    padding-bottom: 0px;
+    margin-bottom: 14px;
+}
+
+.ant-popover.filepond-filetypes-popover {
+    max-width: 500px;
+}
+
+.form-item-help {
+    color: rgba(49, 49, 50, 0.55);
+}

@@ -5,7 +5,7 @@ import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { MINE_INCIDENT_DOCUMENTS } from "@mds/common/constants/API";
 import FileUpload from "@/components/common/FileUpload";
-import { DOCUMENT, EXCEL, SPATIAL } from "@/constants/fileTypes";
+import { DOCUMENT, EXCEL, SPATIAL, IMAGE, MESSAGE } from "@/constants/fileTypes";
 
 const propTypes = {
   onFileLoad: PropTypes.func.isRequired,
@@ -18,7 +18,7 @@ const defaultProps = {
   labelIdle: null,
 };
 
-const acceptedFileTypesMap = { ...DOCUMENT, ...EXCEL, ...SPATIAL };
+const acceptedFileTypesMap = { ...DOCUMENT, ...EXCEL, ...SPATIAL, ...IMAGE, ...MESSAGE };
 
 export const IncidentFileUpload = (props) => (
   <Form.Item>

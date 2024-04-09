@@ -166,7 +166,11 @@ export class AdvancedMineSearchForm extends Component {
           </div>
         )}
         <div className="left center-mobile">
-          <Button className="btn--dropdown" onClick={this.toggleIsAdvancedSearch}>
+          <Button
+            className="btn--dropdown"
+            onClick={this.toggleIsAdvancedSearch}
+            data-cy="expand-filters-button"
+          >
             {this.state.expandAdvancedSearch ? "Collapse Filters" : "Expand Filters"}
             {this.state.expandAdvancedSearch ? <UpOutlined /> : <DownOutlined />}
           </Button>
@@ -175,7 +179,12 @@ export class AdvancedMineSearchForm extends Component {
           <Button className="full-mobile" type="secondary" htmlType="reset">
             Clear Filters
           </Button>
-          <Button className="full-mobile" type="primary" htmlType="submit">
+          <Button
+            data-cy="apply-filter-button"
+            className="full-mobile"
+            type="primary"
+            htmlType="submit"
+          >
             Apply Filters
           </Button>
         </div>

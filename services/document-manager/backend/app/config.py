@@ -1,5 +1,52 @@
 import os
+from flask import current_app
+import logging
+import traceback
+from opentelemetry import trace
 
+class CustomFormatter(logging.Formatter):
+    def format(self, record):
+        KEY_CLOAK_CLIENT_ID = None
+        def get_key_cloak_client_id():
+            try:
+                # Check if the request is a valid HTTP request
+                if current_app and hasattr(current_app, 'extensions'):
+                    from app.extensions import getJwtManager
+                    from flask import request
+
+                    # Check if the request has a bearer token
+                    bearer_token = request.headers.get('Authorization')
+                    if bearer_token and bearer_token.startswith('Bearer '):
+                        if getJwtManager().audience:
+                            return getJwtManager().audience
+            except Exception as e:
+                #print error only when there is a major error with implementation of getJwtManager()
+                print(traceback.format_exc())
+
+            return None
+
+        def get_traceid_from_telemetry():
+            current_span = trace.get_current_span()
+            if current_span:
+                traceid = current_span.get_span_context().trace_id
+                return traceid
+            return None
+
+        # Get the traceid from the telemetry
+        traceid = get_traceid_from_telemetry()
+
+        # Add the traceid to the log message
+        record.traceid = traceid
+        if get_key_cloak_client_id() and not KEY_CLOAK_CLIENT_ID:
+            KEY_CLOAK_CLIENT_ID = get_key_cloak_client_id()
+
+        # Call the parent formatter to format the log message
+        formatted_message = super().format(record)
+
+        # Add the traceid, keycloak client id and message to the formatted log message
+        formatted_message = f'{formatted_message} [trace_id={traceid} client={KEY_CLOAK_CLIENT_ID}]: {record.message}'
+
+        return formatted_message
 
 class Config(object):
     # Environment config
@@ -78,6 +125,42 @@ class Config(object):
     CELERY_REST_API_URL = os.environ.get('CELERY_REST_API_URL', '')
     FLOWER_USER = os.environ.get('FLOWER_USER', '')
     FLOWER_USER_PASSWORD = os.environ.get('FLOWER_USER_PASSWORD', '')
+
+    FLASK_LOGGING_LEVEL = os.environ.get('FLASK_LOGGING_LEVEL',
+                                         'INFO')  # ['DEBUG','INFO','WARN','ERROR','CRITICAL']
+    WERKZEUG_LOGGING_LEVEL = os.environ.get('WERKZEUG_LOGGING_LEVEL',
+                                            'CRITICAL')  # ['DEBUG','INFO','WARN','ERROR','CRITICAL']
+    DISPLAY_WERKZEUG_LOG = os.environ.get('DISPLAY_WERKZEUG_LOG',
+                                          True)
+
+    LOGGING_DICT_CONFIG = {
+        'version': 1,
+        'formatters': {
+            'default': {
+                '()': CustomFormatter,
+                'format': '%(asctime)s %(levelname)s [%(name)s] [%(filename)s:%(lineno)d]',
+            }
+        },
+        'handlers': {
+            'console': {
+                'class': 'logging.StreamHandler',
+                'stream': 'ext://sys.stdout',
+                'formatter': 'default',
+                'level': 'DEBUG'
+            }
+        },
+        'root': {
+            'level': FLASK_LOGGING_LEVEL,
+            'handlers': ['console']
+        },
+        'loggers': {
+            'werkzeug': {
+                'level': WERKZEUG_LOGGING_LEVEL,
+                'handlers': ['console'],
+                'propagate': DISPLAY_WERKZEUG_LOG
+            }
+        }
+    }
 
     def JWT_ROLE_CALLBACK(jwt_dict):
         return (jwt_dict.get('client_roles') or [])

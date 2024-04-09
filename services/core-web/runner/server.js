@@ -1,8 +1,12 @@
 const express = require("express");
 const cacheControl = require("express-cache-controller");
 const dotenv = require("dotenv").config({ path: `${__dirname}/.env` });
+const expressStaticGzip = require("express-static-gzip");
+const helmet = require("helmet");
 
-let { BASE_PATH } = process.env;
+// Content Security Policy is managed by the environment variable CONTENT_SECURITY_POLICY defined
+// in the bcgov-c/tenant-gitops-4c2ba9 repository. The value of this variable is a JSON string
+let { BASE_PATH, CONTENT_SECURITY_POLICY = null, PERMISSIONS_POLICY = null } = process.env;
 let BUILD_DIR = process.env.BUILD_DIR || "../build";
 const VENDOR_DIR = process.env.VENDOR_DIR || "vendor";
 let PORT = process.env.PORT || 3000;
@@ -10,6 +14,10 @@ if (dotenv.parsed) {
   BASE_PATH = dotenv.parsed.BASE_PATH || BASE_PATH;
   BUILD_DIR = dotenv.parsed.BUILD_DIR || BUILD_DIR;
   PORT = dotenv.parsed.PORT || PORT;
+}
+
+if (CONTENT_SECURITY_POLICY) {
+  CONTENT_SECURITY_POLICY = JSON.parse(CONTENT_SECURITY_POLICY);
 }
 
 // maxAge and mustRevalidate control how the client caches application files. The settings
@@ -25,14 +33,32 @@ app.use(
   })
 );
 
-const staticServe = express.static(`${__dirname}/${BUILD_DIR}`, {
+app.use(helmet({
+  contentSecurityPolicy: CONTENT_SECURITY_POLICY ? {
+    directives: CONTENT_SECURITY_POLICY
+  } : false
+}));
+
+const staticServe = expressStaticGzip(`${__dirname}/${BUILD_DIR}`, {
   immutable: true,
   maxAge: "1y",
+  enableBrotli: true,
+  customCompressions: [{
+    encodingName: 'deflate',
+    fileExtension: 'zz'
+  }],
+  orderPreference: ['br', 'gzip']
 });
 
-const vendorServe = express.static(`${__dirname}/${VENDOR_DIR}`, {
+const vendorServe = expressStaticGzip(`${__dirname}/${VENDOR_DIR}`, {
   immutable: true,
   maxAge: "1y",
+  enableBrotli: true,
+  customCompressions: [{
+    encodingName: 'deflate',
+    fileExtension: 'zz'
+  }],
+  orderPreference: ['br', 'gzip']
 });
 
 app.get(`${BASE_PATH}/env`, (req, res) => {
@@ -64,6 +90,13 @@ app.get(`/version`, (req, res) => {
   });
 });
 
+app.use((req, res, next) => {
+  if (PERMISSIONS_POLICY) {
+    res.setHeader("Permissions-Policy", PERMISSIONS_POLICY);
+  }
+  next();
+});
+
 app.use(`${BASE_PATH}/`, staticServe);
 app.use(`${BASE_PATH}/vendor/`, vendorServe);
 app.use(`${BASE_PATH}*`, staticServe);
@@ -71,4 +104,6 @@ app.use(`/`, staticServe);
 app.use(`/vendor/`, staticServe);
 app.use(`*`, staticServe);
 
-app.listen(PORT, "0.0.0.0", () => console.log("Server running"));
+const server = app.listen(PORT, "0.0.0.0", () => console.log("Server running"));
+server.keepAliveTimeout = 15 * 1000;
+server.headersTimeout = 20 * 1000;

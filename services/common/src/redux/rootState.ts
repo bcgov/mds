@@ -1,29 +1,20 @@
 import { sharedReducer } from "@mds/common/redux/reducers/rootReducerShared";
+import { configureStore } from "@reduxjs/toolkit";
+import { loadingBarReducer } from "react-redux-loading-bar";
 
-import { createStore, applyMiddleware, combineReducers, $CombinedState } from "redux";
-import thunk from "redux-thunk";
-import { loadingBarMiddleware } from "react-redux-loading-bar";
+export const getStore = (preloadedState = {}) =>
+  configureStore({
+    reducer: {
+      ...sharedReducer,
+      loadingBar: loadingBarReducer,
+    },
+    preloadedState,
+    devTools: process.env.NODE_ENV === "development",
+  });
 
-const configureStore = () => {
-  if (process.env.NODE_ENV === "development") {
-    return createStore(
-      combineReducers(sharedReducer),
-      applyMiddleware(
-        thunk,
-        loadingBarMiddleware({
-          scope: "modal",
-        })
-      )
-    );
-  }
-  return createStore(
-    combineReducers(sharedReducer),
-    applyMiddleware(thunk, loadingBarMiddleware())
-  );
-};
+export const store = getStore();
 
-const store = configureStore();
-
+// @ts-ignore
 type RootState = ReturnType<typeof store.getState>;
 
 export { RootState };

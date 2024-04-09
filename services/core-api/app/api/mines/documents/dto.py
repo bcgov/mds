@@ -1,4 +1,4 @@
-from flask_restplus import fields
+from flask_restx import fields
 from app.extensions import api
 
 CREATE_DOCUMENT_VERSION = api.model('MineDocumentVersionCreate', {

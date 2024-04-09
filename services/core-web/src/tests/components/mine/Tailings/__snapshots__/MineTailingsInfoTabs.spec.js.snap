@@ -32,20 +32,13 @@ exports[`MineTailingsInfoTabs renders properly 1`] = `
           >
             Tailings Storage Facilities
           </h4>
-          <Connect(AuthorizationWrapper)
-            permission="role_edit_tsf"
-          >
-            <AddButton
-              onClick={[Function]}
-            >
-              Add TSF
-            </AddButton>
-          </Connect(AuthorizationWrapper)>
         </div>
         <withRouter(Connect(MineTailingsTable))
+          canEditTSF={false}
           handleEditTailings={[Function]}
           isLoaded={false}
           openEditTailingsModal={[Function]}
+          tsfV2Enabled={true}
         />
       </div>
     </DeprecatedTabPane>

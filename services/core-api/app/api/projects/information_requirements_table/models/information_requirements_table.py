@@ -36,7 +36,8 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
         lazy='select',
         secondary='information_requirements_table_document_xref',
         secondaryjoin=
-        'and_(foreign(InformationRequirementsTableDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid), MineDocument.deleted_ind == False, MineDocument.is_archived == False)'
+        'and_(foreign(InformationRequirementsTableDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid), MineDocument.deleted_ind == False, MineDocument.is_archived == False)',
+        overlaps="information_requirements_table_document_xref,mine_document,documents"
     )
 
     def __repr__(self):
@@ -87,13 +88,13 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
         subject = f'IRT Submitted for {self.project.mine_name}'
         body = f'<p>{self.project.mine_name} (Mine no: {self.project.mine_no}) has updated {self.project.project_title} by submitting an IRT.</p>'
 
-        link = f'{Config.CORE_PRODUCTION_URL}/pre-applications/{self.project.project_guid}/information-requirements-table/{self.irt_guid}/intro-project-overview'
+        link = f'{Config.CORE_PROD_URL}/pre-applications/{self.project.project_guid}/information-requirements-table/{self.irt_guid}/intro-project-overview'
         body += f'<p>View IRT in Core: <a href="{link}" target="_blank">{link}</a></p>'
         EmailService.send_email(subject, recipients, body)
 
     def send_irt_approval_email(self):
         recipients = [contact.email for contact in self.project.contacts]
-        link = f'{Config.MINESPACE_PRODUCTION_URL}/projects/{self.project.project_guid}/information-requirements-table/{self.irt_guid}/review/intro-project-overview'
+        link = f'{Config.MINESPACE_PROD_URL}/projects/{self.project.project_guid}/information-requirements-table/{self.irt_guid}/review/intro-project-overview'
 
         subject = f'IRT Notification for {self.project.mine_name}:{self.project.project_title}'
         body = f'<p>An IRT has been approved for {self.project.mine_name}:(Mine no: {self.project.mine_no})-{self.project.project_title}.</p>'

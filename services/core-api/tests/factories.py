@@ -1,6 +1,5 @@
 import uuid
 from datetime import datetime, timedelta
-from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointmentStatus
 from pytz import timezone, utc
 from random import randrange
 import factory
@@ -9,6 +8,7 @@ import factory.fuzzy
 from app.api.dams import Dam
 from app.api.dams.models.dam import DamType, OperatingStatus, ConsequenceClassification
 from app.api.mines.explosives_permit_amendment.models.explosives_permit_amendment import ExplosivesPermitAmendment
+from app.api.projects.project_link.models.project_link import ProjectLink
 from app.extensions import db
 from tests.status_code_gen import *
 from app.api.mines.documents.models.mine_document import MineDocument
@@ -518,6 +518,7 @@ class MineReportFactory(BaseFactory):
                                                  datetime.utcnow().year + 11)
     mine_report_submissions = []
     permit_condition_category_code = None
+    submitter_name = factory.Faker('name')
 
     @factory.post_generation
     def mine_report_submissions(obj, create, extracted, **kwargs):
@@ -550,6 +551,21 @@ class MineReportSubmissionFactory(BaseFactory):
     class Params:
         report = factory.SubFactory('tests.factories.MineReportFactory')
 
+        permit_required_reports = factory.Trait(
+            mine_report_definition_id=None,
+            permit_condition_category_code=factory.LazyFunction(RandomConditionCategoryCode))
+
+    mine_guid = factory.SelfAttribute('report.mine_guid')
+    mine_report_definition_id = factory.LazyFunction(
+        RandomMineReportDefinition
+    )  # None if not factory.SelfAttribute('set_permit_condition_category_code') else factory.LazyFunction(RandomMineReportDefinition)
+    received_date = factory.Faker('date_between', start_date='-15d', end_date='+15d')
+    due_date = factory.Faker('future_date', end_date='+30d')
+    submission_year = factory.fuzzy.FuzzyInteger(datetime.utcnow().year - 2,
+                                                 datetime.utcnow().year + 11)
+    
+    permit_condition_category_code = None
+    submitter_name = factory.Faker('name')    
     mine_report_id = factory.SelfAttribute('report.mine_report_id')
     mine_report_submission_guid = GUID
     mine_report_submission_status_code = factory.LazyFunction(RandomMineReportSubmissionStatusCode)
@@ -659,7 +675,7 @@ class MinePartyAppointmentFactory(BaseFactory):
     party = factory.SubFactory(PartyFactory, person=True, address=1)
     start_date = factory.LazyFunction(datetime.utcnow().date)
     end_date = None
-    status = MinePartyAppointmentStatus.active
+    status = None
     processed_by = factory.Faker('first_name')
     processed_on = TODAY
     permit_id = factory.LazyAttribute(lambda o: o.mine.mine_permit[0].permit_id
@@ -1163,6 +1179,7 @@ class ProjectFactory(BaseFactory):
     proponent_project_id = factory.Faker('sentence', nb_words=1)
     project_title = factory.Faker('text', max_nb_chars=50)
     contacts = []
+    project_links = []
 
     proponent_project_id = None
 
@@ -1249,7 +1266,8 @@ class ProjectContactFactory(BaseFactory):
     project_guid = factory.SelfAttribute('project.project_guid')
     email = factory.Faker('email')
     phone_number = factory.Faker('numerify', text='###-###-####')
-    name = factory.Faker('name')
+    first_name = factory.Faker('first_name')
+    last_name = factory.Faker('last_name')
     is_primary = True
     deleted_ind = False
 
@@ -1461,3 +1479,13 @@ class ExplosivesPermitAmendmentFactory(BaseFactory):
     closed_timestamp = None
 
     deleted_ind = False
+
+class ProjectLinkFactory(BaseFactory):
+    class Meta:
+        model = ProjectLink
+
+    class Params:
+        project = factory.SubFactory(ProjectFactory)
+    project_link_guid = GUID
+    project_guid = factory.SelfAttribute('project.project_guid')
+    related_project_guid = factory.SelfAttribute('project.project_guid')

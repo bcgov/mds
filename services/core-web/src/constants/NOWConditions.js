@@ -75,8 +75,8 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
         applicationType: ["NOW"],
       },
       {
-        href: "indegenous-engagement",
-        title: "Indegenous Engagement",
+        href: "indigenous-engagement",
+        title: "Indigenous Engagement",
         alwaysVisible: true,
         applicationType: ["NOW"],
       },

@@ -1,3 +1,259 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`UserDashboard renders properly 1`] = `<UnauthenticatedNotice />`;
+exports[`UserDashboard renders properly 1`] = `
+<div
+  class="ant-row"
+>
+  <div
+    class="ant-col ant-col-24"
+  >
+    <h1
+      class="ant-typography"
+    >
+      My Mines
+    </h1>
+    <div
+      class="ant-divider ant-divider-horizontal"
+      role="separator"
+    />
+    <h4
+      class="ant-typography"
+    >
+      Welcome, 
+      test@bceid
+      .
+    </h4>
+    <div
+      class="ant-row"
+      style="margin-left: -16px; margin-right: -16px;"
+    >
+      <div
+        class="ant-col ant-col-sm-24 ant-col-lg-14 ant-col-xl-12"
+        style="padding-left: 16px; padding-right: 16px;"
+      >
+        <div
+          class="ant-typography"
+        >
+          You are authorized to submit information for the following mines:
+        </div>
+        <div
+          class="link-card"
+        >
+          <ul>
+            <li>
+              <div
+                class="ant-skeleton ant-skeleton-active"
+              >
+                <div
+                  class="ant-skeleton-content"
+                >
+                  <h3
+                    class="ant-skeleton-title"
+                    style="width: 38%;"
+                  />
+                  <ul
+                    class="ant-skeleton-paragraph"
+                  >
+                    <li
+                      style="width: 61%;"
+                    />
+                  </ul>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div
+                class="ant-skeleton ant-skeleton-active"
+              >
+                <div
+                  class="ant-skeleton-content"
+                >
+                  <h3
+                    class="ant-skeleton-title"
+                    style="width: 38%;"
+                  />
+                  <ul
+                    class="ant-skeleton-paragraph"
+                  >
+                    <li
+                      style="width: 61%;"
+                    />
+                  </ul>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div
+                class="ant-skeleton ant-skeleton-active"
+              >
+                <div
+                  class="ant-skeleton-content"
+                >
+                  <h3
+                    class="ant-skeleton-title"
+                    style="width: 38%;"
+                  />
+                  <ul
+                    class="ant-skeleton-paragraph"
+                  >
+                    <li
+                      style="width: 61%;"
+                    />
+                  </ul>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div
+                class="ant-skeleton ant-skeleton-active"
+              >
+                <div
+                  class="ant-skeleton-content"
+                >
+                  <h3
+                    class="ant-skeleton-title"
+                    style="width: 38%;"
+                  />
+                  <ul
+                    class="ant-skeleton-paragraph"
+                  >
+                    <li
+                      style="width: 61%;"
+                    />
+                  </ul>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div
+                class="ant-skeleton ant-skeleton-active"
+              >
+                <div
+                  class="ant-skeleton-content"
+                >
+                  <h3
+                    class="ant-skeleton-title"
+                    style="width: 38%;"
+                  />
+                  <ul
+                    class="ant-skeleton-paragraph"
+                  >
+                    <li
+                      style="width: 61%;"
+                    />
+                  </ul>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div
+                class="ant-skeleton ant-skeleton-active"
+              >
+                <div
+                  class="ant-skeleton-content"
+                >
+                  <h3
+                    class="ant-skeleton-title"
+                    style="width: 38%;"
+                  />
+                  <ul
+                    class="ant-skeleton-paragraph"
+                  >
+                    <li
+                      style="width: 61%;"
+                    />
+                  </ul>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div
+                class="ant-skeleton ant-skeleton-active"
+              >
+                <div
+                  class="ant-skeleton-content"
+                >
+                  <h3
+                    class="ant-skeleton-title"
+                    style="width: 38%;"
+                  />
+                  <ul
+                    class="ant-skeleton-paragraph"
+                  >
+                    <li
+                      style="width: 61%;"
+                    />
+                  </ul>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div
+                class="ant-skeleton ant-skeleton-active"
+              >
+                <div
+                  class="ant-skeleton-content"
+                >
+                  <h3
+                    class="ant-skeleton-title"
+                    style="width: 38%;"
+                  />
+                  <ul
+                    class="ant-skeleton-paragraph"
+                  >
+                    <li
+                      style="width: 61%;"
+                    />
+                  </ul>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div
+                class="ant-skeleton ant-skeleton-active"
+              >
+                <div
+                  class="ant-skeleton-content"
+                >
+                  <h3
+                    class="ant-skeleton-title"
+                    style="width: 38%;"
+                  />
+                  <ul
+                    class="ant-skeleton-paragraph"
+                  >
+                    <li
+                      style="width: 61%;"
+                    />
+                  </ul>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div
+                class="ant-skeleton ant-skeleton-active"
+              >
+                <div
+                  class="ant-skeleton-content"
+                >
+                  <h3
+                    class="ant-skeleton-title"
+                    style="width: 38%;"
+                  />
+                  <ul
+                    class="ant-skeleton-paragraph"
+                  >
+                    <li
+                      style="width: 61%;"
+                    />
+                  </ul>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

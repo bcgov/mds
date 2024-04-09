@@ -11,21 +11,23 @@ import {
 import { MINISTRY_ACKNOWLEDGED_STATUS, PARTY_APPOINTMENT_STATUS } from "@mds/common";
 import TailingsContext from "./tailings/TailingsContext";
 import DocumentLink from "@/components/common/DocumentLink";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 
 const propTypes = {
   columns: PropTypes.arrayOf(PropTypes.string),
   updatePartyRelationship: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
   change: PropTypes.func.isRequired,
+  canEditTSF: PropTypes.bool,
 };
 
 const defaultProps = {
   columns: [],
+  canEditTSF: true,
 };
 
 const PartyAppointmentTable = (props) => {
-  const { columns } = props;
+  const { columns, canEditTSF } = props;
 
   const { renderConfig, isCore, tsfFormName, mineGuid, tsfGuid } = useContext(TailingsContext);
 
@@ -92,6 +94,7 @@ const PartyAppointmentTable = (props) => {
               data={statusColumns}
               loading={loadingField[`${record.rowName}.status`]}
               onChange={(val) => partyAppointmentChanged(record.rowName, record.key, "status", val)}
+              disabled={!canEditTSF}
             />
           );
         }

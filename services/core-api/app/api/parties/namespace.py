@@ -1,4 +1,4 @@
-from flask_restplus import Namespace
+from flask_restx import Namespace
 
 from app.api.parties.party.resources.party_resource import PartyResource
 from app.api.parties.party.resources.merge_resource import MergeResource

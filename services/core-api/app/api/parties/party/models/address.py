@@ -22,8 +22,11 @@ class Address(SoftDeleteMixin, AuditMixin, Base):
     post_code = db.Column(db.String, nullable=True)
     address_type_code = db.Column(db.String, nullable=False, server_default=FetchedValue())
 
-    party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=False)
-    party = db.relationship('Party', lazy='joined')
+    party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
+    party = db.relationship('Party', lazy='joined', back_populates='address')
+
+    project_contact_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('project_contact.project_contact_guid'))
+    project_contact = db.relationship('ProjectContact', lazy='joined', back_populates='address')
 
     def __repr__(self):
         return '<Address %r>' % self.address_id
@@ -87,16 +90,27 @@ class Address(SoftDeleteMixin, AuditMixin, Base):
         return address
 
     # will be called for both fields, in the order defined in model, 1st call will be missing 2nd value
-    @validates('post_code')
-    def validate_address_code(self, key, post_code):
+    @validates('post_code', 'address_type_code')
+    def validate_address_code(self, key, value):
+        if key == 'address_type_code':
+            post_code = self.post_code
+            address_type_code = value       
+        else:
+            address_type_code = self.address_type_code
+            post_code = value     
+        
         if post_code and len(post_code) > 10:
             raise AssertionError('post_code must not exceed 10 characters.')
-        # regex: CA | US postal codes
+
+        if not address_type_code or not post_code or address_type_code not in ['CAN', 'USA']:
+            return value          
+
+        # this Canada postal code regex accepts American postal codes.
         validCaPostalCode = re.compile(r"(^\d{5}(-\d{4})?$)|(^[abceghjklmnprstvxyABCEGHJKLMNPRSTVXY]{1}\d{1}[a-zA-Z]{1} *\d{1}[a-zA-Z]{1}\d{1}$)")
         validUsPostalCode = re.compile(r"((^\d{5}$)|(^\d{9}$)|(^\d{5}-\d{4}$))")
 
-        if post_code and not validCaPostalCode.match(post_code) and not validUsPostalCode.match(post_code):
-            current_app.logger.error(f'Failed post_code validation for address {self.address_id}. post_code: {post_code}, address_type_code: {self.address_type_code}')
+        if not validCaPostalCode.match(post_code) and not validUsPostalCode.match(post_code):
 
+            current_app.logger.error(f'Failed post_code validation for address {self.address_id}. post_code: {post_code}, address_type_code: {address_type_code}')
             raise AssertionError('Invalid post_code format.')
-        return post_code
+        return value

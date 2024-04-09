@@ -8,6 +8,7 @@ const props = {};
 const setupProps = () => {
   props.partyIds = MOCK.PARTY.partyIds;
   props.parties = MOCK.PARTY.partiesWithAppointments;
+  props.relationshipTypeHash = MOCK.PARTY_RELATIONSHIP_TYPE_HASH;
 };
 
 beforeEach(() => {

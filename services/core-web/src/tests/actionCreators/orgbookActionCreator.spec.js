@@ -1,6 +1,10 @@
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
-import { searchOrgBook, fetchOrgBookCredential } from "@mds/common/redux/actionCreators/orgbookActionCreator";
+import {
+  searchOrgBook,
+  fetchOrgBookCredential,
+  verifyOrgBookCredential,
+} from "@mds/common/redux/actionCreators/orgbookActionCreator";
 import * as genericActions from "@mds/common/redux/actions/genericActions";
 import { ENVIRONMENT } from "@mds/common";
 import * as API from "@mds/common/constants/API";
@@ -59,6 +63,31 @@ describe("`fetchOrgBookCredential` action creator", () => {
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url).reply(418, MOCK.ERROR);
     return fetchOrgBookCredential(credentialId)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`verifyOrgBookCredential` action creator", () => {
+  const credentialId = 12345;
+  const url = ENVIRONMENT.apiUrl + API.ORGBOOK_VERIFY(credentialId);
+
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { success: true };
+    mockAxios.onGet(url, credentialId).reply(200, mockResponse);
+    return verifyOrgBookCredential(credentialId)(dispatch).then((response) => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+      expect(response).toEqual(mockResponse);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onGet(url).reply(418, MOCK.ERROR);
+    return verifyOrgBookCredential(credentialId)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

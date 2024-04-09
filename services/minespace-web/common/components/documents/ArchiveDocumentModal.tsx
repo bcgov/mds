@@ -3,12 +3,16 @@ import React, { FC } from "react";
 import DocumentTable from "@/components/common/DocumentTable";
 import { Alert, Button, Form, Typography } from "antd";
 import { IMineDocument } from "@mds/common";
+import { MineDocument } from "@mds/common/models/documents/document";
 
 interface ArchiveDocumentModalProps {
   documents: IMineDocument[];
   handleSubmit(documents: IMineDocument[]): Promise<void>;
   closeModal(): void;
 }
+
+const transformDocs = (documents: IMineDocument[]): MineDocument[] =>
+  documents.map((doc) => new MineDocument(doc));
 
 const ArchiveDocumentModal: FC<ArchiveDocumentModalProps> = (props: ArchiveDocumentModalProps) => {
   return (
@@ -30,9 +34,8 @@ const ArchiveDocumentModal: FC<ArchiveDocumentModalProps> = (props: ArchiveDocum
       </Typography.Paragraph>
 
       <DocumentTable
-        documents={props.documents}
+        documents={transformDocs(props.documents)}
         view="minimal"
-        uploadDateIndex="upload_date"
         excludedColumnKeys={["actions", "category"]}
       />
 

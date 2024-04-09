@@ -1,4 +1,4 @@
-import keycloak from "@/keycloak";
+import keycloak from "@mds/common/keycloak";
 /**
  * Utility class for various request Headers.
  */

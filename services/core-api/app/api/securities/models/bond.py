@@ -2,7 +2,7 @@ import uuid
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from marshmallow import fields, validate
-from flask_restplus import marshal
+from flask_restx import marshal
 from flask import current_app
 
 from app.extensions import db
@@ -41,8 +41,8 @@ class Bond(Base, AuditMixin):
     note = db.Column(db.String)
 
     payer = db.relationship('Party', lazy='joined')
-    permit = db.relationship('Permit', uselist=False, lazy='joined', secondary='bond_permit_xref')
-    documents = db.relationship('BondDocument', lazy='select')
+    permit = db.relationship('Permit', uselist=False, lazy='joined', secondary='bond_permit_xref', back_populates='bonds')
+    documents = db.relationship('BondDocument', lazy='select', back_populates='bond')
     closed_date = db.Column(db.DateTime)
     closed_note = db.Column(db.String)
 

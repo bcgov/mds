@@ -1,4 +1,4 @@
-from flask_restplus import Namespace
+from flask_restx import Namespace
 from app.api.notice_of_departure.resources.notice_of_departure_list import NoticeOfDepartureListResource
 from app.api.notice_of_departure.resources.notice_of_departure import NoticeOfDepartureResource
 from app.api.notice_of_departure.resources.notice_of_departure_document import MineNoticeOfDepartureDocumentUploadResource, MineNoticeOfDepartureDocumentResource

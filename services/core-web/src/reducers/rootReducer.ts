@@ -1,4 +1,3 @@
-import { combineReducers } from "redux";
 import { createReducer } from "@common/utils/helpers";
 import mineAlertReducer from "./mineAlertReducer";
 import networkReducer from "./networkReducer";
@@ -80,4 +79,4 @@ const coreReducer = {
   ),
 };
 
-export const rootReducer = combineReducers(coreReducer);
+export const rootReducer = coreReducer;

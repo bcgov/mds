@@ -151,7 +151,7 @@ exports[`ViewBondModal renders properly 1`] = `
       >
         Documents
       </p>
-      <Connect(DocumentTable)
+      <DocumentTable
         documents={Array []}
         isViewOnly={true}
       />

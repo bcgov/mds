@@ -3,7 +3,7 @@ from datetime import datetime
 from decimal import Decimal
 
 from flask import request, current_app
-from flask_restplus import Resource
+from flask_restx import Resource
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
 from app.extensions import api, db
@@ -26,6 +26,8 @@ from app.api.now_applications.models.activity_detail.exploration_surface_drillin
 from app.api.now_applications.transmogrify_now import transmogrify_now
 from app.api.services.nros_now_status_service import NROSNOWStatusService
 from app.api.now_applications.models.now_application_status import NOWApplicationStatus
+
+from app.api.utils.helpers import validate_phone_no
 
 
 class NOWApplicationImportResource(Resource, UserMixin):
@@ -72,7 +74,7 @@ class NOWApplicationImportResource(Resource, UserMixin):
             if not now_party:
                 raise NotFound(f'No party found for party with guid {party_guid}')
 
-            Party.validate_phone_no(now_party.phone_no)
+            validate_phone_no(now_party.phone_no)
 
             mine_party_appt_type_code = contact['mine_party_appt_type_code']
             mine_party_appt_type = MinePartyAppointmentType.find_by_mine_party_appt_type_code(
@@ -103,7 +105,11 @@ class NOWApplicationImportResource(Resource, UserMixin):
 
         # update application status to received once imported
         now_application_identity.now_application.previous_application_status_code = now_application_identity.now_application.now_application_status_code
+        current_app.logger.debug(f'now_application_status_code before change to REC: {now_application_identity.now_application.now_application_status_code}')
+        
         now_application_identity.now_application.now_application_status_code = "REC"
+
+        current_app.logger.debug(f'now_application_status_code after change to REC: {now_application_identity.now_application.now_application_status_code}')
         now_application_identity.save()
 
         NROSNOWStatusService.nros_now_status_update(

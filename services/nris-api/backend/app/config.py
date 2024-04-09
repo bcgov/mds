@@ -4,6 +4,42 @@ from dotenv import load_dotenv, find_dotenv
 
 
 class Config(object):
+
+    FLASK_LOGGING_LEVEL = os.environ.get('FLASK_LOGGING_LEVEL',
+                                         'INFO')                # ['DEBUG','INFO','WARN','ERROR','CRITICAL']
+    WERKZEUG_LOGGING_LEVEL = os.environ.get('WERKZEUG_LOGGING_LEVEL',
+                                         'CRITICAL')  # ['DEBUG','INFO','WARN','ERROR','CRITICAL']
+    DISPLAY_WERKZEUG_LOG = os.environ.get('DISPLAY_WERKZEUG_LOG',
+                                            True)
+
+    LOGGING_DICT_CONFIG = {
+        'version': 1,
+        'formatters': {
+            'default': {
+                'format': '%(asctime)s %(levelname)s [%(name)s] [%(filename)s:%(lineno)d]',
+            }
+        },
+        'handlers': {
+            'console': {
+                'class': 'logging.StreamHandler',
+                'stream': 'ext://sys.stdout',
+                'formatter': 'default',
+                'level': 'DEBUG'
+            }
+        },
+        'root': {
+            'level': FLASK_LOGGING_LEVEL,
+            'handlers': ['console']
+        },
+        'loggers': {
+            'werkzeug': {
+                'level': WERKZEUG_LOGGING_LEVEL,
+                'handlers': ['console'],
+                'propagate': DISPLAY_WERKZEUG_LOG
+            }
+        }
+    }
+
     # Environment config
     SECRET_KEY = os.environ.get('SECRET_KEY', 'dev')
     BASE_PATH = os.environ.get('BASE_PATH', '')
@@ -12,10 +48,10 @@ class Config(object):
     DB_PASS = os.environ.get('DB_PASS', 'pass')
     DB_PORT = os.environ.get('DB_PORT', 5432)
     DB_NAME = os.environ.get('DB_NAME', 'db_name')
-    DB_URL = f"postgres://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    DB_URL = f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
     ENVIRONMENT_NAME = os.environ.get('ENVIRONMENT_NAME', 'dev')
-
+    RESTX_MASK_SWAGGER = False
     # SqlAlchemy config
     SQLALCHEMY_DATABASE_URI = DB_URL
     SQLALCHEMY_TRACK_MODIFICATIONS = False
@@ -50,7 +86,7 @@ class TestConfig(Config):
     TESTING = os.environ.get('TESTING', True)
 
     DB_NAME = os.environ.get('DB_NAME_TEST', 'db_name_test')
-    DB_URL = f"postgres://{Config.DB_USER}:{Config.DB_PASS}@{Config.DB_HOST}:{Config.DB_PORT}/{DB_NAME}"
+    DB_URL = f"postgresql://{Config.DB_USER}:{Config.DB_PASS}@{Config.DB_HOST}:{Config.DB_PORT}/{DB_NAME}"
     SQLALCHEMY_DATABASE_URI = DB_URL
 
     NRIS_DB_USER = os.environ.get('NRIS_DB_USER', 'localhost')

@@ -9,9 +9,10 @@ const TerserPlugin = require("terser-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
-
+const { EsbuildPlugin } = require("esbuild-loader");
 const { WebpackManifestPlugin } = require("webpack-manifest-plugin");
 const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
+const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
 
 const postCSSLoader = {
   loader: "postcss-loader",
@@ -259,13 +260,19 @@ exports.loadImages = ({
       },
       {
         test: /\.(png|jpe?g)$/,
-        include,
-        exclude,
-        loader: "image-webpack-loader",
-        options: {
-          bypassOnDebug: true,
-          ...imageLoaderOptions,
-        },
+        use: [
+          {
+            loader: ImageMinimizerPlugin.loader,
+            options: {
+              minimizer: {
+                implementation: ImageMinimizerPlugin.imageminMinify,
+                options: {
+                  plugins: ["imagemin-mozjpeg", "imagemin-pngquant"],
+                },
+              },
+            },
+          },
+        ],
       },
     ],
   },
@@ -309,13 +316,11 @@ exports.generateSourceMaps = ({ type } = {}) => ({
 
 exports.bundleOptimization = ({ options, cssOptions } = {}) => ({
   optimization: {
+    minimize: true,
     splitChunks: options,
     minimizer: [
-      new TerserPlugin({
-        parallel: true,
-        terserOptions: {
-          compress: false,
-        },
+      new EsbuildPlugin({
+        target: "es2016",
       }),
       new CssMinimizerPlugin({
         minimizerOptions: {
@@ -346,9 +351,7 @@ exports.clean = () => ({
 
 exports.copy = (from, to) => ({
   plugins: [
-    new CopyWebpackPlugin({
-      patterns: [{ from, to, globOptions: { ignore: ["*.html"] } }],
-    }),
+    new CopyWebpackPlugin({ patterns: [{ from, to, globOptions: { ignore: ["**/index.html"] } }] }),
   ],
 });
 

@@ -140,21 +140,21 @@ class NOWApplication(Base, AuditMixin):
     security_not_required_reason = db.Column(db.String)
 
     # Activities
-    camp = db.relationship('Camp', lazy='selectin', uselist=False)
+    camp = db.relationship('Camp', lazy='selectin', uselist=False, overlaps='now_application')
     cut_lines_polarization_survey = db.relationship(
-        'CutLinesPolarizationSurvey', lazy='selectin', uselist=False)
-    exploration_access = db.relationship('ExplorationAccess', lazy='selectin', uselist=False)
+        'CutLinesPolarizationSurvey', lazy='selectin', uselist=False, overlaps='now_application')
+    exploration_access = db.relationship('ExplorationAccess', lazy='selectin', uselist=False, overlaps='now_application')
     exploration_surface_drilling = db.relationship(
-        'ExplorationSurfaceDrilling', lazy='selectin', uselist=False)
-    mechanical_trenching = db.relationship('MechanicalTrenching', lazy='selectin', uselist=False)
-    placer_operation = db.relationship('PlacerOperation', lazy='selectin', uselist=False)
+        'ExplorationSurfaceDrilling', lazy='selectin', uselist=False, overlaps='now_application')
+    mechanical_trenching = db.relationship('MechanicalTrenching', lazy='selectin', uselist=False, overlaps='now_application')
+    placer_operation = db.relationship('PlacerOperation', lazy='selectin', uselist=False, overlaps='now_application')
     sand_gravel_quarry_operation = db.relationship(
-        'SandGravelQuarryOperation', lazy='selectin', uselist=False)
-    settling_pond = db.relationship('SettlingPond', lazy='selectin', uselist=False)
-    surface_bulk_sample = db.relationship('SurfaceBulkSample', lazy='selectin', uselist=False)
+        'SandGravelQuarryOperation', lazy='selectin', uselist=False, overlaps='now_application')
+    settling_pond = db.relationship('SettlingPond', lazy='selectin', uselist=False, overlaps='now_application')
+    surface_bulk_sample = db.relationship('SurfaceBulkSample', lazy='selectin', uselist=False, overlaps='now_application')
     underground_exploration = db.relationship(
-        'UndergroundExploration', lazy='selectin', uselist=False)
-    water_supply = db.relationship('WaterSupply', lazy='selectin', uselist=False)
+        'UndergroundExploration', lazy='selectin', uselist=False, overlaps='now_application')
+    water_supply = db.relationship('WaterSupply', lazy='selectin', uselist=False, overlaps='now_application')
 
     # Progress
     application_progress = db.relationship('NOWApplicationProgress', lazy='selectin', uselist=True)
@@ -165,7 +165,9 @@ class NOWApplication(Base, AuditMixin):
         lazy='selectin',
         primaryjoin=
         'and_(NOWApplicationDocumentXref.now_application_id==NOWApplication.now_application_id, NOWApplicationDocumentXref.now_application_review_id==None, NOWApplicationDocumentXref.deleted_ind==False)',
-        order_by='desc(NOWApplicationDocumentXref.create_timestamp)')
+        order_by='desc(NOWApplicationDocumentXref.create_timestamp)',
+
+    )
 
     application_reason_codes = db.relationship(
         'ApplicationReasonXref',
@@ -195,7 +197,8 @@ class NOWApplication(Base, AuditMixin):
         'NOWPartyAppointment',
         lazy='selectin',
         primaryjoin=
-        'and_(NOWPartyAppointment.now_application_id == NOWApplication.now_application_id, NOWPartyAppointment.deleted_ind==False)'
+        'and_(NOWPartyAppointment.now_application_id == NOWApplication.now_application_id, NOWPartyAppointment.deleted_ind==False)',
+
     )
 
     status = db.relationship(
@@ -206,7 +209,7 @@ class NOWApplication(Base, AuditMixin):
     )
 
     equipment = db.relationship(
-        'Equipment', secondary='activity_equipment_xref', load_on_pending=True)
+        'Equipment', secondary='activity_equipment_xref', load_on_pending=True, overlaps='equipment')
 
     def __repr__(self):
         return '<NOWApplication %r>' % self.now_application_guid

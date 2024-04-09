@@ -9,7 +9,7 @@ import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import { SUCCESS_CHECKMARK } from "@/constants/assets";
 import { getWorkInformationBadgeStatusType } from "@/constants/theme";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 
 const propTypes = {
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
@@ -37,7 +37,7 @@ const columns = [
     sorter: true,
     width: 150,
     render: (text, record) => (
-      <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)} title="Name">
+      <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)} title="Name" data-cy="mine-link">
         {text}
         {record.verified_status && record.verified_status.healthy_ind && (
           <img

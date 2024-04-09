@@ -18,15 +18,7 @@ exports[`VarianceFileUpload renders properly 1`] = `
   }
   allowMultiple={true}
   allowRevert={true}
-  component={
-    Object {
-      "$$typeof": Symbol(react.memo),
-      "WrappedComponent": [Function],
-      "compare": null,
-      "displayName": "Connect(FileUpload)",
-      "type": [Function],
-    }
-  }
+  component={[Function]}
   id="fileUpload"
   name="fileUpload"
   onFileLoad={[MockFunction]}

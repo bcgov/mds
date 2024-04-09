@@ -7,7 +7,8 @@ import { formatDate } from "@/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import * as routes from "@/constants/routes";
 import { EDIT_PENCIL } from "@/constants/assets";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
+import * as Strings from "@mds/common/constants/strings";
 
 const propTypes = {
   projects: PropTypes.arrayOf(CustomPropTypes.project).isRequired,
@@ -17,17 +18,21 @@ const propTypes = {
 export class ProjectsTable extends Component {
   transformRowData = (projects) =>
     projects &&
-    projects.map((project) => ({
-      key: project.project_guid,
-      project,
-      primary_contact: project.contacts.find((c) => c.is_primary)?.name || "",
-      mine_guid: project.mine_guid,
-      proponent_project_id: project.proponent_project_id,
-      project_title: project.project_title,
-      update_user: project.update_user,
-      update_timestamp: formatDate(project.update_timestamp),
-      documents: project.documents,
-    }));
+    projects.map((project) => {
+      const primaryContact = project.contacts.find((c) => c.is_primary);
+      const name = [primaryContact?.first_name, primaryContact?.last_name].join(" ").trim();
+      return {
+        key: project.project_guid,
+        project,
+        primary_contact: name || Strings.EMPTY_FIELD,
+        mine_guid: project.mine_guid,
+        proponent_project_id: project.proponent_project_id,
+        project_title: project.project_title,
+        update_user: project.update_user,
+        update_timestamp: formatDate(project.update_timestamp),
+        documents: project.documents,
+      };
+    });
 
   columns = () => [
     {

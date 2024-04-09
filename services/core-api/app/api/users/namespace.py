@@ -1,5 +1,5 @@
 from app.api.users.resources.user import UserResource
-from flask_restplus import Namespace
+from flask_restx import Namespace
 
 from app.api.users.core.resources.core_user import CoreUserListResource, CoreUserResource
 

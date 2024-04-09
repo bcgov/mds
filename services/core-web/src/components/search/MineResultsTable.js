@@ -10,7 +10,7 @@ import {
   renderHighlightedTextColumn,
   renderTextColumn,
 } from "@mds/common/components/common/CoreTableCommonColumns";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 
 /**
  * @class  MineResultsTable - displays a table of mine search results

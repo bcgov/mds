@@ -1,4 +1,4 @@
-from flask_restplus import fields
+from flask_restx import fields
 
 from app.api.dams.models.dam import DamType, OperatingStatus, ConsequenceClassification
 from app.extensions import api

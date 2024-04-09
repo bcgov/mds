@@ -63,7 +63,8 @@ class MineTailingsStorageFacility(AuditMixin, Base):
         'MineTailingsStorageFacility.mine_tailings_storage_facility_guid, '
         'MinePartyAppointment.mine_party_appt_type_code == "EOR", MinePartyAppointment.deleted_ind == False)',
         order_by=
-        'nullslast(desc(MinePartyAppointment.start_date)), nullsfirst(desc(MinePartyAppointment.end_date))'
+        'nullslast(desc(MinePartyAppointment.start_date)), nullsfirst(desc(MinePartyAppointment.end_date))',
+        overlaps="mine_tailings_storage_facility"
     )
     dams = db.relationship(
         'Dam',
@@ -81,7 +82,8 @@ class MineTailingsStorageFacility(AuditMixin, Base):
         primaryjoin=
         'and_(MinePartyAppointment.mine_tailings_storage_facility_guid == MineTailingsStorageFacility.mine_tailings_storage_facility_guid, MinePartyAppointment.mine_party_appt_type_code == "TQP", MinePartyAppointment.deleted_ind == False)',
         order_by=
-        'nullslast(desc(MinePartyAppointment.start_date)), nullsfirst(desc(MinePartyAppointment.end_date))'
+        'nullslast(desc(MinePartyAppointment.start_date)), nullsfirst(desc(MinePartyAppointment.end_date))',
+        overlaps="engineer_of_records,mine_tailings_storage_facility"
     )
 
     @hybrid_property
@@ -166,6 +168,6 @@ class MineTailingsStorageFacility(AuditMixin, Base):
         recipients = MINESPACE_TSF_UPDATE_EMAIL
         subject = f'TSF Information Update for {self.mine.mine_name}'
         body = f'<p>{self.mine.mine_name} (Mine No.: {self.mine.mine_no}) has requested to update their TSF information.</p>'
-        link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/permits-and-approvals/tailings'
+        link = f'{Config.CORE_PROD_URL}/mine-dashboard/{self.mine.mine_guid}/permits-and-approvals/tailings'
         body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
         EmailService.send_email(subject, recipients, body)

@@ -1,3 +1,32 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MineDashboard renders properly 1`] = `<Loading />`;
+exports[`MineDashboard renders properly 1`] = `
+<div>
+  <Drawer
+    closable={false}
+    onClose={[Function]}
+    placement="right"
+    title={
+      <React.Fragment>
+        Internal Communication for 
+        mine3
+        <CoreTooltip
+          title="Anything written in Internal Communications may be requested under FOIPPA. Keep it professional and concise."
+        />
+      </React.Fragment>
+    }
+    visible={false}
+  >
+    <Button
+      className="modal__close"
+      ghost={true}
+      onClick={[Function]}
+    >
+      <ForwardRef(CloseOutlined) />
+    </Button>
+    <Connect(MineComments)
+      mineGuid="18133c75-49ad-4101-85f3-a43e35ae989a"
+    />
+  </Drawer>
+</div>
+`;

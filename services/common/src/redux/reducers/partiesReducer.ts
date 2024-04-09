@@ -65,7 +65,7 @@ export const partiesReducer = (state = initialState, action) => {
         .filter((p) => p.mine_party_appt_type_code === "EOR")
         .map((p) => ({
           value: p.party_guid,
-          label: p.party.name,
+          label: p.party?.name,
         }));
 
       const eorRecords = tsfGuid

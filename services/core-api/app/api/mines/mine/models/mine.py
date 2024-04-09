@@ -1,4 +1,5 @@
 import uuid
+from datetime import datetime, timezone
 
 import utm
 from geoalchemy2 import Geometry
@@ -64,11 +65,13 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         order_by='desc(Permit.create_timestamp)',
         lazy='select',
         secondary='mine_permit_xref',
-        secondaryjoin='and_(foreign(MinePermitXref.permit_id) == remote(Permit.permit_id),Permit.deleted_ind == False,MinePermitXref.deleted_ind == False)'
+        secondaryjoin='and_(foreign(MinePermitXref.permit_id) == remote(Permit.permit_id),Permit.deleted_ind == False,MinePermitXref.deleted_ind == False)',
+        back_populates='_all_mines',
+        overlaps='_mine_associations,all_mine_permit_xref,mine_permit_xref,mine'
     )
 
     # across all permit_identities
-    _mine_permit_amendments = db.relationship('PermitAmendment', lazy='selectin')
+    _mine_permit_amendments = db.relationship('PermitAmendment', lazy='selectin', back_populates='mine')
 
     mine_type = db.relationship(
         'MineType',
@@ -91,7 +94,7 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         lazy='select',
         primaryjoin='and_(MineIncident.mine_guid == Mine.mine_guid, MineIncident.deleted_ind == False)')
 
-    mine_reports = db.relationship('MineReport', lazy='select')
+    mine_reports = db.relationship('MineReport', lazy='select', back_populates='mine')
 
     explosives_permits = db.relationship(
         'ExplosivesPermit',
@@ -115,7 +118,8 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         'MineWorkInformation',
         lazy='selectin',
         order_by='desc(MineWorkInformation.created_timestamp)',
-        primaryjoin='and_(MineWorkInformation.mine_guid == Mine.mine_guid, MineWorkInformation.deleted_ind == False)'
+        primaryjoin='and_(MineWorkInformation.mine_guid == Mine.mine_guid, MineWorkInformation.deleted_ind == False)',
+        back_populates='mine'
     )
 
     comments = db.relationship(
@@ -177,9 +181,15 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
     @hybrid_property
     def mine_manager(self):
         if self.mine_party_appt:
-            return next(
-                (mpa for mpa in self.mine_party_appt if mpa.mine_party_appt_type_code == 'MMG'),
-                None)
+            today = datetime.now(timezone.utc)  # To filter out previous mine managers.
+            for party in self.mine_party_appt:
+                party_end_date = None
+                if party.end_date:
+                    party_end_date = datetime.strptime(str(party.end_date), '%Y-%m-%d').replace(tzinfo=timezone.utc)
+                if party.mine_party_appt_type_code == "MMG" and party.party.email \
+                    and (party_end_date == None or party_end_date > today) \
+                        and str(party.status).lower() != "inactive":  #There are mine managers with null status
+                    return party
         return None
 
     @hybrid_property
@@ -235,7 +245,7 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
     @classmethod
     def find_by_mine_guid(cls, _id):
         try:
-            uuid.UUID(_id, version=4)
+            uuid.UUID(str(_id), version=4)
             return cls.query.filter_by(mine_guid=_id).filter_by(deleted_ind=False).first()
         except (ValueError, TypeError):
             return None

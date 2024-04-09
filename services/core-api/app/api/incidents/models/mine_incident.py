@@ -129,12 +129,13 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
         lazy='selectin')
 
     # Note there is a dependency on deleted_ind in mine_documents
-    documents = db.relationship('MineIncidentDocumentXref', lazy='selectin')
+    _documents = db.relationship('MineIncidentDocumentXref', lazy='selectin')
     mine_documents = db.relationship(
         'MineDocument',
         lazy='selectin',
         secondary='mine_incident_document_xref',
-        secondaryjoin='and_(foreign(MineIncidentDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid),MineDocument.deleted_ind == False)'
+        secondaryjoin='and_(foreign(MineIncidentDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid),MineDocument.deleted_ind == False)',
+        overlaps='_documents'
     )
 
     categories = db.relationship(
@@ -146,10 +147,14 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
         primaryjoin='and_(MineIncidentNote.mine_incident_guid == MineIncident.mine_incident_guid, MineIncidentNote.deleted_ind == False)'
     )
 
-    mine_table = db.relationship('Mine', lazy='joined')
+    mine_table = db.relationship('Mine', lazy='joined', back_populates='mine_incidents', overlaps='mine,mine_incidents')
     mine_name = association_proxy('mine_table', 'mine_name')
     mine_region = association_proxy('mine_table', 'mine_region')
     major_mine_ind = association_proxy('mine_table', 'major_mine_ind')
+
+    @hybrid_property
+    def documents(self):
+        return [doc for doc in self._documents if doc.deleted_ind is False]
 
     @hybrid_property
     def reported_to_inspector_party(self):
@@ -262,7 +267,7 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
                 raise AssertionError('reported_timestamp must not be in the future')
         return reported_timestamp
 
-    @validates(name=['reported_to_inspector_contact_method', 'johsc_worker_rep_contact_method', 'johsc_management_rep_contact_method'])
+    @validates('reported_to_inspector_contact_method', 'johsc_worker_rep_contact_method', 'johsc_management_rep_contact_method')
     def validates_contact_method(self, key, value):
         if value:
             if value not in ['PHN', 'EML', 'MRP', 'MRE']:
@@ -294,7 +299,7 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
                 "mine_name": self.mine_table.mine_name,
                 "mine_no": self.mine_table.mine_no,
             },
-            "incident_link": f'{Config.CORE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}',
+            "incident_link": f'{Config.CORE_PROD_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}',
         }
 
         minespace_context = {
@@ -305,7 +310,7 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
                 "mine_name": self.mine_table.mine_name,
                 "mine_no": self.mine_table.mine_no,
             },
-            "minespace_incident_link": f'{Config.MINESPACE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}',
+            "minespace_incident_link": f'{Config.MINESPACE_PROD_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}',
         }
         EmailService.send_template_email(subject, emli_recipients, emli_body, emli_context, cc=cc)
         EmailService.send_template_email(subject, minespace_recipients, minespace_body, minespace_context, cc=cc)
@@ -317,7 +322,7 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
         cc = None
 
         subject = f'{self.mine_name}: The status of a reportable incident {self.mine_incident_report_no} has been updated on {format_email_datetime_to_string(self.update_timestamp)}'
-        link = f'{Config.MINESPACE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}/review' if is_prop else f'{Config.CORE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}'
+        link = f'{Config.MINESPACE_PROD_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}/review' if is_prop else f'{Config.CORE_PROD_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}'
         body = open("app/templates/email/incident/minespace_awaiting_incident_final_report_email.html", "r").read() if is_prop else open("app/templates/email/incident/emli_awaiting_incident_final_report_email.html", "r").read()
 
         context = {
@@ -338,7 +343,7 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
         recipients = [PROP_EMAIL if is_prop else OCI_EMAIL]
         cc = None
 
-        link = f'{Config.MINESPACE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}/review' if is_prop else f'{Config.CORE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}'
+        link = f'{Config.MINESPACE_PROD_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}/review' if is_prop else f'{Config.CORE_PROD_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}'
         body = open("app/templates/email/incident/minespace_final_report_received_incident_email.html", "r").read() if is_prop else open("app/templates/email/incident/emli_final_report_received_incident_email.html", "r").read()
         subject = f'{self.mine_name}: A final incident report on {self.mine_incident_report_no} has been submitted on {format_email_datetime_to_string(self.update_timestamp)}'
         context = {

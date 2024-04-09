@@ -1,12 +1,11 @@
 import React from "react";
-import { shallow } from "enzyme";
-import { MineIncident, MineIncidentProps } from "@/components/mine/Incidents/MineIncident";
+import { render } from "@testing-library/react";
+import { MineIncident } from "@/components/mine/Incidents/MineIncident";
 import * as MOCK from "@/tests/mocks/dataMocks";
-import PropTypes, { any } from "prop-types";
-import { createMineIncident } from "@mds/common/redux/actionCreators/incidentActionCreator";
-import { AxiosResponse } from "axios";
+import { store } from "@/App";
+import { Provider } from "react-redux";
 
-const props: MineIncidentProps = {
+const props: any = {
   incident: MOCK.INCIDENT,
   formErrors: {},
   formValues: {
@@ -18,32 +17,6 @@ const props: MineIncidentProps = {
   history: {
     push: jest.fn(),
     replace: jest.fn(),
-  },
-  clearMineIncident: jest.fn(() => Promise.resolve()),
-  createMineIncident: function (
-    mine_guid: any,
-    payload: any,
-    message?: string
-  ): Promise<AxiosResponse<any>> {
-    throw new Error("Function not implemented.");
-  },
-  fetchMineIncident: function (mine_guid: any, mine_incident_guid: any): Promise<any> {
-    throw new Error("Function not implemented.");
-  },
-  updateMineIncident: function (
-    mineGuid: any,
-    mineIncidentGuid: any,
-    payload: any,
-    message?: string
-  ): Promise<AxiosResponse<any>> {
-    throw new Error("Function not implemented.");
-  },
-  removeDocumentFromMineIncident: function (
-    mineGuid: any,
-    mineIncidentGuid: any,
-    mineDocumentGuid: any
-  ): Promise<AxiosResponse<any>> {
-    throw new Error("Function not implemented.");
   },
 };
 const dispatchProps = {
@@ -81,7 +54,11 @@ beforeEach(() => {
 
 describe("MineIncident", () => {
   it("renders properly", () => {
-    const component = shallow(<MineIncident {...props} {...dispatchProps} />);
-    expect(component).toMatchSnapshot();
+    const { container } = render(
+      <Provider store={store}>
+        <MineIncident {...props} {...dispatchProps} />
+      </Provider>
+    );
+    expect(container.firstChild.childNodes).toMatchSnapshot();
   });
 });

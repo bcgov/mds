@@ -1,26 +1,25 @@
 import uuid
-from flask_restplus import Resource, reqparse, fields, inputs
-from flask import request, current_app
+from flask_restx import Resource
+from flask import request
 from datetime import datetime
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
-from app.extensions import api, db
+from app.api.mines.reports.models.mine_report_contact import MineReportContact
+from app.extensions import api
 from app.api.utils.resources_mixins import UserMixin
-from app.api.utils.access_decorators import requires_role_view_all, requires_any_of, requires_role_edit_report, EDIT_REPORT, MINESPACE_PROPONENT, VIEW_ALL, is_minespace_user
+from app.api.utils.access_decorators import requires_any_of, requires_role_edit_report, EDIT_REPORT, MINESPACE_PROPONENT, VIEW_ALL, is_minespace_user
+from app.api.activity.models.activity_notification import ActivityType
+from app.api.activity.models.activity_notification import ActivityRecipients
+from app.api.activity.utils import trigger_notification
 
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.reports.models.mine_report import MineReport
 from app.api.mines.reports.models.mine_report_submission import MineReportSubmission
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
-from app.api.mines.reports.models.mine_report_category_xref import MineReportCategoryXref
 from app.api.mines.reports.models.mine_report_document_xref import MineReportDocumentXref
 from app.api.mines.documents.models.mine_document import MineDocument
-from app.api.mines.reports.models.mine_report_submission_status_code import MineReportSubmissionStatusCode
-from app.api.mines.reports.models.mine_report_category import MineReportCategory
-from app.api.mines.reports.models.mine_report_due_date_type import MineReportDueDateType
 from app.api.mines.permits.permit_conditions.models.permit_condition_category import PermitConditionCategory
-from app.api.mines.reports.models.mine_report_definition_compliance_article_xref import MineReportDefinitionComplianceArticleXref
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.mines.response_models import MINE_REPORT_MODEL
 
@@ -42,6 +41,11 @@ class MineReportListResource(Resource, UserMixin):
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
     parser.add_argument('mine_report_submissions', type=list, location='json')
     parser.add_argument('permit_condition_category_code', type=str, location='json')
+    parser.add_argument('mine_report_status_code', type=str, location='json')
+    parser.add_argument('description_comment', type=str, location='json')
+    parser.add_argument('submitter_name', type=str, location='json')
+    parser.add_argument('submitter_email', type=str, location='json')
+    parser.add_argument('mine_report_contacts', type=list, location='json')
 
     @api.marshal_with(MINE_REPORT_MODEL, envelope='records', code=200)
     @api.doc(description='returns the reports for a given mine.')
@@ -65,10 +69,18 @@ class MineReportListResource(Resource, UserMixin):
 
         data = self.parser.parse_args()
         permit_condition_type_code = data.get('permit_condition_category_code', None)
+        is_report_request = data.get('mine_report_status_code', None) == "NON"
 
         is_code_required_report = permit_condition_type_code == None
+        permit_condition_category = None
         permit_condition_category_code = None
         permit_guid = data['permit_guid']
+
+        is_first_submission = False
+        mine_report_guid = data.get('mine_report_guid', None)
+
+        if not mine_report_guid:
+            is_first_submission = True
 
         # Code Required Reports check
         if is_code_required_report:
@@ -101,17 +113,38 @@ class MineReportListResource(Resource, UserMixin):
             due_date=data.get('due_date'),
             received_date=data['received_date'],
             submission_year=data['submission_year'],
+            description_comment=data['description_comment'],
             permit_id=permit.permit_id if permit else None,
-            permit_condition_category_code=permit_condition_category_code)
+            permit_condition_category_code=permit_condition_category_code,
+            submitter_name=data['submitter_name'],
+            submitter_email=data['submitter_email'])
 
+        contacts = data.get('mine_report_contacts')
+        if contacts:
+            mine_report_contacts = MineReportContact.create_from_list(contacts, mine_report.mine_report_id)
+            if mine_report_contacts:
+                mine_report.mine_report_contacts = mine_report_contacts
+
+        # TODO: remove following with CODE_REQUIRED_REPORTS feature flag (submissions, if submissions)
         submissions = data.get('mine_report_submissions')
         if submissions:
             submission = submissions[-1]
             if len(submission.get('documents')) > 0:
                 submission_status = data.get('mine_report_submission_status') if data.get(
-                    'mine_report_submission_status') else 'NRQ'
+                    'mine_report_submission_status') else 'INI'
                 report_submission = MineReportSubmission(
+                    description_comment=mine_report.description_comment,
+                    due_date=mine_report.due_date,
+                    mine_guid=mine_report.mine_guid,
+                    mine_report_definition_id=mine_report.mine_report_definition_id,
+                    mine_report_id=mine_report.mine_report_id,
                     mine_report_submission_status_code=submission_status,
+                    permit_condition_category_code=mine_report.permit_condition_category_code,
+                    permit_id=mine_report.permit_id,
+                    received_date=mine_report.received_date,
+                    submission_year=mine_report.submission_year,
+                    submitter_email=mine_report.submitter_email,
+                    submitter_name=mine_report.submitter_name,
                     submission_date=datetime.utcnow())
                 for submission_doc in submission.get('documents'):
                     mine_doc = MineDocument(
@@ -127,13 +160,37 @@ class MineReportListResource(Resource, UserMixin):
                     report_submission.documents.append(mine_doc)
 
                 mine_report.mine_report_submissions.append(report_submission)
+                # TODO: remove following with CODE_REQUIRED_REPORTS feature flag (submissions, if submissions)
+        elif is_first_submission and is_code_required_report and not is_report_request:
+            # If this is the initial report, create a submission with the status
+            # of INI (Received)
+            initial_submission = MineReportSubmission(
+                description_comment=mine_report.description_comment,
+                due_date=mine_report.due_date,
+                mine_guid=mine_report.mine_guid,
+                mine_report_definition_id=mine_report.mine_report_definition_id,
+                mine_report_id=mine_report.mine_report_id,
+                permit_condition_category_code=mine_report.permit_condition_category_code,
+                permit_id=mine_report.permit_id,
+                received_date=mine_report.received_date,
+                submission_year=mine_report.submission_year,
+                submitter_email=mine_report.submitter_email,
+                submitter_name=mine_report.submitter_name,
+                mine_report_submission_status_code='INI',
+                submission_date=datetime.utcnow())
+
+            mine_report.mine_report_submissions.append(initial_submission)
         try:
             mine_report.save()
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')
 
         if is_minespace_user():
-            mine_report.send_report_update_email(False)
+            mine_report.send_crr_report_update_email(False)
+
+        if is_report_request:
+            report_name = mine_report_definition.report_name if is_code_required_report else permit_condition_category.description
+            trigger_notification(f'A report has been requested by the ministry: {report_name}', ActivityType.report_requested, mine, 'MineReport', mine_report.mine_report_guid, None, None, ActivityRecipients.minespace_users)
 
         return mine_report, 201
 
@@ -189,6 +246,17 @@ class MineReportResource(Resource, UserMixin):
             (x for x in submission_iterator if x.get('mine_report_submission_guid') is None), None)
         if new_submission is not None:
             new_report_submission = MineReportSubmission(
+                description_comment=mine_report.description_comment,
+                due_date=mine_report.due_date,
+                mine_guid=mine_report.mine_guid,
+                mine_report_definition_id=mine_report.mine_report_definition_id,
+                mine_report_id=mine_report.mine_report_id,
+                permit_condition_category_code=mine_report.permit_condition_category_code,
+                permit_id=mine_report.permit_id,
+                received_date=mine_report.received_date,
+                submission_year=mine_report.submission_year,
+                submitter_email=mine_report.submitter_email,
+                submitter_name=mine_report.submitter_name,
                 submission_date=datetime.now(),
                 mine_report_submission_status_code=mine_report_submission_status)
             # Copy the current list of documents for the report submission
@@ -242,7 +310,7 @@ class MineReportResource(Resource, UserMixin):
             raise InternalServerError(f'Error when saving: {e}')
 
         if is_minespace_user():
-            mine_report.send_report_update_email(True)
+            mine_report.send_crr_report_update_email(True)
 
         return mine_report
 

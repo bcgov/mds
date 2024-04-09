@@ -18,7 +18,7 @@ from app.api.constants import STATE_MODIFIED_DELETE_ON_PUT
 from .include.user_info import User
 
 from sqlalchemy.inspection import inspect
-from flask_restplus import inputs
+from flask_restx import inputs
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.ext.associationproxy import association_proxy
 
@@ -34,6 +34,9 @@ class UserBoundQuery(db.Query):
         rv._user_bound = False
         return rv
 
+    def paginate(self, page, per_page, error_out=True, max_per_page=None):
+        # flask-sqlalchemy 3.0+ changed page and per_page to be optional. This is in place to support current use of pagination
+        return super(UserBoundQuery, self).paginate(page=page, per_page=per_page, error_out=error_out, max_per_page=max_per_page)
 
 # add listener for the before_compile event on UserBoundQuery
 @db.event.listens_for(UserBoundQuery, 'before_compile', retval=True)
@@ -42,8 +45,8 @@ def ensure_constrained(query):
 
     if not query._user_bound or not auth.apply_security:
         return query
-
-    mzero = query._mapper_zero()
+    
+    mzero = query._entity_from_pre_ent_zero()
     if mzero is not None:
         if has_request_context():
             user_security = auth.get_current_user_security()
@@ -257,7 +260,7 @@ class Base(db.Model):
                         continue
 
                     #for string or integer columns, consider empty strings as null
-                    if py_type in (str, int) and v is '':
+                    if py_type in (str, int) and v == '':
                         setattr(self, k, None)
 
                     # elif (v is not None) and not isinstance(v, py_type):

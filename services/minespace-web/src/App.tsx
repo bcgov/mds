@@ -2,14 +2,12 @@ import React, { FC, useEffect, useState } from "react";
 import { compose, bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-// eslint-disable-next-line
 import { hot } from "react-hot-loader";
 import LoadingOutlined from "@ant-design/icons/LoadingOutlined";
 import { Layout, BackTop, Row, Col, Spin } from "antd";
 import { loadBulkStaticContent } from "@mds/common/redux/actionCreators/staticContentActionCreator";
 import { getStaticContentLoadingIsComplete } from "@mds/common/redux/selectors/staticContentSelectors";
 import MediaQuery from "react-responsive";
-import * as PropTypes from "prop-types";
 import { isAuthenticated } from "@mds/common/redux/selectors/authenticationSelectors";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -20,7 +18,8 @@ import WarningBanner from "@/components/common/WarningBanner";
 
 import Routes from "./routes/Routes";
 import configureStore from "./store/configureStore";
-import { detectIE } from "@mds/common";
+import { SystemFlagEnum, detectIE } from "@mds/common";
+import { storeSystemFlag } from "@mds/common/redux/actions/authenticationActions";
 
 export const store = configureStore();
 
@@ -29,34 +28,30 @@ export type AppDispatch = typeof store.dispatch;
 
 Spin.setDefaultIndicator(<LoadingOutlined style={{ fontSize: 40 }} />);
 
-const propTypes = {
-  loadBulkStaticContent: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool,
-  staticContentLoadingIsComplete: PropTypes.bool,
-};
-
-const defaultProps = {
-  isAuthenticated: false,
-  staticContentLoadingIsComplete: false,
-};
-
 interface AppProps {
   isAuthenticated: boolean;
   staticContentLoadingIsComplete: boolean;
   loadBulkStaticContent: () => void;
+  storeSystemFlag: (flag) => void;
 }
 
 const App: FC<AppProps> = (props) => {
   const [isIE, setIsIE] = useState(true);
   const [isMobile, setIsMobile] = useState(true);
 
-  const { loadBulkStaticContent, isAuthenticated, staticContentLoadingIsComplete } = props;
+  const {
+    loadBulkStaticContent,
+    storeSystemFlag,
+    isAuthenticated = false,
+    staticContentLoadingIsComplete = false,
+  } = props;
 
   useEffect(() => {
     if (isAuthenticated) {
       loadBulkStaticContent();
     }
     setIsIE(!!detectIE());
+    storeSystemFlag(SystemFlagEnum.ms);
   }, []);
 
   useEffect(() => {
@@ -114,12 +109,10 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       loadBulkStaticContent,
+      storeSystemFlag,
     },
     dispatch
   );
-
-App.propTypes = propTypes;
-App.defaultProps = defaultProps;
 
 export default compose(
   hot(module),

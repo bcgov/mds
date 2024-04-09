@@ -1,4 +1,4 @@
-from flask_restplus import Resource, fields
+from flask_restx import Resource, fields
 from sqlalchemy_filters import apply_sort
 from werkzeug.exceptions import BadRequest, NotFound
 

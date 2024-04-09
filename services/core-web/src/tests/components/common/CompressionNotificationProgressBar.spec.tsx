@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { CompressionNotificationProgressBar } from "@/components/common/CompressionNotificationProgressBar";
+import { CompressionNotificationProgressBar } from "@mds/common/components/documents/CompressionNotificationProgressBar";
 
 const props: any = {};
 

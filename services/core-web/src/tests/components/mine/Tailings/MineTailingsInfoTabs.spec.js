@@ -6,6 +6,12 @@ import * as MOCK from "@/tests/mocks/dataMocks";
 const props = {};
 const dispatchProps = {};
 
+jest.mock("@mds/common/providers/featureFlags/useFeatureFlag", () => ({
+  useFeatureFlag: () => ({
+    isFeatureEnabled: () => true,
+  }),
+}));
+
 const setupProps = () => {
   props.mines = MOCK.MINES.mines;
   [props.mineGuid] = MOCK.MINES.mineIds;

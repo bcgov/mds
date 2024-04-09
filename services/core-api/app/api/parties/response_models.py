@@ -1,6 +1,6 @@
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointmentStatus, MinePartyAcknowledgedStatus
 from app.extensions import api
-from flask_restplus import fields
+from flask_restx import fields
 
 
 class Date(fields.Raw):
@@ -89,7 +89,8 @@ PARTY_ORGBOOK_ENTITY = api.model(
         'credential_id': fields.Integer,
         'party_guid': fields.String,
         'association_user': fields.String,
-        'association_timestamp': fields.DateTime
+        'association_timestamp': fields.DateTime,
+        'company_alias': fields.String
     })
 
 PARTY_BUSINESS_ROLE_APPT = api.model(
@@ -135,7 +136,8 @@ PARTY = api.model(
         'now_party_appt': fields.Nested(NOW_PARTY_APPOINTMENT),
         'organization_guid': fields.String,
         'organization': fields.Nested(ORGANIZATION, skip_none=True),
-        "digital_wallet_connection_status": fields.String
+        "digital_wallet_connection_status": fields.String,
+        'middle_name': fields.String
     })
 
 PAGINATED_LIST = api.model(

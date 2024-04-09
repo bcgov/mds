@@ -2,7 +2,7 @@ from datetime import datetime
 from re import sub
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import lazyload
+from sqlalchemy.orm import lazyload, backref
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.sql import text, select, table, column, literal_column
 from sqlalchemy.sql.functions import func
@@ -89,25 +89,29 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
         'NoticeOfDepartureDocumentXref',
         lazy='select',
         primaryjoin="and_(NoticeOfDeparture.nod_guid==NoticeOfDepartureDocumentXref.nod_guid, NoticeOfDepartureDocumentXref.deleted_ind==False)",
-        order_by='desc(NoticeOfDepartureDocumentXref.create_timestamp)')
+        order_by='desc(NoticeOfDepartureDocumentXref.create_timestamp)',
+        backref=backref('notice_of_departure')
+    )
 
     nod_contacts = db.relationship(
         'NoticeOfDepartureContact',
         lazy='joined',
-        primaryjoin="and_(NoticeOfDeparture.nod_guid==NoticeOfDepartureContact.nod_guid, NoticeOfDepartureContact.deleted_ind==False)",
+        primaryjoin="and_(NoticeOfDeparture.nod_guid==NoticeOfDepartureContact.nod_guid, NoticeOfDepartureContact.deleted_ind==False)"
     )
 
     primary_nod_contact = db.relationship(
         'NoticeOfDepartureContact',
         lazy='joined',
         primaryjoin="and_(NoticeOfDeparture.nod_guid==NoticeOfDepartureContact.nod_guid, NoticeOfDepartureContact.is_primary==True, NoticeOfDepartureContact.deleted_ind==False)",
+        overlaps="nod_contacts"
     )
 
     mine_documents = db.relationship(
         'MineDocument',
         lazy='select',
         secondary='notice_of_departure_document_xref',
-        secondaryjoin='and_(foreign(NoticeOfDepartureDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid),MineDocument.deleted_ind == False)'
+        secondaryjoin='and_(foreign(NoticeOfDepartureDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid),MineDocument.deleted_ind == False)',
+        overlaps="documents,notice_of_departure"
     )
 
     @classmethod
@@ -232,6 +236,6 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
 
         subject = f'Notice of Departure Submitted for {self.mine.mine_name}'
         body = f'<p>{self.mine.mine_name} (Mine no: {self.mine.mine_no}) has submitted a "Notice of Departure from Approval" report.</p>'
-        link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/permits-and-approvals/notices-of-departure'
+        link = f'{Config.CORE_PROD_URL}/mine-dashboard/{self.mine.mine_guid}/permits-and-approvals/notices-of-departure'
         body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
         EmailService.send_email(subject, recipients, body, cc=cc)

@@ -124,7 +124,7 @@ html {
     height: 50%;
   }
 
-  & > div {
+  &>div {
     margin-right: 5px;
   }
 
@@ -657,6 +657,11 @@ img.lessOpacity {
   display: none;
 }
 
+.ellipsis-text {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
 // Styling for react-sortable-hoc
 
 .row-dragging {
@@ -680,4 +685,8 @@ img.lessOpacity {
   &-125 {
     margin-top: 125px !important;
   }
+}
+
+.no-bg {
+  background: transparent;
 }

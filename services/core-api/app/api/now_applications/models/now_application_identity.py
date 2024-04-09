@@ -43,12 +43,14 @@ class NOWApplicationIdentity(Base, AuditMixin):
     application_delays = db.relationship('NOWApplicationDelay')
     is_document_import_requested = db.Column(db.Boolean, server_default=FetchedValue())
 
-    now_application = db.relationship('NOWApplication')
+    now_application = db.relationship('NOWApplication', overlaps='now_application_identity')
     application_delays = db.relationship(
         'NOWApplicationDelay',
         lazy='selectin',
         uselist=True,
-        order_by='desc(NOWApplicationDelay.start_date)')
+        order_by='desc(NOWApplicationDelay.start_date)',
+        overlaps='now_application'
+    )
 
     def __repr__(self):
         return f'{self.__class__.__name__} {self.now_application_guid}'

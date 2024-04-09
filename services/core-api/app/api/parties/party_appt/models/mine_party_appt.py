@@ -63,7 +63,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
     union_rep_company = db.Column(db.String)
 
     # Relationships
-    party = db.relationship('Party', lazy='joined', foreign_keys=party_guid)
+    party = db.relationship('Party', lazy='joined', foreign_keys=party_guid, back_populates='mine_party_appt')
     merged_from_party = db.relationship('Party', foreign_keys=merged_from_party_guid)
     mine_tailings_storage_facility = db.relationship('MineTailingsStorageFacility', lazy='joined')
     mine_party_appt_type = db.relationship(
@@ -277,6 +277,12 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
                 include_permit_contacts=False,
                 active_only=False,
                 mine_tailings_storage_facility_guid=None):
+
+        eor_and_tqp = (cls.mine_party_appt_type_code ==  "EOR"
+                                            or cls.mine_party_appt_type_code ==  "TQP" )
+        active_only_for_eor_and_tqp = ((cls.status == 'active' and eor_and_tqp)
+                                        or not eor_and_tqp)
+
         built_query = cls.query.filter_by(deleted_ind=False)
         if mine_guid:
             built_query = built_query.filter_by(mine_guid=mine_guid)
@@ -287,8 +293,10 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
         if mine_party_appt_type_codes:
             built_query = built_query.filter(
                 cls.mine_party_appt_type_code.in_(mine_party_appt_type_codes))
+
         if active_only:
-            built_query = built_query.filter(cls.status == 'active')
+            built_query = built_query.filter(active_only_for_eor_and_tqp)
+
         results = built_query\
             .order_by(nullslast(cls.start_date.desc()), nullsfirst(cls.end_date.desc())) \
             .all()
@@ -304,9 +312,10 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
                         if not active_only:
                             permit_contacts.append(pa)
                         else:
-                            if cls.status == 'active'and (pa.end_date is None or (
+                            if (active_only_for_eor_and_tqp
+                                and (pa.end_date is None or (
                                     (pa.start_date is None or pa.start_date <= datetime.utcnow().date())
-                                    and pa.end_date >= datetime.utcnow().date())):
+                                    and pa.end_date >= datetime.utcnow().date()))):
                                 permit_contacts.append(pa)
 
             results = results + permit_contacts
@@ -349,7 +358,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
             if recipients:
                 cache.set(EDIT_TSF_EMAILS, recipients, timeout=TIMEOUT_24_HOURS)
 
-        button_link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/permits-and-approvals/tailings/{self.mine_tailings_storage_facility.mine_tailings_storage_facility_guid}/{party_page}'
+        button_link = f'{Config.CORE_PROD_URL}/mine-dashboard/{self.mine.mine_guid}/permits-and-approvals/tailings/{self.mine_tailings_storage_facility.mine_tailings_storage_facility_guid}/{party_page}'
         # change from UTC to PST
         submitted_at = format_email_datetime_to_string(datetime.utcnow())
         start_date = self.start_date.strftime('%b %d %Y') if self.start_date else 'No date provided',

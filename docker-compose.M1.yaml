@@ -92,6 +92,7 @@ services:
       - PLATFORM=LOCAL
     volumes:
       - ./migrations/sql:/flyway/sql
+      - ./migrations/sql-prod:/flyway/sql-prod
       - ./migrations/scripts:/flyway/scripts
     depends_on:
       - postgres
@@ -246,6 +247,7 @@ services:
       - 5001:5001
     volumes:
       - ./services/document-manager/backend:/app
+      - document_manager_logs:/var/log/document-manager
     depends_on:
       - postgres
       - redis
@@ -264,6 +266,7 @@ services:
       - 5555:5555
     volumes:
       - ./services/document-manager/backend:/app
+      - document_manager_logs:/var/log/document-manager
     depends_on:
       - postgres
       - redis
@@ -307,3 +310,4 @@ volumes:
   postgres_data: {}
   core_api_logs: {}
   core_web_logs: {}
+  document_manager_logs: {}

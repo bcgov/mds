@@ -1,6 +1,6 @@
 from app.api.activity.models.activity_notification import ActivityType
-from flask_restplus import Resource, reqparse, inputs
-from werkzeug.exceptions import NotFound
+from flask_restx import Resource, reqparse, inputs
+from werkzeug.exceptions import NotFound, BadRequest
 from app.extensions import api
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import (requires_any_of, VIEW_ALL, MINESPACE_PROPONENT,

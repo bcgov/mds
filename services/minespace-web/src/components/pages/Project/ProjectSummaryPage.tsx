@@ -39,9 +39,13 @@ import {
   ADD_PROJECT_SUMMARY,
   EDIT_PROJECT,
 } from "@/constants/routes";
-import ProjectSummaryForm from "@/components/Forms/projects/projectSummary/ProjectSummaryForm";
-import { IMine, IProjectSummary, IProject } from "@mds/common";
+import ProjectSummaryForm, {
+  getProjectFormTabs,
+} from "@/components/Forms/projects/projectSummary/ProjectSummaryForm";
+import { IMine, IProjectSummary, IProject, Feature, removeNullValuesRecursive } from "@mds/common";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { isArray } from "lodash";
 
 interface ProjectSummaryPageProps {
   mines: Partial<IMine>[];
@@ -74,14 +78,6 @@ interface IParams {
   tab?: any;
 }
 
-const tabs = [
-  "basic-information",
-  "project-contacts",
-  "project-dates",
-  "authorizations-involved",
-  "document-upload",
-];
-
 export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
   const {
     mines,
@@ -104,13 +100,15 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
     updateProject,
   } = props;
 
+  const { isFeatureEnabled } = useFeatureFlag();
+  const amsFeatureEnabled = isFeatureEnabled(Feature.AMS_AGENT);
   const { mineGuid, projectGuid, projectSummaryGuid, tab } = useParams<IParams>();
   const [isLoaded, setIsLoaded] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const history = useHistory();
   const location = useLocation();
-
-  const activeTab = tab ?? tabs[0];
+  const projectFormTabs = getProjectFormTabs(amsFeatureEnabled);
+  const activeTab = tab ?? projectFormTabs[0];
 
   const handleFetchData = () => {
     if (projectGuid && projectSummaryGuid) {
@@ -129,44 +127,143 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
     };
   }, []);
 
-  const handleTransformPayload = (values) => {
-    let payloadValues: any = {};
-    const updatedAuthorizations = [];
-    Object.keys(values).forEach((key) => {
-      // Pull out form properties from request object that match known authorization types
-      if (values[key] && projectSummaryAuthorizationTypesArray.includes(key)) {
-        const project_summary_guid = values?.project_summary_guid;
-        const authorization = values?.authorizations?.find(
-          (auth) => auth?.project_summary_authorization_type === key
-        );
-        updatedAuthorizations.push({
-          ...values[key],
-          // Conditionally add project_summary_guid and project_summary_authorization_guid properties if this a pre-existing authorization
-          // ... otherwise treat it as a new one which won't have those two properties yet.
-          ...(project_summary_guid && { project_summary_guid }),
-          ...(authorization && {
-            project_summary_authorization_guid: authorization?.project_summary_authorization_guid,
-          }),
-          project_summary_authorization_type: key,
-          project_summary_permit_type:
-            key === "OTHER" ? ["OTHER"] : values[key]?.project_summary_permit_type,
-          existing_permits_authorizations:
-            values[key]?.existing_permits_authorizations?.split(",") || [],
-        });
-        // eslint-disable-next-line no-param-reassign
-        delete values[key];
+  const transformAuthorizations = (valuesFromForm: any) => {
+    const { authorizations = {}, project_summary_guid } = valuesFromForm;
+
+    const transformAuthorization = (type, authorization) => {
+      return { ...authorization, project_summary_authorization_type: type, project_summary_guid };
+    };
+
+    let updatedAuthorizations = [];
+    let newAmsAuthorizations = [];
+    let amendAmsAuthorizations = [];
+
+    projectSummaryAuthorizationTypesArray.forEach((type) => {
+      const authsOfType = authorizations[type];
+      if (authsOfType) {
+        if (isArray(authsOfType)) {
+          const formattedAuthorizations = authsOfType.map((a) => {
+            return transformAuthorization(type, a);
+          });
+          updatedAuthorizations = updatedAuthorizations.concat(formattedAuthorizations);
+        } else {
+          newAmsAuthorizations = newAmsAuthorizations.concat(
+            authsOfType?.NEW.map((a) =>
+              transformAuthorization(type, { ...a, project_summary_permit_type: ["NEW"] })
+            )
+          );
+          amendAmsAuthorizations = amendAmsAuthorizations.concat(
+            authsOfType?.AMENDMENT.map((a) =>
+              transformAuthorization(type, { ...a, project_summary_permit_type: ["AMENDMENT"] })
+            )
+          );
+        }
       }
     });
+    return {
+      authorizations: updatedAuthorizations,
+      ams_authorizations: { amendments: amendAmsAuthorizations, new: newAmsAuthorizations },
+    };
+  };
+
+  const handleTransformPayload = (valuesFromForm: any) => {
+    let payloadValues: any = {};
+    const updatedAuthorizations = transformAuthorizations(valuesFromForm);
+    const values = removeNullValuesRecursive(valuesFromForm);
     payloadValues = {
       ...values,
-      authorizations: updatedAuthorizations,
+      ...updatedAuthorizations,
     };
     // eslint-disable-next-line no-param-reassign
-    delete payloadValues.authorizationOptions;
+    delete payloadValues.authorizationTypes;
     return payloadValues;
   };
 
-  const handleUpdateProjectSummary = (values, message) => {
+  const getFieldValue = (obj, field) => {
+    const value = obj[field];
+    if (typeof value === "undefined" || value === null || value === "") {
+      return null;
+    }
+    return value;
+  };
+
+  const getRequiredFieldFormTab = (field: string) => {
+    const requiredFieldMap = {
+      project_summary_title: "basic-information",
+      project_summary_description: "basic-information",
+      agent: "agent",
+      is_agent: "agent",
+      legal_land_owner: "legal-land-owner-information",
+      is_legal_land_owner: "legal-land-owner-information",
+      contacts: "project-contacts",
+    };
+    return requiredFieldMap[field];
+  };
+
+  const verifyRequiredFields = (payload) => {
+    const requiredFields = amsFeatureEnabled
+      ? ["project_summary_title", "project_summary_description", "is_agent", "is_legal_land_owner"]
+      : ["project_summary_title", "project_summary_description"];
+
+    for (const field of requiredFields) {
+      if (getFieldValue(payload, field) === null) {
+        return field;
+      }
+    }
+
+    // Additional check for contacts
+    if (payload.contacts && payload.contacts.length > 0) {
+      for (let i = 0; i < payload.contacts.length; i++) {
+        const contact = payload?.contacts[i];
+        const address = contact?.address;
+        const verifyPersonInfo =
+          !contact.first_name || !contact.last_name || !contact.email || !contact.phone_number;
+        const verifyAddressInfoForPrimary = contact.is_primary && !address;
+        if (verifyPersonInfo || verifyAddressInfoForPrimary) {
+          return "contacts";
+        }
+      }
+    }
+
+    // Get agent information and party type code
+    const agent = payload.agent || {};
+    const partyTypeCode = agent.party_type_code;
+
+    // Define required fields based on party type
+    const commonAgentRequiredFields = ["party_name", "phone_no", "email", "address"];
+    const agentRequiredFields =
+      partyTypeCode === "ORG"
+        ? commonAgentRequiredFields
+        : ["first_name", ...commonAgentRequiredFields];
+
+    // Check if all required fields are present and non-empty
+    for (const field of agentRequiredFields) {
+      if (payload.is_agent && !agent[field]) {
+        return "agent";
+      }
+    }
+
+    // Additional check for legal land owner
+    if (!payload.is_legal_land_owner && amsFeatureEnabled) {
+      const requiredLandOwnerFields = [
+        "is_legal_land_owner",
+        "is_crown_land_federal_or_provincial",
+        "is_landowner_aware_of_discharge_application",
+        "legal_land_owner_name",
+        "has_landowner_received_copy_of_application",
+        "legal_land_owner_contact_number",
+        "legal_land_owner_email_address",
+      ];
+      for (const field of requiredLandOwnerFields) {
+        if (getFieldValue(payload, field) === null) {
+          return "legal_land_owner";
+        }
+      }
+    }
+    return null;
+  };
+
+  const handleUpdateProjectSummary = async (values, message) => {
     const payload = handleTransformPayload(values);
     setIsLoaded(false);
     return updateProjectSummary(
@@ -177,8 +274,8 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
       payload,
       message
     )
-      .then(() => {
-        updateProject(
+      .then(async () => {
+        await updateProject(
           { projectGuid },
           { mrc_review_required: payload.mrc_review_required, contacts: payload.contacts },
           "Successfully updated project.",
@@ -193,7 +290,7 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
       });
   };
 
-  const handleCreateProjectSummary = (values, message) => {
+  const handleCreateProjectSummary = async (values, message) => {
     return createProjectSummary(
       {
         mineGuid: mineGuid,
@@ -201,7 +298,9 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
       handleTransformPayload(values),
       message
     ).then(({ data: { project_guid, project_summary_guid } }) => {
-      history.replace(EDIT_PROJECT_SUMMARY.dynamicRoute(project_guid, project_summary_guid));
+      history.replace(
+        EDIT_PROJECT_SUMMARY.dynamicRoute(project_guid, project_summary_guid, projectFormTabs[1])
+      );
     });
   };
 
@@ -212,7 +311,7 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
     history.push(url);
   };
 
-  const handleSaveData = (e, newActiveTab) => {
+  const handleSaveData = async (e, newActiveTab) => {
     if (e) {
       e.preventDefault();
     }
@@ -220,37 +319,52 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
       ? "Successfully updated the project description."
       : "Successfully submitted a project description to the Province of British Columbia.";
     const values = { ...formValues, status_code: "SUB" };
+    const missingRequiredFields = verifyRequiredFields(handleTransformPayload(values));
+    if (missingRequiredFields) {
+      handleTabChange(getRequiredFieldFormTab(missingRequiredFields));
+      return;
+    }
     submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
     touch(FORM.ADD_EDIT_PROJECT_SUMMARY);
     const errors = Object.keys(flattenObject(formErrors));
     if (errors.length === 0) {
-      if (!isEditMode) {
-        handleCreateProjectSummary(values, message);
-      }
-      if (projectGuid && projectSummaryGuid) {
-        handleUpdateProjectSummary(values, message);
+      try {
+        if (!isEditMode) {
+          await handleCreateProjectSummary(values, message);
+        }
+        if (projectGuid && projectSummaryGuid) {
+          await handleUpdateProjectSummary(values, message);
+          handleTabChange(newActiveTab);
+        }
+      } catch (err) {
+        console.log(err);
+        setIsLoaded(true);
       }
     }
-    handleTabChange(newActiveTab);
   };
 
-  const handleSaveDraft = () => {
-    const currentTabIndex = tabs.indexOf(activeTab);
-    const newActiveTab = tabs[currentTabIndex + 1];
+  const handleSaveDraft = async () => {
+    const currentTabIndex = projectFormTabs.indexOf(activeTab);
+    const newActiveTab = projectFormTabs[currentTabIndex + 1];
     const message = "Successfully saved a draft project description.";
     const values = { ...formValues, status_code: "DFT" };
     submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
     touch(FORM.ADD_EDIT_PROJECT_SUMMARY);
     const errors = Object.keys(flattenObject(formErrors));
     if (errors.length === 0) {
-      if (!isEditMode) {
-        handleCreateProjectSummary(values, message);
-      }
-      if (projectGuid && projectSummaryGuid) {
-        handleUpdateProjectSummary(values, message);
+      try {
+        if (!isEditMode) {
+          await handleCreateProjectSummary(values, message);
+        }
+        if (projectGuid && projectSummaryGuid) {
+          await handleUpdateProjectSummary(values, message);
+          handleTabChange(newActiveTab);
+        }
+      } catch (err) {
+        console.log(err);
+        setIsLoaded(true);
       }
     }
-    handleTabChange(newActiveTab);
   };
 
   const mineName = isEditMode

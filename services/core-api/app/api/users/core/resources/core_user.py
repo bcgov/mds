@@ -1,4 +1,4 @@
-from flask_restplus import Resource, reqparse, fields
+from flask_restx import Resource, reqparse, fields
 from flask import request
 from datetime import datetime
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError

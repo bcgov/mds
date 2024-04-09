@@ -9,7 +9,6 @@ const dotenv = require("dotenv").config({ path: `${__dirname}/.env` });
 const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
 const threadLoader = require("thread-loader");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const HtmlCriticalWebpackPlugin = require("html-critical-webpack-plugin");
 
 const parts = require("./webpack.parts");
 
@@ -87,19 +86,19 @@ const commonConfig = merge([
       }),
       new webpack.ProvidePlugin({
         REQUEST_HEADER: path.resolve(__dirname, "common/utils/RequestHeaders.js"),
-        GLOBAL_ROUTES: path.resolve(__dirname, "src/constants/routes.js"),
+        GLOBAL_ROUTES: path.resolve(__dirname, "src/constants/routes.ts"),
       }),
-      // Prevent moment locales to be bundled with the app
-      // to reduce app size
+      // // Prevent moment locales to be bundled with the app
+      // // to reduce app size
       new webpack.IgnorePlugin({
         resourceRegExp: /^\.\/locale$/,
         contextRegExp: /moment$/,
       }),
-      // Explicitly load timezone data for Canada and US
+      // // Explicitly load timezone data for Canada and US
       new MomentTimezoneDataPlugin({
         startYear: 1900,
         endYear: 2300,
-        matchCountries: ["CA", "US"],
+        matchZones: /^(America.*|Canada.*)/,
       }),
       new MiniCssExtractPlugin(),
     ],
@@ -114,6 +113,10 @@ const commonConfig = merge([
           : {}),
         // Use lodash-es that supports proper tree-shaking
         lodash: "lodash-es",
+        // Make sure we do not use de-duped react-redux to prevent
+        // errors related to no redux store access
+        "react-redux": require.resolve("react-redux"),
+        "redux-form": require.resolve("redux-form"),
       },
     },
   },
@@ -130,7 +133,10 @@ const commonConfig = merge([
     },
   }),
   parts.loadFiles({
-    include: path.join(PATHS.src, "assets", "downloads"),
+    include: [
+      path.join(PATHS.src, "assets", "downloads"),
+      path.join(PATHS.sharedPackage, "assets", "downloads"),
+    ],
     exclude: undefined,
   }),
   {
@@ -166,7 +172,6 @@ const devConfig = merge([
     exclude: path.join(PATHS.src, "assets", "fonts"),
     urlLoaderOptions: undefined,
     fileLoaderOptions: undefined,
-    imageLoaderOptions: undefined,
     include: undefined,
   }),
   {
@@ -207,16 +212,6 @@ const prodConfig = merge([
     fileLoaderOptions: {
       name: BUILD_FILE_NAMES.assets,
     },
-    imageLoaderOptions: {
-      mozjpeg: {
-        progressive: true,
-        quality: 40,
-      },
-      pngquant: {
-        quality: [0.5, 0.6],
-        speed: 4,
-      },
-    },
   }),
   parts.bundleOptimization({
     options: {
@@ -253,19 +248,6 @@ const prodConfig = merge([
   parts.copy(PATHS.public, path.join(PATHS.build, "public")),
   {
     plugins: [
-      new HtmlCriticalWebpackPlugin({
-        base: PATHS.build,
-        src: "index.html",
-        dest: "index.html",
-        inline: true,
-        minify: true,
-        extract: true,
-        width: 375,
-        height: 565,
-        penthouse: {
-          blockJSRequests: false,
-        },
-      }),
       new BundleAnalyzerPlugin({
         analyzerMode: "static",
         generateStatsFile: true,

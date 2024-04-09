@@ -13,6 +13,8 @@ from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.parties.party.models.address import Address
 from app.api.verifiable_credentials.models.connection import PartyVerifiableCredentialConnection
 
+from app.api.utils.helpers import validate_phone_no
+
 MAX_NAME_LENGTH = 100
 
 
@@ -21,6 +23,7 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
 
     party_guid = db.Column(UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     first_name = db.Column(db.String)
+    middle_name = db.Column(db.String)
     party_name = db.Column(db.String, nullable=False)
     phone_no = db.Column(db.String)
     phone_ext = db.Column(db.String)
@@ -31,7 +34,7 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
     email = db.Column(db.String)
     email_sec = db.Column(db.String)
     party_type_code = db.Column(db.String, db.ForeignKey('party_type_code.party_type_code'))
-    address = db.relationship('Address', lazy='joined')
+    address = db.relationship('Address', lazy='joined', back_populates='party', order_by='Address.address_id.asc()')
     job_title = db.Column(db.String)
     job_title_code = db.Column(db.String, db.ForeignKey('mine_party_appt_type_code.mine_party_appt_type_code'))
     postnominal_letters = db.Column(db.String)
@@ -44,25 +47,28 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
         'MinePartyAppointment',
         lazy='joined',
         primaryjoin=
-        'and_(MinePartyAppointment.party_guid == Party.party_guid, MinePartyAppointment.deleted_ind==False)'
+        'and_(MinePartyAppointment.party_guid == Party.party_guid, MinePartyAppointment.deleted_ind==False)',
+        back_populates='party'
     )
 
     now_party_appt = db.relationship(
         'NOWPartyAppointment',
         lazy='selectin',
         primaryjoin=
-        'and_(NOWPartyAppointment.party_guid == Party.party_guid, NOWPartyAppointment.deleted_ind==False)'
+        'and_(NOWPartyAppointment.party_guid == Party.party_guid, NOWPartyAppointment.deleted_ind==False)',
+        back_populates='party'
     )
 
     business_role_appts = db.relationship(
         'PartyBusinessRoleAppointment',
-        lazy='dynamic',
+        lazy='selectin',
         primaryjoin=
-        'and_(PartyBusinessRoleAppointment.party_guid == Party.party_guid, PartyBusinessRoleAppointment.deleted_ind==False)'
+        'and_(PartyBusinessRoleAppointment.party_guid == Party.party_guid, PartyBusinessRoleAppointment.deleted_ind==False)',
+        back_populates='party'
     )
 
     party_orgbook_entity = db.relationship(
-        'PartyOrgBookEntity', backref='party_orgbook_entity', uselist=False, lazy='select')
+        'PartyOrgBookEntity', backref='party_orgbook_entity', uselist=False, lazy='select', overlaps='party')
 
     organization = db.relationship(
         'Party',
@@ -75,7 +81,8 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
         'PartyVerifiableCredentialConnection',
         lazy='select',
         uselist=True,
-        order_by='desc(PartyVerifiableCredentialConnection.update_timestamp)',)
+        order_by='desc(PartyVerifiableCredentialConnection.update_timestamp)',
+        overlaps='active_digital_wallet_connection')
         
     active_digital_wallet_connection = db.relationship(
         'PartyVerifiableCredentialConnection',
@@ -83,7 +90,8 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
         uselist=False,
         remote_side=[party_guid],
         primaryjoin=
-        'and_(PartyVerifiableCredentialConnection.party_guid == Party.party_guid, PartyVerifiableCredentialConnection.connection_state==\'active\')')
+        'and_(PartyVerifiableCredentialConnection.party_guid == Party.party_guid, PartyVerifiableCredentialConnection.connection_state==\'active\')',
+        overlaps='digital_wallet_invitations')
 
 
     @hybrid_property
@@ -227,8 +235,10 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
                job_title=None,
                job_title_code=None,
                organization_guid=None,
+               middle_name=None,
+               address_type_code='CAN',
                add_to_session=True):
-        Party.validate_phone_no(phone_no)
+        validate_phone_no(phone_no, address_type_code)
         party = cls(
             party_name=party_name,
             phone_no=phone_no,
@@ -243,18 +253,12 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
             email_sec=email_sec,
             job_title=job_title,
             job_title_code=job_title_code,
-            organization_guid=organization_guid)
+            organization_guid=organization_guid,
+            middle_name=middle_name)
         if add_to_session:
             party.save(commit=False)
         return party
 
-    @classmethod
-    def validate_phone_no(cls, phone_no):
-        if not phone_no:
-            raise AssertionError('Party phone number is not provided.')
-        if not re.match(r'[0-9]{3}-[0-9]{3}-[0-9]{4}', phone_no):
-            raise AssertionError('Invalid phone number format, must be of XXX-XXX-XXXX.')
-        return phone_no
 
     @validates('party_type_code')
     def validate_party_type_code(self, key, party_type_code):

@@ -1,13 +1,11 @@
 import json
 import uuid
-import pytest
 
 from app.api.mines.mine.models.mine import Mine
-from app.api.mines.reports.models.mine_report import MineReport
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
 from app.api.constants import MINE_REPORT_TYPE
 
-from tests.factories import MineFactory, MineReportFactory, PermitFactory, PermitAmendmentFactory, PartyFactory
+from tests.factories import MineFactory, MineReportFactory
 THREE_REPORTS = 3
 ONE_REPORT = 1
 GUID = str(uuid.uuid4)
@@ -44,6 +42,24 @@ def test_get_a_report_for_a_mine(test_client, db_session, auth_headers):
 
 
 # Create
+def test_post_request_report(test_client, db_session, auth_headers):
+    mine = MineFactory(mine_reports=0)
+    report_definition = MineReportDefinition.get_all()[0]
+    data = {
+        'due_date': '2024-07-05',
+        'mine_report_definition_guid': str(report_definition.mine_report_definition_guid),
+        'mine_report_status_code': "NON",
+        'submission_year': '2024',
+    }
+
+    post_resp = test_client.post(f'/mines/{mine.mine_guid}/reports', headers=auth_headers['full_auth_header'], json=data)
+    post_data = json.loads(post_resp.data.decode())
+
+    assert post_resp.status_code == 201
+    assert post_data["mine_report_status_code"] == "NON"
+    assert post_data["received_date"] == None
+    assert post_data["latest_submission"]["mine_report_submission_guid"] == None
+
 def test_post_mine_report(test_client, db_session, auth_headers):
     mine = MineFactory(mine_reports=ONE_REPORT)
     mine_report = mine.mine_reports[0]

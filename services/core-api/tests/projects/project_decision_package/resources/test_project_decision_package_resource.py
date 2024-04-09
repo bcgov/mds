@@ -1,6 +1,6 @@
 import json
 
-from flask_restplus import marshal
+from flask_restx import marshal
 from tests.factories import ProjectFactory, ProjectDecisionPackageFactory
 from app.api.projects.response_models import PROJECT_DECISION_PACKAGE_MODEL
 

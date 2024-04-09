@@ -31,13 +31,17 @@ interface QualifiedPersonProps {
   mineGuid: string;
   loading?: boolean;
   isCore?: boolean;
+  canEditTSF: boolean;
+  isEditMode: boolean;
 }
 
 export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
-  const { isCore, mineGuid, partyRelationships } = props;
+  const { isCore, mineGuid, partyRelationships, canEditTSF, isEditMode } = props;
   const { renderConfig, addContactModalConfig, tsfFormName } = useContext(TailingsContext);
   const formValues = useSelector((state) => getFormValues(tsfFormName)(state));
   const [currentQp, setCurrentQp] = useState(null);
+
+  const canEditTSFAndEditMode = canEditTSF && isEditMode;
 
   const handleCreateQP = (value) => {
     props.change(tsfFormName, "qualified_person.party_guid", value.party_guid);
@@ -110,7 +114,7 @@ export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
     props.formValues?.qualified_person?.party_guid &&
     !props.formValues?.qualified_person?.mine_party_appt_guid;
 
-  const fieldsDisabled = !canEditQFP || props.loading;
+  const fieldsDisabled = !canEditQFP || props.loading || !canEditTSFAndEditMode;
 
   return (
     <Row>
@@ -120,18 +124,20 @@ export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
           {isCore ? (
             <Col span={12}>
               <Row justify="end">
-                <Popconfirm
-                  placement="top"
-                  title="Once acknowledged by the Ministry, assigning a new Qualified Person will replace the current one and set the previous status to inactive. Continue?"
-                  okText="Yes"
-                  cancelText="No"
-                  onConfirm={openCreateQPModal}
-                >
-                  <Button style={{ whiteSpace: "normal" }} type="primary">
-                    <PlusCircleFilled />
-                    Update TSF Qualified Person
-                  </Button>
-                </Popconfirm>
+                {canEditTSFAndEditMode && (
+                  <Popconfirm
+                    placement="top"
+                    title="Once acknowledged by the Ministry, assigning a new Qualified Person will replace the current one and set the previous status to inactive. Continue?"
+                    okText="Yes"
+                    cancelText="No"
+                    onConfirm={openCreateQPModal}
+                  >
+                    <Button style={{ whiteSpace: "normal" }} type="primary">
+                      <PlusCircleFilled />
+                      Update TSF Qualified Person
+                    </Button>
+                  </Popconfirm>
+                )}
                 {formValues?.qualified_person?.update_timestamp && (
                   <Typography.Paragraph style={{ textAlign: "right" }}>
                     <b>Last Updated</b>
@@ -145,45 +151,51 @@ export const QualifiedPerson: FC<QualifiedPersonProps> = (props) => {
             </Col>
           ) : (
             <Col>
-              <Popconfirm
-                style={{ maxWidth: "150px" }}
-                placement="top"
-                title="Once acknowledged by the Ministry, assigning a new Qualified Person will replace the current one and set the previous status to inactive. Continue?"
-                okText="Yes"
-                cancelText="No"
-                onConfirm={openCreateQPModal}
-              >
-                <Button style={{ display: "inline", float: "right" }} type="primary">
-                  <PlusCircleFilled />
-                  Assign a new Qualified Person
-                </Button>
-              </Popconfirm>
+              {canEditTSFAndEditMode && (
+                <Popconfirm
+                  style={{ maxWidth: "150px" }}
+                  placement="top"
+                  title="Once acknowledged by the Ministry, assigning a new Qualified Person will replace the current one and set the previous status to inactive. Continue?"
+                  okText="Yes"
+                  cancelText="No"
+                  onConfirm={openCreateQPModal}
+                >
+                  <Button style={{ display: "inline", float: "right" }} type="primary">
+                    <PlusCircleFilled />
+                    Assign a new Qualified Person
+                  </Button>
+                </Popconfirm>
+              )}
             </Col>
           )}
         </Row>
 
-        {props.formValues?.qualified_person?.party_guid ? (
-          <Alert
-            description="Assigning a new Qualified Person will replace the current Qualified Person and set the previous Qualified Person’s status to inactive."
-            showIcon
-            type="info"
-            message={""}
-          />
-        ) : (
-          <Alert
-            description="There is no Qualified Person (QP) on file for this facility. Click above to assign a new Qualified Person."
-            showIcon
-            type="info"
-            message={""}
-          />
-        )}
-        {daysToQPExpiry && daysToQPExpiry < 0 && (
-          <Alert
-            message="The Qualified Person's term has expired."
-            description=""
-            showIcon
-            type="error"
-          />
+        {canEditTSFAndEditMode && (
+          <div>
+            {props.formValues?.qualified_person?.party_guid ? (
+              <Alert
+                description="Assigning a new Qualified Person will replace the current Qualified Person and set the previous Qualified Person’s status to inactive."
+                showIcon
+                type="info"
+                message={""}
+              />
+            ) : (
+              <Alert
+                description="There is no Qualified Person (QP) on file for this facility. Click above to assign a new Qualified Person."
+                showIcon
+                type="info"
+                message={""}
+              />
+            )}
+            {daysToQPExpiry && daysToQPExpiry < 0 && (
+              <Alert
+                message="The Qualified Person's term has expired."
+                description=""
+                showIcon
+                type="error"
+              />
+            )}
+          </div>
         )}
         <Typography.Title level={4} className="margin-large--top">
           Contact Information

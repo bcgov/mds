@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps, useParams, withRouter } from "react-router-dom";
-import { EyeOutlined } from "@ant-design/icons";
+import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { Button, Typography } from "antd";
 import {
   CONSEQUENCE_CLASSIFICATION_CODE_HASH,
@@ -16,20 +16,18 @@ import {
 import { bindActionCreators } from "redux";
 import { storeDam } from "@mds/common/redux/actions/damActions";
 import { storeTsf } from "@mds/common/redux/actions/tailingsActions";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import { EDIT_DAM, MINE_TAILINGS_DETAILS } from "@/constants/routes";
 import { IDam, ITailingsStorageFacility } from "@mds/common";
 import { ColumnsType } from "antd/lib/table";
-import { FixedType } from "rc-table/lib/interface";
 import {
   renderCategoryColumn,
   renderTextColumn,
+  renderActionsColumn,
 } from "@mds/common/components/common/CoreTableCommonColumns";
-import { Feature } from "@mds/common";
-import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 
 interface MineTailingsTableProps {
   tailings: ITailingsStorageFacility[];
@@ -45,6 +43,8 @@ interface MineTailingsTableProps {
   history?: any;
   storeDam?: typeof storeDam;
   storeTsf?: typeof storeTsf;
+  tsfV2Enabled: boolean;
+  canEditTSF: boolean;
 }
 
 const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (props) => {
@@ -55,11 +55,9 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
     openEditTailingsModal,
     handleEditTailings,
     tailings,
+    tsfV2Enabled,
+    canEditTSF,
   } = props;
-
-  const { isFeatureEnabled } = useFeatureFlag();
-
-  const tsfV2Enabled = isFeatureEnabled(Feature.TSF_V2);
 
   const transformRowData = (items: ITailingsStorageFacility[]) => {
     return items?.map((tailing) => {
@@ -70,7 +68,7 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
     });
   };
 
-  const handleEditDam = (event, dam: IDam) => {
+  const handleEditDam = (event, dam: IDam, isEditMode, canEditDam) => {
     event.preventDefault();
     props.storeDam(dam);
     const tsf = tailings.find(
@@ -82,12 +80,97 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
     const url = EDIT_DAM.dynamicRoute(
       mineGuid,
       dam.mine_tailings_storage_facility_guid,
-      dam.dam_guid
+      dam.dam_guid,
+      isEditMode,
+      canEditDam
     );
     props.history.push(url);
   };
 
-  const columns: ColumnsType<ITailingsStorageFacility> = [
+  const renderOldTSFActions = () => {
+    return {
+      key: "actions",
+      fixed: "right",
+      render: (record) => {
+        return (
+          <div>
+            <AuthorizationWrapper permission={Permission.EDIT_TSF}>
+              <Button
+                type="primary"
+                size="small"
+                ghost
+                onClick={(event) => openEditTailingsModal(event, handleEditTailings, record)}
+              >
+                <img src={EDIT_OUTLINE_VIOLET} alt="Edit TSF" />
+              </Button>
+            </AuthorizationWrapper>
+          </div>
+        );
+      },
+    };
+  };
+
+  const newTSFActions = [
+    {
+      key: "view",
+      label: "View TSF",
+      icon: <EyeOutlined />,
+      clickFunction: (_event, record) => {
+        props.history.push({
+          pathname: MINE_TAILINGS_DETAILS.dynamicRoute(
+            record.mine_tailings_storage_facility_guid,
+            record.mine_guid,
+            "basic-information",
+            false
+          ),
+        });
+      },
+    },
+    ...(canEditTSF
+      ? [
+          {
+            key: "edit",
+            label: "Edit TSF",
+            icon: <EditOutlined />,
+            clickFunction: (_event, record) => {
+              props.history.push({
+                pathname: MINE_TAILINGS_DETAILS.dynamicRoute(
+                  record.mine_tailings_storage_facility_guid,
+                  record.mine_guid,
+                  "basic-information",
+                  true
+                ),
+              });
+            },
+          },
+        ]
+      : []),
+  ];
+
+  const damActions = [
+    {
+      key: "view",
+      label: "View Dam",
+      icon: <EyeOutlined />,
+      clickFunction: (_event, record) => {
+        handleEditDam(event, record, false, false);
+      },
+    },
+    ...(canEditTSF
+      ? [
+          {
+            key: "edit",
+            label: "Edit Dam",
+            icon: <EditOutlined />,
+            clickFunction: (_event, record) => {
+              handleEditDam(event, record, true, true);
+            },
+          },
+        ]
+      : []),
+  ];
+
+  const columns = [
     {
       title: "Name",
       dataIndex: "mine_tailings_storage_facility_name",
@@ -143,44 +226,7 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
       dataIndex: "longitude",
       render: (text) => <div title="Longitude">{text || EMPTY_FIELD}</div>,
     },
-    {
-      key: "operations",
-      title: "Actions",
-      fixed: "right",
-      render: (record) => {
-        return (
-          <div>
-            <AuthorizationWrapper permission={Permission.EDIT_TSF}>
-              <Button
-                type="primary"
-                size="small"
-                ghost
-                onClick={(event) => openEditTailingsModal(event, handleEditTailings, record)}
-              >
-                <img src={EDIT_OUTLINE_VIOLET} alt="Edit TSF" />
-              </Button>
-              {tsfV2Enabled && (
-                <Button
-                  type="primary"
-                  size="small"
-                  ghost
-                  onClick={() =>
-                    props.history.push(
-                      MINE_TAILINGS_DETAILS.dynamicRoute(
-                        record.mine_tailings_storage_facility_guid,
-                        record.mine_guid
-                      )
-                    )
-                  }
-                >
-                  <EyeOutlined className="icon-lg icon-svg-filter" />
-                </Button>
-              )}
-            </AuthorizationWrapper>
-          </div>
-        );
-      },
-    },
+    ...(tsfV2Enabled ? [renderActionsColumn({ actions: newTSFActions })] : [renderOldTSFActions()]),
   ];
 
   const damColumns = [
@@ -191,36 +237,14 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
       "Consequence Classification",
       CONSEQUENCE_CLASSIFICATION_CODE_HASH
     ),
-    {
-      title: "",
-      fixed: "right" as FixedType,
-      key: "edit",
-      render: (record) => {
-        return (
-          <div>
-            <AuthorizationWrapper>
-              <Button
-                type="primary"
-                size="small"
-                ghost
-                onClick={(event) => {
-                  handleEditDam(event, record);
-                }}
-              >
-                <img src={EDIT_OUTLINE_VIOLET} alt="Edit Dam" />
-              </Button>
-            </AuthorizationWrapper>
-          </div>
-        );
-      },
-    },
+    renderActionsColumn({ actions: damActions }),
   ];
 
   return (
     <CoreTable
       condition={props.isLoaded}
       dataSource={transformRowData(props.tailings)}
-      columns={columns}
+      columns={columns as ColumnsType<ITailingsStorageFacility>}
       rowKey="mine_tailings_storage_facility_guid"
       classPrefix="tailings"
       expandProps={

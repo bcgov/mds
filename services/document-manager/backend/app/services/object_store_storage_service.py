@@ -1,8 +1,9 @@
 import io
+import math
 import os
 import sys
 import threading
-from datetime import datetime
+from datetime import datetime, timedelta
 from stat import S_IFREG
 
 import boto3
@@ -364,3 +365,117 @@ class ObjectStoreStorageService():
             Config=boto3.s3.transfer.TransferConfig(multipart_chunksize=1024 * 1024 * 8, use_threads=False),
             Callback=zip_upload_progress_callback
         )
+
+    def create_multipart_upload(self, key, file_size):
+        """
+        Create a multipart upload for a file at the given key
+        :param key: The key of the file
+        :param file_size: The size of the file to upload
+        """
+        try:
+            upload = self._client.create_multipart_upload(Bucket=Config.OBJECT_STORE_BUCKET, Key=key, Expires=datetime.now() + timedelta(days=1), ContentType='application/pdf')
+
+            upload_id = upload['UploadId']
+            parts = self.create_multipart_upload_urls(key, upload_id, file_size)
+
+            return {
+                "uploadId": upload_id,
+                "parts": parts
+            }
+        except ClientError as e:
+            current_app.logger.error('Failed to create the multipart upload: %s', e)
+            raise Exception(f'Failed to create the multipart upload: {e}')
+    
+    def create_multipart_upload_urls(self, key, uploadId, file_size):
+        """
+        Create a list of upload URLs for each part of the file
+        :param key: The key of the file
+        :param uploadId: The upload id of the multipart upload
+        :file_size: The size of the file to upload
+        """
+        chunk_size = 5 * 1024 * 1024
+
+        num_chunks = math.ceil(file_size / chunk_size)
+
+        upload_urls = []
+
+        for i in range(num_chunks):
+            part_size = chunk_size
+            part_no = i + 1
+            if i == num_chunks:
+                # last chunk should cover the remaining of what's left of the file
+                part_size = file_size - (chunk_size * len(chunk_size - 1))
+
+            upload_url = self._sign_upload_url(key, uploadId, part_no, part_size)
+
+            upload_urls.append({
+                "part": part_no,
+                "size": part_size,
+                "url": upload_url
+            })
+
+        return upload_urls
+
+    
+    def _sign_upload_url(self, key, uploadId, part_no, part_size):
+        try:
+            return self._client.generate_presigned_url(
+                ClientMethod='upload_part',
+                HttpMethod='PUT',
+                ExpiresIn=3600,
+                Params={
+                    "Bucket": Config.OBJECT_STORE_BUCKET,
+                    "Key": key,
+                    "UploadId": uploadId,
+                    "PartNumber": part_no,
+                }
+            )
+        except ClientError as e:
+            current_app.logger.error('Failed to sign the upload url: %s', e)
+            raise Exception(f'Failed to sign the upload url: {e}')
+
+    def _validate_uploaded_file(self, key):
+        """
+        Validate that the uploaded file is less than the maximum allowed size
+        :param key: The key of the file
+        """
+
+        try :
+            file_size = self._client.head_object(Bucket=Config.OBJECT_STORE_BUCKET, Key=key)['ContentLength']
+
+            if file_size > Config.MAX_CONTENT_LENGTH:
+                raise Exception(f'File size must be less than: {Config.MAX_CONTENT_LENGTH} bytes')
+        except ClientError as e:
+            raise Exception(f'Failed to get the file size: {e}')
+
+    def list_versions(self, key):
+        return self._client.list_object_versions(Bucket=Config.OBJECT_STORE_BUCKET, Prefix=key)
+
+    def complete_multipart_upload(self, uploadId, key, parts):
+        """
+        Complete the multipart upload by sending a request to S3 to merge the parts
+        :param uploadId: The upload id of the multipart upload
+        :param key: The key of the file
+        :param parts: The list of parts to merge
+        """
+        print('Completing multipart upload', uploadId)
+        try:
+            result = self._client.complete_multipart_upload(
+                Bucket=Config.OBJECT_STORE_BUCKET,
+                Key=key,
+                UploadId=uploadId,
+                MultipartUpload={
+                    'Parts': [{
+                        'ETag': part['etag'],
+                        'PartNumber': part['part']
+                    } for part in parts]
+                }
+            )
+
+            self._validate_uploaded_file(key)
+
+            return result
+        except ClientError as e:
+            current_app.logger.error('Failed to complete the multipart upload: %s', e)
+            raise e
+                               

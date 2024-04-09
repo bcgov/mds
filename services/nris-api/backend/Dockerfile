@@ -1,4 +1,4 @@
-FROM python:3.6
+FROM python:3.11.7
 
 ENV LD_LIBRARY_PATH="/opt/oracle/instantclient:${LD_LIBRARY_PATH}" \
     PATH="/opt/oracle/instantclient:${PATH}" \
@@ -35,6 +35,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN mkdir -p /opt/app-root/src/wallet
 COPY cwallet.sso /opt/app-root/src/wallet
 COPY sqlnet.ora /opt/app-root/src/wallet
+
+ENV PYTHONUNBUFFERED=1
 
 # Run the server
 EXPOSE 5500

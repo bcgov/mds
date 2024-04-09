@@ -1,13 +1,67 @@
 from app.extensions import api
-from flask_restplus import fields, marshal
+from flask_restx import fields, marshal
 
 from app.api.mines.response_models import MINE_DOCUMENT_MODEL, MINES_MODEL
-
+from app.api.parties.response_models import PARTY, ADDRESS
 
 class Requirement(fields.Raw):
     def format(self, value):
         return marshal(value, REQUIREMENTS_MODEL)
 
+IRT_MODEL_ATTRIBUTES = api.model(
+    'InformationRequirementsTable', {
+        'irt_guid': fields.String,
+        'status_code': fields.String
+    })
+
+MAJOR_MINE_APPLICATION_MODEL_ATTRIBUTES = api.model(
+    'MajorMineApplication', {
+        'major_mine_application_guid': fields.String,
+        'status_code': fields.String
+    }
+)
+
+PROJECT_SUMMARY_MODEL_ATTRIBUTES = api.model(
+    'ProjectSummary', {
+        'project_summary_guid': fields.String,
+        'status_code': fields.String
+    }
+)
+
+PROJECT_CONTACT_MODEL_ATTRIBUTES = api.model(
+    'ProjectContact', {
+        'first_name': fields.String,
+        'last_name': fields.String,
+        'is_primary': fields.Boolean
+    }
+)
+
+PROJECT_MODEL_ATTRIBUTES = api.model(
+    'ProjectAttributes', {
+        'project_guid': fields.String,
+        'project_title': fields.String,
+        'proponent_project_id': fields.String,
+        'contacts': fields.List(fields.Nested(PROJECT_CONTACT_MODEL_ATTRIBUTES)),
+        'project_summary': fields.Nested(PROJECT_SUMMARY_MODEL_ATTRIBUTES),
+        'major_mine_application': fields.Nested(MAJOR_MINE_APPLICATION_MODEL_ATTRIBUTES),
+        'information_requirements_table': fields.Nested(IRT_MODEL_ATTRIBUTES),
+        'update_timestamp': fields.DateTime
+    }
+)
+
+PROJECT_LINK_MODEL = api.model(
+    'ProjectLink', {
+        'project_link_guid': fields.String,
+        'project_guid': fields.String,
+        'related_project_guid': fields.String,
+        'update_user': fields.String,
+        'update_timestamp': fields.DateTime,
+        'create_user': fields.String,
+        'create_timestamp': fields.DateTime,
+        'project': fields.Nested(PROJECT_MODEL_ATTRIBUTES),
+        'related_project': fields.Nested(PROJECT_MODEL_ATTRIBUTES)
+    }
+)
 
 PROJECT_SUMMARY_DOCUMENT_MODEL = api.inherit('ProjectSummaryDocument', MINE_DOCUMENT_MODEL, {
     'project_summary_id': fields.Integer,
@@ -53,7 +107,7 @@ PROJECT_SUMMARY_CONTACT_MODEL = api.model(
         'email': fields.String,
         'phone_number': fields.String,
         'phone_extension': fields.String,
-        'is_primary': fields.Boolean
+        'is_primary': fields.Boolean,
     })
 
 PROJECT_SUMMARY_AUTHORIZATION_MODEL = api.model(
@@ -62,7 +116,38 @@ PROJECT_SUMMARY_AUTHORIZATION_MODEL = api.model(
         'project_summary_guid': fields.String,
         'project_summary_permit_type': fields.List(fields.String),
         'project_summary_authorization_type': fields.String,
-        'existing_permits_authorizations': fields.List(fields.String)
+        'existing_permits_authorizations': fields.List(fields.String),
+        'amendment_changes': fields.List(fields.String),
+        'amendment_severity': fields.String,
+        'is_contaminated': fields.Boolean,
+        'new_type': fields.String,
+        'authorization_description': fields.String,
+        'exemption_requested': fields.Boolean,
+        'ams_tracking_number': fields.String,
+        'ams_outcome': fields.String,
+        'ams_status_code': fields.String,
+        'ams_submission_timestamp': fields.DateTime,
+    })
+
+PROJECT_CONTACT_MODEL = api.model(
+    'ProjectContact', {
+        'project_contact_guid': fields.String,
+        'project_guid': fields.String,
+        'job_title': fields.String,
+        'company_name': fields.String,
+        'email': fields.String,
+        'phone_number': fields.String,
+        'phone_extension': fields.String,
+        'is_primary': fields.Boolean,
+        'first_name': fields.String,
+        'last_name': fields.String,
+        'address': fields.List(fields.Nested(ADDRESS)),
+    })
+
+MUNICIPALITY_MODEL = api.model(
+    'Municipality', {
+        'municipality_guid': fields.String,
+        'municipality_name': fields.String
     })
 
 PROJECT_SUMMARY_MODEL = api.model(
@@ -82,25 +167,41 @@ PROJECT_SUMMARY_MODEL = api.model(
         'expected_permit_receipt_date': fields.DateTime,
         'expected_project_start_date': fields.DateTime,
         'documents': fields.List(fields.Nested(PROJECT_SUMMARY_DOCUMENT_MODEL)),
-        'contacts': fields.List(fields.Nested(PROJECT_SUMMARY_CONTACT_MODEL)),
+        'contacts': fields.List(fields.Nested(PROJECT_CONTACT_MODEL)),
         'authorizations': fields.List(fields.Nested(PROJECT_SUMMARY_AUTHORIZATION_MODEL)),
         'update_user': fields.String,
         'update_timestamp': fields.DateTime,
         'create_user': fields.String,
-        'create_timestamp': fields.DateTime
-    })
-
-PROJECT_CONTACT_MODEL = api.model(
-    'ProjectContact', {
-        'project_contact_guid': fields.String,
-        'project_guid': fields.String,
-        'name': fields.String,
-        'job_title': fields.String,
-        'company_name': fields.String,
-        'email': fields.String,
-        'phone_number': fields.String,
-        'phone_extension': fields.String,
-        'is_primary': fields.Boolean
+        'create_timestamp': fields.DateTime,
+        'agent': fields.Nested(PARTY),
+        'is_agent': fields.Boolean,
+        'is_legal_land_owner': fields.Boolean,
+        'is_crown_land_federal_or_provincial': fields.Boolean,
+        'is_landowner_aware_of_discharge_application': fields.Boolean,
+        'has_landowner_received_copy_of_application': fields.Boolean,
+        'legal_land_owner_name': fields.String,
+        'legal_land_owner_contact_number': fields.String,
+        'legal_land_owner_email_address': fields.String,
+        'facility_operator': fields.Nested(PARTY),
+        'facility_type': fields.String,
+        'facility_desc': fields.String,
+        'facility_latitude': fields.Fixed(decimals=7),
+        'facility_longitude': fields.Fixed(decimals=7),
+        'facility_coords_source': fields.String,
+        'facility_coords_source_desc': fields.String,
+        'facility_pid_pin_crown_file_no': fields.String,
+        'legal_land_desc': fields.String,
+        'facility_lease_no': fields.String,
+        'zoning': fields.Boolean,
+        'zoning_reason': fields.String,
+        'nearest_municipality': fields.String(attribute='nearest_municipality_guid'),
+        'company_alias': fields.String,
+        'incorporation_number': fields.String,
+        'is_legal_address_same_as_mailing_address': fields.Boolean,
+        'is_billing_address_same_as_mailing_address': fields.Boolean,
+        'is_billing_address_same_as_legal_address': fields.Boolean,
+        'applicant': fields.Nested(PARTY),
+        'municipality': fields.Nested(MUNICIPALITY_MODEL)
     })
 
 REQUIREMENTS_MODEL = api.model(
@@ -246,7 +347,8 @@ PROJECT_MODEL = api.model(
         'update_user': fields.String,
         'update_timestamp': fields.DateTime,
         'create_user': fields.String,
-        'create_timestamp': fields.DateTime
+        'create_timestamp': fields.DateTime,
+        'project_links': fields.List(fields.Nested(PROJECT_LINK_MODEL))
     })
 
 PROJECT_MINE_LIST_MODEL = api.model(

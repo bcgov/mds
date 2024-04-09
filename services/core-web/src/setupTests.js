@@ -18,6 +18,12 @@ jest.mock("react-lottie", () => ({
   default: "lottie-mock",
 }));
 
+jest.mock("@mds/common/providers/featureFlags/useFeatureFlag", () => ({
+  useFeatureFlag: () => ({
+    isFeatureEnabled: () => true,
+  }),
+}));
+
 const location = JSON.stringify(window.location);
 delete window.location;
 
@@ -28,4 +34,18 @@ Object.defineProperty(window, "location", {
 Object.defineProperty(global.location, "href", {
   value: "http://localhost",
   configurable: true,
+});
+
+Object.defineProperty(window, "matchMedia", {
+  writable: true,
+  value: jest.fn().mockImplementation((query) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: jest.fn(),
+    removeListener: jest.fn(),
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    dispatchEvent: jest.fn(),
+  })),
 });

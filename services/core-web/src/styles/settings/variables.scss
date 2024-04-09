@@ -9,6 +9,7 @@ $medium-grey: #606060;
 $violet: #5e46a1;
 $transparent-violet: #bdb3d826;
 $light-violet: #7c66ad;
+$lightest-violet: #EFEDF6;
 $hover-violet: #392B62;
 $hover-blue: #3d6de7;
 $btn-red: #bc2929;
@@ -24,6 +25,7 @@ $light-grey: #ded9d9;
 $lightest-grey: #f4f0f0;
 $off-white: #fcf8f8;
 $pure-white: #ffffff;
+$background: #f2f2f2;
 
 // Special Colours
 $alert-red: #d40d0d;
@@ -58,6 +60,7 @@ $nav-color: $darkest-grey;
 $nav-border-color: $medium-grey;
 $nav-height: 62px;
 $loading-bar-height: 2px;
+$header-height: $nav-height + $loading-bar-height;
 
 // Ant Component Overrides
 $h-divider-color: $darkest-grey;

@@ -5,7 +5,7 @@ import { Badge, Button, Col, Dropdown, Popconfirm, Row, Tooltip, Typography } fr
 import { DeleteOutlined, EditOutlined, EyeOutlined, WarningOutlined } from "@ant-design/icons";
 import { dateSorter, formatDate } from "@common/utils/helpers";
 import * as Strings from "@mds/common/constants/strings";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 import {
   getExplosivesPermitBadgeStatusType,
   getExplosivesPermitClosedBadgeStatusType,
@@ -480,7 +480,7 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
         render: (text, record) => (
           <div
             className="underline"
-            onClick={(event) => handleOpenViewMagazineModal(event, record, "DET")}
+            onClick={(event) => handleOpenViewMagazineModal(event, record, "EXP")}
           >
             {text || "0"} kg
           </div>

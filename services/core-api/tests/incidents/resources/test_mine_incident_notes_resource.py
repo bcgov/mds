@@ -1,5 +1,5 @@
 import json
-from flask_restplus import marshal
+from flask_restx import marshal
 
 from tests.status_code_gen import *
 from tests.factories import MineIncidentNoteFactory, MineIncidentFactory, MineFactory

@@ -1,7 +1,14 @@
 {
   // Change this to match your project
-  "include": ["src/**/*", "webpack.config.ts", "types", "src/@Types/global.d.ts"],
-  "exclude": ["node_modules", "**/*.spec.ts"],
+  "include": [
+    "src/**/*",
+    "webpack.config.ts",
+    "types",
+    "src/@Types/global.d.ts",
+    "jest.config.js",
+    "babel.config.js"
+  ],
+  "exclude": ["node_modules"],
   "compilerOptions": {
     "outDir": "dist" /* Redirect output structure to the directory. */,
     "baseUrl": "." /* Base directory to resolve non-absolute module names. */,
@@ -13,6 +20,7 @@
     "declaration": false /* Generate .d.ts files from TypeScript and JavaScript files in your project. */,
     "declarationMap": true,
     "declarationDir": "dist",
+    "module": "ESNext",
     "moduleResolution": "node",
     "sourceMap": true,
     "allowJs": true /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */,

@@ -29,6 +29,7 @@ exports[`AdvancedMineSearchForm renders properly 1`] = `
   >
     <Button
       className="btn--dropdown"
+      data-cy="expand-filters-button"
       onClick={[Function]}
     >
       Expand Filters
@@ -47,6 +48,7 @@ exports[`AdvancedMineSearchForm renders properly 1`] = `
     </Button>
     <Button
       className="full-mobile"
+      data-cy="apply-filter-button"
       htmlType="submit"
       type="primary"
     >

@@ -17,7 +17,7 @@ const setupDispatchProps = () => {
 
 const setupProps = () => {
   props.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
-  props.mineAlerts = MOCK.MINE_ALERTS;
+  props.mineAlerts = MOCK.MINE_ALERTS.records;
 };
 
 beforeEach(() => {

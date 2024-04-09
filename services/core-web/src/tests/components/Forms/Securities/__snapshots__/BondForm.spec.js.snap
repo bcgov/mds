@@ -313,7 +313,7 @@ exports[`BondForm renders properly 1`] = `
     <Col
       xs={24}
     >
-      <Connect(DocumentTable)
+      <DocumentTable
         documentColumns={
           Array [
             Object {
@@ -437,15 +437,7 @@ exports[`BondForm renders properly 1`] = `
       }
       allowMultiple={true}
       allowRevert={true}
-      component={
-        Object {
-          "$$typeof": Symbol(react.memo),
-          "WrappedComponent": [Function],
-          "compare": null,
-          "displayName": "Connect(FileUpload)",
-          "type": [Function],
-        }
-      }
+      component={[Function]}
       id="documents"
       name="documents"
       onFileLoad={[Function]}

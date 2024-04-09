@@ -145,7 +145,10 @@ export class Project extends Component {
               </Tag>
             </span>
           </h1>
-          <Link to={routes.MINE_PRE_APPLICATIONS.dynamicRoute(this.props.project.mine_guid)}>
+          <Link
+            data-cy="back-to-major-project-link"
+            to={routes.MINE_PRE_APPLICATIONS.dynamicRoute(this.props.project.mine_guid)}
+          >
             <ArrowLeftOutlined className="padding-sm--right" />
             Back to: {this.props.project.mine_name} Major projects
           </Link>

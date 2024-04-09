@@ -2,7 +2,7 @@ import requests
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
 from flask import request, current_app
-from flask_restplus import Resource
+from flask_restx import Resource
 
 from app.extensions import api
 from app.api.utils.access_decorators import (requires_any_of, EDIT_VARIANCE, MINESPACE_PROPONENT)

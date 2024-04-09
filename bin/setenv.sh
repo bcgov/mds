@@ -14,6 +14,7 @@ document-manager/backend
 filesystem-provider
 minespace-web
 tusd
+permits
 "
 
 bold=$(tput bold)
@@ -67,6 +68,7 @@ function loadExternalSecrets() {
         fi
     fi
 
+    echo "Configuring Access to Fontawesome"
     # Read ARTIFACTORY_TOKEN from local-dev-secrets ocp secret
     ARTIFACTORY_TOKEN=$(kubectl get secret local-dev-secrets --namespace 4c2ba9-dev -o go-template='{{.data.ARTIFACTORY_TOKEN | base64decode}}')
     
@@ -75,6 +77,17 @@ function loadExternalSecrets() {
     yarn config set 'npmScopes["fortawesome"].npmAlwaysAuth' true -H
     yarn config set 'npmScopes["fortawesome"].npmRegistryServer' "https://artifacts.developer.gov.bc.ca/artifactory/api/npm/m4c2-mds/" -H
     yarn config unset 'npmScopes["fortawesome"].npmAuthToken' -H # Remove previous token used for authentication
+
+    echo "Configuring S3 Access"
+    OBJECT_STORE_ACCESS_KEY=$(kubectl get secret local-dev-secrets --namespace 4c2ba9-dev -o go-template='{{.data.OBJECT_STORE_ACCESS_KEY | base64decode}}')
+
+    for S in $SERVICES
+    do
+        sed -i "s/OBJECT_STORE_ACCESS_KEY=.*/OBJECT_STORE_ACCESS_KEY=$OBJECT_STORE_ACCESS_KEY/g" $SERVICES_PATH/$S/.env
+        sed -i "s/AWS_SECRET_ACCESS_KEY=.*/AWS_SECRET_ACCESS_KEY=$OBJECT_STORE_ACCESS_KEY/g" $SERVICES_PATH/$S/.env
+    done
+
+    echo "Successfully configured secrets!"
 }
 
 if [ -z "$INPUT" ];

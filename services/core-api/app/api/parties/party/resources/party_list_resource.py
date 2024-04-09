@@ -1,5 +1,5 @@
 from flask import request, current_app
-from flask_restplus import Resource, marshal
+from flask_restx import Resource, marshal
 from sqlalchemy_filters import apply_sort, apply_pagination
 from werkzeug.exceptions import BadRequest, InternalServerError
 from sqlalchemy import and_, or_
@@ -181,6 +181,7 @@ class PartyListResource(Resource, UserMixin):
             job_title=data.get('job_title'),
             job_title_code=data.get('job_title_code'),
             organization_guid=data.get('organization_guid'),
+            address_type_code=data.get('address_type_code'),
             add_to_session=True)
 
         if not party:

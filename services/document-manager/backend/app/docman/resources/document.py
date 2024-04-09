@@ -63,7 +63,7 @@ class DocumentListResource(Resource):
 
         pretty_path = os.path.join(base_folder, pretty_folder, filename)
 
-        response, object_store_path = DocumentUploadHelper.initiate_document_upload(
+        response, object_store_path, multipart_upload_path, multipart_upload_id = DocumentUploadHelper.initiate_document_upload(
             document_guid=document_guid,
             file_path=file_path,
             folder=folder,
@@ -76,7 +76,10 @@ class DocumentListResource(Resource):
             upload_started_date=datetime.utcnow(),
             file_display_name=filename,
             path_display_name=pretty_path,
-            object_store_path=object_store_path)
+            object_store_path=object_store_path,
+            multipart_upload_path=multipart_upload_path,
+            multipart_upload_id=multipart_upload_id
+        )
         document.save()
 
         return response

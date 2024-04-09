@@ -64,14 +64,10 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
   mines,
   inspectors,
   explosivesPermits,
-  explosivesPermitDocumentTypeDropdownOptions,
-  // eslint-disable-next-line @typescript-eslint/no-shadow
-  updateExplosivesPermit,
-  // eslint-disable-next-line @typescript-eslint/no-shadow
-  updateExplosivesPermitAmendment,
-  // eslint-disable-next-line @typescript-eslint/no-shadow
-  fetchExplosivesPermits,
-  // eslint-disable-next-line @typescript-eslint/no-shadow
+  explosivesPermitDocumentTypeDropdownOptions, // eslint-disable-next-line @typescript-eslint/no-shadow
+  updateExplosivesPermit, // eslint-disable-next-line @typescript-eslint/no-shadow
+  updateExplosivesPermitAmendment, // eslint-disable-next-line @typescript-eslint/no-shadow
+  fetchExplosivesPermits, // eslint-disable-next-line @typescript-eslint/no-shadow
   closeModal,
   ...props
 }) => {
@@ -91,6 +87,7 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
   };
 
   const handleDocumentPreview = (documentTypeCode, values: any, record) => {
+    if (record.isAmendment) values.amendment_no = record.amendment_no;
     const payload = {
       explosives_permit_guid: record.explosives_permit_guid,
       template_data: values,
@@ -182,7 +179,11 @@ export const ExplosivesPermit: FC<ExplosivesPermitProps> = ({
     return props.createExplosivesPermitAmendment(payload).then((newPermit) => {
       fetchExplosivesPermits(mineGuid);
       if (issueAfter) {
-        handleOpenExplosivesPermitDecisionModal(null, { ...newPermit.data, isAmendment: true });
+        handleOpenExplosivesPermitDecisionModal(null, {
+          ...newPermit.data,
+          isAmendment: true,
+          amendment_no: amendment_count,
+        });
       } else {
         closeModal();
       }

@@ -5,7 +5,7 @@ import * as router from "@/constants/routes";
 import PropTypes from "prop-types";
 import { formatDate } from "@common/utils/helpers";
 import * as Strings from "@mds/common/constants/strings";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 import { getApplicationStatusType } from "@/constants/theme";
 import DocumentLink from "@/components/common/DocumentLink";
 

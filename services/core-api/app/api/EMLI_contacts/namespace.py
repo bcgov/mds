@@ -1,4 +1,4 @@
-from flask_restplus import Namespace
+from flask_restx import Namespace
 
 from app.api.EMLI_contacts.resources.EMLI_contact_list import EMLIContactListResource
 from app.api.EMLI_contacts.resources.EMLI_contact import EMLIContactResource

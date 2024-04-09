@@ -29,13 +29,12 @@ import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import * as FORM from "@/constants/forms";
 import Loading from "@/components/common/Loading";
 import customPropTypes from "@/customPropTypes";
-import {
-  FINAL_REPORT_DOCUMENTS_FORM_FIELD,
-  INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD,
-} from "@/components/Forms/incidents/IncidentForm";
+
 import * as routes from "@/constants/routes";
 import { modalConfig } from "@/components/modalContent/config";
 import StepForms from "@/components/pages/Incidents/IncidentStepForms";
+const INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD = "initial_notification_documents";
+const FINAL_REPORT_DOCUMENTS_FORM_FIELD = "final_report_documents";
 
 const propTypes = {
   incident: customPropTypes.incident.isRequired,

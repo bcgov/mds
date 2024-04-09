@@ -1,6 +1,5 @@
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
-import { ENVIRONMENT } from "@mds/common";
 import { request, success, error } from "../actions/genericActions";
 import * as reducerTypes from "@mds/common/constants/reducerTypes";
 import * as Strings from "@mds/common/constants/strings";
@@ -8,17 +7,19 @@ import * as projectActions from "../actions/projectActions";
 import * as API from "@mds/common/constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
+import { ENVIRONMENT } from "@mds/common/constants";
 import {
   ICreateProjectSummary,
   IProjectSummary,
   IProject,
+  IProjectLink,
   IInformationRequirementsTable,
   IFileInfo,
   ICreateMajorMinesApplication,
   IMajorMinesApplication,
   IProjectDecisionPackage,
   IProjectPageData,
-} from "@mds/common";
+} from "@mds/common/interfaces";
 import { AppThunk } from "@mds/common/interfaces/appThunk.type";
 import { AxiosResponse } from "axios";
 
@@ -31,14 +32,17 @@ export const createProjectSummary = (
 ): Promise<AxiosResponse<IProjectSummary>> => {
   dispatch(request(reducerTypes.CREATE_MINE_PROJECT_SUMMARY));
   dispatch(showLoading());
-  return CustomAxios()
+  const messages = {
+    errorToastMessage: "default",
+    successToastMessage: message,
+  };
+  return CustomAxios(messages)
     .post(
       ENVIRONMENT.apiUrl + API.NEW_PROJECT_SUMMARY(),
       { ...payload, mine_guid: mineGuid },
       createRequestHeader()
     )
     .then((response: AxiosResponse<IProjectSummary>) => {
-      notification.success({ message, duration: 10 });
       dispatch(success(reducerTypes.CREATE_MINE_PROJECT_SUMMARY));
       dispatch(projectActions.storeProjectSummary(payload));
       return response;
@@ -59,24 +63,23 @@ export const updateProjectSummary = (
 ): Promise<AxiosResponse<IProjectSummary>> => {
   dispatch(request(reducerTypes.UPDATE_MINE_PROJECT_SUMMARY));
   dispatch(showLoading());
-  return CustomAxios()
+  const messages = {
+    errorToastMessage: "default",
+    successToastMessage: message,
+  };
+  return CustomAxios(messages)
     .put(
       ENVIRONMENT.apiUrl + API.PROJECT_SUMMARY(projectGuid, projectSummaryGuid),
       payload,
       createRequestHeader()
     )
     .then((response: AxiosResponse<IProjectSummary>) => {
-      notification.success({
-        message,
-        duration: 10,
-      });
       dispatch(success(reducerTypes.UPDATE_MINE_PROJECT_SUMMARY));
       dispatch(projectActions.storeProjectSummary(payload));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.UPDATE_MINE_PROJECT_SUMMARY));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -89,22 +92,20 @@ export const updateProject = (
 ): AppThunk<Promise<IProject>> => (dispatch): Promise<IProject> => {
   dispatch(request(reducerTypes.UPDATE_PROJECT));
   dispatch(showLoading());
-  return CustomAxios()
+  const successToastMessage = showSuccessMessage ? message : null;
+  const messages = {
+    errorToastMessage: "default",
+    successToastMessage,
+  };
+  return CustomAxios(messages)
     .put(ENVIRONMENT.apiUrl + API.PROJECT(projectGuid), payload, createRequestHeader())
     .then((response: AxiosResponse<IProject>) => {
-      if (showSuccessMessage) {
-        notification.success({
-          message,
-          duration: 10,
-        });
-      }
       dispatch(success(reducerTypes.UPDATE_PROJECT));
       dispatch(projectActions.storeProject(payload));
       return response.data;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.UPDATE_PROJECT));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -140,9 +141,8 @@ export const fetchProjectSummaryById = (
       dispatch(success(reducerTypes.GET_PROJECT_SUMMARY));
       dispatch(projectActions.storeProjectSummary(response.data));
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.GET_PROJECT_SUMMARY));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -168,9 +168,8 @@ export const removeDocumentFromProjectSummary = (
       dispatch(success(reducerTypes.REMOVE_DOCUMENT_FROM_PROJECT_SUMMARY));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.REMOVE_DOCUMENT_FROM_PROJECT_SUMMARY));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -223,9 +222,8 @@ export const fetchProjectById = (projectGuid: string): AppThunk<Promise<IProject
       dispatch(projectActions.storeMajorMinesApplication(response.data.major_mine_application));
       return response.data;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.GET_PROJECT));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -263,9 +261,8 @@ export const deleteProjectSummary = (
       dispatch(success(reducerTypes.DELETE_PROJECT_SUMMARY));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.DELETE_PROJECT_SUMMARY));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -358,9 +355,8 @@ export const updateInformationRequirementsTable = (
       dispatch(success(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -374,9 +370,8 @@ export const fetchRequirements = (): AppThunk => (dispatch) => {
       dispatch(success(reducerTypes.GET_REQUIREMENTS));
       dispatch(projectActions.storeRequirements(response.data));
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.GET_REQUIREMENTS));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -402,9 +397,8 @@ export const removeDocumentFromInformationRequirementsTable = (
       dispatch(success(reducerTypes.REMOVE_DOCUMENT_FROM_INFORMATION_REQUIREMENTS_TABLE));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.REMOVE_DOCUMENT_FROM_INFORMATION_REQUIREMENTS_TABLE));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -434,9 +428,8 @@ export const createMajorMineApplication = (
       dispatch(success(reducerTypes.CREATE_MAJOR_MINES_APPLICATION));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.CREATE_MAJOR_MINES_APPLICATION));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -466,9 +459,8 @@ export const updateMajorMineApplication = (
       dispatch(success(reducerTypes.UPDATE_MAJOR_MINES_APPLICATION));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.UPDATE_MAJOR_MINES_APPLICATION));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -498,9 +490,8 @@ export const removeDocumentFromMajorMineApplication = (
       dispatch(success(reducerTypes.REMOVE_DOCUMENT_FROM_MAJOR_MINE_APPLICATION));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.REMOVE_DOCUMENT_FROM_MAJOR_MINE_APPLICATION));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -525,9 +516,8 @@ export const createProjectDecisionPackage = (
       dispatch(success(reducerTypes.CREATE_PROJECT_DECISION_PACKAGE));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.CREATE_PROJECT_DECISION_PACKAGE));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -552,9 +542,8 @@ export const updateProjectDecisionPackage = (
       dispatch(success(reducerTypes.UPDATE_PROJECT_DECISION_PACKAGE));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.UPDATE_PROJECT_DECISION_PACKAGE));
-      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -584,9 +573,64 @@ export const removeDocumentFromProjectDecisionPackage = (
       dispatch(success(reducerTypes.REMOVE_DOCUMENT_FROM_PROJECT_DECISION_PACKAGE));
       return response;
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch(error(reducerTypes.REMOVE_DOCUMENT_FROM_PROJECT_DECISION_PACKAGE));
-      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const createProjectLinks = (
+  mineGuid: string,
+  projectGuid: string,
+  relatedProjectGuids: string[],
+  message = "Successfully create new project links"
+): AppThunk<Promise<AxiosResponse<IProjectLink[]>>> => (
+  dispatch
+): Promise<AxiosResponse<IProjectLink[]>> => {
+  dispatch(request(reducerTypes.CREATE_PROJECT_LINKS));
+  dispatch(showLoading());
+  const payload = {
+    mine_guid: mineGuid,
+    related_project_guids: relatedProjectGuids,
+  };
+  return CustomAxios()
+    .post(ENVIRONMENT.apiUrl + API.PROJECT_LINKS(projectGuid), payload, createRequestHeader())
+    .then(
+      ({ data }): AxiosResponse<IProjectLink[]> => {
+        notification.success({ message, duration: 10 });
+        dispatch(success(reducerTypes.CREATE_PROJECT_LINKS));
+        dispatch(projectActions.storeRelatedProjects(data));
+        return data;
+      }
+    )
+    .catch(() => {
+      dispatch(error(reducerTypes.CREATE_PROJECT_LINKS));
+    })
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const deleteProjectLink = (
+  projectGuid: string,
+  projectLinkGuid: string
+): AppThunk<Promise<AxiosResponse<string>>> => (dispatch): Promise<AxiosResponse<string>> => {
+  dispatch(request(reducerTypes.DELETE_PROJECT_LINK));
+  dispatch(showLoading());
+  return CustomAxios()
+    .delete(
+      `${ENVIRONMENT.apiUrl}${API.PROJECT_LINKS(projectGuid, projectLinkGuid)}`,
+      createRequestHeader()
+    )
+    .then((response: AxiosResponse<string>) => {
+      notification.success({
+        message: "Successfully deleted project link.",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.DELETE_PROJECT_LINK));
+      dispatch(projectActions.removeProjectLink(projectLinkGuid));
+      return response;
+    })
+    .catch(() => {
+      dispatch(error(reducerTypes.DELETE_PROJECT_LINK));
     })
     .finally(() => dispatch(hideLoading()));
 };

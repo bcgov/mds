@@ -3,7 +3,6 @@ from dateutil.relativedelta import relativedelta
 
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
-from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from app.api.utils.models_mixins import Base, AuditMixin
@@ -23,6 +22,9 @@ class MineReportDefinition(Base, AuditMixin):
         db.ForeignKey('mine_report_due_date_type.mine_report_due_date_type'),
         nullable=False)
     active_ind = db.Column(db.Boolean, server_default=FetchedValue(), nullable=False)
+    is_common = db.Column(db.Boolean, server_default=FetchedValue(), nullable=False)
+    is_prr_only = db.Column(db.Boolean, server_default=FetchedValue(), nullable=False)
+
     required = db.Column(db.Boolean)
 
     categories = db.relationship(

@@ -66,6 +66,19 @@
   min-height: 30px;
 }
 
+.ant-btn.btn-sm-padding {
+  padding: 0 12px;
+}
+
+.ant-btn-text {
+  border-radius: 2px;
+
+  &:hover,
+  &:focus {
+    background-color: #D9EAF7;
+  }
+}
+
 .ant-btn-background-ghost {
   border-color: transparent;
   padding-left: 5px;
@@ -80,6 +93,11 @@
 .ant-btn-background-ghost.ant-btn-primary:hover,
 .ant-btn-background-ghost.ant-btn-primary:focus {
   border-color: transparent;
+}
+
+.ant-btn.block-button {
+  margin-left: 0;
+  margin-bottom: 20px;
 }
 
 // Typography
@@ -101,12 +119,12 @@ h4.ant-typography,
 
 h3.ant-typography,
 .ant-typography h3 {
-  color: #313132;
+  color: $font-colour;
 }
 
 h5.ant-typography,
 .ant-typography h5 {
-  color: #313132;
+  color: $font-colour;
 }
 
 .ant-typography a {
@@ -245,7 +263,8 @@ h5.ant-typography,
   .ant-table-content {
     overflow-x: auto;
   }
-  tr > td {
+
+  tr>td {
     border-bottom: 1px solid #BBBBBB;
   }
 }
@@ -294,6 +313,7 @@ td a {
 }
 
 tr.ant-table-expanded-row {
+
   & table,
   .ant-table-body {
     margin: 0;
@@ -379,38 +399,6 @@ th.ant-descriptions-item.vertical-description {
     border: none;
     padding: 0;
   }
-}
-
-// Forms
-.ant-form-item-required {
-  &::before {
-    font-family: $font-family;
-  }
-}
-
-.ant-legacy-form label {
-  font-size: 16px;
-}
-
-.ant-form-vertical .ant-form-item {
-  padding-bottom: 0px;
-}
-
-.ant-form-item {
-  margin-bottom: 8px;
-}
-
-.ant-steps-item-finish>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-title {
-  color: #036;
-}
-
-.ant-steps-item-icon {
-  line-height: 30px;
-}
-
-.ant-legacy-form-vertical .ant-legacy-form-item {
-  padding-bottom: 0px;
-  margin-bottom: 14px;
 }
 
 // Cards
@@ -499,6 +487,10 @@ th.ant-descriptions-item.vertical-description {
   padding: 5px;
 }
 
+.form-multiselect .ant-col.ant-form-item-control {
+  width: 100%;
+}
+
 // DATE PICKER
 .ant-picker {
   width: 100%;
@@ -546,14 +538,14 @@ th.ant-descriptions-item.vertical-description {
       &:focus,
       &:hover {
         background-color: white;
-      ;
+        ;
       }
     }
   }
 }
 
 .magazine-collapse,
-.magazine-collapse > div {
+.magazine-collapse>div {
   background-color: #f2f2f2;
   align-items: center !important;
   border-bottom: none !important;

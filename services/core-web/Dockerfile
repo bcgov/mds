@@ -1,11 +1,11 @@
-FROM node:14.21.3
+FROM node:20.11.0
 
 # Create working directory
 RUN mkdir /app
 WORKDIR /app
 
 # Install app dependencies
-COPY package.json package-lock.json ./
+COPY package.json ./
 
 RUN npm ci
 

@@ -138,7 +138,8 @@
 .ant-btn,
 .ant-btn-sm,
 // secondary is deprecated --> move to default
-.ant-btn-secondary, .ant-btn-default {
+.ant-btn-secondary,
+.ant-btn-default {
   position: inherit;
   margin: 10px;
   padding: 0 16px;
@@ -152,6 +153,18 @@
 
   span {
     font-size: $font-size-base;
+  }
+}
+
+label .ant-btn {
+  margin: 0px;
+}
+
+.ant-btn-icon-only {
+  >svg.svg-inline--fa {
+    font-size: 1rem;
+    vertical-align: 2em;
+    margin-left: -0.35em
   }
 }
 
@@ -235,7 +248,8 @@
   background-color: $primary-btn-color;
   border-color: $primary-btn-color;
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     color: $pure-white;
     background-color: $primary-btn-color-hover;
     border-color: $primary-btn-border-color-hover;
@@ -247,7 +261,8 @@
   border: 2px solid $primary-btn-color;
   background-color: $pure-white;
 
-  &:hover, &:active {
+  &:hover,
+  &:active {
     background-color: $transparent-violet;
     color: $hover-violet;
     border-color: $hover-violet;
@@ -293,6 +308,11 @@
   background: #F4F0F0 !important;
   border-color: #000000 !important;
   border-style: solid !important;
+}
+
+.ant-btn.block-button {
+  margin-left: 0;
+  margin-bottom: $default-margin-lg;
 }
 
 // POPUP CONFIRM
@@ -388,20 +408,32 @@
 }
 
 // ALERTS
+
+// generic styling for alerts of any severity
+.ant-alert {
+  &.ant-alert-with-description {
+    .ant-alert-icon {
+      margin-top: 4px;
+    }
+  }
+
+  .ant-alert-content {
+    .ant-alert-message {
+      color: black;
+      font-weight: 800;
+    }
+
+    .ant-alert-description {
+      color: black;
+      line-height: 2rem;
+    }
+  }
+}
+
+
+
+
 .ant-alert-warning {
-  .ant-alert-message {
-    color: black !important;
-    font-weight: 800;
-  }
-
-  .ant-alert-description {
-    color: black !important;
-    line-height: 2rem;
-  }
-
-  .ant-alert-icon {
-    margin-top: 4px;
-  }
 
   &.ant-alert-warning-custom-with-red-icon {
     .ant-alert-icon {
@@ -415,30 +447,10 @@
 
 .ant-alert-error {
   margin: 0;
-
-  .ant-alert-message {
-    color: black !important;
-    font-weight: 800;
-  }
-
-  .ant-alert-description {
-    color: black !important;
-    line-height: 2rem;
-  }
 }
 
 .ant-alert-info {
   background-color: #ecf6fd;
-
-  .ant-alert-message {
-    color: black !important;
-    font-weight: 800;
-  }
-
-  .ant-alert-description {
-    color: black !important;
-    line-height: 2rem;
-  }
 
   .ant-alert-icon {
     background-color: #ecf6fd !important;
@@ -498,33 +510,6 @@
   }
 }
 
-// FORMS
-.ant-form-vertical .ant-form-item {
-  padding-bottom: 0;
-}
-
-.ant-form-item {
-  margin-bottom: 10px;
-}
-
-.ant-form-item-label label:after {
-  content: none;
-}
-
-// DATE PICKER
-.ant-picker {
-  width: 100%;
-  padding: 4px 11px;
-}
-
-.ant-picker-today-btn {
-  color: $a-color;
-
-  &:hover {
-    color: $violet;
-  }
-}
-
 // COLLAPSE
 .ant-collapse {
   border: none;
@@ -541,6 +526,18 @@
 .ant-menu {
   padding: 0;
   margin: 0;
+}
+
+// menu where the whole item should be clickable
+.full-click-menu {
+  .ant-dropdown-menu-item {
+    padding: 0;
+
+    .menu-item-inner {
+      padding: 5px 12px;
+      display: block;
+    }
+  }
 }
 
 // MENU.ITEM
@@ -560,9 +557,19 @@
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
   line-height: 22px;
+  text-align: left;
 
   &:hover {
     background-color: $light-grey;
+  }
+
+  a {
+    text-decoration: none;
+    font-size: inherit;
+
+    &:hover {
+      text-decoration: none;
+    }
   }
 }
 
@@ -647,13 +654,20 @@
 }
 
 // SIDE MENU NAVIGATION
+.ant-anchor {
+  padding-left: 0;
+}
+
 .ant-anchor-wrapper {
-  background-color: $lightest-grey;
   margin-bottom: 20px;
+  border: 1px solid $light-grey;
+  border-radius: 5px;
+  padding: 8px 0;
 }
 
 .ant-anchor-link-active {
-  border-left: 7px solid $violet;
+  border-left: 4px solid $violet;
+  background-color: $transparent-violet;
 }
 
 .ant-anchor-link-active>.ant-anchor-link-title {
@@ -663,6 +677,7 @@
 
 .ant-anchor-link-title {
   text-decoration: none;
+  margin-left: $default-margin-md;
 }
 
 .ant-anchor-link {
@@ -672,6 +687,10 @@
 
 .ant-anchor-link:last-child {
   border-bottom: none;
+}
+
+.ant-anchor-ink::before {
+  background-color: transparent;
 }
 
 // Having html input inherit the antd styling to keep everything consistent
@@ -768,44 +787,6 @@ select {
   max-width: 200px !important; //140 by default
 }
 
-.filepond--root {
-  font-family: $default-font;
-  font-size: 0.7rem;
-
-  &,
-  .filepond--drop-label {
-    min-height: 84.6px;
-  }
-}
-
-.whirlpool-container {
-  position: relative;
-
-  .ant-switch {
-    position: absolute;
-    top: 6px;
-    right: 8px;
-    z-index: 10;
-  }
-}
-
-.whirlpool-on {
-  .filepond--drip {
-    background-image: url("../assets/images/whirlpool.gif");
-    background-blend-mode: screen;
-    background-position: 50% 50%;
-    background-repeat: no-repeat;
-    background-size: cover;
-    border-radius: 10px;
-    background-color: $blue;
-    opacity: 0.9;
-  }
-
-  .filepond--drop-label {
-    color: white;
-  }
-}
-
 // Drawer
 .ant-drawer-content-wrapper {
   width: 520px !important; // 250px by default
@@ -830,6 +811,11 @@ select {
 
 .ant-legacy-form-item-control-wrapper {
   flex: 1 1 100%;
+}
+
+// same effect as above but not legacy
+.ant-form-item-row {
+  flex-direction: column;
 }
 
 .ant-legacy-form-item {

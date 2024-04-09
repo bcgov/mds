@@ -1,7 +1,7 @@
 from decimal import Decimal
 from datetime import datetime, timezone
 from flask import current_app
-from flask_restplus import Resource, reqparse
+from flask_restx import Resource, reqparse
 from werkzeug.exceptions import InternalServerError, NotFound, BadRequest
 
 from app.extensions import api, db
@@ -151,6 +151,8 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
                         due_date=calculated_due_date,
                         received_date=None,
                         submission_year=calculated_due_date.year - 1,
+                        description_comment=None,
+                        submitter_name=None,
                         permit_id=None)
             except Exception as e:
                 db.session.rollback()

@@ -1,4 +1,4 @@
-import { IPermit, IPermitCondition, IStandardPermitCondition } from "@mds/common";
+import { IPermit, IPermitCondition, IStandardPermitCondition } from "@mds/common/interfaces";
 import * as actionTypes from "@mds/common/constants/actionTypes";
 import { PERMITS } from "@mds/common/constants/reducerTypes";
 import { RootState } from "@mds/common/redux/rootState";

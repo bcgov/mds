@@ -65,7 +65,8 @@ class SandGravelQuarryOperation(ActivitySummaryBase):
     details = db.relationship(
         'SandGravelQuarryOperationDetail',
         secondary='activity_summary_detail_xref',
-        load_on_pending=True)
+        load_on_pending=True,
+        overlaps='detail,detail_associations,summary,summary_associations')
 
     # TODO replace with value from vFCBC
     # If the other description is provided, the other option has been selected.

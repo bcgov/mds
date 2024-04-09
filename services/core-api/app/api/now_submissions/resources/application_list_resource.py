@@ -1,5 +1,5 @@
 import uuid
-from flask_restplus import Resource
+from flask_restx import Resource
 from flask import request, current_app
 from sqlalchemy_filters import apply_pagination, apply_sort
 from sqlalchemy import desc, func, or_

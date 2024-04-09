@@ -2,7 +2,7 @@ import uuid
 
 from flask import request, current_app
 from app.api.utils.include.user_info import User
-from flask_restplus import Resource, reqparse
+from flask_restx import Resource, reqparse
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
 from app.extensions import api, db

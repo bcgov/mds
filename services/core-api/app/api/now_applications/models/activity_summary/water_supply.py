@@ -15,7 +15,7 @@ class WaterSupply(ActivitySummaryBase):
     }
 
     ## NO TABLE FOR THIS TYPE
-    details = db.relationship('WaterSupplyDetail', secondary='activity_summary_detail_xref')
+    details = db.relationship('WaterSupplyDetail', secondary='activity_summary_detail_xref', overlaps='detail,detail_associations,summary,summary_associations')
 
     def __repr__(self):
         return '<WaterSupply %r>' % self.activity_summary_id

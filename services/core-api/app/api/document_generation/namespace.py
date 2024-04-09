@@ -1,4 +1,4 @@
-from flask_restplus import Namespace
+from flask_restx import Namespace
 
 from app.api.document_generation.resources.explosives_permit_amendment_document_resource import \
     ExplosivesPermitAmendmentDocumentResource

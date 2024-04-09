@@ -183,6 +183,12 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/mine-dashboard/:id/permits-and-approvals/permits"
   />
   <Route
+    component={[Function]}
+    exact={true}
+    key="/mine-dashboard/:id/permits-and-approvals/digital-credentials/:permitGuid"
+    path="/mine-dashboard/:id/permits-and-approvals/digital-credentials/:permitGuid"
+  />
+  <Route
     component={
       Object {
         "$$typeof": Symbol(react.memo),
@@ -253,29 +259,13 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/mine-dashboard/:id/permits-and-approvals/pre-applications"
   />
   <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(withRouter(WrappedComponent))",
-        "type": [Function],
-      }
-    }
+    component={[Function]}
     exact={true}
     key="/mines/:mineGuid/project-description/new"
     path="/mines/:mineGuid/project-description/new"
   />
   <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(withRouter(WrappedComponent))",
-        "type": [Function],
-      }
-    }
+    component={[Function]}
     exact={true}
     key="/pre-applications/:projectGuid/project-description/:projectSummaryGuid"
     path="/pre-applications/:projectGuid/project-description/:projectSummaryGuid"
@@ -355,14 +345,14 @@ exports[`DashboardRoutes  renders properly 1`] = `
   <Route
     component={[Function]}
     exact={true}
-    key="/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab"
-    path="/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab"
+    key="/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab/:userAction"
+    path="/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab/:userAction"
   />
   <Route
     component={[Function]}
     exact={true}
-    key="/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab"
-    path="/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab"
+    key="/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab/:userAction"
+    path="/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab/:userAction"
   />
   <Route
     component={
@@ -423,38 +413,28 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/mine-dashboard/:id/oversight/inspections-and-audits"
   />
   <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(MineReportInfo)",
-        "type": [Function],
-      }
-    }
-    exact={true}
-    key="/mine-dashboard/:id/reports/code-required-reports"
-    path="/mine-dashboard/:id/reports/code-required-reports"
-  />
-  <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(PermitRequiredReports)",
-        "type": [Function],
-      }
-    }
-    exact={true}
-    key="/mine-dashboard/:id/reports/permit-required-reports"
-    path="/mine-dashboard/:id/reports/permit-required-reports"
-  />
-  <Route
     component={[Function]}
     exact={true}
     key="/mine-dashboard/:id/reports/tailings-reports"
     path="/mine-dashboard/:id/reports/tailings-reports"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
+    key="/mine-dashboard/:id/required-reports/:reportType"
+    path="/mine-dashboard/:id/required-reports/:reportType"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
+    key="/dashboard/reporting/mine/:mineGuid/report/:reportGuid"
+    path="/dashboard/reporting/mine/:mineGuid/report/:reportGuid"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
+    key="/mines/:mineGuid/reports/new/:reportType"
+    path="/mines/:mineGuid/reports/new/:reportType"
   />
   <Route
     component={
@@ -731,14 +711,14 @@ exports[`DashboardRoutes  renders properly 1`] = `
   <Route
     component={[Function]}
     exact={true}
-    key="/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/new/"
-    path="/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/new/"
+    key="/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/:parentTSFFormMode/:userAction"
+    path="/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/:parentTSFFormMode/:userAction"
   />
   <Route
     component={[Function]}
     exact={true}
-    key="/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/:damGuid"
-    path="/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/:damGuid"
+    key="/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/:parentTSFFormMode/:userAction/dam/:damGuid"
+    path="/mine-dashboard/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/:parentTSFFormMode/:userAction/dam/:damGuid"
   />
   <Route
     component={[Function]}

@@ -117,10 +117,24 @@ class Config(object):
     NRIS_USER_NAME = os.environ.get('NRIS_USER_NAME', None)
     NRIS_PASS = os.environ.get('NRIS_PASS', None)
     ENVIRONMENT_NAME = os.environ.get('ENVIRONMENT_NAME', 'dev')
-    CORE_PRODUCTION_URL = os.environ.get('CORE_PRODUCTION_URL',
+    CORE_PROD_URL = os.environ.get('CORE_PRODUCTION_URL',
                                          'https://minesdigitalservices.gov.bc.ca')
-    MINESPACE_PRODUCTION_URL = os.environ.get('MINESPACE_PRODUCTION_URL',
+    CORE_TEST_URL = os.environ.get('CORE_TEST_URL',
+                                         'https://mds-test.apps.silver.devops.gov.bc.ca')
+    CORE_DEV_URL = os.environ.get('CORE_DEV_URL',
+                                         'https://mds-dev.apps.silver.devops.gov.bc.ca')
+    CORE_LOCAL_URL = os.environ.get('CORE_LOCAL_URL',
+                                         'http://localhost:3000')
+    
+    MINESPACE_PROD_URL = os.environ.get('MINESPACE_PRODUCTION_URL',
                                               'https://minespace.gov.bc.ca')
+    MINESPACE_TEST_URL = os.environ.get('MINESPACE_TEST_URL',
+                                              'https://minespace-test.apps.silver.devops.gov.bc.ca')
+    MINESPACE_DEV_URL = os.environ.get('MINESPACE_DEV_URL',
+                                              'https://minespace-dev.apps.silver.devops.gov.bc.ca')
+    MINESPACE_LOCAL_URL = os.environ.get('MINESPACE_LOCAL_URL',
+                                              'http://localhost:3020')
+    
     MDS_NO_REPLY_EMAIL = os.environ.get('MDS_NO_REPLY_EMAIL', 'noreply-mds@gov.bc.ca')
     MDS_EMAIL = os.environ.get('MDS_EMAIL', 'mds@gov.bc.ca')
     MAJOR_MINES_OFFICE_EMAIL = os.environ.get('MAJOR_MINES_OFFICE_EMAIL', 'PermRecl@gov.bc.ca')
@@ -214,6 +228,11 @@ class Config(object):
     NRPTI_API_URL = os.environ.get(
         'NRPTI_API_URL', 'https://nrpti-api-f00029-prod.apps.silver.devops.gov.bc.ca/api/public/')
 
+    # Permit Search Service
+    PERMITS_ENDPOINT = os.environ.get('PERMITS_ENDPOINT', None)
+    PERMITS_CLIENT_ID = os.environ.get('PERMITS_CLIENT_ID', None)
+    PERMITS_CLIENT_SECRET = os.environ.get('PERMITS_CLIENT_SECRET', None)
+
     # EPIC
     EPIC_API_URL = os.environ.get('EPIC_API_URL', 'https://projects.eao.gov.bc.ca/api/v2/')
     EPIC_LINK_URL = os.environ.get('EPIC_LINK_URL', 'https://projects.eao.gov.bc.ca/p/')
@@ -224,6 +243,7 @@ class Config(object):
         'https://mines-permitting-issuer-a3e512-dev.apps.silver.devops.gov.bc.ca/')
     VCR_ISSUER_SECRET_KEY = os.environ.get('VCR_ISSUER_SECRET_KEY', 'super-secret-key')
 
+
     # Common Services
     COMMON_SERVICES_CLIENT_ID = os.environ.get('COMMON_SERVICES_CLIENT_ID')
     COMMON_SERVICES_CLIENT_SECRET = os.environ.get('COMMON_SERVICES_CLIENT_SECRET')
@@ -231,6 +251,10 @@ class Config(object):
     COMMON_SERVICES_EMAIL_HOST = os.environ.get('COMMON_SERVICES_EMAIL_HOST')
     EMAIL_ENABLED = os.environ.get('EMAIL_ENABLED', False)
     EMAIL_RECIPIENT_OVERRIDE = os.environ.get('EMAIL_RECIPIENT_OVERRIDE')
+
+    # AMS API Services
+    AMS_BEARER_TOKEN = os.environ.get('AMS_BEARER_TOKEN')
+    AMS_URL = os.environ.get('AMS_URL')
 
     # CSS Keycloak SSO
     CSS_CLIENT_ID = os.environ.get('CSS_CLIENT_ID')
@@ -245,7 +269,7 @@ class Config(object):
     TEMPLATE_IRT = os.environ.get('TEMPLATE_IRT', 'IRT_Template.xlsx')
 
     # Celery settings
-    CELERY_RESULT_BACKEND = f'db+postgres://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+    CELERY_RESULT_BACKEND = f'db+postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
     CELERY_BROKER_URL = f'redis://:{CACHE_REDIS_PASS}@{CACHE_REDIS_HOST}:{CACHE_REDIS_PORT}'
     CELERY_READBEAT_BROKER_URL = f'{CELERY_BROKER_URL}'
     CELERY_DEFAULT_QUEUE = 'core_tasks'

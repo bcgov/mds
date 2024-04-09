@@ -1,0 +1,1 @@
+ALTER TABLE permit ADD COLUMN IF NOT EXISTS mines_act_permit_vc_locked BOOLEAN;

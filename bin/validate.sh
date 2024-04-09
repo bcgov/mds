@@ -8,7 +8,7 @@ OS=${1}
 # Global config
 # These values are checked for in validation
 LIC_PLATE="4c2ba9"
-DESIRED_NODE_VER="v14.8.0"
+DESIRED_NODE_VER="v20.11.0"
 DESIRED_YARN_VER="3.2.4"
 DESIRED_DC_VER="v2"
 SERVICES_PATH="./services"

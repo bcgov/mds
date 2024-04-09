@@ -8,16 +8,17 @@ import { CaretDownOutlined } from "@ant-design/icons";
 import { generateActionMenuItems } from "./ActionMenu";
 
 export const renderTextColumn = (
-  dataIndex: string,
+  dataIndex: string | string[],
   title: string,
   sortable = false,
   placeHolder = EMPTY_FIELD,
-  width?: number
+  width?: number | string
 ): ColumnType<any> => {
+  const key = Array.isArray(dataIndex) ? dataIndex.join(".") : dataIndex;
   return {
     title,
     dataIndex,
-    key: dataIndex,
+    key: key,
     render: (text: string) => (
       <div title={title} className={`${dataIndex}-column`}>
         {text ?? placeHolder}
@@ -87,15 +88,25 @@ export interface ITableAction {
   icon?: ReactNode;
 }
 
-export const renderActionsColumn = (
-  actions: ITableAction[],
-  recordActionsFilter?: (record, actions) => ITableAction[],
+export const renderActionsColumn = ({
+  actions,
+  recordActionsFilter,
   isRowSelected = false,
   text = "Actions",
-  dropdownAltText = "Menu"
-) => {
+  dropdownAltText = "Menu",
+  fixed = false,
+}: {
+  actions: ITableAction[];
+  recordActionsFilter?: (record, actions) => ITableAction[];
+  isRowSelected?: boolean;
+  text?: string;
+  dropdownAltText?: string;
+  fixed?: boolean;
+}) => {
   return {
     key: "actions",
+    fixed: fixed ? ("right" as const) : null,
+    className: "actions-column",
     render: (record) => {
       const filteredActions = recordActionsFilter ? recordActionsFilter(record, actions) : actions;
       const items = generateActionMenuItems(filteredActions, record);
@@ -104,8 +115,7 @@ export const renderActionsColumn = (
         <div>
           {items.length > 0 && (
             <Dropdown menu={{ items }} placement="bottomLeft" disabled={isRowSelected}>
-              {/* // TODO: change button classname to something generic */}
-              <Button data-cy="menu-actions-button" className="permit-table-button">
+              <Button data-cy="menu-actions-button" className="actions-dropdown-button ">
                 {text}
                 <CaretDownOutlined alt={dropdownAltText} />
               </Button>

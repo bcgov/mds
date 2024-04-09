@@ -306,7 +306,7 @@ exports[`PrivateRoutes  renders properly 1`] = `
           "type": [Function],
         }
       }
-      path="/mines/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/:tab"
+      path="/mines/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/:tab/:userAction"
     />
     <Route
       component={
@@ -321,7 +321,7 @@ exports[`PrivateRoutes  renders properly 1`] = `
           "type": [Function],
         }
       }
-      path="/mine/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/new/"
+      path="/mine/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/:parentTSFFormMode/:userAction"
     />
     <Route
       component={
@@ -336,7 +336,7 @@ exports[`PrivateRoutes  renders properly 1`] = `
           "type": [Function],
         }
       }
-      path="/mine/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/dam/:damGuid"
+      path="/mine/:mineGuid/tailings-storage-facility/:tailingsStorageFacilityGuid/:parentTSFFormMode/:userAction/dam/:damGuid"
     />
     <Route
       component={
@@ -379,6 +379,36 @@ exports[`PrivateRoutes  renders properly 1`] = `
         }
       }
       path="/mine/:mineGuid/explosives-permits/:explosivesPermitGuid"
+    />
+    <Route
+      component={
+        Object {
+          "$$typeof": Symbol(react.memo),
+          "WrappedComponent": [Function],
+          "_ctor": [Function],
+          "_result": null,
+          "_status": -1,
+          "compare": null,
+          "displayName": "Connect(authenticationGuard)",
+          "type": [Function],
+        }
+      }
+      path="/mines/:mineGuid/reports/new"
+    />
+    <Route
+      component={
+        Object {
+          "$$typeof": Symbol(react.memo),
+          "WrappedComponent": [Function],
+          "_ctor": [Function],
+          "_result": null,
+          "_status": -1,
+          "compare": null,
+          "displayName": "Connect(authenticationGuard)",
+          "type": [Function],
+        }
+      }
+      path="/mines/:mineGuid/reports/:reportGuid"
     />
     <Route
       render={[Function]}

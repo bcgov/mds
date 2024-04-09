@@ -1,4 +1,4 @@
-from flask_restplus import fields, marshal
+from flask_restx import fields, marshal
 
 from app.api.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
 from app.api.dams.dto import DAM_MODEL
@@ -6,6 +6,7 @@ from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointme
 from app.api.parties.response_models import PARTY
 from app.extensions import api
 
+from app.api.utils.feature_flag import is_feature_enabled, Feature
 
 class DateTime(fields.Raw):
 
@@ -208,6 +209,7 @@ PERMIT_AMENDMENT_SHORT_MODEL = api.model(
         'permit_conditions_last_updated_date': fields.DateTime,
         'has_permit_conditions': fields.Boolean,
         'vc_credential_exch_state': fields.String,
+        'mines_act_permit_vc_locked': fields.Boolean,
         'is_generated_in_core': fields.Boolean,
     })
 
@@ -296,6 +298,7 @@ PERMIT_MODEL = api.model(
         'current_permittee': fields.String,
         'current_permittee_guid': fields.String,
         'current_permittee_digital_wallet_connection_state': fields.String,
+        'mines_act_permit_vc_locked': fields.Boolean,
         'project_id': fields.String,
         'permit_amendments': fields.List(fields.Nested(PERMIT_AMENDMENT_MODEL)),
         'remaining_static_liability': fields.Float,
@@ -647,13 +650,44 @@ MINE_REPORT_COMMENT_MODEL = api.model(
         'from_latest_submission': fields.Boolean
     })
 
+MINE_REPORT_CONTACT_MODEL = api.model(
+    'MineReportContact', {
+        'mine_report_contact_id': fields.String,
+        'name': fields.String,
+        'email': fields.String
+    })
+
 MINE_REPORT_SUBMISSION_MODEL = api.model(
     'MineReportSubmission', {
+        'mine_report_guid': fields.String,
+        'mine_report_id': fields.Integer,
         'mine_report_submission_guid': fields.String,
         'submission_date': fields.Date,
         'mine_report_submission_status_code': fields.String,
         'documents': fields.List(fields.Nested(MINE_DOCUMENT_MODEL)),
-        'comments': fields.List(fields.Nested(MINE_REPORT_COMMENT_MODEL))
+        'mine_report_definition_guid': fields.String,
+        'mine_report_category':
+            fields.List(
+                fields.String(attribute='mine_report_category'),
+                attribute='mine_report_definition.categories'),
+        'report_type': fields.String,
+        'report_name': fields.String,
+        'due_date': fields.Date,
+        'received_date': fields.Date,
+        'submission_year': fields.Integer,
+        'create_user': fields.String,
+        'create_timestamp': fields.DateTime,
+        'update_user': fields.String,
+        'update_timestamp': fields.DateTime,
+        'permit_guid': fields.String,
+        'permit_number': fields.String,
+        'mine_guid': fields.String,
+        'mine_name': fields.String,
+        'permit_condition_category_code': fields.String,
+        'description_comment': fields.String,
+        'submitter_name': fields.String,
+        'submitter_email': fields.String,
+        'mine_report_contacts': fields.List(fields.Nested(MINE_REPORT_CONTACT_MODEL)),
     })
 
 MINE_REPORT_MODEL = api.model(
@@ -682,14 +716,26 @@ MINE_REPORT_MODEL = api.model(
             fields.String,
         'permit_number':
             fields.String,
+        # TODO: Remove with CODE_REQUIRED_REPORTS feature flag- slows down API dramatically
         'mine_report_submissions':
             fields.List(fields.Nested(MINE_REPORT_SUBMISSION_MODEL)),
+        'latest_submission':
+            fields.Nested(MINE_REPORT_SUBMISSION_MODEL),
         'mine_guid':
             fields.String,
         'mine_name':
             fields.String,
         'permit_condition_category_code':
-            fields.String
+            fields.String,
+        'description_comment':
+            fields.String,
+        'submitter_name':
+            fields.String,
+        'submitter_email':
+            fields.String,
+        'mine_report_contacts':
+            fields.List(fields.Nested(MINE_REPORT_CONTACT_MODEL)),
+        'mine_report_status_code': fields.String,
     })
 
 MINE_REPORT_DEFINITION_CATEGORIES = api.model('MineReportDefinitionCategoriesModel', {
@@ -708,7 +754,9 @@ MINE_REPORT_DEFINITION_MODEL = api.model(
         'default_due_date': fields.Date,
         'active_ind': fields.Boolean,
         'categories': fields.List(fields.Nested(MINE_REPORT_DEFINITION_CATEGORIES)),
-        'compliance_articles': fields.List(fields.Nested(COMPLIANCE_ARTICLE_MODEL))
+        'compliance_articles': fields.List(fields.Nested(COMPLIANCE_ARTICLE_MODEL)),
+        'is_common': fields.Boolean,
+        'is_prr_only': fields.Boolean,
     })
 
 PAGINATED_LIST = api.model(

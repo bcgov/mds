@@ -4,6 +4,8 @@ import {
   INoticeOfWork,
   NoDTypeSaveEnum,
   NodStatusSaveEnum,
+  IMineIncident,
+  MINE_INCIDENT_DOCUMENT_TYPE_CODE,
 } from "@mds/common";
 
 export const createMockHeader = () => ({
@@ -342,14 +344,20 @@ export const PARTY = {
       party_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
       party_name: "mock name",
       party_type_code: "PER",
+      first_name: "mock name",
+      name: "other mock name",
       address: [{}],
+      now_party_appt: [],
       business_role_appts: [{}],
     },
     "18145c75-49ad-0101-85f3-a43e45ae989a": {
       party_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
       party_name: "mock Two",
       party_type_code: "PER",
+      first_name: "mock Two",
+      name: "other mock Two",
       address: [{}],
+      now_party_appt: [],
       business_role_appts: [{}],
     },
   },
@@ -358,16 +366,30 @@ export const PARTY = {
       party_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
       party_name: "mock name",
       party_type_code: "PER",
+      first_name: "mock name",
+      name: "other mock name",
       address: [{}],
-      mine_party_appt: [],
+      mine_party_appt: [
+        {
+          mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+        },
+      ],
+      now_party_appt: [],
       business_role_appts: [{}],
     },
     "18145c75-49ad-0101-85f3-a43e45ae989a": {
       party_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
       party_name: "mock Two",
       party_type_code: "PER",
+      first_name: "mock Two",
+      name: "other mock Two",
       address: [{}],
-      mine_party_appt: [],
+      mine_party_appt: [
+        {
+          mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
+        },
+      ],
+      now_party_appt: [],
       business_role_appts: [
         {
           end_date: "2020-08-29T00:00:00",
@@ -1721,7 +1743,11 @@ export const INSPECTORS_HASH = {
   "51b3a499-a474-4d52-be99-5c5123d7501c": "BLAH",
 };
 
-export const INCIDENT = {
+export const INCIDENT: IMineIncident = {
+  incident_location: "test",
+  responsible_inspector_party: "test",
+  update_user: "test",
+  update_timestamp: "test",
   dangerous_occurrence_subparagraph_ids: [1747],
   determination_inspector_party_guid: "c002cc91-555a-4edd-9a9c-fcfee8357b00",
   determination_type_code: "DO",
@@ -1730,9 +1756,12 @@ export const INCIDENT = {
       document_manager_guid: "7b41c10c-4974-428d-a38a-ee3e8c4cee5a",
       document_name: "Amazing_PDF.pdf",
       mine_document_guid: "75855dd1-1f51-4fc1-835f-2dd99ea96f90",
-      mine_incident_document_type_code: "INI",
+      mine_incident_document_type_code: MINE_INCIDENT_DOCUMENT_TYPE_CODE.INI,
+      update_user: "test",
+      upload_date: "2019-07-04 14:05",
     },
   ],
+  verbal_notification_provided: false,
   emergency_services_called: false,
   followup_inspection: false,
   followup_inspection_date: null,
@@ -1808,6 +1837,7 @@ export const MINE_REPORTS = [
     submission_year: 2020,
     created_by_idir: "idir\\TEST",
     permit_guid: null,
+    mine_report_status_code: "NRQ",
     mine_report_submissions: [
       {
         mine_report_submission_guid: "fed32646-5db7-495a-acbb-b6b8ad333ee1",
@@ -1839,6 +1869,7 @@ export const MINE_REPORTS = [
     submission_year: 2020,
     created_by_idir: "idir\\TEST",
     permit_guid: null,
+    mine_report_status_code: "NRQ",
     mine_report_submissions: [
       {
         mine_report_submission_guid: "d0149d1b-845d-4011-a731-3f951c7d8219",
@@ -1873,6 +1904,7 @@ export const MINE_REPORTS = [
     mine_report_submissions: [],
     mine_guid: "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
     mine_name: "Abbott Inc",
+    mine_report_status_code: "NON",
   },
 ];
 
@@ -6692,6 +6724,63 @@ export const PROJECT = {
   major_mine_application: {
     documents: [],
   },
+  project_links: [
+    {
+      project_link_guid: "90de19e1-7292-4646-af0a-260bd14b1d45",
+      project_guid: "8132462392222",
+      related_project_guid: "d7411155-dc79-4fa9-8975-c22594aab7ec",
+      update_user: "test@bctest",
+      update_timestamp: "2023-11-27T18:27:20.598307-07:00",
+      create_user: "test@bctest",
+      create_timestamp: "2023-11-27T18:27:20.598193-07:00",
+      project: {
+        project_guid: "8132462392222",
+        project_title: "Test Mine",
+        proponent_project_id: "Test-123",
+        contacts: [
+          {
+            name: "Test Contact",
+          },
+        ],
+        project_summary: {
+          project_summary_guid: "6bab1df6-e181-435a-abc0-e99466411880",
+          status_code: "SUB",
+        },
+        major_mine_application: {
+          major_mine_application_guid: "abcde12345",
+          status_code: "DFT",
+        },
+        information_requirements_table: {
+          irt_guid: "awxyz12345",
+          status_code: "APV",
+        },
+        update_timestamp: "2023-08-04T09:21:06.028471-06:00",
+      },
+      related_project: {
+        project_guid: "913246239223",
+        project_title: "Test Coal",
+        proponent_project_id: "TEST-1001",
+        contacts: [
+          {
+            name: "Tom Tester",
+          },
+        ],
+        project_summary: {
+          project_summary_guid: "a2e76a72-f306-4973-bda8-37018d15baa2",
+          status_code: "SUB",
+        },
+        major_mine_application: {
+          major_mine_application_guid: "abcde12345",
+          status_code: "WDN",
+        },
+        information_requirements_table: {
+          irt_guid: "awxyz12345",
+          status_code: "APV",
+        },
+        update_timestamp: "2023-08-24T15:49:16.702250-06:00",
+      },
+    },
+  ],
 };
 
 export const PROJECT_SUMMARIES = {
@@ -6726,6 +6815,7 @@ export const PROJECT_SUMMARY = {
   expected_project_start_date: "2020-11-22T22:18:19+00:00",
   documents: [],
   contacts: [],
+  authorizations: [],
 };
 
 export const PROJECT_SUMMARY_AUTHORIZATION_TYPES_HASH = {

@@ -32,6 +32,9 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
     status_changed_timestamp = db.Column(db.DateTime)
     project_id = db.Column(db.String)
 
+    #if true, this permit is locked from any vc'ed issued for it. 
+    mines_act_permit_vc_locked = db.Column(db.Boolean, default=False) 
+
     _all_permit_amendments = db.relationship(
         'PermitAmendment',
         backref='permit',
@@ -40,7 +43,7 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
         order_by='desc(PermitAmendment.issue_date), desc(PermitAmendment.permit_amendment_id)',
         lazy='select')
 
-    _all_mines = db.relationship('Mine', lazy='select', secondary='mine_permit_xref')
+    _all_mines = db.relationship('Mine', lazy='select', secondary='mine_permit_xref', back_populates='_permit_identities', overlaps='mine,mine_permit_xref,all_mine_permit_xref')
 
     permittee_appointments = db.relationship(
         'MinePartyAppointment',
@@ -48,12 +51,14 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
         'and_(MinePartyAppointment.permit_id == Permit.permit_id, MinePartyAppointment.deleted_ind==False, MinePartyAppointment.mine_party_appt_type_code=="PMT")',
         lazy='select',
         order_by=
-        'desc(MinePartyAppointment.start_date), desc(MinePartyAppointment.mine_party_appt_id)')
+        'desc(MinePartyAppointment.start_date), desc(MinePartyAppointment.mine_party_appt_id)',
+        overlaps='permit,permitt_appointments')
     permit_appointments = db.relationship(
         'MinePartyAppointment',
         lazy='select',
         order_by=
-        'desc(MinePartyAppointment.start_date), desc(MinePartyAppointment.mine_party_appt_id)')
+        'desc(MinePartyAppointment.start_date), desc(MinePartyAppointment.mine_party_appt_id)',
+        overlaps='permittee_appointments,permit')
     permit_status = db.relationship('PermitStatusCode', lazy='select')
     permit_status_code_description = association_proxy('permit_status', 'description')
 
@@ -61,8 +66,8 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
     is_exploration = db.Column(db.Boolean)
 
     bonds = db.relationship(
-        'Bond', lazy='select', secondary='bond_permit_xref', order_by='desc(Bond.issue_date)')
-    reclamation_invoices = db.relationship('ReclamationInvoice', lazy='select')
+        'Bond', lazy='select', secondary='bond_permit_xref', order_by='desc(Bond.issue_date)', back_populates='permit')
+    reclamation_invoices = db.relationship('ReclamationInvoice', lazy='select', back_populates='permit')
     exemption_fee_status_code = db.Column(
         db.String, db.ForeignKey('exemption_fee_status.exemption_fee_status_code'))
     exemption_fee_status_note = db.Column(db.String)
@@ -72,7 +77,7 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
         lazy='select',
         primaryjoin='and_(Permit.permit_guid == MineType.permit_guid, MineType.active_ind==True)')
 
-    _mine_associations = db.relationship('MinePermitXref')
+    _mine_associations = db.relationship('MinePermitXref', overlaps='_all_mines,all_mine_permit_xref,mine_permit_xref')
 
     # Liability on permit after permit is closed
     remaining_static_liability = db.Column(db.Numeric(16, 2))

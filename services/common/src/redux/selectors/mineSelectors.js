@@ -2,6 +2,7 @@ import { createSelector } from "reselect";
 import * as mineReducer from "../reducers/mineReducer";
 
 export const getMines = (state) => mineReducer.getMines(state);
+export const getMineById = (state, mineGuid) => mineReducer.getMineById(state, mineGuid);
 export const getMineIds = (state) => mineReducer.getMineIds(state);
 export const getMineNames = (state) => mineReducer.getMineNames(state);
 export const getMinesPageData = (state) => mineReducer.getMinesPageData(state);

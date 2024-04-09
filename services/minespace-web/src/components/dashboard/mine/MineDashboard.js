@@ -13,7 +13,7 @@ import { getMines } from "@mds/common/redux/selectors/mineSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import Loading from "@/components/common/Loading";
 import Overview from "@/components/dashboard/mine/overview/Overview";
-import Permits from "@/components/dashboard/mine/permits/Permits";
+import PermitTabContainer from "@/components/dashboard/mine/permits/PermitTabContainer";
 import Variances from "@/components/dashboard/mine/variances/Variances";
 import Inspections from "@/components/dashboard/mine/inspections/Inspections";
 import Incidents from "@/components/dashboard/mine/incidents/Incidents";
@@ -25,6 +25,8 @@ import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 import NotFoundNotice from "@/components/common/NotFoundNotice";
 import NoticesOfDeparture from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDeparture";
+import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
+import { USER_ROLES } from "@mds/common";
 
 const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
@@ -40,6 +42,7 @@ const propTypes = {
   staticContentLoadingIsComplete: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired,
   fetchEMLIContactsByRegion: PropTypes.func.isRequired,
+  userRoles: PropTypes.arrayOf(PropTypes.string),
 };
 
 const defaultProps = {
@@ -55,11 +58,17 @@ export class MineDashboard extends Component {
       isLoaded: false,
       activeTab: initialTab,
       mineNotFound: false,
+      canEditTSF: false,
     };
   }
 
   componentDidMount() {
     const { id, activeTab } = this.props.match.params;
+    this.setState({
+      canEditTSF: this.props.userRoles?.some(
+        (r) => r === USER_ROLES.role_minespace_proponent || r === USER_ROLES.role_edit_tsf
+      ),
+    });
 
     this.loadMine(id, activeTab);
   }
@@ -144,9 +153,7 @@ export class MineDashboard extends Component {
                   {mine.mine_name || Strings.UNKNOWN}
                 </Typography.Title>
                 <Typography.Title level={4} style={{ margin: 0 }}>
-                  Mine Number: 
-                  {' '}
-                  {mine.mine_no || Strings.UNKNOWN}
+                  Mine Number: {mine.mine_no || Strings.UNKNOWN}
                 </Typography.Title>
               </Col>
             </Row>
@@ -167,7 +174,7 @@ export class MineDashboard extends Component {
                     </Tabs.TabPane>
                   )}
                   <Tabs.TabPane tab="Permits" key="permits">
-                    <Permits mine={mine} match={this.props.match} />
+                    <PermitTabContainer mine={mine} match={this.props.match} />
                   </Tabs.TabPane>
 
                   <Tabs.TabPane tab="Notices of Departure" key="nods">
@@ -189,7 +196,11 @@ export class MineDashboard extends Component {
                     <Bonds mine={mine} match={this.props.match} />
                   </Tabs.TabPane>
                   <Tabs.TabPane tab="Tailings & Dams" key="tailings">
-                    <Tailings mine={mine} match={this.props.match} />
+                    <Tailings
+                      mine={mine}
+                      match={this.props.match}
+                      canEditTSF={this.state.canEditTSF}
+                    />
                   </Tabs.TabPane>
                 </Tabs>
               </Col>
@@ -205,6 +216,7 @@ const mapStateToProps = (state) => ({
   mines: getMines(state),
   staticContentLoadingIsComplete: getStaticContentLoadingIsComplete(state),
   EMLIContactsByRegion: getEMLIContactsByRegion(state),
+  userRoles: getUserAccessData(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -1,7 +1,8 @@
 import {
   IProjectSummaryDocument,
-  IProjectSummaryContact,
+  IProjectContact,
   IProjectSummaryAuthorization,
+  IParty,
 } from "@mds/common/index";
 
 export interface IProjectSummary {
@@ -20,7 +21,7 @@ export interface IProjectSummary {
   expected_permit_receipt_date?: string;
   expected_project_start_date?: string;
   documents: Partial<IProjectSummaryDocument>[];
-  contacts: IProjectSummaryContact[];
+  contacts: IProjectContact[];
   authorizations: IProjectSummaryAuthorization[];
   update_user: string;
   update_timestamp: string;
@@ -28,4 +29,5 @@ export interface IProjectSummary {
   create_timestamp: string;
   mrc_review_required?: boolean;
   project_lead_party_guid?: string;
+  agent?: IParty;
 }

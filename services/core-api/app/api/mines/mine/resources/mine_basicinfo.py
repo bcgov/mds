@@ -1,4 +1,4 @@
-from flask_restplus import Resource, reqparse
+from flask_restx import Resource, reqparse
 from app.api.utils.access_decorators import requires_role_view_all
 from sqlalchemy import table, column, select
 

@@ -19,4 +19,4 @@ class BondDocument(MineDocument):
     bond_document_type_code = db.Column(
         db.String, db.ForeignKey('bond_document_type.bond_document_type_code'), nullable=False)
 
-    bond = db.relationship('Bond', lazy='joined')
+    bond = db.relationship('Bond', lazy='joined', back_populates='documents')

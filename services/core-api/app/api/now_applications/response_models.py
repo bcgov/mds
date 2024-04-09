@@ -1,5 +1,5 @@
 from app.extensions import api
-from flask_restplus import fields
+from flask_restx import fields
 
 from app.api.parties.response_models import PARTY
 from app.api.mines.response_models import MINE_DOCUMENT_MODEL, PERMIT_AMENDMENT_SHORT_MODEL, MINE_TYPE_MODEL
@@ -635,7 +635,11 @@ NOW_APPLICATION_MODEL = api.model(
         'mine_longitude':
         fields.Fixed(decimals=7),
         'permittee':
-        fields.Nested(PARTY, skip_none=True)
+        fields.Nested(PARTY, skip_none=True),
+        'latest_response_date':
+        fields.Date,
+        'regional_contact':
+        fields.String,
     })
 
 NOW_APPLICATION_MODEL_EXPORT = api.model(
@@ -787,6 +791,12 @@ NOW_VIEW_MODEL = api.model(
         fields.String,
         'source_permit_amendment_issue_date':
         fields.Date,
+        'latest_response_date':
+        fields.Date,
+        'regional_contact':
+        fields.String,
+        'mine_purpose':
+        fields.String,
     })
 
 PAGINATED_LIST = api.model(

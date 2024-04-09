@@ -1,15 +1,14 @@
-import { createStore } from "redux";
 import { authenticateUser } from "@mds/common/redux/actions/authenticationActions";
 import * as reducerTypes from "@mds/common/constants/reducerTypes";
-import { rootReducer, reducerObject } from "@/reducers/rootReducer";
 import * as ROUTES from "../../constants/routes";
+import getStore from "@/store/configureStore";
 
 describe("Store", () => {
   beforeEach(() => {
     global.GLOBAL_ROUTES = ROUTES;
   });
   it("should handle reducer creation", () => {
-    const store = createStore(rootReducer, reducerObject);
+    const store = getStore();
 
     const action = authenticateUser({});
     store.dispatch(action);

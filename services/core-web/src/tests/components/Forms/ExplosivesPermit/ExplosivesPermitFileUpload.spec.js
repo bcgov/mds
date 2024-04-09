@@ -1,6 +1,10 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+import { Provider } from "react-redux";
+import { reduxForm } from "redux-form";
 import { ExplosivesPermitFileUpload } from "@/components/Forms/ExplosivesPermit/ExplosivesPermitFileUpload";
+import { store } from "@/App";
+import { EXPLOSIVES_PERMIT_NEW } from "@/constants/forms";
 
 const props = {};
 
@@ -15,8 +19,18 @@ beforeEach(() => {
 });
 
 describe("ExplosivesPermitFileUpload", () => {
+  const FieldInForm = () => (
+    <form>
+      <ExplosivesPermitFileUpload {...props} />
+    </form>
+  );
+  const ReduxForm = reduxForm({ form: EXPLOSIVES_PERMIT_NEW })(FieldInForm);
   it("renders properly", () => {
-    const component = shallow(<ExplosivesPermitFileUpload {...props} />);
-    expect(component).toMatchSnapshot();
+    const { container } = render(
+      <Provider store={store}>
+        <ReduxForm />
+      </Provider>
+    );
+    expect(container.firstChild.firstChild).toMatchSnapshot();
   });
 });

@@ -1,5 +1,5 @@
 from werkzeug.exceptions import NotFound
-from flask_restplus import Resource, inputs
+from flask_restx import Resource, inputs
 
 from app.extensions import api, jwt
 from app.api.utils.access_decorators import requires_any_of, VIEW_ALL, MINE_EDIT, MINESPACE_PROPONENT, is_minespace_user

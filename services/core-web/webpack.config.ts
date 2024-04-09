@@ -7,8 +7,10 @@ const path = require("path");
 const dotenv = require("dotenv").config({ path: `${__dirname}/.env` });
 const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
 const threadLoader = require("thread-loader");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const MomentTimezoneDataPlugin = require("moment-timezone-data-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-
 const parts = require("./webpack.parts");
 const DEVELOPMENT = "development";
 const PRODUCTION = "production";
@@ -69,6 +71,14 @@ const commonConfig = merge([
       main: PATHS.entry,
     },
     plugins: [
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: path.join(PATHS.public, "custom-script.js"),
+            to: path.join(PATHS.build, "custom-script.js"),
+          },
+        ],
+      }),
       //new webpack.optimize.ModuleConcatenationPlugin(),
       new HtmlWebpackPlugin({
         template: PATHS.template,
@@ -77,12 +87,31 @@ const commonConfig = merge([
         REQUEST_HEADER: path.resolve(__dirname, "common/utils/RequestHeaders.js"),
         GLOBAL_ROUTES: path.resolve(__dirname, "src/constants/routes.ts"),
       }),
+      // // Prevent moment locales to be bundled with the app
+      // // to reduce app size
+      new webpack.IgnorePlugin({
+        resourceRegExp: /^\.\/locale$/,
+        contextRegExp: /moment$/,
+      }),
+      // Explicitly load timezone data for Canada and US
+      new MomentTimezoneDataPlugin({
+        startYear: 1900,
+        endYear: 2300,
+        matchZones: /^(America.*|Canada.*)/,
+      }),
+      new MiniCssExtractPlugin(),
     ],
     resolve: {
       extensions: [".tsx", ".ts", ".js"],
       alias: {
         ...PATH_ALIASES,
-        "react-dom": "@hot-loader/react-dom", // patch react-dom import
+        ...(process.env.NODE_ENV === "development"
+          ? {
+              "react-dom": "@hot-loader/react-dom",
+            }
+          : {}),
+        // Use lodash-es that supports proper tree-shaking
+        lodash: "lodash-es",
       },
     },
   },
@@ -97,7 +126,10 @@ const commonConfig = merge([
     },
   }),
   parts.loadFiles({
-    include: path.join(PATHS.src, "assets", "downloads"),
+    include: [
+      path.join(PATHS.src, "assets", "downloads"),
+      path.join(PATHS.sharedPackage, "assets", "downloads"),
+    ],
   }),
 ]);
 
@@ -145,6 +177,9 @@ const prodConfig = merge([
     },
   },
   parts.clean(),
+  parts.generateSourceMaps({
+    type: "source-map",
+  }),
   parts.extractCSS({
     filename: BUILD_FILE_NAMES.css,
     theme: path.join(PATHS.src, "styles", "settings", "theme.scss"),
@@ -158,24 +193,27 @@ const prodConfig = merge([
     fileLoaderOptions: {
       name: BUILD_FILE_NAMES.assets,
     },
-    imageLoaderOptions: {
-      mozjpeg: {
-        progressive: true,
-        quality: 40,
-      },
-      pngquant: {
-        quality: [0.5, 0.6],
-        speed: 4,
-      },
-    },
   }),
   parts.bundleOptimization({
     options: {
       cacheGroups: {
-        commons: {
-          test: /[\\/]node_modules[\\/]/,
+        defaultVendors: {
+          test: /[\\/]node_modules[\\/](?!\@syncfusion*)/,
           name: "vendor",
           chunks: "all",
+          priority: -5,
+        },
+        syncfusion: {
+          test: /[\\/]node_modules\/\@syncfusion*/,
+          name: "syncfusion",
+          chunks: "all",
+          priority: 10,
+        },
+        leaflet: {
+          test: /[\\/]node_modules\/leaflet*/,
+          name: "leaflet",
+          chunks: "all",
+          priority: 10,
         },
       },
     },
@@ -188,6 +226,15 @@ const prodConfig = merge([
   }),
   parts.extractManifest(),
   parts.copy(PATHS.public, path.join(PATHS.build, "public")),
+  {
+    plugins: [
+      new BundleAnalyzerPlugin({
+        analyzerMode: "static",
+        generateStatsFile: true,
+        statsOptions: { source: false },
+      }),
+    ],
+  },
 ]);
 
 module.exports = () => {
@@ -197,6 +244,8 @@ module.exports = () => {
   }
 
   if (mode === DEVELOPMENT) {
-    return smp.wrap(merge(commonConfig, devConfig, { mode }));
+    const conf = merge(commonConfig, devConfig, { mode });
+
+    return process.env.MEASURE_SPEED ? smp.wrap(conf) : conf;
   }
 };

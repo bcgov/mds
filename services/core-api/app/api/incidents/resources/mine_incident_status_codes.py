@@ -1,4 +1,4 @@
-from flask_restplus import Resource, fields
+from flask_restx import Resource, fields
 
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_view_all

@@ -30,15 +30,7 @@ exports[`FilePicker renders properly 1`] = `
     hasFeedback={false}
   >
     <Field
-      component={
-        Object {
-          "$$typeof": Symbol(react.memo),
-          "WrappedComponent": [Function],
-          "compare": null,
-          "displayName": "Connect(FileUpload)",
-          "type": [Function],
-        }
-      }
+      component={[Function]}
       existingFilesDropdown={
         Array [
           Object {

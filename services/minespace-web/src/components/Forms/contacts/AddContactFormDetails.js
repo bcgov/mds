@@ -66,7 +66,11 @@ export const AddContactFormDetails = (props) => {
         await props.onSubmit(party);
       } else if (props.isDirty) {
         // Selected party has been updated, update it
-        const { data: party } = await props.updateParty(payload, values.party_guid);
+        const response = await props.updateParty(payload, values.party_guid);
+
+        if (!response) return;
+
+        const { data: party } = response;
 
         await props.onSubmit(party);
       } else {

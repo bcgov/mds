@@ -1,5 +1,6 @@
 version: "3"
-
+include:
+  - ./services/permits/docker-compose.yaml
 services:
 
   ####################### Keycloak for Cypress #######################
@@ -91,6 +92,7 @@ services:
       - PLATFORM=LOCAL
     volumes:
       - ./migrations/sql:/flyway/sql
+      - ./migrations/sql-prod:/flyway/sql-prod
       - ./migrations/scripts:/flyway/scripts
     depends_on:
       - postgres
@@ -120,6 +122,7 @@ services:
       - jaeger
       - otelcollector
       - keycloak
+      - core_api_celery
     healthcheck:
       test: [ "CMD", "curl", "localhost:5000/health" ]
       interval: 5s
@@ -160,15 +163,17 @@ services:
     user: 1000:1000
     container_name: mds_frontend
     build:
-      context: services/core-web
-    command: [ "npm", "run", "serve" ]
+      context: .
+      dockerfile: services/core-web/Dockerfile.ci
+      args:
+        ARTIFACTORY_TOKEN: $ARTIFACTORY_TOKEN
+
     volumes:
       - ./services/core-web/src:/app/src
     ports:
       - 3000:3000
-    depends_on:
-      - backend
     env_file: ./services/core-web/.env
+    network_mode: "host"
     healthcheck:
       test: [ "CMD", "curl", "localhost:3000/health" ]
       interval: 15s
@@ -182,20 +187,23 @@ services:
     user: 1000:1000
     container_name: mds_minespace
     build:
-      context: services/minespace-web
-    command: [ "npm", "run", "serve" ]
+      context: .
+      dockerfile: services/minespace-web/Dockerfile.ci
+      args:
+        ARTIFACTORY_TOKEN: $ARTIFACTORY_TOKEN
+    environment:
+      - NODE_ENV=production
     volumes:
       - ./services/minespace-web/src:/app/src
     ports:
       - 3020:3020
-    depends_on:
-      - backend
     env_file: ./services/minespace-web/.env
     healthcheck:
       test: [ "CMD", "curl", "localhost:3020/health" ]
       interval: 5s
       timeout: 5s
       retries: 5
+    network_mode: "host"
 
   ####################### NRIS_BACKEND Definition #######################
   nris_backend:
@@ -259,6 +267,7 @@ services:
       - 5001:5001
     volumes:
       - ./services/document-manager/backend:/app
+      - document_manager_logs:/var/log/document-manager
     depends_on:
       - postgres
       - redis
@@ -277,6 +286,7 @@ services:
       - 5555:5555
     volumes:
       - ./services/document-manager/backend:/app
+      - document_manager_logs:/var/log/document-manager
     depends_on:
       - postgres
       - redis
@@ -300,13 +310,16 @@ services:
   docgen-api:
     restart: always
     container_name: docgen_api
-    image: bcgovimages/common-document-generation-service:2.4.1
+    image: bcgovimages/common-document-generation-service:2.5.0
     command: [ "npm", "run", "start" ]
     environment:
       - SERVER_PORT=3030
       - APP_PORT=3030
       - CACHE_DIR=/tmp/tmp-reports
       - NODE_ENV=development
+      - KC_REALM=notused
+      - KC_CLIENT_ID=notused
+      - KC_SERVERURL=http://
     ports:
       - 3030:3030
 
@@ -320,3 +333,4 @@ volumes:
   postgres_data: {}
   core_api_logs: {}
   core_web_logs: {}
+  document_manager_logs: {}

@@ -15,7 +15,7 @@ exports[`ProjectDates renders properly 1`] = `
         <a
           alt="Major Mines Permitting Office"
           href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/major-mines-permitting-office"
-          rel="noreferrer"
+          rel="noopener noreferrer"
           target="_blank"
         >
           Major Mines Office
@@ -30,7 +30,7 @@ exports[`ProjectDates renders properly 1`] = `
   <Field
     component={[Function]}
     id="expected_draft_irt_submission_date"
-    label="When do you anticipate submitting a draft Information Requirements Table? (optional)"
+    label="When do you anticipate submitting a draft Information Requirements Table?"
     name="expected_draft_irt_submission_date"
     placeholder="Please select date"
     validate={
@@ -42,7 +42,7 @@ exports[`ProjectDates renders properly 1`] = `
   <Field
     component={[Function]}
     id="expected_permit_application_date"
-    label="When do you anticipate submitting a permit application? (optional)"
+    label="When do you anticipate submitting a permit application?"
     name="expected_permit_application_date"
     placeholder="Please select date"
     validate={
@@ -54,7 +54,7 @@ exports[`ProjectDates renders properly 1`] = `
   <Field
     component={[Function]}
     id="expected_permit_receipt_date"
-    label="When do you hope to receive your permit/amendment(s)? (optional)"
+    label="When do you hope to receive your permit/amendment(s)?"
     name="expected_permit_receipt_date"
     placeholder="Please select date"
     validate={
@@ -66,7 +66,7 @@ exports[`ProjectDates renders properly 1`] = `
   <Field
     component={[Function]}
     id="expected_project_start_date"
-    label="When do you anticipate starting work on this project? (optional)"
+    label="When do you anticipate starting work on this project?"
     name="expected_project_start_date"
     placeholder="Please select date"
     validate={

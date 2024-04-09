@@ -134,7 +134,7 @@ def setup_schema(Base, session):
                 except Exception as e:
                     raise e
 
-        for class_ in Base._decl_class_registry.values():
+        for class_ in Base.registry._class_registry.values():
             if hasattr(class_, "_schema"):
                 try:
                     mapper = inspect(class_)

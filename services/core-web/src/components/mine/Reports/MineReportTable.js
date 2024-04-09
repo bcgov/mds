@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import * as Strings from "@mds/common/constants/strings";
 import {
   formatDate,
@@ -13,20 +13,29 @@ import {
   getMineReportStatusOptionsHash,
   getMineReportDefinitionHash,
 } from "@mds/common/redux/selectors/staticContentSelectors";
-import { Link } from "react-router-dom";
-import { Badge } from "antd";
+import { Link, useHistory } from "react-router-dom";
+import { Badge, notification } from "antd";
 import CustomPropTypes from "@/customPropTypes";
-import { MineReportActions } from "@/components/mine/Reports/MineReportActions";
 import DocumentLink from "@/components/common/DocumentLink";
-import CoreTable from "@/components/common/CoreTable";
+import CoreTable from "@mds/common/components/common/CoreTable";
 import * as router from "@/constants/routes";
 import { getReportSubmissionBadgeStatusType } from "@/constants/theme";
+import { renderActionsColumn } from "@mds/common/components/common/CoreTableCommonColumns";
+import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
+import DownloadOutlined from "@ant-design/icons/DownloadOutlined";
+import EditOutlined from "@ant-design/icons/EditOutlined";
+import EyeOutlined from "@ant-design/icons/EyeOutlined";
+import { deleteConfirmWrapper } from "@mds/common/components/common/ActionMenu";
+import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
+import { Feature, USER_ROLES } from "@mds/common";
+import { getDocumentDownloadToken } from "@mds/common/redux/utils/actionlessNetworkCalls";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { waitFor, downloadDocument } from "@/components/common/downloads/helpers";
 
 const propTypes = {
   mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
   mineReportCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineReportStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  // eslint-disable-next-line react/no-unused-prop-types
   mineReportDefinitionHash: PropTypes.objectOf(PropTypes.any).isRequired,
   openEditReportModal: PropTypes.func.isRequired,
   handleEditReport: PropTypes.func.isRequired,
@@ -52,6 +61,81 @@ const defaultProps = {
 
 export const MineReportTable = (props) => {
   const hideColumn = (condition) => (condition ? "column-hide" : "");
+
+  const userIsAdmin = useSelector((state) => userHasRole(state, USER_ROLES.role_admin));
+  const { isFeatureEnabled } = useFeatureFlag();
+  const history = useHistory();
+
+  const openReportPage = (mineReport) => {
+    history.push(
+      router.REPORT_VIEW_EDIT.dynamicRoute(mineReport.mine_guid, mineReport.mine_report_guid)
+    );
+  };
+  // from DownloadAllDocumentsButton- I think there is a new way to accomplish this
+  const handleDownloadAll = (mineReport) => {
+    const documents = mineReport.documents;
+    const docURLS = [];
+
+    const totalFiles = documents.length;
+    if (totalFiles === 0) {
+      return;
+    }
+    documents.forEach((doc) =>
+      getDocumentDownloadToken(doc.document_manager_guid, doc.document_name, docURLS)
+    );
+
+    waitFor(() => docURLS.length === documents.length).then(async () => {
+      for (const url of docURLS) {
+        downloadDocument(url);
+
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+      }
+      notification.success({
+        message: `Successfully Downloaded: ${totalFiles} files.`,
+        duration: 10,
+      });
+    });
+  };
+
+  const getRecordActions = () => {
+    return [
+      isFeatureEnabled(Feature.CODE_REQUIRED_REPORTS) && {
+        key: "view",
+        label: "View",
+        icon: <EyeOutlined />,
+        clickFunction: (event, record) => {
+          openReportPage(record);
+        },
+      },
+      !isFeatureEnabled(Feature.CODE_REQUIRED_REPORTS) && {
+        key: "edit",
+        label: "Edit",
+        icon: <EditOutlined />,
+        clickFunction: (event, record) => {
+          props.openEditReportModal(event, props.handleEditReport, record.report);
+        },
+      },
+      {
+        key: "download-all",
+        label: "Download All",
+        icon: <DownloadOutlined />,
+        clickFunction: (event, record) => {
+          handleDownloadAll(record);
+        },
+      },
+      userIsAdmin && {
+        key: "delete",
+        label: "Delete",
+        icon: <DeleteOutlined />,
+        clickFunction: (event, record) => {
+          deleteConfirmWrapper(
+            `${record.report.submission_year} ${record.report.report_name}`,
+            () => props.handleRemoveReport(record)
+          );
+        },
+      },
+    ].filter(Boolean);
+  };
 
   const getComplianceCodeValue = (guid) => {
     return props.mineReportDefinitionHash && props.mineReportDefinitionHash[guid]
@@ -97,10 +181,10 @@ export const MineReportTable = (props) => {
     },
     {
       title: "Status",
-      key: "mine_report_status_code",
-      dataIndex: "mine_report_status_code",
-      sortField: "mine_report_status_code",
-      sorter: props.isDashboardView || nullableStringSorter("mine_report_status_code"),
+      key: "mine_report_status",
+      dataIndex: "mine_report_status",
+      sortField: "mine_report_status",
+      sorter: props.isDashboardView || nullableStringSorter("mine_report_status"),
       render: (text) => (
         <div title="Status">
           <Badge
@@ -160,21 +244,14 @@ export const MineReportTable = (props) => {
         </div>
       ),
     },
-    {
-      key: "operations",
-      render: (text, record) => {
-        return (
-          <div align="right">
-            <MineReportActions
-              mineReport={record.report}
-              openEditReportModal={record.openEditReportModal}
-              handleEditReport={record.handleEditReport}
-              handleRemoveReport={record.handleRemoveReport}
-            />
-          </div>
-        );
+    renderActionsColumn({
+      actions: getRecordActions(),
+      recordActionsFilter: (record, actions) => {
+        return record.documents.length > 0
+          ? actions
+          : actions.filter((action) => action.key !== "download-all");
       },
-    },
+    }),
   ];
 
   const codeSectionColumn = {
@@ -204,7 +281,7 @@ export const MineReportTable = (props) => {
     columns.splice(2, 0, permitColumn);
   }
 
-  const transformRowData = (reports, openEditReportModal, handleEditReport, handleRemoveReport) =>
+  const transformRowData = (reports) =>
     reports.map((report) => ({
       key: report.mine_report_guid,
       mine_report_id: Number(report.mine_report_id),
@@ -220,32 +297,16 @@ export const MineReportTable = (props) => {
         Strings.EMPTY_FIELD,
       report_name: report.report_name,
       due_date: formatDate(report.due_date),
-      received_date: formatDate(report.received_date),
+      received_date: formatDate(report.latest_submission?.received_date),
       submission_year: Number(report.submission_year),
       created_by_idir: report.created_by_idir,
       permit_guid: report.permit_guid || Strings.EMPTY_FIELD,
-      mine_report_status_code:
-        (report.mine_report_submissions &&
-          report.mine_report_submissions.length > 0 &&
-          props.mineReportStatusOptionsHash[
-            report.mine_report_submissions[report.mine_report_submissions.length - 1]
-              .mine_report_submission_status_code
-          ]) ||
-        null,
-      documents:
-        report.mine_report_submissions &&
-        report.mine_report_submissions.length > 0 &&
-        report.mine_report_submissions[report.mine_report_submissions.length - 1].documents &&
-        report.mine_report_submissions[report.mine_report_submissions.length - 1].documents.length >
-          0
-          ? report.mine_report_submissions[report.mine_report_submissions.length - 1].documents
-          : [],
+      mine_report_status:
+        props.mineReportStatusOptionsHash[report.mine_report_status_code] || Strings.EMPTY_FIELD,
+      documents: report.latest_submission?.documents ?? [],
       mine_guid: report.mine_guid,
       mine_name: report.mine_name,
       report,
-      openEditReportModal,
-      handleEditReport,
-      handleRemoveReport,
     }));
 
   const applySortIndicator = (_columns, field, dir) =>
@@ -268,12 +329,7 @@ export const MineReportTable = (props) => {
       condition={props.isLoaded}
       columns={applySortIndicator(columns, props.sortField, props.sortDir)}
       classPrefix="mine-reports"
-      dataSource={transformRowData(
-        props.mineReports,
-        props.openEditReportModal,
-        props.handleEditReport,
-        props.handleRemoveReport
-      )}
+      dataSource={transformRowData(props.mineReports)}
       pagination={props.isPaginated}
       onChange={handleTableChange(props.handleTableChange, props.filters)}
     />

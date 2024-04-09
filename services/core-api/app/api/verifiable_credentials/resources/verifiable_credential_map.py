@@ -1,5 +1,5 @@
-from flask import current_app
-from flask_restplus import Resource, reqparse
+from flask import current_app, request
+from flask_restx import Resource, reqparse
 from werkzeug.exceptions import BadRequest
 from app.extensions import api
 from app.config import Config
@@ -8,30 +8,36 @@ from app.api.parties.party.models.party import Party
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.verifiable_credentials.models.connection import PartyVerifiableCredentialConnection
 from app.api.verifiable_credentials.models.credentials import PartyVerifiableCredentialMinesActPermit
+from app.api.verifiable_credentials.aries_constants import IssueCredentialIssuerState
+from app.api.verifiable_credentials.response_models import PARTY_VERIFIABLE_CREDENTIAL_MINES_ACT_PERMIT
 
 from app.api.services.traction_service import TractionService
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import requires_any_of, MINESPACE_PROPONENT, EDIT_PARTY
-
+from app.api.utils.feature_flag import Feature, is_feature_enabled
 
 
 class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument(
-            'party_guid',
-            type=str,
-            help='GUID of the party.',
-            location='json',
-            store_missing=False)
-    parser.add_argument(
         'permit_amendment_guid', location='json', type=str, store_missing=False)
     
+    @requires_any_of([EDIT_PARTY, MINESPACE_PROPONENT])
+    @api.marshal_with(PARTY_VERIFIABLE_CREDENTIAL_MINES_ACT_PERMIT, code=200, envelope='records', as_list=True)
+    def get(self, party_guid):
+        if not party_guid:
+            raise BadRequest("party_guid required")
+        party_credential_exchanges = PartyVerifiableCredentialMinesActPermit.find_by_party_guid(party_guid)
+
+        return party_credential_exchanges
+
     @api.doc(description="Create a connection invitation for a party by guid", params={"party_guid":"guid for party with wallet connection","permit_amendment_guid":"parmit_amendment that will be offered as a credential to the indicated party"})
     @requires_any_of([EDIT_PARTY, MINESPACE_PROPONENT])
-    def post(self):
+    def post(self, party_guid):
+        if not is_feature_enabled(Feature.TRACTION_VERIFIABLE_CREDENTIALS):
+            raise NotImplemented()
         data = self.parser.parse_args()
         current_app.logger.warning(data)
-        party_guid = data["party_guid"]
         permit_amendment_guid = data["permit_amendment_guid"]
 
         # validate action
@@ -44,13 +50,20 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
         if not (permit_amendment):
             raise BadRequest(f"permit_amendment not found")
         
-        existing_cred_exch = PartyVerifiableCredentialMinesActPermit.find_by_permit_amendment_guid(permit_amendment_guid=permit_amendment_guid)
-        if existing_cred_exch:
-            raise BadRequest(f"This permit_amendment has already been offered, cred_exch_id={existing_cred_exch.cred_exch_id}, cred_exch_state={existing_cred_exch.cred_exch_state}")
+        existing_cred_exch = PartyVerifiableCredentialMinesActPermit.find_by_permit_amendment_guid(permit_amendment_guid=permit_amendment_guid) or []
+        
+        # If a user has deleted the credential from their wallet, they will need another copy so only limit on pending for UX reasons
+        pending_creds = [e for e in existing_cred_exch if e.cred_exch_state in IssueCredentialIssuerState.pending_credential_states]
 
+        #https://github.com/hyperledger/aries-rfcs/tree/main/features/0036-issue-credential#states-for-issuer
+        if pending_creds:
+            raise BadRequest(f"There is a pending credential offer, accept or delete that offer first, cred_exch_id={existing_cred_exch.cred_exch_id}, cred_exch_state={existing_cred_exch.cred_exch_state}")
 
-        # collect information
-        # https://github.com/bcgov/bc-vcpedia/blob/main/credentials/credential-bc-mines-act-permit.md#261-schema-definition
+        if permit_amendment.permit.mines_act_permit_vc_locked:
+            raise BadRequest(f"This permit cannot be offered as a credential")
+         
+        # collect information for schema
+        # https://github.com/bcgov/bc-vcpedia/blob/main/credentials/bc-mines-act-permit/1.1.1/governance.md#261-schema-definition
         credential_attrs={}
 
         mine_disturbance_list = [mtd.mine_disturbance_literal for mtd in permit_amendment.mine.mine_type[0].mine_type_detail if mtd.mine_disturbance_code]
@@ -66,7 +79,8 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
         credential_attrs["mine_disturbance"] = ", ".join(mine_disturbance_list) if mine_disturbance_list else None
         credential_attrs["mine_commodity"] =  ", ".join(mine_commodity_list) if mine_commodity_list else None
         credential_attrs["mine_no"] = permit_amendment.mine.mine_no
-        credential_attrs["issue_date"] = permit_amendment.issue_date
+        credential_attrs["issue_date"] = int(permit_amendment.issue_date.strftime("%Y%m%d")) if is_feature_enabled(Feature.VC_MINES_ACT_PERMIT_20) else permit_amendment.issue_date
+        # https://github.com/hyperledger/aries-rfcs/tree/main/concepts/0441-present-proof-best-practices#dates-and-predicates
         credential_attrs["latitude"] = permit_amendment.mine.latitude
         credential_attrs["longitude"] = permit_amendment.mine.longitude
         credential_attrs["bond_total"] = permit_amendment.permit.active_bond_total
@@ -85,7 +99,7 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
         active_connections = [con for con in vc_conn if con.connection_state in ["active","completed"]] 
 
         if not active_connections:
-            current_app.logger.error("NO ACTIVE CONNECTION")
+            current_app.logger.warning("NO ACTIVE CONNECTION credential not offered")
             current_app.logger.warning(vc_conn)
             current_app.logger.warning(attributes)
             raise BadRequest("Party does not have an active Digital Wallet connection")

@@ -1,5 +1,4 @@
 import React, { FC, useEffect, useState } from "react";
-import PropTypes from "prop-types";
 import { Field, WrappedFieldProps } from "redux-form";
 import { useSelector } from "react-redux";
 import { NEW_VERSION_DOCUMENTS, PROJECT_SUMMARY_DOCUMENTS } from "@mds/common/constants/API";
@@ -8,14 +7,6 @@ import { Alert, Divider, Modal, Popconfirm, Table, Typography } from "antd";
 import { getUserInfo } from "@mds/common/redux/selectors/authenticationSelectors";
 import { FilePondFile } from "filepond";
 import { IDocument } from "@mds/common";
-import { HttpRequest, HttpResponse } from "tus-js-client";
-
-const propTypes = {
-  onFileLoad: PropTypes.func.isRequired,
-  onRemoveFile: PropTypes.func.isRequired,
-  acceptedFileTypesMap: PropTypes.objectOf(PropTypes.string).isRequired,
-  params: PropTypes.objectOf(PropTypes.string).isRequired,
-};
 
 const notificationDisabledStatusCodes = [409]; // Define the notification disabled status codes
 
@@ -50,13 +41,15 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
   const userInfo = useSelector(getUserInfo);
 
   const handleCloseModal = () => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    handleModalClose && handleModalClose();
+    if (handleModalClose) {
+      handleModalClose();
+    }
   };
 
   const handleNewVersionSubmit = () => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    handleModalSubmit && handleModalSubmit();
+    if (handleModalSubmit) {
+      handleModalSubmit();
+    }
   };
 
   const columns = [
@@ -149,23 +142,55 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
     });
   };
 
-  const onAfterResponse = (request: HttpRequest, response: HttpResponse) => {
-    const responseBody = response.getBody();
-    if (responseBody) {
-      const jsonString = responseBody.replace(/'/g, '"');
-
-      const obj = JSON.parse(jsonString);
-      if (obj && obj.document_manager_version_guid) {
-        setVersion(obj.document_manager_version_guid);
-      }
+  const onUploadResponse = (response) => {
+    if (response.document_manager_version_guid) {
+      setVersion(response.document_manager_version_guid);
     }
   };
 
-  const handleFileLoad = (fileName: string, document_guid: string) => {
+  const handleFileLoad = (fileName: string, document_guid: string, versionGuid: string) => {
     props.onFileLoad(fileName, document_guid, {
-      document_manager_version_guid: version,
+      document_manager_version_guid: version || versionGuid,
       document_manager_guid: mineDocumentGuid,
     });
+  };
+
+  const onError = (filename: string, e) => {
+    setFileName(fileName);
+    if (
+      e.response.status_code &&
+      notificationDisabledStatusCodes.includes(e.response.status_code)
+    ) {
+      if (e.response.status === "ARCHIVED_FILE_EXIST") {
+        setShouldAbortUpload(false);
+        const message = `An archived file named ${filename} already exists. If you would like to restore it, download the archived file and upload it again with a different file name.`;
+        setArchivedFileModalMessage(message);
+        setIsArchivedFileModalVisible(true);
+      }
+      if (e.response.status === "REPLACEABLE_FILE_EXIST") {
+        setShouldAbortUpload(false);
+        const message = `A file with the same name already exists in this project. Replacing it will create a new version of the original file and replace it as part of this submission.`;
+        setReplaceableFileModalMessage(message);
+        setReplaceableFileModalVisible(true);
+        setMineGuid(e.response.mine_guid);
+        setMineDocumentGuid(e.response.mine_document_guid);
+
+        const date = new Date(e.response.update_timestamp);
+        const options: Intl.DateTimeFormatOptions = {
+          year: "numeric",
+          month: "short",
+          day: "2-digit",
+        };
+        const formattedDate = date.toLocaleDateString("en-US", options);
+
+        setFileDetails({
+          file_name: filename,
+          file_type: e.response.file_type,
+          update_timestamp: `${formattedDate}`,
+          update_user: e.response.update_user,
+        });
+      }
+    }
   };
 
   return (
@@ -187,44 +212,8 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
         props={{
           beforeAddFile: beforeUpload,
           beforeDropFile: beforeUpload,
-          onError: (filename: string, e) => {
-            setFileName(fileName);
-            if (
-              e.response.status_code &&
-              notificationDisabledStatusCodes.includes(e.response.status_code)
-            ) {
-              if (e.response.status === "ARCHIVED_FILE_EXIST") {
-                setShouldAbortUpload(false);
-                const message = `An archived file named ${filename} already exists. If you would like to restore it, download the archived file and upload it again with a different file name.`;
-                setArchivedFileModalMessage(message);
-                setIsArchivedFileModalVisible(true);
-              }
-              if (e.response.status === "REPLACEABLE_FILE_EXIST") {
-                setShouldAbortUpload(false);
-                const message = `A file with the same name already exists in this project. Replacing it will create a new version of the original file and replace it as part of this submission.`;
-                setReplaceableFileModalMessage(message);
-                setReplaceableFileModalVisible(true);
-                setMineGuid(e.response.mine_guid);
-                setMineDocumentGuid(e.response.mine_document_guid);
-
-                const date = new Date(e.response.update_timestamp);
-                const options: Intl.DateTimeFormatOptions = {
-                  year: "numeric",
-                  month: "short",
-                  day: "2-digit",
-                };
-                const formattedDate = date.toLocaleDateString("en-US", options);
-
-                setFileDetails({
-                  file_name: filename,
-                  file_type: e.response.file_type,
-                  update_timestamp: `${formattedDate}`,
-                  update_user: e.response.update_user,
-                });
-              }
-            }
-          },
-          onAfterResponse,
+          onError,
+          onUploadResponse,
         }}
       />
       <Popconfirm
@@ -311,7 +300,5 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
     </>
   );
 };
-
-ProjectSummaryFileUpload.propTypes = propTypes;
 
 export default ProjectSummaryFileUpload;
