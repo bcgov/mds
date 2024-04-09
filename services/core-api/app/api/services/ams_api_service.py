@@ -126,7 +126,7 @@ class AMSApiService():
                         'em_companyname': agent.get('party_name', '') if agent else ''
                     },
                     'preappexemptionrequest': cls.__boolean_to_yes_no(authorization.get('exemption_requested')),
-                    'preappexemptionrequestreason': 'Test',
+                    'preappexemptionrequestreason': authorization.get('authorization_description', ''),
                     'iscontaminatedsite': cls.__boolean_to_yes_no(authorization.get('is_contaminated')),
                     'contact': {
                         'em_lastname': contacts[0].get('last_name', ''),
