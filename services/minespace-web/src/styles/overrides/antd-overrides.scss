@@ -280,7 +280,7 @@ h5.ant-typography,
 }
 
 .ant-table-thead>tr>th {
-  background: #F7F8FA;
+  background: #f2f2f2;
   color: #494949;
   border-bottom: 2px solid $primary-color;
   border-radius: 0;
@@ -554,4 +554,27 @@ th.ant-descriptions-item.vertical-description {
 .ant-modal-footer {
   padding-right: 24px;
   padding-bottom: 24px;
+}
+
+// Collapse Component
+.ant-collapse:not(.ant-collapse-borderless) {
+  border-color: $background;
+  border-width: 1px;
+  border-bottom-style: solid;
+  border-radius: 2px;
+}
+
+.ant-collapse-header {
+  // same as .grey-filled-box
+  padding: 16px 24px;
+}
+
+.ant-collapse>.ant-collapse-item:last-child,
+.ant-collapse>.ant-collapse-item:last-child>.ant-collapse-header {
+  border-radius: 0;
+  border-bottom: none;
+}
+
+.ant-collapse-borderless>.ant-collapse-item>.ant-collapse-content {
+  background-color: $white;
 }

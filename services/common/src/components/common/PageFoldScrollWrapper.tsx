@@ -1,5 +1,14 @@
-import React, { FC, ReactNode, ReactNodeArray, useLayoutEffect, useEffect, useState } from "react";
+import React, { FC, ReactNode, ReactNodeArray, useEffect, useState } from "react";
 
+/**
+  A wrapper to confine content to "above the page fold"
+  - Puts a div with a Y-scroll around the children (div is given [optional] id param),
+    math finds out how much space is above it, and max-height is set accordingly
+  - Pass in an offsetBottom to keep content below of that height above page fold too,
+    without making that content scroll.
+  - To keep content from disappearing on small windows, use minHeight (or let it be default)
+  - Watches for window resizes.
+ */
 const PageFoldScrollWrapper: FC<{
   children: ReactNode | ReactNodeArray;
   id?: string;
@@ -23,7 +32,11 @@ const PageFoldScrollWrapper: FC<{
   }, [offsetBottom]);
 
   return (
-    <div id={id} style={{ maxHeight, overflowY: "scroll", minHeight }}>
+    <div
+      id={id}
+      style={{ maxHeight, overflowY: "scroll", minHeight }}
+      className="page-scroll-wrapper"
+    >
       {children}
     </div>
   );

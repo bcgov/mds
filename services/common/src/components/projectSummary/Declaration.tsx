@@ -1,7 +1,7 @@
-import React, { FC, useEffect, useState } from "react";
-import { Col, Row, Typography } from "antd";
+import React, { FC } from "react";
+import { Collapse, Row, Typography } from "antd";
 import { useSelector } from "react-redux";
-import { Field, getFormValues, getFormSyncErrors } from "redux-form";
+import { Field, getFormValues } from "redux-form";
 import { FORM } from "../..";
 import { getAmsAuthorizationTypes } from "@mds/common/redux/selectors/projectSelectors";
 import { required } from "@mds/common/redux/utils/Validate";
@@ -91,42 +91,57 @@ const Declaration: FC = () => {
 
   const hasAmsAuths = amsAuthTypes.some((type: string) => authorizationTypes?.includes(type));
 
+  const rowVerticalGutter = 16;
   const aboveFoldContentHeight = document.getElementById("above-fold")?.clientHeight ?? 0;
   const submitButtonRowHeight =
     document.querySelector(".stepped-form-button-row")?.clientHeight ?? 0;
-  const offsetBottom = aboveFoldContentHeight + submitButtonRowHeight + 8;
+  const offsetBottom = aboveFoldContentHeight + submitButtonRowHeight + rowVerticalGutter * 2 + 8;
 
   return (
     <div id="declaration">
       <Typography.Title level={3}>Declaration</Typography.Title>
-      {hasAmsAuths && (
-        <>
+      <Row gutter={[0, rowVerticalGutter]}>
+        {hasAmsAuths && (
+          <Collapse expandIconPosition="end" defaultActiveKey="ams_terms">
+            <Collapse.Panel
+              key="ams_terms"
+              collapsible="icon"
+              header={
+                <Field
+                  name="ams_terms_agreed"
+                  required
+                  validate={[required]}
+                  label={
+                    <>
+                      By completing this Application for an authorization, the Applicant understands
+                      and agrees with the terms and conditions.
+                    </>
+                  }
+                  component={RenderCheckbox}
+                />
+              }
+            >
+              <PageFoldScrollWrapper id="terms-and-conditions" offsetBottom={offsetBottom}>
+                {terms}
+              </PageFoldScrollWrapper>
+            </Collapse.Panel>
+          </Collapse>
+        )}
+        <div
+          id="above-fold"
+          className="grey-filled-box"
+          style={{ marginBottom: rowVerticalGutter }}
+        >
+          <Typography.Text strong>Confirmation of Submission</Typography.Text>
           <Field
-            name="ams_terms_agreed"
+            name="confirmation_of_submission"
+            label="I understand that this submission, along with any supporting files, is being submitted on behalf of the owner, agent, or mine manager. The reporter may be contacted by the Ministry for further follow-up."
             required
             validate={[required]}
-            label={
-              <>
-                By completing this Application for an authorization, the Applicant understands and
-                agrees with the terms and conditions
-              </>
-            }
             component={RenderCheckbox}
           />
-          <PageFoldScrollWrapper id="terms-and-conditions" offsetBottom={offsetBottom}>
-            {terms}
-          </PageFoldScrollWrapper>
-          <div id="above-fold">
-            <Field
-              name="confirmation_of_submission"
-              label="Confirmation of Submission"
-              required
-              validate={[required]}
-              component={RenderCheckbox}
-            />
-          </div>
-        </>
-      )}
+        </div>
+      </Row>
     </div>
   );
 };

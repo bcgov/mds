@@ -25,6 +25,7 @@ const RenderCheckbox: FC<CheckboxProps> = ({
       name={input.name}
       validateStatus={meta.touched ? meta.error && "error" : ""}
       required={props.required}
+      className={props.required && "ant-form-item-checkbox-required"}
       help={
         meta.touched &&
         ((meta.error && <span>{meta.error}</span>) || (meta.warning && <span>{meta.warning}</span>))

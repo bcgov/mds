@@ -13,6 +13,15 @@
     }
 }
 
+.ant-form-item-checkbox-required .ant-checkbox+span {
+    &::after {
+        content: "*";
+        font-family: $font-family;
+        color: $gov-red;
+    }
+
+}
+
 .label-subtitle {
     line-height: 24px;
 }

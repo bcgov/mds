@@ -10,11 +10,15 @@ const propTypes = {
   sub_requirement: customPropTypes.subRequirements.isRequired,
 };
 
-const renderSubrequirement = (item) => item.map((it) => <Subrequirement sub_requirement={it} />);
+const renderSubrequirement = (item) =>
+  item.map((it) => {
+    //eslint-disable-next-line @typescript-eslint/no-use-before-define
+    return <Subrequirement sub_requirement={it} key={it.requirement_id} />;
+  });
 
 const ReviewSubmitInformationRequirementsTable = ({ requirements }) => {
   return (
-    <Collapse defaultActiveKey={["1"]}>
+    <Collapse defaultActiveKey={["1"]} bordered={false}>
       <br />
       <Panel header={<Title level={5}>{`${requirements?.description}`}</Title>} key="1">
         {requirements !== undefined ? renderSubrequirement(requirements?.sub_requirements) : null}

@@ -1,24 +1,24 @@
-.information-requirements-table-callout > h4 {
-    color: $font-colour;
-    font-weight: 700;
-  }
-  
-.information-requirements-table-callout > p {
-    font-size: 1rem;
-    margin-bottom: 0;
-  }
+.information-requirements-table-callout>h4 {
+  color: $font-colour;
+  font-weight: 700;
+}
 
-.ant-collapse {
-    border: none;
-  }
+.information-requirements-table-callout>p {
+  font-size: 1rem;
+  margin-bottom: 0;
+}
 
 .ant-collapse-content {
-    border-top: none;
-  }
-  
+  border-top: none;
+}
+
+.page-scroll-wrapper .ant-collapse-content>.ant-collapse-content-box {
+  padding: 0;
+}
+
 .success-page {
-    color: #008000;
-    transform: scale(7.0);
-    margin-top: 7.0em;
-    margin-bottom: 3.5em;
-  }
+  color: #008000;
+  transform: scale(7.0);
+  margin-top: 7.0em;
+  margin-bottom: 3.5em;
+}
