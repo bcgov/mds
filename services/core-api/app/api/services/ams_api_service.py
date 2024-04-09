@@ -178,4 +178,6 @@ class AMSApiService():
             except requests.exceptions.Timeout as timeout_err:
                 current_app.logger.error(f'AMS Service Timeout error occurred for POST request: {timeout_err}')
                 break
+            except Exception as err:
+                current_app.logger.error(f'AMS Input Exception error occurred for POST request: {err}')
         return ams_results
