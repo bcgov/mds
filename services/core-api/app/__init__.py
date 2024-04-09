@@ -333,11 +333,19 @@ def register_routes(app):
         app.logger.error(str(error))
         app.logger.error(type(error))
         app.logger.error(traceback.format_exc())
+        status_code = 500
+        error_message = str(error),
+        if hasattr(error, 'status_code'):
+            status_code = int(getattr(error, 'status_code'))
+
+        if 400 <= status_code < 500:
+            error_message = str(error.description),
+
         return {
-            'status': getattr(error, 'status_code', 400),
-            'message': "Encountered an unexpected error",
+            "status": status_code,
+            "message": error_message,
             "trace_id": str(get_trace_id()),
-        }, getattr(error, 'status_code', 400)
+        }, status_code
 
     def _add_sqlalchemy_error_handlers(classname):
         for subclass in classname.__subclasses__():
@@ -351,15 +359,20 @@ def register_routes(app):
     @root_api_namespace.errorhandler(Exception)
     def default_error_handler(error):
         app.logger.error(traceback.format_exc())
+        status_code = 500
+        error_message = "Ooops! Unexpected error occurred"
+
+        if hasattr(error, 'status_code'):
+          status_code = int(getattr(error, "status_code"))
+        elif hasattr(error, "code"):
+          status_code = int(getattr(error, "code"))
+
         if isinstance(error, MDSCoreAPIException):
-            return {
-                "status": getattr(error, "code", 500),
-                "message": str(getattr(error, "message", "")),
-                "trace_id": str(get_trace_id()),
-            }, getattr(error, 'code', 500)
-        else:
-            return {
-                "status": getattr(error, "code", 500),
-                "message": str("Ooops! Unexpected error occurred"),
-                "trace_id": str(get_trace_id()),
-            }, getattr(error, 'code', 500)
+            error_message = str(getattr(error, "message", ""))
+        elif 400 <= status_code < 500:
+            error_message = str(error.description)
+        return {
+            "status": status_code,
+            "message": error_message,
+            "trace_id": str(get_trace_id()),
+        }, status_code
