@@ -31,7 +31,7 @@ const RenderCheckbox: FC<CheckboxProps> = ({
         ((meta.error && <span>{meta.error}</span>) || (meta.warning && <span>{meta.warning}</span>))
       }
     >
-      <Checkbox id={id} {...input} disabled={disabled} onChange={onChange}>
+      <Checkbox id={id} checked={input.value} disabled={disabled} onChange={onChange}>
         {label}
       </Checkbox>
     </Form.Item>

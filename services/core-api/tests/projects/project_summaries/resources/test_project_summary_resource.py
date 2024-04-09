@@ -71,6 +71,7 @@ def test_update_project_summary_assign_project_lead(test_client, db_session, aut
     data['mine_guid'] = project_summary.project.mine_guid
     data['project_summary_title'] = project_summary.project_summary_title
     data['status_code'] = 'SUB'
+    data['confirmation_of_submission'] = True
     data['project_lead_party_guid'] = party.party_guid
 
     put_resp = test_client.put(
@@ -81,3 +82,105 @@ def test_update_project_summary_assign_project_lead(test_client, db_session, aut
 
     assert put_resp.status_code == 200
     assert put_data['status_code'] == 'ASG'
+
+def test_update_project_summary_bad_request_without_terms(test_client, db_session, auth_headers):
+    '''Not agreeing to terms returns an error'''
+    project = ProjectFactory(project_summary=0)
+    project_summary = ProjectSummaryFactory(project=project)
+    party = PartyFactory(person=True)
+
+    data = {}
+    data['documents'] = []
+    data['mine_guid'] = project_summary.project.mine_guid
+    data['project_summary_title'] = project_summary.project_summary_title
+    data['status_code'] = 'SUB'
+    data['project_lead_party_guid'] = party.party_guid
+
+    put_resp = test_client.put(
+        f'/projects/{project.project_guid}/project-summaries/{project_summary.project_summary_guid}',
+        headers=auth_headers['full_auth_header'],
+        json=data)
+    put_data = json.loads(put_resp.data.decode())
+
+    assert put_resp.status_code == 400
+    assert put_data['message'] == "400 Bad Request: Please agree to the terms and conditions of submission"
+
+def test_update_project_summary_bad_request_without_terms_ams_auths(test_client, db_session, auth_headers):
+    '''Not agreeing to AMS terms when there are AMS auths returns an error'''
+    project = ProjectFactory(project_summary=0)
+    project_summary = ProjectSummaryFactory(project=project)
+    party = PartyFactory(person=True)
+
+    data = {}
+    data['documents'] = []
+    data['mine_guid'] = project_summary.project.mine_guid
+    data['project_summary_title'] = project_summary.project_summary_title
+    data['status_code'] = 'SUB'
+    data['confirmation_of_submission'] = True
+    data['ams_authorizations'] = {
+        'amendments': [],
+        'new': [{
+            'authorization_description': 'Purpose of application',
+            'exemption_requested': False,
+            'new_type': 'APP',
+            'project_summary_authorization_type': 'MUNICIPAL_WASTEWATER_REGULATION',
+            'project_summary_guid': project_summary.project_summary_guid,
+            'project_summary_permit_type': ['NEW']
+        }]
+    }
+    data['project_lead_party_guid'] = party.party_guid
+
+    put_resp = test_client.put(
+        f'/projects/{project.project_guid}/project-summaries/{project_summary.project_summary_guid}',
+        headers=auth_headers['full_auth_header'],
+        json=data)
+    put_data = json.loads(put_resp.data.decode())
+
+    assert put_resp.status_code == 400
+    assert put_data['message'] == "400 Bad Request: Please agree to the terms and conditions of submission"
+
+def test_update_project_summary_with_ams_auths(test_client, db_session, auth_headers):
+    '''AMS authorizations are posted successfully'''
+    project = ProjectFactory(project_summary=0)
+    project_summary = ProjectSummaryFactory(project=project)
+    party = PartyFactory(person=True)
+
+    data = {}
+    data['documents'] = []
+    data['mine_guid'] = project_summary.project.mine_guid
+    data['project_summary_title'] = project_summary.project_summary_title
+    data['status_code'] = 'SUB'
+    data['confirmation_of_submission'] = True
+    data['ams_terms_agreed'] = True
+    data['ams_authorizations'] = {
+        'amendments': [{
+            'amendment_changes': ['ILT'],
+            'amendment_severity': 'SIG',
+            'authorization_description': 'Description',
+            'exemption_requested': True,
+            'existing_permits_authorizations': ['1234'],
+            'is_contaminated': False,
+            'project_summary_authorization_type': 'AIR_EMISSIONS_DISCHARGE_PERMIT',
+            'project_summary_guid': project_summary.project_summary_guid,
+            'project_summary_permit_type': ['AMENDMENT']
+        }],
+        'new': [{
+            'authorization_description': 'Purpose of application',
+            'exemption_requested': False,
+            'new_type': 'APP',
+            'project_summary_authorization_type': 'MUNICIPAL_WASTEWATER_REGULATION',
+            'project_summary_guid': project_summary.project_summary_guid,
+            'project_summary_permit_type': ['NEW']
+        }]
+    }
+    data['project_lead_party_guid'] = party.party_guid
+
+    put_resp = test_client.put(
+        f'/projects/{project.project_guid}/project-summaries/{project_summary.project_summary_guid}',
+        headers=auth_headers['full_auth_header'],
+        json=data)
+    put_data = json.loads(put_resp.data.decode())
+
+    assert put_resp.status_code == 200
+    assert put_data['authorizations'][0]['project_summary_authorization_guid'] is not None
+    assert put_data['authorizations'][1]['project_summary_authorization_guid'] is not None

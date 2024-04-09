@@ -348,6 +348,18 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         return ams_tracking_result
 
     @classmethod
+    def validate_new_submission(self, new_data):
+        ams_terms_agreed = new_data.get('ams_terms_agreed')
+        confirmation_of_submission = new_data.get('confirmation_of_submission')
+        ams_authorizations = new_data.get('ams_authorizations')
+        ams_condition = ams_terms_agreed or ams_authorizations == None
+        terms_agreed = ams_condition and confirmation_of_submission
+
+        if not terms_agreed:
+            return "Please agree to the terms and conditions of submission"
+        return True
+        
+    @classmethod
     def create(cls,
                project,
                mine,
