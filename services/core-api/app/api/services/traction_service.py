@@ -12,7 +12,7 @@ traction_token_url = Config.TRACTION_HOST+"/multitenancy/tenant/"+Config.TRACTIO
 traction_oob_create_invitation = Config.TRACTION_HOST+"/out-of-band/create-invitation"
 traction_offer_credential = Config.TRACTION_HOST+"/issue-credential/send-offer"
 revoke_credential_url = Config.TRACTION_HOST+"/revocation/revoke"
-
+fetch_credential_exchanges = Config.TRACTION_HOST+"/issue-credential/records"
 class VerificableCredentialWorkflowError(Exception):
     pass
 
@@ -99,3 +99,8 @@ class TractionService():
         revoke_resp = requests.post(revoke_credential_url, json=payload,headers=self.get_headers())
         assert revoke_resp.status_code == 200, f"revoke_resp={revoke_resp.json()}"
         return revoke_resp.json()
+
+    def fetch_credential_exchange(self,cred_exch_id):
+        fetch_resp = requests.get(fetch_credential_exchanges+"/"+str(cred_exch_id),headers=self.get_headers())
+        assert fetch_resp.status_code == 200, f"fetch_resp={fetch_resp.json()}"
+        return fetch_resp.json()

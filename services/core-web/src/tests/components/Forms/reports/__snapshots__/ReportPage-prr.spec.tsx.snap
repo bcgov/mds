@@ -295,7 +295,11 @@ exports[`ReportPage renders view mode properly 1`] = `
                     for="VIEW_EDIT_REPORT_report_for"
                     title=""
                   >
-                    Who is the report for?
+                    <div
+                      style="width: 100%;"
+                    >
+                      Who is the report for?
+                    </div>
                   </label>
                 </div>
                 <div
@@ -308,9 +312,7 @@ exports[`ReportPage renders view mode properly 1`] = `
                       class="ant-form-item-control-input-content"
                     >
                       <div
-                        aria-required="true"
                         class="ant-radio-group ant-radio-group-solid vertical-radio-group"
-                        id="VIEW_EDIT_REPORT_report_for"
                       >
                         <label
                           class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
@@ -445,7 +447,11 @@ exports[`ReportPage renders view mode properly 1`] = `
                     for="VIEW_EDIT_REPORT_report_type"
                     title=""
                   >
-                    What is the type of the report?
+                    <div
+                      style="width: 100%;"
+                    >
+                      What is the type of the report?
+                    </div>
                   </label>
                 </div>
                 <div
@@ -458,9 +464,7 @@ exports[`ReportPage renders view mode properly 1`] = `
                       class="ant-form-item-control-input-content"
                     >
                       <div
-                        aria-required="true"
                         class="ant-radio-group ant-radio-group-solid vertical-radio-group"
-                        id="VIEW_EDIT_REPORT_report_type"
                       >
                         <label
                           class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"

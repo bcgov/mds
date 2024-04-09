@@ -8,8 +8,7 @@ import { get, isEmpty, isNil, sortBy } from "lodash";
 import { createNumberMask } from "redux-form-input-masks";
 import moment from "moment-timezone";
 import { reset } from "redux-form";
-import { ItemMap } from "@mds/common/interfaces";
-import { IMineReportDefinition, IMineReportSubmission } from "@mds/common/interfaces";
+import { IMineReportDefinition, IMineReportSubmission, ItemMap } from "@mds/common/interfaces";
 import { MINE_REPORT_SUBMISSION_CODES } from "../..";
 
 /**
@@ -72,6 +71,14 @@ export const createDropDownList = (
 // Function to create a hash given an array of values and labels
 export const createLabelHash = (arr) =>
   arr.reduce((map, { value, label }) => ({ [value]: label, ...map }), {});
+
+export const formatTractionDate = (dateString: string) => {
+  const year = dateString.slice(0, 4);
+  const month = dateString.slice(4, 6);
+  const day = dateString.slice(6, 8);
+
+  return `${year}-${month}-${day}T00:00:00`;
+};
 
 // Function to format an API date string to human readable
 export const formatDate = (dateString) =>

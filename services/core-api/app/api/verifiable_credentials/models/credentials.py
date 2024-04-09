@@ -22,7 +22,7 @@ class PartyVerifiableCredentialMinesActPermit(AuditMixin, Base):
     
     
     def __repr__(self):
-        return '<PartyVerifiableCredentialMinesActPermit cred_exch_id=%r, party_guid=%r, permit_amendment_id=%r>' % self.cred_exch_id, self.party_guid, self.permit_amendment_id
+        return f'<PartyVerifiableCredentialMinesActPermit cred_exch_id={self.cred_exch_id}, party_guid={self.party_guid}, permit_amendment_id={self.permit_amendment_guid}>'
         
     @classmethod
     def find_by_cred_exch_id(cls, cred_exch_id, unsafe:bool =False) -> "PartyVerifiableCredentialMinesActPermit":
@@ -30,7 +30,7 @@ class PartyVerifiableCredentialMinesActPermit(AuditMixin, Base):
         return query.filter_by(cred_exch_id=cred_exch_id).one_or_none()
 
     @classmethod
-    def find_by_party_guid(cls, party_guid) -> "PartyVerifiableCredentialMinesActPermit":
+    def find_by_party_guid(cls, party_guid) -> List["PartyVerifiableCredentialMinesActPermit"]:
         return cls.query.filter_by(party_guid=party_guid).all()
     
     @classmethod

@@ -62,6 +62,7 @@ import DeleteDocumentModal from "@mds/common/components/documents/DeleteDocument
 import ReplaceDocumentModal from "@mds/common/components/documents/ReplaceDocumentModal";
 import UpdateMineReportSubmissionStatusModal from "./UpdateMineReportSubmissionStatusModal";
 import RevokeCredentialModal from "@/components/mine/DigitalPermitCredential/RevokeCredentialModal";
+import CredentialContentModal from "@/components/mine/DigitalPermitCredential/CredentialContentModal";
 
 export const modalConfig = {
   MINE_RECORD: MineRecordModal,
@@ -128,6 +129,7 @@ export const modalConfig = {
   VIEW_PAST_MINE_ALERTS: ViewPastMineAlertModal,
   UPDATE_MINE_REPORT_STATUS_MODAL: UpdateMineReportSubmissionStatusModal,
   REVOKE_CREDENTIAL_MODAL: RevokeCredentialModal,
+  CREDENTIAL_CONTENT_MODAL: CredentialContentModal,
 };
 
 export default modalConfig;

@@ -93,8 +93,8 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
         def generate_list_element(element):
             return f'<li>{element}</li>'
 
-        # TODO: Update this link with Config.MINESPACE_PRODUCTION_URL}/projects/{self.project_guid}/major-mine-application/{self.major_mine_application_guid}/review?step=3 and update frontend to support that
-        link = f'{Config.MINESPACE_PRODUCTION_URL}/projects/{self.project_guid}/major-mine-application/entry'
+        # TODO: Update this link with Config.MINESPACE_PROD_URL}/projects/{self.project_guid}/major-mine-application/{self.major_mine_application_guid}/review?step=3 and update frontend to support that
+        link = f'{Config.MINESPACE_PROD_URL}/projects/{self.project_guid}/major-mine-application/entry'
 
         subject = f'Major Mine Application Submitted for {self.project.project_title}'
         body = '<p>The following documents have been submitted with this Major Mine Application:</p>'

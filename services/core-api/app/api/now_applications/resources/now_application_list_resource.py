@@ -9,6 +9,7 @@ from app.api.mines.permits.permit.models.permit import Permit
 from app.api.now_applications.models.applications_view import ApplicationsView
 from app.api.now_applications.models.now_application import NOWApplication
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
+from app.api.now_applications.resources.now_application_base_list_resource import NowApplicationBaseListResource
 from app.api.now_applications.response_models import NOW_VIEW_LIST, NOW_APPLICATION_MODEL
 from app.api.utils.access_decorators import requires_role_edit_permit, requires_any_of, VIEW_ALL, GIS
 from app.api.utils.custom_reqparser import CustomReqparser
@@ -21,7 +22,7 @@ SORT_FIELD_DEFAULT = 'received_date'
 SORT_DIR_DEFAULT = 'desc'
 
 
-class NOWApplicationListResource(Resource, UserMixin):
+class NOWApplicationListResource(NowApplicationBaseListResource):
     parser = CustomReqparser()
     parser.add_argument('permit_guid', type=str, required=True)
     # required because only allowed on Major Mine Permit Amendment Application
@@ -100,110 +101,6 @@ class NOWApplicationListResource(Resource, UserMixin):
             'items_per_page': pagination_details.page_size,
             'total': pagination_details.total_results,
         }
-
-    def _apply_filters_and_pagination(self,
-                                      page_number=PAGE_DEFAULT,
-                                      page_size=PER_PAGE_DEFAULT,
-                                      sort_field=None,
-                                      sort_dir=None,
-                                      mine_guid=None,
-                                      lead_inspector_name=None,
-                                      issuing_inspector_name=None,
-                                      notice_of_work_type_description=[],
-                                      mine_region=[],
-                                      mine_name=None,
-                                      now_number=None,
-                                      mine_search=None,
-                                      now_application_status_description=[],
-                                      originating_system=[],
-                                      submissions_only=None,
-                                      import_timestamp_since=None,
-                                      update_timestamp_since=None,
-                                      application_type=None,
-                                      permit_no=None,
-                                      party=None):
-
-        filters = []
-        base_query = ApplicationsView.query
-        if application_type:
-            filters.append(ApplicationsView.application_type_code == application_type)
-
-        if submissions_only:
-            filters.append(
-                and_(ApplicationsView.originating_system != None,
-                     ApplicationsView.originating_system != 'MMS'))
-
-        if mine_guid:
-            filters.append(ApplicationsView.mine_guid == mine_guid)
-
-        if lead_inspector_name:
-            filters.append(
-                func.lower(ApplicationsView.lead_inspector_name).contains(
-                    func.lower(lead_inspector_name)))
-
-        if issuing_inspector_name:
-            filters.append(
-                func.lower(ApplicationsView.issuing_inspector_name).contains(
-                    func.lower(issuing_inspector_name)))
-
-        if notice_of_work_type_description:
-            filters.append(
-                ApplicationsView.notice_of_work_type_description.in_(
-                    notice_of_work_type_description))
-
-        if now_number:
-            filters.append(ApplicationsView.now_number == now_number)
-
-        if mine_region or mine_search or mine_name:
-            base_query = base_query.join(Mine)
-
-        if mine_region:
-            filters.append(Mine.mine_region.in_(mine_region))
-
-        if originating_system:
-            filters.append(ApplicationsView.originating_system.in_(originating_system))
-
-        if mine_name:
-            filters.append(func.lower(Mine.mine_name).contains(func.lower(mine_name)))
-
-        if mine_search:
-            filters.append(
-                or_(
-                    func.lower(ApplicationsView.mine_no).contains(func.lower(mine_search)),
-                    func.lower(Mine.mine_name).contains(func.lower(mine_search)),
-                    func.lower(Mine.mine_no).contains(func.lower(mine_search))))
-
-        if permit_no:
-            filters.append(func.lower(ApplicationsView.permit_no).contains(func.lower(str(permit_no))))
-
-        if party:
-            filters.append(func.lower(ApplicationsView.party).contains(func.lower(str(party))))
-
-        if now_application_status_description:
-            filters.append(
-                ApplicationsView.now_application_status_description.in_(
-                    now_application_status_description))
-
-        if import_timestamp_since:
-            filters.append(ApplicationsView.import_timestamp >= import_timestamp_since)
-
-        if update_timestamp_since:
-            filters.append(ApplicationsView.update_timestamp >= update_timestamp_since)
-        base_query = base_query.filter(*filters)
-
-        if sort_field and sort_dir:
-            sort_criteria = None
-            if sort_field in ['mine_region', 'mine_name']:
-                sort_criteria = [{'model': 'Mine', 'field': sort_field, 'direction': sort_dir}]
-            else:
-                sort_criteria = [{
-                    'model': 'ApplicationsView',
-                    'field': sort_field,
-                    'direction': sort_dir,
-                }]
-            base_query = apply_sort(base_query, sort_criteria)
-
-        return apply_pagination(base_query, page_number, page_size)
 
     @api.doc(description='Adds a Notice of Work to a mine/permit.', params={})
     @requires_role_edit_permit

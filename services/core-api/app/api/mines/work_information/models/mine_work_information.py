@@ -104,7 +104,7 @@ class MineWorkInformation(SoftDeleteMixin, AuditMixin, Base):
         body += f'<p><b>Work Status: </b>{self.work_status}</p>'
         body += f'<p><b>Comments: </b>{self.work_comments}</p>'
         body += f'<p><b>Updated By: </b>{self.updated_by}</p>'
-        link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/mine-information/general'
+        link = f'{Config.CORE_PROD_URL}/mine-dashboard/{self.mine.mine_guid}/mine-information/general'
         body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
         EmailService.send_email(subject, recipients, body)
 

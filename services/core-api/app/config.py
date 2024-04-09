@@ -117,10 +117,24 @@ class Config(object):
     NRIS_USER_NAME = os.environ.get('NRIS_USER_NAME', None)
     NRIS_PASS = os.environ.get('NRIS_PASS', None)
     ENVIRONMENT_NAME = os.environ.get('ENVIRONMENT_NAME', 'dev')
-    CORE_PRODUCTION_URL = os.environ.get('CORE_PRODUCTION_URL',
+    CORE_PROD_URL = os.environ.get('CORE_PRODUCTION_URL',
                                          'https://minesdigitalservices.gov.bc.ca')
-    MINESPACE_PRODUCTION_URL = os.environ.get('MINESPACE_PRODUCTION_URL',
+    CORE_TEST_URL = os.environ.get('CORE_TEST_URL',
+                                         'https://mds-test.apps.silver.devops.gov.bc.ca')
+    CORE_DEV_URL = os.environ.get('CORE_DEV_URL',
+                                         'https://mds-dev.apps.silver.devops.gov.bc.ca')
+    CORE_LOCAL_URL = os.environ.get('CORE_LOCAL_URL',
+                                         'http://localhost:3000')
+    
+    MINESPACE_PROD_URL = os.environ.get('MINESPACE_PRODUCTION_URL',
                                               'https://minespace.gov.bc.ca')
+    MINESPACE_TEST_URL = os.environ.get('MINESPACE_TEST_URL',
+                                              'https://minespace-test.apps.silver.devops.gov.bc.ca')
+    MINESPACE_DEV_URL = os.environ.get('MINESPACE_DEV_URL',
+                                              'https://minespace-dev.apps.silver.devops.gov.bc.ca')
+    MINESPACE_LOCAL_URL = os.environ.get('MINESPACE_LOCAL_URL',
+                                              'http://localhost:3020')
+    
     MDS_NO_REPLY_EMAIL = os.environ.get('MDS_NO_REPLY_EMAIL', 'noreply-mds@gov.bc.ca')
     MDS_EMAIL = os.environ.get('MDS_EMAIL', 'mds@gov.bc.ca')
     MAJOR_MINES_OFFICE_EMAIL = os.environ.get('MAJOR_MINES_OFFICE_EMAIL', 'PermRecl@gov.bc.ca')
@@ -237,6 +251,10 @@ class Config(object):
     COMMON_SERVICES_EMAIL_HOST = os.environ.get('COMMON_SERVICES_EMAIL_HOST')
     EMAIL_ENABLED = os.environ.get('EMAIL_ENABLED', False)
     EMAIL_RECIPIENT_OVERRIDE = os.environ.get('EMAIL_RECIPIENT_OVERRIDE')
+
+    # AMS API Services
+    AMS_BEARER_TOKEN = os.environ.get('AMS_BEARER_TOKEN')
+    AMS_URL = os.environ.get('AMS_URL')
 
     # CSS Keycloak SSO
     CSS_CLIENT_ID = os.environ.get('CSS_CLIENT_ID')
