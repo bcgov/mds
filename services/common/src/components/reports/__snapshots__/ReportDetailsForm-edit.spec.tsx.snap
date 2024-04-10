@@ -319,7 +319,7 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
                     class="ant-input"
                     id="description_comment"
                     name="description_comment"
-                    placeholder="Example: \\"Mine X's Annual Reclamation Report, as per section 10.4.4. Spatial files included.\\""
+                    placeholder="Example: "Mine X's Annual Reclamation Report, as per section 10.4.4. Spatial files included.""
                     style="height: 0px; resize: none; min-height: -12px;"
                   />
                   <div

@@ -19,12 +19,14 @@ import FeatureFlagProvider from "@mds/common/providers/featureFlags/featureFlag.
 const idleTimeout = 5 * 60_000;
 const refreshTokenBufferSeconds = 60;
 
-export const Index = () => {
+export const Index = (props) => {
   const [environment, setEnvironment] = useState(false);
 
-  fetchEnv().then(() => {
-    setEnvironment(true);
-  });
+  if (!props.disableEnvLoading) {
+    fetchEnv().then(() => {
+      setEnvironment(true);
+    });
+  }
 
   const { isIdle } = useIdleTimer({
     timeout: idleTimeout,
@@ -104,4 +106,10 @@ export const Index = () => {
   );
 };
 
-render(<Index />, document.getElementById("root"));
+const root = document.getElementById('root');
+if (root) {
+  render(
+    <Index />,
+    root,
+  );
+}

@@ -5,15 +5,18 @@
     "webpack.config.ts",
     "types",
     "src/@Types/global.d.ts",
-    "jest.config.js",
-    "babel.config.js"
+    "jest.config.js"
   ],
-  "exclude": ["node_modules"],
+  "exclude": [
+    "node_modules"
+  ],
   "compilerOptions": {
     "outDir": "dist" /* Redirect output structure to the directory. */,
     "baseUrl": "." /* Base directory to resolve non-absolute module names. */,
     "paths": {
-      "@mds/common/*": ["src/*"]
+      "@mds/common/*": [
+        "src/*"
+      ]
     },
     "target": "es2016" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
     "jsx": "react",
