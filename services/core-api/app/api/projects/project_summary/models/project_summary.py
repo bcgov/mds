@@ -338,13 +338,12 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 )
                 self.authorizations.append(new_authorization)
 
-    def get_ams_tracking_details(self, ams_tracking_results, project_summary_guid, project_summary_authorization_type):
+    def get_ams_tracking_details(self, ams_tracking_results, project_summary_authorization_guid):
         if not ams_tracking_results:
             return None
 
         ams_tracking_result = next((item for item in ams_tracking_results if item.get(
-            'project_summary_guid') == project_summary_guid and item.get(
-            'project_summary_authorization_type') == project_summary_authorization_type), None)
+            'project_summary_authorization_guid') == project_summary_authorization_guid), None)
         return ams_tracking_result
 
     @classmethod
@@ -604,8 +603,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             for authorization in ams_authorizations.get('new', []):
                 if ams_results:
                     ams_tracking_details = self.get_ams_tracking_details(ams_results,
-                                                                         authorization.get('project_summary_guid'),
-                                                                         authorization.get('project_summary_authorization_type'))
+                                                                         authorization.get('project_summary_authorization_guid'))
                     if ams_tracking_details:
                         # if result does not have a statusCode attribute, it means the outcome is successful.
                         authorization['ams_status_code'] = ams_tracking_details.get('statusCode', '200')
