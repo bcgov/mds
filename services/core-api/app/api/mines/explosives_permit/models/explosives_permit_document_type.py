@@ -5,7 +5,7 @@ from app.api.parties.party.models.party import Party
 from app.api.utils.helpers import create_image_with_aspect_ratio
 from app.api.utils.models_mixins import AuditMixin, Base
 from app.extensions import db
-from app.api.mines.exceptions.mine_exceptions import ExplosivesPermitExeption
+from app.api.mines.exceptions.mine_exceptions import ExplosivesPermitException
 
 PERMIT_SIGNATURE_IMAGE_HEIGHT_INCHES = 0.8
 LETTER_SIGNATURE_IMAGE_HEIGHT_INCHES = 0.8
@@ -43,7 +43,7 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
     def transform_template_data(self, template_data, explosives_permit):
         def validate_issuing_inspector(explosives_permit):
             if not explosives_permit.issuing_inspector:
-                raise ExplosivesPermitExeption("No Issuing Inspector has been assigned",
+                raise ExplosivesPermitException("No Issuing Inspector has been assigned",
                                               status_code = 422)
             if not explosives_permit.issuing_inspector.signature:
                 raise Exception('No signature for the Issuing Inspector has been provided')
@@ -59,7 +59,7 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
             issuing_inspector_party_guid = template_data['issuing_inspector_party_guid']
             issuing_inspector = Party.find_by_party_guid(issuing_inspector_party_guid)
             if issuing_inspector is None:
-                raise ExplosivesPermitExeption("Can't find the provided issuing inspector",
+                raise ExplosivesPermitException("Can't find the provided issuing inspector",
                                               status_code = 404)
         else:
             validate_issuing_inspector(explosives_permit)
@@ -68,29 +68,29 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
 
         mine_manager = explosives_permit.mine_manager
         if mine_manager is None:
-            raise ExplosivesPermitExeption("Provided Mine Manager not found",
+            raise ExplosivesPermitException("Provided Mine Manager not found",
                                               status_code = 404)
 
         if mine_manager.party.first_address is None:
-            raise ExplosivesPermitExeption("Mine Manager does not have an address",
+            raise ExplosivesPermitException("Mine Manager does not have an address",
                                               status_code = 422)
         template_data['mine_manager_address'] = mine_manager.party.first_address.full
         template_data['mine_manager_name'] = mine_manager.party.name
 
         permittee = explosives_permit.permittee
         if permittee is None:
-            raise ExplosivesPermitExeption("Provided permittee not found",
+            raise ExplosivesPermitException("Provided permittee not found",
                                               status_code = 404)
 
         if permittee.party.first_address is None:
-            raise ExplosivesPermitExeption("Permittee does not have an address",
+            raise ExplosivesPermitException("Permittee does not have an address",
                                               status_code = 422)
         template_data['permittee_address'] = permittee.party.first_address.full
         template_data['permittee_name'] = permittee.party.name
 
         permit_number = 'BC-XXXXX' if is_draft else explosives_permit.permit_number
         if permit_number is None:
-            raise ExplosivesPermitExeption("Explosives Permit has not been issued",
+            raise ExplosivesPermitException("Explosives Permit has not been issued",
                                               status_code = 400)
         template_data['permit_number'] = permit_number
 

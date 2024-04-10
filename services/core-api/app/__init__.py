@@ -361,4 +361,4 @@ def register_routes(app):
             "status": getattr(error, "code", 500),
             "message": error_message,
             "trace_id": str(get_trace_id()),
-        }
+        }, getattr(error, "code", 500)

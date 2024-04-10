@@ -13,7 +13,7 @@ from app.api.utils.access_decorators import requires_role_view_all, requires_rol
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.constants import TIMEOUT_5_MINUTES, EXPLOSIVES_PERMIT_DOCUMENT_DOWNLOAD_TOKEN
 from app.api.mines.explosives_permit.response_models import EXPLOSIVES_PERMIT_DOCUMENT_TYPE_MODEL
-from app.api.mines.exceptions.mine_exceptions import MineException, ExplosivesPermitExeption, ExplosivesPermitDocumentException
+from app.api.mines.exceptions.mine_exceptions import MineException, ExplosivesPermitException, ExplosivesPermitDocumentException
 
 EXPLOSIVES_PERMIT_DOCUMENT_DOWNLOAD_TOKEN_MODEL = api.model('ExplosivesPermitDocumentDownloadToken',
                                                             {'token': fields.String})
@@ -89,7 +89,7 @@ class ExplosivesPermitDocumentGenerateResource(Resource, UserMixin):
             current_app.logger.error(e)
             raise e
 
-        except ExplosivesPermitExeption as e:
+        except ExplosivesPermitException as e:
             current_app.logger.error(e)
             raise e
 

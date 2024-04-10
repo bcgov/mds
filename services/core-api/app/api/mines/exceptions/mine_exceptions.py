@@ -21,7 +21,7 @@ class ExplosivesPermitDocumentException(MineException):
         super().__init__(message, **kwargs)
         self.code = int(kwargs.get("status_code", 500))
 
-class ExplosivesPermitExeption(MineException):
+class ExplosivesPermitException(MineException):
     """Exception for Explosive Permit related errors"""
 
     description = (

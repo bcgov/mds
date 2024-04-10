@@ -220,7 +220,7 @@ class ExplosivesPermitResource(Resource, UserMixin):
             explosives_permit.save()
         except Exception as e:
             current_app.logger.error(e)
-            raise MineException("Something went wrong while updaitng the explosive permit information")
+            raise MineException("Something went wrong while updating the explosive permit information")
         else:
             return explosives_permit
 
