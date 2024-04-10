@@ -516,20 +516,13 @@ label .ant-btn {
   background-color: $pure-white;
 }
 
-// .ant-collapse:not(.ant-collapse-borderless) {}
+.ant-collapse-borderless>.ant-collapse-item>.ant-collapse-content {
+  background-color: $white;
+}
 
-// .ant-collapse-header {}
-
-// .ant-collapse>.ant-collapse-item:last-child,
-// .ant-collapse>.ant-collapse-item:last-child>.ant-collapse-header {}
-
-// .ant-collapse-borderless>.ant-collapse-item>.ant-collapse-content {
-//   background-color: $white;
-// }
-
-// .page-scroll-wrapper .ant-collapse-content>.ant-collapse-content-box {
-//   padding: 0;
-// }
+.page-scroll-wrapper .ant-collapse-content>.ant-collapse-content-box {
+  padding: 0;
+}
 
 .light-background {
   .ant-collapse-content>.ant-collapse-content-box {
