@@ -136,7 +136,7 @@ const LeafletMap: FC<LeafletMapProps> = ({ mine, additionalPins = [], controls =
       });
       if (layerGroup) createAdditionalPins(additionalPins);
     }
-  }, [additionalPins]);
+  }, [additionalPins, layerGroup]);
 
   return <div style={{ height: "100%", width: "100%", zIndex: 0 }} id="leaflet-map" />;
 };
