@@ -10,7 +10,7 @@ const reducerProps: any = {};
 function mockFunction() {
 
   // @ts-ignore
-  const original = require.requireActual("react-router-dom");
+  const original = jest.requireActual("react-router-dom");
   return {
     ...original,
     useParams: jest.fn().mockReturnValue({ id: "abcde1234567", activeTab: "nods?nod=xyz1234567" }),
