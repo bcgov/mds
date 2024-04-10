@@ -556,24 +556,24 @@ th.ant-descriptions-item.vertical-description {
 }
 
 // Collapse Component
-.ant-collapse:not(.ant-collapse-borderless) {
-  border-color: $background;
-  border-width: 1px;
-  border-bottom-style: solid;
-  border-radius: 2px;
-}
+// .ant-collapse:not(.ant-collapse-borderless) {
+//   border-color: $background;
+//   border-width: 1px;
+//   border-bottom-style: solid;
+//   border-radius: 2px;
+// }
 
-.ant-collapse-header {
-  // same as .grey-filled-box
-  padding: 16px 24px;
-}
+// .ant-collapse-header {
+//   // same as .grey-filled-box
+//   padding: 16px 24px;
+// }
 
-.ant-collapse>.ant-collapse-item:last-child,
-.ant-collapse>.ant-collapse-item:last-child>.ant-collapse-header {
-  border-radius: 0;
-  border-bottom: none;
-}
+// .ant-collapse>.ant-collapse-item:last-child,
+// .ant-collapse>.ant-collapse-item:last-child>.ant-collapse-header {
+//   border-radius: 0;
+//   border-bottom: none;
+// }
 
-.ant-collapse-borderless>.ant-collapse-item>.ant-collapse-content {
-  background-color: $white;
-}
+// .ant-collapse-borderless>.ant-collapse-item>.ant-collapse-content {
+//   background-color: $white;
+// }
