@@ -305,7 +305,7 @@ def register_routes(app):
         return {
             'status': getattr(error, 'status_code', 401),
             'message': str(error),
-            "trace_id": str(get_trace_id()),
+            'trace_id': str(get_trace_id()),
         }, getattr(error, 'status_code', 401)
 
     @root_api_namespace.errorhandler(Forbidden)
@@ -316,7 +316,7 @@ def register_routes(app):
         return {
             'status': getattr(error, 'status_code', 403),
             'message': str(error),
-            "trace_id": str(get_trace_id()),
+            'trace_id': str(get_trace_id()),
         }, getattr(error, 'status_code', 403)
 
     @root_api_namespace.errorhandler(AssertionError)
@@ -325,7 +325,7 @@ def register_routes(app):
         return {
             'status': getattr(error, 'code', 400),
             'message': str(error),
-            "trace_id": str(get_trace_id()),
+            'trace_id': str(get_trace_id()),
         }, getattr(error, 'code', 400)
 
     # Recursively add handler to every SQLAlchemy Error
@@ -333,19 +333,12 @@ def register_routes(app):
         app.logger.error(str(error))
         app.logger.error(type(error))
         app.logger.error(traceback.format_exc())
-        status_code = 500
-        error_message = str(error),
-        if hasattr(error, 'status_code'):
-            status_code = int(getattr(error, 'status_code'))
-
-        if 400 <= status_code < 500:
-            error_message = str(error.description),
 
         return {
-            "status": status_code,
-            "message": error_message,
-            "trace_id": str(get_trace_id()),
-        }, status_code
+            'status': getattr(error, 'status_code', 400),
+            'message': "Error occurred while procesing data",
+            'trace_id': str(get_trace_id()),
+        }, getattr(error, 'status_code', 400)
 
     def _add_sqlalchemy_error_handlers(classname):
         for subclass in classname.__subclasses__():
@@ -358,21 +351,14 @@ def register_routes(app):
 
     @root_api_namespace.errorhandler(Exception)
     def default_error_handler(error):
-        app.logger.error(traceback.format_exc())
-        status_code = 500
-        error_message = "Ooops! Unexpected error occurred"
-
-        if hasattr(error, 'status_code'):
-          status_code = int(getattr(error, "status_code"))
-        elif hasattr(error, "code"):
-          status_code = int(getattr(error, "code"))
-
+        app.logger.error(str(error))
         if isinstance(error, MDSCoreAPIException):
             error_message = str(getattr(error, "message", ""))
-        elif 400 <= status_code < 500:
-            error_message = str(error.description)
+        else:
+            error_message = str(error)
+
         return {
-            "status": status_code,
+            "status": getattr(error, "code", 500),
             "message": error_message,
             "trace_id": str(get_trace_id()),
-        }, status_code
+        }
