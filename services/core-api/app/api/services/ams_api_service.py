@@ -32,32 +32,31 @@ class AMSApiService():
         return f"{address_line1}, {city}, {sub_division_code}, {post_code}"
 
     @classmethod
-    def __get_new_authorization_details(cls, authorizations_data):
+    def __get_new_authorization_details(cls, ams_authorizations):
         new_authorization_values = []
-
-        if len(authorizations_data['new']) > 0:
-            for item in authorizations_data['new']:
+        if len(ams_authorizations['new']) > 0:
+            for item in ams_authorizations['new']:
                 new_authorization_values.append({
+                    'project_summary_authorization_guid': item.get('project_summary_authorization_guid', ''),
                     'project_summary_guid': item.get('project_summary_guid'),
                     'project_summary_authorization_type': item.get('project_summary_authorization_type'),
                     'authorization_type': item.get('new_type'),
-                    'authorization_description': item.get('authorization_description'),
+                    'authorization_description': item.get('authorization_description') or 'N/A',
                     'new_type': item.get('new_type'),
-                    'exemption_requested': item.get('exemption_requested'),
-                    'is_contaminated': item.get('is_contaminated')
+                    'exemption_requested': item.get('exemption_requested') or False,
+                    'is_contaminated': item.get('is_contaminated') or False
                 })
-
         return new_authorization_values
 
     @classmethod
     def __format_phone_number(cls, phone_no):
-        return phone_no.replace('-', '').strip()
+        return phone_no.replace('-', '').strip() if phone_no else None
 
     @classmethod
     def __boolean_to_yes_no(cls, value):
-        if isinstance(value, bool):
-            return 'Yes' if value else 'No'
-        return 'No'
+        if value is None:
+            return 'No'
+        return 'Yes' if value else 'No'
 
     @classmethod
     def create_new_ams_authorization(cls,
@@ -126,7 +125,7 @@ class AMSApiService():
                         'em_companyname': agent.get('party_name', '') if agent else ''
                     },
                     'preappexemptionrequest': cls.__boolean_to_yes_no(authorization.get('exemption_requested')),
-                    'preappexemptionrequestreason': authorization.get('authorization_description', ''),
+                    'preappexemptionrequestreason': authorization.get('authorization_description', 'Not Applicable'),
                     'iscontaminatedsite': cls.__boolean_to_yes_no(authorization.get('is_contaminated')),
                     'contact': {
                         'em_lastname': contacts[0].get('last_name', ''),
@@ -168,6 +167,7 @@ class AMSApiService():
                 payload = json.dumps(ams_authorization_data)
                 response = requests.post(Config.AMS_URL, data=payload, headers=headers)
                 ams_result = response.json()
+                ams_result['project_summary_authorization_guid'] = authorization.get('project_summary_authorization_guid')
                 ams_result['project_summary_guid'] = authorization.get('project_summary_guid')
                 ams_result['project_summary_authorization_type'] = authorization.get(
                     'project_summary_authorization_type')
@@ -180,4 +180,5 @@ class AMSApiService():
             current_app.logger.error(f'AMS Service Timeout error occurred for POST request: {timeout_err}')
         except Exception as err:
             current_app.logger.error(f'AMS Input Exception error occurred for POST request: {err}')
+
         return ams_results
