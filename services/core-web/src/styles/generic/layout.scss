@@ -35,6 +35,11 @@ html {
   margin: 20px;
 }
 
+.grey-filled-box {
+  background: $background;
+  padding: 16px 24px;
+}
+
 .footer {
   height: 45px;
   background-color: $nav-color;

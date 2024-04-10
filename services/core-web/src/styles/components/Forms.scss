@@ -44,6 +44,15 @@
   }
 }
 
+.ant-form-item-checkbox-required .ant-checkbox+span {
+  &::after {
+    content: "*";
+    font-family: $font-family;
+    color: $gov-red;
+  }
+
+}
+
 .ant-form-vertical .ant-form-item-label>label {
   // to make * appear on the same line when label is an HTML element
   display: flex;
