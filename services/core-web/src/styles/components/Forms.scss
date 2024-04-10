@@ -37,21 +37,20 @@
 }
 
 // FORMS
-// .ant-form-item-required,
-// .ant-form-item-label>label.ant-form-item-required:not(.ant-form-item-required-mark-optional) {
-//   &::before {
+.ant-form-item-required,
+.ant-form-item-label>label.ant-form-item-required:not(.ant-form-item-required-mark-optional) {
+  &::before {
+    font-family: $font-family;
+  }
+}
+
+// .ant-form-item-checkbox-required .ant-checkbox+span {
+//   &::after {
+//     content: "*";
 //     font-family: $font-family;
+//     color: $gov-red;
 //   }
 // }
-
-.ant-form-item-checkbox-required .ant-checkbox+span {
-  &::after {
-    content: "*";
-    font-family: $font-family;
-    color: $gov-red;
-  }
-
-}
 
 .ant-form-vertical .ant-form-item-label>label {
   // to make * appear on the same line when label is an HTML element
