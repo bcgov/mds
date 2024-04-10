@@ -37,12 +37,12 @@
 }
 
 // FORMS
-.ant-form-item-required,
-.ant-form-item-label>label.ant-form-item-required:not(.ant-form-item-required-mark-optional) {
-  &::before {
-    font-family: $font-family;
-  }
-}
+// .ant-form-item-required,
+// .ant-form-item-label>label.ant-form-item-required:not(.ant-form-item-required-mark-optional) {
+//   &::before {
+//     font-family: $font-family;
+//   }
+// }
 
 .ant-form-item-checkbox-required .ant-checkbox+span {
   &::after {
