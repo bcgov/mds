@@ -12,7 +12,6 @@ from app.api.mines.mine.models.mine_type import MineType
 from app.api.mines.mine.models.mine_tenure_type_code import MineTenureTypeCode
 from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
 from app.api.mines.response_models import MINE_TYPE_MODEL
-from app.api.mines.exceptions.mine_exceptions import MineException, MineIntegrityException
 
 
 class MineTypeListResource(Resource, UserMixin):
@@ -58,10 +57,7 @@ class MineTypeListResource(Resource, UserMixin):
             return mine_type
         except exc.IntegrityError as e:
             current_app.logger.error(e)
-            raise MineIntegrityException()
-        except Exception as e:
-            current_app.logger.error(e)
-            raise MineException()
+            raise MineException("Unable to process the request due to a data integrity violation.", status_code=400)
 
 
 class MineTypeResource(Resource, UserMixin):

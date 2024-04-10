@@ -50,13 +50,3 @@ class MineReportProcessingException(MineException):
     def __init__(self, message = "Error in processing the Mine Report", **kwargs):
         super().__init__(message, **kwargs)
         self.code = int(kwargs.get("status_code", 422))
-
-class MineIntegrityException(MineException):
-    """Exception for Integrity exception in sqlalchemy"""
-
-    description = (
-        "Exception for Integrity exception in sqlalchemy"
-    )
-    def __init__(self, message = "Unable to process the request due to a data integrity violation.", **kwargs):
-        super().__init__(message, **kwargs)
-        self.code = int(kwargs.get("status_code", 400))
