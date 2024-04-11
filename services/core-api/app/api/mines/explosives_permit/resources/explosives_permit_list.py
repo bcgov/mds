@@ -10,7 +10,7 @@ from app.api.mines.mine.models.mine import Mine
 from app.api.mines.explosives_permit.response_models import EXPLOSIVES_PERMIT_MODEL
 from app.api.mines.explosives_permit.models.explosives_permit import ExplosivesPermit
 from sqlalchemy import exc
-from app.api.mines.exceptions.mine_exceptions import MineException, ExplosivePermitNumberAlreadyExistExeption
+from app.api.mines.exceptions.mine_exceptions import MineException
 from flask import current_app
 
 class ExplosivesPermitListResource(Resource, UserMixin):
@@ -149,8 +149,7 @@ class ExplosivesPermitListResource(Resource, UserMixin):
 
         except Exception as e:
             current_app.logger.error(e)
-            raise MineException("Oops!, Something went wrong while retrieving the mine information",
-                                detailed_error = e)
+            raise MineException("Something went wrong while retrieving the mine information")
 
         else:
             return explosives_permits
@@ -193,14 +192,13 @@ class ExplosivesPermitListResource(Resource, UserMixin):
                 "duplicate key value violates unique constraint \"explosives_permit_permit_number_key\"" \
                 in str(intgErr.__cause__)
             if is_duplicate_permit_number:
-                raise ExplosivePermitNumberAlreadyExistExeption(detailed_error = intgErr)
+                raise MineException("A record already exists with the provided 'Explosives Permit Number", status_code = 422)
             else:
-                raise MineException("Unexpected error occurred, when creating the esup",
-                                    detailed_error = intgErr)
+                raise MineException("Something went wrong while creating the new ESUP")
 
         except Exception as e:
             current_app.logger.error(e)
-            raise MineException(detailed_error = e)
+            raise MineException("Something went wrong while creating the new ESUP")
 
         else:
             return explosives_permit, 201

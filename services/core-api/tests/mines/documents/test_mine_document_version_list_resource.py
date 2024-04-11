@@ -77,7 +77,7 @@ class TestMineDocumentVersionUploadResource:
         post_data = json.loads(post_resp.data.decode())
 
         assert post_resp.status_code == 404
-        assert post_data['message'] == '404 Not Found: Mine not found.'
+        assert 'Mine not found.' in post_data['message']
 
     def test_create_missing_mine_document_returns_404(self, test_client, db_session, auth_headers, setup_info):
         """Returns 404 if mine document doesn't exist"""
@@ -95,7 +95,7 @@ class TestMineDocumentVersionUploadResource:
         post_data = json.loads(post_resp.data.decode())
 
         assert post_resp.status_code == 404
-        assert post_data['message'] == '404 Not Found: Mine document not found.'
+        assert 'Mine document not found.' in post_data['message']
 
     def test_create_mine_document_not_attached_to_mine_returns_400(self, test_client, db_session, auth_headers, setup_info):
         """Returns 400 if mine document isn't attached to mine"""
@@ -114,7 +114,7 @@ class TestMineDocumentVersionUploadResource:
         post_data = json.loads(post_resp.data.decode())
 
         assert post_resp.status_code == 400
-        assert post_data['message'] == '400 Bad Request: Mine document not attached to Mine'
+        assert 'Mine document not attached to Mine' in post_data['message']
 
     def test_create_mine_document_archived_returns_400(self, test_client, db_session, auth_headers, setup_info):
         """Returns 400 if mine document isn't attached to mine"""
@@ -136,4 +136,4 @@ class TestMineDocumentVersionUploadResource:
         post_data = json.loads(post_resp.data.decode())
 
         assert post_resp.status_code == 400
-        assert post_data['message'] == '400 Bad Request: Cannot create new version of archived document'
+        assert 'Cannot create new version of archived document' in post_data['message']

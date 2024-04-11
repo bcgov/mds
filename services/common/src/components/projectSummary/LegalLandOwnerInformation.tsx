@@ -103,20 +103,20 @@ export const LegalLandOwnerInformation: FC = () => {
               />
             </Col>
           </Row>
-          <Row>
-            <Col md={12} sm={24}>
-              <Field
-                name="nearest_municipality"
-                id="nearest_municipality"
-                label="Nearest Municipality to Facility/Site"
-                required
-                component={RenderSelect}
-                data={municipalityOptions}
-              />
-            </Col>
-          </Row>
         </>
       )}
+      <Row>
+        <Col md={12} sm={24}>
+          <Field
+            name="nearest_municipality"
+            id="nearest_municipality"
+            label="Nearest Municipality to Facility/Site"
+            required
+            component={RenderSelect}
+            data={municipalityOptions}
+          />
+        </Col>
+      </Row>
     </div>
   );
 };

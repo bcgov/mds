@@ -32,32 +32,31 @@ class AMSApiService():
         return f"{address_line1}, {city}, {sub_division_code}, {post_code}"
 
     @classmethod
-    def __get_new_authorization_details(cls, authorizations_data):
+    def __get_new_authorization_details(cls, ams_authorizations):
         new_authorization_values = []
-
-        if len(authorizations_data['new']) > 0:
-            for item in authorizations_data['new']:
+        if len(ams_authorizations['new']) > 0:
+            for item in ams_authorizations['new']:
                 new_authorization_values.append({
+                    'project_summary_authorization_guid': item.get('project_summary_authorization_guid', ''),
                     'project_summary_guid': item.get('project_summary_guid'),
                     'project_summary_authorization_type': item.get('project_summary_authorization_type'),
                     'authorization_type': item.get('new_type'),
-                    'authorization_description': item.get('authorization_description'),
+                    'authorization_description': item.get('authorization_description') or 'N/A',
                     'new_type': item.get('new_type'),
-                    'exemption_requested': item.get('exemption_requested'),
-                    'is_contaminated': item.get('is_contaminated')
+                    'exemption_requested': item.get('exemption_requested') or False,
+                    'is_contaminated': item.get('is_contaminated') or False
                 })
-
         return new_authorization_values
 
     @classmethod
     def __format_phone_number(cls, phone_no):
-        return phone_no.replace('-', '').strip()
+        return phone_no.replace('-', '').strip() if phone_no else None
 
     @classmethod
     def __boolean_to_yes_no(cls, value):
-        if isinstance(value, bool):
-            return 'Yes' if value else 'No'
-        return 'No'
+        if value is None:
+            return 'No'
+        return 'Yes' if value else 'No'
 
     @classmethod
     def create_new_ams_authorization(cls,
@@ -89,11 +88,13 @@ class AMSApiService():
             'bearer': Config.AMS_BEARER_TOKEN,
             'Content-Type': 'application/json'
         }
-        nearest_municipality_name = Municipality.find_by_guid(nearest_municipality).municipality_name
-        authorization_list = cls.__get_new_authorization_details(ams_authorizations)
+        try:
+            nearest_municipality_name = ''
+            if nearest_municipality:
+                nearest_municipality_name = Municipality.find_by_guid(nearest_municipality).municipality_name
 
-        for authorization in authorization_list:
-            try:
+            authorization_list = cls.__get_new_authorization_details(ams_authorizations)
+            for authorization in authorization_list:
                 ams_authorization_data = {
                     'isauthamendment': 'No',
                     'authorizationtype': {
@@ -105,33 +106,33 @@ class AMSApiService():
                     },
                     'applicant': {
                         'applicanttype': cls.__get_mapped_party_type(applicant.get('party_type_code')),
-                        'em_companyname': applicant.get('party_name'),
-                        'em_businessphone': cls.__format_phone_number(applicant.get('phone_no')),
-                        'em_firstname': applicant.get('first_name'),
-                        'em_middlename': applicant.get('middle_name'),
-                        'em_lastname': applicant.get('party_name'),
-                        'em_email': applicant.get('email'),
+                        'em_companyname': applicant.get('party_name', ''),
+                        'em_businessphone': cls.__format_phone_number(applicant.get('phone_no', '')),
+                        'em_firstname': applicant.get('first_name', ''),
+                        'em_middlename': applicant.get('middle_name', ''),
+                        'em_lastname': applicant.get('party_name', ''),
+                        'em_email': applicant.get('email', ''),
                         'billingaddress': cls.__create_full_address(
-                            applicant.get('address')[2].get('address_line_1'),
-                            applicant.get('address')[2].get('city'),
-                            applicant.get('address')[2].get('sub_division_code'),
+                            applicant.get('address')[2].get('address_line_1', ''),
+                            applicant.get('address')[2].get('city', ''),
+                            applicant.get('address')[2].get('sub_division_code', ''),
                             applicant.get('address')[2].get('post_code'))
                     },
                     'agent': {
-                        'em_lastname': agent.get('party_name'),
-                        'em_firstname': agent.get('first_name'),
-                        'em_email': agent.get('email'),
-                        'em_companyname': agent.get('party_name')
+                        'em_lastname': agent.get('party_name', '') if agent else '',
+                        'em_firstname': agent.get('first_name', '') if agent else '',
+                        'em_email': agent.get('email', '') if agent else '',
+                        'em_companyname': agent.get('party_name', '') if agent else ''
                     },
                     'preappexemptionrequest': cls.__boolean_to_yes_no(authorization.get('exemption_requested')),
-                    'preappexemptionrequestreason': 'Test',
+                    'preappexemptionrequestreason': authorization.get('authorization_description', 'Not Applicable'),
                     'iscontaminatedsite': cls.__boolean_to_yes_no(authorization.get('is_contaminated')),
                     'contact': {
-                        'em_lastname': contacts[0].get('last_name'),
-                        'em_firstname': contacts[0].get('first_name'),
-                        'em_title': contacts[0].get('job_title'),
+                        'em_lastname': contacts[0].get('last_name', ''),
+                        'em_firstname': contacts[0].get('first_name', ''),
+                        'em_title': contacts[0].get('job_title', ''),
                         'em_businessphone': cls.__format_phone_number(contacts[0].get('phone_number')),
-                        'em_email': contacts[0].get('email')
+                        'em_email': contacts[0].get('email', '')
                     },
                     'facilitytype': facility_type,
                     'facilitydescription': facility_desc,
@@ -142,19 +143,19 @@ class AMSApiService():
                     'legallanddescription': legal_land_desc,
                     'facilityaddress': {
                         'addresstype': 'Civic',
-                        'suitenumber': facility_operator.get('address').get('suite_no'),
-                        'streetnumber': facility_operator.get('address').get('suite_no'),
-                        'street': facility_operator.get('address').get('address_line_1'),
-                        'line2': facility_operator.get('address').get('address_line_2'),
-                        'municipality': facility_operator.get('address').get('city'),
+                        'suitenumber': facility_operator.get('address').get('suite_no', ''),
+                        'streetnumber': facility_operator.get('address').get('suite_no', ''),
+                        'street': facility_operator.get('address').get('address_line_1', ''),
+                        'line2': facility_operator.get('address').get('address_line_2', ''),
+                        'municipality': facility_operator.get('address').get('city', ''),
                         'province': 'British Columbia',
                         'country': 'Canada',
                         'postalcode': facility_operator.get('address').get('post_code')
                     },
-                    'facilityopname': facility_operator.get('name'),
-                    'facilityopphonenumber': cls.__format_phone_number(facility_operator.get('phone_no')),
-                    'facilityopphonenumberext': facility_operator.get('phone_ext'),
-                    'facilityopemail': facility_operator.get('email'),
+                    'facilityopname': facility_operator.get('name', ''),
+                    'facilityopphonenumber': cls.__format_phone_number(facility_operator.get('phone_no', '')),
+                    'facilityopphonenumberext': facility_operator.get('phone_ext', ''),
+                    'facilityopemail': facility_operator.get('email', ''),
                     'landownername': legal_land_owner_name,
                     'landownerphonenumber': cls.__format_phone_number(legal_land_owner_contact_number),
                     'landowneremail': legal_land_owner_email_address,
@@ -166,18 +167,18 @@ class AMSApiService():
                 payload = json.dumps(ams_authorization_data)
                 response = requests.post(Config.AMS_URL, data=payload, headers=headers)
                 ams_result = response.json()
+                ams_result['project_summary_authorization_guid'] = authorization.get('project_summary_authorization_guid')
                 ams_result['project_summary_guid'] = authorization.get('project_summary_guid')
-                ams_result['project_summary_authorization_type'] = authorization.get('project_summary_authorization_type')
+                ams_result['project_summary_authorization_type'] = authorization.get(
+                    'project_summary_authorization_type')
                 ams_results.append(ams_result)
-            except requests.exceptions.HTTPError as http_err:
-                current_app.logger.error(f'AMS Service HTTP error occurred for POST request: {http_err}')
-                break
-            except requests.exceptions.ConnectionError as conn_err:
-                current_app.logger.error(f'AMS Service Connection error occurred for POST request: {conn_err}')
-                break
-            except requests.exceptions.Timeout as timeout_err:
-                current_app.logger.error(f'AMS Service Timeout error occurred for POST request: {timeout_err}')
-                break
-            except Exception as err:
-                current_app.logger.error(f'AMS Input Exception error occurred for POST request: {err}')
+        except requests.exceptions.HTTPError as http_err:
+            current_app.logger.error(f'AMS Service HTTP error occurred for POST request: {http_err}')
+        except requests.exceptions.ConnectionError as conn_err:
+            current_app.logger.error(f'AMS Service Connection error occurred for POST request: {conn_err}')
+        except requests.exceptions.Timeout as timeout_err:
+            current_app.logger.error(f'AMS Service Timeout error occurred for POST request: {timeout_err}')
+        except Exception as err:
+            current_app.logger.error(f'AMS Input Exception error occurred for POST request: {err}')
+
         return ams_results

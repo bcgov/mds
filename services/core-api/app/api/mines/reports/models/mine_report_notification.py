@@ -10,7 +10,7 @@ from app.extensions import db
 from sqlalchemy.ext.hybrid import hybrid_property
 from app.extensions import db
 from sqlalchemy import func, and_
-from app.api.mines.exceptions.mine_exceptions import MineReportProcessingException
+from app.api.mines.exceptions.mine_exceptions import MineException
 
 # mine_report_notification (compliance_article_emli_contact_xref) table, 
 # cotains the parameters that needs to decide the notifications depending on the article section and mine types
@@ -58,7 +58,7 @@ class MineReportNotification(Base):
                                   ComplianceArticle.paragraph == None,
                                   ComplianceArticle.sub_paragraph == None)
             else:
-                raise MineReportProcessingException(message= "Atleast compliance article 'section' field is mandatory to continue")
+                raise MineException("Atleast compliance article 'section' field is mandatory to continue", status_code = 400)
 
             query_result = db.session.query(EMLIContact.email, MineReportNotification.is_major_mine, MineReportNotification.is_regional_mine).\
                 join(MineReportNotification, EMLIContact.contact_guid == MineReportNotification.contact_guid).\

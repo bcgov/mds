@@ -290,6 +290,13 @@ def register_routes(app):
         res = requests.get(url)
         return res.status_code == 200
 
+    def get_trace_id():
+        trace_id = ""
+        current_span = trace.get_current_span()
+        if current_span:
+            trace_id = current_span.get_span_context().trace_id
+        return trace_id
+
     @root_api_namespace.errorhandler(AuthError)
     def jwt_oidc_auth_error_handler(error):
         app.logger.error(str(error))
@@ -298,6 +305,7 @@ def register_routes(app):
         return {
             'status': getattr(error, 'status_code', 401),
             'message': str(error),
+            'trace_id': str(get_trace_id()),
         }, getattr(error, 'status_code', 401)
 
     @root_api_namespace.errorhandler(Forbidden)
@@ -308,6 +316,7 @@ def register_routes(app):
         return {
             'status': getattr(error, 'status_code', 403),
             'message': str(error),
+            'trace_id': str(get_trace_id()),
         }, getattr(error, 'status_code', 403)
 
     @root_api_namespace.errorhandler(AssertionError)
@@ -316,6 +325,7 @@ def register_routes(app):
         return {
             'status': getattr(error, 'code', 400),
             'message': str(error),
+            'trace_id': str(get_trace_id()),
         }, getattr(error, 'code', 400)
 
     # Recursively add handler to every SQLAlchemy Error
@@ -323,9 +333,11 @@ def register_routes(app):
         app.logger.error(str(error))
         app.logger.error(type(error))
         app.logger.error(traceback.format_exc())
+
         return {
             'status': getattr(error, 'status_code', 400),
-            'message': str(error),
+            'message': "Error occurred while procesing data",
+            'trace_id': str(get_trace_id()),
         }, getattr(error, 'status_code', 400)
 
     def _add_sqlalchemy_error_handlers(classname):
@@ -341,14 +353,12 @@ def register_routes(app):
     def default_error_handler(error):
         app.logger.error(str(error))
         if isinstance(error, MDSCoreAPIException):
-            return {
-                "status": getattr(error, "code", 500),
-                "message": str(getattr(error, "message", "")),
-                "detailed_error": str(getattr(error, "detailed_error", "")),
-            }, getattr(error, 'code', 500)
+            error_message = str(getattr(error, "message", ""))
         else:
-            return {
-                "status": getattr(error, "code", 500),
-                "message": str(error),
-                "detailed_error": str(getattr(error, "detailed_error", "Not provided")),
-            }, getattr(error, 'code', 500)
+            error_message = str(error)
+
+        return {
+            "status": getattr(error, "code", 500),
+            "message": error_message,
+            "trace_id": str(get_trace_id()),
+        }, getattr(error, "code", 500)
