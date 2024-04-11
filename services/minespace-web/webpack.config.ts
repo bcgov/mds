@@ -199,6 +199,7 @@ const prodConfig = merge([
   }),
   parts.extractCSS({
     filename: BUILD_FILE_NAMES.css,
+    theme: path.join(PATHS.src, "styles", "settings", "theme.scss"),
   }),
   parts.loadImages({
     include: undefined,
@@ -213,7 +214,7 @@ const prodConfig = merge([
   }),
   parts.bundleOptimization({
     options: {
-      maxSize: 3000000,
+      // maxSize: 3000000,
       cacheGroups: {
         defaultVendors: {
           test: /[\\/]node_modules[\\/](?!\@syncfusion*)/,

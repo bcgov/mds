@@ -217,7 +217,7 @@ exports.loadCSS = ({ include, exclude } = {}) => ({
   plugins: [],
 });
 
-exports.extractCSS = ({ include, exclude, filename } = {}) => ({
+exports.extractCSS = ({ include, exclude, filename, theme } = {}) => ({
   module: {
     rules: [
       {
