@@ -214,7 +214,7 @@ const prodConfig = merge([
   }),
   parts.bundleOptimization({
     options: {
-      maxSize: 3000000,
+      // maxSize: 3000000,
       cacheGroups: {
         defaultVendors: {
           test: /[\\/]node_modules[\\/](?!\@syncfusion*)/,
