@@ -115,7 +115,7 @@ export class Projects extends Component {
             If you are unsure how to proceed, please email the Major Mines Office at&nbsp;
             <a href="mailto:permrecl@gov.bc.ca">permrecl@gov.bc.ca</a>&nbsp;or contact the&nbsp;
             <a
-              href=" https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/further-information/office-chief-inspector"
+              href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/mines-contact-info"
               target="_blank"
               rel="noopener noreferrer"
             >
