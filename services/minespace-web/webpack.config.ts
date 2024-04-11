@@ -199,8 +199,6 @@ const prodConfig = merge([
   }),
   parts.extractCSS({
     filename: BUILD_FILE_NAMES.css,
-    include: undefined,
-    exclude: undefined,
   }),
   parts.loadImages({
     include: undefined,
