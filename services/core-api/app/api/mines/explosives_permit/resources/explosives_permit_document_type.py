@@ -13,7 +13,7 @@ from app.api.utils.access_decorators import requires_role_view_all, requires_rol
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.constants import TIMEOUT_5_MINUTES, EXPLOSIVES_PERMIT_DOCUMENT_DOWNLOAD_TOKEN
 from app.api.mines.explosives_permit.response_models import EXPLOSIVES_PERMIT_DOCUMENT_TYPE_MODEL
-from app.api.mines.exceptions.mine_exceptions import MineException, ExplosivesPermitExeption, ExplosivesPermitDocumentException
+from app.api.mines.exceptions.mine_exceptions import MineException
 
 EXPLOSIVES_PERMIT_DOCUMENT_DOWNLOAD_TOKEN_MODEL = api.model('ExplosivesPermitDocumentDownloadToken',
                                                             {'token': fields.String})
@@ -28,7 +28,7 @@ class ExplosivesPermitDocumentTypeListResource(Resource, UserMixin):
             return ExplosivesPermitDocumentType.get_all()
         except Exception as e:
             current_app.logger.error(e)
-            raise MineException(detailed_error = e)
+            raise MineException("Something went wrong while retrieving explosive permit document types.")
 
 class ExplosivesPermitDocumentTypeResource(Resource, UserMixin):
     @api.doc(description=
@@ -41,7 +41,7 @@ class ExplosivesPermitDocumentTypeResource(Resource, UserMixin):
             return ExplosivesPermitDocumentType.get_with_context(document_type_code, context_guid)
         except Exception as e:
             current_app.logger.error(e)
-            raise MineException(detailed_error = e)
+            raise MineException("Something went wrong while retrieving the requested explosive permit document type")
 
 
 class ExplosivesPermitDocumentGenerateResource(Resource, UserMixin):
@@ -59,11 +59,11 @@ class ExplosivesPermitDocumentGenerateResource(Resource, UserMixin):
         try:
             document_type = ExplosivesPermitDocumentType.query.get(document_type_code)
             if not document_type:
-                raise ExplosivesPermitDocumentException("Document type not found", status_code = 404)
+                raise MineException("Document type not found", status_code = 404)
 
             document_template = document_type.document_template
             if not document_template:
-                raise ExplosivesPermitDocumentException(f"Cannot generate a {document_type.description}",
+                raise MineException(f"Cannot generate a {document_type.description}",
                                                     status_code = 400)
 
             data = self.parser.parse_args()
@@ -71,7 +71,7 @@ class ExplosivesPermitDocumentGenerateResource(Resource, UserMixin):
             explosives_permit_guid = data['explosives_permit_guid']
             explosives_permit = ExplosivesPermit.find_by_explosives_permit_guid(explosives_permit_guid)
             if not explosives_permit:
-                raise ExplosivesPermitDocumentException("Explosives Permit not found",
+                raise MineException("Explosives Permit not found",
                                                     status_code = 404)
 
             template_data = data['template_data']
@@ -85,17 +85,13 @@ class ExplosivesPermitDocumentGenerateResource(Resource, UserMixin):
             token = ExplosivesPermitDocumentGenerateResource.get_explosives_document_generate_token(
                 document_type_code, explosives_permit_guid, template_data)
 
-        except ExplosivesPermitDocumentException as e:
-            current_app.logger.error(e)
-            raise e
-
-        except ExplosivesPermitExeption as e:
+        except MineException as e:
             current_app.logger.error(e)
             raise e
 
         except Exception as e:
             current_app.logger.error(e)
-            raise MineException(detailed_error = e)
+            raise MineException("Something went wrong while generating explosive permit document.")
 
         else:
             return {'token': token}
@@ -117,4 +113,4 @@ class ExplosivesPermitDocumentGenerateResource(Resource, UserMixin):
 
         except Exception as e:
             current_app.logger.error(e)
-            raise MineException(detailed_error = e)
+            raise MineException("Something went wrong while downloading document")

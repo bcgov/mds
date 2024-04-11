@@ -23,4 +23,4 @@ class ExplosivesPermitDocumentUploadResource(Resource, UserMixin):
                 request, mine, 'explosives_permits')
         except Exception as e:
             current_app.logger.error(e)
-            raise MineException(detailed_error = e)
+            raise MineException("Something went wrong while initializing the document upload.")
