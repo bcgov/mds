@@ -1,5 +1,3 @@
-import "@ant-design/compatible/assets/index.css";
-
 import { Alert, Button, Col, Row, Table, Typography } from "antd";
 import {
   ESUP_DOCUMENT_GENERATED_TYPES,
@@ -9,14 +7,11 @@ import {
 import React, { FC, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { bindActionCreators } from "redux";
-
 import ExplosivesPermitDiffModal from "@mds/common/components/explosivespermits/ExplosivesPermitDiffModal";
 import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls";
 import { formatDate } from "@mds/common/redux/utils/helpers";
 import ExplosivesPermitMap from "@mds/common/components/explosivespermits/ExplosivesPermitMap";
 import Magazine from "@mds/common/components/explosivespermits/Magazine";
-import { openDocument } from "@mds/common/components/syncfusion/DocumentViewer";
 import { renderCategoryColumn, renderTextColumn } from "../common/CoreTableCommonColumns";
 
 export const generatedDocColumns = [
@@ -167,7 +162,11 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
       const allDocs = [...permitDocuments, ...[].concat(...amendmentDocuments)];
 
       setGeneratedDocs(
-        allDocs.filter((doc) => generatedTypes.includes(doc.explosives_permit_document_type_code))
+        allDocs.filter(
+          (doc) =>
+            generatedTypes.includes(doc.explosives_permit_document_type_code) &&
+            doc.explosives_permit_amendment_id === explosivesPermit.explosives_permit_amendment_id
+        )
       );
       setSupportingDocs(
         allDocs.filter((doc) => !generatedTypes.includes(doc.explosives_permit_document_type_code))
