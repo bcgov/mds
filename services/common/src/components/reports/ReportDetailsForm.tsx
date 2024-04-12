@@ -186,7 +186,9 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   const isPRR = report_type === REPORT_TYPE_CODES.PRR;
   const isMS = system === SystemFlagEnum.ms;
 
-  const hasSubmissions = mine_report_submission_status_code !== MINE_REPORT_SUBMISSION_CODES.NON;
+  const hasSubmissions =
+    mine_report_submission_status_code !== MINE_REPORT_SUBMISSION_CODES.NON &&
+    formValues.mine_report_submission_guid;
   // minespace users are only allowed to add documents
   const mineSpaceEdit = isMS && initialValues?.mine_report_guid && isEditMode;
 
@@ -286,8 +288,10 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
   };
 
   useEffect(() => {
-    fetchComments();
-  }, [formValues.mine_report_guid]);
+    if (hasSubmissions) {
+      fetchComments();
+    }
+  }, [formValues.mine_report_guid, formValues.mine_report_submission_guid]);
 
   const handleAddComment = async (values) => {
     const formVals = {
@@ -650,7 +654,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
             )}
             {(hasSubmissions || documents) && <ReportFilesTable documents={documents} />}
           </Col>
-          {system === SystemFlagEnum.core && (
+          {system === SystemFlagEnum.core && hasSubmissions && (
             <AuthorizationWrapper permission={coreViewAllPermission} showToolTip={false}>
               <Col span={24}>
                 <Typography.Title level={3} id="internal-ministry-comments">
