@@ -21,6 +21,7 @@ from app.api.activity.utils import trigger_notification
 from app.api.activity.models.activity_notification import ActivityType, ActivityRecipients
 from app.api.mines.reports.models.mine_report_notification import MineReportNotification
 from app.api.utils.helpers import get_current_core_or_ms_env_url
+from app.api.utils.helpers import format_email_datetime_to_string
 
 class MineReport(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = "mine_report"
@@ -172,7 +173,7 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
               "report_type": report_type,
               "report_compliance_year": self.submission_year,
               "report_due_date": due_date,
-              "report_recieved_date": (self.latest_submission.submission_date).strftime("%b %d %Y at %I:%M %p"),
+              "report_recieved_date": format_email_datetime_to_string(self.latest_submission.submission_date),
           },
           "minespace_login_link": ms_url,
           "core_report_page_link": core_report_page_link,
