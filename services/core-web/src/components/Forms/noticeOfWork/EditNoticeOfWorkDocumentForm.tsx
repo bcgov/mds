@@ -131,6 +131,15 @@ const EditNoticeOfWorkDocumentForm: FC<EditNoticeOfWorkDocumentFormProps> = ({
                     component={RenderField}
                   />
                 </Col>
+                <Col md={12} xs={24}>
+                  <Field
+                    id="preamble_author"
+                    name="preamble_author"
+                    label="Author"
+                    placeholder="Author"
+                    component={RenderField}
+                  />
+                </Col>
               </Row>
               <Row gutter={16}>
                 <Col md={12} xs={24}>
