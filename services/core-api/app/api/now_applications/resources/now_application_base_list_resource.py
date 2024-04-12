@@ -92,7 +92,7 @@ class NowApplicationBaseListResource(Resource, UserMixin):
                     func.lower(Mine.mine_no).contains(func.lower(mine_search))))
 
         if permit_no:
-            filters.append(func.lower(ApplicationsView.permit_no).contains(func.lower(str(permit_no))))
+            filters.append(func.lower(ApplicationsView.source_permit_no).contains(func.lower(str(permit_no))))
 
         if party:
             filters.append(func.lower(ApplicationsView.party).contains(func.lower(str(party))))
