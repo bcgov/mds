@@ -21,7 +21,6 @@ from app.api.activity.utils import trigger_notification
 from app.api.activity.models.activity_notification import ActivityType, ActivityRecipients
 from app.api.mines.reports.models.mine_report_notification import MineReportNotification
 from app.api.utils.helpers import get_current_core_or_ms_env_url
-from flask import current_app
 
 class MineReport(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = "mine_report"
@@ -130,7 +129,7 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
 
     def __repr__(self):
         return '<MineReport %r>' % self.mine_report_guid
-    
+
     def send_crr_and_prr_add_notification_email(self, is_proponent, crr_or_prr):
         is_crr = crr_or_prr == "CRR"
         report_code = "Code" if is_crr else "Permit"
