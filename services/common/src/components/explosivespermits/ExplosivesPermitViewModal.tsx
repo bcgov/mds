@@ -162,10 +162,8 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
       const allDocs = [...permitDocuments, ...[].concat(...amendmentDocuments)];
 
       setGeneratedDocs(
-        allDocs.filter(
-          (doc) =>
-            generatedTypes.includes(doc.explosives_permit_document_type_code) &&
-            doc.explosives_permit_amendment_id === explosivesPermit.explosives_permit_amendment_id
+        currentPermit.documents.filter((doc) =>
+          generatedTypes.includes(doc.explosives_permit_document_type_code)
         )
       );
       setSupportingDocs(
