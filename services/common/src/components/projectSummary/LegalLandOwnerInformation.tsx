@@ -114,6 +114,7 @@ export const LegalLandOwnerInformation: FC = () => {
             required
             component={RenderSelect}
             data={municipalityOptions}
+            validate={[required]}
           />
         </Col>
       </Row>
