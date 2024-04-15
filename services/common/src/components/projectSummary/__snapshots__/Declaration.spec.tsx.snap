@@ -1,0 +1,265 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Declaration renders properly 1`] = `
+<div>
+  <form
+    class="ant-form ant-form-vertical edit"
+    id="ADD_EDIT_PROJECT_SUMMARY"
+  >
+    <div
+      id="declaration"
+    >
+      <h3
+        class="ant-typography"
+      >
+        Declaration
+      </h3>
+      <div
+        class="ant-row"
+        style="margin-top: -8px; margin-bottom: -8px;"
+      >
+        <div
+          class="ant-collapse ant-collapse-icon-position-end"
+        >
+          <div
+            class="ant-collapse-item ant-collapse-item-active"
+          >
+            <div
+              aria-disabled="false"
+              aria-expanded="true"
+              class="ant-collapse-header ant-collapse-icon-collapsible-only"
+            >
+              <div
+                class="ant-collapse-expand-icon"
+              >
+                <span
+                  aria-label="right"
+                  class="anticon anticon-right ant-collapse-arrow"
+                  role="img"
+                >
+                  <svg
+                    aria-hidden="true"
+                    data-icon="right"
+                    fill="currentColor"
+                    focusable="false"
+                    height="1em"
+                    style="transform: rotate(90deg);"
+                    viewBox="64 64 896 896"
+                    width="1em"
+                  >
+                    <path
+                      d="M765.7 486.8L314.9 134.7A7.97 7.97 0 00302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 000-50.4z"
+                    />
+                  </svg>
+                </span>
+              </div>
+              <span
+                class="ant-collapse-header-text"
+              >
+                <div
+                  class="ant-form-item ant-form-item-with-help ant-form-item-checkbox-required"
+                >
+                  <div
+                    class="ant-row ant-form-item-row"
+                  >
+                    <div
+                      class="ant-col ant-form-item-control"
+                    >
+                      <div
+                        class="ant-form-item-control-input"
+                      >
+                        <div
+                          class="ant-form-item-control-input-content"
+                        >
+                          <label
+                            class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item"
+                          >
+                            <span
+                              class="ant-checkbox"
+                            >
+                              <input
+                                aria-required="true"
+                                class="ant-checkbox-input"
+                                id="ADD_EDIT_PROJECT_SUMMARY_ams_terms_agreed"
+                                type="checkbox"
+                                value=""
+                              />
+                              <span
+                                class="ant-checkbox-inner"
+                              />
+                            </span>
+                            <span>
+                              By completing this Application for an authorization, the Applicant understands and agrees with the terms and conditions.
+                            </span>
+                          </label>
+                        </div>
+                      </div>
+                      <div
+                        style="display: flex; flex-wrap: nowrap;"
+                      >
+                        <div
+                          class="ant-form-item-explain ant-form-item-explain-connected"
+                          id="ADD_EDIT_PROJECT_SUMMARY_ams_terms_agreed_help"
+                          role="alert"
+                        >
+                          <div
+                            class=""
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </span>
+            </div>
+            <div
+              class="ant-collapse-content ant-collapse-content-active"
+            >
+              <div
+                class="ant-collapse-content-box"
+              >
+                <div
+                  class="page-scroll-wrapper"
+                  id="terms-and-conditions"
+                  style="max-height: 728px; overflow-y: scroll; min-height: 100px;"
+                >
+                  <ol>
+                    <li>
+                      In this section: “Applicant” means the applicant as identified in section 2 of this application form;
+                    </li>
+                    <li>
+                      “Authorization” means the permit, approval, operational certificate, or amended permit, approval, operational certificate, sought pursuant to this application;
+                    </li>
+                    <li>
+                      “Director” means any statutory decision maker under EMA; “EMA” means the Environmental Management Act, S.B.C. 2003, c. 53, as amended or replaced from time to time;
+                    </li>
+                    <li>
+                      “FOIPPA” means the Freedom of Information and Protection of Privacy Act, R.S.B.C. 1996, c. 165, as amended or replaced from time to time;
+                    </li>
+                    <li>
+                      “Province” means Her Majesty the Queen in Right of British Columbia; “Regulatory Document” means:
+                    </li>
+                    <li>
+                      a) this application form,
+                    </li>
+                    <li>
+                      b) any document that the Applicant submits or causes to be provided submitted to the Province or the Director in
+                    </li>
+                    <li>
+                      support of this application, and
+                    </li>
+                    <li>
+                      c) any document that the Applicant submitted or causes to be submitted to the Director or the Province pursuant to
+                      <ol
+                        type="a"
+                      >
+                        <li>
+                          the Authorization;
+                        </li>
+                        <li>
+                          any regulation made under EMA that regulates the facility described above or the discharge of waste from
+                        </li>
+                        <li>
+                          that facility; or
+                        </li>
+                        <li>
+                          any order issued under EMA directed against the Applicant that is related to the facility described above or
+                        </li>
+                        <li>
+                          the discharge of waste from that facility.
+                        </li>
+                      </ol>
+                    </li>
+                    <li>
+                      In consideration of the Province receiving this application, subject to paragraph 3, the Applicant hereby irrevocably authorizes
+                    </li>
+                    <li>
+                      the Province to publish on the B.C. government website the entirety of any Regulatory Document.
+                    </li>
+                    <li>
+                      Despite paragraph 2, if the Applicant clearly identifies on the face of a Regulatory Document that the Regulatory Document, or clearly identified portions of it, are confidential and provides in writing with the document a rationale for why the document or portion thereof could not be disclosed under FOIPPA, the Applicant does not consent to the Province publishing the document or any portion of it if, in the opinion of the Director, the document or portion could not be disclosed under FOIPPA, if it were subject to a request under section 5 of FOIPPA.
+                    </li>
+                    <li>
+                      In consideration of the Province receiving this application, the Applicant agrees that it will indemnify and save harmless the Province and the Province’s employees and agents from any claim for infringement of copyright or other intellectual property rights that the Province or any of the Province’s employees or agents may sustain, incur, suffer or be put to at any time that arise from the publication of a Regulatory Document.
+                    </li>
+                    <li>
+                      The Applicant certifies that the information provided in this registration form is true, complete and accurate, and acknowledges that the submission of insufficient information may result in this registration being returned causing delays in the registration review process.
+                    </li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="grey-filled-box"
+          id="above-fold"
+          style="margin-bottom: 16px;"
+        >
+          <span
+            class="ant-typography"
+          >
+            <strong>
+              Confirmation of Submission
+            </strong>
+          </span>
+          <div
+            class="ant-form-item ant-form-item-with-help ant-form-item-checkbox-required"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <label
+                      class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item"
+                    >
+                      <span
+                        class="ant-checkbox"
+                      >
+                        <input
+                          aria-required="true"
+                          class="ant-checkbox-input"
+                          id="ADD_EDIT_PROJECT_SUMMARY_confirmation_of_submission"
+                          type="checkbox"
+                          value=""
+                        />
+                        <span
+                          class="ant-checkbox-inner"
+                        />
+                      </span>
+                      <span>
+                        I understand that this submission, along with any supporting files, is being submitted on behalf of the owner, agent, or mine manager. The reporter may be contacted by the Ministry for further follow-up.
+                      </span>
+                    </label>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_EDIT_PROJECT_SUMMARY_confirmation_of_submission_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+`;

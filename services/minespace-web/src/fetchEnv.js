@@ -29,7 +29,7 @@ export default function fetchEnv() {
         env.keycloak_clientId,
         env.keycloak_resource,
         env.keycloak_url,
-        env.keycloak_idir_idpHint,
+        env.keycloak_idir_idpHint || "na",
         env.keycloak_bceid_idpHint,
         env.keycloak_vcauthn_idpHint,
         env.vcauthn_pres_req_conf_id,

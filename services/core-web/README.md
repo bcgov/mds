@@ -80,7 +80,7 @@ run the command `docker-compose up -d keycloak`
 Navigate to `http://localhost:8080` to check if keycloak was successfully installed.
 
 **Run Cypress test**
-To run your cypress tests with a browser, type the command `yarn run cypress open`.
+To run your cypress tests with a browser, type the command `yarn run cypress open` from within the core-web directory, or `yarn workspace @mds/core-web run cypress run open`.
 To run your cypress tests in headless mode, type the command `yarn cypress run`.
 
 ### Running

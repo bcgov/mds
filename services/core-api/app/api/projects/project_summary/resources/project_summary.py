@@ -162,7 +162,8 @@ class ProjectSummaryResource(Resource, UserMixin):
     parser.add_argument('is_legal_address_same_as_mailing_address', type=bool, store_missing=False, required=False)
     parser.add_argument('is_billing_address_same_as_mailing_address', type=bool, store_missing=False, required=False)
     parser.add_argument('is_billing_address_same_as_legal_address', type=bool, store_missing=False, required=False)
-
+    parser.add_argument('ams_terms_agreed', type=bool, store_missing=False, required=False)
+    parser.add_argument('confirmation_of_submission', type=bool, store_missing=False, required=False)
 
     @api.doc(
         description='Get a Project Description.',
@@ -202,12 +203,14 @@ class ProjectSummaryResource(Resource, UserMixin):
         if project is None:
             raise NotFound('Project is not found')
 
+        submission_date = project_summary.submission_date
         prev_status = project_summary.status_code
-        current_submission_date = project_summary.submission_date
-
-        submission_date = datetime.now(
-            tz=timezone.utc
-        ) if prev_status == 'DFT' and data.get('status_code') == 'SUB' else current_submission_date
+        if data.get('status_code') == 'SUB':
+            valid_submission = project_summary.validate_new_submission(data)
+            if valid_submission != True:
+                raise BadRequest(valid_submission)
+            if prev_status == 'DFT':
+                submission_date = datetime.now(tz=timezone.utc)
 
         # Update project summary.
         project_summary.update(project, data.get('project_summary_description'),
