@@ -6,7 +6,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.schema import FetchedValue
 from marshmallow import fields, validate
 from flask import current_app
-from datetime import date
+from datetime import date, datetime
 
 from app.extensions import db
 from app.api.utils.models_mixins import Base
@@ -396,6 +396,7 @@ class Application(Base):
 
     mine_name = association_proxy('mine', 'mine_name')
     mine_region = association_proxy('mine', 'mine_region')
+    submitted_to_core_date = db.Column(db.DateTime, nullable=True, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     @hybrid_property
     def is_pre_launch(self):
