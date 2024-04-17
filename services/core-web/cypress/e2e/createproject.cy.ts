@@ -12,6 +12,7 @@ describe("Major Projects", () => {
     cy.contains("Select Mine Classification").click({ force: true });
     cy.get('[title="Major Mine"]').click({ force: true });
     cy.contains("Apply Filters").click({ force: true });
+    cy.wait(3000); // wait for table to load data
 
     // // Navigate to the second mine
     cy.get('[data-cy="mine-link"]', { timeout: 10000 })
