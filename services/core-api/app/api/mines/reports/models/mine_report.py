@@ -9,6 +9,7 @@ from sqlalchemy import select, and_, desc, func, literal
 from app.api.mines.reports.models.mine_report_contact import MineReportContact
 from app.api.mines.reports.models.mine_report_submission import MineReportSubmission
 from app.api.mines.reports.models.mine_report_submission_status_code import MineReportSubmissionStatusCode
+from app.api.compliance.models.compliance_article import ComplianceArticle
 from app.api.constants import MINE_REPORT_TYPE
 from app.extensions import db
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
@@ -20,6 +21,7 @@ from app.api.activity.utils import trigger_notification
 from app.api.activity.models.activity_notification import ActivityType, ActivityRecipients
 from app.api.mines.reports.models.mine_report_notification import MineReportNotification
 from app.api.utils.helpers import get_current_core_or_ms_env_url
+from app.api.utils.helpers import format_email_datetime_to_string
 
 class MineReport(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = "mine_report"
@@ -150,7 +152,8 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
         if is_crr:
             report_type = "Code Required Report"
             compliance_details = self.mine_report_definition.compliance_articles[0]
-            report_name = f'{compliance_details.section}.{compliance_details.sub_section}.{compliance_details.paragraph} - {compliance_details.description}'
+            compliance_string = ComplianceArticle.get_compliance_article_string(self.mine_report_definition.compliance_articles[0])
+            report_name = f'{compliance_string} - {compliance_details.description}'
             core_recipients.extend(self.getReportSpecificEmailsByReportType(compliance_details))
 
         else: #PRR
@@ -170,18 +173,18 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
               "report_type": report_type,
               "report_compliance_year": self.submission_year,
               "report_due_date": due_date,
-              "report_recieved_date": (self.received_date).strftime("%b %d %Y at %I:%M %p"),
+              "report_recieved_date": format_email_datetime_to_string(self.latest_submission.submission_date),
           },
           "minespace_login_link": ms_url,
           "core_report_page_link": core_report_page_link,
           "ms_report_page_link": ms_report_page_link
         }
 
-        trigger_notification(f'Your {report_name} report has been recieved',
+        trigger_notification(f'Your {report_name} report has been received',
                               ActivityType.mine_report_submitted, self.mine,
                               'MineReport', self.mine_report_guid, recipients=ActivityRecipients.minespace_users)
 
-        trigger_notification(f'A {report_name} report has been recieved',
+        trigger_notification(f'A {report_name} report has been received',
                               ActivityType.mine_report_submitted, self.mine,
                               'MineReport', self.mine_report_guid, recipients=ActivityRecipients.core_users)
 

@@ -25,6 +25,12 @@ class ComplianceArticle(AuditMixin, Base):
 
     def __repr__(self):
         return '<ComplianceArticle %r>' % self.compliance_article_id
+    
+    # returns format 14.3.2 if all of section, sub_section, paragraph present, or filters out None for 14.3 or 14
+    @staticmethod
+    def get_compliance_article_string(compliance_details):
+        return '.'.join([x for x in [compliance_details.section, compliance_details.sub_section, compliance_details.paragraph] if x is not None])
+
 
     @classmethod
     def find_by_compliance_article_id(cls, id):

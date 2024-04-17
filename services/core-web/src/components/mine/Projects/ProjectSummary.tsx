@@ -8,7 +8,6 @@ import EnvironmentOutlined from "@ant-design/icons/EnvironmentOutlined";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 
 import NullScreen from "@/components/common/NullScreen";
-import { getMines } from "@mds/common/redux/selectors/mineSelectors";
 import {
   getFormattedProjectSummary,
   getProject,
@@ -52,7 +51,6 @@ export const ProjectSummary: FC = () => {
 
   const formattedProjectSummary = useSelector(getFormattedProjectSummary);
   const project = useSelector(getProject);
-  const mines = useSelector(getMines);
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
   const formErrors = useSelector(getFormSyncErrors(FORM.ADD_EDIT_PROJECT_SUMMARY));
   const anyTouched = useSelector(
@@ -109,12 +107,11 @@ export const ProjectSummary: FC = () => {
           setIsValid(false);
         });
     }
-    return dispatch(fetchMineRecordById(projectMineGuid)).then(() => {
-      const mine = mines[projectMineGuid];
+    return dispatch(fetchMineRecordById(projectMineGuid)).then((res) => {
       setIsNewProject(true);
       setIsLoaded(true);
       setActiveTab(tab);
-      setMineName(mine.mine_name);
+      setMineName(res.data.mine_name);
     });
   };
 

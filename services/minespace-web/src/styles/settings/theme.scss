@@ -45,25 +45,17 @@ $black: #000;
 
 // Color used by default to control hover and active backgrounds and for
 // alert info backgrounds.
-$primary-1: tint(
-  $primary-color,
-  90%
-); //color(~`colorPalette('${primary-color}', 1) `); // replace tint($primary-color, 90%)
-$primary-2: tint(
-  $primary-color,
-  80%
-); //color(~`colorPalette('${primary-color}', 2) `); // replace tint($primary-color, 80%)
+$primary-1: tint($primary-color,
+    90%); //color(~`colorPalette('${primary-color}', 1) `); // replace tint($primary-color, 90%)
+$primary-2: tint($primary-color,
+    80%); //color(~`colorPalette('${primary-color}', 2) `); // replace tint($primary-color, 80%)
 $primary-3: tint($primary-color, 70%); //color(~`colorPalette('${primary-color}', 3) `); // unused
 $primary-4: tint($primary-color, 60%); //color(~`colorPalette('${primary-color}', 4) `); // unused
-$primary-5: tint(
-  $primary-color,
-  20%
-); //color(~`colorPalette('${primary-color}', 5) `); // color used to control the text color in many active and hover states, replace tint($primary-color, 20%)
+$primary-5: tint($primary-color,
+    20%); //color(~`colorPalette('${primary-color}', 5) `); // color used to control the text color in many active and hover states, replace tint($primary-color, 20%)
 $primary-6: $primary-color; // color used to control the text color of active buttons, don't use, use $primary-color
-$primary-7: shade(
-  $primary-color,
-  5%
-); //color(~`colorPalette('${primary-color}', 7) `); // replace shade($primary-color, 5%)
+$primary-7: shade($primary-color,
+    5%); //color(~`colorPalette('${primary-color}', 7) `); // replace shade($primary-color, 5%)
 //$primary-8: color(~`colorPalette('${primary-color}', 8) `); // unused
 //$primary-9: color(~`colorPalette('${primary-color}', 9) `); // unused
 //$primary-10: color(~`colorPalette('${primary-color}', 10) `); // unused
@@ -297,11 +289,21 @@ $screen-xxl: 1600px;
 $screen-xxl-min: $screen-xxl;
 
 // provide a maximum
-$screen-xs-max: ($screen-sm-min - 1px);
-$screen-sm-max: ($screen-md-min - 1px);
-$screen-md-max: ($screen-lg-min - 1px);
-$screen-lg-max: ($screen-xl-min - 1px);
-$screen-xl-max: ($screen-xxl-min - 1px);
+$screen-xs-max: (
+  $screen-sm-min - 1px
+);
+$screen-sm-max: (
+  $screen-md-min - 1px
+);
+$screen-md-max: (
+  $screen-lg-min - 1px
+);
+$screen-lg-max: (
+  $screen-xl-min - 1px
+);
+$screen-xl-max: (
+  $screen-xxl-min - 1px
+);
 
 // Grid system
 $grid-columns: 24;
@@ -365,13 +367,9 @@ $input-padding-horizontal: $control-padding-horizontal - 1px;
 $input-padding-horizontal-base: $input-padding-horizontal;
 $input-padding-horizontal-sm: $control-padding-horizontal-sm - 1px;
 $input-padding-horizontal-lg: $input-padding-horizontal;
-$input-padding-vertical-base: round(
-    ($input-height-base - $font-size-base * $line-height-base) / 2 * 10
-  ) / 10 - $border-width-base;
-$input-padding-vertical-sm: round(($input-height-sm - $font-size-base * $line-height-base) / 2 * 10) /
-  10 - $border-width-base;
-$input-padding-vertical-lg: round(($input-height-lg - $font-size-lg * $line-height-base) / 2 * 10) /
-  10 - $border-width-base;
+$input-padding-vertical-base: round(($input-height-base - $font-size-base * $line-height-base) / 2 * 10) / 10 - $border-width-base;
+$input-padding-vertical-sm: round(($input-height-sm - $font-size-base * $line-height-base) / 2 * 10) / 10 - $border-width-base;
+$input-padding-vertical-lg: round(($input-height-lg - $font-size-lg * $line-height-base) / 2 * 10) / 10 - $border-width-base;
 $input-color: $primary-color; //$text-color;
 $input-placeholder-color: fade($input-color, 25%); //#BFBFBF; //hsv(0, 0, 75%);
 $input-icon-color: $input-color;
@@ -534,7 +532,7 @@ $spin-dot-size-lg: 32px;
 // Table
 // --
 $table-bg: $component-background;
-$table-header-bg: $white; //$background-color-light;
+$table-header-bg: $card-bg; //$background-color-light;
 $table-header-color: $heading-color;
 $table-header-sort-bg: $background-color-base;
 $table-body-sort-bg: rgba(0, 0, 0, 0.01);

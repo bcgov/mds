@@ -516,6 +516,14 @@ label .ant-btn {
   background-color: $pure-white;
 }
 
+.ant-collapse-borderless>.ant-collapse-item>.ant-collapse-content {
+  background-color: $white;
+}
+
+.page-scroll-wrapper .ant-collapse-content>.ant-collapse-content-box {
+  padding: 0;
+}
+
 .light-background {
   .ant-collapse-content>.ant-collapse-content-box {
     background-color: #908e8e17;

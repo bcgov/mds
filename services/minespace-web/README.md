@@ -41,7 +41,7 @@ _If coverage is lower than before writing a new feature, the tests **need** to b
 2. Start a local version of `keycloak`: `docker-compose up -d keycloak`. This will start a keycloak instance at http://localhost:8080, admin credentials if you ever need to log into it for debugging purposes is `admin/admin`.
 
 **Run Cypress test**
-To run your cypress tests with a browser, type the command `yarn run cypress open`.
+To run your cypress tests with a browser, type the command `yarn run cypress open` from within the minespace-web directory, or `yarn workspace @mds/minespace-web run cypress run open`.
 To run your cypress tests in headless mode, type the command `yarn cypress run`.
 
 **Keycloak Realm configuration**

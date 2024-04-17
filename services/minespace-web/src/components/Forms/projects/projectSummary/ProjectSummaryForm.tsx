@@ -28,6 +28,7 @@ import { LegalLandOwnerInformation } from "@mds/common/components/projectSummary
 import { FacilityOperator } from "@mds/common/components/projectSummary/FacilityOperator";
 import BasicInformation from "@mds/common/components/projectSummary/BasicInformation";
 import Applicant from "@/components/Forms/projects/projectSummary/Applicant";
+import Declaration from "@mds/common/components/projectSummary/Declaration";
 
 interface ProjectSummaryFormProps {
   initialValues: IProjectSummary;
@@ -61,6 +62,7 @@ export const getProjectFormTabs = (amsFeatureEnabled: boolean) => {
     "legal-land-owner-information",
     "project-dates",
     "document-upload",
+    "declaration",
   ];
 
   return amsFeatureEnabled
@@ -100,6 +102,7 @@ export const ProjectSummaryForm: FC<ProjectSummaryFormProps &
       "document-upload": (
         <DocumentUpload initialValues={props.initialValues} {...props} documents={documents} />
       ),
+      declaration: <Declaration />,
     }[tab]);
 
   const errors = Object.keys(flattenObject(props.formErrors));
