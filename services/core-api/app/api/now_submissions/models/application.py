@@ -396,7 +396,7 @@ class Application(Base):
 
     mine_name = association_proxy('mine', 'mine_name')
     mine_region = association_proxy('mine', 'mine_region')
-    submitted_to_core_date = db.Column(db.DateTime, nullable=True, default=datetime.utcnow, onupdate=datetime.utcnow)
+    submitted_to_core_date = db.Column(db.DateTime, default=datetime.utcnow)
 
     @hybrid_property
     def is_pre_launch(self):

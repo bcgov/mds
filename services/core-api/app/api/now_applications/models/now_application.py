@@ -211,7 +211,7 @@ class NOWApplication(Base, AuditMixin):
     equipment = db.relationship(
         'Equipment', secondary='activity_equipment_xref', load_on_pending=True, overlaps='equipment')
 
-    submitted_to_core_date = db.Column(db.DateTime, nullable=True, default=datetime.utcnow, onupdate=datetime.utcnow)
+    submitted_to_core_date = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
         return '<NOWApplication %r>' % self.now_application_guid
