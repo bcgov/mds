@@ -6,33 +6,45 @@ from app.tasks.celery import celery
 from app.extensions import db
 from app.api.utils.feature_flag import Feature, is_feature_enabled
 
+from app.api.mines.mine.models.mine import Mine
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.verifiable_credentials.models.credentials import PartyVerifiableCredentialMinesActPermit
 from app.api.services.traction_service import TractionService
 
+@celery.task()
+def revoke_credential_and_offer_newest_amendment(credential_exchange_id: str, permit_guid: str):
+    """Revoke the existing credential and offer a new one with the newest amendment."""
+
+    cred_exch = PartyVerifiableCredentialMinesActPermit.find_by_cred_exch_id(credential_exchange_id)
+    print(cred_exch)
+    permit = Permit.query.unbound_unsafe().filter_by(permit_guid=permit_guid).first()
+    permit._context_mine = cred_exch.permit_amendment.mine_guid
+    print(permit)
+    assert cred_exch and permit, "Invalid credential exchange or permit guid"
+
+    return "DID IT"
+
+    connection = credential_exchange.party.active_digital_wallet_connection
+
+    traction_svc = TractionService()
+    traction_svc.revoke_credential(connection.connection_id, credential_exchange.rev_reg_id, credential_exchange.cred_rev_id)
+
+    while not credential_exchange.cred_rev_id:
+        #wait for webhook callback confirming revocation to be processed
+        sleep(1)
+        db.session.refresh(credential_exchange)
+
+    newest_amendment = permit.permit_amendments.order_by(PermitAmendment.issue_date.desc()).first()
+
+    attributes = VerifiableCredentialManager.collect_attributes_for_mines_act_permit_111(newest_amendment)
+    traction_svc.offer_mines_act_permit_111(connection.connection_id, attributes)
+
 class VerifiableCredentialManager(): 
     def __init__(self):
         pass
 
-    @celery.task()
-    def revoke_credential_and_offer_newest_amendment(self, credential_exchange: PartyVerifiableCredentialMinesActPermit, permit: Permit):
-
-        connection = credential_exchange.party.active_digital_wallet_connection
-
-        traction_svc = TractionService()
-        traction_svc.revoke_credential(connection.connection_id, credential_exchange.rev_reg_id, credential_exchange.cred_rev_id)
-
-        while not credential_exchange.cred_rev_id:
-            #wait for webhook callback
-            sleep(1)
-            db.session.refresh(credential_exchange)
-
-        newest_amendment = permit.permit_amendments.order_by(PermitAmendment.issue_date.desc()).first()
-
-        attributes = VerifiableCredentialManager.collect_attributes_for_mines_act_permit_111(newest_amendment)
-        traction_svc.offer_mines_act_permit_111(connection.connection_id, attributes)
- 
+   
     @classmethod
     def collect_attributes_for_mines_act_permit_111(cls, permit_amendment: PermitAmendment) -> List[dict]:
         # collect information for schema

@@ -137,13 +137,11 @@ def register_commands(app):
             notify_and_update_expired_party_appointments()
 
     @app.cli.command('revoke_mines_act_permit_vc_and_offer_newest')
+    @click.argument('credential_exchange_id')
+    @click.argument('permit_guid')
     def revoke_mines_act_permit_vc_and_offer_newest(credential_exchange_id, permit_guid):
-        from app.api.verifiable_credentials.manager import VerifiableCredentialManager
+        from app.api.verifiable_credentials.manager import revoke_credential_and_offer_newest_amendment
         from app import auth
         auth.apply_security = False
-
         with current_app.app_context():
-            cred_exch = PartyVerifiableCredentialMinesActPermit.find_by_cred_exch_id(credential_exchange_id)
-            permit = Permit.find_by_mine_guid(permit_guid)
-            assert cred_exch and permit, "Invalid credential exchange or permit guid"
-            VerifiableCredentialManager.revoke_credential_and_offer_newest_amendment(cred_exch,permit.permit_guid)
+            revoke_credential_and_offer_newest_amendment(credential_exchange_id, permit_guid)
