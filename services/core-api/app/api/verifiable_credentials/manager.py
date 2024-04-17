@@ -19,26 +19,28 @@ def revoke_credential_and_offer_newest_amendment(credential_exchange_id: str, pe
     cred_exch = PartyVerifiableCredentialMinesActPermit.find_by_cred_exch_id(credential_exchange_id)
     print(cred_exch)
     permit = Permit.query.unbound_unsafe().filter_by(permit_guid=permit_guid).first()
-    permit._context_mine = cred_exch.permit_amendment.mine_guid
+    permit._context_mine = cred_exch.permit_amendment.mine
     print(permit)
     assert cred_exch and permit, "Invalid credential exchange or permit guid"
 
-    return "DID IT"
 
-    connection = credential_exchange.party.active_digital_wallet_connection
+    connection = cred_exch.party.active_digital_wallet_connection
 
     traction_svc = TractionService()
-    traction_svc.revoke_credential(connection.connection_id, credential_exchange.rev_reg_id, credential_exchange.cred_rev_id)
+    traction_svc.revoke_credential(connection.connection_id, cred_exch.rev_reg_id, cred_exch.cred_rev_id, "amended")
 
-    while not credential_exchange.cred_rev_id:
+    while not cred_exch.cred_rev_id:
         #wait for webhook callback confirming revocation to be processed
+        print("waiting")
         sleep(1)
-        db.session.refresh(credential_exchange)
+        db.session.refresh(cred_exch)
 
-    newest_amendment = permit.permit_amendments.order_by(PermitAmendment.issue_date.desc()).first()
+    newest_amendment = sorted(permit.permit_amendments, key=lambda pa: pa.issue_date,reverse=True)[0]
 
     attributes = VerifiableCredentialManager.collect_attributes_for_mines_act_permit_111(newest_amendment)
-    traction_svc.offer_mines_act_permit_111(connection.connection_id, attributes)
+    response = traction_svc.offer_mines_act_permit_111(connection.connection_id, attributes)
+    map_vc = PartyVerifiableCredentialMinesActPermit(cred_exch_id = response["credential_exchange_id"],party_guid = cred_exch.party_guid, permit_amendment_guid=newest_amendment.permit_amendment_guid)
+    map_vc.save()
 
 class VerifiableCredentialManager(): 
     def __init__(self):
