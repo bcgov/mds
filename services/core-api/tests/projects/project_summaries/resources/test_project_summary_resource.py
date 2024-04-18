@@ -139,6 +139,33 @@ def test_update_project_summary_bad_request_without_terms_ams_auths(test_client,
     assert put_resp.status_code == 400
     assert put_data['message'] == "400 Bad Request: Please agree to the terms and conditions of submission"
 
+def test_submit_project_summary_without_ams_auths(test_client, db_session, auth_headers):
+    '''Project summary submitted without AMS authorizations submitted successfully'''
+    project = ProjectFactory(project_summary=0)
+    project_summary = ProjectSummaryFactory(project=project)
+    party = PartyFactory(person=True)
+
+    data = {}
+    data['documents'] = []
+    data['mine_guid'] = project_summary.project.mine_guid
+    data['project_summary_title'] = project_summary.project_summary_title
+    data['status_code'] = 'SUB'
+    data['confirmation_of_submission'] = True
+    data['ams_authorizations'] = {
+        'amendments': [],
+        'new': []
+    }
+    data['project_lead_party_guid'] = party.party_guid
+
+    put_resp = test_client.put(
+        f'/projects/{project.project_guid}/project-summaries/{project_summary.project_summary_guid}',
+        headers=auth_headers['full_auth_header'],
+        json=data)
+    put_data = json.loads(put_resp.data.decode())
+
+    # should not be bad request
+    assert put_resp.status_code == 200
+
 def test_update_project_summary_with_ams_auths(test_client, db_session, auth_headers):
     '''AMS authorizations are posted successfully'''
     project = ProjectFactory(project_summary=0)
