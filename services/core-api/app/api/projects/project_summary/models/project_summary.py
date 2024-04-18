@@ -350,8 +350,10 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     def validate_new_submission(self, new_data):
         ams_terms_agreed = new_data.get('ams_terms_agreed')
         confirmation_of_submission = new_data.get('confirmation_of_submission')
-        ams_authorizations = new_data.get('ams_authorizations')
-        ams_condition = ams_terms_agreed or ams_authorizations == None
+        ams_authorizations = new_data.get('ams_authorizations', {})
+        ams_new = ams_authorizations.get('new', [])
+        ams_amendments = ams_authorizations.get('amendments', [])
+        ams_condition = ams_terms_agreed or (len(ams_new) == 0 and len(ams_amendments) == 0)
         terms_agreed = ams_condition and confirmation_of_submission
 
         if not terms_agreed:
