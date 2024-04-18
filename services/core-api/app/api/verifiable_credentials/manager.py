@@ -27,9 +27,13 @@ def revoke_credential_and_offer_newest_amendment(credential_exchange_id: str, pe
     traction_svc = TractionService()
     traction_svc.revoke_credential(connection.connection_id, cred_exch.rev_reg_id, cred_exch.cred_rev_id, "amended")
 
+    attempts = 0
     while not cred_exch.cred_rev_id:
         sleep(1)
         db.session.refresh(cred_exch)
+        attempts += 1
+        if attempts > 60:
+            raise Exception("Never received webhook confirming revokation credential")
 
     newest_amendment = sorted(permit.permit_amendments, key=lambda pa: pa.issue_date,reverse=True)[0]
 
