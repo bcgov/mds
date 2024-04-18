@@ -144,4 +144,9 @@ def register_commands(app):
         from app import auth
         auth.apply_security = False
         with current_app.app_context():
-            revoke_credential_and_offer_newest_amendment(credential_exchange_id, permit_guid)
+            cred_exch = PartyVerifiableCredentialMinesActPermit.find_by_cred_exch_id(credential_exchange_id)
+            assert cred_exch, "Credential exchange not found"
+            permit = Permit.query.unbound_unsafe().filter_by(permit_guid=permit_guid).first()
+            assert permit, "Permit not found"
+            revoke_credential_and_offer_newest_amendment.apply_async(kwargs={"credential_exchange_id":credential_exchange_id, "permit_guid": permit_guid})
+            print("celery job started")

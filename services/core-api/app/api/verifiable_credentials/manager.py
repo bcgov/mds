@@ -1,8 +1,10 @@
 # for midware/business level actions between requests and data access
 from time import sleep
 from typing import List
+from celery.utils.log import get_task_logger
 
 from app.tasks.celery import celery
+
 from app.extensions import db
 from app.api.utils.feature_flag import Feature, is_feature_enabled
 
@@ -12,10 +14,11 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment import Permi
 from app.api.verifiable_credentials.models.credentials import PartyVerifiableCredentialMinesActPermit
 from app.api.services.traction_service import TractionService
 
+logger = get_task_logger(__name__)
+
 @celery.task()
 def revoke_credential_and_offer_newest_amendment(credential_exchange_id: str, permit_guid: str):
     """Revoke the existing credential and offer a new one with the newest amendment."""
-
     cred_exch = PartyVerifiableCredentialMinesActPermit.find_by_cred_exch_id(credential_exchange_id)
     assert cred_exch, "Credential exchange not found"
     permit = Permit.query.unbound_unsafe().filter_by(permit_guid=permit_guid).first()
@@ -41,6 +44,11 @@ def revoke_credential_and_offer_newest_amendment(credential_exchange_id: str, pe
     response = traction_svc.offer_mines_act_permit_111(connection.connection_id, attributes)
     map_vc = PartyVerifiableCredentialMinesActPermit(cred_exch_id = response["credential_exchange_id"],party_guid = cred_exch.party_guid, permit_amendment_guid=newest_amendment.permit_amendment_guid)
     map_vc.save()
+
+    info_str = f"Revoked credential_exchange_id={credential_exchange_id} and offer new_cred_exchange{response['credential_exchange_id']} for permit_guid={newest_amendment.permit_amendment_guid}"
+    logger.warning(info_str) # not sure where to find this. 
+    
+    return info_str
 
 class VerifiableCredentialManager(): 
     def __init__(self):
