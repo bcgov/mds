@@ -265,9 +265,9 @@ exports.loadImages = ({
             loader: ImageMinimizerPlugin.loader,
             options: {
               minimizer: {
-                implementation: ImageMinimizerPlugin.imageminMinify,
+                implementation: ImageMinimizerPlugin.sharpMinify,
                 options: {
-                  plugins: ["imagemin-mozjpeg", "imagemin-pngquant"],
+                  encodeOptions: {},
                 },
               },
             },
