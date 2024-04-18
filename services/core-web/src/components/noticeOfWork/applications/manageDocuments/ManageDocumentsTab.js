@@ -85,22 +85,18 @@ export class ManageDocumentsTab extends Component {
   downloadDocumentPackage = (selectedDocumentRows) => {
     const mineGuid = this.props.noticeOfWork?.mine_guid;
     const nowDocs = this.gatherNowDocuments()
-      .map(
-        (doc) =>
-          new MineDocument({
-            mine_document_guid: doc.is_imported_submission
-              ? doc.mine_document_guid
-              : doc.mine_document.mine_document_guid,
-            document_manager_guid: doc.is_imported_submission
-              ? doc.document_manager_guid
-              : doc.mine_document.document_manager_guid,
-            document_name: doc.is_imported_submission
-              ? doc.filename
-              : doc.mine_document.document_name,
-            mine_guid: mineGuid,
-          })
-      )
-      .filter((doc) => selectedDocumentRows.includes(doc.mine_document_guid));
+      .map((doc) => ({
+        mine_document_guid: doc.is_imported_submission
+          ? doc.mine_document_guid
+          : doc.mine_document.mine_document_guid,
+        document_manager_guid: doc.is_imported_submission
+          ? doc.document_manager_guid
+          : doc.mine_document.document_manager_guid,
+        document_name: doc.is_imported_submission ? doc.filename : doc.mine_document.document_name,
+        mine_guid: mineGuid,
+      }))
+      .filter((doc) => doc.document_name && selectedDocumentRows.includes(doc.mine_document_guid))
+      .map((doc) => new MineDocument(doc));
 
     const totalFiles = nowDocs.length;
     if (totalFiles === 0) {
