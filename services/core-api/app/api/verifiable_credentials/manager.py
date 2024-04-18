@@ -17,12 +17,10 @@ def revoke_credential_and_offer_newest_amendment(credential_exchange_id: str, pe
     """Revoke the existing credential and offer a new one with the newest amendment."""
 
     cred_exch = PartyVerifiableCredentialMinesActPermit.find_by_cred_exch_id(credential_exchange_id)
-    print(cred_exch)
+    assert cred_exch, "Credential exchange not found"
     permit = Permit.query.unbound_unsafe().filter_by(permit_guid=permit_guid).first()
+    assert permit, "Permit not found"
     permit._context_mine = cred_exch.permit_amendment.mine
-    print(permit)
-    assert cred_exch and permit, "Invalid credential exchange or permit guid"
-
 
     connection = cred_exch.party.active_digital_wallet_connection
 
@@ -30,8 +28,6 @@ def revoke_credential_and_offer_newest_amendment(credential_exchange_id: str, pe
     traction_svc.revoke_credential(connection.connection_id, cred_exch.rev_reg_id, cred_exch.cred_rev_id, "amended")
 
     while not cred_exch.cred_rev_id:
-        #wait for webhook callback confirming revocation to be processed
-        print("waiting")
         sleep(1)
         db.session.refresh(cred_exch)
 
