@@ -426,30 +426,30 @@ exports[`ApplicationTab renders properly 1`] = `
           placement="bottomRight"
           title="You have unsaved changes. Are you sure you want to cancel?"
         >
-          <ForwardRef(InternalButton)
+          <Button
             className="full-mobile"
             disabled={false}
             type="secondary"
           >
             Cancel
-          </ForwardRef(InternalButton)>
+          </Button>
         </ForwardRef>
-        <ForwardRef(InternalButton)
+        <Button
           className="full-mobile"
           loading={false}
           onClick={[Function]}
           type="tertiary"
         >
           Save & Continue
-        </ForwardRef(InternalButton)>
-        <ForwardRef(InternalButton)
+        </Button>
+        <Button
           className="full-mobile"
           loading={false}
           onClick={[Function]}
           type="primary"
         >
           Save
-        </ForwardRef(InternalButton)>
+        </Button>
       </div>
     }
     tabName="Application"

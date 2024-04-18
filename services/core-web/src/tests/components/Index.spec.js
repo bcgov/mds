@@ -1,16 +1,13 @@
 import React from "react";
 import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { Index } from "../../index";
 import Loading from "@/components/common/Loading";
 import { getKeycloakMock } from "../mocks/keycloakMocks";
-// import { waitFor } from '@testing-library/react';
+import { MessageChannel } from "worker_threads";
+window.MessageChannel = MessageChannel;
 
-// this handles the non-existence of the #root element in test environment
-jest.mock("react-dom", () => {
-  return {
-    render: jest.fn(),
-  };
-});
+// import { waitFor } from '@testing-library/react';
 
 const stateSetter = jest.fn();
 
@@ -32,9 +29,8 @@ it("Index: redirects unauthenticated to login", async () => {
 });
 
 it("Index: shows loading before keycloak is instantiated", () => {
-  const component = shallow(<Index />);
-  expect(component.find(Loading).length).toEqual(1);
-  expect(component).toMatchSnapshot();
+  const { container } = render(<Index disableEnvLoading={true} />);
+  expect(container).toMatchSnapshot();
 });
 
 it("Index: token is automatically refreshed while user is active", () => {

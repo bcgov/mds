@@ -4,7 +4,7 @@ exports[`TailingsSummaryPage renders properly 1`] = `
 <ContextProvider
   value={
     Object {
-      "children": <UNDEFINED
+      "children": <Memo(Connect(ReduxForm))
         TSFOperatingStatusCodeHash={Object {}}
         clearTsf={[MockFunction]}
         consequenceClassificationStatusCodeHash={Object {}}

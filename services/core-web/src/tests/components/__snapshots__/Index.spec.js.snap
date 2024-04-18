@@ -1,3 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Index: shows loading before keycloak is instantiated 1`] = `<Loading />`;
+exports[`Index: shows loading before keycloak is instantiated 1`] = `
+<div>
+  <div
+    class="loading-screen"
+  >
+    <div
+      id="loader"
+    >
+      <lottie-mock
+        options="[object Object]"
+      />
+    </div>
+  </div>
+</div>
+`;

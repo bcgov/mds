@@ -427,13 +427,13 @@ exports[`AdministrativeTab renders properly 1`] = `
           placement="bottomLeft"
           visible={false}
         >
-          <ForwardRef(InternalButton)
+          <Button
             className="full-mobile"
             type="secondary"
           >
             Actions
             <ForwardRef(DownOutlined) />
-          </ForwardRef(InternalButton)>
+          </Button>
         </Dropdown>
       </withRouter(Connect(NOWActionWrapper))>
     }

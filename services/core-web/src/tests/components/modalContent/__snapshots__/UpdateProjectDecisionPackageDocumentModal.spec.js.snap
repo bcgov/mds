@@ -28,7 +28,7 @@ exports[`UpdateProjectDecisionPackageDocumentModal renders properly 1`] = `
             Object {
               "dataIndex": "project_decision_package_document_type_code",
               "render": [Function],
-              "title": <ForwardRef(InternalCheckbox)
+              "title": <Checkbox
                 checked={false}
                 onChange={[Function]}
               />,

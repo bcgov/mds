@@ -71,12 +71,12 @@ exports[`MergeContactDashboard renders properly 1`] = `
                       </li>
                     </ul>
                   </div>
-                  <ForwardRef(InternalButton)
+                  <Button
                     className="btn--expand"
                     onClick={[Function]}
                   >
                       ...Read more
-                  </ForwardRef(InternalButton)>
+                  </Button>
                 </React.Fragment>
               }
               message="Not all contacts can be merged at this time"
@@ -233,7 +233,8 @@ exports[`MergeContactDashboard renders properly 1`] = `
                   >
                     <Alert
                       closable={true}
-                      description="All contacts selected will be deleted when the merge is complete and the proposed contact will be created."
+                      description="All contacts selected will be deleted when the merge is complete and the proposed
+          contact will be created."
                       showIcon={true}
                       type="info"
                     />
@@ -321,12 +322,12 @@ exports[`MergeContactDashboard renders properly 1`] = `
                       </li>
                     </ul>
                   </div>
-                  <ForwardRef(InternalButton)
+                  <Button
                     className="btn--expand"
                     onClick={[Function]}
                   >
                       ...Read more
-                  </ForwardRef(InternalButton)>
+                  </Button>
                 </React.Fragment>
               }
               message="Not all contacts can be merged at this time"
@@ -483,7 +484,8 @@ exports[`MergeContactDashboard renders properly 1`] = `
                   >
                     <Alert
                       closable={true}
-                      description="All contacts selected will be deleted when the merge is complete and the proposed contact will be created."
+                      description="All contacts selected will be deleted when the merge is complete and the proposed
+          contact will be created."
                       showIcon={true}
                       type="info"
                     />

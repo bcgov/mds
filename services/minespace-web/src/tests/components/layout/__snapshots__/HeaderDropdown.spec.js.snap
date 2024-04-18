@@ -19,12 +19,12 @@ exports[`HeaderDropdown renders properly 1`] = `
           className="header-dropdown-menu"
         >
           <MenuItem>
-            <ForwardRef(InternalButton)
+            <Button
               className="header-dropdown-item-button"
               onClick={[Function]}
             >
               Log out
-            </ForwardRef(InternalButton)>
+            </Button>
           </MenuItem>
         </Menu>
       }
@@ -44,19 +44,19 @@ exports[`HeaderDropdown renders properly 1`] = `
         <Menu
           className="header-dropdown-menu"
         >
-          <UNDEFINED>
+          <Memo(Connect(AuthorizationWrapper))>
             <MenuItem>
-              <ForwardRef(InternalButton)
+              <Button
                 className="header-dropdown-item-button"
               >
-                <ForwardRef
+                <Link
                   to="/mines"
                 >
                   My Mines
-                </ForwardRef>
-              </ForwardRef(InternalButton)>
+                </Link>
+              </Button>
             </MenuItem>
-          </UNDEFINED>
+          </Memo(Connect(AuthorizationWrapper))>
           <Divider
             className="bg-color-table-seperator"
             style={
@@ -66,12 +66,12 @@ exports[`HeaderDropdown renders properly 1`] = `
             }
           />
           <MenuItem>
-            <ForwardRef(InternalButton)
+            <Button
               className="header-dropdown-item-button"
               onClick={[Function]}
             >
               Log out
-            </ForwardRef(InternalButton)>
+            </Button>
           </MenuItem>
         </Menu>
       }

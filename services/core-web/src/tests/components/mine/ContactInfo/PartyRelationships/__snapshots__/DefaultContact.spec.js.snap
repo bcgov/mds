@@ -31,15 +31,15 @@ exports[`DefaultContact renders properly 1`] = `
       <div
         className="padding-md--top"
       >
-        <ForwardRef
+        <Link
           to="/dashboard/3124624567/history/PMT"
         >
-          <ForwardRef(InternalButton)
+          <Button
             className="margin-none"
           >
             See History
-          </ForwardRef(InternalButton)>
-        </ForwardRef>
+          </Button>
+        </Link>
       </div>
     </div>
   }
