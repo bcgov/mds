@@ -462,7 +462,8 @@ APPLICATION = api.model(
         'camps': fields.List(fields.Nested(CAMP_ACTIVITY)),
         'buildings': fields.List(fields.Nested(BUILDING_ACTIVITY)),
         'stagingareas': fields.List(fields.Nested(STAGING_AREA_ACTIVITY)),
-        'equipment': fields.List(fields.Nested(EQUIPMENT))
+        'equipment': fields.List(fields.Nested(EQUIPMENT)),
+        'submitted_to_core_date': fields.Date,
     })
 
 APPLICATION_LIST = api.model(
