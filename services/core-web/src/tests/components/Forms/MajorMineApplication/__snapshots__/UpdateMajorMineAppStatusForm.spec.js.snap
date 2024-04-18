@@ -13,8 +13,8 @@ exports[`UpdateMajorMineAppStatusForm renders properly 1`] = `
   >
     <Alert
       description={
-        <ForwardRef>
-          <ForwardRef
+        <Row>
+          <Col
             md={18}
             xs={24}
           >
@@ -29,15 +29,15 @@ exports[`UpdateMajorMineAppStatusForm renders properly 1`] = `
             <b>
               Please note that updating this status will notify the project proponent.
             </b>
-          </ForwardRef>
-          <ForwardRef
+          </Col>
+          <Col
             md={6}
             xs={24}
           >
             <FormItem
               hasFeedback={false}
             >
-              <ForwardRef
+              <Field
                 component={[Function]}
                 data={
                   Object {
@@ -59,8 +59,8 @@ exports[`UpdateMajorMineAppStatusForm renders properly 1`] = `
                 }
               />
             </FormItem>
-          </ForwardRef>
-        </ForwardRef>
+          </Col>
+        </Row>
       }
       message="Submitted"
       showIcon={true}

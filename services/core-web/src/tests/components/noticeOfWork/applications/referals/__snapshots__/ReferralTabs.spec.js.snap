@@ -406,7 +406,7 @@ exports[`ReferralTabs renders properly 1`] = `
       showProgressButton={true}
       tab="REF"
       tabActions={
-        <UNDEFINED
+        <Memo(Connect(ReferralConsultationPackage))
           type="REF"
         />
       }

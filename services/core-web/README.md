@@ -9,7 +9,7 @@ The application requires a whole suite of npm modules for building/testing/runni
 ### Building
 
 - [webpack](https://webpack.js.org/) : Project building and asset compilation.
-- [babel](https://babeljs.io/) : Adds support for older browsers
+- [esbuild](https://esbuild.github.io/) : Web asset bundler
 - [sass](https://sass-lang.com/guide) : Clean CSS files
 
 ### Testing

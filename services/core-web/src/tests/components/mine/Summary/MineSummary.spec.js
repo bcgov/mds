@@ -15,7 +15,7 @@ const setupProps = () => {
 };
 
 function mockFunction() {
-  const original = require.requireActual("react-router-dom");
+  const original = jest.requireActual("react-router-dom");
   return {
     ...original,
     useParams: jest.fn().mockReturnValue({ id: "18145c75-49ad-0101-85f3-a43e45ae989a" }),

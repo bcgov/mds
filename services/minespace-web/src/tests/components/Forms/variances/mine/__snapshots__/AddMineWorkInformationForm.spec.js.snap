@@ -20,7 +20,7 @@ exports[`AddMineWorkInformationForm renders properly 1`] = `
         <DescriptionsItem
           label={
             <React.Fragment>
-              <ForwardRef
+              <Tooltip
                 mouseEnterDelay={0.3}
                 overlayClassName="minespace-tooltip"
                 placement="right"
@@ -47,7 +47,7 @@ exports[`AddMineWorkInformationForm renders properly 1`] = `
                 <ForwardRef(InfoCircleOutlined)
                   className="padding-sm"
                 />
-              </ForwardRef>
+              </Tooltip>
               Work Start Date
             </React.Fragment>
           }
@@ -74,7 +74,7 @@ exports[`AddMineWorkInformationForm renders properly 1`] = `
         <DescriptionsItem
           label={
             <React.Fragment>
-              <ForwardRef
+              <Tooltip
                 mouseEnterDelay={0.3}
                 overlayClassName="minespace-tooltip"
                 placement="right"
@@ -101,7 +101,7 @@ exports[`AddMineWorkInformationForm renders properly 1`] = `
                 <ForwardRef(InfoCircleOutlined)
                   className="padding-sm"
                 />
-              </ForwardRef>
+              </Tooltip>
               Work Stop Date
             </React.Fragment>
           }

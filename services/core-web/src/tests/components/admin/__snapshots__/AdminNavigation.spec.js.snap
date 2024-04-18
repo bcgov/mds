@@ -9,19 +9,19 @@ exports[`AdminNavigation renders properly 1`] = `
         "children": Array [
           Object {
             "key": "verified",
-            "label": <ForwardRef
+            "label": <Link
               to="/admin/dashboard/mine-verification/verified"
             >
               Verified Mines
-            </ForwardRef>,
+            </Link>,
           },
           Object {
             "key": "unverified",
-            "label": <ForwardRef
+            "label": <Link
               to="/admin/dashboard/mine-verification/unverified"
             >
               UnVerified Mines
-            </ForwardRef>,
+            </Link>,
           },
         ],
         "icon": <ForwardRef(DownOutlined) />,
@@ -33,11 +33,11 @@ exports[`AdminNavigation renders properly 1`] = `
         "children": Array [
           Object {
             "key": "users",
-            "label": <ForwardRef
+            "label": <Link
               to="/admin/dashboard/manage-minespace/users"
             >
               Users
-            </ForwardRef>,
+            </Link>,
           },
         ],
         "icon": <ForwardRef(DownOutlined) />,
