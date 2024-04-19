@@ -45,6 +45,7 @@ class ComplianceArticleResource(Resource, UserMixin):
                         type=str,
                         store_missing=False,
                         required=False)
+
     @api.doc(description=
              'This endpoint returns a list of all possible compliance codes and their descriptions.',
              params={
