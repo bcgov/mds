@@ -1,7 +1,8 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Field, getFormValues } from "redux-form";
+import { Field, getFormValues, reset, change } from "redux-form";
 import { Row, Col, Button } from "antd";
+import * as FORM from "@/constants/forms";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import { REPORT_REGULATORY_AUTHORITY_CODES, REPORT_REGULATORY_AUTHORITY_ENUM } from "@mds/common";
 import {
@@ -16,12 +17,33 @@ import RenderDate from "@mds/common/components/forms/RenderDate";
 import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
 import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
+import { closeModal } from "@mds/common/redux/actions/modalActions";
 
-const ComplianceCodeViewEditForm: FC<any> = ({ initialValues, isEditMode = true }) => {
+const ComplianceCodeViewEditForm: FC<any> = ({ initialValues = {}, isEditMode = true }) => {
+  const dispatch = useDispatch();
+  const formValues = useSelector(getFormValues(FORM.ADD_COMPLIANCE_CODE)) ?? {};
+  const { section, sub_section, paragraph, sub_paragraph } = formValues;
+
+  const handleCancel = () => {
+    dispatch(reset(FORM.ADD_COMPLIANCE_CODE));
+    dispatch(closeModal());
+  };
+
+  const generateArticleNumber = () => {
+    const articleNumber = [section, sub_section, paragraph, sub_paragraph]
+      .filter(Boolean)
+      .join(".");
+    dispatch(change(FORM.ADD_COMPLIANCE_CODE, "articleNumber", articleNumber));
+  };
+
+  useEffect(() => {
+    generateArticleNumber();
+  }, [section, sub_section, paragraph, sub_paragraph]);
+
   return (
     <div>
       <FormWrapper
-        name="new-hsrc"
+        name={FORM.ADD_COMPLIANCE_CODE}
         initialValues={initialValues}
         onSubmit={(values) => console.log(values)}
         isEditMode={isEditMode}
@@ -153,9 +175,11 @@ const ComplianceCodeViewEditForm: FC<any> = ({ initialValues, isEditMode = true 
             />
           </Col>
         </Row>
-        <Row gutter={[16, 16]}>
-          <RenderCancelButton />
-          <Button htmlType="submit">Save Code</Button>
+        <Row gutter={[16, 16]} justify="end">
+          <RenderCancelButton cancelFunction={handleCancel} />
+          <Button htmlType="submit" type="primary">
+            Save Code
+          </Button>
         </Row>
       </FormWrapper>
     </div>

@@ -1,6 +1,6 @@
 import React, { FC, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Field, reset } from "redux-form";
+import { Field, reset, getFormValues, getFormMeta } from "redux-form";
 import { Button, Table, Row, Col } from "antd";
 import { getComplianceCodes } from "@mds/common/redux/selectors/staticContentSelectors";
 import CoreTable from "@mds/common/components/common/CoreTable";
@@ -20,8 +20,9 @@ import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton"
 const ComplianceCodeManagement: FC = () => {
   const dispatch = useDispatch();
   const complianceCodes = useSelector(getComplianceCodes);
-  const [editingId, setEditingId] = useState();
   const [isEditMode, setIsEditMode] = useState(false);
+  const formPrefix = "code";
+  const [editedIds, setEditedIds] = useState([]);
 
   const formatCode = (code) => {
     const cim_or_cpo = code.cim_or_cpo ?? REPORT_REGULATORY_AUTHORITY_CODES.NONE;
@@ -31,18 +32,32 @@ const ComplianceCodeManagement: FC = () => {
     return { ...code, articleNumber, cim_or_cpo };
   };
 
+  // array for the table rows
+  const formattedComplianceCodesList = complianceCodes?.map((code) => formatCode(code));
+
   // item map for the form
-  const formattedComplianceCodesMap = complianceCodes?.reduce(
+  const formattedComplianceCodesMap = formattedComplianceCodesList?.reduce(
     (acc, code) => ({
       ...acc,
       // form doesn't like fields to be named with numbers, prepend "code"
-      [`code${code.compliance_article_id}`]: formatCode(code),
+      [`${formPrefix}${code.compliance_article_id}`]: code,
     }),
     {}
   );
 
-  // array for the table rows
-  const formattedComplianceCodesList = complianceCodes?.map((code) => formatCode(code));
+  const handleChange = (_val, newVal, _prevVal, fieldName) => {
+    const field = fieldName.split(".");
+    const initialCodeValue = formattedComplianceCodesMap[field[0]] ?? {};
+    const id = initialCodeValue.compliance_article_id;
+    const initialValue = initialCodeValue[field[1]];
+    const changedFromInitial = newVal !== initialValue;
+
+    if (!editedIds.includes(id) && changedFromInitial) {
+      setEditedIds([...editedIds, id]);
+    } else if (editedIds.includes(id) && !changedFromInitial) {
+      setEditedIds(editedIds.filter((compliance_id) => id !== compliance_id));
+    }
+  };
 
   const openAddModal = () => {
     dispatch(
@@ -60,6 +75,14 @@ const ComplianceCodeManagement: FC = () => {
     setIsEditMode(false);
   };
 
+  const handleSubmit = (values) => {
+    const editedValues = editedIds.map((id) => {
+      return values[`${formPrefix}${id}`];
+    });
+    // array of compliance articles that have been changed
+    console.log(editedValues);
+  };
+
   const columns = [
     renderTextColumn("articleNumber", "Article #", true),
     renderTextColumn("description", "Description", true),
@@ -70,12 +93,15 @@ const ComplianceCodeManagement: FC = () => {
       key: "expiry-date",
       render: (text, record) => {
         return (
-          <div>
+          <div
+            className={editedIds.includes(record.compliance_article_id) && "modified-table-cell"}
+          >
             {
               <Field
-                name={`code${record.compliance_article_id}.expiry_date`}
+                name={`${formPrefix}${record.compliance_article_id}.expiry_date`}
                 label=""
                 required
+                onChange={handleChange}
                 component={isEditMode ? RenderDate : () => <div>{text}</div>}
                 validate={[required]}
               />
@@ -86,15 +112,13 @@ const ComplianceCodeManagement: FC = () => {
     },
   ];
 
-  console.log(complianceCodes);
-
   return (
     <div>
-      <Button onClick={() => openAddModal()}>Add</Button>
+      <Button onClick={() => openAddModal()}>Add Compliance Code</Button>
 
       <FormWrapper
         name={FORM.COMPLIANCE_CODE_BULK_EDIT}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={handleSubmit}
         initialValues={formattedComplianceCodesMap}
       >
         <CoreTable
