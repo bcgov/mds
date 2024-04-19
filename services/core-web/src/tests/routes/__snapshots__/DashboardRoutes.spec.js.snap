@@ -611,6 +611,12 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/admin/contact-management/:tab"
   />
   <Route
+    component={[Function]}
+    exact={true}
+    key="/admin/hsrc-management"
+    path="/admin/hsrc-management"
+  />
+  <Route
     component={
       Object {
         "$$typeof": Symbol(react.memo),
