@@ -43,9 +43,7 @@ class ComplianceArticle(AuditMixin, Base):
 
     @classmethod
     def filter_or_get_all(cls, article_act_code=None, section=None, description=None, long_description=None,
-                          sub_section=None, paragraph=None, sub_paragraph=None, effective_date=None, expiry_date=None):
-        if expiry_date is None:
-            expiry_date = '9999-12-31'
+                          sub_section=None, paragraph=None, sub_paragraph=None, effective_date=None, expiry_date='9999-12-31'):
 
         if any(param is not None for param in
                [article_act_code, section, description, long_description, sub_section, paragraph, sub_paragraph,
@@ -75,8 +73,8 @@ class ComplianceArticle(AuditMixin, Base):
 
     @classmethod
     def find_existing_compliance_article(cls, article_act_code, section, sub_section=None, paragraph=None,
-                                         sub_paragraph=None):
-        query = cls.query.filter_by(article_act_code=article_act_code, section=section)
+                                         sub_paragraph=None, expiry_date='9999-12-31'):
+        query = cls.query.filter_by(article_act_code=article_act_code, section=section, expiry_date=expiry_date)
         if sub_section is not None:
             query = query.filter_by(sub_section=sub_section)
         if paragraph is not None:

@@ -99,7 +99,8 @@ class ComplianceArticleCreateResource(Resource, UserMixin):
 
         compliance_article = ComplianceArticle.find_existing_compliance_article(article_act_code, section, sub_section,
                                                                                 paragraph,
-                                                                                sub_paragraph)
+                                                                                sub_paragraph,
+                                                                                expiry_date)
         if compliance_article is not None:
             raise BadRequest('Another compliance article with the same properties already exists.')
 

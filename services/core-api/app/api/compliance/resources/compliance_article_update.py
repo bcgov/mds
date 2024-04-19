@@ -97,13 +97,6 @@ class ComplianceArticleUpdateResource(Resource, UserMixin):
         effective_date = data.get('effective_date')
         expiry_date = data.get('expiry_date')
 
-        # To confirm from business if this a valid check
-        # compliance_article = ComplianceArticle.find_existing_compliance_article(article_act_code, section, sub_section,
-        #                                                                         paragraph,
-        #                                                                         sub_paragraph)
-        # if compliance_article is not None:
-        #     raise BadRequest('Another compliance article with the same properties already exists.')
-
         update_compliance_article = ComplianceArticle.find_by_compliance_article_id(compliance_article_id)
 
         if update_compliance_article is None:
