@@ -8,7 +8,12 @@ import { get, isEmpty, isNil, sortBy } from "lodash";
 import { createNumberMask } from "redux-form-input-masks";
 import moment from "moment-timezone";
 import { reset } from "redux-form";
-import { IMineReportDefinition, IMineReportSubmission, ItemMap } from "@mds/common/interfaces";
+import {
+  IComplianceArticle,
+  IMineReportDefinition,
+  IMineReportSubmission,
+  ItemMap,
+} from "@mds/common/interfaces";
 import { MINE_REPORT_SUBMISSION_CODES } from "../..";
 
 /**
@@ -344,6 +349,12 @@ export const formatComplianceCodeValueOrLabel = (code, showDescription) => {
   return `${section}${formattedSubSection}${formattedParagraph}${formattedSubParagraph}${formattedDescription}`;
 };
 
+export const formatComplianceCodeArticleNumber = (code: IComplianceArticle) => {
+  return [code.section, code.sub_section, code.paragraph, code.sub_paragraph]
+    .filter(Boolean)
+    .join(".");
+};
+
 export const formatComplianceCodeReportName = (report: IMineReportDefinition) => {
   const { section, sub_section, paragraph, sub_paragraph } = report?.compliance_articles[0];
   const formattedSubSection = sub_section ? `.${sub_section}` : "";
@@ -353,6 +364,32 @@ export const formatComplianceCodeReportName = (report: IMineReportDefinition) =>
 
   return `${section}${formattedSubSection}${formattedParagraph}${formattedSubParagraph}${formattedReportName}`;
 };
+
+export const sortComplianceCodesByArticleNumber = (
+  a: IComplianceArticle,
+  b: IComplianceArticle
+) => {
+  let returnVal = 0;
+  const parts = ["section", "sub_section", "paragraph", "sub_paragraph"];
+  for (let i = 0; i < parts.length && !returnVal; i++) {
+    const part = parts[i];
+    const aPart = Number(a[part] ?? 0);
+    const bPart = Number(b[part] ?? 0);
+    if (isNaN(aPart) && isNaN(bPart)) {
+      returnVal = a[part].localeCompare(b[part]);
+    } else if (isNaN(aPart)) {
+      returnVal = -1;
+    } else if (isNaN(bPart)) {
+      returnVal = 1;
+    } else {
+      returnVal = aPart - bPart;
+    }
+  }
+  return returnVal;
+};
+
+// eslint-disable-next-line no-useless-escape
+export const stripParentheses = (str) => str.replaceAll(/[\(\)]/g, "");
 
 // function to flatten an object for nested items in redux form
 // eslint-disable-snippets

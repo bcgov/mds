@@ -1,5 +1,5 @@
 import * as Strings from "@mds/common/constants/strings";
-import { IOption } from "@mds/common";
+import { IOption } from "@mds/common/interfaces/";
 
 import { memoize } from "lodash";
 import moment from "moment-timezone";
@@ -116,7 +116,7 @@ export const number = (value) =>
   value && Number.isNaN(Number(value)) ? "Input must be a number" : undefined;
 
 export const digitCharactersOnly = (value) => {
-  return /^\d+$/.test(value) ? undefined : "Input must contain only digits";
+  return value && /^\d+$/.test(value) ? undefined : "Input must contain only digits";
 };
 
 export const positiveNumber = (value) =>

@@ -1,7 +1,9 @@
 import React, { FC, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Field, reset, getFormValues, getFormMeta } from "redux-form";
-import { Button, Table, Row, Col } from "antd";
+import { Field, reset } from "redux-form";
+import SearchOutlined from "@ant-design/icons/SearchOutlined";
+import { Button, Table, Row, Input } from "antd";
+
 import { getComplianceCodes } from "@mds/common/redux/selectors/staticContentSelectors";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import {
@@ -16,24 +18,35 @@ import ComplianceCodeViewEditForm from "./ComplianceCodeViewEditForm";
 import RenderDate from "@mds/common/components/forms/RenderDate";
 import { REPORT_REGULATORY_AUTHORITY_CODES } from "@mds/common/constants/enums";
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
+import { IComplianceArticle } from "@mds/common/interfaces/";
+import {
+  formatComplianceCodeArticleNumber,
+  sortComplianceCodesByArticleNumber,
+} from "@mds/common/redux/utils/helpers";
 
 const ComplianceCodeManagement: FC = () => {
   const dispatch = useDispatch();
-  const complianceCodes = useSelector(getComplianceCodes);
+  const complianceCodes: IComplianceArticle[] = useSelector(getComplianceCodes);
   const [isEditMode, setIsEditMode] = useState(false);
   const formPrefix = "code";
   const [editedIds, setEditedIds] = useState([]);
+  const [searchText, setSearchText] = useState("");
+  const [filteredRecordsList, setFilteredRecordsList] = useState([]);
 
   const formatCode = (code) => {
     const cim_or_cpo = code.cim_or_cpo ?? REPORT_REGULATORY_AUTHORITY_CODES.NONE;
-    const articleNumber = [code.section, code.sub_section, code.paragraph, code.sub_section]
-      .filter(Boolean)
-      .join(".");
+    const articleNumber = formatComplianceCodeArticleNumber(code);
     return { ...code, articleNumber, cim_or_cpo };
   };
 
   // array for the table rows
-  const formattedComplianceCodesList = complianceCodes?.map((code) => formatCode(code));
+  const formattedComplianceCodesList = complianceCodes
+    ?.map((code) => formatCode(code))
+    .sort(sortComplianceCodesByArticleNumber);
+
+  useEffect(() => {
+    setFilteredRecordsList(formattedComplianceCodesList);
+  }, []);
 
   // item map for the form
   const formattedComplianceCodesMap = formattedComplianceCodesList?.reduce(
@@ -73,6 +86,7 @@ const ComplianceCodeManagement: FC = () => {
   const handleCancel = () => {
     dispatch(reset(FORM.COMPLIANCE_CODE_BULK_EDIT));
     setIsEditMode(false);
+    setEditedIds([]);
   };
 
   const handleSubmit = (values) => {
@@ -83,8 +97,59 @@ const ComplianceCodeManagement: FC = () => {
     console.log(editedValues);
   };
 
+  const handleSearch = (confirm, field, searchInputText) => {
+    if (searchInputText && searchInputText.length) {
+      const filteredRecords = formattedComplianceCodesList.filter((code) => {
+        return code[field]
+          .toString()
+          .toLowerCase()
+          .includes((searchInputText as string).toLowerCase());
+      });
+      setFilteredRecordsList(filteredRecords);
+    } else {
+      setFilteredRecordsList(formattedComplianceCodesList);
+    }
+
+    confirm();
+  };
+
   const columns = [
-    renderTextColumn("articleNumber", "Article #", true),
+    renderTextColumn("compliance_article_id", "ID", true),
+    {
+      ...renderTextColumn("articleNumber", "Article #", true, null, 150),
+      filterIcon: () => <SearchOutlined />,
+      filterDropdown: ({ confirm }) => {
+        return (
+          <div style={{ padding: 8 }}>
+            <Row style={{ minWidth: 240 }}>
+              <Input
+                placeholder="Search Compliance Article"
+                onChange={(e) => setSearchText(e.target.value)}
+                onPressEnter={() => handleSearch(confirm, "articleNumber", searchText)}
+                allowClear
+              />
+            </Row>
+            <Button
+              onClick={() => handleSearch(confirm, "articleNumber", searchText)}
+              icon={<SearchOutlined />}
+              size="small"
+              type="primary"
+            >
+              Search
+            </Button>
+            <Button
+              onClick={() => {
+                setSearchText("");
+                handleSearch(confirm, "articleNumber", "");
+              }}
+              size="small"
+            >
+              Reset
+            </Button>
+          </div>
+        );
+      },
+    },
     renderTextColumn("description", "Description", true),
     renderDateColumn("effective_date", "Effective Date", true),
     {
@@ -114,7 +179,9 @@ const ComplianceCodeManagement: FC = () => {
 
   return (
     <div>
-      <Button onClick={() => openAddModal()}>Add Compliance Code</Button>
+      <Button onClick={() => openAddModal()} disabled={isEditMode} type="primary">
+        Add Compliance Code
+      </Button>
 
       <FormWrapper
         name={FORM.COMPLIANCE_CODE_BULK_EDIT}
@@ -122,11 +189,12 @@ const ComplianceCodeManagement: FC = () => {
         initialValues={formattedComplianceCodesMap}
       >
         <CoreTable
-          dataSource={formattedComplianceCodesList}
+          dataSource={filteredRecordsList}
           columns={columns}
+          rowKey="compliance_article_id"
           pagination={{
-            total: formattedComplianceCodesList.length,
-            defaultPageSize: 10,
+            total: filteredRecordsList.length,
+            defaultPageSize: 50,
             position: ["bottomCenter"],
             disabled: isEditMode,
           }}

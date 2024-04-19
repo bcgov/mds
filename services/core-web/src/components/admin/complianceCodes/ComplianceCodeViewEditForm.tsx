@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Field, getFormValues, reset, change } from "redux-form";
+import { Field, getFormValues, reset, change, touch } from "redux-form";
 import { Row, Col, Button } from "antd";
 import * as FORM from "@/constants/forms";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
@@ -18,11 +18,22 @@ import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons"
 import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 import { closeModal } from "@mds/common/redux/actions/modalActions";
+import { getComplianceCodes } from "@mds/common/redux/selectors/staticContentSelectors";
+import {
+  formatComplianceCodeArticleNumber,
+  stripParentheses,
+} from "@mds/common/redux/utils/helpers";
 
 const ComplianceCodeViewEditForm: FC<any> = ({ initialValues = {}, isEditMode = true }) => {
   const dispatch = useDispatch();
+  const complianceCodes = useSelector(getComplianceCodes);
   const formValues = useSelector(getFormValues(FORM.ADD_COMPLIANCE_CODE)) ?? {};
   const { section, sub_section, paragraph, sub_paragraph } = formValues;
+
+  const uniqueArticleNumbers = complianceCodes.map((code) => {
+    const articleNumber = formatComplianceCodeArticleNumber(code);
+    return stripParentheses(articleNumber);
+  });
 
   const handleCancel = () => {
     dispatch(reset(FORM.ADD_COMPLIANCE_CODE));
@@ -34,6 +45,13 @@ const ComplianceCodeViewEditForm: FC<any> = ({ initialValues = {}, isEditMode = 
       .filter(Boolean)
       .join(".");
     dispatch(change(FORM.ADD_COMPLIANCE_CODE, "articleNumber", articleNumber));
+    dispatch(touch(FORM.ADD_COMPLIANCE_CODE, "articleNumber"));
+  };
+
+  const validateUniqueArticleNumber = (value) => {
+    return value && uniqueArticleNumbers.includes(stripParentheses(value))
+      ? "Must select a unique article number"
+      : undefined;
   };
 
   useEffect(() => {
@@ -87,12 +105,12 @@ const ComplianceCodeViewEditForm: FC<any> = ({ initialValues = {}, isEditMode = 
           </Col>
         </Row>
         <Row gutter={[16, 16]}>
-          <Col span={24}>
+          <Col span={24} className="hide-required-indicator">
             <Field
               id="articleNumber"
               name="articleNumber"
               label="Section Displayed"
-              validate={[]}
+              validate={[validateUniqueArticleNumber]}
               disabled
               component={RenderField}
             />
