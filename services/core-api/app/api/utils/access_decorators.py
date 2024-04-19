@@ -4,6 +4,7 @@ from app.extensions import getJwtManager
 from app.flask_jwt_oidc_local.exceptions import AuthError
 from werkzeug.exceptions import Forbidden
 
+EDIT_CODE = "core_edit_code"
 VIEW_ALL = "core_view_all"
 MINE_EDIT = "core_edit_mines"
 MINE_ADMIN = "core_admin"
