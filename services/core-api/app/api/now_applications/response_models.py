@@ -640,6 +640,8 @@ NOW_APPLICATION_MODEL = api.model(
         fields.Date,
         'regional_contact':
         fields.String,
+        'submitted_to_core_date':
+        fields.Date,
     })
 
 NOW_APPLICATION_MODEL_EXPORT = api.model(

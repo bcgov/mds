@@ -1,4 +1,4 @@
-FROM node:20.11.0 as builder
+FROM node:20.12.2 as builder
 
 # Create working directory
 RUN mkdir /app
@@ -32,7 +32,7 @@ RUN rm -rf /app/node_modules
 # Multi Stage Build: Node JS Runtime - App Runner 
 # --------------------------------------------------------#
 
-FROM node:20.11.0-alpine as runner
+FROM node:20.12.2-alpine as runner
 
 WORKDIR /app
 
