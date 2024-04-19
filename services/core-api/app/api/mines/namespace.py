@@ -28,6 +28,8 @@ from app.api.mines.explosives_permit.resources.explosives_permit_list import Exp
 from app.api.mines.explosives_permit.resources.explosives_permit_document_upload import ExplosivesPermitDocumentUploadResource
 from app.api.mines.explosives_permit.resources.explosives_permit_document_type import ExplosivesPermitDocumentTypeResource, ExplosivesPermitDocumentTypeListResource, ExplosivesPermitDocumentGenerateResource
 from app.api.mines.region.resources.region import MineRegionResource
+from app.api.mines.reports.resources.mine_report_definition_compliance_article import \
+    MineReportDefinitionComplianceArticleCreateResource, MineReportDefinitionComplianceArticleUpdateResource
 from app.api.mines.reports.resources.mine_report_document import MineReportDocumentListResource
 from app.api.mines.reports.resources.reports_resource import ReportsResource
 from app.api.mines.reports.resources.mine_reports import MineReportListResource, MineReportResource
@@ -122,6 +124,9 @@ api.add_resource(ReportSubmissionResource, '/reports/submissions')
 api.add_resource(MineReportDefinitionListResource, '/reports/definitions')
 api.add_resource(MineReportCommentListResource,
                  '/<string:mine_guid>/reports/<string:mine_report_guid>/comments')
+api.add_resource(MineReportDefinitionComplianceArticleCreateResource, '/reports/definitions/compliance-article')
+api.add_resource(MineReportDefinitionComplianceArticleUpdateResource,
+                 '/reports/definitions/compliance-article/<string:mine_report_definition_compliance_article_xref_guid>')
 api.add_resource(
     MineReportCommentResource,
     '/<string:mine_guid>/reports/<string:mine_report_guid>/comments/<string:mine_report_comment_guid>'
