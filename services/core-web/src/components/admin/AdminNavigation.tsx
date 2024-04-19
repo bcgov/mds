@@ -13,6 +13,12 @@ interface AdminNavigationProps {
 const AdminNavigation: FC<AdminNavigationProps> = (props) => {
   const ifActiveButton = (route) => (includes(props.activeButton, route) ? "active-menu-btn" : "");
 
+  const complianceItem = {
+    label: <Link to={routes.ADMIN_HSRC_COMPLIANCE_CODE_MANAGEMENT.route}>HSRC Management</Link>,
+    key: "submenu-hsrc-management",
+    id: ifActiveButton("hsrc-management"),
+  };
+
   const items = [
     {
       label: "Mine Verification",
@@ -45,6 +51,7 @@ const AdminNavigation: FC<AdminNavigationProps> = (props) => {
         { key: "users", label: <Link to={routes.ADMIN_MANAGE_MINESPACE_USERS.route}>Users</Link> },
       ],
     },
+    complianceItem,
   ];
 
   return (
