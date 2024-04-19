@@ -9,7 +9,7 @@ from app.api.utils.access_decorators import EDIT_CODE, requires_any_of
 from werkzeug.exceptions import BadRequest
 
 
-class ComplianceArticleListResource(Resource, UserMixin):
+class ComplianceArticleCreateResource(Resource, UserMixin):
     parser = CustomReqparser()
     parser.add_argument(
         'article_act_code',
@@ -101,7 +101,7 @@ class ComplianceArticleListResource(Resource, UserMixin):
                                                                                 paragraph,
                                                                                 sub_paragraph)
         if compliance_article is not None:
-            raise BadRequest('Another compliance article with the same attributes already exists.')
+            raise BadRequest('Another compliance article with the same properties already exists.')
 
         new_compliance_article = ComplianceArticle.create(article_act_code,
                                                           section,

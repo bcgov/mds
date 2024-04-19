@@ -129,7 +129,6 @@ class ComplianceArticle(AuditMixin, Base):
                cim_or_cpo=None,
                add_to_session=True):
         self.article_act_code = article_act_code
-        self.article_act_code = article_act_code
         self.description = description
         self.long_description = long_description
         self.effective_date = effective_date
