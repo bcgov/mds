@@ -896,3 +896,9 @@ TSF_OPERATING_STATUS_MODEL = api.model(
         'description': fields.String,
         'active_ind': fields.Boolean
     })
+
+MINE_REPORT_DEFINITION_COMPLIANCE_ARTICLE_MODEL = api.model(
+    'MineReportDefinitionComplianceArticleXref', {
+        'compliance_article_id': fields.Integer,
+        'mine_report_definition_id': fields.Integer
+    })
