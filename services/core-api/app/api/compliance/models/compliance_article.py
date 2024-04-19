@@ -1,4 +1,7 @@
 from datetime import datetime
+
+from sqlalchemy import func
+
 from app.extensions import db
 from sqlalchemy.schema import FetchedValue
 
@@ -43,33 +46,41 @@ class ComplianceArticle(AuditMixin, Base):
 
     @classmethod
     def filter_or_get_all(cls, article_act_code=None, section=None, description=None, long_description=None,
-                          sub_section=None, paragraph=None, sub_paragraph=None, effective_date=None, expiry_date='9999-12-31'):
+                          sub_section=None, paragraph=None, sub_paragraph=None, effective_date=None,
+                          expiry_date='9999-12-31'):
 
-        if any(param is not None for param in
-               [article_act_code, section, description, long_description, sub_section, paragraph, sub_paragraph,
-                effective_date, expiry_date]):
-            query = cls.query
-            if article_act_code is not None:
-                query = query.filter_by(article_act_code=article_act_code)
-            if section is not None:
-                query = query.filter_by(section=section)
-            if description is not None:
-                query = query.filter_by(description=description)
-            if long_description is not None:
-                query = query.filter_by(long_description=long_description)
-            if sub_section is not None:
-                query = query.filter_by(sub_section=sub_section)
-            if paragraph is not None:
-                query = query.filter_by(paragraph=paragraph)
-            if sub_paragraph is not None:
-                query = query.filter_by(sub_paragraph=sub_paragraph)
-            if effective_date is not None:
-                query = query.filter_by(effective_date=effective_date)
-            if expiry_date is not None:
-                query = query.filter_by(expiry_date=expiry_date)
-            return query.all()
-        else:
-            return cls.query.all()
+        filters = []
+
+        if article_act_code:
+            filters.append(
+                func.lower(cls.article_act_code).contains(
+                    func.lower(article_act_code)))
+        if section:
+            filters.append(cls.section == section)
+        if description:
+            filters.append(
+                func.lower(cls.description).contains(
+                    func.lower(description)))
+        if long_description:
+            filters.append(
+                func.lower(cls.long_description).contains(
+                    func.lower(long_description)))
+        if sub_section:
+            filters.append(cls.sub_section == sub_section)
+        if paragraph:
+            filters.append(cls.paragraph == paragraph)
+        if sub_paragraph:
+            filters.append(cls.sub_paragraph == sub_paragraph)
+        if effective_date:
+            filters.append(cls.effective_date == effective_date)
+        if expiry_date:
+            filters.append(cls.expiry_date == expiry_date)
+
+        base_query = cls.query
+        if filters:
+            base_query = base_query.filter(*filters)
+
+        return base_query.all()
 
     @classmethod
     def find_existing_compliance_article(cls, article_act_code, section, sub_section=None, paragraph=None,

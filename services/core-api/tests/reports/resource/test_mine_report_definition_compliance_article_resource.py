@@ -1,6 +1,7 @@
 from unittest.mock import Mock
 
-def test_create_mine_report_definition_compliance(test_client, db_session, auth_headers):
+
+def test_create_mine_report_definition_compliance_article(test_client, db_session, auth_headers):
     data = {
         "compliance_article_id": 1,
         "mine_report_definition_id": 100
@@ -19,7 +20,7 @@ def test_create_mine_report_definition_compliance(test_client, db_session, auth_
     assert post_resp.status_code == 201
 
 
-def test_update_mine_report_definition_compliance(test_client, db_session, auth_headers):
+def test_update_mine_report_definition_compliance_article(test_client, db_session, auth_headers):
     data = {
         "compliance_article_id": 1,
         "mine_report_definition_id": 1
