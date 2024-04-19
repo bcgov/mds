@@ -71,7 +71,7 @@ class ComplianceArticle(AuditMixin, Base):
                 query = query.filter_by(expiry_date=expiry_date)
             return query.all()
         else:
-            return cls.get_all()
+            return cls.query.all()
 
     @classmethod
     def find_existing_compliance_article(cls, article_act_code, section, sub_section=None, paragraph=None,
