@@ -1,4 +1,6 @@
 from flask_restx import Resource, inputs, reqparse, fields
+from marshmallow.exceptions import MarshmallowError
+from werkzeug.exceptions import BadRequest
 
 from app.api.compliance.models.compliance_article import ComplianceArticle
 from app.api.compliance.response_models import COMPLIANCE_ARTICLE_MODEL, COMPLIANCE_ARTICLE_UPDATE_MODEL
@@ -26,9 +28,13 @@ class ComplianceArticleUpdateResource(Resource, UserMixin):
         data = self.parser.parse_args()
         compliance_article_codes = data.get('compliance_article_codes')
         compliance_article = ComplianceArticle()
-        update_compliance_article_codes = compliance_article.update_all(compliance_article_codes)
+        try:
+            update_compliance_article_codes = compliance_article.update_all(compliance_article_codes)
 
-        if len(update_compliance_article_codes) == len(compliance_article_codes):
-            compliance_article.save_all(update_compliance_article_codes)
+            if len(update_compliance_article_codes) == len(compliance_article_codes):
+                compliance_article.save_all(update_compliance_article_codes)
 
-        return update_compliance_article_codes
+            return update_compliance_article_codes
+        except MarshmallowError as e:
+            raise BadRequest(f'Something went wrong while trying to update {e}')
+
