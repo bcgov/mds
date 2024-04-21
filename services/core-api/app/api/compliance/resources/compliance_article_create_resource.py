@@ -1,81 +1,92 @@
-from flask_restx import Resource, inputs
+from flask_restx import Resource, inputs, reqparse
 
 from app.api.compliance.models.compliance_article import ComplianceArticle
 from app.api.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
 from app.api.utils.resources_mixins import UserMixin
-from app.api.utils.custom_reqparser import CustomReqparser
 from app.extensions import api
 from app.api.utils.access_decorators import EDIT_CODE, requires_any_of
 from werkzeug.exceptions import BadRequest
 
 
 class ComplianceArticleCreateResource(Resource, UserMixin):
-    parser = CustomReqparser()
+    parser = reqparse.RequestParser()
+
     parser.add_argument(
         'article_act_code',
         type=str,
         store_missing=False,
         required=True,
+        location='json',
     )
     parser.add_argument(
         'section',
         type=str,
         store_missing=False,
         required=True,
+        location='json',
     )
     parser.add_argument(
         'description',
         type=str,
         store_missing=False,
         required=True,
+        location='json',
     )
     parser.add_argument(
         'long_description',
         type=str,
         store_missing=False,
         required=True,
+        location='json',
     )
     parser.add_argument(
         'sub_section',
         type=str,
         store_missing=False,
         required=False,
+        location='json',
     )
     parser.add_argument(
         'paragraph',
         type=str,
         store_missing=False,
         required=False,
+        location='json',
     )
     parser.add_argument(
         'sub_paragraph',
         type=str,
         store_missing=False,
         required=False,
+        location='json',
     )
     parser.add_argument(
         'help_reference_link',
         type=str,
         store_missing=False,
         required=False,
+        location='json',
     )
     parser.add_argument(
         'cim_or_cpo',
         type=str,
         store_missing=False,
         required=False,
+        location='json',
     )
     parser.add_argument(
         'effective_date',
         type=lambda x: inputs.datetime_from_iso8601(x),
         store_missing=False,
         required=True,
+        location='json',
     )
     parser.add_argument(
         'expiry_date',
         type=lambda x: inputs.datetime_from_iso8601(x) if x else '9999-12-31',
         store_missing=False,
         required=False,
+        location='json',
     )
 
     @api.doc(description='Create a new Compliance Article.')

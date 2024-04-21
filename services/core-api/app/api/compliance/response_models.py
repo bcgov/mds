@@ -16,3 +16,8 @@ COMPLIANCE_ARTICLE_MODEL = api.model(
         'help_reference_link': fields.String,
         'cim_or_cpo': fields.String
     })
+
+COMPLIANCE_ARTICLE_UPDATE_MODEL = api.model(
+    'ComplianceArticleUpdate', {
+        'compliance_article_codes': fields.List(fields.Nested(COMPLIANCE_ARTICLE_MODEL))
+    })

@@ -5,6 +5,7 @@ from sqlalchemy.schema import FetchedValue
 from app.api.utils.models_mixins import AuditMixin, Base
 from sqlalchemy import func
 
+
 class ComplianceArticle(AuditMixin, Base):
     __tablename__ = 'compliance_article'
     compliance_article_id = db.Column(db.Integer, nullable=False, primary_key=True)
@@ -25,12 +26,13 @@ class ComplianceArticle(AuditMixin, Base):
 
     def __repr__(self):
         return '<ComplianceArticle %r>' % self.compliance_article_id
-    
+
     # returns format 14.3.2 if all of section, sub_section, paragraph present, or filters out None for 14.3 or 14
     @staticmethod
     def get_compliance_article_string(compliance_details):
-        return '.'.join([x for x in [compliance_details.section, compliance_details.sub_section, compliance_details.paragraph] if x is not None])
-
+        return '.'.join(
+            [x for x in [compliance_details.section, compliance_details.sub_section, compliance_details.paragraph] if
+             x is not None])
 
     @classmethod
     def find_by_compliance_article_id(cls, id):
@@ -121,37 +123,46 @@ class ComplianceArticle(AuditMixin, Base):
             compliance_article.save(commit=False)
         return compliance_article
 
-    def update(self,
-               article_act_code,
-               description,
-               long_description,
-               effective_date,
-               expiry_date,
-               section=None,
-               sub_section=None,
-               paragraph=None,
-               sub_paragraph=None,
-               help_reference_link=None,
-               cim_or_cpo=None,
-               add_to_session=True):
-        self.article_act_code = article_act_code
-        self.description = description
-        self.long_description = long_description
-        self.effective_date = effective_date
-        self.expiry_date = expiry_date
-        if section is not None:
-            self.section = section
-        if sub_section is not None:
-            self.sub_section = sub_section
-        if paragraph is not None:
-            self.paragraph = paragraph
-        if sub_paragraph is not None:
-            self.sub_paragraph = sub_paragraph
-        if help_reference_link is not None:
-            self.help_reference_link = help_reference_link
-        if cim_or_cpo is not None:
-            self.cim_or_cpo = cim_or_cpo
+    def update_all(self,
+                   records,
+                   add_to_session=True):
+        updated_records = []
+        for record in records:
+            compliance_article_id = record.get('compliance_article_id')
+            existing_article = self.find_by_compliance_article_id(compliance_article_id)
+
+            article_act_code = record.get('article_act_code')
+            description = record.get('description')
+            long_description = record.get('long_description')
+            effective_date = record.get('effective_date')
+            expiry_date = record.get('expiry_date')
+            section = record.get('section')
+            sub_section = record.get('sub_section')
+            paragraph = record.get('paragraph')
+            sub_paragraph = record.get('sub_paragraph')
+            help_reference_link = record.get('help_reference_link')
+            cim_or_cpo = record.get('cim_or_cpo')
+
+            existing_article.article_act_code = article_act_code
+            existing_article.description = description
+            existing_article.long_description = long_description
+            existing_article.effective_date = effective_date
+            existing_article.expiry_date = expiry_date
+            if section is not None:
+                existing_article.section = section
+            if sub_section is not None:
+                existing_article.sub_section = sub_section
+            if paragraph is not None:
+                existing_article.paragraph = paragraph
+            if sub_paragraph is not None:
+                existing_article.sub_paragraph = sub_paragraph
+            if help_reference_link is not None:
+                existing_article.help_reference_link = help_reference_link
+            if cim_or_cpo is not None:
+                existing_article.cim_or_cpo = cim_or_cpo
+
+            updated_records.append(existing_article)
 
         if add_to_session:
-            self.save(commit=False)
-        return self
+            self.save_all(updated_records, commit=False)
+        return updated_records
