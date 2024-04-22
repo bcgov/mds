@@ -8,7 +8,7 @@ import {
   TSF_OPERATING_STATUS_CODE,
   TSF_TYPES,
 } from "@mds/common";
-import { Col, Row, Typography } from "antd";
+import { Alert, Col, Row, Typography } from "antd";
 import React, { FC, useEffect, useState } from "react";
 import {
   lat,
@@ -62,11 +62,17 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
       <Row justify="space-between">
         <Typography.Title level={3}>Basic Information</Typography.Title>
         {props.showUpdateTimestamp && props.tsf?.update_timestamp && (
-          <Typography.Paragraph style={{ textAlign: "right" }}>
-            <b>Last Updated</b>
-            <br />
-            {formatDateTime(props.tsf.update_timestamp)}
-          </Typography.Paragraph>
+          <Alert
+            message={`Last Updated by  on ${formatDateTime(props.tsf.update_timestamp)}`}
+            showIcon
+            type="info"
+          />
+
+          // <Typography.Paragraph style={{ textAlign: "right" }}>
+          //   <b>Last Updated</b>
+          //   <br />
+          //   {formatDateTime(props.tsf.update_timestamp)}
+          // </Typography.Paragraph>
         )}
       </Row>
       <Field

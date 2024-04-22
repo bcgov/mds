@@ -2,6 +2,7 @@ import { Button, Modal, Table, Typography } from "antd";
 import React, { FC, useEffect, useState } from "react";
 import { isEqual } from "lodash";
 import { IExplosivesPermit } from "@mds/common/interfaces/permits/explosivesPermit.interface";
+import DiffColumn, { IDiffColumn } from "../history/DiffColumn";
 
 interface ExplosivesPermitDiffModalProps {
   explosivesPermit: IExplosivesPermit;
@@ -9,14 +10,8 @@ interface ExplosivesPermitDiffModalProps {
   onCancel: () => void;
 }
 
-interface IPermitDifference {
-  fieldName: string;
-  previousValue: any;
-  currentValue: any;
-}
-
 interface IPermitDifferencesByAmendment {
-  [amendmentId: string]: IPermitDifference[];
+  [amendmentId: string]: IDiffColumn[];
 }
 
 const ExplosivesPermitDiffModal: FC<ExplosivesPermitDiffModalProps> = ({
@@ -82,7 +77,7 @@ const ExplosivesPermitDiffModal: FC<ExplosivesPermitDiffModalProps> = ({
                 ) {
                   const fieldPrefix =
                     key === "detonator_magazines" ? "Detonator Magazine" : "Explosive Magazine";
-                  const diff: IPermitDifference = {
+                  const diff: IDiffColumn = {
                     fieldName: `${fieldPrefix} ${idx} - ${magazineKey}`,
                     previousValue: oldMagazineValue,
                     currentValue: magazineValue,
@@ -105,7 +100,7 @@ const ExplosivesPermitDiffModal: FC<ExplosivesPermitDiffModalProps> = ({
         }
 
         if (newValue !== oldValue && !ignoredFields.includes(key)) {
-          const diff: IPermitDifference = {
+          const diff: IDiffColumn = {
             fieldName: key,
             previousValue: oldValue,
             currentValue: newValue,
@@ -134,14 +129,6 @@ const ExplosivesPermitDiffModal: FC<ExplosivesPermitDiffModalProps> = ({
     }
   }, [explosivesPermit]);
 
-  const valueOrNoData = (value: any) => {
-    if (typeof value === "boolean") {
-      return value ? "True" : "False";
-    }
-
-    return value ? value : "No Data";
-  };
-
   const columns = [
     {
       title: "Notice of Work #",
@@ -164,47 +151,8 @@ const ExplosivesPermitDiffModal: FC<ExplosivesPermitDiffModalProps> = ({
       title: "Changes",
       dataIndex: "differences",
       key: "differences",
-      render: (differences: IPermitDifference[]) => {
-        return (
-          <div className="padding-md--top">
-            {differences.map((diff) => (
-              <div key={diff.fieldName}>
-                {diff.fieldName === "Documents" ? (
-                  <div>
-                    <Typography.Paragraph strong className="margin-none line-height-none">
-                      Files Added:
-                    </Typography.Paragraph>
-                    {diff.currentValue.map((file: any, index) => (
-                      <Typography.Paragraph
-                        key={`${file}${index}`}
-                        className="green margin-none line-height-none"
-                      >
-                        {file}
-                      </Typography.Paragraph>
-                    ))}
-                  </div>
-                ) : (
-                  <div>
-                    <Typography.Paragraph strong className="margin-none line-height-none">
-                      {diff.fieldName}:
-                    </Typography.Paragraph>
-                    {diff.fieldName !== "None" && (
-                      <Typography.Paragraph>
-                        <Typography.Text className="red">
-                          {valueOrNoData(diff.previousValue)}
-                        </Typography.Text>
-                        {` => `}
-                        <Typography.Text className="green">
-                          {valueOrNoData(diff.currentValue)}
-                        </Typography.Text>
-                      </Typography.Paragraph>
-                    )}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        );
+      render: (differences: IDiffColumn[]) => {
+        return <DiffColumn differences={differences} />;
       },
     },
   ];
