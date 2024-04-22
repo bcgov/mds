@@ -45,15 +45,6 @@ exports[`AdminNavigation renders properly 1`] = `
         "key": "submenu-manage-minespace",
         "label": "MineSpace Management",
       },
-      Object {
-        "id": "",
-        "key": "submenu-hsrc-management",
-        "label": <Link
-          to="/admin/hsrc-management"
-        >
-          HSRC Management
-        </Link>,
-      },
     ]
   }
   mode="horizontal"
