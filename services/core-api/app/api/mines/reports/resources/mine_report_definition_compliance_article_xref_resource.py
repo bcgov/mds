@@ -1,4 +1,4 @@
-from flask_restx import Resource
+from flask_restx import Resource, reqparse
 from werkzeug.exceptions import NotFound
 
 from app.api.mines.reports.models.mine_report_definition_compliance_article_xref import \
@@ -45,7 +45,7 @@ class MineReportDefinitionComplianceArticleCreateResource(Resource, UserMixin):
 
 
 class MineReportDefinitionComplianceArticleUpdateResource(Resource, UserMixin):
-    parser = CustomReqparser()
+    parser = reqparse.RequestParser()
     parser.add_argument(
         'mine_report_definition_id',
         type=int,
@@ -76,7 +76,7 @@ class MineReportDefinitionComplianceArticleUpdateResource(Resource, UserMixin):
             mine_report_definition_compliance_article_xref_guid)
 
         if update_mine_report_definition_compliance is None:
-            raise NotFound('Mine Report Definition Compliance Article Reference found')
+            raise NotFound('Mine Report Definition Compliance Article Reference Not found')
 
         update_mine_report_definition_compliance.update(
             mine_report_definition_id,

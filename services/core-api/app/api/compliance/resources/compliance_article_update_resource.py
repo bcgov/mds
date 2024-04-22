@@ -1,4 +1,5 @@
-from flask_restx import Resource, inputs, reqparse, fields
+from flask import current_app
+from flask_restx import Resource, reqparse
 from marshmallow.exceptions import MarshmallowError
 from werkzeug.exceptions import BadRequest
 
@@ -36,5 +37,6 @@ class ComplianceArticleUpdateResource(Resource, UserMixin):
 
             return update_compliance_article_codes
         except MarshmallowError as e:
-            raise BadRequest(f'Something went wrong while trying to update {e}')
+            current_app.logger.error(f'Something went wrong while trying to update: {e}')
+            raise BadRequest(f'Something went wrong while trying to update')
 
