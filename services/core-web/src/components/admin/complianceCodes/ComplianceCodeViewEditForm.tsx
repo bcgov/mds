@@ -4,7 +4,11 @@ import { Field, getFormValues, change, touch } from "redux-form";
 import { Row, Col, Button, Typography } from "antd";
 import * as FORM from "@/constants/forms";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
-import { REPORT_REGULATORY_AUTHORITY_CODES, REPORT_REGULATORY_AUTHORITY_ENUM } from "@mds/common";
+import {
+  IComplianceArticle,
+  REPORT_REGULATORY_AUTHORITY_CODES,
+  REPORT_REGULATORY_AUTHORITY_ENUM,
+} from "@mds/common";
 import {
   required,
   maxLength,
@@ -17,19 +21,21 @@ import RenderDate from "@mds/common/components/forms/RenderDate";
 import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
 import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
-import { closeModal } from "@mds/common/redux/actions/modalActions";
-import { getComplianceCodes } from "@mds/common/redux/selectors/staticContentSelectors";
 import {
   formatComplianceCodeArticleNumber,
   stripParentheses,
 } from "@mds/common/redux/utils/helpers";
+import { createComplianceCode, getActiveComplianceCodesList } from "./complianceCodesSlice";
+import { closeModal } from "@mds/common/redux/actions/modalActions";
 
-const ComplianceCodeViewEditForm: FC<any> = ({ initialValues = {}, isEditMode = true }) => {
+const ComplianceCodeViewEditForm: FC<{
+  initialValues: IComplianceArticle;
+  isEditMode: boolean;
+}> = ({ initialValues = {}, isEditMode = true }) => {
   const dispatch = useDispatch();
-  const complianceCodes = useSelector(getComplianceCodes);
+  const complianceCodes = useSelector(getActiveComplianceCodesList);
   const formValues = useSelector(getFormValues(FORM.ADD_COMPLIANCE_CODE)) ?? {};
   const { section, sub_section, paragraph, sub_paragraph } = formValues;
-
   const uniqueArticleNumbers = complianceCodes.map((code) => {
     const articleNumber = formatComplianceCodeArticleNumber(code);
     return stripParentheses(articleNumber);
@@ -50,15 +56,28 @@ const ComplianceCodeViewEditForm: FC<any> = ({ initialValues = {}, isEditMode = 
   };
 
   useEffect(() => {
-    generateArticleNumber();
+    if (section) {
+      generateArticleNumber();
+    }
   }, [section, sub_section, paragraph, sub_paragraph]);
+
+  const handleSubmit = (values: IComplianceArticle) => {
+    const cim_or_cpo =
+      values.cim_or_cpo !== REPORT_REGULATORY_AUTHORITY_CODES.NONE ? values.cim_or_cpo : null;
+    const payload = { ...values, article_act_code: "HSRCM", cim_or_cpo };
+    dispatch(createComplianceCode(payload)).then((resp) => {
+      if (resp.payload) {
+        dispatch(closeModal());
+      }
+    });
+  };
 
   return (
     <div>
       <FormWrapper
         name={FORM.ADD_COMPLIANCE_CODE}
         initialValues={initialValues}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={handleSubmit}
         isEditMode={isEditMode}
         isModal={true}
       >
@@ -66,7 +85,7 @@ const ComplianceCodeViewEditForm: FC<any> = ({ initialValues = {}, isEditMode = 
           <Col span={24}>
             <Typography.Text strong>HSRC Details</Typography.Text>
           </Col>
-          <Col md={6} sm={12}>
+          <Col md={5} sm={10}>
             <Field
               label="Section"
               required
@@ -91,7 +110,7 @@ const ComplianceCodeViewEditForm: FC<any> = ({ initialValues = {}, isEditMode = 
               component={RenderField}
             />
           </Col>
-          <Col md={6} sm={12}>
+          <Col md={7} sm={14}>
             <Field
               label="Subparagraph"
               validate={[maxLength(20)]}

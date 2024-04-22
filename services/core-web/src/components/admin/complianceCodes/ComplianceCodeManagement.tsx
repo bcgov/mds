@@ -5,7 +5,6 @@ import SearchOutlined from "@ant-design/icons/SearchOutlined";
 import PlusOutlined from "@ant-design/icons/PlusOutlined";
 import { Button, Table, Row, Input, Typography } from "antd";
 
-import { getComplianceCodes } from "@mds/common/redux/selectors/staticContentSelectors";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import {
   renderActionsColumn,
@@ -18,49 +17,41 @@ import { openModal } from "@mds/common/redux/actions/modalActions";
 import * as FORM from "@/constants/forms";
 import ComplianceCodeViewEditForm from "./ComplianceCodeViewEditForm";
 import RenderDate from "@mds/common/components/forms/RenderDate";
-import { REPORT_REGULATORY_AUTHORITY_CODES } from "@mds/common/constants/enums";
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
-import { IComplianceArticle } from "@mds/common/interfaces/";
-import {
-  dateSorter,
-  formatComplianceCodeArticleNumber,
-  sortComplianceCodesByArticleNumber,
-} from "@mds/common/redux/utils/helpers";
+import { IComplianceArticle, ItemMap } from "@mds/common/interfaces/";
+import { sortComplianceCodesByArticleNumber } from "@mds/common/redux/utils/helpers";
 import PermitConditionsNavigation from "../permitConditions/PermitConditionsNavigation";
+import {
+  fetchComplianceCodes,
+  getFormattedComplianceCodes,
+  updateComplianceCodes,
+} from "./complianceCodesSlice";
 
 const ComplianceCodeManagement: FC = () => {
   const dispatch = useDispatch();
-  const complianceCodes: IComplianceArticle[] = useSelector(getComplianceCodes);
   const [isEditMode, setIsEditMode] = useState(false);
   const formPrefix = "code";
   const [editedIds, setEditedIds] = useState([]);
   const [searchText, setSearchText] = useState("");
-  const [filteredRecordsList, setFilteredRecordsList] = useState([]);
-
-  const formatCode = (code) => {
-    const cim_or_cpo = code.cim_or_cpo ?? REPORT_REGULATORY_AUTHORITY_CODES.NONE;
-    const articleNumber = formatComplianceCodeArticleNumber(code);
-    return { ...code, articleNumber, cim_or_cpo };
-  };
-
-  // array for the table rows
-  const formattedComplianceCodesList = complianceCodes
-    ?.map((code) => formatCode(code))
-    .sort(sortComplianceCodesByArticleNumber);
+  const complianceCodes: ItemMap<IComplianceArticle> = useSelector(getFormattedComplianceCodes);
+  const [filteredRecordsList, setFilteredRecordsList] = useState<IComplianceArticle[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    setFilteredRecordsList(formattedComplianceCodesList);
+    if (!complianceCodes) {
+      setIsLoading(true);
+      dispatch(fetchComplianceCodes({})).then(() => {
+        setIsLoading(false);
+      });
+    }
   }, []);
 
-  // item map for the form
-  const formattedComplianceCodesMap = formattedComplianceCodesList?.reduce(
-    (acc, code) => ({
-      ...acc,
-      // form doesn't like fields to be named with numbers, prepend "code"
-      [`${formPrefix}${code.compliance_article_id}`]: code,
-    }),
-    {}
-  );
+  useEffect(() => {
+    if (complianceCodes) {
+      const newList = Object.values(complianceCodes).sort(sortComplianceCodesByArticleNumber);
+      setFilteredRecordsList(newList);
+    }
+  }, [complianceCodes]);
 
   const resetRow = (record) => {
     const fieldName = `${formPrefix}${record.compliance_article_id}`;
@@ -73,8 +64,8 @@ const ComplianceCodeManagement: FC = () => {
 
   const handleChange = (_val, newVal, _prevVal, fieldName) => {
     const field = fieldName.split(".");
-    const initialCodeValue = formattedComplianceCodesMap[field[0]] ?? {};
-    const id = initialCodeValue.compliance_article_id;
+    const initialCodeValue = complianceCodes[field[0]];
+    const id = initialCodeValue?.compliance_article_id;
     const initialValue = initialCodeValue[field[1]];
     const changedFromInitial = newVal !== initialValue;
 
@@ -96,7 +87,7 @@ const ComplianceCodeManagement: FC = () => {
     );
   };
 
-  const openViewModal = (record) => {
+  const openViewModal = (record: IComplianceArticle) => {
     dispatch(
       openModal({
         props: {
@@ -115,25 +106,35 @@ const ComplianceCodeManagement: FC = () => {
     setEditedIds([]);
   };
 
-  const handleSubmit = (values) => {
+  const handleSubmit = (values: IComplianceArticle[]) => {
     const editedValues = editedIds.map((id) => {
       return values[`${formPrefix}${id}`];
     });
     // array of compliance articles that have been changed
-    console.log(editedValues);
+    dispatch(updateComplianceCodes(editedValues)).then((resp) => {
+      if (resp.payload) {
+        setIsEditMode(false);
+        setEditedIds([]);
+      }
+      console.log(resp);
+    });
   };
 
   const handleSearch = (confirm, field, searchInputText) => {
     if (searchInputText && searchInputText.length) {
-      const filteredRecords = formattedComplianceCodesList.filter((code) => {
-        return code[field]
-          .toString()
-          .toLowerCase()
-          .startsWith((searchInputText as string).toLowerCase());
-      });
+      const filteredRecords = Object.values(complianceCodes)
+        .filter((code) => {
+          return code[field]
+            .toString()
+            .toLowerCase()
+            .startsWith((searchInputText as string).toLowerCase());
+        })
+        .sort(sortComplianceCodesByArticleNumber);
       setFilteredRecordsList(filteredRecords);
     } else {
-      setFilteredRecordsList(formattedComplianceCodesList);
+      setFilteredRecordsList(
+        Object.values(complianceCodes).sort(sortComplianceCodesByArticleNumber)
+      );
     }
 
     confirm();
@@ -147,18 +148,30 @@ const ComplianceCodeManagement: FC = () => {
     },
   ];
 
-  const editModeActions = [
-    {
-      key: "reset",
-      label: "Reset",
-      clickFunction: (event, record) => resetRow(record),
+  const actionMenu = renderActionsColumn({
+    actions: viewModeActions,
+  });
+
+  const editModeResetColumn = {
+    key: "reset-action",
+    render: (record) => {
+      const isEditingRecord = editedIds.includes(record.compliance_article_id);
+      return (
+        <div>
+          <Button disabled={!isEditingRecord} onClick={() => resetRow(record)}>
+            Reset
+          </Button>
+        </div>
+      );
     },
-  ];
+  };
 
   const columns = [
-    renderTextColumn("compliance_article_id", "ID", true),
     {
-      ...renderTextColumn("articleNumber", "Section", true, null, 150),
+      key: "articleNumber",
+      dataIndex: "articleNumber",
+      title: "Section",
+      width: 150,
       filterIcon: () => <SearchOutlined />,
       filterDropdown: ({ confirm }) => {
         return (
@@ -192,14 +205,13 @@ const ComplianceCodeManagement: FC = () => {
         );
       },
     },
-    renderTextColumn("description", "Description", true),
-    { ...renderDateColumn("effective_date", "Date Active", true), width: 150 },
+    renderTextColumn("description", "Description"),
+    { ...renderDateColumn("effective_date", "Date Active"), width: 150 },
     {
       title: "Date Expire",
       dataIndex: "expiry_date",
       key: "expiry-date",
       width: 170,
-      sorter: dateSorter("expiry_date"),
       render: (text, record) => {
         return (
           <div
@@ -221,10 +233,9 @@ const ComplianceCodeManagement: FC = () => {
         );
       },
     },
-    renderActionsColumn({
-      actions: isEditMode ? editModeActions : viewModeActions,
-    }),
-  ];
+    !isEditMode && actionMenu,
+    isEditMode && editModeResetColumn,
+  ].filter(Boolean);
 
   return (
     <div>
@@ -254,9 +265,10 @@ const ComplianceCodeManagement: FC = () => {
         <FormWrapper
           name={FORM.COMPLIANCE_CODE_BULK_EDIT}
           onSubmit={handleSubmit}
-          initialValues={formattedComplianceCodesMap}
+          initialValues={complianceCodes}
         >
           <CoreTable
+            loading={isLoading}
             dataSource={filteredRecordsList}
             columns={columns}
             rowKey="compliance_article_id"
@@ -274,7 +286,11 @@ const ComplianceCodeManagement: FC = () => {
                       {isEditMode ? (
                         <>
                           <RenderCancelButton cancelFunction={handleCancel} />
-                          <Button type="primary" htmlType="submit">
+                          <Button
+                            type="primary"
+                            htmlType="submit"
+                            disabled={editedIds.length === 0}
+                          >
                             Save Changes
                           </Button>
                         </>

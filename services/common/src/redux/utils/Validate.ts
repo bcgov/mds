@@ -116,7 +116,7 @@ export const number = (value) =>
   value && Number.isNaN(Number(value)) ? "Input must be a number" : undefined;
 
 export const digitCharactersOnly = (value) => {
-  return value && /^\d+$/.test(value) ? undefined : "Input must contain only digits";
+  return value && !/^\d+$/.test(value) ? "Input must contain only digits" : undefined;
 };
 
 export const positiveNumber = (value) =>

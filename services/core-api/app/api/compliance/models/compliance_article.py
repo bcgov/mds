@@ -116,7 +116,7 @@ class ComplianceArticle(AuditMixin, Base):
                                  description=description,
                                  long_description=long_description,
                                  effective_date=effective_date,
-                                 expiry_date=expiry_date,
+                                 expiry_date=expiry_date if expiry_date else '9999-12-31',
                                  help_reference_link=help_reference_link,
                                  cim_or_cpo=cim_or_cpo)
         if add_to_session:
