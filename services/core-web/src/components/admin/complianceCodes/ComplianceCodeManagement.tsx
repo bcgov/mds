@@ -2,7 +2,8 @@ import React, { FC, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Field, reset } from "redux-form";
 import SearchOutlined from "@ant-design/icons/SearchOutlined";
-import { Button, Table, Row, Input } from "antd";
+import PlusOutlined from "@ant-design/icons/PlusOutlined";
+import { Button, Table, Row, Input, Typography } from "antd";
 
 import { getComplianceCodes } from "@mds/common/redux/selectors/staticContentSelectors";
 import CoreTable from "@mds/common/components/common/CoreTable";
@@ -23,6 +24,7 @@ import {
   formatComplianceCodeArticleNumber,
   sortComplianceCodesByArticleNumber,
 } from "@mds/common/redux/utils/helpers";
+import PermitConditionsNavigation from "../permitConditions/PermitConditionsNavigation";
 
 const ComplianceCodeManagement: FC = () => {
   const dispatch = useDispatch();
@@ -103,7 +105,7 @@ const ComplianceCodeManagement: FC = () => {
         return code[field]
           .toString()
           .toLowerCase()
-          .includes((searchInputText as string).toLowerCase());
+          .startsWith((searchInputText as string).toLowerCase());
       });
       setFilteredRecordsList(filteredRecords);
     } else {
@@ -116,7 +118,7 @@ const ComplianceCodeManagement: FC = () => {
   const columns = [
     renderTextColumn("compliance_article_id", "ID", true),
     {
-      ...renderTextColumn("articleNumber", "Article #", true, null, 150),
+      ...renderTextColumn("articleNumber", "Section", true, null, 150),
       filterIcon: () => <SearchOutlined />,
       filterDropdown: ({ confirm }) => {
         return (
@@ -151,15 +153,17 @@ const ComplianceCodeManagement: FC = () => {
       },
     },
     renderTextColumn("description", "Description", true),
-    renderDateColumn("effective_date", "Effective Date", true),
+    renderDateColumn("effective_date", "Date Active", true),
     {
-      title: "Expiry date!",
+      title: "Date Expire",
       dataIndex: "expiry_date",
       key: "expiry-date",
       render: (text, record) => {
         return (
           <div
-            className={editedIds.includes(record.compliance_article_id) && "modified-table-cell"}
+            className={
+              editedIds.includes(record.compliance_article_id) ? "modified-table-cell" : ""
+            }
           >
             {
               <Field
@@ -179,50 +183,67 @@ const ComplianceCodeManagement: FC = () => {
 
   return (
     <div>
-      <Button onClick={() => openAddModal()} disabled={isEditMode} type="primary">
-        Add Compliance Code
-      </Button>
-
-      <FormWrapper
-        name={FORM.COMPLIANCE_CODE_BULK_EDIT}
-        onSubmit={handleSubmit}
-        initialValues={formattedComplianceCodesMap}
-      >
-        <CoreTable
-          dataSource={filteredRecordsList}
-          columns={columns}
-          rowKey="compliance_article_id"
-          pagination={{
-            total: filteredRecordsList.length,
-            defaultPageSize: 50,
-            position: ["bottomCenter"],
-            disabled: isEditMode,
-          }}
-          summary={() => (
-            <Table.Summary fixed={"bottom"}>
-              <Table.Summary.Row>
-                <Table.Summary.Cell index={0} colSpan={columns.length}>
-                  <Row justify="end">
-                    {isEditMode ? (
-                      <>
-                        <RenderCancelButton cancelFunction={handleCancel} />
-                        <Button type="primary" htmlType="submit">
-                          Save Changes
+      <div className="landing-page__header">
+        <h1>Permit Condition Management</h1>
+      </div>
+      <PermitConditionsNavigation activeButton="hsrc-management" openSubMenuKey={null} />
+      <div className="tab__content">
+        <h2>Health and Safety Reclamation Code</h2>
+        <Typography.Text>
+          Manage HSRC in the system that are associated with <b>Incidents, Variances,</b> and{" "}
+          <b>Reports</b>. View the code to see long description and the regulatory authority.
+        </Typography.Text>
+        <Row justify="end">
+          <Button
+            onClick={() => openAddModal()}
+            disabled={isEditMode}
+            type="primary"
+            icon={<PlusOutlined />}
+          >
+            Add Code
+          </Button>
+        </Row>
+        <FormWrapper
+          name={FORM.COMPLIANCE_CODE_BULK_EDIT}
+          onSubmit={handleSubmit}
+          initialValues={formattedComplianceCodesMap}
+        >
+          <CoreTable
+            dataSource={filteredRecordsList}
+            columns={columns}
+            rowKey="compliance_article_id"
+            pagination={{
+              total: filteredRecordsList.length,
+              defaultPageSize: 50,
+              position: ["bottomCenter"],
+              disabled: isEditMode,
+            }}
+            summary={() => (
+              <Table.Summary fixed={"bottom"}>
+                <Table.Summary.Row>
+                  <Table.Summary.Cell index={0} colSpan={columns.length}>
+                    <Row justify="end">
+                      {isEditMode ? (
+                        <>
+                          <RenderCancelButton cancelFunction={handleCancel} />
+                          <Button type="primary" htmlType="submit">
+                            Save Changes
+                          </Button>
+                        </>
+                      ) : (
+                        <Button onClick={() => setIsEditMode(true)} type="primary">
+                          Edit Expiry Dates
                         </Button>
-                      </>
-                    ) : (
-                      <Button onClick={() => setIsEditMode(true)} type="primary">
-                        Edit Expiry Dates
-                      </Button>
-                    )}
-                  </Row>
-                </Table.Summary.Cell>
-              </Table.Summary.Row>
-            </Table.Summary>
-          )}
-          sticky
-        />
-      </FormWrapper>
+                      )}
+                    </Row>
+                  </Table.Summary.Cell>
+                </Table.Summary.Row>
+              </Table.Summary>
+            )}
+            sticky
+          />
+        </FormWrapper>
+      </div>
     </div>
   );
 };
