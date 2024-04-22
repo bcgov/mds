@@ -13,8 +13,8 @@ exports[`UpdateInformationRequirementsTableForm renders properly 1`] = `
   >
     <Alert
       description={
-        <Row>
-          <Col
+        <ForwardRef>
+          <ForwardRef
             md={18}
             xs={24}
           >
@@ -29,15 +29,15 @@ exports[`UpdateInformationRequirementsTableForm renders properly 1`] = `
             <b>
               Please note that updating this status will notify the project proponent.
             </b>
-          </Col>
-          <Col
+          </ForwardRef>
+          <ForwardRef
             md={6}
             xs={24}
           >
             <FormItem
               hasFeedback={false}
             >
-              <Field
+              <ForwardRef
                 component={[Function]}
                 data={
                   Array [
@@ -78,8 +78,8 @@ exports[`UpdateInformationRequirementsTableForm renders properly 1`] = `
                 }
               />
             </FormItem>
-          </Col>
-        </Row>
+          </ForwardRef>
+        </ForwardRef>
       }
       message="Submitted"
       showIcon={true}

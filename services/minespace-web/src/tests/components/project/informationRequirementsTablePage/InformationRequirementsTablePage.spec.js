@@ -2,29 +2,25 @@ import React from "react";
 import { shallow } from "enzyme";
 import { InformationRequirementsTablePage } from "@/components/pages/Project/InformationRequirementsTablePage";
 import * as MOCK from "@/tests/mocks/dataMocks";
+import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
+import { PROJECTS } from "@mds/common/constants/reducerTypes";
 
-const props = {};
-const dispatchProps = {};
-
-const setupProps = () => {
-  props.match = { params: { projectGuid: "123", tab: "overview" } };
-  props.project = MOCK.PROJECT;
+const initialState = {
+  [PROJECTS]: {
+    project: MOCK.PROJECT,
+    requirements: MOCK.INFORMATION_REQUIREMENTS_TABLE.requirements,
+    informationRequirementsTableDocumentTypesHash:
+      MOCK.INFORMATION_REQUIREMENTS_TABLE_STATUS_CODES_HASH,
+  },
 };
-
-const setupDispatchProps = () => {
-  dispatchProps.clearInformationRequirementsTable = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchProjectById = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchRequirements = jest.fn(() => Promise.resolve());
-};
-
-beforeEach(() => {
-  setupProps();
-  setupDispatchProps();
-});
 
 describe("InformationRequirementsTablePage", () => {
   it("renders properly", () => {
-    const component = shallow(<InformationRequirementsTablePage {...props} {...dispatchProps} />);
+    const component = shallow(
+      <ReduxWrapper initialState={initialState}>
+        <InformationRequirementsTablePage />
+      </ReduxWrapper>
+    );
     expect(component).toMatchSnapshot();
   });
 });

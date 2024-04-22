@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { Field, change, formValueSelector, reduxForm } from "redux-form";
+import { change, Field, formValueSelector, reduxForm } from "redux-form";
 import { bindActionCreators, compose } from "redux";
 import PropTypes from "prop-types";
-import { Alert, Typography, Row, Col } from "antd";
+import { Alert, Col, Row, Typography } from "antd";
 import { Form } from "@ant-design/compatible";
 import { remove } from "lodash";
 import { ENVIRONMENT } from "@mds/common";
@@ -30,15 +30,15 @@ import { documentNameColumn } from "@/components/common/DocumentColumns";
 import { MineDocument } from "@mds/common/models/documents/document";
 
 const propTypes = {
-  change: PropTypes.func.isRequired,
-  createInformationRequirementsTable: PropTypes.func.isRequired,
-  updateInformationRequirementsTableByFile: PropTypes.func.isRequired,
+  change: PropTypes.func,
+  createInformationRequirementsTable: PropTypes.func,
+  updateInformationRequirementsTableByFile: PropTypes.func,
   importIsSuccessful: PropTypes.func.isRequired,
   downloadIRTTemplate: PropTypes.func.isRequired,
-  project: customPropTypes.project.isRequired,
-  documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+  project: customPropTypes.project,
+  documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
   informationRequirementsTableDocumentTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  projectGuid: PropTypes.string.isRequired,
+  projectGuid: PropTypes.string,
 };
 
 export class IRTFileImport extends Component {
