@@ -30,7 +30,7 @@ const PermitConditionsNavigation: FC<AdminNavigationProps> = (props) => {
     icon: <DownOutlined />,
     children: [
       {
-        key: "compliance-codes",
+        key: "submenu-compliance-codes",
         label: (
           <Link to={routes.ADMIN_HSRC_COMPLIANCE_CODE_MANAGEMENT.route}>
             Manage Compliance Codes

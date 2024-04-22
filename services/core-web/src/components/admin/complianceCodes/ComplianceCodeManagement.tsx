@@ -1,6 +1,6 @@
 import React, { FC, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Field, reset } from "redux-form";
+import { Field, reset, change } from "redux-form";
 import SearchOutlined from "@ant-design/icons/SearchOutlined";
 import PlusOutlined from "@ant-design/icons/PlusOutlined";
 import { Button, Table, Row, Input, Typography } from "antd";
@@ -8,6 +8,7 @@ import { Button, Table, Row, Input, Typography } from "antd";
 import { getComplianceCodes } from "@mds/common/redux/selectors/staticContentSelectors";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import {
+  renderActionsColumn,
   renderDateColumn,
   renderTextColumn,
 } from "@mds/common/components/common/CoreTableCommonColumns";
@@ -21,6 +22,7 @@ import { REPORT_REGULATORY_AUTHORITY_CODES } from "@mds/common/constants/enums";
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 import { IComplianceArticle } from "@mds/common/interfaces/";
 import {
+  dateSorter,
   formatComplianceCodeArticleNumber,
   sortComplianceCodesByArticleNumber,
 } from "@mds/common/redux/utils/helpers";
@@ -60,6 +62,15 @@ const ComplianceCodeManagement: FC = () => {
     {}
   );
 
+  const resetRow = (record) => {
+    const fieldName = `${formPrefix}${record.compliance_article_id}`;
+    if (editedIds.includes(record.compliance_article_id)) {
+      // the record retains the original values
+      dispatch(change(FORM.COMPLIANCE_CODE_BULK_EDIT, fieldName, record));
+      setEditedIds(editedIds.filter((id) => id !== record.compliance_article_id));
+    }
+  };
+
   const handleChange = (_val, newVal, _prevVal, fieldName) => {
     const field = fieldName.split(".");
     const initialCodeValue = formattedComplianceCodesMap[field[0]] ?? {};
@@ -79,6 +90,19 @@ const ComplianceCodeManagement: FC = () => {
       openModal({
         props: {
           title: "Add Health and Safety Reclamation Code",
+        },
+        content: ComplianceCodeViewEditForm,
+      })
+    );
+  };
+
+  const openViewModal = (record) => {
+    dispatch(
+      openModal({
+        props: {
+          title: "View Health and Safety Reclamation Code",
+          isEditMode: false,
+          initialValues: record,
         },
         content: ComplianceCodeViewEditForm,
       })
@@ -114,6 +138,22 @@ const ComplianceCodeManagement: FC = () => {
 
     confirm();
   };
+
+  const viewModeActions = [
+    {
+      key: "view",
+      label: "View",
+      clickFunction: (event, record) => openViewModal(record),
+    },
+  ];
+
+  const editModeActions = [
+    {
+      key: "reset",
+      label: "Reset",
+      clickFunction: (event, record) => resetRow(record),
+    },
+  ];
 
   const columns = [
     renderTextColumn("compliance_article_id", "ID", true),
@@ -153,11 +193,13 @@ const ComplianceCodeManagement: FC = () => {
       },
     },
     renderTextColumn("description", "Description", true),
-    renderDateColumn("effective_date", "Date Active", true),
+    { ...renderDateColumn("effective_date", "Date Active", true), width: 150 },
     {
       title: "Date Expire",
       dataIndex: "expiry_date",
       key: "expiry-date",
+      width: 170,
+      sorter: dateSorter("expiry_date"),
       render: (text, record) => {
         return (
           <div
@@ -179,6 +221,9 @@ const ComplianceCodeManagement: FC = () => {
         );
       },
     },
+    renderActionsColumn({
+      actions: isEditMode ? editModeActions : viewModeActions,
+    }),
   ];
 
   return (
@@ -186,7 +231,10 @@ const ComplianceCodeManagement: FC = () => {
       <div className="landing-page__header">
         <h1>Permit Condition Management</h1>
       </div>
-      <PermitConditionsNavigation activeButton="hsrc-management" openSubMenuKey={null} />
+      <PermitConditionsNavigation
+        activeButton="hsrc-management"
+        openSubMenuKey={["submenu-compliance-codes"]}
+      />
       <div className="tab__content">
         <h2>Health and Safety Reclamation Code</h2>
         <Typography.Text>

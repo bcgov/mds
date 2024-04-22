@@ -1,7 +1,7 @@
 import React, { FC, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Field, getFormValues, reset, change, touch } from "redux-form";
-import { Row, Col, Button } from "antd";
+import { Field, getFormValues, change, touch } from "redux-form";
+import { Row, Col, Button, Typography } from "antd";
 import * as FORM from "@/constants/forms";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import { REPORT_REGULATORY_AUTHORITY_CODES, REPORT_REGULATORY_AUTHORITY_ENUM } from "@mds/common";
@@ -35,11 +35,6 @@ const ComplianceCodeViewEditForm: FC<any> = ({ initialValues = {}, isEditMode = 
     return stripParentheses(articleNumber);
   });
 
-  const handleCancel = () => {
-    dispatch(reset(FORM.ADD_COMPLIANCE_CODE));
-    dispatch(closeModal());
-  };
-
   const generateArticleNumber = () => {
     const articleNumber = [section, sub_section, paragraph, sub_paragraph]
       .filter(Boolean)
@@ -65,8 +60,12 @@ const ComplianceCodeViewEditForm: FC<any> = ({ initialValues = {}, isEditMode = 
         initialValues={initialValues}
         onSubmit={(values) => console.log(values)}
         isEditMode={isEditMode}
+        isModal={true}
       >
         <Row gutter={[16, 16]}>
+          <Col span={24}>
+            <Typography.Text strong>HSRC Details</Typography.Text>
+          </Col>
           <Col md={6} sm={12}>
             <Field
               label="Section"
@@ -79,7 +78,6 @@ const ComplianceCodeViewEditForm: FC<any> = ({ initialValues = {}, isEditMode = 
           <Col md={6} sm={12}>
             <Field
               label="Subsection"
-              required
               validate={[digitCharactersOnly, maxLength(6)]}
               name="sub_section"
               component={RenderField}
@@ -88,7 +86,6 @@ const ComplianceCodeViewEditForm: FC<any> = ({ initialValues = {}, isEditMode = 
           <Col md={6} sm={12}>
             <Field
               label="Paragraph"
-              required
               validate={[digitCharactersOnly, maxLength(4)]}
               name="paragraph"
               component={RenderField}
@@ -97,7 +94,6 @@ const ComplianceCodeViewEditForm: FC<any> = ({ initialValues = {}, isEditMode = 
           <Col md={6} sm={12}>
             <Field
               label="Subparagraph"
-              required
               validate={[maxLength(20)]}
               name="sub_paragraph"
               component={RenderField}
@@ -157,6 +153,9 @@ const ComplianceCodeViewEditForm: FC<any> = ({ initialValues = {}, isEditMode = 
             />
           </Col>
           <Col span={24}>
+            <Typography.Text strong>Regulatory Authority</Typography.Text>
+          </Col>
+          <Col span={24}>
             <Field
               name="cim_or_cpo"
               label="Who is the report for?"
@@ -194,10 +193,12 @@ const ComplianceCodeViewEditForm: FC<any> = ({ initialValues = {}, isEditMode = 
           </Col>
         </Row>
         <Row gutter={[16, 16]} justify="end">
-          <RenderCancelButton cancelFunction={handleCancel} />
-          <Button htmlType="submit" type="primary">
-            Save Code
-          </Button>
+          <RenderCancelButton />
+          {isEditMode && (
+            <Button htmlType="submit" type="primary">
+              Save Code
+            </Button>
+          )}
         </Row>
       </FormWrapper>
     </div>
