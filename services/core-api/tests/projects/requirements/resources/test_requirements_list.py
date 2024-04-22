@@ -18,7 +18,8 @@ def test_post_requirement(test_client, db_session, auth_headers):
         "requirement": {
             "description": "New Requirement",
             "parent_requirement_id": 1,
-            "display_order": 6
+            "display_order": 6,
+            "version": 1
         }
     }
 
