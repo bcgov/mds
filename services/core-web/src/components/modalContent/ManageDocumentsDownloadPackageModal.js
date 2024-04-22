@@ -19,29 +19,35 @@ export const ManageDocumentsDownloadPackageModal = (props) => {
         <h4>All NoW Documents</h4>
         <NOWSubmissionDocuments
           now_application_guid={props.noticeOfWorkGuid}
-          documents={props.nowDocuments.map((nd) => {
-            let document = {};
-            // NoW Imported Submission documents have a different structure
-            if (!nd.mine_document) {
-              document = {
-                filename: nd.filename,
-                mine_document_guid: nd.mine_document_guid,
-                document_manager_guid: nd.document_manager_guid,
-                category: nd.documenttype,
-                description: nd.description,
-                is_imported_submission: nd.is_imported_submission,
-                upload_date: nd.update_timestamp,
-              };
-            } else {
-              document = {
-                filename: nd.mine_document.document_name,
-                mine_document_guid: nd.mine_document.mine_document_guid,
-                document_manager_guid: nd.mine_document.document_manager_guid,
-                ...nd,
-              };
-            }
-            return document;
-          })}
+          documents={props.nowDocuments
+            .filter(
+              (nd) =>
+                (!nd.mine_document && nd.filename) ||
+                (nd.mine_document && nd.mine_document.document_name)
+            )
+            .map((nd) => {
+              let document = {};
+              // NoW Imported Submission documents have a different structure
+              if (!nd.mine_document) {
+                document = {
+                  filename: nd.filename,
+                  mine_document_guid: nd.mine_document_guid,
+                  document_manager_guid: nd.document_manager_guid,
+                  category: nd.documenttype,
+                  description: nd.description,
+                  is_imported_submission: nd.is_imported_submission,
+                  upload_date: nd.update_timestamp,
+                };
+              } else {
+                document = {
+                  filename: nd.mine_document.document_name,
+                  mine_document_guid: nd.mine_document.mine_document_guid,
+                  document_manager_guid: nd.mine_document.document_manager_guid,
+                  ...nd,
+                };
+              }
+              return document;
+            })}
           selectedRows={{
             selectedSubmissionRows: selectedDocumentRows,
             setSelectedSubmissionRows: setSelectedDocumentRows,

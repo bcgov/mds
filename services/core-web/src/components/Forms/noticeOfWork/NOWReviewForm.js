@@ -216,10 +216,12 @@ export class NOWReviewForm extends Component {
               <UploadedDocumentsTable
                 showCategory
                 documentTypeOptionsHash={this.props.documentTypeOptionsHash}
-                files={this.state.existingDocuments.map((doc) => ({
-                  now_application_document_type_code: doc.now_application_document_type_code,
-                  ...doc.mine_document,
-                }))}
+                files={this.state.existingDocuments
+                  .filter((doc) => doc.mine_document?.mine_document_guid)
+                  .map((doc) => ({
+                    now_application_document_type_code: doc.now_application_document_type_code,
+                    ...doc.mine_document,
+                  }))}
                 showRemove
                 removeFileHandler={(doc_guid) => {
                   this.props.handleDocumentDelete(doc_guid);
