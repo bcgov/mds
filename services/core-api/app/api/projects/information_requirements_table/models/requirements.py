@@ -19,6 +19,7 @@ class Requirements(SoftDeleteMixin, AuditMixin, Base):
     parent_requirement_id = db.Column(db.Integer, db.ForeignKey('requirements.requirement_id'))
     display_order = db.Column(db.Integer, nullable=False)
     description = db.Column(db.String(300))
+    version = db.Column(db.Integer)
     all_sub_requirements = db.relationship(
         "Requirements",
         lazy='joined',
@@ -65,5 +66,13 @@ class Requirements(SoftDeleteMixin, AuditMixin, Base):
     def get_all(cls):
         try:
             return cls.query.order_by(cls.requirement_id).filter_by(deleted_ind=False).all()
+        except ValueError:
+            return None
+
+    @classmethod
+    def get_all_latest_version(cls):
+        max_version = db.session.query(db.func.max(cls.version)).scalar()
+        try:
+            return cls.query.order_by(cls.requirement_id).filter_by(deleted_ind=False, version=max_version).all()
         except ValueError:
             return None
