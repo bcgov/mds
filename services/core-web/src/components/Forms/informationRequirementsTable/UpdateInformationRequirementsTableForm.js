@@ -2,10 +2,9 @@ import React from "react";
 import { compose } from "redux";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Field, reduxForm, getFormValues } from "redux-form";
-import { Form } from "@ant-design/compatible";
+import { Field, getFormValues, reduxForm } from "redux-form";
 import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Alert } from "antd";
+import { Alert, Button, Col, Form, Row } from "antd";
 import { required } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import { getDropdownInformationRequirementsTableStatusCodes } from "@mds/common/redux/selectors/staticContentSelectors";
@@ -13,7 +12,7 @@ import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 
 const propTypes = {
-  dropdownInformationRequirementsTableStatusCodes: PropTypes.objectOf(PropTypes.string).isRequired,
+  dropdownInformationRequirementsTableStatusCodes: PropTypes.any.isRequired,
   displayValues: PropTypes.shape({
     statusCode: PropTypes.string,
     updateUser: PropTypes.string,
