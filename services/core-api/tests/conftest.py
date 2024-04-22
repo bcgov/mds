@@ -44,6 +44,7 @@ def auth_headers(app):
     incorrect_aud_auth_token = _jwt.create_jwt(FULL_AUTH_CLAIMS | {'aud': 'invalid_aud'}, TOKEN_HEADER)
     incorrect_iss_auth_token = _jwt.create_jwt(FULL_AUTH_CLAIMS | {'iss': 'invalid_iss'}, TOKEN_HEADER)
     expired_auth_token = _jwt.create_jwt(FULL_AUTH_CLAIMS | {'iat': 1675197826, 'exp': 1706647426}, TOKEN_HEADER)
+    core_edit_code = _jwt.create_jwt(CORE_EDIT_CODE, TOKEN_HEADER)
 
     return {
         'base_auth_header': {
@@ -78,6 +79,9 @@ def auth_headers(app):
         },
         'expired_auth_header': {
             'Authorization': 'Bearer ' + expired_auth_token
+        },
+        'core_edit_code': {
+            'Authorization': 'Bearer ' + core_edit_code
         }
     }
 
