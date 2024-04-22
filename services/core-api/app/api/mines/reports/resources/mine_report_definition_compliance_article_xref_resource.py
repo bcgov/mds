@@ -17,12 +17,14 @@ class MineReportDefinitionComplianceArticleCreateResource(Resource, UserMixin):
         type=int,
         store_missing=False,
         required=True,
+        location='json',
     )
     parser.add_argument(
         'compliance_article_id',
         type=int,
         store_missing=False,
         required=True,
+        location='json',
     )
 
     @api.doc(description='Create link Mine Definition Report and corresponding Compliance Article.')
@@ -49,12 +51,14 @@ class MineReportDefinitionComplianceArticleUpdateResource(Resource, UserMixin):
         type=int,
         store_missing=False,
         required=True,
+        location='json',
     )
     parser.add_argument(
         'compliance_article_id',
         type=int,
         store_missing=False,
         required=True,
+        location='json',
     )
 
     @api.doc(description='Update Link between a Definition Report corresponding Compliance Article.')
