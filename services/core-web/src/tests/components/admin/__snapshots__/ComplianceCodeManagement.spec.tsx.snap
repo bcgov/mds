@@ -368,7 +368,7 @@ exports[`PermitConditionsNavigation renders properly 1`] = `
                         </td>
                       </tr>
                       <tr
-                        class="ant-table-row ant-table-row-level-0 fade-in"
+                        class="ant-table-row ant-table-row-level-0 expired-row"
                         data-row-key="305"
                       >
                         <td
@@ -442,7 +442,7 @@ exports[`PermitConditionsNavigation renders properly 1`] = `
                         </td>
                       </tr>
                       <tr
-                        class="ant-table-row ant-table-row-level-0 fade-in"
+                        class="ant-table-row ant-table-row-level-0 expired-row"
                         data-row-key="306"
                       >
                         <td
