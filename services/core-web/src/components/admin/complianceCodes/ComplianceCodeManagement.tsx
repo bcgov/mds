@@ -116,7 +116,6 @@ const ComplianceCodeManagement: FC = () => {
         setIsEditMode(false);
         setEditedIds([]);
       }
-      console.log(resp);
     });
   };
 
