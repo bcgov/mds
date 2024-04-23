@@ -76,11 +76,18 @@ const ComplianceCodeManagement: FC = () => {
     }
   };
 
+  const handleModalSave = (values: IComplianceArticle) => {
+    dispatch(
+      change(FORM.COMPLIANCE_CODE_BULK_EDIT, `${formPrefix}${values.compliance_article_id}`, values)
+    );
+  };
+
   const openAddModal = () => {
     dispatch(
       openModal({
         props: {
           title: "Add Health and Safety Reclamation Code",
+          onSave: handleModalSave,
         },
         content: ComplianceCodeViewEditForm,
       })

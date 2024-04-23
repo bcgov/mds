@@ -27,6 +27,7 @@ import {
 } from "@mds/common/redux/utils/helpers";
 import {
   createComplianceCode,
+  formatCode,
   getActiveComplianceCodesList,
 } from "@mds/common/redux/slices/complianceCodesSlice";
 import { closeModal } from "@mds/common/redux/actions/modalActions";
@@ -34,7 +35,8 @@ import { closeModal } from "@mds/common/redux/actions/modalActions";
 const ComplianceCodeViewEditForm: FC<{
   initialValues: IComplianceArticle;
   isEditMode: boolean;
-}> = ({ initialValues = {}, isEditMode = true }) => {
+  onSave: (values: IComplianceArticle) => void | Promise<void>;
+}> = ({ initialValues = {}, isEditMode = true, onSave = null }) => {
   const dispatch = useDispatch();
   const complianceCodes = useSelector(getActiveComplianceCodesList);
   const formValues = useSelector(getFormValues(FORM.ADD_COMPLIANCE_CODE)) ?? {};
@@ -70,6 +72,9 @@ const ComplianceCodeViewEditForm: FC<{
     const payload = { ...values, article_act_code: "HSRCM", cim_or_cpo };
     dispatch(createComplianceCode(payload)).then((resp) => {
       if (resp.payload) {
+        if (onSave) {
+          onSave(formatCode(resp.payload));
+        }
         dispatch(closeModal());
       }
     });
