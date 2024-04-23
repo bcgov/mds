@@ -1,5 +1,5 @@
 from flask_restx import Resource, inputs, reqparse
-
+from datetime import datetime
 from app.api.compliance.models.compliance_article import ComplianceArticle
 from app.api.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
 from app.api.utils.resources_mixins import UserMixin
@@ -76,14 +76,14 @@ class ComplianceArticleCreateResource(Resource, UserMixin):
     )
     parser.add_argument(
         'effective_date',
-        type=lambda x: inputs.datetime_from_iso8601(x),
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
         store_missing=False,
         required=True,
         location='json',
     )
     parser.add_argument(
         'expiry_date',
-        type=lambda x: inputs.datetime_from_iso8601(x) if x else '9999-12-31',
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
         store_missing=False,
         required=False,
         location='json',

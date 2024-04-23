@@ -167,6 +167,7 @@ $pagination-widths: $pagination-width-1, $pagination-width-2, $pagination-width-
 // buttons within tables
 td.ant-table-cell {
   vertical-align: middle;
+
   button {
     margin-top: 0;
     margin-bottom: 0;
@@ -176,6 +177,11 @@ td.ant-table-cell {
 // This style is used in a common component, so it needs to be here, but doesn't require styles in core-web
 .diff-table {}
 
-.diff-table-row > td{
+.diff-table-row>td {
   vertical-align: top;
+}
+
+// Table wrapped in form
+.modified-table-cell {
+  font-weight: bold;
 }
