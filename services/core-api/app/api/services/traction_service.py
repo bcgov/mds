@@ -106,9 +106,9 @@ class TractionService():
         assert revoke_resp.status_code == 200, f"revoke_resp={revoke_resp.json()}"
         return revoke_resp.json()
 
-    def send_issue_credential_problem_report(self, credential_exchange_id):
+    def send_issue_credential_problem_report(self, credential_exchange_id, description:str):
         payload={
-            "description": "The issuer has a problem with the credential",
+            "description": description,
         }
         requests.post(
             traction_issue_credential_problem_report(cred_ex_id=credential_exchange_id), 
@@ -116,8 +116,6 @@ class TractionService():
             headers=self.get_headers()
         )
         
-    
-
 
     def fetch_credential_exchange(self,cred_exch_id):
         fetch_resp = requests.get(fetch_credential_exchanges+"/"+str(cred_exch_id),headers=self.get_headers())

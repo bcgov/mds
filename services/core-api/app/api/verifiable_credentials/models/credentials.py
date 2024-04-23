@@ -5,7 +5,7 @@ from app.extensions import db
 from typing import List
 from app.api.utils.models_mixins import AuditMixin, Base
 from app.api.mines.permits.permit.models.permit import Permit
-
+from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 class PartyVerifiableCredentialMinesActPermit(AuditMixin, Base):
     """Verificable Credential reference to Traction, a Multi-tenant Hyperledger Aries Wallet"""
     __tablename__ = "party_verifiable_credential_mines_act_permit"
@@ -44,8 +44,8 @@ class PartyVerifiableCredentialMinesActPermit(AuditMixin, Base):
     @classmethod
     def find_issued_by_permit_amendment_guid(cls, permit_amendment_guid) -> List["PartyVerifiableCredentialMinesActPermit"]:
         #https://github.com/hyperledger/aries-rfcs/blob/main/features/0036-issue-credential/README.md#states-for-issuer
-        return cls.query.filter_by(permit_amendment_guid=permit_amendment_guid).filter(PartyVerifiableCredentialMinesActPermit.cred_exch_state.in_(_active_credential_states)).all()
+        return cls.query.filter_by(permit_amendment_guid=permit_amendment_guid).filter(PartyVerifiableCredentialMinesActPermit.cred_exch_state.in_(cls._active_credential_states)).all()
     
     @classmethod
-    def find_by_permit_guid_and_mine_guid(cls, permit_guid,mine_guid) -> List["PartyVerifiableCredentialMinesActPermit"]:
-        return Permit.query.join(cls).filter(cls.permit_guid==permit_guid).filter_by(mine_guid=mine_guid).all()
+    def find_by_permit_guid_and_mine_guid(cls, permit_guid, mine_guid) -> List["PartyVerifiableCredentialMinesActPermit"]:
+        return cls.query.join(PermitAmendment).join(Permit).filter(PermitAmendment.permit_guid==Permit.permit_guid).filter(PermitAmendment.mine_guid==mine_guid).all()

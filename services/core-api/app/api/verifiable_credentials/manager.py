@@ -24,11 +24,12 @@ def revoke_all_credentials_for_permit(permit_guid: str, mine_guid:str, reason:st
     cred_exch = PartyVerifiableCredentialMinesActPermit.find_by_permit_guid_and_mine_guid(permit_guid, mine_guid)
     for ce in cred_exch:
         traction_svc = TractionService()
+        connection = PartyVerifiableCredentialConnection.find_active_by_party_guid(ce.party_guid)
         if ce.cred_exch_state in PartyVerifiableCredentialMinesActPermit._active_credential_states:
-            traction_svc.revoke_credential(ce.connection_id, ce.rev_reg_id, ce.cred_rev_id, reason)
+            traction_svc.revoke_credential(connection.connection_id, ce.rev_reg_id, ce.cred_rev_id, reason)
             
             attempts = 0
-            while not cred_exch.cred_rev_id:
+            while not ce.cred_rev_id:
                 sleep(1)
                 db.session.refresh(cred_exch)
                 attempts += 1
@@ -53,7 +54,7 @@ def offer_newest_amendment_to_current_permittee(permit_amendment_guid: str, cred
     if permit.current_permittee_digital_wallet_connection_state != "active":
         return "Permittee's wallet connection is not active, do not issue credential."
     
-    connection = PartyVerifiableCredentialConnection.find_by_party_guid(permit.current_permittee_guid)
+    connection = PartyVerifiableCredentialConnection.find_active_by_party_guid(permit.current_permittee_guid)
     
     attributes = VerifiableCredentialManager.collect_attributes_for_mines_act_permit_111(newest_amendment)
 
