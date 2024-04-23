@@ -25,7 +25,7 @@ import {
   fetchComplianceCodes,
   getFormattedComplianceCodes,
   updateComplianceCodes,
-} from "./complianceCodesSlice";
+} from "@mds/common/redux/slices/complianceCodesSlice";
 
 const ComplianceCodeManagement: FC = () => {
   const dispatch = useDispatch();

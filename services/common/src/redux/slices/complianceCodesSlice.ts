@@ -28,7 +28,7 @@ const rejectHandler = (action) => {
 };
 
 // creates 'articleNumber' property and fills in cim_or_cpo where blank
-const formatCode = (code: IComplianceArticle): IComplianceArticle => {
+export const formatCode = (code: IComplianceArticle): IComplianceArticle => {
   const cim_or_cpo = code.cim_or_cpo ?? REPORT_REGULATORY_AUTHORITY_CODES.NONE;
   const is_expired = !moment(code.expiry_date).isAfter();
   const articleNumber = formatComplianceCodeArticleNumber(code);

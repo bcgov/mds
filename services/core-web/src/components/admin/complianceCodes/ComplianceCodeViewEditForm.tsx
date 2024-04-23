@@ -25,7 +25,10 @@ import {
   formatComplianceCodeArticleNumber,
   stripParentheses,
 } from "@mds/common/redux/utils/helpers";
-import { createComplianceCode, getActiveComplianceCodesList } from "./complianceCodesSlice";
+import {
+  createComplianceCode,
+  getActiveComplianceCodesList,
+} from "@mds/common/redux/slices/complianceCodesSlice";
 import { closeModal } from "@mds/common/redux/actions/modalActions";
 
 const ComplianceCodeViewEditForm: FC<{
