@@ -1,9 +1,9 @@
-import React, { FC, useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Field, reset, change } from "redux-form";
+import React, { FC, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { change, Field, reset } from "redux-form";
 import SearchOutlined from "@ant-design/icons/SearchOutlined";
 import PlusOutlined from "@ant-design/icons/PlusOutlined";
-import { Button, Table, Row, Input, Typography } from "antd";
+import { Button, Input, Row, Table, Typography } from "antd";
 
 import CoreTable from "@mds/common/components/common/CoreTable";
 import {
@@ -26,6 +26,9 @@ import {
   getFormattedComplianceCodes,
   updateComplianceCodes,
 } from "@mds/common/redux/slices/complianceCodesSlice";
+import AuthorizationGuard from "@/HOC/AuthorizationGuard";
+import { EDIT_COMPLIANCE_CODES } from "@/constants/permissions";
+import { isAfter } from "date-fns";
 
 const ComplianceCodeManagement: FC = () => {
   const dispatch = useDispatch();
@@ -243,6 +246,13 @@ const ComplianceCodeManagement: FC = () => {
     isEditMode && editModeResetColumn,
   ].filter(Boolean);
 
+  const setExpiredRowBackground = (record: IComplianceArticle) => {
+    if (isAfter(new Date(), new Date(record.expiry_date))) {
+      return "expired-row";
+    }
+    return "";
+  };
+
   return (
     <div>
       <div className="landing-page__header">
@@ -277,6 +287,7 @@ const ComplianceCodeManagement: FC = () => {
             loading={isLoading}
             dataSource={filteredRecordsList}
             columns={columns}
+            rowClassName={setExpiredRowBackground}
             rowKey="compliance_article_id"
             pagination={{
               total: filteredRecordsList.length,
@@ -318,4 +329,4 @@ const ComplianceCodeManagement: FC = () => {
   );
 };
 
-export default ComplianceCodeManagement;
+export default AuthorizationGuard(EDIT_COMPLIANCE_CODES)(ComplianceCodeManagement);
