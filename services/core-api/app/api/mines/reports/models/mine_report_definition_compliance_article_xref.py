@@ -17,3 +17,31 @@ class MineReportDefinitionComplianceArticleXref(Base, AuditMixin):
 
     def __repr__(self):
         return '<mine_report_definition_compliance_article_xref %r>' % self.mine_report_definition_compliance_article_xref_guid
+
+    @classmethod
+    def find_by_mine_report_definition_compliance_article_xref_guid(cls,
+                                                                    mine_report_definition_compliance_article_xref_guid):
+        return cls.query.filter_by(
+            mine_report_definition_compliance_article_xref_guid=mine_report_definition_compliance_article_xref_guid).first()
+
+    @classmethod
+    def create(cls,
+               mine_report_definition_id,
+               compliance_article_id,
+               add_to_session=True):
+        mine_report_definition_compliance_article_xref = cls(
+            mine_report_definition_id=mine_report_definition_id,
+            compliance_article_id=compliance_article_id)
+        if add_to_session:
+            mine_report_definition_compliance_article_xref.save(commit=False)
+        return mine_report_definition_compliance_article_xref
+
+    def update(self,
+               mine_report_definition_id,
+               compliance_article_id,
+               add_to_session=True):
+        self.mine_report_definition_id = mine_report_definition_id
+        self.compliance_article_id = compliance_article_id
+        if add_to_session:
+            self.save(commit=False)
+        return self

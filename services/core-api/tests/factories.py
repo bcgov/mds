@@ -8,6 +8,8 @@ import factory.fuzzy
 from app.api.dams import Dam
 from app.api.dams.models.dam import DamType, OperatingStatus, ConsequenceClassification
 from app.api.mines.explosives_permit_amendment.models.explosives_permit_amendment import ExplosivesPermitAmendment
+from app.api.mines.reports.models.mine_report_definition_compliance_article_xref import \
+    MineReportDefinitionComplianceArticleXref
 from app.api.projects.project_link.models.project_link import ProjectLink
 from app.extensions import db
 from tests.status_code_gen import *
@@ -1489,3 +1491,17 @@ class ProjectLinkFactory(BaseFactory):
     project_link_guid = GUID
     project_guid = factory.SelfAttribute('project.project_guid')
     related_project_guid = factory.SelfAttribute('project.project_guid')
+
+
+class MineReportDefinitionComplianceArticleXrefFactory(BaseFactory):
+    class Meta:
+        model = MineReportDefinitionComplianceArticleXref
+
+    mine_report_definition_compliance_article_xref_guid = GUID
+
+    mine_report_definition_id = factory.LazyFunction(
+        RandomMineReportDefinition
+    )
+    compliance_article_id = factory.LazyFunction(
+        RandomComplianceArticleId
+    )

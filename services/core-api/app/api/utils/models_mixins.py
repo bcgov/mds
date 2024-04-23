@@ -81,6 +81,15 @@ class Base(db.Model):
     # but also allows them to override it if need be.
     _ModelSchema = SQLAlchemyAutoSchema
 
+    def save_all(self, objects, commit=True):
+        db.session.add_all(objects)
+        if commit:
+            try:
+                db.session.commit()
+            except SQLAlchemyError as e:
+                db.session.rollback()
+                raise e
+
     def save(self, commit=True):
         db.session.add(self)
         if commit:
