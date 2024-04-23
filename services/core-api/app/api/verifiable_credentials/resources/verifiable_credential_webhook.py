@@ -89,10 +89,11 @@ class VerifiableCredentialWebhookResource(Resource, UserMixin):
                 current_app.logger.info(f"Updated cred_exch_record cred_exch_id={cred_exch_id} with state={new_state}")
 
         elif topic == ISSUER_CREDENTIAL_REVOKED:
-            current_app.logger.info(f"CREDENTIAL SUCCESSFULLY REVOKED received={request.get_json()}")
-            cred_exch = PartyVerifiableCredentialMinesActPermit.find_by_cred_exch_id(webhook_body["cred_ex_id"], unsafe=True)
-            cred_exch.permit_amendment.permit.mines_act_permit_vc_locked = True
-            cred_exch.save()
+            if webhook_body["state"] != "revoked":
+                current_app.logger.info(f"CREDENTIAL SUCCESSFULLY REVOKED received={request.get_json()}")
+                cred_exch = PartyVerifiableCredentialMinesActPermit.find_by_cred_exch_id(webhook_body["cred_ex_id"], unsafe=True)
+                cred_exch.permit_amendment.permit.mines_act_permit_vc_locked = True
+                cred_exch.save()
   
         elif topic == PING:
             current_app.logger.info(f"TrustPing received={request.get_json()}")

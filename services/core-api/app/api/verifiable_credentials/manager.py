@@ -1,4 +1,4 @@
-# for midware/business level actions between requests and data access
+    # for midware/business level actions between requests and data access
 from time import sleep
 from typing import List
 from celery.utils.log import get_task_logger
@@ -6,47 +6,70 @@ from celery.utils.log import get_task_logger
 from app.tasks.celery import celery
 
 from app.extensions import db
+from app.config import Config
 from app.api.utils.feature_flag import Feature, is_feature_enabled
 
 from app.api.mines.mine.models.mine import Mine
+from app.api.parties.party.models.party import Party
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.verifiable_credentials.models.credentials import PartyVerifiableCredentialMinesActPermit
+from app.api.verifiable_credentials.models.connection import PartyVerifiableCredentialConnection
 from app.api.services.traction_service import TractionService
 
-logger = get_task_logger(__name__)
+task_logger = get_task_logger(__name__)
 
 @celery.task()
-def revoke_credential_and_offer_newest_amendment(credential_exchange_id: str, permit_guid: str):
-    """Revoke the existing credential and offer a new one with the newest amendment."""
-    cred_exch = PartyVerifiableCredentialMinesActPermit.find_by_cred_exch_id(credential_exchange_id)
-    assert cred_exch, "Credential exchange not found"
-    permit = Permit.query.unbound_unsafe().filter_by(permit_guid=permit_guid).first()
-    assert permit, "Permit not found"
-    permit._context_mine = cred_exch.permit_amendment.mine
+def revoke_all_credentials_for_permit(permit_guid: str, mine_guid:str, reason:str): 
+    cred_exch = PartyVerifiableCredentialMinesActPermit.find_by_permit_guid_and_mine_guid(permit_guid, mine_guid)
+    for ce in cred_exch:
+        traction_svc = TractionService()
+        if ce.cred_exch_state in PartyVerifiableCredentialMinesActPermit._active_credential_states:
+            traction_svc.revoke_credential(ce.connection_id, ce.rev_reg_id, ce.cred_rev_id, reason)
+            
+            attempts = 0
+            while not cred_exch.cred_rev_id:
+                sleep(1)
+                db.session.refresh(cred_exch)
+                attempts += 1
+                if attempts > 60:
+                    raise Exception("Never received webhook confirming revokation credential")
 
-    connection = cred_exch.party.active_digital_wallet_connection
+        if ce.cred_exch_state in PartyVerifiableCredentialMinesActPermit._pending_credential_states:
+            traction_svc.send_issue_credential_problem_report(ce.cred_exch_id, "problem_report")
+            #do we delete or mark these records locally to ensure they do not get completed later.
+
+    info_str = f"revoked all credentials for permit_guid={permit_guid} and mine_guid={mine_guid}"
+    task_logger.warning(info_str) # not sure where to find this. 
+    
+    return info_str
+
+@celery.task()
+def offer_newest_amendment_to_current_permittee(permit_amendment_guid: str, cred_type: str = Config.CRED_DEF_ID_MINES_ACT_PERMIT):
+    """Revoke the existing credential and offer a new one with the newest amendment."""
+    newest_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
+    
+    permit = Permit.find_by_permit_guid(newest_amendment.permit_guid)
+    if permit.current_permittee_digital_wallet_connection_state != "active":
+        return "Permittee's wallet connection is not active, do not issue credential."
+    
+    connection = PartyVerifiableCredentialConnection.find_by_party_guid(permit.current_permittee_guid)
+    
+    attributes = VerifiableCredentialManager.collect_attributes_for_mines_act_permit_111(newest_amendment)
 
     traction_svc = TractionService()
-    traction_svc.revoke_credential(connection.connection_id, cred_exch.rev_reg_id, cred_exch.cred_rev_id, "amended")
-
-    attempts = 0
-    while not cred_exch.cred_rev_id:
-        sleep(1)
-        db.session.refresh(cred_exch)
-        attempts += 1
-        if attempts > 60:
-            raise Exception("Never received webhook confirming revokation credential")
-
-    newest_amendment = sorted(permit.permit_amendments, key=lambda pa: pa.issue_date,reverse=True)[0]
-
-    attributes = VerifiableCredentialManager.collect_attributes_for_mines_act_permit_111(newest_amendment)
     response = traction_svc.offer_mines_act_permit_111(connection.connection_id, attributes)
-    map_vc = PartyVerifiableCredentialMinesActPermit(cred_exch_id = response["credential_exchange_id"],party_guid = cred_exch.party_guid, permit_amendment_guid=newest_amendment.permit_amendment_guid)
+    map_vc = PartyVerifiableCredentialMinesActPermit(
+        cred_exch_id = response["credential_exchange_id"],
+        cred_type = cred_type,
+        party_guid = permit.current_permittee_guid, 
+        permit_amendment_guid=newest_amendment.permit_amendment_guid
+    )
+    
     map_vc.save()
 
-    info_str = f"Revoked credential_exchange_id={credential_exchange_id} and offer new_cred_exchange{response['credential_exchange_id']} for permit_guid={newest_amendment.permit_amendment_guid}"
-    logger.warning(info_str) # not sure where to find this. 
+    info_str = f"offer new_cred_exchange{response['credential_exchange_id']} for permit_amendment_guid={newest_amendment.permit_amendment_guid}"
+    task_logger.warning(info_str) # not sure where to find this. 
     
     return info_str
 
@@ -91,3 +114,7 @@ class VerifiableCredentialManager():
         } for attr,val in credential_attrs.items()]
 
         return attributes
+    
+    @classmethod
+    def revoke_all_credentials_for_permit(permit_guid: str):
+        pass
