@@ -139,14 +139,12 @@ def register_commands(app):
     @app.cli.command('revoke_mines_act_permit_vc_and_offer_newest')
     @click.argument('credential_exchange_id')
     @click.argument('permit_guid')
-    def revoke_mines_act_permit_vc_and_offer_newest(credential_exchange_id, permit_guid):
-        from app.api.verifiable_credentials.manager import revoke_credential_and_offer_newest_amendment
+    def revoke_mines_act_permits_for_permit(credential_exchange_id, permit_guid):
+        from app.api.verifiable_credentials.manager import revoke_all_credentials_for_permit
         from app import auth
         auth.apply_security = False
         with current_app.app_context():
-            cred_exch = PartyVerifiableCredentialMinesActPermit.find_by_cred_exch_id(credential_exchange_id)
-            assert cred_exch, "Credential exchange not found"
             permit = Permit.query.unbound_unsafe().filter_by(permit_guid=permit_guid).first()
             assert permit, "Permit not found"
-            revoke_credential_and_offer_newest_amendment.apply_async(kwargs={"credential_exchange_id":credential_exchange_id, "permit_guid": permit_guid})
+            revoke_all_credentials_for_permit.apply_async(kwargs={"permit_guid": permit_guid})
             print("celery job started")

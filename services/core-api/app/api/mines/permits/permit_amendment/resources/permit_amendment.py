@@ -267,9 +267,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
         new_pa.save()
 
         revoke_all_credentials_for_permit.apply_async(kwargs={"permit_guid": permit_guid, "mine_guid":mine_guid, "reason":"it was amended"})
-        
         offer_newest_amendment_to_current_permittee.apply_async(kwargs={"permit_amendment_guid": new_pa.permit_amendment_guid})
-        # if has connection, offer 
 
 
         return new_pa
