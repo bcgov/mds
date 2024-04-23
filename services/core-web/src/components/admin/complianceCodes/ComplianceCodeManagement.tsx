@@ -28,7 +28,6 @@ import {
 } from "@mds/common/redux/slices/complianceCodesSlice";
 import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
-import { isAfter } from "date-fns";
 
 const ComplianceCodeManagement: FC = () => {
   const dispatch = useDispatch();
@@ -247,7 +246,7 @@ const ComplianceCodeManagement: FC = () => {
   ].filter(Boolean);
 
   const setExpiredRowBackground = (record: IComplianceArticle) => {
-    if (isAfter(new Date(), new Date(record.expiry_date))) {
+    if (record.is_expired) {
       return "expired-row";
     }
     return "";
