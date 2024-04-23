@@ -27,7 +27,7 @@ import {
   updateComplianceCodes,
 } from "@mds/common/redux/slices/complianceCodesSlice";
 import AuthorizationGuard from "@/HOC/AuthorizationGuard";
-import { EDIT_COMPLIANCE_CODES } from "@/constants/permissions";
+import * as Permission from "@/constants/permissions";
 import { isAfter } from "date-fns";
 
 const ComplianceCodeManagement: FC = () => {
@@ -329,4 +329,4 @@ const ComplianceCodeManagement: FC = () => {
   );
 };
 
-export default AuthorizationGuard(EDIT_COMPLIANCE_CODES)(ComplianceCodeManagement);
+export default AuthorizationGuard(Permission.EDIT_COMPLIANCE_CODES)(ComplianceCodeManagement);
