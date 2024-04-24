@@ -38,7 +38,7 @@ def revoke_all_credentials_for_permit(permit_guid: str, mine_guid:str, reason:st
 
         if ce.cred_exch_state in PartyVerifiableCredentialMinesActPermit._pending_credential_states:
             traction_svc.send_issue_credential_problem_report(ce.cred_exch_id, "problem_report")
-            #do we delete or mark these records locally to ensure they do not get completed later.
+            #problem reports set the state to abandoned in both agents, cannot continue afterwards
 
     info_str = f"revoked all credentials for permit_guid={permit_guid} and mine_guid={mine_guid}"
     task_logger.warning(info_str) # not sure where to find this. 
