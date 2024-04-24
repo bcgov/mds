@@ -74,12 +74,16 @@ class VerifiableCredentialWebhookResource(Resource, UserMixin):
 
             assert cred_exch_record, f"issue_credential.credential_exchange_id={cred_exch_id} not found. webhook_body={webhook_body}"
             new_state = webhook_body["state"]
+
             if cred_exch_record.last_webhook_timestamp and cred_exch_record.last_webhook_timestamp >= webhook_timestamp:
                 current_app.logger.warn(f"webhooks out of order catch, ignoring {webhook_body}")
                 # already processed a more recent webhook 
             else:
                 cred_exch_record.last_webhook_timestamp = webhook_timestamp
-                
+                if new_state == IssueCredentialIssuerState.ABANDONED:
+                    current_app.logger.warning(f"cred_exch_id={cred_exch_id} is abanoned with message = {webhook_body['error_msg']}")
+                    cred_exch_record.error_description = webhook_body['error_msg']
+    
                 cred_exch_record.cred_exch_state=new_state
                 if new_state == IssueCredentialIssuerState.CREDENTIAL_ACKED:
                     cred_exch_record.rev_reg_id = webhook_body["revoc_reg_id"]

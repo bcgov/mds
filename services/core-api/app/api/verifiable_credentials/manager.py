@@ -34,6 +34,8 @@ def revoke_all_credentials_for_permit(permit_guid: str, mine_guid:str, reason:st
                 db.session.refresh(cred_exch)
                 attempts += 1
                 if attempts > 60:
+                    ce.error_description = "Never received webhook confirming revokation credential"
+                    ce.save()
                     raise Exception("Never received webhook confirming revokation credential")
 
         if ce.cred_exch_state in PartyVerifiableCredentialMinesActPermit._pending_credential_states:
