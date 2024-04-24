@@ -3,7 +3,7 @@ import { InformationRequirementsTablePage } from "@/components/pages/Project/Inf
 import * as MOCK from "@/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import * as reducerTypes from "@mds/common/constants/reducerTypes";
-import { AUTHENTICATION, PROJECTS } from "@mds/common/constants/reducerTypes";
+import { AUTHENTICATION, PROJECTS, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
 import { render } from "@testing-library/react";
 import { USER_ROLES } from "@mds/common";
 import { Provider } from "react-redux";
@@ -22,6 +22,10 @@ const initialState = {
     informationRequirementsTableDocumentTypesHash:
       MOCK.INFORMATION_REQUIREMENTS_TABLE_STATUS_CODES_HASH,
   },
+  [STATIC_CONTENT]: {
+    informationRequirementsTableDocumentTypes:
+      MOCK.INFORMATION_REQUIREMENTS_TABLE_STATUS_CODES_HASH,
+  },
   [AUTHENTICATION]: {
     userAccessData: [USER_ROLES.role_minespace_proponent],
   },
@@ -38,7 +42,7 @@ function mockFunction() {
       irtGuid,
     }),
     useLocation: jest.fn().mockReturnValue({
-      state: { current: 0 },
+      state: { current: 2 },
     }),
   };
 }
@@ -51,9 +55,17 @@ jest.spyOn(projectActionCreator, "fetchProjectById").mockImplementation(
     return Promise.resolve(MOCK.PROJECT);
   }
 );
+jest.spyOn(projectActionCreator, "fetchRequirements").mockImplementation(
+  (): AppThunk<Promise<any>> => (dispatch) => {
+    dispatch(success(reducerTypes.GET_REQUIREMENTS));
+    dispatch(projectActions.storeRequirements({ records: MOCK.IRT_REQUIREMENTS }));
+    return Promise.resolve(MOCK.IRT_REQUIREMENTS);
+  }
+);
+
 describe("InformationRequirementsTablePage", () => {
-  it("renders properly", () => {
-    const { container } = render(
+  it("renders properly", async () => {
+    const { container, findByText } = render(
       <BrowserRouter>
         <ReduxWrapper initialState={initialState}>
           <Provider store={store}>
@@ -62,6 +74,8 @@ describe("InformationRequirementsTablePage", () => {
         </ReduxWrapper>
       </BrowserRouter>
     );
+
+    await findByText(/Information Requirements Table/i);
 
     expect(container).toMatchSnapshot();
   });

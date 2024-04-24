@@ -1,8 +1,7 @@
 import React, { FC, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { change, Field, formValueSelector, InjectedFormProps, reduxForm } from "redux-form";
-import { Alert, Col, Row, Typography } from "antd";
-import { Form } from "@ant-design/compatible";
+import { Alert, Col, Form, Row, Typography } from "antd";
 import { remove } from "lodash";
 import { ENVIRONMENT, IProject } from "@mds/common";
 import * as API from "@mds/common/constants/API";
@@ -32,7 +31,7 @@ interface IRTFileImportProps {
   downloadIRTTemplate: (url: string) => void;
 }
 
-export const IRTFileImport: FC<IRTFileImportProps & InjectedFormProps<any>> = ({
+export const IRTFileImport: FC<IRTFileImportProps & Partial<InjectedFormProps<any>>> = ({
   projectGuid,
   importIsSuccessful,
   downloadIRTTemplate,
@@ -143,9 +142,9 @@ export const IRTFileImport: FC<IRTFileImportProps & InjectedFormProps<any>> = ({
   );
 };
 
-export default reduxForm({
+export default (reduxForm({
   form: FORM.INFORMATION_REQUIREMENTS_TABLE,
   destroyOnUnmount: false,
   touchOnBlur: true,
   forceUnregisterOnUnmount: true,
-})(IRTFileImport);
+})(IRTFileImport as any) as unknown) as FC<IRTFileImportProps>;

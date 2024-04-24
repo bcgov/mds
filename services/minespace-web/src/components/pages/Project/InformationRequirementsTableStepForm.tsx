@@ -48,6 +48,7 @@ const StepForms = ({
 
   return [
     {
+      key: "downloadIRTTemplate",
       title: "Download Template",
       content: (
         <IRTDownloadTemplate
@@ -66,6 +67,7 @@ const StepForms = ({
       ],
     },
     {
+      key: "importFile",
       title: "Import File",
       content: (
         <IRTFileImport
@@ -78,7 +80,7 @@ const StepForms = ({
         />
       ),
       buttons: [
-        <>
+        <div key="import-buttons">
           <Button
             id="step-back"
             className="full-mobile"
@@ -104,10 +106,11 @@ const StepForms = ({
           >
             Continue to Review
           </Button>
-        </>,
+        </div>,
       ],
     },
     {
+      key: "reviewAndSubmit",
       title: "Review & Submit",
       content: (
         <>
@@ -131,7 +134,7 @@ const StepForms = ({
         </>
       ),
       buttons: [
-        <>
+        <div key="review-buttons">
           {project.information_requirements_table?.status_code === "DFT" ? (
             <>
               <Button
@@ -223,7 +226,7 @@ const StepForms = ({
               </Button>
             </>
           )}
-        </>,
+        </div>,
       ],
     },
   ];

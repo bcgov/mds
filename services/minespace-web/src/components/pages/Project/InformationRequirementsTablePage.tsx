@@ -140,7 +140,7 @@ export const InformationRequirementsTablePage = () => {
   }, []);
 
   useEffect(() => {
-    if (requirements && project.information_requirements_table) {
+    if (requirements.length > 0 && project.information_requirements_table) {
       const projectRequirementsVersion =
         project.information_requirements_table.requirements[0].version;
 
@@ -315,11 +315,7 @@ export const InformationRequirementsTablePage = () => {
         </Row>
         <Row>
           {project?.information_requirements_table?.status_code !== "APV" && (
-            <Steps current={current}>
-              {Forms.map((step) => (
-                <Steps.Step key={step.title} title={step.title} />
-              ))}
-            </Steps>
+            <Steps current={current} items={Forms} />
           )}
           <br />
           <br />
