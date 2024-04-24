@@ -19,8 +19,6 @@ const initialState = {
     projects: [MOCK.PROJECT],
     project: MOCK.PROJECT,
     requirements: MOCK.INFORMATION_REQUIREMENTS_TABLE.requirements,
-    informationRequirementsTableDocumentTypesHash:
-      MOCK.INFORMATION_REQUIREMENTS_TABLE_STATUS_CODES_HASH,
   },
   [STATIC_CONTENT]: {
     informationRequirementsTableDocumentTypes:
