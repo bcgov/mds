@@ -80,7 +80,7 @@ interface BaseViewInputProps {
 }
 export const BaseViewInput: FC<BaseViewInputProps> = ({ label = "", value = "" }) => {
   return (
-    <div className="view-item">
+    <div className="view-item ant-form-item">
       {label && label !== "" && (
         <Typography.Paragraph className="view-item-label">{label}</Typography.Paragraph>
       )}

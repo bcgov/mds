@@ -5,7 +5,7 @@ exports[`RequestReportForm renders form properly 1`] = `
   style="min-height: 380px;"
 >
   <form
-    class="ant-form ant-form-vertical edit"
+    class="ant-form ant-form-vertical common-form common-form-REQUEST_REPORT form-edit"
     id="REQUEST_REPORT"
   >
     <div

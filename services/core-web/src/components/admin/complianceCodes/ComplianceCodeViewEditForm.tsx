@@ -21,6 +21,7 @@ import RenderDate from "@mds/common/components/forms/RenderDate";
 import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
 import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
+import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 import {
   formatComplianceCodeArticleNumber,
   stripParentheses,
@@ -66,7 +67,7 @@ const ComplianceCodeViewEditForm: FC<{
     }
   }, [section, sub_section, paragraph, sub_paragraph]);
 
-  const handleSubmit = (values: IComplianceArticle) => {
+  const handleSubmit = async (values: IComplianceArticle) => {
     const cim_or_cpo =
       values.cim_or_cpo !== REPORT_REGULATORY_AUTHORITY_CODES.NONE ? values.cim_or_cpo : null;
     const payload = { ...values, article_act_code: "HSRCM", cim_or_cpo };
@@ -89,7 +90,7 @@ const ComplianceCodeViewEditForm: FC<{
         isEditMode={isEditMode}
         isModal={true}
       >
-        <Row gutter={[16, 16]}>
+        <Row gutter={[16, 16]} className="form-row-margin">
           <Col span={24}>
             <Typography.Text strong>HSRC Details</Typography.Text>
           </Col>
@@ -127,7 +128,7 @@ const ComplianceCodeViewEditForm: FC<{
             />
           </Col>
         </Row>
-        <Row gutter={[16, 16]}>
+        <Row gutter={[16, 16]} className="form-row-margin">
           <Col span={24} className="hide-required-indicator">
             <Field
               id="articleNumber"
@@ -139,7 +140,7 @@ const ComplianceCodeViewEditForm: FC<{
             />
           </Col>
         </Row>
-        <Row gutter={[16, 16]}>
+        <Row gutter={[16, 16]} className="form-row-margin">
           <Col span={12}>
             <Field
               name="effective_date"
@@ -221,11 +222,7 @@ const ComplianceCodeViewEditForm: FC<{
         </Row>
         <Row gutter={[16, 16]} justify="end">
           <RenderCancelButton />
-          {isEditMode && (
-            <Button htmlType="submit" type="primary">
-              Save Code
-            </Button>
-          )}
+          <RenderSubmitButton buttonText="Save Code" />
         </Row>
       </FormWrapper>
     </div>

@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { change, Field, reset } from "redux-form";
+import { change, Field, initialize, reset } from "redux-form";
 import SearchOutlined from "@ant-design/icons/SearchOutlined";
 import PlusOutlined from "@ant-design/icons/PlusOutlined";
 import { Button, Input, Row, Table, Typography } from "antd";
@@ -52,6 +52,7 @@ const ComplianceCodeManagement: FC = () => {
     if (complianceCodes) {
       const newList = Object.values(complianceCodes).sort(sortComplianceCodesByArticleNumber);
       setFilteredRecordsList(newList);
+      dispatch(initialize(FORM.COMPLIANCE_CODE_BULK_EDIT, complianceCodes));
     }
   }, [complianceCodes]);
 
@@ -78,8 +79,8 @@ const ComplianceCodeManagement: FC = () => {
     }
   };
 
-  const handleModalSave = (values: IComplianceArticle) => {
-    dispatch(
+  const handleModalSave = async (values: IComplianceArticle) => {
+    await dispatch(
       change(FORM.COMPLIANCE_CODE_BULK_EDIT, `${formPrefix}${values.compliance_article_id}`, values)
     );
   };
@@ -271,6 +272,7 @@ const ComplianceCodeManagement: FC = () => {
           <Button
             onClick={() => openAddModal()}
             disabled={isEditMode}
+            loading={isLoading}
             type="primary"
             icon={<PlusOutlined />}
           >
@@ -311,7 +313,11 @@ const ComplianceCodeManagement: FC = () => {
                           </Button>
                         </>
                       ) : (
-                        <Button onClick={() => setIsEditMode(true)} type="primary">
+                        <Button
+                          onClick={() => setIsEditMode(true)}
+                          type="primary"
+                          loading={isLoading}
+                        >
                           Edit Expiry Dates
                         </Button>
                       )}
