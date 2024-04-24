@@ -6,7 +6,7 @@ import { compose, bindActionCreators } from "redux";
 import { Field, reduxForm, change, formValueSelector } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm, Divider } from "antd";
+import { Alert, Button, Col, Row, Popconfirm, Divider } from "antd";
 import {
   required,
   maxLength,
@@ -38,6 +38,7 @@ const propTypes = {
   is_historical_amendment: PropTypes.bool.isRequired,
   userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
   securityNotRequired: PropTypes.bool.isRequired,
+  show_vc_warning: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -116,6 +117,7 @@ export class PermitAmendmentForm extends Component {
   };
 
   render() {
+    console.log(this.props.show_vc_warning);
     const isPermitCoalOrMineral =
       this.props.initialValues.permit_prefix === "C" ||
       this.props.initialValues.permit_prefix === "M";
@@ -235,6 +237,18 @@ export class PermitAmendmentForm extends Component {
                 allowMultiple
               />
             </Form.Item>
+            {this.props.show_vc_warning && (
+              <>
+                <p>Digital Credentials</p>
+                <br />
+                <Alert
+                  message="Existing Digital Credential"
+                  showIcon
+                  type="warning"
+                  description="This permit has an active digital credential. By issuing this amendment, the proponent will receive an updated digital credential immediately."
+                />
+              </>
+            )}
           </Col>
         </Row>
         <div className="right center-mobile" style={{ paddingTop: "14px" }}>

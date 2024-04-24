@@ -74,12 +74,16 @@ class VerifiableCredentialWebhookResource(Resource, UserMixin):
 
             assert cred_exch_record, f"issue_credential.credential_exchange_id={cred_exch_id} not found. webhook_body={webhook_body}"
             new_state = webhook_body["state"]
+
             if cred_exch_record.last_webhook_timestamp and cred_exch_record.last_webhook_timestamp >= webhook_timestamp:
                 current_app.logger.warn(f"webhooks out of order catch, ignoring {webhook_body}")
                 # already processed a more recent webhook 
             else:
                 cred_exch_record.last_webhook_timestamp = webhook_timestamp
-                
+                if new_state == IssueCredentialIssuerState.ABANDONED:
+                    current_app.logger.warning(f"cred_exch_id={cred_exch_id} is abanoned with message = {webhook_body['error_msg']}")
+                    cred_exch_record.error_description = webhook_body['error_msg']
+    
                 cred_exch_record.cred_exch_state=new_state
                 if new_state == IssueCredentialIssuerState.CREDENTIAL_ACKED:
                     cred_exch_record.rev_reg_id = webhook_body["revoc_reg_id"]
@@ -89,10 +93,11 @@ class VerifiableCredentialWebhookResource(Resource, UserMixin):
                 current_app.logger.info(f"Updated cred_exch_record cred_exch_id={cred_exch_id} with state={new_state}")
 
         elif topic == ISSUER_CREDENTIAL_REVOKED:
-            current_app.logger.info(f"CREDENTIAL SUCCESSFULLY REVOKED received={request.get_json()}")
-            cred_exch = PartyVerifiableCredentialMinesActPermit.find_by_cred_exch_id(webhook_body["cred_ex_id"], unsafe=True)
-            cred_exch.permit_amendment.permit.mines_act_permit_vc_locked = True
-            cred_exch.save()
+            if webhook_body["state"] != "revoked":
+                current_app.logger.info(f"CREDENTIAL SUCCESSFULLY REVOKED received={request.get_json()}")
+                cred_exch = PartyVerifiableCredentialMinesActPermit.find_by_cred_exch_id(webhook_body["cred_ex_id"], unsafe=True)
+                cred_exch.permit_amendment.permit.mines_act_permit_vc_locked = True
+                cred_exch.save()
   
         elif topic == PING:
             current_app.logger.info(f"TrustPing received={request.get_json()}")

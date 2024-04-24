@@ -1,4 +1,7 @@
+from flask import current_app
 import json, pytest, uuid
+from unittest.mock import MagicMock, patch
+
 from datetime import datetime, timedelta
 from dateutil import parser
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
@@ -193,18 +196,24 @@ def test_post__historical_permit_amendment(test_client, db_session, auth_headers
         'authorization_end_date': (datetime.today() + timedelta(days=1)).date().isoformat(),
     }
 
-    post_resp = test_client.post(
-        f'/mines/{mine.mine_guid}/permits/{permit.permit_guid}/amendments',
-        json=data,
-        headers=auth_headers['full_auth_header'])
-    post_data = json.loads(post_resp.data.decode())
+    with current_app.test_request_context() as a, patch(
+        "app.api.verifiable_credentials.manager.offer_newest_amendment_to_current_permittee.apply_async"
+    ) as mock_offer_job, patch(
+        "app.api.verifiable_credentials.manager.revoke_all_credentials_for_permit.apply_async"
+    ) as mock_revoke_job:
 
-    assert post_resp.status_code == 200, post_resp.response
-    assert parser.parse(post_data['received_date']) == parser.parse(data['received_date'])
-    assert parser.parse(post_data['issue_date']) == parser.parse(data['issue_date'])
-    assert parser.parse(post_data['authorization_end_date']) == parser.parse(
-        data['authorization_end_date'])
-    assert permit.permittee_appointments[0].party_guid == permittee.party.party_guid
+        post_resp = test_client.post(
+            f'/mines/{mine.mine_guid}/permits/{permit.permit_guid}/amendments',
+            json=data,
+            headers=auth_headers['full_auth_header'])
+        post_data = json.loads(post_resp.data.decode())
 
-    #permit_amdendment is actually in db
-    assert PermitAmendment.find_by_permit_amendment_guid(post_data['permit_amendment_guid'])
+        assert post_resp.status_code == 200, post_resp.response
+        assert parser.parse(post_data['received_date']) == parser.parse(data['received_date'])
+        assert parser.parse(post_data['issue_date']) == parser.parse(data['issue_date'])
+        assert parser.parse(post_data['authorization_end_date']) == parser.parse(
+            data['authorization_end_date'])
+        assert permit.permittee_appointments[0].party_guid == permittee.party.party_guid
+
+        #permit_amdendment is actually in db
+        assert PermitAmendment.find_by_permit_amendment_guid(post_data['permit_amendment_guid'])

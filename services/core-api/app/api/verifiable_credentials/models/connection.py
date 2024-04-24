@@ -35,7 +35,7 @@ class PartyVerifiableCredentialConnection(AuditMixin, Base):
         
     @classmethod
     def find_active_by_party_guid(cls, party_guid) -> "PartyVerifiableCredentialConnection":
-        return cls.query.filter_by(party_guid=party_guid, connection_state="active").one_or_none()
+        return cls.query.filter_by(party_guid=party_guid, connection_state="active").first()
     
     @classmethod
     def find_by_invitation_id(cls, invitation_id) -> "PartyVerifiableCredentialConnection":
