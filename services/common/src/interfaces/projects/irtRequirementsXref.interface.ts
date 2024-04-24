@@ -5,4 +5,5 @@ export interface IIRTRequirementsXref {
   comment: string;
   methods: boolean;
   required: boolean;
+  version: number;
 }
