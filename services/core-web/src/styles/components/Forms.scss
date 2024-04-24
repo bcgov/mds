@@ -52,6 +52,12 @@
   }
 }
 
+.hide-required-indicator {
+  .form-item-optional {
+    display: none;
+  }
+}
+
 .ant-form-vertical .ant-form-item-label>label {
   // to make * appear on the same line when label is an HTML element
   display: flex;

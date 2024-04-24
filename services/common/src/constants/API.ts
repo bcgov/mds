@@ -267,6 +267,14 @@ export const MINE_REPORT_COMMENT = (mineGuid, reportGuid, commentGuid) =>
 export const MINE_REPORT_STATUS = "/mines/reports/status-codes";
 export const MINE_REPORT_CATEGORY = "/mines/reports/category-codes";
 
+// Compliance Codes
+export const COMPLIANCE_CODE_LIST = (params = {}) =>
+  `/compliance/codes?${queryString.stringify(params)}`;
+export const COMPLIANCE_CODE_ADD = () => `/compliance/codes/create`;
+export const COMPLIANCE_CODE_BULK_UPDATE = () => `/compliance/codes/update`;
+export const COMPLIANCE_CODE_REPORT_XREF = (guid?: string) =>
+  `/mines/reports/definitions/compliance-article/${guid}`;
+
 // Notice Of Work
 export const NOTICE_OF_WORK_APPLICATION_LIST = (params = {}) =>
   `/now-applications?${queryString.stringify(params)}`;

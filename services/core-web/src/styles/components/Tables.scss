@@ -21,7 +21,7 @@
   }
 }
 
-.ant-table-thead>tr>th {
+.ant-table-thead > tr > th {
   font-weight: 600;
 }
 
@@ -34,12 +34,12 @@
     display: none;
   }
 
-  .ant-table-tbody>tr {
+  .ant-table-tbody > tr {
     display: block;
     border-top: 2px solid $lightest-grey;
   }
 
-  .ant-table-tbody>tr>td {
+  .ant-table-tbody > tr > td {
     display: block !important;
     padding: 0.25rem 0.5rem;
     border-bottom: none;
@@ -68,7 +68,7 @@
     }
   }
 
-  .ant-table-tbody>tr>td:last-child {
+  .ant-table-tbody > tr > td:last-child {
     border-bottom: 0;
   }
 }
@@ -76,7 +76,7 @@
 // Nested Table
 tr.ant-table-expanded-row,
 tr.ant-table-expanded-row:hover {
-  >td {
+  > td {
     background-color: #fff;
   }
 }
@@ -88,7 +88,7 @@ tr.ant-table-expanded-row:hover {
     }
   }
 
-  .ant-table-expanded-row:hover>td {
+  .ant-table-expanded-row:hover > td {
     background: #fff;
   }
 }
@@ -150,16 +150,16 @@ $pagination-widths: $pagination-width-1, $pagination-width-2, $pagination-width-
   border-top: 2px solid $black;
 }
 
-.ant-table-tbody>tr.ant-table-row.ant-table-row-minimal {
-  &>td {
+.ant-table-tbody > tr.ant-table-row.ant-table-row-minimal {
+  & > td {
     border-bottom: none;
   }
 
-  &:hover>td {
-    background: none
+  &:hover > td {
+    background: none;
   }
 
-  &>td:first-child {
+  & > td:first-child {
     padding-left: 0;
   }
 }
@@ -167,6 +167,7 @@ $pagination-widths: $pagination-width-1, $pagination-width-2, $pagination-width-
 // buttons within tables
 td.ant-table-cell {
   vertical-align: middle;
+
   button {
     margin-top: 0;
     margin-bottom: 0;
@@ -174,8 +175,27 @@ td.ant-table-cell {
 }
 
 // This style is used in a common component, so it needs to be here, but doesn't require styles in core-web
-.diff-table {}
+.diff-table {
+}
 
-.diff-table-row > td{
+.diff-table-row > td {
   vertical-align: top;
+}
+
+// Table wrapped in form
+.modified-table-cell {
+  font-weight: bold;
+}
+
+.expired-row {
+  color: $disabled-text;
+  background-color: $disabled-grey;
+}
+
+.expired-row > td {
+  &:hover,
+  &:active,
+  &:focus {
+    background-color: $disabled-grey !important;
+  }
 }

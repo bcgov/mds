@@ -1,7 +1,8 @@
-import React, { FC } from "react";
+import React, { FC, useContext } from "react";
 import { Form, Radio } from "antd";
 import { BaseInputProps, getFormItemLabel } from "@mds/common/components/forms/BaseInput";
-import { IOption } from "@mds/common";
+import { IOption } from "@mds/common/interfaces";
+import { FormContext } from "./FormWrapper";
 
 /**
  * @class RenderRadioButtons - Ant Design `Radio` component used for boolean values in redux-form.
@@ -26,6 +27,8 @@ const RenderRadioButtons: FC<RenderRadioButtonsProps> = ({
   optionType = "default",
   isVertical = false,
 }) => {
+  const { isEditMode } = useContext(FormContext);
+
   const options = customOptions ?? [
     { label: "Yes", value: true },
     { label: "No", value: false },
@@ -50,7 +53,7 @@ const RenderRadioButtons: FC<RenderRadioButtonsProps> = ({
     >
       <>
         <Radio.Group
-          disabled={disabled}
+          disabled={disabled || !isEditMode}
           name={input.name}
           value={input.value}
           onChange={handleRadioChange}
