@@ -3,7 +3,7 @@
 exports[`RenderCancelButton component renders properly, does not show confirm on pristine form 1`] = `
 <div>
   <form
-    class="ant-form ant-form-vertical edit"
+    class="ant-form ant-form-vertical common-form common-form-FORM_NAME form-edit"
     id="FORM_NAME"
   >
     <button

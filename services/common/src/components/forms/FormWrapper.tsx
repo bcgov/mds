@@ -89,15 +89,16 @@ const FormWrapper: FC<FormWrapperProps & InjectedFormProps<any>> = ({
     }
   }, [isEditMode]);
 
-  const handleSubmit = (values) => {
+  const handleSubmit = async (values) => {
     dispatch(submit(props.name));
     if (!formErrors) {
-      props.onSubmit(values);
+      await props.onSubmit(values);
     }
   };
 
-  const formClassName =
-    `common-form common-form-${props.name} form-` + isEditMode ? "edit" : "view";
+  const formClassName = `common-form common-form-${props.name} form-${
+    isEditMode ? "edit" : "view"
+  }`;
 
   return (
     <FormProvider value={providerValues}>

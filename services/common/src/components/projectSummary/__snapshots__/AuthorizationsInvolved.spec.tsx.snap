@@ -3,7 +3,7 @@
 exports[`AuthorizationsInvolved renders properly 1`] = `
 <div>
   <form
-    class="ant-form ant-form-vertical edit"
+    class="ant-form ant-form-vertical common-form common-form-ADD_EDIT_PROJECT_SUMMARY form-edit"
     id="ADD_EDIT_PROJECT_SUMMARY"
   >
     <div
