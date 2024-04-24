@@ -4,9 +4,11 @@ import { isEqual } from "lodash";
 import { IExplosivesPermit } from "@mds/common/interfaces/permits/explosivesPermit.interface";
 import DiffColumn, { IDiffColumn } from "../history/DiffColumn";
 import { ITailingsStorageFacility } from "@mds/common/interfaces/tailingsStorageFacility";
+import { Change, IndividualChange } from "@mds/common/interfaces/historyChange.type";
 
 interface ITailingsDiffModal {
   tsf: ITailingsStorageFacility;
+  history: Change[];
   open: boolean;
   onCancel: () => void;
 }
@@ -15,14 +17,11 @@ interface IPermitDifferencesByAmendment {
   [amendmentId: string]: IDiffColumn[];
 }
 
-const TailingsDiffModal: FC<ITailingsDiffModal> = ({ tsf, open = false, onCancel }) => {
-  const differences = [];
-
+const TailingsDiffModal: FC<ITailingsDiffModal> = ({ tsf, history, open = false, onCancel }) => {
   const columns = [
     {
       title: "Section",
-      dataIndex: "now_number",
-      key: "now_number",
+      key: "section",
       render: () => <Typography.Text>Basic Information</Typography.Text>,
     },
     {
@@ -37,9 +36,16 @@ const TailingsDiffModal: FC<ITailingsDiffModal> = ({ tsf, open = false, onCancel
     },
     {
       title: "Changes",
-      dataIndex: "differences",
-      key: "differences",
-      render: (differences: IDiffColumn[]) => <DiffColumn differences={differences} />,
+      dataIndex: "changeset",
+      key: "changeset",
+      render: (changes: IndividualChange[]) => {
+        const differences = changes.map((change) => ({
+          fieldName: change.field_name,
+          previousValue: change.from,
+          currentValue: change.to,
+        }));
+        return <DiffColumn differences={differences} />;
+      },
     },
   ];
 
@@ -64,7 +70,7 @@ const TailingsDiffModal: FC<ITailingsDiffModal> = ({ tsf, open = false, onCancel
         rowClassName="diff-table-row"
         pagination={false}
         columns={columns}
-        dataSource={differences}
+        dataSource={history}
         rowKey="explosives_permit_amendment_id"
       />
     </Modal>

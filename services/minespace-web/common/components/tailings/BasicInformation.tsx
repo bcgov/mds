@@ -8,7 +8,7 @@ import {
   TSF_OPERATING_STATUS_CODE,
   TSF_TYPES,
 } from "@mds/common";
-import { Alert, Col, Row, Typography } from "antd";
+import { Alert, Button, Col, Row, Typography } from "antd";
 import React, { FC, useEffect, useState } from "react";
 import {
   lat,
@@ -26,6 +26,7 @@ import { formatDateTime } from "@common/utils/helpers";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { getTsf } from "@mds/common/redux/selectors/tailingsSelectors";
 import { RootState } from "@/App";
+import TailingsDiffModal from "@mds/common/components/tailings/TailingsDiffModal";
 
 interface BasicInformationProps {
   permits: IPermit[];
@@ -39,6 +40,7 @@ interface BasicInformationProps {
 export const BasicInformation: FC<BasicInformationProps> = (props) => {
   const { permits, renderConfig, canEditTSF = false, tsf, isEditMode } = props;
   const [permitOptions, setPermitOptions] = useState([]);
+  const [diffModalOpen, setDiffModalOpen] = useState(false);
 
   const canEditTSFAndEditMode = canEditTSF && isEditMode;
 
@@ -59,21 +61,30 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
   }, [permits]);
   return (
     <>
-      <Row justify="space-between">
+      {props.tsf?.update_timestamp && (
+        <Row>
+          <Col span={24}>
+            <Typography.Paragraph>
+              <Alert
+                description={`Last Updated by ${props.tsf.update_user}  on ${formatDateTime(
+                  props.tsf.update_timestamp
+                )}`}
+                showIcon
+                message=""
+                type="info"
+                style={{ alignItems: "center" }}
+                action={
+                  <Button className="margin-large--left" onClick={() => setDiffModalOpen(true)}>
+                    View History
+                  </Button>
+                }
+              />
+            </Typography.Paragraph>
+          </Col>
+        </Row>
+      )}
+      <Row>
         <Typography.Title level={3}>Basic Information</Typography.Title>
-        {props.showUpdateTimestamp && props.tsf?.update_timestamp && (
-          <Alert
-            message={`Last Updated by  on ${formatDateTime(props.tsf.update_timestamp)}`}
-            showIcon
-            type="info"
-          />
-
-          // <Typography.Paragraph style={{ textAlign: "right" }}>
-          //   <b>Last Updated</b>
-          //   <br />
-          //   {formatDateTime(props.tsf.update_timestamp)}
-          // </Typography.Paragraph>
-        )}
       </Row>
       <Field
         id="facility_type"
@@ -167,6 +178,12 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
         disabled={!canEditTSFAndEditMode}
         data={TSF_INDEPENDENT_TAILINGS_REVIEW_BOARD}
         validate={[maxLength(300), required]}
+      />
+      <TailingsDiffModal
+        open={diffModalOpen}
+        onCancel={() => setDiffModalOpen(false)}
+        tsf={tsf}
+        history={tsf.history}
       />
     </>
   );

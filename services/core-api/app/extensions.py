@@ -9,6 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 from app.config import TestConfig
 from .config import Config
 from .helper import Api
+from sqlalchemy_continuum import make_versioned
 
 def JWT_ROLE_CALLBACK(jwt_dict):
     return (jwt_dict.get('client_roles') or [])
@@ -33,6 +34,7 @@ def get_jwt_by_audience(aud):
             return jwt_value
 
     return None
+
 
 db = SQLAlchemy()
 
@@ -92,6 +94,8 @@ api = Api(
     doc='{}/'.format(Config.BASE_PATH),
     default='mds',
     default_label='MDS related operations')
+
+make_versioned(user_cls=None)
 
 if Config.FLASK_LOGGING_LEVEL == 'DEBUG':
     # Have engine logs included at INFO level when pod debug set to DEBUG

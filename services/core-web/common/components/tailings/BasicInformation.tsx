@@ -66,9 +66,12 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
           <Col span={24}>
             <Typography.Paragraph>
               <Alert
-                description={`Last Updated by  on ${formatDateTime(props.tsf.update_timestamp)}`}
+                description={`Last Updated by ${props.tsf.update_user}  on ${formatDateTime(
+                  props.tsf.update_timestamp
+                )}`}
                 showIcon
                 message=""
+                className="ant-alert-grey bullet"
                 type="info"
                 style={{ alignItems: "center" }}
                 action={
@@ -177,7 +180,12 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
         data={TSF_INDEPENDENT_TAILINGS_REVIEW_BOARD}
         validate={[maxLength(300), required]}
       />
-      <TailingsDiffModal open={diffModalOpen} onCancel={() => setDiffModalOpen(false)} tsf={tsf} />
+      <TailingsDiffModal
+        open={diffModalOpen}
+        onCancel={() => setDiffModalOpen(false)}
+        tsf={tsf}
+        history={tsf.history}
+      />
     </>
   );
 };
