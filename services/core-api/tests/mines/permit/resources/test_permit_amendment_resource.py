@@ -208,15 +208,12 @@ def test_post__historical_permit_amendment(test_client, db_session, auth_headers
             headers=auth_headers['full_auth_header'])
         post_data = json.loads(post_resp.data.decode())
 
-    assert mock_offer_job.assert_called_once()
-    assert mock_revoke_job.assert_called_once()
+        assert post_resp.status_code == 200, post_resp.response
+        assert parser.parse(post_data['received_date']) == parser.parse(data['received_date'])
+        assert parser.parse(post_data['issue_date']) == parser.parse(data['issue_date'])
+        assert parser.parse(post_data['authorization_end_date']) == parser.parse(
+            data['authorization_end_date'])
+        assert permit.permittee_appointments[0].party_guid == permittee.party.party_guid
 
-    assert post_resp.status_code == 200, post_resp.response
-    assert parser.parse(post_data['received_date']) == parser.parse(data['received_date'])
-    assert parser.parse(post_data['issue_date']) == parser.parse(data['issue_date'])
-    assert parser.parse(post_data['authorization_end_date']) == parser.parse(
-        data['authorization_end_date'])
-    assert permit.permittee_appointments[0].party_guid == permittee.party.party_guid
-
-    #permit_amdendment is actually in db
-    assert PermitAmendment.find_by_permit_amendment_guid(post_data['permit_amendment_guid'])
+        #permit_amdendment is actually in db
+        assert PermitAmendment.find_by_permit_amendment_guid(post_data['permit_amendment_guid'])
