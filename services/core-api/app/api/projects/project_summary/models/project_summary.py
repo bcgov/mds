@@ -6,7 +6,6 @@ from sqlalchemy.schema import FetchedValue
 from sqlalchemy import case
 from werkzeug.exceptions import BadRequest
 
-from app.api.municipalities.models.municipality import Municipality
 from app.api.parties.party import PartyOrgBookEntity
 from app.api.services.ams_api_service import AMSApiService
 from app.extensions import db
@@ -89,9 +88,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     )
     facility_operator = db.relationship(
         'Party', lazy='joined', foreign_keys=facility_operator_guid
-    )
-    nearest_municipality = db.relationship(
-        'Municipality', lazy='joined', foreign_keys=nearest_municipality_guid
     )
     authorizations = db.relationship(
         'ProjectSummaryAuthorization',
