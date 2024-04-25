@@ -7,7 +7,6 @@ from app.api.parties.response_models import PARTY, ADDRESS
 class Requirement(fields.Raw):
     def format(self, value):
         return marshal(value, REQUIREMENTS_MODEL)
-
 IRT_MODEL_ATTRIBUTES = api.model(
     'InformationRequirementsTable', {
         'irt_guid': fields.String,

@@ -3,6 +3,8 @@ from datetime import datetime
 from sqlalchemy.dialects.postgresql import UUID
 from cerberus import Validator
 import json
+from flask import current_app
+from werkzeug.exceptions import BadRequest
 
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
@@ -169,8 +171,10 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
             v = Validator(other_schema, purge_unknown=True)
 
         if not v.validate(authorization):
-            return json.dumps(v.errors)
-        return True
+            errors = json.dumps(v.errors)
+            current_app.logger.info(f'Validation failed for the following authorization with error {errors}')
+            current_app.logger.info(authorization)
+            raise BadRequest(errors)
 
     @classmethod
     def create(cls,

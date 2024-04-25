@@ -172,6 +172,7 @@ export const ProjectSummary: FC = () => {
       ...values,
       ...updatedAuthorizations,
     };
+
     delete payloadValues.authorizationTypes;
     return payloadValues;
   };
@@ -181,7 +182,7 @@ export const ProjectSummary: FC = () => {
     return dispatch(
       updateProjectSummary(
         { projectGuid: project_guid, projectSummaryGuid },
-        handleTransformPayload({ ...formValues, applicant: null }),
+        handleTransformPayload({ ...formValues }),
         message
       )
     )
