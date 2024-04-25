@@ -28,6 +28,7 @@ from app.config import Config
 
 from app.api.utils.helpers import validate_phone_no
 
+
 class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'project_summary'
 
@@ -53,8 +54,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     legal_land_owner_email_address = db.Column(db.String(200), nullable=True)
     facility_type = db.Column(db.String, nullable=True)
     facility_desc = db.Column(db.String(4000), nullable=True)
-    facility_latitude = db.Column(db.Numeric(9,7), nullable=True)
-    facility_longitude = db.Column(db.Numeric(11,7), nullable=True)
+    facility_latitude = db.Column(db.Numeric(9, 7), nullable=True)
+    facility_longitude = db.Column(db.Numeric(11, 7), nullable=True)
     facility_coords_source = db.Column(db.String(3), nullable=True)
     facility_coords_source_desc = db.Column(db.String(4000), nullable=True)
     facility_pid_pin_crown_file_no = db.Column(db.String(100), nullable=True)
@@ -63,6 +64,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     zoning = db.Column(db.Boolean, nullable=True)
     zoning_reason = db.Column(db.String, nullable=True)
     nearest_municipality_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('municipality.municipality_guid'))
+    company_alias = db.Column(db.String(200), nullable=True)
 
     is_legal_address_same_as_mailing_address = db.Column(db.Boolean, nullable=True)
     is_billing_address_same_as_mailing_address = db.Column(db.Boolean, nullable=True)
@@ -196,8 +198,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         qy = db.session.query(ProjectSummary)
         try:
             if mine_document_guid is not None:
-                query = qy\
-                    .filter(ProjectSummary.project_summary_id == ProjectSummaryDocumentXref.project_summary_id)\
+                query = qy \
+                    .filter(ProjectSummary.project_summary_id == ProjectSummaryDocumentXref.project_summary_id) \
                     .filter(ProjectSummaryDocumentXref.mine_document_guid == mine_document_guid)
                 return query.first()
 
@@ -244,8 +246,9 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 party_type_code=party_data.get('party_type_code'),
                 job_title=party_data.get('job_title'),
                 job_title_code=job_title_code,
-                address_type_code= cls.__get_address_type_code(address_data),
-                middle_name=party_data.get('middle_name')
+                address_type_code=cls.__get_address_type_code(address_data),
+                middle_name=party_data.get('middle_name'),
+                credential_id=party_data.get('credential_id')
             )
 
             if isinstance(address_data, list):
@@ -271,25 +274,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 new_party.address.append(new_address)
             return new_party
 
-    @classmethod
-    def create_or_update_party_orgbook(cls, party_data, party_guid, existing_party):
-        party_orgbook_data = party_data.get('party_orgbook_entity')
-        existing_party_orgbook = existing_party.party_orgbook_entity
-        if existing_party_orgbook is not None:
-            existing_party_orgbook.deep_update_from_dict(party_orgbook_data)
-            return existing_party_orgbook
-        else:
-            party_orgbook = PartyOrgBookEntity.create(party_orgbook_data.get('registration_id'),
-                                                      party_orgbook_data.get('registration_status'),
-                                                      party_orgbook_data.get('registration_date'),
-                                                      party_orgbook_data.get('name_id'),
-                                                      party_orgbook_data.get('name_text'),
-                                                      party_orgbook_data.get('credential_id'),
-                                                      party_guid,
-                                                      party_orgbook_data.get('company_alias'))
-            return party_orgbook
-
-        
     def create_or_update_authorization(self, authorization, is_ams):
             valid_authorization = ProjectSummaryAuthorization.validate_authorization(authorization, is_ams)
             if valid_authorization != True:
@@ -460,6 +444,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                is_billing_address_same_as_mailing_address=None,
                is_billing_address_same_as_legal_address=None,
                contacts=None,
+               company_alias=None,
                add_to_session=True):
 
         # Update simple properties.
@@ -487,6 +472,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         self.is_legal_address_same_as_mailing_address = is_legal_address_same_as_mailing_address
         self.is_billing_address_same_as_mailing_address = is_billing_address_same_as_mailing_address
         self.is_billing_address_same_as_legal_address = is_billing_address_same_as_legal_address
+        self.company_alias = company_alias
 
         # TODO - Turn this on when document removal is activated on the front end.
         # Get the GUIDs of the updated documents.
@@ -502,9 +488,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             applicant_party = self.create_or_update_party(applicant, 'APP', self.applicant)
             applicant_party.save()
             self.applicant_party_guid = applicant_party.party_guid
-
-            if applicant.get('party_type_code') == "ORG":
-               self.create_or_update_party_orgbook(applicant, self.applicant_party_guid, self.applicant)
 
         # Create or update Agent Party
         self.is_agent = is_agent
@@ -613,7 +596,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             for authorization in ams_authorizations.get('new', []):
                 if ams_results:
                     ams_tracking_details = self.get_ams_tracking_details(ams_results,
-                                                                         authorization.get('project_summary_authorization_guid'))
+                                                                         authorization.get(
+                                                                             'project_summary_authorization_guid'))
                     if ams_tracking_details:
                         # if result does not have a statusCode attribute, it means the outcome is successful.
                         authorization['ams_status_code'] = ams_tracking_details.get('statusCode', '200')
