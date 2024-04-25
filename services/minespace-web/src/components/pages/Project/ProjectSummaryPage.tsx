@@ -237,14 +237,13 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
       : "Successfully submitted a project description to the Province of British Columbia.";
 
     let status_code = projectSummary.status_code;
-    const errors = Object.keys(flattenObject(formErrors));
-
     if (!status_code || !isEditMode) {
       status_code = "DFT";
     } else if (!newActiveTab) {
       status_code = "SUB";
     }
 
+    const errors = Object.keys(flattenObject(formErrors));
     const values = { ...formValues, status_code: status_code };
     submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
     touch(FORM.ADD_EDIT_PROJECT_SUMMARY);
@@ -269,7 +268,6 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
     const newActiveTab = projectFormTabs[currentTabIndex + 1];
     const message = "Successfully saved a draft project description.";
     const values = { ...formValues, status_code: "DFT" };
-
     submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
     touch(FORM.ADD_EDIT_PROJECT_SUMMARY);
     const errors = Object.keys(flattenObject(formErrors));

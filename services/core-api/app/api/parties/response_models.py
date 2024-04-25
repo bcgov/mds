@@ -7,7 +7,6 @@ class Date(fields.Raw):
     def format(self, value):
         return value.strftime("%Y-%m-%d") if value else None
 
-
 MINE_DOCUMENT = api.model(
     'MineDocument', {
         'mine_document_guid': fields.String,

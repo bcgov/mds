@@ -246,8 +246,7 @@ class Project(AuditMixin, Base):
                project_lead_party_guid,
                mrc_review_required,
                contacts=[],
-               add_to_session=True):
-        
+               add_to_session=True): 
         # Update simple properties.
         self.project_title = project_title
         self.proponent_project_id = proponent_project_id
