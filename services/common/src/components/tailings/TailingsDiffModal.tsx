@@ -1,23 +1,24 @@
 import { Button, Modal, Table, Typography } from "antd";
-import React, { FC, useEffect, useState } from "react";
-import { isEqual } from "lodash";
-import { IExplosivesPermit } from "@mds/common/interfaces/permits/explosivesPermit.interface";
-import DiffColumn, { IDiffColumn } from "../history/DiffColumn";
+import React, { FC } from "react";
+import DiffColumn from "../history/DiffColumn";
 import { ITailingsStorageFacility } from "@mds/common/interfaces/tailingsStorageFacility";
-import { Change, IndividualChange } from "@mds/common/interfaces/historyChange.type";
+import { DiffColumnValueMapper, IDiffColumn, IDiffEntry } from "../history/DiffColumn.interface";
 
 interface ITailingsDiffModal {
   tsf: ITailingsStorageFacility;
-  history: Change[];
+  history: IDiffEntry[];
   open: boolean;
+  valueMapper: DiffColumnValueMapper;
   onCancel: () => void;
 }
 
-interface IPermitDifferencesByAmendment {
-  [amendmentId: string]: IDiffColumn[];
-}
-
-const TailingsDiffModal: FC<ITailingsDiffModal> = ({ tsf, history, open = false, onCancel }) => {
+const TailingsDiffModal: FC<ITailingsDiffModal> = ({
+  tsf,
+  history,
+  open = false,
+  onCancel,
+  valueMapper,
+}) => {
   const columns = [
     {
       title: "Section",
@@ -38,14 +39,9 @@ const TailingsDiffModal: FC<ITailingsDiffModal> = ({ tsf, history, open = false,
       title: "Changes",
       dataIndex: "changeset",
       key: "changeset",
-      render: (changes: IndividualChange[]) => {
-        const differences = changes.map((change) => ({
-          fieldName: change.field_name,
-          previousValue: change.from,
-          currentValue: change.to,
-        }));
-        return <DiffColumn differences={differences} />;
-      },
+      render: (differences: IDiffColumn[]) => (
+        <DiffColumn differences={differences} valueMapper={valueMapper} />
+      ),
     },
   ];
 

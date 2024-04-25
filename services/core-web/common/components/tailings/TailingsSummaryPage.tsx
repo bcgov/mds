@@ -28,7 +28,7 @@ import {
 } from "redux-form";
 
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
-import BasicInformation from "@common/components/tailings/BasicInformation";
+import BasicInformation from "@mds/common/components/tailings/BasicInformation";
 import Step from "@common/components/Step";
 import SteppedForm from "@common/components/SteppedForm";
 import { connect } from "react-redux";

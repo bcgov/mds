@@ -8,7 +8,7 @@ import {
   TailingsStorageFacilityTypeEnum,
   IPartyAppt,
 } from "@mds/common/index";
-import { Change } from "../historyChange.type";
+import { IDiffEntry } from "@mds/common/components/history/DiffColumn.interface";
 
 export interface ICreateTailingsStorageFacility {
   mine_tailings_storage_facility_name: string;
@@ -33,7 +33,7 @@ export interface ITailingsStorageFacility extends ICreateTailingsStorageFacility
   mine_guid: string;
   update_timestamp: string;
   update_user: string;
-  history?: Change[];
+  history?: IDiffEntry[];
 }
 
 export interface IEngineerOfRecord extends IPartyAppt {

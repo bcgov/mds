@@ -18,14 +18,13 @@ import {
   required,
   requiredList,
   validateSelectOptions,
-} from "@common/utils/Validate";
+} from "@mds/common/redux/utils/Validate";
 
 import { Field } from "redux-form";
 import { connect } from "react-redux";
-import { formatDateTime } from "@common/utils/helpers";
+import { formatDateTime } from "@mds/common/redux/utils/helpers";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { getTsf } from "@mds/common/redux/selectors/tailingsSelectors";
-import { RootState } from "@/App";
 import TailingsDiffModal from "@mds/common/components/tailings/TailingsDiffModal";
 
 interface BasicInformationProps {
@@ -36,6 +35,47 @@ interface BasicInformationProps {
   canEditTSF?: boolean;
   isEditMode: boolean;
 }
+
+// Provide a mapping of the field names to the title and data for the field
+// This is used to display the field names and values in a more user-friendly way in the history modal
+const historyDiffValueMapper = {
+  facility_type: {
+    title: "Facility Type",
+    data: FACILITY_TYPES,
+  },
+  mines_act_permit_no: {
+    title: "Mines Act Permit Number",
+  },
+  tailings_storage_facility_type: {
+    title: "Tailings Storage Facility Type",
+    data: TSF_TYPES,
+  },
+  storage_location: {
+    title: "Underground or Above Ground?",
+    data: STORAGE_LOCATION,
+  },
+  mine_tailings_storage_facility_name: {
+    title: "Facility Name",
+  },
+  latitude: {
+    title: "Latitude",
+  },
+  longitude: {
+    title: "Longitude",
+  },
+  consequence_classification_status_code: {
+    title: "Consequence Classification",
+    data: CONSEQUENCE_CLASSIFICATION_STATUS_CODE,
+  },
+  tsf_operating_status_code: {
+    title: "Operating Status",
+    data: TSF_OPERATING_STATUS_CODE,
+  },
+  itrb_exemption_status_code: {
+    title: "Independent Tailings Review Board Member",
+    data: TSF_INDEPENDENT_TAILINGS_REVIEW_BOARD,
+  },
+};
 
 export const BasicInformation: FC<BasicInformationProps> = (props) => {
   const { permits, renderConfig, canEditTSF = false, tsf, isEditMode } = props;
@@ -183,6 +223,7 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
       <TailingsDiffModal
         open={diffModalOpen}
         onCancel={() => setDiffModalOpen(false)}
+        valueMapper={historyDiffValueMapper}
         tsf={tsf}
         history={tsf.history}
       />
@@ -190,7 +231,7 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
   );
 };
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state) => ({
   permits: getPermits(state),
   tsf: getTsf(state),
 });

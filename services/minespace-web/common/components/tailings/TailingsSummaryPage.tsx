@@ -12,6 +12,7 @@ import { clearTsf, storeTsf } from "@mds/common/redux/actions/tailingsActions";
 import {
   createTailingsStorageFacility,
   fetchMineRecordById,
+  fetchTailingsStorageFacility,
   updateTailingsStorageFacility,
 } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { flattenObject } from "@common/utils/helpers";
@@ -27,7 +28,7 @@ import {
 } from "redux-form";
 
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
-import BasicInformation from "@common/components/tailings/BasicInformation";
+import BasicInformation from "@mds/common/components/tailings/BasicInformation";
 import Step from "@common/components/Step";
 import SteppedForm from "@common/components/SteppedForm";
 import { connect } from "react-redux";
@@ -69,6 +70,7 @@ interface TailingsSummaryPageProps {
   addDocumentToRelationship?: ActionCreator<typeof addDocumentToRelationship>;
   updateTailingsStorageFacility?: ActionCreator<typeof updateTailingsStorageFacility>;
   createTailingsStorageFacility?: ActionCreator<typeof createTailingsStorageFacility>;
+  fetchTailingsStorageFacility?: ActionCreator<typeof fetchTailingsStorageFacility>;
   addPartyRelationship?: ActionCreator<typeof addPartyRelationship>;
   formValues?: Partial<ITailingsStorageFacility>;
   fetchPermits?: ActionCreator<typeof fetchPermits>;
@@ -108,12 +110,7 @@ export const TailingsSummaryPage: FC<InjectedFormProps<ITailingsStorageFacility>
 
     if (tsfGuid) {
       if (!props.initialValues.mine_tailings_storage_facility_guid || forceReload) {
-        const mine = await props.fetchMineRecordById(mineGuid);
-        const existingTsf = mine.data.mine_tailings_storage_facilities.find(
-          (tsf) => tsf.mine_tailings_storage_facility_guid === tsfGuid
-        );
-
-        props.storeTsf(existingTsf);
+        await props.fetchTailingsStorageFacility(mineGuid, tsfGuid);
 
         await props.fetchPartyRelationships({
           mine_guid: mineGuid,
@@ -355,6 +352,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchPartyRelationships,
       updateTailingsStorageFacility,
       createTailingsStorageFacility,
+      fetchTailingsStorageFacility,
       fetchMineRecordById,
       addPartyRelationship,
       addDocumentToRelationship,

@@ -100,9 +100,6 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin):
 
         if not mine_tsf or str(mine_tsf.mine_guid) != mine_guid:
             raise NotFound('Tailing Storage Facility not found')
-        
-        print('asdn')
-        print(mine_tsf.history)
 
         return mine_tsf
 

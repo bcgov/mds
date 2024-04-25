@@ -100,30 +100,6 @@ class MineTailingsStorageFacility(AuditMixin, Base):
     def qualified_person(self):
         if self.qualified_persons:
             return self.qualified_persons[0]
-        
-    @hybrid_property
-    def history(self):
-        def dt_to_str(dt):
-            if isinstance(dt, datetime.datetime):
-                return dt.isoformat() if dt else None
-            return dt
-        if self.versions:
-            hs = list(map(lambda version: {
-                'updated_by': version.update_user,
-                'updated_at': version.update_timestamp,
-                'changeset': list(map(lambda key: json.loads(json.dumps({
-                    'field_name': key,
-                    'from': dt_to_str(version.changeset[key][0]),
-                    'to': dt_to_str(version.changeset[key][1])
-                }, default=str)), version.changeset))
-            }, self.versions))
-
-            print('hasdasd',hs)
-
-            return hs
-            # return json.dumps(hs, default=str)
-        else:
-            return []
 
 
     def __repr__(self):
@@ -168,6 +144,26 @@ class MineTailingsStorageFacility(AuditMixin, Base):
         if add_to_session:
             new_tsf.save()
         return new_tsf
+    @hybrid_property
+    def history(self):
+        def dt_to_str(dt):
+            if isinstance(dt, datetime.datetime):
+                return dt.isoformat() if dt else None
+            return dt
+        if self.versions:
+            hs = list(map(lambda version: {
+                'updated_by': version.update_user,
+                'updated_at': version.update_timestamp,
+                'changeset': list(map(lambda key: json.loads(json.dumps({
+                    'field_name': key,
+                    'from': dt_to_str(version.changeset[key][0]),
+                    'to': dt_to_str(version.changeset[key][1])
+                }, default=str)), version.changeset))
+            }, self.versions))
+
+            return hs
+        else:
+            return []
 
     @classmethod
     def find_by_mine_guid(cls, mine_guid):

@@ -2,7 +2,8 @@ import { Button, Modal, Table, Typography } from "antd";
 import React, { FC, useEffect, useState } from "react";
 import { isEqual } from "lodash";
 import { IExplosivesPermit } from "@mds/common/interfaces/permits/explosivesPermit.interface";
-import DiffColumn, { IDiffColumn } from "../history/DiffColumn";
+import DiffColumn from "../history/DiffColumn";
+import { IDiffColumn } from "../history/DiffColumn.interface";
 
 interface ExplosivesPermitDiffModalProps {
   explosivesPermit: IExplosivesPermit;
@@ -78,9 +79,9 @@ const ExplosivesPermitDiffModal: FC<ExplosivesPermitDiffModalProps> = ({
                   const fieldPrefix =
                     key === "detonator_magazines" ? "Detonator Magazine" : "Explosive Magazine";
                   const diff: IDiffColumn = {
-                    fieldName: `${fieldPrefix} ${idx} - ${magazineKey}`,
-                    previousValue: oldMagazineValue,
-                    currentValue: magazineValue,
+                    field_name: `${fieldPrefix} ${idx} - ${magazineKey}`,
+                    from: oldMagazineValue,
+                    to: magazineValue,
                   };
                   acc[currAmendment.explosives_permit_amendment_id].push(diff);
                 }
@@ -101,9 +102,9 @@ const ExplosivesPermitDiffModal: FC<ExplosivesPermitDiffModalProps> = ({
 
         if (newValue !== oldValue && !ignoredFields.includes(key)) {
           const diff: IDiffColumn = {
-            fieldName: key,
-            previousValue: oldValue,
-            currentValue: newValue,
+            field_name: key,
+            from: oldValue,
+            to: newValue,
           };
 
           acc[currAmendment.explosives_permit_amendment_id].push(diff);
@@ -113,9 +114,9 @@ const ExplosivesPermitDiffModal: FC<ExplosivesPermitDiffModalProps> = ({
       const amendmentDocuments = currAmendment.documents.map((doc) => doc.document_name);
       if (amendmentDocuments && amendmentDocuments.length > 0) {
         acc[currAmendment.explosives_permit_amendment_id].push({
-          fieldName: "Documents",
-          previousValue: [],
-          currentValue: amendmentDocuments,
+          field_name: "Documents",
+          from: [],
+          to: amendmentDocuments,
         });
       }
       return acc;
@@ -167,7 +168,7 @@ const ExplosivesPermitDiffModal: FC<ExplosivesPermitDiffModalProps> = ({
 
       return {
         ...permit,
-        differences: currentDiff[key].length > 0 ? currentDiff[key] : [{ fieldName: "None" }],
+        differences: currentDiff[key].length > 0 ? currentDiff[key] : [{ field_name: "None" }],
       };
     })
     .reverse();

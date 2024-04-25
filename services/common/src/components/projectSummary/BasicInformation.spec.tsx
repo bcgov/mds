@@ -7,6 +7,8 @@ import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { PROJECT } from "@mds/common/tests/mocks/dataMocks";
 import BasicInformation from "./BasicInformation";
 
+window.scrollTo = jest.fn();
+
 const initialState = {
   [PROJECTS]: {
     project: PROJECT,
