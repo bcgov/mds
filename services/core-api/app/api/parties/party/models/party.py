@@ -68,13 +68,12 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
     )
 
     party_orgbook_entity = db.relationship(
-        'PartyOrgBookEntity', backref='party_orgbook_entity', uselist=False, lazy='select', overlaps='party')
+        'PartyOrgBookEntity', backref='party', uselist=False, lazy='select')
 
     organization = db.relationship(
         'Party',
         lazy='select',
         uselist=False,
-        remote_side=[party_guid],
         foreign_keys=[organization_guid])
     
     digital_wallet_invitations = db.relationship(
@@ -88,7 +87,6 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
         'PartyVerifiableCredentialConnection',
         lazy='select',
         uselist=False,
-        remote_side=[party_guid],
         primaryjoin=
         'and_(PartyVerifiableCredentialConnection.party_guid == Party.party_guid, PartyVerifiableCredentialConnection.connection_state==\'active\')',
         overlaps='digital_wallet_invitations')
