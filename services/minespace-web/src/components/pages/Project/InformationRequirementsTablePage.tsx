@@ -109,12 +109,15 @@ export const InformationRequirementsTablePage = () => {
   };
 
   useEffect(() => {
+    if (!location.state?.current) {
+      history.replace(location.pathname, { current: 0 });
+    }
     handleFetchData();
   }, []);
 
   useEffect(() => {
     if (project) {
-      setCurrent(location.state.current);
+      setCurrent(location.state?.current ?? 0);
       if (project?.information_requirements_table?.status_code !== "DFT") {
         setEditMode(true);
       }
@@ -139,10 +142,16 @@ export const InformationRequirementsTablePage = () => {
     };
   }, []);
 
+  const getRequirementsVersion = () => {
+    return (
+      project.information_requirements_table.requirements?.[0].version ??
+      requirements[requirements.length - 1].version
+    );
+  };
+
   useEffect(() => {
     if (requirements.length > 0 && project.information_requirements_table) {
-      const projectRequirementsVersion =
-        project.information_requirements_table.requirements[0].version;
+      const projectRequirementsVersion = getRequirementsVersion();
 
       setProjectRequirementsVersion(projectRequirementsVersion);
 
