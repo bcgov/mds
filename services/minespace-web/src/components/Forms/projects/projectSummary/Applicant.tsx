@@ -15,12 +15,16 @@ import { CONTACTS_COUNTRY_OPTIONS, FORM, IOrgbookCredential } from "@mds/common"
 import RenderOrgBookSearch from "@mds/common/components/forms/RenderOrgBookSearch";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck, faCircleX, faSpinner } from "@fortawesome/pro-light-svg-icons";
-import { verifyOrgBookCredential } from "@mds/common/redux/actionCreators/orgbookActionCreator";
+import {
+  verifyOrgBookCredential,
+  fetchOrgBookCredential,
+} from "@mds/common/redux/actionCreators/orgbookActionCreator";
 import RenderField from "@mds/common/components/forms/RenderField";
 import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import RenderCheckbox from "@mds/common/components/forms/RenderCheckbox";
 import { normalizePhone } from "@common/utils/helpers";
+import { getOrgBookCredential } from "@mds/common/redux/selectors/orgbookSelectors";
 
 const { Title, Paragraph } = Typography;
 interface IVerifiedCredential {
@@ -38,6 +42,7 @@ const Applicant = () => {
   const [orgBookOptions, setOrgBookOptions] = useState([]);
   const [verifiedCredential, setVerifiedCredential] = useState<IVerifiedCredential>(null);
 
+  const orgBookCredential = useSelector(getOrgBookCredential);
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
   const {
     applicant = {},
@@ -45,7 +50,7 @@ const Applicant = () => {
     is_billing_address_same_as_mailing_address = false,
     is_billing_address_same_as_legal_address = false,
   } = formValues;
-  const { party_type_code, address = [], party_orgbook_entity = {} } = applicant ?? {};
+  const { party_type_code, address = [], credential_id } = applicant ?? {};
 
   const [mailingAddress, legalAddress, billingAddress] = address || [];
   const isMailingInternational = mailingAddress?.address_type_code === "INT";
@@ -59,6 +64,10 @@ const Applicant = () => {
   };
 
   useEffect(() => {
+    if (credential_id) dispatch(fetchOrgBookCredential(credential_id));
+  }, [credential_id]);
+
+  useEffect(() => {
     const defaultPartyTypeCode = party_type_code || "ORG";
     dispatch(
       change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.party_type_code", defaultPartyTypeCode)
@@ -66,19 +75,12 @@ const Applicant = () => {
   }, []);
 
   useEffect(() => {
-    if (party_orgbook_entity && party_orgbook_entity?.credential_id) {
-      const options = [
-        { text: party_orgbook_entity.name_text, value: party_orgbook_entity.credential_id },
-      ];
+    if (orgBookCredential?.topic) {
+      setCredential(orgBookCredential);
+      const options = [{ text: orgBookCredential.topic.local_name.text, value: credential_id }];
       setOrgBookOptions(options);
-      const payload = {
-        businessNumber: party_orgbook_entity.registration_id || "-",
-        registrationStatus: !party_orgbook_entity.registration_status ? "Inactive" : "Active",
-        registriesId: party_orgbook_entity.credential_id,
-      };
-      setVerifiedCredential(payload);
     }
-  }, [party_orgbook_entity]);
+  }, [orgBookCredential]);
 
   useEffect(() => {
     setVerified(false);
@@ -94,7 +96,7 @@ const Applicant = () => {
         };
         setVerifiedCredential(payload);
       });
-
+      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.credential_id", credential.id));
       const orgBookEntity = {
         registration_id: credential.topic.source_id,
         registration_status: !credential.inactive,
@@ -107,12 +109,7 @@ const Applicant = () => {
       dispatch(
         change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.party_orgbook_entity", orgBookEntity)
       );
-    }
-    if (party_orgbook_entity && party_orgbook_entity?.credential_id) {
-      const options = [
-        { text: party_orgbook_entity.name_text, value: party_orgbook_entity.credential_id },
-      ];
-      setOrgBookOptions(options);
+      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "company_alias", null));
     }
   }, [credential]);
 
@@ -180,6 +177,8 @@ const Applicant = () => {
     dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.party_orgbook_entity", null));
     dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.first_name", null));
     dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.middle_name", null));
+    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "company_alias", null));
+    setCredential(null);
     setVerifiedCredential(null);
     setOrgBookOptions(null);
   };
@@ -283,7 +282,7 @@ const Applicant = () => {
             label="Company Legal Name"
             setCredential={setCredential}
             data={orgBookOptions}
-            help={"as registered with the BC Registar of Companies"}
+            help={"as registered with the BC Registrar of Companies"}
             component={RenderOrgBookSearch}
           />
           {verifiedCredential && (
@@ -305,8 +304,8 @@ const Applicant = () => {
           <Row gutter={16}>
             <Col md={12} sm={24}>
               <Field
-                id="applicant.party_orgbook_entity.company_alias"
-                name="applicant.party_orgbook_entity.company_alias"
+                id="company_alias"
+                name="company_alias"
                 label="Doing Business As"
                 component={RenderField}
               />
