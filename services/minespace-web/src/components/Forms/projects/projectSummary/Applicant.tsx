@@ -15,13 +15,15 @@ import { CONTACTS_COUNTRY_OPTIONS, FORM, IOrgbookCredential } from "@mds/common"
 import RenderOrgBookSearch from "@mds/common/components/forms/RenderOrgBookSearch";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck, faCircleX, faSpinner } from "@fortawesome/pro-light-svg-icons";
-import { verifyOrgBookCredential } from "@mds/common/redux/actionCreators/orgbookActionCreator";
+import {
+  verifyOrgBookCredential,
+  fetchOrgBookCredential,
+} from "@mds/common/redux/actionCreators/orgbookActionCreator";
 import RenderField from "@mds/common/components/forms/RenderField";
 import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import RenderCheckbox from "@mds/common/components/forms/RenderCheckbox";
 import { normalizePhone } from "@common/utils/helpers";
-import { fetchOrgBookCredential } from "@mds/common/redux/actionCreators/orgbookActionCreator";
 import { getOrgBookCredential } from "@mds/common/redux/selectors/orgbookSelectors";
 
 const { Title, Paragraph } = Typography;
@@ -107,6 +109,7 @@ const Applicant = () => {
       dispatch(
         change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.party_orgbook_entity", orgBookEntity)
       );
+      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "company_alias", null));
     }
   }, [credential]);
 
