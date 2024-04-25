@@ -1,9 +1,9 @@
 import React, { FC, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { change, Field, formValueSelector, InjectedFormProps, reduxForm } from "redux-form";
+import { change, Field, formValueSelector } from "redux-form";
 import { Alert, Col, Form, Row, Typography } from "antd";
 import { remove } from "lodash";
-import { ENVIRONMENT, IProject } from "@mds/common";
+import { ENVIRONMENT, IFileInfo, IProject } from "@mds/common";
 import * as API from "@mds/common/constants/API";
 import {
   createInformationRequirementsTable,
@@ -23,6 +23,7 @@ import {
 import { formatDateTime } from "@common/utils/helpers";
 import { documentNameColumn } from "@/components/common/DocumentColumns";
 import { MineDocument } from "@mds/common/models/documents/document";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 interface IRTFileImportProps {
   projectGuid: string;
@@ -31,7 +32,7 @@ interface IRTFileImportProps {
   downloadIRTTemplate: (url: string) => void;
 }
 
-export const IRTFileImport: FC<IRTFileImportProps & Partial<InjectedFormProps<any>>> = ({
+export const IRTFileImport: FC<IRTFileImportProps> = ({
   projectGuid,
   importIsSuccessful,
   downloadIRTTemplate,
@@ -76,8 +77,32 @@ export const IRTFileImport: FC<IRTFileImportProps & Partial<InjectedFormProps<an
     renderTextColumn("create_user", "Imported By"),
   ];
 
+  const handleCreateInformationRequirementsTable = (
+    projectGuid: string,
+    file: IFileInfo,
+    documentGuid: string
+  ) => {
+    dispatch(createInformationRequirementsTable(projectGuid, file, documentGuid));
+  };
+
+  const handleUpdateInformationRequirementsTableByFile = (
+    projectGuid: string,
+    informationRequirementsTableGuid: string,
+    file: IFileInfo,
+    documentGuid: string
+  ) => {
+    dispatch(
+      updateInformationRequirementsTableByFile(
+        projectGuid,
+        informationRequirementsTableGuid,
+        file,
+        documentGuid
+      )
+    );
+  };
+
   return (
-    <>
+    <FormWrapper name={FORM.INFORMATION_REQUIREMENTS_TABLE} onSubmit={() => {}}>
       <Row>
         <Col span={24}>
           <Typography.Title level={4}>Import IRT file</Typography.Title>
@@ -125,10 +150,10 @@ export const IRTFileImport: FC<IRTFileImportProps & Partial<InjectedFormProps<an
               name="final_irt"
               onFileLoad={onFileLoad}
               onRemoveFile={onRemoveFile}
-              createInformationRequirementsTable={dispatch(createInformationRequirementsTable)}
-              updateInformationRequirementsTableByFile={dispatch(
-                updateInformationRequirementsTableByFile
-              )}
+              createInformationRequirementsTable={handleCreateInformationRequirementsTable}
+              updateInformationRequirementsTableByFile={
+                handleUpdateInformationRequirementsTableByFile
+              }
               irtGuid={project?.information_requirements_table?.irt_guid}
               projectGuid={projectGuid}
               acceptedFileTypesMap={acceptedFileTypesMap}
@@ -138,13 +163,8 @@ export const IRTFileImport: FC<IRTFileImportProps & Partial<InjectedFormProps<an
           </Form.Item>
         </Col>
       </Row>
-    </>
+    </FormWrapper>
   );
 };
 
-export default (reduxForm({
-  form: FORM.INFORMATION_REQUIREMENTS_TABLE,
-  destroyOnUnmount: false,
-  touchOnBlur: true,
-  forceUnregisterOnUnmount: true,
-})(IRTFileImport as any) as unknown) as FC<IRTFileImportProps>;
+export default IRTFileImport;
