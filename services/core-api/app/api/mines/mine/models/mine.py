@@ -29,6 +29,7 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'mine'
     _edit_key = MINE_EDIT_GROUP
 
+    __versioned__ = {}
     mine_guid = db.Column(UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     mine_no = db.Column(db.String(10))
     mine_name = db.Column(db.String(60), nullable=False)

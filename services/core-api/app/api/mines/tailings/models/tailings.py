@@ -91,8 +91,6 @@ class MineTailingsStorageFacility(AuditMixin, Base):
 
     @hybrid_property
     def engineer_of_record(self):
-        for version in self.versions:
-            print(version.changeset)
         if self.engineer_of_records:
             return self.engineer_of_records[0]
 

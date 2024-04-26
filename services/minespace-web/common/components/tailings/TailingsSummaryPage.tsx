@@ -110,7 +110,10 @@ export const TailingsSummaryPage: FC<InjectedFormProps<ITailingsStorageFacility>
 
     if (tsfGuid) {
       if (!props.initialValues.mine_tailings_storage_facility_guid || forceReload) {
-        await props.fetchTailingsStorageFacility(mineGuid, tsfGuid);
+        await Promise.all([
+          props.fetchMineRecordById(mineGuid),
+          props.fetchTailingsStorageFacility(mineGuid, tsfGuid),
+        ]);
 
         await props.fetchPartyRelationships({
           mine_guid: mineGuid,

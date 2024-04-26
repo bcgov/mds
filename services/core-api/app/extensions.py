@@ -95,6 +95,9 @@ api = Api(
     default='mds',
     default_label='MDS related operations')
 
+# Register the sqlalchemy-continuum extension.
+# Any models with the __versioned__ attribute will be versioned automatically on
+# inserts, updates, and deletes.
 make_versioned(user_cls=None)
 
 if Config.FLASK_LOGGING_LEVEL == 'DEBUG':
