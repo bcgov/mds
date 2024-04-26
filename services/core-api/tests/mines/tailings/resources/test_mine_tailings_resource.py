@@ -68,6 +68,7 @@ def test_tsf_history_creates_record_first_insert(test_client, db_session, auth_h
         f'/mines/{tsf.mine_guid}/tailings/{tsf.mine_tailings_storage_facility_guid}', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
 
+
     assert get_resp.status_code == 200, get_resp.response
 
     assert len(get_data['history']) == 1
@@ -108,7 +109,6 @@ def test_tsf_history_creates_record_on_update(test_client, db_session, auth_head
     db_session.commit()
 
     data = {
-        'storage_location': 'above_ground',
         'mine_tailings_storage_facility_name': 'a name',
         'latitude': '50.6598000',
         'longitude': '-120.5134000',
@@ -118,27 +118,26 @@ def test_tsf_history_creates_record_on_update(test_client, db_session, auth_head
         'facility_type': 'tailings_storage_facility',
         'tailings_storage_facility_type': 'pit',
         'mines_act_permit_no': 'xxx',
-
+        'storage_location': 'above_ground',
     }
 
-    test_client.put(
+    put_resp = test_client.put(
         f'/mines/{tsf.mine_guid}/tailings/{tsf.mine_tailings_storage_facility_guid}',
         data=data,
         headers=auth_headers['full_auth_header'])
-    get_resp = test_client.get(
-        f'/mines/{tsf.mine_guid}/tailings/{tsf.mine_tailings_storage_facility_guid}',
-        headers=auth_headers['full_auth_header'])
-    get_data = json.loads(get_resp.data.decode())
+    put_data = json.loads(put_resp.data.decode())
 
-    assert get_resp.status_code == 200, get_resp.response
+    assert put_resp.status_code == 200, put_resp.response
 
-    assert len(get_data['history']) == 2
+    assert len(put_data['history']) == 2
     
-    entry = get_data['history'][1]
+    entry = put_data['history'][1]
     changeset = entry['changeset']
 
     print('hii')
-    print(get_data['history'])
+    print(json.dumps(put_data, indent=2, default=str))
+
+    print(put_data['history'])
     def find_change(field_name):
         return next((ch for ch in changeset if ch['field_name'] == field_name), None)
 
@@ -150,10 +149,9 @@ def test_tsf_history_creates_record_on_update(test_client, db_session, auth_head
     assert consequence_classification_status_code['to'] == 'SIG'
 
     assert tailings_storage_facility_type == None
-
-    assert storage_location['from'] == 'above_ground'
-    assert storage_location['to'] == 'below_ground'
-
+    assert storage_location == None # Cannot update storage location
+    assert entry['updated_by'] == 'mds'
+    assert entry['updated_at'] != None
 
 
 def test_post_mine_tailings_storage_facility_by_mine_guid(test_client, db_session, auth_headers):

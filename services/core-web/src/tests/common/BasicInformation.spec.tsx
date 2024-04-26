@@ -22,7 +22,7 @@ const initialState = {
   },
 };
 
-const BasicInfoPageForm = reduxForm({ form: "TAILINGS" })(BasicInformation);
+const BasicInfoPageForm: any = reduxForm({ form: "TAILINGS" })(BasicInformation);
 describe("BasicInformation", () => {
   test("renders properly", () => {
     const { container } = render(

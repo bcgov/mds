@@ -27,7 +27,7 @@ import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { getTsf } from "@mds/common/redux/selectors/tailingsSelectors";
 import TailingsDiffModal from "@mds/common/components/tailings/TailingsDiffModal";
 
-interface BasicInformationProps {
+export interface BasicInformationProps {
   permits: IPermit[];
   showUpdateTimestamp: boolean;
   renderConfig: any;
