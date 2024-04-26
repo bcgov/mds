@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useSelector, connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import "filepond-polyfill";
 import { FilePond, registerPlugin } from "react-filepond";
-import { Form, Popover, Switch, notification } from "antd";
+import { Form, notification, Popover, Switch } from "antd";
 import { invert, uniq } from "lodash";
 import { FunnelPlotOutlined } from "@ant-design/icons";
 import "filepond/dist/filepond.min.css";
 import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import * as tus from "tus-js-client";
+import { HttpRequest, HttpResponse } from "tus-js-client";
 import { APPLICATION_OCTET_STREAM, ENVIRONMENT, SystemFlagEnum } from "@mds/common/index";
 import { bindActionCreators } from "redux";
 import { pollDocumentUploadStatus } from "@mds/common/redux/actionCreators/documentActionCreator";
@@ -21,7 +22,6 @@ import {
   MultipartDocumentUpload,
   UploadResult,
 } from "@mds/common/utils/fileUploadHelper.interface";
-import { HttpRequest, HttpResponse } from "tus-js-client";
 import { BaseInputProps } from "./BaseInput";
 
 registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
@@ -211,7 +211,7 @@ export const FileUpload = (props: FileUploadProps) => {
               }
               props.importIsSuccessful(true);
             } catch (err) {
-              props.importIsSuccessful(false, err);
+              props.importIsSuccessful(false, err.response.data);
             }
 
             if (showWhirlpool) {
