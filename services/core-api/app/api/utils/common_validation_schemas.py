@@ -1,41 +1,3 @@
-document_schema = {
-    'document_manager_guid': {
-        'nullable': True,
-        'type': 'string',
-    },
-    'document_name': {
-        'nullable': True,
-        'type': 'string',
-    },
-    'mine_document_guid': {
-        'nullable': True,
-        'type': 'string',
-    },
-    'mine_guid': {
-        'nullable': True,
-        'type': 'string',
-    },
-    'upload_date': {
-        'nullable': True,
-        'type': 'string',
-    },
-}
-
-now_application_schema = {
-    'now_application_guid': {
-        'nullable': True,
-        'type': 'string',
-    },
-    'now_number': {
-        'nullable': True,
-        'type': 'string',
-    },
-    'submitted_date': {
-        'nullable': True,
-        'type': 'string',
-    },
-}
-
 now_party_appt_schema = {
     'mine_party_appt_type_code': {
         'nullable': True,
@@ -48,7 +10,20 @@ now_party_appt_schema = {
     'now_application': {
         'nullable': True,
         'type': 'dict',
-        'schema': now_application_schema,
+        'schema': {
+            'now_application_guid': {
+                'nullable': True,
+                'type': 'string',
+            },
+            'now_number': {
+                'nullable': True,
+                'type': 'string',
+            },
+            'submitted_date': {
+                'nullable': True,
+                'type': 'string',
+            },
+        },
     },
     'now_party_appointment_id': {
         'nullable': True,
@@ -283,7 +258,28 @@ mine_party_appointment_schema = {
     },
     'documents': {
         'type': 'dict',
-        'schema': document_schema,
+        'schema': {
+            'document_manager_guid': {
+                'nullable': True,
+                'type': 'string',
+            },
+            'document_name': {
+                'nullable': True,
+                'type': 'string',
+            },
+            'mine_document_guid': {
+                'nullable': True,
+                'type': 'string',
+            },
+            'mine_guid': {
+                'nullable': True,
+                'type': 'string',
+            },
+            'upload_date': {
+                'nullable': True,
+                'type': 'string',
+            },
+        },
     },
     'union_rep_company': {
         'nullable': True,

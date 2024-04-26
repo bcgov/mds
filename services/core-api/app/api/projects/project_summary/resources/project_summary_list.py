@@ -132,9 +132,7 @@ class ProjectSummaryListPostResource(Resource, UserMixin):
         mine_guid = data.get('mine_guid')
         mine = Mine.find_by_mine_guid(mine_guid)
         if mine is None:
-            raise NotFound('Mine not found')
-        
-        Project.validate_project_basic_info(data)   
+            raise NotFound('Mine not found')  
         new_project = Project.create(mine, data.get('project_summary_title'),
                                      data.get('proponent_project_id'),
                                      data.get('mrc_review_required', False),

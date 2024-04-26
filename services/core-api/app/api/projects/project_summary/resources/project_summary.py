@@ -164,6 +164,7 @@ class ProjectSummaryResource(Resource, UserMixin):
     parser.add_argument('is_billing_address_same_as_legal_address', type=bool, store_missing=False, required=False)
     parser.add_argument('ams_terms_agreed', type=bool, store_missing=False, required=False)
     parser.add_argument('confirmation_of_submission', type=bool, store_missing=False, required=False)
+    parser.add_argument('company_alias', type=str, store_missing=False, required=False)
 
     @api.doc(
         description='Get a Project Description.',
@@ -195,7 +196,10 @@ class ProjectSummaryResource(Resource, UserMixin):
         project = Project.find_by_project_guid(project_guid)
         data = self.parser.parse_args()
         
-        project_summary.validate_project_summary(data)
+        project_summary_validation = project_summary.validate_project_summary(data)
+        if any(project_summary_validation[i] != [] for i in project_summary_validation):
+            current_app.logger.error(f'Project Summary schema validation failed with errors: {project_summary_validation}')
+            raise BadRequest(project_summary_validation)
 
         mine_guid = data.get('mine_guid')
         mine = Mine.find_by_mine_guid(mine_guid)
@@ -235,7 +239,8 @@ class ProjectSummaryResource(Resource, UserMixin):
                                data.get('is_legal_address_same_as_mailing_address'),
                                data.get('is_billing_address_same_as_mailing_address'),
                                data.get('is_billing_address_same_as_legal_address'),
-                               data.get('contacts'))
+                               data.get('contacts'),
+                               data.get('company_alias'))
 
         project_summary.save()
         if prev_status == 'DFT' and project_summary.status_code == 'SUB':

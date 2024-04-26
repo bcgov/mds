@@ -1,5 +1,7 @@
 export interface IComplianceArticle {
   compliance_article_id: number;
+  articleNumber?: string;
+  is_expired?: boolean;
   article_act_code: string;
   section: string;
   sub_section: string;

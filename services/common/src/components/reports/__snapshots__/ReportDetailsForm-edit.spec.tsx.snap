@@ -3,7 +3,7 @@
 exports[`ReportDetailsForm renders edit mode properly 1`] = `
 <div>
   <form
-    class="ant-form ant-form-vertical edit"
+    class="ant-form ant-form-vertical common-form common-form-VIEW_EDIT_REPORT form-edit"
     id="VIEW_EDIT_REPORT"
   >
     <div>
@@ -720,7 +720,7 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
         style="padding: 4px 8px 4px 8px;"
       >
         <div
-          class="view-item"
+          class="view-item ant-form-item"
         >
           <div
             class="ant-typography view-item-label"
@@ -739,7 +739,7 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
         style="padding: 4px 8px 4px 8px;"
       >
         <div
-          class="view-item"
+          class="view-item ant-form-item"
         >
           <div
             class="ant-typography view-item-label"

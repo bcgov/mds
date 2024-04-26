@@ -17,8 +17,8 @@
     "editor.defaultFormatter": "vscode.typescript-language-features"
   },
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true,
-    "eslint.autoFixOnSave": true
+    "source.fixAll.eslint": "explicit",
+    "eslint.autoFixOnSave": "explicit"
   },
   "cSpell.words": ["idir"],
   "yaml.schemas": {

@@ -101,11 +101,9 @@ class Project(AuditMixin, Base):
         v = Validator(basic_info_schema, purge_unknown=True)
        
         if not v.validate(data):
-            errors = json.dumps(v.errors)
-            current_app.logger.info(f'Validation failed for Project Basic Information with error {errors}')
-            current_app.logger.info(data)
-            raise BadRequest(errors)
-    
+            return json.dumps(v.errors)
+        return True
+
     @classmethod
     def validate_project_contacts(cls, contact):
         base_schema = {
@@ -165,7 +163,7 @@ class Project(AuditMixin, Base):
 
         is_primary = contact.get('is_primary')
         address = contact.get('address', None)
-        address_type_code = address.get('address_type_code') if address != None else ''
+        address_type_code = address.get('address_type_code') if address != None else 'CAN'
 
         contact_schema = base_schema
 
@@ -196,10 +194,8 @@ class Project(AuditMixin, Base):
 
         v = Validator(contact_schema, purge_unknown=True)
         if not v.validate(contact):
-            errors = json.dumps(v.errors)
-            current_app.logger.info(f'Validation failed for Project Contacts with error {errors}')
-            current_app.logger.info(contact)
-            raise BadRequest(errors)
+            return json.dumps(v.errors)
+        return True
 
     @classmethod
     def create(cls,

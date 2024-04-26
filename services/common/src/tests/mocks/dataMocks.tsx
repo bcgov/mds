@@ -1807,6 +1807,9 @@ export const COMPLIANCE_CODES = {
       section: "2",
       sub_paragraph: null,
       sub_section: "3",
+      long_description: "long description",
+      help_reference_link: "https://example.com",
+      cim_or_cpo: "CIM",
     },
     {
       article_act_code: "HSRCM",
@@ -1818,6 +1821,9 @@ export const COMPLIANCE_CODES = {
       section: "2",
       sub_paragraph: null,
       sub_section: "3",
+      long_description: "long description",
+      help_reference_link: null,
+      cim_or_cpo: null,
     },
   ],
 };

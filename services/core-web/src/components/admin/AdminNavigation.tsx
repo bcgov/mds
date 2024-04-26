@@ -6,9 +6,9 @@ import { includes } from "lodash";
 import * as routes from "@/constants/routes";
 
 interface AdminNavigationProps {
-  activeButton: string,
-  openSubMenuKey: string[],
-};
+  activeButton: string;
+  openSubMenuKey: string[];
+}
 
 const AdminNavigation: FC<AdminNavigationProps> = (props) => {
   const ifActiveButton = (route) => (includes(props.activeButton, route) ? "active-menu-btn" : "");

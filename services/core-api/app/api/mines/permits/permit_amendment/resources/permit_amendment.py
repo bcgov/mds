@@ -24,8 +24,9 @@ from app.api.now_applications.models.now_application_document_xref import NOWApp
 from app.api.now_applications.models.now_application_document_identity_xref import NOWApplicationDocumentIdentityXref
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from app.api.mines.mine.resources.mine_type import MineType
-from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
 from app.api.utils.helpers import get_preamble_text
+from app.api.verifiable_credentials.models.credentials import PartyVerifiableCredentialMinesActPermit
+from app.api.verifiable_credentials.manager import revoke_all_credentials_for_permit, offer_newest_amendment_to_current_permittee
 
 ROLES_ALLOWED_TO_CREATE_HISTORICAL_AMENDMENTS = [MINE_ADMIN, EDIT_HISTORICAL_PERMIT_AMENDMENTS]
 
@@ -264,6 +265,11 @@ class PermitAmendmentListResource(Resource, UserMixin):
                             ])
 
         new_pa.save()
+
+        revoke_all_credentials_for_permit.apply_async(kwargs={"permit_guid": permit_guid, "mine_guid":mine_guid, "reason":"it was amended"})
+        offer_newest_amendment_to_current_permittee.apply_async(kwargs={"permit_amendment_guid": new_pa.permit_amendment_guid})
+
+
         return new_pa
 
 

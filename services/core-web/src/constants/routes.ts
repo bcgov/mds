@@ -56,6 +56,7 @@ import DamsDetailsPage from "@/components/mine/Tailings/DamsDetailsPage";
 import ReportPage from "@/components/mine/Reports/ReportPage";
 import ReportSteps from "@mds/common/components/reports/ReportSteps";
 import ViewDigitalPermitCredential from "@/components/mine/DigitalPermitCredential/ViewDigitalPermitCredential";
+import ComplianceCodeManagement from "@/components/admin/complianceCodes/ComplianceCodeManagement";
 
 const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));
@@ -445,6 +446,11 @@ export const ADMIN_CONTACT_MANAGEMENT = {
   route: "/admin/contact-management/:tab",
   dynamicRoute: (tab) => `/admin/contact-management/${tab}`,
   component: MergeContactsDashboard,
+};
+
+export const ADMIN_HSRC_COMPLIANCE_CODE_MANAGEMENT = {
+  route: "/admin/hsrc-management",
+  component: ComplianceCodeManagement,
 };
 
 export const SEARCH_RESULTS = {

@@ -106,3 +106,7 @@ export const ADD_EDIT_DAM = "ADD_EDIT_DAM";
 
 // Staff Alerts
 export const ADD_EDIT_MINE_ALERT = "ADD_EDIT_MINE_ALERT";
+
+// Compliance Codes
+export const COMPLIANCE_CODE_BULK_EDIT = "COMPLIANCE_CODE_BULK_EDIT";
+export const ADD_COMPLIANCE_CODE = "ADD_COMPLIANCE_CODE";

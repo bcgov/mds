@@ -252,7 +252,7 @@ exports[`ReportPage renders view mode properly 1`] = `
     </div>
     <div>
       <form
-        class="ant-form ant-form-vertical edit"
+        class="ant-form ant-form-vertical common-form common-form-VIEW_EDIT_REPORT form-view"
         id="VIEW_EDIT_REPORT"
       >
         <div
@@ -534,7 +534,7 @@ exports[`ReportPage renders view mode properly 1`] = `
             style="padding: 4px 8px 4px 8px;"
           >
             <div
-              class="view-item"
+              class="view-item ant-form-item"
             >
               <div
                 class="ant-typography view-item-label"
@@ -553,7 +553,7 @@ exports[`ReportPage renders view mode properly 1`] = `
             style="padding: 4px 8px 4px 8px;"
           >
             <div
-              class="view-item"
+              class="view-item ant-form-item"
             >
               <div
                 class="ant-typography view-item-label"
@@ -572,7 +572,7 @@ exports[`ReportPage renders view mode properly 1`] = `
             style="padding: 4px 8px 4px 8px;"
           >
             <div
-              class="view-item"
+              class="view-item ant-form-item"
             >
               <div
                 class="ant-typography view-item-label"
@@ -602,7 +602,7 @@ exports[`ReportPage renders view mode properly 1`] = `
             style="padding: 4px 8px 4px 8px;"
           >
             <div
-              class="view-item"
+              class="view-item ant-form-item"
             >
               <div
                 class="ant-typography view-item-label"
@@ -621,7 +621,7 @@ exports[`ReportPage renders view mode properly 1`] = `
             style="padding: 4px 8px 4px 8px;"
           >
             <div
-              class="view-item"
+              class="view-item ant-form-item"
             >
               <div
                 class="ant-typography view-item-label"
@@ -640,7 +640,7 @@ exports[`ReportPage renders view mode properly 1`] = `
             style="padding: 4px 8px 4px 8px;"
           >
             <div
-              class="view-item"
+              class="view-item ant-form-item"
             >
               <div
                 class="ant-typography view-item-label"
@@ -659,7 +659,7 @@ exports[`ReportPage renders view mode properly 1`] = `
             style="padding: 4px 8px 4px 8px;"
           >
             <div
-              class="view-item"
+              class="view-item ant-form-item"
             >
               <div
                 class="ant-typography view-item-label"
@@ -699,7 +699,7 @@ exports[`ReportPage renders view mode properly 1`] = `
             style="padding: 4px 8px 4px 8px;"
           >
             <div
-              class="view-item"
+              class="view-item ant-form-item"
             >
               <div
                 class="ant-typography view-item-label"
@@ -718,7 +718,7 @@ exports[`ReportPage renders view mode properly 1`] = `
             style="padding: 4px 8px 4px 8px;"
           >
             <div
-              class="view-item"
+              class="view-item ant-form-item"
             >
               <div
                 class="ant-typography view-item-label"

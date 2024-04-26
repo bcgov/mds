@@ -213,7 +213,8 @@ REQUIREMENTS_MODEL = api.model(
         'display_order': fields.Integer,
         'deleted_ind': fields.Boolean,
         'sub_requirements': fields.List(Requirement),
-        'step': fields.String
+        'step': fields.String,
+        'version': fields.Integer
     })
 
 IRT_DOCUMENT_MODEL = api.inherit('InformationRequirementsTableDocument', MINE_DOCUMENT_MODEL, {
@@ -243,7 +244,8 @@ IRT_REQUIREMENTS_MODEL = api.model(
         'deleted_ind': fields.Boolean,
         'required': fields.Boolean,
         'methods': fields.Boolean,
-        'comment': fields.String
+        'comment': fields.String,
+        'version': fields.Integer,
     })
 
 IRT_MODEL = api.model(

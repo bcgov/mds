@@ -52,6 +52,12 @@
   }
 }
 
+.hide-required-indicator {
+  .form-item-optional {
+    display: none;
+  }
+}
+
 .ant-form-vertical .ant-form-item-label>label {
   // to make * appear on the same line when label is an HTML element
   display: flex;
@@ -64,6 +70,10 @@
 
 .ant-form-item {
   margin-bottom: 10px;
+}
+
+.common-form.form-view .ant-row.form-row-margin {
+  margin-bottom: 1em;
 }
 
 .vertical-radio-group {

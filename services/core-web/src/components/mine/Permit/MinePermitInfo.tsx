@@ -248,6 +248,11 @@ export const MinePermitInfo: FC<MinePermitInfoProps> = (props) => {
   // Amendment Modals
   const openAddAmendmentModal = (event, onSubmit, title, permit, type) => {
     event.preventDefault();
+    const show_vc_warning =
+      permit.current_permittee_digital_wallet_connection_state &&
+      permit.permit_amendments.some(
+        (amendment) => amendment.vc_credential_exch_state === "credential_acked"
+      );
     props.openModal({
       props: {
         initialValues: {
@@ -261,6 +266,7 @@ export const MinePermitInfo: FC<MinePermitInfoProps> = (props) => {
         title,
         mine_guid: props.mineGuid,
         amendments: permit.permit_amendments,
+        show_vc_warning: show_vc_warning,
       },
       width: "50vw",
       content: modalConfig.PERMIT_AMENDMENT,

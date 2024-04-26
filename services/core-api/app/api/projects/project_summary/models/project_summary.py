@@ -57,8 +57,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     legal_land_owner_email_address = db.Column(db.String(200), nullable=True)
     facility_type = db.Column(db.String, nullable=True)
     facility_desc = db.Column(db.String(4000), nullable=True)
-    facility_latitude = db.Column(db.Numeric(9,7), nullable=True)
-    facility_longitude = db.Column(db.Numeric(11,7), nullable=True)
+    facility_latitude = db.Column(db.Numeric(9, 7), nullable=True)
+    facility_longitude = db.Column(db.Numeric(11, 7), nullable=True)
     facility_coords_source = db.Column(db.String(3), nullable=True)
     facility_coords_source_desc = db.Column(db.String(4000), nullable=True)
     facility_pid_pin_crown_file_no = db.Column(db.String(100), nullable=True)
@@ -67,6 +67,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     zoning = db.Column(db.Boolean, nullable=True)
     zoning_reason = db.Column(db.String, nullable=True)
     nearest_municipality_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('municipality.municipality_guid'))
+    company_alias = db.Column(db.String(200), nullable=True)
 
     is_legal_address_same_as_mailing_address = db.Column(db.Boolean, nullable=True)
     is_billing_address_same_as_mailing_address = db.Column(db.Boolean, nullable=True)
@@ -203,8 +204,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         qy = db.session.query(ProjectSummary)
         try:
             if mine_document_guid is not None:
-                query = qy\
-                    .filter(ProjectSummary.project_summary_id == ProjectSummaryDocumentXref.project_summary_id)\
+                query = qy \
+                    .filter(ProjectSummary.project_summary_id == ProjectSummaryDocumentXref.project_summary_id) \
                     .filter(ProjectSummaryDocumentXref.mine_document_guid == mine_document_guid)
                 return query.first()
 
@@ -250,8 +251,9 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 party_type_code=party_data.get('party_type_code'),
                 job_title=party_data.get('job_title'),
                 job_title_code=job_title_code,
-                address_type_code= cls.__get_address_type_code(address_data),
-                middle_name=party_data.get('middle_name')
+                address_type_code=cls.__get_address_type_code(address_data),
+                middle_name=party_data.get('middle_name'),
+                credential_id=party_data.get('credential_id')
             )
 
             if isinstance(address_data, list):
@@ -294,7 +296,45 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                                                       party_guid,
                                                       party_orgbook_data.get('company_alias'))
             return party_orgbook
-        
+
+    def create_or_update_authorization(self, authorization):
+            updated_authorization_guid = authorization.get('project_summary_authorization_guid')
+
+            if updated_authorization_guid:
+                updated_authorization = ProjectSummaryAuthorization.find_by_project_summary_authorization_guid(
+                    updated_authorization_guid)
+                updated_authorization.project_summary_permit_type = authorization.get(
+                    'project_summary_permit_type')
+                updated_authorization.existing_permits_authorizations = authorization.get(
+                    'existing_permits_authorizations')
+                updated_authorization.amendment_changes = authorization.get('amendment_changes')
+                updated_authorization.amendment_severity = authorization.get('amendment_severity')
+                updated_authorization.is_contaminated = authorization.get('is_contaminated')
+                updated_authorization.new_type = authorization.get('new_type')
+                updated_authorization.authorization_description = authorization.get('authorization_description')
+                updated_authorization.exemption_requested = authorization.get('exemption_requested')
+                updated_authorization.ams_tracking_number = authorization.get('ams_tracking_number')
+                updated_authorization.ams_outcome = authorization.get('ams_outcome')
+                updated_authorization.ams_status_code = authorization.get('ams_status_code')
+            else:
+                new_authorization = ProjectSummaryAuthorization(
+                    project_summary_guid=self.project_summary_guid,
+                    project_summary_authorization_type=authorization.get(
+                        'project_summary_authorization_type'),
+                    project_summary_permit_type=authorization.get('project_summary_permit_type'),
+                    existing_permits_authorizations=authorization.get(
+                        'existing_permits_authorizations'),
+                    amendment_changes=authorization.get('amendment_changes'),
+                    amendment_severity=authorization.get('amendment_severity'),
+                    is_contaminated=authorization.get('is_contaminated'),
+                    new_type=authorization.get('new_type'),
+                    authorization_description=authorization.get('authorization_description'),
+                    exemption_requested=authorization.get('exemption_requested'),
+                    ams_tracking_number=authorization.get('ams_tracking_number'),
+                    ams_outcome=authorization.get('ams_outcome')
+                )
+                self.authorizations.append(new_authorization)
+
     @classmethod
     def validate_project_party(cls, party, section):
         person_schema = party_base_schema | {
@@ -406,10 +446,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             
         v = Validator(base_schema, purge_unknown=True)
         if not v.validate(party):
-            errors = json.dumps(v.errors)
-            current_app.logger.info(f'{section} validation failed with error {errors}')
-            current_app.logger.info(party)
-            raise BadRequest(errors)
+            return json.dumps(v.errors)
+        return True
 
     @classmethod
     def validate_legal_land(self, data):
@@ -444,10 +482,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         v = Validator(legal_land_owner_schema, purge_unknown=True)
        
         if not v.validate(data):
-            errors = json.dumps(v.errors)
-            current_app.logger.info(f'Validation failed for Project Legal Land Owner Information with error {errors}')
-            current_app.logger.info(data)
-            raise BadRequest(errors)
+            return json.dumps(v.errors)
+        return True
         
     @classmethod
     def validate_declaration(self, data):
@@ -482,13 +518,11 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         v = Validator(declaration_schema, purge_unknown=True)
        
         if not v.validate(data):
-            errors = json.dumps(v.errors)
-            current_app.logger.info(f'Validation failed for Project Declaration with error {errors}')
-            current_app.logger.info(data)
-            raise BadRequest(errors)
+            return json.dumps(v.errors)
+        return True
 
     @classmethod
-    def validate_project_summary(cls, data):
+    def validate_project_summary_surface_level_data(self, data):
         draft_surface_level_schema = project_summary_base_schema | {
             'contacts': {
                 'required': True,
@@ -613,18 +647,10 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         }
 
         status_code = data.get('status_code')
-        ams_authorizations = data.get('ams_authorizations', None)
-        authorizations = data.get('authorizations',[])
-        contacts = data.get('contacts')
-        applicant = data.get('applicant', None)
-        agent = data.get('agent', None)
-        is_agent = data.get('is_agent', None)
-        facility_operator = data.get('facility_operator', None)
         facility_latitude = data.get('facility_latitude', None)
         facility_longitude = data.get('facility_longitude', None)
-        is_legal_land_owner = data.get('is_legal_land_owner', None)
-        zoning = data.get('zoning', None)
         facility_coords_source = data.get('facility_coords_source', None)
+        zoning = data.get('zoning', None)
 
         surface_data_to_validate = data
         if facility_latitude != None and facility_longitude != None:
@@ -647,97 +673,107 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                     'type': 'string',
                 },     
             }
-        
-        # Validate surfave level of payload
-        validate_surface_level = Validator(surface_level_schema, purge_unknown=True)
-        if not validate_surface_level.validate(surface_data_to_validate):
-            surface_level_errors = json.dumps(validate_surface_level.errors)
-            current_app.logger.info(f'Surface level validation failed with error {surface_level_errors}')
-            current_app.logger.info(data)
-            raise BadRequest(surface_level_errors)
+
+        v = Validator(surface_level_schema, purge_unknown=True)
+        if not v.validate(surface_data_to_validate):
+            return json.dumps(v.errors)
+        return True
+
+    @classmethod
+    def validate_project_summary(cls, data):
+        status_code = data.get('status_code')
+        ams_authorizations = data.get('ams_authorizations', None)
+        authorizations = data.get('authorizations',[])
+        contacts = data.get('contacts')
+        applicant = data.get('applicant', None)
+        agent = data.get('agent', None)
+        is_agent = data.get('is_agent', None)
+        facility_operator = data.get('facility_operator', None)
+        is_legal_land_owner = data.get('is_legal_land_owner', None)
+
+        errors_found = {
+            'surface_level_data': [],
+            'basic_info': [],
+            'authorizations': [],
+            'project_contacts': [],
+            'applicant_info': [],
+            'agent': [],
+            'facility': [],
+            'legal_land': [],
+            'declaration': [],
+        }
+
+        # Validate surface level data of payload
+        surface_level_validation = ProjectSummary.validate_project_summary_surface_level_data(data)
+        if surface_level_validation != True:
+            errors_found['surface_level_data'].append(surface_level_validation)
 
         # Validate Basic Information
-        Project.validate_project_basic_info(data)
+        basic_info_validation = Project.validate_project_basic_info(data)
+        if basic_info_validation != True:
+            errors_found['basic_info'].append(basic_info_validation)
 
         # Validate Authorizations Involved
-        if (status_code == 'SUB' 
+        if (status_code == 'SUB'
             and len(ams_authorizations.get('amendments', [])) == 0 
             and len(ams_authorizations.get('new', [])) == 0 
             and len(authorizations) == 0):
-                raise AssertionError('Authorizations Involved not provided')
+                errors_found['authorizations'].append('Authorizations Involved not provided')
         
         for authorization in authorizations:
-            ProjectSummaryAuthorization.validate_authorization(authorization, False)
+            authorization_validation = ProjectSummaryAuthorization.validate_authorization(authorization, False)
+            if authorization_validation != True:
+                errors_found['authorizations'].append(authorization_validation)
 
         if ams_authorizations:
             for authorization in ams_authorizations.get('amendments', []):
-                ProjectSummaryAuthorization.validate_authorization(authorization, True)
+                ams_authorization_amendments_validation = ProjectSummaryAuthorization.validate_authorization(authorization, True)
+                if ams_authorization_amendments_validation != True:
+                    errors_found['authorizations'].append(ams_authorization_amendments_validation)
 
             for authorization in ams_authorizations.get('new', []):
-                ProjectSummaryAuthorization.validate_authorization(authorization, True)
+                ams_authorization_new_validation = ProjectSummaryAuthorization.validate_authorization(authorization, True)
+                if ams_authorization_new_validation != True:
+                    errors_found['authorizations'].append(ams_authorization_new_validation)
 
         # Validate Project Contacts
         for contact in contacts:
-            Project.validate_project_contacts(contact)
+            contact_validation = Project.validate_project_contacts(contact)
+            if contact_validation != True:
+                errors_found['project_contacts'].append(contact_validation)
 
         # Validate Applicant Information
         if applicant != None:
-            ProjectSummary.validate_project_party(applicant, 'Applicant')
+            applicant_validation = ProjectSummary.validate_project_party(applicant, 'Applicant')
+            if applicant_validation != True:
+                errors_found['applicant_info'].append(applicant_validation)
 
         # Validate Agent
         if is_agent == True:
-            ProjectSummary.validate_project_party(agent, 'Agent')
+            agent_validation = ProjectSummary.validate_project_party(agent, 'Agent')
+            if agent_validation != True:
+                errors_found['agent'].append(agent_validation)
         
         # Validate Facility Operator Information
         if facility_operator != None:
-            ProjectSummary.validate_project_party(facility_operator, 'Facility')
+            facility_validation = ProjectSummary.validate_project_party(facility_operator, 'Facility')
+            if facility_validation != True:
+                errors_found['facility'].append(facility_validation)
 
         # Validate Legal Land Owner Information
         if is_legal_land_owner == False:
-            ProjectSummary.validate_legal_land(data)
+            legal_land_validation = ProjectSummary.validate_legal_land(data)
+            if legal_land_validation != True:
+                errors_found['legal_land'].append(legal_land_validation)
 
 
         # Validate Declaration
         if status_code == 'SUB':
-            ProjectSummary.validate_declaration(data)
+            declaration_validation = ProjectSummary.validate_declaration(data)
+            if declaration_validation != True:
+                errors_found['legal_land'].append(declaration_validation)
 
-    def create_or_update_authorization(self, authorization):
-            updated_authorization_guid = authorization.get('project_summary_authorization_guid')
-
-            if updated_authorization_guid:
-                updated_authorization = ProjectSummaryAuthorization.find_by_project_summary_authorization_guid(
-                    updated_authorization_guid)
-                updated_authorization.project_summary_permit_type = authorization.get(
-                    'project_summary_permit_type')
-                updated_authorization.existing_permits_authorizations = authorization.get(
-                    'existing_permits_authorizations')
-                updated_authorization.amendment_changes = authorization.get('amendment_changes')
-                updated_authorization.amendment_severity = authorization.get('amendment_severity')
-                updated_authorization.is_contaminated = authorization.get('is_contaminated')
-                updated_authorization.new_type = authorization.get('new_type')
-                updated_authorization.authorization_description = authorization.get('authorization_description')
-                updated_authorization.exemption_requested = authorization.get('exemption_requested')
-                updated_authorization.ams_tracking_number = authorization.get('ams_tracking_number')
-                updated_authorization.ams_outcome = authorization.get('ams_outcome')
-                updated_authorization.ams_status_code = authorization.get('ams_status_code')
-            else:
-                new_authorization = ProjectSummaryAuthorization(
-                    project_summary_guid=self.project_summary_guid,
-                    project_summary_authorization_type=authorization.get(
-                        'project_summary_authorization_type'),
-                    project_summary_permit_type=authorization.get('project_summary_permit_type'),
-                    existing_permits_authorizations=authorization.get(
-                        'existing_permits_authorizations'),
-                    amendment_changes=authorization.get('amendment_changes'),
-                    amendment_severity=authorization.get('amendment_severity'),
-                    is_contaminated=authorization.get('is_contaminated'),
-                    new_type=authorization.get('new_type'),
-                    authorization_description=authorization.get('authorization_description'),
-                    exemption_requested=authorization.get('exemption_requested'),
-                    ams_tracking_number=authorization.get('ams_tracking_number'),
-                    ams_outcome=authorization.get('ams_outcome')
-                )
-                self.authorizations.append(new_authorization)
+        return errors_found
 
     def get_ams_tracking_details(self, ams_tracking_results, project_summary_authorization_guid):
         if not ams_tracking_results:
@@ -789,16 +825,13 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             project_summary.documents.append(project_summary_doc)
 
         for authorization in authorizations:
-            ProjectSummaryAuthorization.validate_authorization(authorization, False)
             project_summary.create_or_update_authorization(authorization)
 
         if ams_authorizations:
             for authorization in ams_authorizations.get('amendments', []):
-                ProjectSummaryAuthorization.validate_authorization(authorization, True)
                 project_summary.create_or_update_authorization(authorization)
 
             for authorization in ams_authorizations.get('new', []):
-                ProjectSummaryAuthorization.validate_authorization(authorization, True)
                 project_summary.create_or_update_authorization(authorization)
         
 
@@ -854,6 +887,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                is_billing_address_same_as_mailing_address=None,
                is_billing_address_same_as_legal_address=None,
                contacts=None,
+               company_alias=None,
                add_to_session=True):
         
         # Update simple properties.
@@ -881,6 +915,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         self.is_legal_address_same_as_mailing_address = is_legal_address_same_as_mailing_address
         self.is_billing_address_same_as_mailing_address = is_billing_address_same_as_mailing_address
         self.is_billing_address_same_as_legal_address = is_billing_address_same_as_legal_address
+        self.company_alias = company_alias
 
         # TODO - Turn this on when document removal is activated on the front end.
         # Get the GUIDs of the updated documents.
@@ -896,9 +931,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             applicant_party = self.create_or_update_party(applicant, 'APP', self.applicant)
             applicant_party.save()
             self.applicant_party_guid = applicant_party.party_guid
-
-            if applicant.get('party_type_code') == "ORG":
-               self.create_or_update_party_orgbook(applicant, self.applicant_party_guid, self.applicant)
 
         # Create or update Agent Party
         self.is_agent = is_agent
@@ -1007,7 +1039,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             for authorization in ams_authorizations.get('new', []):
                 if ams_results:
                     ams_tracking_details = self.get_ams_tracking_details(ams_results,
-                                                                         authorization.get('project_summary_authorization_guid'))
+                                                                         authorization.get(
+                                                                             'project_summary_authorization_guid'))
                     if ams_tracking_details:
                         # if result does not have a statusCode attribute, it means the outcome is successful.
                         authorization['ams_status_code'] = ams_tracking_details.get('statusCode', '200')

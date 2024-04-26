@@ -336,7 +336,7 @@ def register_routes(app):
 
         return {
             'status': getattr(error, 'status_code', 400),
-            'message': "Error occurred while procesing data",
+            'message': "Error occurred while processing data",
             'trace_id': str(get_trace_id()),
         }, getattr(error, 'status_code', 400)
 

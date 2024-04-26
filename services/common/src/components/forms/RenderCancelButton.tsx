@@ -26,6 +26,7 @@ export const cancelConfirmWrapper = (
 
 interface RenderCancelButtonProps {
   buttonText?: string | ReactNode;
+  viewButtonText?: string | ReactNode;
   buttonProps?: BaseButtonProps;
   cancelFunction?: () => void | Promise<void>;
   cancelModalProps?: ModalFuncProps;
@@ -41,12 +42,13 @@ interface RenderCancelButtonProps {
  */
 const RenderCancelButton: FC<RenderCancelButtonProps> = ({
   buttonText = "Cancel",
+  viewButtonText = "Close",
   buttonProps = { type: "default" },
   cancelFunction,
   cancelModalProps,
 }) => {
   const dispatch = useDispatch();
-  const { formName, isModal } = useContext(FormContext);
+  const { formName, isModal, isEditMode } = useContext(FormContext);
   const isFormDirty = useSelector(isDirty(formName));
 
   const handleCancel = () => {
@@ -57,12 +59,14 @@ const RenderCancelButton: FC<RenderCancelButtonProps> = ({
       dispatch(closeModal());
     }
   };
+
+  const buttonCancelFunction = isEditMode
+    ? () => cancelConfirmWrapper(handleCancel, isFormDirty, cancelModalProps)
+    : handleCancel;
+
   return (
-    <Button
-      {...buttonProps}
-      onClick={() => cancelConfirmWrapper(handleCancel, isFormDirty, cancelModalProps)}
-    >
-      {buttonText}
+    <Button {...buttonProps} onClick={() => buttonCancelFunction()}>
+      {isEditMode ? buttonText : viewButtonText}
     </Button>
   );
 };

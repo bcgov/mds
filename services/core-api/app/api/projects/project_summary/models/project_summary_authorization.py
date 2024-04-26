@@ -171,10 +171,8 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
             v = Validator(other_schema, purge_unknown=True)
 
         if not v.validate(authorization):
-            errors = json.dumps(v.errors)
-            current_app.logger.info(f'Validation failed for the following authorization with error {errors}')
-            current_app.logger.info(authorization)
-            raise BadRequest(errors)
+            return json.dumps(v.errors)
+        return True
 
     @classmethod
     def create(cls,
