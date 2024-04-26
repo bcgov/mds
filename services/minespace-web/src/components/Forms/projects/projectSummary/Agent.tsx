@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Field, change, getFormValues } from "redux-form";
 import { Col, Row, Typography } from "antd";
@@ -15,17 +15,36 @@ import {
   requiredRadioButton,
 } from "@mds/common/redux/utils/Validate";
 import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
-import { CONTACTS_COUNTRY_OPTIONS } from "@mds/common";
+import { CONTACTS_COUNTRY_OPTIONS, IOrgbookCredential } from "@mds/common";
+import RenderOrgBookSearch from "@mds/common/components/forms/RenderOrgBookSearch";
+import { fetchOrgBookCredential } from "@mds/common/redux/actionCreators/orgbookActionCreator";
+import { getOrgBookCredential } from "@mds/common/redux/selectors/orgbookSelectors";
+import { normalizePhone } from "@common/utils/helpers";
 
 export const Agent: FC = () => {
   const dispatch = useDispatch();
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
   const { agent = {}, is_agent = false } = formValues;
-  const { party_type_code, address = {} } = agent ?? {};
+  const { party_type_code, address = {}, credential_id } = agent ?? {};
   const { address_type_code, sub_division_code } = address ?? {};
   const isInternational = address_type_code === "INT";
   // currently no endpoints, etc, for address_type_code
   const provinceOptions = useSelector(getDropdownProvinceOptions);
+  const [orgBookOptions, setOrgBookOptions] = useState([]);
+  const [credential, setCredential] = useState<IOrgbookCredential>(null);
+  const orgBookCredential = useSelector(getOrgBookCredential);
+
+  useEffect(() => {
+    if (credential_id) dispatch(fetchOrgBookCredential(credential_id));
+  }, [credential_id]);
+
+  useEffect(() => {
+    if (orgBookCredential?.topic) {
+      setCredential(orgBookCredential);
+      const options = [{ text: orgBookCredential.topic.local_name.text, value: credential_id }];
+      setOrgBookOptions(options);
+    }
+  }, [orgBookCredential]);
 
   useEffect(() => {
     // set a value for party type code because required validation doesn't show
@@ -37,6 +56,7 @@ export const Agent: FC = () => {
   }, [is_agent]);
 
   useEffect(() => {
+    setCredential(null);
     if (party_type_code === "ORG") {
       dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.first_name", null));
     }
@@ -51,6 +71,19 @@ export const Agent: FC = () => {
       dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.address.sub_division_code", null));
     }
   }, [address_type_code]);
+
+  useEffect(() => {
+    if (credential)
+      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.credential_id", credential.id));
+  }, [credential]);
+
+  const handleResetParty = () => {
+    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.party_name", null));
+    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.first_name", null));
+    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.middle_name", null));
+    setCredential(null);
+    setOrgBookOptions(null);
+  };
 
   return (
     <div className="ant-form-vertical">
@@ -82,16 +115,19 @@ export const Agent: FC = () => {
               { label: "Person", value: "PER" },
             ]}
             optionType="button"
+            onChange={handleResetParty}
           />
           {party_type_code === "ORG" && (
-            // TODO: With orgbook integration, this should populate something in orgbook, not agent.party_name
             <Field
               name="agent.party_name"
-              label="Agent's Company Legal Name"
+              id="agent.party_name"
               required
-              validate={[required, maxLength(100)]}
-              component={RenderField}
-              help="as registered with the BC Registar of Companies"
+              validate={[required]}
+              label="Agent's Company Legal Name"
+              setCredential={setCredential}
+              data={orgBookOptions}
+              help={"as registered with the BC Registrar of Companies"}
+              component={RenderOrgBookSearch}
             />
           )}
           {party_type_code === "PER" && (
@@ -140,6 +176,7 @@ export const Agent: FC = () => {
                 required
                 validate={isInternational ? [required] : [required, phoneNumber]}
                 component={RenderField}
+                normalize={normalizePhone}
               />
             </Col>
             <Col md={4} sm={5}>
