@@ -8,7 +8,7 @@ import {
   TSF_OPERATING_STATUS_CODE,
   TSF_TYPES,
 } from "@mds/common";
-import { Col, Row, Typography } from "antd";
+import { Alert, Button, Col, Row, Typography } from "antd";
 import React, { FC, useEffect, useState } from "react";
 import {
   lat,
@@ -18,16 +18,16 @@ import {
   required,
   requiredList,
   validateSelectOptions,
-} from "@common/utils/Validate";
+} from "@mds/common/redux/utils/Validate";
 
 import { Field } from "redux-form";
 import { connect } from "react-redux";
-import { formatDateTime } from "@common/utils/helpers";
+import { formatDateTime } from "@mds/common/redux/utils/helpers";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { getTsf } from "@mds/common/redux/selectors/tailingsSelectors";
-import { RootState } from "@/App";
+import TailingsDiffModal from "@mds/common/components/tailings/TailingsDiffModal";
 
-interface BasicInformationProps {
+export interface BasicInformationProps {
   permits: IPermit[];
   showUpdateTimestamp: boolean;
   renderConfig: any;
@@ -36,9 +36,51 @@ interface BasicInformationProps {
   isEditMode: boolean;
 }
 
+// Provide a mapping of the field names to the title and data for the field
+// This is used to display the field names and values in a more user-friendly way in the history modal
+const historyDiffValueMapper = {
+  facility_type: {
+    title: "Facility Type",
+    data: FACILITY_TYPES,
+  },
+  mines_act_permit_no: {
+    title: "Mines Act Permit Number",
+  },
+  tailings_storage_facility_type: {
+    title: "Tailings Storage Facility Type",
+    data: TSF_TYPES,
+  },
+  storage_location: {
+    title: "Underground or Above Ground?",
+    data: STORAGE_LOCATION,
+  },
+  mine_tailings_storage_facility_name: {
+    title: "Facility Name",
+  },
+  latitude: {
+    title: "Latitude",
+  },
+  longitude: {
+    title: "Longitude",
+  },
+  consequence_classification_status_code: {
+    title: "Consequence Classification",
+    data: CONSEQUENCE_CLASSIFICATION_STATUS_CODE,
+  },
+  tsf_operating_status_code: {
+    title: "Operating Status",
+    data: TSF_OPERATING_STATUS_CODE,
+  },
+  itrb_exemption_status_code: {
+    title: "Independent Tailings Review Board Member",
+    data: TSF_INDEPENDENT_TAILINGS_REVIEW_BOARD,
+  },
+};
+
 export const BasicInformation: FC<BasicInformationProps> = (props) => {
   const { permits, renderConfig, canEditTSF = false, tsf, isEditMode } = props;
   const [permitOptions, setPermitOptions] = useState([]);
+  const [diffModalOpen, setDiffModalOpen] = useState(false);
 
   const canEditTSFAndEditMode = canEditTSF && isEditMode;
 
@@ -59,15 +101,31 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
   }, [permits]);
   return (
     <>
-      <Row justify="space-between">
+      {props.tsf?.update_timestamp && (
+        <Row>
+          <Col span={24}>
+            <Typography.Paragraph>
+              <Alert
+                description={`Last Updated by ${props.tsf.update_user}  on ${formatDateTime(
+                  props.tsf.update_timestamp
+                )}`}
+                showIcon
+                message=""
+                className="ant-alert-grey bullet"
+                type="info"
+                style={{ alignItems: "center" }}
+                action={
+                  <Button className="margin-large--left" onClick={() => setDiffModalOpen(true)}>
+                    View History
+                  </Button>
+                }
+              />
+            </Typography.Paragraph>
+          </Col>
+        </Row>
+      )}
+      <Row>
         <Typography.Title level={3}>Basic Information</Typography.Title>
-        {props.showUpdateTimestamp && props.tsf?.update_timestamp && (
-          <Typography.Paragraph style={{ textAlign: "right" }}>
-            <b>Last Updated</b>
-            <br />
-            {formatDateTime(props.tsf.update_timestamp)}
-          </Typography.Paragraph>
-        )}
       </Row>
       <Field
         id="facility_type"
@@ -162,11 +220,18 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
         data={TSF_INDEPENDENT_TAILINGS_REVIEW_BOARD}
         validate={[maxLength(300), required]}
       />
+      <TailingsDiffModal
+        open={diffModalOpen}
+        onCancel={() => setDiffModalOpen(false)}
+        valueMapper={historyDiffValueMapper}
+        tsf={tsf}
+        history={tsf.history}
+      />
     </>
   );
 };
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state) => ({
   permits: getPermits(state),
   tsf: getTsf(state),
 });

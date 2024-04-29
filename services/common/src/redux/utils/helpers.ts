@@ -126,12 +126,12 @@ export const formatPostalCode = (code) => code && code.replace(/.{3}$/, " $&");
 export const formatTitleString = (input) =>
   input.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
 
-export const formatSnakeCaseToSentenceCase = (text: string | null) => {
+export const formatSnakeCaseToSentenceCase = (text: string | null, separator = "-") => {
   if (!text || !text.length) {
     return "";
   }
   const words = text
-    .split("-")
+    .split(separator)
     .map((word) => word.charAt(0).toUpperCase() + word.substring(1).toLowerCase());
   return words.join(" ");
 };

@@ -50,6 +50,7 @@ export const TailingsSummaryPageWrapper = (props) => {
       tsfGuid={match.params.tailingsStorageFacilityGuid}
       canAssignEor
       routes={routes}
+      showUpdateTimestamp
       eorHistoryColumns={["name", "status", "dates", "letters"]}
     >
       <TailingsSummaryPage

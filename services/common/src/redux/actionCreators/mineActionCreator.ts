@@ -143,6 +143,27 @@ export const updateTailingsStorageFacility = (
     .finally(() => dispatch(hideLoading()));
 };
 
+export const fetchTailingsStorageFacility = (
+  mineGuid: string,
+  TSFGuid: string
+): AppThunk<Promise<AxiosResponse<ITailingsStorageFacility>>> => (
+  dispatch
+): Promise<AxiosResponse<ITailingsStorageFacility>> => {
+  dispatch(request(reducerTypes.GET_TSF));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(`${ENVIRONMENT.apiUrl}${API.MINE_TSF(mineGuid, TSFGuid)}`, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_TSF));
+      dispatch(tsfActions.storeTsf(response.data));
+      return response;
+    })
+    .catch(() => {
+      dispatch(error(reducerTypes.GET_TSF));
+    })
+    .finally(() => dispatch(hideLoading()));
+};
+
 export const fetchMineRecords = (params) => (dispatch) => {
   const defaultParams = params || String.DEFAULT_DASHBOARD_PARAMS;
   dispatch(request(reducerTypes.GET_MINE_RECORDS));
