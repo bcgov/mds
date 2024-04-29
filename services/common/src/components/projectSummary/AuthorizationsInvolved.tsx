@@ -37,9 +37,34 @@ import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreat
 import { createDropDownList } from "@mds/common/redux/utils/helpers";
 import { FORM } from "@mds/common/constants/forms";
 import RenderHiddenField from "../forms/RenderHiddenField";
+import AuthorizationSupportDocumentUpload from "./AuthorizationSupportDocumentUpload";
+import AuthorizationDocumentTable from "./AuthorizationDocumentTable";
+import { Feature, IMineDocument, IProjectSummaryDocument } from "@mds/common";
 
-const RenderEMAPermitCommonSections = ({ isAmendment }) => {
-  const purposeLabel = isAmendment
+export interface ProjectSummary {
+  project_summary_id: number;
+  mine_guid: string;
+  project_summary_guid: string;
+  status_code: string;
+  submission_date: string;
+  project_summary_description: string;
+  project_guid: string;
+  documents: IProjectSummaryDocument[];
+}
+
+interface DocumentUploadProps {
+  initialValues: ProjectSummary;
+  change: any;
+  documents: IProjectSummaryDocument[];
+  isEditMode: boolean;
+  projectSummaryDocumentTypesHash: any;
+  mineGuid: string;
+}
+
+const RenderEMAPermitCommonSections = ({ props }) => {
+  console.log(".......................65:..>>>>: ", props)
+  const dispatch = useDispatch();
+  const purposeLabel = props.isAmendment
     ? "Additional Amendment Request Information"
     : "Purpose of Application";
   const [showDocSection, setShowDocSection] = useState(false);
@@ -47,6 +72,11 @@ const RenderEMAPermitCommonSections = ({ isAmendment }) => {
   const onChange = (value, _newVal, _prevVal, _fieldName) => {
     setShowDocSection(value);
   };
+
+  const updateDocuments = (docs: IProjectSummaryDocument[]) => {
+    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "amendmentDocuments", docs));
+  };
+
   return (
     <>
       <Field
@@ -75,22 +105,45 @@ const RenderEMAPermitCommonSections = ({ isAmendment }) => {
         }
       />
       {showDocSection && (
-        <Alert
-          description={
-            <>
-              If yes, please attach a <b>letter with rationale</b> to support this exemption at{" "}
-              <b>Document Upload</b> section. Please note that requests may not always be granted.
-              Incomplete applications may be returned if they don&apos;t meet Ministry requirements
-              and the application fee may not be refunded.
-            </>
-          }
-          showIcon
-        />
+        <div>
+          <Alert
+            description={
+              <>
+                If yes, please attach a <b>letter with rationale</b> to support this exemption at{" "}
+                <b>Document Upload</b> section. Please note that requests may not always be granted.
+                Incomplete applications may be returned if they don&apos;t meet Ministry..... requirements
+                and the application fee may not be refunded.
+              </>
+            }
+            showIcon
+          />
+          <div className="margin-large--bottom">
+            <Typography.Title level={5} className="margin-large--top">
+            Upload Documents
+            </Typography.Title>
+            <Typography.Text> Submit the documents required for your amendment application.</Typography.Text>
+          </div>
+          <AuthorizationSupportDocumentUpload
+            mineGuid={props.mine_guid}
+            isProponent={true}
+            documents={props.documents}
+            updateDocuments= {updateDocuments}
+            projectGuid={props.project_guid}
+            projectSummaryGuid={props.project_summary_guid}
+          />
+          <AuthorizationDocumentTable/>
+        </div>
       )}
     </>
   );
 };
-const RenderEMANewPermitSection = ({ code }) => {
+const RenderEMANewPermitSection = ({ code, mine_guid, project_guid, project_summary_guid }) => {
+  let props = {
+    isAmendment: false,
+    mine_guid: mine_guid,
+    project_guid: project_guid,
+    project_summary_guid: project_summary_guid
+  }
   return (
     <div className="grey-box">
       <FormSection name={`${code}.NEW[0]`}>
@@ -129,13 +182,13 @@ const RenderEMANewPermitSection = ({ code }) => {
           required
           validate={[requiredRadioButton]}
         />
-        <RenderEMAPermitCommonSections isAmendment={false} />
+        <RenderEMAPermitCommonSections props = {props}/> 
       </FormSection>
     </div>
   );
 };
 
-const RenderEMAAmendFieldArray = ({ fields }) => {
+const RenderEMAAmendFieldArray = ({ fields, mine_guid, project_guid, project_summary_guid }) => {
   const handleRemoveAmendment = (index: number) => {
     fields.remove(index);
   };
@@ -197,7 +250,7 @@ const RenderEMAAmendFieldArray = ({ fields }) => {
               validate={[requiredRadioButton]}
               component={RenderRadioButtons}
             />
-            <RenderEMAPermitCommonSections isAmendment={true} />
+            <RenderEMAPermitCommonSections props = {{isAmendment:true, mine_guid:mine_guid, project_guid:project_guid, project_summary_guid: project_summary_guid}} />
           </FormSection>
         </Col>
       ))}
@@ -205,7 +258,7 @@ const RenderEMAAmendFieldArray = ({ fields }) => {
   );
 };
 
-const RenderEMAAuthCodeFormSection = ({ code }) => {
+const RenderEMAAuthCodeFormSection = ({ code, mine_guid, project_guid, project_summary_guid }) => {
   const { authorizations } = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
   const codeAuthorizations = authorizations[code] ?? [];
   const hasAmendments = codeAuthorizations.AMENDMENT?.length > 0;
@@ -214,6 +267,13 @@ const RenderEMAAuthCodeFormSection = ({ code }) => {
   const permitTypes = ["AMENDMENT", "NEW"];
 
   const dispatch = useDispatch();
+
+  let props = {
+    isAmendment: false,
+    mine_guid: mine_guid,
+    project_guid: project_guid,
+    project_summary_guid: project_summary_guid
+  }
 
   const addAmendment = () => {
     dispatch(arrayPush(FORM.ADD_EDIT_PROJECT_SUMMARY, `authorizations.${code}.AMENDMENT`, {}));
@@ -253,7 +313,7 @@ const RenderEMAAuthCodeFormSection = ({ code }) => {
                     <FieldArray
                       name={`${code}.AMENDMENT`}
                       component={RenderEMAAmendFieldArray}
-                      props={{}}
+                      props={props}
                     />
                     <Button
                       onClick={addAmendment}
@@ -274,7 +334,7 @@ const RenderEMAAuthCodeFormSection = ({ code }) => {
           },
         ]}
       />
-      {hasNew && <RenderEMANewPermitSection code={code} />}
+      {hasNew && <RenderEMANewPermitSection code={code} mine_guid={mine_guid} project_guid={project_guid} project_summary_guid={project_summary_guid} />}
     </>
   );
 };
@@ -308,11 +368,11 @@ const RenderMinesActPermitSelect = () => {
   );
 };
 
-const RenderAuthCodeFormSection = ({ authorizationType, code }) => {
+const RenderAuthCodeFormSection = ({ authorizationType, code, mine_guid, project_guid, project_summary_guid }) => {
   const dropdownProjectSummaryPermitTypes = useSelector(getDropdownProjectSummaryPermitTypes);
   if (authorizationType === "ENVIRONMENTAL_MANAGMENT_ACT") {
     // AMS authorizations, have options of amend/new with more details
-    return <RenderEMAAuthCodeFormSection code={code} />;
+    return <RenderEMAAuthCodeFormSection code={code} mine_guid={mine_guid} project_guid={project_guid} project_summary_guid={project_summary_guid} />;
   }
   if (authorizationType === "OTHER_LEGISLATION") {
     return (
@@ -362,14 +422,20 @@ const RenderAuthCodeFormSection = ({ authorizationType, code }) => {
     </FormSection>
   );
 };
-export const AuthorizationsInvolved = () => {
+
+export const AuthorizationsInvolved = (props) => {
+  console.log("......426::::", props)
+  
   const dispatch = useDispatch();
   const transformedProjectSummaryAuthorizationTypes = useSelector(
     getTransformedProjectSummaryAuthorizationTypes
   );
   const amsAuthTypes = useSelector(getAmsAuthorizationTypes);
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
-
+  
+  // if (formValues.authorizations?.AIR_EMISSIONS_DISCHARGE_PERMIT?.AMENDMENT[0]?.exemption_requested) {
+    
+  // }
   const handleChange = (e, code) => {
     if (e.target.checked) {
       let formVal;
@@ -456,6 +522,9 @@ export const AuthorizationsInvolved = () => {
                                 <RenderAuthCodeFormSection
                                   code={child.code}
                                   authorizationType={authorization.code}
+                                  mine_guid={props.initialValues.mine_guid}
+                                  project_guid={props.initialValues.project_guid}
+                                  project_summary_guid={props.initialValues.project_summary_guid}
                                 />
                               </>
                             )}
