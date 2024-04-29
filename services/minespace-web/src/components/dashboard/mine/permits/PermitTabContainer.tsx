@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import { connect } from "react-redux";
 
 import { Tabs } from "antd";
@@ -9,17 +9,18 @@ import Permits from "@/components/dashboard/mine/permits/Permits";
 import DigitalPermits from "@/components/dashboard/mine/permits/DigitalPermits";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 
-import { Feature, IMine, IPermit, VC_CONNECTION_STATES, isFeatureEnabled } from "@mds/common";
+import { Feature, IMine, IPermit, isFeatureEnabled } from "@mds/common";
+import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
 
 interface PermitTabContainerProps {
-  mine: IMine;
   permits: IPermit[];
   fetchPermits: ActionCreator<typeof fetchPermits>;
 }
 
 const initialTab = "all_permits";
 
-export const PermitTabContainer: FC<PermitTabContainerProps> = ({ mine, permits, ...props }) => {
+export const PermitTabContainer: FC<PermitTabContainerProps> = ({ permits, ...props }) => {
+  const { mine } = useContext<{ mine: IMine }>(SidebarContext);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   useEffect(() => {

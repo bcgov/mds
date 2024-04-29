@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import { Button, Col, Row, Typography } from "antd";
 import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
@@ -31,6 +31,7 @@ import NoticeOfDepartureTable from "@/components/dashboard/mine/noticeOfDepartur
 import { modalConfig } from "@/components/modalContent/config";
 import { MINE_DASHBOARD } from "@/constants/routes";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
+import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
 
 interface NoticeOfDepartureProps {
   mine: IMine;
@@ -47,14 +48,14 @@ interface NoticeOfDepartureProps {
 }
 
 export const NoticeOfDeparture: FC<NoticeOfDepartureProps> = (props) => {
-  const { mine, nods, permits } = props;
+  const { mine } = useContext<{ mine: IMine }>(SidebarContext);
+  const { nods, permits } = props;
   const [isLoaded, setIsLoaded] = useState(false);
   const location = useLocation();
-  const url: { activeTab: string } = useParams();
 
   const handleFetchPermits = async () => {
     await props.fetchPermits(mine.mine_guid);
-    await setIsLoaded(true);
+    setIsLoaded(true);
   };
 
   const handleFetchNoticesOfDeparture = async () => {
@@ -170,7 +171,9 @@ export const NoticeOfDeparture: FC<NoticeOfDepartureProps> = (props) => {
   };
 
   useEffect(() => {
-    const nod = new URLSearchParams(url.activeTab.split("?")[1]).get("nod");
+    console.log(location);
+    const { pathname } = location;
+    const nod = new URLSearchParams(pathname.split("?")[1]).get("nod");
     if (nod) {
       (async () => {
         window.history.replaceState(

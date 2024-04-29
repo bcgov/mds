@@ -3619,6 +3619,58 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
   ],
   mineReportDefinitionOptions: [
     {
+      mine_report_definition_guid: "5f4f4727-4ecd-4a04-8929-2e8a5e03996d",
+      report_name: "TSF, WSF or Dam As-built Report",
+      description: "",
+      due_date_period_months: 12,
+      mine_report_due_date_type: "FIS",
+      default_due_date: "2020-03-31",
+      categories: [
+        { mine_report_category: "GTC", description: "Geotechnical" },
+        { mine_report_category: "TSF", description: "Tailings Storage Facility" },
+      ],
+      compliance_articles: [
+        {
+          compliance_article_id: 157,
+          article_act_code: "HSRCM",
+          section: "10",
+          sub_section: "5",
+          paragraph: "1",
+          sub_paragraph: "1",
+          description: "General",
+          long_description: "General",
+          effective_date: "1970-01-01",
+          expiry_date: "2016-07-19",
+        },
+      ],
+    },
+    {
+      mine_report_definition_guid: "6eda0c36-8748-4072-83c9-0fcdf270d36f",
+      report_name: "Annual DSI",
+      description: "",
+      due_date_period_months: 12,
+      mine_report_due_date_type: "FIS",
+      default_due_date: "2020-03-31",
+      categories: [
+        { mine_report_category: "GTC", description: "Geotechnical" },
+        { mine_report_category: "TSF", description: "Tailings Storage Facility" },
+      ],
+      compliance_articles: [
+        {
+          compliance_article_id: 155,
+          article_act_code: "HSRCM",
+          section: "10",
+          sub_section: "4",
+          paragraph: "4",
+          sub_paragraph: null,
+          description: "General",
+          long_description: "General",
+          effective_date: "2016-07-20",
+          expiry_date: "9999-12-31",
+        },
+      ],
+    },
+    {
       mine_report_definition_guid: "a1f02190-908b-4459-9dfe-6382282dfd30",
       report_name: "OHSC Annual Report",
       description: "",
@@ -5672,7 +5724,7 @@ export const MINE_REPORTS = [
   {
     mine_report_id: 123,
     mine_report_guid: "9f98a719-720a-40a5-ac5b-e91e8a526fad",
-    mine_report_definition_guid: "baa01f9f-c9b2-485d-96f3-12a9c8fe637b",
+    mine_report_definition_guid: "f5dec476-cb13-430a-a85e-81e5bbe666e4",
     mine_report_category: ["GSC", "GTC"],
     report_name: "Underground Oil and Grease Storage Area Report",
     due_date: "2020-01-02",
@@ -5772,6 +5824,58 @@ export const REPORTS_PAGE_DATA = {
 };
 
 export const MINE_REPORT_DEFINITION_HASH = {
+  "5f4f4727-4ecd-4a04-8929-2e8a5e03996d": {
+    mine_report_definition_guid: "5f4f4727-4ecd-4a04-8929-2e8a5e03996d",
+    report_name: "TSF, WSF or Dam As-built Report",
+    description: "",
+    due_date_period_months: 12,
+    mine_report_due_date_type: "FIS",
+    default_due_date: "2020-03-31",
+    categories: [
+      { mine_report_category: "GTC", description: "Geotechnical" },
+      { mine_report_category: "TSF", description: "Tailings Storage Facility" },
+    ],
+    compliance_articles: [
+      {
+        compliance_article_id: 157,
+        article_act_code: "HSRCM",
+        section: "10",
+        sub_section: "5",
+        paragraph: "1",
+        sub_paragraph: "1",
+        description: "General",
+        long_description: "General",
+        effective_date: "1970-01-01",
+        expiry_date: "2016-07-19",
+      },
+    ],
+  },
+  "6eda0c36-8748-4072-83c9-0fcdf270d36f": {
+    mine_report_definition_guid: "6eda0c36-8748-4072-83c9-0fcdf270d36f",
+    report_name: "Annual DSI",
+    description: "",
+    due_date_period_months: 12,
+    mine_report_due_date_type: "FIS",
+    default_due_date: "2020-03-31",
+    categories: [
+      { mine_report_category: "GTC", description: "Geotechnical" },
+      { mine_report_category: "TSF", description: "Tailings Storage Facility" },
+    ],
+    compliance_articles: [
+      {
+        compliance_article_id: 155,
+        article_act_code: "HSRCM",
+        section: "10",
+        sub_section: "4",
+        paragraph: "4",
+        sub_paragraph: null,
+        description: "General",
+        long_description: "General",
+        effective_date: "2016-07-20",
+        expiry_date: "9999-12-31",
+      },
+    ],
+  },
   "a1f02190-908b-4459-9dfe-6382282dfd30": {
     mine_report_definition_guid: "a1f02190-908b-4459-9dfe-6382282dfd30",
     report_name: "OHSC Annual Report",

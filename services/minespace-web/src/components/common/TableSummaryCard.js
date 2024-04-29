@@ -6,7 +6,12 @@ const propTypes = {
   type: PropTypes.string.isRequired,
   icon: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  content: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.element]).isRequired,
+  content: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.element,
+    PropTypes.ReactNodeLike,
+  ]).isRequired,
 };
 
 export const TableSummaryCard = (props) => (

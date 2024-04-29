@@ -15,7 +15,7 @@ const MajorMineApplicationPage = React.lazy(() =>
 const MajorMineApplicationSuccessPage = React.lazy(() =>
   import("@/components/pages/Project/MajorMineApplicationSuccessPage")
 );
-const MineDashboard = React.lazy(() => import("@/components/dashboard/mine/MineDashboard"));
+const MineDashboard = React.lazy(() => import("@/components/dashboard/mine/MineDashboardNew"));
 const MinesPage = React.lazy(() => import("@/components/pages/MinesPage"));
 const ProjectPage = React.lazy(() => import("@/components/pages/Project/ProjectPage"));
 const ProjectSummaryPage = React.lazy(() =>
@@ -156,10 +156,16 @@ export const MINE_INCIDENT_SUCCESS = {
   component: IncidentSuccessPage,
 };
 
+const getQueryString = (filterParams?) => {
+  // return "";
+  if (!filterParams) return "";
+  return `?${queryString.stringify(filterParams)}`;
+};
+
 export const MINE_DASHBOARD = {
   route: "/mines/:id/:activeTab",
   dynamicRoute: (id, activeTab = "overview", filterParams?: any) =>
-    `/mines/${id}/${activeTab}?${queryString.stringify(filterParams)}`,
+    `/mines/${id}/${activeTab}${getQueryString(filterParams)}`,
   component: MineDashboard,
 };
 
