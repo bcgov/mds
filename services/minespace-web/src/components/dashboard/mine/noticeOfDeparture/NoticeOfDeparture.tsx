@@ -12,7 +12,7 @@ import {
 import { getNoticesOfDeparture } from "@mds/common/redux/selectors/noticeOfDepartureSelectors";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import {
   IMine,
   INodDocumentPayload,
@@ -171,9 +171,8 @@ export const NoticeOfDeparture: FC<NoticeOfDepartureProps> = (props) => {
   };
 
   useEffect(() => {
-    console.log(location);
-    const { pathname } = location;
-    const nod = new URLSearchParams(pathname.split("?")[1]).get("nod");
+    const { search } = location;
+    const nod = new URLSearchParams(search).get("nod");
     if (nod) {
       (async () => {
         window.history.replaceState(
