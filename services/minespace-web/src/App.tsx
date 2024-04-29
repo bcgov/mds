@@ -84,7 +84,7 @@ const App: FC<AppProps> = (props) => {
                 {isMobile && <WarningBanner type="mobile" onClose={handleMobileWarningClose} />}
               </MediaQuery>
               <Row justify="center" align="top">
-                <Col xs={xs} lg={lg} xl={xl} xxl={xxl}>
+                <Col xs={xs}>
                   <Routes />
                 </Col>
               </Row>
