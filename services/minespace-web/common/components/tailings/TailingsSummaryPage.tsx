@@ -287,6 +287,7 @@ export const TailingsSummaryPage: FC<InjectedFormProps<ITailingsStorageFacility>
         >
           <Step key="basic-information">
             <BasicInformation
+              mineName={mineName}
               renderConfig={renderConfig}
               canEditTSF={canEditTSF}
               isEditMode={isUserActionEdit}
