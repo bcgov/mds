@@ -32,12 +32,15 @@ export interface BasicInformationProps {
   showUpdateTimestamp: boolean;
   renderConfig: any;
   tsf: ITailingsStorageFacility;
+  mineName: string;
   canEditTSF?: boolean;
   isEditMode: boolean;
 }
 
 // Provide a mapping of the field names to the title and data for the field
 // This is used to display the field names and values in a more user-friendly way in the history modal
+// Defaults to Title Case for field names and keeping values as is for any fields where
+// a field mapping is not provided
 const historyDiffValueMapper = {
   facility_type: {
     title: "Facility Type",
@@ -78,7 +81,7 @@ const historyDiffValueMapper = {
 };
 
 export const BasicInformation: FC<BasicInformationProps> = (props) => {
-  const { permits, renderConfig, canEditTSF = false, tsf, isEditMode } = props;
+  const { permits, renderConfig, canEditTSF = false, tsf, isEditMode, mineName } = props;
   const [permitOptions, setPermitOptions] = useState([]);
   const [diffModalOpen, setDiffModalOpen] = useState(false);
 
@@ -224,7 +227,8 @@ export const BasicInformation: FC<BasicInformationProps> = (props) => {
         open={diffModalOpen}
         onCancel={() => setDiffModalOpen(false)}
         valueMapper={historyDiffValueMapper}
-        tsf={tsf}
+        mineName={mineName}
+        tsfName={tsf.mine_tailings_storage_facility_name}
         history={tsf.history}
       />
     </>
