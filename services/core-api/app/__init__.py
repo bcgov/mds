@@ -15,6 +15,8 @@ from app.date_time_helper import get_formatted_current_time
 from app.flask_jwt_oidc_local.exceptions import AuthError
 from werkzeug.exceptions import Forbidden
 import traceback
+from .sqlalchemy_extensions import register_sqlalchemy_continuum
+register_sqlalchemy_continuum()
 
 from app.api.compliance.namespace import api as compliance_api
 from app.api.download_token.namespace import api as download_token_api
@@ -160,6 +162,7 @@ def register_extensions(app, test_config=None):
     cache.init_app(app)
     db.init_app(app)
     CORS(app)
+
 
     # Set up Marshmallow
     with app.app_context():
