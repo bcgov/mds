@@ -189,14 +189,14 @@ export const NoticeOfDeparture: FC<NoticeOfDepartureProps> = (props) => {
     <Row>
       <Col span={24}>
         <Button
-          style={{ display: "inline", float: "right" }}
+          className="dashboard-add-button"
           type="primary"
           onClick={(event) => openCreateNODModal(event)}
         >
           <PlusCircleFilled />
           Create a Notice of Departure
         </Button>
-        <Typography.Title level={4}>Notices of Departure</Typography.Title>
+        <Typography.Title level={1}>Notices of Departure</Typography.Title>
         <Typography.Paragraph>
           The below table displays all of the&nbsp; Notices of Departure and their associated
           permits &nbsp;associated with this mine.

@@ -35,7 +35,7 @@ export const Inspections: FC = () => {
   return (
     <Row>
       <Col span={24}>
-        <Typography.Title level={4}>Inspections</Typography.Title>
+        <Typography.Title level={1}>Inspections</Typography.Title>
         <Typography.Paragraph>
           This table shows your mine&apos;s&nbsp;
           <Typography.Text className="color-primary" strong>

@@ -143,16 +143,12 @@ export const Variances: FC = () => {
     <Row>
       <Col span={24}>
         <AuthorizationWrapper>
-          <Button
-            style={{ display: "inline", float: "right" }}
-            type="primary"
-            onClick={openCreateVarianceModal}
-          >
+          <Button className="dashboard-add-button" type="primary" onClick={openCreateVarianceModal}>
             <PlusCircleFilled />
             Apply for a Variance
           </Button>
         </AuthorizationWrapper>
-        <Typography.Title level={4}>Variances</Typography.Title>
+        <Typography.Title level={1}>Variances</Typography.Title>
         <Typography.Paragraph>
           This table shows your mine&apos;s&nbsp;
           <Typography.Text className="color-primary" strong>

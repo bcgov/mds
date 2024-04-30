@@ -4,7 +4,10 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import InfoCircleOutlined from "@ant-design/icons/InfoCircleOutlined";
 import { Button, Col, Descriptions, Row, Tooltip, Typography } from "antd";
-import { fetchMineRecordById, updateMineRecord } from "@mds/common/redux/actionCreators/mineActionCreator";
+import {
+  fetchMineRecordById,
+  updateMineRecord,
+} from "@mds/common/redux/actionCreators/mineActionCreator";
 import { EDIT_PENCIL } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
 import EditWorkerInformationForm from "@/components/Forms/mines/EditWorkerInformationForm";
@@ -60,7 +63,7 @@ export class WorkerInfoEmployee extends Component {
               <Col span={24}>
                 <div className="inline-flex between">
                   <>
-                    <Typography.Title level={4}>
+                    <Typography.Title level={3}>
                       Worker Information
                       <Tooltip
                         overlayClassName="minespace-tooltip"

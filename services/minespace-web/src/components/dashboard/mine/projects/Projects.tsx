@@ -30,7 +30,7 @@ export const Projects: FC = () => {
   return (
     <Row>
       <Col span={24}>
-        <Typography.Title level={4}>Major Mine Applications</Typography.Title>
+        <Typography.Title level={1}>Major Mine Applications</Typography.Title>
         <Typography.Paragraph>
           A{" "}
           <Typography.Text className="color-primary" strong>

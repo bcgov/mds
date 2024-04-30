@@ -1,7 +1,7 @@
 import React, { FC, useContext, useEffect, useState } from "react";
 import { connect } from "react-redux";
 
-import { Tabs } from "antd";
+import { Tabs, Typography } from "antd";
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 
@@ -42,17 +42,20 @@ export const PermitTabContainer: FC<PermitTabContainerProps> = ({ permits, ...pr
     return result;
   };
   return (
-    <Tabs type="card">
-      <Tabs.TabPane tab="All Permits" key={initialTab}>
-        <Permits mine={mine} permits={permits} />
-      </Tabs.TabPane>
-
-      {showDigitalWalletTab() && (
-        <Tabs.TabPane tab="Digital Permit Credentials" key={"digital_permit_credentials"}>
-          <DigitalPermits mine={mine} permits={permits} />
+    <div>
+      <Typography.Title level={1}>Permits</Typography.Title>
+      <Tabs type="card">
+        <Tabs.TabPane tab="All Permits" key={initialTab}>
+          <Permits mine={mine} permits={permits} />
         </Tabs.TabPane>
-      )}
-    </Tabs>
+
+        {showDigitalWalletTab() && (
+          <Tabs.TabPane tab="Digital Permit Credentials" key={"digital_permit_credentials"}>
+            <DigitalPermits mine={mine} permits={permits} />
+          </Tabs.TabPane>
+        )}
+      </Tabs>
+    </div>
   );
 };
 

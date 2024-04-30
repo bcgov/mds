@@ -144,20 +144,19 @@ export const Reports: FC = () => {
       <Col span={24}>
         <Row>
           <Col span={24}>
-            <div className="submit-report-button">
+            <div>
               <AuthorizationWrapper>
                 {isFeatureEnabled(Feature.CODE_REQUIRED_REPORTS) ? (
                   <Link to={routes.REPORTS_CREATE_NEW.dynamicRoute(mine.mine_guid)}>
-                    <Button style={{ zIndex: 1 }} className="submit-report-button" type="primary">
+                    <Button className="dashboard-add-button" type="primary">
                       <PlusCircleFilled />
                       Submit Report
                     </Button>
                   </Link>
                 ) : (
                   <Button
-                    style={{ zIndex: 1 }}
-                    className="submit-report-button"
                     type="primary"
+                    className="dashboard-add-button"
                     onClick={(event) => openAddReportModal(event)}
                   >
                     <PlusCircleFilled />
@@ -166,7 +165,7 @@ export const Reports: FC = () => {
                 )}
               </AuthorizationWrapper>
             </div>
-            <Typography.Title level={4} className="report-title">
+            <Typography.Title level={1} className="report-title">
               Reports
             </Typography.Title>
             <Typography.Paragraph>

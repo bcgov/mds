@@ -21,10 +21,10 @@ export const Bonds: FC = () => {
 
   return (
     <Row>
+      <Typography.Title level={1}>Bonds</Typography.Title>
       <Col span={24}>
         <Row>
           <Col span={24}>
-            <Typography.Title level={4}>Bonds</Typography.Title>
             <Typography.Paragraph>
               This table shows&nbsp;
               <Typography.Text className="color-primary" strong>

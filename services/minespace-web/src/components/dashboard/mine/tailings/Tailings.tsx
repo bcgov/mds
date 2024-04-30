@@ -84,7 +84,7 @@ export const Tailings: FC = () => {
       <Col span={24}>
         <Row justify={tsfV2Enabled ? "space-between" : "start"}>
           <Col>
-            <Title level={4}>Tailings Storage Facilities</Title>
+            <Title level={1}>Tailings Storage Facilities</Title>
             <Paragraph>
               This table shows&nbsp;
               <Text className="color-primary" strong>
@@ -96,7 +96,11 @@ export const Tailings: FC = () => {
           </Col>
           {tsfV2Enabled && canEditTSF && (
             <Col>
-              <Button type="primary" onClick={navigateToCreateTailings}>
+              <Button
+                type="primary"
+                onClick={navigateToCreateTailings}
+                className="dashboard-add-button"
+              >
                 <PlusCircleFilled />
                 Create New Facility
               </Button>
