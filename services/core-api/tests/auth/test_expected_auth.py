@@ -88,7 +88,7 @@ from app.api.mines.alerts.resources.mine_alert import GlobalMineAlertListResourc
      (MineTailingsStorageFacilityListResource, "get", [VIEW_ALL]),
      (MineTailingsStorageFacilityListResource, "post", [MINESPACE_PROPONENT, EDIT_TSF]),
      (MineTailingsStorageFacilityResource, "put", [EDIT_TSF, MINESPACE_PROPONENT]),
-     (MineTailingsStorageFacilityResource, "put", [EDIT_TSF, MINESPACE_PROPONENT, VIEW_ALL]),
+     (MineTailingsStorageFacilityResource, "get", [EDIT_TSF, MINESPACE_PROPONENT, VIEW_ALL]),
      (MineTenureTypeCodeResource, "get", [VIEW_ALL]), (MineTypeListResource, "post", [MINE_EDIT]),
      (MineTypeResource, "delete", [MINE_EDIT]),
      (MineVarianceDocumentUploadResource, "post", [EDIT_VARIANCE, MINESPACE_PROPONENT]),
