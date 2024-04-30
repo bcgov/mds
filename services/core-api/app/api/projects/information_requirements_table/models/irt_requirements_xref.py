@@ -1,4 +1,6 @@
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.orm import relationship
 from sqlalchemy.schema import FetchedValue
 
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
@@ -16,6 +18,12 @@ class IRTRequirementsXref(SoftDeleteMixin, AuditMixin, Base):
     required = db.Column(db.Boolean, nullable=False, default=False)
     methods = db.Column(db.Boolean, nullable=False, default=False)
     comment = db.Column(db.String)
+
+    requirement = relationship('Requirements', backref='irt_requirements_xrefs')
+
+    @hybrid_property
+    def version(self):
+        return self.requirement.version
 
     def __repr__(self):
         return f'{self.__class__.__name__} {self.requirement_guid}'

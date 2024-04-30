@@ -1,14 +1,23 @@
+import datetime
 import click
 import psycopg2
 
 from sqlalchemy.exc import DBAPIError
 from multiprocessing.dummy import Pool as ThreadPool
 from flask import current_app
+from app.api.utils.models_mixins import Base
+from sqlalchemy_continuum import transaction_class
+from sqlalchemy.schema import CreateTable, CreateIndex
+from sqlalchemy.dialects import postgresql
 
 from app.api.utils.include.user_info import User
 from app.extensions import db
 
+from app.api.verifiable_credentials.models.credentials import PartyVerifiableCredentialMinesActPermit
+from app.api.mines.permits.permit.models.permit import Permit
+
 from tests.factories import MineFactory, MinePartyAppointmentFactory, MinespaceSubscriptionFactory, MinespaceUserFactory, NOWSubmissionFactory, NOWApplicationIdentityFactory
+from .cli_commands.generate_history_table_migration import generate_history_table_migration
 
 
 def register_commands(app):
@@ -132,3 +141,28 @@ def register_commands(app):
 
         with current_app.app_context():
             notify_and_update_expired_party_appointments()
+
+    @app.cli.command('revoke_mines_act_permit_vc_and_offer_newest')
+    @click.argument('credential_exchange_id')
+    @click.argument('permit_guid')
+    def revoke_mines_act_permits_for_permit(credential_exchange_id, permit_guid):
+        from app.api.verifiable_credentials.manager import revoke_all_credentials_for_permit
+        from app import auth
+        auth.apply_security = False
+        with current_app.app_context():
+            permit = Permit.query.unbound_unsafe().filter_by(permit_guid=permit_guid).first()
+            assert permit, "Permit not found"
+            revoke_all_credentials_for_permit.apply_async(kwargs={"permit_guid": permit_guid})
+            print("celery job started")
+
+    @app.cli.command('generate_history_table_migration')
+    @click.argument('table')
+    def do_generate_history_table_command(table):
+        """
+        Generate a migration file that contains the history table definition for the specified table.
+        Uses SQLAlchemy-continuum to generate the history table definition.
+
+        Example usage:
+            flask generate_history_table_migration mine_tailings_storage_facility
+        """
+        generate_history_table_migration(table)

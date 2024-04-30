@@ -61,8 +61,8 @@ export const ImportIRTErrorModal = (props) => {
         </h3>
         <b>{description}</b>
         <br />
-        {errorSection.map((es) => (
-          <p>
+        {errorSection.map((es, index) => (
+          <p key={index}>
             Section {es.section} Row {es.row_number}
           </p>
         ))}
@@ -109,7 +109,6 @@ export const ImportIRTErrorModal = (props) => {
   }
   return (
     <div>
-      <p>{props.errors}</p>
       <div className="ant-modal-footer">
         <Button type="primary" onClick={props.closeModal}>
           Close

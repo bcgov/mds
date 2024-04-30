@@ -38,7 +38,8 @@ jobs:
       - name: Run integration tests
         env:
           DOCKER_BUILDKIT: 1
-        run: docker-compose -f docker-compose.ci.yaml run backend pytest
+        run: docker-compose -f docker-compose.ci.yaml run backend pytest -q
+        
   run-sonar-scan:
     name: Run SonarCloud Scan
     if: success()

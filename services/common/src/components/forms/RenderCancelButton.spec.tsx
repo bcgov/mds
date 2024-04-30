@@ -3,6 +3,7 @@ import { render, fireEvent } from "@testing-library/react";
 import RenderCancelButton from "./RenderCancelButton";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import FormWrapper from "./FormWrapper";
+window.scrollTo = jest.fn();
 
 const changedState = {
   form: {

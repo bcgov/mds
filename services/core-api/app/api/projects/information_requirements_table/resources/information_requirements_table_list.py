@@ -35,12 +35,12 @@ class InformationRequirementsTableListResource(Resource, UserMixin):
         # Retrieve all valid requirements to cross reference with worksheet "Information" cell content
         import_errors = []
         sanitized_irt_requirements = []
-        valid_requirements = Requirements.get_all()
+        valid_requirements = Requirements.get_all_latest_version()
         valid_requirement_descriptions = [
             requirement.description.strip().lower() for requirement in valid_requirements
         ]
         # Start parsing at specific row to avoid metadata in template
-        starting_row_number = 7
+        starting_row_number = 8
         worksheet_to_parse = excel_dict.sanitize_sheet_items[starting_row_number:]
         for idx, row in enumerate(worksheet_to_parse):
             ## Parse requirements.description from "Information" cell in spreadsheet and cross reference with DB source of truth to determine validity

@@ -2,6 +2,7 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import CommentEditor from "./CommentEditor";
+window.scrollTo = jest.fn();
 
 describe("CommentEditor", () => {
   it("renders properly", () => {

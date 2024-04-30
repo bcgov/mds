@@ -204,7 +204,7 @@ exports[`PermitConditionsNavigation renders properly 1`] = `
       </button>
     </div>
     <form
-      class="ant-form ant-form-vertical edit"
+      class="ant-form ant-form-vertical common-form common-form-COMPLIANCE_CODE_BULK_EDIT form-edit"
       id="COMPLIANCE_CODE_BULK_EDIT"
     >
       <div

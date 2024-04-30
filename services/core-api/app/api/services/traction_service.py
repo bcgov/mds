@@ -13,6 +13,12 @@ traction_oob_create_invitation = Config.TRACTION_HOST+"/out-of-band/create-invit
 traction_offer_credential = Config.TRACTION_HOST+"/issue-credential/send-offer"
 revoke_credential_url = Config.TRACTION_HOST+"/revocation/revoke"
 fetch_credential_exchanges = Config.TRACTION_HOST+"/issue-credential/records"
+
+def traction_issue_credential_problem_report(cred_ex_id:str):
+    return Config.TRACTION_HOST+f"/issue-credential/records/{cred_ex_id}/problem-report"
+
+
+
 class VerificableCredentialWorkflowError(Exception):
     pass
 
@@ -69,8 +75,8 @@ class TractionService():
         
         return response
     
-    def offer_mines_act_permit(self, connection_id, attributes):
-
+    def offer_mines_act_permit_111(self, connection_id, attributes):
+        # https://github.com/bcgov/bc-vcpedia/blob/main/credentials/bc-mines-act-permit/1.1.1/governance.md#261-schema-definition
         payload = {
             "auto_issue": True,
             "comment": "VC to provide proof of a permit and some basic details",
@@ -100,7 +106,19 @@ class TractionService():
         assert revoke_resp.status_code == 200, f"revoke_resp={revoke_resp.json()}"
         return revoke_resp.json()
 
+    def send_issue_credential_problem_report(self, credential_exchange_id, description:str):
+        payload={
+            "description": description,
+        }
+        requests.post(
+            traction_issue_credential_problem_report(cred_ex_id=credential_exchange_id), 
+            json=payload,
+            headers=self.get_headers()
+        )
+        
+
     def fetch_credential_exchange(self,cred_exch_id):
         fetch_resp = requests.get(fetch_credential_exchanges+"/"+str(cred_exch_id),headers=self.get_headers())
         assert fetch_resp.status_code == 200, f"fetch_resp={fetch_resp.json()}"
         return fetch_resp.json()
+    

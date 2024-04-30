@@ -42,6 +42,7 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
     signature = db.Column(db.String)
     merged_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
     organization_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
+    credential_id = db.Column(db.Integer, nullable=True)
 
     mine_party_appt = db.relationship(
         'MinePartyAppointment',
@@ -236,6 +237,7 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
                job_title_code=None,
                organization_guid=None,
                middle_name=None,
+               credential_id=None,
                address_type_code='CAN',
                add_to_session=True):
         validate_phone_no(phone_no, address_type_code)
@@ -254,7 +256,8 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
             job_title=job_title,
             job_title_code=job_title_code,
             organization_guid=organization_guid,
-            middle_name=middle_name)
+            middle_name=middle_name,
+            credential_id=credential_id)
         if add_to_session:
             party.save(commit=False)
         return party
