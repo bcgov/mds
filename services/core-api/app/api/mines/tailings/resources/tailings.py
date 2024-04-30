@@ -12,7 +12,7 @@ from app.api.mines.mine.models.mine import Mine
 from app.api.mines.response_models import MINE_TSF_DETAIL_MODEL, MINE_TSF_MODEL
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility, FacilityType
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
-from app.api.utils.access_decorators import requires_any_of, EDIT_TSF, MINESPACE_PROPONENT, is_minespace_user
+from app.api.utils.access_decorators import VIEW_ALL, requires_any_of, EDIT_TSF, MINESPACE_PROPONENT, is_minespace_user
 from app.api.utils.resources_mixins import UserMixin
 from app.extensions import api
 
@@ -88,7 +88,7 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin):
         store_missing=False)
 
     @api.doc(description='Get a tailing storage facility for the given mine')
-    @requires_any_of([MINESPACE_PROPONENT, EDIT_TSF])
+    @requires_any_of([MINESPACE_PROPONENT, EDIT_TSF, VIEW_ALL])
     @api.marshal_with(MINE_TSF_DETAIL_MODEL)
     def get(self, mine_guid, mine_tailings_storage_facility_guid):
         mine = Mine.find_by_mine_guid(mine_guid)
