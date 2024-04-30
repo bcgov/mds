@@ -293,7 +293,7 @@ exports[`ReportDetailsForm renders view mode properly 1`] = `
           <div
             class="ant-typography view-item-value"
           >
-            1.9.3 - OHSC Annual Report
+            10.5.1.1 - TSF, WSF or Dam As-built Report
           </div>
         </div>
       </div>
@@ -494,7 +494,7 @@ exports[`ReportDetailsForm renders view mode properly 1`] = `
                 class="ant-spin-container"
               >
                 <div
-                  class="ant-table"
+                  class="ant-table ant-table-has-fix-right"
                 >
                   <div
                     class="ant-table-container"
@@ -759,7 +759,8 @@ exports[`ReportDetailsForm renders view mode properly 1`] = `
                               </div>
                             </th>
                             <th
-                              class="ant-table-cell actions-column"
+                              class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                              style="position: sticky; right: 0px;"
                             />
                           </tr>
                         </thead>
@@ -820,7 +821,8 @@ exports[`ReportDetailsForm renders view mode properly 1`] = `
                               </div>
                             </td>
                             <td
-                              class="ant-table-cell actions-column"
+                              class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                              style="position: sticky; right: 0px;"
                             >
                               <div>
                                 <button

@@ -1,38 +1,31 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import { Reports } from "@/components/dashboard/mine/reports/Reports";
-import * as MOCK from "@/tests/mocks/dataMocks";
-import { store } from "@/App";
-import { Provider } from "react-redux";
-import FeatureFlagProvider from "@mds/common/providers/featureFlags/featureFlag.provider";
-import { isFeatureEnabled } from "@mds/common/utils/featureFlag";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
+import { SidebarProvider } from "@mds/common/components/common/SidebarWrapper";
+import { REPORTS, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
 
-// Mock the isFeatureEnabled function
-jest.mock("@mds/common/utils/featureFlag", () => ({
-  isFeatureEnabled: jest.fn(),
-  initializeFlagsmith: jest.fn(() => Promise.resolve()),
-}));
-
-const props: any = {};
-
-const setupProps = () => {
-  props.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
+const initialState = {
+  [REPORTS]: {
+    mineReports: MOCK.MINE_REPORTS,
+  },
+  [STATIC_CONTENT]: {
+    mineReportDefinitionOptions: MOCK.BULK_STATIC_CONTENT_RESPONSE.mineReportDefinitionOptions,
+  },
 };
 
-beforeEach(() => {
-  setupProps();
-});
+const mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
 
 describe("Reports", () => {
   it("renders properly", () => {
-    (isFeatureEnabled as jest.Mock).mockImplementation(() => true);
     const { container } = render(
-      <FeatureFlagProvider>
-        <Provider store={store}>
-          <Reports {...props} />
-        </Provider>
-      </FeatureFlagProvider>
+      <ReduxWrapper initialState={initialState}>
+        <SidebarProvider value={{ mine } as any}>
+          <Reports />
+        </SidebarProvider>
+      </ReduxWrapper>
     );
-    expect(container.firstChild).toMatchSnapshot();
+    expect(container).toMatchSnapshot();
   });
 });

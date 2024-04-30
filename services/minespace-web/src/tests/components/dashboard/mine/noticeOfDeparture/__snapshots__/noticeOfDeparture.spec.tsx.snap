@@ -6,20 +6,15 @@ exports[`NoticesOfDeparture renders properly 1`] = `
     span={24}
   >
     <Button
+      className="dashboard-add-button"
       onClick={[Function]}
-      style={
-        Object {
-          "display": "inline",
-          "float": "right",
-        }
-      }
       type="primary"
     >
       <ForwardRef(PlusCircleFilled) />
       Create a Notice of Departure
     </Button>
     <ForwardRef
-      level={4}
+      level={1}
     >
       Notices of Departure
     </ForwardRef>
