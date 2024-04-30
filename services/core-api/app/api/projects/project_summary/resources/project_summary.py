@@ -192,9 +192,11 @@ class ProjectSummaryResource(Resource, UserMixin):
     def put(self, project_guid, project_summary_guid):
         project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid,
                                                                       is_minespace_user())
+        print(".... Received.....\n\n")
         project = Project.find_by_project_guid(project_guid)
 
         data = self.parser.parse_args()
+        print(".... Received.....data: ", data)
         mine_guid = data.get('mine_guid')
         mine = Mine.find_by_mine_guid(mine_guid)
 

@@ -33,10 +33,13 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
     updateDocuments(newDocuments);
   };
 
-  const handleFileLoad = (document_name, document_manager_guid) => {
+  const handleFileLoad = (props) => {
+    const {document_name, document_manager_guid} = props;
+    console.log("________HANDLE----_______", props)
     console.log("handle File Load.....", document_name, " - ", document_manager_guid)
     console.log("documents: ", documents)
     const newDoc = { document_name, document_manager_guid } as IMineDocument;
+
     if(documents) {
       const newDocuments = [...documents, newDoc];
       updateDocuments(newDocuments)

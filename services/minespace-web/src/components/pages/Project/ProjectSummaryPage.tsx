@@ -344,10 +344,12 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
   };
 
   const handleSaveDraft = async () => {
+    console.log("saving draft......")
     const currentTabIndex = projectFormTabs.indexOf(activeTab);
     const newActiveTab = projectFormTabs[currentTabIndex + 1];
     const message = "Successfully saved a draft project description.";
     const values = { ...formValues, status_code: "DFT" };
+    console.log("saving draft..., values: ", values)
     submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
     touch(FORM.ADD_EDIT_PROJECT_SUMMARY);
     const errors = Object.keys(flattenObject(formErrors));

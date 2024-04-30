@@ -89,10 +89,10 @@ const columns = [
   renderDateColumn("action", "", true),
 ];
 
-const AuthorizationDocumentTable = () => {
-  // console.log(props)
-  const { amendmentDocuments = [] } = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
-  const data = amendmentDocuments?.map((result) => {
+const AuthorizationDocumentTable = (props) => {
+  console.log("_____________________93::::: ", props)
+  const { amendment_documents = [] } = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
+  const data = amendment_documents?.map((result) => {
     console.log(">>>>>>>>> 97 result: ", result)
     const {
       document_name,

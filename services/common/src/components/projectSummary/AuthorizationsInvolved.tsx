@@ -40,6 +40,8 @@ import RenderHiddenField from "../forms/RenderHiddenField";
 import AuthorizationSupportDocumentUpload from "./AuthorizationSupportDocumentUpload";
 import AuthorizationDocumentTable from "./AuthorizationDocumentTable";
 import { Feature, IMineDocument, IProjectSummaryDocument } from "@mds/common";
+import DocumentTable from "@mds/common";
+import { MineDocument } from "@mds/common/models/documents/document";
 
 export interface ProjectSummary {
   project_summary_id: number;
@@ -74,8 +76,31 @@ const RenderEMAPermitCommonSections = ({ props }) => {
   };
 
   const updateDocuments = (docs: IProjectSummaryDocument[]) => {
-    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "amendmentDocuments", docs));
+    const index = 0
+    console.log("Updating document..________________...", docs);
+    console.log("111111111111111111111111", props)
+    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, `ams_authorizations.amendments[${index}].amendment_documents`, docs));
+    console.log("222222222222222222222222", FORM.ADD_EDIT_PROJECT_SUMMARY)
+    return props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, `ams_authorizations.amendments[${index}].amendment_documents`, docs);
+    console.log("333333333333333333333333", props)
   };
+
+  const tableDocuments = []
+  // props?.documents?.map(
+  //   (doc) => new MineDocument({ ...doc, category: doc.project_summary_document_type_code })
+  // ) ?? [];
+
+  const documentColumns = [
+    "a", "b", "c", "d"
+    // documentNameColumn(),
+    // renderCategoryColumn(
+    //   "project_summary_document_type_code",
+    //   "Category",
+    //   projectSummaryDocumentTypesHash
+    // ),
+    // uploadDateColumn(),
+  ];
+
 
   return (
     <>
@@ -126,19 +151,27 @@ const RenderEMAPermitCommonSections = ({ props }) => {
           <AuthorizationSupportDocumentUpload
             mineGuid={props.mine_guid}
             isProponent={true}
-            documents={props.documents}
+            // documents={props.documents}
+            documents={tableDocuments}
             updateDocuments= {updateDocuments}
             projectGuid={props.project_guid}
             projectSummaryGuid={props.project_summary_guid}
           />
-          <AuthorizationDocumentTable/>
+          <DocumentTable
+            documents={tableDocuments}
+            documentParent="project summary"
+            documentColumns={documentColumns}
+          />
+          {/* <AuthorizationDocumentTable props = {props.initialValues}/> */}
         </div>
       )}
     </>
   );
 };
-const RenderEMANewPermitSection = ({ code, mine_guid, project_guid, project_summary_guid }) => {
-  let props = {
+
+const RenderEMANewPermitSection = ({ props, code, mine_guid, project_guid, project_summary_guid }) => {
+  // GET PROPS to here
+  let doc_props = {
     isAmendment: false,
     mine_guid: mine_guid,
     project_guid: project_guid,
@@ -258,7 +291,8 @@ const RenderEMAAmendFieldArray = ({ fields, mine_guid, project_guid, project_sum
   );
 };
 
-const RenderEMAAuthCodeFormSection = ({ code, mine_guid, project_guid, project_summary_guid }) => {
+const RenderEMAAuthCodeFormSection = ({ props, code, mine_guid, project_guid, project_summary_guid }) => {
+  //get props here 2
   const { authorizations } = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
   const codeAuthorizations = authorizations[code] ?? [];
   const hasAmendments = codeAuthorizations.AMENDMENT?.length > 0;
@@ -268,7 +302,7 @@ const RenderEMAAuthCodeFormSection = ({ code, mine_guid, project_guid, project_s
 
   const dispatch = useDispatch();
 
-  let props = {
+  let doc_props = {
     isAmendment: false,
     mine_guid: mine_guid,
     project_guid: project_guid,
@@ -334,7 +368,7 @@ const RenderEMAAuthCodeFormSection = ({ code, mine_guid, project_guid, project_s
           },
         ]}
       />
-      {hasNew && <RenderEMANewPermitSection code={code} mine_guid={mine_guid} project_guid={project_guid} project_summary_guid={project_summary_guid} />}
+      {hasNew && <RenderEMANewPermitSection props={props} code={code} mine_guid={mine_guid} project_guid={project_guid} project_summary_guid={project_summary_guid} />}
     </>
   );
 };
@@ -368,11 +402,12 @@ const RenderMinesActPermitSelect = () => {
   );
 };
 
-const RenderAuthCodeFormSection = ({ authorizationType, code, mine_guid, project_guid, project_summary_guid }) => {
+const RenderAuthCodeFormSection = ({props, authorizationType, code, mine_guid, project_guid, project_summary_guid }) => {
+  // GET props here 3
   const dropdownProjectSummaryPermitTypes = useSelector(getDropdownProjectSummaryPermitTypes);
   if (authorizationType === "ENVIRONMENTAL_MANAGMENT_ACT") {
     // AMS authorizations, have options of amend/new with more details
-    return <RenderEMAAuthCodeFormSection code={code} mine_guid={mine_guid} project_guid={project_guid} project_summary_guid={project_summary_guid} />;
+    return <RenderEMAAuthCodeFormSection props={props} code={code} mine_guid={mine_guid} project_guid={project_guid} project_summary_guid={project_summary_guid} />;
   }
   if (authorizationType === "OTHER_LEGISLATION") {
     return (
@@ -525,6 +560,7 @@ export const AuthorizationsInvolved = (props) => {
                                   mine_guid={props.initialValues.mine_guid}
                                   project_guid={props.initialValues.project_guid}
                                   project_summary_guid={props.initialValues.project_summary_guid}
+                                  props={props}
                                 />
                               </>
                             )}

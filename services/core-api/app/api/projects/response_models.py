@@ -122,6 +122,7 @@ PROJECT_SUMMARY_AUTHORIZATION_MODEL = api.model(
         'is_contaminated': fields.Boolean,
         'new_type': fields.String,
         'authorization_description': fields.String,
+        'amendment_documents': fields.List(fields.Nested(PROJECT_SUMMARY_DOCUMENT_MODEL)),
         'exemption_requested': fields.Boolean,
         'ams_tracking_number': fields.String,
         'ams_outcome': fields.String,

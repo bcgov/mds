@@ -46,7 +46,7 @@ interface StateProps {
   formValues: any;
   formErrors: any;
   anyTouched: boolean;
-  amendmentDocuments: IProjectSummaryDocument[];
+  // amendmentDocuments: IProjectSummaryDocument[];
 }
 
 // converted to a function to make feature flag easier to work with
