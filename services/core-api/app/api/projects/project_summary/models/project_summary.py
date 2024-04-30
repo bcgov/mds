@@ -641,7 +641,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 'type': 'boolean',
             },
             'nearest_municipality': {
-                'required': True,
+                'nullable': True,
                 'type': 'string',
             },
         }
@@ -766,12 +766,11 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             if legal_land_validation != True:
                 errors_found['legal_land'].append(legal_land_validation)
 
-
         # Validate Declaration
         if status_code == 'SUB':
             declaration_validation = ProjectSummary.validate_declaration(data)
             if declaration_validation != True:
-                errors_found['legal_land'].append(declaration_validation)
+                errors_found['declaration'].append(declaration_validation)
 
         return errors_found
 

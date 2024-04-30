@@ -14,7 +14,6 @@ import json
 from werkzeug.exceptions import BadRequest
 from app.api.utils.common_validation_schemas import primary_address_schema, address_na_schema, address_int_schema, secondary_address_schema
 from app.api.utils.helpers import validate_phone_no
-from flask import current_app
 
 
 class Project(AuditMixin, Base):
