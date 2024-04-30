@@ -157,7 +157,6 @@ export const MINE_INCIDENT_SUCCESS = {
 };
 
 const getQueryString = (filterParams?) => {
-  // return "";
   if (!filterParams) return "";
   return `?${queryString.stringify(filterParams)}`;
 };
