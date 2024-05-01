@@ -11,7 +11,7 @@ const initialState = {
   [STATIC_CONTENT]: MOCK.BULK_STATIC_CONTENT_RESPONSE,
 };
 
-const mine = MOCK.MINE_RESPONSE.mines[0];
+const mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
 
 describe("Variances", () => {
   it("renders properly", () => {
@@ -23,8 +23,5 @@ describe("Variances", () => {
       </ReduxWrapper>
     );
     expect(container).toMatchSnapshot();
-
-    // const component = shallow(<Variances {...props} {...dispatchProps} />);
-    // expect(component).toMatchSnapshot();
   });
 });
