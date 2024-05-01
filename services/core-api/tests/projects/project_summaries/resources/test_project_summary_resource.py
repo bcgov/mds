@@ -167,7 +167,7 @@ def test_update_project_summary_bad_request_with_validation_errors(test_client, 
 
     # Authorization data
     data['ams_authorizations'] = AMS_AUTHORIZATION_DATA
-    data['authorization'] = AUTHORIZATION_DATA
+    data['authorizations'] = AUTHORIZATION_DATA
 
     # Project Contact data
     data['contacts'] = CONTACTS_DATA
@@ -225,7 +225,7 @@ def test_update_project_summary_validation_success(test_client, db_session, auth
 
     # Authorization data
     data['ams_authorizations'] = AMS_AUTHORIZATION_DATA
-    data['authorization'] = AUTHORIZATION_DATA
+    data['authorizations'] = AUTHORIZATION_DATA
 
     # Project Contact data
     data['contacts'] = CONTACTS_DATA
