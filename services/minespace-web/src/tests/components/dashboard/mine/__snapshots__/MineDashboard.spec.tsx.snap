@@ -1,0 +1,345 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MineDashboard renders properly 1`] = `
+<section
+  class="ant-layout ant-layout-has-sider sidebar-wrapper"
+>
+  <aside
+    class="ant-layout-sider ant-layout-sider-dark sider-fixed"
+    style="flex: 0 0 241px; max-width: 241px; min-width: 241px; width: 241px;"
+  >
+    <div
+      class="ant-layout-sider-children"
+    >
+      <div
+        class="sidebar-header"
+      >
+        <div
+          class="primary-colour"
+        >
+          <b>
+            mine3
+          </b>
+        </div>
+        <div>
+          Mine number: 
+          BLAH9091
+        </div>
+      </div>
+      <ul
+        class="ant-menu ant-menu-root ant-menu-vertical ant-menu-light"
+        data-menu-list="true"
+        role="menu"
+        style="height: 100%;"
+        tabindex="0"
+      >
+        <li
+          class="ant-menu-item ant-menu-item-selected"
+          data-menu-id="rc-menu-uuid-test-overview"
+          path="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/overview"
+          role="menuitem"
+          tabindex="-1"
+        >
+          <span
+            aria-label="menu-unfold"
+            class="anticon anticon-menu-unfold ant-menu-item-icon"
+            role="img"
+          >
+            <svg
+              aria-hidden="true"
+              class=""
+              data-icon="menu-unfold"
+              fill="currentColor"
+              focusable="false"
+              height="1em"
+              viewBox="64 64 896 896"
+              width="1em"
+            >
+              <path
+                d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM142.4 642.1L298.7 519a8.84 8.84 0 000-13.9L142.4 381.9c-5.8-4.6-14.4-.5-14.4 6.9v246.3a8.9 8.9 0 0014.4 7z"
+              />
+            </svg>
+          </span>
+          <span
+            class="ant-menu-title-content"
+          >
+            Overview
+          </span>
+        </li>
+        <li
+          class="ant-menu-item"
+          data-menu-id="rc-menu-uuid-test-permits"
+          path="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/permits"
+          role="menuitem"
+          tabindex="-1"
+        >
+          <span
+            aria-label="menu-unfold"
+            class="anticon anticon-menu-unfold ant-menu-item-icon"
+            role="img"
+          >
+            <svg
+              aria-hidden="true"
+              class=""
+              data-icon="menu-unfold"
+              fill="currentColor"
+              focusable="false"
+              height="1em"
+              viewBox="64 64 896 896"
+              width="1em"
+            >
+              <path
+                d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM142.4 642.1L298.7 519a8.84 8.84 0 000-13.9L142.4 381.9c-5.8-4.6-14.4-.5-14.4 6.9v246.3a8.9 8.9 0 0014.4 7z"
+              />
+            </svg>
+          </span>
+          <span
+            class="ant-menu-title-content"
+          >
+            Permits
+          </span>
+        </li>
+        <li
+          class="ant-menu-item"
+          data-menu-id="rc-menu-uuid-test-nods"
+          path="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/nods"
+          role="menuitem"
+          tabindex="-1"
+        >
+          <span
+            aria-label="menu-unfold"
+            class="anticon anticon-menu-unfold ant-menu-item-icon"
+            role="img"
+          >
+            <svg
+              aria-hidden="true"
+              class=""
+              data-icon="menu-unfold"
+              fill="currentColor"
+              focusable="false"
+              height="1em"
+              viewBox="64 64 896 896"
+              width="1em"
+            >
+              <path
+                d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM142.4 642.1L298.7 519a8.84 8.84 0 000-13.9L142.4 381.9c-5.8-4.6-14.4-.5-14.4 6.9v246.3a8.9 8.9 0 0014.4 7z"
+              />
+            </svg>
+          </span>
+          <span
+            class="ant-menu-title-content"
+          >
+            Notices of Departure
+          </span>
+        </li>
+        <li
+          class="ant-menu-item"
+          data-menu-id="rc-menu-uuid-test-inspections"
+          path="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/inspections"
+          role="menuitem"
+          tabindex="-1"
+        >
+          <span
+            aria-label="menu-unfold"
+            class="anticon anticon-menu-unfold ant-menu-item-icon"
+            role="img"
+          >
+            <svg
+              aria-hidden="true"
+              class=""
+              data-icon="menu-unfold"
+              fill="currentColor"
+              focusable="false"
+              height="1em"
+              viewBox="64 64 896 896"
+              width="1em"
+            >
+              <path
+                d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM142.4 642.1L298.7 519a8.84 8.84 0 000-13.9L142.4 381.9c-5.8-4.6-14.4-.5-14.4 6.9v246.3a8.9 8.9 0 0014.4 7z"
+              />
+            </svg>
+          </span>
+          <span
+            class="ant-menu-title-content"
+          >
+            Inspections
+          </span>
+        </li>
+        <li
+          class="ant-menu-item"
+          data-menu-id="rc-menu-uuid-test-incidents"
+          path="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/incidents"
+          role="menuitem"
+          tabindex="-1"
+        >
+          <span
+            aria-label="menu-unfold"
+            class="anticon anticon-menu-unfold ant-menu-item-icon"
+            role="img"
+          >
+            <svg
+              aria-hidden="true"
+              class=""
+              data-icon="menu-unfold"
+              fill="currentColor"
+              focusable="false"
+              height="1em"
+              viewBox="64 64 896 896"
+              width="1em"
+            >
+              <path
+                d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM142.4 642.1L298.7 519a8.84 8.84 0 000-13.9L142.4 381.9c-5.8-4.6-14.4-.5-14.4 6.9v246.3a8.9 8.9 0 0014.4 7z"
+              />
+            </svg>
+          </span>
+          <span
+            class="ant-menu-title-content"
+          >
+            Incidents
+          </span>
+        </li>
+        <li
+          class="ant-menu-item"
+          data-menu-id="rc-menu-uuid-test-variances"
+          path="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/variances"
+          role="menuitem"
+          tabindex="-1"
+        >
+          <span
+            aria-label="menu-unfold"
+            class="anticon anticon-menu-unfold ant-menu-item-icon"
+            role="img"
+          >
+            <svg
+              aria-hidden="true"
+              class=""
+              data-icon="menu-unfold"
+              fill="currentColor"
+              focusable="false"
+              height="1em"
+              viewBox="64 64 896 896"
+              width="1em"
+            >
+              <path
+                d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM142.4 642.1L298.7 519a8.84 8.84 0 000-13.9L142.4 381.9c-5.8-4.6-14.4-.5-14.4 6.9v246.3a8.9 8.9 0 0014.4 7z"
+              />
+            </svg>
+          </span>
+          <span
+            class="ant-menu-title-content"
+          >
+            Variances
+          </span>
+        </li>
+        <li
+          class="ant-menu-item"
+          data-menu-id="rc-menu-uuid-test-reports"
+          path="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/reports"
+          role="menuitem"
+          tabindex="-1"
+        >
+          <span
+            aria-label="menu-unfold"
+            class="anticon anticon-menu-unfold ant-menu-item-icon"
+            role="img"
+          >
+            <svg
+              aria-hidden="true"
+              class=""
+              data-icon="menu-unfold"
+              fill="currentColor"
+              focusable="false"
+              height="1em"
+              viewBox="64 64 896 896"
+              width="1em"
+            >
+              <path
+                d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM142.4 642.1L298.7 519a8.84 8.84 0 000-13.9L142.4 381.9c-5.8-4.6-14.4-.5-14.4 6.9v246.3a8.9 8.9 0 0014.4 7z"
+              />
+            </svg>
+          </span>
+          <span
+            class="ant-menu-title-content"
+          >
+            Reports
+          </span>
+        </li>
+        <li
+          class="ant-menu-item"
+          data-menu-id="rc-menu-uuid-test-bonds"
+          path="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/bonds"
+          role="menuitem"
+          tabindex="-1"
+        >
+          <span
+            aria-label="menu-unfold"
+            class="anticon anticon-menu-unfold ant-menu-item-icon"
+            role="img"
+          >
+            <svg
+              aria-hidden="true"
+              class=""
+              data-icon="menu-unfold"
+              fill="currentColor"
+              focusable="false"
+              height="1em"
+              viewBox="64 64 896 896"
+              width="1em"
+            >
+              <path
+                d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM142.4 642.1L298.7 519a8.84 8.84 0 000-13.9L142.4 381.9c-5.8-4.6-14.4-.5-14.4 6.9v246.3a8.9 8.9 0 0014.4 7z"
+              />
+            </svg>
+          </span>
+          <span
+            class="ant-menu-title-content"
+          >
+            Bonds
+          </span>
+        </li>
+        <li
+          class="ant-menu-item"
+          data-menu-id="rc-menu-uuid-test-tailings"
+          path="/mines/18133c75-49ad-4101-85f3-a43e35ae989a/tailings"
+          role="menuitem"
+          tabindex="-1"
+        >
+          <span
+            aria-label="menu-unfold"
+            class="anticon anticon-menu-unfold ant-menu-item-icon"
+            role="img"
+          >
+            <svg
+              aria-hidden="true"
+              class=""
+              data-icon="menu-unfold"
+              fill="currentColor"
+              focusable="false"
+              height="1em"
+              viewBox="64 64 896 896"
+              width="1em"
+            >
+              <path
+                d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM142.4 642.1L298.7 519a8.84 8.84 0 000-13.9L142.4 381.9c-5.8-4.6-14.4-.5-14.4 6.9v246.3a8.9 8.9 0 0014.4 7z"
+              />
+            </svg>
+          </span>
+          <span
+            class="ant-menu-title-content"
+          >
+            Tailings & Dams
+          </span>
+        </li>
+      </ul>
+      <div
+        aria-hidden="true"
+        style="display: none;"
+      />
+    </div>
+  </aside>
+  <main
+    class="ant-layout-content"
+    style="margin-left: 241px;"
+  />
+</section>
+`;

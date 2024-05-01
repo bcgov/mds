@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
@@ -12,7 +12,7 @@ import { fetchEMLIContactsByRegion } from "@mds/common/redux/actionCreators/mine
 import { fetchPartyRelationships } from "@mds/common/redux/actionCreators/partiesActionCreator";
 import NotFoundNotice from "@/components/common/NotFoundNotice";
 
-const MineDashboardNew = () => {
+const MineDashboard: FC = () => {
   const dispatch = useDispatch();
   const { id, activeTab } = useParams<{ id: string; activeTab: string }>();
   const mine: IMine = useSelector((state) => getMineById(state, id));
@@ -71,8 +71,4 @@ const MineDashboardNew = () => {
   );
 };
 
-export interface MineDashboardContext {
-  mine: IMine;
-}
-
-export default MineDashboardNew;
+export default MineDashboard;
