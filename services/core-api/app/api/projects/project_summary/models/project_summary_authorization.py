@@ -3,8 +3,6 @@ from datetime import datetime
 from sqlalchemy.dialects.postgresql import UUID
 from cerberus import Validator
 import json
-from flask import current_app
-from werkzeug.exceptions import BadRequest
 
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db

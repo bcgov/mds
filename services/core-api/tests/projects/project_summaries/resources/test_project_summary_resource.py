@@ -2,9 +2,7 @@ import json
 import re
 
 from tests.factories import ProjectFactory, ProjectSummaryFactory, PartyFactory
-from flask_restx import marshal
-from app.api.projects.response_models import PROJECT_SUMMARY_MODEL
-
+from tests.constants import MAJOR_PROJECTS_SUMMARY_MOCK_DATA
 
 def test_get_project_summary_by_project_summary_guid(test_client, db_session, auth_headers):
     project = ProjectFactory()
@@ -92,6 +90,45 @@ def test_update_project_summary_assign_project_lead(test_client, db_session, aut
     assert put_resp.status_code == 200
     assert put_data['status_code'] == 'ASG'
 
+def test_submit_project_summary_without_ams_auths(test_client, db_session, auth_headers):
+    '''Project summary submitted without AMS authorizations submitted successfully'''
+    project = ProjectFactory(project_summary=0)
+    project_summary = ProjectSummaryFactory(project=project)
+    party = PartyFactory(person=True)
+
+    data = MAJOR_PROJECTS_SUMMARY_MOCK_DATA
+    data['documents'] = []
+    data['mine_guid'] = project_summary.project.mine_guid
+    data['status_code'] = 'SUB'
+    data['project_lead_party_guid'] = party.party_guid
+
+    # Basic info data
+    data['project_summary_title'] = project_summary.project_summary_title
+    data['project_summary_description'] = project_summary.project_summary_description
+    
+    # Authorization data
+    data['ams_authorizations'] = {
+        'amendments': [],
+        'new': []
+    }
+
+    data['authorizations'] = [
+        {
+            "project_summary_permit_type": [
+                "AMENDMENT"
+            ],
+        "project_summary_authorization_type": "MINES_ACT_PERMIT",
+        }
+    ]
+
+    put_resp = test_client.put(
+        f'/projects/{project.project_guid}/project-summaries/{project_summary.project_summary_guid}',
+        headers=auth_headers['full_auth_header'],
+        json=data)
+    put_data = json.loads(put_resp.data.decode())
+
+    # should not be bad request
+    assert put_resp.status_code == 200
 
 def test_update_project_summary_bad_request_with_validation_errors(test_client, db_session, auth_headers):
     '''A payload with status_code of SUB needs all required input fields filled else the errors by sections are returned'''
@@ -99,7 +136,7 @@ def test_update_project_summary_bad_request_with_validation_errors(test_client, 
     project_summary = ProjectSummaryFactory(project=project)
     party = PartyFactory(person=True)
 
-    data = {}
+    data = MAJOR_PROJECTS_SUMMARY_MOCK_DATA
 
     data['mine_guid'] = project_summary.project.mine_guid
     data['status_code'] = 'SUB'
@@ -109,150 +146,12 @@ def test_update_project_summary_bad_request_with_validation_errors(test_client, 
     # Basic info data
     data['project_summary_title'] = project_summary.project_summary_title
     data['project_summary_description'] = project_summary.project_summary_description
-
-    # Project contacts data
-    data['contacts'] = [
-        {
-            "email": "test@gov.bc.ca",
-            "phone_number": "123-123-1234",
-            "is_primary": True,
-            "first_name": "test name",
-            "last_name": "test name",
-            "address": {
-                "suite_no": "123",
-                "address_line_1": "some street",
-                "city": "Vancouver",
-                "sub_division_code": "BC",
-                "post_code": "V5S4W2",
-                "address_type_code": "CAN"
-            }
-        },
-    ]
-
-    # Authorization data
-    data['ams_authorizations'] = {
-    "amendments": [
-        {
-            "project_summary_permit_type": [
-                "AMENDMENT"
-            ],
-            "project_summary_authorization_type": "AIR_EMISSIONS_DISCHARGE_PERMIT",
-            "existing_permits_authorizations": [
-                "1234"
-            ],
-            "amendment_changes": [
-                "ILT",
-                "IGT"
-            ],
-            "amendment_severity": "SIG",
-            "is_contaminated": False,
-            "authorization_description": "test descript",
-            "exemption_requested": False,
-        }
-    ],
-    "new": []
-    }
-
-    data['authorizations'] = [
-        {
-            "project_summary_permit_type": [
-                "AMENDMENT"
-            ],
-            "project_summary_authorization_type": "AIR_EMISSIONS_DISCHARGE_PERMIT",
-            "existing_permits_authorizations": [
-                "1234"
-            ],
-            "amendment_changes": [
-                "ILT",
-                "IGT"
-            ],
-            "amendment_severity": "SIG",
-            "is_contaminated": False,
-            "authorization_description": "description",
-            "exemption_requested": False,
-        }
-    ]
-
-    # Applicant data
-    data['applicant'] = {
-        "party_type_code": "ORG",
-        "phone_no": party.phone_no,
-        "email": "test@gov.bc.ca",
-        "party_name": "test name",
-        "address": [
-            {
-                "address_line_1": "123 fake street",
-                "city": "Vancouver",
-                "sub_division_code": "BC",
-                "post_code": "V5S4W2",
-                "address_type_code": "CAN"
-            },
-            {
-                "address_line_1": "123 fake street",
-                "city": "Vancouver",
-                "sub_division_code": "BC",
-                "post_code": "V5S4W2",
-                "address_type_code": "CAN"
-            },
-            {
-                "address_line_1": "123 fake street",
-                "city": "Vancouver",
-                "sub_division_code": "BC",
-                "post_code": "V5S4W2",
-                "address_type_code": "CAN"
-            }
-        ],
-    }
     
     # Agent data
     data['is_agent'] = True
-    data['agent'] = {
-        "party_type_code": "PER",
-        "phone_no": party.phone_no,
-        "email": "test@gov.bc.ca",
-        "party_name": "test name",
-        "first_name": "test name",
-        "address": {
-            "suite_no": "",
-            "address_line_1": None,
-            "city": "Vancouver",
-            "sub_division_code": "BC",
-            "post_code": None,
-            "address_type_code": "CAN"
-        },
-    }
-
-    # Facility operator data
-    data['facility_coords_source'] = 'GPS'
-    data['facility_desc'] = 'description'
-    data['facility_latitude'] = '50.0000000'
-    data['facility_longitude'] = '-115.0000000'
-    data['facility_type'] = 'test type'
-    data['zoning'] = True
-    data['facility_operator'] = {
-        "party_type_code": "PER",
-        "phone_no": "123-123-1234",
-        "email": "test@govb.bc.ca",
-        "party_name": "test name",
-        "first_name": "test",
-        "address": {
-            "suite_no": "123",
-            "address_line_1": "some address",
-            "city": "vancouver",
-            "sub_division_code": "BC",
-            "post_code": "V5S4W2",
-            "address_type_code": "CAN"
-        },
-    }
 
     # Legal land data
     data['is_legal_land_owner'] = False
-    data['is_crown_land_federal_or_provincial'] = None
-    data['is_landowner_aware_of_discharge_application'] = True
-    data['has_landowner_received_copy_of_application'] = False
-    data['legal_land_owner_name'] = 'some name'
-    data['legal_land_owner_contact_number'] = '123-123-1234'
-    data['legal_land_owner_email_address'] = 'test@gov.bc.ca'
 
     # Declaration data
     data['confirmation_of_submission'] = None
@@ -284,7 +183,7 @@ def test_update_project_summary_validation_success(test_client, db_session, auth
     project_summary = ProjectSummaryFactory(project=project)
     party = PartyFactory(person=True)
 
-    data = {}
+    data = MAJOR_PROJECTS_SUMMARY_MOCK_DATA
     data['mine_guid'] = project_summary.project.mine_guid
     data['status_code'] = 'SUB'
     data['project_lead_party_guid'] = party.party_guid
@@ -293,133 +192,6 @@ def test_update_project_summary_validation_success(test_client, db_session, auth
     # Basic info data
     data['project_summary_title'] = project_summary.project_summary_title
     data['project_summary_description'] = project_summary.project_summary_description
-
-    # Project contacts data
-    data['contacts'] = [
-        {
-            "email": "test@gov.bc.ca",
-            "phone_number": "123-123-1234",
-            "is_primary": True,
-            "first_name": "test name",
-            "last_name": "test name",
-            "address": {
-                "suite_no": "123",
-                "address_line_1": "some street",
-                "city": "Vancouver",
-                "sub_division_code": "BC",
-                "post_code": "V5S4W2",
-                "address_type_code": "CAN"
-            }
-        },
-    ]
-
-    # Authorization data
-    data['ams_authorizations'] = {
-    "amendments": [
-        {
-            "project_summary_permit_type": [
-                "AMENDMENT"
-            ],
-            "project_summary_authorization_type": "AIR_EMISSIONS_DISCHARGE_PERMIT",
-            "existing_permits_authorizations": [
-                "1234"
-            ],
-            "amendment_changes": [
-                "ILT",
-                "IGT"
-            ],
-            "amendment_severity": "SIG",
-            "is_contaminated": False,
-            "authorization_description": "test descript",
-            "exemption_requested": False,
-        }
-    ],
-    "new": []
-    }
-
-    data['authorizations'] = [
-        {
-            "project_summary_permit_type": [
-                "AMENDMENT"
-            ],
-            "project_summary_authorization_type": "AIR_EMISSIONS_DISCHARGE_PERMIT",
-            "existing_permits_authorizations": [
-                "1234"
-            ],
-            "amendment_changes": [
-                "ILT",
-                "IGT"
-            ],
-            "amendment_severity": "SIG",
-            "is_contaminated": False,
-            "authorization_description": "description",
-            "exemption_requested": False,
-        }
-    ]
-
-    # Applicant data
-    data['applicant'] = {
-        "party_type_code": "ORG",
-        "phone_no": party.phone_no,
-        "email": "test@gov.bc.ca",
-        "party_name": "test name",
-        "address": [
-            {
-                "address_line_1": "123 fake street",
-                "city": "Vancouver",
-                "sub_division_code": "BC",
-                "post_code": "V5S4W2",
-                "address_type_code": "CAN"
-            },
-            {
-                "address_line_1": "123 fake street",
-                "city": "Vancouver",
-                "sub_division_code": "BC",
-                "post_code": "V5S4W2",
-                "address_type_code": "CAN"
-            },
-            {
-                "address_line_1": "123 fake street",
-                "city": "Vancouver",
-                "sub_division_code": "BC",
-                "post_code": "V5S4W2",
-                "address_type_code": "CAN"
-            }
-        ],
-    }
-    
-    # Agent data
-    data['is_agent'] = False
-
-    # Facility operator data
-    data['facility_coords_source'] = 'GPS'
-    data['facility_desc'] = 'description'
-    data['facility_latitude'] = '50.0000000'
-    data['facility_longitude'] = '-115.0000000'
-    data['facility_type'] = 'test type'
-    data['zoning'] = True
-    data['facility_operator'] = {
-        "party_type_code": "PER",
-        "phone_no": "123-123-1234",
-        "email": "test@govb.bc.ca",
-        "party_name": "test name",
-        "first_name": "test",
-        "address": {
-            "suite_no": "123",
-            "address_line_1": "some address",
-            "city": "vancouver",
-            "sub_division_code": "BC",
-            "post_code": "V5S4W2",
-            "address_type_code": "CAN"
-        },
-    }
-
-    # Legal land data
-    data['is_legal_land_owner'] = True
-
-    # Declaration data
-    data['confirmation_of_submission'] = True
-    data['ams_terms_agreed'] = True
 
     put_resp = test_client.put(
         f'/projects/{project.project_guid}/project-summaries/{project_summary.project_summary_guid}',
