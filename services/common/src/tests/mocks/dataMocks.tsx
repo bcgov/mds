@@ -1477,6 +1477,56 @@ export const COMPLIANCE = {
   open_orders: [
     { order_no: "", report_no: "", due_date: "", inspector: "", violation: "", overdue: false },
   ],
+  orders: [
+    {
+      order_no: "1234-1",
+      report_no: "1234",
+      due_date: "",
+      inspector: "TEST",
+      violation: "2.2",
+      overdue: false,
+    },
+    {
+      order_no: "1234-2",
+      report_no: "1234",
+      due_date: "2019-12-31",
+      inspector: "TEST",
+      violation: "2.3",
+      overdue: true,
+    },
+    {
+      order_no: "1234-3",
+      report_no: "1234",
+      due_date: "",
+      inspector: "TEST",
+      violation: "1.1.1",
+      overdue: false,
+    },
+  ],
+  all_time: {
+    num_inspections: 5,
+    num_advisories: 6,
+    num_warnings: 7,
+    num_requests: 8,
+  },
+  current_fiscal: {
+    num_inspections: 3,
+    num_advisories: 4,
+    num_warnings: 5,
+    num_requests: 6,
+  },
+  last_12_months: {
+    num_inspections: 2,
+    num_advisories: 3,
+    num_warnings: 4,
+    num_requests: 5,
+  },
+  year_to_date: {
+    num_inspections: 1,
+    num_advisories: 2,
+    num_warnings: 3,
+    num_requests: 4,
+  },
 };
 
 export const MINE_TYPES = [
