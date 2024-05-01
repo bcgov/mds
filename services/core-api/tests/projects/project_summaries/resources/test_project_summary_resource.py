@@ -2,7 +2,7 @@ import json
 import re
 
 from tests.factories import ProjectFactory, ProjectSummaryFactory, PartyFactory
-from tests.constants import MAJOR_PROJECTS_SUMMARY_MOCK_DATA
+from tests.constants import *
 
 def test_get_project_summary_by_project_summary_guid(test_client, db_session, auth_headers):
     project = ProjectFactory()
@@ -96,7 +96,7 @@ def test_submit_project_summary_without_ams_auths(test_client, db_session, auth_
     project_summary = ProjectSummaryFactory(project=project)
     party = PartyFactory(person=True)
 
-    data = MAJOR_PROJECTS_SUMMARY_MOCK_DATA
+    data = {}
     data['documents'] = []
     data['mine_guid'] = project_summary.project.mine_guid
     data['status_code'] = 'SUB'
@@ -105,7 +105,7 @@ def test_submit_project_summary_without_ams_auths(test_client, db_session, auth_
     # Basic info data
     data['project_summary_title'] = project_summary.project_summary_title
     data['project_summary_description'] = project_summary.project_summary_description
-    
+
     # Authorization data
     data['ams_authorizations'] = {
         'amendments': [],
@@ -120,6 +120,24 @@ def test_submit_project_summary_without_ams_auths(test_client, db_session, auth_
         "project_summary_authorization_type": "MINES_ACT_PERMIT",
         }
     ]
+
+    # Project Contacts data
+    data['contacts'] = CONTACTS_DATA
+
+    # Applicant data
+    data['applicant'] = APPLICANT_DATA
+
+    # Agent data
+    data['is_agent'] = False
+
+    # Facility data
+    data |= FACILITY_DATA
+
+    # Legal land data
+    data['is_legal_land_owner'] = True
+    
+    # Declaration data
+    data['confirmation_of_submission'] = True
 
     put_resp = test_client.put(
         f'/projects/{project.project_guid}/project-summaries/{project_summary.project_summary_guid}',
@@ -136,7 +154,7 @@ def test_update_project_summary_bad_request_with_validation_errors(test_client, 
     project_summary = ProjectSummaryFactory(project=project)
     party = PartyFactory(person=True)
 
-    data = MAJOR_PROJECTS_SUMMARY_MOCK_DATA
+    data = {}
 
     data['mine_guid'] = project_summary.project.mine_guid
     data['status_code'] = 'SUB'
@@ -146,12 +164,24 @@ def test_update_project_summary_bad_request_with_validation_errors(test_client, 
     # Basic info data
     data['project_summary_title'] = project_summary.project_summary_title
     data['project_summary_description'] = project_summary.project_summary_description
+
+    # Authorization data
+    data['ams_authorizations'] = AMS_AUTHORIZATION_DATA
+    data['authorization'] = AUTHORIZATION_DATA
+
+    # Project Contact data
+    data['contacts'] = CONTACTS_DATA
+
+    # Applicant data
+    data['applicant'] = APPLICANT_DATA
     
     # Agent data
     data['is_agent'] = True
+    data['agent'] = AGENT_DATA
 
     # Legal land data
     data['is_legal_land_owner'] = False
+    data |= LEGAL_LAND_DATA
 
     # Declaration data
     data['confirmation_of_submission'] = None
@@ -183,7 +213,7 @@ def test_update_project_summary_validation_success(test_client, db_session, auth
     project_summary = ProjectSummaryFactory(project=project)
     party = PartyFactory(person=True)
 
-    data = MAJOR_PROJECTS_SUMMARY_MOCK_DATA
+    data = {}
     data['mine_guid'] = project_summary.project.mine_guid
     data['status_code'] = 'SUB'
     data['project_lead_party_guid'] = party.party_guid
@@ -192,6 +222,29 @@ def test_update_project_summary_validation_success(test_client, db_session, auth
     # Basic info data
     data['project_summary_title'] = project_summary.project_summary_title
     data['project_summary_description'] = project_summary.project_summary_description
+
+    # Authorization data
+    data['ams_authorizations'] = AMS_AUTHORIZATION_DATA
+    data['authorization'] = AUTHORIZATION_DATA
+
+    # Project Contact data
+    data['contacts'] = CONTACTS_DATA
+
+    # Applicant data
+    data['applicant'] = APPLICANT_DATA
+
+    # Agent data
+    data['is_agent'] = False
+
+    # Facility data
+    data |= FACILITY_DATA
+
+    # Legal land data
+    data['is_legal_land_owner'] = True
+
+    # Declaration data
+    data['confirmation_of_submission'] = True
+    data['ams_terms_agreed'] = True
 
     put_resp = test_client.put(
         f'/projects/{project.project_guid}/project-summaries/{project_summary.project_summary_guid}',

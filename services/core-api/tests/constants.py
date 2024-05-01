@@ -140,24 +140,7 @@ CORE_EDIT_CODE = {
 
 # Major Projects Summary constants
 
-MAJOR_PROJECTS_SUMMARY_MOCK_DATA = {
-    'facility_coords_source': "GPS",
-    'facility_desc': "description",
-    'facility_latitude': "50.0000000",
-    'facility_longitude': "-115.0000000",
-    'facility_type': "test type",
-    'zoning': True,
-    'is_agent': False,
-    'is_legal_land_owner': True,
-    'is_crown_land_federal_or_provincial': None,
-    'is_landowner_aware_of_discharge_application': True,
-    'has_landowner_received_copy_of_application': False,
-    'legal_land_owner_name': "some name",
-    'legal_land_owner_contact_number': "123-123-1234",
-    'legal_land_owner_email_address': "test@gov.bc.ca",
-    'confirmation_of_submission': True,
-    'ams_terms_agreed': True,
-    'contacts': [
+CONTACTS_DATA = [
         {
             "email": "test@gov.bc.ca",
             "phone_number": "123-123-1234",
@@ -173,8 +156,9 @@ MAJOR_PROJECTS_SUMMARY_MOCK_DATA = {
                 "address_type_code": "CAN"
             }
         },
-    ],
-    'applicant': {
+    ]
+
+APPLICANT_DATA = {
         "party_type_code": "ORG",
         "phone_no": "123-123-1234",
         "email": "test@gov.bc.ca",
@@ -202,8 +186,9 @@ MAJOR_PROJECTS_SUMMARY_MOCK_DATA = {
                 "address_type_code": "CAN"
             }
         ],
-    },
-    'agent': {
+    }
+
+AGENT_DATA = {
         "party_type_code": "PER",
         "phone_no": "123-123-1234",
         "email": "test@gov.bc.ca",
@@ -217,7 +202,9 @@ MAJOR_PROJECTS_SUMMARY_MOCK_DATA = {
             "post_code": None,
             "address_type_code": "CAN"
         },
-    },
+    }
+
+FACILITY_DATA = {
     'facility_operator': {
         "party_type_code": "PER",
         "phone_no": "123-123-1234",
@@ -233,7 +220,15 @@ MAJOR_PROJECTS_SUMMARY_MOCK_DATA = {
             "address_type_code": "CAN"
         },
     },
-    'ams_authorizations': {
+    'facility_coords_source': "GPS",
+    'facility_desc': "description",
+    'facility_latitude': "50.0000000",
+    'facility_longitude': "-115.0000000",
+    'facility_type': "test type",
+    'zoning': True,
+}
+
+AMS_AUTHORIZATION_DATA = {
     "amendments": [
         {
             "project_summary_permit_type": [
@@ -254,8 +249,9 @@ MAJOR_PROJECTS_SUMMARY_MOCK_DATA = {
         }
     ],
     "new": []
-    },
-    'authorizations': [
+    }
+
+AUTHORIZATION_DATA = [
         {
             "project_summary_permit_type": [
                 "AMENDMENT"
@@ -273,5 +269,13 @@ MAJOR_PROJECTS_SUMMARY_MOCK_DATA = {
             "authorization_description": "description",
             "exemption_requested": False,
         }
-    ],
+    ]
+
+LEGAL_LAND_DATA = {
+    'is_crown_land_federal_or_provincial': None,
+    'is_landowner_aware_of_discharge_application': True,
+    'has_landowner_received_copy_of_application': False,
+    'legal_land_owner_name': "some name",
+    'legal_land_owner_contact_number': "123-123-1234",
+    'legal_land_owner_email_address': "test@gov.bc.ca",
 }
