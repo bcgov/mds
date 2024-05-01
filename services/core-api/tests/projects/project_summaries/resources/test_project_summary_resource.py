@@ -179,6 +179,9 @@ def test_update_project_summary_bad_request_with_validation_errors(test_client, 
     data['is_agent'] = True
     data['agent'] = AGENT_DATA
 
+    # Facility data
+    data |= FACILITY_DATA
+
     # Legal land data
     data['is_legal_land_owner'] = False
     data |= LEGAL_LAND_DATA
