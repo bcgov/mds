@@ -279,24 +279,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 new_party.address.append(new_address)
             return new_party
 
-    @classmethod
-    def create_or_update_party_orgbook(cls, party_data, party_guid, existing_party):
-        party_orgbook_data = party_data.get('party_orgbook_entity')
-        existing_party_orgbook = existing_party.party_orgbook_entity
-        if existing_party_orgbook is not None:
-            existing_party_orgbook.deep_update_from_dict(party_orgbook_data)
-            return existing_party_orgbook
-        else:
-            party_orgbook = PartyOrgBookEntity.create(party_orgbook_data.get('registration_id'),
-                                                      party_orgbook_data.get('registration_status'),
-                                                      party_orgbook_data.get('registration_date'),
-                                                      party_orgbook_data.get('name_id'),
-                                                      party_orgbook_data.get('name_text'),
-                                                      party_orgbook_data.get('credential_id'),
-                                                      party_guid,
-                                                      party_orgbook_data.get('company_alias'))
-            return party_orgbook
-
     def create_or_update_authorization(self, authorization):
             updated_authorization_guid = authorization.get('project_summary_authorization_guid')
 
