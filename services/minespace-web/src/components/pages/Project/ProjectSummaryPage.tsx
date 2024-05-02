@@ -179,90 +179,6 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
     return payloadValues;
   };
 
-  const getFieldValue = (obj, field) => {
-    const value = obj[field];
-    if (typeof value === "undefined" || value === null || value === "") {
-      return null;
-    }
-    return value;
-  };
-
-  const getRequiredFieldFormTab = (field: string) => {
-    const requiredFieldMap = {
-      project_summary_title: "basic-information",
-      project_summary_description: "basic-information",
-      agent: "agent",
-      is_agent: "agent",
-      legal_land_owner: "legal-land-owner-information",
-      is_legal_land_owner: "legal-land-owner-information",
-      contacts: "project-contacts",
-    };
-    return requiredFieldMap[field];
-  };
-
-  const verifyRequiredFields = (payload) => {
-    const requiredFields = amsFeatureEnabled
-      ? ["project_summary_title", "project_summary_description", "is_agent", "is_legal_land_owner"]
-      : ["project_summary_title", "project_summary_description"];
-
-    for (const field of requiredFields) {
-      if (getFieldValue(payload, field) === null) {
-        return field;
-      }
-    }
-
-    // Additional check for contacts
-    if (payload.contacts && payload.contacts.length > 0) {
-      for (let i = 0; i < payload.contacts.length; i++) {
-        const contact = payload?.contacts[i];
-        const address = contact?.address;
-        const verifyPersonInfo =
-          !contact.first_name || !contact.last_name || !contact.email || !contact.phone_number;
-        const verifyAddressInfoForPrimary = contact.is_primary && !address;
-        if (verifyPersonInfo || verifyAddressInfoForPrimary) {
-          return "contacts";
-        }
-      }
-    }
-
-    // Get agent information and party type code
-    const agent = payload.agent || {};
-    const partyTypeCode = agent.party_type_code;
-
-    // Define required fields based on party type
-    const commonAgentRequiredFields = ["party_name", "phone_no", "email", "address"];
-    const agentRequiredFields =
-      partyTypeCode === "ORG"
-        ? commonAgentRequiredFields
-        : ["first_name", ...commonAgentRequiredFields];
-
-    // Check if all required fields are present and non-empty
-    for (const field of agentRequiredFields) {
-      if (payload.is_agent && !agent[field]) {
-        return "agent";
-      }
-    }
-
-    // Additional check for legal land owner
-    if (!payload.is_legal_land_owner && amsFeatureEnabled) {
-      const requiredLandOwnerFields = [
-        "is_legal_land_owner",
-        "is_crown_land_federal_or_provincial",
-        "is_landowner_aware_of_discharge_application",
-        "legal_land_owner_name",
-        "has_landowner_received_copy_of_application",
-        "legal_land_owner_contact_number",
-        "legal_land_owner_email_address",
-      ];
-      for (const field of requiredLandOwnerFields) {
-        if (getFieldValue(payload, field) === null) {
-          return "legal_land_owner";
-        }
-      }
-    }
-    return null;
-  };
-
   const handleUpdateProjectSummary = async (values, message) => {
     const payload = handleTransformPayload(values);
     setIsLoaded(false);
@@ -315,18 +231,22 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
     if (e) {
       e.preventDefault();
     }
+
     const message = newActiveTab
       ? "Successfully updated the project description."
       : "Successfully submitted a project description to the Province of British Columbia.";
-    const values = { ...formValues, status_code: "SUB" };
-    const missingRequiredFields = verifyRequiredFields(handleTransformPayload(values));
-    if (missingRequiredFields) {
-      handleTabChange(getRequiredFieldFormTab(missingRequiredFields));
-      return;
+
+    let status_code = projectSummary.status_code;
+    if (!status_code || !isEditMode) {
+      status_code = "DFT";
+    } else if (!newActiveTab) {
+      status_code = "SUB";
     }
+
+    const errors = Object.keys(flattenObject(formErrors));
+    const values = { ...formValues, status_code: status_code };
     submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
     touch(FORM.ADD_EDIT_PROJECT_SUMMARY);
-    const errors = Object.keys(flattenObject(formErrors));
     if (errors.length === 0) {
       try {
         if (!isEditMode) {
