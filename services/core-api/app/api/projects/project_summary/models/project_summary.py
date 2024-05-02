@@ -91,6 +91,11 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     facility_operator = db.relationship(
         'Party', lazy='joined', foreign_keys=facility_operator_guid
     )
+    
+    nearest_municipality = db.relationship(
+        'Municipality', lazy='joined', foreign_keys=nearest_municipality_guid
+    )
+
     authorizations = db.relationship(
         'ProjectSummaryAuthorization',
         primaryjoin='and_(ProjectSummaryAuthorization.project_summary_guid == ProjectSummary.project_summary_guid, ProjectSummaryAuthorization.deleted_ind == False)',
