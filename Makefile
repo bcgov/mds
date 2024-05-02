@@ -141,6 +141,12 @@ clean: stop |
 	@docker rmi -f mds_postgres mds_backend mds_frontend mds_flyway
 	@docker volume rm mds_postgres_data -f
 
+# Generates a migration file to support versioning of the specified table
+# Usage: make generate_history_table_migration TABLE=<table_name>
+generate_history_table_migration:
+	@echo "+\n++ Generating history table migration ...\n+"
+	@docker compose $(DC_FILE) exec backend bash -c "flask generate_history_table_migration $(TABLE)"
+
 # initial project setup for local/codespaces development
 init:
 	@./bin/setup_codespaces.sh

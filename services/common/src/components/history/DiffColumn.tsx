@@ -16,17 +16,19 @@ const DiffColumn: React.FC<DiffColumnProps> = ({ differences, valueMapper }) => 
    * If a valueMapper is not provided or a the given field does not have a corresponding mapping,
    * the field_name will be formatted to sentence case for easier readability.
    */
-  const mappedDifferences = differences.map((change) => {
-    const mapper = valueMapper ? valueMapper[change.field_name] : null;
-    const fromMapped = mapper?.data?.find((data) => data.value === change.from);
-    const toMapped = mapper?.data?.find((data) => data.value === change.to);
+  const mappedDifferences = differences
+    .filter((change) => !change.field_name?.endsWith("_guid")) // Ignore any fields we can reasonably assume the user doesn't care about
+    .map((change) => {
+      const mapper = valueMapper ? valueMapper[change.field_name] : null;
+      const fromMapped = mapper?.data?.find((data) => data.value === change.from);
+      const toMapped = mapper?.data?.find((data) => data.value === change.to);
 
-    return {
-      field_name: mapper?.title ?? formatSnakeCaseToSentenceCase(change.field_name, "_"),
-      from: fromMapped?.label || change.from,
-      to: toMapped?.label || change.to,
-    };
-  });
+      return {
+        field_name: mapper?.title ?? formatSnakeCaseToSentenceCase(change.field_name, "_"),
+        from: fromMapped?.label || change.from,
+        to: toMapped?.label || change.to,
+      };
+    });
 
   return (
     <div className="padding-md--top">
