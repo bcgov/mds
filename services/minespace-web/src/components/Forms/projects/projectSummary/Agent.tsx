@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Field, change, getFormValues } from "redux-form";
 import { Col, Row, Typography } from "antd";
@@ -15,17 +15,50 @@ import {
   requiredRadioButton,
 } from "@mds/common/redux/utils/Validate";
 import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
-import { CONTACTS_COUNTRY_OPTIONS } from "@mds/common";
+import { CONTACTS_COUNTRY_OPTIONS, IOrgbookCredential } from "@mds/common";
+import RenderOrgBookSearch from "@mds/common/components/forms/RenderOrgBookSearch";
+import {
+  fetchOrgBookCredential,
+  verifyOrgBookCredential,
+} from "@mds/common/redux/actionCreators/orgbookActionCreator";
+import { getOrgBookCredential } from "@mds/common/redux/selectors/orgbookSelectors";
+import { normalizePhone } from "@common/utils/helpers";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleCheck, faCircleX, faSpinner } from "@fortawesome/pro-light-svg-icons";
 
 export const Agent: FC = () => {
   const dispatch = useDispatch();
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
   const { agent = {}, is_agent = false } = formValues;
-  const { party_type_code, address = {} } = agent ?? {};
+  const { party_type_code, address = {}, credential_id } = agent ?? {};
   const { address_type_code, sub_division_code } = address ?? {};
   const isInternational = address_type_code === "INT";
   // currently no endpoints, etc, for address_type_code
   const provinceOptions = useSelector(getDropdownProvinceOptions);
+  const [orgBookOptions, setOrgBookOptions] = useState([]);
+  const [credential, setCredential] = useState<IOrgbookCredential>(null);
+  const orgBookCredential = useSelector(getOrgBookCredential);
+  const [verified, setVerified] = useState(false);
+  const [checkingStatus, setCheckingStatus] = useState(false);
+  const [verifiedCredential, setVerifiedCredential] = useState(null);
+
+  useEffect(() => {
+    setCheckingStatus(true);
+    setOrgBookOptions([]);
+    setCredential(null);
+    setVerified(false);
+    setVerifiedCredential(null);
+    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.party_orgbook_entity", null));
+    if (credential_id) dispatch(fetchOrgBookCredential(credential_id));
+  }, [credential_id]);
+
+  useEffect(() => {
+    if (credential_id && orgBookCredential?.topic) {
+      setCredential(orgBookCredential);
+      const options = [{ text: orgBookCredential.topic.local_name.text, value: credential_id }];
+      setOrgBookOptions(options);
+    }
+  }, [orgBookCredential]);
 
   useEffect(() => {
     // set a value for party type code because required validation doesn't show
@@ -37,6 +70,7 @@ export const Agent: FC = () => {
   }, [is_agent]);
 
   useEffect(() => {
+    setCredential(null);
     if (party_type_code === "ORG") {
       dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.first_name", null));
     }
@@ -51,6 +85,75 @@ export const Agent: FC = () => {
       dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.address.sub_division_code", null));
     }
   }, [address_type_code]);
+
+  useEffect(() => {
+    setVerified(false);
+    setCheckingStatus(true);
+    if (credential) {
+      dispatch(verifyOrgBookCredential(credential.id)).then((response) => {
+        setVerified(response.success);
+        setCheckingStatus(false);
+        const payload = {
+          businessNumber: credential.topic.source_id || "-",
+          registrationStatus: credential.inactive ? "Inactive" : "Active",
+          registriesId: credential.id,
+        };
+        setVerifiedCredential(payload);
+      });
+      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.credential_id", credential.id));
+      const orgBookEntity = {
+        registration_id: credential.topic.source_id,
+        registration_status: !credential.inactive,
+        registration_date: credential.attributes[0].value,
+        name_id: credential.topic.local_name.id,
+        name_text: credential.topic.local_name.text,
+        credential_id: credential.topic.local_name.credential_id,
+        company_alias: null,
+      };
+      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.party_orgbook_entity", orgBookEntity));
+    }
+  }, [credential]);
+
+  const renderStatus = () => {
+    let icon = faSpinner;
+    let color = undefined;
+    let text = undefined;
+
+    if (!checkingStatus) {
+      if (verified) {
+        icon = faCircleCheck;
+        color = "#45A766";
+        text = "Verified on Orgbook BC";
+      } else {
+        icon = faCircleX;
+        color = "#D8292F";
+        text = "Not registered on Orgbook BC";
+      }
+    }
+
+    return (
+      <Typography.Paragraph strong className="light">
+        <FontAwesomeIcon
+          size="lg"
+          color={color}
+          icon={icon}
+          spin={checkingStatus}
+          className="margin-medium--right"
+        />
+        {text}
+      </Typography.Paragraph>
+    );
+  };
+
+  const handleResetParty = () => {
+    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.party_name", null));
+    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.first_name", null));
+    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.middle_name", null));
+    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.party_orgbook_entity", null));
+    setCredential(null);
+    setOrgBookOptions(null);
+    setVerifiedCredential(null);
+  };
 
   return (
     <div className="ant-form-vertical">
@@ -82,17 +185,50 @@ export const Agent: FC = () => {
               { label: "Person", value: "PER" },
             ]}
             optionType="button"
+            onChange={handleResetParty}
           />
           {party_type_code === "ORG" && (
-            // TODO: With orgbook integration, this should populate something in orgbook, not agent.party_name
-            <Field
-              name="agent.party_name"
-              label="Agent's Company Legal Name"
-              required
-              validate={[required, maxLength(100)]}
-              component={RenderField}
-              help="as registered with the BC Registar of Companies"
-            />
+            <div>
+              <Field
+                name="agent.party_name"
+                id="agent.party_name"
+                required
+                validate={[required]}
+                label="Company Legal Name"
+                setCredential={setCredential}
+                data={orgBookOptions}
+                help={"as registered with the BC Registrar of Companies"}
+                component={RenderOrgBookSearch}
+              />
+              {verifiedCredential && (
+                <div className="table-summary-card">
+                  {renderStatus()}
+
+                  <Typography.Paragraph className="light margin-none">
+                    Business Number: {verifiedCredential.businessNumber}
+                  </Typography.Paragraph>
+
+                  <Typography.Paragraph className="light margin-none">
+                    BC Registries ID: {verifiedCredential.registriesId}
+                  </Typography.Paragraph>
+                  <Typography.Paragraph className="light margin-none">
+                    BC Registration Status {verifiedCredential.registrationStatus}
+                  </Typography.Paragraph>
+                </div>
+              )}
+              <Row gutter={16}>
+                <Col md={12} sm={24}>
+                  <Field
+                    id="agent.party_orgbook_entity.registration_id"
+                    name="agent.party_orgbook_entity.registration_id"
+                    label="Incorporation Number"
+                    required
+                    validate={[required]}
+                    component={RenderField}
+                  />
+                </Col>
+              </Row>
+            </div>
           )}
           {party_type_code === "PER" && (
             <Row gutter={16}>
@@ -140,6 +276,7 @@ export const Agent: FC = () => {
                 required
                 validate={isInternational ? [required] : [required, phoneNumber]}
                 component={RenderField}
+                normalize={normalizePhone}
               />
             </Col>
             <Col md={4} sm={5}>

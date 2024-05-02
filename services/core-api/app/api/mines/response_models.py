@@ -378,6 +378,7 @@ MINE_TSF_MODEL = api.model(
         'consequence_classification_status_code': fields.String,
         'itrb_exemption_status_code': fields.String,
         'update_timestamp': fields.DateTime,
+        'update_user': fields.String,
         'tsf_operating_status_code': fields.String,
         'notes': fields.String,
         'facility_type': fields.String,
@@ -388,6 +389,23 @@ MINE_TSF_MODEL = api.model(
         'qualified_person': fields.Nested(MINE_PARTY_APPT_PARTY),
         'dams': fields.List(fields.Nested(DAM_MODEL)),
     })
+
+INDIVIDUAL_CHANGE_MODEL = api.model('IndividualChange', {
+    'field_name': fields.String,
+    'from': fields.Raw,
+    'to': fields.Raw
+})
+
+CHANGE_MODEL = api.model('Change', {
+    'updated_by': fields.String,
+    'updated_at': fields.DateTime,
+    'changeset': fields.List(fields.Nested(INDIVIDUAL_CHANGE_MODEL))
+})
+
+MINE_TSF_DETAIL_MODEL = api.clone('MineTailingsStorageFacilityDetail', MINE_TSF_MODEL, {
+    'history': fields.List(fields.Nested(CHANGE_MODEL))
+})
+
 
 MINE_WORK_INFORMATION_MODEL = api.model(
     'MineWorkInformation', {

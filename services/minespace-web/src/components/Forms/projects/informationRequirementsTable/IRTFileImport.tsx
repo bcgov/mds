@@ -77,21 +77,21 @@ export const IRTFileImport: FC<IRTFileImportProps> = ({
     renderTextColumn("create_user", "Imported By"),
   ];
 
-  const handleCreateInformationRequirementsTable = (
+  const handleCreateInformationRequirementsTable = async (
     projectGuid: string,
     file: IFileInfo,
     documentGuid: string
   ) => {
-    dispatch(createInformationRequirementsTable(projectGuid, file, documentGuid));
+    return dispatch(createInformationRequirementsTable(projectGuid, file, documentGuid));
   };
 
-  const handleUpdateInformationRequirementsTableByFile = (
+  const handleUpdateInformationRequirementsTableByFile = async (
     projectGuid: string,
     informationRequirementsTableGuid: string,
     file: IFileInfo,
     documentGuid: string
   ) => {
-    dispatch(
+    return dispatch(
       updateInformationRequirementsTableByFile(
         projectGuid,
         informationRequirementsTableGuid,

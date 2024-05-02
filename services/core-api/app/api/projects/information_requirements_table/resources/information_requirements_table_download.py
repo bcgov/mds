@@ -11,4 +11,4 @@ class InformationRequirementsTableDownloadResource(Resource, UserMixin):
     def get(self):
         filename = Config.TEMPLATE_FOLDER_IRT + Config.TEMPLATE_IRT
         return send_file(
-            filename_or_fp=filename, attachment_filename=Config.TEMPLATE_IRT, as_attachment=True)
+            path_or_file=filename, download_name=Config.TEMPLATE_IRT, as_attachment=True)

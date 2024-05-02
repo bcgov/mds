@@ -1,4 +1,6 @@
 from enum import Enum
+import json
+import datetime
 
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -38,9 +40,10 @@ class TailingsStorageFacilityType(Enum):
     def __str__(self):
         return self.value
 
-
 class MineTailingsStorageFacility(AuditMixin, Base):
     __tablename__ = "mine_tailings_storage_facility"
+    __versioned__ = {}
+
     mine_tailings_storage_facility_guid = db.Column(
         UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
@@ -96,6 +99,7 @@ class MineTailingsStorageFacility(AuditMixin, Base):
         if self.qualified_persons:
             return self.qualified_persons[0]
 
+
     def __repr__(self):
         return '<MineTailingsStorageFacility %r>' % self.mine_guid
 
@@ -138,6 +142,26 @@ class MineTailingsStorageFacility(AuditMixin, Base):
         if add_to_session:
             new_tsf.save()
         return new_tsf
+    @hybrid_property
+    def history(self):
+        def dt_to_str(dt):
+            if isinstance(dt, datetime.datetime):
+                return dt.isoformat() if dt else None
+            return dt
+        if self.versions:
+            hs = list(map(lambda version: {
+                'updated_by': version.update_user,
+                'updated_at': version.update_timestamp,
+                'changeset': list(map(lambda key: json.loads(json.dumps({
+                    'field_name': key,
+                    'from': dt_to_str(version.changeset[key][0]),
+                    'to': dt_to_str(version.changeset[key][1])
+                }, default=str)), version.changeset))
+            }, self.versions))
+
+            return hs
+        else:
+            return []
 
     @classmethod
     def find_by_mine_guid(cls, mine_guid):

@@ -64,6 +64,11 @@ const Applicant = () => {
   };
 
   useEffect(() => {
+    setOrgBookOptions([]);
+    setCredential(null);
+    setVerified(false);
+    setVerifiedCredential(null);
+    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.party_orgbook_entity", null));
     if (credential_id) dispatch(fetchOrgBookCredential(credential_id));
   }, [credential_id]);
 
@@ -75,7 +80,7 @@ const Applicant = () => {
   }, []);
 
   useEffect(() => {
-    if (orgBookCredential?.topic) {
+    if (credential_id && orgBookCredential?.topic) {
       setCredential(orgBookCredential);
       const options = [{ text: orgBookCredential.topic.local_name.text, value: credential_id }];
       setOrgBookOptions(options);
@@ -96,6 +101,10 @@ const Applicant = () => {
         };
         setVerifiedCredential(payload);
       });
+
+      if (credential_id !== credential.id)
+        dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "company_alias", null));
+
       dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.credential_id", credential.id));
       const orgBookEntity = {
         registration_id: credential.topic.source_id,
@@ -109,7 +118,6 @@ const Applicant = () => {
       dispatch(
         change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.party_orgbook_entity", orgBookEntity)
       );
-      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "company_alias", null));
     }
   }, [credential]);
 

@@ -128,7 +128,7 @@ export const InformationRequirementsTablePage = () => {
     if (importFailed && importErrors) {
       openIRTImportErrorModal(importErrors);
     }
-  }, [importFailed]);
+  }, [importFailed, importErrors]);
 
   useEffect(() => {
     if (uploadedSuccessfully) {
@@ -144,7 +144,7 @@ export const InformationRequirementsTablePage = () => {
 
   const getRequirementsVersion = () => {
     return (
-      project.information_requirements_table.requirements?.[0].version ??
+      project.information_requirements_table.requirements?.[0]?.version ??
       requirements[requirements.length - 1].version
     );
   };
@@ -204,13 +204,13 @@ export const InformationRequirementsTablePage = () => {
 
   const importIsSuccessful = async (success, err) => {
     if (!success) {
-      const hasBadRequestError = err?.response?.data?.message.includes("400 Bad Request: [");
-      const formattedError = marshalImportIRTError(err?.response?.data?.message);
+      const hasBadRequestError = err?.message.includes("400 Bad Request: [");
+      const formattedError = marshalImportIRTError(err?.message);
       await handleFetchData();
 
+      setHasBadRequestError(hasBadRequestError);
       setImportFailed(true);
       setImportErrors(formattedError);
-      setHasBadRequestError(hasBadRequestError);
       return;
     }
 

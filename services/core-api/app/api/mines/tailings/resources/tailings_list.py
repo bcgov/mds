@@ -14,7 +14,7 @@ from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility, 
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
 from app.api.mines.reports.models.mine_report import MineReport
-from app.api.mines.response_models import MINE_TSF_MODEL
+from app.api.mines.response_models import MINE_TSF_DETAIL_MODEL, MINE_TSF_MODEL
 
 
 class MineTailingsStorageFacilityListResource(Resource, UserMixin):
@@ -101,7 +101,7 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
         return mine.mine_tailings_storage_facilities
 
     @api.doc(description='Creates a new tailing storage facility for the given mine')
-    @api.marshal_with(MINE_TSF_MODEL, code=201)
+    @api.marshal_with(MINE_TSF_DETAIL_MODEL, code=201)
     @requires_any_of([EDIT_TSF, MINESPACE_PROPONENT])
     def post(self, mine_guid):
         mine = Mine.find_by_mine_guid(mine_guid)
