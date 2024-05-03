@@ -1,6 +1,5 @@
 import React from "react";
 import Overview from "./overview/Overview";
-import MenuUnfoldOutlined from "@ant-design/icons/lib/icons/MenuUnfoldOutlined";
 import Projects from "./projects/Projects";
 import PermitTabContainer from "./permits/PermitTabContainer";
 import Inspections from "./inspections/Inspections";
@@ -10,67 +9,80 @@ import Reports from "./reports/Reports";
 import Variances from "./variances/Variances";
 import Incidents from "./incidents/Incidents";
 import NoticesOfDeparture from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDeparture";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faHouse,
+  faFiles,
+  faCircleCheck,
+  faClipboardList,
+  faBrakeWarning,
+  faHexagonExclamation,
+  faDiamondTurnRight,
+  faShieldKeyhole,
+  faHouseWater,
+} from "@fortawesome/pro-light-svg-icons";
+import { faBuildingMagnifyingGlass } from "@fortawesome/pro-solid-svg-icons";
 
 export const getMineDashboardRoutes = (isMajorMine: boolean) =>
   [
     {
       key: "overview",
       label: "Overview",
-      icon: <MenuUnfoldOutlined />,
+      icon: <FontAwesomeIcon icon={faHouse} />,
       component: Overview,
     },
     isMajorMine && {
       key: "applications",
       label: "Applications",
-      icon: <MenuUnfoldOutlined />,
+      icon: <FontAwesomeIcon icon={faFiles} />,
       component: Projects,
     },
     {
       key: "permits",
       label: "Permits",
-      icon: <MenuUnfoldOutlined />,
+      icon: <FontAwesomeIcon icon={faCircleCheck} />,
       component: PermitTabContainer,
-    },
-    {
-      key: "nods",
-      label: "Notices of Departure",
-      icon: <MenuUnfoldOutlined />,
-      component: NoticesOfDeparture,
     },
     {
       key: "inspections",
       label: "Inspections",
-      icon: <MenuUnfoldOutlined />,
+      icon: <FontAwesomeIcon icon={faBuildingMagnifyingGlass as any} />,
       component: Inspections,
-    },
-    {
-      key: "incidents",
-      label: "Incidents",
-      icon: <MenuUnfoldOutlined />,
-      component: Incidents,
-    },
-    {
-      key: "variances",
-      label: "Variances",
-      icon: <MenuUnfoldOutlined />,
-      component: Variances,
     },
     {
       key: "reports",
       label: "Reports",
-      icon: <MenuUnfoldOutlined />,
+      icon: <FontAwesomeIcon icon={faClipboardList} />,
       component: Reports,
+    },
+    {
+      key: "incidents",
+      label: "Incidents",
+      icon: <FontAwesomeIcon icon={faBrakeWarning} />,
+      component: Incidents,
+    },
+    {
+      key: "nods",
+      label: "Notices of Departure",
+      icon: <FontAwesomeIcon icon={faHexagonExclamation} />,
+      component: NoticesOfDeparture,
+    },
+    {
+      key: "variances",
+      label: "Variances",
+      icon: <FontAwesomeIcon icon={faDiamondTurnRight} />,
+      component: Variances,
     },
     {
       key: "bonds",
       label: "Bonds",
-      icon: <MenuUnfoldOutlined />,
+      icon: <FontAwesomeIcon icon={faShieldKeyhole} />,
       component: Bonds,
     },
     {
       key: "tailings",
       label: "Tailings & Dams",
-      icon: <MenuUnfoldOutlined />,
+      icon: <FontAwesomeIcon icon={faHouseWater} />,
       component: Tailings,
     },
   ].filter(Boolean);
