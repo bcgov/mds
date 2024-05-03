@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, ReactNodeArray } from "react";
+import React, { FC, ReactNode, ReactNodeArray, useMemo } from "react";
 import { Menu, Layout } from "antd";
 import { Route, Switch, useHistory } from "react-router-dom";
 import { ItemType } from "antd/lib/menu/hooks/useItems";
@@ -62,12 +62,14 @@ interface SidebarNavigationProps {
 export const SidebarNavigation: FC<SidebarNavigationProps> = ({ items, selectedKeys }) => {
   const history = useHistory();
 
-  const clickHandlers = items.reduce((acc, item) => {
-    return {
-      ...acc,
-      [item.key]: item.onClick ?? (() => history.push(item.path)),
-    };
-  }, {});
+  const clickHandlers = useMemo(() => {
+    return items.reduce((acc, item) => {
+      return {
+        ...acc,
+        [item.key]: item.onClick ?? (() => history.push(item.path)),
+      };
+    }, {});
+  }, [items, history]);
 
   const onClick = (item: ItemType) => {
     const handleClick = clickHandlers[item.key];
