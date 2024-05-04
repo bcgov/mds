@@ -148,7 +148,7 @@ const RenderEMAPermitCommonSections = ({ props }) => {
               <>
                 If yes, please attach a <b>letter with rationale</b> to support this exemption at{" "}
                 <b>Document Upload</b> section. Please note that requests may not always be granted.
-                Incomplete applications may be returned if they don&apos;t meet Ministry.....
+                Incomplete applications may be returned if they don&apos;t meet Ministry
                 requirements and the application fee may not be refunded.
               </>
             }
