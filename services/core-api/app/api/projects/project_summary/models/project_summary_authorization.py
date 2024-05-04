@@ -10,7 +10,8 @@ from app.extensions import db
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.projects.project_summary.models.project_summary_authorization_type import ProjectSummaryAuthorizationType
 from app.api.projects.project_summary.models.project_summary_permit_type import ProjectSummaryPermitType
-
+from app.api.mines.documents.models.mine_document import MineDocument
+from app.api.projects.project_summary.models.project_summary_authorization_document_xref import ProjectSummaryAuthorizationDocumentXref
 
 class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'project_summary_authorization'
@@ -38,6 +39,12 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
 
     def __repr__(self):
         return f'{self.__class__.__name__} {self.project_summary_authorization_guid}'
+
+    amendment_documents = db.relationship(
+        'ProjectSummaryAuthorizationDocumentXref',
+        lazy='select',
+        primaryjoin='and_(ProjectSummaryAuthorizationDocumentXref.project_summary_authorization_guid == ProjectSummaryAuthorization.project_summary_authorization_guid, ProjectSummaryAuthorizationDocumentXref.mine_document_guid == MineDocument.mine_document_guid, MineDocument.is_archived == False)'
+    )
 
     @classmethod
     def validate_ams_authorization_type(cls, authorization_type):
@@ -183,10 +190,13 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
                new_type,
                authorization_description,
                exemption_requested,
+               mine,
                ams_tracking_number=None,
                ams_outcome=None,
                ams_status_code=None,
-               add_to_session=True):
+               add_to_session=True,
+               amendment_documents=[]):
+
         new_authorization = cls(
             project_summary_guid=project_summary_guid,
             project_summary_permit_type=project_summary_permit_type,
@@ -199,11 +209,12 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
             exemption_requested=exemption_requested,
             ams_tracking_number=ams_tracking_number,
             ams_outcome=ams_outcome,
-            ams_status_code=ams_status_code)
+            ams_status_code=ams_status_code,
+            amendment_documents=amendment_documents)
         if add_to_session:
             new_authorization.save(commit=False)
         return new_authorization
-
+# TODO fileupload only when uploading
     def update(self, 
                existing_permits_authorizations, 
                amendment_changes,
@@ -215,7 +226,8 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
                ams_tracking_number=None,
                ams_outcome=None,
                ams_status_code=None,
-               add_to_session=True):
+               add_to_session=True,
+               amendment_documents=[]):
         self.existing_permits_authorizations = existing_permits_authorizations
         self.amendment_changes = amendment_changes
         self.amendment_severity = amendment_severity
@@ -225,7 +237,8 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
         self.exemption_requested = exemption_requested
         self.ams_tracking_number = ams_tracking_number
         self.ams_outcome = ams_outcome
-        self.ams_status_code=ams_status_code,
+        self.ams_status_code=ams_status_code
+        self.amendment_documents=amendment_documents
         if add_to_session:
             self.save(commit=True)
         return self

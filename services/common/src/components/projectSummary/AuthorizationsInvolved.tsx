@@ -39,8 +39,18 @@ import { FORM } from "@mds/common/constants/forms";
 import RenderHiddenField from "../forms/RenderHiddenField";
 import AuthorizationSupportDocumentUpload from "./AuthorizationSupportDocumentUpload";
 import { IProjectSummaryDocument } from "@mds/common";
-import { renderTextColumn } from "@mds/common/components/common/CoreTableCommonColumns";
+import {
+  renderTextColumn,
+  renderDateColumn,
+} from "@mds/common/components/common/CoreTableCommonColumns";
 import DocumentTable from "@mds/common/components/documents/DocumentTable";
+import {
+  PROJECT_SUMMARY_DOCUMENT_TYPE,
+  PROJECT_SUMMARY_DOCUMENT_TYPE_CODE,
+  PROJECT_SUMMARY_DOCUMENT_TYPE_CODE_LOCATION,
+} from "../..";
+import { renderCategoryColumn } from "@mds/common/components/common/CoreTableCommonColumns";
+import { MineDocument } from "@mds/common/models/documents/document";
 
 export interface ProjectSummary {
   project_summary_id: number;
@@ -63,50 +73,45 @@ interface DocumentUploadProps {
 }
 
 const RenderEMAPermitCommonSections = ({ props }) => {
-  console.log(".......................65:..>>>>: ", props);
   const dispatch = useDispatch();
   const purposeLabel = props.isAmendment
     ? "Additional Amendment Request Information"
     : "Purpose of Application";
-  const [showDocSection, setShowDocSection] = useState(false);
+
+  const [showDocSection, setShowDocSection] = useState(props?.exemption_requested || false);
 
   const onChange = (value, _newVal, _prevVal, _fieldName) => {
     setShowDocSection(value);
   };
 
-  const updateDocuments = (docs: IProjectSummaryDocument[]) => {
+  const updateAmendmentDocuments = (doc: IProjectSummaryDocument) => {
     const index = 0;
-    console.log("Updating document..________________...", docs);
-    console.log("111111111111111111111111", props);
-    dispatch(
-      change(
+    const response = dispatch(
+      arrayPush(
         FORM.ADD_EDIT_PROJECT_SUMMARY,
-        `ams_authorizations.amendments[${index}].amendment_documents`,
-        docs
+        `authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[${index}].amendment_documents`,
+        doc
       )
     );
-    console.log("222222222222222222222222", FORM.ADD_EDIT_PROJECT_SUMMARY);
-    return props.change(
-      FORM.ADD_EDIT_PROJECT_SUMMARY,
-      `ams_authorizations.amendments[${index}].amendment_documents`,
-      docs
-    );
-    console.log("333333333333333333333333", props);
+    return response;
   };
 
-  const tableDocuments = [];
-  // props?.documents?.map(
-  //   (doc) => new MineDocument({ ...doc, category: doc.project_summary_document_type_code })
-  // ) ?? [];
+  const tableDocuments =
+    props?.amendment_documents.map(
+      (doc) => new MineDocument({ ...doc, category: doc.project_summary_document_type_code })
+    ) ?? [];
 
   const documentColumns = [
-    renderTextColumn("project_summary_document_type_code", "test"),
-    // renderCategoryColumn(
-    //   "project_summary_document_type_code",
-    //   "Category",
-    //   projectSummaryDocumentTypesHash
-    // ),
-    // uploadDateColumn(),
+    renderTextColumn("document_name", "File Name"),
+    renderCategoryColumn(
+      "project_summary_document_type_code",
+      "Document Category",
+      props.projectSummaryDocumentTypesHash,
+      false,
+      "N/A"
+    ),
+    renderDateColumn("upload_date", "Updated"),
+    renderTextColumn("create_user", "Updated By"),
   ];
 
   return (
@@ -161,18 +166,16 @@ const RenderEMAPermitCommonSections = ({ props }) => {
           <AuthorizationSupportDocumentUpload
             mineGuid={props.mine_guid}
             isProponent={true}
-            // documents={props.documents}
             documents={tableDocuments}
-            updateDocuments={updateDocuments}
+            updateAmendmentDocuments={updateAmendmentDocuments}
             projectGuid={props.project_guid}
             projectSummaryGuid={props.project_summary_guid}
           />
           <DocumentTable
             documents={tableDocuments}
-            // documentParent="project summary"
+            documentParent="project summary authorization"
             documentColumns={documentColumns}
           />
-          {/* <AuthorizationDocumentTable props = {props.initialValues}/> */}
         </div>
       )}
     </>
@@ -186,8 +189,8 @@ const RenderEMANewPermitSection = ({
   project_guid,
   project_summary_guid,
 }) => {
-  // GET PROPS to here
-  const doc_props = {
+  const new_props = {
+    ...props.formValues.authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0],
     isAmendment: false,
     mine_guid: mine_guid,
     project_guid: project_guid,
@@ -231,13 +234,20 @@ const RenderEMANewPermitSection = ({
           required
           validate={[requiredRadioButton]}
         />
-        <RenderEMAPermitCommonSections props={props} />
+        <RenderEMAPermitCommonSections props={new_props} />
       </FormSection>
     </div>
   );
 };
 
-const RenderEMAAmendFieldArray = ({ fields, mine_guid, project_guid, project_summary_guid }) => {
+const RenderEMAAmendFieldArray = ({
+  fields,
+  projectSummaryDocumentTypesHash,
+  mine_guid,
+  project_guid,
+  project_summary_guid,
+  ...rest_of_the_props
+}) => {
   const handleRemoveAmendment = (index: number) => {
     fields.remove(index);
   };
@@ -301,6 +311,8 @@ const RenderEMAAmendFieldArray = ({ fields, mine_guid, project_guid, project_sum
             />
             <RenderEMAPermitCommonSections
               props={{
+                ...rest_of_the_props,
+                projectSummaryDocumentTypesHash: projectSummaryDocumentTypesHash,
                 isAmendment: true,
                 mine_guid: mine_guid,
                 project_guid: project_guid,
@@ -321,7 +333,6 @@ const RenderEMAAuthCodeFormSection = ({
   project_guid,
   project_summary_guid,
 }) => {
-  //get props here 2
   const { authorizations } = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
   const codeAuthorizations = authorizations[code] ?? [];
   const hasAmendments = codeAuthorizations.AMENDMENT?.length > 0;
@@ -332,6 +343,8 @@ const RenderEMAAuthCodeFormSection = ({
   const dispatch = useDispatch();
 
   const doc_props = {
+    ...authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0],
+    projectSummaryDocumentTypesHash: props.projectSummaryDocumentTypesHash,
     isAmendment: false,
     mine_guid: mine_guid,
     project_guid: project_guid,
@@ -376,7 +389,7 @@ const RenderEMAAuthCodeFormSection = ({
                     <FieldArray
                       name={`${code}.AMENDMENT`}
                       component={RenderEMAAmendFieldArray}
-                      props={props}
+                      props={doc_props}
                     />
                     <Button
                       onClick={addAmendment}
@@ -447,7 +460,6 @@ const RenderAuthCodeFormSection = ({
   project_guid,
   project_summary_guid,
 }) => {
-  // GET props here 3
   const dropdownProjectSummaryPermitTypes = useSelector(getDropdownProjectSummaryPermitTypes);
   if (authorizationType === "ENVIRONMENTAL_MANAGMENT_ACT") {
     // AMS authorizations, have options of amend/new with more details
@@ -511,8 +523,6 @@ const RenderAuthCodeFormSection = ({
 };
 
 export const AuthorizationsInvolved = (props) => {
-  console.log("......426::::", props);
-
   const dispatch = useDispatch();
   const transformedProjectSummaryAuthorizationTypes = useSelector(
     getTransformedProjectSummaryAuthorizationTypes
@@ -520,9 +530,6 @@ export const AuthorizationsInvolved = (props) => {
   const amsAuthTypes = useSelector(getAmsAuthorizationTypes);
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
 
-  // if (formValues.authorizations?.AIR_EMISSIONS_DISCHARGE_PERMIT?.AMENDMENT[0]?.exemption_requested) {
-
-  // }
   const handleChange = (e, code) => {
     if (e.target.checked) {
       let formVal;
