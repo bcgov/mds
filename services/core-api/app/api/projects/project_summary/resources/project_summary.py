@@ -193,11 +193,14 @@ class ProjectSummaryResource(Resource, UserMixin):
     def put(self, project_guid, project_summary_guid):
         project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid,
                                                                       is_minespace_user())
-        print(".... Received.....\n\n")
         project = Project.find_by_project_guid(project_guid)
-
         data = self.parser.parse_args()
-        print(".... Received.....data: ", data)
+        
+        project_summary_validation = project_summary.validate_project_summary(data)
+        if any(project_summary_validation[i] != [] for i in project_summary_validation):
+            current_app.logger.error(f'Project Summary schema validation failed with errors: {project_summary_validation}')
+            raise BadRequest(project_summary_validation)
+
         mine_guid = data.get('mine_guid')
         mine = Mine.find_by_mine_guid(mine_guid)
 
@@ -208,12 +211,8 @@ class ProjectSummaryResource(Resource, UserMixin):
 
         submission_date = project_summary.submission_date
         prev_status = project_summary.status_code
-        if data.get('status_code') == 'SUB':
-            valid_submission = project_summary.validate_new_submission(data)
-            if valid_submission != True:
-                raise BadRequest(valid_submission)
-            if prev_status == 'DFT':
-                submission_date = datetime.now(tz=timezone.utc)
+        if data.get('status_code') == 'SUB' and prev_status == 'DFT':
+            submission_date = datetime.now(tz=timezone.utc)
 
         # Update project summary.
         project_summary.update(project, data.get('project_summary_description'),

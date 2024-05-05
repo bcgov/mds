@@ -9,7 +9,10 @@ from app.api.projects.project_contact.models.project_contact import ProjectConta
 from app.api.parties.party.models.address import Address
 from app.api.mines.mine.models.mine import Mine
 from app.api.parties.party.models.party import Party
-
+from cerberus import Validator
+import json
+from werkzeug.exceptions import BadRequest
+from app.api.utils.common_validation_schemas import primary_address_schema, address_na_schema, address_int_schema, secondary_address_schema
 from app.api.utils.helpers import validate_phone_no
 
 
@@ -76,6 +79,122 @@ class Project(AuditMixin, Base):
     @classmethod
     def find_by_mine_guid(cls, mine_guid):
         return cls.query.filter_by(mine_guid=mine_guid).all()
+    
+    @classmethod
+    def validate_project_basic_info(cls, data):
+        basic_info_schema = {
+            'project_summary_title': {
+                'type': 'string',
+                'required': True,
+            },
+            'project_summary_description': {
+                'type': 'string',
+                'required': True,
+            },
+            'proponent_project_id': {
+                'type': 'string',
+                'nullable': True,
+            }
+        }
+
+        v = Validator(basic_info_schema, purge_unknown=True)
+       
+        if not v.validate(data):
+            return json.dumps(v.errors)
+        return True
+
+    @classmethod
+    def validate_project_contacts(cls, contact):
+        base_schema = {
+            'is_primary': {
+                'type': 'boolean',
+                'required': True
+            },
+            'first_name': {
+                'type': 'string',
+                'required': True,
+            },
+            'last_name': {
+                'type': 'string',
+                'required': True,
+            },
+            'email': {
+                'type': 'string',
+                'required': True,
+            },
+            'phone_extension': {
+                'type': 'string',
+                'nullable': True,
+            },
+            'project_contact_guid' : {
+                'type': 'string',
+                'nullable': True,
+            },
+            'project_guid': {
+                'type': 'string',
+                'nullable': True,
+            },
+            'company_name': {
+                'type': 'string',
+                'nullable': True,
+            },
+            'job_title': {
+                'type': 'string',
+                'nullable': True,
+            },
+        }
+
+        contact_na_phone_schema = {
+            'phone_number': {
+                'type': 'string',
+                'required': True,
+                'regex': '[0-9]{3}-[0-9]{3}-[0-9]{4}',
+            },
+        }
+
+        contact_int_phone_schema = {
+            'phone_number': {
+                'type': 'string',
+                'required': True,
+                'maxlength': 50,
+            },
+        }     
+
+        is_primary = contact.get('is_primary')
+        address = contact.get('address', None)
+        address_type_code = address.get('address_type_code') if address != None else 'CAN'
+
+        contact_schema = base_schema
+
+        if address_type_code == 'INT':
+            contact_schema |= contact_int_phone_schema
+            address_schema = address_int_schema
+        else:
+            contact_schema |= contact_na_phone_schema
+            address_schema = address_na_schema
+            
+        if is_primary:
+            address_schema |= primary_address_schema
+            contact_schema |= {
+                'address': {
+                    'type': 'dict',
+                    'required': True,
+                    'schema': address_schema,
+                }
+            }
+        else:
+            contact_schema |= {
+                'address': {
+                    'type': 'dict',
+                    'nullable': True,
+                    'schema': secondary_address_schema,
+                }
+            }
+
+        v = Validator(contact_schema, purge_unknown=True)
+        if not v.validate(contact):
+            return json.dumps(v.errors)
+        return True
 
     @classmethod
     def create(cls,
@@ -122,8 +241,7 @@ class Project(AuditMixin, Base):
                project_lead_party_guid,
                mrc_review_required,
                contacts=[],
-               add_to_session=True):
-
+               add_to_session=True): 
         # Update simple properties.
         self.project_title = project_title
         self.proponent_project_id = proponent_project_id

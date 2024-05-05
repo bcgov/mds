@@ -137,3 +137,145 @@ CORE_EDIT_CODE = {
         "core_edit_code"
     ]
 }
+
+# Major Projects Summary constants
+
+CONTACTS_DATA = [
+        {
+            "email": "test@gov.bc.ca",
+            "phone_number": "123-123-1234",
+            "is_primary": True,
+            "first_name": "test name",
+            "last_name": "test name",
+            "address": {
+                "suite_no": "123",
+                "address_line_1": "some street",
+                "city": "Vancouver",
+                "sub_division_code": "BC",
+                "post_code": "V5S4W2",
+                "address_type_code": "CAN"
+            }
+        },
+    ]
+
+APPLICANT_DATA = {
+        "party_type_code": "ORG",
+        "phone_no": "123-123-1234",
+        "email": "test@gov.bc.ca",
+        "party_name": "test name",
+        "address": [
+            {
+                "address_line_1": "123 fake street",
+                "city": "Vancouver",
+                "sub_division_code": "BC",
+                "post_code": "V5S4W2",
+                "address_type_code": "CAN"
+            },
+            {
+                "address_line_1": "123 fake street",
+                "city": "Vancouver",
+                "sub_division_code": "BC",
+                "post_code": "V5S4W2",
+                "address_type_code": "CAN"
+            },
+            {
+                "address_line_1": "123 fake street",
+                "city": "Vancouver",
+                "sub_division_code": "BC",
+                "post_code": "V5S4W2",
+                "address_type_code": "CAN"
+            }
+        ],
+    }
+
+AGENT_DATA = {
+        "party_type_code": "PER",
+        "phone_no": "123-123-1234",
+        "email": "test@gov.bc.ca",
+        "party_name": "test name",
+        "first_name": "test name",
+        "address": {
+            "suite_no": "",
+            "address_line_1": None,
+            "city": "Vancouver",
+            "sub_division_code": "BC",
+            "post_code": None,
+            "address_type_code": "CAN"
+        },
+    }
+
+FACILITY_DATA = {
+    'facility_operator': {
+        "party_type_code": "PER",
+        "phone_no": "123-123-1234",
+        "email": "test@govb.bc.ca",
+        "party_name": "test name",
+        "first_name": "test",
+        "address": {
+            "suite_no": "123",
+            "address_line_1": "some address",
+            "city": "vancouver",
+            "sub_division_code": "BC",
+            "post_code": "V5S4W2",
+            "address_type_code": "CAN"
+        },
+    },
+    'facility_coords_source': "GPS",
+    'facility_desc': "description",
+    'facility_latitude': "50.0000000",
+    'facility_longitude': "-115.0000000",
+    'facility_type': "test type",
+    'zoning': True,
+}
+
+AMS_AUTHORIZATION_DATA = {
+    "amendments": [
+        {
+            "project_summary_permit_type": [
+                "AMENDMENT"
+            ],
+            "project_summary_authorization_type": "AIR_EMISSIONS_DISCHARGE_PERMIT",
+            "existing_permits_authorizations": [
+                "1234"
+            ],
+            "amendment_changes": [
+                "ILT",
+                "IGT"
+            ],
+            "amendment_severity": "SIG",
+            "is_contaminated": False,
+            "authorization_description": "test descript",
+            "exemption_requested": False,
+        }
+    ],
+    "new": []
+    }
+
+AUTHORIZATION_DATA = [
+        {
+            "project_summary_permit_type": [
+                "AMENDMENT"
+            ],
+            "project_summary_authorization_type": "AIR_EMISSIONS_DISCHARGE_PERMIT",
+            "existing_permits_authorizations": [
+                "1234"
+            ],
+            "amendment_changes": [
+                "ILT",
+                "IGT"
+            ],
+            "amendment_severity": "SIG",
+            "is_contaminated": False,
+            "authorization_description": "description",
+            "exemption_requested": False,
+        }
+    ]
+
+LEGAL_LAND_DATA = {
+    'is_crown_land_federal_or_provincial': None,
+    'is_landowner_aware_of_discharge_application': True,
+    'has_landowner_received_copy_of_application': False,
+    'legal_land_owner_name': "some name",
+    'legal_land_owner_contact_number': "123-123-1234",
+    'legal_land_owner_email_address': "test@gov.bc.ca",
+}
