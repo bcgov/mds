@@ -79,7 +79,7 @@ const RenderEMAPermitCommonSections = ({ props }) => {
     : "Purpose of Application";
 
   const [showDocSection, setShowDocSection] = useState(props?.exemption_requested || false);
-
+  console.log("________________::::::", props.projectSummaryDocumentTypesHash);
   const onChange = (value, _newVal, _prevVal, _fieldName) => {
     setShowDocSection(value);
   };

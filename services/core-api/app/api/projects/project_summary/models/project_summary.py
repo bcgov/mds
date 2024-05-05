@@ -304,7 +304,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 updated_authorization.ams_tracking_number = authorization.get('ams_tracking_number')
                 updated_authorization.ams_outcome = authorization.get('ams_outcome')
                 updated_authorization.ams_status_code = authorization.get('ams_status_code')
-# TODO check only for new files
+
                 for doc in authorization.get('amendment_documents'):
                     mine_doc = MineDocument(
                         mine_guid=self.mine_guid,
