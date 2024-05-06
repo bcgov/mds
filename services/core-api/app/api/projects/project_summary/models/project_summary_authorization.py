@@ -214,7 +214,7 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
         if add_to_session:
             new_authorization.save(commit=False)
         return new_authorization
-# TODO fileupload only when uploading
+
     def update(self, 
                existing_permits_authorizations, 
                amendment_changes,
