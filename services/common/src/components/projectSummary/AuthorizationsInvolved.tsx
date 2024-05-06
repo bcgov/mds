@@ -175,6 +175,7 @@ const RenderEMAPermitCommonSections = ({ props }) => {
             updateAmendmentDocuments={updateAmendmentDocuments}
             projectGuid={props.project_guid}
             projectSummaryGuid={props.project_summary_guid}
+            dfaRequired={props.dfaRequired}
           />
           <DocumentTable
             documents={tableDocuments}
@@ -257,6 +258,12 @@ const RenderEMAAmendFieldArray = ({
     fields.remove(index);
   };
 
+  const [dfaRequired, setDfaRequired] = useState(false);
+
+  const onChangeAmendment = (value, _newVal, _prevVal, _fieldName) => {
+    setDfaRequired(value.includes("ILT") || value.includes("IGT") || value.includes("DDL"));
+  };
+
   return (
     <>
       {fields.map((amendment: string, index) => (
@@ -306,6 +313,7 @@ const RenderEMAAmendFieldArray = ({
                 { label: "Regulatory Change", value: "RCH" },
                 { label: "Other", value: "OTH" },
               ]}
+              onChange={onChangeAmendment}
             />
             <Field
               label="Is this Authorization required for remediation of a contaminated site?"
@@ -322,6 +330,7 @@ const RenderEMAAmendFieldArray = ({
                 mine_guid: mine_guid,
                 project_guid: project_guid,
                 project_summary_guid: project_summary_guid,
+                dfaRequired: dfaRequired,
               }}
             />
           </FormSection>

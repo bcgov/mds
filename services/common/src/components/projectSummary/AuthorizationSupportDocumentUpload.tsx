@@ -16,6 +16,7 @@ interface AuthorizationSupportDocumentUploadProps {
   updateAmendmentDocuments: (documents: IProjectSummaryDocument) => void;
   projectGuid: string;
   projectSummaryGuid: string;
+  dfaRequired: boolean;
 }
 
 export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocumentUploadProps> = ({
@@ -25,6 +26,7 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
   updateAmendmentDocuments,
   projectGuid,
   projectSummaryGuid,
+  dfaRequired,
 }) => {
   const handleRemoveFile = (error, fileToRemove) => {
     if (error) {
@@ -61,7 +63,6 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
         label="Location Map"
         labelHref="https://www2.gov.bc.ca/assets/gov/environment/waste-management/waste-discharge-authorization/guides/forms/epd-ema-08_location_map_form.pdf"
         component={RenderFileUpload}
-        // TODO validate={isProponent ? [requiredNewFiles] : [required]}
         required
         allowRevert
         allowMultiple
@@ -84,8 +85,7 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
         label="Discharge Factor Amendment Form (PDF, 318KB)"
         labelHref="https://www2.gov.bc.ca/assets/gov/environment/waste-management/waste-discharge-authorization/guides/forms/epd-ema-06_amend_discharge_factor_amendment_form.pdf"
         component={RenderFileUpload}
-        // TODO validate={isProponent ? [requiredNewFiles] : [required]}
-        required
+        required={dfaRequired}
         allowRevert
         allowMultiple
         acceptedFileTypesMap={acceptedFileTypesMap}
@@ -106,8 +106,7 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
         name="documents"
         label="Supporting Document"
         component={RenderFileUpload}
-        // TODO validate={isProponent ? [requiredNewFiles] : [required]}
-        required
+        required={false}
         allowRevert
         allowMultiple
         acceptedFileTypesMap={acceptedFileTypesMap}
