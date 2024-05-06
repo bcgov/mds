@@ -145,7 +145,7 @@ class AMSApiService():
                     'legallanddescription': legal_land_desc,
                     'pidpincrownfilenumber': facility_pid_pin_crown_file_no,
                     'facilityaddress': {
-                        'addresstype': 'Other',
+                        'addresstype': 'Other / International',
                         'suitenumber': facility_operator.get('address').get('suite_no', ''),
                         'streetnumber': facility_operator.get('address').get('suite_no', ''),
                         'street': facility_operator.get('address').get('address_line_1', ''),
@@ -153,7 +153,12 @@ class AMSApiService():
                         'municipality': facility_operator.get('address').get('city', ''),
                         'province': 'British Columbia',
                         'country': 'Canada',
-                        'postalcode': facility_operator.get('address').get('post_code')
+                        'postalcode': facility_operator.get('address').get('post_code'),
+                        'otheraddress': cls.__create_full_address(
+                            facility_operator.get('address').get('address_line_1'),
+                            facility_operator.get('address').get('city'),
+                            facility_operator.get('address').get('sub_division_code'),
+                            facility_operator.get('address').get('post_code'))
                     },
                     'facilityopname': facility_operator.get('name', ''),
                     'facilityopphonenumber': cls.__format_phone_number(facility_operator.get('phone_no', '')),
