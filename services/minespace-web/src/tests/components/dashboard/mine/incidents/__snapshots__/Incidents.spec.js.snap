@@ -7,13 +7,8 @@ exports[`MineIncidents renders properly 1`] = `
   >
     <Connect(AuthorizationWrapper)>
       <Button
+        className="dashboard-add-button"
         onClick={[Function]}
-        style={
-          Object {
-            "display": "inline",
-            "float": "right",
-          }
-        }
         type="primary"
       >
         <ForwardRef(PlusCircleFilled) />
@@ -21,7 +16,7 @@ exports[`MineIncidents renders properly 1`] = `
       </Button>
     </Connect(AuthorizationWrapper)>
     <ForwardRef
-      level={4}
+      level={1}
     >
       Incidents
     </ForwardRef>

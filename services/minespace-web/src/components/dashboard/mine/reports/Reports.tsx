@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import { Button, Col, Row, Typography } from "antd";
@@ -18,15 +18,14 @@ import { Link, useHistory } from "react-router-dom";
 import * as routes from "@/constants/routes";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Link as ScrollLink, Element } from "react-scroll";
+import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
 
-interface ReportsProps {
-  mine: IMine;
-}
-
-export const Reports: FC<ReportsProps> = ({ mine, ...props }) => {
+export const Reports: FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { isFeatureEnabled } = useFeatureFlag();
+
+  const { mine } = useContext<{ mine: IMine }>(SidebarContext);
 
   const mineReports: IMineReport[] = useSelector(getMineReports);
 
@@ -145,20 +144,19 @@ export const Reports: FC<ReportsProps> = ({ mine, ...props }) => {
       <Col span={24}>
         <Row>
           <Col span={24}>
-            <div className="submit-report-button">
+            <div>
               <AuthorizationWrapper>
                 {isFeatureEnabled(Feature.CODE_REQUIRED_REPORTS) ? (
                   <Link to={routes.REPORTS_CREATE_NEW.dynamicRoute(mine.mine_guid)}>
-                    <Button style={{ zIndex: 1 }} className="submit-report-button" type="primary">
+                    <Button className="dashboard-add-button" type="primary">
                       <PlusCircleFilled />
                       Submit Report
                     </Button>
                   </Link>
                 ) : (
                   <Button
-                    style={{ zIndex: 1 }}
-                    className="submit-report-button"
                     type="primary"
+                    className="dashboard-add-button"
                     onClick={(event) => openAddReportModal(event)}
                   >
                     <PlusCircleFilled />
@@ -167,7 +165,7 @@ export const Reports: FC<ReportsProps> = ({ mine, ...props }) => {
                 )}
               </AuthorizationWrapper>
             </div>
-            <Typography.Title level={4} className="report-title">
+            <Typography.Title level={1} className="report-title">
               Reports
             </Typography.Title>
             <Typography.Paragraph>

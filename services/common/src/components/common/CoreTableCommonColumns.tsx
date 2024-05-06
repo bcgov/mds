@@ -94,7 +94,7 @@ export const renderActionsColumn = ({
   isRowSelected = false,
   text = "Actions",
   dropdownAltText = "Menu",
-  fixed = false,
+  fixed = true,
 }: {
   actions: ITableAction[];
   recordActionsFilter?: (record, actions) => ITableAction[];

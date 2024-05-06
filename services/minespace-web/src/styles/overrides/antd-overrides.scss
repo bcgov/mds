@@ -13,7 +13,7 @@
   padding-right: 0;
   color: $primary-color;
   background: $primary-color;
-  height: 80px;
+  height: $layout-header-height;
 }
 
 .ant-layout-footer {
@@ -21,8 +21,8 @@
   width: 100%;
   min-height: 80px;
   bottom: 0;
-  padding-left: 0;
-  padding-right: 0;
+  padding: 0;
+  height: $layout-footer-height;
 }
 
 .ant-layout {
@@ -30,8 +30,12 @@
   min-height: 100vh;
 }
 
+.app-container-column {
+  padding-bottom: $layout-header-height;
+}
+
 .ant-layout-content {
-  padding: $layout-header-height 0;
+  padding: $layout-header-height 0 0 0;
 
   @include screen-md {
     padding: $layout-header-height $padding-sm;
@@ -283,7 +287,6 @@ h5.ant-typography,
   color: #494949;
   border-bottom: 2px solid $primary-color;
   border-radius: 0;
-  font-weight: 600;
 }
 
 .ant-table-header-column {
@@ -360,6 +363,10 @@ tr.ant-table-expanded-row {
 
 .ant-descriptions-item {
   margin-right: $padding-lg;
+
+  .ant-descriptions-item-content {
+    word-break: keep-all;
+  }
 }
 
 th.ant-descriptions-item.vertical-description {

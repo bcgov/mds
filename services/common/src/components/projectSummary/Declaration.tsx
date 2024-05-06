@@ -106,6 +106,7 @@ const Declaration: FC = () => {
             <Collapse.Panel
               key="ams_terms"
               collapsible="icon"
+              className="collapse-no-padding"
               header={
                 <Field
                   name="ams_terms_agreed"

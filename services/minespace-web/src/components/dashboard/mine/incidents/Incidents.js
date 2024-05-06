@@ -7,7 +7,10 @@ import { Button, Col, Row, Typography } from "antd";
 import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import PropTypes from "prop-types";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
-import { createMineIncident, fetchIncidents } from "@mds/common/redux/actionCreators/incidentActionCreator";
+import {
+  createMineIncident,
+  fetchIncidents,
+} from "@mds/common/redux/actionCreators/incidentActionCreator";
 import {
   getDropdownIncidentCategoryCodeOptions,
   getDropdownIncidentDeterminationOptions,
@@ -70,8 +73,8 @@ export const Incidents = (props) => {
       <Col span={24}>
         <AuthorizationWrapper>
           <Button
-            style={{ display: "inline", float: "right" }}
             type="primary"
+            className="dashboard-add-button"
             onClick={(event) =>
               history.push({
                 pathname: routes.ADD_MINE_INCIDENT.dynamicRoute(mine?.mine_guid),
@@ -83,7 +86,7 @@ export const Incidents = (props) => {
             Record a mine incident
           </Button>
         </AuthorizationWrapper>
-        <Typography.Title level={4}>Incidents</Typography.Title>
+        <Typography.Title level={1}>Incidents</Typography.Title>
         <Typography.Paragraph>
           This table shows your mine&apos;s history of&nbsp;
           <Typography.Text className="color-primary" strong>
