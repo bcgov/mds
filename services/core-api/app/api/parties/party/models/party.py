@@ -69,7 +69,7 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
     )
 
     party_orgbook_entity = db.relationship(
-        'PartyOrgBookEntity', backref='party_orgbook_entity', uselist=False, lazy='select', overlaps='party')
+        'PartyOrgBookEntity', backref='party', uselist=False, lazy='select')
 
     organization = db.relationship(
         'Party',
