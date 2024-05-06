@@ -1430,7 +1430,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                                                               class="ant-col ant-form-item-label"
                                                             >
                                                               <label
-                                                                class="ant-form-item-required"
+                                                                class=""
                                                                 for="ADD_EDIT_PROJECT_SUMMARY_authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].documents"
                                                                 title=""
                                                               >
@@ -1500,7 +1500,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                                                               class="ant-col ant-form-item-label"
                                                             >
                                                               <label
-                                                                class="ant-form-item-required"
+                                                                class=""
                                                                 for="ADD_EDIT_PROJECT_SUMMARY_authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].documents"
                                                                 title=""
                                                               >
