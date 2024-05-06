@@ -109,7 +109,8 @@ export const getIncidentFollowupActionOptions = (state, isShowActiveOnly) =>
 export const getCurrentComplianceCodes = createSelector([getComplianceCodes], (codes) => {
   return codes.map((code) => {
     if (new Date(code?.expiry_date) < new Date()) {
-      code.description = `${code.description} (Repealed)`;
+      const description = `${code.description} (Repealed)`;
+      return { ...code, description };
     }
     return code;
   });

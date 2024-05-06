@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { connect } from "react-redux";
 import moment from "moment";
 import PropTypes from "prop-types";
@@ -20,9 +20,9 @@ import MinistryContactItem from "@/components/dashboard/mine/overview/MinistryCo
 import * as Strings from "@/constants/strings";
 import Map from "@/components/common/Map";
 import MineWorkInformation from "./MineWorkInformation";
+import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
 
 const propTypes = {
-  mine: CustomPropTypes.mine.isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship).isRequired,
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineDisturbanceOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -46,110 +46,119 @@ const getMineManager = (partyRelationships) => {
   return mineManager;
 };
 
-export const Overview = (props) => (
-  <Row gutter={[0, 16]}>
-    <Col lg={{ span: 14 }} xl={{ span: 16 }}>
-      <Typography.Title level={4}>Overview</Typography.Title>
-      <Typography.Paragraph>
-        This tab contains general information about your mine and important contacts at EMLI. The
-        information is pulled from current Ministry resources. If anything is incorrect, please
-        notify one of the Ministry contacts.
-      </Typography.Paragraph>
-      <Descriptions column={2} colon={false}>
-        <Descriptions.Item span={2} label="Region">
-          {props.mineRegionHash[props.mine.mine_region] || Strings.UNKNOWN}
-        </Descriptions.Item>
-        <Descriptions.Item label="Latitude">
-          {(props.mine.mine_location && props.mine.mine_location.latitude) || Strings.UNKNOWN}
-        </Descriptions.Item>
-        <Descriptions.Item label="Longitude">
-          {(props.mine.mine_location && props.mine.mine_location.longitude) || Strings.UNKNOWN}
-        </Descriptions.Item>
-        <Descriptions.Item span={2} label="Operating Status">
-          {(props.mine.mine_status &&
-            props.mine.mine_status.length > 0 &&
-            props.mine.mine_status[0].status_labels.join(", ")) ||
-            Strings.UNKNOWN}
-        </Descriptions.Item>
-        <Descriptions.Item span={2} label="Commodity">
-          {props.transformedMineTypes &&
-          props.transformedMineTypes.mine_commodity_code &&
-          props.transformedMineTypes.mine_commodity_code.length > 0
-            ? props.transformedMineTypes.mine_commodity_code
-                .map((code) => props.mineCommodityOptionsHash[code])
-                .join(", ")
-            : Strings.UNKNOWN}
-        </Descriptions.Item>
-        <Descriptions.Item span={2} label="Disturbance">
-          {props.transformedMineTypes &&
-          props.transformedMineTypes.mine_disturbance_code &&
-          props.transformedMineTypes.mine_disturbance_code.length > 0
-            ? props.transformedMineTypes.mine_disturbance_code
-                .map((code) => props.mineDisturbanceOptionsHash[code])
-                .join(", ")
-            : Strings.UNKNOWN}
-        </Descriptions.Item>
-        <Descriptions.Item span={2} label="Active Permits">
-          {props.mine.mine_permit_numbers && props.mine.mine_permit_numbers.length > 0
-            ? props.mine.mine_permit_numbers.join(", ")
-            : Strings.NONE}
-        </Descriptions.Item>
-      </Descriptions>
-      <div className="padding-md--top padding-md--bottom">
-        <MineWorkInformation mineGuid={props.mine.mine_guid} />
-      </div>
-      <div className="padding-md--top padding-md--bottom">
-        <WorkerInfoEmployee mine={props.mine} />
-      </div>
-      <Row gutter={[16, 16]}>
-        <Col xl={11} xxl={11} md={24}>
-          <ContactCard
-            title="Mine Manager"
-            partyRelationship={getMineManager(props.partyRelationships)}
-            dateLabel="Mine Manager Since"
-          />
-        </Col>
+export const Overview = (props) => {
+  const { mine } = useContext(SidebarContext);
+  return (
+    <>
+      <Row>
+        <Typography.Title level={1}>Overview</Typography.Title>
       </Row>
-    </Col>
-    <Col lg={{ span: 9, offset: 1 }} xl={{ offset: 1, span: 7 }} md={24}>
       <Row gutter={[0, 16]}>
-        <Col span={24}>
-          <div style={{ height: "200px" }}>
-            <Map mine={props.mine} controls={false} />
+        <Col lg={{ span: 14 }} xl={{ span: 16 }}>
+          <Typography.Title level={2}>Mine Information</Typography.Title>
+          <Typography.Paragraph>
+            This tab contains general information about your mine and important contacts at EMLI.
+            The information is pulled from current Ministry resources. If anything is incorrect,
+            please notify one of the Ministry contacts.
+          </Typography.Paragraph>
+          <Descriptions column={2} colon={false}>
+            <Descriptions.Item span={2} label="Region">
+              {props.mineRegionHash[mine.mine_region] || Strings.UNKNOWN}
+            </Descriptions.Item>
+            <Descriptions.Item label="Latitude">
+              {(mine.mine_location && mine.mine_location.latitude) || Strings.UNKNOWN}
+            </Descriptions.Item>
+            <Descriptions.Item label="Longitude">
+              {(mine.mine_location && mine.mine_location.longitude) || Strings.UNKNOWN}
+            </Descriptions.Item>
+            <Descriptions.Item span={2} label="Operating Status">
+              {(mine.mine_status &&
+                mine.mine_status.length > 0 &&
+                mine.mine_status[0].status_labels.join(", ")) ||
+                Strings.UNKNOWN}
+            </Descriptions.Item>
+            <Descriptions.Item span={2} label="Commodity">
+              {props.transformedMineTypes &&
+              props.transformedMineTypes.mine_commodity_code &&
+              props.transformedMineTypes.mine_commodity_code.length > 0
+                ? props.transformedMineTypes.mine_commodity_code
+                    .map((code) => props.mineCommodityOptionsHash[code])
+                    .join(", ")
+                : Strings.UNKNOWN}
+            </Descriptions.Item>
+            <Descriptions.Item span={2} label="Disturbance">
+              {props.transformedMineTypes &&
+              props.transformedMineTypes.mine_disturbance_code &&
+              props.transformedMineTypes.mine_disturbance_code.length > 0
+                ? props.transformedMineTypes.mine_disturbance_code
+                    .map((code) => props.mineDisturbanceOptionsHash[code])
+                    .join(", ")
+                : Strings.UNKNOWN}
+            </Descriptions.Item>
+            <Descriptions.Item span={2} label="Active Permits">
+              {mine.mine_permit_numbers && mine.mine_permit_numbers.length > 0
+                ? mine.mine_permit_numbers.join(", ")
+                : Strings.NONE}
+            </Descriptions.Item>
+          </Descriptions>
+          <div className="padding-md--top padding-md--bottom">
+            <MineWorkInformation mineGuid={mine.mine_guid} />
           </div>
+          <div className="padding-md--top padding-md--bottom">
+            <WorkerInfoEmployee mine={mine} />
+          </div>
+          <Typography.Title level={2}>Contacts</Typography.Title>
+          <Row gutter={[16, 16]}>
+            <Col xl={11} xxl={11} md={24}>
+              <ContactCard
+                title="Mine Manager"
+                partyRelationship={getMineManager(props.partyRelationships)}
+                dateLabel="Mine Manager Since"
+              />
+            </Col>
+          </Row>
         </Col>
-        {(props.mine.major_mine_ind && (
-          <Col span={24}>
-            <Card title="Ministry Contacts">
-              {props.EMLIcontactInfo.map((contact) => (
-                <MinistryContactItem contact={contact} key={contact.id} />
-              ))}
-            </Card>
-          </Col>
-        )) || [
-          <Col span={24} key="regional">
-            <Card title="Regional Ministry Contacts">
-              {props.EMLIcontactInfo.filter(({ is_general_contact }) => !is_general_contact).map(
-                (contact) => (
-                  <MinistryContactItem contact={contact} key={contact.id} />
-                )
-              )}
-            </Card>
-          </Col>,
-          <Col span={24} key="general">
-            <Card title="General Ministry Contacts">
-              {props.EMLIcontactInfo.filter(({ is_general_contact }) => is_general_contact).map(
-                (contact) => (
-                  <MinistryContactItem contact={contact} key={contact.id} />
-                )
-              )}
-            </Card>
-          </Col>,
-        ]}
+        <Col lg={{ span: 9, offset: 1 }} xl={{ offset: 1, span: 7 }} md={24}>
+          <Row gutter={[0, 16]}>
+            <Col span={24}>
+              <div style={{ height: "200px" }}>
+                <Map mine={mine} controls={false} />
+              </div>
+            </Col>
+            {(mine.major_mine_ind && (
+              <Col span={24}>
+                <Card title="Ministry Contacts">
+                  {props.EMLIcontactInfo.map((contact) => (
+                    <MinistryContactItem contact={contact} key={contact.id} />
+                  ))}
+                </Card>
+              </Col>
+            )) || [
+              <Col span={24} key="regional">
+                <Card title="Regional Ministry Contacts">
+                  {props.EMLIcontactInfo.filter(
+                    ({ is_general_contact }) => !is_general_contact
+                  ).map((contact) => (
+                    <MinistryContactItem contact={contact} key={contact.id} />
+                  ))}
+                </Card>
+              </Col>,
+              <Col span={24} key="general">
+                <Card title="General Ministry Contacts">
+                  {props.EMLIcontactInfo.filter(({ is_general_contact }) => is_general_contact).map(
+                    (contact) => (
+                      <MinistryContactItem contact={contact} key={contact.id} />
+                    )
+                  )}
+                </Card>
+              </Col>,
+            ]}
+          </Row>
+        </Col>
       </Row>
-    </Col>
-  </Row>
-);
+    </>
+  );
+};
 
 const mapStateToProps = (state) => ({
   userInfo: getUserInfo(state),

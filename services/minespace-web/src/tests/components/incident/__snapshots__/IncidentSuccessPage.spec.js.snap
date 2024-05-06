@@ -16,7 +16,7 @@ exports[`IncidentSuccessPage renders properly 1`] = `
       span={24}
     >
       <Link
-        to="/mines/undefined/incidents?"
+        to="/mines/undefined/incidents"
       >
         <ForwardRef(ArrowLeftOutlined)
           className="padding-sm--right"
@@ -70,7 +70,7 @@ exports[`IncidentSuccessPage renders properly 1`] = `
         <div>
           <p>
             <Link
-              to="/mines/undefined/incidents?"
+              to="/mines/undefined/incidents"
             >
               <Button
                 type="primary"

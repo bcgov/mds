@@ -156,10 +156,15 @@ export const MINE_INCIDENT_SUCCESS = {
   component: IncidentSuccessPage,
 };
 
+const getQueryString = (filterParams?) => {
+  if (!filterParams) return "";
+  return `?${queryString.stringify(filterParams)}`;
+};
+
 export const MINE_DASHBOARD = {
   route: "/mines/:id/:activeTab",
   dynamicRoute: (id, activeTab = "overview", filterParams?: any) =>
-    `/mines/${id}/${activeTab}?${queryString.stringify(filterParams)}`,
+    `/mines/${id}/${activeTab}${getQueryString(filterParams)}`,
   component: MineDashboard,
 };
 

@@ -15,7 +15,7 @@ exports[`WorkerInfoEmployee renders properly 1`] = `
           className="inline-flex between"
         >
           <ForwardRef
-            level={4}
+            level={3}
           >
             Worker Information
             <Tooltip

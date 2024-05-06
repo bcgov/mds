@@ -7,7 +7,7 @@ import { openModal } from "@mds/common/redux/actions/modalActions";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { getExplosivesPermits } from "@mds/common/redux/selectors/explosivesPermitSelectors";
 import DigitalPermitsTable from "@/components/dashboard/mine/permits/DigitalPermitsTable";
-import { Feature, IExplosivesPermit, IMine, IPermit, VC_CONNECTION_STATES } from "@mds/common";
+import { IExplosivesPermit, IMine, IPermit, VC_CONNECTION_STATES } from "@mds/common";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import modalConfig from "@/components/modalContent/config";
 
@@ -74,9 +74,6 @@ export const Permits: FC<DigitalPermitsProps> = ({
       Active: "#45A776",
     };
 
-    const showDigitalWalletInfo = permittees.some(
-      (p) => VC_CONNECTION_STATES[p.status] !== VC_CONNECTION_STATES.active
-    );
     return (
       <>
         <div className="light-grey-background padding-md">
@@ -141,7 +138,6 @@ export const Permits: FC<DigitalPermitsProps> = ({
     <Row>
       <Col span={24}>
         <Typography.Title level={4}>Digital Permit Credentials</Typography.Title>
-
         <Typography.Paragraph>
           The below table displays all of the digital credentials that have been issued to represent{" "}
           <strong>permit applications</strong>. Major mines operators in B.C. can now use digital

@@ -1017,6 +1017,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fortawesome/fontawesome-common-types@npm:6.5.1":
+  version: 6.5.1
+  resolution: "@fortawesome/fontawesome-common-types@npm:6.5.1::__archiveUrl=https%3A%2F%2Fartifacts.developer.gov.bc.ca%3A443%2Fartifactory%2Fapi%2Fnpm%2Fm4c2-mds%2Ffortawesome-fontawesome-common-types-6.5.1.tgz"
+  checksum: c597062de8903aae591b652aa03b9b7aaa66e8c71e5950dc34a8b2812851a7f4ad743fba7396bab87d787c5359bb121496769a165bd3399d039dc214434f6f0c
+  languageName: node
+  linkType: hard
+
 "@fortawesome/fontawesome-pro@npm:6.4.2":
   version: 6.4.2
   resolution: "@fortawesome/fontawesome-pro@npm:6.4.2::__archiveUrl=https%3A%2F%2Fartifacts.developer.gov.bc.ca%3A443%2Fartifactory%2Fapi%2Fnpm%2Fm4c2-mds%2Ffortawesome-fontawesome-pro-6.4.2.tgz"
@@ -1039,6 +1046,15 @@ __metadata:
   dependencies:
     "@fortawesome/fontawesome-common-types": 6.4.2
   checksum: 92ed30d302980cab64fa1738731fbfec9efb4502737968489b0b781471d52711fba31b1098b54b6840bff5ba7382a29447f9a5a65e438d4fcb1c534d3daaea56
+  languageName: node
+  linkType: hard
+
+"@fortawesome/pro-solid-svg-icons@npm:6.5.1":
+  version: 6.5.1
+  resolution: "@fortawesome/pro-solid-svg-icons@npm:6.5.1::__archiveUrl=https%3A%2F%2Fartifacts.developer.gov.bc.ca%3A443%2Fartifactory%2Fapi%2Fnpm%2Fm4c2-mds%2Ffortawesome-pro-solid-svg-icons-6.5.1.tgz"
+  dependencies:
+    "@fortawesome/fontawesome-common-types": 6.5.1
+  checksum: 0eb0cee7e4d69677bd4c1a118f20acacb44eb4ce243f678f16a4b2ef69909e63345bd717d7f17949c69a3ff9cc0999c2c517c56b382d37742af8518c8de9547c
   languageName: node
   linkType: hard
 
@@ -1818,6 +1834,7 @@ __metadata:
     "@ant-design/compatible": 1.0.5
     "@ant-design/icons": 4.2.2
     "@datapunt/matomo-tracker-react": 0.1.5
+    "@fortawesome/pro-solid-svg-icons": 6.5.1
     "@hot-loader/react-dom": 16.13.0
     "@mds/common": 0.1.0
     "@react-keycloak/web": ^3.4.0

@@ -217,7 +217,7 @@ exports[`PermitConditionsNavigation renders properly 1`] = `
             class="ant-spin-container"
           >
             <div
-              class="ant-table"
+              class="ant-table ant-table-has-fix-right"
             >
               <div
                 class="ant-table-container"
@@ -289,7 +289,8 @@ exports[`PermitConditionsNavigation renders properly 1`] = `
                           Date Expire
                         </th>
                         <th
-                          class="ant-table-cell actions-column"
+                          class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first ant-table-cell-fix-sticky"
+                          style="position: sticky; right: 0px;"
                         />
                       </tr>
                     </thead>
@@ -405,7 +406,8 @@ exports[`PermitConditionsNavigation renders properly 1`] = `
                           </div>
                         </td>
                         <td
-                          class="ant-table-cell actions-column"
+                          class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                          style="position: sticky; right: 0px;"
                         >
                           <div>
                             <button
@@ -479,7 +481,8 @@ exports[`PermitConditionsNavigation renders properly 1`] = `
                           </div>
                         </td>
                         <td
-                          class="ant-table-cell actions-column"
+                          class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                          style="position: sticky; right: 0px;"
                         >
                           <div>
                             <button
@@ -531,8 +534,9 @@ exports[`PermitConditionsNavigation renders properly 1`] = `
                     >
                       <tr>
                         <td
-                          class="ant-table-cell"
+                          class="ant-table-cell ant-table-cell-fix-right ant-table-cell-fix-right-first ant-table-cell-fix-sticky"
                           colspan="5"
+                          style="position: sticky; right: 0px;"
                         >
                           <div
                             class="ant-row ant-row-end"
