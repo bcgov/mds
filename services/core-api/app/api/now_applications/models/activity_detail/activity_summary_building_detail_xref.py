@@ -12,4 +12,4 @@ class ActivitySummaryBuildingDetailXref(Base):
     summary = db.relationship(
         'ActivitySummaryBase', backref='building_summary_associations', load_on_pending=True, overlaps='building_summary_associations,summary')
     detail = db.relationship(
-        'ActivityDetailBase', backref='building_detail_associations', load_on_pending=True, overlaps='building_summary_associations,summary')
+        'ActivityDetailBase', backref='building_detail_associations', load_on_pending=True, overlaps='building_detail_associations,building_details,detail')

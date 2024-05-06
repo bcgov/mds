@@ -11,7 +11,7 @@ exports[`MineReportTable renders properly 1`] = `
       class="ant-spin-container"
     >
       <div
-        class="ant-table"
+        class="ant-table ant-table-has-fix-right"
       >
         <div
           class="ant-table-container"
@@ -404,7 +404,8 @@ exports[`MineReportTable renders properly 1`] = `
                     Documents
                   </th>
                   <th
-                    class="ant-table-cell actions-column"
+                    class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                    style="position: sticky; right: 0px;"
                   />
                 </tr>
               </thead>
@@ -537,7 +538,8 @@ exports[`MineReportTable renders properly 1`] = `
                     </div>
                   </td>
                   <td
-                    class="ant-table-cell actions-column"
+                    class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                    style="position: sticky; right: 0px;"
                   >
                     <div>
                       <button
@@ -699,7 +701,8 @@ exports[`MineReportTable renders properly 1`] = `
                     </div>
                   </td>
                   <td
-                    class="ant-table-cell actions-column"
+                    class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                    style="position: sticky; right: 0px;"
                   >
                     <div>
                       <button
@@ -830,7 +833,8 @@ exports[`MineReportTable renders properly 1`] = `
                     </div>
                   </td>
                   <td
-                    class="ant-table-cell actions-column"
+                    class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                    style="position: sticky; right: 0px;"
                   >
                     <div>
                       <button

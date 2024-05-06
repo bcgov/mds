@@ -8,6 +8,7 @@
     "@ant-design/compatible": "1.0.5",
     "@ant-design/icons": "4.2.2",
     "@datapunt/matomo-tracker-react": "0.1.5",
+    "@fortawesome/pro-solid-svg-icons": "6.5.1",
     "@hot-loader/react-dom": "16.13.0",
     "@mds/common": "0.1.0",
     "@react-keycloak/web": "^3.4.0",

@@ -109,11 +109,11 @@ const NotificationDrawer: FC<INotificationDrawerProps> = (props) => {
         return {
           route: MINE_DASHBOARD.dynamicRoute(
             notification.notification_document.metadata.mine.mine_guid,
-            "nods",
-            {
-              nod: notification.notification_document.metadata.entity_guid,
-            }
+            "nods"
           ),
+          search: `?${new URLSearchParams({
+            nod: notification.notification_document.metadata.entity_guid,
+          })}`,
           state: {},
         };
       case "MineIncident":
@@ -177,7 +177,11 @@ const NotificationDrawer: FC<INotificationDrawerProps> = (props) => {
     await handleMarkAsRead(notification.notification_guid);
     handleCollapse();
     const routeSpecifics = navigationHandler(notification);
-    const route = { pathname: routeSpecifics?.route, state: { ...(routeSpecifics?.state ?? {}) } };
+    const route = {
+      pathname: routeSpecifics?.route,
+      search: routeSpecifics?.search,
+      state: { ...(routeSpecifics?.state ?? {}) },
+    };
     history.push(route);
   };
 
