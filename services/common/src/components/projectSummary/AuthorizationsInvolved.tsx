@@ -44,11 +44,6 @@ import {
   renderDateColumn,
 } from "@mds/common/components/common/CoreTableCommonColumns";
 import DocumentTable from "@mds/common/components/documents/DocumentTable";
-import {
-  PROJECT_SUMMARY_DOCUMENT_TYPE,
-  PROJECT_SUMMARY_DOCUMENT_TYPE_CODE,
-  PROJECT_SUMMARY_DOCUMENT_TYPE_CODE_LOCATION,
-} from "../..";
 import { renderCategoryColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import { MineDocument } from "@mds/common/models/documents/document";
 
@@ -61,15 +56,6 @@ export interface ProjectSummary {
   project_summary_description: string;
   project_guid: string;
   documents: IProjectSummaryDocument[];
-}
-
-interface DocumentUploadProps {
-  initialValues: ProjectSummary;
-  change: any;
-  documents: IProjectSummaryDocument[];
-  isEditMode: boolean;
-  projectSummaryDocumentTypesHash: any;
-  mineGuid: string;
 }
 
 const RenderEMAPermitCommonSections = ({ props }) => {
@@ -104,14 +90,9 @@ const RenderEMAPermitCommonSections = ({ props }) => {
   const documentColumns = [
     renderTextColumn("document_name", "File Name"),
     renderCategoryColumn(
-      "project_summary_document_type_code",
+      "category",
       "Document Category",
-      {
-        SPR: "Supporting Documents",
-        MAP: "Location Map",
-        GEN: "General",
-        DFA: "Discharge Factor Amendment",
-      },
+      props.projectSummaryDocumentTypesHash,
       false,
       "N/A"
     ),
@@ -613,13 +594,13 @@ export const AuthorizationsInvolved = (props) => {
                                         <li>
                                           For exploration work outside the permit mine area without
                                           expanding the production area, submit a Notice of Work
-                                          application via FrountCounter BC to amend your MX or CX
+                                          application via FrontCounter BC to amend your MX or CX
                                           permit.
                                         </li>
                                         <li>
                                           For induced polarization surveys or exploration drilling
                                           within the permit mine area, submit a Notification of
-                                          Deemed Authorixation application via FrountCounter BC.
+                                          Deemed Authorization application via FrontCounter BC.
                                         </li>
                                       </ul>
                                     }

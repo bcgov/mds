@@ -1,12 +1,9 @@
 import React, { FC } from "react";
-import { Field, getFormValues } from "redux-form";
+import { Field } from "redux-form";
 import { DOCUMENT, EXCEL, IMAGE, SPATIAL } from "@mds/common/constants/fileTypes";
-import { MINE_REPORT_DOCUMENT, PROJECT_SUMMARY_DOCUMENTS } from "@mds/common/constants/API";
+import { PROJECT_SUMMARY_DOCUMENTS } from "@mds/common/constants/API";
 import RenderFileUpload from "../forms/RenderFileUpload";
-import { required, requiredNewFiles } from "@mds/common/redux/utils/Validate";
-import { IProjectSummaryDocument, IMineDocument } from "../..";
-import { useSelector } from "react-redux";
-import { FORM } from "../..";
+import { IProjectSummaryDocument } from "../..";
 import { PROJECT_SUMMARY_DOCUMENT_TYPE_CODE } from "../..";
 
 interface AuthorizationSupportDocumentUploadProps {
@@ -41,9 +38,9 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
   };
 
   const handleFileLoad = (
-    document_name,
-    document_manager_guid,
-    project_summary_document_type_code
+    document_name: string,
+    document_manager_guid: string,
+    project_summary_document_type_code: string
   ) => {
     const newDoc = {
       document_name,
