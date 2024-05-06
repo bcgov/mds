@@ -832,7 +832,7 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
                   <label
                     class="ant-form-item-required"
                     for="VIEW_EDIT_REPORT_documents"
-                    title="Upload Files"
+                    title=""
                   >
                     Upload Files
                   </label>
