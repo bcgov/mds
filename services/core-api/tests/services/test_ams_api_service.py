@@ -35,7 +35,8 @@ def test_create_new_ams_authorization_unsuccessful_outcome(test_client):
                                                       data.get('is_legal_land_owner'),
                                                       data.get('is_crown_land_federal_or_provincial'),
                                                       data.get('is_landowner_aware_of_discharge_application'),
-                                                      data.get('has_landowner_received_copy_of_application'))
+                                                      data.get('has_landowner_received_copy_of_application'),
+                                                      data.get('facility_pid_pin_crown_file_no'))
         mock_create_new_ams_authorization.assert_called_once()
         assert result[0]['statusCode'] == '400'
 
@@ -110,6 +111,7 @@ def test_create_new_ams_authorization_successful_outcome(test_client):
                 'address_type_code': 'CAN'
             },
         },
+        'facility_pid_pin_crown_file_no': '12345',
         'facility_type': 'Test Facility',
         'facility_desc': 'Test Facility',
         'facility_latitude': '47.0000000',
@@ -183,6 +185,7 @@ def test_create_new_ams_authorization_successful_outcome(test_client):
                                                       data.get('is_legal_land_owner'),
                                                       data.get('is_crown_land_federal_or_provincial'),
                                                       data.get('is_landowner_aware_of_discharge_application'),
-                                                      data.get('has_landowner_received_copy_of_application'))
+                                                      data.get('has_landowner_received_copy_of_application'),
+                                                      data.get('facility_pid_pin_crown_file_no'))
         mock_create_new_ams_authorization.assert_called_once()
         assert result[0]['trackingnumber'] == '123456'

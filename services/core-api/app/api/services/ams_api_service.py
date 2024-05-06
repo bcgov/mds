@@ -79,7 +79,8 @@ class AMSApiService():
                                      is_legal_land_owner,
                                      is_crown_land_federal_or_provincial,
                                      is_landowner_aware_of_discharge_application,
-                                     has_landowner_received_copy_of_application
+                                     has_landowner_received_copy_of_application,
+                                     facility_pid_pin_crown_file_no
                                      ):
         """Creates a new AMS authorization application"""
 
@@ -124,6 +125,7 @@ class AMSApiService():
                         'em_email': agent.get('email', '') if agent else '',
                         'em_companyname': agent.get('party_name', '') if agent else ''
                     },
+                    'purposeofapplication': authorization.get('authorization_description', ''),
                     'preappexemptionrequest': cls.__boolean_to_yes_no(authorization.get('exemption_requested')),
                     'preappexemptionrequestreason': authorization.get('authorization_description', 'Not Applicable'),
                     'iscontaminatedsite': cls.__boolean_to_yes_no(authorization.get('is_contaminated')),
@@ -141,8 +143,9 @@ class AMSApiService():
                     'sourceofdata': facility_coords_source,
                     'sourceofdatadescription': facility_coords_source_desc,
                     'legallanddescription': legal_land_desc,
+                    'pidpincrownfilenumber': facility_pid_pin_crown_file_no,
                     'facilityaddress': {
-                        'addresstype': 'Civic',
+                        'addresstype': 'Other',
                         'suitenumber': facility_operator.get('address').get('suite_no', ''),
                         'streetnumber': facility_operator.get('address').get('suite_no', ''),
                         'street': facility_operator.get('address').get('address_line_1', ''),
