@@ -97,7 +97,7 @@ const RenderEMAPermitCommonSections = ({ props }) => {
   };
 
   const tableDocuments =
-    props?.amendment_documents.map(
+    props?.amendment_documents?.map(
       (doc) => new MineDocument({ ...doc, category: doc.project_summary_document_type_code })
     ) ?? [];
 
@@ -106,7 +106,12 @@ const RenderEMAPermitCommonSections = ({ props }) => {
     renderCategoryColumn(
       "project_summary_document_type_code",
       "Document Category",
-      props.projectSummaryDocumentTypesHash,
+      {
+        SPR: "Supporting Documents",
+        MAP: "Location Map",
+        GEN: "General",
+        DFA: "Discharge Factor Amendment",
+      },
       false,
       "N/A"
     ),
@@ -614,11 +619,11 @@ export const AuthorizationsInvolved = (props) => {
                                   />
                                 )}
                                 <RenderAuthCodeFormSection
-                                  code={child.code}
-                                  authorizationType={authorization.code}
-                                  mine_guid={props.initialValues.mine_guid}
-                                  project_guid={props.initialValues.project_guid}
-                                  project_summary_guid={props.initialValues.project_summary_guid}
+                                  code={child?.code}
+                                  authorizationType={authorization?.code}
+                                  mine_guid={props?.initialValues?.mine_guid}
+                                  project_guid={props?.initialValues?.project_guid}
+                                  project_summary_guid={props?.initialValues?.project_summary_guid}
                                   props={props}
                                 />
                               </>
