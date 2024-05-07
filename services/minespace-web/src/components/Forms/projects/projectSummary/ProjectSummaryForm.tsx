@@ -46,6 +46,7 @@ interface StateProps {
   formValues: any;
   formErrors: any;
   anyTouched: boolean;
+  // amendmentDocuments: IProjectSummaryDocument[];
 }
 
 // converted to a function to make feature flag easier to work with
@@ -98,7 +99,9 @@ export const ProjectSummaryForm: FC<ProjectSummaryFormProps &
       "applicant-information": <Applicant />,
       "representing-agent": <Agent />,
       "facility-operator-information": <FacilityOperator />,
-      "authorizations-involved": <AuthorizationsInvolved />,
+      "authorizations-involved": (
+        <AuthorizationsInvolved initialValues={props.initialValues} {...props} />
+      ),
       "document-upload": (
         <DocumentUpload initialValues={props.initialValues} {...props} documents={documents} />
       ),
