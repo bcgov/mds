@@ -13,76 +13,76 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHouse,
   faFiles,
-  faFileCircleCheck,
+  faCircleCheck,
   faClipboardList,
   faBrakeWarning,
   faHexagonExclamation,
   faDiamondTurnRight,
   faShieldKeyhole,
   faHouseWater,
-  faUserMagnifyingGlass,
 } from "@fortawesome/pro-light-svg-icons";
+import { faBuildingMagnifyingGlass } from "@fortawesome/pro-solid-svg-icons";
 
 export const getMineDashboardRoutes = (isMajorMine: boolean) =>
   [
     {
       key: "overview",
       label: "Overview",
-      icon: <FontAwesomeIcon icon={faHouse} style={{ width: "24px" }} />,
+      icon: <FontAwesomeIcon icon={faHouse} />,
       component: Overview,
     },
     isMajorMine && {
       key: "applications",
       label: "Applications",
-      icon: <FontAwesomeIcon icon={faFiles} style={{ width: "24px" }} />,
+      icon: <FontAwesomeIcon icon={faFiles} />,
       component: Projects,
     },
     {
       key: "permits",
       label: "Permits",
-      icon: <FontAwesomeIcon icon={faFileCircleCheck} style={{ width: "24px" }} />,
+      icon: <FontAwesomeIcon icon={faCircleCheck} />,
       component: PermitTabContainer,
     },
     {
       key: "inspections",
       label: "Inspections",
-      icon: <FontAwesomeIcon icon={faUserMagnifyingGlass} style={{ width: "24px" }} />,
+      icon: <FontAwesomeIcon icon={faBuildingMagnifyingGlass as any} />,
       component: Inspections,
     },
     {
       key: "reports",
       label: "Reports",
-      icon: <FontAwesomeIcon icon={faClipboardList} style={{ width: "24px" }} />,
+      icon: <FontAwesomeIcon icon={faClipboardList} />,
       component: Reports,
     },
     {
       key: "incidents",
       label: "Incidents",
-      icon: <FontAwesomeIcon icon={faBrakeWarning} style={{ width: "24px" }} />,
+      icon: <FontAwesomeIcon icon={faBrakeWarning} />,
       component: Incidents,
     },
     {
       key: "nods",
       label: "Notices of Departure",
-      icon: <FontAwesomeIcon icon={faHexagonExclamation} style={{ width: "24px" }} />,
+      icon: <FontAwesomeIcon icon={faHexagonExclamation} />,
       component: NoticesOfDeparture,
     },
     {
       key: "variances",
       label: "Variances",
-      icon: <FontAwesomeIcon icon={faDiamondTurnRight} style={{ width: "24px" }} />,
+      icon: <FontAwesomeIcon icon={faDiamondTurnRight} />,
       component: Variances,
     },
     {
       key: "bonds",
       label: "Bonds",
-      icon: <FontAwesomeIcon icon={faShieldKeyhole} style={{ width: "24px" }} />,
+      icon: <FontAwesomeIcon icon={faShieldKeyhole} />,
       component: Bonds,
     },
     {
       key: "tailings",
       label: "Tailings & Dams",
-      icon: <FontAwesomeIcon icon={faHouseWater} style={{ width: "24px" }} />,
+      icon: <FontAwesomeIcon icon={faHouseWater} />,
       component: Tailings,
     },
   ].filter(Boolean);
