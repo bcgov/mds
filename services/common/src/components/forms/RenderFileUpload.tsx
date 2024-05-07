@@ -444,10 +444,13 @@ export const FileUpload = (props: FileUploadProps) => {
 
   const getLabel = (props) => {
     if (props.labelHref)
-      return <a href={props.labelHref} target="_blank">{props.label}</a>
-    else
-      return <>{props.label}</>
-  }
+      return (
+        <a href={props.labelHref} target="_blank" rel="noopener noreferrer">
+          {props.label}
+        </a>
+      );
+    else return <>{props.label}</>;
+  };
 
   return (
     <div className={showWhirlpool ? "whirlpool-container whirlpool-on" : "whirlpool-container"}>
@@ -476,7 +479,7 @@ export const FileUpload = (props: FileUploadProps) => {
       <Form.Item
         name={props.input?.name}
         required={props.required}
-        label={getLabel({label: props.label, labelHref: props.labelHref})}
+        label={getLabel({ label: props.label, labelHref: props.labelHref })}
         validateStatus={
           props.meta?.touched
             ? (props.meta?.error && "error") || (props.meta?.warning && "warning")
