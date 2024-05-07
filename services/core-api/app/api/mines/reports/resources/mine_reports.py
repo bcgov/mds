@@ -1,6 +1,6 @@
 import uuid
 from flask_restx import Resource
-from flask import request
+from flask import request, current_app
 from datetime import datetime
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
@@ -22,6 +22,8 @@ from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.mines.permits.permit_conditions.models.permit_condition_category import PermitConditionCategory
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.mines.response_models import MINE_REPORT_MODEL
+from app.api.mines.exceptions.mine_exceptions import MineException
+
 
 
 class MineReportListResource(Resource, UserMixin):
@@ -191,6 +193,10 @@ class MineReportListResource(Resource, UserMixin):
         if is_report_request:
             report_name = mine_report_definition.report_name if is_code_required_report else permit_condition_category.description
             trigger_notification(f'A report has been requested by the ministry: {report_name}', ActivityType.report_requested, mine, 'MineReport', mine_report.mine_report_guid, None, None, ActivityRecipients.minespace_users)
+            try:
+                mine_report.send_report_requested_email(report_name)
+            except Exception as e:
+                current_app.logger.warning(f"Couldn't send the email notification for the requested report: {report_name}. {str(e)}")
 
         return mine_report, 201
 
