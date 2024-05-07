@@ -1366,6 +1366,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                                                               >
                                                                 <a
                                                                   href="https://www2.gov.bc.ca/assets/gov/environment/waste-management/waste-discharge-authorization/guides/forms/epd-ema-08_location_map_form.pdf"
+                                                                  rel="noopener noreferrer"
                                                                   target="_blank"
                                                                 >
                                                                   Location Map
@@ -1436,6 +1437,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                                                               >
                                                                 <a
                                                                   href="https://www2.gov.bc.ca/assets/gov/environment/waste-management/waste-discharge-authorization/guides/forms/epd-ema-06_amend_discharge_factor_amendment_form.pdf"
+                                                                  rel="noopener noreferrer"
                                                                   target="_blank"
                                                                 >
                                                                   Discharge Factor Amendment Form (PDF, 318KB)
