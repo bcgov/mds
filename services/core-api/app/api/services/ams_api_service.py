@@ -80,7 +80,8 @@ class AMSApiService():
                                      is_crown_land_federal_or_provincial,
                                      is_landowner_aware_of_discharge_application,
                                      has_landowner_received_copy_of_application,
-                                     facility_pid_pin_crown_file_no
+                                     facility_pid_pin_crown_file_no,
+                                     company_alias
                                      ):
         """Creates a new AMS authorization application"""
 
@@ -117,7 +118,8 @@ class AMSApiService():
                             applicant.get('address')[2].get('address_line_1', ''),
                             applicant.get('address')[2].get('city', ''),
                             applicant.get('address')[2].get('sub_division_code', ''),
-                            applicant.get('address')[2].get('post_code'))
+                            applicant.get('address')[2].get('post_code')),
+                        'em_doingbusinessas': company_alias,
                     },
                     'agent': {
                         'em_lastname': agent.get('party_name', '') if agent else '',
@@ -134,12 +136,19 @@ class AMSApiService():
                         'em_firstname': contacts[0].get('first_name', ''),
                         'em_title': contacts[0].get('job_title', ''),
                         'em_businessphone': cls.__format_phone_number(contacts[0].get('phone_number')),
-                        'em_email': contacts[0].get('email', '')
+                        'em_email': contacts[0].get('email', ''),
+                        'em_mailingaddress': cls.__create_full_address(
+                            contacts[0].get('address').get('address_line_1', ''),
+                            contacts[0].get('address').get('city', ''),
+                            contacts[0].get('address').get('sub_division_code', ''),
+                            contacts[0].get('address').get('post_code')),
                     },
                     'facilitytype': facility_type,
                     'facilitydescription': facility_desc,
                     'facilitylocationlatitude': str(facility_latitude),
                     'facilitylocationlongitude': str(facility_longitude),
+                    'latitude': str(facility_latitude),
+                    'longitude': str(abs(facility_longitude)),
                     'sourceofdata': facility_coords_source,
                     'sourceofdatadescription': facility_coords_source_desc,
                     'legallanddescription': legal_land_desc,
@@ -170,7 +179,10 @@ class AMSApiService():
                     'istheapplicantthelandowner': cls.__boolean_to_yes_no(is_legal_land_owner),
                     'landfedorprov': cls.__boolean_to_yes_no(is_crown_land_federal_or_provincial),
                     'landownerawareofapplication': cls.__boolean_to_yes_no(is_landowner_aware_of_discharge_application),
-                    'landownerreceivedcopy': cls.__boolean_to_yes_no(has_landowner_received_copy_of_application)
+                    'landownerreceivedcopy': cls.__boolean_to_yes_no(has_landowner_received_copy_of_application),
+                    'facilityoperator': facility_operator.get('name', ''),
+                    'facilityoperatorphonenumber': cls.__format_phone_number(facility_operator.get('phone_no', '')),
+                    'facilityoperatoremail': facility_operator.get('email', ''),
                 }
                 payload = json.dumps(ams_authorization_data)
                 response = requests.post(Config.AMS_URL, data=payload, headers=headers)
