@@ -204,7 +204,7 @@ def test_update_project_summary_bad_request_with_validation_errors(test_client, 
     'agent': ['{"address": ["no definitions validate", {"anyof definition 0": ["must be of list type"], "anyof definition 1": [{"address_line_1": ["null value not allowed"]}]}]}'], 
     'facility': [], 
     'legal_land': ['{"is_crown_land_federal_or_provincial": ["null value not allowed"]}'], 
-    'declaration': ['{"ams_terms_agreed": ["unallowed value False"], "confirmation_of_submission": ["null value not allowed"]}']}"""
+    'declaration': ['{"confirmation_of_submission": ["null value not allowed"]}']}"""
     
     assert put_resp.status_code == 400
     assert put_data['message'] == re.compile(r"\s+").sub(" ", error_message).strip()

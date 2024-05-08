@@ -30,7 +30,6 @@ from cerberus import Validator
 import json
 
 from app.api.utils.common_validation_schemas import primary_address_schema, base_address_schema, address_na_schema, address_int_schema, party_base_schema, project_summary_base_schema
-from app.api.utils.helpers import validate_phone_no
 
 class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'project_summary'
@@ -225,12 +224,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         if isinstance(party_data.get('party_name'), dict):
             # Update party_name with the label if it exists
             party_data['party_name'] = party_data['party_name'].get('label')
-
-        if isinstance(address_data, list):
-            # Validate only the phone number used for the mailing address
-            validate_phone_no(party_data.get('phone_no'), address_data[0].get('address_type_code'))
-        elif address_data is not None:
-            validate_phone_no(party_data.get('phone_no'), address_data.get('address_type_code'))
 
         if party_guid is not None and existing_party is not None:
             existing_party.deep_update_from_dict(party_data)
@@ -522,7 +515,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 'ams_terms_agreed': {
                     'required': True,
                     'type': 'boolean',
-                    'allowed': [True],
                 }
             }
 
