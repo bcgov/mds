@@ -70,6 +70,7 @@ interface ProjectSummaryPageProps {
   anyTouched: boolean;
   formattedProjectSummary: any;
   location: Record<any, string>;
+  change: any;
 }
 
 interface IParams {
@@ -99,6 +100,7 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
     createProjectSummary,
     updateProjectSummary,
     updateProject,
+    change,
   } = props;
 
   const { isFeatureEnabled } = useFeatureFlag();
@@ -275,7 +277,7 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
     const filtered = file_to_upload.filter((doc) => !doc.mine_document_guid);
     values.authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].amendment_documents = filtered;
 
-    props.change(
+    change(
       FORM.ADD_EDIT_PROJECT_SUMMARY,
       values.authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].amendment_documents,
       filtered

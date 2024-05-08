@@ -258,10 +258,6 @@ class Project(AuditMixin, Base):
         for contact in contacts:
             updated_contact_guid = contact.get('project_contact_guid')
             new_address_data = contact.get('address', None)
-            if new_address_data:
-                validate_phone_no(contact.get('phone_number'), new_address_data.get('address_type_code', "CAN"))
-            else:
-                validate_phone_no(contact.get('phone_number'))
 
             if updated_contact_guid:
                 updated_contact = ProjectContact.find_project_contact_by_guid(updated_contact_guid)
