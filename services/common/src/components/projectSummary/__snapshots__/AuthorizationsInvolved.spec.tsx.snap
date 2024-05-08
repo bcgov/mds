@@ -181,10 +181,10 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                                       For changes to existing activities, submit Notice of Departure through MineSpace.
                                     </li>
                                     <li>
-                                      For exploration work outside the permit mine area without expanding the production area, submit a Notice of Work application via FrountCounter BC to amend your MX or CX permit.
+                                      For exploration work outside the permit mine area without expanding the production area, submit a Notice of Work application via FrontCounter BC to amend your MX or CX permit.
                                     </li>
                                     <li>
-                                      For induced polarization surveys or exploration drilling within the permit mine area, submit a Notification of Deemed Authorixation application via FrountCounter BC.
+                                      For induced polarization surveys or exploration drilling within the permit mine area, submit a Notification of Deemed Authorization application via FrontCounter BC.
                                     </li>
                                   </ul>
                                 </div>
@@ -1279,6 +1279,354 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                                                             <div
                                                               class=""
                                                             />
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                  <div>
+                                                    <div
+                                                      class="ant-alert ant-alert-info ant-alert-with-description"
+                                                      data-show="true"
+                                                      role="alert"
+                                                    >
+                                                      <span
+                                                        aria-label="info-circle"
+                                                        class="anticon anticon-info-circle ant-alert-icon"
+                                                        role="img"
+                                                      >
+                                                        <svg
+                                                          aria-hidden="true"
+                                                          data-icon="info-circle"
+                                                          fill="currentColor"
+                                                          focusable="false"
+                                                          height="1em"
+                                                          viewBox="64 64 896 896"
+                                                          width="1em"
+                                                        >
+                                                          <path
+                                                            d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+                                                          />
+                                                          <path
+                                                            d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"
+                                                          />
+                                                        </svg>
+                                                      </span>
+                                                      <div
+                                                        class="ant-alert-content"
+                                                      >
+                                                        <div
+                                                          class="ant-alert-description"
+                                                        >
+                                                          If yes, please attach a 
+                                                          <b>
+                                                            letter with rationale
+                                                          </b>
+                                                           to support this exemption at
+                                                           
+                                                          <b>
+                                                            Document Upload
+                                                          </b>
+                                                           section. Please note that requests may not always be granted. Incomplete applications may be returned if they don't meet Ministry requirements and the application fee may not be refunded.
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                    <div
+                                                      class="margin-large--bottom"
+                                                    >
+                                                      <h5
+                                                        class="ant-typography margin-large--top"
+                                                      >
+                                                        Upload Documents
+                                                      </h5>
+                                                      <span
+                                                        class="ant-typography"
+                                                      >
+                                                         
+                                                        Submit the documents required for your amendment application.
+                                                      </span>
+                                                    </div>
+                                                    <div>
+                                                      <div
+                                                        class="whirlpool-container"
+                                                      >
+                                                        <div
+                                                          class="ant-form-item ant-form-item-with-help"
+                                                        >
+                                                          <div
+                                                            class="ant-row ant-form-item-row"
+                                                          >
+                                                            <div
+                                                              class="ant-col ant-form-item-label"
+                                                            >
+                                                              <label
+                                                                class="ant-form-item-required"
+                                                                for="ADD_EDIT_PROJECT_SUMMARY_authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].documents"
+                                                                title=""
+                                                              >
+                                                                <a
+                                                                  href="https://www2.gov.bc.ca/assets/gov/environment/waste-management/waste-discharge-authorization/guides/forms/epd-ema-08_location_map_form.pdf"
+                                                                  rel="noopener noreferrer"
+                                                                  target="_blank"
+                                                                >
+                                                                  Location Map
+                                                                </a>
+                                                              </label>
+                                                            </div>
+                                                            <div
+                                                              class="ant-col ant-form-item-control"
+                                                            >
+                                                              <div
+                                                                class="ant-form-item-control-input"
+                                                              >
+                                                                <div
+                                                                  class="ant-form-item-control-input-content"
+                                                                >
+                                                                  <div
+                                                                    class="filepond--wrapper"
+                                                                  >
+                                                                    <input
+                                                                      accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,application/vnd.oasis.opendocument.text,application/vnd.oasis.opendocument.text-template,application/vnd.oasis.opendocument.text-web,application/vnd.oasis.opendocument.text-master,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,image/jpg,image/jpeg,image/png,image/jp2,image/tiff,image/heic,image/heif,application/dbf,application/vnd.geo+json,application/gml+xml,application/vnd.google-earth.kml+xml,application/vnd.google-earth.kmz,application/octet-stream,text/csv,application/xml,text/xml"
+                                                                      multiple=""
+                                                                      name="file"
+                                                                      type="file"
+                                                                    />
+                                                                  </div>
+                                                                  <div
+                                                                    class="filepond-popover-container"
+                                                                  >
+                                                                    <span>
+                                                                      View accepted file types
+                                                                    </span>
+                                                                  </div>
+                                                                </div>
+                                                              </div>
+                                                              <div
+                                                                style="display: flex; flex-wrap: nowrap;"
+                                                              >
+                                                                <div
+                                                                  class="ant-form-item-explain ant-form-item-explain-connected"
+                                                                  id="ADD_EDIT_PROJECT_SUMMARY_authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].documents_help"
+                                                                  role="alert"
+                                                                >
+                                                                  <div
+                                                                    class=""
+                                                                  />
+                                                                </div>
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                      <div
+                                                        class="whirlpool-container"
+                                                      >
+                                                        <div
+                                                          class="ant-form-item ant-form-item-with-help"
+                                                        >
+                                                          <div
+                                                            class="ant-row ant-form-item-row"
+                                                          >
+                                                            <div
+                                                              class="ant-col ant-form-item-label"
+                                                            >
+                                                              <label
+                                                                class=""
+                                                                for="ADD_EDIT_PROJECT_SUMMARY_authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].documents"
+                                                                title=""
+                                                              >
+                                                                <a
+                                                                  href="https://www2.gov.bc.ca/assets/gov/environment/waste-management/waste-discharge-authorization/guides/forms/epd-ema-06_amend_discharge_factor_amendment_form.pdf"
+                                                                  rel="noopener noreferrer"
+                                                                  target="_blank"
+                                                                >
+                                                                  Discharge Factor Amendment Form (PDF, 318KB)
+                                                                </a>
+                                                              </label>
+                                                            </div>
+                                                            <div
+                                                              class="ant-col ant-form-item-control"
+                                                            >
+                                                              <div
+                                                                class="ant-form-item-control-input"
+                                                              >
+                                                                <div
+                                                                  class="ant-form-item-control-input-content"
+                                                                >
+                                                                  <div
+                                                                    class="filepond--wrapper"
+                                                                  >
+                                                                    <input
+                                                                      accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,application/vnd.oasis.opendocument.text,application/vnd.oasis.opendocument.text-template,application/vnd.oasis.opendocument.text-web,application/vnd.oasis.opendocument.text-master,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,image/jpg,image/jpeg,image/png,image/jp2,image/tiff,image/heic,image/heif,application/dbf,application/vnd.geo+json,application/gml+xml,application/vnd.google-earth.kml+xml,application/vnd.google-earth.kmz,application/octet-stream,text/csv,application/xml,text/xml"
+                                                                      multiple=""
+                                                                      name="file"
+                                                                      type="file"
+                                                                    />
+                                                                  </div>
+                                                                  <div
+                                                                    class="filepond-popover-container"
+                                                                  >
+                                                                    <span>
+                                                                      View accepted file types
+                                                                    </span>
+                                                                  </div>
+                                                                </div>
+                                                              </div>
+                                                              <div
+                                                                style="display: flex; flex-wrap: nowrap;"
+                                                              >
+                                                                <div
+                                                                  class="ant-form-item-explain ant-form-item-explain-connected"
+                                                                  id="ADD_EDIT_PROJECT_SUMMARY_authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].documents_help"
+                                                                  role="alert"
+                                                                >
+                                                                  <div
+                                                                    class=""
+                                                                  />
+                                                                </div>
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                      <div
+                                                        class="whirlpool-container"
+                                                      >
+                                                        <div
+                                                          class="ant-form-item ant-form-item-with-help"
+                                                        >
+                                                          <div
+                                                            class="ant-row ant-form-item-row"
+                                                          >
+                                                            <div
+                                                              class="ant-col ant-form-item-label"
+                                                            >
+                                                              <label
+                                                                class=""
+                                                                for="ADD_EDIT_PROJECT_SUMMARY_authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].documents"
+                                                                title=""
+                                                              >
+                                                                Supporting Document
+                                                              </label>
+                                                            </div>
+                                                            <div
+                                                              class="ant-col ant-form-item-control"
+                                                            >
+                                                              <div
+                                                                class="ant-form-item-control-input"
+                                                              >
+                                                                <div
+                                                                  class="ant-form-item-control-input-content"
+                                                                >
+                                                                  <div
+                                                                    class="filepond--wrapper"
+                                                                  >
+                                                                    <input
+                                                                      accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,application/vnd.oasis.opendocument.text,application/vnd.oasis.opendocument.text-template,application/vnd.oasis.opendocument.text-web,application/vnd.oasis.opendocument.text-master,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,image/jpg,image/jpeg,image/png,image/jp2,image/tiff,image/heic,image/heif,application/dbf,application/vnd.geo+json,application/gml+xml,application/vnd.google-earth.kml+xml,application/vnd.google-earth.kmz,application/octet-stream,text/csv,application/xml,text/xml"
+                                                                      multiple=""
+                                                                      name="file"
+                                                                      type="file"
+                                                                    />
+                                                                  </div>
+                                                                  <div
+                                                                    class="filepond-popover-container"
+                                                                  >
+                                                                    <span>
+                                                                      View accepted file types
+                                                                    </span>
+                                                                  </div>
+                                                                </div>
+                                                              </div>
+                                                              <div
+                                                                style="display: flex; flex-wrap: nowrap;"
+                                                              >
+                                                                <div
+                                                                  class="ant-form-item-explain ant-form-item-explain-connected"
+                                                                  id="ADD_EDIT_PROJECT_SUMMARY_authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].documents_help"
+                                                                  role="alert"
+                                                                >
+                                                                  <div
+                                                                    class=""
+                                                                  />
+                                                                </div>
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                    <div>
+                                                      <div />
+                                                      <div
+                                                        class="ant-table-wrapper  core-table"
+                                                      >
+                                                        <div
+                                                          class="ant-spin-nested-loading"
+                                                        >
+                                                          <div
+                                                            class="ant-spin-container"
+                                                          >
+                                                            <div
+                                                              class="ant-table ant-table-empty ant-table-has-fix-right"
+                                                            >
+                                                              <div
+                                                                class="ant-table-container"
+                                                              >
+                                                                <div
+                                                                  class="ant-table-content"
+                                                                >
+                                                                  <table
+                                                                    style="table-layout: auto;"
+                                                                  >
+                                                                    <colgroup />
+                                                                    <thead
+                                                                      class="ant-table-thead"
+                                                                    >
+                                                                      <tr>
+                                                                        <th
+                                                                          class="ant-table-cell"
+                                                                        >
+                                                                          File Name
+                                                                        </th>
+                                                                        <th
+                                                                          class="ant-table-cell"
+                                                                        >
+                                                                          Document Category
+                                                                        </th>
+                                                                        <th
+                                                                          class="ant-table-cell"
+                                                                        >
+                                                                          Updated
+                                                                        </th>
+                                                                        <th
+                                                                          class="ant-table-cell"
+                                                                        >
+                                                                          Updated By
+                                                                        </th>
+                                                                        <th
+                                                                          class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                                                                          style="position: sticky; right: 0px;"
+                                                                        />
+                                                                      </tr>
+                                                                    </thead>
+                                                                    <tbody
+                                                                      class="ant-table-tbody"
+                                                                    >
+                                                                      <tr
+                                                                        class="ant-table-placeholder"
+                                                                      >
+                                                                        <td
+                                                                          class="ant-table-cell"
+                                                                          colspan="5"
+                                                                        >
+                                                                          No Data Yet
+                                                                        </td>
+                                                                      </tr>
+                                                                    </tbody>
+                                                                  </table>
+                                                                </div>
+                                                              </div>
+                                                            </div>
                                                           </div>
                                                         </div>
                                                       </div>

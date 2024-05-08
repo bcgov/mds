@@ -7379,6 +7379,62 @@ export const PROJECT_SUMMARY = {
   },
 };
 
+export const AUTHORIZATION_INVOLVED = {
+  initialValues: PROJECT_SUMMARY,
+  projectSummaryDocumentTypesHash: {
+    SPR: "Supporting Documents",
+    MAP: "Location Map",
+    GEN: "General",
+    DFA: "Discharge Factor Amendment",
+  },
+  formValues: {
+    authorizations: {
+      AIR_EMISSIONS_DISCHARGE_PERMIT: {
+        AMENDMENT: [
+          {
+            project_summary_authorization_guid: "82857352-de32-4c43-badc-34f62cb8e50a",
+            project_summary_guid: "d20fd1ce-51ef-4fc0-b2f1-e53857edca3e",
+            project_summary_permit_type: ["AMENDMENT"],
+            project_summary_authorization_type: "AIR_EMISSIONS_DISCHARGE_PERMIT",
+            amendment_documents: [
+              {
+                project_summary_document_type_code: "MAP",
+                mine_document_guid: "1868b4d5-7efa-4d74-bb58-fb575cc6dd2c",
+                mine_guid: "6133891d-3398-466a-a4e9-f3c5d837a0f1",
+                document_manager_guid: "359569b7-d5c5-4dc1-a6ac-9f93c4088368",
+                document_name: "041.pdf",
+                upload_date: "2024-05-05 18:06:18.436920-07:00",
+                update_timestamp: null,
+                create_user: "user@bceid",
+              },
+              {
+                project_summary_document_type_code: "DFA",
+                mine_document_guid: "74d0a1cd-8f79-45c1-a79f-56707fa6d93b",
+                mine_guid: "6133891d-3398-466a-a4e9-f3c5d837a0f1",
+                document_manager_guid: "ad300bc1-9c1a-4e49-a8ba-fa2025785fe8",
+                document_name: "doc_check.pdf",
+                upload_date: "2024-05-05 18:06:18.436934-07:00",
+                update_timestamp: null,
+                create_user: "user@bceid",
+              },
+              {
+                project_summary_document_type_code: "SPR",
+                mine_document_guid: "3ae455d8-541d-4a38-80c6-f7f9e6794e45",
+                mine_guid: "6133891d-3398-466a-a4e9-f3c5d837a0f1",
+                document_manager_guid: "b7bb4e80-f5b8-46fb-bd79-b77d1a3108aa",
+                document_name: "doc_check.pdf",
+                upload_date: "2024-05-05 18:06:18.436948-07:00",
+                update_timestamp: null,
+                create_user: "user@bceid",
+              },
+            ],
+          },
+        ],
+      },
+    },
+  },
+};
+
 export const PROJECT_SUMMARY_AUTHORIZATION_TYPES_HASH = {
   MINES_ACT: "Mines Act",
   ENVIRONMENTAL_MANAGMENT_ACT: "Environmental Management Act",

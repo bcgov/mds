@@ -1,3 +1,5 @@
+import { IProjectSummaryDocument } from "./projectSummaryDocuments.interface";
+
 export interface IProjectSummaryAuthorization {
   project_summary_authorization_guid: string;
   project_summary_guid: string;
@@ -10,4 +12,5 @@ export interface IProjectSummaryAuthorization {
   exemption_requested: boolean;
   is_contaminated: boolean;
   new_type: string;
+  amendment_documents: IProjectSummaryDocument[];
 }

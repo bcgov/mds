@@ -66,6 +66,7 @@ interface FileUploadProps extends BaseInputProps {
   // true for "We accept most common ${listedFileTypes.join()} files" language + popover
   abbrevLabel?: boolean;
   maxFiles?: number;
+  labelHref: string;
 
   beforeAddFile?: (file?: any) => any;
   beforeDropFile?: (file?: any) => any;
@@ -95,6 +96,7 @@ const defaultProps = {
   beforeDropFile: () => {},
   file: null,
   maxFiles: undefined,
+  labelHref: undefined,
 };
 
 export const FileUpload = (props: FileUploadProps) => {
@@ -440,6 +442,16 @@ export const FileUpload = (props: FileUploadProps) => {
   const fileValidateTypeLabelExpectedTypesMap = invert(props.acceptedFileTypesMap);
   const acceptedFileTypes = uniq(Object.values(props.acceptedFileTypesMap));
 
+  const getLabel = (props) => {
+    if (props.labelHref)
+      return (
+        <a href={props.labelHref} target="_blank" rel="noopener noreferrer">
+          {props.label}
+        </a>
+      );
+    else return <>{props.label}</>;
+  };
+
   return (
     <div className={showWhirlpool ? "whirlpool-container whirlpool-on" : "whirlpool-container"}>
       {system === SystemFlagEnum.core && (
@@ -467,7 +479,7 @@ export const FileUpload = (props: FileUploadProps) => {
       <Form.Item
         name={props.input?.name}
         required={props.required}
-        label={props.label}
+        label={getLabel({ label: props.label, labelHref: props.labelHref })}
         validateStatus={
           props.meta?.touched
             ? (props.meta?.error && "error") || (props.meta?.warning && "warning")
