@@ -125,6 +125,17 @@ class AMSApiService():
                                 applicant.get('address')[2].get('sub_division_code', ''),
                                 applicant.get('address')[2].get('post_code')),
                             'em_doingbusinessas': company_alias,
+                            'legaladdress': cls.__create_full_address(
+                                applicant.get('address')[1].get('address_line_1', ''),
+                                applicant.get('address')[1].get('city', ''),
+                                applicant.get('address')[1].get('sub_division_code', ''),
+                                applicant.get('address')[1].get('post_code')),
+                            'mailingaddress': cls.__create_full_address(
+                                applicant.get('address')[0].get('address_line_1', ''),
+                                applicant.get('address')[0].get('city', ''),
+                                applicant.get('address')[0].get('sub_division_code', ''),
+                                applicant.get('address')[0].get('post_code')),
+                            'bccompanyregistrationnumber': applicant.get('party_orgbook_entity').get('registration_id', '')
                         },
                         'agent': {
                             'em_lastname': agent.get('party_name', '') if agent else '',
@@ -157,8 +168,6 @@ class AMSApiService():
                         },
                         'facilitytype': facility_type,
                         'facilitydescription': facility_desc,
-                        'facilitylocationlatitude': str(facility_latitude),
-                        'facilitylocationlongitude': str(facility_longitude),
                         'latitude': str(facility_latitude),
                         'longitude': str(abs(facility_longitude)),
                         'sourceofdata': facility_coords_source,
@@ -181,10 +190,7 @@ class AMSApiService():
                                 facility_operator.get('address').get('sub_division_code'),
                                 facility_operator.get('address').get('post_code'))
                         },
-                        'facilityopname': facility_operator.get('name', ''),
-                        'facilityopphonenumber': cls.__format_phone_number(facility_operator.get('phone_no', '')),
                         'facilityopphonenumberext': facility_operator.get('phone_ext', ''),
-                        'facilityopemail': facility_operator.get('email', ''),
                         'isappropriatezoning': cls.__boolean_to_yes_no(zoning),
                         'isappropriatezoningreason': zoning_reason,
                         'landownername': legal_land_owner_name,
