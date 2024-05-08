@@ -37,7 +37,10 @@ def test_create_new_ams_authorization_unsuccessful_outcome(test_client):
                                                       data.get('is_landowner_aware_of_discharge_application'),
                                                       data.get('has_landowner_received_copy_of_application'),
                                                       data.get('facility_pid_pin_crown_file_no'),
-                                                      data.get('company_alias'))
+                                                      data.get('company_alias'),
+                                                      data.get('zoning'),
+                                                      data.get('zoning_reason'))
+
         mock_create_new_ams_authorization.assert_called_once()
         assert result[0]['statusCode'] == '400'
 
@@ -113,6 +116,7 @@ def test_create_new_ams_authorization_successful_outcome(test_client):
                 'address_type_code': 'CAN'
             },
         },
+        'zoning': True,
         'facility_pid_pin_crown_file_no': '12345',
         'facility_type': 'Test Facility',
         'facility_desc': 'Test Facility',
@@ -189,6 +193,8 @@ def test_create_new_ams_authorization_successful_outcome(test_client):
                                                       data.get('is_landowner_aware_of_discharge_application'),
                                                       data.get('has_landowner_received_copy_of_application'),
                                                       data.get('facility_pid_pin_crown_file_no'),
-                                                      data.get('company_alias'))
+                                                      data.get('company_alias'),
+                                                      data.get('zoning'),
+                                                      data.get('zoning_reason'))
         mock_create_new_ams_authorization.assert_called_once()
         assert result[0]['trackingnumber'] == '123456'
