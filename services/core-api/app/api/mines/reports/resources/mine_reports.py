@@ -194,7 +194,7 @@ class MineReportListResource(Resource, UserMixin):
             report_name = mine_report_definition.report_name if is_code_required_report else permit_condition_category.description
             trigger_notification(f'A report has been requested by the ministry: {report_name}', ActivityType.report_requested, mine, 'MineReport', mine_report.mine_report_guid, None, None, ActivityRecipients.minespace_users)
             try:
-                mine_report.send_report_requested_email(report_name)
+                mine_report.send_report_requested_email(report_name, is_code_required_report)
             except Exception as e:
                 current_app.logger.warning(f"Couldn't send the email notification for the requested report: {report_name}. {str(e)}")
 

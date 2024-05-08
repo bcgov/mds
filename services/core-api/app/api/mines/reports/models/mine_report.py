@@ -257,14 +257,26 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
             body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
             EmailService.send_email(subject, recipients, body)
 
-    def send_report_requested_email(self, report_name):
+    def send_report_requested_email(self, report_name, is_crr):
             if self.mine.mine_manager:
                 recipients = [self.mine.mine_manager.party.email]
             else:
                 current_app.logger.info(f"Can't find mine manager's email for the mine: {self.mine.mine_name}")
                 raise MineException(f"Couldn't send the email for the mine manager as no manager found for the mine: {self.mine.mine_name}")
 
-            subject = f'Report "{report_name}" is requested in MineSpace'
+            if is_crr:
+                compliance_details = self.mine_report_definition.compliance_articles[0]
+                compliance_string = ComplianceArticle.get_compliance_article_string(self.mine_report_definition.compliance_articles[0])
+                report_name = f'{compliance_string} - {compliance_details.description}'
+                permit_info_value = ""
+                permit_info_label = ""
+
+            else: #PRR
+                report_name = self.report_name
+                permit_info_label = "Permit Number"
+                permit_info_value = self.permit_number + ": "
+
+            subject = "A Report is requested in MineSpace"
             due_date = due_date = (self.due_date).strftime("%b %d %Y") if self.due_date else "N/A"
             ms_url = get_current_core_or_ms_env_url("ms")
             ms_report_page_link = f'{ms_url}/mines/{self.mine.mine_guid}/reports/{self.mine_report_guid}'
@@ -273,6 +285,8 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
                 "report_request": {
                     "mine_number": self.mine.mine_no,
                     "mine_name": self.mine.mine_name,
+                    "permit_info_label": permit_info_label,
+                    "permit_info_value": permit_info_value,
                     "report_name": report_name,
                     "report_compliance_year": self.submission_year,
                     "report_due_date": due_date,
