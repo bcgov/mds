@@ -15,6 +15,7 @@ import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import {
   getDropdownProjectSummaryPermitTypes,
   getTransformedProjectSummaryAuthorizationTypes,
+  getProjectSummaryDocumentTypesHash,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getAmsAuthorizationTypes } from "@mds/common/redux/selectors/projectSelectors";
 import {
@@ -65,6 +66,7 @@ const RenderEMAPermitCommonSections = ({ props }) => {
     : "Purpose of Application";
 
   const [showDocSection, setShowDocSection] = useState(props?.exemption_requested || false);
+  const projectSummaryDocumentTypesHash = useSelector(getProjectSummaryDocumentTypesHash);
 
   const onChange = (value, _newVal, _prevVal, _fieldName) => {
     setShowDocSection(value);
@@ -92,7 +94,7 @@ const RenderEMAPermitCommonSections = ({ props }) => {
     renderCategoryColumn(
       "category",
       "Document Category",
-      props.projectSummaryDocumentTypesHash,
+      projectSummaryDocumentTypesHash,
       false,
       "N/A"
     ),
@@ -177,7 +179,7 @@ const RenderEMANewPermitSection = ({
   project_summary_guid,
 }) => {
   const new_props = {
-    ...props.formValues.authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0],
+    ...props?.formValues?.authorizations?.AIR_EMISSIONS_DISCHARGE_PERMIT?.AMENDMENT[0],
     isAmendment: false,
     mine_guid: mine_guid,
     project_guid: project_guid,
@@ -229,7 +231,6 @@ const RenderEMANewPermitSection = ({
 
 const RenderEMAAmendFieldArray = ({
   fields,
-  projectSummaryDocumentTypesHash,
   mine_guid,
   project_guid,
   project_summary_guid,
@@ -306,7 +307,6 @@ const RenderEMAAmendFieldArray = ({
             <RenderEMAPermitCommonSections
               props={{
                 ...rest_of_the_props,
-                projectSummaryDocumentTypesHash: projectSummaryDocumentTypesHash,
                 isAmendment: true,
                 mine_guid: mine_guid,
                 project_guid: project_guid,
@@ -338,8 +338,7 @@ const RenderEMAAuthCodeFormSection = ({
   const dispatch = useDispatch();
 
   const doc_props = {
-    ...authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0],
-    projectSummaryDocumentTypesHash: props.projectSummaryDocumentTypesHash,
+    ...authorizations?.AIR_EMISSIONS_DISCHARGE_PERMIT?.AMENDMENT[0],
     isAmendment: false,
     mine_guid: mine_guid,
     project_guid: project_guid,
