@@ -70,6 +70,7 @@ interface ProjectSummaryPageProps {
   anyTouched: boolean;
   formattedProjectSummary: any;
   location: Record<any, string>;
+  change: any;
 }
 
 interface IParams {
@@ -99,6 +100,7 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
     createProjectSummary,
     updateProjectSummary,
     updateProject,
+    change,
   } = props;
 
   const { isFeatureEnabled } = useFeatureFlag();
@@ -270,16 +272,18 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
     const message = "Successfully saved a draft project description.";
     const values = { ...formValues, status_code: "DFT" };
 
-    const file_to_upload =
-      values.authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].amendment_documents;
-    const filtered = file_to_upload.filter((doc) => !doc.mine_document_guid);
-    values.authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].amendment_documents = filtered;
-
-    props.change(
-      FORM.ADD_EDIT_PROJECT_SUMMARY,
-      values.authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].amendment_documents,
-      filtered
-    );
+    if (values.authorizations?.AIR_EMISSIONS_DISCHARGE_PERMIT !== undefined) {
+      const file_to_upload =
+        values.authorizations?.AIR_EMISSIONS_DISCHARGE_PERMIT?.AMENDMENT[0].amendment_documents ??
+        [];
+      const filtered = file_to_upload.filter((doc) => !doc.mine_document_guid);
+      values.authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].amendment_documents = filtered;
+      change(
+        FORM.ADD_EDIT_PROJECT_SUMMARY,
+        values.authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].amendment_documents,
+        filtered
+      );
+    }
 
     submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
     touch(FORM.ADD_EDIT_PROJECT_SUMMARY);
