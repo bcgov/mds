@@ -14,6 +14,7 @@ import InfoCircleOutlined from "@ant-design/icons/InfoCircleOutlined";
 import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import {
   getDropdownProjectSummaryPermitTypes,
+  getProjectSummaryDocumentTypesHash,
   getTransformedProjectSummaryAuthorizationTypes,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getAmsAuthorizationTypes } from "@mds/common/redux/selectors/projectSelectors";
@@ -38,7 +39,7 @@ import { createDropDownList } from "@mds/common/redux/utils/helpers";
 import { FORM } from "@mds/common/constants/forms";
 import RenderHiddenField from "../forms/RenderHiddenField";
 import AuthorizationSupportDocumentUpload from "./AuthorizationSupportDocumentUpload";
-import { IProjectSummaryDocument } from "@mds/common";
+import { IProjectSummaryDocument } from "@mds/common/interfaces";
 import {
   renderTextColumn,
   renderDateColumn,
@@ -59,6 +60,7 @@ export interface ProjectSummary {
 }
 
 const RenderEMAPermitCommonSections = ({ props }) => {
+  const { code } = props;
   const dispatch = useDispatch();
   const purposeLabel = props.isAmendment
     ? "Additional Amendment Request Information"
@@ -70,12 +72,12 @@ const RenderEMAPermitCommonSections = ({ props }) => {
     setShowDocSection(value);
   };
 
-  const updateAmendmentDocuments = (doc: IProjectSummaryDocument) => {
+  const updateAmendmentDocuments = (doc: IProjectSummaryDocument, code: string) => {
     const index = 0;
     const response = dispatch(
       arrayPush(
         FORM.ADD_EDIT_PROJECT_SUMMARY,
-        `authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[${index}].amendment_documents`,
+        `authorizations.[${code}][${index}].amendment_documents`,
         doc
       )
     );
@@ -150,6 +152,7 @@ const RenderEMAPermitCommonSections = ({ props }) => {
             </Typography.Text>
           </div>
           <AuthorizationSupportDocumentUpload
+            code={code}
             mineGuid={props.mine_guid}
             isProponent={true}
             documents={tableDocuments}
@@ -177,7 +180,8 @@ const RenderEMANewPermitSection = ({
   project_summary_guid,
 }) => {
   const new_props = {
-    ...props.formValues.authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0],
+    ...props.formValues.authorizations[code][0],
+    code,
     isAmendment: false,
     mine_guid: mine_guid,
     project_guid: project_guid,
@@ -333,13 +337,15 @@ const RenderEMAAuthCodeFormSection = ({
   const hasAmendments = codeAuthorizations.AMENDMENT?.length > 0;
   const hasNew = codeAuthorizations.NEW?.length > 0;
 
+  const projectSummaryDocumentTypesHash = useSelector(getProjectSummaryDocumentTypesHash);
+
   const permitTypes = ["AMENDMENT", "NEW"];
 
   const dispatch = useDispatch();
 
   const doc_props = {
-    ...authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0],
-    projectSummaryDocumentTypesHash: props.projectSummaryDocumentTypesHash,
+    ...authorizations[code].AMENDMENT[0],
+    projectSummaryDocumentTypesHash,
     isAmendment: false,
     mine_guid: mine_guid,
     project_guid: project_guid,
