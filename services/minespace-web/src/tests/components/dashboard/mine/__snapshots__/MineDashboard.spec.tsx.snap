@@ -21,7 +21,9 @@ exports[`MineDashboard renders properly 1`] = `
             mine3
           </b>
         </div>
-        <div>
+        <div
+          style="font-size: 14px;"
+        >
           Mine number: 
           BLAH9091
         </div>

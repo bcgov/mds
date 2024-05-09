@@ -62,7 +62,7 @@ const MineDashboard: FC = () => {
         <div className="primary-colour">
           <b>{mine.mine_name}</b>
         </div>
-        <div>Mine number: {mine.mine_no}</div>
+        <div style={{ fontSize: "14px" }}>Mine number: {mine.mine_no}</div>
       </div>
       <SidebarNavigation items={items} selectedKeys={selectedKeys} />
     </SidebarWrapper>
