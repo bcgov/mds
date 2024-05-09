@@ -73,7 +73,6 @@ export const getProjectFormTabs = (amsFeatureEnabled: boolean) => {
         "related-projects",
         "project-contacts",
         "project-dates",
-        "authorizations-involved",
         "document-upload",
       ];
 };
