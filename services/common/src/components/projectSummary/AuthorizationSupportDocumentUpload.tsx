@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { Field } from "redux-form";
 import { DOCUMENT, EXCEL, IMAGE, SPATIAL } from "@mds/common/constants/fileTypes";
 import { PROJECT_SUMMARY_DOCUMENTS } from "@mds/common/constants/API";
-import RenderFileUpload from "../forms/RenderFileUpload";
+import RenderFileUpload from "@mds/common/components/forms/RenderFileUpload";
 import { IProjectSummaryDocument } from "../..";
 import { PROJECT_SUMMARY_DOCUMENT_TYPE_CODE } from "../..";
 
