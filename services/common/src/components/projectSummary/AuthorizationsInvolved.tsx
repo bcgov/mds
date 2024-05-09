@@ -79,7 +79,7 @@ const RenderEMAPermitCommonSections = ({ props }) => {
     const response = dispatch(
       arrayPush(
         FORM.ADD_EDIT_PROJECT_SUMMARY,
-        `authorizations.${props.code}.AMENDMENT[${index}].amendment_documents`,
+        `authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[${index}].amendment_documents`,
         doc
       )
     );
@@ -181,14 +181,13 @@ const RenderEMANewPermitSection = ({
   project_summary_guid,
 }) => {
   const new_props = {
-    ...props?.formValues?.authorizations?.code?.AMENDMENT[0],
+    ...props.formValues.authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0],
     code: code,
     isAmendment: false,
     mine_guid: mine_guid,
     project_guid: project_guid,
     project_summary_guid: project_summary_guid,
   };
-  console.log("_________________188 CODE_", code);
   return (
     <div className="grey-box">
       <FormSection name={`${code}.NEW[0]`}>
@@ -244,7 +243,7 @@ const RenderEMAAmendFieldArray = ({
   const handleRemoveAmendment = (index: number) => {
     fields.remove(index);
   };
-  console.log("___________________247____CODE_: ", code);
+
   const [dfaRequired, setDfaRequired] = useState(false);
 
   const onChangeAmendment = (value, _newVal, _prevVal, _fieldName) => {
@@ -329,7 +328,7 @@ const RenderEMAAmendFieldArray = ({
 
 const RenderEMAAuthCodeFormSection = ({
   props,
-  code, //_________________________CHECK THE CODE.......
+  code,
   mine_guid,
   project_guid,
   project_summary_guid,
@@ -345,14 +344,14 @@ const RenderEMAAuthCodeFormSection = ({
   const dispatch = useDispatch();
 
   const doc_props = {
-    ...authorizations?.code?.AMENDMENT[0],
-    code: code,
+    ...authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0],
+    projectSummaryDocumentTypesHash: props.projectSummaryDocumentTypesHash,
     isAmendment: false,
     mine_guid: mine_guid,
     project_guid: project_guid,
     project_summary_guid: project_summary_guid,
   };
-  console.log("_____________335__________code: ", doc_props);
+
   const addAmendment = () => {
     dispatch(arrayPush(FORM.ADD_EDIT_PROJECT_SUMMARY, `authorizations.${code}.AMENDMENT`, {}));
   };
@@ -468,7 +467,7 @@ const RenderAuthCodeFormSection = ({
     // ABOVE______________________SAYS THIS THE TASK
     // AMS authorizations, have options of amend/new with more details
     return (
-      <RenderEMAAuthCodeFormSection // SO---________________ CHECK CODE ACCORDINLGY WHEN UPLOADING FILES
+      <RenderEMAAuthCodeFormSection
         props={props}
         code={code}
         mine_guid={mine_guid}
@@ -535,23 +534,18 @@ export const AuthorizationsInvolved = (props) => {
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
 
   const handleChange = (e, code) => {
-    console.log("________CHEKCED...529____CODE____: ", code);
-    console.log("________CHEKCED...529______E__: ", e);
     if (e.target.checked) {
       let formVal;
       dispatch(arrayPush(FORM.ADD_EDIT_PROJECT_SUMMARY, `authorizationTypes`, code));
       console.log("_______amsAuthTypes__", amsAuthTypes);
       if (amsAuthTypes.includes(code)) {
         formVal = { AMENDMENT: [], NEW: [], types: [] };
-        console.log("FORMVAL__537___", formVal);
       } else if (code === "OTHER") {
         formVal = [
           { project_summary_authorization_type: code, project_summary_permit_type: ["OTHER"] },
         ];
-        console.log("FORMVAL__542___", formVal);
       } else {
         formVal = [{ project_summary_authorization_type: code }];
-        console.log("FORMVAL__545___", formVal);
       }
       dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, `authorizations[${code}]`, formVal));
     } else {
@@ -561,10 +555,10 @@ export const AuthorizationsInvolved = (props) => {
 
     //LOOOOOOOGGGGGGGGGGGGGGGGG
     transformedProjectSummaryAuthorizationTypes.map((authorization) => {
+      console.log("authorizationType=", authorization?.code);
       authorization.children.map((child) => {
         console.log("code=", child?.code);
       });
-      console.log("authorizationType=", authorization?.code);
     });
   };
 
