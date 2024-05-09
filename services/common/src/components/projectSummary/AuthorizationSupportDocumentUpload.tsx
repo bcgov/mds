@@ -10,10 +10,11 @@ interface AuthorizationSupportDocumentUploadProps {
   mineGuid: string;
   isProponent: boolean;
   documents: IProjectSummaryDocument[];
-  updateAmendmentDocuments: (documents: IProjectSummaryDocument) => void;
+  updateAmendmentDocuments: (documents: IProjectSummaryDocument, code: string) => void;
   projectGuid: string;
   projectSummaryGuid: string;
   dfaRequired: boolean;
+  code: string;
 }
 
 export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocumentUploadProps> = ({
@@ -24,6 +25,7 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
   projectGuid,
   projectSummaryGuid,
   dfaRequired,
+  code,
 }) => {
   const handleRemoveFile = (error, fileToRemove) => {
     if (error) {
@@ -33,7 +35,7 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
       (file) => fileToRemove.serverId !== file.document_manager_guid
     );
     newDocuments.forEach((newDoc) => {
-      updateAmendmentDocuments(newDoc);
+      updateAmendmentDocuments(newDoc, code);
     });
   };
 
@@ -47,7 +49,7 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
       document_manager_guid,
       project_summary_document_type_code,
     } as IProjectSummaryDocument;
-    updateAmendmentDocuments(newDoc);
+    updateAmendmentDocuments(newDoc, code);
   };
 
   const acceptedFileTypesMap = { ...DOCUMENT, ...EXCEL, ...IMAGE, ...SPATIAL };
