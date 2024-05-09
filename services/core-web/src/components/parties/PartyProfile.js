@@ -3,13 +3,15 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { Tabs, Button, Popconfirm } from "antd";
+import { Tabs, Button, Popconfirm, Card, Row, Col } from "antd";
 import {
   PhoneOutlined,
   MinusCircleOutlined,
   MailOutlined,
   CheckCircleOutlined,
   EditOutlined,
+  LinkOutlined,
+  ContactsOutlined,
 } from "@ant-design/icons";
 import { uniq, isEmpty } from "lodash";
 import {
@@ -259,20 +261,37 @@ export class PartyProfile extends Component {
               </div>
             </div>
             {!isEmpty(party.party_orgbook_entity) && (
-              <div className="inline-flex">
-                <div className="padding-right">
-                  <CheckCircleOutlined className="icon-sm" />
-                </div>
-                <p>
-                  <a
-                    href={routes.ORGBOOK_ENTITY_URL(party.party_orgbook_entity.registration_id)}
-                    target="_blank"
-                    rel="noopener noreferrer"
+              <Row>
+                <Col md={6} xs={12}>
+                  <Card
+                    title={
+                      <Row justify="center" align="middle">
+                        <CheckCircleOutlined className="icon-lg" style={{ paddingRight: 5 }} />
+
+                        <h4>OrgBook Details</h4>
+                        <a
+                          href={routes.ORGBOOK_ENTITY_URL(
+                            party.party_orgbook_entity.registration_id
+                          )}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          See on OrgBook
+                        </a>
+                      </Row>
+                    }
                   >
-                    Verified OrgBook Entity
-                  </a>
-                </p>
-              </div>
+                    <Row justify="left" align="middle">
+                      <LinkOutlined className="icon-lg" style={{ paddingRight: 5 }} />
+                      <span>{party.party_orgbook_entity.registration_id}</span>
+                    </Row>
+                    <Row justify="left" align="middle">
+                      <ContactsOutlined className="icon-lg" style={{ paddingRight: 5 }} />
+                      <span>{party.party_orgbook_entity.name_text}</span>
+                    </Row>
+                  </Card>
+                </Col>
+              </Row>
             )}
             <div className="inline-flex">
               <div className="padding-right">
