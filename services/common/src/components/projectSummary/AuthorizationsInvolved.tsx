@@ -68,6 +68,8 @@ const RenderEMAPermitCommonSections = ({ props }) => {
 
   const [showDocSection, setShowDocSection] = useState(props?.exemption_requested || false);
 
+  const projectSummaryDocumentTypesHash = useSelector(getProjectSummaryDocumentTypesHash);
+
   const onChange = (value, _newVal, _prevVal, _fieldName) => {
     setShowDocSection(value);
   };
@@ -94,7 +96,7 @@ const RenderEMAPermitCommonSections = ({ props }) => {
     renderCategoryColumn(
       "category",
       "Document Category",
-      props.projectSummaryDocumentTypesHash,
+      projectSummaryDocumentTypesHash,
       false,
       "N/A"
     ),

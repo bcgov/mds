@@ -272,17 +272,19 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
     const message = "Successfully saved a draft project description.";
     const values = { ...formValues, status_code: "DFT" };
 
-    if (values.authorizations?.AIR_EMISSIONS_DISCHARGE_PERMIT !== undefined) {
-      const file_to_upload =
-        values.authorizations?.AIR_EMISSIONS_DISCHARGE_PERMIT?.AMENDMENT[0].amendment_documents ??
-        [];
-      const filtered = file_to_upload.filter((doc) => !doc.mine_document_guid);
-      values.authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].amendment_documents = filtered;
-      change(
-        FORM.ADD_EDIT_PROJECT_SUMMARY,
-        values.authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].amendment_documents,
-        filtered
-      );
+    for (const code of Object.keys(values.authorizations)) {
+      if (values.authorizations?.[code] !== undefined) {
+        const file_to_upload =
+          values.authorizations?.[code]?.AMENDMENT[0]?.amendment_documents ?? [];
+        const filtered = file_to_upload.filter((doc) => !doc.mine_document_guid);
+        if (filtered.length > 0) {
+          change(
+            FORM.ADD_EDIT_PROJECT_SUMMARY,
+            values.authorizations[code].AMENDMENT[0].amendment_documents,
+            filtered
+          );
+        }
+      }
     }
 
     submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
