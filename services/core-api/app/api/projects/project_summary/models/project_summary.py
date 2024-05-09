@@ -29,6 +29,8 @@ from app.config import Config
 from cerberus import Validator
 import json
 
+from app.api.utils.feature_flag import is_feature_enabled, Feature
+
 from app.api.utils.common_validation_schemas import primary_address_schema, base_address_schema, address_na_schema, address_int_schema, party_base_schema, project_summary_base_schema
 
 class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
@@ -407,7 +409,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             base_schema |= party_na_phone_schema
             address_schema = address_na_schema
 
-        if section == 'Applicant' or section == 'Agent':
+        # Setting up address schema based on party section
+        if section == 'applicant' or section == 'agent':
             base_schema |= {
                 'email': {
                     'required': True,
@@ -415,11 +418,11 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 },    
             }
 
-            if section == 'Applicant':
+            if section == 'applicant':
                 address_schema |= primary_address_schema
             else:
                 address_schema |= agent_address_schema
-        elif section == 'Facility':
+        elif section == 'facility_operator':
             address_schema |= facility_address_schema
             base_schema |= {
                 'email': {
@@ -531,60 +534,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 'required': True,
                 'type': 'list',
             },
-            'applicant': {
-                'nullable': True,
-                'type': 'dict',
-            },
-            'is_agent': {
-                'nullable': True,
-                'type': 'boolean',
-            },
-            'facility_coords_source': {
-                'nullable': True,
-                'type': 'string',
-                'allowed': ['GPS', 'SUR', 'GGE', 'OTH'],
-            },
-            'facility_desc': {
-                'nullable': True,
-                'maxlength': 4000,
-                'type': 'string'
-            },
-            'facility_latitude': {
-                'nullable': True,
-                'min': 47,
-                'max': 60,
-                'type': 'number',
-            },
-            'facility_longitude': {
-                'nullable': True,
-                'min': -140,
-                'max': -113,
-                'type': 'number',
-            },
-            'facility_operator': {
-                'nullable': True,
-                'type': 'dict',
-            },
-            'facility_type': {
-                'nullable': True,
-                'type': 'string'
-            },
-            'zoning': {
-                'nullable': True,
-                'type': 'boolean',
-            },
-            'legal_land_desc': {
-                'nullable': True,
-                'type': 'string',
-            },
-            'is_legal_land_owner': {
-                'nullable': True,
-                'type': 'boolean',
-            },
-            'nearest_municipality': {
-                'nullable': True,
-                'type': 'string',
-            },
         }
 
         submission_surface_level_schema = project_summary_base_schema | {
@@ -593,61 +542,140 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 'type': 'list',
                 'empty': False,
             },
-            'applicant': {
-                'required': True,
-                'type': 'dict',
-            },
-            'is_agent': {
-                'required': True,
-                'type': 'boolean',
-            },
-            'facility_coords_source': {
-                'required': True,
-                'type': 'string',
-                'allowed': ['GPS', 'SUR', 'GGE', 'OTH'],
-            },
-            'facility_desc': {
-                'required': True,
-                'maxlength': 4000,
-                'type': 'string',
-            },
-            'facility_latitude': {
-                'required': True,
-                'min': 47,
-                'max': 60,
-                'type': 'number',
-            },
-            'facility_longitude': {
-                'required': True,
-                'min': -140,
-                'max': -113,
-                'type': 'number'
-            },
-            'facility_operator': {
-                'required': True,
-                'type': 'dict',
-            },
-            'facility_type': {
-                'required': True,
-                'type': 'string',
-            },
-            'zoning': {
-                'required': True,
-                'type': 'boolean',
-            },
-            'legal_land_desc': {
-                'nullable': True,
-                'type': 'string',
-            },
-            'is_legal_land_owner': {
-                'required': True,
-                'type': 'boolean',
-            },
-            'nearest_municipality': {
-                'nullable': True,
-                'type': 'string',
-            },
         }
+
+        if is_feature_enabled(Feature.AMS_AGENT):
+            draft_surface_level_schema |= {
+                'ams_authorizations': {
+                    'nullable': True,
+                    'type': 'dict',
+                    },
+                'authorizations': {
+                    'nullable': True,
+                    'type': 'list',
+                    'empty': True,
+                },
+                'applicant': {
+                    'nullable': True,
+                    'type': 'dict',
+                },
+                'is_agent': {
+                    'nullable': True,
+                    'type': 'boolean',
+                },
+                'facility_coords_source': {
+                    'nullable': True,
+                    'type': 'string',
+                    'allowed': ['GPS', 'SUR', 'GGE', 'OTH'],
+                },
+                'facility_desc': {
+                    'nullable': True,
+                    'maxlength': 4000,
+                    'type': 'string'
+                },
+                'facility_latitude': {
+                    'nullable': True,
+                    'min': 47,
+                    'max': 60,
+                    'type': 'number',
+                },
+                'facility_longitude': {
+                    'nullable': True,
+                    'min': -140,
+                    'max': -113,
+                    'type': 'number',
+                },
+                'facility_operator': {
+                    'nullable': True,
+                    'type': 'dict',
+                },
+                'facility_type': {
+                    'nullable': True,
+                    'type': 'string'
+                },
+                'zoning': {
+                    'nullable': True,
+                    'type': 'boolean',
+                },
+                'legal_land_desc': {
+                    'nullable': True,
+                    'type': 'string',
+                },
+                'is_legal_land_owner': {
+                    'nullable': True,
+                    'type': 'boolean',
+                },
+                'nearest_municipality': {
+                    'nullable': True,
+                    'type': 'string',
+                },
+            }
+
+            submission_surface_level_schema |= {
+                'ams_authorizations': {
+                    'required': True,
+                    'type': 'dict',
+                    },
+                'authorizations': {
+                    'required': True,
+                    'type': 'list',
+                    'empty': True,
+                },
+                'applicant': {
+                    'required': True,
+                    'type': 'dict',
+                },
+                'is_agent': {
+                    'required': True,
+                    'type': 'boolean',
+                },
+                'facility_coords_source': {
+                    'required': True,
+                    'type': 'string',
+                    'allowed': ['GPS', 'SUR', 'GGE', 'OTH'],
+                },
+                'facility_desc': {
+                    'required': True,
+                    'maxlength': 4000,
+                    'type': 'string',
+                },
+                'facility_latitude': {
+                    'required': True,
+                    'min': 47,
+                    'max': 60,
+                    'type': 'number',
+                },
+                'facility_longitude': {
+                    'required': True,
+                    'min': -140,
+                    'max': -113,
+                    'type': 'number'
+                },
+                'facility_operator': {
+                    'required': True,
+                    'type': 'dict',
+                },
+                'facility_type': {
+                    'required': True,
+                    'type': 'string',
+                },
+                'zoning': {
+                    'required': True,
+                    'type': 'boolean',
+                },
+                'legal_land_desc': {
+                    'nullable': True,
+                    'type': 'string',
+                },
+                'is_legal_land_owner': {
+                    'required': True,
+                    'type': 'boolean',
+                },
+                'nearest_municipality': {
+                    'nullable': True,
+                    'type': 'string',
+                },
+            }
 
         status_code = data.get('status_code')
         facility_latitude = data.get('facility_latitude', None)
@@ -697,8 +725,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         errors_found = {
             'surface_level_data': [],
             'basic_info': [],
-            'authorizations': [],
             'project_contacts': [],
+            'authorizations': [],
             'applicant_info': [],
             'agent': [],
             'facility': [],
@@ -718,6 +746,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
         # Validate Authorizations Involved
         if (status_code == 'SUB'
+            and is_feature_enabled(Feature.AMS_AGENT)
             and len(ams_authorizations.get('amendments', [])) == 0 
             and len(ams_authorizations.get('new', [])) == 0 
             and len(authorizations) == 0):
@@ -747,19 +776,19 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
         # Validate Applicant Information
         if applicant != None:
-            applicant_validation = ProjectSummary.validate_project_party(applicant, 'Applicant')
+            applicant_validation = ProjectSummary.validate_project_party(applicant, 'applicant')
             if applicant_validation != True:
                 errors_found['applicant_info'].append(applicant_validation)
 
         # Validate Agent
         if is_agent == True:
-            agent_validation = ProjectSummary.validate_project_party(agent, 'Agent')
+            agent_validation = ProjectSummary.validate_project_party(agent, 'agent')
             if agent_validation != True:
                 errors_found['agent'].append(agent_validation)
         
         # Validate Facility Operator Information
         if facility_operator != None:
-            facility_validation = ProjectSummary.validate_project_party(facility_operator, 'Facility')
+            facility_validation = ProjectSummary.validate_project_party(facility_operator, 'facility_operator')
             if facility_validation != True:
                 errors_found['facility'].append(facility_validation)
 
@@ -770,7 +799,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 errors_found['legal_land'].append(legal_land_validation)
 
         # Validate Declaration
-        if status_code == 'SUB':
+        if status_code == 'SUB' and is_feature_enabled(Feature.AMS_AGENT):
             declaration_validation = ProjectSummary.validate_declaration(data)
             if declaration_validation != True:
                 errors_found['declaration'].append(declaration_validation)

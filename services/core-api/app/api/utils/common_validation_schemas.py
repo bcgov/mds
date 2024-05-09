@@ -37,15 +37,6 @@ now_party_appt_schema = {
 
 # Project Summary Schema
 project_summary_base_schema = {
-    'ams_authorizations': {
-        'required': True,
-        'type': 'dict',
-        },
-    'authorizations': {
-        'required': True,
-        'type': 'list',
-        'empty': True,
-    },
     'agent': {
         'nullable': True,
         'type': 'dict',
