@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
 import { flattenObject } from "@common/utils/helpers";
 import { Link, Prompt, useHistory, useLocation, useParams } from "react-router-dom";
@@ -112,6 +112,7 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
   const location = useLocation();
   const projectFormTabs = getProjectFormTabs(amsFeatureEnabled);
   const activeTab = tab ?? projectFormTabs[0];
+  const dispatch = useDispatch();
 
   const handleFetchData = () => {
     if (projectGuid && projectSummaryGuid) {
@@ -291,11 +292,13 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
         values.authorizations?.AIR_EMISSIONS_DISCHARGE_PERMIT?.AMENDMENT[0].amendment_documents ??
         [];
       const filtered = file_to_upload.filter((doc) => !doc.mine_document_guid);
-      values.authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].amendment_documents = filtered;
-      change(
-        FORM.ADD_EDIT_PROJECT_SUMMARY,
-        values.authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].amendment_documents,
-        filtered
+      // values.authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].amendment_documents = filtered;
+      dispatch(
+        change(
+          FORM.ADD_EDIT_PROJECT_SUMMARY,
+          values.authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].amendment_documents,
+          filtered
+        )
       );
     }
 

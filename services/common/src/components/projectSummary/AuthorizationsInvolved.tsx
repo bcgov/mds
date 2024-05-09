@@ -319,6 +319,7 @@ const RenderEMAAmendFieldArray = ({
               props={{
                 ...rest_of_the_props,
                 code: code,
+                amendment_documents,
                 isAmendment: true,
                 mine_guid: mine_guid,
                 project_guid: project_guid,
@@ -642,8 +643,8 @@ export const AuthorizationsInvolved = (props) => {
                                 <RenderAuthCodeFormSection
                                   code={child?.code}
                                   amendment_documents={
-                                    formValues.authorizations.child.code.AMENDMENT[0]
-                                      .amendment_documents
+                                    formValues?.authorizations?.child?.code?.AMENDMENT[0]
+                                      ?.amendment_documents
                                   }
                                   authorizationType={authorization?.code}
                                   mine_guid={props?.initialValues?.mine_guid}
