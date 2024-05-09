@@ -36,6 +36,7 @@ export const createProjectSummary = (
     errorToastMessage: "default",
     successToastMessage: message,
   };
+
   return CustomAxios(messages)
     .post(
       ENVIRONMENT.apiUrl + API.NEW_PROJECT_SUMMARY(),

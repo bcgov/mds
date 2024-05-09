@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Field, change, getFormValues } from "redux-form";
-import { Col, Row, Typography } from "antd";
+import { Col, Row, Typography, Alert } from "antd";
 import { FORM } from "@mds/common";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
@@ -157,13 +157,19 @@ export const Agent: FC = () => {
 
   return (
     <div className="ant-form-vertical">
-      <Typography.Title level={3}>Agent</Typography.Title>
+      <Typography.Title level={3}>Representing Agent</Typography.Title>
       <Typography.Paragraph>
-        The Applicant may authorize an Agent to deal with the Ministry directly on future aspects of
-        this application. This section must be completed in full if an Agent is used. An Agent is a
-        person who is not an employee of the Applicant.
+        The applicant may authorize a representing agent to deal with the Ministry directly on
+        future aspects of this application. This section must be completed in full if a representing
+        agent is a person who is not an employee of the applicant.
       </Typography.Paragraph>
-
+      <Typography.Paragraph>
+        <Alert
+          description="This section will not identify the Agent as defined under the Mines Act, unless the Ministry of Energy, Mines and Low Carbon Innovation is otherwise notified by the owner."
+          type="warning"
+          showIcon
+        />
+      </Typography.Paragraph>
       <Field
         name="is_agent"
         id="is_agent"

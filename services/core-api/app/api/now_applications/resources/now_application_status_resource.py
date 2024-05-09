@@ -109,7 +109,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                 # Validate that the issue date is not before the most recent amendment's issue date
                 amendments = [
                     amendment for amendment in permit.permit_amendments if amendment
-                    and amendment.issue_date and amendment.permit_amendment_status_code is not 'DFT'
+                    and amendment.issue_date and amendment.permit_amendment_status_code != 'DFT'
                 ]
                 if amendments:
                     latest_amendment = max(amendments, key=attrgetter('issue_date'))

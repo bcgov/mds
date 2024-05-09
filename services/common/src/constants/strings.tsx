@@ -209,14 +209,23 @@ export const MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE_LOCATION = {
 
 export const PROJECT_SUMMARY_DOCUMENT_TYPE = {
   GENERAL: "general",
+  LOCATION_MAP: "location_map",
+  DISCHARGE_FACTOR_AMENDMENT: "discharge_factor_amendment",
+  SUPPORTING: "supporting_documents",
 };
 
 export const PROJECT_SUMMARY_DOCUMENT_TYPE_CODE = {
-  GENRAL: "GEN",
+  GENERAL: "GEN",
+  LOCATION_MAP: "MAP",
+  DISCHARGE_FACTOR_AMENDMENT: "DFA",
+  SUPPORTING: "SPR",
 };
 
 export const PROJECT_SUMMARY_DOCUMENT_TYPE_CODE_LOCATION = {
   GEN: "General",
+  MAP: "Location Map",
+  DFA: "Discharge Factor Amendment",
+  SPR: "Supporting Documents",
 };
 
 export const PROJECT_DECISION_PACKAGE_DOCUMENT_TYPE = {

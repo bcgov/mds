@@ -23,6 +23,15 @@ exports[`ExplosivesPermitFileUpload renders properly 1`] = `
               class="ant-row ant-form-item-row"
             >
               <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class=""
+                  for="fileUpload"
+                  title=""
+                />
+              </div>
+              <div
                 class="ant-col ant-form-item-control"
               >
                 <div

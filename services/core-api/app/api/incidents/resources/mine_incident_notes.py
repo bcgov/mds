@@ -96,7 +96,7 @@ class MineIncidentNoteListResource(Resource, UserMixin):
 
         data = self.parser.parse_args()
         note_content = data.get('content')
-        if note_content is None or note_content is '':
+        if note_content is None or note_content == '':
             raise BadRequest('Mine Incident Note requires "content" to be set')
         mine_incident_note = MineIncidentNote.create(mine_incident, data.get('content'))
 

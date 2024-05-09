@@ -22,7 +22,7 @@ exports[`Declaration renders properly 1`] = `
           class="ant-collapse ant-collapse-icon-position-end"
         >
           <div
-            class="ant-collapse-item ant-collapse-item-active"
+            class="ant-collapse-item ant-collapse-item-active collapse-no-padding"
           >
             <div
               aria-disabled="false"

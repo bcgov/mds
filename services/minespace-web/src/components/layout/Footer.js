@@ -12,7 +12,7 @@ const propTypes = {
 
 export const Footer = (props) => (
   <Layout.Footer>
-    <Row type="flex" justify="center" align="middle">
+    <Row type="flex" justify="center" align="middle" style={{ height: "100%" }}>
       <Col xs={props.xs} lg={props.lg} xl={props.xl} xxl={props.xxl}>
         <Row className="footer-content" type="flex" justify="center" align="middle">
           <Col xs={24} lg={4}>

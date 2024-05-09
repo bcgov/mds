@@ -46,6 +46,7 @@ interface StateProps {
   formValues: any;
   formErrors: any;
   anyTouched: boolean;
+  // amendmentDocuments: IProjectSummaryDocument[];
 }
 
 // converted to a function to make feature flag easier to work with
@@ -57,7 +58,7 @@ export const getProjectFormTabs = (amsFeatureEnabled: boolean) => {
     "authorizations-involved",
     "project-contacts",
     "applicant-information",
-    "agent",
+    "representing-agent",
     "facility-operator-information",
     "legal-land-owner-information",
     "project-dates",
@@ -72,7 +73,6 @@ export const getProjectFormTabs = (amsFeatureEnabled: boolean) => {
         "related-projects",
         "project-contacts",
         "project-dates",
-        "authorizations-involved",
         "document-upload",
       ];
 };
@@ -96,9 +96,11 @@ export const ProjectSummaryForm: FC<ProjectSummaryFormProps &
       "project-contacts": <ProjectContacts />,
       "project-dates": <ProjectDates initialValues={props.initialValues} />,
       "applicant-information": <Applicant />,
-      agent: <Agent />,
+      "representing-agent": <Agent />,
       "facility-operator-information": <FacilityOperator />,
-      "authorizations-involved": <AuthorizationsInvolved />,
+      "authorizations-involved": (
+        <AuthorizationsInvolved initialValues={props.initialValues} {...props} />
+      ),
       "document-upload": (
         <DocumentUpload initialValues={props.initialValues} {...props} documents={documents} />
       ),

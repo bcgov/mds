@@ -58,8 +58,6 @@ export const Permits: FC<PermitsProps> = ({ mine, permits, explosivesPermits, ..
   return (
     <Row>
       <Col span={24}>
-        <Typography.Title level={4}>Permits</Typography.Title>
-
         <Typography.Paragraph>
           The below table displays all of the <strong>permit applications</strong> associated with
           this mine.

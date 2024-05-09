@@ -58,7 +58,7 @@ export class MineWorkInformation extends Component {
     return (
       <div className="work-information-container ">
         <div className="inline-flex between">
-          <Typography.Title level={4}>Work Information</Typography.Title>
+          <Typography.Title level={3}>Work Information</Typography.Title>
           {!this.state.isEditMode && (
             <span>
               <AuthorizationWrapper>
