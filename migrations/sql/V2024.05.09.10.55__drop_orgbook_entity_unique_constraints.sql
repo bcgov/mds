@@ -1,0 +1,5 @@
+ALTER TABLE party_orgbook_entity 
+DROP CONSTRAINT if exists party_orgbook_entity_credential_id_key,
+DROP CONSTRAINT if exists party_orgbook_entity_name_text_key,
+DROP CONSTRAINT if exists party_orgbook_entity_name_id_key,
+DROP CONSTRAINT if exists party_orgbook_entity_registration_id_key;
