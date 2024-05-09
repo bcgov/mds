@@ -60,6 +60,8 @@ export interface ProjectSummary {
 }
 
 const RenderEMAPermitCommonSections = ({ props }) => {
+  console.log("____________PROPS:::::", props);
+  console.log("YEEEy................,props.code: ", props.code);
   const dispatch = useDispatch();
   const purposeLabel = props.isAmendment
     ? "Additional Amendment Request Information"
@@ -77,7 +79,7 @@ const RenderEMAPermitCommonSections = ({ props }) => {
     const response = dispatch(
       arrayPush(
         FORM.ADD_EDIT_PROJECT_SUMMARY,
-        `authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[${index}].amendment_documents`,
+        `authorizations.${props.code}.AMENDMENT[${index}].amendment_documents`,
         doc
       )
     );
@@ -179,12 +181,14 @@ const RenderEMANewPermitSection = ({
   project_summary_guid,
 }) => {
   const new_props = {
-    ...props?.formValues?.authorizations?.AIR_EMISSIONS_DISCHARGE_PERMIT?.AMENDMENT[0],
+    ...props?.formValues?.authorizations?.code?.AMENDMENT[0],
+    code: code,
     isAmendment: false,
     mine_guid: mine_guid,
     project_guid: project_guid,
     project_summary_guid: project_summary_guid,
   };
+  console.log("_________________188 CODE_", code);
   return (
     <div className="grey-box">
       <FormSection name={`${code}.NEW[0]`}>
@@ -231,6 +235,7 @@ const RenderEMANewPermitSection = ({
 
 const RenderEMAAmendFieldArray = ({
   fields,
+  code,
   mine_guid,
   project_guid,
   project_summary_guid,
@@ -239,7 +244,7 @@ const RenderEMAAmendFieldArray = ({
   const handleRemoveAmendment = (index: number) => {
     fields.remove(index);
   };
-
+  console.log("___________________247____CODE_: ", code);
   const [dfaRequired, setDfaRequired] = useState(false);
 
   const onChangeAmendment = (value, _newVal, _prevVal, _fieldName) => {
@@ -307,6 +312,7 @@ const RenderEMAAmendFieldArray = ({
             <RenderEMAPermitCommonSections
               props={{
                 ...rest_of_the_props,
+                code: code,
                 isAmendment: true,
                 mine_guid: mine_guid,
                 project_guid: project_guid,
@@ -323,11 +329,12 @@ const RenderEMAAmendFieldArray = ({
 
 const RenderEMAAuthCodeFormSection = ({
   props,
-  code,
+  code, //_________________________CHECK THE CODE.......
   mine_guid,
   project_guid,
   project_summary_guid,
 }) => {
+  console.log("__________3333__________: ", code);
   const { authorizations } = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
   const codeAuthorizations = authorizations[code] ?? [];
   const hasAmendments = codeAuthorizations.AMENDMENT?.length > 0;
@@ -338,13 +345,14 @@ const RenderEMAAuthCodeFormSection = ({
   const dispatch = useDispatch();
 
   const doc_props = {
-    ...authorizations?.AIR_EMISSIONS_DISCHARGE_PERMIT?.AMENDMENT[0],
+    ...authorizations?.code?.AMENDMENT[0],
+    code: code,
     isAmendment: false,
     mine_guid: mine_guid,
     project_guid: project_guid,
     project_summary_guid: project_summary_guid,
   };
-
+  console.log("_____________335__________code: ", doc_props);
   const addAmendment = () => {
     dispatch(arrayPush(FORM.ADD_EDIT_PROJECT_SUMMARY, `authorizations.${code}.AMENDMENT`, {}));
   };
@@ -454,11 +462,13 @@ const RenderAuthCodeFormSection = ({
   project_guid,
   project_summary_guid,
 }) => {
+  console.log("____________RECIEVED:::::::::CODE)______: ", code);
   const dropdownProjectSummaryPermitTypes = useSelector(getDropdownProjectSummaryPermitTypes);
   if (authorizationType === "ENVIRONMENTAL_MANAGMENT_ACT") {
+    // ABOVE______________________SAYS THIS THE TASK
     // AMS authorizations, have options of amend/new with more details
     return (
-      <RenderEMAAuthCodeFormSection
+      <RenderEMAAuthCodeFormSection // SO---________________ CHECK CODE ACCORDINLGY WHEN UPLOADING FILES
         props={props}
         code={code}
         mine_guid={mine_guid}
@@ -525,23 +535,37 @@ export const AuthorizationsInvolved = (props) => {
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
 
   const handleChange = (e, code) => {
+    console.log("________CHEKCED...529____CODE____: ", code);
+    console.log("________CHEKCED...529______E__: ", e);
     if (e.target.checked) {
       let formVal;
       dispatch(arrayPush(FORM.ADD_EDIT_PROJECT_SUMMARY, `authorizationTypes`, code));
+      console.log("_______amsAuthTypes__", amsAuthTypes);
       if (amsAuthTypes.includes(code)) {
         formVal = { AMENDMENT: [], NEW: [], types: [] };
+        console.log("FORMVAL__537___", formVal);
       } else if (code === "OTHER") {
         formVal = [
           { project_summary_authorization_type: code, project_summary_permit_type: ["OTHER"] },
         ];
+        console.log("FORMVAL__542___", formVal);
       } else {
         formVal = [{ project_summary_authorization_type: code }];
+        console.log("FORMVAL__545___", formVal);
       }
       dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, `authorizations[${code}]`, formVal));
     } else {
       const index = formValues.authorizationTypes.indexOf(code);
       dispatch(arrayRemove(FORM.ADD_EDIT_PROJECT_SUMMARY, `authorizationTypes`, index));
     }
+
+    //LOOOOOOOGGGGGGGGGGGGGGGGG
+    transformedProjectSummaryAuthorizationTypes.map((authorization) => {
+      authorization.children.map((child) => {
+        console.log("code=", child?.code);
+      });
+      console.log("authorizationType=", authorization?.code);
+    });
   };
 
   return (

@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { flattenObject } from "@common/utils/helpers";
 import { Link, Prompt, useHistory, useLocation, useParams } from "react-router-dom";
@@ -23,6 +23,7 @@ import {
 import {
   getProjectSummaryDocumentTypesHash,
   getProjectSummaryAuthorizationTypesArray,
+  // getTransformedProjectSummaryAuthorizationTypes,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import {
   createProjectSummary,
@@ -271,19 +272,47 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
     const newActiveTab = projectFormTabs[currentTabIndex + 1];
     const message = "Successfully saved a draft project description.";
     const values = { ...formValues, status_code: "DFT" };
+    // const transformedProjectSummaryAuthorizationTypes = useSelector(
+    //   getTransformedProjectSummaryAuthorizationTypes
+    // );
 
-    if (values.authorizations?.AIR_EMISSIONS_DISCHARGE_PERMIT !== undefined) {
-      const file_to_upload =
-        values.authorizations?.AIR_EMISSIONS_DISCHARGE_PERMIT?.AMENDMENT[0].amendment_documents ??
-        [];
-      const filtered = file_to_upload.filter((doc) => !doc.mine_document_guid);
-      values.authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].amendment_documents = filtered;
-      change(
-        FORM.ADD_EDIT_PROJECT_SUMMARY,
-        values.authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].amendment_documents,
-        filtered
-      );
-    }
+    // const environmental_act_types = transformedProjectSummaryAuthorizationTypes
+    //     .map((code) =>
+    //         code === "ENVIRONMENTAL_MANAGMENT_ACT" )
+
+    // values.authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0].amendment_documents = filtered;
+
+    // console.log(" 281______environmental_act_types", environmental_act_types)
+    const environmental_act_types = [
+      "AIR_EMISSIONS_DISCHARGE_PERMIT",
+      "EFFLUENT_DISCHARGE_PERMIT",
+      "REFUSE_DISCHARGE_PERMIT",
+      "MUNICIPAL_WASTEWATER_REGULATION",
+    ];
+
+    environmental_act_types.map((type) => {
+      // if (values.authorizations?.child?.code !== undefined) {
+      if (values.authorizations?.type !== undefined) {
+        // const file_to_upload =
+        //   values.authorizations?.child?.code?.AMENDMENT[0].amendment_documents ??
+        //   [];
+        const file_to_upload = values.authorizations?.type?.AMENDMENT[0].amendment_documents ?? [];
+        // const filtered = file_to_upload.filter((doc) => !doc.mine_document_guid);
+        const filtered = file_to_upload.filter((doc) => !doc.mine_document_guid);
+        // values.authorizations.child.code.AMENDMENT[0].amendment_documents = filtered;
+        values.authorizations.type.AMENDMENT[0].amendment_documents = filtered;
+        // change(
+        //   FORM.ADD_EDIT_PROJECT_SUMMARY,
+        //   values.authorizations.child.code.AMENDMENT[0].amendment_documents,
+        //   filtered
+        // );
+        change(
+          FORM.ADD_EDIT_PROJECT_SUMMARY,
+          values.authorizations.type.AMENDMENT[0].amendment_documents,
+          filtered
+        );
+      }
+    });
 
     submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
     touch(FORM.ADD_EDIT_PROJECT_SUMMARY);
