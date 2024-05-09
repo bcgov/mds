@@ -76,10 +76,13 @@ const RenderEMAPermitCommonSections = ({ props }) => {
 
   const updateAmendmentDocuments = (doc: IProjectSummaryDocument) => {
     const index = 0;
+    // `authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[${index}].amendment_documents`,
+    props.amendment_documents = [...props?.amendment_documents, doc];
+    console.log(`_____PATH: authorizations.${props.code}.AMENDMENT[${index}].amendment_documents`);
     const response = dispatch(
       arrayPush(
         FORM.ADD_EDIT_PROJECT_SUMMARY,
-        `authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[${index}].amendment_documents`,
+        `authorizations.${props.code}.AMENDMENT[${index}].amendment_documents`,
         doc
       )
     );
@@ -181,7 +184,7 @@ const RenderEMANewPermitSection = ({
   project_summary_guid,
 }) => {
   const new_props = {
-    ...props.formValues.authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0],
+    ...props,
     code: code,
     isAmendment: false,
     mine_guid: mine_guid,
@@ -235,6 +238,8 @@ const RenderEMANewPermitSection = ({
 const RenderEMAAmendFieldArray = ({
   fields,
   code,
+  amendment_documents,
+  props,
   mine_guid,
   project_guid,
   project_summary_guid,
@@ -243,6 +248,8 @@ const RenderEMAAmendFieldArray = ({
   const handleRemoveAmendment = (index: number) => {
     fields.remove(index);
   };
+  console.log("_________246_________CODE: ", code);
+  console.log("_________AMENDMENT DOCUMENTS____len ", amendment_documents?.length);
 
   const [dfaRequired, setDfaRequired] = useState(false);
 
@@ -329,6 +336,7 @@ const RenderEMAAmendFieldArray = ({
 const RenderEMAAuthCodeFormSection = ({
   props,
   code,
+  amendment_documents,
   mine_guid,
   project_guid,
   project_summary_guid,
@@ -344,8 +352,11 @@ const RenderEMAAuthCodeFormSection = ({
   const dispatch = useDispatch();
 
   const doc_props = {
-    ...authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0],
-    projectSummaryDocumentTypesHash: props.projectSummaryDocumentTypesHash,
+    // ...authorizations.AIR_EMISSIONS_DISCHARGE_PERMIT.AMENDMENT[0],
+    // projectSummaryDocumentTypesHash: props.projectSummaryDocumentTypesHash,
+    code: code,
+    amendment_documents: amendment_documents,
+    props: props,
     isAmendment: false,
     mine_guid: mine_guid,
     project_guid: project_guid,
@@ -457,6 +468,7 @@ const RenderAuthCodeFormSection = ({
   props,
   authorizationType,
   code,
+  amendment_documents,
   mine_guid,
   project_guid,
   project_summary_guid,
@@ -470,6 +482,7 @@ const RenderAuthCodeFormSection = ({
       <RenderEMAAuthCodeFormSection
         props={props}
         code={code}
+        amendment_documents={amendment_documents}
         mine_guid={mine_guid}
         project_guid={project_guid}
         project_summary_guid={project_summary_guid}
@@ -526,6 +539,7 @@ const RenderAuthCodeFormSection = ({
 };
 
 export const AuthorizationsInvolved = (props) => {
+  console.log("ORIINGAL PROPS: ", props);
   const dispatch = useDispatch();
   const transformedProjectSummaryAuthorizationTypes = useSelector(
     getTransformedProjectSummaryAuthorizationTypes
@@ -627,6 +641,10 @@ export const AuthorizationsInvolved = (props) => {
                                 )}
                                 <RenderAuthCodeFormSection
                                   code={child?.code}
+                                  amendment_documents={
+                                    formValues.authorizations.child.code.AMENDMENT[0]
+                                      .amendment_documents
+                                  }
                                   authorizationType={authorization?.code}
                                   mine_guid={props?.initialValues?.mine_guid}
                                   project_guid={props?.initialValues?.project_guid}

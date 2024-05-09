@@ -267,10 +267,24 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
   };
 
   const handleSaveDraft = async () => {
+    console.log("HANDLE SAVE DRAFT....");
     const currentTabIndex = projectFormTabs.indexOf(activeTab);
     const newActiveTab = projectFormTabs[currentTabIndex + 1];
     const message = "Successfully saved a draft project description.";
     const values = { ...formValues, status_code: "DFT" };
+
+    const mines_act_types = [
+      "AIR_EMISSIONS_DISCHARGE_PERMIT",
+      "EFFLUENT_DISCHARGE_PERMIT",
+      "REFUSE_DISCHARGE_PERMIT",
+      "MUNICIPAL_WASTEWATER_REGULATION",
+    ];
+    mines_act_types.map((type) => {
+      console.log("____________CHECKING FILES TO UPLOAD....for: ", type);
+      if (values.authorizations?.type !== undefined) {
+        console.log("_____________FOUND TO UPDATE FILE______", type);
+      }
+    });
 
     if (values.authorizations?.AIR_EMISSIONS_DISCHARGE_PERMIT !== undefined) {
       const file_to_upload =
