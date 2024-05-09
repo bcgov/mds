@@ -79,7 +79,7 @@ const RenderEMAPermitCommonSections = ({ props }) => {
     const response = dispatch(
       arrayPush(
         FORM.ADD_EDIT_PROJECT_SUMMARY,
-        `authorizations.[${code}][${index}].amendment_documents`,
+        `authorizations.[${code}].AMENDMENT.[${index}].amendment_documents`,
         doc
       )
     );
@@ -182,7 +182,7 @@ const RenderEMANewPermitSection = ({
   project_summary_guid,
 }) => {
   const new_props = {
-    ...props.formValues.authorizations[code][0],
+    ...props.formValues.authorizations[code],
     code,
     isAmendment: false,
     mine_guid: mine_guid,
@@ -236,6 +236,7 @@ const RenderEMANewPermitSection = ({
 const RenderEMAAmendFieldArray = ({
   fields,
   projectSummaryDocumentTypesHash,
+  code,
   mine_guid,
   project_guid,
   project_summary_guid,
@@ -313,6 +314,7 @@ const RenderEMAAmendFieldArray = ({
               props={{
                 ...rest_of_the_props,
                 projectSummaryDocumentTypesHash: projectSummaryDocumentTypesHash,
+                code,
                 isAmendment: true,
                 mine_guid: mine_guid,
                 project_guid: project_guid,
@@ -348,6 +350,7 @@ const RenderEMAAuthCodeFormSection = ({
   const doc_props = {
     ...authorizations[code].AMENDMENT[0],
     projectSummaryDocumentTypesHash,
+    code: code,
     isAmendment: false,
     mine_guid: mine_guid,
     project_guid: project_guid,
