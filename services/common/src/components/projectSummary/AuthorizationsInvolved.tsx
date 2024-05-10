@@ -182,7 +182,7 @@ const RenderEMANewPermitSection = ({
   project_summary_guid,
 }) => {
   const new_props = {
-    ...props.formValues.authorizations[code],
+    ...props.formValues.authorizations[code].AMENDMENT[0],
     code,
     isAmendment: false,
     mine_guid: mine_guid,
