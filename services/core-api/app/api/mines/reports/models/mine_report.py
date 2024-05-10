@@ -277,7 +277,7 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
                 permit_info_value = self.permit_number + ": "
 
             subject = "A Report is requested in MineSpace"
-            due_date = due_date = (self.due_date).strftime("%b %d %Y") if self.due_date else "N/A"
+            due_date = (self.due_date).strftime("%b %d %Y") if self.due_date else "N/A"
             ms_url = get_current_core_or_ms_env_url("ms")
             ms_report_page_link = f'{ms_url}/mines/{self.mine.mine_guid}/reports/{self.mine_report_guid}'
 
