@@ -296,16 +296,17 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
                 if authorization.get('amendment_documents') is not None:
                     for doc in authorization.get('amendment_documents'):
-                        mine_doc = MineDocument(
-                            mine_guid=self.mine_guid,
-                            document_name=doc.get('document_name'),
-                            document_manager_guid=doc.get('document_manager_guid'))
-                        project_summary_authorization_doc = ProjectSummaryAuthorizationDocumentXref(
-                            mine_document_guid=mine_doc.mine_document_guid,
-                            project_summary_authorization_guid=updated_authorization.project_summary_authorization_guid,
-                            project_summary_document_type_code=doc.get('project_summary_document_type_code'))
-                        project_summary_authorization_doc.mine_document = mine_doc
-                        updated_authorization.amendment_documents.append(project_summary_authorization_doc)
+                        if not doc.mine_document_guid:
+                            mine_doc = MineDocument(
+                                mine_guid=self.mine_guid,
+                                document_name=doc.get('document_name'),
+                                document_manager_guid=doc.get('document_manager_guid'))
+                            project_summary_authorization_doc = ProjectSummaryAuthorizationDocumentXref(
+                                mine_document_guid=mine_doc.mine_document_guid,
+                                project_summary_authorization_guid=updated_authorization.project_summary_authorization_guid,
+                                project_summary_document_type_code=doc.get('project_summary_document_type_code'))
+                            project_summary_authorization_doc.mine_document = mine_doc
+                            updated_authorization.amendment_documents.append(project_summary_authorization_doc)
             else:
                 new_authorization = ProjectSummaryAuthorization(
                     project_summary_guid=self.project_summary_guid,
@@ -326,16 +327,17 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 # Check only for new files
                 if authorization.get('amendment_documents') is not None:
                     for doc in authorization.get('amendment_documents'):
-                        mine_doc = MineDocument(
-                            mine_guid=self.mine_guid,
-                            document_name=doc.get('document_name'),
-                            document_manager_guid=doc.get('document_manager_guid'))
-                        project_summary_authorization_doc = ProjectSummaryAuthorizationDocumentXref(
-                            mine_document_guid=mine_doc.mine_document_guid,
-                            project_summary_authorization_guid=new_authorization.project_summary_authorization_guid,
-                            project_summary_document_type_code=doc.get('project_summary_document_type_code'))
-                        project_summary_authorization_doc.mine_document = mine_doc
-                        new_authorization.amendment_documents.append(project_summary_authorization_doc)
+                        if not doc.mine_document_guid:
+                            mine_doc = MineDocument(
+                                mine_guid=self.mine_guid,
+                                document_name=doc.get('document_name'),
+                                document_manager_guid=doc.get('document_manager_guid'))
+                            project_summary_authorization_doc = ProjectSummaryAuthorizationDocumentXref(
+                                mine_document_guid=mine_doc.mine_document_guid,
+                                project_summary_authorization_guid=new_authorization.project_summary_authorization_guid,
+                                project_summary_document_type_code=doc.get('project_summary_document_type_code'))
+                            project_summary_authorization_doc.mine_document = mine_doc
+                            new_authorization.amendment_documents.append(project_summary_authorization_doc)
 
                 self.authorizations.append(new_authorization)
 
