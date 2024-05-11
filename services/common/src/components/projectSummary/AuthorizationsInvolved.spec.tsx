@@ -27,7 +27,7 @@ describe("AuthorizationsInvolved", () => {
       <ReduxWrapper initialState={initialState}>
         <FormWrapper
           name={FORM.ADD_EDIT_PROJECT_SUMMARY}
-          initialValues={MOCK.PROJECT_SUMMARY}
+          initialValues={MOCK.PERMITS}
           onSubmit={() => {}}
         >
           <AuthorizationsInvolved {...MOCK.AUTHORIZATION_INVOLVED} />
