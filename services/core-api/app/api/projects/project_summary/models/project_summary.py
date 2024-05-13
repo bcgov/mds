@@ -297,8 +297,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 if authorization.get('amendment_documents') is not None:
                     for doc in authorization.get('amendment_documents'):
                         if doc.get('mine_document_guid') is None:
-                            print("----mine_document_guid: ", doc.get('document_name'))
-                            print("----mine_document_guid: ", doc.get('mine_document_guid'))
                             mine_doc = MineDocument(
                                 mine_guid=self.mine_guid,
                                 document_name=doc.get('document_name'),
