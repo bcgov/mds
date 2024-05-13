@@ -65,7 +65,8 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
         required
         allowRevert
         allowMultiple
-        acceptedFileTypesMap={acceptedFileTypesMap}
+        labelIdle="<strong>Drag & Drop your files or <u>Browse</u></strong><br/>
+          <div>We accept most common document, image, spreadsheet, and spatial files with max individual file size of 750 MB.</div>"
         listedFileTypes={["document", "image", "spreadsheet", "spatial"]}
         abbrevLabel={true}
         uploadUrl={PROJECT_SUMMARY_DOCUMENTS({ projectGuid, projectSummaryGuid, mineGuid })}
@@ -88,7 +89,8 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
         allowRevert
         allowMultiple
         acceptedFileTypesMap={acceptedFileTypesMap}
-        listedFileTypes={["document", "image", "spreadsheet", "spatial"]}
+        labelIdle="<strong>Drag & Drop your files or <u>Browse</u></strong><br/>
+          <div>We accept most common document, image, spreadsheet, and spatial files with max individual file size of 750 MB.</div>"
         abbrevLabel={true}
         uploadUrl={PROJECT_SUMMARY_DOCUMENTS({ projectGuid, projectSummaryGuid, mineGuid })}
         onFileLoad={(document_name, document_manager_guid) =>
@@ -109,7 +111,8 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
         allowRevert
         allowMultiple
         acceptedFileTypesMap={acceptedFileTypesMap}
-        listedFileTypes={["document", "image", "spreadsheet", "spatial"]}
+        labelIdle="<strong>Drag & Drop your files or <u>Browse</u></strong><br/>
+          <div>We accept most common document, image, spreadsheet, and spatial files with max individual file size of 750 MB.</div>"
         abbrevLabel={true}
         uploadUrl={PROJECT_SUMMARY_DOCUMENTS({ projectGuid, projectSummaryGuid, mineGuid })}
         onFileLoad={(document_name, document_manager_guid) =>
