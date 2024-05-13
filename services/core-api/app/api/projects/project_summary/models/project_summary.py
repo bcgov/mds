@@ -728,12 +728,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             'surface_level_data': [],
             'basic_info': [],
             'project_contacts': [],
-            'authorizations': [],
-            'applicant_info': [],
-            'agent': [],
-            'facility': [],
-            'legal_land': [],
-            'declaration': [],
         }
 
         # Validate surface level data of payload
@@ -746,65 +740,75 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         if basic_info_validation != True:
             errors_found['basic_info'].append(basic_info_validation)
 
-        # Validate Authorizations Involved
-        if (status_code == 'SUB'
-            and is_feature_enabled(Feature.AMS_AGENT)
-            and len(ams_authorizations.get('amendments', [])) == 0 
-            and len(ams_authorizations.get('new', [])) == 0 
-            and len(authorizations) == 0):
-                errors_found['authorizations'].append('Authorizations Involved not provided')
-        
-        for authorization in authorizations:
-            authorization_validation = ProjectSummaryAuthorization.validate_authorization(authorization, False)
-            if authorization_validation != True:
-                errors_found['authorizations'].append(authorization_validation)
-
-        if ams_authorizations:
-            for authorization in ams_authorizations.get('amendments', []):
-                ams_authorization_amendments_validation = ProjectSummaryAuthorization.validate_authorization(authorization, True)
-                if ams_authorization_amendments_validation != True:
-                    errors_found['authorizations'].append(ams_authorization_amendments_validation)
-
-            for authorization in ams_authorizations.get('new', []):
-                ams_authorization_new_validation = ProjectSummaryAuthorization.validate_authorization(authorization, True)
-                if ams_authorization_new_validation != True:
-                    errors_found['authorizations'].append(ams_authorization_new_validation)
-
         # Validate Project Contacts
         for contact in contacts:
             contact_validation = Project.validate_project_contacts(contact)
             if contact_validation != True:
                 errors_found['project_contacts'].append(contact_validation)
 
-        # Validate Applicant Information
-        if applicant != None:
-            applicant_validation = ProjectSummary.validate_project_party(applicant, 'applicant')
-            if applicant_validation != True:
-                errors_found['applicant_info'].append(applicant_validation)
-
-        # Validate Agent
-        if is_agent == True:
-            agent_validation = ProjectSummary.validate_project_party(agent, 'agent')
-            if agent_validation != True:
-                errors_found['agent'].append(agent_validation)
+        if is_feature_enabled(Feature.AMS_AGENT):
+            errors_found |= {
+                'authorizations': [],
+                'applicant_info': [],
+                'agent': [],
+                'facility': [],
+                'legal_land': [],
+                'declaration': [],
+            }
+            
+            # Validate Authorizations Involved
+            if (status_code == 'SUB'
+                and is_feature_enabled(Feature.AMS_AGENT)
+                and len(ams_authorizations.get('amendments', [])) == 0 
+                and len(ams_authorizations.get('new', [])) == 0 
+                and len(authorizations) == 0):
+                errors_found['authorizations'].append('Authorizations Involved not provided')
         
-        # Validate Facility Operator Information
-        if facility_operator != None:
-            facility_validation = ProjectSummary.validate_project_party(facility_operator, 'facility_operator')
-            if facility_validation != True:
-                errors_found['facility'].append(facility_validation)
+            for authorization in authorizations:
+                authorization_validation = ProjectSummaryAuthorization.validate_authorization(authorization, False)
+                if authorization_validation != True:
+                    errors_found['authorizations'].append(authorization_validation)
 
-        # Validate Legal Land Owner Information
-        if is_legal_land_owner == False:
-            legal_land_validation = ProjectSummary.validate_legal_land(data)
-            if legal_land_validation != True:
-                errors_found['legal_land'].append(legal_land_validation)
+            if ams_authorizations:
+                for authorization in ams_authorizations.get('amendments', []):
+                    ams_authorization_amendments_validation = ProjectSummaryAuthorization.validate_authorization(authorization, True)
+                    if ams_authorization_amendments_validation != True:
+                        errors_found['authorizations'].append(ams_authorization_amendments_validation)
 
-        # Validate Declaration
-        if status_code == 'SUB' and is_feature_enabled(Feature.AMS_AGENT):
-            declaration_validation = ProjectSummary.validate_declaration(data)
-            if declaration_validation != True:
-                errors_found['declaration'].append(declaration_validation)
+                for authorization in ams_authorizations.get('new', []):
+                    ams_authorization_new_validation = ProjectSummaryAuthorization.validate_authorization(authorization, True)
+                    if ams_authorization_new_validation != True:
+                        errors_found['authorizations'].append(ams_authorization_new_validation)
+
+            # Validate Applicant Information
+            if applicant != None:
+                applicant_validation = ProjectSummary.validate_project_party(applicant, 'applicant')
+                if applicant_validation != True:
+                    errors_found['applicant_info'].append(applicant_validation)
+
+            # Validate Agent
+            if is_agent == True:
+                agent_validation = ProjectSummary.validate_project_party(agent, 'agent')
+                if agent_validation != True:
+                    errors_found['agent'].append(agent_validation)
+        
+            # Validate Facility Operator Information
+            if facility_operator != None:
+                facility_validation = ProjectSummary.validate_project_party(facility_operator, 'facility_operator')
+                if facility_validation != True:
+                    errors_found['facility'].append(facility_validation)
+
+            # Validate Legal Land Owner Information
+            if is_legal_land_owner == False:
+                legal_land_validation = ProjectSummary.validate_legal_land(data)
+                if legal_land_validation != True:
+                    errors_found['legal_land'].append(legal_land_validation)
+
+            # Validate Declaration
+            if status_code == 'SUB' and is_feature_enabled(Feature.AMS_AGENT):
+                declaration_validation = ProjectSummary.validate_declaration(data)
+                if declaration_validation != True:
+                    errors_found['declaration'].append(declaration_validation)
 
         return errors_found
 
