@@ -758,7 +758,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             
             # Validate Authorizations Involved
             if (status_code == 'SUB'
-                and is_feature_enabled(Feature.AMS_AGENT)
                 and len(ams_authorizations.get('amendments', [])) == 0 
                 and len(ams_authorizations.get('new', [])) == 0 
                 and len(authorizations) == 0):
@@ -805,7 +804,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                     errors_found['legal_land'].append(legal_land_validation)
 
             # Validate Declaration
-            if status_code == 'SUB' and is_feature_enabled(Feature.AMS_AGENT):
+            if status_code == 'SUB':
                 declaration_validation = ProjectSummary.validate_declaration(data)
                 if declaration_validation != True:
                     errors_found['declaration'].append(declaration_validation)
