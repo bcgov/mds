@@ -1062,7 +1062,11 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                     is_legal_land_owner,
                     is_crown_land_federal_or_provincial,
                     is_landowner_aware_of_discharge_application,
-                    has_landowner_received_copy_of_application)
+                    has_landowner_received_copy_of_application,
+                    facility_pid_pin_crown_file_no,
+                    company_alias,
+                    zoning,
+                    zoning_reason)
 
             for authorization in ams_authorizations.get('amendments', []):
                 self.create_or_update_authorization(authorization)
