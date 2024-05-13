@@ -53,7 +53,7 @@ export const Overview = (props) => {
       <Row>
         <Typography.Title level={1}>Overview</Typography.Title>
       </Row>
-      <Row gutter={[0, 16]} style={{ paddingBottom: 14 }}>
+      <Row gutter={[0, 16]} style={{ paddingBottom: 8 }}>
         <Col lg={{ span: 14 }} xl={{ span: 16 }}>
           <Typography.Title level={2}>Mine Information</Typography.Title>
           <Typography.Paragraph>
