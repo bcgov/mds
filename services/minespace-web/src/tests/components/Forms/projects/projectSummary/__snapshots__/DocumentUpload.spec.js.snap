@@ -8,62 +8,72 @@ exports[`DocumentUpload renders properly 1`] = `
     Document Upload
   </ForwardRef>
   <InternalFormItem
-    label="Attach your project description file(s) here."
+    label="Upload supporting files that are not part of the required documents in Purpose and Authorization."
   >
-    <Row
-      gutter={16}
+    <ForwardRef
+      level={5}
     >
-      <Col
-        span={12}
-      >
-        <ForwardRef>
-          <ul>
-            <li>
-              You cannot upload ZIP files
-            </li>
-            <li>
-              The allowed file types are: 
-              .pdf, .doc, .docx, .rtf, .odt, .ott, .oth, .odm, .xls, .xlsx, .jpg, .jpeg, .png, .jp2, .tif, .tiff, .heic, .heif
-            </li>
-            <li>
-              Maximum individual file size is 400 MB
-            </li>
-          </ul>
-        </ForwardRef>
-      </Col>
-    </Row>
-    <Connect(DocumentTable)
-      documentColumns={
-        Array [
-          Object {
-            "dataIndex": "document_name",
-            "key": "document_name",
-            "render": [Function],
-            "sorter": [Function],
-            "title": "File Name",
-          },
-          Object {
-            "className": undefined,
-            "dataIndex": "project_summary_document_type_code",
-            "key": "project_summary_document_type_code",
-            "render": [Function],
-            "title": "Category",
-          },
-          Object {
-            "dataIndex": "upload_date",
-            "key": "upload_date",
-            "render": [Function],
-            "sorter": [Function],
-            "title": "Uploaded",
-          },
-        ]
-      }
-      documentParent="project summary"
-      documents={Array []}
-    />
+      Spatial Documents
+    </ForwardRef>
+    <ForwardRef>
+      Upload spatial files to support the application. You may only upload specified spatial types.
+    </ForwardRef>
     <Field
       acceptedFileTypesMap={
         Object {
+          ".dbf": "application/dbf",
+          ".kml": "application/vnd.google-earth.kml+xml",
+          ".kmz": "application/vnd.google-earth.kmz",
+          ".prj": "application/octet-stream",
+          ".sbn": "application/octet-stream",
+          ".sbx": "application/octet-stream",
+          ".shp": "application/octet-stream",
+          ".shx": "application/octet-stream",
+          ".xml": "application/xml",
+        }
+      }
+      component={[Function]}
+      id="documents"
+      name="documents"
+      onFileLoad={[Function]}
+      onRemoveFile={[Function]}
+      params={
+        Object {
+          "mineGuid": undefined,
+          "projectGuid": undefined,
+          "projectSummaryGuid": undefined,
+        }
+      }
+      props={
+        Object {
+          "documents": Object {},
+          "label": "Upload spatial documents",
+          "labelIdle": "<strong>Drag & Drop your files or <span class=\\"filepond--label-action\\">Browse</span></strong><br><div>We accept spatial files with max individual file size of 400 MB.</div>",
+        }
+      }
+    />
+    <ForwardRef
+      level={5}
+    >
+      Supporting Documents
+    </ForwardRef>
+    <ForwardRef>
+      Upload any supporting document and draft of 
+       
+      <LinkButton
+        disabled={false}
+        onClick={[Function]}
+        tabIndex={0}
+      >
+        Information Requirements Table (IRT)
+      </LinkButton>
+       
+       following the official template here. It is required to upload your final IRT in the form provided to proceed to the final application.
+    </ForwardRef>
+    <Field
+      acceptedFileTypesMap={
+        Object {
+          ".csv": "text/csv",
           ".doc": "application/msword",
           ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
           ".heic": "image/heic",
@@ -99,8 +109,46 @@ exports[`DocumentUpload renders properly 1`] = `
       props={
         Object {
           "documents": Object {},
+          "label": "Upload Files  (optional)",
+          "labelIdle": "<strong>Drag & Drop your files or <span class=\\"filepond--label-action\\">Browse</span></strong><br><div>We accept most common document, image, and spreadsheet with max individual file size of 400 MB.</div>",
         }
       }
+    />
+    <Connect(DocumentTable)
+      documentColumns={
+        Array [
+          Object {
+            "dataIndex": "document_name",
+            "key": "document_name",
+            "render": [Function],
+            "sorter": [Function],
+            "title": "File Name",
+          },
+          Object {
+            "className": undefined,
+            "dataIndex": "category",
+            "key": "category",
+            "render": [Function],
+            "title": "Document Category",
+          },
+          Object {
+            "dataIndex": "upload_date",
+            "key": "upload_date",
+            "render": [Function],
+            "sorter": [Function],
+            "title": "Updated",
+          },
+          Object {
+            "dataIndex": "create_user",
+            "key": "create_user",
+            "render": [Function],
+            "sorter": [Function],
+            "title": "Updated By",
+          },
+        ]
+      }
+      documentParent="project summary"
+      documents={Array []}
     />
   </InternalFormItem>
 </Fragment>

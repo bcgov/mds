@@ -1002,10 +1002,11 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         # Create or update existing documents.
         for doc in documents:
             mine_document_guid = doc.get('mine_document_guid')
+            project_summary_document_type_code = doc.get('project_summary_document_type_code', 'GEN')
             if mine_document_guid:
                 project_summary_doc = ProjectSummaryDocumentXref.find_by_mine_document_guid(
                     mine_document_guid)
-                project_summary_doc.project_summary_document_type_code = 'GEN'
+                project_summary_doc.project_summary_document_type_code = project_summary_document_type_code
             else:
                 mine_doc = MineDocument(
                     mine_guid=self.mine_guid,
@@ -1014,7 +1015,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 project_summary_doc = ProjectSummaryDocumentXref(
                     mine_document_guid=mine_doc.mine_document_guid,
                     project_summary_id=self.project_summary_id,
-                    project_summary_document_type_code='GEN')
+                    project_summary_document_type_code=project_summary_document_type_code)
                 project_summary_doc.mine_document = mine_doc
                 self.documents.append(project_summary_doc)
 

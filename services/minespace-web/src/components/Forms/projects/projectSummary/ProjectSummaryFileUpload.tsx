@@ -1,8 +1,8 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useState, ReactNode } from "react";
 import { Field, WrappedFieldProps } from "redux-form";
 import { useSelector } from "react-redux";
 import { NEW_VERSION_DOCUMENTS, PROJECT_SUMMARY_DOCUMENTS } from "@mds/common/constants/API";
-import FileUpload from "@/components/common/FileUpload";
+import RenderFileUpload from "@mds/common/components/forms/RenderFileUpload";
 import { Alert, Divider, Modal, Popconfirm, Table, Typography } from "antd";
 import { getUserInfo } from "@mds/common/redux/selectors/authenticationSelectors";
 import { FilePondFile } from "filepond";
@@ -16,6 +16,8 @@ interface ProjectSummaryFileUploadProps {
   acceptedFileTypesMap: object;
   params: any;
   documents: IDocument[];
+  label?: string | ReactNode;
+  labelIdle?: string;
 }
 
 export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFileUploadProps> = (
@@ -196,9 +198,12 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
   return (
     <>
       <Field
+        {...(props.label ? { label: props.label } : {})}
+        {...(props.labelIdle ? { labelIdle: props.labelIdle } : {})}
+        newAbbrevLabel={true}
         id="fileUpload"
         name="fileUpload"
-        component={FileUpload}
+        component={RenderFileUpload}
         shouldReplaceFile={shouldReplaceFile}
         uploadUrl={uploadUrl}
         replaceFileUploadUrl={replaceFileUploadUrl}
