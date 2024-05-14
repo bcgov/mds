@@ -58,7 +58,7 @@ exports[`DocumentUpload renders properly 1`] = `
       Supporting Documents
     </ForwardRef>
     <ForwardRef>
-      Upload any supporting document and draft of 
+      Upload any supporting document and draft of
        
       <LinkButton
         disabled={false}
@@ -68,7 +68,7 @@ exports[`DocumentUpload renders properly 1`] = `
         Information Requirements Table (IRT)
       </LinkButton>
        
-       following the official template here. It is required to upload your final IRT in the form provided to proceed to the final application.
+      following the official template here. It is required to upload your final IRT in the form provided to proceed to the final application.
     </ForwardRef>
     <Field
       acceptedFileTypesMap={
