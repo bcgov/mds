@@ -21,6 +21,7 @@ import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticCo
 import RenderRadioButtons from "../forms/RenderRadioButtons";
 import RenderAutoSizeField from "../forms/RenderAutoSizeField";
 import CoreMap from "../common/Map";
+import { normalizePhone } from "@mds/common/redux/utils/helpers";
 
 export const FacilityOperator: FC = () => {
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
@@ -233,8 +234,9 @@ export const FacilityOperator: FC = () => {
             name="facility_operator.phone_no"
             label="Facility Operator Contact Number"
             required
-            validate={[required, phoneNumber]}
+            validate={[phoneNumber, maxLength(12), required]}
             component={RenderField}
+            normalize={normalizePhone}
           />
         </Col>
         <Col md={4} sm={5}>

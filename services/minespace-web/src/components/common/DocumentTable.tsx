@@ -201,6 +201,7 @@ export const DocumentTable: FC<DocumentTableProps> = ({
     if (excludedColumnKeys?.length > 0) {
       columns = columns.filter((column) => !excludedColumnKeys.includes(column.key.toString()));
     }
+
     return columns;
   };
 
