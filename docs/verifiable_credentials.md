@@ -10,6 +10,8 @@ The core-api is enabled to send credential-offer messages to connected wallets a
 
 The Mines Act Permit Verifiable Credentials has public [governance documentation](https://github.com/bcgov/bc-vcpedia/blob/main/credentials/bc-mines-act-permit/1.1.1/governance.md) that should be kept up-to-date with any technical or process changes.
 
+## User Flows
+
 ### Connection Establishment
 
 This is abbreviated from the governance documentation above which will supercede this if unclear or out-of-date.
@@ -136,12 +138,14 @@ TRACTION_WEBHOOK_X_API_KEY=1263835957285d576a09466f2d5f6142
 
 These values could be used for local development, however you will not receive webhooks back from Traction unless you create a public tunnel (like NRGROK) and set tractions with that webhook url.
 
-## Race Conditions
-
-Webhook processing may be inconsistent, causing messages to be processed incorrectly. Some protection should be added to ensure that if a message state is going to send a protocol backwards, it should be ignored. Discussions are ongoing with Traction to see if the webhook can provide some timing data to help this processing.
-
 ## Local development testing
 
 Traction DEV is configured to send webhooks to MDS DEV, and to this website for inspection https://webhook.site, after 100 requests, you must create a new testing webhook url and add that to the CPO Dev wallet on traction dev.
 
 You can configure your local MDS to use the CPO Wallet on Traction dev as well (with env variables), but there is no way for the webhooks to get back to your local machine, so to manually test, we need to manually pass the webhook payload from traction, which will send it to webhook.site, then can be copied into Postman (or similar http client) and passed to your localhost api at `http://localhost:5000/verifiable-credentials/webhook/topic/<TOPIC>` as a json body, the topic is parameterized.
+
+# W3C Credentials
+
+Active development includes signing W3C credentials complaint with the [UN Transparency Protocol](https://uncefact.github.io/spec-untp/) that prove the mines act permit. This would allow a company to produce a **Digital Product Passport** for their goods that make claims about the ESG preformance of the goods and the Mines Act Permit could be used as evidence for those claims.
+
+No features exist in production at the moment. This is blocked by the difference between AnonCreds being issued to the holder through minespace, to publishing W3C credentials that need to relate to BC Business Registrations. Another way to think is that W3C credentials are no held, but simply relate to other verifiable data. Holder binding (how to know the credential on the web is related to the company/person I am connecting with), for BC Business Registration Numbers is still being designed.
