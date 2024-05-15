@@ -24,10 +24,9 @@ Happy Path UX Flow
 
 Current Limitations:
 
-- User can create many invitations until the party has an active connection, however if multiple invitations are created, then multiple are accepted. Multiple active connections may exist between the Company wallet and the CPO Wallet, this should not be allowed
+- User can create many invitations until the party has an active connection, however if multiple invitations are created, then multiple are accepted. Multiple active connections may exist between the Company wallet and the CPO Wallet, this should not be allowed. (https://bcmines.atlassian.net/browse/MDS-5986)
 - If an active connection exists, do not allow the processing of any further connection requests
-- Deleting a connection is not accessible in the UI, It could be done manually by deleting the row in `party_verifiable_credential_connection`, and using the TenantUI (see links below) to delete the connection record in Traction.
-- This may be needed for POC testing purposes, or if a company made a new corporate wallet.
+- Deleting a connection is not accessible in the UI, It could be done manually by deleting the row in `party_verifiable_credential_connection`, and using the TenantUI (see links below) to delete the connection record in Traction. (This may be needed for POC testing purposes, or if a company made a new corporate wallet.)
 
 ### Credential Issuance
 
@@ -47,11 +46,15 @@ Current Limitations:
 - The existence of this problem report should show in the Minespace and Core UI, as well as the text description contained in the problem-report
 - Controls and endpoints should be built to allow for a new credential-offer when a problem report has been received on a previous offer
 
-## OCA Bundle
+### Credential Revocation
 
-The Overlay Capture Architechture (OCA) bundle for this credential is hosted [here](https://github.com/bcgov/aries-oca-bundles/tree/main/OCABundles/schema). The OCA bundle provides infomation on how the credential should be presented, including backgroun colors, labels, data-typing, and localization. If the credential is updated, the OCA bundle may need to be updated to match.
+Happy Path UX flow
 
-OCA bundles hosted here can be previewed on the [OCA Explorer](https://bcgov.github.io/aries-oca-explorer/)
+1. A Ministry user can navigate to a mine, then the permit tab
+1. A new "Digital Permit Credentials" tab, allows Ministry staff to see the veriifable credentials issues for a given permit
+1. The ministry user can then select a credential, and hit the 'revoke' button.
+1. The corporate wallet of the holder will receive a `revocation-notification` message, CORE will lock the permit such that it shows in the state `revoked` on minespace.
+1. If the verifiable credential should become valid again, the ministry user can release the lock, which means the permit record will show as `available` in minespace, so the the proponent can get their veriifable credential again.
 
 ### Permit Amendments and Revocation
 
@@ -59,8 +62,13 @@ When a permit is amended, the previous authorization is no longer valid and the 
 
 After a new permit amendment is created for a permit:
 
-- A ministry user in Core should have the ability to revoke the previous veriifable credentials
-- The new version of the permit cannot be issued until existing credentials have been revoked
+MDS will automatically revoke all verifiable credentials for that permit and offer a new credential with the newest values to the connection on the permitee (if it has one).
+
+## OCA Bundle
+
+The Overlay Capture Architechture (OCA) bundle for this credential is hosted [here](https://github.com/bcgov/aries-oca-bundles/tree/main/OCABundles/schema). The OCA bundle provides infomation on how the credential should be presented, including backgroun colors, labels, data-typing, and localization. If the credential is updated, the OCA bundle may need to be updated to match.
+
+OCA bundles hosted here can be previewed on the [OCA Explorer](https://bcgov.github.io/aries-oca-explorer/)
 
 ## Key identifiers and links
 
