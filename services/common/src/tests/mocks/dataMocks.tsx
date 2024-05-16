@@ -1477,6 +1477,56 @@ export const COMPLIANCE = {
   open_orders: [
     { order_no: "", report_no: "", due_date: "", inspector: "", violation: "", overdue: false },
   ],
+  orders: [
+    {
+      order_no: "1234-1",
+      report_no: "1234",
+      due_date: "",
+      inspector: "TEST",
+      violation: "2.2",
+      overdue: false,
+    },
+    {
+      order_no: "1234-2",
+      report_no: "1234",
+      due_date: "2019-12-31",
+      inspector: "TEST",
+      violation: "2.3",
+      overdue: true,
+    },
+    {
+      order_no: "1234-3",
+      report_no: "1234",
+      due_date: "",
+      inspector: "TEST",
+      violation: "1.1.1",
+      overdue: false,
+    },
+  ],
+  all_time: {
+    num_inspections: 5,
+    num_advisories: 6,
+    num_warnings: 7,
+    num_requests: 8,
+  },
+  current_fiscal: {
+    num_inspections: 3,
+    num_advisories: 4,
+    num_warnings: 5,
+    num_requests: 6,
+  },
+  last_12_months: {
+    num_inspections: 2,
+    num_advisories: 3,
+    num_warnings: 4,
+    num_requests: 5,
+  },
+  year_to_date: {
+    num_inspections: 1,
+    num_advisories: 2,
+    num_warnings: 3,
+    num_requests: 4,
+  },
 };
 
 export const MINE_TYPES = [
@@ -3619,6 +3669,58 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
   ],
   mineReportDefinitionOptions: [
     {
+      mine_report_definition_guid: "5f4f4727-4ecd-4a04-8929-2e8a5e03996d",
+      report_name: "TSF, WSF or Dam As-built Report",
+      description: "",
+      due_date_period_months: 12,
+      mine_report_due_date_type: "FIS",
+      default_due_date: "2020-03-31",
+      categories: [
+        { mine_report_category: "GTC", description: "Geotechnical" },
+        { mine_report_category: "TSF", description: "Tailings Storage Facility" },
+      ],
+      compliance_articles: [
+        {
+          compliance_article_id: 157,
+          article_act_code: "HSRCM",
+          section: "10",
+          sub_section: "5",
+          paragraph: "1",
+          sub_paragraph: "1",
+          description: "General",
+          long_description: "General",
+          effective_date: "1970-01-01",
+          expiry_date: "2016-07-19",
+        },
+      ],
+    },
+    {
+      mine_report_definition_guid: "6eda0c36-8748-4072-83c9-0fcdf270d36f",
+      report_name: "Annual DSI",
+      description: "",
+      due_date_period_months: 12,
+      mine_report_due_date_type: "FIS",
+      default_due_date: "2020-03-31",
+      categories: [
+        { mine_report_category: "GTC", description: "Geotechnical" },
+        { mine_report_category: "TSF", description: "Tailings Storage Facility" },
+      ],
+      compliance_articles: [
+        {
+          compliance_article_id: 155,
+          article_act_code: "HSRCM",
+          section: "10",
+          sub_section: "4",
+          paragraph: "4",
+          sub_paragraph: null,
+          description: "General",
+          long_description: "General",
+          effective_date: "2016-07-20",
+          expiry_date: "9999-12-31",
+        },
+      ],
+    },
+    {
       mine_report_definition_guid: "a1f02190-908b-4459-9dfe-6382282dfd30",
       report_name: "OHSC Annual Report",
       description: "",
@@ -5672,7 +5774,7 @@ export const MINE_REPORTS = [
   {
     mine_report_id: 123,
     mine_report_guid: "9f98a719-720a-40a5-ac5b-e91e8a526fad",
-    mine_report_definition_guid: "baa01f9f-c9b2-485d-96f3-12a9c8fe637b",
+    mine_report_definition_guid: "f5dec476-cb13-430a-a85e-81e5bbe666e4",
     mine_report_category: ["GSC", "GTC"],
     report_name: "Underground Oil and Grease Storage Area Report",
     due_date: "2020-01-02",
@@ -5772,6 +5874,58 @@ export const REPORTS_PAGE_DATA = {
 };
 
 export const MINE_REPORT_DEFINITION_HASH = {
+  "5f4f4727-4ecd-4a04-8929-2e8a5e03996d": {
+    mine_report_definition_guid: "5f4f4727-4ecd-4a04-8929-2e8a5e03996d",
+    report_name: "TSF, WSF or Dam As-built Report",
+    description: "",
+    due_date_period_months: 12,
+    mine_report_due_date_type: "FIS",
+    default_due_date: "2020-03-31",
+    categories: [
+      { mine_report_category: "GTC", description: "Geotechnical" },
+      { mine_report_category: "TSF", description: "Tailings Storage Facility" },
+    ],
+    compliance_articles: [
+      {
+        compliance_article_id: 157,
+        article_act_code: "HSRCM",
+        section: "10",
+        sub_section: "5",
+        paragraph: "1",
+        sub_paragraph: "1",
+        description: "General",
+        long_description: "General",
+        effective_date: "1970-01-01",
+        expiry_date: "2016-07-19",
+      },
+    ],
+  },
+  "6eda0c36-8748-4072-83c9-0fcdf270d36f": {
+    mine_report_definition_guid: "6eda0c36-8748-4072-83c9-0fcdf270d36f",
+    report_name: "Annual DSI",
+    description: "",
+    due_date_period_months: 12,
+    mine_report_due_date_type: "FIS",
+    default_due_date: "2020-03-31",
+    categories: [
+      { mine_report_category: "GTC", description: "Geotechnical" },
+      { mine_report_category: "TSF", description: "Tailings Storage Facility" },
+    ],
+    compliance_articles: [
+      {
+        compliance_article_id: 155,
+        article_act_code: "HSRCM",
+        section: "10",
+        sub_section: "4",
+        paragraph: "4",
+        sub_paragraph: null,
+        description: "General",
+        long_description: "General",
+        effective_date: "2016-07-20",
+        expiry_date: "9999-12-31",
+      },
+    ],
+  },
   "a1f02190-908b-4459-9dfe-6382282dfd30": {
     mine_report_definition_guid: "a1f02190-908b-4459-9dfe-6382282dfd30",
     report_name: "OHSC Annual Report",
@@ -7221,6 +7375,62 @@ export const PROJECT_SUMMARY = {
         },
       ],
       AMENDMENT: [],
+    },
+  },
+};
+
+export const AUTHORIZATION_INVOLVED = {
+  initialValues: PROJECT_SUMMARY,
+  projectSummaryDocumentTypesHash: {
+    SPR: "Supporting Documents",
+    MAP: "Location Map",
+    GEN: "General",
+    DFA: "Discharge Factor Amendment",
+  },
+  formValues: {
+    authorizations: {
+      AIR_EMISSIONS_DISCHARGE_PERMIT: {
+        AMENDMENT: [
+          {
+            project_summary_authorization_guid: "82857352-de32-4c43-badc-34f62cb8e50a",
+            project_summary_guid: "d20fd1ce-51ef-4fc0-b2f1-e53857edca3e",
+            project_summary_permit_type: ["AMENDMENT"],
+            project_summary_authorization_type: "AIR_EMISSIONS_DISCHARGE_PERMIT",
+            amendment_documents: [
+              {
+                project_summary_document_type_code: "MAP",
+                mine_document_guid: "1868b4d5-7efa-4d74-bb58-fb575cc6dd2c",
+                mine_guid: "6133891d-3398-466a-a4e9-f3c5d837a0f1",
+                document_manager_guid: "359569b7-d5c5-4dc1-a6ac-9f93c4088368",
+                document_name: "041.pdf",
+                upload_date: "2024-05-05 18:06:18.436920-07:00",
+                update_timestamp: null,
+                create_user: "user@bceid",
+              },
+              {
+                project_summary_document_type_code: "DFA",
+                mine_document_guid: "74d0a1cd-8f79-45c1-a79f-56707fa6d93b",
+                mine_guid: "6133891d-3398-466a-a4e9-f3c5d837a0f1",
+                document_manager_guid: "ad300bc1-9c1a-4e49-a8ba-fa2025785fe8",
+                document_name: "doc_check.pdf",
+                upload_date: "2024-05-05 18:06:18.436934-07:00",
+                update_timestamp: null,
+                create_user: "user@bceid",
+              },
+              {
+                project_summary_document_type_code: "SPR",
+                mine_document_guid: "3ae455d8-541d-4a38-80c6-f7f9e6794e45",
+                mine_guid: "6133891d-3398-466a-a4e9-f3c5d837a0f1",
+                document_manager_guid: "b7bb4e80-f5b8-46fb-bd79-b77d1a3108aa",
+                document_name: "doc_check.pdf",
+                upload_date: "2024-05-05 18:06:18.436948-07:00",
+                update_timestamp: null,
+                create_user: "user@bceid",
+              },
+            ],
+          },
+        ],
+      },
     },
   },
 };

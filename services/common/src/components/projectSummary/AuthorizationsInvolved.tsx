@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  Field,
-  FieldArray,
-  FormSection,
   arrayPush,
   arrayRemove,
   change,
+  Field,
+  FieldArray,
+  FormSection,
   getFormValues,
 } from "redux-form";
-import { Typography, Checkbox, Tooltip, Alert, Button, Row, Col, Form } from "antd";
+import { Alert, Button, Checkbox, Col, Row, Tooltip, Typography } from "antd";
 import InfoCircleOutlined from "@ant-design/icons/InfoCircleOutlined";
 import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import {
-  getTransformedProjectSummaryAuthorizationTypes,
   getDropdownProjectSummaryPermitTypes,
+  getProjectSummaryDocumentTypesHash,
+  getTransformedProjectSummaryAuthorizationTypes,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getAmsAuthorizationTypes } from "@mds/common/redux/selectors/projectSelectors";
 import {
@@ -37,16 +38,72 @@ import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreat
 import { createDropDownList } from "@mds/common/redux/utils/helpers";
 import { FORM } from "@mds/common/constants/forms";
 import RenderHiddenField from "../forms/RenderHiddenField";
+import AuthorizationSupportDocumentUpload from "./AuthorizationSupportDocumentUpload";
+import { IProjectSummaryDocument } from "@mds/common/interfaces";
+import {
+  renderTextColumn,
+  renderDateColumn,
+} from "@mds/common/components/common/CoreTableCommonColumns";
+import DocumentTable from "@mds/common/components/documents/DocumentTable";
+import { renderCategoryColumn } from "@mds/common/components/common/CoreTableCommonColumns";
+import { MineDocument } from "@mds/common/models/documents/document";
 
-const RenderEMAPermitCommonSections = ({ isAmendment }) => {
-  const purposeLabel = isAmendment
+export interface ProjectSummary {
+  project_summary_id: number;
+  mine_guid: string;
+  project_summary_guid: string;
+  status_code: string;
+  submission_date: string;
+  project_summary_description: string;
+  project_guid: string;
+  documents: IProjectSummaryDocument[];
+}
+
+const RenderEMAPermitCommonSections = ({ props }) => {
+  const { code } = props;
+  const dispatch = useDispatch();
+  const purposeLabel = props.isAmendment
     ? "Additional Amendment Request Information"
     : "Purpose of Application";
-  const [showDocSection, setShowDocSection] = useState(false);
+
+  const [showDocSection, setShowDocSection] = useState(props?.exemption_requested || false);
+
+  const projectSummaryDocumentTypesHash = useSelector(getProjectSummaryDocumentTypesHash);
 
   const onChange = (value, _newVal, _prevVal, _fieldName) => {
     setShowDocSection(value);
   };
+
+  const updateAmendmentDocuments = (doc: IProjectSummaryDocument, code: string) => {
+    const index = 0;
+    const response = dispatch(
+      arrayPush(
+        FORM.ADD_EDIT_PROJECT_SUMMARY,
+        `authorizations.[${code}].AMENDMENT.[${index}].amendment_documents`,
+        doc
+      )
+    );
+    return response;
+  };
+
+  const tableDocuments =
+    props?.amendment_documents?.map(
+      (doc) => new MineDocument({ ...doc, category: doc.project_summary_document_type_code })
+    ) ?? [];
+
+  const documentColumns = [
+    renderTextColumn("document_name", "File Name"),
+    renderCategoryColumn(
+      "category",
+      "Document Category",
+      projectSummaryDocumentTypesHash,
+      false,
+      "N/A"
+    ),
+    renderDateColumn("upload_date", "Updated"),
+    renderTextColumn("create_user", "Updated By"),
+  ];
+
   return (
     <>
       <Field
@@ -75,22 +132,63 @@ const RenderEMAPermitCommonSections = ({ isAmendment }) => {
         }
       />
       {showDocSection && (
-        <Alert
-          description={
-            <>
-              If yes, please attach a <b>letter with rationale</b> to support this exemption at{" "}
-              <b>Document Upload</b> section. Please note that requests may not always be granted.
-              Incomplete applications may be returned if they don&apos;t meet Ministry requirements
-              and the application fee may not be refunded.
-            </>
-          }
-          showIcon
-        />
+        <div>
+          <Alert
+            description={
+              <>
+                If yes, please attach a <b>letter with rationale</b> to support this exemption at{" "}
+                <b>Document Upload</b> section. Please note that requests may not always be granted.
+                Incomplete applications may be returned if they don&apos;t meet Ministry
+                requirements and the application fee may not be refunded.
+              </>
+            }
+            showIcon
+          />
+          <div className="margin-large--bottom">
+            <Typography.Title level={5} className="margin-large--top">
+              Upload Documents
+            </Typography.Title>
+            <Typography.Text>
+              {" "}
+              Submit the documents required for your amendment application.
+            </Typography.Text>
+          </div>
+          <AuthorizationSupportDocumentUpload
+            code={code}
+            mineGuid={props.mine_guid}
+            isProponent={true}
+            documents={tableDocuments}
+            updateAmendmentDocuments={updateAmendmentDocuments}
+            projectGuid={props.project_guid}
+            projectSummaryGuid={props.project_summary_guid}
+            dfaRequired={props.dfaRequired}
+          />
+          <DocumentTable
+            documents={tableDocuments}
+            documentParent="project summary authorization"
+            documentColumns={documentColumns}
+          />
+        </div>
       )}
     </>
   );
 };
-const RenderEMANewPermitSection = ({ code }) => {
+
+const RenderEMANewPermitSection = ({
+  props,
+  code,
+  mine_guid,
+  project_guid,
+  project_summary_guid,
+}) => {
+  const new_props = {
+    ...props.formValues.authorizations[code].AMENDMENT[0],
+    code,
+    isAmendment: false,
+    mine_guid: mine_guid,
+    project_guid: project_guid,
+    project_summary_guid: project_summary_guid,
+  };
   return (
     <div className="grey-box">
       <FormSection name={`${code}.NEW[0]`}>
@@ -129,15 +227,29 @@ const RenderEMANewPermitSection = ({ code }) => {
           required
           validate={[requiredRadioButton]}
         />
-        <RenderEMAPermitCommonSections isAmendment={false} />
+        <RenderEMAPermitCommonSections props={new_props} />
       </FormSection>
     </div>
   );
 };
 
-const RenderEMAAmendFieldArray = ({ fields }) => {
+const RenderEMAAmendFieldArray = ({
+  fields,
+  projectSummaryDocumentTypesHash,
+  code,
+  mine_guid,
+  project_guid,
+  project_summary_guid,
+  ...rest_of_the_props
+}) => {
   const handleRemoveAmendment = (index: number) => {
     fields.remove(index);
+  };
+
+  const [dfaRequired, setDfaRequired] = useState(false);
+
+  const onChangeAmendment = (value, _newVal, _prevVal, _fieldName) => {
+    setDfaRequired(value.includes("ILT") || value.includes("IGT") || value.includes("DDL"));
   };
 
   return (
@@ -189,6 +301,7 @@ const RenderEMAAmendFieldArray = ({ fields }) => {
                 { label: "Regulatory Change", value: "RCH" },
                 { label: "Other", value: "OTH" },
               ]}
+              onChange={onChangeAmendment}
             />
             <Field
               label="Is this Authorization required for remediation of a contaminated site?"
@@ -197,7 +310,18 @@ const RenderEMAAmendFieldArray = ({ fields }) => {
               validate={[requiredRadioButton]}
               component={RenderRadioButtons}
             />
-            <RenderEMAPermitCommonSections isAmendment={true} />
+            <RenderEMAPermitCommonSections
+              props={{
+                ...rest_of_the_props,
+                projectSummaryDocumentTypesHash: projectSummaryDocumentTypesHash,
+                code,
+                isAmendment: true,
+                mine_guid: mine_guid,
+                project_guid: project_guid,
+                project_summary_guid: project_summary_guid,
+                dfaRequired: dfaRequired,
+              }}
+            />
           </FormSection>
         </Col>
       ))}
@@ -205,15 +329,33 @@ const RenderEMAAmendFieldArray = ({ fields }) => {
   );
 };
 
-const RenderEMAAuthCodeFormSection = ({ code }) => {
+const RenderEMAAuthCodeFormSection = ({
+  props,
+  code,
+  mine_guid,
+  project_guid,
+  project_summary_guid,
+}) => {
   const { authorizations } = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
   const codeAuthorizations = authorizations[code] ?? [];
   const hasAmendments = codeAuthorizations.AMENDMENT?.length > 0;
   const hasNew = codeAuthorizations.NEW?.length > 0;
 
+  const projectSummaryDocumentTypesHash = useSelector(getProjectSummaryDocumentTypesHash);
+
   const permitTypes = ["AMENDMENT", "NEW"];
 
   const dispatch = useDispatch();
+
+  const doc_props = {
+    ...authorizations[code].AMENDMENT[0],
+    projectSummaryDocumentTypesHash,
+    code: code,
+    isAmendment: false,
+    mine_guid: mine_guid,
+    project_guid: project_guid,
+    project_summary_guid: project_summary_guid,
+  };
 
   const addAmendment = () => {
     dispatch(arrayPush(FORM.ADD_EDIT_PROJECT_SUMMARY, `authorizations.${code}.AMENDMENT`, {}));
@@ -253,7 +395,7 @@ const RenderEMAAuthCodeFormSection = ({ code }) => {
                     <FieldArray
                       name={`${code}.AMENDMENT`}
                       component={RenderEMAAmendFieldArray}
-                      props={{}}
+                      props={doc_props}
                     />
                     <Button
                       onClick={addAmendment}
@@ -274,7 +416,15 @@ const RenderEMAAuthCodeFormSection = ({ code }) => {
           },
         ]}
       />
-      {hasNew && <RenderEMANewPermitSection code={code} />}
+      {hasNew && (
+        <RenderEMANewPermitSection
+          props={props}
+          code={code}
+          mine_guid={mine_guid}
+          project_guid={project_guid}
+          project_summary_guid={project_summary_guid}
+        />
+      )}
     </>
   );
 };
@@ -308,11 +458,26 @@ const RenderMinesActPermitSelect = () => {
   );
 };
 
-const RenderAuthCodeFormSection = ({ authorizationType, code }) => {
+const RenderAuthCodeFormSection = ({
+  props,
+  authorizationType,
+  code,
+  mine_guid,
+  project_guid,
+  project_summary_guid,
+}) => {
   const dropdownProjectSummaryPermitTypes = useSelector(getDropdownProjectSummaryPermitTypes);
   if (authorizationType === "ENVIRONMENTAL_MANAGMENT_ACT") {
     // AMS authorizations, have options of amend/new with more details
-    return <RenderEMAAuthCodeFormSection code={code} />;
+    return (
+      <RenderEMAAuthCodeFormSection
+        props={props}
+        code={code}
+        mine_guid={mine_guid}
+        project_guid={project_guid}
+        project_summary_guid={project_summary_guid}
+      />
+    );
   }
   if (authorizationType === "OTHER_LEGISLATION") {
     return (
@@ -362,7 +527,8 @@ const RenderAuthCodeFormSection = ({ authorizationType, code }) => {
     </FormSection>
   );
 };
-export const AuthorizationsInvolved = () => {
+
+export const AuthorizationsInvolved = (props) => {
   const dispatch = useDispatch();
   const transformedProjectSummaryAuthorizationTypes = useSelector(
     getTransformedProjectSummaryAuthorizationTypes
@@ -439,13 +605,13 @@ export const AuthorizationsInvolved = () => {
                                         <li>
                                           For exploration work outside the permit mine area without
                                           expanding the production area, submit a Notice of Work
-                                          application via FrountCounter BC to amend your MX or CX
+                                          application via FrontCounter BC to amend your MX or CX
                                           permit.
                                         </li>
                                         <li>
                                           For induced polarization surveys or exploration drilling
                                           within the permit mine area, submit a Notification of
-                                          Deemed Authorixation application via FrountCounter BC.
+                                          Deemed Authorization application via FrontCounter BC.
                                         </li>
                                       </ul>
                                     }
@@ -454,8 +620,12 @@ export const AuthorizationsInvolved = () => {
                                   />
                                 )}
                                 <RenderAuthCodeFormSection
-                                  code={child.code}
-                                  authorizationType={authorization.code}
+                                  code={child?.code}
+                                  authorizationType={authorization?.code}
+                                  mine_guid={props?.initialValues?.mine_guid}
+                                  project_guid={props?.initialValues?.project_guid}
+                                  project_summary_guid={props?.initialValues?.project_summary_guid}
+                                  props={props}
                                 />
                               </>
                             )}

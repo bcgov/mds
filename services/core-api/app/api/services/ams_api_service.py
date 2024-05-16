@@ -44,7 +44,8 @@ class AMSApiService():
                     'authorization_description': item.get('authorization_description') or 'N/A',
                     'new_type': item.get('new_type'),
                     'exemption_requested': item.get('exemption_requested') or False,
-                    'is_contaminated': item.get('is_contaminated') or False
+                    'is_contaminated': item.get('is_contaminated') or False,
+                    'ams_status_code': item.get('ams_status_code') or '0' # This will be used to track new authorizations that have been submitted successfully
                 })
         return new_authorization_values
 
@@ -79,7 +80,11 @@ class AMSApiService():
                                      is_legal_land_owner,
                                      is_crown_land_federal_or_provincial,
                                      is_landowner_aware_of_discharge_application,
-                                     has_landowner_received_copy_of_application
+                                     has_landowner_received_copy_of_application,
+                                     facility_pid_pin_crown_file_no,
+                                     company_alias,
+                                     zoning,
+                                     zoning_reason
                                      ):
         """Creates a new AMS authorization application"""
 
@@ -95,83 +100,119 @@ class AMSApiService():
 
             authorization_list = cls.__get_new_authorization_details(ams_authorizations)
             for authorization in authorization_list:
-                ams_authorization_data = {
-                    'isauthamendment': 'No',
-                    'authorizationtype': {
-                        'authorizationname': cls.__get_mapped_permit_type(authorization.get('new_type')),
-                    },
-                    'receiveddate': get_date_iso8601_string(),
-                    'majorcentre': {
-                        'name': nearest_municipality_name
-                    },
-                    'applicant': {
-                        'applicanttype': cls.__get_mapped_party_type(applicant.get('party_type_code')),
-                        'em_companyname': applicant.get('party_name', ''),
-                        'em_businessphone': cls.__format_phone_number(applicant.get('phone_no', '')),
-                        'em_firstname': applicant.get('first_name', ''),
-                        'em_middlename': applicant.get('middle_name', ''),
-                        'em_lastname': applicant.get('party_name', ''),
-                        'em_email': applicant.get('email', ''),
-                        'billingaddress': cls.__create_full_address(
-                            applicant.get('address')[2].get('address_line_1', ''),
-                            applicant.get('address')[2].get('city', ''),
-                            applicant.get('address')[2].get('sub_division_code', ''),
-                            applicant.get('address')[2].get('post_code'))
-                    },
-                    'agent': {
-                        'em_lastname': agent.get('party_name', '') if agent else '',
-                        'em_firstname': agent.get('first_name', '') if agent else '',
-                        'em_email': agent.get('email', '') if agent else '',
-                        'em_companyname': agent.get('party_name', '') if agent else ''
-                    },
-                    'preappexemptionrequest': cls.__boolean_to_yes_no(authorization.get('exemption_requested')),
-                    'preappexemptionrequestreason': authorization.get('authorization_description', 'Not Applicable'),
-                    'iscontaminatedsite': cls.__boolean_to_yes_no(authorization.get('is_contaminated')),
-                    'contact': {
-                        'em_lastname': contacts[0].get('last_name', ''),
-                        'em_firstname': contacts[0].get('first_name', ''),
-                        'em_title': contacts[0].get('job_title', ''),
-                        'em_businessphone': cls.__format_phone_number(contacts[0].get('phone_number')),
-                        'em_email': contacts[0].get('email', '')
-                    },
-                    'facilitytype': facility_type,
-                    'facilitydescription': facility_desc,
-                    'facilitylocationlatitude': str(facility_latitude),
-                    'facilitylocationlongitude': str(facility_longitude),
-                    'sourceofdata': facility_coords_source,
-                    'sourceofdatadescription': facility_coords_source_desc,
-                    'legallanddescription': legal_land_desc,
-                    'facilityaddress': {
-                        'addresstype': 'Civic',
-                        'suitenumber': facility_operator.get('address').get('suite_no', ''),
-                        'streetnumber': facility_operator.get('address').get('suite_no', ''),
-                        'street': facility_operator.get('address').get('address_line_1', ''),
-                        'line2': facility_operator.get('address').get('address_line_2', ''),
-                        'municipality': facility_operator.get('address').get('city', ''),
-                        'province': 'British Columbia',
-                        'country': 'Canada',
-                        'postalcode': facility_operator.get('address').get('post_code')
-                    },
-                    'facilityopname': facility_operator.get('name', ''),
-                    'facilityopphonenumber': cls.__format_phone_number(facility_operator.get('phone_no', '')),
-                    'facilityopphonenumberext': facility_operator.get('phone_ext', ''),
-                    'facilityopemail': facility_operator.get('email', ''),
-                    'landownername': legal_land_owner_name,
-                    'landownerphonenumber': cls.__format_phone_number(legal_land_owner_contact_number),
-                    'landowneremail': legal_land_owner_email_address,
-                    'istheapplicantthelandowner': cls.__boolean_to_yes_no(is_legal_land_owner),
-                    'landfedorprov': cls.__boolean_to_yes_no(is_crown_land_federal_or_provincial),
-                    'landownerawareofapplication': cls.__boolean_to_yes_no(is_landowner_aware_of_discharge_application),
-                    'landownerreceivedcopy': cls.__boolean_to_yes_no(has_landowner_received_copy_of_application)
-                }
-                payload = json.dumps(ams_authorization_data)
-                response = requests.post(Config.AMS_URL, data=payload, headers=headers)
-                ams_result = response.json()
-                ams_result['project_summary_authorization_guid'] = authorization.get('project_summary_authorization_guid')
-                ams_result['project_summary_guid'] = authorization.get('project_summary_guid')
-                ams_result['project_summary_authorization_type'] = authorization.get(
-                    'project_summary_authorization_type')
-                ams_results.append(ams_result)
+                existing_ams_status_code = authorization.get('ams_status_code')
+                if existing_ams_status_code != '200':
+                    ams_authorization_data = {
+                        'isauthamendment': 'No',
+                        'authorizationtype': {
+                            'authorizationname': cls.__get_mapped_permit_type(authorization.get('new_type')),
+                        },
+                        'receiveddate': get_date_iso8601_string(),
+                        'majorcentre': {
+                            'name': nearest_municipality_name
+                        },
+                        'applicant': {
+                            'applicanttype': cls.__get_mapped_party_type(applicant.get('party_type_code')),
+                            'em_companyname': applicant.get('party_name', ''),
+                            'em_businessphone': cls.__format_phone_number(applicant.get('phone_no', '')),
+                            'em_firstname': applicant.get('first_name', ''),
+                            'em_middlename': applicant.get('middle_name', ''),
+                            'em_lastname': applicant.get('party_name', ''),
+                            'em_email': applicant.get('email', ''),
+                            'billingaddress': cls.__create_full_address(
+                                applicant.get('address')[2].get('address_line_1', ''),
+                                applicant.get('address')[2].get('city', ''),
+                                applicant.get('address')[2].get('sub_division_code', ''),
+                                applicant.get('address')[2].get('post_code')),
+                            'em_doingbusinessas': company_alias,
+                            'legaladdress': cls.__create_full_address(
+                                applicant.get('address')[1].get('address_line_1', ''),
+                                applicant.get('address')[1].get('city', ''),
+                                applicant.get('address')[1].get('sub_division_code', ''),
+                                applicant.get('address')[1].get('post_code')),
+                            'mailingaddress': cls.__create_full_address(
+                                applicant.get('address')[0].get('address_line_1', ''),
+                                applicant.get('address')[0].get('city', ''),
+                                applicant.get('address')[0].get('sub_division_code', ''),
+                                applicant.get('address')[0].get('post_code')),
+                            'bccompanyregistrationnumber': applicant.get('party_orgbook_entity').get('registration_id', '')
+                        },
+                        'agent': {
+                            'em_lastname': agent.get('party_name', '') if agent else '',
+                            'em_firstname': agent.get('first_name', '') if agent else '',
+                            'em_email': agent.get('email', '') if agent else '',
+                            'em_companyname': agent.get('party_name', '') if agent else '',
+                            'em_mailingaddress': cls.__create_full_address(
+                                agent.get('address').get('address_line_1', ''),
+                                agent.get('address').get('city', ''),
+                                agent.get('address').get('sub_division_code', ''),
+                                agent.get('address').get('post_code')) if agent else '',
+                            'em_businessphone': cls.__format_phone_number(agent.get('phone_no')) if agent else '',
+                            'em_title': agent.get('job_title', '') if agent else '',
+                        },
+                        'purposeofapplication': authorization.get('authorization_description', ''),
+                        'preappexemptionrequest': cls.__boolean_to_yes_no(authorization.get('exemption_requested')),
+                        'preappexemptionrequestreason': authorization.get('authorization_description', 'Not Applicable'),
+                        'iscontaminatedsite': cls.__boolean_to_yes_no(authorization.get('is_contaminated')),
+                        'contact': {
+                            'em_lastname': contacts[0].get('last_name', ''),
+                            'em_firstname': contacts[0].get('first_name', ''),
+                            'em_title': contacts[0].get('job_title', ''),
+                            'em_businessphone': cls.__format_phone_number(contacts[0].get('phone_number')),
+                            'em_email': contacts[0].get('email', ''),
+                            'em_mailingaddress': cls.__create_full_address(
+                                contacts[0].get('address').get('address_line_1', ''),
+                                contacts[0].get('address').get('city', ''),
+                                contacts[0].get('address').get('sub_division_code', ''),
+                                contacts[0].get('address').get('post_code')),
+                        },
+                        'facilitytype': facility_type,
+                        'facilitydescription': facility_desc,
+                        'latitude': str(facility_latitude),
+                        'longitude': str(abs(facility_longitude)),
+                        'sourceofdata': facility_coords_source,
+                        'sourceofdatadescription': facility_coords_source_desc,
+                        'legallanddescription': legal_land_desc,
+                        'pidpincrownfilenumber': facility_pid_pin_crown_file_no,
+                        'facilityaddress': {
+                            'addresstype': 'Other / International',
+                            'suitenumber': facility_operator.get('address').get('suite_no', ''),
+                            'streetnumber': facility_operator.get('address').get('suite_no', ''),
+                            'street': facility_operator.get('address').get('address_line_1', ''),
+                            'line2': facility_operator.get('address').get('address_line_2', ''),
+                            'municipality': facility_operator.get('address').get('city', ''),
+                            'province': 'British Columbia',
+                            'country': 'Canada',
+                            'postalcode': facility_operator.get('address').get('post_code'),
+                            'otheraddress': cls.__create_full_address(
+                                facility_operator.get('address').get('address_line_1'),
+                                facility_operator.get('address').get('city'),
+                                facility_operator.get('address').get('sub_division_code'),
+                                facility_operator.get('address').get('post_code'))
+                        },
+                        'facilityopphonenumberext': facility_operator.get('phone_ext', ''),
+                        'isappropriatezoning': cls.__boolean_to_yes_no(zoning),
+                        'isappropriatezoningreason': zoning_reason,
+                        'landownername': legal_land_owner_name,
+                        'landownerphonenumber': cls.__format_phone_number(legal_land_owner_contact_number),
+                        'landowneremail': legal_land_owner_email_address,
+                        'istheapplicantthelandowner': cls.__boolean_to_yes_no(is_legal_land_owner),
+                        'landfedorprov': cls.__boolean_to_yes_no(is_crown_land_federal_or_provincial),
+                        'landownerawareofapplication': cls.__boolean_to_yes_no(is_landowner_aware_of_discharge_application),
+                        'landownerreceivedcopy': cls.__boolean_to_yes_no(has_landowner_received_copy_of_application),
+                        'facilityoperator': facility_operator.get('name', ''),
+                        'facilityoperatorphonenumber': cls.__format_phone_number(facility_operator.get('phone_no', '')),
+                        'facilityoperatoremail': facility_operator.get('email', ''),
+                        'facilityoperatortitle': facility_operator.get('job_title', '')
+                    }
+                    payload = json.dumps(ams_authorization_data)
+                    response = requests.post(Config.AMS_URL, data=payload, headers=headers)
+                    ams_result = response.json()
+                    ams_result['project_summary_authorization_guid'] = authorization.get('project_summary_authorization_guid')
+                    ams_result['project_summary_guid'] = authorization.get('project_summary_guid')
+                    ams_result['project_summary_authorization_type'] = authorization.get(
+                        'project_summary_authorization_type')
+                    ams_results.append(ams_result)
         except requests.exceptions.HTTPError as http_err:
             current_app.logger.error(f'AMS Service HTTP error occurred for POST request: {http_err}')
         except requests.exceptions.ConnectionError as conn_err:

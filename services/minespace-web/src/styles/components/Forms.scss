@@ -97,3 +97,11 @@
 .form-item-help {
     color: rgba(49, 49, 50, 0.55);
 }
+
+.form-dashed-underline {
+    color: $medium-grey;
+    padding-bottom: 0;
+    text-align: center;
+    text-decoration: none !important;
+    border-bottom: 1px dotted;
+}

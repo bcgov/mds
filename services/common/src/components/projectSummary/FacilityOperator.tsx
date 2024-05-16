@@ -21,11 +21,19 @@ import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticCo
 import RenderRadioButtons from "../forms/RenderRadioButtons";
 import RenderAutoSizeField from "../forms/RenderAutoSizeField";
 import CoreMap from "../common/Map";
+import { normalizePhone } from "@mds/common/redux/utils/helpers";
 
 export const FacilityOperator: FC = () => {
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
   const formErrors = useSelector(getFormSyncErrors(FORM.ADD_EDIT_PROJECT_SUMMARY));
-  const { facility_coords_source, zoning, facility_latitude, facility_longitude } = formValues;
+  const {
+    facility_coords_source,
+    zoning,
+    facility_latitude,
+    facility_longitude,
+    legal_land_desc,
+    facility_pid_pin_crown_file_no,
+  } = formValues;
   const [pin, setPin] = useState<Array<string>>([]);
 
   useEffect(() => {
@@ -117,15 +125,18 @@ export const FacilityOperator: FC = () => {
         name="facility_pid_pin_crown_file_no"
         label="PID/PIN/Crown File No"
         component={RenderField}
-        validate={[maxLength(100)]}
+        validate={!legal_land_desc ? [required, maxLength(100)] : [maxLength(100)]}
+        maximumCharacters={100}
+        required={!legal_land_desc}
       />
       <Field
         name="legal_land_desc"
         label="Legal land Description (Lot/Block/Plan)"
-        validate={[maxLength(4000)]}
+        validate={!facility_pid_pin_crown_file_no ? [required, maxLength(4000)] : [maxLength(4000)]}
         maximumCharacters={4000}
         rows={3}
         component={RenderAutoSizeField}
+        required={!facility_pid_pin_crown_file_no}
       />
       <Field
         name="facility_lease_no"
@@ -223,8 +234,9 @@ export const FacilityOperator: FC = () => {
             name="facility_operator.phone_no"
             label="Facility Operator Contact Number"
             required
-            validate={[required, phoneNumber]}
+            validate={[phoneNumber, maxLength(12), required]}
             component={RenderField}
+            normalize={normalizePhone}
           />
         </Col>
         <Col md={4} sm={5}>

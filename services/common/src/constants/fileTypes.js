@@ -17,6 +17,14 @@ export const DOC = {
   ".rtf": "application/rtf",
 };
 
+export const XML = {
+  ".xml": "application/xml",
+};
+
+export const CSV = {
+  ".csv": "text/csv",
+};
+
 export const OPEN_DOC = {
   ".odt": "application/vnd.oasis.opendocument.text",
   ".ott": "application/vnd.oasis.opendocument.text-template",
@@ -43,12 +51,21 @@ export const MESSAGE = {
 
 export const APPLICATION_OCTET_STREAM = "application/octet-stream";
 
-export const UNIQUELY_SPATIAL = {
+export const OTHER_SPATIAL = {
   ".dbf": "application/dbf",
-  ".geojson": "application/vnd.geo+json",
-  ".gml": "application/gml+xml",
   ".kml": "application/vnd.google-earth.kml+xml",
   ".kmz": "application/vnd.google-earth.kmz",
+  ".prj": APPLICATION_OCTET_STREAM,
+  ".sbn": APPLICATION_OCTET_STREAM,
+  ".sbx": APPLICATION_OCTET_STREAM,
+  ".shp": APPLICATION_OCTET_STREAM,
+  ".shx": APPLICATION_OCTET_STREAM,
+};
+
+export const UNIQUELY_SPATIAL = {
+  ".geojson": "application/vnd.geo+json",
+  ".gml": "application/gml+xml",
+  ...OTHER_SPATIAL,
   ".ain": APPLICATION_OCTET_STREAM,
   ".aih": APPLICATION_OCTET_STREAM,
   ".atx": APPLICATION_OCTET_STREAM,
@@ -57,18 +74,13 @@ export const UNIQUELY_SPATIAL = {
   ".fbx": APPLICATION_OCTET_STREAM,
   ".ixs": APPLICATION_OCTET_STREAM,
   ".mxs": APPLICATION_OCTET_STREAM,
-  ".prj": APPLICATION_OCTET_STREAM,
-  ".sbn": APPLICATION_OCTET_STREAM,
-  ".sbx": APPLICATION_OCTET_STREAM,
-  ".shp": APPLICATION_OCTET_STREAM,
   ".shpz": APPLICATION_OCTET_STREAM,
-  ".shx": APPLICATION_OCTET_STREAM,
   ".wkt": APPLICATION_OCTET_STREAM,
 };
 
 export const SPATIAL = {
   ...UNIQUELY_SPATIAL,
-  ".csv": "text/csv",
-  ".xml": "application/xml",
+  ...CSV,
+  ...XML,
   ".shp.xml": "text/xml",
 };

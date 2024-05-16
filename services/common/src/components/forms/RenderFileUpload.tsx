@@ -23,6 +23,8 @@ import {
   UploadResult,
 } from "@mds/common/utils/fileUploadHelper.interface";
 import { BaseInputProps } from "./BaseInput";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleQuestion } from "@fortawesome/pro-light-svg-icons";
 
 registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 
@@ -65,7 +67,10 @@ interface FileUploadProps extends BaseInputProps {
   listedFileTypes?: string[];
   // true for "We accept most common ${listedFileTypes.join()} files" language + popover
   abbrevLabel?: boolean;
+  // I left abbrevLabel prop alone for the time being as it seems for certain areas we may want to still display the accepted file types below the filepond
+  newAbbrevLabel?: boolean;
   maxFiles?: number;
+  labelHref: string;
 
   beforeAddFile?: (file?: any) => any;
   beforeDropFile?: (file?: any) => any;
@@ -91,10 +96,12 @@ const defaultProps = {
   labelInstruction:
     '<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong>',
   abbrevLabel: false,
+  newAbbrevLabel: false,
   beforeAddFile: () => {},
   beforeDropFile: () => {},
   file: null,
   maxFiles: undefined,
+  labelHref: undefined,
 };
 
 export const FileUpload = (props: FileUploadProps) => {
@@ -440,6 +447,43 @@ export const FileUpload = (props: FileUploadProps) => {
   const fileValidateTypeLabelExpectedTypesMap = invert(props.acceptedFileTypesMap);
   const acceptedFileTypes = uniq(Object.values(props.acceptedFileTypesMap));
 
+  const getLabel = (props) => {
+    if (props.labelHref)
+      return (
+        <a href={props.labelHref} target="_blank" rel="noopener noreferrer">
+          {props.label}
+        </a>
+      );
+
+    if (props.newAbbrevLabel && Object.values(props.acceptedFileTypesMap).length > 0) {
+      return (
+        <span>
+          {props.label}{" "}
+          <span>
+            <Popover
+              content={
+                <>
+                  <strong>Accepted File Types:</strong>
+                  <p>{Object.keys(props.acceptedFileTypesMap).join(", ")}</p>
+                </>
+              }
+              placement="topLeft"
+              color="white"
+              overlayClassName="filepond-filetypes-popover"
+            >
+              <span className="form-dashed-underline">
+                Accepted file types{" "}
+                <FontAwesomeIcon icon={faCircleQuestion} style={{ width: "15px" }} />
+              </span>
+            </Popover>
+          </span>
+        </span>
+      );
+    }
+
+    return <>{props.label}</>;
+  };
+
   return (
     <div className={showWhirlpool ? "whirlpool-container whirlpool-on" : "whirlpool-container"}>
       {system === SystemFlagEnum.core && (
@@ -467,7 +511,12 @@ export const FileUpload = (props: FileUploadProps) => {
       <Form.Item
         name={props.input?.name}
         required={props.required}
-        label={props.label}
+        label={getLabel({
+          label: props.label,
+          labelHref: props.labelHref,
+          newAbbrevLabel: props.newAbbrevLabel,
+          acceptedFileTypesMap: props.acceptedFileTypesMap,
+        })}
         validateStatus={
           props.meta?.touched
             ? (props.meta?.error && "error") || (props.meta?.warning && "warning")

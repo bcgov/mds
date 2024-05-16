@@ -12,7 +12,7 @@ describe("Mines Page", () => {
     cy.get("h4.ant-typography").should("have.text", "Welcome, cypress@bceid.");
     cy.contains("Evergreen Cypress Mine").should("exist");
     cy.contains("Evergreen Cypress Mine").click();
-    cy.get("h1.ant-typography").should("have.text", "Evergreen Cypress Mine");
+    cy.get("div.sidebar-header div.primary-colour").should("have.text", "Evergreen Cypress Mine");
     cy.contains(
       "This tab contains general information about your mine and important contacts at EMLI."
     ).should("exist");

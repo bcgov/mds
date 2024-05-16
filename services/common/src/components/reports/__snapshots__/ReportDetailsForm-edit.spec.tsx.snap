@@ -832,7 +832,7 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
                   <label
                     class="ant-form-item-required"
                     for="VIEW_EDIT_REPORT_documents"
-                    title="Upload Files"
+                    title=""
                   >
                     Upload Files
                   </label>
@@ -850,7 +850,7 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
                         class="filepond--wrapper"
                       >
                         <input
-                          accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,application/vnd.oasis.opendocument.text,application/vnd.oasis.opendocument.text-template,application/vnd.oasis.opendocument.text-web,application/vnd.oasis.opendocument.text-master,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,image/jpg,image/jpeg,image/png,image/jp2,image/tiff,image/heic,image/heif,application/dbf,application/vnd.geo+json,application/gml+xml,application/vnd.google-earth.kml+xml,application/vnd.google-earth.kmz,application/octet-stream,text/csv,application/xml,text/xml"
+                          accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,application/vnd.oasis.opendocument.text,application/vnd.oasis.opendocument.text-template,application/vnd.oasis.opendocument.text-web,application/vnd.oasis.opendocument.text-master,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,image/jpg,image/jpeg,image/png,image/jp2,image/tiff,image/heic,image/heif,application/vnd.geo+json,application/gml+xml,application/dbf,application/vnd.google-earth.kml+xml,application/vnd.google-earth.kmz,application/octet-stream,text/csv,application/xml,text/xml"
                           multiple=""
                           name="file"
                           type="file"
@@ -895,7 +895,7 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
                 class="ant-spin-container"
               >
                 <div
-                  class="ant-table ant-table-empty"
+                  class="ant-table ant-table-empty ant-table-has-fix-right"
                 >
                   <div
                     class="ant-table-container"
@@ -1160,7 +1160,8 @@ exports[`ReportDetailsForm renders edit mode properly 1`] = `
                               </div>
                             </th>
                             <th
-                              class="ant-table-cell actions-column"
+                              class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                              style="position: sticky; right: 0px;"
                             />
                           </tr>
                         </thead>
