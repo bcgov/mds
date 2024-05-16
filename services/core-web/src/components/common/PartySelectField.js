@@ -78,9 +78,7 @@ const transformData = (data, options, header) => {
           <div className="padding-right">
             <FontAwesomeIcon icon={faIdBadge} />
           </div>
-          <span>
-            {options[opt].party_orgbook_entity?.registration_id}
-          </span>
+          <span>{options[opt].party_orgbook_entity?.registration_id}</span>
         </div>
         <div className="inline-flex">
           <div className="padding-right">
@@ -167,7 +165,7 @@ export class PartySelectField extends Component {
           createItemIdsArray(filteredParties, "party_guid"),
           createItemMap(filteredParties, "party_guid"),
           this.props.allowAddingParties &&
-          renderAddPartyFooter(this.showAddPartyForm, this.props.partyLabel)
+            renderAddPartyFooter(this.showAddPartyForm, this.props.partyLabel)
         );
         return { partyDataSource: newPartyDataSource };
       });
@@ -217,7 +215,7 @@ export class PartySelectField extends Component {
     }
   };
 
-  render = () => {
+  render() {
     return (
       <Field
         disabled={this.props.disabled}
@@ -230,7 +228,7 @@ export class PartySelectField extends Component {
         selectedOption={this.state.selectedOption}
       />
     );
-  };
+  }
 }
 
 const mapStateToProps = (state) => ({
