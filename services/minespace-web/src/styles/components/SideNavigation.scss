@@ -33,6 +33,8 @@
 
         .ant-menu-vertical {
             border-right: none;
+            padding-bottom: 120px;
+            overflow-y: auto;
 
             .ant-menu-item {
                 border-radius: 8px;
@@ -44,6 +46,7 @@
 
                 &.ant-menu-item-selected {
                     background-color: "#D9EAF7";
+                    font-weight: 700;
                 }
             }
         }

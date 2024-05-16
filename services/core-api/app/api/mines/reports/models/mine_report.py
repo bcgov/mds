@@ -1,5 +1,5 @@
 import uuid
-
+from flask import current_app
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.associationproxy import association_proxy
@@ -22,6 +22,7 @@ from app.api.activity.models.activity_notification import ActivityType, Activity
 from app.api.mines.reports.models.mine_report_notification import MineReportNotification
 from app.api.utils.helpers import get_current_core_or_ms_env_url
 from app.api.utils.helpers import format_email_datetime_to_string
+from app.api.mines.exceptions.mine_exceptions import MineException
 
 class MineReport(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = "mine_report"
@@ -223,15 +224,15 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
         return core_recipients, ms_recipients
 
     def getReportSpecificEmailsByReportType(self, compliance_details):
-        notificaiton_list = MineReportNotification.find_contact_by_compliance_article(compliance_details.section,
+        notification_list = MineReportNotification.find_contact_by_compliance_article(compliance_details.section,
                                     compliance_details.sub_section, compliance_details.paragraph, compliance_details.sub_paragraph)
         unique_recipients = set()
         regional_email = self.mine.region.regional_contact_office.email
 
-        for ntf in notificaiton_list:
-            notifiy_email = ntf[0]
-            if notifiy_email not in unique_recipients:
-                unique_recipients.add(notifiy_email)
+        for ntf in notification_list:
+            notify_email = ntf[0]
+            if notify_email not in unique_recipients:
+                unique_recipients.add(notify_email)
 
             if ntf[1] and self.mine.major_mine_ind and PERM_RECL_EMAIL not in unique_recipients:
                 unique_recipients.add(PERM_RECL_EMAIL)
@@ -255,6 +256,47 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
             link = f'{Config.CORE_PROD_URL}/mine-dashboard/{self.mine.mine_guid}/reports/code-required-reports'
             body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
             EmailService.send_email(subject, recipients, body)
+
+    def send_report_requested_email(self, report_name, is_crr):
+            if self.mine.mine_manager:
+                recipients = [self.mine.mine_manager.party.email]
+            else:
+                current_app.logger.info(f"Can't find mine manager's email for the mine: {self.mine.mine_name}")
+                raise MineException(f"Couldn't send the email for the mine manager as no manager found for the mine: {self.mine.mine_name}")
+
+            if is_crr:
+                compliance_details = self.mine_report_definition.compliance_articles[0]
+                compliance_string = ComplianceArticle.get_compliance_article_string(self.mine_report_definition.compliance_articles[0])
+                report_name = f'{compliance_string} - {compliance_details.description}'
+                permit_info_value = ""
+                permit_info_label = ""
+
+            else: #PRR
+                report_name = self.report_name
+                permit_info_label = "Permit Number"
+                permit_info_value = self.permit_number + ": "
+
+            subject = "A Report is requested in MineSpace"
+            due_date = (self.due_date).strftime("%b %d %Y") if self.due_date else "N/A"
+            ms_url = get_current_core_or_ms_env_url("ms")
+            ms_report_page_link = f'{ms_url}/mines/{self.mine.mine_guid}/reports/{self.mine_report_guid}'
+
+            email_context = {
+                "report_request": {
+                    "mine_number": self.mine.mine_no,
+                    "mine_name": self.mine.mine_name,
+                    "permit_info_label": permit_info_label,
+                    "permit_info_value": permit_info_value,
+                    "report_name": report_name,
+                    "report_compliance_year": self.submission_year,
+                    "report_due_date": due_date,
+                    },
+                    "minespace_login_link": ms_url,
+                    "ms_report_page_link": ms_report_page_link
+                }
+
+            ms_email_body = open("app/templates/email/report/ms_new_report_requested_email.html", "r").read()
+            EmailService.send_template_email(subject, recipients, ms_email_body, email_context, cc=None)
 
     @classmethod
     def create(cls,

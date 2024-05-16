@@ -7,12 +7,14 @@ import {
   phoneNumber,
   required,
   requiredRadioButton,
+  maxLength,
 } from "@mds/common/redux/utils/Validate";
 import { useSelector } from "react-redux";
 import { FORM } from "@mds/common/constants";
 import RenderField from "../forms/RenderField";
 import { getDropdownMunicipalities } from "@mds/common/redux/selectors/staticContentSelectors";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
+import { normalizePhone } from "@mds/common/redux/utils/helpers";
 
 export const LegalLandOwnerInformation: FC = () => {
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
@@ -89,7 +91,8 @@ export const LegalLandOwnerInformation: FC = () => {
                 label="Legal Land Owner Contact Number"
                 component={RenderField}
                 required={!is_legal_land_owner}
-                validate={!is_legal_land_owner ? [required, phoneNumber] : []}
+                validate={!is_legal_land_owner ? [phoneNumber, maxLength(12), required] : []}
+                normalize={normalizePhone}
               />
             </Col>
             <Col md={12} sm={24}>
