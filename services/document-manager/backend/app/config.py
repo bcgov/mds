@@ -175,7 +175,7 @@ class TestConfig(Config):
     SQLALCHEMY_DATABASE_URI = DB_URL
 
     JWT_OIDC_TEST_MODE = True
-    JWT_OIDC_TEST_AUDIENCE = "test_audience"
+    JWT_OIDC_TEST_AUDIENCE = os.environ.get('JWT_OIDC_TEST_AUDIENCE', None)
     JWT_OIDC_TEST_CLIENT_SECRET = "test_secret"
     JWT_OIDC_TEST_ISSUER = "test_issuer"
 
