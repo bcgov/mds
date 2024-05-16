@@ -175,51 +175,40 @@ class TestConfig(Config):
     SQLALCHEMY_DATABASE_URI = DB_URL
 
     JWT_OIDC_TEST_MODE = True
-    JWT_OIDC_TEST_AUDIENCE = os.environ.get('JWT_OIDC_TEST_AUDIENCE', '')
-    JWT_OIDC_TEST_CLIENT_SECRET = os.environ.get('JWT_OIDC_TEST_CLIENT_SECRET', '')
-    JWT_OIDC_TEST_ISSUER = os.environ.get('JWT_OIDC_TEST_ISSUER', '')
+    JWT_OIDC_TEST_AUDIENCE = os.environ.get('JWT_OIDC_TEST_AUDIENCE')
+    JWT_OIDC_TEST_CLIENT_SECRET = os.environ.get('JWT_OIDC_TEST_CLIENT_SECRET')
+    JWT_OIDC_TEST_ISSUER = os.environ.get('JWT_OIDC_TEST_ISSUER')
 
-    # Dummy Private Keys for testing purposes, can replace these keys with any other generated key.
     JWT_OIDC_TEST_KEYS = {
         "keys": [{
-            "kid": os.environ.get('JWT_OIDC_KEY_KID',''),
-            "kty": os.environ.get('JWT_OIDC_KEY_KTY',''),
-            "alg": os.environ.get('JWT_OIDC_KEY_ALG',''),
-            "use": os.environ.get('JWT_OIDC_KEY_USE',''),
-            "n": os.environ.get('JWT_OIDC_KEY_N', ''),
-            "e": os.environ.get('JWT_OIDC_KEY_E', '')
+            "kid": os.environ.get('JWT_OIDC_KEY_KID'),
+            "kty": os.environ.get('JWT_OIDC_KEY_KTY'),
+            "alg": os.environ.get('JWT_OIDC_KEY_ALG'),
+            "use": os.environ.get('JWT_OIDC_KEY_USE'),
+            "n": os.environ.get('JWT_OIDC_KEY_N'),
+            "e": os.environ.get('JWT_OIDC_KEY_E')
         }]
     }
+
     # Dummy Private Keys for testing purposes.
     JWT_OIDC_TEST_PRIVATE_KEY_JWKS = {
         "keys": [{
-            "kid":
-            os.environ.get('JWT_OIDC_KEY_KID',''),
-            "kty":
-            os.environ.get('JWT_OIDC_KEY_KTY',''),
-            "alg":
-            os.environ.get('JWT_OIDC_KEY_ALG',''),
-            "use":
-            os.environ.get('JWT_OIDC_KEY_USE',''),
-            "kty":
-            os.environ.get('JWT_OIDC_KEY_KTY',''),
-            "n":
-            os.environ.get('JWT_OIDC_KEY_N',''),
-            "e":
-            os.environ.get('JWT_OIDC_KEY_E',''),
-            "d":
-            os.environ.get('JWT_OIDC_KEY_D'),
-            "p":
-            os.environ.get('JWT_OIDC_KEY_P'),
-            "q":
-            os.environ.get('JWT_OIDC_KEY_Q'),
-            "dp":
-            os.environ.get('JWT_OIDC_KEY_DP'),
-            "dq":
-            os.environ.get('JWT_OIDC_KEY_DP'),
-            "qi":
-            os.environ.get('JWT_OIDC_KEY_QI')
+            "kid": os.environ.get('JWT_OIDC_KEY_KID'),
+            "kty": os.environ.get('JWT_OIDC_KEY_KTY'),
+            "alg": os.environ.get('JWT_OIDC_KEY_ALG'),
+            "use": os.environ.get('JWT_OIDC_KEY_USE'),
+            "n": os.environ.get('JWT_OIDC_KEY_N'),
+            "e": os.environ.get('JWT_OIDC_KEY_E'),
+            "d": os.environ.get('JWT_OIDC_KEY_D'),
+            "p": os.environ.get('JWT_OIDC_KEY_P'),
+            "q": os.environ.get('JWT_OIDC_KEY_Q'),
+            "dp": os.environ.get('JWT_OIDC_KEY_DP'),
+            "dq": os.environ.get('JWT_OIDC_KEY_DQ'),
+            "qi": os.environ.get('JWT_OIDC_KEY_QI')
         }]
     }
+
+    # Dummy Private Key, for testing purposes.
+    JWT_OIDC_TEST_PRIVATE_KEY_PEM = os.environ.get('JWT_OIDC_TEST_PRIVATE_KEY_PEM')
     # Dummy Private Key, for testing purposes.
     JWT_OIDC_TEST_PRIVATE_KEY_PEM = os.environ.get('JWT_OIDC_TEST_PRIVATE_KEY_PEM')
