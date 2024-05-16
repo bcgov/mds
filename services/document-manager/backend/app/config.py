@@ -179,7 +179,7 @@ class TestConfig(Config):
     JWT_OIDC_TEST_CLIENT_SECRET = os.environ.get('JWT_OIDC_TEST_CLIENT_SECRET', None)
     JWT_OIDC_TEST_ISSUER = os.environ.get('JWT_OIDC_TEST_ISSUER', None)
 
-    KID_KEY = os.environ.get('JWT_OIDC_KEY_KID', None)
+    KID_KEY = "flask-jwt-oidc-test-client"
     # KTY_KEY = os.environ.get('JWT_OIDC_KEY_KTY', None)
     # ALG_KEY = os.environ.get('JWT_OIDC_KEY_ALG', None)
     # USE_KEY = os.environ.get('JWT_OIDC_KEY_USE', None)
