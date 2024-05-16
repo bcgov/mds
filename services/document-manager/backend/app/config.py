@@ -176,31 +176,18 @@ class TestConfig(Config):
 
     JWT_OIDC_TEST_MODE = True
     JWT_OIDC_TEST_AUDIENCE = os.environ.get('JWT_OIDC_TEST_AUDIENCE', None)
-    JWT_OIDC_TEST_CLIENT_SECRET = os.environ.get('JWT_OIDC_TEST_CLIENT_SECRET', None)
-    JWT_OIDC_TEST_ISSUER = os.environ.get('JWT_OIDC_TEST_ISSUER', None)
-
-    KID_KEY = "flask-jwt-oidc-test-client"
-    # KTY_KEY = os.environ.get('JWT_OIDC_KEY_KTY', None)
-    # ALG_KEY = os.environ.get('JWT_OIDC_KEY_ALG', None)
-    # USE_KEY = os.environ.get('JWT_OIDC_KEY_USE', None)
-    # N_KEY = str(os.environ.get('JWT_OIDC_KEY_N', None))
-    # E_KEY = os.environ.get('JWT_OIDC_KEY_E', None)
-    # D_KEY = str(os.environ.get('JWT_OIDC_KEY_D', None))
-    # P_KEY = str(os.environ.get('JWT_OIDC_KEY_P', None))
-    # Q_KEY = str(os.environ.get('JWT_OIDC_KEY_Q', None))
-    # DP_KEY = str(os.environ.get('JWT_OIDC_KEY_DP', None))
-    # DQ_KEY = str(os.environ.get('JWT_OIDC_KEY_DQ', None))
-    # QI_KEY = str(os.environ.get('JWT_OIDC_KEY_QI', None))
+    JWT_OIDC_TEST_CLIENT_SECRET = "test_secret"
+    JWT_OIDC_TEST_ISSUER = "test_issuer"
 
     # Dummy Private Keys for testing purposes, can replace these keys with any other generated key.
     JWT_OIDC_TEST_KEYS = {
         "keys": [{
-            "kid": KID_KEY,
+            "kid": "flask-jwt-oidc-test-client",
             "kty": "RSA",
             "alg": "RS256",
             "use": "sig",
             "n":
-                "AN-fWcpCyE5KPzHDjigLaSUVZI0uYrcGcc40InVtl-rQRDmAh-C2W8H4_Hxhr5VLc6crsJ2LiJTV_E72S03pzpOOaaYV6-TzAjCou2GYJIXev7f6Hh512PuG5wyxda_TlBSsI-gvphRTPsKCnPutrbiukCYrnPuWxX5_cES9eStR",
+            "AN-fWcpCyE5KPzHDjigLaSUVZI0uYrcGcc40InVtl-rQRDmAh-C2W8H4_Hxhr5VLc6crsJ2LiJTV_E72S03pzpOOaaYV6-TzAjCou2GYJIXev7f6Hh512PuG5wyxda_TlBSsI-gvphRTPsKCnPutrbiukCYrnPuWxX5_cES9eStR",
             "e": "AQAB"
         }]
     }
@@ -208,31 +195,31 @@ class TestConfig(Config):
     JWT_OIDC_TEST_PRIVATE_KEY_JWKS = {
         "keys": [{
             "kid":
-                "flask-jwt-oidc-test-client",
+            "flask-jwt-oidc-test-client",
             "kty":
-                "RSA",
+            "RSA",
             "alg":
-                "RS256",
+            "RS256",
             "use":
-                "sig",
+            "sig",
             "kty":
-                "RSA",
+            "RSA",
             "n":
-                "AN-fWcpCyE5KPzHDjigLaSUVZI0uYrcGcc40InVtl-rQRDmAh-C2W8H4_Hxhr5VLc6crsJ2LiJTV_E72S03pzpOOaaYV6-TzAjCou2GYJIXev7f6Hh512PuG5wyxda_TlBSsI-gvphRTPsKCnPutrbiukCYrnPuWxX5_cES9eStR",
+            "AN-fWcpCyE5KPzHDjigLaSUVZI0uYrcGcc40InVtl-rQRDmAh-C2W8H4_Hxhr5VLc6crsJ2LiJTV_E72S03pzpOOaaYV6-TzAjCou2GYJIXev7f6Hh512PuG5wyxda_TlBSsI-gvphRTPsKCnPutrbiukCYrnPuWxX5_cES9eStR",
             "e":
-                "AQAB",
+            "AQAB",
             "d":
-                "C0G3QGI6OQ6tvbCNYGCqq043YI_8MiBl7C5dqbGZmx1ewdJBhMNJPStuckhskURaDwk4-8VBW9SlvcfSJJrnZhgFMjOYSSsBtPGBIMIdM5eSKbenCCjO8Tg0BUh_xa3CHST1W4RQ5rFXadZ9AeNtaGcWj2acmXNO3DVETXAX3x0",
+            "C0G3QGI6OQ6tvbCNYGCqq043YI_8MiBl7C5dqbGZmx1ewdJBhMNJPStuckhskURaDwk4-8VBW9SlvcfSJJrnZhgFMjOYSSsBtPGBIMIdM5eSKbenCCjO8Tg0BUh_xa3CHST1W4RQ5rFXadZ9AeNtaGcWj2acmXNO3DVETXAX3x0",
             "p":
-                "APXcusFMQNHjh6KVD_hOUIw87lvK13WkDEeeuqAydai9Ig9JKEAAfV94W6Aftka7tGgE7ulg1vo3eJoLWJ1zvKM",
+            "APXcusFMQNHjh6KVD_hOUIw87lvK13WkDEeeuqAydai9Ig9JKEAAfV94W6Aftka7tGgE7ulg1vo3eJoLWJ1zvKM",
             "q":
-                "AOjX3OnPJnk0ZFUQBwhduCweRi37I6DAdLTnhDvcPTrrNWuKPg9uGwHjzFCJgKd8KBaDQ0X1rZTZLTqi3peT43s",
+            "AOjX3OnPJnk0ZFUQBwhduCweRi37I6DAdLTnhDvcPTrrNWuKPg9uGwHjzFCJgKd8KBaDQ0X1rZTZLTqi3peT43s",
             "dp":
-                "AN9kBoA5o6_Rl9zeqdsIdWFmv4DB5lEqlEnC7HlAP-3oo3jWFO9KQqArQL1V8w2D4aCd0uJULiC9pCP7aTHvBhc",
+            "AN9kBoA5o6_Rl9zeqdsIdWFmv4DB5lEqlEnC7HlAP-3oo3jWFO9KQqArQL1V8w2D4aCd0uJULiC9pCP7aTHvBhc",
             "dq":
-                "ANtbSY6njfpPploQsF9sU26U0s7MsuLljM1E8uml8bVJE1mNsiu9MgpUvg39jEu9BtM2tDD7Y51AAIEmIQex1nM",
+            "ANtbSY6njfpPploQsF9sU26U0s7MsuLljM1E8uml8bVJE1mNsiu9MgpUvg39jEu9BtM2tDD7Y51AAIEmIQex1nM",
             "qi":
-                "XLE5O360x-MhsdFXx8Vwz4304-MJg-oGSJXCK_ZWYOB_FGXFRTfebxCsSYi0YwJo-oNu96bvZCuMplzRI1liZw"
+            "XLE5O360x-MhsdFXx8Vwz4304-MJg-oGSJXCK_ZWYOB_FGXFRTfebxCsSYi0YwJo-oNu96bvZCuMplzRI1liZw"
         }]
     }
     # Dummy Private Key, for testing purposes.
