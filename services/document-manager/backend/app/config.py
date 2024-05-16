@@ -175,51 +175,67 @@ class TestConfig(Config):
     SQLALCHEMY_DATABASE_URI = DB_URL
 
     JWT_OIDC_TEST_MODE = True
-    JWT_OIDC_TEST_AUDIENCE = os.environ.get('JWT_OIDC_TEST_AUDIENCE', '')
-    JWT_OIDC_TEST_CLIENT_SECRET = os.environ.get('JWT_OIDC_TEST_CLIENT_SECRET', '')
-    JWT_OIDC_TEST_ISSUER = os.environ.get('JWT_OIDC_TEST_ISSUER', '')
+    JWT_OIDC_TEST_AUDIENCE = "test_audience"
+    JWT_OIDC_TEST_CLIENT_SECRET = "test_secret"
+    JWT_OIDC_TEST_ISSUER = "test_issuer"
 
     # Dummy Private Keys for testing purposes, can replace these keys with any other generated key.
     JWT_OIDC_TEST_KEYS = {
         "keys": [{
-            "kid": os.environ.get('JWT_OIDC_KEY_KID',''),
-            "kty": os.environ.get('JWT_OIDC_KEY_KTY',''),
-            "alg": os.environ.get('JWT_OIDC_KEY_ALG',''),
-            "use": os.environ.get('JWT_OIDC_KEY_USE',''),
-            "n": os.environ.get('JWT_OIDC_KEY_N',''),
-            "e": os.environ.get('JWT_OIDC_KEY_E','')
+            "kid": "flask-jwt-oidc-test-client",
+            "kty": "RSA",
+            "alg": "RS256",
+            "use": "sig",
+            "n":
+            "AN-fWcpCyE5KPzHDjigLaSUVZI0uYrcGcc40InVtl-rQRDmAh-C2W8H4_Hxhr5VLc6crsJ2LiJTV_E72S03pzpOOaaYV6-TzAjCou2GYJIXev7f6Hh512PuG5wyxda_TlBSsI-gvphRTPsKCnPutrbiukCYrnPuWxX5_cES9eStR",
+            "e": "AQAB"
         }]
     }
     # Dummy Private Keys for testing purposes.
     JWT_OIDC_TEST_PRIVATE_KEY_JWKS = {
         "keys": [{
             "kid":
-            os.environ.get('JWT_OIDC_KEY_KID',''),
+            "flask-jwt-oidc-test-client",
             "kty":
-            os.environ.get('JWT_OIDC_KEY_KTY',''),
+            "RSA",
             "alg":
-            os.environ.get('JWT_OIDC_KEY_ALG',''),
+            "RS256",
             "use":
-            os.environ.get('JWT_OIDC_KEY_USE',''),
+            "sig",
             "kty":
-            os.environ.get('JWT_OIDC_KEY_KTY',''),
+            "RSA",
             "n":
-            os.environ.get('JWT_OIDC_KEY_N',''),
+            "AN-fWcpCyE5KPzHDjigLaSUVZI0uYrcGcc40InVtl-rQRDmAh-C2W8H4_Hxhr5VLc6crsJ2LiJTV_E72S03pzpOOaaYV6-TzAjCou2GYJIXev7f6Hh512PuG5wyxda_TlBSsI-gvphRTPsKCnPutrbiukCYrnPuWxX5_cES9eStR",
             "e":
-            os.environ.get('JWT_OIDC_KEY_E',''),
+            "AQAB",
             "d":
-            os.environ.get('JWT_OIDC_KEY_D',''),
+            "C0G3QGI6OQ6tvbCNYGCqq043YI_8MiBl7C5dqbGZmx1ewdJBhMNJPStuckhskURaDwk4-8VBW9SlvcfSJJrnZhgFMjOYSSsBtPGBIMIdM5eSKbenCCjO8Tg0BUh_xa3CHST1W4RQ5rFXadZ9AeNtaGcWj2acmXNO3DVETXAX3x0",
             "p":
-            os.environ.get('JWT_OIDC_KEY_P',''),
+            "APXcusFMQNHjh6KVD_hOUIw87lvK13WkDEeeuqAydai9Ig9JKEAAfV94W6Aftka7tGgE7ulg1vo3eJoLWJ1zvKM",
             "q":
-            os.environ.get('JWT_OIDC_KEY_Q',''),
+            "AOjX3OnPJnk0ZFUQBwhduCweRi37I6DAdLTnhDvcPTrrNWuKPg9uGwHjzFCJgKd8KBaDQ0X1rZTZLTqi3peT43s",
             "dp":
-            os.environ.get('JWT_OIDC_KEY_DP',''),
+            "AN9kBoA5o6_Rl9zeqdsIdWFmv4DB5lEqlEnC7HlAP-3oo3jWFO9KQqArQL1V8w2D4aCd0uJULiC9pCP7aTHvBhc",
             "dq":
-            os.environ.get('JWT_OIDC_KEY_DP',''),
+            "ANtbSY6njfpPploQsF9sU26U0s7MsuLljM1E8uml8bVJE1mNsiu9MgpUvg39jEu9BtM2tDD7Y51AAIEmIQex1nM",
             "qi":
-            os.environ.get('JWT_OIDC_KEY_QI','')
+            "XLE5O360x-MhsdFXx8Vwz4304-MJg-oGSJXCK_ZWYOB_FGXFRTfebxCsSYi0YwJo-oNu96bvZCuMplzRI1liZw"
         }]
     }
     # Dummy Private Key, for testing purposes.
-    JWT_OIDC_TEST_PRIVATE_KEY_PEM = os.environ.get('JWT_OIDC_TEST_PRIVATE_KEY_PEM','')
+    JWT_OIDC_TEST_PRIVATE_KEY_PEM = """
+    -----BEGIN RSA PRIVATE KEY-----
+    MIICXQIBAAKBgQDfn1nKQshOSj8xw44oC2klFWSNLmK3BnHONCJ1bZfq0EQ5gIfg
+    tlvB+Px8Ya+VS3OnK7Cdi4iU1fxO9ktN6c6TjmmmFevk8wIwqLthmCSF3r+3+h4e
+    ddj7hucMsXWv05QUrCPoL6YUUz7Cgpz7ra24rpAmK5z7lsV+f3BEvXkrUQIDAQAB
+    AoGAC0G3QGI6OQ6tvbCNYGCqq043YI/8MiBl7C5dqbGZmx1ewdJBhMNJPStuckhs
+    kURaDwk4+8VBW9SlvcfSJJrnZhgFMjOYSSsBtPGBIMIdM5eSKbenCCjO8Tg0BUh/
+    xa3CHST1W4RQ5rFXadZ9AeNtaGcWj2acmXNO3DVETXAX3x0CQQD13LrBTEDR44ei
+    lQ/4TlCMPO5bytd1pAxHnrqgMnWovSIPSShAAH1feFugH7ZGu7RoBO7pYNb6N3ia
+    C1idc7yjAkEA6Nfc6c8meTRkVRAHCF24LB5GLfsjoMB0tOeEO9w9Ous1a4o+D24b
+    AePMUImAp3woFoNDRfWtlNktOqLel5PjewJBAN9kBoA5o6/Rl9zeqdsIdWFmv4DB
+    5lEqlEnC7HlAP+3oo3jWFO9KQqArQL1V8w2D4aCd0uJULiC9pCP7aTHvBhcCQQDb
+    W0mOp436T6ZaELBfbFNulNLOzLLi5YzNRPLppfG1SRNZjbIrvTIKVL4N/YxLvQbT
+    NrQw+2OdQACBJiEHsdZzAkBcsTk7frTH4yGx0VfHxXDPjfTj4wmD6gZIlcIr9lZg
+    4H8UZcVFN95vEKxJiLRjAmj6g273pu9kK4ymXNEjWWJn
+    -----END RSA PRIVATE KEY-----"""
