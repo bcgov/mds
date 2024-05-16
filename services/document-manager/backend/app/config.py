@@ -176,14 +176,17 @@ class TestConfig(Config):
 
     JWT_OIDC_TEST_MODE = True
     JWT_OIDC_TEST_AUDIENCE = os.environ.get('JWT_OIDC_TEST_AUDIENCE', None)
-    JWT_OIDC_TEST_CLIENT_SECRET = "test_secret"
-    JWT_OIDC_TEST_ISSUER = "test_issuer"
+    JWT_OIDC_TEST_CLIENT_SECRET = os.environ.get('JWT_OIDC_TEST_CLIENT_SECRET', None)
+    JWT_OIDC_TEST_ISSUER = os.environ.get('JWT_OIDC_TEST_ISSUER', None)
+
+    KID =  os.environ.get('JWT_OIDC_KEY_KID', None)
+    KTY = os.environ.get('JWT_OIDC_KEY_KTY', None)
 
     # Dummy Private Keys for testing purposes, can replace these keys with any other generated key.
     JWT_OIDC_TEST_KEYS = {
         "keys": [{
-            "kid": "flask-jwt-oidc-test-client",
-            "kty": "RSA",
+            "kid": KID,
+            "kty": KTY,
             "alg": "RS256",
             "use": "sig",
             "n":
@@ -194,10 +197,8 @@ class TestConfig(Config):
     # Dummy Private Keys for testing purposes.
     JWT_OIDC_TEST_PRIVATE_KEY_JWKS = {
         "keys": [{
-            "kid":
-            "flask-jwt-oidc-test-client",
-            "kty":
-            "RSA",
+            "kid":KID,
+            "kty":KTY,
             "alg":
             "RS256",
             "use":
