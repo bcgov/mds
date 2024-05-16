@@ -1,3 +1,5 @@
+import { IMineReportDefinition } from "./reports";
+
 export interface IComplianceArticle {
   compliance_article_id: number;
   articleNumber?: string;
@@ -13,4 +15,5 @@ export interface IComplianceArticle {
   expiry_date: Date;
   help_reference_link: string;
   cim_or_cpo: string;
+  reports: IMineReportDefinition[];
 }
