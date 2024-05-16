@@ -323,5 +323,34 @@ class TestConfig(Config):
     DQ_KEY = os.environ.get('JWT_OIDC_KEY_DQ', None)
     QI_KEY = os.environ.get('JWT_OIDC_KEY_QI', None)
 
+    # Dummy Private Keys for testing purposes, can replace these keys with any other generated key.
+    JWT_OIDC_TEST_KEYS = {
+        "keys": [{
+            "kid": KID_KEY,
+            "kty": KTY_KEY,
+            "alg": ALG_KEY,
+            "use": USE_KEY,
+            "n": N_KEY,
+            "e": E_KEY
+        }]
+    }
+    # Dummy Private Keys for testing purposes.
+    JWT_OIDC_TEST_PRIVATE_KEY_JWKS = {
+        "keys": [{
+            "kid": KID_KEY,
+            "kty": KTY_KEY,
+            "alg": ALG_KEY,
+            "use": USE_KEY,
+            "kty": KTY_KEY,
+            "n": N_KEY,
+            "e": E_KEY,
+            "d": D_KEY,
+            "p": P_KEY,
+            "q": Q_KEY,
+            "dp": DP_KEY,
+            "dq": DQ_KEY,
+            "qi": QI_KEY
+        }]
+    }
     # Dummy Private Key, for testing purposes.
     JWT_OIDC_TEST_PRIVATE_KEY_PEM = os.environ.get('JWT_OIDC_TEST_PRIVATE_KEY_PEM', None)
