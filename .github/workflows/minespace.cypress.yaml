@@ -65,6 +65,21 @@ jobs:
           CYPRESS_FILE_SYSTEM_PROVIDER_URL: https://mds-dev.apps.silver.devops.gov.bc.ca/file-api/AmazonS3Provider/
           CYPRESS_FLAGSMITH_URL: https://mds-flags-dev.apps.silver.devops.gov.bc.ca/api/v1/
           CYPRESS_FLAGSMITH_KEY: 4Eu9eEMDmWVEHKDaKoeWY7
+          JWT_OIDC_TEST_AUDIENCE: ${{ secrets.JWT_OIDC_TEST_AUDIENCE }}
+          JWT_OIDC_TEST_CLIENT_SECRET: ${{ secrets.JWT_OIDC_TEST_CLIENT_SECRET }}
+          JWT_OIDC_TEST_ISSUER: ${{ secrets.JWT_OIDC_TEST_ISSUER }}
+          JWT_OIDC_KEY_KID: ${{ secrets.JWT_OIDC_KEY_KID }}
+          JWT_OIDC_KEY_KTY: ${{ secrets.JWT_OIDC_KEY_KTY }}
+          JWT_OIDC_KEY_ALG: ${{ secrets.JWT_OIDC_KEY_ALG }}
+          JWT_OIDC_KEY_USE: ${{ secrets.JWT_OIDC_KEY_USE }}
+          JWT_OIDC_KEY_N: ${{ secrets.JWT_OIDC_KEY_N }}
+          JWT_OIDC_KEY_E: ${{ secrets.JWT_OIDC_KEY_E }}
+          JWT_OIDC_KEY_D: ${{ secrets.JWT_OIDC_KEY_D }}
+          JWT_OIDC_KEY_P: ${{ secrets.JWT_OIDC_KEY_P }}
+          JWT_OIDC_KEY_Q: ${{ secrets.JWT_OIDC_KEY_Q }}
+          JWT_OIDC_KEY_DP: ${{ secrets.JWT_OIDC_KEY_DP }}
+          JWT_OIDC_KEY_DQ: ${{ secrets.JWT_OIDC_KEY_DQ }}
+          JWT_OIDC_KEY_QI: ${{ secrets.JWT_OIDC_KEY_QI }}
       - name: Upload cypress video
         uses: actions/upload-artifact@v3
         if: failure()
