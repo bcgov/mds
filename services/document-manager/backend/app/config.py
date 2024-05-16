@@ -180,17 +180,17 @@ class TestConfig(Config):
     JWT_OIDC_TEST_ISSUER = os.environ.get('JWT_OIDC_TEST_ISSUER', None)
 
     KID_KEY = os.environ.get('JWT_OIDC_KEY_KID', None)
-    KTY_KEY = os.environ.get('JWT_OIDC_KEY_KTY', None)
-    ALG_KEY = os.environ.get('JWT_OIDC_KEY_ALG', None)
-    USE_KEY = os.environ.get('JWT_OIDC_KEY_USE', None)
-    N_KEY = str(os.environ.get('JWT_OIDC_KEY_N', None))
-    E_KEY = os.environ.get('JWT_OIDC_KEY_E', None)
-    D_KEY = str(os.environ.get('JWT_OIDC_KEY_D', None))
-    P_KEY = str(os.environ.get('JWT_OIDC_KEY_P', None))
-    Q_KEY = str(os.environ.get('JWT_OIDC_KEY_Q', None))
-    DP_KEY = str(os.environ.get('JWT_OIDC_KEY_DP', None))
-    DQ_KEY = str(os.environ.get('JWT_OIDC_KEY_DQ', None))
-    QI_KEY = str(os.environ.get('JWT_OIDC_KEY_QI', None))
+    # KTY_KEY = os.environ.get('JWT_OIDC_KEY_KTY', None)
+    # ALG_KEY = os.environ.get('JWT_OIDC_KEY_ALG', None)
+    # USE_KEY = os.environ.get('JWT_OIDC_KEY_USE', None)
+    # N_KEY = str(os.environ.get('JWT_OIDC_KEY_N', None))
+    # E_KEY = os.environ.get('JWT_OIDC_KEY_E', None)
+    # D_KEY = str(os.environ.get('JWT_OIDC_KEY_D', None))
+    # P_KEY = str(os.environ.get('JWT_OIDC_KEY_P', None))
+    # Q_KEY = str(os.environ.get('JWT_OIDC_KEY_Q', None))
+    # DP_KEY = str(os.environ.get('JWT_OIDC_KEY_DP', None))
+    # DQ_KEY = str(os.environ.get('JWT_OIDC_KEY_DQ', None))
+    # QI_KEY = str(os.environ.get('JWT_OIDC_KEY_QI', None))
 
     # Dummy Private Keys for testing purposes, can replace these keys with any other generated key.
     JWT_OIDC_TEST_KEYS = {
