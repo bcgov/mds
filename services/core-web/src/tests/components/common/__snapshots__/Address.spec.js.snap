@@ -11,8 +11,48 @@ exports[`Address renders properly 1`] = `
   <div
     className="inline-flex"
   >
-    <ForwardRef(ContactsOutlined)
-      className="icon-sm padding-sm--right"
+    <FontAwesomeIcon
+      beat={false}
+      beatFade={false}
+      border={false}
+      bounce={false}
+      className="fa-lg fa-fw"
+      fade={false}
+      fixedWidth={false}
+      flip={false}
+      icon={
+        Object {
+          "icon": Array [
+            384,
+            512,
+            Array [
+              127970,
+              61687,
+            ],
+            "f1ad",
+            "M64 32C46.3 32 32 46.3 32 64V448c0 17.7 14.3 32 32 32h64V416c0-35.3 28.7-64 64-64s64 28.7 64 64v64h64c17.7 0 32-14.3 32-32V64c0-17.7-14.3-32-32-32H64zM224 416c0-17.7-14.3-32-32-32s-32 14.3-32 32v64h64V416zm-96 96H64c-35.3 0-64-28.7-64-64V64C0 28.7 28.7 0 64 0H320c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H256 224 160 128zM64 120c0-13.3 10.7-24 24-24h48c13.3 0 24 10.7 24 24v48c0 13.3-10.7 24-24 24H88c-13.3 0-24-10.7-24-24V120zm32 8v32h32V128H96zM248 96h48c13.3 0 24 10.7 24 24v48c0 13.3-10.7 24-24 24H248c-13.3 0-24-10.7-24-24V120c0-13.3 10.7-24 24-24zm8 64h32V128H256v32zM64 248c0-13.3 10.7-24 24-24h48c13.3 0 24 10.7 24 24v48c0 13.3-10.7 24-24 24H88c-13.3 0-24-10.7-24-24V248zm32 8v32h32V256H96zm152-32h48c13.3 0 24 10.7 24 24v48c0 13.3-10.7 24-24 24H248c-13.3 0-24-10.7-24-24V248c0-13.3 10.7-24 24-24zm8 64h32V256H256v32z",
+          ],
+          "iconName": "building",
+          "prefix": "fal",
+        }
+      }
+      inverse={false}
+      listItem={false}
+      mask={null}
+      maskId={null}
+      pull={null}
+      pulse={false}
+      rotation={null}
+      shake={false}
+      size={null}
+      spin={false}
+      spinPulse={false}
+      spinReverse={false}
+      swapOpacity={false}
+      symbol={false}
+      title=""
+      titleId={null}
+      transform={null}
     />
     <p>
       <span
