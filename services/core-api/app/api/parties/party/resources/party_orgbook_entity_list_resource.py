@@ -56,7 +56,6 @@ class PartyOrgBookEntityListResource(Resource, UserMixin):
 
         party_orgbook_entity.save()
 
-        party.party_name = name_text
         party.save()
 
         return party_orgbook_entity, 201
