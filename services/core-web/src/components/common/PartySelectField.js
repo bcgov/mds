@@ -3,6 +3,9 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { throttle } from "lodash";
 import PropTypes from "prop-types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faIdBadge } from "@fortawesome/pro-light-svg-icons";
+
 import { Divider } from "antd";
 import { PlusOutlined, PhoneOutlined, MailOutlined } from "@ant-design/icons";
 import { Field } from "redux-form";
@@ -71,6 +74,14 @@ const transformData = (data, options, header) => {
     label: (
       <div>
         <span>{options[opt].name}</span>
+        <div className="inline-flex">
+          <div className="padding-right">
+            <FontAwesomeIcon icon={faIdBadge} />
+          </div>
+          <span>
+            {options[opt].party_orgbook_entity?.registration_id}
+          </span>
+        </div>
         <div className="inline-flex">
           <div className="padding-right">
             <MailOutlined className="icon-xs" />
@@ -156,7 +167,7 @@ export class PartySelectField extends Component {
           createItemIdsArray(filteredParties, "party_guid"),
           createItemMap(filteredParties, "party_guid"),
           this.props.allowAddingParties &&
-            renderAddPartyFooter(this.showAddPartyForm, this.props.partyLabel)
+          renderAddPartyFooter(this.showAddPartyForm, this.props.partyLabel)
         );
         return { partyDataSource: newPartyDataSource };
       });
