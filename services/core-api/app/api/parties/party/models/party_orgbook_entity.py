@@ -10,12 +10,12 @@ class PartyOrgBookEntity(AuditMixin, Base):
     __tablename__ = 'party_orgbook_entity'
 
     party_orgbook_entity_id = db.Column(db.Integer, primary_key=True)
-    registration_id = db.Column(db.String, nullable=False, unique=True)
+    registration_id = db.Column(db.String, nullable=False)
     registration_status = db.Column(db.Boolean, nullable=False)
     registration_date = db.Column(db.DateTime, nullable=False)
-    name_id = db.Column(db.Integer, nullable=False, unique=True)
-    name_text = db.Column(db.String, nullable=False, unique=True)
-    credential_id = db.Column(db.Integer, nullable=False, unique=True)
+    name_id = db.Column(db.Integer, nullable=False)
+    name_text = db.Column(db.String, nullable=False)
+    credential_id = db.Column(db.Integer, nullable=False)
     company_alias = db.Column(db.String(200), nullable=True)
 
     party_guid = db.Column(
