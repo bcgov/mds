@@ -5,7 +5,11 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { Tabs, Button, Popconfirm, Row, Col, Typography } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowUpRightFromSquare, faIdBadge, faFileSignature } from "@fortawesome/pro-light-svg-icons";
+import {
+  faArrowUpRightFromSquare,
+  faHashtag,
+  faFileSignature,
+} from "@fortawesome/pro-light-svg-icons";
 import {
   PhoneOutlined,
   MinusCircleOutlined,
@@ -222,7 +226,7 @@ export class PartyProfile extends Component {
                 <Typography.Title level={2}>{party.name}</Typography.Title>
               </Col>
               <Col md={8} xs={12}></Col>
-              <Col md={8} xs={12} style={{ display: "flex", justifyContent: 'flex-end' }}>
+              <Col md={8} xs={12} style={{ display: "flex", justifyContent: "flex-end" }}>
                 <AuthorizationWrapper permission={Permission.EDIT_PARTIES}>
                   <Button
                     type="primary"
@@ -262,7 +266,6 @@ export class PartyProfile extends Component {
                     </Button>
                   </Popconfirm>
                 </AuthorizationWrapper>
-
               </Col>
             </Row>
 
@@ -294,8 +297,6 @@ export class PartyProfile extends Component {
                     {party.phone_no} {party.phone_ext ? `x${party.phone_ext}` : ""}
                   </p>
                 </div>
-
-
               </Col>
               <Col md={8} xs={12}>
                 <div className="inline-flex">
@@ -306,14 +307,12 @@ export class PartyProfile extends Component {
               </Col>
               <Col md={8} xs={12}>
                 {!isEmpty(party.party_orgbook_entity) && (
-
                   <div className="light-grey-background padding-md">
                     <Typography.Title level={4}>
                       <CheckCircleOutlined style={{ paddingRight: 5 }} />
-                      OrgBook Registration Information <a
-                        href={routes.ORGBOOK_ENTITY_URL(
-                          party.party_orgbook_entity.registration_id
-                        )}
+                      OrgBook Registration Information{" "}
+                      <a
+                        href={routes.ORGBOOK_ENTITY_URL(party.party_orgbook_entity.registration_id)}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -321,15 +320,16 @@ export class PartyProfile extends Component {
                       </a>
                     </Typography.Title>
                     <br />
-                    <FontAwesomeIcon className="fa-fw" icon={faIdBadge} />
-                    <span className="padding-left">{party.party_orgbook_entity.registration_id}</span>
+                    <FontAwesomeIcon className="fa-fw" icon={faHashtag} />
+                    <span className="padding-left">
+                      {party.party_orgbook_entity.registration_id}
+                    </span>
                     <br />
                     <FontAwesomeIcon className="fa-fw" icon={faFileSignature} />
                     <span className="padding-left">{party.party_orgbook_entity.name_text}</span>
                   </div>
                 )}
               </Col>
-
             </Row>
             <div className="inline-flex">
               <div className="padding-right">
@@ -347,12 +347,13 @@ export class PartyProfile extends Component {
               )}
             </div>
 
-            {isFeatureEnabled(Feature.VERIFIABLE_CREDENTIALS) && party.party_type_code === "ORG" && (
-              <div className="padding-md--top">
-                Digital Wallet Connection Status:{" "}
-                {VC_CONNECTION_STATES[party?.digital_wallet_connection_status]}
-              </div>
-            )}
+            {isFeatureEnabled(Feature.VERIFIABLE_CREDENTIALS) &&
+              party.party_type_code === "ORG" && (
+                <div className="padding-md--top">
+                  Digital Wallet Connection Status:{" "}
+                  {VC_CONNECTION_STATES[party?.digital_wallet_connection_status]}
+                </div>
+              )}
           </div>
           <div className="profile__content">
             <Tabs
@@ -375,7 +376,7 @@ export class PartyProfile extends Component {
               </Tabs.TabPane>
             </Tabs>
           </div>
-        </div >
+        </div>
       );
     }
     return <Loading />;

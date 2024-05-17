@@ -4,7 +4,7 @@ import { bindActionCreators } from "redux";
 import { throttle } from "lodash";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faIdBadge } from "@fortawesome/pro-light-svg-icons";
+import { faHashtag } from "@fortawesome/pro-light-svg-icons";
 
 import { Divider } from "antd";
 import { PlusOutlined, PhoneOutlined, MailOutlined } from "@ant-design/icons";
@@ -76,7 +76,7 @@ const transformData = (data, options, header) => {
         <span>{options[opt].name}</span>
         <div className="inline-flex">
           <div className="padding-right">
-            <FontAwesomeIcon icon={faIdBadge} />
+            <FontAwesomeIcon icon={faHashtag} />
           </div>
           <span>{options[opt].party_orgbook_entity?.registration_id}</span>
         </div>
