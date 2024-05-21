@@ -142,7 +142,7 @@ class ComplianceArticleCreateResource(Resource, UserMixin):
                                                           cim_or_cpo)
         
 
-        if len(reports):
+        if reports is not None and len(reports):
             report_guids = [r.get('mine_report_definition_guid') for r in reports]
             reports = MineReportDefinition.find_by_mine_report_definition_many(report_guids)
 
