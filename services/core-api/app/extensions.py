@@ -76,7 +76,7 @@ def getJwtManager():
         raise AuthError({'code': 'auth_fail',
                     'description': 'Token issuer oidc.gov.bc.ca is no longer supported. Please contact the mds team.'}, 401)
 
-    if iss in test_config.JWT_OIDC_TEST_ISSUER:
+    if test_config.JWT_OIDC_TEST_ISSUER is not None:
         jwt_result = jwt
     else:
         jwt_result = get_jwt_by_audience(aud)
