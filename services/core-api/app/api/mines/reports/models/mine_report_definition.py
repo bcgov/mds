@@ -32,7 +32,9 @@ class MineReportDefinition(Base, AuditMixin):
     compliance_articles = db.relationship(
         'ComplianceArticle',
         lazy='selectin',
-        secondary='mine_report_definition_compliance_article_xref')
+        secondary='mine_report_definition_compliance_article_xref',
+        backref='reports'
+    )
 
     def __repr__(self):
         return '<MineReportDefinition %r>' % self.mine_report_definition_guid
@@ -49,6 +51,13 @@ class MineReportDefinition(Base, AuditMixin):
     def find_by_mine_report_definition_id(cls, _id):
         try:
             return cls.query.filter_by(mine_report_definition_id=_id).first()
+        except ValueError:
+            return None
+
+    @classmethod
+    def find_by_mine_report_definition_many(cls, _guids):
+        try:
+            return cls.query.filter(cls.mine_report_definition_guid.in_(_guids)).all()
         except ValueError:
             return None
 

@@ -281,6 +281,11 @@ exports[`PermitConditionsNavigation renders properly 1`] = `
                         <th
                           class="ant-table-cell"
                         >
+                          Description
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
                           Date Active
                         </th>
                         <th
@@ -306,6 +311,7 @@ exports[`PermitConditionsNavigation renders properly 1`] = `
                       <col
                         style="width: 150px;"
                       />
+                      <col />
                       <col />
                       <col
                         style="width: 150px;"
@@ -367,6 +373,15 @@ exports[`PermitConditionsNavigation renders properly 1`] = `
                              
                           </div>
                         </td>
+                        <td
+                          style="padding: 0px; border: 0px; height: 0px;"
+                        >
+                          <div
+                            style="height: 0px; overflow: hidden;"
+                          >
+                             
+                          </div>
+                        </td>
                       </tr>
                       <tr
                         class="ant-table-row ant-table-row-level-0 expired-row"
@@ -376,6 +391,16 @@ exports[`PermitConditionsNavigation renders properly 1`] = `
                           class="ant-table-cell"
                         >
                           2.3.7
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="ant-row ant-row-space-between"
+                          >
+                            Spills
+                             
+                          </div>
                         </td>
                         <td
                           class="ant-table-cell"
@@ -451,6 +476,16 @@ exports[`PermitConditionsNavigation renders properly 1`] = `
                           class="ant-table-cell"
                         >
                           2.3.8
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="ant-row ant-row-space-between"
+                          >
+                            Flammable Waste Storage
+                             
+                          </div>
                         </td>
                         <td
                           class="ant-table-cell"
@@ -535,7 +570,7 @@ exports[`PermitConditionsNavigation renders properly 1`] = `
                       <tr>
                         <td
                           class="ant-table-cell ant-table-cell-fix-right ant-table-cell-fix-right-first ant-table-cell-fix-sticky"
-                          colspan="5"
+                          colspan="6"
                           style="position: sticky; right: 0px;"
                         >
                           <div
