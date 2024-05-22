@@ -11,6 +11,7 @@ from app.api.projects.response_models import IRT_MODEL
 from app.api.projects.information_requirements_table.models.information_requirements_table import InformationRequirementsTable
 from app.api.projects.information_requirements_table.resources.information_requirements_table_list import InformationRequirementsTableListResource
 from app.api.activity.models.activity_notification import ActivityType
+from flask.globals import current_app
 
 
 class InformationRequirementsTableResource(Resource, UserMixin):
@@ -41,12 +42,13 @@ class InformationRequirementsTableResource(Resource, UserMixin):
     @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT, EDIT_INFORMATION_REQUIREMENTS_TABLE])
     @api.marshal_with(IRT_MODEL, code=200)
     def put(self, project_guid, irt_guid):
-        import_file = request.files.get('file')
-        document_guid = request.form.get('document_guid')
-        data = request.json
+
         try:
+            import_file = request.files.get('file')
+            document_guid = request.form.get('document_guid')
+
             irt = InformationRequirementsTable.find_by_irt_guid(irt_guid)
-            current_status_code = irt.status_code
+            # current_status_code = irt.status_code
             if irt is None:
                 raise NotFound('Information Requirements Table (IRT) not found.')
             if import_file and document_guid:
@@ -54,18 +56,10 @@ class InformationRequirementsTableResource(Resource, UserMixin):
                     import_file)
                 irt_updated = irt.update(sanitized_irt_requirements, import_file, document_guid)
                 return irt_updated
-            irt_updated = irt.update(data)
+            else:
+                current_app.logger.error("Error occurred while retrieving file | document_guid")
+                raise BadRequest('Missing file information')
 
-            if current_status_code != 'APV' and data['status_code'] == 'APV':
-                irt.send_irt_approval_email()
-            elif current_status_code != 'SUB' and data['status_code'] == 'SUB':
-                irt.send_irt_submit_email()
-                # Trigger notification for newly submitted IRT
-                message = f'An Information Requirements Table for ({irt.project.project_title}) has been submitted for ({irt.project.mine_name})'
-                extra_data = {'project': {'project_guid': str(irt.project.project_guid)}}
-                trigger_notification(message, ActivityType.ir_table_submitted, irt.project.mine, 'InformationRequirementsTable', irt.irt_guid, extra_data)
-
-            return irt_updated
         except BadRequest as err:
             raise err
 
