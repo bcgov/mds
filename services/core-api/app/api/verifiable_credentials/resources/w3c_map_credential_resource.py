@@ -46,14 +46,16 @@ class W3CCredentialListResource(Resource, UserMixin):
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(
             data["permit_amendment_guid"])
         traction_service = TractionService()
-        public_did_dict = traction_service.fetch_current_public_did()
-        public_did = public_did_dict["did"]
+        did_dict = traction_service.fetch_a_random_did_key()
+        private_did_key = did_dict["did"]
+        #private did:key: isn't that helpful, not available to third parties
         credential_dict = VerifiableCredentialManager.produce_map_01_credential_payload(
-            public_did, permit_amendment)
+            private_did_key, permit_amendment)
 
-        current_app.logger.warning(credential_dict)
-        signed_credential = traction_service.sign_jsonld_credential(public_did, credential_dict)
-        return signed_credential
+        signed_credential = traction_service.sign_jsonld_credential(credential_dict)
+        current_app.logger.warning("credential signed by did:key, not publicly verifiable" +
+                                   dumps(signed_credential))
+        return signed_credential["verifiableCredential"]
 
 
 class W3CCredentialDeprecatedResource(Resource, UserMixin):
@@ -73,7 +75,7 @@ class W3CCredentialDeprecatedResource(Resource, UserMixin):
             data["permit_amendment_guid"])
         traction_service = TractionService()
         public_did_dict = traction_service.fetch_current_public_did()
-        public_did = public_did_dict["did"]
+        public_did = "did:indy:bcovrin:test:" + public_did_dict["did"]
         public_verkey = public_did_dict["verkey"]
 
         credential_dict = VerifiableCredentialManager.produce_map_01_credential_payload(
@@ -81,4 +83,7 @@ class W3CCredentialDeprecatedResource(Resource, UserMixin):
 
         signed_credential = traction_service.sign_jsonld_credential_deprecated(
             public_did, public_verkey, credential_dict)
+        current_app.logger.warning(
+            "credential signed by did:indy, not by did:web and using deprecated acapy endpoints" +
+            dumps(signed_credential))
         return signed_credential["signed_doc"]

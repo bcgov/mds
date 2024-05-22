@@ -155,8 +155,7 @@ class VerifiableCredentialManager():
         pass
 
     @classmethod
-    def produce_map_01_credential_payload(cls, my_public_did_web: str,
-                                          permit_amendment: PermitAmendment):
+    def produce_map_01_credential_payload(cls, did: str, permit_amendment: PermitAmendment):
 
         credential = {
             "@context":
@@ -165,7 +164,7 @@ class VerifiableCredentialManager():
             }],
             "type": ["VerifiableCredential"],
             "issuer": {
-                "id": "did:indy:bcovrin:test:" + my_public_did_web,
+                "id": did,
             },
             "issuanceDate": "2010-01-01T19:23:24Z",
             "credentialSubject": {

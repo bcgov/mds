@@ -15,6 +15,7 @@ fetch_credential_exchanges = Config.TRACTION_HOST + "/issue-credential/records"
 traction_deprecated_jsonld_sign = Config.TRACTION_HOST + "/jsonld/sign"
 traction_sign_jsonld_credential = Config.TRACTION_HOST + "/vc/credentials/issue"
 traction_get_current_indy_did = Config.TRACTION_HOST + "/wallet/did/public"
+traction_get_did = Config.TRACTION_HOST + "/wallet/did"
 
 
 def traction_issue_credential_problem_report(cred_ex_id: str):
@@ -141,10 +142,7 @@ class TractionService():
         verkey,
         credential,
     ):
-        options = {
-            "verificationMethod": "did:indy:bcovrin:test:" + did + "#verkey",
-            "proofPurpose": "assertionMethod"
-        }
+        options = {"verificationMethod": did + "#verkey", "proofPurpose": "assertionMethod"}
         payload = {
             "doc": {
                 "options": options,
@@ -160,11 +158,18 @@ class TractionService():
         assert post_resp
         return post_resp.json()
 
+    def fetch_a_random_did_key(self):
+        get_resp = requests.get(
+            traction_get_did, params={"method": "key"}, headers=self.get_headers())
+        assert get_resp.status_code == 200, f"fetch_resp={get_resp.json()}"
+        return get_resp.json()["results"][0]
+
     def sign_jsonld_credential(self, credential: dict, options: dict = {}):
         payload = {
             "options": options,
             "credential": credential,
         }
+        current_app.logger.warning(json.dumps(payload))
         post_resp = requests.post(
             traction_sign_jsonld_credential, json=payload, headers=self.get_headers())
         current_app.logger.warning(post_resp.content)
