@@ -46,9 +46,8 @@ class InformationRequirementsTableResource(Resource, UserMixin):
         try:
             import_file = request.files.get('file')
             document_guid = request.form.get('document_guid')
-
             irt = InformationRequirementsTable.find_by_irt_guid(irt_guid)
-            # current_status_code = irt.status_code
+
             if irt is None:
                 raise NotFound('Information Requirements Table (IRT) not found.')
             if import_file and document_guid:
