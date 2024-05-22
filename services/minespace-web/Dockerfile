@@ -1,4 +1,4 @@
-FROM node:20.12.2
+FROM node:20
 
 # Create working directory
 RUN mkdir /app
