@@ -4,6 +4,7 @@ from flask import current_app, request
 from werkzeug.exceptions import Forbidden
 from flask_restx import Resource, reqparse
 from app.api.utils.include.user_info import User
+from app.api.utils.access_decorators import requires_any_of, MINESPACE_PROPONENT, EDIT_PARTY, VIEW_ALL
 
 from app.config import Config
 from app.extensions import api
@@ -26,6 +27,7 @@ ISSUER_CREDENTIAL_REVOKED = "issuer_cred_rev"
 class W3CCredentialResource(Resource, UserMixin):
 
     @api.doc(description='Endpoint to get vc by uri, including guid.', params={})
+    @requires_any_of([VIEW_ALL])
     def get(vc_guid: str):
         return "Hello World"
 
@@ -44,6 +46,7 @@ class W3CCredentialListResource(Resource, UserMixin):
         description=
         "returns a signed w3c credential for a specific permit_amendment, using new aca-py endpoints, but cannot use public did."
     )
+    @requires_any_of([EDIT_PARTY, MINESPACE_PROPONENT])
     def post(self):
         if not is_feature_enabled(Feature.JSONLD_MINES_ACT_PERMIT):
             raise NotImplementedError("This feature is not enabled.")
@@ -78,6 +81,7 @@ class W3CCredentialDeprecatedResource(Resource, UserMixin):
         description=
         "returns a signed w3c credential for a specific permit_amendment using deprecated aca-py endpoint, but with did:indy:bcovrin:test:"
     )
+    @requires_any_of([EDIT_PARTY, MINESPACE_PROPONENT])
     def post(self):
         if not is_feature_enabled(Feature.JSONLD_MINES_ACT_PERMIT):
             raise NotImplementedError("This feature is not enabled.")
