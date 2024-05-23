@@ -84,7 +84,8 @@ class AMSApiService():
                                      facility_pid_pin_crown_file_no,
                                      company_alias,
                                      zoning,
-                                     zoning_reason
+                                     zoning_reason,
+                                     regional_district_name
                                      ):
         """Creates a new AMS authorization application"""
 
@@ -203,7 +204,10 @@ class AMSApiService():
                         'facilityoperator': facility_operator.get('name', ''),
                         'facilityoperatorphonenumber': cls.__format_phone_number(facility_operator.get('phone_no', '')),
                         'facilityoperatoremail': facility_operator.get('email', ''),
-                        'facilityoperatortitle': facility_operator.get('job_title', '')
+                        'facilityoperatortitle': facility_operator.get('job_title', ''),
+                        'regionaldistrict': {
+                            'name': regional_district_name
+                        }
                     }
                     payload = json.dumps(ams_authorization_data)
                     response = requests.post(Config.AMS_URL, data=payload, headers=headers)
