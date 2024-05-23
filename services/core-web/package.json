@@ -5,7 +5,7 @@
   "private": true,
   "homepage": "${BASE_PATH}/",
   "dependencies": {
-    "@ant-design/compatible": "5.0.0",
+    "@ant-design/compatible": "1.0.5",
     "@ant-design/icons": "4.2.2",
     "@datapunt/matomo-tracker-react": "0.1.5",
     "@fortawesome/fontawesome-pro": "6.4.2",
