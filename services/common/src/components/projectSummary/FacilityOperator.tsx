@@ -17,10 +17,39 @@ import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticCo
 import RenderRadioButtons from "../forms/RenderRadioButtons";
 import RenderAutoSizeField from "../forms/RenderAutoSizeField";
 import { normalizePhone } from "@mds/common/redux/utils/helpers";
+import { getRegionOptions } from "@mds/common/redux/slices/regionsSlice";
 
 export const FacilityOperator: FC = () => {
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
-  const { zoning } = formValues;
+
+  const formErrors = useSelector(getFormSyncErrors(FORM.ADD_EDIT_PROJECT_SUMMARY));
+  const {
+    facility_coords_source,
+    zoning,
+    facility_latitude,
+    facility_longitude,
+    legal_land_desc,
+    facility_pid_pin_crown_file_no,
+  } = formValues;
+  const [pin, setPin] = useState<Array<string>>([]);
+
+  const regionOptions = useSelector(getRegionOptions);
+
+  useEffect(() => {
+    // don't jump around the map while coords being entered and not yet valid
+    const invalidPin = Boolean(formErrors.facility_longitude || formErrors.facility_latitude);
+    if (!invalidPin) {
+      const latLng = [facility_latitude, facility_longitude];
+      setPin(latLng);
+    }
+  }, [facility_longitude, facility_latitude]);
+
+  const dataSourceOptions = [
+    { value: "GPS", label: "GPS" },
+    { value: "SUR", label: "Survey" },
+    { value: "GGE", label: "Google Earth" },
+    { value: "OTH", label: "Other" },
+  ];
 
   const address_type_code = "CAN";
 
@@ -49,6 +78,18 @@ export const FacilityOperator: FC = () => {
         rows={3}
         component={RenderAutoSizeField}
       />
+      <Row className="margin-large--bottom">
+        <Col span={12}>
+          <Field
+            name="regional_district_id"
+            required
+            validate={[required]}
+            label="Facility's Regional Location"
+            component={RenderSelect}
+            data={regionOptions}
+          />
+        </Col>
+      </Row>
       <Typography.Title level={5}>Facility Address</Typography.Title>
       <Row gutter={16}>
         <Col md={19} sm={24}>
