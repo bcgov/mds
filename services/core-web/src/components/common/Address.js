@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { formatPostalCode } from "@common/utils/helpers";
-import { ContactsOutlined } from "@ant-design/icons";
 import * as Strings from "@mds/common/constants/strings";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBuilding } from "@fortawesome/pro-light-svg-icons";
 
 const propTypes = {
   address: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -31,7 +32,7 @@ export class Address extends Component {
 
   renderRowOne = (itemArr) => (
     <div className="inline-flex">
-      {this.props.showIcon && <ContactsOutlined className="icon-sm padding-sm--right" />}
+      {this.props.showIcon && <FontAwesomeIcon className="fa-lg fa-fw" icon={faBuilding} />}
       <p>{this.formatRowContent(itemArr)}</p>
     </div>
   );
@@ -51,18 +52,18 @@ export class Address extends Component {
         ? this.renderRowOne([address.suite_no, address.address_line_2])
         : this.renderNextLine([address.address_line_2])}
       {!address.address_line_1 &&
-      !address.address_line_2 &&
-      (address.city || address.sub_division_code || address.post_code)
+        !address.address_line_2 &&
+        (address.city || address.sub_division_code || address.post_code)
         ? this.renderRowOne([
-            address.city,
-            address.sub_division_code,
-            formatPostalCode(address.post_code),
-          ])
+          address.city,
+          address.sub_division_code,
+          formatPostalCode(address.post_code),
+        ])
         : this.renderNextLine([
-            address.city,
-            address.sub_division_code,
-            formatPostalCode(address.post_code),
-          ])}
+          address.city,
+          address.sub_division_code,
+          formatPostalCode(address.post_code),
+        ])}
     </div>
   );
 

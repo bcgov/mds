@@ -31,14 +31,8 @@ class PartyOrgBookEntityListResource(Resource, UserMixin):
         if party is None:
             raise NotFound('Party not found.')
 
-        if PartyOrgBookEntity.find_by_party_guid(party_guid) is not None:
-            raise BadRequest('This party is already associated with an OrgBook entity.')
-
         data = PartyOrgBookEntityListResource.parser.parse_args()
         credential_id = data.get('credential_id')
-
-        if PartyOrgBookEntity.find_by_credential_id(credential_id) is not None:
-            raise BadRequest('An OrgBook entity with the provided credential ID already exists.')
 
         resp = OrgBookService.get_credential(credential_id)
         if resp.status_code != requests.codes.ok:
@@ -62,7 +56,6 @@ class PartyOrgBookEntityListResource(Resource, UserMixin):
 
         party_orgbook_entity.save()
 
-        party.party_name = name_text
         party.save()
 
         return party_orgbook_entity, 201
