@@ -4,12 +4,11 @@
   "files.trimFinalNewlines": true,
   "editor.renderWhitespace": "none",
   "editor.formatOnSave": true,
-  "python.formatting.provider": "none",
-  "python.formatting.yapfArgs": [
-    "--style={column_limit:100, spaces_before_comment:'15,30,50', SPLIT_BEFORE_EXPRESSION_AFTER_OPENING_PAREN:TRUE}"
-  ],
-  "python.linting.enabled": true,
-  "eslint.alwaysShowStatus": true,
+  "[python]": {
+    "editor.defaultFormatter": "eeyore.yapf",
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true
+  },
   "files.exclude": {
     "**/__pycache__": true
   },
@@ -17,14 +16,13 @@
     "editor.defaultFormatter": "vscode.typescript-language-features"
   },
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true,
-    "eslint.autoFixOnSave": true
+    "source.fixAll.eslint": "explicit",
+    "eslint.autoFixOnSave": "explicit"
   },
-  "cSpell.words": ["idir"],
-  "yaml.schemas": {
-    "https://json.schemastore.org/github-workflow.json": ".github/workflows/**"
-  },
-  "[python]": {
-    "editor.defaultFormatter": "ms-python.python"
-  }
+  "python.testing.pytestArgs": ["tests"],
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true,
+  "yapf.args": [
+    "--style={column_limit:100, spaces_before_comment:'15,30,50', SPLIT_BEFORE_EXPRESSION_AFTER_OPENING_PAREN:TRUE}"
+  ]
 }
