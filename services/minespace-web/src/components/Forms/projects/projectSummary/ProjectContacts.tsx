@@ -219,7 +219,7 @@ const RenderContacts = (props) => {
 
             {index === 0 && (
               <>
-                <Typography.Title level={3}>
+                <Typography.Title level={5}>
                   Additional project contacts (optional)
                 </Typography.Title>
                 <Typography.Paragraph>
