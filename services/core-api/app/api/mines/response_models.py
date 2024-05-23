@@ -762,8 +762,8 @@ MINE_REPORT_DEFINITION_CATEGORIES = api.model('MineReportDefinitionCategoriesMod
     'active_ind': fields.Boolean
 })
 
-MINE_REPORT_DEFINITION_MODEL = api.model(
-    'MineReportDefinition', {
+MINE_REPORT_DEFINITION_BASE_MODEL = api.model(
+    'MineReportDefinitionBase', {
         'mine_report_definition_guid': fields.String,
         'report_name': fields.String,
         'description': fields.String,
@@ -772,10 +772,13 @@ MINE_REPORT_DEFINITION_MODEL = api.model(
         'default_due_date': fields.Date,
         'active_ind': fields.Boolean,
         'categories': fields.List(fields.Nested(MINE_REPORT_DEFINITION_CATEGORIES)),
-        'compliance_articles': fields.List(fields.Nested(COMPLIANCE_ARTICLE_MODEL)),
         'is_common': fields.Boolean,
         'is_prr_only': fields.Boolean,
     })
+
+MINE_REPORT_DEFINITION_MODEL = api.inherit('MineReportDefinition', MINE_REPORT_DEFINITION_BASE_MODEL, {
+    'compliance_articles': fields.List(fields.Nested(COMPLIANCE_ARTICLE_MODEL)),
+})
 
 PAGINATED_LIST = api.model(
     'List', {

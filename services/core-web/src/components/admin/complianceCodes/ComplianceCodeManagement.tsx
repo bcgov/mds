@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { change, Field, initialize, reset } from "redux-form";
 import SearchOutlined from "@ant-design/icons/SearchOutlined";
 import PlusOutlined from "@ant-design/icons/PlusOutlined";
-import { Button, Input, Row, Table, Typography } from "antd";
+import { Button, Input, Row, Table, Tag, Typography } from "antd";
 
 import CoreTable from "@mds/common/components/common/CoreTable";
 import {
@@ -28,6 +28,9 @@ import {
 } from "@mds/common/redux/slices/complianceCodesSlice";
 import AuthorizationGuard from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
+import { faLink } from "@fortawesome/pro-light-svg-icons";
+import { EMPTY_FIELD } from "@mds/common";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const ComplianceCodeManagement: FC = () => {
   const dispatch = useDispatch();
@@ -211,6 +214,23 @@ const ComplianceCodeManagement: FC = () => {
               Reset
             </Button>
           </div>
+        );
+      },
+    },
+    {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+      render: (text, record) => {
+        return (
+          <Row justify="space-between">
+            {text ?? EMPTY_FIELD}{" "}
+            {!!record.reports?.length && (
+              <Tag title="Report" className="tag-secondary">
+                <FontAwesomeIcon icon={faLink} /> Report
+              </Tag>
+            )}
+          </Row>
         );
       },
     },
