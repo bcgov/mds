@@ -40,8 +40,14 @@ class W3CCredentialListResource(Resource, UserMixin):
         store_missing=False)
 
     @api.expect(parser)
-    @api.doc(description="returns a signed w3c credential for a specific permit_amendment")
+    @api.doc(
+        description=
+        "returns a signed w3c credential for a specific permit_amendment, using new aca-py endpoints, but cannot use public did."
+    )
     def post(self):
+        if not is_feature_enabled(Feature.JSONLD_MINES_ACT_PERMIT):
+            raise NotImplementedError("This feature is not enabled.")
+
         data = self.parser.parse_args()
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(
             data["permit_amendment_guid"])
@@ -68,8 +74,14 @@ class W3CCredentialDeprecatedResource(Resource, UserMixin):
         store_missing=False)
 
     @api.expect(parser)
-    @api.doc(description="returns a signed w3c credential for a specific permit_amendment")
+    @api.doc(
+        description=
+        "returns a signed w3c credential for a specific permit_amendment using deprecated aca-py endpoint, but with did:indy:bcovrin:test:"
+    )
     def post(self):
+        if not is_feature_enabled(Feature.JSONLD_MINES_ACT_PERMIT):
+            raise NotImplementedError("This feature is not enabled.")
+
         data = self.parser.parse_args()
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(
             data["permit_amendment_guid"])
