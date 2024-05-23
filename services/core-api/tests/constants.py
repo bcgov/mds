@@ -279,7 +279,6 @@ LEGAL_LAND_DATA = {
 
 LOCATION_ACCESS_DATA = {
     'legal_land_desc': "test",
-    'nearest_municipality': "9e3cb514-283a-4f46-a7aa-d9b0a3fbc623",
     'facility_latitude': "50.0000000",
     'facility_longitude': "-115.0000000",
     'facility_coords_source': "GPS",

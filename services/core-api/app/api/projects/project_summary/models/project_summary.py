@@ -625,7 +625,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                     'allowed': ['GPS', 'SUR', 'GGE', 'OTH'],
                 },
                 'nearest_municipality': {
-                    'required': True,
+                    'nullable': True,
                     'type': 'string',
                 },
                 'municipality': {
