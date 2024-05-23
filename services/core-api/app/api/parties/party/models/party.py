@@ -94,7 +94,6 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
         'and_(PartyVerifiableCredentialConnection.party_guid == Party.party_guid, PartyVerifiableCredentialConnection.connection_state==\'active\')',
         overlaps='digital_wallet_invitations')
 
-
     @hybrid_property
     def name(self):
         return f'{self.first_name} {self.party_name}' if self.first_name and self.party_type_code == 'PER' else self.party_name

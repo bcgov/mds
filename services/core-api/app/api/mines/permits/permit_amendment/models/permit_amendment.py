@@ -29,7 +29,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     permit_amendment_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
     permit_id = db.Column(db.Integer, db.ForeignKey('permit.permit_id'), nullable=False)
     received_date = db.Column(db.DateTime, nullable=False)
-    issue_date = db.Column(db.DateTime, nullable=False)
+    issue_date: datetime = db.Column(db.DateTime, nullable=False)
     authorization_end_date = db.Column(db.DateTime, nullable=False)
     permit_amendment_status_code = db.Column(
         db.String(3), db.ForeignKey('permit_amendment_status_code.permit_amendment_status_code'))
@@ -76,21 +76,18 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         uselist=False,
         primaryjoin=
         "and_(PermitAmendment.mine_guid==foreign(MinePermitXref.mine_guid), PermitAmendment.permit_id==foreign(MinePermitXref.permit_id))",
-        overlaps='mine'
-    )
+        overlaps='mine')
     all_mine_permit_xref = db.relationship(
         'MinePermitXref',
         primaryjoin="PermitAmendment.permit_id==foreign(MinePermitXref.permit_id)",
-        overlaps='mine_permit_xref'
-    )
+        overlaps='mine_permit_xref')
 
     now_application_identity = db.relationship(
         'NOWApplicationIdentity',
         lazy='selectin',
         uselist=False,
         foreign_keys=[now_application_guid],
-        overlaps='now_identity'
-    )
+        overlaps='now_identity')
 
     vc_credential_exch = db.relationship(
         'PartyVerifiableCredentialMinesActPermit',
@@ -141,20 +138,22 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
             deleted_ind=False).count()
         return permit_conditions > 0
 
-    
     @hybrid_property
     def vc_credential_exch_state(self):
-        # TODO this assumes only one active credential for each mines act permit 
+        # TODO this assumes only one active credential for each mines act permit
         # this will need to be revisited to support additional issuances (wallet recovery) or multple schemas issued
 
-        active = [x for x in self.vc_credential_exch if x.cred_exch_state in IssueCredentialIssuerState.active_credential_states]
+        active = [
+            x for x in self.vc_credential_exch
+            if x.cred_exch_state in IssueCredentialIssuerState.active_credential_states
+        ]
 
         if active:
             #if any active, return most recent
             return active[0].cred_exch_state
         else:
-            return self.vc_credential_exch[0].cred_exch_state if len(self.vc_credential_exch) > 0 else None
-
+            return self.vc_credential_exch[0].cred_exch_state if len(
+                self.vc_credential_exch) > 0 else None
 
     def __repr__(self):
         return '<PermitAmendment %r, %r>' % (self.mine_guid, self.permit_id)
