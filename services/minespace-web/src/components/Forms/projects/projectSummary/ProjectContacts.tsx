@@ -115,7 +115,7 @@ const RenderContacts = (props) => {
                 <Field
                   name={`${field}.company_name`}
                   id={`${field}.company_name`}
-                  label="Company name"
+                  label="Company Name"
                   component={RenderField}
                 />
               </Col>

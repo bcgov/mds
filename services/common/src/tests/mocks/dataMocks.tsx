@@ -5618,7 +5618,7 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
     },
     {
       project_summary_authorization_type: "MUNICIPAL_WASTEWATER_REGULATION",
-      description: "Municipal wastewater regulation",
+      description: "Municipal Wastewater Regulation",
       project_summary_authorization_type_group_id: "ENVIRONMENTAL_MANAGMENT_ACT",
     },
     {
@@ -7445,7 +7445,7 @@ export const PROJECT_SUMMARY_AUTHORIZATION_TYPES_HASH = {
   AIR_EMISSIONS_DISCHARGE_PERMIT: "Air emissions discharge permit",
   EFFLUENT_DISCHARGE_PERMIT: "Effluent discharge permit",
   REFUSE_DISCHARGE_PERMIT: "Refuse discharge permit",
-  MUNICIPAL_WASTEWATER_REGULATION: "Municipal wastewater regulation",
+  MUNICIPAL_WASTEWATER_REGULATION: "Municipal Wastewater Regulation",
   CHANGE_APPROVAL: "Change approval",
   USE_APPROVAL: "Use approval",
   WATER_LICENCE: "Water licence",
@@ -7658,7 +7658,7 @@ export const PROJECT_SUMMARY_AUTHORIZATION_TYPES_TRANSFORMED = [
       { code: "AIR_EMISSIONS_DISCHARGE_PERMIT", description: "Air emissions discharge permit" },
       { code: "EFFLUENT_DISCHARGE_PERMIT", description: "Effluent discharge permit" },
       { code: "REFUSE_DISCHARGE_PERMIT", description: "Refuse discharge permit" },
-      { code: "MUNICIPAL_WASTEWATER_REGULATION", description: "Municipal wastewater regulation" },
+      { code: "MUNICIPAL_WASTEWATER_REGULATION", description: "Municipal Wastewater Regulation" },
     ],
   },
   {
@@ -7701,7 +7701,7 @@ export const PROJECT_SUMMARY_CHILD_AUTHORIZATION_TYPES_HASH = {
     parent: { code: "MINES_ACT", description: "Mines Act" },
   },
   MUNICIPAL_WASTEWATER_REGULATION: {
-    description: "Municipal wastewater regulation",
+    description: "Municipal Wastewater Regulation",
     parent: { code: "ENVIRONMENTAL_MANAGMENT_ACT", description: "Environmental Management Act" },
   },
   OCCUPANT_CUT_LICENCE: {

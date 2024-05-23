@@ -123,12 +123,12 @@ h4.ant-typography,
 
 h3.ant-typography,
 .ant-typography h3 {
-  color: $font-colour;
+  color: $primary-color;
 }
 
 h5.ant-typography,
 .ant-typography h5 {
-  color: $font-colour;
+  color: $primary-color;
 }
 
 .ant-typography a {
@@ -476,6 +476,11 @@ th.ant-descriptions-item.vertical-description {
 
 .ant-alert+.ant-alert {
   margin-top: 14px;
+}
+
+.ant-alert-message {
+  font-weight: 600;
+  font-size: 16px !important;
 }
 
 .header-link:hover,

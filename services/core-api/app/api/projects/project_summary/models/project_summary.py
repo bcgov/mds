@@ -379,7 +379,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             },
             'post_code': {
                 'type': 'string',
-                'required': True,
+                'nullable': True,
             }, 
         }
 
@@ -424,7 +424,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 address_schema |= primary_address_schema
             else:
                 address_schema |= agent_address_schema
-        elif section == 'facility_operator':
+        elif section == 'mine_component_and_offsite':
             address_schema |= facility_address_schema
             base_schema |= {
                 'email': {
@@ -455,6 +455,66 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             
         v = Validator(base_schema, purge_unknown=True)
         if not v.validate(party):
+            return json.dumps(v.errors)
+        return True
+    
+    @classmethod
+    def validate_mine_component_offsite_infrastructure(self, data):
+        draft_mine_offsite_schema = {
+            'facility_desc': {
+                'nullable': True,
+                'maxlength': 4000,
+                'type': 'string'
+            },
+            'facility_type': {
+                'nullable': True,
+                'type': 'string'
+            },
+            'zoning': {
+                'nullable': True,
+                'type': 'boolean',
+            },
+        }
+
+        submission_mine_offsite_schema = {
+            'facility_desc': {
+                'required': True,
+                'maxlength': 4000,
+                'type': 'string'
+            },
+            'facility_type': {
+                'required': True,
+                'type': 'string'
+            },
+            'zoning': {
+                'required': True,
+                'type': 'boolean',
+            },
+        }
+
+        status_code = data.get('status_code')
+        zoning = data.get('zoning')
+
+        mine_offsite_schema = submission_mine_offsite_schema if status_code == 'SUB' else draft_mine_offsite_schema
+
+        if zoning == False:
+            mine_offsite_schema |= {
+                'zoning_reason': {
+                    'required': True,
+                    'type': 'string',
+                },
+            }
+        else:
+            mine_offsite_schema |= {
+                'zoning_reason': {
+                    'nullable': True,
+                    'type': 'string',
+                },
+            }
+
+        v = Validator(mine_offsite_schema, purge_unknown=True)
+       
+        if not v.validate(data):
             return json.dumps(v.errors)
         return True
 
@@ -493,7 +553,163 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         if not v.validate(data):
             return json.dumps(v.errors)
         return True
-        
+    
+    @classmethod
+    def validate_location_access(self, data):
+        draft_location_access_schema = {
+                'facility_latitude': {
+                    'nullable': True,
+                    'min': 47,
+                    'max': 60,
+                    'type': 'number',
+                },
+                'facility_longitude': {
+                    'nullable': True,
+                    'min': -140,
+                    'max': -113,
+                    'type': 'number',
+                },
+                'facility_coords_source': {
+                    'nullable': True,
+                    'type': 'string',
+                    'allowed': ['GPS', 'SUR', 'GGE', 'OTH'],
+                },
+                'nearest_municipality': {
+                    'nullable': True,
+                    'type': 'string',
+                },
+                'municipality': {
+                    'nullable': True,
+                    'type': 'dict',
+                    'schema': {
+                        'municipality_guid': {
+                            'required': True,
+                            'type': 'string',
+                        },
+                        'municipality_name': {
+                            'required': True,
+                            'type': 'string',
+                        },
+                    },
+                },
+                'facility_lease_no': {
+                    'nullable': True,
+                    'type': 'string',
+                },
+                'facility_pid_pin_crown_file_no': {
+                    'nullable': True,
+                    'type': 'string',
+                },
+                'legal_land_desc': {
+                    'nullable': True,
+                    'type': 'string',
+                },
+        }
+
+        submission_location_access_schema = {
+                'facility_latitude': {
+                    'required': True,
+                    'min': 47,
+                    'max': 60,
+                    'type': 'number',
+                },
+                'facility_longitude': {
+                    'required': True,
+                    'min': -140,
+                    'max': -113,
+                    'type': 'number',
+                },
+                'facility_coords_source': {
+                    'required': True,
+                    'type': 'string',
+                    'allowed': ['GPS', 'SUR', 'GGE', 'OTH'],
+                },
+                'nearest_municipality': {
+                    'required': True,
+                    'type': 'string',
+                },
+                'municipality': {
+                    'nullable': True,
+                    'type': 'dict',
+                    'schema': {
+                        'municipality_guid': {
+                            'required': True,
+                            'type': 'string',
+                        },
+                        'municipality_name': {
+                            'required': True,
+                            'type': 'string',
+                        },
+                    },
+                },
+                'facility_lease_no': {
+                    'required': True,
+                    'type': 'string',
+                }
+        }
+
+        status_code = data.get('status_code')
+        facility_latitude = data.get('facility_latitude', None)
+        facility_longitude = data.get('facility_longitude', None)
+        facility_coords_source = data.get('facility_coords_source', None)
+        facility_pid_pin_crown_file_no = data.get('facility_pid_pin_crown_file_no', None)
+        legal_land_desc = data.get('legal_land_desc', None)
+
+        location_access_data_to_validate = data
+        if facility_latitude != None and facility_longitude != None:
+            location_access_data_to_validate = {**data, 'facility_latitude': float(facility_latitude), 'facility_longitude': float(facility_longitude)}
+
+        location_access_schema = draft_location_access_schema
+        if status_code == 'SUB':
+            location_access_schema = submission_location_access_schema
+            if facility_pid_pin_crown_file_no == None and legal_land_desc != None:
+                location_access_schema |= {
+                    'legal_land_desc': {
+                        'required': True,
+                        'type': 'string',
+                    },
+                    'facility_pid_pin_crown_file_no': {
+                        'nullable': True,
+                        'type': 'string',
+                    },
+                }
+            elif facility_pid_pin_crown_file_no != None and legal_land_desc == None:
+                location_access_schema |= {
+                    'legal_land_desc': {
+                        'nullable': True,
+                        'type': 'string',
+                    },
+                    'facility_pid_pin_crown_file_no': {
+                        'required': True,
+                        'type': 'string',
+                    },
+                }
+            else:
+                location_access_schema |= {
+                    'legal_land_desc': {
+                        'required': True,
+                        'type': 'string',
+                    },
+                    'facility_pid_pin_crown_file_no': {
+                        'required': True,
+                        'type': 'string',
+                    },
+                }
+
+        if facility_coords_source == 'OTH':
+            location_access_schema |= {
+                'facility_coords_source_desc': {
+                    'required': True,
+                    'type': 'string',
+                },     
+            }
+
+        v = Validator(location_access_schema, purge_unknown=True)
+       
+        if not v.validate(location_access_data_to_validate):
+            return json.dumps(v.errors)
+        return True
+
     @classmethod
     def validate_declaration(self, data):
         declaration_schema = {
@@ -531,184 +747,10 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
     @classmethod
     def validate_project_summary_surface_level_data(self, data):
-        draft_surface_level_schema = project_summary_base_schema | {
-            'contacts': {
-                'required': True,
-                'type': 'list',
-            },
-        }
-
-        submission_surface_level_schema = project_summary_base_schema | {
-            'contacts': {
-                'required': True,
-                'type': 'list',
-                'empty': False,
-            },
-        }
-
-        if is_feature_enabled(Feature.AMS_AGENT):
-            draft_surface_level_schema |= {
-                'ams_authorizations': {
-                    'nullable': True,
-                    'type': 'dict',
-                    },
-                'authorizations': {
-                    'nullable': True,
-                    'type': 'list',
-                    'empty': True,
-                },
-                'applicant': {
-                    'nullable': True,
-                    'type': 'dict',
-                },
-                'is_agent': {
-                    'nullable': True,
-                    'type': 'boolean',
-                },
-                'facility_coords_source': {
-                    'nullable': True,
-                    'type': 'string',
-                    'allowed': ['GPS', 'SUR', 'GGE', 'OTH'],
-                },
-                'facility_desc': {
-                    'nullable': True,
-                    'maxlength': 4000,
-                    'type': 'string'
-                },
-                'facility_latitude': {
-                    'nullable': True,
-                    'min': 47,
-                    'max': 60,
-                    'type': 'number',
-                },
-                'facility_longitude': {
-                    'nullable': True,
-                    'min': -140,
-                    'max': -113,
-                    'type': 'number',
-                },
-                'facility_operator': {
-                    'nullable': True,
-                    'type': 'dict',
-                },
-                'facility_type': {
-                    'nullable': True,
-                    'type': 'string'
-                },
-                'zoning': {
-                    'nullable': True,
-                    'type': 'boolean',
-                },
-                'legal_land_desc': {
-                    'nullable': True,
-                    'type': 'string',
-                },
-                'is_legal_land_owner': {
-                    'nullable': True,
-                    'type': 'boolean',
-                },
-                'nearest_municipality': {
-                    'nullable': True,
-                    'type': 'string',
-                },
-            }
-
-            submission_surface_level_schema |= {
-                'ams_authorizations': {
-                    'required': True,
-                    'type': 'dict',
-                    },
-                'authorizations': {
-                    'required': True,
-                    'type': 'list',
-                    'empty': True,
-                },
-                'applicant': {
-                    'required': True,
-                    'type': 'dict',
-                },
-                'is_agent': {
-                    'required': True,
-                    'type': 'boolean',
-                },
-                'facility_coords_source': {
-                    'required': True,
-                    'type': 'string',
-                    'allowed': ['GPS', 'SUR', 'GGE', 'OTH'],
-                },
-                'facility_desc': {
-                    'required': True,
-                    'maxlength': 4000,
-                    'type': 'string',
-                },
-                'facility_latitude': {
-                    'required': True,
-                    'min': 47,
-                    'max': 60,
-                    'type': 'number',
-                },
-                'facility_longitude': {
-                    'required': True,
-                    'min': -140,
-                    'max': -113,
-                    'type': 'number'
-                },
-                'facility_operator': {
-                    'required': True,
-                    'type': 'dict',
-                },
-                'facility_type': {
-                    'required': True,
-                    'type': 'string',
-                },
-                'zoning': {
-                    'required': True,
-                    'type': 'boolean',
-                },
-                'legal_land_desc': {
-                    'nullable': True,
-                    'type': 'string',
-                },
-                'is_legal_land_owner': {
-                    'required': True,
-                    'type': 'boolean',
-                },
-                'nearest_municipality': {
-                    'nullable': True,
-                    'type': 'string',
-                },
-            }
-
-        status_code = data.get('status_code')
-        facility_latitude = data.get('facility_latitude', None)
-        facility_longitude = data.get('facility_longitude', None)
-        facility_coords_source = data.get('facility_coords_source', None)
-        zoning = data.get('zoning', None)
-
-        surface_data_to_validate = data
-        if facility_latitude != None and facility_longitude != None:
-            surface_data_to_validate = {**data, 'facility_latitude': float(facility_latitude), 'facility_longitude': float(facility_longitude)}
-
-        surface_level_schema = submission_surface_level_schema if status_code == 'SUB' else draft_surface_level_schema
-
-        if zoning == False:
-            surface_level_schema |= {
-                'zoning_reason': {
-                    'required': True,
-                    'type': 'string',
-                },         
-            }
-        
-        if facility_coords_source == 'OTH':
-            surface_level_schema |= {
-                'facility_coords_source_desc': {
-                    'required': True,
-                    'type': 'string',
-                },     
-            }
+        surface_level_schema = project_summary_base_schema
 
         v = Validator(surface_level_schema, purge_unknown=True)
-        if not v.validate(surface_data_to_validate):
+        if not v.validate(data):
             return json.dumps(v.errors)
         return True
 
@@ -741,6 +783,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             errors_found['basic_info'].append(basic_info_validation)
 
         # Validate Project Contacts
+        if status_code == 'SUB' and len(contacts) == 0:
+            errors_found['project_contacts'].append("Project Contacts not provided")
         for contact in contacts:
             contact_validation = Project.validate_project_contacts(contact)
             if contact_validation != True:
@@ -751,8 +795,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 'authorizations': [],
                 'applicant_info': [],
                 'agent': [],
-                'facility': [],
-                'legal_land': [],
+                'location_access_land_use': [],
+                'mine_component_and_offsite': [],
                 'declaration': [],
             }
             
@@ -780,28 +824,44 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                         errors_found['authorizations'].append(ams_authorization_new_validation)
 
             # Validate Applicant Information
-            if applicant != None:
+            if status_code == 'SUB' and applicant == None:
+                errors_found['applicant_info'].append('Applicant Information not provided')
+            elif applicant != None:
                 applicant_validation = ProjectSummary.validate_project_party(applicant, 'applicant')
                 if applicant_validation != True:
                     errors_found['applicant_info'].append(applicant_validation)
 
             # Validate Agent
-            if is_agent == True:
+            if status_code == 'SUB' and is_agent == None:
+                errors_found['agent'].append("Is applicant an agent not provided")
+            elif is_agent == True:
                 agent_validation = ProjectSummary.validate_project_party(agent, 'agent')
                 if agent_validation != True:
                     errors_found['agent'].append(agent_validation)
         
-            # Validate Facility Operator Information
-            if facility_operator != None:
-                facility_validation = ProjectSummary.validate_project_party(facility_operator, 'facility_operator')
-                if facility_validation != True:
-                    errors_found['facility'].append(facility_validation)
+            # Validate Mine Components and Offsite Infrastructure
+            if status_code == 'SUB' and facility_operator == None:
+                errors_found['mine_component_and_offsite'].append('Facility address info not provided')
+            elif facility_operator != None:
+                mine_offsite_party_validation = ProjectSummary.validate_project_party(facility_operator, 'mine_component_and_offsite')
+                if mine_offsite_party_validation != True:
+                    errors_found['mine_component_and_offsite'].append(mine_offsite_party_validation)
 
-            # Validate Legal Land Owner Information
-            if is_legal_land_owner == False:
+            mine_offsite_validation = ProjectSummary.validate_mine_component_offsite_infrastructure(data)
+            if mine_offsite_validation != True:
+                    errors_found['mine_component_and_offsite'].append(mine_offsite_validation)
+
+            # Validate Location, Access and Land Use
+            if status_code == 'SUB' and is_legal_land_owner == None:
+                errors_found['location_access_land_use'].append('Is the Applicant the Legal Land Owner not provided')
+            elif is_legal_land_owner == False:
                 legal_land_validation = ProjectSummary.validate_legal_land(data)
                 if legal_land_validation != True:
-                    errors_found['legal_land'].append(legal_land_validation)
+                    errors_found['location_access_land_use'].append(legal_land_validation)
+
+            location_access_validation = ProjectSummary.validate_location_access(data)
+            if location_access_validation != True:
+                errors_found['location_access_land_use'].append(location_access_validation)
 
             # Validate Declaration
             if status_code == 'SUB':

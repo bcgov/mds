@@ -247,7 +247,7 @@ exports[`ProjectSummaryForm renders properly 1`] = `
       <h3
         class="ant-typography"
       >
-        Purpose & Authorization
+        Purpose and Authorization
       </h3>
       <div
         class="ant-alert ant-alert-warning ant-alert-with-description"
