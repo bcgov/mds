@@ -7,6 +7,14 @@ import {
   getTransformedProjectSummaryAuthorizationTypes,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getAmsAuthorizationTypes } from "@mds/common/redux/selectors/projectSelectors";
+import { renderTextColumn } from "@mds/common/components/common/CoreTableCommonColumns";
+import CoreTable from "@mds/common/components/common/CoreTable";
+import { ColumnsType } from "antd/es/table";
+
+interface IAuthorizationSummaryColumn {
+  type: string;
+  permit_no: string;
+}
 
 export const ApplicationSummary: FC = () => {
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
@@ -20,7 +28,20 @@ export const ApplicationSummary: FC = () => {
   const [environmentalManagementActData, setEnvironmentalManagementActData] = useState([]);
   const [waterSustainabilityActData, setWaterSustainabilityActData] = useState([]);
   const [forestryActData, setForestryActData] = useState([]);
-  const [otherLegislationData, setOtherLegislationData] = useState([]);
+  const [otherLegislationActData, setOtherLegislationActData] = useState([]);
+
+  const processedEnvironmentActPermitResult: any[] = [];
+  let processedOtherActPermitResult: any[] = [];
+
+  const minesActColumns: ColumnsType<IAuthorizationSummaryColumn> = [
+    renderTextColumn("project_type", "Type", false),
+    renderTextColumn("permit_no", "Permit", false),
+  ];
+
+  const otherActColumns: ColumnsType<IAuthorizationSummaryColumn> = [
+    renderTextColumn("project_type", "Type", false),
+    renderTextColumn("permit_no", "Authorization", false),
+  ];
 
   const parseProjectTypeLabel = (authType: string) => {
     const projectType = dropdownProjectSummaryPermitTypes.find((x) => x.value === authType);
@@ -39,13 +60,7 @@ export const ApplicationSummary: FC = () => {
     return jobType?.description;
   };
 
-  const loadMinesActData = (payload) => {
-    console.log("dropdownProjectSummaryPermitTypes", dropdownProjectSummaryPermitTypes);
-    console.log(
-      "transformedProjectSummaryAuthorizationTypes",
-      transformedProjectSummaryAuthorizationTypes
-    );
-    console.log("amsAuthTypes", amsAuthTypes);
+  const loadMinesActPermitData = (payload) => {
     const result = [];
     if (payload?.MINES_ACT_PERMIT) {
       for (const permit of payload.MINES_ACT_PERMIT) {
@@ -59,36 +74,129 @@ export const ApplicationSummary: FC = () => {
     }
     setMinesActData(result);
   };
-  console.log("minesActData", minesActData);
 
-  const loadEnvironmentalManagementActData = (payload) => {
-    const result: any[] = [];
-    if (payload?.EFFLUENT_DISCHARGE_PERMIT) {
-      if (payload.EFFLUENT_DISCHARGE_PERMIT?.AMENDMENT) {
-        for (let i = 0; i < payload.EFFLUENT_DISCHARGE_PERMIT.AMENDMENT.length; i++) {
-          if (payload.EFFLUENT_DISCHARGE_PERMIT.types[i] === "AMENDMENT") {
-            result.push({
-              project_type: parseTransformedProjectSummaryAuthorizationTypes(
-                "ENVIRONMENTAL_MANAGMENT_ACT",
-                "EFFLUENT_DISCHARGE_PERMIT"
-              ),
-              permit_no:
-                payload.EFFLUENT_DISCHARGE_PERMIT.AMENDMENT[i].existing_permits_authorizations[0],
-            });
-          }
+  const processEnvironmentActPermitAuthorizations = (
+    payload: any,
+    permitAuthorizationType: string,
+    permitType: string
+  ) => {
+    if (payload?.[permitType]?.AMENDMENT) {
+      const types = payload[permitType].types;
+      for (let i = 0; i < payload[permitType].AMENDMENT.length; i++) {
+        const permit = payload[permitType].AMENDMENT[i];
+        const type = types[i];
+        const permitTypeLabel = parseProjectTypeLabel(type);
+        const projectType = `${parseTransformedProjectSummaryAuthorizationTypes(
+          permitAuthorizationType,
+          permitType
+        )} - ${permitTypeLabel}`;
+
+        if (type === "AMENDMENT") {
+          processedEnvironmentActPermitResult.push({
+            project_type: projectType,
+            permit_no: permit.existing_permits_authorizations?.[0] || "N/A",
+          });
+        } else if (type === "NEW") {
+          processedEnvironmentActPermitResult.push({
+            project_type: projectType,
+            permit_no: "N/A",
+          });
         }
       }
     }
-    console.log("result", result);
   };
 
-  console.log("minesActData", minesActData);
-  console.log("environmentalManagementActData", environmentalManagementActData);
+  const processOtherActPermitAuthorizations = (
+    payload: any,
+    permitAuthorizationType: string,
+    permitType: string
+  ) => {
+    const permits = payload?.[permitType];
+
+    if (permits?.[0]?.existing_permits_authorizations?.length) {
+      permits[0].existing_permits_authorizations.forEach((authorization: string) => {
+        const permitTypeLabel = parseProjectTypeLabel("AMENDMENT");
+        const projectType = `${parseTransformedProjectSummaryAuthorizationTypes(
+          permitAuthorizationType,
+          permitType
+        )} - ${permitTypeLabel}`;
+
+        processedOtherActPermitResult.push({
+          project_type: projectType,
+          permit_no: authorization,
+        });
+      });
+    }
+
+    if (permits?.[0].project_summary_permit_type?.length) {
+      permits[0].project_summary_permit_type.forEach((type: string) => {
+        if (type !== "AMENDMENT") {
+          const permitTypeLabel = parseProjectTypeLabel(type);
+          const projectType = `${parseTransformedProjectSummaryAuthorizationTypes(
+            permitAuthorizationType,
+            permitType
+          )} - ${permitTypeLabel}`;
+
+          processedOtherActPermitResult.push({
+            project_type: projectType,
+            permit_no: "N/A",
+          });
+        }
+      });
+    }
+  };
+
+  const loadPermitData = (payload) => {
+    processEnvironmentActPermitAuthorizations(
+      payload,
+      "ENVIRONMENTAL_MANAGMENT_ACT",
+      "AIR_EMISSIONS_DISCHARGE_PERMIT"
+    );
+    processEnvironmentActPermitAuthorizations(
+      payload,
+      "ENVIRONMENTAL_MANAGMENT_ACT",
+      "EFFLUENT_DISCHARGE_PERMIT"
+    );
+    processEnvironmentActPermitAuthorizations(
+      payload,
+      "ENVIRONMENTAL_MANAGMENT_ACT",
+      "REFUSE_DISCHARGE_PERMIT"
+    );
+    processEnvironmentActPermitAuthorizations(
+      payload,
+      "ENVIRONMENTAL_MANAGMENT_ACT",
+      "MUNICIPAL_WASTEWATER_REGULATION"
+    );
+
+    setEnvironmentalManagementActData(processedEnvironmentActPermitResult);
+
+    processOtherActPermitAuthorizations(payload, "WATER_SUSTAINABILITY_ACT", "CHANGE_APPROVAL");
+    processOtherActPermitAuthorizations(payload, "WATER_SUSTAINABILITY_ACT", "USE_APPROVAL");
+    processOtherActPermitAuthorizations(payload, "WATER_SUSTAINABILITY_ACT", "WATER_LICENCE");
+    setWaterSustainabilityActData([...processedOtherActPermitResult]);
+    processedOtherActPermitResult = [];
+
+    processOtherActPermitAuthorizations(payload, "FORESTRY_ACT", "OCCUPANT_CUT_LICENCE");
+    setForestryActData([...processedOtherActPermitResult]);
+    processedOtherActPermitResult = [];
+
+    processOtherActPermitAuthorizations(payload, "OTHER_LEGISLATION", "OTHER");
+    setOtherLegislationActData([...processedOtherActPermitResult]);
+    processedOtherActPermitResult = [];
+  };
 
   useEffect(() => {
-    loadMinesActData(formValues.authorizations);
-    loadEnvironmentalManagementActData(formValues.authorizations);
+    loadMinesActPermitData(formValues.authorizations);
+    loadPermitData(formValues.authorizations);
   }, [formValues, transformedProjectSummaryAuthorizationTypes, dropdownProjectSummaryPermitTypes]);
 
-  return <></>;
+  return (
+    <>
+      <CoreTable dataSource={minesActData} columns={minesActColumns} />
+      <CoreTable dataSource={environmentalManagementActData} columns={otherActColumns} />
+      <CoreTable dataSource={waterSustainabilityActData} columns={otherActColumns} />
+      <CoreTable dataSource={forestryActData} columns={otherActColumns} />
+      <CoreTable dataSource={otherLegislationActData} columns={otherActColumns} />
+    </>
+  );
 };
