@@ -156,7 +156,8 @@ class VerifiableCredentialManager():
 
     @classmethod
     def produce_map_01_credential_payload(cls, did: str, permit_amendment: PermitAmendment):
-
+        #use w3c vcdm issue_date, not as an attribute in the credential
+        #https://www.w3.org/TR/vc-data-model/
         credential = {
             "@context":
             ["https://www.w3.org/2018/credentials/v1", {
@@ -166,10 +167,11 @@ class VerifiableCredentialManager():
             "issuer": {
                 "id": did,
             },
-            "issuanceDate": "2010-01-01T19:23:24Z",
+            "issuanceDate": permit_amendment.issue_date.isoformat(),
             "credentialSubject": {
                 a["name"]: a["value"]
                 for a in cls.collect_attributes_for_mines_act_permit_111(permit_amendment)
+                if a["name"] != "issue_date"
             }
         }
         return credential
