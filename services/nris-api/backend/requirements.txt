@@ -20,4 +20,4 @@ SQLAlchemy==1.4.51
 uwsgi==2.0.23
 requests==2.31.0
 uwsgitop==0.11
-Werkzeug==3.0.1
+Werkzeug==3.0.3
