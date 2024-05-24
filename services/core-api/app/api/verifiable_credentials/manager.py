@@ -162,8 +162,7 @@ class VerifiableCredentialManager():
         #https://www.w3.org/TR/vc-data-model/
         id = permit_amendment.issue_date
         #convert to datetime with tzinfo
-        issuance_date = datetime(
-            id.year, id.month, id.day, 0, 0, 0, tzinfo=pytz.timezone("US/Pacific"))
+        issuance_date = datetime(id.year, id.month, id.day, 0, 0, 0)
         credential = {
             "@context":
             ["https://www.w3.org/2018/credentials/v1", {
