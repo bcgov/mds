@@ -34,6 +34,10 @@
     line-height: 22px;
 }
 
+.ant-form-vertical {
+    margin-bottom: 15px;
+}
+
 .ant-form-vertical .ant-form-item-label>label {
     // to make * appear on the same line when label is an HTML element
     display: flex;

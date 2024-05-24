@@ -36,7 +36,7 @@ describe("LegalLandOwnerInformation Component", () => {
       </Provider>
     );
 
-    expect(container.querySelector("h3")?.textContent).toBe("Legal Land Owner Information");
+    expect(container.querySelector("h3")?.textContent).toBe("Location, Access and Land Use");
     expect(getByText("Is the Applicant the Legal Land Owner?")).toBeDefined();
   });
 

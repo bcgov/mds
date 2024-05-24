@@ -94,28 +94,6 @@ project_summary_base_schema = {
         'nullable': True,
         'type': 'boolean',
     },
-    'facility_pid_pin_crown_file_no': {
-        'nullable': True,
-        'type': 'string',
-    },
-    'legal_land_desc': {
-        'nullable': True,
-        'type': 'string',
-    },
-    'municipality': {
-        'nullable': True,
-        'type': 'dict',
-        'schema': {
-            'municipality_guid': {
-                'required': True,
-                'type': 'string',
-            },
-            'municipality_name': {
-                'required': True,
-                'type': 'string',
-            },
-        },
-    },
     'expected_draft_irt_submission_date': {
         'nullable': True,
         'type': 'date',

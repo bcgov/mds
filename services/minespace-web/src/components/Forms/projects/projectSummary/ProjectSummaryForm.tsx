@@ -55,12 +55,12 @@ export const getProjectFormTabs = (amsFeatureEnabled: boolean) => {
   const projectFormTabs = [
     "basic-information",
     "related-projects",
-    "authorizations-involved",
+    "purpose-and-authorization",
     "project-contacts",
     "applicant-information",
     "representing-agent",
-    "facility-operator-information",
-    "legal-land-owner-information",
+    "location-access-and-land-use",
+    "mine-components-and-offsite-infrastructure",
     "project-dates",
     "document-upload",
     "declaration",
@@ -88,7 +88,7 @@ export const ProjectSummaryForm: FC<ProjectSummaryFormProps &
 
   const renderTabComponent = (tab) =>
     ({
-      "legal-land-owner-information": <LegalLandOwnerInformation />,
+      "location-access-and-land-use": <LegalLandOwnerInformation />,
       "basic-information": <BasicInformation />,
       "related-projects": (
         <ProjectLinks viewProject={(p) => EDIT_PROJECT.dynamicRoute(p.project_guid)} />
@@ -97,8 +97,8 @@ export const ProjectSummaryForm: FC<ProjectSummaryFormProps &
       "project-dates": <ProjectDates initialValues={props.initialValues} />,
       "applicant-information": <Applicant />,
       "representing-agent": <Agent />,
-      "facility-operator-information": <FacilityOperator />,
-      "authorizations-involved": (
+      "mine-components-and-offsite-infrastructure": <FacilityOperator />,
+      "purpose-and-authorization": (
         <AuthorizationsInvolved initialValues={props.initialValues} {...props} />
       ),
       "document-upload": (

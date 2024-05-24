@@ -1,7 +1,7 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC } from "react";
 import { useSelector } from "react-redux";
 import { Col, Row, Typography } from "antd";
-import { Field, getFormValues, getFormSyncErrors } from "redux-form";
+import { Field, getFormValues } from "redux-form";
 import {
   email,
   maxLength,
@@ -9,10 +9,6 @@ import {
   postalCodeWithCountry,
   required,
   requiredRadioButton,
-  lat,
-  lon,
-  max,
-  min,
 } from "@mds/common/redux/utils/Validate";
 import RenderField from "../forms/RenderField";
 import RenderSelect from "../forms/RenderSelect";
@@ -20,37 +16,11 @@ import { FORM } from "../..";
 import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import RenderRadioButtons from "../forms/RenderRadioButtons";
 import RenderAutoSizeField from "../forms/RenderAutoSizeField";
-import CoreMap from "../common/Map";
 import { normalizePhone } from "@mds/common/redux/utils/helpers";
 
 export const FacilityOperator: FC = () => {
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
-  const formErrors = useSelector(getFormSyncErrors(FORM.ADD_EDIT_PROJECT_SUMMARY));
-  const {
-    facility_coords_source,
-    zoning,
-    facility_latitude,
-    facility_longitude,
-    legal_land_desc,
-    facility_pid_pin_crown_file_no,
-  } = formValues;
-  const [pin, setPin] = useState<Array<string>>([]);
-
-  useEffect(() => {
-    // don't jump around the map while coords being entered and not yet valid
-    const invalidPin = Boolean(formErrors.facility_longitude || formErrors.facility_latitude);
-    if (!invalidPin) {
-      const latLng = [facility_latitude, facility_longitude];
-      setPin(latLng);
-    }
-  }, [facility_longitude, facility_latitude]);
-
-  const dataSourceOptions = [
-    { value: "GPS", label: "GPS" },
-    { value: "SUR", label: "Survey" },
-    { value: "GGE", label: "Google Earth" },
-    { value: "OTH", label: "Other" },
-  ];
+  const { zoning } = formValues;
 
   const address_type_code = "CAN";
 
@@ -60,7 +30,7 @@ export const FacilityOperator: FC = () => {
 
   return (
     <>
-      <Typography.Title level={3}>Facility Location and Operator Information</Typography.Title>
+      <Typography.Title level={3}>Mine Components and Offsite Infrastructure</Typography.Title>
       <Field
         name="facility_type"
         required
@@ -79,80 +49,14 @@ export const FacilityOperator: FC = () => {
         rows={3}
         component={RenderAutoSizeField}
       />
-      <Row gutter={16}>
-        <Col md={12} sm={24}>
-          <Field
-            name="facility_latitude"
-            required
-            validate={[required, lat, max(60), min(47)]}
-            label="Latitude"
-            component={RenderField}
-            help="Must be between 47 and 60 with no more than 7 decimal places"
-          />
-          <Field
-            name="facility_longitude"
-            required
-            validate={[required, lon, max(-113), min(-140)]}
-            label="Longitude"
-            component={RenderField}
-            help="Must be between -113 and -140 with no more than 7 decimal places"
-          />
-          <Field
-            name="facility_coords_source"
-            required
-            validate={[required]}
-            label="Source of Data"
-            data={dataSourceOptions}
-            component={RenderSelect}
-          />
-        </Col>
-        <Col md={12} sm={24}>
-          <CoreMap controls additionalPins={[pin]} />
-        </Col>
-      </Row>
-      {facility_coords_source === "OTH" && (
-        <Field
-          name="facility_coords_source_desc"
-          required
-          validate={[required, maxLength(4000)]}
-          label="Please specify if other"
-          maximumCharacters={4000}
-          rows={3}
-          component={RenderAutoSizeField}
-        />
-      )}
-      <Field
-        name="facility_pid_pin_crown_file_no"
-        label="PID/PIN/Crown File No"
-        component={RenderField}
-        validate={!legal_land_desc ? [required, maxLength(100)] : [maxLength(100)]}
-        maximumCharacters={100}
-        required={!legal_land_desc}
-      />
-      <Field
-        name="legal_land_desc"
-        label="Legal land Description (Lot/Block/Plan)"
-        validate={!facility_pid_pin_crown_file_no ? [required, maxLength(4000)] : [maxLength(4000)]}
-        maximumCharacters={4000}
-        rows={3}
-        component={RenderAutoSizeField}
-        required={!facility_pid_pin_crown_file_no}
-      />
-      <Field
-        name="facility_lease_no"
-        label="Mine Lease/Coal Lease Number"
-        component={RenderField}
-        validate={[maxLength(100)]}
-      />
-
-      <Typography.Title level={4}>Facility Address</Typography.Title>
+      <Typography.Title level={5}>Facility Address</Typography.Title>
       <Row gutter={16}>
         <Col md={19} sm={24}>
           <Field
             name="facility_operator.address.address_line_1"
             label="Street"
             required
-            validate={[required]}
+            validate={[required, maxLength(400)]}
             component={RenderField}
             help="If no civic address, describe location (e.g. 3km north of Sechelt, BC, on Highway 101)"
           />
@@ -180,8 +84,7 @@ export const FacilityOperator: FC = () => {
         name="facility_operator.address.post_code"
         label="Postal Code"
         component={RenderField}
-        required
-        validate={[postalCodeWithCountry(address_type_code), required]}
+        validate={[postalCodeWithCountry(address_type_code)]}
       />
 
       <Field
