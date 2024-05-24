@@ -84,22 +84,30 @@ export const ApplicationSummary: FC = () => {
     permitType: string
   ) => {
     if (payload?.[permitType]?.AMENDMENT) {
-      const types = payload[permitType].types;
       for (let i = 0; i < payload[permitType].AMENDMENT.length; i++) {
         const permit = payload[permitType].AMENDMENT[i];
-        const type = types[i];
-        const permitTypeLabel = parseProjectTypeLabel(type);
+        const permitTypeLabel = parseProjectTypeLabel("AMENDMENT");
         const projectType = `${parseTransformedProjectSummaryAuthorizationTypes(
           permitAuthorizationType,
           permitType
         )} - ${permitTypeLabel}`;
 
-        if (type === "AMENDMENT") {
-          processedEnvironmentActPermitResult.push({
-            project_type: projectType,
-            permit_no: permit.existing_permits_authorizations?.[0] || "N/A",
-          });
-        } else if (type === "NEW") {
+        processedEnvironmentActPermitResult.push({
+          project_type: projectType,
+          permit_no: permit.existing_permits_authorizations?.[0],
+        });
+      }
+    }
+    const permitTypes = ["NEW", "CLOSURE", "OTHER"];
+
+    for (const type of permitTypes) {
+      if (payload?.[permitType]?.[type]) {
+        for (let i = 0; i < payload[permitType][type].length; i++) {
+          const permitTypeLabel = parseProjectTypeLabel(type);
+          const projectType = `${parseTransformedProjectSummaryAuthorizationTypes(
+            permitAuthorizationType,
+            permitType
+          )} - ${permitTypeLabel}`;
           processedEnvironmentActPermitResult.push({
             project_type: projectType,
             permit_no: "N/A",
@@ -209,11 +217,11 @@ export const ApplicationSummary: FC = () => {
       <Typography.Title level={3}>Application Summary</Typography.Title>
       <Typography.Paragraph>
         {
-          "Let's review what you're submittingThese files are not reviewed as part of the submission."
+          "Let's review what you're submitting. These files are not reviewed as part of the submission."
         }
       </Typography.Paragraph>
       <Alert
-        description="Select the authorization that you anticipate needing for this project. This is to assist in planning and may not be the complete list for the final application."
+        description="A fee may be requested from the ministries for the review of each permit or authorization. Incorrect authorization numbers will cause delays or rejection of the submission."
         type="warning"
         showIcon
       />
