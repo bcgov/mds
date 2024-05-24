@@ -115,7 +115,7 @@ const RenderContacts = (props) => {
                 <Field
                   name={`${field}.company_name`}
                   id={`${field}.company_name`}
-                  label="Company name"
+                  label="Company Name"
                   component={RenderField}
                 />
               </Col>
@@ -219,7 +219,7 @@ const RenderContacts = (props) => {
 
             {index === 0 && (
               <>
-                <Typography.Title level={3}>
+                <Typography.Title level={5}>
                   Additional project contacts (optional)
                 </Typography.Title>
                 <Typography.Paragraph>

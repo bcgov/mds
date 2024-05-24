@@ -47,6 +47,7 @@ import {
 import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import { renderCategoryColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import { MineDocument } from "@mds/common/models/documents/document";
+import { Link } from "react-router-dom";
 
 export interface ProjectSummary {
   project_summary_id: number;
@@ -533,9 +534,9 @@ export const AuthorizationsInvolved = (props) => {
   const transformedProjectSummaryAuthorizationTypes = useSelector(
     getTransformedProjectSummaryAuthorizationTypes
   );
+
   const amsAuthTypes = useSelector(getAmsAuthorizationTypes);
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
-
   const handleChange = (e, code) => {
     if (e.target.checked) {
       let formVal;
@@ -559,7 +560,7 @@ export const AuthorizationsInvolved = (props) => {
   return (
     <div id="authorizations-involved">
       <Row gutter={[0, 16]}>
-        <Typography.Title level={3}>Purpose & Authorization</Typography.Title>
+        <Typography.Title level={3}>Purpose and Authorization</Typography.Title>
         <Alert
           description="Select the authorization that you anticipate needing for this project. This is to assist in planning and may not be the complete list for the final application."
           type="warning"
@@ -599,8 +600,18 @@ export const AuthorizationsInvolved = (props) => {
                                     description={
                                       <ul>
                                         <li>
-                                          For changes to existing activities, submit Notice of
-                                          Departure through MineSpace.
+                                          For intent to depart from a Mines Act authorized mine plan
+                                          and reclamation program, as per HSRC code 10.1.18, submit
+                                          a{" "}
+                                          <Link
+                                            to={GLOBAL_ROUTES?.MINE_DASHBOARD.dynamicRoute(
+                                              formValues?.mine_guid,
+                                              "nods"
+                                            )}
+                                          >
+                                            Notice of Departure
+                                          </Link>{" "}
+                                          through MineSpace
                                         </li>
                                         <li>
                                           For exploration work outside the permit mine area without

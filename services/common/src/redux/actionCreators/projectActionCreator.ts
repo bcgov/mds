@@ -68,6 +68,7 @@ export const updateProjectSummary = (
     errorToastMessage: "default",
     successToastMessage: message,
   };
+
   return CustomAxios(messages)
     .put(
       ENVIRONMENT.apiUrl + API.PROJECT_SUMMARY(projectGuid, projectSummaryGuid),

@@ -27,8 +27,7 @@ const terms = (
       165, as amended or replaced from time to time;
     </li>
     <li>
-      “Province” means Her Majesty the Queen in Right of British Columbia; “Regulatory Document”
-      means:
+      “Province” means His Majesty King in Right of British Columbia; “Regulatory Document” means:
     </li>
     <li>a) this application form,</li>
     <li>

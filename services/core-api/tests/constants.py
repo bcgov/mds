@@ -220,10 +220,7 @@ FACILITY_DATA = {
             "address_type_code": "CAN"
         },
     },
-    'facility_coords_source': "GPS",
     'facility_desc': "description",
-    'facility_latitude': "50.0000000",
-    'facility_longitude': "-115.0000000",
     'facility_type': "test type",
     'zoning': True,
 }
@@ -278,4 +275,13 @@ LEGAL_LAND_DATA = {
     'legal_land_owner_name': "some name",
     'legal_land_owner_contact_number': "123-123-1234",
     'legal_land_owner_email_address': "test@gov.bc.ca",
+}
+
+LOCATION_ACCESS_DATA = {
+    'legal_land_desc': "test",
+    'facility_latitude': "50.0000000",
+    'facility_longitude': "-115.0000000",
+    'facility_coords_source': "GPS",
+    'facility_lease_no': "1234",
+    'facility_pid_pin_crown_file_no': "1234",
 }

@@ -16,7 +16,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
         <h3
           class="ant-typography"
         >
-          Purpose & Authorization
+          Purpose and Authorization
         </h3>
         <div
           class="ant-alert ant-alert-warning ant-alert-with-description"
@@ -276,7 +276,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                               </span>
                               <span>
                                 <b>
-                                  Municipal wastewater regulation
+                                  Municipal Wastewater Regulation
                                 </b>
                               </span>
                             </label>
