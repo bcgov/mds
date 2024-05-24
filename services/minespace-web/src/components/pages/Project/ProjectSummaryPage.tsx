@@ -224,6 +224,10 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
   };
 
   const handleTabChange = (newTab) => {
+    console.log("newTab: ", newTab);
+    console.log("projectGuid: ", projectGuid);
+    console.log("projectSummaryGuid: ", projectSummaryGuid);
+    console.log("mineGuid: ", mineGuid);
     const url = isEditMode
       ? EDIT_PROJECT_SUMMARY.dynamicRoute(projectGuid, projectSummaryGuid, newTab)
       : ADD_PROJECT_SUMMARY.dynamicRoute(mineGuid, newTab);

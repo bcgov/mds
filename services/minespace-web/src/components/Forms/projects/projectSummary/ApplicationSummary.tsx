@@ -6,10 +6,13 @@ import {
   getDropdownProjectSummaryPermitTypes,
   getTransformedProjectSummaryAuthorizationTypes,
 } from "@mds/common/redux/selectors/staticContentSelectors";
-import { getAmsAuthorizationTypes } from "@mds/common/redux/selectors/projectSelectors";
+
 import { renderTextColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { ColumnsType } from "antd/es/table";
+import { Button, Alert, Typography, Col, Row } from "antd";
+import { EDIT_PROJECT_SUMMARY } from "@/constants/routes";
+import { useHistory } from "react-router-dom";
 
 interface IAuthorizationSummaryColumn {
   type: string;
@@ -22,13 +25,13 @@ export const ApplicationSummary: FC = () => {
   const transformedProjectSummaryAuthorizationTypes = useSelector(
     getTransformedProjectSummaryAuthorizationTypes
   );
-  const amsAuthTypes = useSelector(getAmsAuthorizationTypes);
 
   const [minesActData, setMinesActData] = useState([]);
   const [environmentalManagementActData, setEnvironmentalManagementActData] = useState([]);
   const [waterSustainabilityActData, setWaterSustainabilityActData] = useState([]);
   const [forestryActData, setForestryActData] = useState([]);
   const [otherLegislationActData, setOtherLegislationActData] = useState([]);
+  const history = useHistory();
 
   const processedEnvironmentActPermitResult: any[] = [];
   let processedOtherActPermitResult: any[] = [];
@@ -190,13 +193,92 @@ export const ApplicationSummary: FC = () => {
     loadPermitData(formValues.authorizations);
   }, [formValues, transformedProjectSummaryAuthorizationTypes, dropdownProjectSummaryPermitTypes]);
 
+  const handleEditClicked = () => {
+    const projectGuid = formValues?.project_guid;
+    const projectSummaryGuid = formValues?.project_summary_guid;
+    const url = EDIT_PROJECT_SUMMARY.dynamicRoute(
+      projectGuid,
+      projectSummaryGuid,
+      "authorizations-involved"
+    );
+    history.push(url);
+  };
+
   return (
-    <>
+    <div className="ant-form-vertical">
+      <Typography.Title level={3}>Application Summary</Typography.Title>
+      <Typography.Paragraph>
+        {
+          "Let's review what you're submittingThese files are not reviewed as part of the submission."
+        }
+      </Typography.Paragraph>
+      <Alert
+        description="Select the authorization that you anticipate needing for this project. This is to assist in planning and may not be the complete list for the final application."
+        type="warning"
+        showIcon
+      />
+      <br />
+      <Typography.Title level={4}>Major Mines Office</Typography.Title>
+      <Row gutter={8}>
+        <Col md={12} sm={24}>
+          <Typography.Title level={5}>Mines Act</Typography.Title>
+        </Col>
+        <Col md={12} sm={24} style={{ textAlign: "right" }}>
+          <Button type="default" onClick={handleEditClicked}>
+            Edit
+          </Button>
+        </Col>
+      </Row>
       <CoreTable dataSource={minesActData} columns={minesActColumns} />
+      <br />
+      <Typography.Title level={4}>Ministry of Environment</Typography.Title>
+      <Row gutter={8}>
+        <Col md={12} sm={24}>
+          <Typography.Title level={5}>Environmental Management Act</Typography.Title>
+        </Col>
+        <Col md={12} sm={24} style={{ textAlign: "right" }}>
+          <Button type="default" onClick={handleEditClicked}>
+            Edit
+          </Button>
+        </Col>
+      </Row>
       <CoreTable dataSource={environmentalManagementActData} columns={otherActColumns} />
+      <br />
+      <Row gutter={8}>
+        <Col md={12} sm={24}>
+          <Typography.Title level={5}>Water Sustainability Act</Typography.Title>
+        </Col>
+        <Col md={12} sm={24} style={{ textAlign: "right" }}>
+          <Button type="default" onClick={handleEditClicked}>
+            Edit
+          </Button>
+        </Col>
+      </Row>
       <CoreTable dataSource={waterSustainabilityActData} columns={otherActColumns} />
+      <br />
+      <Row gutter={8}>
+        <Col md={12} sm={24}>
+          <Typography.Title level={5}>Forestry Act</Typography.Title>
+        </Col>
+        <Col md={12} sm={24} style={{ textAlign: "right" }}>
+          <Button type="default" onClick={handleEditClicked}>
+            Edit
+          </Button>
+        </Col>
+      </Row>
       <CoreTable dataSource={forestryActData} columns={otherActColumns} />
+      <br />
+      <Row gutter={8}>
+        <Col md={12} sm={24}>
+          <Typography.Title level={5}>Other Legislation</Typography.Title>
+        </Col>
+        <Col md={12} sm={24} style={{ textAlign: "right" }}>
+          <Button type="default" onClick={handleEditClicked}>
+            Edit
+          </Button>
+        </Col>
+      </Row>
       <CoreTable dataSource={otherLegislationActData} columns={otherActColumns} />
-    </>
+    </div>
   );
 };
