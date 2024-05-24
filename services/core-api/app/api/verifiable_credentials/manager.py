@@ -1,5 +1,4 @@
 # for midware/business level actions between requests and data access
-import pytz
 from datetime import datetime
 from time import sleep
 from typing import List
