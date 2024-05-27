@@ -1,4 +1,5 @@
 # for midware/business level actions between requests and data access
+import pytz
 from datetime import datetime
 from time import sleep
 from typing import List
@@ -161,7 +162,7 @@ class VerifiableCredentialManager():
         #https://www.w3.org/TR/vc-data-model/
         id = permit_amendment.issue_date
         #convert to datetime with tzinfo
-        issuance_date = datetime(id.year, id.month, id.day, 0, 0, 0)
+        issuance_date = datetime(id.year, id.month, id.day, 0, 0, 0, tzinfo=pytz.timezone("UTC"))
         credential = {
             "@context":
             ["https://www.w3.org/2018/credentials/v1", {
