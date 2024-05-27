@@ -1957,26 +1957,3 @@ export const NOTICE_OF_DEPARTURE_DETAILS = {
     },
   ],
 };
-
-export const REGIONS = [
-  {
-    name: "Alberni-Clayoquot",
-    regional_district_id: 4786586,
-  },
-  {
-    name: "Bulkley-Nechako",
-    regional_district_id: 4786587,
-  },
-  {
-    name: "Capital",
-    regional_district_id: 4786588,
-  },
-  {
-    name: "Cariboo",
-    regional_district_id: 4786590,
-  },
-  {
-    name: "Central Coast",
-    regional_district_id: 4786592,
-  },
-];

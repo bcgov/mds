@@ -5,10 +5,10 @@ import {
   BULK_STATIC_CONTENT_RESPONSE,
   PROJECT,
   PROJECT_SUMMARY,
+  REGIONS,
 } from "@mds/common/tests/mocks/dataMocks";
 import { PROJECTS, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
-import { REGIONS } from "@/tests/mocks/dataMocks";
 import { BrowserRouter } from "react-router-dom";
 
 function mockFunction() {
@@ -31,7 +31,9 @@ function mockFunction() {
 jest.mock("react-router-dom", () => mockFunction());
 
 const initialState = {
-  regions: { regions: REGIONS },
+  regions: {
+    regions: REGIONS,
+  },
   [PROJECTS]: {
     project: PROJECT,
     projectSummary: PROJECT_SUMMARY,

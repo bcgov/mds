@@ -1,7 +1,7 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC } from "react";
 import { useSelector } from "react-redux";
 import { Col, Row, Typography } from "antd";
-import { Field, getFormSyncErrors, getFormValues } from "redux-form";
+import { Field, getFormValues } from "redux-form";
 import {
   email,
   maxLength,
@@ -22,34 +22,9 @@ import { getRegionOptions } from "@mds/common/redux/slices/regionsSlice";
 export const FacilityOperator: FC = () => {
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
 
-  const formErrors = useSelector(getFormSyncErrors(FORM.ADD_EDIT_PROJECT_SUMMARY));
-  const {
-    facility_coords_source,
-    zoning,
-    facility_latitude,
-    facility_longitude,
-    legal_land_desc,
-    facility_pid_pin_crown_file_no,
-  } = formValues;
-  const [pin, setPin] = useState<Array<string>>([]);
+  const { zoning } = formValues;
 
   const regionOptions = useSelector(getRegionOptions);
-
-  useEffect(() => {
-    // don't jump around the map while coords being entered and not yet valid
-    const invalidPin = Boolean(formErrors.facility_longitude || formErrors.facility_latitude);
-    if (!invalidPin) {
-      const latLng = [facility_latitude, facility_longitude];
-      setPin(latLng);
-    }
-  }, [facility_longitude, facility_latitude]);
-
-  const dataSourceOptions = [
-    { value: "GPS", label: "GPS" },
-    { value: "SUR", label: "Survey" },
-    { value: "GGE", label: "Google Earth" },
-    { value: "OTH", label: "Other" },
-  ];
 
   const address_type_code = "CAN";
 

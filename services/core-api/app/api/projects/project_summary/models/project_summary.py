@@ -1112,7 +1112,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         regional_district_name = regional_district_id is not None and Regions.find_by_id(
             regional_district_id).name or None
 
-        current_app.logger.info(regional_district_name)
 
         if ams_authorizations:
             ams_results = []

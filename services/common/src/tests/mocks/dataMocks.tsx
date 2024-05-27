@@ -8138,3 +8138,26 @@ export const MINES_ACT_PERMITS_VC_LIST = [
     cred_rev_id: "1234",
   },
 ];
+
+export const REGIONS = [
+  {
+    name: "Alberni-Clayoquot",
+    regional_district_id: 4786586,
+  },
+  {
+    name: "Bulkley-Nechako",
+    regional_district_id: 4786587,
+  },
+  {
+    name: "Capital",
+    regional_district_id: 4786588,
+  },
+  {
+    name: "Cariboo",
+    regional_district_id: 4786590,
+  },
+  {
+    name: "Central Coast",
+    regional_district_id: 4786592,
+  },
+];
