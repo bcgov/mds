@@ -207,7 +207,7 @@ export const ApplicationSummary: FC = () => {
     const url = EDIT_PROJECT_SUMMARY.dynamicRoute(
       projectGuid,
       projectSummaryGuid,
-      "authorizations-involved"
+      "purpose-and-authorization"
     );
     history.push(url);
   };
