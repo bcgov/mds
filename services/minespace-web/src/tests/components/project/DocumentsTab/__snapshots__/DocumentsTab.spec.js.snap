@@ -92,10 +92,7 @@ exports[`DocumentsTab renders properly 1`] = `
               "status_code": "DFT",
             },
             "project_guid": "8132462392222",
-            "project_summary": Object {
-              "project_summary_guid": "6bab1df6-e181-435a-abc0-e99466411880",
-              "status_code": "SUB",
-            },
+            "project_summary": Object {},
             "project_title": "Test Mine",
             "proponent_project_id": "Test-123",
             "update_timestamp": "2023-08-04T09:21:06.028471-06:00",
