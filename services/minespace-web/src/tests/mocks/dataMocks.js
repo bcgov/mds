@@ -1218,7 +1218,10 @@ export const PROJECT = {
             name: "Test Contact",
           },
         ],
-        project_summary: {},
+        project_summary: {
+          project_summary_guid: "6bab1df6-e181-435a-abc0-e99466411880",
+          status_code: "SUB",
+        },
         major_mine_application: {
           major_mine_application_guid: "abcde12345",
           status_code: "DFT",
