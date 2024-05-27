@@ -1,17 +1,7 @@
 import React, { FC } from "react";
-import { connect } from "react-redux";
-import { RouteComponentProps, withRouter } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { flattenObject, resetForm } from "@common/utils/helpers";
-import { compose, bindActionCreators } from "redux";
-import {
-  reduxForm,
-  change,
-  arrayPush,
-  formValueSelector,
-  getFormValues,
-  getFormSyncErrors,
-  InjectedFormProps,
-} from "redux-form";
+import { formValueSelector, getFormSyncErrors, getFormValues } from "redux-form";
 import * as FORM from "@/constants/forms";
 import DocumentUpload from "@/components/Forms/projects/projectSummary/DocumentUpload";
 import ProjectContacts from "@/components/Forms/projects/projectSummary/ProjectContacts";
@@ -22,13 +12,14 @@ import Step from "@common/components/Step";
 import ProjectLinks from "@mds/common/components/projects/ProjectLinks";
 import { EDIT_PROJECT } from "@/constants/routes";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
-import { Feature, IProjectSummary, IProjectSummaryDocument } from "@mds/common";
+import { Feature, IProjectSummary } from "@mds/common";
 import { Agent } from "./Agent";
 import { LegalLandOwnerInformation } from "@mds/common/components/projectSummary/LegalLandOwnerInformation";
 import { FacilityOperator } from "@mds/common/components/projectSummary/FacilityOperator";
 import BasicInformation from "@mds/common/components/projectSummary/BasicInformation";
 import Applicant from "@/components/Forms/projects/projectSummary/Applicant";
 import Declaration from "@mds/common/components/projectSummary/Declaration";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import { ApplicationSummary } from "./ApplicationSummary";
 
 interface ProjectSummaryFormProps {
@@ -40,14 +31,6 @@ interface ProjectSummaryFormProps {
   handleSaveData: (event, activeTab) => void;
   handleSaveDraft: () => void;
   activeTab: string;
-}
-
-interface StateProps {
-  documents: IProjectSummaryDocument;
-  formValues: any;
-  formErrors: any;
-  anyTouched: boolean;
-  // amendmentDocuments: IProjectSummaryDocument[];
 }
 
 // converted to a function to make feature flag easier to work with
@@ -79,10 +62,24 @@ export const getProjectFormTabs = (amsFeatureEnabled: boolean) => {
       ];
 };
 
-export const ProjectSummaryForm: FC<ProjectSummaryFormProps &
-  StateProps &
-  InjectedFormProps<IProjectSummary> &
-  RouteComponentProps<any>> = ({ documents = [], ...props }) => {
+export const ProjectSummaryForm: FC<ProjectSummaryFormProps> = ({ ...props }) => {
+  const selector = formValueSelector(FORM.ADD_EDIT_PROJECT_SUMMARY);
+
+  const formValues =
+    useSelector((state) => getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)(state)) || {};
+  const documents = useSelector((state) => selector(state, "documents")) || [];
+  const formErrors = useSelector((state) =>
+    getFormSyncErrors(FORM.ADD_EDIT_PROJECT_SUMMARY)(state)
+  );
+  const anyTouched = useSelector((state) => selector(state, "anyTouched"));
+
+  const childProps = {
+    ...props,
+    formValues,
+    formErrors,
+    anyTouched,
+  };
+
   const { isFeatureEnabled } = useFeatureFlag();
   const majorProjectsFeatureEnabled = isFeatureEnabled(Feature.MAJOR_PROJECT_LINK_PROJECTS);
   const amsFeatureEnabled = isFeatureEnabled(Feature.AMS_AGENT);
@@ -101,61 +98,46 @@ export const ProjectSummaryForm: FC<ProjectSummaryFormProps &
       "representing-agent": <Agent />,
       "mine-components-and-offsite-infrastructure": <FacilityOperator />,
       "purpose-and-authorization": (
-        <AuthorizationsInvolved initialValues={props.initialValues} {...props} />
+        <AuthorizationsInvolved initialValues={props.initialValues} {...childProps} />
       ),
       "document-upload": (
-        <DocumentUpload initialValues={props.initialValues} {...props} documents={documents} />
+        <DocumentUpload initialValues={props.initialValues} {...childProps} documents={documents} />
       ),
       "application-summary": <ApplicationSummary />,
       declaration: <Declaration />,
     }[tab]);
 
-  const errors = Object.keys(flattenObject(props.formErrors));
+  const errors = Object.keys(flattenObject(formErrors));
   const disabledTabs = errors.length > 0;
 
   return (
-    <SteppedForm
-      errors={errors}
-      handleSaveData={props.handleSaveData}
-      handleSaveDraft={props.handleSaveDraft}
-      handleTabChange={props.handleTabChange}
-      activeTab={props.activeTab}
+    <FormWrapper
+      name={FORM.ADD_EDIT_PROJECT_SUMMARY}
+      onSubmit={() => {}}
+      initialValues={props.initialValues}
+      reduxFormConfig={{
+        touchOnBlur: true,
+        touchOnChange: false,
+        onSubmitSuccess: resetForm(FORM.ADD_EDIT_PROJECT_SUMMARY),
+      }}
     >
-      {projectFormTabs
-        .filter((tab) => majorProjectsFeatureEnabled || tab !== "related-projects")
-        .map((tab) => (
-          <Step key={tab} disabled={disabledTabs}>
-            {renderTabComponent(tab)}
-          </Step>
-        ))}
-    </SteppedForm>
+      <SteppedForm
+        errors={errors}
+        handleSaveData={props.handleSaveData}
+        handleSaveDraft={props.handleSaveDraft}
+        handleTabChange={props.handleTabChange}
+        activeTab={props.activeTab}
+      >
+        {projectFormTabs
+          .filter((tab) => majorProjectsFeatureEnabled || tab !== "related-projects")
+          .map((tab) => (
+            <Step key={tab} disabled={disabledTabs}>
+              {renderTabComponent(tab)}
+            </Step>
+          ))}
+      </SteppedForm>
+    </FormWrapper>
   );
 };
 
-const selector = formValueSelector(FORM.ADD_EDIT_PROJECT_SUMMARY);
-const mapStateToProps = (state) => ({
-  documents: selector(state, "documents"),
-  formValues: getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)(state) || {},
-  formErrors: getFormSyncErrors(FORM.ADD_EDIT_PROJECT_SUMMARY)(state),
-  anyTouched: selector(state, "anyTouched"),
-});
-
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      change,
-      arrayPush,
-    },
-    dispatch
-  );
-
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  reduxForm({
-    form: FORM.ADD_EDIT_PROJECT_SUMMARY,
-    touchOnBlur: true,
-    touchOnChange: false,
-    onSubmitSuccess: resetForm(FORM.ADD_EDIT_PROJECT_SUMMARY),
-    onSubmit: () => {},
-  })
-)(withRouter(ProjectSummaryForm)) as FC<ProjectSummaryFormProps>;
+export default ProjectSummaryForm;

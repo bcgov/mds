@@ -1218,10 +1218,7 @@ export const PROJECT = {
             name: "Test Contact",
           },
         ],
-        project_summary: {
-          project_summary_guid: "6bab1df6-e181-435a-abc0-e99466411880",
-          status_code: "SUB",
-        },
+        project_summary: {},
         major_mine_application: {
           major_mine_application_guid: "abcde12345",
           status_code: "DFT",
@@ -1957,3 +1954,26 @@ export const NOTICE_OF_DEPARTURE_DETAILS = {
     },
   ],
 };
+
+export const REGIONS = [
+  {
+    name: "Alberni-Clayoquot",
+    regional_district_id: 4786586,
+  },
+  {
+    name: "Bulkley-Nechako",
+    regional_district_id: 4786587,
+  },
+  {
+    name: "Capital",
+    regional_district_id: 4786588,
+  },
+  {
+    name: "Cariboo",
+    regional_district_id: 4786590,
+  },
+  {
+    name: "Central Coast",
+    regional_district_id: 4786592,
+  },
+];

@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { flattenObject } from "@common/utils/helpers";
 import { Link, Prompt, useHistory, useLocation, useParams } from "react-router-dom";
@@ -34,25 +34,10 @@ import {
 import ProjectSummaryForm, {
   getProjectFormTabs,
 } from "@/components/Forms/projects/projectSummary/ProjectSummaryForm";
-import { Feature, IMine, IProject, IProjectSummary, removeNullValuesRecursive } from "@mds/common";
+import { Feature, removeNullValuesRecursive } from "@mds/common";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { isArray } from "lodash";
 import { fetchRegions } from "@mds/common/redux/slices/regionsSlice";
-
-interface ProjectSummaryPageProps {
-  mines: Partial<IMine>[];
-  projectSummary: Partial<IProjectSummary>;
-  project: Partial<IProject>;
-  projectSummaryDocumentTypesHash: Record<string, string>;
-  formValueSelector: (arg1: string, arg2?: any) => any;
-  getFormSyncErrors: (arg1: string) => any;
-  formErrors: Record<string, string>;
-  formValues: any;
-  projectSummaryAuthorizationTypesArray: any[];
-  anyTouched: boolean;
-  formattedProjectSummary: any;
-  location: Record<any, string>;
-}
 
 interface IParams {
   mineGuid?: string;
@@ -61,7 +46,7 @@ interface IParams {
   tab?: any;
 }
 
-export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = () => {
+export const ProjectSummaryPage = () => {
   const anyTouched = useSelector(
     (state) => state.form[FORM.ADD_EDIT_PROJECT_SUMMARY]?.anyTouched || false
   );
@@ -97,8 +82,14 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = () => {
   };
 
   useEffect(() => {
+    if (project) {
+      setIsLoaded(true);
+    }
+  }, [project]);
+
+  useEffect(() => {
     if (!isLoaded) {
-      handleFetchData().then(() => setIsLoaded(true));
+      handleFetchData();
     }
     return () => {
       dispatch(clearProjectSummary());
