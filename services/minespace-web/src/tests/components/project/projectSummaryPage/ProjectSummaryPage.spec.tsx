@@ -44,6 +44,16 @@ const initialState = {
   },
 };
 
+/**
+ * There seems to be a provider issue when rendering the ProjectSummaryForm component
+ * the FormWrapper which is used as a child component requires the ReduxWrapper from the common directory
+ * while the ProjectSummaryPage component requires the ReduxWrapper from the minespace directory.
+ *
+ * So for now, the ProjectSummaryForm component is being mocked to avoid the provider issue.
+ *
+ * There is work planned to move the Project Summary related components to the common directory,
+ * so this test will need to be updated once that work is completed.
+ */
 jest.mock("@/components/Forms/projects/projectSummary/ProjectSummaryForm", () => ({
   __esModule: true,
   default: jest.fn(() => <div>Mock Project Summary Form</div>),
