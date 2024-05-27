@@ -158,26 +158,24 @@ const StepForms = ({
                   project?.information_requirements_table?.irt_guid
                 )}
               >
-                <AuthorizationWrapper>
-                  <Popconfirm
-                    placement="topRight"
-                    title="Are you sure you want to submit your final IRT, no changes could be made after submitting?"
-                    onConfirm={() =>
-                      handleIRTUpdate(
-                        {
-                          status_code: "SUB",
-                        },
-                        "Successfully submitted final IRT."
-                      )
-                    }
-                    okText="Yes"
-                    cancelText="No"
-                  >
-                    <Button id="submit_irt" type="primary">
-                      Submit IRT
-                    </Button>
-                  </Popconfirm>
-                </AuthorizationWrapper>
+                <Popconfirm
+                  placement="topRight"
+                  title="Are you sure you want to submit your final IRT, no changes could be made after submitting?"
+                  onConfirm={() =>
+                    handleIRTUpdate(
+                      {
+                        status_code: "SUB",
+                      },
+                      "Successfully submitted final IRT."
+                    )
+                  }
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <Button id="submit_irt" type="primary">
+                    Submit IRT
+                  </Button>
+                </Popconfirm>
               </Link>
             </>
           ) : (

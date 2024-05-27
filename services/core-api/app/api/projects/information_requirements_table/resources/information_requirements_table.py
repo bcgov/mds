@@ -55,9 +55,20 @@ class InformationRequirementsTableResource(Resource, UserMixin):
                     import_file)
                 irt_updated = irt.update(sanitized_irt_requirements, import_file, document_guid)
                 return irt_updated
-            else:
-                current_app.logger.error("Error occurred while retrieving file | document_guid")
-                raise BadRequest('Missing file information')
+
+            if request.json:
+                data = request.json
+                current_status_code = irt.status_code
+                irt_updated = irt.update(data)
+                if current_status_code != 'APV' and data['status_code'] == 'APV':
+                    irt.send_irt_approval_email()
+                elif current_status_code != 'SUB' and data['status_code'] == 'SUB':
+                    irt.send_irt_submit_email()
+                    # Trigger notification for newly submitted IRT
+                    message = f'An Information Requirements Table for ({irt.project.project_title}) has been submitted for ({irt.project.mine_name})'
+                    extra_data = {'project': {'project_guid': str(irt.project.project_guid)}}
+                    trigger_notification(message, ActivityType.ir_table_submitted, irt.project.mine, 'InformationRequirementsTable', irt.irt_guid, extra_data)
+                return irt_updated
 
         except BadRequest as err:
             raise err
