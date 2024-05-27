@@ -261,7 +261,18 @@ const RenderEMAAmendFieldArray = ({
             <Field
               label={
                 <Row justify="space-between" style={{ flexBasis: "100%" }}>
-                  <Col>Authorization Number</Col>
+                  <Col>
+                    <Typography.Text>
+                      Authorization Number &nbsp;&nbsp;&nbsp;
+                      <a
+                        href="https://j200.gov.bc.ca/pub/ams/Default.aspx?PossePresentation=DocumentSearch"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        AMS Lookup
+                      </a>
+                    </Typography.Text>
+                  </Col>
                   <Col>
                     <Button onClick={() => handleRemoveAmendment(index)}>Cancel</Button>
                   </Col>
@@ -269,8 +280,8 @@ const RenderEMAAmendFieldArray = ({
               }
               name="existing_permits_authorizations[0]"
               required
-              validate={[required, exactLength(4), digitCharactersOnly]}
-              help="Number only (e.g. PC1234 should be entered as 1234)"
+              validate={[required, exactLength(6), digitCharactersOnly]}
+              help="Number only (e.g. PC123456 should be entered as 123456)"
               component={RenderField}
             />
             <Field
