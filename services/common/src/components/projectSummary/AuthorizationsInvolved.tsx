@@ -20,7 +20,7 @@ import {
 import { getAmsAuthorizationTypes } from "@mds/common/redux/selectors/projectSelectors";
 import {
   digitCharactersOnly,
-  exactLength,
+  minLength,
   maxLength,
   required,
   requiredList,
@@ -280,8 +280,8 @@ const RenderEMAAmendFieldArray = ({
               }
               name="existing_permits_authorizations[0]"
               required
-              validate={[required, exactLength(6), digitCharactersOnly]}
-              help="Number only (e.g. PC123456 should be entered as 123456)"
+              validate={[required, minLength(2), maxLength(6), digitCharactersOnly]}
+              help="Number only (e.g. PC12345 should be entered as 12345)"
               component={RenderField}
             />
             <Field
