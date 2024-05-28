@@ -13,6 +13,7 @@ import { ColumnsType } from "antd/es/table";
 import { Button, Alert, Typography, Col, Row } from "antd";
 import { EDIT_PROJECT_SUMMARY } from "@/constants/routes";
 import { useHistory } from "react-router-dom";
+import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 
 interface IAuthorizationSummaryColumn {
   type: string;
@@ -20,6 +21,7 @@ interface IAuthorizationSummaryColumn {
 }
 
 export const ApplicationSummary: FC = () => {
+  const permits = useSelector(getPermits);
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
   const dropdownProjectSummaryPermitTypes = useSelector(getDropdownProjectSummaryPermitTypes);
   const transformedProjectSummaryAuthorizationTypes = useSelector(
@@ -32,6 +34,7 @@ export const ApplicationSummary: FC = () => {
   const [forestryActData, setForestryActData] = useState([]);
   const [otherLegislationActData, setOtherLegislationActData] = useState([]);
   const history = useHistory();
+  const notApplicableText = "N/A";
 
   const processedEnvironmentActPermitResult: any[] = [];
   let processedOtherActPermitResult: any[] = [];
@@ -63,18 +66,32 @@ export const ApplicationSummary: FC = () => {
     return jobType?.description;
   };
 
+  const getPermitNumber = (permit_guid: string): string => {
+    const permit = permits.find(({ permit_guid: id }) => id === permit_guid);
+    return permit?.permit_no ?? notApplicableText;
+  };
+
   const loadMinesActPermitData = (payload) => {
-    const result = [];
-    if (payload?.MINES_ACT_PERMIT) {
-      for (const permit of payload.MINES_ACT_PERMIT) {
-        for (const projectType of permit.project_summary_permit_type) {
-          result.push({
-            project_type: parseProjectTypeLabel(projectType),
-            permit_no: "N/A",
-          });
-        }
-      }
-    }
+    if (!payload?.MINES_ACT_PERMIT) return;
+
+    const result = payload.MINES_ACT_PERMIT.flatMap((permit) =>
+      permit.project_summary_permit_type
+        .map((projectType: string) => {
+          const project_type = parseProjectTypeLabel(projectType);
+          if (projectType === "AMENDMENT") {
+            return permit.existing_permits_authorizations.map((guid) => ({
+              project_type,
+              permit_no: getPermitNumber(guid),
+            }));
+          } else {
+            return {
+              project_type,
+              permit_no: notApplicableText,
+            };
+          }
+        })
+        .flat()
+    );
     setMinesActData(result);
   };
 
@@ -110,7 +127,7 @@ export const ApplicationSummary: FC = () => {
           )} - ${permitTypeLabel}`;
           processedEnvironmentActPermitResult.push({
             project_type: projectType,
-            permit_no: "N/A",
+            permit_no: notApplicableText,
           });
         }
       }
@@ -150,7 +167,7 @@ export const ApplicationSummary: FC = () => {
 
           processedOtherActPermitResult.push({
             project_type: projectType,
-            permit_no: "N/A",
+            permit_no: notApplicableText,
           });
         }
       });
