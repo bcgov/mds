@@ -90,21 +90,21 @@ const DocumentsSection = () => {
   const links = [
     {
       title: "Health, Safety and Reclamation Code",
-      url: HSRC_PDF,
+      url: HSRC_PDF, //new code
     },
     {
       title: "Chief Inspector's Annual Reports",
       url:
-        "https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/further-information/reports-publications/chief-inspector-s-annual-reports",
+        "https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/health-safety/chief-inspector-s-annual-reports",
     },
     {
       title: "Chief Inspector's Directives",
       url:
-        "https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/further-information/directives-alerts-incident-information/chief-inspector-directives",
+        "https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/health-safety/chief-inspector-directives",
     },
     {
       title: "Mine Emergency Management Plan",
-      url: MEMP_PDF,
+      url: MEMP_PDF, // new PDF
     },
   ];
   return linkWidget("Documents", links);
