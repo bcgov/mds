@@ -181,6 +181,8 @@ export const INFORMATION_REQUIREMENTS_TABLES = (projectGuid) =>
   `/projects/${projectGuid}/information-requirements-table`;
 export const INFORMATION_REQUIREMENTS_TABLE = (projectGuid, irtGuid) =>
   `/projects/${projectGuid}/information-requirements-table/${irtGuid}`;
+export const INFORMATION_REQUIREMENTS_TABLE_STATUS = (projectGuid, irtGuid) =>
+  `/projects/${projectGuid}/information-requirements-table/${irtGuid}/status`;
 
 // Major mine application
 export const MAJOR_MINE_APPLICATIONS = (projectGuid) =>

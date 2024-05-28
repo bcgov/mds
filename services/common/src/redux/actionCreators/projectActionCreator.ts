@@ -363,6 +363,36 @@ export const updateInformationRequirementsTable = (
     .finally(() => dispatch(hideLoading()));
 };
 
+export const updateInformationRequirementsTableStatus = (
+  { projectGuid, informationRequirementsTableGuid },
+  payload: Partial<IInformationRequirementsTable>,
+  message = "Successfully updated information requirements table"
+): AppThunk<Promise<AxiosResponse<IInformationRequirementsTable>>> => (
+  dispatch
+): Promise<AxiosResponse<IInformationRequirementsTable>> => {
+  dispatch(request(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE_STATUS));
+  dispatch(showLoading());
+  return CustomAxios()
+    .put(
+      ENVIRONMENT.apiUrl +
+        API.INFORMATION_REQUIREMENTS_TABLE_STATUS(projectGuid, informationRequirementsTableGuid),
+      payload,
+      createRequestHeader()
+    )
+    .then((response: AxiosResponse<IInformationRequirementsTable>) => {
+      notification.success({
+        message,
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE_STATUS));
+      return response;
+    })
+    .catch(() => {
+      dispatch(error(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE_STATUS));
+    })
+    .finally(() => dispatch(hideLoading()));
+};
+
 export const fetchRequirements = (): AppThunk => (dispatch) => {
   dispatch(request(reducerTypes.GET_REQUIREMENTS));
   dispatch(showLoading());
