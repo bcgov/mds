@@ -17,10 +17,14 @@ import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticCo
 import RenderRadioButtons from "../forms/RenderRadioButtons";
 import RenderAutoSizeField from "../forms/RenderAutoSizeField";
 import { normalizePhone } from "@mds/common/redux/utils/helpers";
+import { getRegionOptions } from "@mds/common/redux/slices/regionsSlice";
 
 export const FacilityOperator: FC = () => {
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
+
   const { zoning } = formValues;
+
+  const regionOptions = useSelector(getRegionOptions);
 
   const address_type_code = "CAN";
 
@@ -49,6 +53,18 @@ export const FacilityOperator: FC = () => {
         rows={3}
         component={RenderAutoSizeField}
       />
+      <Row className="margin-large--bottom">
+        <Col span={12}>
+          <Field
+            name="regional_district_id"
+            required
+            validate={[required]}
+            label="Facility's Regional Location"
+            component={RenderSelect}
+            data={regionOptions}
+          />
+        </Col>
+      </Row>
       <Typography.Title level={5}>Facility Address</Typography.Title>
       <Row gutter={16}>
         <Col md={19} sm={24}>

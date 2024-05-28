@@ -1,26 +1,15 @@
 import React from "react";
-import { shallow } from "enzyme";
 import { ProjectSummaryPage } from "@/components/pages/Project/ProjectSummaryPage";
-import * as MOCK from "@/tests/mocks/dataMocks";
-
-const props: any = {};
-const dispatchProps: any = {};
-
-const setupProps = () => {
-  props.projectSummaryDocumentTypesHash = MOCK.PROJECT_SUMMARY_DOCUMENT_TYPES_HASH;
-  props.mines = {};
-  props.fieldsTouched = {};
-  props.formattedProjectSummary = {
-    mine_guid: "123",
-  };
-};
-
-const setupDispatchProps = () => {
-  dispatchProps.fetchProjectSummaryById = jest.fn(() => Promise.resolve());
-  dispatchProps.createProjectSummary = jest.fn(() => Promise.resolve());
-  dispatchProps.updateProjectSummary = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchMineRecordById = jest.fn(() => Promise.resolve());
-};
+import { render } from "@testing-library/react";
+import {
+  BULK_STATIC_CONTENT_RESPONSE,
+  PROJECT,
+  PROJECT_SUMMARY,
+  REGIONS,
+} from "@mds/common/tests/mocks/dataMocks";
+import { PROJECTS, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
+import { BrowserRouter } from "react-router-dom";
 
 function mockFunction() {
   const original = jest.requireActual("react-router-dom");
@@ -30,6 +19,7 @@ function mockFunction() {
       projectGuid: "74120872-74f2-4e27-82e6-878ddb472e5a",
       projectSummaryGuid: "70414192-ca71-4d03-93a5-630491e9c554",
       tab: "basic-information",
+      mineGuid: "12345678-74f2-4e27-82e6-878ddb472e5a",
     }),
     useLocation: jest.fn().mockReturnValue({
       pathname:
@@ -40,14 +30,47 @@ function mockFunction() {
 
 jest.mock("react-router-dom", () => mockFunction());
 
-beforeEach(() => {
-  setupProps();
-  setupDispatchProps();
-});
+const initialState = {
+  regions: {
+    regions: REGIONS,
+  },
+  [PROJECTS]: {
+    project: PROJECT,
+    projectSummary: PROJECT_SUMMARY,
+  },
+  [STATIC_CONTENT]: {
+    projectSummaryAuthorizationTypes: BULK_STATIC_CONTENT_RESPONSE.projectSummaryAuthorizationTypes,
+    projectSummaryDocumentTypes: BULK_STATIC_CONTENT_RESPONSE.projectSummaryDocumentTypes,
+  },
+};
+
+/**
+ * There seems to be a provider issue when rendering the ProjectSummaryForm component
+ * the FormWrapper which is used as a child component requires the ReduxWrapper from the common directory
+ * while the ProjectSummaryPage component requires the ReduxWrapper from the minespace directory.
+ *
+ * So for now, the ProjectSummaryForm component is being mocked to avoid the provider issue.
+ *
+ * There is work planned to move the Project Summary related components to the common directory,
+ * so this test will need to be updated once that work is completed.
+ */
+jest.mock("@/components/Forms/projects/projectSummary/ProjectSummaryForm", () => ({
+  __esModule: true,
+  default: jest.fn(() => <div>Mock Project Summary Form</div>),
+  getProjectFormTabs: jest.fn().mockReturnValue(["mockTab1", "mockTab2"]),
+}));
 
 describe("ProjectSummaryPage", () => {
-  it("renders properly", () => {
-    const component = shallow(<ProjectSummaryPage {...props} {...dispatchProps} />);
-    expect(component).toMatchSnapshot();
+  it("renders properly", async () => {
+    const { container, findByText } = render(
+      <ReduxWrapper initialState={initialState}>
+        <BrowserRouter>
+          <ProjectSummaryPage />
+        </BrowserRouter>
+      </ReduxWrapper>
+    );
+
+    await findByText(/Edit project description - Sample title/i);
+    expect(container).toMatchSnapshot();
   });
 });

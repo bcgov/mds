@@ -1,77 +1,43 @@
-import React, { FC, useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { flattenObject } from "@common/utils/helpers";
 import { Link, Prompt, useHistory, useLocation, useParams } from "react-router-dom";
-import {
-  submit,
-  formValueSelector,
-  getFormSyncErrors,
-  getFormValues,
-  reset,
-  touch,
-  change,
-} from "redux-form";
-import { Row, Col, Typography, Divider } from "antd";
+import { getFormSyncErrors, getFormValues, reset, submit, touch } from "redux-form";
+import { Col, Divider, Row, Typography } from "antd";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import { getMines } from "@mds/common/redux/selectors/mineSelectors";
 import {
-  getProjectSummary,
   getFormattedProjectSummary,
   getProject,
+  getProjectSummary,
 } from "@mds/common/redux/selectors/projectSelectors";
 import {
-  getProjectSummaryDocumentTypesHash,
   getProjectSummaryAuthorizationTypesArray,
+  getProjectSummaryDocumentTypesHash,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import {
   createProjectSummary,
-  updateProjectSummary,
   fetchProjectById,
   updateProject,
+  updateProjectSummary,
 } from "@mds/common/redux/actionCreators/projectActionCreator";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { clearProjectSummary } from "@mds/common/redux/actions/projectActions";
 import * as FORM from "@/constants/forms";
 import Loading from "@/components/common/Loading";
 import {
-  EDIT_PROJECT_SUMMARY,
-  MINE_DASHBOARD,
   ADD_PROJECT_SUMMARY,
   EDIT_PROJECT,
+  EDIT_PROJECT_SUMMARY,
+  MINE_DASHBOARD,
 } from "@/constants/routes";
 import ProjectSummaryForm, {
   getProjectFormTabs,
 } from "@/components/Forms/projects/projectSummary/ProjectSummaryForm";
-import { IMine, IProjectSummary, IProject, Feature, removeNullValuesRecursive } from "@mds/common";
-import { ActionCreator } from "@mds/common/interfaces/actionCreator";
+import { Feature, removeNullValuesRecursive } from "@mds/common";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { isArray } from "lodash";
-
-interface ProjectSummaryPageProps {
-  mines: Partial<IMine>[];
-  projectSummary: Partial<IProjectSummary>;
-  project: Partial<IProject>;
-  fetchProjectById: ActionCreator<typeof fetchProjectById>;
-  createProjectSummary: ActionCreator<typeof createProjectSummary>;
-  updateProjectSummary: ActionCreator<typeof updateProjectSummary>;
-  fetchMineRecordById: ActionCreator<typeof fetchMineRecordById>;
-  updateProject: ActionCreator<typeof updateProject>;
-  clearProjectSummary: () => any;
-  projectSummaryDocumentTypesHash: Record<string, string>;
-  submit: (arg1?: string) => any;
-  formValueSelector: (arg1: string, arg2?: any) => any;
-  getFormSyncErrors: (arg1: string) => any;
-  reset: (arg1: string) => any;
-  touch: (arg1?: string, arg2?: any) => any;
-  formErrors: Record<string, string>;
-  formValues: any;
-  projectSummaryAuthorizationTypesArray: any[];
-  anyTouched: boolean;
-  formattedProjectSummary: any;
-  location: Record<any, string>;
-  change: any;
-}
+import { fetchRegions } from "@mds/common/redux/slices/regionsSlice";
 
 interface IParams {
   mineGuid?: string;
@@ -80,29 +46,22 @@ interface IParams {
   tab?: any;
 }
 
-export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
-  const {
-    mines,
-    formattedProjectSummary,
-    project,
-    projectSummary,
-    projectSummaryAuthorizationTypesArray,
-    projectSummaryDocumentTypesHash,
-    formValues,
-    formErrors,
-    submit,
-    touch,
-    anyTouched,
-    reset,
-    fetchProjectById,
-    fetchMineRecordById,
-    clearProjectSummary,
-    createProjectSummary,
-    updateProjectSummary,
-    updateProject,
-    change,
-  } = props;
+export const ProjectSummaryPage = () => {
+  const anyTouched = useSelector(
+    (state) => state.form[FORM.ADD_EDIT_PROJECT_SUMMARY]?.anyTouched || false
+  );
+  const mines = useSelector(getMines);
+  const projectSummary = useSelector(getProjectSummary);
+  const formattedProjectSummary = useSelector(getFormattedProjectSummary);
+  const project = useSelector(getProject);
+  const projectSummaryDocumentTypesHash = useSelector(getProjectSummaryDocumentTypesHash);
+  const projectSummaryAuthorizationTypesArray = useSelector(
+    getProjectSummaryAuthorizationTypesArray
+  );
+  const formErrors = useSelector(getFormSyncErrors(FORM.ADD_EDIT_PROJECT_SUMMARY));
+  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
 
+  const dispatch = useDispatch();
   const { isFeatureEnabled } = useFeatureFlag();
   const amsFeatureEnabled = isFeatureEnabled(Feature.AMS_AGENT);
   const { mineGuid, projectGuid, projectSummaryGuid, tab } = useParams<IParams>();
@@ -116,17 +75,24 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
   const handleFetchData = () => {
     if (projectGuid && projectSummaryGuid) {
       setIsEditMode(true);
-      return fetchProjectById(projectGuid);
+      dispatch(fetchRegions(undefined));
+      return dispatch(fetchProjectById(projectGuid));
     }
-    return fetchMineRecordById(mineGuid);
+    return dispatch(fetchMineRecordById(mineGuid));
   };
 
   useEffect(() => {
+    if (project) {
+      setIsLoaded(true);
+    }
+  }, [project]);
+
+  useEffect(() => {
     if (!isLoaded) {
-      handleFetchData().then(() => setIsLoaded(true));
+      handleFetchData();
     }
     return () => {
-      clearProjectSummary();
+      dispatch(clearProjectSummary());
     };
   }, []);
 
@@ -152,12 +118,18 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
         } else {
           newAmsAuthorizations = newAmsAuthorizations.concat(
             authsOfType?.NEW.map((a) =>
-              transformAuthorization(type, { ...a, project_summary_permit_type: ["NEW"] })
+              transformAuthorization(type, {
+                ...a,
+                project_summary_permit_type: ["NEW"],
+              })
             )
           );
           amendAmsAuthorizations = amendAmsAuthorizations.concat(
             authsOfType?.AMENDMENT.map((a) =>
-              transformAuthorization(type, { ...a, project_summary_permit_type: ["AMENDMENT"] })
+              transformAuthorization(type, {
+                ...a,
+                project_summary_permit_type: ["AMENDMENT"],
+              })
             )
           );
         }
@@ -185,20 +157,27 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
   const handleUpdateProjectSummary = async (values, message) => {
     const payload = handleTransformPayload(values);
     setIsLoaded(false);
-    return updateProjectSummary(
-      {
-        projectGuid,
-        projectSummaryGuid,
-      },
-      payload,
-      message
+    return dispatch(
+      updateProjectSummary(
+        {
+          projectGuid,
+          projectSummaryGuid,
+        },
+        payload,
+        message
+      )
     )
       .then(async () => {
-        await updateProject(
-          { projectGuid },
-          { mrc_review_required: payload.mrc_review_required, contacts: payload.contacts },
-          "Successfully updated project.",
-          false
+        await dispatch(
+          updateProject(
+            { projectGuid },
+            {
+              mrc_review_required: payload.mrc_review_required,
+              contacts: payload.contacts,
+            },
+            "Successfully updated project.",
+            false
+          )
         );
       })
       .then(async () => {
@@ -210,12 +189,14 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
   };
 
   const handleCreateProjectSummary = async (values, message) => {
-    return createProjectSummary(
-      {
-        mineGuid: mineGuid,
-      },
-      handleTransformPayload(values),
-      message
+    return dispatch(
+      createProjectSummary(
+        {
+          mineGuid: mineGuid,
+        },
+        handleTransformPayload(values),
+        message
+      )
     ).then(({ data: { project_guid, project_summary_guid } }) => {
       history.replace(
         EDIT_PROJECT_SUMMARY.dynamicRoute(project_guid, project_summary_guid, projectFormTabs[1])
@@ -248,8 +229,8 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
 
     const errors = Object.keys(flattenObject(formErrors));
     const values = { ...formValues, status_code: status_code };
-    submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
-    touch(FORM.ADD_EDIT_PROJECT_SUMMARY);
+    dispatch(submit(FORM.ADD_EDIT_PROJECT_SUMMARY));
+    dispatch(touch(FORM.ADD_EDIT_PROJECT_SUMMARY));
     if (errors.length === 0) {
       try {
         if (!isEditMode) {
@@ -272,8 +253,8 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
     const message = "Successfully saved a draft project description.";
     const values = { ...formValues, status_code: "DFT" };
 
-    submit(FORM.ADD_EDIT_PROJECT_SUMMARY);
-    touch(FORM.ADD_EDIT_PROJECT_SUMMARY);
+    dispatch(submit(FORM.ADD_EDIT_PROJECT_SUMMARY));
+    dispatch(touch(FORM.ADD_EDIT_PROJECT_SUMMARY));
     const errors = Object.keys(flattenObject(formErrors));
     if (errors.length === 0) {
       try {
@@ -299,7 +280,10 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
     : `New project description for ${mineName}`;
 
   const initialValues = isEditMode
-    ? { ...formattedProjectSummary, mrc_review_required: project.mrc_review_required }
+    ? {
+        ...formattedProjectSummary,
+        mrc_review_required: project.mrc_review_required,
+      }
     : {};
 
   return (
@@ -309,7 +293,7 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
           when={anyTouched}
           message={(newLocation, action) => {
             if (action === "REPLACE") {
-              reset(FORM.ADD_EDIT_PROJECT_SUMMARY);
+              dispatch(reset(FORM.ADD_EDIT_PROJECT_SUMMARY));
             }
             return location.pathname !== newLocation.pathname &&
               !newLocation.pathname.includes("project-description") &&
@@ -354,36 +338,4 @@ export const ProjectSummaryPage: FC<ProjectSummaryPageProps> = (props) => {
   );
 };
 
-const selector = formValueSelector(FORM.ADD_EDIT_PROJECT_SUMMARY);
-const mapStateToProps = (state) => ({
-  anyTouched: state.form[FORM.ADD_EDIT_PROJECT_SUMMARY]?.anyTouched || false,
-  fieldsTouched: state.form[FORM.ADD_EDIT_PROJECT_SUMMARY]?.fields || {},
-  mines: getMines(state),
-  projectSummary: getProjectSummary(state),
-  formattedProjectSummary: getFormattedProjectSummary(state),
-  project: getProject(state),
-  projectSummaryDocumentTypesHash: getProjectSummaryDocumentTypesHash(state),
-  projectSummaryAuthorizationTypesArray: getProjectSummaryAuthorizationTypesArray(state),
-  formErrors: getFormSyncErrors(FORM.ADD_EDIT_PROJECT_SUMMARY)(state),
-  formValues: getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)(state),
-  contacts: selector(state, "contacts"),
-});
-
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      createProjectSummary,
-      updateProjectSummary,
-      fetchMineRecordById,
-      clearProjectSummary,
-      fetchProjectById,
-      updateProject,
-      submit,
-      reset,
-      touch,
-      change,
-    },
-    dispatch
-  );
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectSummaryPage);
+export default ProjectSummaryPage;

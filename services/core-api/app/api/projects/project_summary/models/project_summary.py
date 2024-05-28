@@ -7,6 +7,7 @@ from sqlalchemy import case
 from werkzeug.exceptions import BadRequest
 
 from app.api.parties.party import PartyOrgBookEntity
+from app.api.regions.models.regions import Regions
 from app.api.services.ams_api_service import AMSApiService
 from app.extensions import db
 
@@ -68,6 +69,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     zoning = db.Column(db.Boolean, nullable=True)
     zoning_reason = db.Column(db.String, nullable=True)
     nearest_municipality_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('municipality.municipality_guid'))
+    regional_district_id = db.Column(db.Integer(), db.ForeignKey('regions.regional_district_id'), nullable=True)
     company_alias = db.Column(db.String(200), nullable=True)
 
     is_legal_address_same_as_mailing_address = db.Column(db.Boolean, nullable=True)
@@ -984,6 +986,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                is_billing_address_same_as_legal_address=None,
                contacts=None,
                company_alias=None,
+               regional_district_id=None,
                add_to_session=True):
         
         # Update simple properties.
@@ -1049,6 +1052,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         self.facility_lease_no = facility_lease_no
         self.zoning = zoning
         self.zoning_reason = zoning_reason
+        self.regional_district_id = regional_district_id
 
         if facility_operator and facility_type:
             if not facility_operator['party_type_code']:
@@ -1105,6 +1109,10 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         for authorization in authorizations:
             self.create_or_update_authorization(authorization)
 
+        regional_district_name = regional_district_id is not None and Regions.find_by_id(
+            regional_district_id).name or None
+
+
         if ams_authorizations:
             ams_results = []
             if self.status_code == 'SUB':
@@ -1132,7 +1140,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                     facility_pid_pin_crown_file_no,
                     company_alias,
                     zoning,
-                    zoning_reason)
+                    zoning_reason,
+                    regional_district_name)
 
             for authorization in ams_authorizations.get('amendments', []):
                 self.create_or_update_authorization(authorization)

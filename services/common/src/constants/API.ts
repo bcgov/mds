@@ -363,3 +363,6 @@ export const DAM = (damGuid) => (damGuid ? `/dams/${damGuid}` : "/dams");
 
 export const DOCUMENTS_COMPRESSION = (mineGuid) => `/mines/${mineGuid}/documents/zip`;
 export const POLL_DOCUMENTS_COMPRESSION_PROGRESS = (taskId) => `/mines/documents/zip/${taskId}`;
+
+// Regions
+export const REGIONS_LIST = "/regions";

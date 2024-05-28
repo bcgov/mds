@@ -94,10 +94,10 @@ class ProjectSummaryResource(Resource, UserMixin):
         required=False,
     )
     parser.add_argument(
-        'agent', 
-        type=dict, 
-        location='json', 
-        store_missing=False, 
+        'agent',
+        type=dict,
+        location='json',
+        store_missing=False,
         required=False
         )
     parser.add_argument('is_agent', type=bool, help="True if an agent is applying on behalf of the Applicant", location='json', store_missing=False, required=False)
@@ -130,10 +130,10 @@ class ProjectSummaryResource(Resource, UserMixin):
         required=False,
     )
     parser.add_argument(
-        'facility_operator', 
-        type=dict, 
-        location='json', 
-        store_missing=False, 
+        'facility_operator',
+        type=dict,
+        location='json',
+        store_missing=False,
         required=False
     )
     parser.add_argument('facility_type', type=str, store_missing=False, required=False)
@@ -141,7 +141,7 @@ class ProjectSummaryResource(Resource, UserMixin):
 
     parser.add_argument('facility_latitude', type=lambda x: Decimal(x) if x else None, store_missing=False, required=False)
     parser.add_argument('facility_longitude', type=lambda x: Decimal(x) if x else None, store_missing=False, required=False)
-    
+
     parser.add_argument('facility_coords_source', type=str, store_missing=False, required=False)
     parser.add_argument('facility_coords_source_desc', type=str, store_missing=False, required=False)
     parser.add_argument('facility_pid_pin_crown_file_no', type=str, store_missing=False, required=False)
@@ -150,6 +150,7 @@ class ProjectSummaryResource(Resource, UserMixin):
     parser.add_argument('zoning', type=bool, store_missing=False, required=False)
     parser.add_argument('zoning_reason', type=str, store_missing=False, required=False)
     parser.add_argument('nearest_municipality', type=str, store_missing=False, required=False)
+    parser.add_argument('regional_district_id', type=int, store_missing=False, required=False)
 
     parser.add_argument(
         'applicant',
@@ -195,7 +196,7 @@ class ProjectSummaryResource(Resource, UserMixin):
                                                                       is_minespace_user())
         project = Project.find_by_project_guid(project_guid)
         data = self.parser.parse_args()
-        
+
         project_summary_validation = project_summary.validate_project_summary(data)
         if any(project_summary_validation[i] != [] for i in project_summary_validation):
             current_app.logger.error(f'Project Summary schema validation failed with errors: {project_summary_validation}')
@@ -240,7 +241,8 @@ class ProjectSummaryResource(Resource, UserMixin):
                                data.get('is_billing_address_same_as_mailing_address'),
                                data.get('is_billing_address_same_as_legal_address'),
                                data.get('contacts'),
-                               data.get('company_alias'))
+                               data.get('company_alias'),
+                               data.get('regional_district_id'))
 
         project_summary.save()
         if prev_status == 'DFT' and project_summary.status_code == 'SUB':
