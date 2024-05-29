@@ -147,7 +147,7 @@ class TractionService():
         payload = {
             "doc": {
                 "options": options,
-                "credential": credential.dict(by_alias=True)
+                "credential": credential.dict(by_alias=True, exclude_none=True)
             },
             "verkey": verkey,
         }
