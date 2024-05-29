@@ -134,7 +134,7 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
                 'items': [{
                     'required': True,
                     'type': 'string',
-                    'regex': '^[\d]{4}$'
+                    'regex': '^[\d]{2,6}$'
                 }]
             },
             'amendment_severity': {
