@@ -1,9 +1,9 @@
 from datetime import datetime
 
-from sqlalchemy.dialects.postgresql import UUID
 from cerberus import Validator
 import json
 
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 
