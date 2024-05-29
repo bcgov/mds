@@ -1,17 +1,9 @@
-import React, { FC, useState } from "react";
-import { change, Field, formValueSelector } from "redux-form";
-import { connect } from "react-redux";
+import React, { FC, useEffect } from "react";
+import { change, Field, getFormValues } from "redux-form";
+import { connect, useSelector } from "react-redux";
 import { Form, Typography } from "antd";
 import { bindActionCreators } from "redux";
-import {
-  CSV,
-  DOCUMENT,
-  EXCEL,
-  IMAGE,
-  OTHER_SPATIAL,
-  SPATIAL,
-  XML,
-} from "@mds/common/constants/fileTypes";
+import { CSV, DOCUMENT, EXCEL, IMAGE, OTHER_SPATIAL, XML } from "@mds/common/constants/fileTypes";
 import DocumentTable from "@/components/common/DocumentTable";
 import {
   documentNameColumn,
@@ -22,13 +14,11 @@ import ProjectSummaryFileUpload from "@/components/Forms/projects/projectSummary
 import * as FORM from "@/constants/forms";
 import { renderCategoryColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import { MineDocument } from "@mds/common/models/documents/document";
-import { IMineDocument, ENVIRONMENT } from "@mds/common";
-import { RootState } from "@/App";
+import { IMineDocument, ENVIRONMENT, PROJECT_SUMMARY_DOCUMENT_TYPE_CODE } from "@mds/common";
 import { postNewDocumentVersion } from "@mds/common/redux/actionCreators/documentActionCreator";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import LinkButton from "@/components/common/LinkButton";
 import * as API from "@mds/common/constants/API";
-import { PROJECT_SUMMARY_DOCUMENT_TYPE_CODE } from "@mds/common";
 
 interface IProjectSummaryDocument extends IMineDocument {
   project_summary_document_type_code: string;
@@ -56,10 +46,10 @@ interface DocumentUploadProps {
 }
 
 export const DocumentUpload: FC<DocumentUploadProps> = (props) => {
-  const [uploadedFiles, setUploadedFiles] = useState([]);
-
   const { initialValues, documents, isEditMode, projectSummaryDocumentTypesHash, mineGuid } = props;
-
+  const { spatial_documents = [], support_documents = [] } = useSelector(
+    getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)
+  );
   const spatialAcceptedFileTypesMap = {
     ...OTHER_SPATIAL,
     ...XML,
@@ -72,12 +62,25 @@ export const DocumentUpload: FC<DocumentUploadProps> = (props) => {
     ...IMAGE,
   };
 
+  useEffect(() => {
+    props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, "spatial_documents", []);
+    props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, "support_documents", []);
+  }, []);
+
+  useEffect(() => {
+    props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, "documents", [
+      ...spatial_documents,
+      ...support_documents,
+    ]);
+  }, [spatial_documents.length, support_documents.length]);
+
   const onFileLoad = (
     fileName: string,
     project_summary_document_type_code: string,
     document_manager_guid: string,
     version?: { document_manager_version_guid: string; document_manager_guid: string }
   ) => {
+    let newUploadedFiles = [];
     if (version.document_manager_version_guid) {
       const ConnectedVersion = props.postNewDocumentVersion({
         mineGuid: initialValues.mine_guid,
@@ -86,7 +89,7 @@ export const DocumentUpload: FC<DocumentUploadProps> = (props) => {
       });
 
       // Save the new version to the document that matches the document_manager_guid
-      const newUploadedFiles = documents.map((doc) => {
+      newUploadedFiles = documents.map((doc) => {
         if (doc.document_manager_guid === version.document_manager_guid) {
           return {
             ...doc,
@@ -96,23 +99,39 @@ export const DocumentUpload: FC<DocumentUploadProps> = (props) => {
 
         return doc;
       });
-
-      return props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, "documents", newUploadedFiles);
     } else {
-      const newUploadedFiles = [
+      const uploadedFiles =
+        project_summary_document_type_code === PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.SPATIAL
+          ? spatial_documents
+          : support_documents;
+      newUploadedFiles = [
         ...uploadedFiles,
         { document_name: fileName, document_manager_guid, project_summary_document_type_code },
       ];
-      setUploadedFiles(newUploadedFiles);
-      return props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, "documents", newUploadedFiles);
+    }
+
+    if (project_summary_document_type_code === PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.SPATIAL) {
+      props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, "spatial_documents", newUploadedFiles);
+    } else {
+      props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, "support_documents", newUploadedFiles);
     }
   };
 
   const onRemoveFile = (err, fileItem) => {
-    const newDocuments = documents.filter(
-      (file) => fileItem.serverId !== file.document_manager_guid
-    );
-    return props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, "documents", newDocuments);
+    const document_type_code = documents.find(
+      (file) => fileItem.serverId === file.document_manager_guid
+    )?.project_summary_document_type_code;
+    if (document_type_code === PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.SPATIAL) {
+      const newSpatialDocuments = [...spatial_documents].filter(
+        (file) => fileItem.serverId !== file.document_manager_guid
+      );
+      props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, "spatial_documents", newSpatialDocuments);
+    } else if (document_type_code === PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.SUPPORTING) {
+      const newSupportDocuments = [...support_documents].filter(
+        (file) => fileItem.serverId !== file.document_manager_guid
+      );
+      props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, "support_documents", newSupportDocuments);
+    }
   };
 
   const downloadIRTTemplate = (url) => {
@@ -152,8 +171,8 @@ export const DocumentUpload: FC<DocumentUploadProps> = (props) => {
         </Typography.Paragraph>
 
         <Field
-          id="documents"
-          name="documents"
+          id="spatial_documents"
+          name="spatial_documents"
           onFileLoad={(document_name, document_manager_guid, version) =>
             onFileLoad(
               document_name,
@@ -191,8 +210,8 @@ export const DocumentUpload: FC<DocumentUploadProps> = (props) => {
           provided to proceed to the final application.
         </Typography.Paragraph>
         <Field
-          id="documents"
-          name="documents"
+          id="support_documents"
+          name="support_documents"
           onFileLoad={(document_name, document_manager_guid, version) =>
             onFileLoad(
               document_name,
@@ -207,7 +226,7 @@ export const DocumentUpload: FC<DocumentUploadProps> = (props) => {
           component={ProjectSummaryFileUpload}
           props={{
             documents: documents,
-            label: "Upload Files  (optional)",
+            label: "Upload Files",
             labelIdle:
               '<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><br>' +
               "<div>We accept most common document, image, and spreadsheet with max individual file size of 400 MB.</div>",
@@ -226,11 +245,6 @@ export const DocumentUpload: FC<DocumentUploadProps> = (props) => {
   );
 };
 
-const selector = formValueSelector(FORM.ADD_EDIT_PROJECT_SUMMARY);
-const mapStateToProps = (state: RootState) => ({
-  documents: selector(state, "documents"),
-});
-
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
@@ -240,4 +254,4 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(DocumentUpload);
+export default connect(null, mapDispatchToProps)(DocumentUpload);
