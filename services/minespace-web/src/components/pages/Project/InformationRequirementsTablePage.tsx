@@ -12,6 +12,7 @@ import {
   fetchProjectById,
   fetchRequirements,
   updateInformationRequirementsTable,
+  updateInformationRequirementsTableStatus,
 } from "@mds/common/redux/actionCreators/projectActionCreator";
 import { openModal } from "@mds/common/redux/actions/modalActions";
 import { getInformationRequirementsTableDocumentTypesHash } from "@mds/common/redux/selectors/staticContentSelectors";
@@ -247,6 +248,33 @@ export const InformationRequirementsTablePage = () => {
     });
   };
 
+  const handleIRTStatusUpdate = async (values: any, message: string) => {
+    const projectGuid = project.project_guid;
+    const informationRequirementsTableGuid = project.information_requirements_table.irt_guid;
+    setSubmitting(true);
+
+    await dispatch(
+      updateInformationRequirementsTableStatus(
+        {
+          projectGuid,
+          informationRequirementsTableGuid,
+        },
+        values,
+        message
+      )
+    );
+    setSubmitting(false);
+    handleFetchData();
+
+    history.push({
+      pathname: `${routes.INFORMATION_REQUIREMENTS_TABLE_SUCCESS.dynamicRoute(
+        projectGuid,
+        informationRequirementsTableGuid
+      )}`,
+      state: { project },
+    });
+  };
+
   const downloadIRTTemplate = (url: string) => {
     const anchor = document.createElement("a");
     anchor.href = url;
@@ -286,6 +314,7 @@ export const InformationRequirementsTablePage = () => {
     submitting,
     handleTabChange,
     handleIRTUpdate,
+    handleIRTStatusUpdate,
     importIsSuccessful,
     downloadIRTTemplate,
     openViewFileHistoryModal,
