@@ -1,155 +1,42 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DocumentUpload renders properly 1`] = `
-<Fragment>
-  <ForwardRef
-    level={3}
-  >
-    Document Upload
-  </ForwardRef>
-  <InternalFormItem
-    label="Upload supporting files that are not part of the required documents in Purpose and Authorization."
-  >
-    <ForwardRef
-      level={5}
-    >
-      Spatial Documents
-    </ForwardRef>
-    <ForwardRef>
-      Upload spatial files to support the application. You may only upload specified spatial types.
-    </ForwardRef>
-    <Field
-      acceptedFileTypesMap={
-        Object {
-          ".dbf": "application/dbf",
-          ".kml": "application/vnd.google-earth.kml+xml",
-          ".kmz": "application/vnd.google-earth.kmz",
-          ".prj": "application/octet-stream",
-          ".sbn": "application/octet-stream",
-          ".sbx": "application/octet-stream",
-          ".shp": "application/octet-stream",
-          ".shx": "application/octet-stream",
-          ".xml": "application/xml",
-        }
-      }
-      component={[Function]}
-      id="documents"
-      name="documents"
-      onFileLoad={[Function]}
-      onRemoveFile={[Function]}
-      params={
-        Object {
-          "mineGuid": undefined,
-          "projectGuid": undefined,
-          "projectSummaryGuid": undefined,
-        }
-      }
-      props={
-        Object {
-          "documents": Object {},
-          "label": "Upload spatial documents",
-          "labelIdle": "<strong>Drag & Drop your files or <span class=\\"filepond--label-action\\">Browse</span></strong><br><div>We accept spatial files with max individual file size of 400 MB.</div>",
-        }
-      }
-    />
-    <ForwardRef
-      level={5}
-    >
-      Supporting Documents
-    </ForwardRef>
-    <ForwardRef>
-      Upload any supporting document and draft of
-       
-      <LinkButton
-        disabled={false}
-        onClick={[Function]}
-        tabIndex={0}
-      >
-        Information Requirements Table (IRT)
-      </LinkButton>
-       
-      following the official template here. It is required to upload your final IRT in the form provided to proceed to the final application.
-    </ForwardRef>
-    <Field
-      acceptedFileTypesMap={
-        Object {
-          ".csv": "text/csv",
-          ".doc": "application/msword",
-          ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-          ".heic": "image/heic",
-          ".heif": "image/heif",
-          ".jp2": "image/jp2",
-          ".jpeg": "image/jpeg",
-          ".jpg": "image/jpg",
-          ".odm": "application/vnd.oasis.opendocument.text-master",
-          ".odt": "application/vnd.oasis.opendocument.text",
-          ".oth": "application/vnd.oasis.opendocument.text-web",
-          ".ott": "application/vnd.oasis.opendocument.text-template",
-          ".pdf": "application/pdf",
-          ".png": "image/png",
-          ".rtf": "application/rtf",
-          ".tif": "image/tiff",
-          ".tiff": "image/tiff",
-          ".xls": "application/vnd.ms-excel",
-          ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        }
-      }
-      component={[Function]}
-      id="documents"
-      name="documents"
-      onFileLoad={[Function]}
-      onRemoveFile={[Function]}
-      params={
-        Object {
-          "mineGuid": undefined,
-          "projectGuid": undefined,
-          "projectSummaryGuid": undefined,
-        }
-      }
-      props={
-        Object {
-          "documents": Object {},
-          "label": "Upload Files  (optional)",
-          "labelIdle": "<strong>Drag & Drop your files or <span class=\\"filepond--label-action\\">Browse</span></strong><br><div>We accept most common document, image, and spreadsheet with max individual file size of 400 MB.</div>",
-        }
-      }
-    />
-    <Connect(DocumentTable)
-      documentColumns={
-        Array [
-          Object {
-            "dataIndex": "document_name",
-            "key": "document_name",
-            "render": [Function],
-            "sorter": [Function],
-            "title": "File Name",
-          },
-          Object {
-            "className": undefined,
-            "dataIndex": "category",
-            "key": "category",
-            "render": [Function],
-            "title": "Document Category",
-          },
-          Object {
-            "dataIndex": "upload_date",
-            "key": "upload_date",
-            "render": [Function],
-            "sorter": [Function],
-            "title": "Updated",
-          },
-          Object {
-            "dataIndex": "create_user",
-            "key": "create_user",
-            "render": [Function],
-            "sorter": [Function],
-            "title": "Updated By",
-          },
-        ]
-      }
-      documentParent="project summary"
-      documents={Array []}
-    />
-  </InternalFormItem>
-</Fragment>
+<ContextProvider
+  value={
+    Object {
+      "store": Object {
+        "@@observable": [Function],
+        "dispatch": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      },
+      "subscription": Subscription {
+        "handleChangeWrapper": [Function],
+        "listeners": Object {
+          "notify": [Function],
+        },
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": Object {
+          "@@observable": [Function],
+          "dispatch": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+        },
+        "unsubscribe": null,
+      },
+    }
+  }
+>
+  <DocumentUpload
+    change={[MockFunction]}
+    documents={Object {}}
+    initialValues={Object {}}
+    isEditMode={true}
+    mineGuid={Object {}}
+    projectSummaryDocumentTypesHash={Object {}}
+  />
+</ContextProvider>
 `;
