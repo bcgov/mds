@@ -1,4 +1,5 @@
 import requests, json
+from pydantic import AnyUrl, BaseModel
 from typing import Union
 from flask import current_app
 from uuid import UUID
@@ -140,22 +141,21 @@ class TractionService():
         self,
         did,
         verkey,
-        credential,
+        credential: BaseModel,
     ):
         options = {"verificationMethod": did + "#verkey", "proofPurpose": "assertionMethod"}
         payload = {
             "doc": {
                 "options": options,
-                "credential": credential,
+                "credential": credential.dict(by_alias=True)
             },
             "verkey": verkey,
         }
         current_app.logger.warning(json.dumps(payload))
-
         post_resp = requests.post(
             traction_deprecated_jsonld_sign, json=payload, headers=self.get_headers())
         current_app.logger.warning(post_resp.content)
-        assert post_resp
+        assert post_resp.status_code == 200, f"post_resp={post_resp.json()}"
         return post_resp.json()
 
     def fetch_a_random_did_key(self):

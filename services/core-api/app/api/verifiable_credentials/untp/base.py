@@ -1,35 +1,36 @@
-from typing import List
-from pydantic import BaseModel, AnyUrl, Field
-from .codes import EvidenceFormat, UnitOfMeasure, MimeType, EncryptionMethod
+from typing import List, Optional
+from pydantic import BaseModel, Field
+from .codes import EvidenceFormat, EncryptionMethod
 
 
 class Evidence(BaseModel):
     format: EvidenceFormat
-    credential_reference: AnyUrl
+    credentialReference: Optional[str] = None
 
 
 class Identifier(BaseModel):
-    scheme: AnyUrl
-    identifier_value: str
-    identifer_URI: AnyUrl
-    verification_evidence: Evidence
+    #https://uncefact.github.io/spec-untp/docs/specification/ConformityCredential#identifier
+    scheme: str              # AnyUrl
+    identifierValue: str
+    identifierURI: str       # AnyUrl
+    verificationEvidence: Optional[Evidence] = None
 
 
 class Party(BaseModel):
-    identifiers: List[Identifier]
-    name: str
+    identifiers: Optional[List[Identifier]] = []
+    name: Optional[str] = None
 
 
 class BinaryFile(BaseModel):
     fileHash: str
-    fileLocation: AnyUrl
-    fileType: MimeType
+    fileLocation: str        # AnyUrl
+    fileType: str            # Mimetype
     encryption_method: EncryptionMethod
 
 
 class Authority(BaseModel):
     number: str
-    authority_evidence: Evidence
+    authorityEvidence: Evidence
     trustmark: BinaryFile
     authority: Party
 

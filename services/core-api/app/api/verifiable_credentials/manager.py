@@ -1,8 +1,12 @@
 # for midware/business level actions between requests and data access
 import pytz
+from typing import List, Union
+from pydantic import BaseModel, Field, ConfigDict
+
 from datetime import datetime
 from time import sleep
 from typing import List
+from flask import current_app
 from celery.utils.log import get_task_logger
 
 from app.tasks.celery import celery
@@ -18,6 +22,8 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment import Permi
 from app.api.verifiable_credentials.models.credentials import PartyVerifiableCredentialMinesActPermit
 from app.api.verifiable_credentials.models.connection import PartyVerifiableCredentialConnection
 from app.api.services.traction_service import TractionService
+
+from app.api.verifiable_credentials.untp import codes, base, conformity_credential as cc
 
 task_logger = get_task_logger(__name__)
 
@@ -141,14 +147,13 @@ class VerifiableCredentialManager():
         ])
 
         # offer credential
-        attributes = [
-            {
-                                                        # "mime-type":"text/plain",
-                                                        # NB Orbit does not expect this removing for now
-                "name": str(attr),
-                "value": str(val),
-            } for attr, val in credential_attrs.items()
-        ]
+        # "mime-type":"text/plain",
+        # NB Orbit does not expect this removing for now
+
+        attributes = [{
+            "name": str(attr),
+            "value": str(val),
+        } for attr, val in credential_attrs.items()]
 
         return attributes
 
@@ -180,3 +185,86 @@ class VerifiableCredentialManager():
             }
         }
         return credential
+
+    @classmethod
+    def produce_untp_cc_map_payload(cls, did: str, permit_amendment: PermitAmendment):
+        untp_party_cpo = base.Party(
+            name="Chief Permitting Officer",
+            identifiers=[
+                base.Identifier(
+                    scheme="https://candyscan.idlab.org/tx/CANDY_PROD/domain/321",
+                    identifierValue="",
+                    identifierURI="https://candyscan.idlab.org/tx/CANDY_PROD/domain/321",
+                    verificationEvidence=base.Evidence(
+                        format=codes.EvidenceFormat.W3C_VC,
+                        credentialReference=
+                        "https://candyscan.idlab.org/tx/CANDY_PROD/domain/321"            #this is an anoncred
+                    ))
+            ])
+
+        untp_party_business = base.Party(
+            name="Permittee",
+            identifiers=[
+                base.Identifier(
+                    scheme="https://indyscan.io/tx/SOVRIN_MAINNET/domain/41051",
+                    identifierValue="BusinessNumber",
+                    identifierURI="https://orgbook.gov.bc.ca/entity/A0103047/credential/3323794",
+                    verificationEvidence=base.Evidence(
+                        format=codes.EvidenceFormat.W3C_VC,
+                        credentialReference=
+                        "https://orgbook.gov.bc.ca/entity/A0103047/credential/3323794"))
+            ])
+
+        untp_assessments = [
+            cc.ConformityAssessment(
+                referenceStandard=cc.Standard(
+                    id="https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/96293_01",
+                    name="BC Mines Act",
+                    issuingBody=base.Party(name="BC Government"),
+                    issueDate=datetime(2024, 5, 14, tzinfo=pytz.timezone("UTC")).isoformat()))
+        ]
+        issue_date = permit_amendment.issue_date
+        issuance_date_str = datetime(
+            issue_date.year, issue_date.month, issue_date.day, 0, 0, 0,
+            tzinfo=pytz.timezone("UTC")).isoformat()
+
+        cred = cc.ConformityAttestation(
+            id="http://example.com/attestation/123",
+            assessmentLevel=codes.AssessmentAssuranceCode.GovtApproval,
+            type=codes.AttestationType.Certification,
+            description=
+            "This is a conformity attestation for the existence and good standing of a mining permit under the Mines Act within British Columbia (a province of Canada).",
+            scope=cc.ConformityAssessmentScheme(
+                id=
+                "https://github.com/bcgov/bc-vcpedia/blob/main/credentials/bc-mines-act-permit/1.1.1/governance.md",
+                name="BC Mines Act Permit Credential (1.1.1) Governance Documentation"),
+            issuedBy=untp_party_cpo,
+            issuedTo=untp_party_business,
+            validFrom=issuance_date_str,                                                                                                                                   #shouldn't this just be in the w3c wrapper
+            assessments=untp_assessments,
+            evidence=[])
+
+        class W3CCred(BaseModel):
+            model_config = ConfigDict(
+                populate_by_name=True, json_encoders={
+                    datetime: lambda v: v.isoformat(),
+                })
+
+            context: List[Union[str, dict]] = Field(alias="@context")
+            type: List[str]
+            issuer: dict[str, str]
+            issuanceDate: str
+            credentialSubject: cc.ConformityAttestation
+
+        w3c_cred = W3CCred(
+            context=["https://www.w3.org/2018/credentials/v1", {
+                "@vocab": "urn:bcgov:attributes#"
+            }],
+            type=["VerifiableCredential"],
+            issuer={"id": did},
+            issuanceDate=issuance_date_str,
+            credentialSubject=cred)
+
+        current_app.logger.warning("w3c_cred")
+        current_app.logger.warning(w3c_cred.json(by_alias=True))
+        return w3c_cred

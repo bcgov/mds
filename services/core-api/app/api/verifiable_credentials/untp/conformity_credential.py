@@ -1,30 +1,30 @@
-from typing import List
+from typing import List, Optional
 from datetime import datetime
-from pydantic import BaseModel, AnyUrl
+from pydantic import BaseModel
 
-from .codes import AssessorAssuranceCode, AssessmentAssuranceCode, AttestationType, MimeType, EncryptionMethod, SustainabilityTopic
+from .codes import AssessorAssuranceCode, AssessmentAssuranceCode, AttestationType, SustainabilityTopic
 from .base import Party, Authority, Status, Identifier, Measure, BinaryFile
 
 
 class Classification(BaseModel):
     # https://uncefact.github.io/spec-untp/docs/specification/ConformityCredential/#classification
-    scheme: AnyUrl
+    scheme: str              # str #AnyUrl
     classifierValue: str
     classifierName: str
-    classifierURL: AnyUrl
+    classifierURL: str       # str #AnyUrl
 
 
 class Standard(BaseModel):
     # https://uncefact.github.io/spec-untp/docs/specification/ConformityCredential/#standard
-    id: AnyUrl
+    id: str                  # str #AnyUrl
     name: str
     issuingBody: Party
-    issueDate: datetime
+    issueDate: str           #iso8601 datetime string
 
 
 class Regulation(BaseModel):
     # https://uncefact.github.io/spec-untp/docs/specification/ConformityCredential/#regulation
-    id: AnyUrl
+    id: str   # str #AnyUrl
     name: str
     issuingBody: Party
     effectiveDate: datetime
@@ -39,7 +39,7 @@ class Metric(BaseModel):
 
 class Criterion(BaseModel):
     # https://uncefact.github.io/spec-untp/docs/specification/ConformityCredential/#criteria
-    id: AnyUrl
+    id: str   # str #AnyUrl
     threshold: Metric
     name: str
 
@@ -53,7 +53,7 @@ class Facility(BaseModel):
     identifiers: List[Identifier]
     name: str
     classifications: List[Classification]
-    geolocation: AnyUrl
+    geolocation: str         # str #AnyUrl
     verifiedByCAB: Indicator
 
 
@@ -63,53 +63,53 @@ class Product(BaseModel):
     marking: str
     name: str
     classifications: Classification
-    testedBatchId: AnyUrl
+    testedBatchId: str       # str #AnyUrl
     verifiedByCAB: Indicator
 
 
 class ConformityAssessment(BaseModel):
     # https://uncefact.github.io/spec-untp/docs/specification/ConformityCredential/#conformityattestation
     referenceStandard: Standard
-    referenceRegulation: Regulation
-    assessmentCriterion: Criterion
-    subjectProducts: List[Product]
-    subjectFacilities: List[Facility]
-    measuredResults: List[Metric]
-    complaince: Indicator
-    sustainabilityTopic: SustainabilityTopic
+    # referenceRegulation: Regulation
+    # assessmentCriterion: Criterion
+    # subjectProducts: List[Product]
+    # subjectFacilities: List[Facility]
+    # measuredResults: List[Metric]
+    # complaince: Indicator
+    # sustainabilityTopic: SustainabilityTopic
 
 
 class ConformityAssessmentScheme(BaseModel):
     # https://uncefact.github.io/spec-untp/docs/specification/ConformityCredential/#conformityattestation
-    id: AnyUrl
+    id: str   # str #AnyUrl
     name: str
-    trustmark: BinaryFile
-    issuingBody: Party
-    dateOfIssue: datetime
+    trustmark: Optional[BinaryFile] = None
+    issuingBody: Optional[Party] = None
+    dateOfIssue: Optional[datetime] = None
 
 
 class ConformityEvidence(BaseModel):
-    evidenceRootHash: str    #md5 hash
+    evidenceRootHash: str                        #md5 hash
     description: str
     evidenceFiles: List[BinaryFile]
-    decryptionKeyRequest: AnyUrl
+    decryptionKeyRequest: str                    # str #AnyUrl
 
 
 class ConformityAttestation(BaseModel):
     # https://uncefact.github.io/spec-untp/docs/specification/ConformityCredential/#conformityattestation
-    id: AnyUrl
-    assessorLevel: AssessorAssuranceCode
+    id: str                  #AnyUrl
+    assessorLevel: Optional[AssessorAssuranceCode] = None
     assessmentLevel: AssessmentAssuranceCode
     type: AttestationType
     description: str
     scope: ConformityAssessmentScheme
     issuedBy: Party
     issuedTo: Party
-    validFrom: datetime
-    validTo: datetime
-    status: Status
+    validFrom: str           #iso8601 datetime string
+    validTo: Optional[datetime] = None
+    status: Optional[Status] = None
     assessments: List[ConformityAssessment]
-    evidence: ConformityEvidence
-    accreditation: Authority
-    regulatoryApproval: Authority
-    certificate: BinaryFile
+    evidence: Optional[List[ConformityEvidence]] = []
+    accreditation: Optional[Authority] = None
+    regulatoryApproval: Optional[Authority] = None
+    certificate: Optional[BinaryFile] = None

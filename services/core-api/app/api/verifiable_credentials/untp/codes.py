@@ -1,6 +1,5 @@
 from enum import Enum
 from pydantic import BaseModel, AnyUrl
-from mimetypes import MimeTypes as MimeType
 
 
 class AssessorAssuranceCode(str, Enum):
@@ -57,7 +56,7 @@ class SustainabilityTopic(str, Enum):
     Environment_Deforestation = "Environment.Deforestation"
     Environment_Biodiversity = "Environment.Biodiversity"
     Cirularity_Content = "Circularity.Content"
-    Cicularity_Design = "Circularity.Design"
+    Cirularity_Design = "Circularity.Design"
     Social_Labour = "Social.Labour"
     Social_Rights = "Social.Rights"
     Social_Safety = "Social.Safety"
