@@ -1,9 +1,10 @@
-FROM python:3.11.7
+FROM python:3.11.9-slim
 
 WORKDIR /app
 
 # Update installation utility
 RUN apt-get update
+RUN apt-get install build-essential -y
 
 # Install the requirements
 COPY requirements.txt .
