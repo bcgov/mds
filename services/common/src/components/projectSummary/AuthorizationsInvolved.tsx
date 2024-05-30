@@ -565,6 +565,7 @@ export const AuthorizationsInvolved = (props) => {
     } else {
       const index = formValues.authorizationTypes.indexOf(code);
       dispatch(arrayRemove(FORM.ADD_EDIT_PROJECT_SUMMARY, `authorizationTypes`, index));
+      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, `authorizations[${code}]`, null));
     }
   };
 
