@@ -14,7 +14,7 @@ names==0.3.0
 petl==1.6.8
 psycopg2-binary==2.9.6
 PyJWT==2.4.0
-cryptography==42.0.2
+cryptography==42.0.7
 pytest==8.0.0
 pytest-cov==4.1.0
 python-dateutil==2.8.2
@@ -38,7 +38,7 @@ cerberus==1.3.4
 celery[redis]==5.3.6
 celery-redbeat==2.2.0
 cachelib
-gunicorn==19.10.0
+gunicorn==22.0.0
 opentelemetry-distro==0.43b0
 opentelemetry-exporter-otlp==1.22.0
 opentelemetry-instrumentation==0.43b0
@@ -52,6 +52,6 @@ opentelemetry-instrumentation-redis==0.43b0
 opentelemetry-instrumentation-requests==0.43b0
 opentelemetry-instrumentation-sqlalchemy==0.43b0
 opentelemetry-instrumentation-urllib3==0.43b0
-Pillow==10.2.0
+Pillow==10.3.0
 setuptools==65.5.1
 urllib3==1.26.11
