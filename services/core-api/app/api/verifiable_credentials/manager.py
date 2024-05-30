@@ -2,6 +2,7 @@
 import pytz
 from typing import List, Union
 from pydantic import BaseModel, Field, ConfigDict
+from openlocationcode.openlocationcode import encode as plus_code_encode
 
 from datetime import datetime
 from time import sleep
@@ -214,6 +215,22 @@ class VerifiableCredentialManager():
                         credentialReference=
                         "https://orgbook.gov.bc.ca/entity/A0103047/credential/3323794"))
             ])
+        facility = cc.Facility(
+            identifiers=[],
+            name=permit_amendment.mine.mine_name,
+            classifications=[],
+            geolocation=
+            f'https://plus.codes/{plus_code_encode(permit_amendment.mine.latitude, permit_amendment.mine.longitude)}',
+            verifiedByCAB=True)
+
+        products = [
+            cc.Product(
+                identifiers=[],                                                 #gs1 code
+                marking="",                                                     #productid to match to shipment
+                name=c,
+                classifications=[],
+                verifiedbyCAB=False) for c in permit_amendment.mine.commodities
+        ]
 
         untp_assessments = [
             cc.ConformityAssessment(
@@ -221,7 +238,11 @@ class VerifiableCredentialManager():
                     id="https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/96293_01",
                     name="BC Mines Act",
                     issuingBody=base.Party(name="BC Government"),
-                    issueDate=datetime(2024, 5, 14, tzinfo=pytz.timezone("UTC")).isoformat()))
+                    issueDate=datetime(2024, 5, 14, tzinfo=pytz.timezone("UTC")).isoformat()),
+                subjectFacilities=[facility],
+                assessmentCriterion=None,
+                subjectProducts=[],
+                sustainabilityTopic=codes.SustainabilityTopic.Governance_Compliance)
         ]
         issue_date = permit_amendment.issue_date
         issuance_date_str = datetime(

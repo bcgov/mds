@@ -29,6 +29,7 @@ class BinaryFile(BaseModel):
 
 
 class Authority(BaseModel):
+    # https://uncefact.github.io/spec-untp/docs/specification/ConformityCredential#authority
     number: str
     authorityEvidence: Evidence
     trustmark: BinaryFile

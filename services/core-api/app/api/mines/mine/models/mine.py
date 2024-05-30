@@ -18,7 +18,6 @@ from app.api.utils.access_decorators import is_minespace_user
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.extensions import db
 
-
 # NOTE: Be careful about relationships defined in the mine model. lazy='joined' will cause the relationship
 # to be joined and loaded immediately, so that data will load even when it may not be needed. Setting
 # lazy='select' will lazy load that data when the property is first accessed. There are other options as well
@@ -65,25 +64,28 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         order_by='desc(Permit.create_timestamp)',
         lazy='select',
         secondary='mine_permit_xref',
-        secondaryjoin='and_(foreign(MinePermitXref.permit_id) == remote(Permit.permit_id),Permit.deleted_ind == False,MinePermitXref.deleted_ind == False)',
+        secondaryjoin=
+        'and_(foreign(MinePermitXref.permit_id) == remote(Permit.permit_id),Permit.deleted_ind == False,MinePermitXref.deleted_ind == False)',
         back_populates='_all_mines',
-        overlaps='_mine_associations,all_mine_permit_xref,mine_permit_xref,mine'
-    )
+        overlaps='_mine_associations,all_mine_permit_xref,mine_permit_xref,mine')
 
     # across all permit_identities
-    _mine_permit_amendments = db.relationship('PermitAmendment', lazy='selectin', back_populates='mine')
+    _mine_permit_amendments = db.relationship(
+        'PermitAmendment', lazy='selectin', back_populates='mine')
 
     mine_type = db.relationship(
         'MineType',
         backref='mine',
         order_by='desc(MineType.update_timestamp)',
-        primaryjoin='and_(MineType.mine_guid == Mine.mine_guid, MineType.active_ind==True, MineType.now_application_guid==None)',
+        primaryjoin=
+        'and_(MineType.mine_guid == Mine.mine_guid, MineType.active_ind==True, MineType.now_application_guid==None)',
         lazy='selectin')
 
     mine_documents = db.relationship(
         'MineDocument',
         backref='mine',
-        primaryjoin='and_(MineDocument.mine_guid == Mine.mine_guid, MineDocument.deleted_ind == False)',
+        primaryjoin=
+        'and_(MineDocument.mine_guid == Mine.mine_guid, MineDocument.deleted_ind == False)',
         lazy='select')
 
     mine_party_appt = db.relationship('MinePartyAppointment', backref="mine", lazy='select')
@@ -92,7 +94,8 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         'MineIncident',
         backref='mine',
         lazy='select',
-        primaryjoin='and_(MineIncident.mine_guid == Mine.mine_guid, MineIncident.deleted_ind == False)')
+        primaryjoin=
+        'and_(MineIncident.mine_guid == Mine.mine_guid, MineIncident.deleted_ind == False)')
 
     mine_reports = db.relationship('MineReport', lazy='select', back_populates='mine')
 
@@ -100,13 +103,16 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         'ExplosivesPermit',
         backref='mine',
         lazy='select',
-        primaryjoin='and_(ExplosivesPermit.mine_guid == Mine.mine_guid, ExplosivesPermit.deleted_ind == False)')
+        primaryjoin=
+        'and_(ExplosivesPermit.mine_guid == Mine.mine_guid, ExplosivesPermit.deleted_ind == False)')
 
     explosives_permits_amendments = db.relationship(
         'ExplosivesPermitAmendment',
         backref='mine',
         lazy='select',
-        primaryjoin='and_(ExplosivesPermitAmendment.mine_guid == Mine.mine_guid, ExplosivesPermitAmendment.deleted_ind == False)')
+        primaryjoin=
+        'and_(ExplosivesPermitAmendment.mine_guid == Mine.mine_guid, ExplosivesPermitAmendment.deleted_ind == False)'
+    )
 
     projects = db.relationship(
         'Project',
@@ -118,21 +124,21 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         'MineWorkInformation',
         lazy='selectin',
         order_by='desc(MineWorkInformation.created_timestamp)',
-        primaryjoin='and_(MineWorkInformation.mine_guid == Mine.mine_guid, MineWorkInformation.deleted_ind == False)',
-        back_populates='mine'
-    )
+        primaryjoin=
+        'and_(MineWorkInformation.mine_guid == Mine.mine_guid, MineWorkInformation.deleted_ind == False)',
+        back_populates='mine')
 
     comments = db.relationship(
         'MineComment',
         order_by='MineComment.comment_datetime',
-        primaryjoin='and_(MineComment.mine_guid == Mine.mine_guid, MineComment.deleted_ind == False)',
+        primaryjoin=
+        'and_(MineComment.mine_guid == Mine.mine_guid, MineComment.deleted_ind == False)',
         lazy='joined')
 
     alerts = db.relationship(
         'MineAlert',
         order_by='MineAlert.start_date',
-        primaryjoin='and_(MineAlert.mine_guid == Mine.mine_guid, MineAlert.deleted_ind == False)'
-    )
+        primaryjoin='and_(MineAlert.mine_guid == Mine.mine_guid, MineAlert.deleted_ind == False)')
 
     region = db.relationship('MineRegionCode', lazy='select')
 
@@ -181,14 +187,15 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
     @hybrid_property
     def mine_manager(self):
         if self.mine_party_appt:
-            today = datetime.now(timezone.utc)  # To filter out previous mine managers.
+            today = datetime.now(timezone.utc)                                      # To filter out previous mine managers.
             for party in self.mine_party_appt:
                 party_end_date = None
                 if party.end_date:
-                    party_end_date = datetime.strptime(str(party.end_date), '%Y-%m-%d').replace(tzinfo=timezone.utc)
+                    party_end_date = datetime.strptime(str(party.end_date),
+                                                       '%Y-%m-%d').replace(tzinfo=timezone.utc)
                 if party.mine_party_appt_type_code == "MMG" and party.party.email \
                     and (party_end_date == None or party_end_date > today) \
-                        and str(party.status).lower() != "inactive":  #There are mine managers with null status
+                        and str(party.status).lower() != "inactive":                #There are mine managers with null status
                     return party
         return None
 
@@ -233,13 +240,20 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
             return latest_status
         return None
 
+    @hybrid_property
+    def commodities(self):
+        return [
+            x.mine_type_detail.mine_commodity_literal for x in self.mine_type
+            if x.now_application_guid and x.mine_type_detail.mine_commodity_code
+        ]
+
     @work_status.expression
     def work_status(cls):
         return func.coalesce(
             select([MineWorkInformation.work_status]).where(
                 and_(MineWorkInformation.mine_guid == cls.mine_guid,
                      MineWorkInformation.deleted_ind == False)).order_by(
-                desc(MineWorkInformation.created_timestamp)).limit(1).as_scalar(),
+                         desc(MineWorkInformation.created_timestamp)).limit(1).as_scalar(),
             literal("Unknown"))
 
     @classmethod

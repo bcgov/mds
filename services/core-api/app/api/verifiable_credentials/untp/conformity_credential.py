@@ -1,7 +1,6 @@
 from typing import List, Optional
 from datetime import datetime
 from pydantic import BaseModel
-
 from .codes import AssessorAssuranceCode, AssessmentAssuranceCode, AttestationType, SustainabilityTopic
 from .base import Party, Authority, Status, Identifier, Measure, BinaryFile
 
@@ -44,17 +43,13 @@ class Criterion(BaseModel):
     name: str
 
 
-class Indicator(BaseModel):
-    pass
-
-
 class Facility(BaseModel):
     # https://uncefact.github.io/spec-untp/docs/specification/ConformityCredential/#product
     identifiers: List[Identifier]
     name: str
     classifications: List[Classification]
-    geolocation: str         # str #AnyUrl
-    verifiedByCAB: Indicator
+    geolocation: str         # str #AnyUrl for https://plus.codes/4RQGGVGP+ can be converted https://www.dcode.fr/open-location-code
+    verifiedByCAB: bool
 
 
 class Product(BaseModel):
@@ -62,21 +57,21 @@ class Product(BaseModel):
     identifiers: List[Identifier]
     marking: str
     name: str
-    classifications: Classification
-    testedBatchId: str       # str #AnyUrl
-    verifiedByCAB: Indicator
+    classifications: Optional[Classification] = []
+    testedBatchId: Optional[str] = None          # str #AnyUrl
+    verifiedByCAB: bool
 
 
 class ConformityAssessment(BaseModel):
-    # https://uncefact.github.io/spec-untp/docs/specification/ConformityCredential/#conformityattestation
-    referenceStandard: Standard
-    # referenceRegulation: Regulation
-    # assessmentCriterion: Criterion
-    # subjectProducts: List[Product]
-    # subjectFacilities: List[Facility]
-    # measuredResults: List[Metric]
-    # complaince: Indicator
-    # sustainabilityTopic: SustainabilityTopic
+    # https://uncefact.github.io/spec-untp/docs/specification/ConformityCredential/#conformityassessment
+    referenceStandard: Standard                      #defines the specification
+    referenceRegulation: Optional[Regulation] = None #defines the regulation
+    assessmentCriterion: Optional[Criterion] = None  #defines the criteria
+    subjectProducts: Optional[List[Product]] = []
+    subjectFacilities: List[Facility]
+    measuredResults: Optional[List[Metric]] = []
+    complaince: Optional[bool] = False
+    sustainabilityTopic: SustainabilityTopic
 
 
 class ConformityAssessmentScheme(BaseModel):
@@ -97,7 +92,7 @@ class ConformityEvidence(BaseModel):
 
 class ConformityAttestation(BaseModel):
     # https://uncefact.github.io/spec-untp/docs/specification/ConformityCredential/#conformityattestation
-    id: str                  #AnyUrl
+    id: str                                          #AnyUrl
     assessorLevel: Optional[AssessorAssuranceCode] = None
     assessmentLevel: AssessmentAssuranceCode
     type: AttestationType
@@ -105,11 +100,14 @@ class ConformityAttestation(BaseModel):
     scope: ConformityAssessmentScheme
     issuedBy: Party
     issuedTo: Party
-    validFrom: str           #iso8601 datetime string
+    validFrom: str                                   #iso8601 datetime string
     validTo: Optional[datetime] = None
     status: Optional[Status] = None
-    assessments: List[ConformityAssessment]
-    evidence: Optional[List[ConformityEvidence]] = []
-    accreditation: Optional[Authority] = None
-    regulatoryApproval: Optional[Authority] = None
-    certificate: Optional[BinaryFile] = None
+    assessments: List[
+        ConformityAssessment]                        #list of assessments that are part of this attestation, that this is a real mine.
+    evidence: Optional[List[ConformityEvidence]] = [
+    ]                                                #multi-media proof of claim (pictures, videos, etc)
+    accreditation: Optional[Authority] = None        #proof that CPO is the right authority (from BC Gov)
+    regulatoryApproval: Optional[
+        Authority] = None                            #regulation that allows CPO to issue this credential
+    certificate: Optional[BinaryFile] = None         #a human readable document, e.g. PDF
