@@ -118,7 +118,7 @@ export const ProjectSummaryForm: FC<ProjectSummaryFormProps> = ({ ...props }) =>
       reduxFormConfig={{
         touchOnBlur: true,
         touchOnChange: false,
-        onSubmitSuccess: resetForm(FORM.ADD_EDIT_PROJECT_SUMMARY),
+        enableReinitialize: true,
       }}
     >
       <SteppedForm

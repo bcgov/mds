@@ -22,7 +22,7 @@ exports[`ProjectSummaryPage renders properly 1`] = `
       class="ant-col ant-col-24"
     >
       <a
-        href="/projects/undefined/overview"
+        href="/projects/74120872-74f2-4e27-82e6-878ddb472e5a/overview"
       >
         <span
           aria-label="arrow-left"

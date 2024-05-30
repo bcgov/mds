@@ -65,8 +65,13 @@ export const ProjectSummaryPage = () => {
   const dispatch = useDispatch();
   const { isFeatureEnabled } = useFeatureFlag();
   const amsFeatureEnabled = isFeatureEnabled(Feature.AMS_AGENT);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [isEditMode, setIsEditMode] = useState(false);
+  const isDefaultEditMode = Boolean(projectGuid && projectSummaryGuid);
+  const isDefaultLoaded = isDefaultEditMode
+    ? formattedProjectSummary?.project_summary_guid === projectSummaryGuid &&
+      formattedProjectSummary?.project_guid === projectGuid
+    : mine?.mine_guid === mineGuid;
+  const [isLoaded, setIsLoaded] = useState(isDefaultLoaded);
+  const [isEditMode, setIsEditMode] = useState(isDefaultEditMode);
   const history = useHistory();
   const location = useLocation();
   const projectFormTabs = getProjectFormTabs(amsFeatureEnabled);
@@ -76,9 +81,10 @@ export const ProjectSummaryPage = () => {
     if (projectGuid && projectSummaryGuid) {
       setIsEditMode(true);
       dispatch(fetchRegions(undefined));
-      return dispatch(fetchProjectById(projectGuid));
+      dispatch(fetchProjectById(projectGuid));
+    } else {
+      dispatch(fetchMineRecordById(mineGuid));
     }
-    return dispatch(fetchMineRecordById(mineGuid));
   };
 
   useEffect(() => {
@@ -181,10 +187,7 @@ export const ProjectSummaryPage = () => {
         );
       })
       .then(async () => {
-        return handleFetchData();
-      })
-      .then(() => {
-        setIsLoaded(true);
+        handleFetchData();
       });
   };
 
