@@ -231,14 +231,15 @@ class VerifiableCredentialManager():
                 classifications=[],
                 verifiedbyCAB=False) for c in permit_amendment.mine.commodities
         ]
+        current_app.logger.warning(products)
 
         untp_assessments = [
             cc.ConformityAssessment(
-                referenceStandard=cc.Standard(
+                referenceRegulation=cc.Regulation(
                     id="https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/96293_01",
                     name="BC Mines Act",
                     issuingBody=base.Party(name="BC Government"),
-                    issueDate=datetime(2024, 5, 14, tzinfo=pytz.timezone("UTC")).isoformat()),
+                    effectiveDate=datetime(2024, 5, 14, tzinfo=pytz.timezone("UTC")).isoformat()),
                 subjectFacilities=[facility],
                 assessmentCriterion=None,
                 subjectProducts=[],

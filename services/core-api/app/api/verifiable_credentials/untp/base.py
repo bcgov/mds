@@ -17,7 +17,7 @@ class Identifier(BaseModel):
 
 
 class Party(BaseModel):
-    identifiers: Optional[List[Identifier]] = []
+    identifiers: Optional[List[Identifier]] = None
     name: Optional[str] = None
 
 

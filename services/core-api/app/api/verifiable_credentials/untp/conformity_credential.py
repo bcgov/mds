@@ -57,19 +57,19 @@ class Product(BaseModel):
     identifiers: List[Identifier]
     marking: str
     name: str
-    classifications: Optional[Classification] = []
+    classifications: Optional[Classification] = None
     testedBatchId: Optional[str] = None          # str #AnyUrl
     verifiedByCAB: bool
 
 
 class ConformityAssessment(BaseModel):
     # https://uncefact.github.io/spec-untp/docs/specification/ConformityCredential/#conformityassessment
-    referenceStandard: Standard                      #defines the specification
+    referenceStandard: Optional[Standard] = None     #defines the specification
     referenceRegulation: Optional[Regulation] = None #defines the regulation
     assessmentCriterion: Optional[Criterion] = None  #defines the criteria
-    subjectProducts: Optional[List[Product]] = []
+    subjectProducts: Optional[List[Product]] = None
     subjectFacilities: List[Facility]
-    measuredResults: Optional[List[Metric]] = []
+    measuredResults: Optional[List[Metric]] = None
     complaince: Optional[bool] = False
     sustainabilityTopic: SustainabilityTopic
 
@@ -92,7 +92,7 @@ class ConformityEvidence(BaseModel):
 
 class ConformityAttestation(BaseModel):
     # https://uncefact.github.io/spec-untp/docs/specification/ConformityCredential/#conformityattestation
-    id: str                                          #AnyUrl
+    id: str                                      #AnyUrl
     assessorLevel: Optional[AssessorAssuranceCode] = None
     assessmentLevel: AssessmentAssuranceCode
     type: AttestationType
@@ -100,14 +100,14 @@ class ConformityAttestation(BaseModel):
     scope: ConformityAssessmentScheme
     issuedBy: Party
     issuedTo: Party
-    validFrom: str                                   #iso8601 datetime string
+    validFrom: str                               #iso8601 datetime string
     validTo: Optional[datetime] = None
     status: Optional[Status] = None
     assessments: List[
-        ConformityAssessment]                        #list of assessments that are part of this attestation, that this is a real mine.
-    evidence: Optional[List[ConformityEvidence]] = [
-    ]                                                #multi-media proof of claim (pictures, videos, etc)
-    accreditation: Optional[Authority] = None        #proof that CPO is the right authority (from BC Gov)
+        ConformityAssessment]                    #list of assessments that are part of this attestation, that this is a real mine.
+    evidence: Optional[
+        List[ConformityEvidence]] = None         #multi-media proof of claim (pictures, videos, etc)
+    accreditation: Optional[Authority] = None    #proof that CPO is the right authority (from BC Gov)
     regulatoryApproval: Optional[
-        Authority] = None                            #regulation that allows CPO to issue this credential
-    certificate: Optional[BinaryFile] = None         #a human readable document, e.g. PDF
+        Authority] = None                        #regulation that allows CPO to issue this credential
+    certificate: Optional[BinaryFile] = None     #a human readable document, e.g. PDF
