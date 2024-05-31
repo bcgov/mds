@@ -43,9 +43,9 @@ import { IProjectSummaryDocument } from "@mds/common/interfaces";
 import {
   renderTextColumn,
   renderDateColumn,
+  renderCategoryColumn,
 } from "@mds/common/components/common/CoreTableCommonColumns";
 import DocumentTable from "@mds/common/components/documents/DocumentTable";
-import { renderCategoryColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import { MineDocument } from "@mds/common/models/documents/document";
 import { Link } from "react-router-dom";
 

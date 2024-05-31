@@ -40,7 +40,7 @@ const formatProjectContact = (contacts): IProjectContact[] => {
   return formattedContacts;
 };
 const formatAuthorizations = (authorizations = [], amsAuthTypes, statusCode) => {
-  const authorizationTypes = uniq(authorizations.map((a) => a.project_summary_authorization_type));
+  const authorizationTypes = uniq(authorizations?.map((a) => a.project_summary_authorization_type));
   const formattedAuthorizations = {};
   let ams_terms_agreed = false;
 
