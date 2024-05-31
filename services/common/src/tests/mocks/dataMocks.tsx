@@ -7282,7 +7282,8 @@ export const PROJECT_SUMMARIES = {
 
 export const PROJECT_SUMMARY = {
   mine_guid: "60300a07-376c-46f1-a984-88a813f91438",
-  project_summary_guid: "81324623978135",
+  project_guid: "74120872-74f2-4e27-82e6-878ddb472e5a",
+  project_summary_guid: "70414192-ca71-4d03-93a5-630491e9c554",
   status_code: "OPN",
   project_summary_title: "Sample title",
   project_summary_description: "Sample description",

@@ -39,8 +39,8 @@ const formatProjectContact = (contacts): IProjectContact[] => {
 
   return formattedContacts;
 };
-const formatAuthorizations = (authorizations = [], amsAuthTypes, statusCode) => {
-  const authorizationTypes = uniq(authorizations.map((a) => a.project_summary_authorization_type));
+const formatAuthorizations = (amsAuthTypes, statusCode, authorizations = []) => {
+  const authorizationTypes = uniq(authorizations?.map((a) => a.project_summary_authorization_type));
   const formattedAuthorizations = {};
   let ams_terms_agreed = false;
 
@@ -89,7 +89,7 @@ export const getFormattedProjectSummary = createSelector(
       agent,
       facility_operator,
       confirmation_of_submission,
-      ...formatAuthorizations(summary.authorizations, amsAuthTypes, summary.status_code),
+      ...formatAuthorizations(amsAuthTypes, summary.status_code, summary.authorizations),
     };
 
     formattedSummary.project_lead_party_guid = project.project_lead_party_guid;

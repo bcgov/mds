@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { useSelector } from "react-redux";
-import { flattenObject, resetForm } from "@common/utils/helpers";
+import { flattenObject } from "@common/utils/helpers";
 import { formValueSelector, getFormSyncErrors, getFormValues } from "redux-form";
 import * as FORM from "@/constants/forms";
 import DocumentUpload from "@/components/Forms/projects/projectSummary/DocumentUpload";
@@ -118,7 +118,7 @@ export const ProjectSummaryForm: FC<ProjectSummaryFormProps> = ({ ...props }) =>
       reduxFormConfig={{
         touchOnBlur: true,
         touchOnChange: false,
-        onSubmitSuccess: resetForm(FORM.ADD_EDIT_PROJECT_SUMMARY),
+        enableReinitialize: true,
       }}
     >
       <SteppedForm

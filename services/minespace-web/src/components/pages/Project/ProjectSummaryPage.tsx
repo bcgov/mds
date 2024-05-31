@@ -5,7 +5,7 @@ import { Link, Prompt, useHistory, useLocation, useParams } from "react-router-d
 import { getFormSyncErrors, getFormValues, reset, submit, touch } from "redux-form";
 import { Col, Divider, Row, Typography } from "antd";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
-import { getMines } from "@mds/common/redux/selectors/mineSelectors";
+import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import {
   getFormattedProjectSummary,
   getProject,
@@ -47,10 +47,11 @@ interface IParams {
 }
 
 export const ProjectSummaryPage = () => {
+  const { mineGuid, projectGuid, projectSummaryGuid, tab } = useParams<IParams>();
   const anyTouched = useSelector(
     (state) => state.form[FORM.ADD_EDIT_PROJECT_SUMMARY]?.anyTouched || false
   );
-  const mines = useSelector(getMines);
+  const mine = useSelector((state) => getMineById(state, mineGuid));
   const projectSummary = useSelector(getProjectSummary);
   const formattedProjectSummary = useSelector(getFormattedProjectSummary);
   const project = useSelector(getProject);
@@ -64,9 +65,13 @@ export const ProjectSummaryPage = () => {
   const dispatch = useDispatch();
   const { isFeatureEnabled } = useFeatureFlag();
   const amsFeatureEnabled = isFeatureEnabled(Feature.AMS_AGENT);
-  const { mineGuid, projectGuid, projectSummaryGuid, tab } = useParams<IParams>();
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [isEditMode, setIsEditMode] = useState(false);
+  const isDefaultEditMode = Boolean(projectGuid && projectSummaryGuid);
+  const isDefaultLoaded = isDefaultEditMode
+    ? formattedProjectSummary?.project_summary_guid === projectSummaryGuid &&
+      formattedProjectSummary?.project_guid === projectGuid
+    : mine?.mine_guid === mineGuid;
+  const [isLoaded, setIsLoaded] = useState(isDefaultLoaded);
+  const [isEditMode, setIsEditMode] = useState(isDefaultEditMode);
   const history = useHistory();
   const location = useLocation();
   const projectFormTabs = getProjectFormTabs(amsFeatureEnabled);
@@ -76,16 +81,17 @@ export const ProjectSummaryPage = () => {
     if (projectGuid && projectSummaryGuid) {
       setIsEditMode(true);
       dispatch(fetchRegions(undefined));
-      return dispatch(fetchProjectById(projectGuid));
+      dispatch(fetchProjectById(projectGuid));
+    } else {
+      dispatch(fetchMineRecordById(mineGuid));
     }
-    return dispatch(fetchMineRecordById(mineGuid));
   };
 
   useEffect(() => {
-    if (project) {
+    if ((formattedProjectSummary?.project_guid && isEditMode) || mine?.mine_guid) {
       setIsLoaded(true);
     }
-  }, [project]);
+  }, [formattedProjectSummary, mine]);
 
   useEffect(() => {
     if (!isLoaded) {
@@ -181,10 +187,7 @@ export const ProjectSummaryPage = () => {
         );
       })
       .then(async () => {
-        return handleFetchData();
-      })
-      .then(() => {
-        setIsLoaded(true);
+        handleFetchData();
       });
   };
 
@@ -272,9 +275,7 @@ export const ProjectSummaryPage = () => {
     }
   };
 
-  const mineName = isEditMode
-    ? formattedProjectSummary?.mine_name || ""
-    : mines[mineGuid]?.mine_name || "";
+  const mineName = isEditMode ? formattedProjectSummary?.mine_name || "" : mine?.mine_name || "";
   const title = isEditMode
     ? `Edit project description - ${projectSummary?.project_summary_title}`
     : `New project description for ${mineName}`;

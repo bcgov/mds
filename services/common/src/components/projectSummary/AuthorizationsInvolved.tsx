@@ -43,9 +43,9 @@ import { IProjectSummaryDocument } from "@mds/common/interfaces";
 import {
   renderTextColumn,
   renderDateColumn,
+  renderCategoryColumn,
 } from "@mds/common/components/common/CoreTableCommonColumns";
 import DocumentTable from "@mds/common/components/documents/DocumentTable";
-import { renderCategoryColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import { MineDocument } from "@mds/common/models/documents/document";
 import { Link } from "react-router-dom";
 
@@ -565,6 +565,7 @@ export const AuthorizationsInvolved = (props) => {
     } else {
       const index = formValues.authorizationTypes.indexOf(code);
       dispatch(arrayRemove(FORM.ADD_EDIT_PROJECT_SUMMARY, `authorizationTypes`, index));
+      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, `authorizations[${code}]`, null));
     }
   };
 
