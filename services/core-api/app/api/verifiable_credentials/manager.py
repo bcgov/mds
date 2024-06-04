@@ -16,8 +16,7 @@ from app.extensions import db
 from app.config import Config
 from app.api.utils.feature_flag import Feature, is_feature_enabled
 
-from app.api.mines.mine.models.mine import Mine
-from app.api.parties.party.models.party import Party
+from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.verifiable_credentials.models.credentials import PartyVerifiableCredentialMinesActPermit
@@ -189,12 +188,24 @@ class VerifiableCredentialManager():
 
     @classmethod
     def produce_untp_cc_map_payload(cls, did: str, permit_amendment: PermitAmendment):
+        ANONCRED_SCHEME = "https://hyperledger.github.io/anoncreds-spec/"
+
+        permittee_appointment = MinePartyAppointment.find_by_permit_id(permit_amendment.permit_id)
+        permittee_appointment.sort(key=lambda x: x.start_date, reverse=True)
+        curr_appt = permittee_appointment[0]
+        for pa in permittee_appointment:
+            if curr_appt.start_date < pa.start_date:
+                curr_appt = pa
+            else:
+                break
+        orgbook_entity = curr_appt.party.party_orgbook_entity
+
         untp_party_cpo = base.Party(
             name="Chief Permitting Officer",
             identifiers=[
                 base.Identifier(
-                    scheme="https://candyscan.idlab.org/tx/CANDY_PROD/domain/321",
-                    identifierValue="",
+                    scheme=ANONCRED_SCHEME,
+                    identifierValue="did:indy:candy:A2UZSmrL9N5FDZGPu68wy",
                     identifierURI="https://candyscan.idlab.org/tx/CANDY_PROD/domain/321",
                     verificationEvidence=base.Evidence(
                         format=codes.EvidenceFormat.W3C_VC,
@@ -202,32 +213,31 @@ class VerifiableCredentialManager():
                         "https://candyscan.idlab.org/tx/CANDY_PROD/domain/321"            #this is an anoncred
                     ))
             ])
+        orgbook_cred_url = f"https://orgbook.gov.bc.ca/entity/{orgbook_entity.registration_id}/credential/{orgbook_entity.credential_id}"
 
         untp_party_business = base.Party(
             name="Permittee",
             identifiers=[
                 base.Identifier(
-                    scheme="https://indyscan.io/tx/SOVRIN_MAINNET/domain/41051",
-                    identifierValue="BusinessNumber",
-                    identifierURI="https://orgbook.gov.bc.ca/entity/A0103047/credential/3323794",
+                    scheme=ANONCRED_SCHEME,
+                    identifierValue=orgbook_entity.name_text,
+                    identifierURI=orgbook_cred_url,
                     verificationEvidence=base.Evidence(
-                        format=codes.EvidenceFormat.W3C_VC,
-                        credentialReference=
-                        "https://orgbook.gov.bc.ca/entity/A0103047/credential/3323794"))
+                        format=codes.EvidenceFormat.W3C_VC, credentialReference=orgbook_cred_url))
             ])
+
         facility = cc.Facility(
-            identifiers=[],
             name=permit_amendment.mine.mine_name,
-            classifications=[],
             geolocation=
             f'https://plus.codes/{plus_code_encode(permit_amendment.mine.latitude, permit_amendment.mine.longitude)}',
             verifiedByCAB=True)
 
         products = [
             cc.Product(
-                identifiers=[],                                                 #gs1 code
-                marking="productId to match shipment?",                         #productid to match to shipment
                 name=c,
+                classifications=cc.Classification(
+                    scheme="https://unstats.un.org/unsd/classifications/Econ/cpc",
+                    classifierName=c),
                 verifiedByCAB=False) for c in permit_amendment.mine.commodities
         ]
 
@@ -261,8 +271,7 @@ class VerifiableCredentialManager():
             issuedBy=untp_party_cpo,
             issuedTo=untp_party_business,
             validFrom=issuance_date_str,                                                                                                                                   #shouldn't this just be in the w3c wrapper
-            assessments=untp_assessments,
-            evidence=[])
+            assessments=untp_assessments)
 
         class W3CCred(BaseModel):
             model_config = ConfigDict(

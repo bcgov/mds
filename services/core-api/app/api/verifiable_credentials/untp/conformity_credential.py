@@ -6,10 +6,10 @@ from .base import Party, Authority, Status, Identifier, Measure, BinaryFile
 
 class Classification(BaseModel):
     # https://uncefact.github.io/spec-untp/docs/specification/ConformityCredential/#classification
-    scheme: str              # str #AnyUrl
-    classifierValue: str
+    scheme: str                                  # str #AnyUrl
+    classifierValue: Optional[str] = None
     classifierName: str
-    classifierURL: str       # str #AnyUrl
+    classifierURL: Optional[str] = None          # str #AnyUrl
 
 
 class Standard(BaseModel):
@@ -44,17 +44,17 @@ class Criterion(BaseModel):
 
 class Facility(BaseModel):
     # https://uncefact.github.io/spec-untp/docs/specification/ConformityCredential/#product
-    identifiers: List[Identifier]
+    identifiers: Optional[List[Identifier]] = None
     name: str
-    classifications: List[Classification]
+    classifications: Optional[List[Classification]] = None
     geolocation: str         # str #AnyUrl for https://plus.codes/4RQGGVGP+ can be converted https://www.dcode.fr/open-location-code
     verifiedByCAB: bool
 
 
 class Product(BaseModel):
     # https://uncefact.github.io/spec-untp/docs/specification/ConformityCredential/#product
-    identifiers: List[Identifier]
-    marking: str
+    identifiers: Optional[List[Identifier]] = None
+    marking: Optional[str] = None
     name: str
     classifications: Optional[Classification] = None
     testedBatchId: Optional[str] = None          # str #AnyUrl
