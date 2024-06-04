@@ -14,35 +14,41 @@ import ProjectSummaryFileUpload from "@/components/Forms/projects/projectSummary
 import * as FORM from "@/constants/forms";
 import { renderCategoryColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import { MineDocument } from "@mds/common/models/documents/document";
-import { IMineDocument, ENVIRONMENT, PROJECT_SUMMARY_DOCUMENT_TYPE_CODE } from "@mds/common";
+import {
+  IMineDocument,
+  IProjectSummary,
+  IProjectSummaryDocument,
+  ENVIRONMENT,
+  PROJECT_SUMMARY_DOCUMENT_TYPE_CODE,
+} from "@mds/common";
 import { postNewDocumentVersion } from "@mds/common/redux/actionCreators/documentActionCreator";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import LinkButton from "@/components/common/LinkButton";
 import * as API from "@mds/common/constants/API";
 
-interface IProjectSummaryDocument extends IMineDocument {
-  project_summary_document_type_code: string;
-}
+// interface IProjectSummaryDocument extends IMineDocument {
+//   project_summary_document_type_code: string;
+// }
 
-export interface ProjectSummary {
-  project_summary_id: number;
-  mine_guid: string;
-  project_summary_guid: string;
-  status_code: string;
-  submission_date: string;
-  project_summary_description: string;
-  project_guid: string;
-  documents: IProjectSummaryDocument[];
-}
+// export interface ProjectSummary {
+//   project_summary_id: number;
+//   mine_guid: string;
+//   project_summary_guid: string;
+//   status_code: string;
+//   submission_date: string;
+//   project_summary_description: string;
+//   project_guid: string;
+//   documents: IProjectSummaryDocument[];
+// }
 
 interface DocumentUploadProps {
-  initialValues: ProjectSummary;
-  change: any;
-  documents: IProjectSummaryDocument[];
+  initialValues: Partial<IProjectSummary>;
+  // change: any;
+  documents: Partial<IProjectSummaryDocument>[];
   isEditMode: boolean;
   projectSummaryDocumentTypesHash: any;
   mineGuid: string;
-  postNewDocumentVersion: ActionCreator<typeof postNewDocumentVersion>;
+  // postNewDocumentVersion: ActionCreator<typeof postNewDocumentVersion>;
 }
 
 export const DocumentUpload: FC<DocumentUploadProps> = (props) => {
@@ -63,12 +69,12 @@ export const DocumentUpload: FC<DocumentUploadProps> = (props) => {
   };
 
   useEffect(() => {
-    props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, "spatial_documents", []);
-    props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, "support_documents", []);
+    change(FORM.ADD_EDIT_PROJECT_SUMMARY, "spatial_documents", []);
+    change(FORM.ADD_EDIT_PROJECT_SUMMARY, "support_documents", []);
   }, []);
 
   useEffect(() => {
-    props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, "documents", [
+    change(FORM.ADD_EDIT_PROJECT_SUMMARY, "documents", [
       ...spatial_documents,
       ...support_documents,
     ]);
@@ -82,7 +88,7 @@ export const DocumentUpload: FC<DocumentUploadProps> = (props) => {
   ) => {
     let newUploadedFiles = [];
     if (version.document_manager_version_guid) {
-      const ConnectedVersion = props.postNewDocumentVersion({
+      const ConnectedVersion = postNewDocumentVersion({
         mineGuid: initialValues.mine_guid,
         mineDocumentGuid: version.document_manager_guid,
         documentManagerVersionGuid: version.document_manager_version_guid,
@@ -111,9 +117,9 @@ export const DocumentUpload: FC<DocumentUploadProps> = (props) => {
     }
 
     if (project_summary_document_type_code === PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.SPATIAL) {
-      props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, "spatial_documents", newUploadedFiles);
+      change(FORM.ADD_EDIT_PROJECT_SUMMARY, "spatial_documents", newUploadedFiles);
     } else {
-      props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, "support_documents", newUploadedFiles);
+      change(FORM.ADD_EDIT_PROJECT_SUMMARY, "support_documents", newUploadedFiles);
     }
   };
 
@@ -125,12 +131,12 @@ export const DocumentUpload: FC<DocumentUploadProps> = (props) => {
       const newSpatialDocuments = [...spatial_documents].filter(
         (file) => fileItem.serverId !== file.document_manager_guid
       );
-      props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, "spatial_documents", newSpatialDocuments);
+      change(FORM.ADD_EDIT_PROJECT_SUMMARY, "spatial_documents", newSpatialDocuments);
     } else if (document_type_code === PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.SUPPORTING) {
       const newSupportDocuments = [...support_documents].filter(
         (file) => fileItem.serverId !== file.document_manager_guid
       );
-      props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, "support_documents", newSupportDocuments);
+      change(FORM.ADD_EDIT_PROJECT_SUMMARY, "support_documents", newSupportDocuments);
     }
   };
 
@@ -245,13 +251,14 @@ export const DocumentUpload: FC<DocumentUploadProps> = (props) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      change,
-      postNewDocumentVersion,
-    },
-    dispatch
-  );
+// const mapDispatchToProps = (dispatch) =>
+//   bindActionCreators(
+//     {
+//       change,
+//       postNewDocumentVersion,
+//     },
+//     dispatch
+//   );
 
-export default connect(null, mapDispatchToProps)(DocumentUpload);
+// export default connect(null, mapDispatchToProps)(DocumentUpload);
+export default DocumentUpload;
