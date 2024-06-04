@@ -1,5 +1,5 @@
 cached_property==1.5.1
-cx_Oracle==8.0.1 
+cx_Oracle==8.3
 factory-boy==3.3.0
 Flask==3.0.1
 Flask-Caching==2.1.0
