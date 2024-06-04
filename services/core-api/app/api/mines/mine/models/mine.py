@@ -242,10 +242,12 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
 
     @hybrid_property
     def commodities(self):
-        return [
-            x.mine_type_detail.mine_commodity_literal for x in self.mine_type
-            if x.now_application_guid and x.mine_type_detail.mine_commodity_code
-        ]
+        mine_type_details = []
+        for mt in self.mine_type:
+            if not mt.now_application_guid:
+                mine_type_details.extend(mt.mine_type_detail)
+
+        return [d.mine_commodity_literal for d in mine_type_details if d.mine_commodity_code]
 
     @work_status.expression
     def work_status(cls):

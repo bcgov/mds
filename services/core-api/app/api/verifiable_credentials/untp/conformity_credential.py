@@ -1,5 +1,4 @@
 from typing import List, Optional
-from datetime import datetime
 from pydantic import BaseModel
 from .codes import AssessorAssuranceCode, AssessmentAssuranceCode, AttestationType, SustainabilityTopic
 from .base import Party, Authority, Status, Identifier, Measure, BinaryFile
@@ -23,10 +22,10 @@ class Standard(BaseModel):
 
 class Regulation(BaseModel):
     # https://uncefact.github.io/spec-untp/docs/specification/ConformityCredential/#regulation
-    id: str   # str #AnyUrl
+    id: str                  # str #AnyUrl
     name: str
     issuingBody: Party
-    effectiveDate: datetime
+    effectiveDate: str       #iso8601 datetime string
 
 
 class Metric(BaseModel):
@@ -76,11 +75,11 @@ class ConformityAssessment(BaseModel):
 
 class ConformityAssessmentScheme(BaseModel):
     # https://uncefact.github.io/spec-untp/docs/specification/ConformityCredential/#conformityattestation
-    id: str   # str #AnyUrl
+    id: str                                      # str #AnyUrl
     name: str
     trustmark: Optional[BinaryFile] = None
     issuingBody: Optional[Party] = None
-    dateOfIssue: Optional[datetime] = None
+    dateOfIssue: Optional[str] = None            #ISO8601 datetime string
 
 
 class ConformityEvidence(BaseModel):
@@ -101,7 +100,7 @@ class ConformityAttestation(BaseModel):
     issuedBy: Party
     issuedTo: Party
     validFrom: str                               #iso8601 datetime string
-    validTo: Optional[datetime] = None
+    validTo: Optional[str] = None                #iso8601 datetime string
     status: Optional[Status] = None
     assessments: List[
         ConformityAssessment]                    #list of assessments that are part of this attestation, that this is a real mine.

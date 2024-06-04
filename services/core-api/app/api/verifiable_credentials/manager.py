@@ -226,12 +226,10 @@ class VerifiableCredentialManager():
         products = [
             cc.Product(
                 identifiers=[],                                                 #gs1 code
-                marking="",                                                     #productid to match to shipment
+                marking="productId to match shipment?",                         #productid to match to shipment
                 name=c,
-                classifications=[],
-                verifiedbyCAB=False) for c in permit_amendment.mine.commodities
+                verifiedByCAB=False) for c in permit_amendment.mine.commodities
         ]
-        current_app.logger.warning(products)
 
         untp_assessments = [
             cc.ConformityAssessment(
@@ -242,7 +240,7 @@ class VerifiableCredentialManager():
                     effectiveDate=datetime(2024, 5, 14, tzinfo=pytz.timezone("UTC")).isoformat()),
                 subjectFacilities=[facility],
                 assessmentCriterion=None,
-                subjectProducts=[],
+                subjectProducts=products,
                 sustainabilityTopic=codes.SustainabilityTopic.Governance_Compliance)
         ]
         issue_date = permit_amendment.issue_date
@@ -268,9 +266,7 @@ class VerifiableCredentialManager():
 
         class W3CCred(BaseModel):
             model_config = ConfigDict(
-                populate_by_name=True, json_encoders={
-                    datetime: lambda v: v.isoformat(),
-                })
+                populate_by_name=True, json_encoders={datetime: lambda v: v.isoformat()})
 
             context: List[Union[str, dict]] = Field(alias="@context")
             type: List[str]
