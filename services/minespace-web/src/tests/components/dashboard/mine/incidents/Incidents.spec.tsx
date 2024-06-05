@@ -3,8 +3,10 @@ import { Incidents } from "@/components/dashboard/mine/incidents/Incidents";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { INCIDENTS } from "@mds/common/constants/reducerTypes";
 import { render } from "@testing-library/react";
-import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
+// import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { SidebarProvider } from "@mds/common/components/common/SidebarWrapper";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
+import { BrowserRouter } from "react-router-dom";
 
 const initialState = {
   [INCIDENTS]: {
@@ -18,9 +20,11 @@ describe("MineIncidents", () => {
   it("renders properly", () => {
     const { container } = render(
       <ReduxWrapper initialState={initialState}>
-        <SidebarProvider value={{ mine } as any}>
-          <Incidents />
-        </SidebarProvider>
+        <BrowserRouter>
+          <SidebarProvider value={{ mine } as any}>
+            <Incidents />
+          </SidebarProvider>
+        </BrowserRouter>
       </ReduxWrapper>
     );
     expect(container).toMatchSnapshot();
