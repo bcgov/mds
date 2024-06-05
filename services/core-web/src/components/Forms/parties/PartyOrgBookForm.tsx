@@ -6,11 +6,14 @@ import { isEmpty } from "lodash";
 import { useDispatch } from "react-redux";
 import {
   createPartyOrgBookEntity,
+  deletePartyOrgBookEntity,
   fetchPartyById,
 } from "@mds/common/redux/actionCreators/partiesActionCreator";
 import { ORGBOOK_ENTITY_URL } from "@/constants/routes";
 import { IOrgbookCredential, IParty } from "@mds/common";
 import OrgBookSearch from "@mds/common/components/parties/OrgBookSearch";
+import * as Permission from "@/constants/permissions";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 interface PartyOrgBookFormProps {
   party: IParty;
@@ -20,6 +23,8 @@ export const PartyOrgBookForm: FC<PartyOrgBookFormProps> = ({ party }) => {
   const [isAssociating, setIsAssociating] = useState(false);
   const dispatch = useDispatch();
   const [credential, setCredential] = useState<IOrgbookCredential>(null);
+  const [currentParty, setCurrentParty] = useState(party.party_orgbook_entity.name_text);
+  const [isAssociated, setIsAssociated] = useState(!!party.party_orgbook_entity.name_text);
 
   const handleAssociateButtonClick = async () => {
     setIsAssociating(true);
@@ -31,6 +36,16 @@ export const PartyOrgBookForm: FC<PartyOrgBookFormProps> = ({ party }) => {
     await dispatch(fetchPartyById(party.party_guid));
 
     setIsAssociating(false);
+    setIsAssociated(true);
+  };
+
+  const handleDisassociateButtonClick = async () => {
+    setIsAssociating(true);
+
+    await dispatch(deletePartyOrgBookEntity(party.party_guid));
+    setIsAssociating(false);
+    setCurrentParty("");
+    setIsAssociated(false);
   };
 
   const hasOrgBookCredential = !isEmpty(credential);
@@ -38,7 +53,11 @@ export const PartyOrgBookForm: FC<PartyOrgBookFormProps> = ({ party }) => {
   return (
     <Row>
       <Col span={24}>
-        <OrgBookSearch isDisabled={isAssociating} setCredential={setCredential} />
+        <OrgBookSearch
+          isDisabled={isAssociated}
+          setCredential={setCredential}
+          current_party={currentParty}
+        />
       </Col>
       <Col span={24}>
         <Button
@@ -52,18 +71,21 @@ export const PartyOrgBookForm: FC<PartyOrgBookFormProps> = ({ party }) => {
             View on OrgBook
           </span>
         </Button>
-        <Button
-          type="primary"
-          className="full-mobile"
-          disabled={!hasOrgBookCredential}
-          onClick={handleAssociateButtonClick}
-          loading={isAssociating}
-        >
-          <span>
-            <CheckCircleOutlined className="padding-sm--right" />
-            Associate
-          </span>
-        </Button>
+        <AuthorizationWrapper permission={Permission.ADMIN}>
+          <Button
+            type="primary"
+            className="full-mobile"
+            disabled={!isAssociated ? !hasOrgBookCredential : false} //Admin is allowed to disassociate
+            onClick={!isAssociated ? handleAssociateButtonClick : handleDisassociateButtonClick}
+            loading={isAssociating}
+            danger={isAssociated}
+          >
+            <span>
+              <CheckCircleOutlined className="padding-sm--right" />
+              {!isAssociated ? "Associate" : "Disassociate"}
+            </span>
+          </Button>
+        </AuthorizationWrapper>
       </Col>
     </Row>
   );

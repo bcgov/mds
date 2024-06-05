@@ -59,3 +59,15 @@ class PartyOrgBookEntityListResource(Resource, UserMixin):
         party.save()
 
         return party_orgbook_entity, 201
+
+    @api.expect(parser)
+    @api.doc(description='Delete a Party OrgBook Entity.')
+    @requires_role_edit_party
+    @api.marshal_with(PARTY_ORGBOOK_ENTITY, code=201)
+    def delete(self, party_guid):
+        party_orgbook_entity = PartyOrgBookEntity.find_by_party_guid(party_guid)
+        if party_orgbook_entity is None:
+            raise NotFound('OrgBook entity not found.')
+
+        party_orgbook_entity.delete()
+        return None, 204

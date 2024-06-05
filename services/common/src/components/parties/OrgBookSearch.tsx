@@ -12,13 +12,19 @@ import {
 } from "@mds/common/redux/actionCreators/orgbookActionCreator";
 import { LoadingOutlined } from "@ant-design/icons";
 import { IOrgbookCredential } from "@mds/common/interfaces";
+import { NONE } from "@mds/minespace-web/src/constants/strings";
 
 interface OrgBookSearchProps {
   isDisabled?: boolean;
   setCredential: (credential: IOrgbookCredential) => void;
+  current_party: string;
 }
 
-const OrgBookSearch: FC<OrgBookSearchProps> = ({ isDisabled = false, setCredential }) => {
+const OrgBookSearch: FC<OrgBookSearchProps> = ({
+  isDisabled = false,
+  setCredential,
+  current_party,
+}) => {
   const dispatch = useDispatch();
 
   const searchOrgBookResults = useSelector(getSearchOrgBookResults);
@@ -28,6 +34,8 @@ const OrgBookSearch: FC<OrgBookSearchProps> = ({ isDisabled = false, setCredenti
 
   const [options, setOptions] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [isAssociated, setIsAssociated] = useState(current_party !== undefined);
+  const [selectedParty, setSelectedParty] = useState(current_party);
 
   const handleChange = () => {
     setIsSearching(false);
@@ -55,6 +63,12 @@ const OrgBookSearch: FC<OrgBookSearchProps> = ({ isDisabled = false, setCredenti
   };
 
   useEffect(() => {
+    if (selectedParty !== current_party) {
+      setSelectedParty(NONE);
+    }
+  }, [current_party]);
+
+  useEffect(() => {
     if (searchOrgBookResults) {
       const selectOptions = searchOrgBookResults
         .filter((result) => result.names && result.names.length > 0)
@@ -69,6 +83,8 @@ const OrgBookSearch: FC<OrgBookSearchProps> = ({ isDisabled = false, setCredenti
   const handleSelect = async (value) => {
     const credentialId = value.key;
     await dispatch(fetchOrgBookCredential(credentialId));
+    setSelectedParty(value.label);
+    setIsAssociated(true);
   };
 
   useEffect(() => {
@@ -94,7 +110,9 @@ const OrgBookSearch: FC<OrgBookSearchProps> = ({ isDisabled = false, setCredenti
         onChange={handleChange}
         onSelect={handleSelect}
         style={{ width: "100%" }}
-        disabled={isDisabled}
+        disabled={isAssociated}
+        defaultValue={current_party}
+        value={selectedParty}
       >
         {options.map((option) => (
           <Select.Option key={option.value}>{option.text}</Select.Option>

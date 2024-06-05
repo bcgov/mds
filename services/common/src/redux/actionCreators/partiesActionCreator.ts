@@ -298,6 +298,28 @@ export const createPartyOrgBookEntity = (
     .finally(() => dispatch(hideLoading("modal")));
 };
 
+export const deletePartyOrgBookEntity = (
+  partyGuid: string
+): AppThunk<Promise<AxiosResponse<IPartyOrgBookEntity>>> => (dispatch) => {
+  dispatch(request(reducerTypes.PARTY_ORGBOOK_ENTITY));
+  dispatch(showLoading("modal"));
+  return CustomAxios()
+    .delete(ENVIRONMENT.apiUrl + API.PARTY_ORGBOOK_ENTITY(partyGuid), createRequestHeader())
+    .then((response) => {
+      dispatch(hideLoading("modal"));
+      notification.success({
+        message: "Successfully disassociated party with OrgBook entity",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.PARTY_ORGBOOK_ENTITY));
+      return response;
+    })
+    .catch(() => {
+      dispatch(error(reducerTypes.PARTY_ORGBOOK_ENTITY));
+    })
+    .finally(() => dispatch(hideLoading("modal")));
+};
+
 export const mergeParties = (payload: IMergeParties): AppThunk<Promise<AxiosResponse<IParty>>> => (
   dispatch
 ): Promise<AxiosResponse<IParty>> => {
