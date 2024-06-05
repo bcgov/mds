@@ -43,6 +43,7 @@ export const PartyOrgBookForm: FC<PartyOrgBookFormProps> = ({ party }) => {
     setIsAssociating(true);
 
     await dispatch(deletePartyOrgBookEntity(party.party_guid));
+    await dispatch(fetchPartyById(party.party_guid));
     setIsAssociating(false);
     setCurrentParty("");
     setIsAssociated(false);
