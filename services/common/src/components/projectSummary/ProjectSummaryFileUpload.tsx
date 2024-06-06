@@ -6,7 +6,7 @@ import RenderFileUpload from "@mds/common/components/forms/RenderFileUpload";
 import { Alert, Divider, Modal, Popconfirm, Table, Typography } from "antd";
 import { getUserInfo } from "@mds/common/redux/selectors/authenticationSelectors";
 import { FilePondFile } from "filepond";
-import { IDocument } from "@mds/common";
+import { IDocument } from "@mds/common/interfaces/document";
 
 const notificationDisabledStatusCodes = [409]; // Define the notification disabled status codes
 

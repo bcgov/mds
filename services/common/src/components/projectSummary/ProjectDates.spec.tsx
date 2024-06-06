@@ -1,11 +1,11 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import AuthorizationsInvolved from "./AuthorizationsInvolved";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import { FORM } from "@mds/common/constants/forms";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { PERMITS, PROJECTS, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
+import ProjectDates from "./ProjectDates";
 
 const initialState = {
   [PROJECTS]: {
@@ -21,7 +21,7 @@ const initialState = {
   },
 };
 
-describe("AuthorizationsInvolved", () => {
+describe("ProjectDates", () => {
   it("renders properly", () => {
     const { container } = render(
       <ReduxWrapper initialState={initialState}>
@@ -30,7 +30,7 @@ describe("AuthorizationsInvolved", () => {
           initialValues={MOCK.PERMITS}
           onSubmit={() => {}}
         >
-          <AuthorizationsInvolved />
+          <ProjectDates />
         </FormWrapper>
       </ReduxWrapper>
     );

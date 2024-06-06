@@ -12,13 +12,12 @@ import {
   email,
   postalCodeWithCountry,
 } from "@mds/common/redux/utils/Validate";
-import { normalizePhone } from "@common/utils/helpers";
-import LinkButton from "@/components/common/LinkButton";
-import * as FORM from "@/constants/forms";
+import { normalizePhone } from "@mds/common/redux/utils/helpers";
+import LinkButton from "@mds/common/components/common/LinkButton";
+import { FORM } from "@mds/common/constants/forms";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
-import { CONTACTS_COUNTRY_OPTIONS } from "@mds/common";
-
+import { CONTACTS_COUNTRY_OPTIONS } from "@mds/common/constants";
 import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 
 const RenderContacts = (props) => {

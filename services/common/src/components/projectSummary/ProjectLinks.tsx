@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from "react";
 import { getProject, getProjects } from "@mds/common/redux/selectors/projectSelectors";
 import { useSelector, useDispatch } from "react-redux";
 import { Field, change } from "redux-form";
-import ProjectLinksTable from "@mds/common/components/projects/ProjectLinksTable";
+import ProjectLinksTable from "@mds/common/components/projectSummary/ProjectLinksTable";
 import { ILinkedProject, IProject } from "@mds/common/interfaces";
 
 import { Button, Col, Row, Typography } from "antd";
