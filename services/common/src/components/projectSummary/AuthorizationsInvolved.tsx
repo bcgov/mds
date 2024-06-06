@@ -49,25 +49,23 @@ import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import { MineDocument } from "@mds/common/models/documents/document";
 import { Link } from "react-router-dom";
 
-export interface ProjectSummary {
-  project_summary_id: number;
-  mine_guid: string;
-  project_summary_guid: string;
-  status_code: string;
-  submission_date: string;
-  project_summary_description: string;
-  project_guid: string;
-  documents: IProjectSummaryDocument[];
-}
-
-const RenderEMAPermitCommonSections = ({ props }) => {
-  const { code } = props;
+const RenderEMAPermitCommonSections = ({ code, isAmendment, index }) => {
   const dispatch = useDispatch();
-  const purposeLabel = props.isAmendment
+  const purposeLabel = isAmendment
     ? "Additional Amendment Request Information"
     : "Purpose of Application";
 
-  const [showDocSection, setShowDocSection] = useState(props?.exemption_requested || false);
+  const { authorizations, mine_guid, project_guid, project_summary_guid } = useSelector(
+    getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)
+  );
+
+  const codeAuthorizations = authorizations[code];
+  const { AMENDMENT, NEW } = codeAuthorizations;
+  const sectionValues = isAmendment ? AMENDMENT[index] : NEW[index];
+  const dfaRequired =
+    isAmendment &&
+    sectionValues?.amendment_changes?.some((val) => ["ILT", "IGT", "DDL"].includes(val));
+  const [showDocSection, setShowDocSection] = useState(sectionValues?.exemption_requested || false);
 
   const projectSummaryDocumentTypesHash = useSelector(getProjectSummaryDocumentTypesHash);
 
@@ -75,20 +73,19 @@ const RenderEMAPermitCommonSections = ({ props }) => {
     setShowDocSection(value);
   };
 
-  const updateAmendmentDocuments = (doc: IProjectSummaryDocument, code: string) => {
-    const index = 0;
-    const response = dispatch(
+  const updateAmendmentDocuments = (doc: IProjectSummaryDocument) => {
+    const type = isAmendment ? "AMENDMENT" : "NEW";
+    dispatch(
       arrayPush(
         FORM.ADD_EDIT_PROJECT_SUMMARY,
-        `authorizations.[${code}].AMENDMENT.[${index}].amendment_documents`,
+        `authorizations.[${code}].${type}[${index}].amendment_documents`,
         doc
       )
     );
-    return response;
   };
 
   const tableDocuments =
-    props?.amendment_documents?.map(
+    sectionValues?.amendment_documents?.map(
       (doc) => new MineDocument({ ...doc, category: doc.project_summary_document_type_code })
     ) ?? [];
 
@@ -156,13 +153,13 @@ const RenderEMAPermitCommonSections = ({ props }) => {
           </div>
           <AuthorizationSupportDocumentUpload
             code={code}
-            mineGuid={props.mine_guid}
+            mineGuid={mine_guid}
             isProponent={true}
             documents={tableDocuments}
             updateAmendmentDocuments={updateAmendmentDocuments}
-            projectGuid={props.project_guid}
-            projectSummaryGuid={props.project_summary_guid}
-            dfaRequired={props.dfaRequired}
+            projectGuid={project_guid}
+            projectSummaryGuid={project_summary_guid}
+            dfaRequired={dfaRequired}
           />
           <DocumentTable
             documents={tableDocuments}
@@ -175,21 +172,7 @@ const RenderEMAPermitCommonSections = ({ props }) => {
   );
 };
 
-const RenderEMANewPermitSection = ({
-  props,
-  code,
-  mine_guid,
-  project_guid,
-  project_summary_guid,
-}) => {
-  const new_props = {
-    ...props.formValues.authorizations[code].AMENDMENT[0],
-    code,
-    isAmendment: false,
-    mine_guid: mine_guid,
-    project_guid: project_guid,
-    project_summary_guid: project_summary_guid,
-  };
+const RenderEMANewPermitSection = ({ code }) => {
   return (
     <div className="grey-box">
       <FormSection name={`${code}.NEW[0]`}>
@@ -228,29 +211,15 @@ const RenderEMANewPermitSection = ({
           required
           validate={[requiredRadioButton]}
         />
-        <RenderEMAPermitCommonSections props={new_props} />
+        <RenderEMAPermitCommonSections isAmendment={false} code={code} index={0} />
       </FormSection>
     </div>
   );
 };
 
-const RenderEMAAmendFieldArray = ({
-  fields,
-  projectSummaryDocumentTypesHash,
-  code,
-  mine_guid,
-  project_guid,
-  project_summary_guid,
-  ...rest_of_the_props
-}) => {
+const RenderEMAAmendFieldArray = ({ fields, code }) => {
   const handleRemoveAmendment = (index: number) => {
     fields.remove(index);
-  };
-
-  const [dfaRequired, setDfaRequired] = useState(false);
-
-  const onChangeAmendment = (value, _newVal, _prevVal, _fieldName) => {
-    setDfaRequired(value.includes("ILT") || value.includes("IGT") || value.includes("DDL"));
   };
 
   return (
@@ -313,7 +282,6 @@ const RenderEMAAmendFieldArray = ({
                 { label: "Regulatory Change", value: "RCH" },
                 { label: "Other", value: "OTH" },
               ]}
-              onChange={onChangeAmendment}
             />
             <Field
               label="Is this Authorization required for remediation of a contaminated site?"
@@ -322,18 +290,7 @@ const RenderEMAAmendFieldArray = ({
               validate={[requiredRadioButton]}
               component={RenderRadioButtons}
             />
-            <RenderEMAPermitCommonSections
-              props={{
-                ...rest_of_the_props,
-                projectSummaryDocumentTypesHash: projectSummaryDocumentTypesHash,
-                code,
-                isAmendment: true,
-                mine_guid: mine_guid,
-                project_guid: project_guid,
-                project_summary_guid: project_summary_guid,
-                dfaRequired: dfaRequired,
-              }}
-            />
+            <RenderEMAPermitCommonSections isAmendment={true} code={code} index={index} />
           </FormSection>
         </Col>
       ))}
@@ -341,33 +298,13 @@ const RenderEMAAmendFieldArray = ({
   );
 };
 
-const RenderEMAAuthCodeFormSection = ({
-  props,
-  code,
-  mine_guid,
-  project_guid,
-  project_summary_guid,
-}) => {
+const RenderEMAAuthCodeFormSection = ({ code }) => {
   const { authorizations } = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
   const codeAuthorizations = authorizations[code] ?? [];
   const hasAmendments = codeAuthorizations.AMENDMENT?.length > 0;
   const hasNew = codeAuthorizations.NEW?.length > 0;
-
-  const projectSummaryDocumentTypesHash = useSelector(getProjectSummaryDocumentTypesHash);
-
   const permitTypes = ["AMENDMENT", "NEW"];
-
   const dispatch = useDispatch();
-
-  const doc_props = {
-    ...authorizations[code].AMENDMENT[0],
-    projectSummaryDocumentTypesHash,
-    code: code,
-    isAmendment: false,
-    mine_guid: mine_guid,
-    project_guid: project_guid,
-    project_summary_guid: project_summary_guid,
-  };
 
   const addAmendment = () => {
     dispatch(arrayPush(FORM.ADD_EDIT_PROJECT_SUMMARY, `authorizations.${code}.AMENDMENT`, {}));
@@ -388,55 +325,52 @@ const RenderEMAAuthCodeFormSection = ({
       <Field
         name={`${code}.types`}
         component={RenderGroupCheckbox}
-        label="What type of authorization is involved in your application?"
         required
         validate={[requiredList]}
         normalize={normalizeGroupCheckBox}
+        onDrop={(event) => {
+          event.preventDefault();
+        }}
         onChange={handleChangeAuthType}
-        options={[
-          {
-            disabled: hasAmendments,
-            label: (
-              <>
-                Amendment to an existing authorization
-                {hasAmendments && (
-                  <Row
-                    style={{ marginLeft: "-24px", marginRight: "-16px", cursor: "default" }}
-                    gutter={[0, 16]}
-                  >
-                    <FieldArray
-                      name={`${code}.AMENDMENT`}
-                      component={RenderEMAAmendFieldArray}
-                      props={doc_props}
-                    />
-                    <Button
-                      onClick={addAmendment}
-                      icon={<PlusCircleFilled />}
-                      className="btn-sm-padding"
+        props={{
+          label: "What type of authorization is involved in your application?",
+          options: [
+            {
+              disabled: hasAmendments,
+              label: (
+                <>
+                  Amendment to an existing authorization
+                  {hasAmendments && (
+                    <Row
+                      style={{ marginLeft: "-24px", marginRight: "-16px", cursor: "default" }}
+                      gutter={[0, 16]}
                     >
-                      Add another amendment
-                    </Button>
-                  </Row>
-                )}
-              </>
-            ),
-            value: "AMENDMENT",
-          },
-          {
-            label: "New",
-            value: "NEW",
-          },
-        ]}
+                      <FieldArray
+                        name={`${code}.AMENDMENT`}
+                        component={RenderEMAAmendFieldArray}
+                        props={{ code }}
+                      />
+                      <Button
+                        onClick={addAmendment}
+                        icon={<PlusCircleFilled />}
+                        className="btn-sm-padding"
+                      >
+                        Add another amendment
+                      </Button>
+                    </Row>
+                  )}
+                </>
+              ),
+              value: "AMENDMENT",
+            },
+            {
+              label: "New",
+              value: "NEW",
+            },
+          ],
+        }}
       />
-      {hasNew && (
-        <RenderEMANewPermitSection
-          props={props}
-          code={code}
-          mine_guid={mine_guid}
-          project_guid={project_guid}
-          project_summary_guid={project_summary_guid}
-        />
-      )}
+      {hasNew && <RenderEMANewPermitSection code={code} />}
     </>
   );
 };
@@ -470,26 +404,11 @@ const RenderMinesActPermitSelect = () => {
   );
 };
 
-const RenderAuthCodeFormSection = ({
-  props,
-  authorizationType,
-  code,
-  mine_guid,
-  project_guid,
-  project_summary_guid,
-}) => {
+const RenderAuthCodeFormSection = ({ authorizationType, code }) => {
   const dropdownProjectSummaryPermitTypes = useSelector(getDropdownProjectSummaryPermitTypes);
   if (authorizationType === "ENVIRONMENTAL_MANAGMENT_ACT") {
     // AMS authorizations, have options of amend/new with more details
-    return (
-      <RenderEMAAuthCodeFormSection
-        props={props}
-        code={code}
-        mine_guid={mine_guid}
-        project_guid={project_guid}
-        project_summary_guid={project_summary_guid}
-      />
-    );
+    return <RenderEMAAuthCodeFormSection code={code} />;
   }
   if (authorizationType === "OTHER_LEGISLATION") {
     return (
@@ -540,7 +459,7 @@ const RenderAuthCodeFormSection = ({
   );
 };
 
-export const AuthorizationsInvolved = (props) => {
+export const AuthorizationsInvolved = () => {
   const dispatch = useDispatch();
   const transformedProjectSummaryAuthorizationTypes = useSelector(
     getTransformedProjectSummaryAuthorizationTypes
@@ -548,6 +467,7 @@ export const AuthorizationsInvolved = (props) => {
 
   const amsAuthTypes = useSelector(getAmsAuthorizationTypes);
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
+
   const handleChange = (e, code) => {
     if (e.target.checked) {
       let formVal;
@@ -645,10 +565,6 @@ export const AuthorizationsInvolved = (props) => {
                                 <RenderAuthCodeFormSection
                                   code={child?.code}
                                   authorizationType={authorization?.code}
-                                  mine_guid={props?.initialValues?.mine_guid}
-                                  project_guid={props?.initialValues?.project_guid}
-                                  project_summary_guid={props?.initialValues?.project_summary_guid}
-                                  props={props}
                                 />
                               </>
                             )}
