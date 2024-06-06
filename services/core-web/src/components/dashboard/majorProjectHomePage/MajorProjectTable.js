@@ -86,7 +86,7 @@ export const MajorProjectTable = (props) => {
       sortField: "project_title",
       sorter: true,
       render: (text, record) => (
-        <Link to={router.PROJECTS.dynamicRoute(record.key)} title="Name">
+        <Link to={router.EDIT_PROJECT.dynamicRoute(record.key)} title="Name">
           {text}
         </Link>
       ),
@@ -130,7 +130,7 @@ export const MajorProjectTable = (props) => {
         <div title="" align="right" data-cy="major-projects-table-open-button">
           <Row gutter={1}>
             <Col span={12}>
-              <Link to={router.PROJECTS.dynamicRoute(record.key)}>
+              <Link to={router.EDIT_PROJECT.dynamicRoute(record.key)}>
                 <Button type="primary">Open</Button>
               </Link>
             </Col>

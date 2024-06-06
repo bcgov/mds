@@ -185,12 +185,9 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             return self.project.proponent_project_id
         return None
 
-    @classmethod
-    def find_by_project_summary_guid(cls, project_summary_guid, is_minespace_user=False):
-        if is_minespace_user:
-            return cls.query.filter_by(
-                project_summary_guid=project_summary_guid, deleted_ind=False).one_or_none()
-        return cls.query.filter(ProjectSummary.status_code.is_distinct_from("DFT")).filter_by(
+   @classmethod
+    def find_by_project_summary_guid(cls, project_summary_guid):
+        return cls.query.filter_by(
             project_summary_guid=project_summary_guid, deleted_ind=False).one_or_none()
 
     @classmethod
@@ -198,11 +195,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         return cls.query.filter(cls.mine_guid == mine_guid_to_search).all()
 
     @classmethod
-    def find_by_project_guid(cls, project_guid, is_minespace_user):
-        if is_minespace_user:
-            return cls.query.filter_by(project_guid=project_guid, deleted_ind=False).all()
-        return cls.query.filter(ProjectSummary.status_code.is_distinct_from("DFT")).filter_by(
-            project_guid=project_guid, deleted_ind=False).all()
+    def find_by_project_guid(cls, project_guid):
+        return cls.query.filter_by(project_guid=project_guid, deleted_ind=False).all()
 
     @classmethod
     def find_by_mine_document_guid(cls, mine_document_guid):
