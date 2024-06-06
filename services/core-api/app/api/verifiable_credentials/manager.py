@@ -216,11 +216,11 @@ class VerifiableCredentialManager():
         orgbook_cred_url = f"https://orgbook.gov.bc.ca/entity/{orgbook_entity.registration_id}/credential/{orgbook_entity.credential_id}"
 
         untp_party_business = base.Party(
-            name="Permittee",
+            name=orgbook_entity.name_text,
             identifiers=[
                 base.Identifier(
                     scheme=ANONCRED_SCHEME,
-                    identifierValue=orgbook_entity.name_text,
+                    identifierValue=orgbook_entity.registration_id,
                     identifierURI=orgbook_cred_url,
                     verificationEvidence=base.Evidence(
                         format=codes.EvidenceFormat.W3C_VC, credentialReference=orgbook_cred_url))
@@ -246,10 +246,13 @@ class VerifiableCredentialManager():
                 referenceRegulation=cc.Regulation(
                     id="https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/96293_01",
                     name="BC Mines Act",
-                    issuingBody=base.Party(name="BC Government"),
+                    issuingBody=base.Party(
+                        name="BC Government",
+                        identifiers=[
+                            base.Identifier(identifierValue="did:indy:candy:LTNyw5R14J66CrF7tmV3i8")
+                        ]),
                     effectiveDate=datetime(2024, 5, 14, tzinfo=pytz.timezone("UTC")).isoformat()),
                 subjectFacilities=[facility],
-                assessmentCriterion=None,
                 subjectProducts=products,
                 sustainabilityTopic=codes.SustainabilityTopic.Governance_Compliance)
         ]

@@ -10,9 +10,9 @@ class Evidence(BaseModel):
 
 class Identifier(BaseModel):
     #https://uncefact.github.io/spec-untp/docs/specification/ConformityCredential#identifier
-    scheme: str              # AnyUrl
+    scheme: Optional[str] = None                 # AnyUrl
     identifierValue: str
-    identifierURI: str       # AnyUrl
+    identifierURI: Optional[str] = None          # AnyUrl
     verificationEvidence: Optional[Evidence] = None
 
 
