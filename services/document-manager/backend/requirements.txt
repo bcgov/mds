@@ -23,7 +23,7 @@ uwsgitop==0.11
 Werkzeug==2.3.6
 boto3==1.28.15
 celery==5.3.1
-numpy==1.25.2
+numpy==1.26.4
 flower==2.0.0
 
 zipstream==1.1.4
