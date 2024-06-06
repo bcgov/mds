@@ -12,7 +12,6 @@ import {
 } from "@mds/common/redux/actionCreators/orgbookActionCreator";
 import { LoadingOutlined } from "@ant-design/icons";
 import { IOrgbookCredential } from "@mds/common/interfaces";
-import { NONE } from "@mds/minespace-web/src/constants/strings";
 
 interface OrgBookSearchProps {
   isDisabled?: boolean;
@@ -61,9 +60,11 @@ const OrgBookSearch: FC<OrgBookSearchProps> = ({
     setIsSearching(false);
   };
 
+  const placeHolder = "Start typing to search OrgBook...";
+
   useEffect(() => {
     if (selectedParty !== current_party) {
-      setSelectedParty(NONE);
+      setSelectedParty(placeHolder);
     }
   }, [current_party]);
 
@@ -101,7 +102,7 @@ const OrgBookSearch: FC<OrgBookSearchProps> = ({
         showSearch
         showArrow
         labelInValue
-        placeholder="Start typing to search OrgBook..."
+        placeholder={placeHolder}
         notFoundContent={isSearching ? <Spin size="small" indicator={<LoadingOutlined />} /> : null}
         filterOption={false}
         onSearch={handleSearchDebounced}
