@@ -18,5 +18,4 @@ class Municipality(AuditMixin, Base):
 
     @classmethod
     def find_by_guid(cls, municipality_guid):
-        current_app.logger.debug(f"Looking for municipality with {municipality_guid}")
         return cls.query.filter_by(municipality_guid=municipality_guid).first()
