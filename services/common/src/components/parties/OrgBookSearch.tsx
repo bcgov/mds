@@ -60,11 +60,9 @@ const OrgBookSearch: FC<OrgBookSearchProps> = ({
     setIsSearching(false);
   };
 
-  const placeHolder = "Start typing to search OrgBook...";
-
   useEffect(() => {
     if (selectedParty !== current_party) {
-      setSelectedParty(placeHolder);
+      setSelectedParty(undefined);
     }
   }, [current_party]);
 
@@ -102,7 +100,7 @@ const OrgBookSearch: FC<OrgBookSearchProps> = ({
         showSearch
         showArrow
         labelInValue
-        placeholder={placeHolder}
+        placeholder="Start typing to search OrgBook..."
         notFoundContent={isSearching ? <Spin size="small" indicator={<LoadingOutlined />} /> : null}
         filterOption={false}
         onSearch={handleSearchDebounced}
