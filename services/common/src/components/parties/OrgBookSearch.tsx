@@ -34,7 +34,6 @@ const OrgBookSearch: FC<OrgBookSearchProps> = ({
 
   const [options, setOptions] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
-  const [isAssociated, setIsAssociated] = useState(current_party !== undefined);
   const [selectedParty, setSelectedParty] = useState(current_party);
 
   const handleChange = () => {
@@ -84,7 +83,6 @@ const OrgBookSearch: FC<OrgBookSearchProps> = ({
     const credentialId = value.key;
     await dispatch(fetchOrgBookCredential(credentialId));
     setSelectedParty(value.label);
-    setIsAssociated(true);
   };
 
   useEffect(() => {
@@ -110,7 +108,7 @@ const OrgBookSearch: FC<OrgBookSearchProps> = ({
         onChange={handleChange}
         onSelect={handleSelect}
         style={{ width: "100%" }}
-        disabled={isAssociated}
+        disabled={isDisabled}
         defaultValue={current_party}
         value={selectedParty}
       >
