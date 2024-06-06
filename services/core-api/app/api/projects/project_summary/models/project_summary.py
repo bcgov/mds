@@ -185,7 +185,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             return self.project.proponent_project_id
         return None
 
-   @classmethod
+    @classmethod
     def find_by_project_summary_guid(cls, project_summary_guid):
         return cls.query.filter_by(
             project_summary_guid=project_summary_guid, deleted_ind=False).one_or_none()
