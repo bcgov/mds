@@ -20,7 +20,7 @@ export const MinistryContact: FC = () => {
   const isCore = systemFlag === SystemFlagEnum.core;
 
   if (!isCore) {
-    return <div>go away</div>;
+    return null;
   }
 
   const { status_code, project_summary_guid, project_lead_party_guid } = useSelector((state) =>
