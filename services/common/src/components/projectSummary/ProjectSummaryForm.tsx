@@ -21,6 +21,9 @@ import { ApplicationSummary } from "./ApplicationSummary";
 import { removeNullValuesRecursive } from "@mds/common/constants/utils";
 import { getProjectSummaryAuthorizationTypesArray } from "@mds/common/redux/selectors/staticContentSelectors";
 import { isArray } from "lodash";
+import { MinistryContact } from "./MinistryContact";
+import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
+import { SystemFlagEnum } from "../..";
 
 interface ProjectSummaryFormProps {
   initialValues: IProjectSummary;
@@ -33,7 +36,7 @@ interface ProjectSummaryFormProps {
 
 // converted to a function to make feature flag easier to work with
 // when removing feature flag, convert back to array
-export const getProjectFormTabs = (amsFeatureEnabled: boolean) => {
+export const getProjectFormTabs = (amsFeatureEnabled: boolean, isCore = false) => {
   const projectFormTabs = [
     "basic-information",
     "related-projects",
@@ -48,6 +51,9 @@ export const getProjectFormTabs = (amsFeatureEnabled: boolean) => {
     "application-summary",
     "declaration",
   ];
+  if (isCore) {
+    projectFormTabs.splice(1, 0, "ministry-contact");
+  }
 
   return amsFeatureEnabled
     ? projectFormTabs
@@ -68,10 +74,12 @@ export const ProjectSummaryForm: FC<ProjectSummaryFormProps> = ({
   activeTab,
   isEditMode = true,
 }) => {
+  const systemFlag = useSelector(getSystemFlag);
+  const isCore = systemFlag === SystemFlagEnum.core;
   const { isFeatureEnabled } = useFeatureFlag();
   const majorProjectsFeatureEnabled = isFeatureEnabled(Feature.MAJOR_PROJECT_LINK_PROJECTS);
   const amsFeatureEnabled = isFeatureEnabled(Feature.AMS_AGENT);
-  const projectFormTabs = getProjectFormTabs(amsFeatureEnabled);
+  const projectFormTabs = getProjectFormTabs(amsFeatureEnabled, isCore);
   const projectSummaryAuthorizationTypesArray = useSelector(
     getProjectSummaryAuthorizationTypesArray
   );
@@ -135,6 +143,7 @@ export const ProjectSummaryForm: FC<ProjectSummaryFormProps> = ({
 
   const renderTabComponent = (tab) =>
     ({
+      "ministry-contact": <MinistryContact />,
       "location-access-and-land-use": <LegalLandOwnerInformation />,
       "basic-information": <BasicInformation />,
       "related-projects": (
