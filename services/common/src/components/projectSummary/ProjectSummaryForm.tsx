@@ -29,7 +29,6 @@ interface ProjectSummaryFormProps {
   initialValues: IProjectSummary;
   handleTabChange: (newTab: string) => void;
   handleSaveData: (formValues, newActiveTab?) => Promise<void>;
-  handleSaveDraft: (formValues) => Promise<void>;
   activeTab: string;
   isEditMode?: boolean;
 }
@@ -69,7 +68,6 @@ export const getProjectFormTabs = (amsFeatureEnabled: boolean, isCore = false) =
 export const ProjectSummaryForm: FC<ProjectSummaryFormProps> = ({
   initialValues,
   handleSaveData,
-  handleSaveDraft,
   handleTabChange,
   activeTab,
   isEditMode = true,
@@ -168,7 +166,6 @@ export const ProjectSummaryForm: FC<ProjectSummaryFormProps> = ({
       initialValues={initialValues}
       isEditMode={isEditMode}
       handleSaveData={handleSaveData}
-      handleSaveDraft={handleSaveDraft}
       handleTabChange={handleTabChange}
       transformPayload={handleTransformPayload}
       activeTab={activeTab}

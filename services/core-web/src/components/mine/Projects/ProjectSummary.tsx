@@ -192,26 +192,6 @@ export const ProjectSummary: FC = () => {
     ? {}
     : { ...formattedProjectSummary, mrc_review_required: project.mrc_review_required };
 
-  const handleSaveDraft = async (formValues) => {
-    const currentTabIndex = projectFormTabs.indexOf(activeTab);
-    const newActiveTab = projectFormTabs[currentTabIndex + 1];
-    const message = "Successfully saved a draft project description.";
-    const values = { ...formValues, status_code: "DFT" };
-
-    try {
-      if (isNewProject) {
-        await handleCreateProjectSummary(values, message);
-      }
-      if (projectGuid && projectSummaryGuid) {
-        await handleUpdateProjectSummary(values, message);
-        handleTabChange(newActiveTab);
-      }
-    } catch (err) {
-      console.log(err);
-      setIsLoaded(true);
-    }
-  };
-
   return (
     <>
       <Prompt
@@ -274,7 +254,6 @@ export const ProjectSummary: FC = () => {
               initialValues={initialValues}
               isEditMode={isEditMode}
               handleSaveData={handleSaveData}
-              handleSaveDraft={handleSaveDraft}
               handleTabChange={handleTabChange}
               activeTab={activeTab}
             />

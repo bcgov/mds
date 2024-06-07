@@ -60,7 +60,7 @@ export const ProjectSummaryPage = () => {
   const isDefaultEditMode = Boolean(projectGuid && projectSummaryGuid);
   const isDefaultLoaded = isDefaultEditMode
     ? formattedProjectSummary?.project_summary_guid === projectSummaryGuid &&
-    formattedProjectSummary?.project_guid === projectGuid
+      formattedProjectSummary?.project_guid === projectGuid
     : mine?.mine_guid === mineGuid;
   const [isLoaded, setIsLoaded] = useState(isDefaultLoaded);
   const [isEditMode, setIsEditMode] = useState(isDefaultEditMode);
@@ -173,26 +173,6 @@ export const ProjectSummaryPage = () => {
     }
   };
 
-  const handleSaveDraft = async (formValues) => {
-    const currentTabIndex = projectFormTabs.indexOf(activeTab);
-    const newActiveTab = projectFormTabs[currentTabIndex + 1];
-    const message = "Successfully saved a draft project description.";
-    const values = { ...formValues, status_code: "DFT" };
-
-    try {
-      if (!isEditMode) {
-        await handleCreateProjectSummary(values, message);
-      }
-      if (projectGuid && projectSummaryGuid) {
-        await handleUpdateProjectSummary(values, message);
-        handleTabChange(newActiveTab);
-      }
-    } catch (err) {
-      console.log(err);
-      setIsLoaded(true);
-    }
-  };
-
   const mineName = isEditMode ? formattedProjectSummary?.mine_name || "" : mine?.mine_name || "";
   const title = isEditMode
     ? `Edit project description - ${projectSummary?.project_summary_title}`
@@ -200,9 +180,9 @@ export const ProjectSummaryPage = () => {
 
   const initialValues = isEditMode
     ? {
-      ...formattedProjectSummary,
-      mrc_review_required: project.mrc_review_required,
-    }
+        ...formattedProjectSummary,
+        mrc_review_required: project.mrc_review_required,
+      }
     : {};
 
   return (
@@ -245,7 +225,6 @@ export const ProjectSummaryPage = () => {
         <ProjectSummaryForm
           initialValues={initialValues}
           handleSaveData={handleSaveData}
-          handleSaveDraft={handleSaveDraft}
           handleTabChange={handleTabChange}
           activeTab={activeTab}
         />
