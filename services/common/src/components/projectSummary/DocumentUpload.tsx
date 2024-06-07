@@ -28,7 +28,6 @@ export const DocumentUpload: FC = () => {
     project_guid,
     project_summary_guid,
     documents,
-    ...rest
   } = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
 
   const spatialAcceptedFileTypesMap = {
