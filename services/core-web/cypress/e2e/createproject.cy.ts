@@ -40,7 +40,7 @@ describe("Major Projects", () => {
 
     // SAVE & CONTINUE - skip to Purpose & Authorization
     cy.contains("Save & Continue").click({ force: true });
-    cy.contains("Purpose & Authorization", { timeout: 10000 }).click({ force: true });
+    cy.contains("Purpose and Authorization", { timeout: 10000 }).click({ force: true });
 
     cy.get('[data-cy="checkbox-authorization-OTHER"]').click({ force: true });
     cy.get(
