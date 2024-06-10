@@ -56,14 +56,18 @@ describe("Major Projects", () => {
     cy.get(`[name="contacts[0].email"]`).type("cypress@mds.com", { force: true });
     cy.get(`[name="contacts[0].phone_number"]`).type("1234567890", { force: true });
     cy.get(`[name="contacts[0].address.address_line_1"]`).type("123 Fake St", { force: true });
-    cy.get(`#ADD_EDIT_PROJECT_SUMMARY_contacts[0].address.address_type_code`).click({
-      force: true,
-    });
+    cy.contains("Please Select")
+      .first()
+      .click({
+        force: true,
+      });
     cy.get('[title="Canada"]').click({ force: true });
     cy.get(`[name="contacts[0].address.city"]`).type("Cityville", { force: true });
-    cy.get(`#ADD_EDIT_PROJECT_SUMMARY_contacts[0].address.sub_division_code`).click({
-      force: true,
-    });
+    cy.contains("Please Select")
+      .first()
+      .click({
+        force: true,
+      });
     cy.get('[title="AB"]').click({ force: true });
     cy.get(`[name="contacts[0].address.post_code"]`).type("A0A0A0", { force: true });
 
