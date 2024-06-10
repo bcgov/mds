@@ -77,7 +77,7 @@ describe("Major Projects", () => {
 
     cy.contains("Individual").click({ force: true });
     cy.get(`[name="applicant.first_name"]`).type("Cypress", { force: true });
-    cy.get(`[name="applicant.last_name"]`).type("Test", { force: true });
+    cy.get(`[name="applicant.party_name"]`).type("Test", { force: true });
     cy.get(`[name="applicant.address[0].address_line_1"]`).type("123 Fake St", { force: true });
     cy.contains("Please select")
       .first()
