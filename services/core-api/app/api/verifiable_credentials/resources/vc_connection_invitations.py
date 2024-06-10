@@ -12,7 +12,7 @@ from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.feature_flag import Feature, is_feature_enabled
 
 
-class VerifiableCredentialConnectionResource(Resource, UserMixin):
+class VerifiableCredentialConnectionInvitationsResource(Resource, UserMixin):
 
     @api.doc(description='Create a connection invitation for a party by guid', params={})
     @requires_any_of([EDIT_PARTY, MINESPACE_PROPONENT])
