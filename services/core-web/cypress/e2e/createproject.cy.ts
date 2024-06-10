@@ -30,8 +30,6 @@ describe("Major Projects", () => {
     // Create a new project
     cy.get('[data-cy="create-new-project"]', { timeout: 15000 }).click({ force: true });
 
-    // turn to edit mode
-    cy.contains("Edit Project Description").click({ force: true });
     // Fill in project details
     cy.get("#project_summary_title", { timeout: 15000 }).type(uniqueProjectName, { force: true });
     cy.get("#project_summary_description").type("This is just a Cypress test project description", {
