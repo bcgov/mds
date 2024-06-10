@@ -61,6 +61,7 @@ export const RenderSelect: FC<SelectProps> = ({
           >
             <Select
               virtual={false}
+              data-cy={input.name}
               disabled={disabled}
               allowClear={allowClear}
               dropdownMatchSelectWidth

@@ -71,6 +71,81 @@ describe("Major Projects", () => {
     cy.get('[title="AB"]').click({ force: true });
     cy.get(`[name="contacts[0].address.post_code"]`).type("A0A0A0", { force: true });
 
+    // SAVE & CONTINUE - Applicant Information
+    cy.contains("Save & Continue").click({ force: true });
+    cy.contains("Applicant Information", { timeout: 10000 });
+
+    cy.contains("Individual").click({ force: true });
+    cy.get(`[name="applicant.first_name"]`).type("Cypress", { force: true });
+    cy.get(`[name="applicant.last_name"]`).type("Test", { force: true });
+    cy.get(`[name="applicant.address[0].address_line_1"]`).type("123 Fake St", { force: true });
+    cy.contains("Please select")
+      .first()
+      .click({
+        force: true,
+      });
+    cy.get('[title="Canada"]').click({ force: true });
+    cy.contains("Please select")
+      .first()
+      .click({
+        force: true,
+      });
+    cy.get('[title="AB"]').click({ force: true });
+    cy.get(`[name="applicant.address[0].post_code"]`).type("A0A0A0", { force: true });
+    cy.get(`[name="applicant.address[0].city"]`).type("Cityville", { force: true });
+    cy.contains("Same as mailing address")
+      .first()
+      .click({ force: true });
+    cy.contains("Same as legal address")
+      .first()
+      .click({ force: true });
+
+    // SAVE & CONTINUE - Agent
+    cy.contains("Save & Continue").click({ force: true });
+    cy.contains("Are you an agent applying on behalf of the applicant?", { timeout: 10000 });
+
+    cy.contains("No").click({ force: true });
+
+    // SAVE & CONTINUE - Location, Access and Land Use
+    cy.contains("Save & Continue").click({ force: true });
+    cy.get(`[name="is_legal_land_owner"]`, { timeout: 10000 })
+      .first()
+      .click(); // click yes
+    cy.get(`[name="facility_latitude"]`).type("48", { force: true });
+    cy.get(`[name="facility_longitude"]`).type("-114", { force: true });
+
+    cy.get(`[data-cy="facility_coords_source"]`).click({ force: true });
+    cy.get('[title="GPS"]').click({ force: true });
+    cy.get(`[data-cy="nearest_municipality"]`).click({ force: true });
+    cy.get('[title="Abbotsford"]').click({ force: true });
+
+    cy.get(`[name="facility_pid_pin_crown_file_no"]`).type("123", { force: true });
+    cy.get(`[name="facility_lease_no"]`).type("456", { force: true });
+
+    // SAVE & CONTINUE - Mine Components and Offsite Infrastructure
+    cy.contains("Save & Continue").click({ force: true });
+    cy.contains("Facility Type", { timeout: 10000 });
+    cy.get(`[name="facility_type"]`).type("facility type", { force: true });
+    cy.get(`[name="facility_desc"]`).type("facility description", { force: true });
+
+    cy.get(`[data-cy="regional_district_id"]`).click({ force: true });
+    cy.get('[title="Cariboo"]').click({ force: true });
+
+    cy.get(`[name="facility_operator.address.address_line_1"]`).type("123 Fake St", {
+      force: true,
+    });
+    cy.get(`[name="facility_operator.address.city"]`).type("Cityville", { force: true });
+
+    cy.get(`[data-cy="facility_operator.address.sub_division_code"]`).click({ force: true });
+    cy.get('[title="AB"]').click({ force: true });
+    cy.get(`[name="zoning"]`, { timeout: 10000 })
+      .first()
+      .click(); // click yes
+
+    cy.get(`[name="facility_operator.first_name"]`).type("Firstname", { force: true });
+    cy.get(`[name="facility_operator.party_name"]`).type("Lastname", { force: true });
+    cy.get(`[name="facility_operator.phone_no"]`).type("1231231234", { force: true });
+
     // SAVE & CONTINUE - skip to Declaration
     cy.contains("Save & Continue").click({ force: true });
     cy.contains("Applicant Information", { timeout: 10000 });
