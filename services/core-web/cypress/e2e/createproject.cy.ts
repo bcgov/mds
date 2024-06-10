@@ -56,14 +56,14 @@ describe("Major Projects", () => {
     cy.get(`[name="contacts[0].email"]`).type("cypress@mds.com", { force: true });
     cy.get(`[name="contacts[0].phone_number"]`).type("1234567890", { force: true });
     cy.get(`[name="contacts[0].address.address_line_1"]`).type("123 Fake St", { force: true });
-    cy.contains("Please Select")
+    cy.contains("Please select")
       .first()
       .click({
         force: true,
       });
     cy.get('[title="Canada"]').click({ force: true });
     cy.get(`[name="contacts[0].address.city"]`).type("Cityville", { force: true });
-    cy.contains("Please Select")
+    cy.contains("Please select")
       .first()
       .click({
         force: true,
