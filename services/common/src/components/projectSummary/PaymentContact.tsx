@@ -1,13 +1,15 @@
 import { Col, Row, Typography } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { Field, getFormValues, change } from "redux-form";
-import { CONTACTS_COUNTRY_OPTIONS, FORM } from "@mds/common";
+
 import RenderField from "@mds/common/components/forms/RenderField";
 import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
-import { normalizePhone } from "@common/utils/helpers";
+
 import { email, maxLength, phoneNumber, required } from "@mds/common/redux/utils/Validate";
 import React, { FC, useEffect } from "react";
+import { normalizePhone } from "@mds/common/redux/utils/helpers";
+import { FORM, CONTACTS_COUNTRY_OPTIONS } from "../..";
 
 const { Title, Paragraph } = Typography;
 
