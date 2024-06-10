@@ -35,11 +35,12 @@ export const ProjectSummary: FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { pathname } = useLocation();
-  const { mineGuid, projectSummaryGuid, projectGuid, tab } = useParams<{
+  const { mineGuid, projectSummaryGuid, projectGuid, tab, mode } = useParams<{
     mineGuid: string;
     projectSummaryGuid: string;
     projectGuid: string;
     tab: string;
+    mode: string;
   }>();
 
   const mine = useSelector((state) => getMineById(state, mineGuid));
@@ -53,17 +54,18 @@ export const ProjectSummary: FC = () => {
   const amsFeatureEnabled = isFeatureEnabled(Feature.AMS_AGENT);
   const projectFormTabs = getProjectFormTabs(amsFeatureEnabled, true);
 
-  const isDefaultEditMode = Boolean(projectGuid && projectSummaryGuid);
-  const isDefaultLoaded = isDefaultEditMode
+  const isExistingProject = Boolean(projectGuid && projectSummaryGuid);
+  const isDefaultLoaded = isExistingProject
     ? formattedProjectSummary?.project_summary_guid === projectSummaryGuid &&
       formattedProjectSummary?.project_guid === projectGuid
     : mine?.mine_guid === mineGuid;
+  const isDefaultEditMode = !isExistingProject || mode === "edit";
 
   const [isLoaded, setIsLoaded] = useState(isDefaultLoaded);
   // isNewProject on CORE and isEditMode on MS are inverses of each other
-  const [isNewProject, setIsNewProject] = useState(!isDefaultEditMode);
+  const [isNewProject, setIsNewProject] = useState(isDefaultEditMode);
   // this isEditMode doesn't mean new/edit, it's edit/view
-  const [isEditMode, setIsEditMode] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(isDefaultEditMode);
   const activeTab = tab ?? projectFormTabs[0];
   const mineName = mine?.mine_name ?? formattedProjectSummary?.mine_name ?? "";
 
@@ -117,7 +119,8 @@ export const ProjectSummary: FC = () => {
         routes.EDIT_PROJECT_SUMMARY.dynamicRoute(
           project_guid,
           project_summary_guid,
-          projectFormTabs[1]
+          projectFormTabs[1],
+          false
         )
       );
     });
@@ -152,7 +155,12 @@ export const ProjectSummary: FC = () => {
 
   const handleTabChange = (newTab: string) => {
     const url = !isNewProject
-      ? routes.EDIT_PROJECT_SUMMARY.dynamicRoute(projectGuid, projectSummaryGuid, newTab)
+      ? routes.EDIT_PROJECT_SUMMARY.dynamicRoute(
+          projectGuid,
+          projectSummaryGuid,
+          newTab,
+          !isEditMode
+        )
       : routes.ADD_PROJECT_SUMMARY.dynamicRoute(mineGuid, newTab);
     history.push(url);
   };

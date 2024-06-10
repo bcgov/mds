@@ -223,7 +223,8 @@ export const ApplicationSummary: FC = () => {
     const url = GLOBAL_ROUTES?.EDIT_PROJECT_SUMMARY.dynamicRoute(
       projectGuid,
       projectSummaryGuid,
-      "purpose-and-authorization"
+      "purpose-and-authorization",
+      false
     );
     history.push(url);
   };

@@ -202,9 +202,16 @@ export const ADD_PROJECT_SUMMARY = {
 };
 
 export const EDIT_PROJECT_SUMMARY = {
-  route: "/pre-applications/:projectGuid/project-description/:projectSummaryGuid/:tab",
-  dynamicRoute: (projectGuid, projectSummaryGuid, activeTab = "basic-information") =>
-    `/pre-applications/${projectGuid}/project-description/${projectSummaryGuid}/${activeTab}`,
+  route: "/pre-applications/:projectGuid/project-description/:projectSummaryGuid/:mode/:tab",
+  dynamicRoute: (
+    projectGuid,
+    projectSummaryGuid,
+    activeTab = "basic-information",
+    viewMode = true
+  ) =>
+    `/pre-applications/${projectGuid}/project-description/${projectSummaryGuid}/${
+      viewMode ? "view" : "edit"
+    }/${activeTab}`,
   component: ProjectSummary,
 };
 
