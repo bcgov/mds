@@ -13,7 +13,7 @@ export const DEFAULT_ENVIRONMENT = {
   keycloak_url: "https://test.loginproxy.gov.bc.ca/auth",
   flagsmithKey: "4Eu9eEMDmWVEHKDaKoeWY7",
   flagsmithUrl: "https://mds-flags-dev.apps.silver.devops.gov.bc.ca/api/v1/",
-  syncfusionLicense: "-",
+  syncfusionLicense: process.env.SYNCFUSION_LICENSE_KEY,
 };
 
 export const ENVIRONMENT = {
@@ -124,17 +124,17 @@ export function setupKeycloak(
     throw new Error("idirHint Is Mandatory");
   }
 
-  if (!bceidHint) {
-    throw new Error("bceidHint Is Mandatory");
-  }
+  // if (!bceidHint) {
+  //   throw new Error("bceidHint Is Mandatory");
+  // }
 
-  if (!vcauthnHint) {
-    throw new Error("vcauthnHint Is Mandatory");
-  }
+  // if (!vcauthnHint) {
+  //   throw new Error("vcauthnHint Is Mandatory");
+  // }
 
-  if (!siteMinderURL) {
-    throw new Error("siteMinderURL Is Mandatory");
-  }
+  // if (!siteMinderURL) {
+  //   throw new Error("siteMinderURL Is Mandatory");
+  // }
 
   KEYCLOAK.clientId = clientId;
   KEYCLOAK.resource = resource;

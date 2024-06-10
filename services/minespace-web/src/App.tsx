@@ -84,10 +84,10 @@ const App: FC<AppProps> = (props) => {
                 {isMobile && <WarningBanner type="mobile" onClose={handleMobileWarningClose} />}
               </MediaQuery>
               <Row justify="center" align="top" className="content-wrapper">
-                <DocumentViewer />
                 <Routes />
               </Row>
               <ModalWrapper />
+              <DocumentViewer />
               <BackTop />
             </Layout.Content>
           </Layout>

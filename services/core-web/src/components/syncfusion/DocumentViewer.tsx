@@ -1,7 +1,6 @@
-import React, { Component } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import { ENVIRONMENT } from "@mds/common";
 import {
   PdfViewerComponent,
@@ -21,7 +20,10 @@ import {
 } from "@syncfusion/ej2-react-pdfviewer";
 import { createRequestHeader } from "@common/utils/RequestHeaders";
 import { Modal } from "antd";
-import { closeDocumentViewer, openDocumentViewer } from "@mds/common/redux/actions/documentViewerActions";
+import {
+  closeDocumentViewer,
+  openDocumentViewer,
+} from "@mds/common/redux/actions/documentViewerActions";
 import {
   getDocumentPath,
   getDocumentName,
@@ -31,12 +33,12 @@ import {
 
 import { getDocument, downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 
-const propTypes = {
-  closeDocumentViewer: PropTypes.func.isRequired,
-  isDocumentViewerOpen: PropTypes.bool.isRequired,
-  documentPath: PropTypes.string.isRequired,
-  props: PropTypes.objectOf(PropTypes.any).isRequired,
-};
+interface DocumentViewerProps {
+  closeDocumentViewer: () => void;
+  isDocumentViewerOpen: boolean;
+  documentPath: string;
+  props: any;
+}
 
 const getAjaxRequestSettingsHeaders = (obj) => {
   const ajaxRequestSettingsHeaders = [];
@@ -46,20 +48,11 @@ const getAjaxRequestSettingsHeaders = (obj) => {
   return ajaxRequestSettingsHeaders;
 };
 
-/**
- * All file types that can currently be opened by the Document Viewer.
- */
 export const OPENABLE_DOCUMENT_TYPES = ["PDF"];
 
-/**
- * Whether or not the document can be opened by the Document Viewer (determined by the file extension in the document name).
- */
 export const isDocumentOpenable = (documentName) =>
   OPENABLE_DOCUMENT_TYPES.some((type) => documentName.toUpperCase().includes(`.${type}`));
 
-/**
- * If possible, open the document in the Document Viewer, otherwise, download the document.
- */
 export const openDocument = (documentManagerGuid, documentName) => async (dispatch) => {
   const document = {
     document_manager_guid: documentManagerGuid,
@@ -85,58 +78,49 @@ export const openDocument = (documentManagerGuid, documentName) => async (dispat
   );
 };
 
-/**
- * The Document Viewer allows documents to be opened and viewed within the application.
- */
-export class DocumentViewer extends Component {
-  constructor() {
-    super(...arguments);
-    this.containerRef = React.createRef();
-    this.pdfViewerServiceUrl = ENVIRONMENT.filesystemProviderUrl.replace(
-      "AmazonS3Provider/",
-      "PdfViewer"
-    );
-  }
+const DocumentViewer: React.FC<DocumentViewerProps> = ({
+  closeDocumentViewer,
+  isDocumentViewerOpen,
+  documentPath,
+  props,
+}) => {
+  const containerRef = useRef(null);
+  const [modal, contextHolder] = Modal.useModal();
+  const [modalInstance, setModalInstance] = useState(null);
 
-  handleOk = () => this.props.closeDocumentViewer();
+  const pdfViewerServiceUrl = ENVIRONMENT.filesystemProviderUrl.replace(
+    "AmazonS3Provider/",
+    "PdfViewer"
+  );
 
-  handleCancel = () => this.props.closeDocumentViewer();
+  const handleOk = () => closeDocumentViewer();
+  const handleCancel = () => closeDocumentViewer();
 
-  render() {
-    const ajaxRequestSettings = {
-      ajaxHeaders: getAjaxRequestSettingsHeaders(createRequestHeader().headers),
-      withCredentials: false,
-    };
+  const ajaxRequestSettings = {
+    ajaxHeaders: getAjaxRequestSettingsHeaders(createRequestHeader().headers),
+    withCredentials: false,
+  };
 
-    return (
-      <>
-        {/*
-          Create a container for the pdf viewer modal to be put in.
-          Without it, syncfusion will crash :dragons:
-         */}
-        <div ref={this.containerRef}></div>
-
-        <Modal
-          title={this.props.props.title}
-          open={this.props.isDocumentViewerOpen}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-          getContainer={() => this.containerRef?.current}
-          footer={null}
-          width="98%"
-          destroyOnClose={true}
-        >
-          {/* // NOTE: See here for documentation:
-        https://ej2.syncfusion.com/react/documentation/pdfviewer/getting-started/ */}
+  useEffect(() => {
+    if (isDocumentViewerOpen) {
+      const modalInst = modal.info({
+        title: props.title,
+        closable: true,
+        open: isDocumentViewerOpen,
+        onOk: handleOk,
+        onCancel: handleCancel,
+        getContainer: () => containerRef.current,
+        width: "98%",
+        icon: null,
+        content: (
           <PdfViewerComponent
             id="pdfviewer-container"
-            serviceUrl={this.pdfViewerServiceUrl}
-            documentPath={this.props.documentPath}
+            serviceUrl={pdfViewerServiceUrl}
+            documentPath={documentPath}
             ajaxRequestSettings={ajaxRequestSettings}
             style={{ display: "block", height: "80vh" }}
             enableAnnotation={false}
           >
-            {/* NOTE: Some toolbar items are hidden using CSS. */}
             <Inject
               services={[
                 Toolbar,
@@ -154,13 +138,26 @@ export class DocumentViewer extends Component {
               ]}
             />
           </PdfViewerComponent>
-        </Modal>
-      </>
-    );
-  }
-}
+        ),
+      });
 
-DocumentViewer.propTypes = propTypes;
+      setModalInstance(modalInst);
+    } else {
+      if (modalInstance) {
+        modalInstance.destroy();
+        setModalInstance(null);
+      }
+    }
+  }, [isDocumentViewerOpen]);
+
+  return (
+    <>
+      <div ref={containerRef}></div>
+
+      <div>{contextHolder}</div>
+    </>
+  );
+};
 
 const mapStateToProps = (state) => ({
   documentPath: getDocumentPath(state),
