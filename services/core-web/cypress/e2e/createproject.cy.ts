@@ -81,13 +81,17 @@ describe("Major Projects", () => {
     cy.get(`[name="applicant.phone_no"]`).type("1231231234", { force: true });
     cy.get(`[name="applicant.email"]`).type("email@email.com", { force: true });
     cy.get(`[name="applicant.address[0].address_line_1"]`).type("123 Fake St", { force: true });
-    cy.get(`[data-cy="applicant.address[0].address_type_code"] .ant-select-arrow`).click({
-      force: true,
-    });
+    cy.get(`[data-cy="applicant.address[0].address_type_code"]`)
+      .contains("Please select")
+      .click({
+        force: true,
+      });
     cy.get('[title="Canada"]').click({ force: true });
-    cy.get(`[data-cy="applicant.address[0].sub_division_code"] .ant-select-arrow`).click({
-      force: true,
-    });
+    cy.get(`[data-cy="applicant.address[0].sub_division_code"]`)
+      .contains("Please select")
+      .click({
+        force: true,
+      });
     cy.get('[title="AB"]').click({ force: true });
     cy.get(`[name="applicant.address[0].post_code"]`).type("A0A0A0", { force: true });
     cy.get(`[name="applicant.address[0].city"]`).type("Cityville", { force: true });
@@ -112,9 +116,13 @@ describe("Major Projects", () => {
     cy.get(`[name="facility_latitude"]`).type("48", { force: true });
     cy.get(`[name="facility_longitude"]`).type("-114", { force: true });
 
-    cy.get(`[data-cy="facility_coords_source"] .ant-select-arrow`).click({ force: true });
+    cy.get(`[data-cy="facility_coords_source"]`)
+      .contains("Please select")
+      .click({ force: true });
     cy.get('[title="GPS"]').click({ force: true });
-    cy.get(`[data-cy="nearest_municipality"] .ant-select-arrow`).click({ force: true });
+    cy.get(`[data-cy="nearest_municipality"]`)
+      .contains("Please select")
+      .click({ force: true });
     cy.get('[title="Abbotsford"]').click({ force: true });
 
     cy.get(`[name="facility_pid_pin_crown_file_no"]`).type("123", { force: true });
