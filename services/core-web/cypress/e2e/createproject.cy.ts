@@ -51,10 +51,10 @@ describe("Major Projects", () => {
     cy.contains("Save & Continue").click({ force: true });
     cy.contains("First Name", { timeout: 10000 });
 
-    cy.get(`name=contacts[0].first_name`);
-    cy.get(`name=contacts[0].last_name`).type("Test", { force: true });
-    cy.get(`name=contacts[0].email`).type("cypress@mds.com", { force: true });
-    cy.get(`name=contacts[0].phone_number`).type("1234567890", { force: true });
+    cy.get(`[name="contacts[0].first_name"]`);
+    cy.get(`[name="contacts[0].last_name"]`).type("Test", { force: true });
+    cy.get(`[name="contacts[0].email"]`).type("cypress@mds.com", { force: true });
+    cy.get(`[name="contacts[0].phone_number"]`).type("1234567890", { force: true });
 
     // SAVE & CONTINUE - skip to Declaration
     cy.contains("Save & Continue").click({ force: true });
