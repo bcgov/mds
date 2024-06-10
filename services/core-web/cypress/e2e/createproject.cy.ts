@@ -51,17 +51,30 @@ describe("Major Projects", () => {
     cy.contains("Save & Continue").click({ force: true });
     cy.contains("First Name", { timeout: 10000 });
 
-    cy.get(`[name="contacts[0].first_name"]`);
+    cy.get(`[name="contacts[0].first_name"]`).type("Cypress", { force: true });
     cy.get(`[name="contacts[0].last_name"]`).type("Test", { force: true });
     cy.get(`[name="contacts[0].email"]`).type("cypress@mds.com", { force: true });
     cy.get(`[name="contacts[0].phone_number"]`).type("1234567890", { force: true });
+    cy.get(`[name="contacts[0].address.address_line_1"]`).type("123 Fake St", { force: true });
+    cy.get(`#ADD_EDIT_PROJECT_SUMMARY_contacts[0].address.address_type_code`).click({
+      force: true,
+    });
+    cy.get('[title="Canada"]').click({ force: true });
+    cy.get(`[name="contacts[0].address.city"]`).type("Cityville", { force: true });
+    cy.get(`#ADD_EDIT_PROJECT_SUMMARY_contacts[0].address.sub_division_code`).click({
+      force: true,
+    });
+    cy.get('[title="AB"]').click({ force: true });
+    cy.get(`[name="contacts[0].address.post_code"]`).type("A0A0A0", { force: true });
 
     // SAVE & CONTINUE - skip to Declaration
     cy.contains("Save & Continue").click({ force: true });
     cy.contains("Applicant Information", { timeout: 10000 });
     cy.contains("Declaration", { timeout: 10000 }).click({ force: true });
 
-    cy.get("input", { timeout: 10000 }).click({ force: true });
+    cy.get("input#ADD_EDIT_PROJECT_SUMMARY_confirmation_of_submission", { timeout: 10000 }).click({
+      force: true,
+    });
 
     // Submit the project
     cy.contains("Submit").click({ force: true });
