@@ -81,11 +81,11 @@ describe("Major Projects", () => {
     cy.get(`[name="applicant.phone_no"]`).type("1231231234", { force: true });
     cy.get(`[name="applicant.email"]`).type("email@email.com", { force: true });
     cy.get(`[name="applicant.address[0].address_line_1"]`).type("123 Fake St", { force: true });
-    cy.get(`[data-cy="applicant.address[0].address_type_code"]`).click({
+    cy.get(`[data-cy="applicant.address[0].address_type_code"] .ant-select-arrow`).click({
       force: true,
     });
     cy.get('[title="Canada"]').click({ force: true });
-    cy.get(`[data-cy="applicant.address[0].sub_division_code"]`).click({
+    cy.get(`[data-cy="applicant.address[0].sub_division_code"] .ant-select-arrow`).click({
       force: true,
     });
     cy.get('[title="AB"]').click({ force: true });
@@ -112,9 +112,9 @@ describe("Major Projects", () => {
     cy.get(`[name="facility_latitude"]`).type("48", { force: true });
     cy.get(`[name="facility_longitude"]`).type("-114", { force: true });
 
-    cy.get(`[data-cy="facility_coords_source"]`).click({ force: true });
+    cy.get(`[data-cy="facility_coords_source"] .ant-select-arrow`).click({ force: true });
     cy.get('[title="GPS"]').click({ force: true });
-    cy.get(`[data-cy="nearest_municipality"]`).click({ force: true });
+    cy.get(`[data-cy="nearest_municipality"] .ant-select-arrow`).click({ force: true });
     cy.get('[title="Abbotsford"]').click({ force: true });
 
     cy.get(`[name="facility_pid_pin_crown_file_no"]`).type("123", { force: true });
@@ -126,7 +126,7 @@ describe("Major Projects", () => {
     cy.get(`[name="facility_type"]`).type("facility type", { force: true });
     cy.get(`[name="facility_desc"]`).type("facility description", { force: true });
 
-    cy.get(`[data-cy="regional_district_id"]`).click({ force: true });
+    cy.get(`[data-cy="regional_district_id"] .ant-select-arrow`).click({ force: true });
     cy.get('[title="Cariboo"]').click({ force: true });
 
     cy.get(`[name="facility_operator.address.address_line_1"]`).type("123 Fake St", {
@@ -134,7 +134,9 @@ describe("Major Projects", () => {
     });
     cy.get(`[name="facility_operator.address.city"]`).type("Cityville", { force: true });
 
-    cy.get(`[data-cy="facility_operator.address.sub_division_code"]`).click({ force: true });
+    cy.get(`[data-cy="facility_operator.address.sub_division_code"] .ant-select-arrow`).click({
+      force: true,
+    });
     cy.get('[title="AB"]').click({ force: true });
     cy.get(`[name="zoning"]`, { timeout: 10000 })
       .first()
