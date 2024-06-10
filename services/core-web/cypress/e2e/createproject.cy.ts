@@ -110,9 +110,9 @@ describe("Major Projects", () => {
 
     // SAVE & CONTINUE - Location, Access and Land Use
     cy.contains("Save & Continue").click({ force: true });
-    cy.scrollTo("top");
     cy.get(`[name="is_legal_land_owner"]`, { timeout: 10000 })
       .first()
+      .scrollIntoView()
       .click(); // click yes
     cy.get(`[name="facility_latitude"]`).type("48", { force: true });
     cy.get(`[name="facility_longitude"]`).type("-114", { force: true });
