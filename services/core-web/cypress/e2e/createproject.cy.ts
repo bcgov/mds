@@ -78,18 +78,16 @@ describe("Major Projects", () => {
     cy.contains("Individual").click({ force: true });
     cy.get(`[name="applicant.first_name"]`).type("Cypress", { force: true });
     cy.get(`[name="applicant.party_name"]`).type("Test", { force: true });
+    cy.get(`[name="applicant.phone_no"]`).type("1231231234", { force: true });
+    cy.get(`[name="applicant.email"]`).type("email@email.com", { force: true });
     cy.get(`[name="applicant.address[0].address_line_1"]`).type("123 Fake St", { force: true });
-    cy.contains("Please select")
-      .first()
-      .click({
-        force: true,
-      });
+    cy.get(`[data-cy="applicant.address[0].address_type_code"]`).click({
+      force: true,
+    });
     cy.get('[title="Canada"]').click({ force: true });
-    cy.contains("Please select")
-      .first()
-      .click({
-        force: true,
-      });
+    cy.get(`[data-cy="applicant.address[0].sub_division_code"]`).click({
+      force: true,
+    });
     cy.get('[title="AB"]').click({ force: true });
     cy.get(`[name="applicant.address[0].post_code"]`).type("A0A0A0", { force: true });
     cy.get(`[name="applicant.address[0].city"]`).type("Cityville", { force: true });
