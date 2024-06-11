@@ -12,7 +12,7 @@ import { isAuthenticated } from "@mds/common/redux/selectors/authenticationSelec
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import ModalWrapper from "@/components/common/wrappers/ModalWrapper";
-import DocumentViewer from "@/components/syncfusion/DocumentViewer";
+import DocumentViewer from "@mds/common/components/syncfusion/DocumentViewer";
 import AuthenticationGuard from "@/HOC/AuthenticationGuard";
 import WarningBanner from "@/components/common/WarningBanner";
 
@@ -73,28 +73,30 @@ const App: FC<AppProps> = (props) => {
   const xl = 20;
   const xxl = 18;
   return (
-    <BrowserRouter basename={process.env.BASE_PATH}>
-      <>
-        <Layout>
-          <Header xs={xs} lg={lg} xl={xl} xxl={xxl} isAuthenticated={isAuthenticated} />
+    <>
+      <BrowserRouter basename={process.env.BASE_PATH}>
+        <>
           <Layout>
-            <Layout.Content>
-              {isIE && <WarningBanner type="IE" onClose={handleBannerClose} />}
-              <MediaQuery maxWidth={500}>
-                {isMobile && <WarningBanner type="mobile" onClose={handleMobileWarningClose} />}
-              </MediaQuery>
-              <Row justify="center" align="top" className="content-wrapper">
-                <Routes />
-              </Row>
-              <ModalWrapper />
-              <DocumentViewer />
-              <BackTop />
-            </Layout.Content>
+            <Header xs={xs} lg={lg} xl={xl} xxl={xxl} isAuthenticated={isAuthenticated} />
+            <Layout>
+              <Layout.Content>
+                {isIE && <WarningBanner type="IE" onClose={handleBannerClose} />}
+                <MediaQuery maxWidth={500}>
+                  {isMobile && <WarningBanner type="mobile" onClose={handleMobileWarningClose} />}
+                </MediaQuery>
+                <Row justify="center" align="top" className="content-wrapper">
+                  <Routes />
+                </Row>
+                <BackTop />
+              </Layout.Content>
+            </Layout>
+            <Footer xs={xs} lg={lg} xl={xl} xxl={xxl} />
           </Layout>
-          <Footer xs={xs} lg={lg} xl={xl} xxl={xxl} />
-        </Layout>
-      </>
-    </BrowserRouter>
+          <ModalWrapper />
+        </>
+      </BrowserRouter>
+      <DocumentViewer />
+    </>
   );
 };
 
@@ -114,7 +116,7 @@ const mapDispatchToProps = (dispatch) =>
 
 export default compose(
   hot(module),
-  connect(mapStateToProps, mapDispatchToProps),
-  AuthenticationGuard(true)
+  connect(mapStateToProps, mapDispatchToProps)
+  // AuthenticationGuard(true)
   // @ts-ignore
 )(App);

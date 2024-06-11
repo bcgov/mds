@@ -7,7 +7,7 @@ import { DownOutlined, DownloadOutlined, FileOutlined, DeleteOutlined } from "@a
 import LinkButton from "@/components/common/buttons/LinkButton";
 import { truncateFilename } from "@common/utils/helpers";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
-import { openDocument, isDocumentOpenable } from "@/components/syncfusion/DocumentViewer";
+import { openDocument, isDocumentOpenable } from "@mds/common/components/syncfusion/DocumentViewer";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { USER_ROLES } from "@mds/common";
 

@@ -3,15 +3,15 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Dropdown, Menu } from "antd";
-import DownOutlined from "@ant-design/icons/DownOutlined"
-import DownloadOutlined from "@ant-design/icons/DownloadOutlined"
-import FileOutlined from "@ant-design/icons/FileOutlined"
-import DeleteOutlined from "@ant-design/icons/DeleteOutlined"
+import DownOutlined from "@ant-design/icons/DownOutlined";
+import DownloadOutlined from "@ant-design/icons/DownloadOutlined";
+import FileOutlined from "@ant-design/icons/FileOutlined";
+import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
 import { truncateFilename } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import { USER_ROLES } from "@mds/common";
-import { openDocument, isDocumentOpenable } from "@/components/syncfusion/DocumentViewer";
+import { openDocument, isDocumentOpenable } from "@mds/common/components/syncfusion/DocumentViewer";
 
 const propTypes = {
   documentManagerGuid: PropTypes.string.isRequired,
@@ -30,7 +30,7 @@ const defaultProps = {
   onClickAlternative: null,
   linkTitleOverride: null,
   truncateDocumentName: true,
-  handleDelete: () => { },
+  handleDelete: () => {},
   deletePayload: {},
   deletePermission: false,
 };

@@ -29,27 +29,18 @@ $grey-dark-font: #ffffff;
 $base-font: #000000;
 $error-font: $error-color; //#f44336;
 
-@import "~@syncfusion/ej2-base/styles/material.scss";
-@import "~@syncfusion/ej2-buttons/styles/material.scss";
-@import "~@syncfusion/ej2-dropdowns/styles/material.scss";
-@import "~@syncfusion/ej2-icons/styles/material.scss";
-@import "~@syncfusion/ej2-inputs/styles/material.scss";
-@import "~@syncfusion/ej2-navigations/styles/material.scss";
-@import "~@syncfusion/ej2-popups/styles/material.scss";
-@import "~@syncfusion/ej2-splitbuttons/styles/material.scss";
-@import "~@syncfusion/ej2-lists/styles/material.scss";
-@import "~@syncfusion/ej2-layouts/styles/material.scss";
-@import "~@syncfusion/ej2-grids/styles/material.scss";
-@import "~@syncfusion/ej2-react-pdfviewer/styles/material.scss";
-@import "~@syncfusion/ej2-react-filemanager/styles/material.scss";
-// NOTE: We may need these dependencies in the future if we implement the document/spreadsheet viewer
-// @import "../../../node_modules/@syncfusion/ej2-react-documenteditor/styles/material.scss";
-// @import "../../../node_modules/@syncfusion/ej2-react-spreadsheet/styles/material.scss";
-@import "~@syncfusion/ej2-notifications/styles/material.scss";
+// Syncfusion requires an undocumented $theme variable to be set in order to import the correct theme.
+// This is a workaround to allow us to use the Material theme while still being able to use a different
+// $theme variable elsewhere in the application.
+@use 'syncfusion_imports' with ($theme: 'Material');
+
+.testpink {
+  color: $theme;
+}
 
 .e-empty-inner-content {
   display: none;
-} 
+}
 
 #pdfviewer-container_fileUploadElement,
 #pdfviewer-container_annotationContainer {
@@ -63,7 +54,7 @@ $error-font: $error-color; //#f44336;
 #pdfviewer-container_openContainer {
   visibility: hidden;
 
-  & + .e-toolbar-item.e-separator {
+  &+.e-toolbar-item.e-separator {
     display: none;
   }
 }
@@ -75,11 +66,11 @@ $error-font: $error-color; //#f44336;
 #pdfviewer-container_submitForm {
   display: none;
 
-  & + .e-toolbar-item.e-separator {
+  &+.e-toolbar-item.e-separator {
     display: none;
   }
 }
 
-#pdfviewer-container_handToolContainer + .e-toolbar-item.e-separator {
+#pdfviewer-container_handToolContainer+.e-toolbar-item.e-separator {
   display: none;
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { ENVIRONMENT } from "@mds/common";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
 import {
   PdfViewerComponent,
   Toolbar,
@@ -18,7 +18,7 @@ import {
   FormDesigner,
   Inject,
 } from "@syncfusion/ej2-react-pdfviewer";
-import { createRequestHeader } from "@common/utils/RequestHeaders";
+import { createRequestHeader } from "@mds/common/redux/utils/RequestHeaders";
 import { Modal } from "antd";
 import {
   closeDocumentViewer,
@@ -31,7 +31,10 @@ import {
   getProps,
 } from "@mds/common/redux/selectors/documentViewerSelectors";
 
-import { getDocument, downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import {
+  getDocument,
+  downloadFileFromDocumentManager,
+} from "@mds/common/redux/utils/actionlessNetworkCalls";
 
 interface DocumentViewerProps {
   closeDocumentViewer: () => void;
@@ -78,6 +81,47 @@ export const openDocument = (documentManagerGuid, documentName) => async (dispat
   );
 };
 
+interface ViewPDFProps {
+  pdfViewerServiceUrl: string;
+  documentPath: string;
+  ajaxRequestSettings: any;
+}
+
+const ViewPdf: React.FC<ViewPDFProps> = ({
+  pdfViewerServiceUrl,
+  documentPath,
+  ajaxRequestSettings,
+}) => {
+  return (
+    <PdfViewerComponent
+      id="pdfviewer-container"
+      serviceUrl={pdfViewerServiceUrl}
+      documentPath={documentPath}
+      ajaxRequestSettings={ajaxRequestSettings}
+      style={{ display: "block", height: "80vh" }}
+      enableAnnotation={false}
+      enableFormDesigner={false}
+    >
+      <Inject
+        services={[
+          Toolbar,
+          Magnification,
+          Navigation,
+          Annotation,
+          LinkAnnotation,
+          BookmarkView,
+          ThumbnailView,
+          Print,
+          TextSelection,
+          TextSearch,
+          FormFields,
+          FormDesigner,
+        ]}
+      />
+    </PdfViewerComponent>
+  );
+};
+
 const DocumentViewer: React.FC<DocumentViewerProps> = ({
   closeDocumentViewer,
   isDocumentViewerOpen,
@@ -110,34 +154,14 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({
         onOk: handleOk,
         onCancel: handleCancel,
         getContainer: () => containerRef.current,
-        width: "98%",
+        width: "90%",
         icon: null,
         content: (
-          <PdfViewerComponent
-            id="pdfviewer-container"
-            serviceUrl={pdfViewerServiceUrl}
+          <ViewPdf
+            pdfViewerServiceUrl={pdfViewerServiceUrl}
             documentPath={documentPath}
             ajaxRequestSettings={ajaxRequestSettings}
-            style={{ display: "block", height: "80vh" }}
-            enableAnnotation={false}
-          >
-            <Inject
-              services={[
-                Toolbar,
-                Magnification,
-                Navigation,
-                Annotation,
-                LinkAnnotation,
-                BookmarkView,
-                ThumbnailView,
-                Print,
-                TextSelection,
-                TextSearch,
-                FormFields,
-                FormDesigner,
-              ]}
-            />
-          </PdfViewerComponent>
+          />
         ),
       });
 
