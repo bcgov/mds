@@ -6,7 +6,13 @@ import RenderField from "@mds/common/components/forms/RenderField";
 import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 
-import { email, maxLength, phoneNumber, required } from "@mds/common/redux/utils/Validate";
+import {
+  email,
+  maxLength,
+  phoneNumber,
+  required,
+  postalCodeWithCountry,
+} from "@mds/common/redux/utils/Validate";
 import React, { FC, useEffect } from "react";
 import { normalizePhone } from "@mds/common/redux/utils/helpers";
 import { FORM, CONTACTS_COUNTRY_OPTIONS } from "../..";
@@ -24,7 +30,7 @@ export const PaymentContact: FC = () => {
   }, []);
 
   return (
-    <div className="ant-form-vertical" style={{ paddingTop: 12 }}>
+    <div style={{ paddingTop: 12 }}>
       <Title level={4}>Contact for Payment</Title>
       <Paragraph>
         Provide contact information for the responsible person for application payments.
@@ -120,6 +126,10 @@ export const PaymentContact: FC = () => {
             name="payment_contact.address[0].post_code"
             label="Postal Code"
             component={RenderField}
+            validate={[
+              postalCodeWithCountry(payment_contact?.address?.[0]?.address_type_code),
+              maxLength(10),
+            ]}
           />
         </Col>
       </Row>
