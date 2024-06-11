@@ -14,8 +14,7 @@ api.add_resource(TractionWebhookResource, '/webhook/topic/<string:topic>/')
 
 api.add_resource(VerifiableCredentialConnectionInvitationsResource,
                  '/<string:party_guid>/oob-invitation')
-api.add_resource(VerifiableCredentialConnectionResource,
-                 '/<string:party_guid>/connections/<string:connection_id>')
+api.add_resource(VerifiableCredentialConnectionResource, '/<string:party_guid>/connection/')
 api.add_resource(VerifiableCredentialMinesActPermitResource,
                  '/<string:party_guid>/mines-act-permits')
 api.add_resource(VerifiableCredentialCredentialExchangeResource,

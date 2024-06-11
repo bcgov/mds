@@ -93,3 +93,26 @@ export const fetchVCWalletInvitations = (
       dispatch(hideLoading("modal"));
     });
 };
+
+export const deletePartyWalletConnection = (
+  partyGuid: string
+): AppThunk<Promise<AxiosResponse<IVCInvitation>>> => (
+  dispatch
+): Promise<AxiosResponse<IVCInvitation>> => {
+  dispatch(showLoading("modal"));
+  dispatch(request(reducerTypes.DELETE_VC_WALLET_CONNECTION));
+  return CustomAxios()
+    .delete(
+      `${ENVIRONMENT.apiUrl}/verifiable-credentials/${partyGuid}/connection/`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.DELETE_VC_WALLET_CONNECTION));
+      dispatch(hideLoading("modal"));
+      return response;
+    })
+    .catch(() => {
+      dispatch(error(reducerTypes.DELETE_VC_WALLET_CONNECTION));
+      dispatch(hideLoading("modal"));
+    });
+};

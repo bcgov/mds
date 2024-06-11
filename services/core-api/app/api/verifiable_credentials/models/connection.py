@@ -5,7 +5,7 @@ from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
 
 
-class PartyVerifiableCredentialConnection(AuditMixin, Base, SoftDeleteMixin):
+class PartyVerifiableCredentialConnection(AuditMixin, SoftDeleteMixin, Base):
     """Verificable Credential reference to Traction, a Multi-tenant Hyperledger Aries Wallet"""
     __tablename__ = "party_verifiable_credential_connection"
     invitation_id = db.Column(db.String, primary_key=True)
