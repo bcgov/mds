@@ -169,7 +169,6 @@ export const ProjectSummary: FC = () => {
   };
 
   const handleSaveData = async (formValues, newActiveTab?: string) => {
-    console.log(formValues, newActiveTab);
     const message = newActiveTab
       ? "Successfully updated the project description."
       : "Successfully submitted a project description to the Province of British Columbia.";

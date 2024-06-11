@@ -43,11 +43,6 @@ export const DocumentUpload: FC = () => {
   };
 
   useEffect(() => {
-    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "spatial_documents", []));
-    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "support_documents", []));
-  }, []);
-
-  useEffect(() => {
     dispatch(
       change(FORM.ADD_EDIT_PROJECT_SUMMARY, "documents", [
         ...spatial_documents,
@@ -220,6 +215,7 @@ export const DocumentUpload: FC = () => {
           documents={tableDocuments}
           documentParent="project summary"
           documentColumns={documentColumns}
+          showVersionHistory
         />
       </Form.Item>
     </>
