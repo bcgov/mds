@@ -215,7 +215,6 @@ export const DocumentUpload: FC = () => {
           documents={tableDocuments}
           documentParent="project summary"
           documentColumns={documentColumns}
-          showVersionHistory
         />
       </Form.Item>
     </>
