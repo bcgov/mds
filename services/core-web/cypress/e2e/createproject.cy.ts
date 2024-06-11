@@ -162,7 +162,7 @@ describe("Major Projects", () => {
 
     // SAVE & CONTINUE - skip to Declaration
     cy.contains("Save & Continue").click({ force: true });
-    cy.contains("Applicant Information", { timeout: 10000 });
+    cy.get("#expected_draft_irt_submission_date", { timeout: 10000 });
     cy.contains("Declaration", { timeout: 10000 }).click({ force: true });
 
     cy.get("input#ADD_EDIT_PROJECT_SUMMARY_confirmation_of_submission", { timeout: 10000 }).click({
