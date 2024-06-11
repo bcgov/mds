@@ -139,6 +139,9 @@ export const ProjectSummaryPage = () => {
   };
 
   const handleTabChange = (newTab) => {
+    if (!newTab) {
+      return;
+    }
     const url = isEditMode
       ? EDIT_PROJECT_SUMMARY.dynamicRoute(projectGuid, projectSummaryGuid, newTab)
       : ADD_PROJECT_SUMMARY.dynamicRoute(mineGuid, newTab);
@@ -146,6 +149,7 @@ export const ProjectSummaryPage = () => {
   };
 
   const handleSaveData = async (formValues, newActiveTab?: string) => {
+    console.log(formValues, newActiveTab);
     const message = newActiveTab
       ? "Successfully updated the project description."
       : "Successfully submitted a project description to the Province of British Columbia.";
