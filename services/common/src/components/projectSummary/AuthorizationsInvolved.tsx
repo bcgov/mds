@@ -73,13 +73,13 @@ const RenderEMAPermitCommonSections = ({ code, isAmendment, index }) => {
     setShowDocSection(value);
   };
 
-  const updateAmendmentDocuments = (doc: IProjectSummaryDocument) => {
+  const updateAmendmentDocuments = (documents: IProjectSummaryDocument[]) => {
     const type = isAmendment ? "AMENDMENT" : "NEW";
     dispatch(
-      arrayPush(
+      change(
         FORM.ADD_EDIT_PROJECT_SUMMARY,
         `authorizations.[${code}].${type}[${index}].amendment_documents`,
-        doc
+        documents
       )
     );
   };
@@ -154,7 +154,6 @@ const RenderEMAPermitCommonSections = ({ code, isAmendment, index }) => {
           <AuthorizationSupportDocumentUpload
             code={code}
             mineGuid={mine_guid}
-            isProponent={true}
             documents={tableDocuments}
             updateAmendmentDocuments={updateAmendmentDocuments}
             projectGuid={project_guid}

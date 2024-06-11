@@ -8,9 +8,8 @@ import { PROJECT_SUMMARY_DOCUMENT_TYPE_CODE } from "../..";
 
 interface AuthorizationSupportDocumentUploadProps {
   mineGuid: string;
-  isProponent: boolean;
   documents: IProjectSummaryDocument[];
-  updateAmendmentDocuments: (documents: IProjectSummaryDocument) => void;
+  updateAmendmentDocuments: (documents: IProjectSummaryDocument[]) => void;
   projectGuid: string;
   projectSummaryGuid: string;
   dfaRequired: boolean;
@@ -19,7 +18,6 @@ interface AuthorizationSupportDocumentUploadProps {
 
 export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocumentUploadProps> = ({
   mineGuid,
-  isProponent,
   documents,
   updateAmendmentDocuments,
   projectGuid,
@@ -33,9 +31,7 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
     const newDocuments = documents.filter(
       (file) => fileToRemove.serverId !== file.document_manager_guid
     );
-    newDocuments.forEach((newDoc) => {
-      updateAmendmentDocuments(newDoc);
-    });
+    updateAmendmentDocuments(newDocuments);
   };
 
   const handleFileLoad = (
@@ -48,7 +44,7 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
       document_manager_guid,
       project_summary_document_type_code,
     } as IProjectSummaryDocument;
-    updateAmendmentDocuments(newDoc);
+    updateAmendmentDocuments([newDoc, ...documents]);
   };
 
   const acceptedFileTypesMap = { ...DOCUMENT, ...EXCEL, ...IMAGE, ...SPATIAL };
