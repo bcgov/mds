@@ -137,6 +137,7 @@ export class PartyProfile extends Component {
     this.setState({ deletingParty: true });
     this.props
       .deletePartyWalletConnection(id)
+      .then(this.props.fetchPartyById(id))
       .finally(() => this.setState({ deletingParty: false }));
   };
 
