@@ -320,7 +320,7 @@ class AMSApiService():
                             'other': 'OTH' in amendment_changes
                         },
                         'purposeofapplication': authorization.get('authorization_description', ''),
-                        'newmajorcenter': {
+                        'newmajorcentre': {
                             'name': nearest_municipality_name
                         },
                         'preappexemptionrequest': cls.__boolean_to_yes_no(authorization.get('exemption_requested')),
@@ -362,6 +362,7 @@ class AMSApiService():
                     payload = json.dumps(ams_authorization_data)
                     response = requests.post(Config.AMS_URL, data=payload, headers=headers)
                     ams_result = response.json()
+                    current_app.logger.error(f'AMS Result: {ams_result}')
                     ams_result['project_summary_authorization_guid'] = authorization.get(
                         'project_summary_authorization_guid')
                     ams_result['project_summary_guid'] = authorization.get('project_summary_guid')
