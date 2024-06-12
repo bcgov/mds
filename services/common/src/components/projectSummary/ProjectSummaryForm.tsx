@@ -162,7 +162,7 @@ export const ProjectSummaryForm: FC<ProjectSummaryFormProps> = ({
 
   return (
     <SteppedForm
-      formName={FORM.ADD_EDIT_PROJECT_SUMMARY}
+      name={FORM.ADD_EDIT_PROJECT_SUMMARY}
       initialValues={initialValues}
       isEditMode={isEditMode}
       handleSaveData={handleSaveData}
