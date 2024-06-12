@@ -29,7 +29,7 @@ import {
   InboxOutlined,
   SyncOutlined,
 } from "@ant-design/icons";
-import { openDocument } from "../syncfusion/DocumentViewer";
+import { openDocument } from "@mds/common/components/syncfusion/DocumentViewer";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import { Button, Dropdown, MenuProps } from "antd";

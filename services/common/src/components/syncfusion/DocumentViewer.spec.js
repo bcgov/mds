@@ -1,6 +1,8 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { DocumentViewer } from "@/components/syncfusion/DocumentViewer";
+import DocumentViewer from "@mds/common/components/syncfusion/DocumentViewer";
+import { render } from "@testing-library/react";
+import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 
 const props = {};
 
@@ -18,7 +20,11 @@ beforeEach(() => {
 
 describe("DocumentViewer", () => {
   it("renders properly", () => {
-    const component = shallow(<DocumentViewer {...props} />);
+    const component = render(
+      <ReduxWrapper>
+        <DocumentViewer {...props} />
+      </ReduxWrapper>
+    );
     expect(component).toMatchSnapshot();
   });
 });

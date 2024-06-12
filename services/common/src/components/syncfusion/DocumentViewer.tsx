@@ -122,7 +122,7 @@ const ViewPdf: React.FC<ViewPDFProps> = ({
   );
 };
 
-const DocumentViewer: React.FC<DocumentViewerProps> = ({
+export const DocumentViewer: React.FC<DocumentViewerProps> = ({
   closeDocumentViewer,
   isDocumentViewerOpen,
   documentPath,

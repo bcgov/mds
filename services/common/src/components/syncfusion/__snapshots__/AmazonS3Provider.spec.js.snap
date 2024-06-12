@@ -7,7 +7,7 @@ exports[`AmazonS3Provider renders properly 1`] = `
   >
     <t
       ajaxSettings={
-        Object {
+        {
           "downloadUrl": "<FILESYSTEM_PROVIDER_URL>AmazonS3Download",
           "getImageUrl": "<FILESYSTEM_PROVIDER_URL>AmazonS3GetImage",
           "url": "<FILESYSTEM_PROVIDER_URL>AmazonS3FileOperations",
@@ -19,18 +19,18 @@ exports[`AmazonS3Provider renders properly 1`] = `
       beforeImageLoad={[Function]}
       beforeSend={[Function]}
       contextMenuSettings={
-        Object {
-          "file": Array [
+        {
+          "file": [
             "Open",
             "|",
             "Details",
           ],
-          "folder": Array [
+          "folder": [
             "Open",
             "|",
             "Details",
           ],
-          "layout": Array [
+          "layout": [
             "SortBy",
             "View",
             "Refresh",
@@ -48,7 +48,7 @@ exports[`AmazonS3Provider renders properly 1`] = `
       menuClick={[Function]}
       rootAliasName="Files"
       searchSettings={
-        Object {
+        {
           "allowSearchOnTyping": false,
           "filterType": "contains",
           "ignoreCase": true,
@@ -59,8 +59,8 @@ exports[`AmazonS3Provider renders properly 1`] = `
       showThumbnail={true}
       toolbarClick={[Function]}
       toolbarSettings={
-        Object {
-          "items": Array [
+        {
+          "items": [
             "Download",
             "SortBy",
             "Refresh",
@@ -75,7 +75,7 @@ exports[`AmazonS3Provider renders properly 1`] = `
     >
       <e
         services={
-          Array [
+          [
             [Function],
             [Function],
             [Function],
