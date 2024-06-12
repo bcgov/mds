@@ -191,4 +191,4 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(IncidentsTable);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(IncidentsTable));

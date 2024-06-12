@@ -116,7 +116,7 @@ const mapDispatchToProps = (dispatch) =>
 
 export default compose(
   hot(module),
-  connect(mapStateToProps, mapDispatchToProps)
-  // AuthenticationGuard(true)
+  connect(mapStateToProps, mapDispatchToProps),
+  AuthenticationGuard(true)
   // @ts-ignore
 )(App);

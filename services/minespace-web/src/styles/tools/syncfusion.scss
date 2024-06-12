@@ -34,10 +34,6 @@ $error-font: $error-color; //#f44336;
 // $theme variable elsewhere in the application.
 @use 'syncfusion_imports' with ($theme: 'Material');
 
-.testpink {
-  color: $theme;
-}
-
 .e-empty-inner-content {
   display: none;
 }

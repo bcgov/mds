@@ -124,17 +124,17 @@ export function setupKeycloak(
     throw new Error("idirHint Is Mandatory");
   }
 
-  // if (!bceidHint) {
-  //   throw new Error("bceidHint Is Mandatory");
-  // }
+  if (!bceidHint) {
+    throw new Error("bceidHint Is Mandatory");
+  }
 
-  // if (!vcauthnHint) {
-  //   throw new Error("vcauthnHint Is Mandatory");
-  // }
+  if (!vcauthnHint) {
+    throw new Error("vcauthnHint Is Mandatory");
+  }
 
-  // if (!siteMinderURL) {
-  //   throw new Error("siteMinderURL Is Mandatory");
-  // }
+  if (!siteMinderURL) {
+    throw new Error("siteMinderURL Is Mandatory");
+  }
 
   KEYCLOAK.clientId = clientId;
   KEYCLOAK.resource = resource;
