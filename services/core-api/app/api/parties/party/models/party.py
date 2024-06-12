@@ -77,21 +77,23 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
         uselist=False,
         remote_side=[party_guid],
         foreign_keys=[organization_guid])
-    
+
     digital_wallet_invitations = db.relationship(
         'PartyVerifiableCredentialConnection',
         lazy='select',
         uselist=True,
+        primaryjoin=
+        "and_(PartyVerifiableCredentialConnection.party_guid == Party.party_guid, PartyVerifiableCredentialConnection.deleted_ind==False)",
         order_by='desc(PartyVerifiableCredentialConnection.update_timestamp)',
         overlaps='active_digital_wallet_connection')
-        
+
     active_digital_wallet_connection = db.relationship(
         'PartyVerifiableCredentialConnection',
         lazy='select',
         uselist=False,
         remote_side=[party_guid],
         primaryjoin=
-        'and_(PartyVerifiableCredentialConnection.party_guid == Party.party_guid, PartyVerifiableCredentialConnection.connection_state==\'active\')',
+        'and_(PartyVerifiableCredentialConnection.party_guid == Party.party_guid, PartyVerifiableCredentialConnection.deleted_ind==False, PartyVerifiableCredentialConnection.connection_state==\'active\')',
         overlaps='digital_wallet_invitations')
 
     @hybrid_property
