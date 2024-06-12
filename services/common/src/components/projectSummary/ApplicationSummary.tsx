@@ -1,4 +1,3 @@
-import { FORM } from "@mds/common";
 import React, { FC, useEffect, useState } from "react";
 import { getFormValues } from "redux-form";
 import { useSelector } from "react-redux";
@@ -11,9 +10,9 @@ import { renderTextColumn } from "@mds/common/components/common/CoreTableCommonC
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { ColumnsType } from "antd/es/table";
 import { Button, Alert, Typography, Col, Row } from "antd";
-import { EDIT_PROJECT_SUMMARY } from "@/constants/routes";
 import { useHistory } from "react-router-dom";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
+import { FORM } from "@mds/common/constants/forms";
 
 interface IAuthorizationSummaryColumn {
   type: string;
@@ -221,10 +220,11 @@ export const ApplicationSummary: FC = () => {
   const handleEditClicked = () => {
     const projectGuid = formValues?.project_guid;
     const projectSummaryGuid = formValues?.project_summary_guid;
-    const url = EDIT_PROJECT_SUMMARY.dynamicRoute(
+    const url = GLOBAL_ROUTES?.EDIT_PROJECT_SUMMARY.dynamicRoute(
       projectGuid,
       projectSummaryGuid,
-      "purpose-and-authorization"
+      "purpose-and-authorization",
+      false
     );
     history.push(url);
   };

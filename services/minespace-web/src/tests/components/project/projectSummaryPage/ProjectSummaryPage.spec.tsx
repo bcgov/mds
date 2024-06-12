@@ -8,7 +8,8 @@ import {
   REGIONS,
 } from "@mds/common/tests/mocks/dataMocks";
 import { PROJECTS, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
-import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
+import { ReduxWrapper as CommonWrapper } from "@mds/common/tests/utils/ReduxWrapper";
+import { ReduxWrapper as MSWrapper } from "@/tests/utils/ReduxWrapper";
 import { BrowserRouter } from "react-router-dom";
 
 function mockFunction() {
@@ -44,30 +45,16 @@ const initialState = {
   },
 };
 
-/**
- * There seems to be a provider issue when rendering the ProjectSummaryForm component
- * the FormWrapper which is used as a child component requires the ReduxWrapper from the common directory
- * while the ProjectSummaryPage component requires the ReduxWrapper from the minespace directory.
- *
- * So for now, the ProjectSummaryForm component is being mocked to avoid the provider issue.
- *
- * There is work planned to move the Project Summary related components to the common directory,
- * so this test will need to be updated once that work is completed.
- */
-jest.mock("@/components/Forms/projects/projectSummary/ProjectSummaryForm", () => ({
-  __esModule: true,
-  default: jest.fn(() => <div>Mock Project Summary Form</div>),
-  getProjectFormTabs: jest.fn().mockReturnValue(["mockTab1", "mockTab2"]),
-}));
-
 describe("ProjectSummaryPage", () => {
   it("renders properly", async () => {
     const { container, findByText } = render(
-      <ReduxWrapper initialState={initialState}>
-        <BrowserRouter>
-          <ProjectSummaryPage />
-        </BrowserRouter>
-      </ReduxWrapper>
+      <MSWrapper initialState={initialState}>
+        <CommonWrapper initialState={initialState}>
+          <BrowserRouter>
+            <ProjectSummaryPage />
+          </BrowserRouter>
+        </CommonWrapper>
+      </MSWrapper>
     );
 
     await findByText(/Edit project description - Sample title/i);

@@ -1,11 +1,11 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import AuthorizationsInvolved from "./AuthorizationsInvolved";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import { FORM } from "@mds/common/constants/forms";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { PERMITS, PROJECTS, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
+import DocumentUpload from "./DocumentUpload";
 
 const initialState = {
   [PROJECTS]: {
@@ -15,13 +15,11 @@ const initialState = {
     permits: MOCK.PERMITS,
   },
   [STATIC_CONTENT]: {
-    projectSummaryPermitTypes: MOCK.BULK_STATIC_CONTENT_RESPONSE.projectSummaryPermitTypes,
-    projectSummaryAuthorizationTypes:
-      MOCK.BULK_STATIC_CONTENT_RESPONSE.projectSummaryAuthorizationTypes,
+    projectSummaryDocumentTypes: MOCK.BULK_STATIC_CONTENT_RESPONSE.projectSummaryDocumentTypes,
   },
 };
 
-describe("AuthorizationsInvolved", () => {
+describe("DocumentUpload", () => {
   it("renders properly", () => {
     const { container } = render(
       <ReduxWrapper initialState={initialState}>
@@ -30,7 +28,7 @@ describe("AuthorizationsInvolved", () => {
           initialValues={MOCK.PERMITS}
           onSubmit={() => {}}
         >
-          <AuthorizationsInvolved />
+          <DocumentUpload />
         </FormWrapper>
       </ReduxWrapper>
     );

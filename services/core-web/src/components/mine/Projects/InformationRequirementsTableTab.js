@@ -195,7 +195,7 @@ export class InformationRequirementsTableTab extends Component {
               </Tag>
             </span>
           </h1>
-          <Link to={routes.PROJECTS.dynamicRoute(project_guid)}>
+          <Link to={routes.EDIT_PROJECT.dynamicRoute(project_guid)}>
             <ArrowLeftOutlined className="padding-sm--right" />
             Back to: {mine_name} Project overview
           </Link>

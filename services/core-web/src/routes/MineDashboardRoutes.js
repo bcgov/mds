@@ -27,15 +27,15 @@ const MineDashboardRoutes = () => (
     />
     <Route
       exact
-      path={routes.PRE_APPLICATIONS.route}
-      component={routes.PRE_APPLICATIONS.component}
+      path={routes.EDIT_PROJECT_SUMMARY.route}
+      component={routes.EDIT_PROJECT_SUMMARY.component}
     />
     <Route
       exact
       path={routes.ADD_PROJECT_SUMMARY.route}
       component={routes.ADD_PROJECT_SUMMARY.component}
     />
-    <Route exact path={routes.PROJECTS.route} component={routes.PROJECTS.component} />
+    <Route exact path={routes.EDIT_PROJECT.route} component={routes.EDIT_PROJECT.component} />
     <Route
       exact
       path={routes.INFORMATION_REQUIREMENTS_TABLE.route}

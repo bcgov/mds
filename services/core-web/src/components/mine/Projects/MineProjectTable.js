@@ -91,7 +91,7 @@ export const MineProjectTable = (props) => {
         <div title="" align="right">
           <Row gutter={1}>
             <Col span={12}>
-              <Link to={router.PROJECTS.dynamicRoute(record.key)}>
+              <Link to={router.EDIT_PROJECT.dynamicRoute(record.key)}>
                 <Button type="primary">Open</Button>
               </Link>
             </Col>

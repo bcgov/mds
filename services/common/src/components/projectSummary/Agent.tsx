@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Field, change, getFormValues } from "redux-form";
 import { Col, Row, Typography, Alert } from "antd";
-import { FORM } from "@mds/common";
+import { FORM } from "@mds/common/constants/forms";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
@@ -15,14 +15,15 @@ import {
   requiredRadioButton,
 } from "@mds/common/redux/utils/Validate";
 import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
-import { CONTACTS_COUNTRY_OPTIONS, IOrgbookCredential } from "@mds/common";
+import { IOrgbookCredential } from "@mds/common/interfaces/party";
+import { CONTACTS_COUNTRY_OPTIONS } from "@mds/common/constants/strings";
 import RenderOrgBookSearch from "@mds/common/components/forms/RenderOrgBookSearch";
 import {
   fetchOrgBookCredential,
   verifyOrgBookCredential,
 } from "@mds/common/redux/actionCreators/orgbookActionCreator";
 import { getOrgBookCredential } from "@mds/common/redux/selectors/orgbookSelectors";
-import { normalizePhone } from "@common/utils/helpers";
+import { normalizePhone } from "@mds/common/redux/utils/helpers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck, faCircleX, faSpinner } from "@fortawesome/pro-light-svg-icons";
 
@@ -260,15 +261,6 @@ export const Agent: FC = () => {
           )}
 
           <Row gutter={16}>
-            {/* TODO: With Orgbook integration, this should probably be the agent.party_name */}
-            {/* <Col md={12} sm={24}>
-                <Field
-                  name="agent.doing_business_as"
-                  label="Doing Business As"
-                  component={RenderField}
-                  help="if different than the Company Legal Name"
-                />
-              </Col> */}
             <Col md={12} sm={24}>
               <Field name="agent.job_title" label="Agent's Title" component={RenderField} />
             </Col>

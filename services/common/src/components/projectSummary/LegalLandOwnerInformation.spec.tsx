@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 import { reduxForm, reducer as formReducer } from "redux-form";
 import { LegalLandOwnerInformation } from "@mds/common/components/projectSummary/LegalLandOwnerInformation";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import FormWrapper from "../forms/FormWrapper";
 
 const mockStore = configureStore({
   form: formReducer,
@@ -13,10 +14,12 @@ const mockStore = configureStore({
 const STATIC_CONTENT = {
   municipalityOptions: MOCK.BULK_STATIC_CONTENT_RESPONSE.municipalityOptions,
 };
-
-const WrappedLegalLandOwnerInformation = reduxForm({
-  form: "ADD_EDIT_PROJECT_SUMMARY",
-})(LegalLandOwnerInformation);
+const formName = "ADD_EDIT_PROJECT_SUMMARY";
+const WrappedLegalLandOwnerInformation = (
+  <FormWrapper name={formName} onSubmit={() => {}}>
+    <LegalLandOwnerInformation />
+  </FormWrapper>
+);
 
 describe("LegalLandOwnerInformation Component", () => {
   let store;
@@ -31,9 +34,7 @@ describe("LegalLandOwnerInformation Component", () => {
       STATIC_CONTENT,
     });
     const { container, getByText } = render(
-      <Provider store={store}>
-        <WrappedLegalLandOwnerInformation />
-      </Provider>
+      <Provider store={store}>{WrappedLegalLandOwnerInformation}</Provider>
     );
 
     expect(container.querySelector("h3")?.textContent).toBe("Location, Access and Land Use");
@@ -50,9 +51,7 @@ describe("LegalLandOwnerInformation Component", () => {
       STATIC_CONTENT,
     });
     const { getByText } = render(
-      <Provider store={store}>
-        <WrappedLegalLandOwnerInformation />
-      </Provider>
+      <Provider store={store}>{WrappedLegalLandOwnerInformation}</Provider>
     );
 
     const radioButton = getByText("Is the Applicant the Legal Land Owner?");
@@ -78,9 +77,7 @@ describe("LegalLandOwnerInformation Component", () => {
       STATIC_CONTENT,
     });
     const { getByText } = render(
-      <Provider store={store}>
-        <WrappedLegalLandOwnerInformation />
-      </Provider>
+      <Provider store={store}>{WrappedLegalLandOwnerInformation}</Provider>
     );
 
     const radioButton = getByText("Is the Applicant the Legal Land Owner?");
