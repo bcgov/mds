@@ -27,6 +27,7 @@ import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import RenderCheckbox from "@mds/common/components/forms/RenderCheckbox";
 import { normalizePhone } from "@mds/common/redux/utils/helpers";
 import { getOrgBookCredential } from "@mds/common/redux/selectors/orgbookSelectors";
+import { PaymentContact } from "@mds/common/components/projectSummary/PaymentContact";
 
 const { Title, Paragraph } = Typography;
 interface IVerifiedCredential {
@@ -651,6 +652,7 @@ const Applicant = () => {
           </Row>
         </>
       )}
+      <PaymentContact />
     </div>
   );
 };

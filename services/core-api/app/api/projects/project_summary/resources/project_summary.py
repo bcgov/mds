@@ -167,6 +167,14 @@ class ProjectSummaryResource(Resource, UserMixin):
     parser.add_argument('confirmation_of_submission', type=bool, store_missing=False, required=False)
     parser.add_argument('company_alias', type=str, store_missing=False, required=False)
 
+    parser.add_argument(
+        'payment_contact',
+        type=dict,
+        location='json',
+        store_missing=False,
+        required=False
+    )
+
     @api.doc(
         description='Get a Project Description.',
         params={
@@ -240,7 +248,8 @@ class ProjectSummaryResource(Resource, UserMixin):
                                data.get('is_billing_address_same_as_legal_address'),
                                data.get('contacts'),
                                data.get('company_alias'),
-                               data.get('regional_district_id'))
+                               data.get('regional_district_id'),
+                               data.get('payment_contact'))
 
         project_summary.save()
         if prev_status == 'DFT' and project_summary.status_code == 'SUB':
