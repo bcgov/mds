@@ -508,6 +508,7 @@ exports[`PaymentContact Component should render the component with expected fiel
                   >
                     <div
                       class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                      data-cy="payment_contact.address[0].address_type_code"
                     >
                       <div
                         class="ant-select-selector"
@@ -621,6 +622,7 @@ exports[`PaymentContact Component should render the component with expected fiel
                   >
                     <div
                       class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                      data-cy="payment_contact.address[0].sub_division_code"
                     >
                       <div
                         class="ant-select-selector"
