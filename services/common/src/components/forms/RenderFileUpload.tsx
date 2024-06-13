@@ -134,8 +134,11 @@ export const FileUpload = (props: FileUploadProps) => {
     const fileTypeList = listedFileTypes ?? Object.keys(acceptedFileTypesMap);
     const fileTypeDisplayString =
       fileTypeList.slice(0, -1).join(", ") + ", and " + fileTypeList.slice(-1);
+    const fileSize = props.maxFileSize
+      ? ` with max individual file size of ${props.maxFileSize}`
+      : "";
     const secondLine = abbrevLabel
-      ? `<div>We accept most common ${fileTypeDisplayString} files</div>`
+      ? `<div>We accept most common ${fileTypeDisplayString} files${fileSize}.</div>`
       : `<div>Accepted filetypes: ${fileTypeDisplayString}</div>`;
     return `${labelInstruction}<br>${secondLine}`;
   };

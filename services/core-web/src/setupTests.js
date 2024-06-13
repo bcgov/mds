@@ -24,6 +24,7 @@ jest.mock("@mds/common/providers/featureFlags/useFeatureFlag", () => ({
   }),
 }));
 
+window.scrollTo = jest.fn();
 const location = JSON.stringify(window.location);
 delete window.location;
 

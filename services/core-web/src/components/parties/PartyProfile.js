@@ -32,6 +32,7 @@ import {
   getPartyRelationshipTypeHash,
   getPartyBusinessRoleOptionsHash,
 } from "@mds/common/redux/selectors/staticContentSelectors";
+import { deletePartyWalletConnection } from "@mds/common/redux/actionCreators/verifiableCredentialActionCreator";
 import { formatDate, dateSorter } from "@common/utils/helpers";
 import * as Strings from "@mds/common/constants/strings";
 import { EDIT } from "@/constants/assets";
@@ -56,6 +57,7 @@ const propTypes = {
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   updateParty: PropTypes.func.isRequired,
   deleteParty: PropTypes.func.isRequired,
+  deletePartyWalletConnection: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   parties: PropTypes.arrayOf(CustomPropTypes.party).isRequired,
@@ -127,6 +129,15 @@ export class PartyProfile extends Component {
           })
         );
       })
+      .finally(() => this.setState({ deletingParty: false }));
+  };
+
+  deletePartyWalletConnection = () => {
+    const { id } = this.props.match.params;
+    this.setState({ deletingParty: true });
+    this.props
+      .deletePartyWalletConnection(id)
+      .then(this.props.fetchPartyById(id))
       .finally(() => this.setState({ deletingParty: false }));
   };
 
@@ -347,13 +358,35 @@ export class PartyProfile extends Component {
               )}
             </div>
 
-            {isFeatureEnabled(Feature.VERIFIABLE_CREDENTIALS) &&
-              party.party_type_code === "ORG" && (
+            {isFeatureEnabled(Feature.VERIFIABLE_CREDENTIALS) && party.party_type_code === "ORG" && (
+              <>
                 <div className="padding-md--top">
                   Digital Wallet Connection Status:{" "}
                   {VC_CONNECTION_STATES[party?.digital_wallet_connection_status]}
+                  {VC_CONNECTION_STATES[party?.digital_wallet_connection_status] === "Active" && (
+                    <Popconfirm
+                      title={
+                        <div>
+                          <p>
+                            Are you sure you want to delete the digitial wallet connection for
+                            &apos;
+                            {party.name}&apos;? This is irreversable and destructive.
+                          </p>
+                        </div>
+                      }
+                      onConfirm={this.deletePartyWalletConnection}
+                      okText="Yes"
+                      cancelText="No"
+                    >
+                      <Button type="danger">
+                        <img alt="pencil" className="padding-sm--right" src={EDIT} />
+                        Delete Wallet Connection
+                      </Button>
+                    </Popconfirm>
+                  )}
                 </div>
-              )}
+              </>
+            )}
           </div>
           <div className="profile__content">
             <Tabs
@@ -397,6 +430,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchPartyById,
       fetchMineBasicInfoList,
       deleteParty,
+      deletePartyWalletConnection,
       updateParty,
       openModal,
       closeModal,

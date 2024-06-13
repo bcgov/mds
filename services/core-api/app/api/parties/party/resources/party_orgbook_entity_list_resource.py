@@ -4,7 +4,7 @@ from flask_restx import Resource
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound, BadGateway
 
 from app.extensions import api
-from app.api.utils.access_decorators import requires_role_edit_party
+from app.api.utils.access_decorators import requires_role_edit_party, requires_role_mine_admin
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.parties.party.models.party_orgbook_entity import PartyOrgBookEntity
@@ -59,3 +59,14 @@ class PartyOrgBookEntityListResource(Resource, UserMixin):
         party.save()
 
         return party_orgbook_entity, 201
+
+    @api.doc(description='Delete a Party OrgBook Entity.')
+    @requires_role_mine_admin
+    @api.marshal_with(PARTY_ORGBOOK_ENTITY, code=204)
+    def delete(self, party_guid):
+        party_orgbook_entity = PartyOrgBookEntity.find_by_party_guid(party_guid)
+        if party_orgbook_entity is None:
+            raise NotFound('OrgBook entity not found.')
+
+        party_orgbook_entity.delete()
+        return None, 204

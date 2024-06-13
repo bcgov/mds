@@ -23,7 +23,6 @@ class PartyOrgBookEntity(AuditMixin, Base):
     association_user = db.Column(db.String, nullable=False, default=User().get_user_username)
     association_timestamp = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
 
-
     def __repr__(self):
         return f'{self.__class__.__name__} {self.party_orgbook_entity_id}'
 
@@ -49,3 +48,6 @@ class PartyOrgBookEntity(AuditMixin, Base):
             company_alias=company_alias)
         party_orgbook_entity.save()
         return party_orgbook_entity
+
+    def delete(self, commit=True):
+        super(PartyOrgBookEntity, self).delete(commit)

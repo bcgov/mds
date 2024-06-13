@@ -11,7 +11,9 @@ import {
   requiredRadioButton,
 } from "@mds/common/redux/utils/Validate";
 import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
-import { CONTACTS_COUNTRY_OPTIONS, FORM, IOrgbookCredential } from "@mds/common";
+import { FORM } from "@mds/common/constants/forms";
+import { CONTACTS_COUNTRY_OPTIONS } from "@mds/common/constants/strings";
+import { IOrgbookCredential } from "@mds/common/interfaces/party";
 import RenderOrgBookSearch from "@mds/common/components/forms/RenderOrgBookSearch";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck, faCircleX, faSpinner } from "@fortawesome/pro-light-svg-icons";
@@ -23,7 +25,7 @@ import RenderField from "@mds/common/components/forms/RenderField";
 import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import RenderCheckbox from "@mds/common/components/forms/RenderCheckbox";
-import { normalizePhone } from "@common/utils/helpers";
+import { normalizePhone } from "@mds/common/redux/utils/helpers";
 import { getOrgBookCredential } from "@mds/common/redux/selectors/orgbookSelectors";
 import { PaymentContact } from "@mds/common/components/projectSummary/PaymentContact";
 

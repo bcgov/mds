@@ -1,26 +1,19 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { Field, formValueSelector } from "redux-form";
+import { useSelector } from "react-redux";
+import { Field, getFormValues } from "redux-form";
 import { Typography } from "antd";
-import { connect } from "react-redux";
-import { dateNotBeforeOther, dateNotAfterOther } from "@common/utils/Validate";
-import Callout from "@/components/common/Callout";
-import * as FORM from "@/constants/forms";
+import { dateNotBeforeOther, dateNotAfterOther } from "@mds/common/redux/utils/Validate";
+import Callout from "@mds/common/components/common/Callout";
+import { FORM } from "@mds/common/constants/forms";
 import RenderDate from "@mds/common/components/forms/RenderDate";
 
-const propTypes = {
-  expected_permit_application_date: PropTypes.string,
-  expected_draft_irt_submission_date: PropTypes.string,
-  expected_permit_receipt_date: PropTypes.string,
-};
+export const ProjectDates = () => {
+  const {
+    expected_permit_application_date,
+    expected_draft_irt_submission_date,
+    expected_permit_receipt_date,
+  } = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
 
-const defaultProps = {
-  expected_permit_application_date: undefined,
-  expected_draft_irt_submission_date: undefined,
-  expected_permit_receipt_date: undefined,
-};
-
-export const ProjectDates = (props) => {
   return (
     <>
       <Typography.Title level={3}>Project Dates</Typography.Title>
@@ -32,7 +25,7 @@ export const ProjectDates = (props) => {
             <a
               target="_blank"
               rel="noopener noreferrer"
-              alt="Major Mines Permitting Office"
+              title="Major Mines Permitting Office"
               href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/major-mines-permitting-office"
             >
               Major Mines Office
@@ -47,7 +40,7 @@ export const ProjectDates = (props) => {
         label="When do you anticipate submitting a draft Information Requirements Table?"
         placeholder="Please select date"
         component={RenderDate}
-        validate={[dateNotAfterOther(props.expected_permit_application_date)]}
+        validate={[dateNotAfterOther(expected_permit_application_date)]}
       />
       <Field
         id="expected_permit_application_date"
@@ -55,7 +48,7 @@ export const ProjectDates = (props) => {
         label="When do you anticipate submitting a permit application?"
         placeholder="Please select date"
         component={RenderDate}
-        validate={[dateNotBeforeOther(props.expected_draft_irt_submission_date)]}
+        validate={[dateNotBeforeOther(expected_draft_irt_submission_date)]}
       />
       <Field
         id="expected_permit_receipt_date"
@@ -63,7 +56,7 @@ export const ProjectDates = (props) => {
         label="When do you hope to receive your permit/amendment(s)?"
         placeholder="Please select date"
         component={RenderDate}
-        validate={[dateNotBeforeOther(props.expected_permit_application_date)]}
+        validate={[dateNotBeforeOther(expected_permit_application_date)]}
       />
       <Field
         id="expected_project_start_date"
@@ -71,20 +64,10 @@ export const ProjectDates = (props) => {
         label="When do you anticipate starting work on this project?"
         placeholder="Please select date"
         component={RenderDate}
-        validate={[dateNotBeforeOther(props.expected_permit_receipt_date)]}
+        validate={[dateNotBeforeOther(expected_permit_receipt_date)]}
       />
     </>
   );
 };
 
-ProjectDates.propTypes = propTypes;
-ProjectDates.defaultProps = defaultProps;
-
-const selector = formValueSelector(FORM.ADD_EDIT_PROJECT_SUMMARY);
-const mapStateToProps = (state) => ({
-  expected_draft_irt_submission_date: selector(state, "expected_draft_irt_submission_date"),
-  expected_permit_application_date: selector(state, "expected_permit_application_date"),
-  expected_permit_receipt_date: selector(state, "expected_permit_receipt_date"),
-});
-
-export default connect(mapStateToProps)(ProjectDates);
+export default ProjectDates;

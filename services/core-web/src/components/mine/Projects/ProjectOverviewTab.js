@@ -18,7 +18,7 @@ import CustomPropTypes from "@/customPropTypes";
 import ProjectStagesTable from "./ProjectStagesTable";
 import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
 import { Feature } from "@mds/common";
-import ProjectLinks from "@mds/common/components/projects/ProjectLinks";
+import ProjectLinks from "@mds/common/components/projectSummary/ProjectLinks";
 
 const propTypes = {
   informationRequirementsTableStatusCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -138,7 +138,7 @@ export class ProjectOverviewTab extends Component {
         link: (
           <Link
             data-cy="project-description-view-link"
-            to={routes.PRE_APPLICATIONS.dynamicRoute(project_guid, project_summary_guid)}
+            to={routes.EDIT_PROJECT_SUMMARY.dynamicRoute(project_guid, project_summary_guid)}
           >
             <Button className="full-mobile margin-small" type="secondary">
               View
@@ -254,7 +254,7 @@ export class ProjectOverviewTab extends Component {
             <ProjectLinks
               tableOnly
               viewProject={(p) =>
-                routes.PRE_APPLICATIONS.dynamicRoute(p.project_guid, p.project_summary_guid)
+                routes.EDIT_PROJECT_SUMMARY.dynamicRoute(p.project_guid, p.project_summary_guid)
               }
             />
           )}

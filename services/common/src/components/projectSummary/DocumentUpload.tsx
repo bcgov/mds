@@ -1,55 +1,35 @@
 import React, { FC, useEffect } from "react";
 import { change, Field, getFormValues } from "redux-form";
-import { connect, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Form, Typography } from "antd";
-import { bindActionCreators } from "redux";
 import { CSV, DOCUMENT, EXCEL, IMAGE, OTHER_SPATIAL, XML } from "@mds/common/constants/fileTypes";
-import DocumentTable from "@/components/common/DocumentTable";
+import DocumentTable from "../documents/DocumentTable";
 import {
   documentNameColumn,
   uploadDateColumn,
   uploadedByColumn,
-} from "@/components/common/DocumentColumns";
-import ProjectSummaryFileUpload from "@/components/Forms/projects/projectSummary/ProjectSummaryFileUpload";
-import * as FORM from "@/constants/forms";
+} from "../documents/DocumentColumns";
+import ProjectSummaryFileUpload from "./ProjectSummaryFileUpload";
 import { renderCategoryColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import { MineDocument } from "@mds/common/models/documents/document";
-import { IMineDocument, ENVIRONMENT, PROJECT_SUMMARY_DOCUMENT_TYPE_CODE } from "@mds/common";
+import { ENVIRONMENT, FORM, PROJECT_SUMMARY_DOCUMENT_TYPE_CODE } from "@mds/common/constants";
 import { postNewDocumentVersion } from "@mds/common/redux/actionCreators/documentActionCreator";
-import { ActionCreator } from "@mds/common/interfaces/actionCreator";
-import LinkButton from "@/components/common/LinkButton";
+import LinkButton from "../common/LinkButton";
 import * as API from "@mds/common/constants/API";
+import { getProjectSummaryDocumentTypesHash } from "@mds/common/redux/selectors/staticContentSelectors";
 
-interface IProjectSummaryDocument extends IMineDocument {
-  project_summary_document_type_code: string;
-}
+export const DocumentUpload: FC = () => {
+  const dispatch = useDispatch();
+  const projectSummaryDocumentTypesHash = useSelector(getProjectSummaryDocumentTypesHash);
+  const {
+    spatial_documents = [],
+    support_documents = [],
+    mine_guid,
+    project_guid,
+    project_summary_guid,
+    documents,
+  } = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
 
-export interface ProjectSummary {
-  project_summary_id: number;
-  mine_guid: string;
-  project_summary_guid: string;
-  status_code: string;
-  submission_date: string;
-  project_summary_description: string;
-  project_guid: string;
-  documents: IProjectSummaryDocument[];
-}
-
-interface DocumentUploadProps {
-  initialValues: ProjectSummary;
-  change: any;
-  documents: IProjectSummaryDocument[];
-  isEditMode: boolean;
-  projectSummaryDocumentTypesHash: any;
-  mineGuid: string;
-  postNewDocumentVersion: ActionCreator<typeof postNewDocumentVersion>;
-}
-
-export const DocumentUpload: FC<DocumentUploadProps> = (props) => {
-  const { initialValues, documents, isEditMode, projectSummaryDocumentTypesHash, mineGuid } = props;
-  const { spatial_documents = [], support_documents = [] } = useSelector(
-    getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)
-  );
   const spatialAcceptedFileTypesMap = {
     ...OTHER_SPATIAL,
     ...XML,
@@ -63,15 +43,12 @@ export const DocumentUpload: FC<DocumentUploadProps> = (props) => {
   };
 
   useEffect(() => {
-    props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, "spatial_documents", []);
-    props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, "support_documents", []);
-  }, []);
-
-  useEffect(() => {
-    props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, "documents", [
-      ...spatial_documents,
-      ...support_documents,
-    ]);
+    dispatch(
+      change(FORM.ADD_EDIT_PROJECT_SUMMARY, "documents", [
+        ...spatial_documents,
+        ...support_documents,
+      ])
+    );
   }, [spatial_documents.length, support_documents.length]);
 
   const onFileLoad = (
@@ -82,11 +59,13 @@ export const DocumentUpload: FC<DocumentUploadProps> = (props) => {
   ) => {
     let newUploadedFiles = [];
     if (version.document_manager_version_guid) {
-      const ConnectedVersion = props.postNewDocumentVersion({
-        mineGuid: initialValues.mine_guid,
-        mineDocumentGuid: version.document_manager_guid,
-        documentManagerVersionGuid: version.document_manager_version_guid,
-      });
+      const ConnectedVersion = dispatch(
+        postNewDocumentVersion({
+          mineGuid: mine_guid,
+          mineDocumentGuid: version.document_manager_guid,
+          documentManagerVersionGuid: version.document_manager_version_guid,
+        })
+      );
 
       // Save the new version to the document that matches the document_manager_guid
       newUploadedFiles = documents.map((doc) => {
@@ -111,9 +90,9 @@ export const DocumentUpload: FC<DocumentUploadProps> = (props) => {
     }
 
     if (project_summary_document_type_code === PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.SPATIAL) {
-      props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, "spatial_documents", newUploadedFiles);
+      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "spatial_documents", newUploadedFiles));
     } else {
-      props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, "support_documents", newUploadedFiles);
+      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "support_documents", newUploadedFiles));
     }
   };
 
@@ -125,12 +104,12 @@ export const DocumentUpload: FC<DocumentUploadProps> = (props) => {
       const newSpatialDocuments = [...spatial_documents].filter(
         (file) => fileItem.serverId !== file.document_manager_guid
       );
-      props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, "spatial_documents", newSpatialDocuments);
+      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "spatial_documents", newSpatialDocuments));
     } else if (document_type_code === PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.SUPPORTING) {
       const newSupportDocuments = [...support_documents].filter(
         (file) => fileItem.serverId !== file.document_manager_guid
       );
-      props.change(FORM.ADD_EDIT_PROJECT_SUMMARY, "support_documents", newSupportDocuments);
+      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "support_documents", newSupportDocuments));
     }
   };
 
@@ -144,13 +123,13 @@ export const DocumentUpload: FC<DocumentUploadProps> = (props) => {
   };
 
   const fileUploadParams = {
-    mineGuid: initialValues.mine_guid,
-    projectGuid: initialValues.project_guid,
-    projectSummaryGuid: initialValues.project_summary_guid,
+    mineGuid: mine_guid,
+    projectGuid: project_guid,
+    projectSummaryGuid: project_summary_guid,
   };
 
   const tableDocuments =
-    initialValues?.documents?.map(
+    documents?.map(
       (doc) => new MineDocument({ ...doc, category: doc.project_summary_document_type_code })
     ) ?? [];
 
@@ -232,26 +211,14 @@ export const DocumentUpload: FC<DocumentUploadProps> = (props) => {
               "<div>We accept most common document, image, and spreadsheet with max individual file size of 400 MB.</div>",
           }}
         />
-
-        {isEditMode && (
-          <DocumentTable
-            documents={tableDocuments}
-            documentParent="project summary"
-            documentColumns={documentColumns}
-          />
-        )}
+        <DocumentTable
+          documents={tableDocuments}
+          documentParent="project summary"
+          documentColumns={documentColumns}
+        />
       </Form.Item>
     </>
   );
 };
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      change,
-      postNewDocumentVersion,
-    },
-    dispatch
-  );
-
-export default connect(null, mapDispatchToProps)(DocumentUpload);
+export default DocumentUpload;

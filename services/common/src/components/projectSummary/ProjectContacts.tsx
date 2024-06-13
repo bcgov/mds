@@ -12,17 +12,15 @@ import {
   email,
   postalCodeWithCountry,
 } from "@mds/common/redux/utils/Validate";
-import { normalizePhone } from "@common/utils/helpers";
-import LinkButton from "@/components/common/LinkButton";
-import * as FORM from "@/constants/forms";
+import { normalizePhone } from "@mds/common/redux/utils/helpers";
+import LinkButton from "@mds/common/components/common/LinkButton";
+import { FORM } from "@mds/common/constants/forms";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
-import { CONTACTS_COUNTRY_OPTIONS } from "@mds/common";
-
+import { CONTACTS_COUNTRY_OPTIONS } from "@mds/common/constants";
 import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 
-const RenderContacts = (props) => {
-  const { fields, contacts } = props;
+const RenderContacts = ({ fields }) => {
   const dispatch = useDispatch();
   const provinceOptions = useSelector(getDropdownProvinceOptions);
   const handleClearProvince = (currentCountry, addressTypeCode, subDivisionCode, field) => {
@@ -38,14 +36,14 @@ const RenderContacts = (props) => {
       }
     }
   };
-
   return (
     <>
       {fields.map((field, index) => {
-        const { address = {} } = contacts[index] ?? {};
+        const contact = fields.get(index);
+        const { address = {} } = contact ?? {};
         const { address_type_code, sub_division_code } = address ?? {};
         const isInternational = address_type_code === "INT";
-        const isPrimary = contacts[index].is_primary;
+        const isPrimary = contact.is_primary;
         return (
           // eslint-disable-next-line react/no-array-index-key
           <div key={index}>
@@ -255,7 +253,7 @@ export const ProjectContacts: FC = () => {
   return (
     <>
       <Typography.Title level={3}>Project Contacts</Typography.Title>
-      <FieldArray name="contacts" contacts={contacts} component={RenderContacts} />
+      <FieldArray name="contacts" props={{}} component={RenderContacts} />
     </>
   );
 };

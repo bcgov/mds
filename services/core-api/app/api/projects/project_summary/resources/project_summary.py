@@ -184,8 +184,7 @@ class ProjectSummaryResource(Resource, UserMixin):
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     @api.marshal_with(PROJECT_SUMMARY_MODEL, code=200)
     def get(self, project_guid, project_summary_guid):
-        project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid,
-                                                                      is_minespace_user())
+        project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid)
         if project_summary is None:
             raise NotFound('Project Description not found')
 
@@ -200,8 +199,7 @@ class ProjectSummaryResource(Resource, UserMixin):
     @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PROJECT_SUMMARIES])
     @api.marshal_with(PROJECT_SUMMARY_MODEL, code=200)
     def put(self, project_guid, project_summary_guid):
-        project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid,
-                                                                      is_minespace_user())
+        project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid)
         project = Project.find_by_project_guid(project_guid)
         data = self.parser.parse_args()
 
@@ -283,8 +281,7 @@ class ProjectSummaryResource(Resource, UserMixin):
     @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PROJECT_SUMMARIES])
     @api.response(204, 'Successfully deleted.')
     def delete(self, project_guid, project_summary_guid):
-        project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid,
-                                                                      is_minespace_user())
+        project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid)
         if project_summary is None:
             raise NotFound('Project Description not found')
 
