@@ -199,7 +199,7 @@ export const PreDraftPermitForm = (props) => {
               </div>
             )}
             {!isAmendment && props.isCoalOrMineral && (
-              <div className="left">
+              <div className="ant-form-vertical">
                 <Form.Item>
                   <Field
                     id="is_exploration"
