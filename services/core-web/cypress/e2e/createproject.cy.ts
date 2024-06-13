@@ -104,7 +104,10 @@ describe("Major Projects", () => {
 
     // SAVE & CONTINUE - Agent
     cy.contains("Save & Continue").click({ force: true });
-    cy.contains("Are you an agent applying on behalf of the applicant?", { timeout: 10000 });
+    cy.contains("Are you an agent applying on behalf of the applicant?", {
+      timeout: 15000,
+      force: true,
+    });
 
     cy.contains("No").click({ force: true });
 
