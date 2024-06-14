@@ -15,6 +15,7 @@ from app.api.mines.mine.models.mine import Mine
 from app.api.parties.party.models.party import Party
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
+from app.api.mines.mine.models.mine_type import MineType
 from app.api.verifiable_credentials.models.credentials import PartyVerifiableCredentialMinesActPermit
 from app.api.verifiable_credentials.models.connection import PartyVerifiableCredentialConnection
 from app.api.services.traction_service import TractionService
@@ -98,16 +99,24 @@ class VerifiableCredentialManager():
         # https://github.com/bcgov/bc-vcpedia/blob/main/credentials/bc-mines-act-permit/1.1.1/governance.md#261-schema-definition
         credential_attrs = {}
 
+        #mine_types should related to the permits
+        #all mine_types for all permits are used in mine.mine_type
+        #but we only want the mine_type for this specific permit/permit_amendment.
+
+        #not really a 'mine_type' if it's managed at the permit level.
+        mine_type = MineType.find_by_permit_guid(permit_amendment.permit_guid,
+                                                 permit_amendment.mine_guid)
+
         mine_disturbance_list = [
-            mtd.mine_disturbance_literal
-            for mtd in permit_amendment.mine.mine_type[0].mine_type_detail
+            mtd.mine_disturbance_literal for mtd in mine_type.mine_type_detail
             if mtd.mine_disturbance_code
         ]
+
         mine_commodity_list = [
-            mtd.mine_commodity_literal
-            for mtd in permit_amendment.mine.mine_type[0].mine_type_detail
+            mtd.mine_commodity_literal for mtd in mine_type.mine_type_detail
             if mtd.mine_commodity_code
         ]
+
         mine_status_xref = permit_amendment.mine.mine_status[0].mine_status_xref
 
         credential_attrs["permit_no"] = permit_amendment.permit_no
