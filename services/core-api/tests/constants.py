@@ -244,8 +244,20 @@ AMS_AUTHORIZATION_DATA = {
             "authorization_description": "test descript",
             "exemption_reason": "test exemption",
             "exemption_requested": False,
-            "location_documents": [{}],
-            "discharge_documents": [{}],
+            "location_documents": [
+                    {
+                        "document_name": "testdocdoc (1).docx",
+                        "document_manager_guid": "317dbd83-44f1-40a5-8f6f-e8a4c57bcfe6",
+                        "project_summary_document_type_code": "MAP"
+                    }
+            ],
+            "discharge_documents": [
+                    {
+                        "document_name": "testdocdoc.docx",
+                        "document_manager_guid": "d75524c6-26d7-4922-a784-2d30543dd9dc",
+                        "project_summary_document_type_code": "DFA"
+                    }
+                ],
         }
     ],
     "new": []
