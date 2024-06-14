@@ -107,17 +107,18 @@ class VerifiableCredentialManager():
         mine_type = [
             mt for mt in permit_amendment.permit.site_properties
             if mt.mine_guid == permit_amendment.permit.mine_guid
-        ][0] if permit_amendment.permit.site_properties else []
+        ][0] if permit_amendment.permit.site_properties else None
 
-        mine_disturbance_list = [
-            mtd.mine_disturbance_literal for mtd in mine_type.mine_type_detail
-            if mtd.mine_disturbance_code
-        ]
+        if mine_type:
+            mine_disturbance_list = [
+                mtd.mine_disturbance_literal for mtd in mine_type.mine_type_detail
+                if mtd.mine_disturbance_code
+            ]
 
-        mine_commodity_list = [
-            mtd.mine_commodity_literal for mtd in mine_type.mine_type_detail
-            if mtd.mine_commodity_code
-        ]
+            mine_commodity_list = [
+                mtd.mine_commodity_literal for mtd in mine_type.mine_type_detail
+                if mtd.mine_commodity_code
+            ]
 
         mine_status_xref = permit_amendment.mine.mine_status[0].mine_status_xref
 
