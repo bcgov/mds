@@ -4,7 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import { hot } from "react-hot-loader";
 import Routes from "./routes/Routes";
 import ModalWrapper from "@/components/common/wrappers/ModalWrapper";
-import DocumentViewer from "@/components/syncfusion/DocumentViewer";
+import DocumentViewer from "@mds/common/components/syncfusion/DocumentViewer";
 import ScrollToTopWrapper from "@/components/common/wrappers/ScrollToTopWrapper";
 import getStore from "./store/configureStore";
 import { storeSystemFlag } from "@mds/common/redux/actions/authenticationActions";

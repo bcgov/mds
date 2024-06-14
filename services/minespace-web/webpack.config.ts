@@ -38,10 +38,11 @@ const PATHS = {
 };
 
 const BUILD_FILE_NAMES = {
-  css: "style/[name].[contenthash:4].css",
-  bundle: "js/bundle.[chunkhash:4].js",
-  vendor: "js/[id].[chunkhash:4].js",
-  assets: "assets/[name].[hash:4].[ext]",
+  css: "style/[name].[contenthash:8].css",
+  cssChunkName: "style/[name].[chunkhash:8].css",
+  bundle: "js/bundle.[chunkhash:8].js",
+  vendor: "js/[id].[chunkhash:8].js",
+  assets: "assets/[name].[hash:8].[ext]",
 };
 
 const PATH_ALIASES = {
@@ -199,6 +200,7 @@ const prodConfig = merge([
   }),
   parts.extractCSS({
     filename: BUILD_FILE_NAMES.css,
+    chunkFilename: BUILD_FILE_NAMES.cssChunkName,
     theme: path.join(PATHS.src, "styles", "settings", "theme.scss"),
   }),
   parts.loadImages({

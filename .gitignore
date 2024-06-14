@@ -56,3 +56,4 @@ gitops/tenant-gitops-4c2ba9
 .yarn/.DS_Store
 .vscode/settings.json
 services/document-manager/document-manager.iml
+/services/filesystem-provider/ej2-amazon-s3-aspcore-file-provider/Folder.DotSettings.user

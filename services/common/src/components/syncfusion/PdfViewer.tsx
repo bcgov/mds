@@ -21,13 +21,14 @@ import {
 interface PdfViewerProps {
   pdfViewerServiceUrl: string;
   documentPath: string;
-  ajaxRequestSettings: AjaxRequestSettingsModel
+  ajaxRequestSettings: AjaxRequestSettingsModel;
 }
 
 const PdfViewer: FC<PdfViewerProps> = (props: PdfViewerProps) => {
-
-  {/* // NOTE: See here for documentation:
-        https://ej2.syncfusion.com/react/documentation/pdfviewer/getting-started/ */}
+  {
+    /* // NOTE: See here for documentation:
+        https://ej2.syncfusion.com/react/documentation/pdfviewer/getting-started/ */
+  }
   return (
     <PdfViewerComponent
       id="pdfviewer-container"
