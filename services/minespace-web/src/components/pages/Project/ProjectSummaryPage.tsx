@@ -139,6 +139,9 @@ export const ProjectSummaryPage = () => {
   };
 
   const handleTabChange = (newTab) => {
+    if (!newTab) {
+      return;
+    }
     const url = isEditMode
       ? EDIT_PROJECT_SUMMARY.dynamicRoute(projectGuid, projectSummaryGuid, newTab)
       : ADD_PROJECT_SUMMARY.dynamicRoute(mineGuid, newTab);

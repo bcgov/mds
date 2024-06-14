@@ -23,16 +23,18 @@ OUT_OF_BAND = "out_of_band"
 PING = "ping"
 ISSUER_CREDENTIAL_REVOKED = "issuer_cred_rev"
 
-class VerifiableCredentialWebhookResource(Resource, UserMixin):
+
+class TractionWebhookResource(Resource, UserMixin):
+
     @api.doc(description='Endpoint to recieve webhooks from Traction.', params={})
     def post(self, topic):
         if not is_feature_enabled(Feature.TRACTION_VERIFIABLE_CREDENTIALS):
             raise NotImplemented()
-        
+
         #custom auth for traction
         if request.headers.get("x-api-key") != Config.TRACTION_WEBHOOK_X_API_KEY:
-             return Forbidden("bad x-api-key")
-        
+            return Forbidden("bad x-api-key")
+
         webhook_body = request.get_json()
         current_app.logger.debug(f"webhook received <topic={topic}>: {webhook_body}")
         if "updated_at" not in webhook_body:
@@ -42,7 +44,8 @@ class VerifiableCredentialWebhookResource(Resource, UserMixin):
 
         if topic == CONNECTIONS:
             invitation_id = webhook_body['invitation_msg_id']
-            vc_conn = PartyVerifiableCredentialConnection.query.unbound_unsafe().filter_by(invitation_id=invitation_id).first()
+            vc_conn = PartyVerifiableCredentialConnection.query.unbound_unsafe().filter_by(
+                invitation_id=invitation_id).first()
             assert vc_conn, f"connection.invitation_msg_id={invitation_id} not found. webhook_body={webhook_body}"
             if not vc_conn.connection_id:
                 vc_conn.connection_id = webhook_body["connection_id"]
@@ -52,55 +55,66 @@ class VerifiableCredentialWebhookResource(Resource, UserMixin):
                 # already processed a more recent webhook
             else:
                 vc_conn.last_webhook_timestamp = webhook_timestamp
-                
+
                 new_state = webhook_body["state"]
                 if new_state != vc_conn.connection_state and vc_conn.connection_state != DIDExchangeRequesterState.COMPLETED:
                     # 'completed' is the final succesful state.
-                    vc_conn.connection_state=new_state
+                    vc_conn.connection_state = new_state
                     vc_conn.save()
-                    current_app.logger.info(f"Updated party_vc_conn connection_id={vc_conn.connection_id} with state={new_state}")
+                    current_app.logger.info(
+                        f"Updated party_vc_conn connection_id={vc_conn.connection_id} with state={new_state}"
+                    )
                 if new_state == "deleted":
                     # if deleted in the wallet (either in traction, or by the other agent)
-                    vc_conn.connection_state=new_state
-                    vc_conn.save() 
-                    current_app.logger.info(f"party_vc_conn connection_id={vc_conn.connection_id} was deleted")
-                 
+                    vc_conn.connection_state = new_state
+                    vc_conn.save()
+                    current_app.logger.info(
+                        f"party_vc_conn connection_id={vc_conn.connection_id} was deleted")
+
         elif topic == OUT_OF_BAND:
-                current_app.logger.info(f"out-of-band message invi_msg_id={webhook_body['invi_msg_id']}, state={webhook_body['state']}")
-  
+            current_app.logger.info(
+                f"out-of-band message invi_msg_id={webhook_body['invi_msg_id']}, state={webhook_body['state']}"
+            )
+
         elif topic == CREDENTIAL_OFFER:
             cred_exch_id = webhook_body["credential_exchange_id"]
-            cred_exch_record = PartyVerifiableCredentialMinesActPermit.query.unbound_unsafe().filter_by(cred_exch_id=cred_exch_id).first()
+            cred_exch_record = PartyVerifiableCredentialMinesActPermit.query.unbound_unsafe(
+            ).filter_by(cred_exch_id=cred_exch_id).first()
 
             assert cred_exch_record, f"issue_credential.credential_exchange_id={cred_exch_id} not found. webhook_body={webhook_body}"
             new_state = webhook_body["state"]
 
             if cred_exch_record.last_webhook_timestamp and cred_exch_record.last_webhook_timestamp >= webhook_timestamp:
                 current_app.logger.warn(f"webhooks out of order catch, ignoring {webhook_body}")
-                # already processed a more recent webhook 
+                # already processed a more recent webhook
             else:
                 cred_exch_record.last_webhook_timestamp = webhook_timestamp
                 if new_state == IssueCredentialIssuerState.ABANDONED:
-                    current_app.logger.warning(f"cred_exch_id={cred_exch_id} is abanoned with message = {webhook_body['error_msg']}")
+                    current_app.logger.warning(
+                        f"cred_exch_id={cred_exch_id} is abanoned with message = {webhook_body['error_msg']}"
+                    )
                     cred_exch_record.error_description = webhook_body['error_msg']
-    
-                cred_exch_record.cred_exch_state=new_state
+
+                cred_exch_record.cred_exch_state = new_state
                 if new_state == IssueCredentialIssuerState.CREDENTIAL_ACKED:
                     cred_exch_record.rev_reg_id = webhook_body["revoc_reg_id"]
                     cred_exch_record.cred_rev_id = webhook_body["revocation_id"]
 
                 cred_exch_record.save()
-                current_app.logger.info(f"Updated cred_exch_record cred_exch_id={cred_exch_id} with state={new_state}")
+                current_app.logger.info(
+                    f"Updated cred_exch_record cred_exch_id={cred_exch_id} with state={new_state}")
 
         elif topic == ISSUER_CREDENTIAL_REVOKED:
             if webhook_body["state"] != "revoked":
-                current_app.logger.info(f"CREDENTIAL SUCCESSFULLY REVOKED received={request.get_json()}")
-                cred_exch = PartyVerifiableCredentialMinesActPermit.find_by_cred_exch_id(webhook_body["cred_ex_id"], unsafe=True)
+                current_app.logger.info(
+                    f"CREDENTIAL SUCCESSFULLY REVOKED received={request.get_json()}")
+                cred_exch = PartyVerifiableCredentialMinesActPermit.find_by_cred_exch_id(
+                    webhook_body["cred_ex_id"], unsafe=True)
                 cred_exch.permit_amendment.permit.mines_act_permit_vc_locked = True
                 cred_exch.save()
-  
+
         elif topic == PING:
             current_app.logger.info(f"TrustPing received={request.get_json()}")
-  
+
         else:
-            current_app.logger.info(f"unknown topic '{topic}', webhook_body={webhook_body}") 
+            current_app.logger.info(f"unknown topic '{topic}', webhook_body={webhook_body}")

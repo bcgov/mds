@@ -18,9 +18,9 @@ describe("Major Projects", () => {
   it("should upload and download a document successfully", () => {
     const fileName = "dummy.pdf";
 
-    cy.get("#project-summary-submit").then(($button) => {
-      $button[0].click();
-    });
+    cy.contains("Document Upload").click();
+
+    cy.contains("Edit Project Description").click();
 
     cy.fixture(fileName).then((fileContent) => {
       // Intercept the POST request and stub the response
@@ -63,11 +63,13 @@ describe("Major Projects", () => {
         }
       ).as("statusRequest");
 
-      cy.get('input[type="file"]').attachFile({
-        fileContent: fileContent,
-        fileName: fileName,
-        mimeType: "application/pdf",
-      });
+      cy.get('input[type="file"]')
+        .eq(1)
+        .attachFile({
+          fileContent: fileContent,
+          fileName: fileName,
+          mimeType: "application/pdf",
+        });
 
       // Wait for the upload request to complete(simulated)
       cy.wait("@uploadRequest").then((interception) => {

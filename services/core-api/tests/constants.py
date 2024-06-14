@@ -242,6 +242,7 @@ AMS_AUTHORIZATION_DATA = {
             "amendment_severity": "SIG",
             "is_contaminated": False,
             "authorization_description": "test descript",
+            "exemption_reason": "test exemption",
             "exemption_requested": False,
         }
     ],
@@ -264,6 +265,7 @@ AUTHORIZATION_DATA = [
             "amendment_severity": "SIG",
             "is_contaminated": False,
             "authorization_description": "description",
+            "exemption_reason": "test exemption",
             "exemption_requested": False,
         }
     ]

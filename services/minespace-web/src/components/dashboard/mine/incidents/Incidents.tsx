@@ -74,12 +74,12 @@ export const Incidents = () => {
           </a>{" "}
           for more information on reportable incidents.
         </Typography.Paragraph>
-        <IncidentsTable
+        {/* <IncidentsTable
           isLoaded={isLoaded}
           data={incidents}
           pageData={incidentPageData}
           handleSearch={handleFetchIncidents}
-        />
+        /> */}
       </Col>
     </Row>
   );

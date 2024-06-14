@@ -220,6 +220,22 @@ export const PROJECT_SUMMARY_DOCUMENT_TYPE_CODE = {
   DISCHARGE_FACTOR_AMENDMENT: "DFA",
   SUPPORTING: "SPR",
   SPATIAL: "SPT",
+  CONSENT_LETTER: "CSL",
+  CLAUSE_AMENDMENT_FORM: "CAF",
+  EXEMPTION_LETTER: "EXL",
+  CHANGE_OF_OWNERSHIP_NAME_OR_ADDRESS_FORM: "CON",
+};
+
+export const PROJECT_SUMMARY_DOCUMENT_TYPE_CODE_STATE = {
+  SPT: "spatial_documents",
+  SPR: "support_documents",
+  MAP: "location_documents",
+  GEN: "general_documents",
+  EXL: "exemption_documents",
+  DFA: "discharge_documents",
+  CSL: "consent_documents",
+  CON: "change_ownership_name_documents",
+  CAF: "clause_amendment_documents",
 };
 
 export const PROJECT_SUMMARY_DOCUMENT_TYPE_CODE_LOCATION = {

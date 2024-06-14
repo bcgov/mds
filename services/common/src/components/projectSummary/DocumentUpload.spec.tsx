@@ -15,14 +15,12 @@ const initialState = {
     permits: MOCK.PERMITS,
   },
   [STATIC_CONTENT]: {
-    projectSummaryPermitTypes: MOCK.BULK_STATIC_CONTENT_RESPONSE.projectSummaryPermitTypes,
-    projectSummaryAuthorizationTypes:
-      MOCK.BULK_STATIC_CONTENT_RESPONSE.projectSummaryAuthorizationTypes,
+    projectSummaryDocumentTypes: MOCK.BULK_STATIC_CONTENT_RESPONSE.projectSummaryDocumentTypes,
   },
 };
 
 describe("DocumentUpload", () => {
-  it.skip("renders properly", () => {
+  it("renders properly", () => {
     const { container } = render(
       <ReduxWrapper initialState={initialState}>
         <FormWrapper

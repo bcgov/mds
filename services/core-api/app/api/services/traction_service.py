@@ -9,6 +9,7 @@ from app.api.verifiable_credentials.models.connection import PartyVerifiableCred
 
 traction_token_url = Config.TRACTION_HOST + "/multitenancy/tenant/" + Config.TRACTION_TENANT_ID + "/token"
 traction_oob_create_invitation = Config.TRACTION_HOST + "/out-of-band/create-invitation"
+traction_connections = Config.TRACTION_HOST + "/connections"
 traction_offer_credential = Config.TRACTION_HOST + "/issue-credential/send-offer"
 revoke_credential_url = Config.TRACTION_HOST + "/revocation/revoke"
 fetch_credential_exchanges = Config.TRACTION_HOST + "/issue-credential/records"
@@ -83,6 +84,12 @@ class TractionService():
         new_traction_connection.save()
 
         return response
+
+    def delete_connection(self, connection_id) -> bool:
+        revoke_resp = requests.delete(
+            traction_connections + "/" + str(connection_id), headers=self.get_headers())
+        assert revoke_resp.status_code == 200, f"revoke_resp={revoke_resp.json()}"
+        return True
 
     def offer_mines_act_permit_111(self, connection_id, attributes):
         # https://github.com/bcgov/bc-vcpedia/blob/main/credentials/bc-mines-act-permit/1.1.1/governance.md#261-schema-definition

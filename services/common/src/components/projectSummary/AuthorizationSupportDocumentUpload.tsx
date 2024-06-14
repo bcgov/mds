@@ -5,37 +5,57 @@ import { PROJECT_SUMMARY_DOCUMENTS } from "@mds/common/constants/API";
 import RenderFileUpload from "@mds/common/components/forms/RenderFileUpload";
 import { IProjectSummaryDocument } from "../..";
 import { PROJECT_SUMMARY_DOCUMENT_TYPE_CODE } from "../..";
+import { requiredList } from "@mds/common/redux/utils/Validate";
 
 interface AuthorizationSupportDocumentUploadProps {
   mineGuid: string;
-  isProponent: boolean;
   documents: IProjectSummaryDocument[];
-  updateAmendmentDocuments: (documents: IProjectSummaryDocument) => void;
+  updateAmendmentDocuments: (document: IProjectSummaryDocument) => void;
+  removeAmendmentDocument: (
+    amendmentDocumentsIndex: number,
+    category: string,
+    document_manager_guid: string
+  ) => void;
   projectGuid: string;
   projectSummaryGuid: string;
   dfaRequired: boolean;
+  cslRequired: boolean;
+  conRequired: boolean;
+  cafRequired: boolean;
   code: string;
+  showExemptionSection: boolean;
+  isAmendment: boolean;
 }
 
 export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocumentUploadProps> = ({
   mineGuid,
-  isProponent,
   documents,
   updateAmendmentDocuments,
+  removeAmendmentDocument,
   projectGuid,
   projectSummaryGuid,
   dfaRequired,
+  cslRequired,
+  conRequired,
+  cafRequired,
+  showExemptionSection,
+  isAmendment,
 }) => {
   const handleRemoveFile = (error, fileToRemove) => {
     if (error) {
       console.log(error);
     }
-    const newDocuments = documents.filter(
-      (file) => fileToRemove.serverId !== file.document_manager_guid
+
+    const amendmentDocumentsIndex = documents.findIndex(
+      (doc) => fileToRemove.serverId === doc.document_manager_guid
     );
-    newDocuments.forEach((newDoc) => {
-      updateAmendmentDocuments(newDoc);
-    });
+    const amendmentDocument = documents.find(
+      (doc) => fileToRemove.serverId === doc.document_manager_guid
+    );
+    const category =
+      amendmentDocument.category || amendmentDocument.project_summary_document_type_code;
+
+    removeAmendmentDocument(amendmentDocumentsIndex, category, fileToRemove.serverId);
   };
 
   const handleFileLoad = (
@@ -43,12 +63,13 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
     document_manager_guid: string,
     project_summary_document_type_code: string
   ) => {
-    const newDoc = {
+    const newDocument = {
       document_name,
       document_manager_guid,
       project_summary_document_type_code,
     } as IProjectSummaryDocument;
-    updateAmendmentDocuments(newDoc);
+
+    updateAmendmentDocuments(newDocument);
   };
 
   const acceptedFileTypesMap = { ...DOCUMENT, ...EXCEL, ...IMAGE, ...SPATIAL };
@@ -57,11 +78,12 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
     <div>
       <Field
         id="LocationMapDocumentUpload"
-        name="documents"
+        name="location_documents"
         label="Location Map"
         labelHref="https://www2.gov.bc.ca/assets/gov/environment/waste-management/waste-discharge-authorization/guides/forms/epd-ema-08_location_map_form.pdf"
         component={RenderFileUpload}
         required
+        validate={[requiredList]}
         allowRevert
         allowMultiple
         acceptedFileTypesMap={acceptedFileTypesMap}
@@ -77,31 +99,136 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
         }
         onRemoveFile={handleRemoveFile}
       />
+      {(!isAmendment || (isAmendment && dfaRequired)) && (
+        <Field
+          id="DischargeFactorFormUpload"
+          name="discharge_documents"
+          label="Discharge Factor Amendment Form (PDF, 318KB)"
+          labelHref="https://www2.gov.bc.ca/assets/gov/environment/waste-management/waste-discharge-authorization/guides/forms/epd-ema-06_amend_discharge_factor_amendment_form.pdf"
+          component={RenderFileUpload}
+          required
+          validate={[requiredList]}
+          allowRevert
+          allowMultiple
+          acceptedFileTypesMap={acceptedFileTypesMap}
+          listedFileTypes={["document", "image", "spreadsheet", "spatial"]}
+          abbrevLabel={true}
+          uploadUrl={PROJECT_SUMMARY_DOCUMENTS({ projectGuid, projectSummaryGuid, mineGuid })}
+          onFileLoad={(document_name, document_manager_guid) =>
+            handleFileLoad(
+              document_name,
+              document_manager_guid,
+              PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.DISCHARGE_FACTOR_AMENDMENT
+            )
+          }
+          onRemoveFile={handleRemoveFile}
+        />
+      )}
+      {isAmendment && (
+        <div>
+          {cslRequired && (
+            <Field
+              id="ConsentLetterUpload"
+              name="consent_documents"
+              label="Consent Letter"
+              component={RenderFileUpload}
+              required
+              validate={[requiredList]}
+              allowRevert
+              allowMultiple
+              acceptedFileTypesMap={acceptedFileTypesMap}
+              listedFileTypes={["document", "image", "spreadsheet", "spatial"]}
+              abbrevLabel={true}
+              uploadUrl={PROJECT_SUMMARY_DOCUMENTS({ projectGuid, projectSummaryGuid, mineGuid })}
+              onFileLoad={(document_name, document_manager_guid) =>
+                handleFileLoad(
+                  document_name,
+                  document_manager_guid,
+                  PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.CONSENT_LETTER
+                )
+              }
+              onRemoveFile={handleRemoveFile}
+            />
+          )}
+          {cafRequired && (
+            <Field
+              id="ClauseAmendmentFormUpload"
+              name="clause_amendment_documents"
+              label="Clause Amendment Form (PDF, 276KB)"
+              labelHref="https://www2.gov.bc.ca/assets/gov/environment/waste-management/waste-discharge-authorization/guides/forms/epd-ema-07_amend_clause_amendment_form.pdf"
+              component={RenderFileUpload}
+              required
+              validate={[requiredList]}
+              allowRevert
+              allowMultiple
+              acceptedFileTypesMap={acceptedFileTypesMap}
+              listedFileTypes={["document", "image", "spreadsheet", "spatial"]}
+              abbrevLabel={true}
+              uploadUrl={PROJECT_SUMMARY_DOCUMENTS({ projectGuid, projectSummaryGuid, mineGuid })}
+              onFileLoad={(document_name, document_manager_guid) =>
+                handleFileLoad(
+                  document_name,
+                  document_manager_guid,
+                  PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.CLAUSE_AMENDMENT_FORM
+                )
+              }
+              onRemoveFile={handleRemoveFile}
+            />
+          )}
+          {conRequired && (
+            <Field
+              id="ChangeOfOwnershipNameOrAddressFormUpload"
+              name="change_ownership_name_documents"
+              label="Change of Ownership, Name or Address Form (PDF, 464KB)"
+              labelHref="https://www2.gov.bc.ca/assets/gov/environment/waste-management/waste-discharge-authorization/guides/forms/epd-ema-a2_change_of_ownership_name_or_address_form.pdf"
+              component={RenderFileUpload}
+              required
+              validate={[requiredList]}
+              allowRevert
+              allowMultiple
+              acceptedFileTypesMap={acceptedFileTypesMap}
+              listedFileTypes={["document", "image", "spreadsheet", "spatial"]}
+              abbrevLabel={true}
+              uploadUrl={PROJECT_SUMMARY_DOCUMENTS({ projectGuid, projectSummaryGuid, mineGuid })}
+              onFileLoad={(document_name, document_manager_guid) =>
+                handleFileLoad(
+                  document_name,
+                  document_manager_guid,
+                  PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.CHANGE_OF_OWNERSHIP_NAME_OR_ADDRESS_FORM
+                )
+              }
+              onRemoveFile={handleRemoveFile}
+            />
+          )}
+        </div>
+      )}
+      {showExemptionSection && (
+        <Field
+          id="ExemptionLetterUpload"
+          name="exemption_documents"
+          label="Exemption Letter with Rationale"
+          component={RenderFileUpload}
+          required
+          validate={[requiredList]}
+          allowRevert
+          allowMultiple
+          acceptedFileTypesMap={acceptedFileTypesMap}
+          listedFileTypes={["document", "image", "spreadsheet", "spatial"]}
+          abbrevLabel={true}
+          uploadUrl={PROJECT_SUMMARY_DOCUMENTS({ projectGuid, projectSummaryGuid, mineGuid })}
+          onFileLoad={(document_name, document_manager_guid) =>
+            handleFileLoad(
+              document_name,
+              document_manager_guid,
+              PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.EXEMPTION_LETTER
+            )
+          }
+          onRemoveFile={handleRemoveFile}
+        />
+      )}
       <Field
-        id="DischargeFactorFormUpload"
-        name="documents"
-        label="Discharge Factor Amendment Form (PDF, 318KB)"
-        labelHref="https://www2.gov.bc.ca/assets/gov/environment/waste-management/waste-discharge-authorization/guides/forms/epd-ema-06_amend_discharge_factor_amendment_form.pdf"
-        component={RenderFileUpload}
-        required={dfaRequired}
-        allowRevert
-        allowMultiple
-        acceptedFileTypesMap={acceptedFileTypesMap}
-        listedFileTypes={["document", "image", "spreadsheet", "spatial"]}
-        abbrevLabel={true}
-        uploadUrl={PROJECT_SUMMARY_DOCUMENTS({ projectGuid, projectSummaryGuid, mineGuid })}
-        onFileLoad={(document_name, document_manager_guid) =>
-          handleFileLoad(
-            document_name,
-            document_manager_guid,
-            PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.DISCHARGE_FACTOR_AMENDMENT
-          )
-        }
-        onRemoveFile={handleRemoveFile}
-      />
-      <Field
-        id="ExemptionLetterUpload"
-        name="documents"
+        id="SupportDocumentUpload"
+        name="support_documents"
         label="Supporting Document"
         component={RenderFileUpload}
         required={false}

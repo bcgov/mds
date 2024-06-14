@@ -28,7 +28,6 @@ export const DocumentUpload: FC = () => {
     project_guid,
     project_summary_guid,
     documents,
-    ...rest
   } = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
 
   const spatialAcceptedFileTypesMap = {
@@ -42,11 +41,6 @@ export const DocumentUpload: FC = () => {
     ...CSV,
     ...IMAGE,
   };
-
-  useEffect(() => {
-    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "spatial_documents", []));
-    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "support_documents", []));
-  }, []);
 
   useEffect(() => {
     dispatch(
@@ -169,13 +163,11 @@ export const DocumentUpload: FC = () => {
           onRemoveFile={onRemoveFile}
           params={fileUploadParams}
           acceptedFileTypesMap={spatialAcceptedFileTypesMap}
+          listedFileTypes={["spatial"]}
           component={ProjectSummaryFileUpload}
           props={{
             documents: documents,
             label: "Upload spatial documents",
-            labelIdle:
-              '<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><br>' +
-              "<div>We accept spatial files with max individual file size of 400 MB.</div>",
           }}
         />
 
@@ -208,13 +200,11 @@ export const DocumentUpload: FC = () => {
           onRemoveFile={onRemoveFile}
           params={fileUploadParams}
           acceptedFileTypesMap={supportingAcceptedFileTypesMap}
+          listedFileTypes={["document", "image", "spreadsheet"]}
           component={ProjectSummaryFileUpload}
           props={{
             documents: documents,
             label: "Upload Files",
-            labelIdle:
-              '<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><br>' +
-              "<div>We accept most common document, image, and spreadsheet with max individual file size of 400 MB.</div>",
           }}
         />
         <DocumentTable

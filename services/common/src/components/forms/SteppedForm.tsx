@@ -6,12 +6,9 @@ import LeftOutlined from "@ant-design/icons/LeftOutlined";
 import RightOutlined from "@ant-design/icons/RightOutlined";
 import { indexOf } from "lodash";
 import { flattenObject, formatUrlToUpperCaseString } from "@mds/common/redux/utils/helpers";
-import FormWrapper from "./FormWrapper";
+import FormWrapper, { FormWrapperProps } from "./FormWrapper";
 
-interface SteppedFormProps {
-  formName: string;
-  initialValues?: any;
-  isEditMode?: boolean;
+interface SteppedFormProps extends Omit<FormWrapperProps, "onSubmit"> {
   children: Array<ReactElement<StepProps>>;
   handleTabChange: (newTab: string) => void | Promise<void>;
   handleSaveDraft?: (formValues) => Promise<void>;
@@ -28,9 +25,10 @@ interface SteppedFormProps {
 }
 
 const SteppedForm: FC<SteppedFormProps> = ({
-  formName,
+  name,
   initialValues,
   children,
+  reduxFormConfig,
   transformPayload,
   handleTabChange,
   handleSaveDraft,
@@ -49,8 +47,8 @@ const SteppedForm: FC<SteppedFormProps> = ({
   const [tabIndex, setTabIndex] = useState(0);
   const tabs = children.map((child) => child.key);
   const dispatch = useDispatch();
-  const formValues = useSelector(getFormValues(formName));
-  const formErrors = useSelector((state) => getFormSyncErrors(formName)(state));
+  const formValues = useSelector(getFormValues(name));
+  const formErrors = useSelector((state) => getFormSyncErrors(name)(state));
   const errors = Object.keys(flattenObject(formErrors));
 
   useEffect(() => {
@@ -75,7 +73,7 @@ const SteppedForm: FC<SteppedFormProps> = ({
 
   // checks for validation errors before saving draft or save & continues
   const saveCheck = async () => {
-    await dispatch(submit(formName));
+    await dispatch(submit(name));
     const valid = !errors.length;
     return valid;
   };
@@ -144,15 +142,17 @@ const SteppedForm: FC<SteppedFormProps> = ({
         {children && (
           <div className="stepped-form-form-container">
             <FormWrapper
-              name={formName}
+              name={name}
               onSubmit={() => {}}
               initialValues={initialValues}
               isEditMode={isEditMode}
-              reduxFormConfig={{
-                touchOnBlur: true,
-                touchOnChange: false,
-                enableReinitialize: true,
-              }}
+              reduxFormConfig={
+                reduxFormConfig ?? {
+                  touchOnBlur: true,
+                  touchOnChange: false,
+                  enableReinitialize: true,
+                }
+              }
             >
               {children.find((child) => child.key === tabs[tabIndex])}
             </FormWrapper>
