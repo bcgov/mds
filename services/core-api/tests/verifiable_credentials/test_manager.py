@@ -15,17 +15,18 @@ class TestVerifiableCredentialManager:
         permit.bonds[0].bond_status_code = "ACT"
 
         mine_type = [mt for mt in pa.permit.site_properties if mt.mine_guid == pa.permit.mine_guid
-                     ][0] if pa.permit.site_properties else []
+                     ][0] if pa.permit.site_properties else None
+        if mine_type:
+            mine_disturbance_list = [
+                mtd.mine_disturbance_literal for mtd in mine_type.mine_type_detail
+                if mtd.mine_disturbance_code
+            ]
 
-        mine_disturbance_list = [
-            mtd.mine_disturbance_literal for mtd in mine_type.mine_type_detail
-            if mtd.mine_disturbance_code
-        ]
+            mine_commodity_list = [
+                mtd.mine_commodity_literal for mtd in mine_type.mine_type_detail
+                if mtd.mine_commodity_code
+            ]
 
-        mine_commodity_list = [
-            mtd.mine_commodity_literal for mtd in mine_type.mine_type_detail
-            if mtd.mine_commodity_code
-        ]
         mine_status_xref = pa.mine.mine_status[0].mine_status_xref
 
         assert pa.permit_no
