@@ -789,9 +789,10 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         if status_code == 'SUB' and len(contacts) == 0:
             errors_found['project_contacts'].append("Project Contacts not provided")
         for contact in contacts:
-            contact_validation = Project.validate_project_contacts(contact)
-            if contact_validation != True:
-                errors_found['project_contacts'].append(contact_validation)
+            if status_code == 'SUB' or (status_code != 'SUB' and contact.get('first_name') != None):
+                contact_validation = Project.validate_project_contacts(contact)
+                if contact_validation != True:
+                    errors_found['project_contacts'].append(contact_validation)
 
         if is_feature_enabled(Feature.AMS_AGENT):
             errors_found |= {
