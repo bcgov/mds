@@ -77,6 +77,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     is_billing_address_same_as_legal_address = db.Column(db.Boolean, nullable=True)
 
     applicant_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=True)
+    payment_contact_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=True)
 
     project_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('project.project_guid'), nullable=False)
@@ -128,6 +129,10 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
     municipality = db.relationship(
         'Municipality', lazy='joined', foreign_keys=nearest_municipality_guid
+    )
+
+    payment_contact = db.relationship(
+        'Party', lazy='joined', foreign_keys=payment_contact_party_guid
     )
 
     @classmethod
@@ -983,6 +988,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                contacts=None,
                company_alias=None,
                regional_district_id=None,
+               payment_contact=None,
                add_to_session=True):
         
         # Update simple properties.
@@ -1026,6 +1032,11 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             applicant_party = self.create_or_update_party(applicant, 'APP', self.applicant)
             applicant_party.save()
             self.applicant_party_guid = applicant_party.party_guid
+
+        if payment_contact is not None:
+            payment_contact_party = self.create_or_update_party(payment_contact, 'PAY', self.payment_contact)
+            payment_contact_party.save()
+            self.payment_contact_party_guid = payment_contact_party.party_guid
 
         # Create or update Agent Party
         self.is_agent = is_agent

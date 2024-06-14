@@ -101,6 +101,10 @@ describe("Major Projects", () => {
     cy.contains("Same as legal address")
       .first()
       .click({ force: true });
+    cy.get(`[name="payment_contact.first_name"]`).type("Test", { force: true });
+    cy.get(`[name="payment_contact.party_name"]`).type("Tester", { force: true });
+    cy.get(`[name="payment_contact.phone_no"]`).type("123-456-7890", { force: true });
+    cy.get(`[name="payment_contact.email"]`).type("test@test.com", { force: true });
 
     // SAVE & CONTINUE - Agent
     cy.contains("Save & Continue").click({ force: true });
