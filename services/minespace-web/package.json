@@ -14,7 +14,7 @@
     "@react-keycloak/web": "^3.4.0",
     "@reduxjs/toolkit": "2.0.1",
     "@types/jest": "24.9.1",
-    "@types/lodash": "4.14.192",
+    "@types/lodash": "4.17.5",
     "antd": "4.24.10",
     "axios": "1.7.2",
     "axios-mock-adapter": "1.17.0",

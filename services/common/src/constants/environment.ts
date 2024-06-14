@@ -13,7 +13,7 @@ export const DEFAULT_ENVIRONMENT = {
   keycloak_url: "https://test.loginproxy.gov.bc.ca/auth",
   flagsmithKey: "4Eu9eEMDmWVEHKDaKoeWY7",
   flagsmithUrl: "https://mds-flags-dev.apps.silver.devops.gov.bc.ca/api/v1/",
-  syncfusionLicense: process.env.SYNCFUSION_LICENSE_KEY,
+  syncfusionLicense: process.env.SYNCFUSION_LICENSE_KEY || "-",
 };
 
 export const ENVIRONMENT = {
