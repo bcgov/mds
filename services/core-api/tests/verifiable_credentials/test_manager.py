@@ -16,6 +16,9 @@ class TestVerifiableCredentialManager:
 
         mine_type = [mt for mt in pa.permit.site_properties if mt.mine_guid == pa.permit.mine_guid
                      ][0] if pa.permit.site_properties else None
+        mine_disturbance_list = []
+        mine_commodity_list = []
+
         if mine_type:
             mine_disturbance_list = [
                 mtd.mine_disturbance_literal for mtd in mine_type.mine_type_detail
