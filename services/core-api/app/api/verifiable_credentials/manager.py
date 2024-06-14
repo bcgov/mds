@@ -104,8 +104,10 @@ class VerifiableCredentialManager():
         #but we only want the mine_type for this specific permit/permit_amendment.
 
         #not really a 'mine_type' if it's managed at the permit level.
-        mine_type = MineType.find_by_permit_guid(permit_amendment.permit_guid,
-                                                 permit_amendment.mine_guid)
+        mine_type = [
+            mt for mt in permit_amendment.permit.site_properties
+            if mt.mine_guid == permit_amendment.permit.mine_guid
+        ][0] if permit_amendment.permit.site_properties else []
 
         mine_disturbance_list = [
             mtd.mine_disturbance_literal for mtd in mine_type.mine_type_detail
