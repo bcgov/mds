@@ -170,6 +170,7 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
             'location_documents': {
                 'required': True,
                 'type': 'list',
+                'allowed': ['ILT', 'IGT', 'DDL', 'NAM', 'TRA', 'MMR', 'RCH', 'OTH'],
                 'empty': False,
             },
         }
