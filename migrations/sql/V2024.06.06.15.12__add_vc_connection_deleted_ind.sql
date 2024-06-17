@@ -1,0 +1,1 @@
+ALTER TABLE party_verifiable_credential_connection ADD deleted_ind boolean default false;

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import { Divider } from "antd";
 import { getMines, getMineGuid } from "@mds/common/redux/selectors/mineSelectors";
-import AmazonS3Provider from "@/components/syncfusion/AmazonS3Provider";
+import AmazonS3Provider from "@mds/common/components/syncfusion/AmazonS3Provider";
 
 /**
  * @class  MineDocuments.js - View the mine's archived MMS files.

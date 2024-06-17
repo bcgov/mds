@@ -30,7 +30,7 @@ describe("AuthorizationsInvolved", () => {
           initialValues={MOCK.PERMITS}
           onSubmit={() => {}}
         >
-          <AuthorizationsInvolved {...MOCK.AUTHORIZATION_INVOLVED} />
+          <AuthorizationsInvolved />
         </FormWrapper>
       </ReduxWrapper>
     );

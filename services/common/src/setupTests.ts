@@ -13,6 +13,14 @@ Enzyme.configure({ adapter: new Adapter() });
   setTimeout(callback, 0); // eslint-disable-line @typescript-eslint/no-implied-eval
 };
 
+jest.mock("react", () => {
+  const original = jest.requireActual("react");
+  return {
+    ...original,
+    useLayoutEffect: jest.fn(),
+  };
+});
+
 jest.mock("react-lottie", () => ({
   __esModule: true,
   default: "lottie-mock",
@@ -23,7 +31,7 @@ jest.mock("@mds/common/providers/featureFlags/useFeatureFlag", () => ({
     isFeatureEnabled: () => true,
   }),
 }));
-
+window.scrollTo = jest.fn();
 const location = JSON.stringify(window.location);
 delete window.location;
 

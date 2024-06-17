@@ -213,7 +213,7 @@ exports.loadCSS = ({ include, exclude } = {}) => ({
   plugins: [],
 });
 
-exports.extractCSS = ({ include, exclude, filename, theme } = {}) => ({
+exports.extractCSS = ({ include, exclude, filename, theme, chunkFilename } = {}) => ({
   module: {
     rules: [
       {
@@ -337,6 +337,7 @@ exports.extractCSS = ({ include, exclude, filename, theme } = {}) => ({
   plugins: [
     new MiniCssExtractPlugin({
       filename,
+      chunkFilename,
     }),
   ],
 });

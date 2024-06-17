@@ -27,7 +27,7 @@ import DownOutlined from "@ant-design/icons/DownOutlined";
 import FileOutlined from "@ant-design/icons/FileOutlined";
 import InboxOutlined from "@ant-design/icons/InboxOutlined";
 import SyncOutlined from "@ant-design/icons/SyncOutlined";
-import { openDocument } from "../syncfusion/DocumentViewer";
+import { openDocument } from "@mds/common/components/syncfusion/DocumentViewer";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import { Button, Dropdown, MenuProps } from "antd";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";

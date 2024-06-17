@@ -167,6 +167,14 @@ class ProjectSummaryResource(Resource, UserMixin):
     parser.add_argument('confirmation_of_submission', type=bool, store_missing=False, required=False)
     parser.add_argument('company_alias', type=str, store_missing=False, required=False)
 
+    parser.add_argument(
+        'payment_contact',
+        type=dict,
+        location='json',
+        store_missing=False,
+        required=False
+    )
+
     @api.doc(
         description='Get a Project Description.',
         params={
@@ -176,8 +184,7 @@ class ProjectSummaryResource(Resource, UserMixin):
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     @api.marshal_with(PROJECT_SUMMARY_MODEL, code=200)
     def get(self, project_guid, project_summary_guid):
-        project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid,
-                                                                      is_minespace_user())
+        project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid)
         if project_summary is None:
             raise NotFound('Project Description not found')
 
@@ -192,8 +199,7 @@ class ProjectSummaryResource(Resource, UserMixin):
     @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PROJECT_SUMMARIES])
     @api.marshal_with(PROJECT_SUMMARY_MODEL, code=200)
     def put(self, project_guid, project_summary_guid):
-        project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid,
-                                                                      is_minespace_user())
+        project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid)
         project = Project.find_by_project_guid(project_guid)
         data = self.parser.parse_args()
 
@@ -242,7 +248,8 @@ class ProjectSummaryResource(Resource, UserMixin):
                                data.get('is_billing_address_same_as_legal_address'),
                                data.get('contacts'),
                                data.get('company_alias'),
-                               data.get('regional_district_id'))
+                               data.get('regional_district_id'),
+                               data.get('payment_contact'))
 
         project_summary.save()
         if prev_status == 'DFT' and project_summary.status_code == 'SUB':
@@ -274,8 +281,7 @@ class ProjectSummaryResource(Resource, UserMixin):
     @requires_any_of([MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PROJECT_SUMMARIES])
     @api.response(204, 'Successfully deleted.')
     def delete(self, project_guid, project_summary_guid):
-        project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid,
-                                                                      is_minespace_user())
+        project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid)
         if project_summary is None:
             raise NotFound('Project Description not found')
 

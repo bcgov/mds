@@ -89,10 +89,10 @@ export class Project extends Component {
       project_guid,
       information_requirements_table: { irt_guid },
     } = this.props.project;
-    let url = routes.PROJECTS.dynamicRoute(project_guid);
+    let url = routes.EDIT_PROJECT.dynamicRoute(project_guid);
     switch (activeTab) {
       case "overview":
-        url = routes.PROJECTS.dynamicRoute(project_guid);
+        url = routes.EDIT_PROJECT.dynamicRoute(project_guid);
         break;
       case "intro-project-overview":
         url = routes.INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(project_guid, irt_guid);
@@ -107,7 +107,7 @@ export class Project extends Component {
         url = routes.PROJECT_DECISION_PACKAGE.dynamicRoute(project_guid);
         break;
       default:
-        url = routes.PROJECTS.dynamicRoute(project_guid);
+        url = routes.EDIT_PROJECT.dynamicRoute(project_guid);
     }
     return this.props.history.replace(url);
   };

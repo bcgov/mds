@@ -89,7 +89,7 @@ permits:
 
 extra:
 	@echo "+\n++ Building tertiary services ...\n+"
-	@docker compose $(DC_FILE) up -d docgen-api
+	@docker compose $(DC_FILE) up -d docgen-api filesystem_provider
 
 # Simply for legacy support, this command will be retired shortly
 fe:

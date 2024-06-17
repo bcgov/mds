@@ -61,6 +61,7 @@ exports[`RequestReportForm renders form properly 1`] = `
                   <div
                     aria-required="true"
                     class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                    data-cy="mine_report_definition_guid"
                   >
                     <div
                       class="ant-select-selector"
