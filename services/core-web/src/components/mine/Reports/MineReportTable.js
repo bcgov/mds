@@ -62,8 +62,8 @@ const defaultProps = {
 export const MineReportTable = (props) => {
   const hideColumn = (condition) => (condition ? "column-hide" : "");
 
-  const userIsAdministrative = useSelector((state) =>
-    userHasRole(state, USER_ROLES.role_mds_administrative_users)
+  const userIsCoreEditReports = useSelector((state) =>
+    userHasRole(state, USER_ROLES.role_edit_reports)
   );
   const { isFeatureEnabled } = useFeatureFlag();
   const history = useHistory();
@@ -125,7 +125,7 @@ export const MineReportTable = (props) => {
           handleDownloadAll(record);
         },
       },
-      userIsAdministrative && {
+      userIsCoreEditReports && {
         key: "delete",
         label: "Delete",
         icon: <DeleteOutlined />,
