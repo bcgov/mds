@@ -14,6 +14,7 @@ import ExplosivesPermitMap from "@mds/common/components/explosivespermits/Explos
 import Magazine from "@mds/common/components/explosivespermits/Magazine";
 import { renderCategoryColumn, renderTextColumn } from "../common/CoreTableCommonColumns";
 
+console.log("huhu");
 export const generatedDocColumns = [
   renderCategoryColumn(
     "explosives_permit_document_type_code",
