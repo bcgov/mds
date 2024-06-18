@@ -32,6 +32,8 @@ jobs:
         uses: SonarSource/sonarcloud-github-action@v2.1.1
         with:
           projectBaseDir: ${{ inputs.project-dir }}
+          args: >
+            -Dsonar.verbose=true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
