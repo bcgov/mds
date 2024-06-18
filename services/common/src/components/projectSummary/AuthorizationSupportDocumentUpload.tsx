@@ -10,7 +10,7 @@ import { requiredList } from "@mds/common/redux/utils/Validate";
 interface AuthorizationSupportDocumentUploadProps {
   mineGuid: string;
   documents: IProjectSummaryDocument[];
-  updateAmendmentDocuments: (document: IProjectSummaryDocument) => void;
+  updateAmendmentDocument: (document: IProjectSummaryDocument) => void;
   removeAmendmentDocument: (
     amendmentDocumentsIndex: number,
     category: string,
@@ -18,28 +18,22 @@ interface AuthorizationSupportDocumentUploadProps {
   ) => void;
   projectGuid: string;
   projectSummaryGuid: string;
-  dfaRequired: boolean;
-  cslRequired: boolean;
-  conRequired: boolean;
-  cafRequired: boolean;
   code: string;
   showExemptionSection: boolean;
   isAmendment: boolean;
+  amendmentChanges: string[];
 }
 
 export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocumentUploadProps> = ({
   mineGuid,
   documents,
-  updateAmendmentDocuments,
+  updateAmendmentDocument,
   removeAmendmentDocument,
   projectGuid,
   projectSummaryGuid,
-  dfaRequired,
-  cslRequired,
-  conRequired,
-  cafRequired,
   showExemptionSection,
   isAmendment,
+  amendmentChanges,
 }) => {
   const handleRemoveFile = (error, fileToRemove) => {
     if (error) {
@@ -69,7 +63,22 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
       project_summary_document_type_code,
     } as IProjectSummaryDocument;
 
-    updateAmendmentDocuments(newDocument);
+    updateAmendmentDocument(newDocument);
+  };
+
+  const isDocumentTypeRequired = (type) => {
+    let valuesToCheckFor = [];
+    if (type === "DFA") {
+      valuesToCheckFor = ["ILT", "IGT", "DDL"];
+    } else if (type === "CSL") {
+      valuesToCheckFor = ["TRA"];
+    } else if (type === "CON") {
+      valuesToCheckFor = ["TRA", "NAM"];
+    } else if (type === "CAF") {
+      valuesToCheckFor = ["MMR", "RCH"];
+    }
+
+    return amendmentChanges?.some((val) => valuesToCheckFor.includes(val));
   };
 
   const acceptedFileTypesMap = { ...DOCUMENT, ...EXCEL, ...IMAGE, ...SPATIAL };
@@ -99,7 +108,11 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
         }
         onRemoveFile={handleRemoveFile}
       />
-      {(!isAmendment || (isAmendment && dfaRequired)) && (
+      {(!isAmendment ||
+        (isAmendment &&
+          isDocumentTypeRequired(
+            PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.DISCHARGE_FACTOR_AMENDMENT
+          ))) && (
         <Field
           id="DischargeFactorFormUpload"
           name="discharge_documents"
@@ -126,7 +139,7 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
       )}
       {isAmendment && (
         <div>
-          {cslRequired && (
+          {isDocumentTypeRequired(PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.CONSENT_LETTER) && (
             <Field
               id="ConsentLetterUpload"
               name="consent_documents"
@@ -150,7 +163,7 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
               onRemoveFile={handleRemoveFile}
             />
           )}
-          {cafRequired && (
+          {isDocumentTypeRequired(PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.CLAUSE_AMENDMENT_FORM) && (
             <Field
               id="ClauseAmendmentFormUpload"
               name="clause_amendment_documents"
@@ -175,7 +188,9 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
               onRemoveFile={handleRemoveFile}
             />
           )}
-          {conRequired && (
+          {isDocumentTypeRequired(
+            PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.CHANGE_OF_OWNERSHIP_NAME_OR_ADDRESS_FORM
+          ) && (
             <Field
               id="ChangeOfOwnershipNameOrAddressFormUpload"
               name="change_ownership_name_documents"

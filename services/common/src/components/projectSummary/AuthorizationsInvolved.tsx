@@ -48,10 +48,7 @@ import {
 import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import { MineDocument } from "@mds/common/models/documents/document";
 import { Link } from "react-router-dom";
-import {
-  PROJECT_SUMMARY_DOCUMENT_TYPE_CODE_STATE,
-  PROJECT_SUMMARY_DOCUMENT_TYPE_CODE,
-} from "../..";
+import { PROJECT_SUMMARY_DOCUMENT_TYPE_CODE_STATE } from "../..";
 
 const RenderEMAPermitCommonSections = ({ code, isAmendment, index }) => {
   const dispatch = useDispatch();
@@ -73,21 +70,6 @@ const RenderEMAPermitCommonSections = ({ code, isAmendment, index }) => {
 
   const onChange = (value, _newVal, _prevVal, _fieldName) => {
     setshowExemptionSection(value);
-  };
-
-  const isDocumentTypeRequired = (type) => {
-    let valuesToCheckFor = [];
-    if (type === "DFA") {
-      valuesToCheckFor = ["ILT", "IGT", "DDL"];
-    } else if (type === "CSL") {
-      valuesToCheckFor = ["TRA"];
-    } else if (type === "CON") {
-      valuesToCheckFor = ["TRA", "NAM"];
-    } else if (type === "CAF") {
-      valuesToCheckFor = ["MMR", "RCH"];
-    }
-
-    return sectionValues?.amendment_changes?.some((val) => valuesToCheckFor.includes(val));
   };
 
   const removeAmendmentDocument = (
@@ -118,7 +100,7 @@ const RenderEMAPermitCommonSections = ({ code, isAmendment, index }) => {
     );
   };
 
-  const updateAmendmentDocuments = (document: IProjectSummaryDocument) => {
+  const updateAmendmentDocument = (document: IProjectSummaryDocument) => {
     const category = document.category || document.project_summary_document_type_code;
 
     dispatch(
@@ -224,22 +206,13 @@ const RenderEMAPermitCommonSections = ({ code, isAmendment, index }) => {
         code={code}
         mineGuid={mine_guid}
         documents={tableDocuments}
-        updateAmendmentDocuments={updateAmendmentDocuments}
+        updateAmendmentDocument={updateAmendmentDocument}
         removeAmendmentDocument={removeAmendmentDocument}
         projectGuid={project_guid}
         projectSummaryGuid={project_summary_guid}
-        dfaRequired={isDocumentTypeRequired(
-          PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.DISCHARGE_FACTOR_AMENDMENT
-        )}
-        cslRequired={isDocumentTypeRequired(PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.CONSENT_LETTER)}
-        conRequired={isDocumentTypeRequired(
-          PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.CHANGE_OF_OWNERSHIP_NAME_OR_ADDRESS_FORM
-        )}
-        cafRequired={isDocumentTypeRequired(
-          PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.CLAUSE_AMENDMENT_FORM
-        )}
         showExemptionSection={showExemptionSection}
         isAmendment={isAmendment}
+        amendmentChanges={sectionValues?.amendment_changes}
       />
       <DocumentTable
         documents={tableDocuments}
