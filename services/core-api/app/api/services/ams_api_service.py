@@ -42,6 +42,7 @@ class AMSApiService():
                     'project_summary_authorization_type': item.get('project_summary_authorization_type'),
                     'authorization_type': item.get('new_type'),
                     'authorization_description': item.get('authorization_description') or 'N/A',
+                    'exemption_reason': item.get('exemption_reason') or 'N/A',
                     'new_type': item.get('new_type'),
                     'exemption_requested': item.get('exemption_requested') or False,
                     'is_contaminated': item.get('is_contaminated') or False,
@@ -153,7 +154,7 @@ class AMSApiService():
                         },
                         'purposeofapplication': authorization.get('authorization_description', ''),
                         'preappexemptionrequest': cls.__boolean_to_yes_no(authorization.get('exemption_requested')),
-                        'preappexemptionrequestreason': authorization.get('authorization_description', 'Not Applicable'),
+                        'preappexemptionrequestreason': authorization.get('exemption_reason', 'Not Applicable'),
                         'iscontaminatedsite': cls.__boolean_to_yes_no(authorization.get('is_contaminated')),
                         'contact': {
                             'em_lastname': contacts[0].get('last_name', ''),

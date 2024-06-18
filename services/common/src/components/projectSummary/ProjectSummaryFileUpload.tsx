@@ -14,6 +14,7 @@ interface ProjectSummaryFileUploadProps {
   onFileLoad: (fileName: string, document_guid: string, version_guid) => void;
   onRemoveFile: () => void;
   acceptedFileTypesMap: object;
+  listedFileTypes?: string[];
   params: any;
   documents: IDocument[];
   label?: string | ReactNode;
@@ -199,8 +200,8 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
     <>
       <Field
         {...(props.label ? { label: props.label } : {})}
-        {...(props.labelIdle ? { labelIdle: props.labelIdle } : {})}
-        newAbbrevLabel={true}
+        {...(props.listedFileTypes ? { listedFileTypes: props.listedFileTypes } : {})}
+        abbrevLabel={true}
         id="fileUpload"
         name="fileUpload"
         component={RenderFileUpload}
