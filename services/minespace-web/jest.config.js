@@ -19,7 +19,7 @@ module.exports = {
     escapeString: true,
     printBasicPrototype: true,
   },
-  coverageReporters: ["html", ["lcovonly", { projectRoot: "../../" }], "text-summary"],
+  // coverageReporters: ["html", ["lcovonly", { projectRoot: "../../" }], "text-summary"],
   collectCoverageFrom: [
     "**/common/**/*.{js,ts,tsx}",
     "**/src/**/*.{js,ts,tsx}",
