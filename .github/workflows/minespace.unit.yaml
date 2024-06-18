@@ -51,26 +51,3 @@ jobs:
         uses: SonarSource/sonarcloud-github-action@v2.1.1
         with:
           projectBaseDir: services/minespace-web
-          args: >
-            -Dsonar.verbose=true
-
-  # run-sonar-scan2:
-  #   name: SonarCloud Scan2
-  #   uses: SonarSource/sonarcloud-github-action@v2.1.1
-  #   with:
-  #     projectBaseDir: ${{ inputs.project-dir }}
-  #     args: >
-  #       -Dsonar.verbose=true
-  #   env:
-  #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
-  #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-  # run-sonar-scan:
-  #   name: Run SonarCloud Scan
-  #   needs: tests-unit-minespace
-  #   if: success()
-  #   uses: ./.github/workflows/sonarcloud-scan.yaml
-  #   with:
-  #     project-dir: services/minespace-web
-  #     test-report-artifact: minespace-web-test-results
-  #   secrets: inherit

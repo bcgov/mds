@@ -2,7 +2,6 @@ import { loadingBarReducer } from "react-redux-loading-bar";
 import { rootReducer } from "@/reducers/rootReducer";
 import { configureStore } from "@reduxjs/toolkit";
 
-console.log("hi");
 const getStore = (preloadedState = {}) =>
   configureStore({
     reducer: {

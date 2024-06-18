@@ -48,12 +48,7 @@ jobs:
           path: |
             services/core-web/coverage
             services/core-web/reports/test-reporter.xml
-  run-sonar-scan:
-    name: Run SonarCloud Scan
-    needs: tests-unit-frontend
-    if: success()
-    uses: ./.github/workflows/sonarcloud-scan.yaml
-    with:
-      project-dir: services/core-web
-      test-report-artifact: core-web-test-results
-    secrets: inherit
+      - name: Sonar Reporting
+        uses: SonarSource/sonarcloud-github-action@v2.1.1
+        with:
+          projectBaseDir: services/core-web
