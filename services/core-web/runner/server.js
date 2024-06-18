@@ -33,32 +33,40 @@ app.use(
   })
 );
 
-app.use(helmet({
-  contentSecurityPolicy: CONTENT_SECURITY_POLICY ? {
-    directives: CONTENT_SECURITY_POLICY
-  } : false
-}));
+app.use(
+  helmet({
+    contentSecurityPolicy: CONTENT_SECURITY_POLICY
+      ? {
+          directives: CONTENT_SECURITY_POLICY,
+        }
+      : false,
+  })
+);
 
 const staticServe = expressStaticGzip(`${__dirname}/${BUILD_DIR}`, {
   immutable: true,
   maxAge: "1y",
   enableBrotli: true,
-  customCompressions: [{
-    encodingName: 'deflate',
-    fileExtension: 'zz'
-  }],
-  orderPreference: ['br', 'gzip']
+  customCompressions: [
+    {
+      encodingName: "deflate",
+      fileExtension: "zz",
+    },
+  ],
+  orderPreference: ["br", "gzip"],
 });
 
 const vendorServe = expressStaticGzip(`${__dirname}/${VENDOR_DIR}`, {
   immutable: true,
   maxAge: "1y",
   enableBrotli: true,
-  customCompressions: [{
-    encodingName: 'deflate',
-    fileExtension: 'zz'
-  }],
-  orderPreference: ['br', 'gzip']
+  customCompressions: [
+    {
+      encodingName: "deflate",
+      fileExtension: "zz",
+    },
+  ],
+  orderPreference: ["br", "gzip"],
 });
 
 app.get(`${BASE_PATH}/env`, (req, res) => {
