@@ -35,7 +35,7 @@ class ProjectSummaryListGetResource(Resource, UserMixin):
         project_summaries = []
         for project in projects:
             project_project_summaries = ProjectSummary.find_by_project_guid(
-                project.project_guid, is_minespace_user())
+                project.project_guid)
             project_summaries = [*project_summaries, *project_project_summaries]
 
         return project_summaries

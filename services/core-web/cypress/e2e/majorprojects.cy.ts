@@ -18,9 +18,9 @@ describe("Major Projects", () => {
   it("should upload and download a document successfully", () => {
     const fileName = "dummy.pdf";
 
-    cy.get("#project-summary-submit").then(($button) => {
-      $button[0].click();
-    });
+    cy.contains("Document Upload").click();
+
+    cy.contains("Edit Project Description").click();
 
     cy.fixture(fileName).then((fileContent) => {
       // Intercept the POST request and stub the response
@@ -31,7 +31,6 @@ describe("Major Projects", () => {
           statusCode: 200,
           body: {
             document_manager_guid: "332d6f13-cd09-4b55-93d7-52bd7e557fa4",
-            document_manager_version_guid: "ba61d8cb-d50a-4930-b01c-7c1bb906f035",
             upload: { uploadId: "uploadId", parts: [{ part: 1, size: 100, url: "http://test" }] },
           }, // Stubbed response
         }
@@ -63,11 +62,13 @@ describe("Major Projects", () => {
         }
       ).as("statusRequest");
 
-      cy.get('input[type="file"]').attachFile({
-        fileContent: fileContent,
-        fileName: fileName,
-        mimeType: "application/pdf",
-      });
+      cy.get('input[type="file"]')
+        .eq(1)
+        .attachFile({
+          fileContent: fileContent,
+          fileName: fileName,
+          mimeType: "application/pdf",
+        });
 
       // Wait for the upload request to complete(simulated)
       cy.wait("@uploadRequest").then((interception) => {
@@ -87,11 +88,8 @@ describe("Major Projects", () => {
         expect(interception.request.body).to.deep.equal({
           parts: [{ part: 1, etag: "etagpart1" }],
           upload_id: "uploadId",
-          version_guid: "ba61d8cb-d50a-4930-b01c-7c1bb906f035",
         });
       });
-
-      cy.get(".filepond--file-status-main", { timeout: 5000 }).contains("Upload complete");
     });
 
     // Intercept the GET request and stub the response
@@ -102,7 +100,7 @@ describe("Major Projects", () => {
         body: "Mocked response data",
       });
     }).as("downloadRequest");
-
+    cy.wait(2500);
     cy.get("[data-cy=menu-actions-button]")
       .first()
       .click({ force: true });

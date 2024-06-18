@@ -1,0 +1,526 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HomePage renders properly 1`] = `
+<div>
+  <div
+    id="homepage-banner"
+    style="--img: url([object Object]); position: relative;"
+  >
+    <div
+      class="ant-col"
+    >
+      <h1
+        class="ant-typography"
+        style="color: white; font-size: 28px; text-align: center;"
+      >
+        Welcome back to CORE
+      </h1>
+      <div
+        class="ant-row"
+        id="home-banner-search-container"
+      >
+        <div
+          class="ant-col ant-col-18"
+        >
+          <div>
+            <span
+              class="ant-input-affix-wrapper ant-dropdown-trigger searchbar search-not-focussed ant-input-affix-wrapper-lg"
+            >
+              <input
+                class="ant-input ant-input-lg"
+                history="[object Object]"
+                location="[object Object]"
+                match="[object Object]"
+                placeholder="Search by Mines, Contacts, Permits or Documents Name..."
+                searchbarresults=""
+                type="text"
+                value=""
+              />
+              <span
+                class="ant-input-suffix"
+              >
+                <span
+                  aria-label="search"
+                  class="anticon anticon-search"
+                  role="img"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class=""
+                    data-icon="search"
+                    fill="currentColor"
+                    focusable="false"
+                    height="1em"
+                    viewBox="64 64 896 896"
+                    width="1em"
+                  >
+                    <path
+                      d="M909.6 854.5L649.9 594.8C690.2 542.7 712 479 712 412c0-80.2-31.3-155.4-87.9-212.1-56.6-56.7-132-87.9-212.1-87.9s-155.5 31.3-212.1 87.9C143.2 256.5 112 331.8 112 412c0 80.1 31.3 155.5 87.9 212.1C256.5 680.8 331.8 712 412 712c67 0 130.6-21.8 182.7-62l259.7 259.6a8.2 8.2 0 0011.6 0l43.6-43.5a8.2 8.2 0 000-11.6zM570.4 570.4C528 612.7 471.8 636 412 636s-116-23.3-158.4-65.6C211.3 528 188 471.8 188 412s23.3-116.1 65.6-158.4C296 211.3 352.2 188 412 188s116.1 23.2 158.4 65.6S636 352.2 636 412s-23.3 116.1-65.6 158.4z"
+                    />
+                  </svg>
+                </span>
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-typography ant-typography-secondary"
+      style="position: absolute; right: 10px; bottom: 10px; margin: 0px; font-size: 14px; color: rgb(255, 255, 255); opacity: 0.8;"
+    >
+      Photo Credit: Dominic Yague
+    </div>
+  </div>
+  <div
+    class="ant-row home-content"
+  >
+    <div
+      class="ant-col home-main-content ant-col-xs-24 ant-col-lg-16"
+    >
+      <div
+        class="home-main-content-container"
+      >
+        <div>
+          <h4
+            class="ant-typography"
+          >
+            Browse CORE
+          </h4>
+          <div
+            class="ant-typography"
+          >
+            Browse and filter the latest submissions.
+          </div>
+          <div
+            class="ant-row home-container-gutter"
+          >
+            <button
+              class="ant-btn ant-btn-default home-link-button"
+              type="button"
+            >
+              <div
+                class="home-link-button-inner"
+                data-cy="home-link-button-now"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="svg-inline--fa fa-triangle-person-digging "
+                  data-icon="triangle-person-digging"
+                  data-prefix="fal"
+                  focusable="false"
+                  role="img"
+                  viewBox="0 0 640 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M320 32c2.8 0 5.4 1.4 6.8 3.8l264.5 432c1.5 2.5 1.6 5.6 .2 8.1s-4.1 4.1-7 4.1H56c-2.9 0-5.6-1.6-7-4.1s-1.4-5.6 .2-8.1l264-432c1.5-2.4 4-3.8 6.8-3.8zm34.1-12.9C346.8 7.2 333.9 0 320 0s-26.9 7.3-34.1 19.1l-264 432c-7.5 12.3-7.8 27.8-.8 40.4S41.5 512 56 512H584.5c14.5 0 27.8-7.8 34.9-20.4s6.8-28.1-.8-40.4L354.1 19.1zM312 224a24 24 0 1 0 0-48 24 24 0 1 0 0 48zm-37 48c9.9 0 18.6 6.6 21.2 16.2l5.9 21.8-46.5-26.8 1.8-2.4c4.2-5.5 10.7-8.8 17.6-8.8zm66.5 60.7l-14.4-52.9C320.7 256.3 299.3 240 275 240c-17 0-33 8-43.2 21.6l-12.6 16.8c-2.7 3.7-3.8 8.3-2.9 12.8s3.7 8.4 7.7 10.6l155.9 89.9-9.6 16c-3 4.9-3 11.1-.2 16.1s8.2 8.1 13.9 8.1h96c5.8 0 11.1-3.1 13.9-8.1s2.8-11.2-.2-16.1l-48-80c-2.9-4.8-8.1-7.8-13.7-7.8s-10.8 2.9-13.7 7.8l-21.9 36.6-54.8-31.6zm-124.6-12l-7.5 16.8-32 72c-3.6 8.1 0 17.5 8.1 21.1s17.5 0 21.1-8.1l24.5-55.2L272 392.9V416c0 8.8 7.2 16 16 16s16-7.2 16-16V384c0-5.5-2.8-10.6-7.5-13.6l-64-40-15.6-9.8zM451.7 400H412.3L432 367.1 451.7 400z"
+                    fill="currentColor"
+                  />
+                </svg>
+                Notices of Work
+              </div>
+            </button>
+            <button
+              class="ant-btn ant-btn-default home-link-button"
+              type="button"
+            >
+              <div
+                class="home-link-button-inner"
+                data-cy="home-link-button-incidents"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="svg-inline--fa fa-brake-warning "
+                  data-icon="brake-warning"
+                  data-prefix="fal"
+                  focusable="false"
+                  role="img"
+                  viewBox="0 0 640 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M320 64a192 192 0 1 1 0 384 192 192 0 1 1 0-384zm0 416a224 224 0 1 0 0-448 224 224 0 1 0 0 448zm16-336c0-8.8-7.2-16-16-16s-16 7.2-16 16V272c0 8.8 7.2 16 16 16s16-7.2 16-16V144zM320 376a24 24 0 1 0 0-48 24 24 0 1 0 0 48zM77.5 100.6c4.8-7.4 2.6-17.3-4.8-22.1s-17.3-2.6-22.1 4.8C18.5 133.2 0 192.4 0 256s18.5 122.8 50.5 172.7c4.8 7.4 14.7 9.6 22.1 4.8s9.6-14.7 4.8-22.1C48.7 366.6 32 313.3 32 256s16.7-110.6 45.5-155.4zm512-17.3c-4.8-7.4-14.7-9.6-22.1-4.8s-9.6 14.7-4.8 22.1C591.3 145.4 608 198.7 608 256s-16.7 110.6-45.5 155.4c-4.8 7.4-2.6 17.3 4.8 22.1s17.3 2.6 22.1-4.8C621.4 378.8 640 319.6 640 256s-18.6-122.8-50.5-172.7z"
+                    fill="currentColor"
+                  />
+                </svg>
+                Incidents
+              </div>
+            </button>
+            <button
+              class="ant-btn ant-btn-default home-link-button"
+              type="button"
+            >
+              <div
+                class="home-link-button-inner"
+                data-cy="home-link-button-variances"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="svg-inline--fa fa-diamond-turn-right "
+                  data-icon="diamond-turn-right"
+                  data-prefix="fal"
+                  focusable="false"
+                  role="img"
+                  viewBox="0 0 512 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M261.7 34.3c-3.1-3.1-8.2-3.1-11.3 0l-216 216c-3.1 3.1-3.1 8.2 0 11.3l216 216c3.1 3.1 8.2 3.1 11.3 0l216-216c3.1-3.1 3.1-8.2 0-11.3l-216-216zM227.7 11.7c15.6-15.6 40.9-15.6 56.6 0l216 216c15.6 15.6 15.6 40.9 0 56.6l-216 216c-15.6 15.6-40.9 15.6-56.6 0l-216-216c-15.6-15.6-15.6-40.9 0-56.6l216-216zm65 137c6.2-6.2 16.4-6.2 22.6 0l64 64c6.2 6.2 6.2 16.4 0 22.6l-64 64c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6L329.4 240H232c-13.3 0-24 10.7-24 24v56c0 8.8-7.2 16-16 16s-16-7.2-16-16V264c0-30.9 25.1-56 56-56h97.4l-36.7-36.7c-6.2-6.2-6.2-16.4 0-22.6z"
+                    fill="currentColor"
+                  />
+                </svg>
+                Variances
+              </div>
+            </button>
+            <button
+              class="ant-btn ant-btn-default home-link-button"
+              type="button"
+            >
+              <div
+                class="home-link-button-inner"
+                data-cy="home-link-button-reports"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="svg-inline--fa fa-clipboard-list "
+                  data-icon="clipboard-list"
+                  data-prefix="fal"
+                  focusable="false"
+                  role="img"
+                  viewBox="0 0 384 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M145.5 68c5.3-20.7 24.1-36 46.5-36s41.2 15.3 46.5 36c1.8 7.1 8.2 12 15.5 12h18c8.8 0 16 7.2 16 16v32H192 96V96c0-8.8 7.2-16 16-16h18c7.3 0 13.7-4.9 15.5-12zM192 0c-32.8 0-61 19.8-73.3 48H112C91.1 48 73.3 61.4 66.7 80H64C28.7 80 0 108.7 0 144V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V144c0-35.3-28.7-64-64-64h-2.7c-6.6-18.6-24.4-32-45.3-32h-6.7C253 19.8 224.8 0 192 0zM320 112c17.7 0 32 14.3 32 32V448c0 17.7-14.3 32-32 32H64c-17.7 0-32-14.3-32-32V144c0-17.7 14.3-32 32-32v16c0 17.7 14.3 32 32 32h96 96c17.7 0 32-14.3 32-32V112zM208 80a16 16 0 1 0 -32 0 16 16 0 1 0 32 0zM136 272a24 24 0 1 0 -48 0 24 24 0 1 0 48 0zm40-16c-8.8 0-16 7.2-16 16s7.2 16 16 16h96c8.8 0 16-7.2 16-16s-7.2-16-16-16H176zm0 96c-8.8 0-16 7.2-16 16s7.2 16 16 16h96c8.8 0 16-7.2 16-16s-7.2-16-16-16H176zm-64 40a24 24 0 1 0 0-48 24 24 0 1 0 0 48z"
+                    fill="currentColor"
+                  />
+                </svg>
+                Reports
+              </div>
+            </button>
+            <button
+              class="ant-btn ant-btn-default home-link-button"
+              type="button"
+            >
+              <div
+                class="home-link-button-inner"
+                data-cy="home-link-button-major-projects"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="svg-inline--fa fa-mountains "
+                  data-icon="mountains"
+                  data-prefix="fal"
+                  focusable="false"
+                  role="img"
+                  viewBox="0 0 640 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M480 424.1c0 13.2-10.7 23.9-23.9 23.9H55.9C42.7 448 32 437.3 32 424.1c0-4.5 1.3-8.9 3.7-12.7L252.4 66c.8-1.3 2.2-2 3.6-2s2.9 .8 3.6 2L476.3 411.4c2.4 3.8 3.7 8.2 3.7 12.7zm-480 0C0 455 25 480 55.9 480H456.1 578.9c33.8 0 61.1-27.4 61.1-61.1c0-11.2-3.1-22.2-8.9-31.8l-132-216.3C495 164.1 487.8 160 480 160s-15 4.1-19.1 10.7l-48.2 79L286.8 49c-6.6-10.6-18.3-17-30.8-17s-24.1 6.4-30.8 17L8.6 394.4C3 403.3 0 413.6 0 424.1zM431.7 280L480 200.9 603.7 403.7c2.8 4.6 4.3 9.8 4.3 15.2c0 16.1-13 29.1-29.1 29.1H506.6c3.4-7.3 5.4-15.4 5.4-23.9c0-10.5-3-20.8-8.6-29.7L431.7 280z"
+                    fill="currentColor"
+                  />
+                </svg>
+                Major Projects
+              </div>
+            </button>
+          </div>
+        </div>
+        <div>
+          <h4
+            class="ant-typography"
+          >
+            Key Insights
+          </h4>
+          <div
+            class="ant-typography"
+          >
+            Need a specific data query from CORE or more information about our data? Contact our data team at 
+            <a
+              href="mailto:EMLIAnalytics@gov.bc.ca"
+            >
+              EMLIAnalytics@gov.bc.ca
+            </a>
+             or
+             
+            <a
+              href="https://submit.digital.gov.bc.ca/app/?f=69b63f7b-c496-4a8b-8cd4-230a7025dbef&r=%2Fapp%2Fform%2Fsubmit"
+            >
+              submit a request online
+            </a>
+            .
+          </div>
+          <div
+            class="ant-row"
+            style="margin-left: -8px; margin-right: -8px; min-height: 350px;"
+          />
+        </div>
+        <div
+          class="ant-row"
+          style="margin-left: -8px; margin-right: -8px;"
+        >
+          <div
+            class="ant-col ant-col-xs-24 ant-col-lg-12"
+            style="padding-left: 8px; padding-right: 8px;"
+          >
+            <div
+              class="home-bordered-content"
+              id="home-subscribed-mines-container"
+              style="min-height: inherit;"
+            >
+              <h4
+                class="ant-typography"
+              >
+                My Subscribed Mines
+              </h4>
+              <div
+                class="ant-typography"
+              >
+                Your subscribed mines. To subscribe to more mines, go to the mine's overview page and select "Subscribe to Mine" from the options menu.
+              </div>
+              <a
+                href="/my-dashboard/"
+              >
+                View all subscribed mines
+              </a>
+            </div>
+          </div>
+          <div
+            class="ant-col ant-col-xs-24 ant-col-lg-12"
+            style="padding-left: 8px; padding-right: 8px;"
+          >
+            <div
+              class="home-bordered-content"
+              style="max-height: 838px; overflow-y: scroll;"
+            >
+              <h4
+                class="ant-typography"
+              >
+                Latest Mine Alerts
+              </h4>
+              <div
+                class="ant-typography"
+              >
+                Here are the latest mine alerts from across CORE.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-col ant-col-xs-24 ant-col-lg-7"
+    >
+      <div
+        id="home-side-panel-container"
+      >
+        <div
+          class="home-bordered-content"
+        >
+          <h4
+            class="ant-typography"
+          >
+            External Links
+          </h4>
+          <div>
+            <a
+              href="https://a100.gov.bc.ca/int/cvis/nris/nris.html"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Inspections (NRIS)
+            </a>
+          </div>
+          <div>
+            <a
+              href="https://www2.gov.bc.ca/gov/content/data/geographic-data-services/web-based-mapping/imapbc"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              iMapBC
+            </a>
+          </div>
+          <div>
+            <a
+              href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/mineral-titles/mineral-placer-titles/mineraltitlesonline"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Mineral Titles Online (MTO)
+            </a>
+          </div>
+          <div>
+            <a
+              href="https://gww.nrs.gov.bc.ca/empr/mines-and-mineral-resources/inspector-mines-training"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              LAMP
+            </a>
+          </div>
+          <div>
+            <a
+              href="https://minfile.gov.bc.ca/"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Mineral Inventory (MINFILE)
+            </a>
+          </div>
+          <div>
+            <a
+              href="https://governmentofbc.maps.arcgis.com/apps/webappviewer/index.html?id=f024193c07a04a28b678170e1e2046f6"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              EMLI Inspection Mapper
+            </a>
+          </div>
+          <div>
+            <a
+              href="https://bcgov.sharepoint.com/sites/EMLI-MINESGIS/SitePages/Mining-GIS-Requests-Portal-Home.aspx"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Mining GIS Request Portal
+            </a>
+          </div>
+          <div>
+            <a
+              href="https://projects.eao.gov.bc.ca/"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              EPIC (EAO)
+            </a>
+          </div>
+          <div>
+            <a
+              href="https://mines.qp.gov.bc.ca/mines/app"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Mines Certification Registry
+            </a>
+          </div>
+          <div>
+            <a
+              href="https://apps.nrs.gov.bc.ca/int/fncs"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              First Nation Consultation System
+            </a>
+          </div>
+          <div>
+            <a
+              href="https://www.gov.bc.ca/minesengagement"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Regional Mines Public Engagement Tool Portal
+            </a>
+          </div>
+        </div>
+        <div
+          class="home-bordered-content"
+        >
+          <h4
+            class="ant-typography"
+          >
+            Maps
+          </h4>
+          <div>
+            <a
+              href="https://metabase-4c2ba9-prod.apps.silver.devops.gov.bc.ca/question/2569-active-explosives-permits-in-bc-map"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Active ESUP
+            </a>
+          </div>
+          <div>
+            <a
+              href="https://metabase-4c2ba9-prod.apps.silver.devops.gov.bc.ca/question/2610-mine-tsf-map"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Tailings Storage Facility
+            </a>
+          </div>
+        </div>
+        <div
+          class="home-bordered-content"
+        >
+          <h4
+            class="ant-typography"
+          >
+            Documents
+          </h4>
+          <div>
+            <a
+              href="[object Object]"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Health, Safety and Reclamation Code
+            </a>
+          </div>
+          <div>
+            <a
+              href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/health-safety/chief-inspector-s-annual-reports"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Chief Inspector's Annual Reports
+            </a>
+          </div>
+          <div>
+            <a
+              href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/health-safety/chief-inspector-directives"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Chief Inspector's Directives
+            </a>
+          </div>
+          <div>
+            <a
+              href="[object Object]"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Mine Emergency Management Plan
+            </a>
+          </div>
+        </div>
+        <div
+          class="home-bordered-content"
+        >
+          <h4
+            class="ant-typography"
+          >
+            We Need Your Feedback!
+          </h4>
+          <div
+            class="ant-typography"
+          >
+            We are always open to feedback for CORE and Minespace to improve your experience. Have you encountered a bug that prevents you from working? Get in touch with us.
+          </div>
+          <div
+            class="ant-typography"
+          >
+            Contact the 
+            <a
+              href="mailto: mds@gov.bc.ca"
+            >
+              MDS Team
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

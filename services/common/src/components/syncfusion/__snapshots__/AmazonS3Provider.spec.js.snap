@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AmazonS3Provider renders properly 1`] = `
+<div>
+  <div
+    className="control-section"
+  >
+    <m
+      ajaxSettings={
+        {
+          "downloadUrl": "<FILESYSTEM_PROVIDER_URL>AmazonS3Download",
+          "getImageUrl": "<FILESYSTEM_PROVIDER_URL>AmazonS3GetImage",
+          "url": "<FILESYSTEM_PROVIDER_URL>AmazonS3FileOperations",
+        }
+      }
+      allowDragAndDrop={false}
+      allowMultiSelection={true}
+      beforeDownload={[Function]}
+      beforeImageLoad={[Function]}
+      beforeSend={[Function]}
+      contextMenuSettings={
+        {
+          "file": [
+            "Open",
+            "|",
+            "Details",
+          ],
+          "folder": [
+            "Open",
+            "|",
+            "Details",
+          ],
+          "layout": [
+            "SortBy",
+            "View",
+            "Refresh",
+            "|",
+            "Details",
+            "|",
+            "SelectAll",
+          ],
+          "visible": true,
+        }
+      }
+      enablePersistence={false}
+      fileOpen={[Function]}
+      id="filemanager"
+      menuClick={[Function]}
+      rootAliasName="Files"
+      searchSettings={
+        {
+          "allowSearchOnTyping": false,
+          "filterType": "contains",
+          "ignoreCase": true,
+        }
+      }
+      showFileExtension={true}
+      showHiddenItems={false}
+      showThumbnail={true}
+      toolbarClick={[Function]}
+      toolbarSettings={
+        {
+          "items": [
+            "Download",
+            "SortBy",
+            "Refresh",
+            "Selection",
+            "View",
+            "Details",
+          ],
+          "visible": true,
+        }
+      }
+      view="Details"
+    >
+      <g
+        services={
+          [
+            [Function],
+            [Function],
+            [Function],
+            [Function],
+          ]
+        }
+      />
+    </m>
+  </div>
+</div>
+`;

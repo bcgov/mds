@@ -8,9 +8,8 @@ import { PROJECT_SUMMARY_DOCUMENT_TYPE_CODE } from "../..";
 
 interface AuthorizationSupportDocumentUploadProps {
   mineGuid: string;
-  isProponent: boolean;
   documents: IProjectSummaryDocument[];
-  updateAmendmentDocuments: (documents: IProjectSummaryDocument, code: string) => void;
+  updateAmendmentDocuments: (documents: IProjectSummaryDocument[]) => void;
   projectGuid: string;
   projectSummaryGuid: string;
   dfaRequired: boolean;
@@ -19,13 +18,11 @@ interface AuthorizationSupportDocumentUploadProps {
 
 export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocumentUploadProps> = ({
   mineGuid,
-  isProponent,
   documents,
   updateAmendmentDocuments,
   projectGuid,
   projectSummaryGuid,
   dfaRequired,
-  code,
 }) => {
   const handleRemoveFile = (error, fileToRemove) => {
     if (error) {
@@ -34,9 +31,7 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
     const newDocuments = documents.filter(
       (file) => fileToRemove.serverId !== file.document_manager_guid
     );
-    newDocuments.forEach((newDoc) => {
-      updateAmendmentDocuments(newDoc, code);
-    });
+    updateAmendmentDocuments(newDocuments);
   };
 
   const handleFileLoad = (
@@ -49,7 +44,7 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
       document_manager_guid,
       project_summary_document_type_code,
     } as IProjectSummaryDocument;
-    updateAmendmentDocuments(newDoc, code);
+    updateAmendmentDocuments([newDoc, ...documents]);
   };
 
   const acceptedFileTypesMap = { ...DOCUMENT, ...EXCEL, ...IMAGE, ...SPATIAL };
@@ -65,8 +60,7 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
         required
         allowRevert
         allowMultiple
-        labelIdle="<strong>Drag & Drop your files or <u>Browse</u></strong><br/>
-          <div>We accept most common document, image, spreadsheet, and spatial files with max individual file size of 750 MB.</div>"
+        acceptedFileTypesMap={acceptedFileTypesMap}
         listedFileTypes={["document", "image", "spreadsheet", "spatial"]}
         abbrevLabel={true}
         uploadUrl={PROJECT_SUMMARY_DOCUMENTS({ projectGuid, projectSummaryGuid, mineGuid })}
@@ -89,8 +83,7 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
         allowRevert
         allowMultiple
         acceptedFileTypesMap={acceptedFileTypesMap}
-        labelIdle="<strong>Drag & Drop your files or <u>Browse</u></strong><br/>
-          <div>We accept most common document, image, spreadsheet, and spatial files with max individual file size of 750 MB.</div>"
+        listedFileTypes={["document", "image", "spreadsheet", "spatial"]}
         abbrevLabel={true}
         uploadUrl={PROJECT_SUMMARY_DOCUMENTS({ projectGuid, projectSummaryGuid, mineGuid })}
         onFileLoad={(document_name, document_manager_guid) =>
@@ -111,8 +104,7 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
         allowRevert
         allowMultiple
         acceptedFileTypesMap={acceptedFileTypesMap}
-        labelIdle="<strong>Drag & Drop your files or <u>Browse</u></strong><br/>
-          <div>We accept most common document, image, spreadsheet, and spatial files with max individual file size of 750 MB.</div>"
+        listedFileTypes={["document", "image", "spreadsheet", "spatial"]}
         abbrevLabel={true}
         uploadUrl={PROJECT_SUMMARY_DOCUMENTS({ projectGuid, projectSummaryGuid, mineGuid })}
         onFileLoad={(document_name, document_manager_guid) =>

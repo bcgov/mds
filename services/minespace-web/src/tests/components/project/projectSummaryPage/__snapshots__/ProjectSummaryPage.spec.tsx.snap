@@ -1,3 +1,491 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ProjectSummaryPage renders properly 1`] = `<Loading />`;
+exports[`ProjectSummaryPage renders properly 1`] = `
+<div>
+  <div
+    class="ant-row"
+  >
+    <div
+      class="ant-col ant-col-24"
+    >
+      <h1
+        class="ant-typography"
+      >
+        Edit project description - Sample title
+      </h1>
+    </div>
+  </div>
+  <div
+    class="ant-row"
+  >
+    <div
+      class="ant-col ant-col-24"
+    >
+      <a
+        href="/projects/74120872-74f2-4e27-82e6-878ddb472e5a/overview"
+      >
+        <span
+          aria-label="arrow-left"
+          class="anticon anticon-arrow-left padding-sm--right"
+          role="img"
+        >
+          <svg
+            aria-hidden="true"
+            class=""
+            data-icon="arrow-left"
+            fill="currentColor"
+            focusable="false"
+            height="1em"
+            viewBox="64 64 896 896"
+            width="1em"
+          >
+            <path
+              d="M872 474H286.9l350.2-304c5.6-4.9 2.2-14-5.2-14h-88.5c-3.9 0-7.6 1.4-10.5 3.9L155 487.8a31.96 31.96 0 000 48.3L535.1 866c1.5 1.3 3.3 2 5.2 2h91.5c7.4 0 10.8-9.2 5.2-14L286.9 550H872c4.4 0 8-3.6 8-8v-60c0-4.4-3.6-8-8-8z"
+            />
+          </svg>
+        </span>
+        Back to: 
+        Test Project Title
+         Project Overview page
+      </a>
+    </div>
+  </div>
+  <div
+    class="ant-divider ant-divider-horizontal"
+    role="separator"
+  />
+  <div
+    class="ant-row"
+  >
+    <div
+      class="ant-col ant-col-6 stepped-form-menu-container"
+    >
+      <ul
+        class="ant-menu ant-menu-root ant-menu-inline ant-menu-light stepped-form"
+        data-menu-list="true"
+        role="menu"
+        tabindex="0"
+      >
+        <li
+          aria-disabled="false"
+          class="ant-menu-item ant-menu-item-selected ant-menu-item-only-child stepped-menu-item"
+          data-menu-id="rc-menu-uuid-test-basic-information"
+          role="menuitem"
+          style="padding-left: 24px;"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            Basic Information
+          </span>
+        </li>
+        <li
+          aria-disabled="false"
+          class="ant-menu-item ant-menu-item-only-child stepped-menu-item"
+          data-menu-id="rc-menu-uuid-test-related-projects"
+          role="menuitem"
+          style="padding-left: 24px;"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            Related Projects
+          </span>
+        </li>
+        <li
+          aria-disabled="false"
+          class="ant-menu-item ant-menu-item-only-child stepped-menu-item"
+          data-menu-id="rc-menu-uuid-test-purpose-and-authorization"
+          role="menuitem"
+          style="padding-left: 24px;"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            Purpose and Authorization
+          </span>
+        </li>
+        <li
+          aria-disabled="false"
+          class="ant-menu-item ant-menu-item-only-child stepped-menu-item"
+          data-menu-id="rc-menu-uuid-test-project-contacts"
+          role="menuitem"
+          style="padding-left: 24px;"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            Project Contacts
+          </span>
+        </li>
+        <li
+          aria-disabled="false"
+          class="ant-menu-item ant-menu-item-only-child stepped-menu-item"
+          data-menu-id="rc-menu-uuid-test-applicant-information"
+          role="menuitem"
+          style="padding-left: 24px;"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            Applicant Information
+          </span>
+        </li>
+        <li
+          aria-disabled="false"
+          class="ant-menu-item ant-menu-item-only-child stepped-menu-item"
+          data-menu-id="rc-menu-uuid-test-representing-agent"
+          role="menuitem"
+          style="padding-left: 24px;"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            Representing Agent
+          </span>
+        </li>
+        <li
+          aria-disabled="false"
+          class="ant-menu-item ant-menu-item-only-child stepped-menu-item"
+          data-menu-id="rc-menu-uuid-test-location-access-and-land-use"
+          role="menuitem"
+          style="padding-left: 24px;"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            Location Access and Land Use
+          </span>
+        </li>
+        <li
+          aria-disabled="false"
+          class="ant-menu-item ant-menu-item-only-child stepped-menu-item"
+          data-menu-id="rc-menu-uuid-test-mine-components-and-offsite-infrastructure"
+          role="menuitem"
+          style="padding-left: 24px;"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            Mine Components and Offsite Infrastructure
+          </span>
+        </li>
+        <li
+          aria-disabled="false"
+          class="ant-menu-item ant-menu-item-only-child stepped-menu-item"
+          data-menu-id="rc-menu-uuid-test-project-dates"
+          role="menuitem"
+          style="padding-left: 24px;"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            Project Dates
+          </span>
+        </li>
+        <li
+          aria-disabled="false"
+          class="ant-menu-item ant-menu-item-only-child stepped-menu-item"
+          data-menu-id="rc-menu-uuid-test-document-upload"
+          role="menuitem"
+          style="padding-left: 24px;"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            Document Upload
+          </span>
+        </li>
+        <li
+          aria-disabled="false"
+          class="ant-menu-item ant-menu-item-only-child stepped-menu-item"
+          data-menu-id="rc-menu-uuid-test-application-summary"
+          role="menuitem"
+          style="padding-left: 24px;"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            Application Summary
+          </span>
+        </li>
+        <li
+          aria-disabled="false"
+          class="ant-menu-item ant-menu-item-only-child stepped-menu-item"
+          data-menu-id="rc-menu-uuid-test-declaration"
+          role="menuitem"
+          style="padding-left: 24px;"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            Declaration
+          </span>
+        </li>
+      </ul>
+      <div
+        aria-hidden="true"
+        style="display: none;"
+      />
+    </div>
+    <div
+      class="ant-col ant-col-18"
+    >
+      <div
+        class="stepped-form-form-container"
+      >
+        <form
+          class="ant-form ant-form-vertical common-form common-form-ADD_EDIT_PROJECT_SUMMARY form-edit"
+          id="ADD_EDIT_PROJECT_SUMMARY"
+        >
+          <h3
+            class="ant-typography"
+          >
+            Basic Information
+          </h3>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class="ant-form-item-required"
+                  for="ADD_EDIT_PROJECT_SUMMARY_project_summary_title"
+                  title=""
+                >
+                  <div
+                    style="width: 100%;"
+                  >
+                    Project title
+                  </div>
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <input
+                      class="ant-input"
+                      id="project_summary_title"
+                      name="project_summary_title"
+                      type="text"
+                      value="Sample title"
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_EDIT_PROJECT_SUMMARY_project_summary_title_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class=""
+                  for="ADD_EDIT_PROJECT_SUMMARY_proponent_project_id"
+                  title=""
+                >
+                  <div>
+                    Proponent project tracking ID
+                     
+                    <span
+                      class="form-item-optional"
+                    >
+                       (optional)
+                    </span>
+                    <br />
+                    <span
+                      class="label-subtitle"
+                    >
+                      If your company uses a tracking number to identify projects, please provide it here.
+                    </span>
+                  </div>
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <input
+                      class="ant-input"
+                      id="proponent_project_id"
+                      name="proponent_project_id"
+                      type="text"
+                      value="25789-x"
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_EDIT_PROJECT_SUMMARY_proponent_project_id_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class="ant-form-item-required"
+                  for="ADD_EDIT_PROJECT_SUMMARY_project_summary_description"
+                  title=""
+                >
+                  <div
+                    style="width: 100%;"
+                  >
+                    Project overview
+                    <br />
+                    <span
+                      class="label-subtitle"
+                    >
+                      Provide a 2-3 paragraph high-level description of your proposed project.
+                    </span>
+                  </div>
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <textarea
+                      class="ant-input"
+                      id="project_summary_description"
+                      name="project_summary_description"
+                      style="height: 0px; resize: none; min-height: -40px;"
+                    >
+                      Sample description
+                    </textarea>
+                    <div
+                      class="ant-row ant-row-space-between form-item-help project_summary_description-form-help"
+                    >
+                      <span>
+                        Maximum 4000 characters
+                      </span>
+                      <span
+                        class="flex-end"
+                      >
+                        3982 / 4000
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_EDIT_PROJECT_SUMMARY_project_summary_description_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div
+          class="ant-row ant-row-end stepped-form-button-row"
+        >
+          <div>
+            <button
+              class="ant-btn ant-btn-primary"
+              type="button"
+            >
+              <span>
+                Save & Continue
+              </span>
+              <span
+                aria-label="right"
+                class="anticon anticon-right"
+                role="img"
+              >
+                <svg
+                  aria-hidden="true"
+                  class=""
+                  data-icon="right"
+                  fill="currentColor"
+                  focusable="false"
+                  height="1em"
+                  viewBox="64 64 896 896"
+                  width="1em"
+                >
+                  <path
+                    d="M765.7 486.8L314.9 134.7A7.97 7.97 0 00302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 000-50.4z"
+                  />
+                </svg>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

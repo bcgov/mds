@@ -1,4 +1,4 @@
-FROM python:3.11.7
+FROM python:3.12.3-bookworm
 
 ENV LD_LIBRARY_PATH="/opt/oracle/instantclient:${LD_LIBRARY_PATH}" \
     PATH="/opt/oracle/instantclient:${PATH}" \

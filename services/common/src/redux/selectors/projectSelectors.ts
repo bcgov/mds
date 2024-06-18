@@ -1,7 +1,7 @@
 import { createSelector } from "reselect";
 import { uniq } from "lodash";
 import * as projectReducer from "../reducers/projectReducer";
-import { IParty, IProjectContact } from "../..";
+import { IParty, IProjectContact, IProjectSummaryDocument } from "../..";
 import { getTransformedProjectSummaryAuthorizationTypes } from "./staticContentSelectors";
 
 export const {
@@ -26,6 +26,21 @@ const formatProjectSummaryParty = (party): IParty => {
   return { ...party, address: party.address[0] };
 };
 
+const formatProjectSummaryDocuments = (documents = []): IProjectSummaryDocument[] => {
+  const allDocuments: any = { documents };
+  const fieldNameMap = {
+    support_documents: "SPR",
+    spatial_documents: "SPT",
+  };
+  Object.entries(fieldNameMap).forEach(([fieldName, docTypeCode]) => {
+    const matching = documents.filter(
+      (doc) => doc.project_summary_document_type_code === docTypeCode
+    );
+    allDocuments[fieldName] = matching;
+  });
+  return allDocuments;
+};
+
 const formatProjectContact = (contacts): IProjectContact[] => {
   if (!contacts) {
     return contacts;
@@ -39,8 +54,8 @@ const formatProjectContact = (contacts): IProjectContact[] => {
 
   return formattedContacts;
 };
-const formatAuthorizations = (authorizations = [], amsAuthTypes, statusCode) => {
-  const authorizationTypes = uniq(authorizations.map((a) => a.project_summary_authorization_type));
+const formatAuthorizations = (amsAuthTypes, statusCode, authorizations = []) => {
+  const authorizationTypes = uniq(authorizations?.map((a) => a.project_summary_authorization_type));
   const formattedAuthorizations = {};
   let ams_terms_agreed = false;
 
@@ -78,6 +93,7 @@ export const getAmsAuthorizationTypes = createSelector(
 export const getFormattedProjectSummary = createSelector(
   [getProjectSummary, getProject, getAmsAuthorizationTypes],
   (summary, project, amsAuthTypes) => {
+    const documents = formatProjectSummaryDocuments(summary.documents);
     const contacts = formatProjectContact(project.contacts);
     const agent = formatProjectSummaryParty(summary.agent);
     const facility_operator = formatProjectSummaryParty(summary.facility_operator);
@@ -89,7 +105,8 @@ export const getFormattedProjectSummary = createSelector(
       agent,
       facility_operator,
       confirmation_of_submission,
-      ...formatAuthorizations(summary.authorizations, amsAuthTypes, summary.status_code),
+      ...formatAuthorizations(amsAuthTypes, summary.status_code, summary.authorizations),
+      ...documents,
     };
 
     formattedSummary.project_lead_party_guid = project.project_lead_party_guid;

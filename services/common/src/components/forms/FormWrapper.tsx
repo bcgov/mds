@@ -56,7 +56,7 @@ NOTABLE OMISSIONS:
 SEE ALSO:
 - BaseInput.tsx 
 */
-interface FormWrapperProps {
+export interface FormWrapperProps {
   name: string;
   initialValues?: any;
   reduxFormConfig?: Partial<ConfigProps>;

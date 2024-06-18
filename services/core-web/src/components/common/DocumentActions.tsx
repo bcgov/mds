@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Dropdown, Button, MenuProps } from "antd";
 import { CARAT } from "@/constants/assets";
 import { DownloadOutlined, FileOutlined } from "@ant-design/icons";
-import { openDocument, isDocumentOpenable } from "@/components/syncfusion/DocumentViewer";
+import { openDocument, isDocumentOpenable } from "@mds/common/components/syncfusion/DocumentViewer";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 
 interface DocumentActionsProps {

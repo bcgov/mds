@@ -16,14 +16,14 @@ pytest-cov==4.1.0
 python-dateutil==2.8.2
 python-dotenv==1.0.0
 redis==4.6.0
-requests==2.31.0
+requests==2.32.3
 SQLAlchemy==2.0.19
-uwsgi==2.0.22
+uwsgi==2.0.23
 uwsgitop==0.11
 Werkzeug==2.3.6
 boto3==1.28.15
 celery==5.3.1
-numpy==1.25.2
+numpy==1.26.4
 flower==2.0.0
 
 zipstream==1.1.4
@@ -41,3 +41,4 @@ opentelemetry-instrumentation-redis==0.33b0
 opentelemetry-instrumentation-requests==0.33b0
 opentelemetry-instrumentation-sqlalchemy==0.33b0
 opentelemetry-instrumentation-urllib3==0.33b0
+tornado>=6.4.1 # not directly required, pinned by Snyk to avoid a vulnerability

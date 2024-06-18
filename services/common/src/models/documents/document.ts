@@ -163,10 +163,10 @@ export class MineDocument implements IMineDocument {
     _userRoles: string[] = [],
     is_latest_version: boolean = this.is_latest_version
   ) {
-    const canModify = is_latest_version && !this.is_archived;
-    if (!this.mine_document_guid) return [];
+    const canModify = is_latest_version && !this.is_archived && this.mine_document_guid;
+    const canView = this.file_type === ".pdf" && this.document_manager_guid;
     return [
-      this.file_type === ".pdf" && FileOperations.View,
+      canView && FileOperations.View,
       FileOperations.Download,
       isFeatureEnabled(Feature.DOCUMENTS_REPLACE_FILE) && canModify && FileOperations.Replace,
       canModify && FileOperations.Archive,

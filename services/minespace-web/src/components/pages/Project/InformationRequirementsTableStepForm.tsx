@@ -8,15 +8,15 @@ import * as routes from "@/constants/routes";
 import DownloadOutlined from "@ant-design/icons/DownloadOutlined";
 import HourglassOutlined from "@ant-design/icons/HourglassOutlined";
 import { IRTFileImport } from "@/components/Forms/projects/informationRequirementsTable/IRTFileImport";
-import AuthorizationWrapper from "@mds/common/wrappers/AuthorizationWrapper";
 import InformationRequirementsTableForm from "@/components/Forms/projects/informationRequirementsTable/InformationRequirementsTableForm";
 
-interface stepFormsProps {
+interface StepFormsProps {
   submitting: boolean;
   next: () => void;
   prev: () => void;
   handleTabChange: (tab: string) => void;
   handleIRTUpdate: (values: any, message: string) => void;
+  handleIRTStatusUpdate: (values: any, message: string) => void;
   importIsSuccessful: (success: boolean, err: string) => void;
   downloadIRTTemplate: (url: string) => void;
   openViewFileHistoryModal: () => void;
@@ -34,6 +34,7 @@ const StepForms = ({
   prev,
   handleTabChange,
   handleIRTUpdate,
+  handleIRTStatusUpdate,
   importIsSuccessful,
   downloadIRTTemplate,
   openViewFileHistoryModal,
@@ -43,7 +44,7 @@ const StepForms = ({
   uploadedSuccessfully,
   tabs,
   activeTab,
-}: stepFormsProps) => {
+}: StepFormsProps) => {
   const history = useHistory();
 
   return [
@@ -158,26 +159,24 @@ const StepForms = ({
                   project?.information_requirements_table?.irt_guid
                 )}
               >
-                <AuthorizationWrapper>
-                  <Popconfirm
-                    placement="topRight"
-                    title="Are you sure you want to submit your final IRT, no changes could be made after submitting?"
-                    onConfirm={() =>
-                      handleIRTUpdate(
-                        {
-                          status_code: "SUB",
-                        },
-                        "Successfully submitted final IRT."
-                      )
-                    }
-                    okText="Yes"
-                    cancelText="No"
-                  >
-                    <Button id="submit_irt" type="primary">
-                      Submit IRT
-                    </Button>
-                  </Popconfirm>
-                </AuthorizationWrapper>
+                <Popconfirm
+                  placement="topRight"
+                  title="Are you sure you want to submit your final IRT, no changes could be made after submitting?"
+                  onConfirm={() =>
+                    handleIRTStatusUpdate(
+                      {
+                        status_code: "SUB",
+                      },
+                      "Successfully submitted final IRT."
+                    )
+                  }
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <Button id="submit_irt" type="primary">
+                    Submit IRT
+                  </Button>
+                </Popconfirm>
               </Link>
             </>
           ) : (
