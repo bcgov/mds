@@ -10,6 +10,8 @@ jobs:
   tests-unit-minespace:
     name: tests-unit-minespace
     runs-on: ubuntu-20.04
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     steps:
       - uses: actions/checkout@v3
         name: checkout
