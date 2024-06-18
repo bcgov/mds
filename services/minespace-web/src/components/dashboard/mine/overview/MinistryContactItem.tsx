@@ -17,7 +17,9 @@ interface MinistryContactItemProps {
   };
 }
 
-export const MinistryContactItem: React.FC<MinistryContactItemProps> = (props) => (
+export const MinistryContactItem: React.FC<MinistryContactItemProps> = (
+  props: MinistryContactItemProps
+) => (
   <Typography.Paragraph className="ministry-contact-item">
     <Typography.Text strong className="ministry-contact-title">
       {props.EMLIContactTypesHash[props.contact.emli_contact_type_code] || Strings.UNKNOWN}
