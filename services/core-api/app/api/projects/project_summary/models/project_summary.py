@@ -291,6 +291,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             updated_authorization.is_contaminated = authorization.get('is_contaminated')
             updated_authorization.new_type = authorization.get('new_type')
             updated_authorization.authorization_description = authorization.get('authorization_description')
+                updated_authorization.exemption_reason = authorization.get('exemption_reason')
             updated_authorization.exemption_requested = authorization.get('exemption_requested')
             updated_authorization.ams_tracking_number = authorization.get('ams_tracking_number')
             updated_authorization.ams_outcome = authorization.get('ams_outcome')
@@ -322,6 +323,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 is_contaminated=authorization.get('is_contaminated'),
                 new_type=authorization.get('new_type'),
                 authorization_description=authorization.get('authorization_description'),
+                    exemption_reason=authorization.get('exemption_reason'),
                 exemption_requested=authorization.get('exemption_requested'),
                 ams_tracking_number=authorization.get('ams_tracking_number'),
                 ams_outcome=authorization.get('ams_outcome')
@@ -787,9 +789,10 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         if status_code == 'SUB' and len(contacts) == 0:
             errors_found['project_contacts'].append("Project Contacts not provided")
         for contact in contacts:
-            contact_validation = Project.validate_project_contacts(contact)
-            if contact_validation != True:
-                errors_found['project_contacts'].append(contact_validation)
+            if status_code == 'SUB' or (status_code != 'SUB' and contact.get('first_name') != None):
+                contact_validation = Project.validate_project_contacts(contact)
+                if contact_validation != True:
+                    errors_found['project_contacts'].append(contact_validation)
 
         if is_feature_enabled(Feature.AMS_AGENT):
             errors_found |= {

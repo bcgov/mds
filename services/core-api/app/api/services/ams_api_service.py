@@ -51,6 +51,7 @@ class AMSApiService():
                     'project_summary_authorization_type': item.get('project_summary_authorization_type'),
                     'authorization_type': item.get('new_type'),
                     'authorization_description': item.get('authorization_description') or 'N/A',
+                    'exemption_reason': item.get('exemption_reason') or 'N/A',
                     'new_type': item.get('new_type'),
                     'exemption_requested': item.get('exemption_requested') or False,
                     'is_contaminated': item.get('is_contaminated') or False,

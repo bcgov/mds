@@ -14,7 +14,7 @@ names==0.3.0
 petl==1.6.8
 psycopg2-binary==2.9.6
 PyJWT==2.4.0
-cryptography==42.0.7
+cryptography==42.0.8
 pytest==8.0.0
 pytest-cov==4.1.0
 python-dateutil==2.8.2

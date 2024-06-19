@@ -30,6 +30,7 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
     is_contaminated = db.Column(db.Boolean, nullable=True)
     new_type = db.Column(db.String, nullable=True)
     authorization_description = db.Column(db.String, nullable=True)
+    exemption_reason = db.Column(db.String, nullable=True)
     exemption_requested = db.Column(db.Boolean, nullable=True)
     ams_tracking_number = db.Column(db.String, nullable=True)
     ams_outcome = db.Column(db.String, nullable=True)
@@ -44,6 +45,48 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
         'ProjectSummaryAuthorizationDocumentXref',
         lazy='select',
         primaryjoin='and_(ProjectSummaryAuthorizationDocumentXref.project_summary_authorization_guid == ProjectSummaryAuthorization.project_summary_authorization_guid, ProjectSummaryAuthorizationDocumentXref.mine_document_guid == MineDocument.mine_document_guid, MineDocument.is_archived == False)'
+    )
+
+    location_documents = db.relationship(
+        'ProjectSummaryAuthorizationDocumentXref',
+        lazy='select',
+        primaryjoin='and_(ProjectSummaryAuthorizationDocumentXref.project_summary_authorization_guid == ProjectSummaryAuthorization.project_summary_authorization_guid, ProjectSummaryAuthorizationDocumentXref.mine_document_guid == MineDocument.mine_document_guid, ProjectSummaryAuthorizationDocumentXref.project_summary_document_type_code == "MAP", MineDocument.is_archived == False)'
+    )
+
+    discharge_documents = db.relationship(
+        'ProjectSummaryAuthorizationDocumentXref',
+        lazy='select',
+        primaryjoin='and_(ProjectSummaryAuthorizationDocumentXref.project_summary_authorization_guid == ProjectSummaryAuthorization.project_summary_authorization_guid, ProjectSummaryAuthorizationDocumentXref.mine_document_guid == MineDocument.mine_document_guid, ProjectSummaryAuthorizationDocumentXref.project_summary_document_type_code == "DFA", MineDocument.is_archived == False)'
+    )
+
+    consent_documents = db.relationship(
+        'ProjectSummaryAuthorizationDocumentXref',
+        lazy='select',
+        primaryjoin='and_(ProjectSummaryAuthorizationDocumentXref.project_summary_authorization_guid == ProjectSummaryAuthorization.project_summary_authorization_guid, ProjectSummaryAuthorizationDocumentXref.mine_document_guid == MineDocument.mine_document_guid, ProjectSummaryAuthorizationDocumentXref.project_summary_document_type_code == "CSL", MineDocument.is_archived == False)'
+    )
+
+    clause_amendment_documents = db.relationship(
+        'ProjectSummaryAuthorizationDocumentXref',
+        lazy='select',
+        primaryjoin='and_(ProjectSummaryAuthorizationDocumentXref.project_summary_authorization_guid == ProjectSummaryAuthorization.project_summary_authorization_guid, ProjectSummaryAuthorizationDocumentXref.mine_document_guid == MineDocument.mine_document_guid, ProjectSummaryAuthorizationDocumentXref.project_summary_document_type_code == "CAF", MineDocument.is_archived == False)'
+    )
+
+    change_ownership_name_documents = db.relationship(
+        'ProjectSummaryAuthorizationDocumentXref',
+        lazy='select',
+        primaryjoin='and_(ProjectSummaryAuthorizationDocumentXref.project_summary_authorization_guid == ProjectSummaryAuthorization.project_summary_authorization_guid, ProjectSummaryAuthorizationDocumentXref.mine_document_guid == MineDocument.mine_document_guid, ProjectSummaryAuthorizationDocumentXref.project_summary_document_type_code == "CON", MineDocument.is_archived == False)'
+    )
+
+    exemption_documents = db.relationship(
+        'ProjectSummaryAuthorizationDocumentXref',
+        lazy='select',
+        primaryjoin='and_(ProjectSummaryAuthorizationDocumentXref.project_summary_authorization_guid == ProjectSummaryAuthorization.project_summary_authorization_guid, ProjectSummaryAuthorizationDocumentXref.mine_document_guid == MineDocument.mine_document_guid, ProjectSummaryAuthorizationDocumentXref.project_summary_document_type_code == "EXL", MineDocument.is_archived == False)'
+    )
+
+    support_documents = db.relationship(
+        'ProjectSummaryAuthorizationDocumentXref',
+        lazy='select',
+        primaryjoin='and_(ProjectSummaryAuthorizationDocumentXref.project_summary_authorization_guid == ProjectSummaryAuthorization.project_summary_authorization_guid, ProjectSummaryAuthorizationDocumentXref.mine_document_guid == MineDocument.mine_document_guid, ProjectSummaryAuthorizationDocumentXref.project_summary_document_type_code == "SPR", MineDocument.is_archived == False)'
     )
 
     @classmethod
@@ -123,52 +166,113 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
                 'required': True,
                 'type': 'string',
                 'allowed': ams_auth_types_list
-            }
-        }
-
-        ams_amendment_schema = common_ams_schema | {
-            'existing_permits_authorizations': {
+            },
+            'location_documents': {
                 'required': True,
                 'type': 'list',
-                'schema': {'type': 'string'},
-                'items': [{
-                    'required': True,
-                    'type': 'string',
-                    'regex': '^[\d]{2,6}$'
-                }]
+                'empty': False,
             },
-            'amendment_severity': {
-                'required': True,
-                'type': 'string',
-                'allowed': ['SIG', 'MIN']
-            },
-            'amendment_changes': {
-                'required': True,
-                'type': 'list',
-                'allowed': ['ILT', 'IGT', 'DDL', 'NAM', 'TRA', 'MMR', 'RCH', 'OTH']
-            },
-            'is_contaminated': {
-                'required': True,
-                'type': 'boolean'
-            }
-        }
-        ams_new_schema = common_ams_schema | {
-            'new_type': {
-                'required': True,
-                'type': 'string',
-                'allowed': ['PER', 'APP']
-            }
         }
 
         v = Validator(common_schema, purge_unknown=True)
-        if is_ams:    
+        if is_ams:
             permit_type = authorization.get('project_summary_permit_type')
-
+            if authorization.get('exemption_requested'):
+                common_ams_schema |= {
+                    'exemption_reason': {
+                        'required': True,
+                        'type': 'string',
+                        'maxlength': 4000,
+                    },
+                    'exemption_documents': {
+                        'required': True,
+                        'type': 'list',
+                        'empty': False,
+                    }
+                }
+            
             if not permit_type or not isinstance(permit_type, list) or not permit_type[0]:
                 return f'Invalid authorization type {permit_type}'
             if permit_type[0] == 'AMENDMENT':
+                ams_amendment_schema = common_ams_schema | {
+                    'existing_permits_authorizations': {
+                        'required': True,
+                        'type': 'list',
+                        'schema': {'type': 'string'},
+                        'items': [{
+                            'required': True,
+                            'type': 'string',
+                            'regex': '^[\d]{2,6}$'
+                        }]
+                    },
+                    'amendment_severity': {
+                        'required': True,
+                        'type': 'string',
+                        'allowed': ['SIG', 'MIN']
+                    },
+                    'amendment_changes': {
+                        'required': True,
+                        'type': 'list',
+                        'allowed': ['ILT', 'IGT', 'DDL', 'NAM', 'TRA', 'MMR', 'RCH', 'OTH']
+                    },
+                    'is_contaminated': {
+                        'required': True,
+                        'type': 'boolean'
+                    }
+                }
+
+                amendment_changes = authorization.get('amendment_changes')
+                if 'ILT' in amendment_changes or 'IGT' in amendment_changes or 'DDL' in amendment_changes:
+                    ams_amendment_schema |= {
+                        'discharge_documents': {
+                            'required': True,
+                            'type': 'list',
+                            'empty': False,
+                        },
+                    }
+
+                if 'TRA' in amendment_changes:
+                    ams_amendment_schema |= {
+                        'consent_documents': {
+                            'required': True,
+                            'type': 'list',
+                            'empty': False,
+                        }
+                    }
+
+                if 'NAM' in amendment_changes or 'TRA' in amendment_changes:
+                    ams_amendment_schema |= {
+                        'change_ownership_name_documents': {
+                            'required': True,
+                            'type': 'list',
+                            'empty': False,
+                        },
+                    }
+
+                if 'MMR' in amendment_changes or 'RCH' in amendment_changes:
+                    ams_amendment_schema |= {
+                        'clause_amendment_documents': {
+                            'required': True,
+                            'type': 'list',
+                            'empty': False,
+                        }, 
+                    }
+
                 v = Validator(ams_amendment_schema, purge_unknown=True)
             elif permit_type[0] == 'NEW':
+                ams_new_schema = common_ams_schema | {
+                    'new_type': {
+                        'required': True,
+                        'type': 'string',
+                        'allowed': ['PER', 'APP']
+                    },
+                    'discharge_documents': {
+                        'required': True,
+                        'type': 'list',
+                        'empty': False,
+                    },
+                }
+
                 v = Validator(ams_new_schema, purge_unknown=True)
             else:
                 v = Validator(common_ams_schema, purge_unknown=True)        
@@ -189,6 +293,7 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
                is_contaminated,
                new_type,
                authorization_description,
+               exemption_reason,
                exemption_requested,
                mine,
                ams_tracking_number=None,
@@ -206,6 +311,7 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
             is_contaminated=is_contaminated,
             new_type=new_type,
             authorization_description=authorization_description,
+            exemption_reason=exemption_reason,
             exemption_requested=exemption_requested,
             ams_tracking_number=ams_tracking_number,
             ams_outcome=ams_outcome,
@@ -222,6 +328,7 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
                is_contaminated,
                new_type,
                authorization_description,
+               exemption_reason,
                exemption_requested,
                ams_tracking_number=None,
                ams_outcome=None,
@@ -234,6 +341,7 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
         self.is_contaminated = is_contaminated
         self.new_type = new_type
         self.authorization_description = authorization_description
+        self.exemption_reason = exemption_reason
         self.exemption_requested = exemption_requested
         self.ams_tracking_number = ams_tracking_number
         self.ams_outcome = ams_outcome
