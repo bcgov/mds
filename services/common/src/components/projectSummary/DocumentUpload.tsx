@@ -1,7 +1,7 @@
 import React, { FC, useEffect } from "react";
 import { change, Field, getFormValues } from "redux-form";
 import { useSelector, useDispatch } from "react-redux";
-import { Form, Typography } from "antd";
+import { Button, Form, Typography } from "antd";
 import { CSV, DOCUMENT, EXCEL, IMAGE, OTHER_SPATIAL, XML } from "@mds/common/constants/fileTypes";
 import DocumentTable from "../documents/DocumentTable";
 import {
@@ -17,6 +17,9 @@ import { postNewDocumentVersion } from "@mds/common/redux/actionCreators/documen
 import LinkButton from "../common/LinkButton";
 import * as API from "@mds/common/constants/API";
 import { getProjectSummaryDocumentTypesHash } from "@mds/common/redux/selectors/staticContentSelectors";
+import { openModal } from "@mds/common/redux/actions/modalActions";
+import AddSpatialDocumentsModal from "../documents/spatial/AddSpatialDocumentsModal";
+import SpatialDocumentTable from "../documents/spatial/SpatialDocumentTable";
 
 export const DocumentUpload: FC = () => {
   const dispatch = useDispatch();
@@ -29,11 +32,6 @@ export const DocumentUpload: FC = () => {
     project_summary_guid,
     documents,
   } = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
-
-  const spatialAcceptedFileTypesMap = {
-    ...OTHER_SPATIAL,
-    ...XML,
-  };
 
   const supportingAcceptedFileTypesMap = {
     ...DOCUMENT,
@@ -139,6 +137,24 @@ export const DocumentUpload: FC = () => {
     uploadDateColumn("upload_date", "Updated"),
     uploadedByColumn("create_user", "Updated By"),
   ];
+
+  const openSpatialDocumentModal = () => {
+    dispatch(
+      openModal({
+        props: {
+          title: "Upload Spatial Data",
+          formName: FORM.ADD_EDIT_PROJECT_SUMMARY,
+          fieldName: "spatial_documents",
+          uploadUrl: API.PROJECT_SUMMARY_DOCUMENTS(fileUploadParams),
+          transformFile: (fileData) => ({
+            ...fileData,
+            project_summary_document_type_code: PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.SPATIAL,
+          }),
+        },
+        content: AddSpatialDocumentsModal,
+      })
+    );
+  };
   return (
     <>
       <Typography.Title level={3}>Document Upload</Typography.Title>
@@ -149,27 +165,11 @@ export const DocumentUpload: FC = () => {
           types.
         </Typography.Paragraph>
 
-        <Field
-          id="spatial_documents"
-          name="spatial_documents"
-          onFileLoad={(document_name, document_manager_guid, version) =>
-            onFileLoad(
-              document_name,
-              PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.SPATIAL,
-              document_manager_guid,
-              version
-            )
-          }
-          onRemoveFile={onRemoveFile}
-          params={fileUploadParams}
-          acceptedFileTypesMap={spatialAcceptedFileTypesMap}
-          listedFileTypes={["spatial"]}
-          component={ProjectSummaryFileUpload}
-          props={{
-            documents: documents,
-            label: "Upload spatial documents",
-          }}
-        />
+        <Button onClick={openSpatialDocumentModal} type="primary">
+          Upload Spatial Data
+        </Button>
+
+        <SpatialDocumentTable documents={spatial_documents} />
 
         <Typography.Title level={5}>Supporting Documents</Typography.Title>
         <Typography.Paragraph>
