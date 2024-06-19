@@ -20,7 +20,8 @@ from app.api.projects.project.models.project import Project
 from app.api.projects.project_contact.models.project_contact import ProjectContact
 from app.api.projects.project_summary.models.project_summary_contact import ProjectSummaryContact
 from app.api.projects.project_summary.models.project_summary_authorization import ProjectSummaryAuthorization
-from app.api.projects.project_summary.models.project_summary_authorization_document_xref import ProjectSummaryAuthorizationDocumentXref
+from app.api.projects.project_summary.models.project_summary_authorization_document_xref import \
+    ProjectSummaryAuthorizationDocumentXref
 from app.api.projects.project_summary.models.project_summary_permit_type import ProjectSummaryPermitType
 from app.api.parties.party.models.party import Party
 from app.api.parties.party.models.address import Address
@@ -32,7 +33,9 @@ import json
 
 from app.api.utils.feature_flag import is_feature_enabled, Feature
 
-from app.api.utils.common_validation_schemas import primary_address_schema, base_address_schema, address_na_schema, address_int_schema, party_base_schema, project_summary_base_schema
+from app.api.utils.common_validation_schemas import primary_address_schema, base_address_schema, address_na_schema, \
+    address_int_schema, party_base_schema, project_summary_base_schema
+
 
 class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'project_summary'
@@ -291,7 +294,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             updated_authorization.is_contaminated = authorization.get('is_contaminated')
             updated_authorization.new_type = authorization.get('new_type')
             updated_authorization.authorization_description = authorization.get('authorization_description')
-                updated_authorization.exemption_reason = authorization.get('exemption_reason')
+            updated_authorization.exemption_reason = authorization.get('exemption_reason')
             updated_authorization.exemption_requested = authorization.get('exemption_requested')
             updated_authorization.ams_tracking_number = authorization.get('ams_tracking_number')
             updated_authorization.ams_outcome = authorization.get('ams_outcome')
@@ -323,7 +326,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 is_contaminated=authorization.get('is_contaminated'),
                 new_type=authorization.get('new_type'),
                 authorization_description=authorization.get('authorization_description'),
-                    exemption_reason=authorization.get('exemption_reason'),
+                exemption_reason=authorization.get('exemption_reason'),
                 exemption_requested=authorization.get('exemption_requested'),
                 ams_tracking_number=authorization.get('ams_tracking_number'),
                 ams_outcome=authorization.get('ams_outcome')
@@ -404,7 +407,9 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         party_type_code = party.get('party_type_code', None)
         address_data = party.get('address')
         base_schema = person_schema if (party_type_code == None or party_type_code == 'PER') else org_schema
-        address_type_code = address_data[0].get('address_type_code') if isinstance(address_data, list) else address_data.get('address_type_code')
+        address_type_code = address_data[0].get('address_type_code') if isinstance(address_data,
+                                                                                   list) else address_data.get(
+            'address_type_code')
 
         if address_type_code == 'INT':
             base_schema |= party_int_phone_schema
@@ -759,6 +764,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
     @classmethod
     def validate_project_summary(cls, data):
+        print("validate_project_summary", data)
         status_code = data.get('status_code')
         ams_authorizations = data.get('ams_authorizations', None)
         authorizations = data.get('authorizations', [])
@@ -1123,10 +1129,9 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             regional_district_id).name or None
 
         if ams_authorizations:
-            new_ams_results = []
-            amendment_ams_results = []
+            ams_results = []
             if self.status_code == 'SUB':
-                new_ams_results = AMSApiService.create_new_ams_authorization(
+                ams_results = AMSApiService.create_new_ams_authorization(
                     ams_authorizations,
                     applicant,
                     nearest_municipality,
@@ -1153,33 +1158,33 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                     zoning_reason,
                     regional_district_name)
 
-                amendment_ams_results = AMSApiService.create_amendment_ams_authorization(
-                    ams_authorizations,
-                    applicant,
-                    nearest_municipality,
-                    agent,
-                    contacts,
-                    facility_type,
-                    facility_desc,
-                    facility_latitude,
-                    facility_longitude,
-                    facility_coords_source,
-                    facility_coords_source_desc,
-                    legal_land_desc,
-                    facility_operator,
-                    legal_land_owner_name,
-                    legal_land_owner_contact_number,
-                    legal_land_owner_email_address,
-                    is_landowner_aware_of_discharge_application,
-                    has_landowner_received_copy_of_application,
-                    facility_pid_pin_crown_file_no,
-                    company_alias,
-                    zoning,
-                    zoning_reason,
-                    regional_district_name,
-                    is_legal_land_owner,
-                    is_crown_land_federal_or_provincial
-                )
+            amendment_ams_results = AMSApiService.create_amendment_ams_authorization(
+                ams_authorizations,
+                applicant,
+                nearest_municipality,
+                agent,
+                contacts,
+                facility_type,
+                facility_desc,
+                facility_latitude,
+                facility_longitude,
+                facility_coords_source,
+                facility_coords_source_desc,
+                legal_land_desc,
+                facility_operator,
+                legal_land_owner_name,
+                legal_land_owner_contact_number,
+                legal_land_owner_email_address,
+                is_landowner_aware_of_discharge_application,
+                has_landowner_received_copy_of_application,
+                facility_pid_pin_crown_file_no,
+                company_alias,
+                zoning,
+                zoning_reason,
+                regional_district_name,
+                is_legal_land_owner,
+                is_crown_land_federal_or_provincial
+            )
 
             for authorization in ams_authorizations.get('amendments', []):
                 if amendment_ams_results:
@@ -1195,8 +1200,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 self.create_or_update_authorization(authorization)
 
             for authorization in ams_authorizations.get('new', []):
-                if new_ams_results:
-                    ams_tracking_details = self.get_ams_tracking_details(new_ams_results,
+                if ams_results:
+                    ams_tracking_details = self.get_ams_tracking_details(ams_results,
                                                                          authorization.get(
                                                                              'project_summary_authorization_guid'))
                     if ams_tracking_details:
