@@ -77,8 +77,8 @@ export const ApplicationSummary: FC = () => {
       permit.project_summary_permit_type
         .map((projectType: string) => {
           const project_type = parseProjectTypeLabel(projectType);
-          if (projectType === "AMENDMENT") {
-            return permit.existing_permits_authorizations.map((guid) => ({
+          if (projectType === "AMENDMENT" && permit?.existing_permits_authorizations) {
+            return permit?.existing_permits_authorizations?.map((guid) => ({
               project_type,
               permit_no: getPermitNumber(guid),
             }));

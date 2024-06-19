@@ -228,7 +228,7 @@ class AMSApiService():
                             'sourceofdatadescription': facility_coords_source_desc,
                             'legallanddescription': legal_land_desc,
                             'pidpincrownfilenumber': facility_pid_pin_crown_file_no,
-                            'facilityaddress': cls.__set_facility_address_details(facility_operator),
+                            'facilityaddress': cls.__set_facility_address_details(facility_operator, "Other / International"),
                             'facilityopphonenumberext': facility_operator.get('phone_ext', ''),
                             'isappropriatezoning': cls.__boolean_to_yes_no(zoning),
                             'isappropriatezoningreason': zoning_reason,
@@ -371,7 +371,6 @@ class AMSApiService():
                     'newlandfedorprov': cls.__boolean_to_yes_no(is_crown_land_federal_or_provincial)
                 }
                 payload = json.dumps(ams_authorization_data)
-                print("ams_payload:",payload)
                 response = requests.post(Config.AMS_URL, data=payload, headers=headers)
                 ams_result = response.json()
                 current_app.logger.error(f'AMS Result: {ams_result}')
