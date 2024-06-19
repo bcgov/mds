@@ -1173,7 +1173,9 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                     company_alias,
                     zoning,
                     zoning_reason,
-                    regional_district_name
+                    regional_district_name,
+                    is_legal_land_owner,
+                    is_crown_land_federal_or_provincial
                 )
 
             for authorization in ams_authorizations.get('amendments', []):
