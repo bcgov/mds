@@ -372,7 +372,6 @@ class AMSApiService():
                     'newlandfedorprov': cls.__boolean_to_yes_no(is_crown_land_federal_or_provincial)
                 }
                 payload = json.dumps(ams_authorization_data)
-                print("ams_payload:", payload)
                 response = requests.post(Config.AMS_URL, data=payload, headers=headers)
                 ams_result = response.json()
                 current_app.logger.error(f'AMS Result: {ams_result}')
