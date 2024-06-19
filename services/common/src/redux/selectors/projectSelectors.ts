@@ -33,7 +33,7 @@ const formatProjectSummaryDocuments = (documents = []): IProjectSummaryDocument[
     spatial_documents: "SPT",
   };
   Object.entries(fieldNameMap).forEach(([fieldName, docTypeCode]) => {
-    const matching = documents.filter(
+    const matching = documents?.filter(
       (doc) => doc.project_summary_document_type_code === docTypeCode
     );
     allDocuments[fieldName] = matching;

@@ -98,6 +98,49 @@ export const requiredNewFiles = (files: any[]) => {
   return hasNewFiles ? undefined : "This is a required field";
 };
 
+export const spatialDocumentBundle = (files: any[]) => {
+  const singleTypes = ["kml", "kmz"];
+  const mandatoryTypes = ["shp", "shx", "dbf", "prj"];
+  const optionalTypes = ["sbn", "sbx", "xml"]; //kml, kmz
+  console.log("validate files", files);
+  let typeErrors = [];
+
+  if (files?.length > 0) {
+    const fileData = files.map((file) => file.document_name.split("."));
+    const filesMultipleTypes = fileData.filter((data) => data.length > 2);
+    typeErrors = filesMultipleTypes.map((file) => `Invalid file extension: ${file.join(".")}`);
+    const isSingleFile = files.length === 1 && singleTypes.includes(fileData[0][1]);
+    if (isSingleFile && !(typeErrors.length > 0)) {
+      return;
+    }
+    const fileNameToCompare = fileData[0][0];
+    const fileNameMatch = fileData.every(([fileName]) => fileName === fileNameToCompare);
+    if (!fileNameMatch) {
+      return "Spatial document file names must match";
+    }
+
+    const getMatching = (fileType) =>
+      fileData.filter(([_name, type]) => type.toLowerCase() === fileType);
+    mandatoryTypes.forEach((fileType) => {
+      const matching = getMatching(fileType);
+      console.log("matching mandatory", fileType, matching);
+      if (matching.length === 0) {
+        typeErrors.push(`File with extension ${fileType} is required`);
+      }
+      if (matching.length > 1) {
+        typeErrors.push(`Only one file with extension ${fileType} is accepted`);
+      }
+    });
+    optionalTypes.forEach((fileType) => {
+      const matching = getMatching(fileType);
+      if (matching.length > 1) {
+        typeErrors.push(`Only one file with extension ${fileType} is accepted`);
+      }
+    });
+  }
+  return typeErrors.length > 0 ? typeErrors.join("\n") : undefined;
+};
+
 export const notnone = (value) => (value === "None" ? "Please select an item" : undefined);
 
 export const maxLength = memoize((max) => (value) =>
