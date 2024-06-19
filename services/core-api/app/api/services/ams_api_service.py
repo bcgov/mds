@@ -75,6 +75,7 @@ class AMSApiService():
 
     @classmethod
     def __set_contact_details(cls, contact):
+        address = contact.get('address', {})
         contact_details = {
             'em_lastname': contact.get('last_name', ''),
             'em_firstname': contact.get('first_name', ''),
@@ -82,10 +83,11 @@ class AMSApiService():
             'em_businessphone': cls.__format_phone_number(contact.get('phone_number')),
             'em_email': contact.get('email', ''),
             'em_mailingaddress': cls.__create_full_address(
-                contact.get('address').get('address_line_1', ''),
-                contact.get('address').get('city', ''),
-                contact.get('address').get('sub_division_code', ''),
-                contact.get('address').get('post_code')),
+                address.get('address_line_1', ''),
+                address.get('city', ''),
+                address.get('sub_division_code', ''),
+                address.get('post_code', '')
+            ),
         }
         return contact_details
 
@@ -313,74 +315,74 @@ class AMSApiService():
             authorization_list = cls.__get_authorization_details(ams_authorizations, 'amendments')
 
             for authorization in authorization_list:
-                # existing_ams_status_code = authorization.get('ams_status_code')
+                existing_ams_status_code = authorization.get('ams_status_code')
                 amendment_changes = authorization.get('amendment_changes', [])
                 existing_permits_authorizations = authorization.get('existing_permits_authorizations', [])
-                # if existing_ams_status_code != '200':
-                ams_authorization_data = {
-                    'isauthamendment': 'Yes',
-                    'receiveddate': get_date_iso8601_string(),
-                    'authorizationnumber': existing_permits_authorizations[0],
-                    'amendmenttype': cls.__get_mapped_amendment_type(authorization.get('amendment_severity')),
-                    'amendmentobjectives': {
-                        'increasedischargelimitslt10': str('ILT' in amendment_changes).capitalize(),
-                        'increasedischargelimitsgt10': str('IGT' in amendment_changes).capitalize(),
-                        'decreasedischargelimits': str('DDL' in amendment_changes).capitalize(),
-                        'namechange': str('NAM' in amendment_changes).capitalize(),
-                        'transfer': str('TRA' in amendment_changes).capitalize(),
-                        'modifymonitoringrequirements': str('MMR' in amendment_changes).capitalize(),
-                        'regulatorychange': str('RCH' in amendment_changes).capitalize(),
-                        'other': str('OTH' in amendment_changes).capitalize()
-                    },
-                    'purposeofapplication': authorization.get('authorization_description', ''),
-                    'newmajorcentre': {
-                        'name': nearest_municipality_name
-                    },
-                    'preappexemptionrequest': cls.__boolean_to_yes_no(authorization.get('exemption_requested')),
-                    'preappexemptionrequestreason': authorization.get('authorization_description',
-                                                                      'Not Applicable'),
-                    'newapplicant': cls.__set_applicant_details(applicant, company_alias),
-                    'newcontact': cls.__set_contact_details(contacts[0]),
-                    'newagent': cls.__set_agent_details(agent),
-                    'newfacilitytype': facility_type,
-                    'newfacilitydescrption': facility_desc,
-                    'newregionaldistrict': {
-                        'name': regional_district_name
-                    },
-                    'newlatitude': str(facility_latitude),
-                    'newlongitude': str(abs(facility_longitude)),
-                    'newsourceofdata': facility_coords_source,
-                    'newsourceofdatadescription': facility_coords_source_desc,
-                    'newlegallanddescription': legal_land_desc,
-                    'newpidpincrownfilenumber': facility_pid_pin_crown_file_no,
-                    'newfacilityaddress': cls.__set_facility_address_details(facility_operator, "Other / International"),
-                    'newisappropriatezoning': cls.__boolean_to_yes_no(zoning),
-                    'newisappropriatezoningreason': zoning_reason,
-                    'newfacilityoperator': facility_operator.get('name', ''),
-                    'newfacilityoperatortitle': facility_operator.get('job_title', ''),
-                    'newfacilityoperatorphonenumber': cls.__format_phone_number(
-                        facility_operator.get('phone_no', '')),
-                    'newfacilityopphonenumberext': facility_operator.get('phone_ext', ''),
-                    'newfacilityoperatoremail': facility_operator.get('email', ''),
-                    'newlandownerawareofapplication': cls.__boolean_to_yes_no(
-                        is_landowner_aware_of_discharge_application),
-                    'newlandownerreceivedcopy': cls.__boolean_to_yes_no(has_landowner_received_copy_of_application),
-                    'newlandownername': legal_land_owner_name,
-                    'newlandownerphonenumber': cls.__format_phone_number(legal_land_owner_contact_number),
-                    'newlandowneremail': legal_land_owner_email_address,
-                    'newistheapplicantthelandowner': cls.__boolean_to_yes_no(is_legal_land_owner),
-                    'newlandfedorprov': cls.__boolean_to_yes_no(is_crown_land_federal_or_provincial)
-                }
-                payload = json.dumps(ams_authorization_data)
-                response = requests.post(Config.AMS_URL, data=payload, headers=headers)
-                ams_result = response.json()
-                current_app.logger.error(f'AMS Result: {ams_result}')
-                ams_result['project_summary_authorization_guid'] = authorization.get(
-                    'project_summary_authorization_guid')
-                ams_result['project_summary_guid'] = authorization.get('project_summary_guid')
-                ams_result['project_summary_authorization_type'] = authorization.get(
-                    'project_summary_authorization_type')
-                ams_results.append(ams_result)
+                if existing_ams_status_code != '200':
+                    ams_authorization_data = {
+                        'isauthamendment': 'Yes',
+                        'receiveddate': get_date_iso8601_string(),
+                        'authorizationnumber': existing_permits_authorizations[0],
+                        'amendmenttype': cls.__get_mapped_amendment_type(authorization.get('amendment_severity')),
+                        'amendmentobjectives': {
+                            'increasedischargelimitslt10': str('ILT' in amendment_changes).capitalize(),
+                            'increasedischargelimitsgt10': str('IGT' in amendment_changes).capitalize(),
+                            'decreasedischargelimits': str('DDL' in amendment_changes).capitalize(),
+                            'namechange': str('NAM' in amendment_changes).capitalize(),
+                            'transfer': str('TRA' in amendment_changes).capitalize(),
+                            'modifymonitoringrequirements': str('MMR' in amendment_changes).capitalize(),
+                            'regulatorychange': str('RCH' in amendment_changes).capitalize(),
+                            'other': str('OTH' in amendment_changes).capitalize()
+                        },
+                        'purposeofapplication': authorization.get('authorization_description', ''),
+                        'newmajorcentre': {
+                            'name': nearest_municipality_name
+                        },
+                        'preappexemptionrequest': cls.__boolean_to_yes_no(authorization.get('exemption_requested')),
+                        'preappexemptionrequestreason': authorization.get('authorization_description',
+                                                                          'Not Applicable'),
+                        'newapplicant': cls.__set_applicant_details(applicant, company_alias),
+                        'newcontact': cls.__set_contact_details(contacts[0]),
+                        'newagent': cls.__set_agent_details(agent),
+                        'newfacilitytype': facility_type,
+                        'newfacilitydescrption': facility_desc,
+                        'newregionaldistrict': {
+                            'name': regional_district_name
+                        },
+                        'newlatitude': str(facility_latitude),
+                        'newlongitude': str(abs(facility_longitude)),
+                        'newsourceofdata': facility_coords_source,
+                        'newsourceofdatadescription': facility_coords_source_desc,
+                        'newlegallanddescription': legal_land_desc,
+                        'newpidpincrownfilenumber': facility_pid_pin_crown_file_no,
+                        'newfacilityaddress': cls.__set_facility_address_details(facility_operator, "Other / International"),
+                        'newisappropriatezoning': cls.__boolean_to_yes_no(zoning),
+                        'newisappropriatezoningreason': zoning_reason,
+                        'newfacilityoperator': facility_operator.get('name', ''),
+                        'newfacilityoperatortitle': facility_operator.get('job_title', ''),
+                        'newfacilityoperatorphonenumber': cls.__format_phone_number(
+                            facility_operator.get('phone_no', '')),
+                        'newfacilityopphonenumberext': facility_operator.get('phone_ext', ''),
+                        'newfacilityoperatoremail': facility_operator.get('email', ''),
+                        'newlandownerawareofapplication': cls.__boolean_to_yes_no(
+                            is_landowner_aware_of_discharge_application),
+                        'newlandownerreceivedcopy': cls.__boolean_to_yes_no(has_landowner_received_copy_of_application),
+                        'newlandownername': legal_land_owner_name,
+                        'newlandownerphonenumber': cls.__format_phone_number(legal_land_owner_contact_number),
+                        'newlandowneremail': legal_land_owner_email_address,
+                        'newistheapplicantthelandowner': cls.__boolean_to_yes_no(is_legal_land_owner),
+                        'newlandfedorprov': cls.__boolean_to_yes_no(is_crown_land_federal_or_provincial)
+                    }
+                    payload = json.dumps(ams_authorization_data)
+                    response = requests.post(Config.AMS_URL, data=payload, headers=headers)
+                    ams_result = response.json()
+                    current_app.logger.error(f'AMS Result: {ams_result}')
+                    ams_result['project_summary_authorization_guid'] = authorization.get(
+                        'project_summary_authorization_guid')
+                    ams_result['project_summary_guid'] = authorization.get('project_summary_guid')
+                    ams_result['project_summary_authorization_type'] = authorization.get(
+                        'project_summary_authorization_type')
+                    ams_results.append(ams_result)
 
 
         except requests.exceptions.HTTPError as http_err:
