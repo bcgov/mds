@@ -72,6 +72,7 @@ def test_create_new_ams_authorization_successful_outcome(test_client):
                     'project_summary_guid': 'abcde12345',
                     'new_type': 'PER',
                     'authorization_description': 'Test desc',
+                    'exemption_reason': 'test exemption',
                     'exemption_requested': True,
                     'is_contaminated': True
                 }

@@ -48,45 +48,85 @@ import {
 import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import { MineDocument } from "@mds/common/models/documents/document";
 import { Link } from "react-router-dom";
+import { PROJECT_SUMMARY_DOCUMENT_TYPE_CODE_STATE } from "../..";
 
 const RenderEMAPermitCommonSections = ({ code, isAmendment, index }) => {
   const dispatch = useDispatch();
   const purposeLabel = isAmendment
     ? "Additional Amendment Request Information"
     : "Purpose of Application";
-
+  const authType = isAmendment ? "AMENDMENT" : "NEW";
   const { authorizations, mine_guid, project_guid, project_summary_guid } = useSelector(
     getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)
   );
-
   const codeAuthorizations = authorizations[code];
   const { AMENDMENT, NEW } = codeAuthorizations;
   const sectionValues = isAmendment ? AMENDMENT[index] : NEW[index];
-  const dfaRequired =
-    isAmendment &&
-    sectionValues?.amendment_changes?.some((val) => ["ILT", "IGT", "DDL"].includes(val));
-  const [showDocSection, setShowDocSection] = useState(sectionValues?.exemption_requested || false);
+  const [showExemptionSection, setshowExemptionSection] = useState(
+    sectionValues?.exemption_requested || false
+  );
 
   const projectSummaryDocumentTypesHash = useSelector(getProjectSummaryDocumentTypesHash);
 
   const onChange = (value, _newVal, _prevVal, _fieldName) => {
-    setShowDocSection(value);
+    setshowExemptionSection(value);
   };
 
-  const updateAmendmentDocuments = (documents: IProjectSummaryDocument[]) => {
-    const type = isAmendment ? "AMENDMENT" : "NEW";
+  const removeAmendmentDocument = (
+    amendmentDocumentsIndex: number,
+    category: string,
+    document_manager_guid: string
+  ) => {
+    const categorySpecificDocumentType = PROJECT_SUMMARY_DOCUMENT_TYPE_CODE_STATE[category];
+    const categorySpecificDocuments = sectionValues[categorySpecificDocumentType];
+    const categorySpecificDocumentIndex = categorySpecificDocuments.findIndex(
+      (doc) => document_manager_guid === doc.document_manager_guid
+    );
+
     dispatch(
-      change(
+      arrayRemove(
         FORM.ADD_EDIT_PROJECT_SUMMARY,
-        `authorizations.[${code}].${type}[${index}].amendment_documents`,
-        documents
+        `authorizations.[${code}].${authType}[${index}].${categorySpecificDocumentType}`,
+        categorySpecificDocumentIndex
+      )
+    );
+
+    dispatch(
+      arrayRemove(
+        FORM.ADD_EDIT_PROJECT_SUMMARY,
+        `authorizations.[${code}].${authType}[${index}].amendment_documents`,
+        amendmentDocumentsIndex
+      )
+    );
+  };
+
+  const updateAmendmentDocument = (document: IProjectSummaryDocument) => {
+    const category = document.category || document.project_summary_document_type_code;
+
+    dispatch(
+      arrayPush(
+        FORM.ADD_EDIT_PROJECT_SUMMARY,
+        `authorizations.[${code}].${authType}[${index}].${PROJECT_SUMMARY_DOCUMENT_TYPE_CODE_STATE[category]}`,
+        document
+      )
+    );
+
+    dispatch(
+      arrayPush(
+        FORM.ADD_EDIT_PROJECT_SUMMARY,
+        `authorizations.[${code}].${authType}[${index}].amendment_documents`,
+        document
       )
     );
   };
 
   const tableDocuments =
     sectionValues?.amendment_documents?.map(
-      (doc) => new MineDocument({ ...doc, category: doc.project_summary_document_type_code })
+      (doc) =>
+        new MineDocument({
+          ...doc,
+          category: doc.project_summary_document_type_code || doc.category,
+        })
     ) ?? [];
 
   const documentColumns = [
@@ -129,8 +169,17 @@ const RenderEMAPermitCommonSections = ({ code, isAmendment, index }) => {
           </>
         }
       />
-      {showDocSection && (
+      {showExemptionSection && (
         <div>
+          <Field
+            label="State the reason of exemption"
+            name="exemption_reason"
+            required
+            validate={[required, maxLength(4000)]}
+            maximumCharacters={4000}
+            minRows={2}
+            component={RenderAutoSizeField}
+          />
           <Alert
             description={
               <>
@@ -142,31 +191,34 @@ const RenderEMAPermitCommonSections = ({ code, isAmendment, index }) => {
             }
             showIcon
           />
-          <div className="margin-large--bottom">
-            <Typography.Title level={5} className="margin-large--top">
-              Upload Documents
-            </Typography.Title>
-            <Typography.Text>
-              {" "}
-              Submit the documents required for your amendment application.
-            </Typography.Text>
-          </div>
-          <AuthorizationSupportDocumentUpload
-            code={code}
-            mineGuid={mine_guid}
-            documents={tableDocuments}
-            updateAmendmentDocuments={updateAmendmentDocuments}
-            projectGuid={project_guid}
-            projectSummaryGuid={project_summary_guid}
-            dfaRequired={dfaRequired}
-          />
-          <DocumentTable
-            documents={tableDocuments}
-            documentParent="project summary authorization"
-            documentColumns={documentColumns}
-          />
         </div>
       )}
+      <div className="margin-large--bottom">
+        <Typography.Title level={5} className="margin-large--top">
+          Upload Documents
+        </Typography.Title>
+        <Typography.Text>
+          {" "}
+          Submit the documents required for your amendment application.
+        </Typography.Text>
+      </div>
+      <AuthorizationSupportDocumentUpload
+        code={code}
+        mineGuid={mine_guid}
+        documents={tableDocuments}
+        updateAmendmentDocument={updateAmendmentDocument}
+        removeAmendmentDocument={removeAmendmentDocument}
+        projectGuid={project_guid}
+        projectSummaryGuid={project_summary_guid}
+        showExemptionSection={showExemptionSection}
+        isAmendment={isAmendment}
+        amendmentChanges={sectionValues?.amendment_changes}
+      />
+      <DocumentTable
+        documents={tableDocuments}
+        documentParent="project summary authorization"
+        documentColumns={documentColumns}
+      />
     </>
   );
 };
