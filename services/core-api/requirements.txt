@@ -16,7 +16,6 @@ petl==1.6.8
 psycopg2-binary==2.9.6
 PyJWT==2.4.0
 cryptography==42.0.8
-pydantic==2.7.1
 pytest==8.0.0
 pytest-cov==4.1.0
 python-dateutil==2.8.2
@@ -57,3 +56,4 @@ opentelemetry-instrumentation-urllib3==0.43b0
 Pillow==10.3.0
 setuptools==65.5.1
 urllib3==2.2.1
+untp_models==0.0.1

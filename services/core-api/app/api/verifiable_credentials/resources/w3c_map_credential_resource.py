@@ -1,7 +1,7 @@
 from json import dumps
 from datetime import datetime
 from flask import current_app, request
-from werkzeug.exceptions import Forbidden
+from werkzeug.exceptions import BadRequest
 from flask_restx import Resource, reqparse
 from app.api.utils.include.user_info import User
 from app.api.utils.access_decorators import requires_any_of, MINESPACE_PROPONENT, EDIT_PARTY, VIEW_ALL
@@ -102,4 +102,45 @@ class W3CCredentialDeprecatedResource(Resource, UserMixin):
         current_app.logger.warning(
             "credential signed by did:indy, not by did:web and using deprecated acapy endpoints" +
             dumps(signed_credential))
+        return signed_credential["signed_doc"]
+
+
+class W3CCredentialUNTPResource(Resource, UserMixin):
+    parser = reqparse.RequestParser(trim=True)
+    parser.add_argument(
+        'permit_amendment_guid',
+        type=str,
+        help='GUID of the permit amendment.',
+        location='json',
+        store_missing=False)
+
+    @api.expect(parser)
+    @api.doc(
+        description=
+        "returns a signed w3c credential for a specific permit_amendment using deprecated aca-py endpoint, but with did:indy:bcovrin:test:"
+    )
+    @requires_any_of([EDIT_PARTY, MINESPACE_PROPONENT])
+    def post(self):
+        # if not is_feature_enabled(Feature.JSONLD_MINES_ACT_PERMIT):
+        #     raise NotImplementedError("This feature is not enabled.")
+        current_app.logger.warning("untp endpoint")
+
+        data = self.parser.parse_args()
+        permit_amendment = PermitAmendment.find_by_permit_amendment_guid(
+            data["permit_amendment_guid"])
+        if not permit_amendment:
+            raise BadRequest("Permit amendment not found")
+        traction_service = TractionService()
+        public_did_dict = traction_service.fetch_current_public_did()
+        public_did = "did:indy:bcovrin:test:" + public_did_dict["did"]
+        public_verkey = public_did_dict["verkey"]
+
+        credential = VerifiableCredentialManager.produce_untp_cc_map_payload(
+            public_did, permit_amendment)
+        current_app.logger.warning(credential)
+        signed_credential = traction_service.sign_jsonld_credential_deprecated(
+            public_did, public_verkey, credential)
+        current_app.logger.warning(
+            "UNTP conformity credential signed by did:indy, not by did:web and using deprecated acapy endpoints"
+            + dumps(signed_credential))
         return signed_credential["signed_doc"]

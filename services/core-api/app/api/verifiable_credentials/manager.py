@@ -24,7 +24,7 @@ from app.api.verifiable_credentials.models.credentials import PartyVerifiableCre
 from app.api.verifiable_credentials.models.connection import PartyVerifiableCredentialConnection
 from app.api.services.traction_service import TractionService
 
-from app.api.verifiable_credentials.untp import codes, base, conformity_credential as cc
+from untp_models import codes, base, conformity_credential as cc
 
 task_logger = get_task_logger(__name__)
 
