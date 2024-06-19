@@ -1,9 +1,7 @@
 import React, { FC, useState, useRef, useEffect } from "react";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import { notification } from "antd";
 import CompressionNotificationProgressBar from "@mds/common/components/documents/CompressionNotificationProgressBar";
-import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { MineDocument } from "@mds/common/models/documents/document";
 import {
   documentsCompression,
@@ -13,18 +11,23 @@ import DocumentCompressionWarningModal from "./DocumentCompressionWarningModal";
 import DocumentCompressedDownloadModal from "./DocumentCompressedDownloadModal";
 
 interface DocumentCompressionProps {
-  documentType: string;
-  rows: MineDocument[];
-  setCompressionModalVisible: (arg1: boolean) => void;
+  documentType?: string;
+  mineDocuments: MineDocument[];
+  setCompressionModalVisible: (isVisible: boolean) => void;
   isCompressionModalVisible: boolean;
-  compressionInProgress?: (arg1: boolean) => void;
-  documentsCompression?: ActionCreator<typeof documentsCompression>;
-  pollDocumentsCompressionProgress?: ActionCreator<typeof pollDocumentsCompressionProgress>;
-  startFilesCompression?: () => void;
+  setCompressionInProgress?: (isInProgress: boolean) => void;
   showDownloadWarning: boolean;
 }
 
-export const DocumentCompression: FC<DocumentCompressionProps> = (props) => {
+const DocumentCompression: FC<DocumentCompressionProps> = ({
+  documentType = "all",
+  mineDocuments,
+  setCompressionModalVisible,
+  isCompressionModalVisible,
+  setCompressionInProgress,
+  showDownloadWarning,
+}) => {
+  const dispatch = useDispatch();
   const [isDownloadModalVisible, setDownloadModalVisible] = useState(false);
   const [compressionProgress, setCompressionProgress] = useState(0);
   const [isProgressBarVisible, setProgressBarVisible] = useState(false);
@@ -37,16 +40,16 @@ export const DocumentCompression: FC<DocumentCompressionProps> = (props) => {
   const handleCloseCompressionNotification = () => {
     progressRef.current = false;
     setDownloadModalVisible(false);
-    notification.close(props.documentType);
-    props.compressionInProgress?.(false);
+    notification.close(documentType);
+    setCompressionInProgress?.(false);
     setProgressBarVisible(false);
     setCompressionProgress(0);
   };
 
   const displayCompressionNotification = (message, description, duration) => {
     notification.warning({
-      key: props.documentType,
-      className: `progressNotification-${props.documentType}`,
+      key: documentType,
+      className: `progressNotification-${documentType}`,
       message,
       description,
       duration,
@@ -57,15 +60,15 @@ export const DocumentCompression: FC<DocumentCompressionProps> = (props) => {
   };
 
   const startFilesCompression = () => {
-    props.setCompressionModalVisible(false);
+    setCompressionModalVisible(false);
     displayCompressionNotification("Compressing...", "Preparing files for download", 0);
 
-    const mineGuid = props.rows[0].mine_guid;
-    const documentManagerGuids = props.rows
+    const mineGuid = mineDocuments[0].mine_guid;
+    const documentManagerGuids = mineDocuments
       .filter((row) => row.is_latest_version && !row.is_archived)
       .map((filteredRows) => filteredRows.document_manager_guid);
 
-    setEntityTitle(props.rows[0].entity_title || "");
+    setEntityTitle(mineDocuments[0].entity_title || "");
     if (documentManagerGuids.length === 0) {
       setTimeout(() => {
         const description =
@@ -75,7 +78,8 @@ export const DocumentCompression: FC<DocumentCompressionProps> = (props) => {
         displayCompressionNotification("Error starting file compression", description, 15);
       }, 2000);
     } else {
-      props.documentsCompression(mineGuid, documentManagerGuids).then((response) => {
+      dispatch(documentsCompression(mineGuid, documentManagerGuids)).then((response) => {
+        console.log("response", response);
         const taskId = response.data && response.data.task_id ? response.data.task_id : null;
         if (!taskId) {
           setTimeout(() => {
@@ -86,15 +90,15 @@ export const DocumentCompression: FC<DocumentCompressionProps> = (props) => {
             );
           }, 2000);
         } else {
-          const documentTypeIdentifier = `.progressNotification-${props.documentType}`;
+          const documentTypeIdentifier = `.progressNotification-${documentType}`;
           const notificationElement = document.querySelector(documentTypeIdentifier);
           const notificationPosition = notificationElement.getBoundingClientRect();
           setNotificationTopPosition(notificationPosition.top);
           progressRef.current = true;
-          props.compressionInProgress?.(true);
+          setCompressionInProgress?.(true);
           setProgressBarVisible(true);
           const poll = async () => {
-            const { data } = await props.pollDocumentsCompressionProgress(taskId);
+            const { data } = await dispatch(pollDocumentsCompressionProgress(taskId));
             if (data.progress) {
               setCompressionProgress(data.progress);
             }
@@ -121,18 +125,18 @@ export const DocumentCompression: FC<DocumentCompressionProps> = (props) => {
   };
 
   useEffect(() => {
-    if (!props.showDownloadWarning && props.isCompressionModalVisible) {
+    if (!showDownloadWarning && isCompressionModalVisible) {
       startFilesCompression();
     }
-  }, [props.isCompressionModalVisible]);
+  }, [isCompressionModalVisible]);
 
   return (
     <div>
-      {props.showDownloadWarning && (
+      {showDownloadWarning && (
         <DocumentCompressionWarningModal
-          isModalVisible={props.isCompressionModalVisible}
+          isModalVisible={isCompressionModalVisible}
           filesCompression={startFilesCompression}
-          setModalVisible={props.setCompressionModalVisible}
+          setModalVisible={setCompressionModalVisible}
         />
       )}
       {isProgressBarVisible && (
@@ -151,13 +155,15 @@ export const DocumentCompression: FC<DocumentCompressionProps> = (props) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      documentsCompression,
-      pollDocumentsCompressionProgress,
-    },
-    dispatch
-  );
+export default DocumentCompression;
 
-export default connect(null, mapDispatchToProps)(DocumentCompression);
+// const mapDispatchToProps = (dispatch) =>
+//   bindActionCreators(
+//     {
+//       // documentsCompression,
+//       pollDocumentsCompressionProgress,
+//     },
+//     dispatch
+//   );
+
+// export default connect(null, mapDispatchToProps)(DocumentCompression);

@@ -3,9 +3,11 @@ import Highlight from "react-highlighter";
 import { dateSorter, formatDate, nullableStringSorter } from "@mds/common/redux/utils/helpers";
 import { EMPTY_FIELD } from "@mds/common/constants/strings";
 import { ColumnType } from "antd/lib/table";
-import { Button, Dropdown } from "antd";
+import { Button, Dropdown, Tag } from "antd";
 import { CaretDownOutlined } from "@ant-design/icons";
 import { generateActionMenuItems } from "./ActionMenu";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFiles } from "@fortawesome/pro-light-svg-icons";
 
 export const renderTextColumn = (
   dataIndex: string | string[],
@@ -120,6 +122,40 @@ export const renderActionsColumn = ({
                 <CaretDownOutlined alt={dropdownAltText} />
               </Button>
             </Dropdown>
+          )}
+        </div>
+      );
+    },
+  };
+};
+
+export const renderTaggedColumn = (
+  dataIndex: string,
+  tagIndex: string,
+  title: string,
+  icon: ReactNode = <FontAwesomeIcon icon={faFiles} />,
+  sortable = true
+) => {
+  return {
+    title,
+    dataIndex,
+    sorter: sortable,
+    key: dataIndex,
+    render: (text: string, record: any) => {
+      const tagText = record[tagIndex] ?? undefined;
+      const containerClass = tagText ? "parent" : "child";
+      return (
+        <div
+          title={title}
+          className={`inline-flex flex-between tag-column-container ${containerClass}`}
+        >
+          <div className={`tag-text-${containerClass}`}>{text}</div>
+          {tagText && (
+            <div className="file-history-container">
+              <Tag className="table-tag-primary" icon={icon}>
+                {tagText}
+              </Tag>
+            </div>
           )}
         </div>
       );

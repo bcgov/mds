@@ -155,7 +155,7 @@ export class ManageDocumentsTab extends Component {
         >
           <DocumentCompression
             documentType={"all"}
-            rows={this.state.documents}
+            mineDocuments={this.state.documents}
             setCompressionModalVisible={(state) => this.setState({ isCompressionModal: state })}
             isCompressionModalVisible={this.state.isCompressionModal}
             showDownloadWarning={false}

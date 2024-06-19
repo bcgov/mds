@@ -16,7 +16,7 @@ import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import DocumentCompression from "@mds/common/components/documents/DocumentCompression";
 import { archiveMineDocuments } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { useDispatch, useSelector } from "react-redux";
-import { Feature } from "@mds/common";
+import { Feature } from "@mds/common/utils/featureFlag";
 import { SizeType } from "antd/lib/config-provider/SizeContext";
 import { ColumnsType } from "antd/es/table";
 import { FileOperations, MineDocument } from "@mds/common/models/documents/document";
@@ -385,11 +385,10 @@ export const DocumentTable: FC<DocumentTableProps> = ({
   return (
     <div>
       <DocumentCompression
-        documentType={""}
-        rows={rowSelection}
+        mineDocuments={rowSelection}
         setCompressionModalVisible={setCompressionModal}
         isCompressionModalVisible={isCompressionModal}
-        compressionInProgress={setCompressionInProgress}
+        setCompressionInProgress={setCompressionInProgress}
         showDownloadWarning={showVersionHistory || canArchiveDocuments}
       />
       {renderBulkActions()}

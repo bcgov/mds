@@ -384,10 +384,10 @@ export const DocumentTable: FC<DocumentTableProps> = ({
     <div>
       <DocumentCompression
         documentType={""}
-        rows={rowSelection}
+        mineDocuments={rowSelection}
         setCompressionModalVisible={setCompressionModal}
         isCompressionModalVisible={isCompressionModal}
-        compressionInProgress={setCompressionInProgress}
+        setCompressionInProgress={setCompressionInProgress}
         showDownloadWarning={showVersionHistory || canArchiveDocuments}
       />
       {renderBulkActions()}

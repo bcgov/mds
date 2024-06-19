@@ -2,11 +2,11 @@
 
 exports[`PermitPackage renders properly 1`] = `
 <div>
-  <Connect(DocumentCompression)
-    compressionInProgress={[Function]}
+  <DocumentCompression
     documentType="all"
     isCompressionModalVisible={false}
-    rows={Array []}
+    mineDocuments={Array []}
+    setCompressionInProgress={[Function]}
     setCompressionModalVisible={[Function]}
     showDownloadWarning={false}
   />

@@ -277,7 +277,7 @@ export class MajorMineApplicationTab extends Component {
           <br />
           <DocumentCompression
             documentType={"all"}
-            rows={documents}
+            mineDocuments={documents}
             setCompressionModalVisible={(state) => this.setState({ isCompressionModal: state })}
             isCompressionModalVisible={this.state.isCompressionModal}
             showDownloadWarning={true}
