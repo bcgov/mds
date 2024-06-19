@@ -139,16 +139,28 @@ export class MineAlert extends Component<MineAlertProps, MineAlertState> {
     });
   };
 
+  remainingDays = (endDate: Date) => {
+    const today = moment().startOf("day");
+    const end = moment(endDate).startOf("day");
+    return end.diff(today, "days");
+  };
+
   async fetchAlerts(): Promise<void> {
     await this.props.fetchMineAlertsByMine(this.props.mine.mine_guid);
     this.setState({
       activeMineAlert: this.props.mineAlerts?.filter(
-        (alert: { is_active: boolean }) => alert.is_active
+        (alert: { is_active: boolean; end_date: Date | null }) => {
+          return (
+            alert.is_active && (alert.end_date == null || this.remainingDays(alert.end_date) >= 0)
+          );
+        }
       )?.[0],
     });
     this.setState({
       pastMineAlerts: this.props.mineAlerts?.filter(
-        (alert: { is_active: boolean }) => !alert.is_active
+        (alert: { is_active: boolean; end_date: Date | null }) => {
+          return !alert.is_active || (alert.end_date && this.remainingDays(alert.end_date) < 0);
+        }
       ),
     });
     this.setState({ loaded: true });
