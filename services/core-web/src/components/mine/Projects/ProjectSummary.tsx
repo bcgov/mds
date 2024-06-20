@@ -69,14 +69,14 @@ export const ProjectSummary: FC = () => {
   const activeTab = tab ?? projectFormTabs[0];
   const mineName = mine?.mine_name ?? formattedProjectSummary?.mine_name ?? "";
 
-  const handleFetchData = () => {
+  const handleFetchData = async () => {
     setIsLoaded(false);
     if (projectGuid && projectSummaryGuid) {
       setIsNewProject(false);
-      dispatch(fetchRegions(undefined));
-      dispatch(fetchProjectById(projectGuid));
+      await dispatch(fetchRegions(undefined));
+      await dispatch(fetchProjectById(projectGuid));
     } else {
-      dispatch(fetchMineRecordById(mineGuid));
+      await dispatch(fetchMineRecordById(mineGuid));
     }
   };
 
@@ -90,7 +90,10 @@ export const ProjectSummary: FC = () => {
   }, []);
 
   useEffect(() => {
-    if ((formattedProjectSummary?.project_guid && !isNewProject) || mine?.mine_guid) {
+    if (
+      (formattedProjectSummary?.project_guid && !isNewProject) ||
+      (isNewProject && mine?.mine_guid)
+    ) {
       setIsLoaded(true);
     }
   }, [formattedProjectSummary, mine]);
@@ -149,7 +152,7 @@ export const ProjectSummary: FC = () => {
         );
       })
       .then(async () => {
-        handleFetchData();
+        await handleFetchData();
       });
   };
 
