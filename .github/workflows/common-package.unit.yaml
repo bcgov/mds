@@ -10,6 +10,8 @@ jobs:
   test-common-package:
     name: test-common-package
     runs-on: ubuntu-20.04
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     steps:
       - uses: actions/checkout@v3
         name: checkout
@@ -48,14 +50,7 @@ jobs:
           path: |
             services/common/coverage
             services/common/reports/test-reporter.xml
-
-  run-sonar-scan:
-    name: Run SonarCloud Scan
-    if: success()
-    needs: test-common-package
-    uses: ./.github/workflows/sonarcloud-scan.yaml
-    with:
-      project-dir: services/common
-      test-report-artifact: common-test-results
-
-    secrets: inherit
+      - name: Sonar Reporting
+        uses: SonarSource/sonarcloud-github-action@v2.1.1
+        with:
+          projectBaseDir: services/common
