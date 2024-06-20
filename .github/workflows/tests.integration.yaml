@@ -40,7 +40,7 @@ jobs:
       - name: Run integration tests
         env:
           DOCKER_BUILDKIT: 1
-        run: docker-compose -f docker-compose.ci.yaml run backend pytest -q --cov=app tests/ --cov-report xml
+        run: docker-compose -f docker-compose.ci.yaml run backend pytest -q --cov=app tests/ --cov-report xml --cov-config .coveragerc
 
       - name: Sonar Reporting
         env:
