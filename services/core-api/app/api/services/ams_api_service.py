@@ -75,7 +75,6 @@ class AMSApiService():
 
     @classmethod
     def __set_contact_details(cls, contact):
-        address = contact.get('address', {})
         contact_details = {
             'em_lastname': contact.get('last_name', ''),
             'em_firstname': contact.get('first_name', ''),
@@ -83,11 +82,11 @@ class AMSApiService():
             'em_businessphone': cls.__format_phone_number(contact.get('phone_number')),
             'em_email': contact.get('email', ''),
             'em_mailingaddress': cls.__create_full_address(
-                address.get('address_line_1', ''),
-                address.get('city', ''),
-                address.get('sub_division_code', ''),
-                address.get('post_code', '')
-            ),
+                contact['address'].get('address_line_1', ''),
+                contact['address'].get('city', ''),
+                contact['address'].get('sub_division_code', ''),
+                contact['address'].get('post_code', '')
+            ) if contact.get('address') else ''
         }
         return contact_details
 

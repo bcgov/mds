@@ -1128,9 +1128,10 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             regional_district_id).name or None
 
         if ams_authorizations:
-            ams_results = []
+            new_ams_results = []
+            amendment_ams_results = []
             if self.status_code == 'SUB':
-                ams_results = AMSApiService.create_new_ams_authorization(
+                new_ams_results = AMSApiService.create_new_ams_authorization(
                     ams_authorizations,
                     applicant,
                     nearest_municipality,
@@ -1185,32 +1186,32 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                     is_crown_land_federal_or_provincial
                 )
 
-                for authorization in ams_authorizations.get('amendments', []):
-                    if amendment_ams_results:
-                        ams_tracking_details = self.get_ams_tracking_details(amendment_ams_results,
-                                                                             authorization.get(
-                                                                                 'project_summary_authorization_guid'))
-                        if ams_tracking_details:
-                            # if result does not have a statusCode attribute, it means the outcome is successful.
-                            authorization['ams_status_code'] = ams_tracking_details.get('statusCode', '200')
-                            authorization['ams_tracking_number'] = ams_tracking_details.get('trackingnumber', '0')
-                            authorization['ams_outcome'] = ams_tracking_details.get('outcome', ams_tracking_details.get(
-                                'errorMessage'))
-                    self.create_or_update_authorization(authorization)
+            for authorization in ams_authorizations.get('amendments', []):
+                if amendment_ams_results:
+                    ams_tracking_details = self.get_ams_tracking_details(amendment_ams_results,
+                                                                         authorization.get(
+                                                                             'project_summary_authorization_guid'))
+                    if ams_tracking_details:
+                        # if result does not have a statusCode attribute, it means the outcome is successful.
+                        authorization['ams_status_code'] = ams_tracking_details.get('statusCode', '200')
+                        authorization['ams_tracking_number'] = ams_tracking_details.get('trackingnumber', '0')
+                        authorization['ams_outcome'] = ams_tracking_details.get('outcome', ams_tracking_details.get(
+                            'errorMessage'))
+                self.create_or_update_authorization(authorization)
 
-                for authorization in ams_authorizations.get('new', []):
-                    if ams_results:
-                        ams_tracking_details = self.get_ams_tracking_details(ams_results,
-                                                                             authorization.get(
-                                                                                 'project_summary_authorization_guid'))
-                        if ams_tracking_details:
-                            # if result does not have a statusCode attribute, it means the outcome is successful.
-                            authorization['ams_status_code'] = ams_tracking_details.get('statusCode', '200')
-                            authorization['ams_tracking_number'] = ams_tracking_details.get('trackingnumber', '0')
-                            authorization['ams_outcome'] = ams_tracking_details.get('outcome', ams_tracking_details.get(
-                                'errorMessage'))
+            for authorization in ams_authorizations.get('new', []):
+                if new_ams_results:
+                    ams_tracking_details = self.get_ams_tracking_details(new_ams_results,
+                                                                         authorization.get(
+                                                                             'project_summary_authorization_guid'))
+                    if ams_tracking_details:
+                        # if result does not have a statusCode attribute, it means the outcome is successful.
+                        authorization['ams_status_code'] = ams_tracking_details.get('statusCode', '200')
+                        authorization['ams_tracking_number'] = ams_tracking_details.get('trackingnumber', '0')
+                        authorization['ams_outcome'] = ams_tracking_details.get('outcome', ams_tracking_details.get(
+                            'errorMessage'))
 
-                    self.create_or_update_authorization(authorization)
+                self.create_or_update_authorization(authorization)
 
         if add_to_session:
             self.save(commit=False)
