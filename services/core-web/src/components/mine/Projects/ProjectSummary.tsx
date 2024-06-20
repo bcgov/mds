@@ -7,7 +7,6 @@ import { Button, Col, Row, Tag } from "antd";
 import EnvironmentOutlined from "@ant-design/icons/EnvironmentOutlined";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 
-import NullScreen from "@/components/common/NullScreen";
 import {
   getFormattedProjectSummary,
   getProject,
@@ -82,21 +81,12 @@ export const ProjectSummary: FC = () => {
 
   useEffect(() => {
     if (!isLoaded) {
-      handleFetchData();
+      handleFetchData().then(() => setIsLoaded(true));
     }
     return () => {
       dispatch(clearProjectSummary());
     };
   }, []);
-
-  useEffect(() => {
-    if (
-      (formattedProjectSummary?.project_guid && !isNewProject) ||
-      (isNewProject && mine?.mine_guid)
-    ) {
-      setIsLoaded(true);
-    }
-  }, [formattedProjectSummary, mine]);
 
   const removeUploadedDocument = (payload, docs) => {
     if (Array.isArray(payload.documents)) {
@@ -191,6 +181,7 @@ export const ProjectSummary: FC = () => {
       if (projectGuid && projectSummaryGuid) {
         await handleUpdateProjectSummary(values, message);
         handleTabChange(newActiveTab);
+        setIsLoaded(true);
       }
     } catch (err) {
       console.log(err);

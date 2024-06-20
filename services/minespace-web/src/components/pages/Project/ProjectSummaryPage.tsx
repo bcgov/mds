@@ -78,14 +78,8 @@ export const ProjectSummaryPage = () => {
   };
 
   useEffect(() => {
-    if ((formattedProjectSummary?.project_guid && isEditMode) || (!isEditMode && mine?.mine_guid)) {
-      setIsLoaded(true);
-    }
-  }, [formattedProjectSummary, mine]);
-
-  useEffect(() => {
     if (!isLoaded) {
-      handleFetchData();
+      handleFetchData().then(() => setIsLoaded(true));
     }
     return () => {
       dispatch(clearProjectSummary());
@@ -138,7 +132,7 @@ export const ProjectSummaryPage = () => {
     });
   };
 
-  const handleTabChange = (newTab) => {
+  const handleTabChange = async (newTab) => {
     if (!newTab) {
       return;
     }
@@ -169,6 +163,7 @@ export const ProjectSummaryPage = () => {
       if (projectGuid && projectSummaryGuid) {
         await handleUpdateProjectSummary(values, message);
         handleTabChange(newActiveTab);
+        setIsLoaded(true);
       }
     } catch (err) {
       console.log(err);
