@@ -38,12 +38,11 @@ jobs:
       - name: Run integration tests
         env:
           DOCKER_BUILDKIT: 1
-        run: docker-compose -f docker-compose.ci.yaml run backend pytest -q
-        
-  run-sonar-scan:
-    name: Run SonarCloud Scan
-    if: success()
-    uses: ./.github/workflows/sonarcloud-scan.yaml
-    with:
-      project-dir: services/core-api
-    secrets: inherit
+        run: docker-compose -f docker-compose.ci.yaml run backend pytest -q --cov=app tests/ --cov-report xml
+
+      - name: Sonar Reporting
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        uses: SonarSource/sonarcloud-github-action@v2.1.1
+        with:
+          projectBaseDir: services/core-api
