@@ -11,6 +11,8 @@ jobs:
   tests-unit-frontend:
     name: tests-unit-frontend
     runs-on: ubuntu-20.04
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     steps:
       - uses: actions/checkout@v3
         name: checkout
