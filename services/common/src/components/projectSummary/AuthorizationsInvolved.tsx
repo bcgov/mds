@@ -49,6 +49,8 @@ import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import { MineDocument } from "@mds/common/models/documents/document";
 import { Link } from "react-router-dom";
 import { PROJECT_SUMMARY_DOCUMENT_TYPE_CODE_STATE } from "../..";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
+import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 
 const RenderEMAPermitCommonSections = ({ code, isAmendment, index }) => {
   const dispatch = useDispatch();
@@ -519,6 +521,9 @@ export const AuthorizationsInvolved = () => {
   const amsAuthTypes = useSelector(getAmsAuthorizationTypes);
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
 
+  const systemFlag = useSelector(getSystemFlag);
+  const isCore = systemFlag === SystemFlagEnum.core;
+
   const handleChange = (e, code) => {
     if (e.target.checked) {
       let formVal;
@@ -586,14 +591,18 @@ export const AuthorizationsInvolved = () => {
                                           For intent to depart from a Mines Act authorized mine plan
                                           and reclamation program, as per HSRC code 10.1.18, submit
                                           a{" "}
-                                          <Link
-                                            to={GLOBAL_ROUTES?.MINE_DASHBOARD.dynamicRoute(
-                                              formValues?.mine_guid,
-                                              "nods"
-                                            )}
-                                          >
-                                            Notice of Departure
-                                          </Link>{" "}
+                                          {isCore ? (
+                                            "Notice of Departure"
+                                          ) : (
+                                            <Link
+                                              to={GLOBAL_ROUTES?.MINE_DASHBOARD.dynamicRoute(
+                                                formValues?.mine_guid,
+                                                "nods"
+                                              )}
+                                            >
+                                              Notice of Departure
+                                            </Link>
+                                          )}{" "}
                                           through MineSpace
                                         </li>
                                         <li>
