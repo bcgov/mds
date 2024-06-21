@@ -41,7 +41,13 @@ jobs:
         env:
           DOCKER_BUILDKIT: 1
         run: docker-compose -f docker-compose.ci.yaml run backend pytest -q --cov=app tests/ --cov-report xml --cov-config .coveragerc
-
+      - name: Upload test coverage results
+        uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: core-api-test-results
+          path: |
+            services/core-api/coverage.xml
       - name: Sonar Reporting
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
