@@ -43,7 +43,7 @@ jobs:
         run: |
           docker-compose -f docker-compose.ci.yaml run backend coverage run -m pytest
           docker-compose -f docker-compose.ci.yaml run backend coverage xml
-          sed -i "s/<source>\/app/<source>\/home\/runner\/work\/mds\/mds\/services\/core-api/g" services/core-api/coverage.xml
+          sed -i "s/<source>\/app/<source>\/github\/workspace\/services\/core-api/g" services/core-api/coverage.xml
       - name: Upload test coverage results
         uses: actions/upload-artifact@v4
         if: success()
