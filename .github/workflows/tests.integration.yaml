@@ -41,8 +41,8 @@ jobs:
         env:
           DOCKER_BUILDKIT: 1
         run: |
-          docker-compose -f docker-compose.ci.yaml run coverage run -m pytest
-          docker-compose -f docker-compose.ci.yaml run coverage xml
+          docker-compose -f docker-compose.ci.yaml run backend coverage run -m pytest
+          docker-compose -f docker-compose.ci.yaml run backend coverage
       - name: Upload test coverage results
         uses: actions/upload-artifact@v4
         if: success()
