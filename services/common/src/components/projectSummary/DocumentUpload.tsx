@@ -163,13 +163,11 @@ export const DocumentUpload: FC = () => {
           onRemoveFile={onRemoveFile}
           params={fileUploadParams}
           acceptedFileTypesMap={spatialAcceptedFileTypesMap}
+          listedFileTypes={["spatial"]}
           component={ProjectSummaryFileUpload}
           props={{
             documents: documents,
             label: "Upload spatial documents",
-            labelIdle:
-              '<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><br>' +
-              "<div>We accept spatial files with max individual file size of 400 MB.</div>",
           }}
         />
 
@@ -202,13 +200,11 @@ export const DocumentUpload: FC = () => {
           onRemoveFile={onRemoveFile}
           params={fileUploadParams}
           acceptedFileTypesMap={supportingAcceptedFileTypesMap}
+          listedFileTypes={["document", "image", "spreadsheet"]}
           component={ProjectSummaryFileUpload}
           props={{
             documents: documents,
             label: "Upload Files",
-            labelIdle:
-              '<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><br>' +
-              "<div>We accept most common document, image, and spreadsheet with max individual file size of 400 MB.</div>",
           }}
         />
         <DocumentTable

@@ -17,6 +17,7 @@ import * as routes from "@/constants/routes";
 import { RootState } from "@/App";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import * as router from "@/constants/routes";
+import moment from "moment";
 
 interface HomeMineActivityProps {
   subscribedMines: IMine[];
@@ -146,11 +147,25 @@ const HomeMineActivity: FC<HomeMineActivityProps> = ({
             Here are the latest mine alerts from across CORE.
           </Typography.Paragraph>
 
-          {formattedAlerts.map((alert) => (
-            <Skeleton loading={!alertsLoaded} active key={`global-alerts-${alert.mine_alert_guid}`}>
-              <GlobalMineAlert key={alert.mine_alert_guid} alert={alert} />
-            </Skeleton>
-          ))}
+          {formattedAlerts
+            .filter((alert, index) => {
+              return (
+                alert.is_active &&
+                (alert.end_date == null ||
+                  moment(alert.end_date)
+                    .startOf("day")
+                    .diff(moment().startOf("day"), "days") >= 0)
+              );
+            })
+            .map((alert) => (
+              <Skeleton
+                loading={!alertsLoaded}
+                active
+                key={`global-alerts-${alert.mine_alert_guid}`}
+              >
+                <GlobalMineAlert key={alert.mine_alert_guid} alert={alert} />
+              </Skeleton>
+            ))}
         </div>
       </Col>
     </Row>

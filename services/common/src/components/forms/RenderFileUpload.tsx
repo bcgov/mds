@@ -67,8 +67,6 @@ interface FileUploadProps extends BaseInputProps {
   listedFileTypes?: string[];
   // true for "We accept most common ${listedFileTypes.join()} files" language + popover
   abbrevLabel?: boolean;
-  // I left abbrevLabel prop alone for the time being as it seems for certain areas we may want to still display the accepted file types below the filepond
-  newAbbrevLabel?: boolean;
   maxFiles?: number;
   labelHref: string;
 
@@ -96,7 +94,6 @@ const defaultProps = {
   labelInstruction:
     '<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong>',
   abbrevLabel: false,
-  newAbbrevLabel: false,
   beforeAddFile: () => {},
   beforeDropFile: () => {},
   file: null,
@@ -132,8 +129,12 @@ export const FileUpload = (props: FileUploadProps) => {
       return labelIdle;
     }
     const fileTypeList = listedFileTypes ?? Object.keys(acceptedFileTypesMap);
-    const fileTypeDisplayString =
+    let fileTypeDisplayString =
       fileTypeList.slice(0, -1).join(", ") + ", and " + fileTypeList.slice(-1);
+    if (fileTypeList.length === 1) {
+      fileTypeDisplayString = fileTypeList[0];
+    }
+
     const fileSize = props.maxFileSize
       ? ` with max individual file size of ${props.maxFileSize}`
       : "";
@@ -451,17 +452,20 @@ export const FileUpload = (props: FileUploadProps) => {
   const acceptedFileTypes = uniq(Object.values(props.acceptedFileTypesMap));
 
   const getLabel = (props) => {
-    if (props.labelHref)
-      return (
+    let labelHrefElement = null;
+
+    if (props.labelHref) {
+      labelHrefElement = (
         <a href={props.labelHref} target="_blank" rel="noopener noreferrer">
           {props.label}
         </a>
       );
+    }
 
-    if (props.newAbbrevLabel && Object.values(props.acceptedFileTypesMap).length > 0) {
+    if (props.abbrevLabel && Object.values(props.acceptedFileTypesMap).length > 0) {
       return (
         <span>
-          {props.label}{" "}
+          {labelHrefElement ? labelHrefElement : props.label}{" "}
           <span>
             <Popover
               content={
@@ -482,6 +486,10 @@ export const FileUpload = (props: FileUploadProps) => {
           </span>
         </span>
       );
+    }
+
+    if (labelHrefElement) {
+      return labelHrefElement;
     }
 
     return <>{props.label}</>;
@@ -517,7 +525,7 @@ export const FileUpload = (props: FileUploadProps) => {
         label={getLabel({
           label: props.label,
           labelHref: props.labelHref,
-          newAbbrevLabel: props.newAbbrevLabel,
+          abbrevLabel: props.abbrevLabel,
           acceptedFileTypesMap: props.acceptedFileTypesMap,
         })}
         validateStatus={
@@ -571,23 +579,6 @@ export const FileUpload = (props: FileUploadProps) => {
               })
             }
           />
-          {props.abbrevLabel && (
-            <div className="filepond-popover-container">
-              <Popover
-                content={
-                  <>
-                    <strong>Accepted File Types:</strong>
-                    <p>{Object.keys(props.acceptedFileTypesMap).join(", ")}</p>
-                  </>
-                }
-                placement="topRight"
-                color="white"
-                overlayClassName="filepond-filetypes-popover"
-              >
-                View accepted file types
-              </Popover>
-            </div>
-          )}
         </>
       </Form.Item>
     </div>

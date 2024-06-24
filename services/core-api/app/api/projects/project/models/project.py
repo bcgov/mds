@@ -284,7 +284,7 @@ class Project(AuditMixin, Base):
                             address_type_code=new_address_data.get('address_type_code', None),
                         )
                         updated_contact.address.append(new_address)
-            else:
+            elif contact.get('first_name') != None and updated_contact_guid == None:
                 new_contact = ProjectContact(
                     project_guid=self.project_guid,
                     first_name =contact.get('first_name'),
