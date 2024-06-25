@@ -57,6 +57,7 @@ import ReportPage from "@/components/mine/Reports/ReportPage";
 import ReportSteps from "@mds/common/components/reports/ReportSteps";
 import ViewDigitalPermitCredential from "@/components/mine/DigitalPermitCredential/ViewDigitalPermitCredential";
 import ComplianceCodeManagement from "@/components/admin/complianceCodes/ComplianceCodeManagement";
+import ProjectSubmissionStatusPage from "@mds/common/components/projectSummary/ProjectSubmissionStatusPage";
 
 const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));
@@ -213,6 +214,13 @@ export const EDIT_PROJECT_SUMMARY = {
       viewMode ? "view" : "edit"
     }/${activeTab}`,
   component: ProjectSummary,
+};
+
+export const VIEW_PROJECT_SUBMISSION_STATUS_PAGE = {
+  route: "/projects/:projectGuid/project-submission-status/:status",
+  dynamicRoute: (projectGuid, status) =>
+    `/projects/${projectGuid}/project-submission-status/${status}`,
+  component: ProjectSubmissionStatusPage,
 };
 
 export const EDIT_PROJECT = {

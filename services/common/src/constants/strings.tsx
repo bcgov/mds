@@ -446,3 +446,7 @@ export const CONTACTS_COUNTRY_OPTIONS = [
   { value: "USA", label: "United States" },
   { value: "INT", label: "International" },
 ];
+
+export const PROJECT_SUMMARY_WITH_AMS_SUBMISSION_SECTION = "declaration";
+export const AMS_STATUS_CODES_SUCCESS = "success";
+export const AMS_STATUS_CODE_FAIL = "fail";
