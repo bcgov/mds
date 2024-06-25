@@ -10,6 +10,7 @@ import * as routes from "@/constants/routes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
 import { IMine } from "@mds/common/interfaces/mine.interface";
+import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 
 export const Projects: FC = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -18,6 +19,7 @@ export const Projects: FC = () => {
   const projects = useSelector(getProjects);
 
   const handleFetchData = () => {
+    dispatch(fetchPermits(mine.mine_guid));
     dispatch(fetchProjectsByMine({ mineGuid: mine.mine_guid })).then(() => {
       setIsLoaded(true);
     });

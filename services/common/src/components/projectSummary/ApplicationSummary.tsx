@@ -13,11 +13,7 @@ import { Button, Alert, Typography, Col, Row } from "antd";
 import { useHistory } from "react-router-dom";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { FORM } from "@mds/common/constants/forms";
-
-interface IAuthorizationSummaryColumn {
-  type: string;
-  permit_no: string;
-}
+import { IAuthorizationSummaryColumn } from "@mds/common/interfaces";
 
 export const ApplicationSummary: FC = () => {
   const permits = useSelector(getPermits);
