@@ -66,6 +66,14 @@ CustomAxios = ({
       if (axios.isCancel(error)) {
         return Promise.resolve(error.message);
       }
+
+      if (!document) {
+        // If the DOM document is not available to render, do not try to render a notification.
+        // This happens in some of our tests where axios is not mocked and causes a "TypeError: Cannot read property 'createElement' of null"
+        // error to be thrown by antd and prevents code coverage from being generated.
+        return Promise.reject(error);
+      }
+
       const status = error.response ? error.response.status : null;
       if (status === UNAUTHORIZED || status === MAINTENANCE) {
         // @ts-ignore
