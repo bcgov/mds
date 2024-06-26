@@ -4,6 +4,9 @@ on:
       project-dir:
         required: true
         type: string
+      test-report-artifact:
+        required: false
+        type: string
 jobs:
   sonarcloud:
     name: SonarCloud
@@ -12,11 +15,25 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Download test report
+        if: "${{ inputs.test-report-artifact != '' }}"
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.test-report-artifact }}
+          path: ${{ inputs.project-dir }}
+      - name: Fix test lcov paths
+        if: "${{ inputs.test-report-artifact != '' }}"
+        run: |
+          sed -i 's/SF\:services/\/SF\:\/github\/workspace\/services/g' ${{ inputs.project-dir }}/coverage/lcov.info
+          sed -i 's/home\/runner\/work\/mds\/mds/github\/workspace/g' ${{ inputs.project-dir }}/reports/test-reporter.xml
+
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2.1.1
         with:
           projectBaseDir: ${{ inputs.project-dir }}
+          args: >
+            -Dsonar.verbose=true
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

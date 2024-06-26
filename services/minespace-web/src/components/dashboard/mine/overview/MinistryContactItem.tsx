@@ -1,16 +1,25 @@
 import React from "react";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import { Typography } from "antd";
 import { getEMLIContactTypesHash } from "@mds/common/redux/selectors/staticContentSelectors";
 import * as Strings from "@/constants/strings";
 
-const propTypes = {
-  contact: PropTypes.objectOf(PropTypes.any).isRequired,
-  EMLIContactTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
-};
+interface MinistryContactItemProps {
+  contact: {
+    emli_contact_type_code: string;
+    first_name: string;
+    last_name: string;
+    phone_number: string;
+    email: string;
+  };
+  EMLIContactTypesHash: {
+    [key: string]: string;
+  };
+}
 
-export const MinistryContactItem = (props) => (
+export const MinistryContactItem: React.FC<MinistryContactItemProps> = (
+  props: MinistryContactItemProps
+) => (
   <Typography.Paragraph className="ministry-contact-item">
     <Typography.Text strong className="ministry-contact-title">
       {props.EMLIContactTypesHash[props.contact.emli_contact_type_code] || Strings.UNKNOWN}
@@ -36,8 +45,6 @@ export const MinistryContactItem = (props) => (
     )}
   </Typography.Paragraph>
 );
-
-MinistryContactItem.propTypes = propTypes;
 
 const mapStateToProps = (state) => ({
   EMLIContactTypesHash: getEMLIContactTypesHash(state),
