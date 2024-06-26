@@ -5,7 +5,11 @@ on:
     paths:
       - services/common/**
   workflow_dispatch:
-
+  push:
+    branches:
+      - develop
+    paths:
+      - services/common/**
 jobs:
   test-common-package:
     name: test-common-package

@@ -5,6 +5,12 @@ on:
     paths:
       - services/common/**
       - services/minespace-web/**
+  push:
+    branches:
+      - develop
+    paths:
+      - services/common/**
+      - services/minespace-web/**
 
 jobs:
   tests-unit-minespace:

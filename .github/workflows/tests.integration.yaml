@@ -8,6 +8,11 @@ on:
       - services/postgres/**
       - docker-compose
       - docker-compose.ci.yaml
+  push:
+    branches:
+      - develop
+    paths:
+      - services/core-api/**
 
 jobs:
   tests-verify-migrations:

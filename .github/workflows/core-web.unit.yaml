@@ -6,6 +6,12 @@ on:
     paths:
       - services/common/**
       - services/core-web/**
+  push:
+    branches:
+      - develop
+    paths:
+      - services/common/**
+      - services/core-web/**
 
 jobs:
   tests-unit-frontend:
