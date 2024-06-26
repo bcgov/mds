@@ -1,30 +1,31 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Typography, Button } from "antd";
+import { Row, Col, Typography, Button, Alert, Badge } from "antd";
 import Callout from "@/components/common/Callout";
 import { CALLOUT_SEVERITY } from "@mds/common/constants/strings";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { getProject } from "@mds/common/redux/selectors/projectSelectors";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { renderTextColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import { IAuthorizationSummaryColumn } from "@mds/common/interfaces";
+import { Link } from "react-router-dom";
 
 import {
   getDropdownProjectSummaryPermitTypes,
   getTransformedProjectSummaryAuthorizationTypes,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { ColumnsType } from "antd/es/table";
+import * as routes from "@/constants/routes";
+import { useHistory } from "react-router-dom";
 
 export const ProjectDescriptionTab = () => {
   const history = useHistory();
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [minesActData, setMinesActData] = useState([]);
   const [environmentalManagementActData, setEnvironmentalManagementActData] = useState([]);
   const [waterSustainabilityActData, setWaterSustainabilityActData] = useState([]);
   const [forestryActData, setForestryActData] = useState([]);
-  const [otherLegislationActData, setOtherLegislationActData] = useState([]);
+
   const permits = useSelector(getPermits);
   const project = useSelector(getProject);
   const transformedProjectSummaryAuthorizationTypes = useSelector(
@@ -32,21 +33,28 @@ export const ProjectDescriptionTab = () => {
   );
   const dropdownProjectSummaryPermitTypes = useSelector(getDropdownProjectSummaryPermitTypes);
   const notApplicableText = "N/A";
-  const failedSubmissionStatus = "Failed";
 
   let processedOtherActPermitResult: any[] = [];
+
+  const createStatusColumn = (text: string) => ({
+    title: "Status",
+    render: () => <Badge status={"error"} text={text} />,
+  });
+
+  const minesActStatusColumn = createStatusColumn("Submitted");
+  const otherActStatusColumn = createStatusColumn("Failed");
 
   const minesActColumns: ColumnsType<IAuthorizationSummaryColumn> = [
     renderTextColumn("project_type", "Type", false),
     renderTextColumn("permit_no", "Permit", false),
-    renderTextColumn("status", "Status", false),
+    minesActStatusColumn,
   ];
 
   const otherActColumns: ColumnsType<IAuthorizationSummaryColumn> = [
     renderTextColumn("project_type", "Type", false),
     renderTextColumn("permit_no", "Authorization", false),
     renderTextColumn("ams_tracking_number", "Tracking #", false),
-    renderTextColumn("status", "Status ", false),
+    otherActStatusColumn,
   ];
 
   const parseProjectTypeLabel = (authType: string) => {
@@ -72,103 +80,101 @@ export const ProjectDescriptionTab = () => {
   };
 
   const loadMinesActPermitData = (authorizations) => {
-    const result = [];
-    const submissionStatus = "Submitted";
-    authorizations.forEach((authorization) => {
-      if (
-        authorization.ams_status_code === "400" &&
-        authorization.project_summary_authorization_type === "MINES_ACT_PERMIT"
-      ) {
+    const result = authorizations
+      .filter(
+        (authorization) => authorization.project_summary_authorization_type === "MINES_ACT_PERMIT"
+      )
+      .map((authorization) => {
         const projectType = parseProjectTypeLabel(authorization?.project_summary_permit_type[0]);
-        if (authorization?.project_summary_permit_type[0] === "AMENDMENT") {
-          result.push({
-            project_type: projectType,
-            permit_no: getPermitNumber(authorization?.existing_permits_authorizations[0]),
-            status: submissionStatus,
-          });
-        } else {
-          result.push({
-            project_type: projectType,
-            permit_no: notApplicableText,
-            status: submissionStatus,
-          });
-        }
-      }
-    });
+        const permit_no =
+          authorization?.project_summary_permit_type[0] === "AMENDMENT"
+            ? getPermitNumber(authorization?.existing_permits_authorizations[0])
+            : notApplicableText;
+
+        return {
+          project_type: projectType,
+          permit_no: permit_no,
+        };
+      });
+
     setMinesActData(result);
   };
 
-  const processOtherActAuthorizations = (
-    authorizations: any[],
-    permitAuthorizationType: string,
-    projectSummaryAuthorizationType: string
+  const processOtherActAuthorization = (
+    authorization,
+    permitAuthorizationType,
+    projectSummaryAuthorizationType
   ) => {
-    authorizations.forEach((authorization) => {
-      if (
-        authorization.ams_status_code === "400" &&
-        authorization.project_summary_authorization_type === projectSummaryAuthorizationType
-      ) {
-        const permitTypeLabel = parseProjectTypeLabel(
-          authorization?.project_summary_permit_type[0]
-        );
-        const projectType = `${parseTransformedProjectSummaryAuthorizationTypes(
+    if (
+      authorization.ams_status_code === "400" &&
+      authorization.project_summary_authorization_type === projectSummaryAuthorizationType
+    ) {
+      const permitTypeLabel = parseProjectTypeLabel(authorization.project_summary_permit_type[0]);
+      const projectType = `${parseTransformedProjectSummaryAuthorizationTypes(
+        permitAuthorizationType,
+        projectSummaryAuthorizationType
+      )} - ${permitTypeLabel}`;
+      const permitNo =
+        authorization.project_summary_permit_type[0] === "AMENDMENT"
+          ? authorization.existing_permits_authorizations[0]
+          : notApplicableText;
+
+      return {
+        project_type: projectType,
+        permit_no: permitNo,
+        ams_tracking_number: notApplicableText,
+      };
+    }
+    return null;
+  };
+
+  const processOtherActAuthorizations = (
+    authorizations,
+    permitAuthorizationType,
+    projectSummaryAuthorizationType
+  ) => {
+    const filteredResults = authorizations
+      .map((authorization) =>
+        processOtherActAuthorization(
+          authorization,
           permitAuthorizationType,
           projectSummaryAuthorizationType
-        )} - ${permitTypeLabel}`;
-        if (authorization?.project_summary_permit_type[0] === "AMENDMENT") {
-          processedOtherActPermitResult.push({
-            project_type: projectType,
-            permit_no: authorization?.existing_permits_authorizations[0],
-            status: failedSubmissionStatus,
-            ams_tracking_number: notApplicableText,
-          });
-        } else {
-          processedOtherActPermitResult.push({
-            project_type: projectType,
-            permit_no: notApplicableText,
-            status: failedSubmissionStatus,
-            ams_tracking_number: notApplicableText,
-          });
-        }
-      }
+        )
+      )
+      .filter(Boolean);
+    processedOtherActPermitResult.push(...filteredResults);
+  };
+
+  const processAndSetData = (authorizations, types, actType, setData) => {
+    types.forEach((type) => {
+      processOtherActAuthorizations(authorizations, actType, type);
     });
+    setData([...processedOtherActPermitResult]);
+    processedOtherActPermitResult = [];
   };
 
   const loadOtherActPermitData = (authorizations) => {
-    processOtherActAuthorizations(
+    const environmentalManagementActTypes = [
+      "AIR_EMISSIONS_DISCHARGE_PERMIT",
+      "EFFLUENT_DISCHARGE_PERMIT",
+      "REFUSE_DISCHARGE_PERMIT",
+      "MUNICIPAL_WASTEWATER_REGULATION",
+    ];
+    const waterSustainabilityActTypes = ["CHANGE_APPROVAL", "USE_APPROVAL", "WATER_LICENCE"];
+    const forestryActTypes = ["OCCUPANT_CUT_LICENCE"];
+    processAndSetData(
       authorizations,
+      environmentalManagementActTypes,
       "ENVIRONMENTAL_MANAGMENT_ACT",
-      "AIR_EMISSIONS_DISCHARGE_PERMIT"
+      setEnvironmentalManagementActData
     );
-    processOtherActAuthorizations(
+    processAndSetData(
       authorizations,
-      "ENVIRONMENTAL_MANAGMENT_ACT",
-      "EFFLUENT_DISCHARGE_PERMIT"
+      waterSustainabilityActTypes,
+      "WATER_SUSTAINABILITY_ACT",
+      setWaterSustainabilityActData
     );
-    processOtherActAuthorizations(
-      authorizations,
-      "ENVIRONMENTAL_MANAGMENT_ACT",
-      "REFUSE_DISCHARGE_PERMIT"
-    );
-    processOtherActAuthorizations(
-      authorizations,
-      "ENVIRONMENTAL_MANAGMENT_ACT",
-      "MUNICIPAL_WASTEWATER_REGULATION"
-    );
-    setEnvironmentalManagementActData([...processedOtherActPermitResult]);
-    processedOtherActPermitResult = [];
-    processOtherActAuthorizations(authorizations, "WATER_SUSTAINABILITY_ACT", "CHANGE_APPROVAL");
-    processOtherActAuthorizations(authorizations, "WATER_SUSTAINABILITY_ACT", "USE_APPROVAL");
-    processOtherActAuthorizations(authorizations, "WATER_SUSTAINABILITY_ACT", "WATER_LICENCE");
-    setWaterSustainabilityActData([...processedOtherActPermitResult]);
-    processedOtherActPermitResult = [];
-    processOtherActAuthorizations(authorizations, "FORESTRY_ACT", "OCCUPANT_CUT_LICENCE");
-    setForestryActData([...processedOtherActPermitResult]);
-    processedOtherActPermitResult = [];
-
-    processOtherActAuthorizations(authorizations, "OTHER_LEGISLATION", "OTHER");
-    setOtherLegislationActData([...processedOtherActPermitResult]);
-    processedOtherActPermitResult = [];
+    processAndSetData(authorizations, forestryActTypes, "FORESTRY_ACT", setForestryActData);
   };
 
   useEffect(() => {
@@ -180,7 +186,17 @@ export const ProjectDescriptionTab = () => {
     dropdownProjectSummaryPermitTypes,
   ]);
 
-  console.log("project:", project);
+  const handleViewProjectDescriptionClicked = () => {
+    const projectGuid = project.project_guid;
+    const projectSummaryGuid = project.project_summary_guid;
+    const url = GLOBAL_ROUTES?.EDIT_PROJECT_SUMMARY.dynamicRoute(
+      projectGuid,
+      projectSummaryGuid,
+      "purpose-and-authorization",
+      false
+    );
+    history.push(url);
+  };
 
   return (
     <>
@@ -191,7 +207,9 @@ export const ProjectDescriptionTab = () => {
               <Typography.Title level={4}>Project Description Overview</Typography.Title>
             </Col>
             <Col>
-              <Button type="primary">{"View Project Description Details"}</Button>
+              <Button onClick={handleViewProjectDescriptionClicked} type="primary">
+                {"View Project Description Details"}
+              </Button>
             </Col>
           </Row>
         </Col>
@@ -220,13 +238,29 @@ export const ProjectDescriptionTab = () => {
           <CoreTable dataSource={minesActData} columns={minesActColumns} />
           <Typography.Title level={4}>Ministry of Environment</Typography.Title>
           <Typography.Title level={5}>Environmental Management Act</Typography.Title>
+          {environmentalManagementActData?.length > 0 && (
+            <Alert
+              message={"Submission Failed Please Retry"}
+              showIcon
+              type="error"
+              description={
+                "One or more of your environment authorization application has not been submitted successfully. Please retry the submission."
+              }
+              action={
+                <Link to={routes.ADD_PROJECT_SUMMARY.dynamicRoute(project.mine_guid)}>
+                  <Button>Retry Failed Submission</Button>
+                </Link>
+              }
+              style={{ marginBottom: "12px" }}
+            />
+          )}
           <CoreTable dataSource={environmentalManagementActData} columns={otherActColumns} />
+          <br />
           <Typography.Title level={5}>Water Sustainability Act</Typography.Title>
           <CoreTable dataSource={waterSustainabilityActData} columns={otherActColumns} />
+          <br />
           <Typography.Title level={5}>Forestry Act</Typography.Title>
           <CoreTable dataSource={forestryActData} columns={otherActColumns} />
-          <Typography.Title level={5}>Other Legislation</Typography.Title>
-          <CoreTable dataSource={otherLegislationActData} columns={otherActColumns} />
         </Col>
       </Row>
     </>

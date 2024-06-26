@@ -212,8 +212,3 @@ export enum MineReportTypeUrlParam {
   "PRR" = "permit-required-reports",
   "TAR" = "tailings-reports",
 }
-
-export enum AMS_SUBMISSION_STATUS {
-  SUBMITTED = "Submitted",
-  FAILED = "Failed",
-}
