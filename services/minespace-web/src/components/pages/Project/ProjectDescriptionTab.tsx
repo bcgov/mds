@@ -7,7 +7,10 @@ import { getProject } from "@mds/common/redux/selectors/projectSelectors";
 import { useSelector } from "react-redux";
 
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
-import { renderTextColumn } from "@mds/common/components/common/CoreTableCommonColumns";
+import {
+  renderTextColumn,
+  renderDateColumn,
+} from "@mds/common/components/common/CoreTableCommonColumns";
 import { IAuthorizationSummaryColumn } from "@mds/common/interfaces";
 import { Link } from "react-router-dom";
 
@@ -18,6 +21,7 @@ import {
 import { ColumnsType } from "antd/es/table";
 import * as routes from "@/constants/routes";
 import { useHistory } from "react-router-dom";
+import { formatTime, formatDateTimeTz } from "@mds/common/redux/utils/helpers";
 
 export const ProjectDescriptionTab = () => {
   const history = useHistory();
@@ -47,6 +51,7 @@ export const ProjectDescriptionTab = () => {
   const minesActColumns: ColumnsType<IAuthorizationSummaryColumn> = [
     renderTextColumn("project_type", "Type", false),
     renderTextColumn("permit_no", "Permit", false),
+    renderTextColumn("date_submitted", "Date", false),
     minesActStatusColumn,
   ];
 
@@ -54,6 +59,7 @@ export const ProjectDescriptionTab = () => {
     renderTextColumn("project_type", "Type", false),
     renderTextColumn("permit_no", "Authorization", false),
     renderTextColumn("ams_tracking_number", "Tracking #", false),
+    renderTextColumn("date_submitted", "Date", false),
     otherActStatusColumn,
   ];
 
@@ -85,6 +91,7 @@ export const ProjectDescriptionTab = () => {
         (authorization) => authorization.project_summary_authorization_type === "MINES_ACT_PERMIT"
       )
       .map((authorization) => {
+        const dateSubmitted = formatDateTimeTz(authorization.ams_submission_timestamp);
         const projectType = parseProjectTypeLabel(authorization?.project_summary_permit_type[0]);
         const permit_no =
           authorization?.project_summary_permit_type[0] === "AMENDMENT"
@@ -94,6 +101,7 @@ export const ProjectDescriptionTab = () => {
         return {
           project_type: projectType,
           permit_no: permit_no,
+          date_submitted: dateSubmitted,
         };
       });
 
@@ -109,6 +117,7 @@ export const ProjectDescriptionTab = () => {
       authorization.ams_status_code === "400" &&
       authorization.project_summary_authorization_type === projectSummaryAuthorizationType
     ) {
+      const dateSubmitted = formatDateTimeTz(authorization.ams_submission_timestamp);
       const permitTypeLabel = parseProjectTypeLabel(authorization.project_summary_permit_type[0]);
       const projectType = `${parseTransformedProjectSummaryAuthorizationTypes(
         permitAuthorizationType,
@@ -123,6 +132,7 @@ export const ProjectDescriptionTab = () => {
         project_type: projectType,
         permit_no: permitNo,
         ams_tracking_number: notApplicableText,
+        date_submitted: dateSubmitted,
       };
     }
     return null;
