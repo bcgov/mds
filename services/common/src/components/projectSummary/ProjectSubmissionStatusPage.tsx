@@ -116,7 +116,10 @@ export const ProjectSubmissionStatusPage = () => {
         </Row>
         <Row>
           <Col span={24}>
-            <Link to={GLOBAL_ROUTES?.EDIT_PROJECT.dynamicRoute(projectGuid)}>
+            <Link
+              data-cy="back-to-project-link"
+              to={GLOBAL_ROUTES?.EDIT_PROJECT.dynamicRoute(projectGuid)}
+            >
               <ArrowLeftOutlined className="padding-sm--right" />
               Back to Project Overview
             </Link>
