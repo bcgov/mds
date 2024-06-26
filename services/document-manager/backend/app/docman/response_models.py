@@ -4,6 +4,7 @@ from flask_restx import fields
 DOCUMENT_MODEL = api.model(
     'Document', {
         'document_guid': fields.String,
+        'document_bundle_guid': fields.String,
         'document_id': fields.Integer,
         'full_storage_path': fields.String,
         'upload_started_date': fields.DateTime,
@@ -22,6 +23,14 @@ DOCUMENT_VERSION_MODEL = api.model(
         'upload_completed_date': fields.DateTime,
         'object_store_version_id': fields.String,
         'file_display_name': fields.String,
+    })
+
+DOCMENT_BUNDLE_MODEL = api.model(
+    'DocumentBundle', {
+        'bundle_guid': fields.String,
+        'name': fields.String,
+        'geomark_link': fields.String,
+        'error': fields.String
     })
 
 IMPORT_NOW_SUBMISSION_DOCUMENT = api.model(

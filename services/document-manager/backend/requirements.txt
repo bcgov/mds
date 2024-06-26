@@ -28,6 +28,7 @@ flower==2.0.0
 
 zipstream==1.1.4
 stream-zip==0.0.67
+requests_toolbelt==1.0.0
 
 opentelemetry-distro==0.33b0
 opentelemetry-exporter-otlp==1.12.0

@@ -449,7 +449,7 @@ export const FileUpload = (props: FileUploadProps) => {
   };
 
   const fileValidateTypeLabelExpectedTypesMap = invert(props.acceptedFileTypesMap);
-  const acceptedFileTypes = uniq(Object.values(props.acceptedFileTypesMap));
+  const acceptedFileTypes = uniq(Object.values(props.acceptedFileTypesMap).flat());
 
   const getLabel = (props) => {
     let labelHrefElement = null;

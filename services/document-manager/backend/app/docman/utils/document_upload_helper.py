@@ -1,6 +1,7 @@
 import base64
 import os
 import time
+import zipfile
 from urllib.parse import urlparse
 from wsgiref.handlers import format_date_time
 
@@ -16,14 +17,16 @@ from werkzeug.exceptions import BadRequest, NotFound, RequestEntityTooLarge, Int
 from datetime import datetime
 
 from werkzeug.exceptions import BadRequest, BadGateway, InternalServerError
-from flask import request, current_app
 
 from app.extensions import db
-from app.services.object_store_storage_service import ObjectStoreStorageService
 from app.docman.models.document import Document
 from app.docman.models.document_version import DocumentVersion
 from app.services.object_store_storage_service import ObjectStoreStorageService
 from werkzeug.utils import secure_filename
+
+from app.docman.models.document_bundle import DocumentBundle
+from requests_toolbelt import MultipartEncoder
+
 CACHE_TIMEOUT = TIMEOUT_24_HOURS
 
 def handle_status_and_update_doc(status, doc_guid):
@@ -200,7 +203,7 @@ class DocumentUploadHelper:
         return file_size, data, filename
 
     @classmethod
-    def complete_multipart_upload(cls, upload_id, parts, document, version=None):
+    def complete_multipart_upload(cls, upload_id, parts, document, version=None, is_bundle=False):
         ObjectStoreStorageService().complete_multipart_upload(upload_id, document.multipart_upload_path, parts)
 
         # File has been uploaded to S3 in the {Config.S3_PREFIX}/multipart folder, now move it to its final destination
@@ -212,12 +215,13 @@ class DocumentUploadHelper:
             doc_guid=str(document.document_guid),
             versions=None,
             version_guid=str(version.id) if version is not None else None,
-            info_key=None
+            info_key=None,
+            is_bundle=is_bundle
         )
 
 
     @classmethod
-    def complete_upload(cls, key, new_key, doc_guid, versions=None, version_guid=None, info_key=None):
+    def complete_upload(cls, key, new_key, doc_guid, versions=None, version_guid=None, info_key=None, is_bundle=False):
         oss = ObjectStoreStorageService()
 
         # Copy the file to its new location
@@ -240,7 +244,9 @@ class DocumentUploadHelper:
             if doc.object_store_path != new_key:
                 doc.object_store_path = new_key
                 doc.update_user = 'mds'
-                doc.upload_completed_date = datetime.utcnow()
+
+                if not is_bundle:
+                    doc.upload_completed_date = datetime.utcnow()
 
                 db.session.add(doc)
 
@@ -285,3 +291,118 @@ class DocumentUploadHelper:
         handle_status_and_update_doc('Success', doc_guid)
 
         return ('', 204)
+
+    @classmethod
+    def validate_bundle(cls, bundle_documents):
+        required_extensions = {'.shp', '.shx', '.dbf', '.prj'}
+        optional_extensions = {'.sbn', '.sbx', '.xml'}
+        allowed_extensions = required_extensions.union(optional_extensions)
+
+        # assuming Document.file_display_name or similar method gives file name including extension
+        document_extensions = {os.path.splitext(doc.file_display_name)[1] for doc in bundle_documents}
+
+        if not required_extensions.issubset(document_extensions):
+            missing_extensions = required_extensions - document_extensions
+            raise ValueError(f'Missing required file types: {", ".join(missing_extensions)}')
+
+        extra_extensions = document_extensions - allowed_extensions
+        if extra_extensions:
+            raise ValueError(f'Found non spatial bundle file types in spatial bundle: {", ".join(extra_extensions)}')
+
+    @classmethod
+    def zip_spatial_files(cls, bundle_documents, name):
+        oss_service = ObjectStoreStorageService()
+        shpz_path = f'{name}.shpz'
+
+        with zipfile.ZipFile(shpz_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+            for doc in bundle_documents:
+                current_app.logger.info(f"Attempting to download document: {doc.file_display_name}")
+                response = oss_service.download_file(doc.object_store_path, doc.file_display_name, False)
+
+                if response.status_code == 200:
+                    current_app.logger.info(f"Successfully downloaded document: {doc.file_display_name}")
+                    file_data = response.get_data()  # obtain file data from response body
+
+                    # Verify the file content and extension
+                    if not doc.file_display_name.endswith(('.shp', '.shx', '.dbf', '.prj')):
+                        current_app.logger.error(f"Invalid file type: {doc.file_display_name}")
+                        continue
+
+                    current_app.logger.info(f"Writing document: {doc.file_display_name} to zip file")
+                    zipf.writestr(doc.file_display_name, file_data)
+                    current_app.logger.info(f"Successfully wrote document: {doc.file_display_name} to zip file")
+                else:
+                    current_app.logger.error(f"Failed to download document: {doc.file_display_name}, status code: {response.status_code}")
+
+        return shpz_path
+
+    @classmethod
+    def send_shpz_to_geomark(cls, file_path):
+        with open(file_path, 'rb') as file:
+            multipart_data = MultipartEncoder(
+                fields={
+                    'body': (os.path.basename(file_path), file, 'application/x-shp+zip'),
+                    'resultFormat': 'json',
+                    'format': 'shpz',
+                    'srid': '4326'
+                }
+            )
+
+            headers = {
+                'Content-Type': multipart_data.content_type
+            }
+
+            url = 'https://apps.gov.bc.ca/pub/geomark/geomarks/new'
+
+            # Send the request
+            response = requests.post(
+                url,
+                data=multipart_data,
+                headers=headers
+            )
+
+        # Delete the .shpz file
+        os.remove(file_path)
+
+        return response.json() if response.text.strip() else None
+
+    @classmethod
+    def complete_bundle_upload(cls, bundle_document_guids, name):
+        bundle_documents = Document.find_by_document_guid_many(bundle_document_guids)
+
+        if len(bundle_documents) != len(bundle_document_guids) or not bundle_documents:
+            raise NotFound('One or more documents not found')
+
+        cls.validate_bundle(bundle_documents)
+
+        zip_file_path = cls.zip_spatial_files(bundle_documents, name)
+        geomark_response = cls.send_shpz_to_geomark(zip_file_path)
+
+        bundle = DocumentBundle(
+            name=name,
+        )
+
+        if not geomark_response:
+            raise RuntimeError(f'Geomark API request failed')
+
+        if geomark_response.get('error'):
+            bundle.error = geomark_response['error']
+
+        if geomark_response.get('url'):
+            bundle.geomark_link = geomark_response['url']
+
+        for doc in bundle_documents:
+            doc.document_bundle = bundle
+            if geomark_response.get('url'):
+                doc.upload_completed_date = datetime.utcnow()
+            db.session.add(doc)
+
+        db.session.add(bundle)
+        db.session.commit()
+
+        if bundle.error:
+            raise BadRequest(bundle.error)
+
+        current_app.logger.info(f'Completed bundle upload: {bundle.geomark_link}')
+
+        return {'url': bundle.geomark_link, 'docman_bundle_guid': bundle.bundle_guid}
