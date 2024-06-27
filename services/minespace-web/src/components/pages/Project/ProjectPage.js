@@ -24,7 +24,7 @@ import MajorMineApplicationEntryTab from "./MajorMineApplicationEntryTab";
 import DocumentsTab from "./DocumentsTab";
 import { MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES } from "./MajorMineApplicationPage";
 import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
-import ProjectDescriptionTab from "./ProjectDescriptionTab";
+import { ProjectDescriptionTab } from "@mds/common/components/project/ProjectDescriptionTab";
 
 const propTypes = {
   mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,

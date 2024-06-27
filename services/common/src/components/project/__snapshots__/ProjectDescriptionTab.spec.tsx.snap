@@ -1,0 +1,394 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProjectDescriptionTab renders properly 1`] = `
+<div>
+  <div
+    class="ant-row"
+    style="margin-top: -8px; margin-bottom: -8px;"
+  >
+    <div
+      class="ant-col ant-col-24"
+      style="padding-top: 8px; padding-bottom: 8px;"
+    >
+      <div
+        class="ant-row ant-row-space-between"
+      >
+        <div
+          class="ant-col"
+        >
+          <h4
+            class="ant-typography"
+          >
+            Project Description Overview
+          </h4>
+        </div>
+        <div
+          class="ant-col"
+        >
+          <button
+            class="ant-btn ant-btn-primary"
+            type="button"
+          >
+            <span>
+              View Project Description Details
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-col ant-col-24"
+      style="padding-top: 8px; padding-bottom: 8px;"
+    >
+      <div
+        class="ant-typography"
+      >
+        Below are the authorization submissions and their status in the project description. Both the Major Mines Office and Ministry of Environments reviews must be completed for this
+           stage to be considered complete.
+      </div>
+      <div
+        class="bcgov-callout--danger bcgov-callout"
+      >
+        <div
+          class="nod-callout"
+        >
+          <h4>
+            Submission Failed
+          </h4>
+          <p>
+            One or more of your environment authorizations has not been submitted successfully. Please retry the submission.
+          </p>
+        </div>
+      </div>
+      <h3
+        class="ant-typography"
+      >
+        Submission Progress
+      </h3>
+      <h4
+        class="ant-typography"
+      >
+        Major Mines Office
+      </h4>
+      <h5
+        class="ant-typography"
+      >
+        Mines Act
+      </h5>
+      <div
+        class="ant-table-wrapper  core-table"
+      >
+        <div
+          class="ant-spin-nested-loading"
+        >
+          <div
+            class="ant-spin-container"
+          >
+            <div
+              class="ant-table ant-table-empty"
+            >
+              <div
+                class="ant-table-container"
+              >
+                <div
+                  class="ant-table-content"
+                >
+                  <table
+                    style="table-layout: auto;"
+                  >
+                    <colgroup />
+                    <thead
+                      class="ant-table-thead"
+                    >
+                      <tr>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Type
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Permit
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Date
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Status
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody
+                      class="ant-table-tbody"
+                    >
+                      <tr
+                        class="ant-table-placeholder"
+                      >
+                        <td
+                          class="ant-table-cell"
+                          colspan="4"
+                        >
+                          No Data Yet
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h4
+        class="ant-typography"
+      >
+        Ministry of Environment
+      </h4>
+      <h5
+        class="ant-typography"
+      >
+        Environmental Management Act
+      </h5>
+      <div
+        class="ant-table-wrapper  core-table"
+      >
+        <div
+          class="ant-spin-nested-loading"
+        >
+          <div
+            class="ant-spin-container"
+          >
+            <div
+              class="ant-table ant-table-empty"
+            >
+              <div
+                class="ant-table-container"
+              >
+                <div
+                  class="ant-table-content"
+                >
+                  <table
+                    style="table-layout: auto;"
+                  >
+                    <colgroup />
+                    <thead
+                      class="ant-table-thead"
+                    >
+                      <tr>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Type
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Authorization
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Tracking #
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Date
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Status
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody
+                      class="ant-table-tbody"
+                    >
+                      <tr
+                        class="ant-table-placeholder"
+                      >
+                        <td
+                          class="ant-table-cell"
+                          colspan="5"
+                        >
+                          No Data Yet
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <h5
+        class="ant-typography"
+      >
+        Water Sustainability Act
+      </h5>
+      <div
+        class="ant-table-wrapper  core-table"
+      >
+        <div
+          class="ant-spin-nested-loading"
+        >
+          <div
+            class="ant-spin-container"
+          >
+            <div
+              class="ant-table ant-table-empty"
+            >
+              <div
+                class="ant-table-container"
+              >
+                <div
+                  class="ant-table-content"
+                >
+                  <table
+                    style="table-layout: auto;"
+                  >
+                    <colgroup />
+                    <thead
+                      class="ant-table-thead"
+                    >
+                      <tr>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Type
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Authorization
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Tracking #
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Date
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Status
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody
+                      class="ant-table-tbody"
+                    >
+                      <tr
+                        class="ant-table-placeholder"
+                      >
+                        <td
+                          class="ant-table-cell"
+                          colspan="5"
+                        >
+                          No Data Yet
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <h5
+        class="ant-typography"
+      >
+        Forestry Act
+      </h5>
+      <div
+        class="ant-table-wrapper  core-table"
+      >
+        <div
+          class="ant-spin-nested-loading"
+        >
+          <div
+            class="ant-spin-container"
+          >
+            <div
+              class="ant-table ant-table-empty"
+            >
+              <div
+                class="ant-table-container"
+              >
+                <div
+                  class="ant-table-content"
+                >
+                  <table
+                    style="table-layout: auto;"
+                  >
+                    <colgroup />
+                    <thead
+                      class="ant-table-thead"
+                    >
+                      <tr>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Type
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Authorization
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Tracking #
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Date
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Status
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody
+                      class="ant-table-tbody"
+                    >
+                      <tr
+                        class="ant-table-placeholder"
+                      >
+                        <td
+                          class="ant-table-cell"
+                          colspan="5"
+                        >
+                          No Data Yet
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

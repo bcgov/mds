@@ -7195,6 +7195,7 @@ export const PROJECT = {
   ],
   project_summary: {
     documents: [],
+    authorizations: [],
   },
   information_requirements_table: {
     documents: [],

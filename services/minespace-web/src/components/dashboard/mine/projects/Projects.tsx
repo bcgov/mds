@@ -19,8 +19,10 @@ export const Projects: FC = () => {
   const projects = useSelector(getProjects);
 
   const handleFetchData = () => {
-    dispatch(fetchPermits(mine.mine_guid));
-    dispatch(fetchProjectsByMine({ mineGuid: mine.mine_guid })).then(() => {
+    Promise.all([
+      dispatch(fetchPermits(mine.mine_guid)),
+      dispatch(fetchProjectsByMine({ mineGuid: mine.mine_guid })),
+    ]).then(() => {
       setIsLoaded(true);
     });
   };
