@@ -11,7 +11,7 @@ from app.extensions import api
 
 from app.api.utils.resources_mixins import UserMixin
 from app.api.services.traction_service import TractionService
-from app.api.verifiable_credentials.manager import VerifiableCredentialManager
+from app.api.verifiable_credentials.manager import VerifiableCredentialManager, process_all_untp_map_for_orgbook
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 
 from app.api.utils.feature_flag import Feature, is_feature_enabled
@@ -121,8 +121,8 @@ class W3CCredentialUNTPResource(Resource, UserMixin):
     )
     @requires_any_of([EDIT_PARTY, MINESPACE_PROPONENT])
     def post(self):
-        # if not is_feature_enabled(Feature.JSONLD_MINES_ACT_PERMIT):
-        #     raise NotImplementedError("This feature is not enabled.")
+        if not is_feature_enabled(Feature.JSONLD_MINES_ACT_PERMIT):
+            raise NotImplementedError("This feature is not enabled.")
         current_app.logger.warning("untp endpoint")
 
         data = self.parser.parse_args()
@@ -137,10 +137,6 @@ class W3CCredentialUNTPResource(Resource, UserMixin):
 
         credential = VerifiableCredentialManager.produce_untp_cc_map_payload(
             public_did, permit_amendment)
-        current_app.logger.warning(credential)
         signed_credential = traction_service.sign_jsonld_credential_deprecated(
             public_did, public_verkey, credential)
-        current_app.logger.warning(
-            "UNTP conformity credential signed by did:indy, not by did:web and using deprecated acapy endpoints"
-            + dumps(signed_credential))
         return signed_credential["signed_doc"]
