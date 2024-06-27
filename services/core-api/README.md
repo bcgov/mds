@@ -127,7 +127,7 @@ documentation.](http://flask.pocoo.org/docs/1.0/testing/)
 To run tests, use the following command:
 
 ```
-coverage run --branch --source=app -m pytest
+pytest --cov=app tests/ --cov-report xml
 ```
 
 ## Working with SSO Providers:

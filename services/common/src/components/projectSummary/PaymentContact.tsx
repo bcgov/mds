@@ -26,8 +26,10 @@ export const PaymentContact: FC = () => {
   const provinceOptions = useSelector(getDropdownProvinceOptions);
 
   useEffect(() => {
-    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "payment_contact.party_type_code", "PER"));
-    if (!payment_contact.address) {
+    if (payment_contact?.party_type_code !== "PER" || !payment_contact?.party_type_code) {
+      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "payment_contact.party_type_code", "PER"));
+    }
+    if (!payment_contact?.address) {
       dispatch(
         change(FORM.ADD_EDIT_PROJECT_SUMMARY, "payment_contact.address[0].address_line_1", null)
       );
@@ -40,7 +42,7 @@ export const PaymentContact: FC = () => {
       dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "payment_contact.address[0].city", null));
       dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "payment_contact.address[0].post_code", null));
     }
-  }, []);
+  }, [payment_contact.party_type_code, payment_contact.address]);
 
   return (
     <div style={{ paddingTop: 12 }}>

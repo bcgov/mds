@@ -40,6 +40,7 @@ interface PermitsTableProps {
   majorMineInd: boolean;
   openModal: (value: any) => void;
   closeModal: (value: any) => void;
+  mineGuid: string;
 }
 
 export const PermitsTable: FC<PermitsTableProps> = (props) => {
@@ -62,7 +63,7 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
   const handleOpenViewEsup = (event, record: any) => {
     event.preventDefault();
     event.stopPropagation();
-    history.push(VIEW_ESUP.dynamicRoute(id, record.key));
+    history.push(VIEW_ESUP.dynamicRoute(props.mineGuid, record.key));
   };
 
   if (isFeatureEnabled(Feature.MINESPACE_ESUPS)) {

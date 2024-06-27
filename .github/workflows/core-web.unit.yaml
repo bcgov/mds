@@ -11,6 +11,8 @@ jobs:
   tests-unit-frontend:
     name: tests-unit-frontend
     runs-on: ubuntu-20.04
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     steps:
       - uses: actions/checkout@v3
         name: checkout
@@ -39,11 +41,16 @@ jobs:
         run: yarn install
 
       - name: Run frontend tests
-        run: cd services/core-web/ && yarn && yarn test
-  run-sonar-scan:
-    name: Run SonarCloud Scan
-    if: success()
-    uses: ./.github/workflows/sonarcloud-scan.yaml
-    with:
-      project-dir: services/core-web
-    secrets: inherit
+        run: yarn workspace @mds/core-web run ci-test
+      - name: Upload test coverage results
+        uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: core-web-test-results
+          path: |
+            services/core-web/coverage
+            services/core-web/reports/test-reporter.xml
+      - name: Sonar Reporting
+        uses: SonarSource/sonarcloud-github-action@v2.1.1
+        with:
+          projectBaseDir: services/core-web

@@ -10,10 +10,13 @@ jobs:
   tests-unit-minespace:
     name: tests-unit-minespace
     runs-on: ubuntu-20.04
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     steps:
       - uses: actions/checkout@v3
         name: checkout
-
+        with:
+          fetch-depth: 0
       - uses: actions/cache@v3
         name: Cache yarn
         with:
@@ -35,11 +38,16 @@ jobs:
         run: yarn install
 
       - name: Run minespace tests
-        run: yarn workspace @mds/minespace-web test
-  run-sonar-scan:
-    name: Run SonarCloud Scan
-    if: success()
-    uses: ./.github/workflows/sonarcloud-scan.yaml
-    with:
-      project-dir: services/minespace-web
-    secrets: inherit
+        run: yarn workspace @mds/minespace-web run ci-test
+      - name: Upload test coverage results
+        uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: minespace-web-test-results
+          path: |
+            services/minespace-web/coverage
+            services/minespace-web/reports/test-reporter.xml
+      - name: Sonar Reporting
+        uses: SonarSource/sonarcloud-github-action@v2.1.1
+        with:
+          projectBaseDir: services/minespace-web

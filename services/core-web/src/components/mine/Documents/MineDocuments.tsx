@@ -1,21 +1,19 @@
 import React from "react";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import CustomPropTypes from "@/customPropTypes";
 import { Divider } from "antd";
 import { getMines, getMineGuid } from "@mds/common/redux/selectors/mineSelectors";
 import AmazonS3Provider from "@mds/common/components/syncfusion/AmazonS3Provider";
+import { RootState } from "@mds/common/redux/rootState";
+
+interface MineDocumentsProps {
+  mines: Record<string, { mine_no: string }>;
+  mineGuid: string;
+}
 
 /**
- * @class  MineDocuments.js - View the mine's archived MMS files.
+ * @class MineDocuments - View the mine's archived MMS files.
  */
-
-const propTypes = {
-  mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
-  mineGuid: PropTypes.string.isRequired,
-};
-
-export const MineDocuments = (props) => {
+export const MineDocuments: React.FC<MineDocumentsProps> = (props: MineDocumentsProps) => {
   const mine = props.mines[props.mineGuid];
   return (
     <div className="tab__content">
@@ -29,11 +27,9 @@ export const MineDocuments = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   mines: getMines(state),
   mineGuid: getMineGuid(state),
 });
-
-MineDocuments.propTypes = propTypes;
 
 export default connect(mapStateToProps)(MineDocuments);

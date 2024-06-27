@@ -7,7 +7,6 @@ import { Button, Col, Row, Tag } from "antd";
 import EnvironmentOutlined from "@ant-design/icons/EnvironmentOutlined";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 
-import NullScreen from "@/components/common/NullScreen";
 import {
   getFormattedProjectSummary,
   getProject,
@@ -69,31 +68,25 @@ export const ProjectSummary: FC = () => {
   const activeTab = tab ?? projectFormTabs[0];
   const mineName = mine?.mine_name ?? formattedProjectSummary?.mine_name ?? "";
 
-  const handleFetchData = () => {
+  const handleFetchData = async () => {
     setIsLoaded(false);
     if (projectGuid && projectSummaryGuid) {
       setIsNewProject(false);
-      dispatch(fetchRegions(undefined));
-      dispatch(fetchProjectById(projectGuid));
+      await dispatch(fetchRegions(undefined));
+      await dispatch(fetchProjectById(projectGuid));
     } else {
-      dispatch(fetchMineRecordById(mineGuid));
+      await dispatch(fetchMineRecordById(mineGuid));
     }
   };
 
   useEffect(() => {
     if (!isLoaded) {
-      handleFetchData();
+      handleFetchData().then(() => setIsLoaded(true));
     }
     return () => {
       dispatch(clearProjectSummary());
     };
   }, []);
-
-  useEffect(() => {
-    if ((formattedProjectSummary?.project_guid && !isNewProject) || mine?.mine_guid) {
-      setIsLoaded(true);
-    }
-  }, [formattedProjectSummary, mine]);
 
   const removeUploadedDocument = (payload, docs) => {
     if (Array.isArray(payload.documents)) {
@@ -149,7 +142,7 @@ export const ProjectSummary: FC = () => {
         );
       })
       .then(async () => {
-        handleFetchData();
+        await handleFetchData();
       });
   };
 
@@ -188,6 +181,7 @@ export const ProjectSummary: FC = () => {
       if (projectGuid && projectSummaryGuid) {
         await handleUpdateProjectSummary(values, message);
         handleTabChange(newActiveTab);
+        setIsLoaded(true);
       }
     } catch (err) {
       console.log(err);

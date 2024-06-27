@@ -69,7 +69,7 @@ export const Variances: FC = () => {
         payload
       )
     ).then(async ({ data: { variance_guid } }) => {
-      await dispatch(handleAddDocuments(files, variance_guid));
+      await handleAddDocuments(files, variance_guid);
       dispatch(closeModal());
       dispatch(fetchVariancesByMine({ mineGuid: mine.mine_guid }));
     });
