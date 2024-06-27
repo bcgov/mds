@@ -1,9 +1,11 @@
 # for midware/business level actions between requests and data access
 import pytz
-from typing import List, Union
+import json
+
+from typing import List, Union, Tuple
 from pydantic import BaseModel, Field, ConfigDict
 from openlocationcode.openlocationcode import encode as plus_code_encode
-
+from hashlib import md5
 from datetime import datetime
 from time import sleep
 from typing import List
@@ -17,11 +19,13 @@ from app.config import Config
 from app.api.utils.feature_flag import Feature, is_feature_enabled
 
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
+from app.api.parties.party.models.party_orgbook_entity import PartyOrgBookEntity
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.mines.mine.models.mine_type import MineType
 from app.api.verifiable_credentials.models.credentials import PartyVerifiableCredentialMinesActPermit
 from app.api.verifiable_credentials.models.connection import PartyVerifiableCredentialConnection
+from app.api.verifiable_credentials.models.orgbook_publish_status import PermitAmendmentOrgBookPublish
 from app.api.services.traction_service import TractionService
 
 from untp_models import codes, base, conformity_credential as cc
@@ -91,6 +95,87 @@ def offer_newest_amendment_to_current_permittee(permit_amendment_guid: str,
     task_logger.warning(info_str)                # not sure where to find this.
 
     return info_str
+
+
+def process_all_untp_map_for_orgbook():
+    """Revoke the existing credential and offer a new one with the newest amendment."""
+    # find all parties connected to orgbook
+    # find all most recent permit_amendments for each permit they are permittee's on.
+    # for each permit_amendment, produce the untp_cc_map payload
+
+    # https://metabase-4c2ba9-prod.apps.silver.devops.gov.bc.ca/question/2937-permit-amendments-for-each-party-orgbook-entity
+    permit_amendment_query_results = db.session.execute("""
+                        select pa.permit_amendment_guid, poe.party_guid
+
+                        from party_orgbook_entity poe
+                        inner join party p on poe.party_guid = p.party_guid
+                        inner join mine_party_appt mpa on p.party_guid = mpa.party_guid
+                        inner join permit pmt on pmt.permit_id = mpa.permit_id
+                        inner join permit_amendment pa on pa.permit_id = pmt.permit_id
+
+                        where mpa.permit_id is not null
+                        and mpa.mine_party_appt_type_code = 'PMT'
+                        and mpa.deleted_ind = false
+
+                        group by pa.permit_amendment_guid, pa.description, pa.issue_date, pa.permit_amendment_status_code, mpa.deleted_ind, pmt.permit_no, mpa.permit_id, poe.party_guid, p.party_name, poe.name_text, poe.registration_id
+                        order by pmt.permit_no, pa.issue_date;
+
+                       """).fetchall()
+    current_app.logger.warning("Num of results from query to process:" +
+                               str(len(permit_amendment_query_results)))
+
+    traction_service = TractionService()
+    public_did_dict = traction_service.fetch_current_public_did()
+    public_did = "did:indy:bcovrin:test:" + public_did_dict["did"]
+    public_verkey = public_did_dict["verkey"]
+
+    current_app.logger.warning("public did: " + public_did)
+
+    records: List[Tuple[dict, PermitAmendmentOrgBookPublish]] = [] # list of tuples [payload, record]
+
+    for row in permit_amendment_query_results:
+        pa = PermitAmendment.find_by_permit_amendment_guid(row[0], unsafe=True)
+        pa_cred = VerifiableCredentialManager.produce_untp_cc_map_payload(public_did, pa)
+        current_app.logger.warning("bcreg_uri=" +
+                                   str(pa_cred.credentialSubject.issuedTo.identifiers[0].
+                                       verificationEvidence.credentialReference) +
+                                   ", for permit_amendment_guid=" + str(row[0]))
+
+        payload_hash = md5(pa_cred.json(by_alias=True).encode('utf-8')).hexdigest()
+        existing_paob = PermitAmendmentOrgBookPublish.find_by_unsigned_payload_hash(
+            payload_hash, unsafe=True)
+
+        if existing_paob:
+            #this hash has already been seen, do not make new record or publish
+            continue
+
+        paob = PermitAmendmentOrgBookPublish(
+            permit_amendment_guid=row[0],
+            party_guid=row[1],
+            unsigned_payload_hash=payload_hash,
+        )
+        records.append((pa_cred, paob))
+
+    # send to traction to be signed
+    for cred_payload, record in records:
+        signed_cred = traction_service.sign_jsonld_credential_deprecated(
+            public_did, public_verkey, cred_payload)
+        if signed_cred:
+            record.signed_credential = json.dumps(signed_cred)
+            record.sign_date = datetime.now()
+        record.save()
+
+    return [record for payload, record in records]
+
+
+def publish_all_pending_vc_to_orgbook():
+    records_to_publish = PermitAmendmentOrgBookPublish.find_all_unpublished(unsafe=True)
+
+    for record in records_to_publish:
+        current_app.logger.warning("NOT sending cred to orgbook")
+        # resp = requests.post(ORGBOOK_W3C_CRED_POST, record.signed_credential)
+        # assert resp.status_code == 200, f"resp={resp.json()}"
+        current_app.logger.warning(record.signed_credential)
 
 
 class VerifiableCredentialManager():
@@ -202,6 +287,22 @@ class VerifiableCredentialManager():
         return credential
 
     @classmethod
+    def check_if_outdated(cls, pa_publish_record: PermitAmendmentOrgBookPublish):
+        traction_service = TractionService()
+        public_did_dict = traction_service.fetch_current_public_did()
+        public_did = "did:indy:bcovrin:test:" + public_did_dict["did"]
+
+        pa = PermitAmendment.find_by_permit_amendment_guid(pa_publish_record.permit_amendment_guid)
+
+        payload = cls.produce_untp_cc_map_payload(public_did, pa).json(by_alias=True)
+
+        #assume acapy hasn't changed, so just compare payload hash.
+        if md5(payload) != pa_publish_record.unsigned_payload_hash:
+            return True
+
+        return False
+
+    @classmethod
     def produce_untp_cc_map_payload(cls, did: str, permit_amendment: PermitAmendment):
         ANONCRED_SCHEME = "https://hyperledger.github.io/anoncreds-spec/"
 
@@ -310,6 +411,4 @@ class VerifiableCredentialManager():
             issuanceDate=issuance_date_str,
             credentialSubject=cred)
 
-        current_app.logger.warning("w3c_cred")
-        current_app.logger.warning(w3c_cred.json(by_alias=True))
         return w3c_cred

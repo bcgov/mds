@@ -158,10 +158,8 @@ class TractionService():
             },
             "verkey": verkey,
         }
-        current_app.logger.warning(json.dumps(payload))
         post_resp = requests.post(
             traction_deprecated_jsonld_sign, json=payload, headers=self.get_headers())
-        current_app.logger.warning(post_resp.content)
         assert post_resp.status_code == 200, f"post_resp={post_resp.json()}"
         return post_resp.json()
 
@@ -176,9 +174,7 @@ class TractionService():
             "options": options,
             "credential": credential,
         }
-        current_app.logger.warning(json.dumps(payload))
         post_resp = requests.post(
             traction_sign_jsonld_credential, json=payload, headers=self.get_headers())
-        current_app.logger.warning(post_resp.content)
         assert post_resp
         return post_resp.json()

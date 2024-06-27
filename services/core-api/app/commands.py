@@ -1,19 +1,12 @@
-import datetime
 import click
-import psycopg2
 
 from sqlalchemy.exc import DBAPIError
 from multiprocessing.dummy import Pool as ThreadPool
 from flask import current_app
-from app.api.utils.models_mixins import Base
-from sqlalchemy_continuum import transaction_class
-from sqlalchemy.schema import CreateTable, CreateIndex
-from sqlalchemy.dialects import postgresql
 
 from app.api.utils.include.user_info import User
 from app.extensions import db
 
-from app.api.verifiable_credentials.models.credentials import PartyVerifiableCredentialMinesActPermit
 from app.api.mines.permits.permit.models.permit import Permit
 
 from tests.factories import MineFactory, MinePartyAppointmentFactory, MinespaceSubscriptionFactory, MinespaceUserFactory, NOWSubmissionFactory, NOWApplicationIdentityFactory
@@ -21,6 +14,7 @@ from .cli_commands.generate_history_table_migration import generate_history_tabl
 
 
 def register_commands(app):
+
     @app.cli.command()
     def import_idir():
         from app.cli_jobs.IDIR_jobs import import_empr_idir_users
@@ -72,17 +66,13 @@ def register_commands(app):
             # Set up data to be used in cypress tests
 
             ## Ensure there is at least one major mine
-            mine = MineFactory(
-                major_mine_ind=True,
-                mine_name='Evergreen Cypress Mine'
-            ) 
+            mine = MineFactory(major_mine_ind=True, mine_name='Evergreen Cypress Mine')
 
-            ## Create a minespace user with data corresponding to 
+            ## Create a minespace user with data corresponding to
             ## the Cypress test user (cypress/keycloak-users.json)
             minespace_user = MinespaceUserFactory(
                 email_or_username='cypress@bceid',
-                keycloak_guid='a28dfc3a-5e5c-4501-ab2f-399d8e64f2c8'
-            )
+                keycloak_guid='a28dfc3a-5e5c-4501-ab2f-399d8e64f2c8')
 
             ## Subscribe the minespace user to a mine so we have a mine to test with
             ## for Minespace cypress tests
@@ -95,7 +85,6 @@ def register_commands(app):
                 print(f'Failed to create data used for cypress testing.')
                 db.session.rollback()
                 raise
-
 
     def _create_data(num):
 
@@ -154,6 +143,23 @@ def register_commands(app):
             assert permit, "Permit not found"
             revoke_all_credentials_for_permit.apply_async(kwargs={"permit_guid": permit_guid})
             print("celery job started")
+
+    @app.cli.command('process_all_untp_map_for_orgbook')
+    def process_all_untp_map_for_orgbook():
+        from app.api.verifiable_credentials.manager import process_all_untp_map_for_orgbook
+        from app import auth
+        auth.apply_security = False
+        with current_app.app_context() as app:
+            result = process_all_untp_map_for_orgbook()
+            print("num of records created: " + str(len(result or [])))
+
+    @app.cli.command('publish_all_pending_vc_to_orgbook')
+    def publish_all_pending_vc_to_orgbook():
+        from app.api.verifiable_credentials.manager import publish_all_pending_vc_to_orgbook
+        from app import auth
+        auth.apply_security = False
+        with current_app.app_context():
+            result = publish_all_pending_vc_to_orgbook()
 
     @app.cli.command('generate_history_table_migration')
     @click.argument('table')
