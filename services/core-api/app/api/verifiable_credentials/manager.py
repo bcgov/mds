@@ -97,6 +97,7 @@ def offer_newest_amendment_to_current_permittee(permit_amendment_guid: str,
     return info_str
 
 
+@celery.task()
 def process_all_untp_map_for_orgbook():
     """Revoke the existing credential and offer a new one with the newest amendment."""
     # find all parties connected to orgbook
