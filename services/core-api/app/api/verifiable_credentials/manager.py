@@ -102,6 +102,7 @@ def process_all_untp_map_for_orgbook():
     """Find all permit amendments connected to orgbook verified parties, preprocess and sign any new credentials."""
 
     # https://metabase-4c2ba9-prod.apps.silver.devops.gov.bc.ca/question/2937-permit-amendments-for-each-party-orgbook-entity
+
     permit_amendment_query_results = db.session.execute("""
                         select pa.permit_amendment_guid, poe.party_guid
 
@@ -119,6 +120,7 @@ def process_all_untp_map_for_orgbook():
                         order by pmt.permit_no, pa.issue_date;
 
                        """).fetchall()
+
     current_app.logger.warning("Num of results from query to process:" +
                                str(len(permit_amendment_query_results)))
 
@@ -174,9 +176,9 @@ def publish_all_pending_vc_to_orgbook():
 
     for record in records_to_publish:
         current_app.logger.warning("NOT sending cred to orgbook")
+        current_app.logger.warning(record.signed_credential)
         # resp = requests.post(ORGBOOK_W3C_CRED_POST, record.signed_credential)
         # assert resp.status_code == 200, f"resp={resp.json()}"
-        current_app.logger.warning(record.signed_credential)
 
 
 class VerifiableCredentialManager():
