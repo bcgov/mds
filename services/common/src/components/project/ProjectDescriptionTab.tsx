@@ -22,7 +22,10 @@ import { formatDateTimeTz } from "@mds/common/redux/utils/helpers";
 
 import { PresetStatusColorType } from "antd/es/_util/colors";
 
-import { updateProjectSummary } from "@mds/common/redux/actionCreators/projectActionCreator";
+import {
+  updateProjectSummary,
+  fetchProjectById,
+} from "@mds/common/redux/actionCreators/projectActionCreator";
 import { isArray } from "lodash";
 import { removeNullValuesRecursive } from "@mds/common/constants/utils";
 import Loading from "@mds/common/components/common/Loading";
@@ -328,50 +331,51 @@ export const ProjectDescriptionTab = () => {
     return output;
   };
 
-  const handleRetryAMSSubmissionClicked = () => {
+  const handleRetryAMSSubmissionClicked = async () => {
     setIsLoaded(false);
-    // Transform authorizations
-    const transformedAuthorizations = transformProjectSummaryAuthorizations(
-      project.project_summary.authorizations
-    );
 
-    // Create a new project summary object with transformed authorizations
-    const projectSummary = {
-      ...project.project_summary,
-      authorizations: transformedAuthorizations,
-    };
+    try {
+      const transformedAuthorizations = transformProjectSummaryAuthorizations(
+        project.project_summary.authorizations
+      );
+      const projectSummary = {
+        ...project.project_summary,
+        authorizations: transformedAuthorizations,
+      };
+      const payload = handleTransformPayload({
+        ...projectSummary,
+        ams_terms_agreed: true,
+        confirmation_of_submission: true,
+      });
 
-    // Ensure payload transformation
-    const payload = handleTransformPayload({
-      ...projectSummary,
-      ams_terms_agreed: true,
-      confirmation_of_submission: true,
-    });
+      // Normalize contacts' addresses
+      payload.contacts.forEach((contact) => {
+        if (Array.isArray(contact.address)) {
+          contact.address = contact.address.length === 0 ? null : contact.address.join(", ");
+        }
+      });
 
-    // Normalize contacts' addresses
-    payload.contacts.forEach((contact) => {
-      if (Array.isArray(contact.address)) {
-        contact.address = contact.address.length === 0 ? null : contact.address.join(", ");
+      // Normalize facility operator's address
+      if (Array.isArray(payload.facility_operator.address)) {
+        payload.facility_operator.address =
+          payload.facility_operator.address.length === 0
+            ? null
+            : payload.facility_operator.address[0];
       }
-    });
-
-    // Normalize facility operator's address
-    if (Array.isArray(payload.facility_operator.address)) {
-      payload.facility_operator.address =
-        payload.facility_operator.address.length === 0
-          ? null
-          : payload.facility_operator.address[0];
+      await dispatch(
+        updateProjectSummary(
+          {
+            projectGuid: project.project_summary.project_guid,
+            projectSummaryGuid: project.project_summary.project_summary_guid,
+          },
+          payload
+        )
+      );
+      await dispatch(fetchProjectById(project.project_summary.project_guid));
+      setIsLoaded(true);
+    } catch (error) {
+      setIsLoaded(true);
     }
-
-    dispatch(
-      updateProjectSummary(
-        {
-          projectGuid: project.project_summary.project_guid,
-          projectSummaryGuid: project.project_summary.project_summary_guid,
-        },
-        payload
-      )
-    ).then(() => setIsLoaded(true));
   };
 
   return (
