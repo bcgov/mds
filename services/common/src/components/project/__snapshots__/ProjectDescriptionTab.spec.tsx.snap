@@ -43,8 +43,7 @@ exports[`ProjectDescriptionTab renders properly 1`] = `
       <div
         class="ant-typography"
       >
-        Below are the authorization submissions and their status in the project description. Both the Major Mines Office and Ministry of Environments reviews must be completed for this
-           stage to be considered complete.
+        Below are the authorization submissions and their status in the project description. Both the Major Mines Office and Ministry of Environments reviews must be completed for this stage to be considered complete.
       </div>
       <div
         class="bcgov-callout--danger bcgov-callout"
@@ -56,7 +55,7 @@ exports[`ProjectDescriptionTab renders properly 1`] = `
             Submission Failed
           </h4>
           <p>
-            One or more of your environment authorizations has not been submitted successfully. Please retry the submission.
+            One or more of your environment authorization applications has not been submitted successfully. Please retry the submission.
           </p>
         </div>
       </div>

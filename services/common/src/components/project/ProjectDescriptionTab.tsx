@@ -4,27 +4,38 @@ import Callout from "@mds/common/components/common/Callout";
 import { CALLOUT_SEVERITY } from "@mds/common/constants/strings";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { getProject } from "@mds/common/redux/selectors/projectSelectors";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { renderTextColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import { IAuthorizationSummary } from "@mds/common/interfaces";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 import {
   getDropdownProjectSummaryPermitTypes,
+  getProjectSummaryAuthorizationTypesArray,
   getTransformedProjectSummaryAuthorizationTypes,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { ColumnsType } from "antd/es/table";
 
 import { formatDateTimeTz } from "@mds/common/redux/utils/helpers";
 
+import { PresetStatusColorType } from "antd/es/_util/colors";
+
+import { updateProjectSummary } from "@mds/common/redux/actionCreators/projectActionCreator";
+import { isArray } from "lodash";
+import { removeNullValuesRecursive } from "@mds/common/constants/utils";
+import Loading from "@mds/common/components/common/Loading";
+
 export const ProjectDescriptionTab = () => {
+  const [shouldDisplayRetryButton, setShouldDisplayRetryButton] = useState(false);
+  const dispatch = useDispatch();
   const history = useHistory();
   const [minesActData, setMinesActData] = useState([]);
   const [environmentalManagementActData, setEnvironmentalManagementActData] = useState([]);
   const [waterSustainabilityActData, setWaterSustainabilityActData] = useState([]);
   const [forestryActData, setForestryActData] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(true);
 
   const permits = useSelector(getPermits);
   const project = useSelector(getProject);
@@ -32,18 +43,22 @@ export const ProjectDescriptionTab = () => {
     getTransformedProjectSummaryAuthorizationTypes
   );
   const dropdownProjectSummaryPermitTypes = useSelector(getDropdownProjectSummaryPermitTypes);
+  const projectSummaryAuthorizationTypesArray = useSelector(
+    getProjectSummaryAuthorizationTypesArray
+  );
+
   const notApplicableText = "N/A";
 
   let processedOtherActPermitResult: any[] = [];
 
-  const createStatusColumn = (text: string) => ({
+  const createStatusColumn = (text: string, badgeStatus: PresetStatusColorType) => ({
     key: text,
     title: "Status",
-    render: () => <Badge status={"error"} text={text} />,
+    render: () => <Badge status={badgeStatus} text={text} />,
   });
 
-  const minesActStatusColumn = createStatusColumn("Submitted");
-  const otherActStatusColumn = createStatusColumn("Failed");
+  const minesActStatusColumn = createStatusColumn("Submitted", "success");
+  let otherActStatusColumn = createStatusColumn("Failed", "error");
 
   const minesActColumns: ColumnsType<IAuthorizationSummary> = [
     renderTextColumn("project_type", "Type", false),
@@ -113,7 +128,7 @@ export const ProjectDescriptionTab = () => {
     projectSummaryAuthorizationType
   ) => {
     if (
-      authorization.ams_status_code === "400" &&
+      (authorization.ams_status_code === "400" || authorization.ams_status_code === "500") &&
       authorization.project_summary_authorization_type === projectSummaryAuthorizationType
     ) {
       const dateSubmitted = formatDateTimeTz(authorization.ams_submission_timestamp);
@@ -127,6 +142,13 @@ export const ProjectDescriptionTab = () => {
           ? authorization.existing_permits_authorizations[0]
           : notApplicableText;
       const projectSummaryAuthorizationGuid = authorization?.project_summary_authorization_guid;
+
+      if (authorization?.ams_status_code === "500") {
+        otherActStatusColumn = createStatusColumn("Failed", "error");
+        setShouldDisplayRetryButton(true);
+      } else {
+        otherActStatusColumn = createStatusColumn("Rejected", "error");
+      }
 
       return {
         project_type: projectType,
@@ -198,91 +220,238 @@ export const ProjectDescriptionTab = () => {
   ]);
 
   const handleViewProjectDescriptionClicked = () => {
-    const projectGuid = project.project_guid;
-    const projectSummaryGuid = project.project_summary_guid;
     const url = GLOBAL_ROUTES?.EDIT_PROJECT_SUMMARY.dynamicRoute(
-      projectGuid,
-      projectSummaryGuid,
+      project.project_summary.project_guid,
+      project.project_summary.project_summary_guid,
       "purpose-and-authorization",
       false
     );
     history.push(url);
   };
 
+  const transformAuthorizations = (valuesFromForm: any) => {
+    const { authorizations = {}, project_summary_guid } = valuesFromForm;
+
+    const transformAuthorization = (type, authorization) => {
+      return { ...authorization, project_summary_authorization_type: type, project_summary_guid };
+    };
+
+    let updatedAuthorizations = [];
+    let newAmsAuthorizations = [];
+    let amendAmsAuthorizations = [];
+
+    projectSummaryAuthorizationTypesArray.forEach((type) => {
+      const authsOfType = authorizations[type];
+      if (authsOfType) {
+        if (isArray(authsOfType)) {
+          const formattedAuthorizations = authsOfType.map((a) => {
+            return transformAuthorization(type, a);
+          });
+          updatedAuthorizations = updatedAuthorizations.concat(formattedAuthorizations);
+        } else {
+          newAmsAuthorizations = newAmsAuthorizations.concat(
+            authsOfType?.NEW.map((a) =>
+              transformAuthorization(type, {
+                ...a,
+                project_summary_permit_type: ["NEW"],
+              })
+            )
+          );
+          amendAmsAuthorizations = amendAmsAuthorizations.concat(
+            authsOfType?.AMENDMENT.map((a) =>
+              transformAuthorization(type, {
+                ...a,
+                project_summary_permit_type: ["AMENDMENT"],
+              })
+            )
+          );
+        }
+      }
+    });
+    return {
+      authorizations: updatedAuthorizations,
+      ams_authorizations: { amendments: amendAmsAuthorizations, new: newAmsAuthorizations },
+    };
+  };
+
+  const handleTransformPayload = (payload: any) => {
+    let payloadValues: any = {};
+    const updatedAuthorizations = transformAuthorizations(payload);
+    const values = removeNullValuesRecursive(payload);
+    payloadValues = {
+      ...values,
+      ...updatedAuthorizations,
+    };
+    delete payloadValues.authorizationTypes;
+    return payloadValues;
+  };
+
+  /* Transforms project summary authorizations to match the
+   *  shape of project summary authorization form values.
+   */
+  const transformProjectSummaryAuthorizations = (input) => {
+    const output: any = {};
+    input.forEach((authorization) => {
+      const authType = authorization.project_summary_authorization_type;
+
+      if (!output[authType]) {
+        output[authType] = { types: [], AMENDMENT: [], NEW: [] };
+      }
+
+      authorization.project_summary_permit_type.forEach((permitType) => {
+        if (!output[authType].types.includes(permitType)) {
+          output[authType].types.push(permitType);
+        }
+        if (permitType === "AMENDMENT") {
+          if (!authorization.amendment_changes) {
+            authorization.amendment_changes = [];
+          }
+          output[authType].AMENDMENT.push(authorization);
+          if (!output[authType].NEW) {
+            output[authType].NEW = [];
+          }
+        } else if (permitType === "NEW") {
+          output[authType].NEW.push(authorization);
+          if (!output[authType].AMENDMENT) {
+            output[authType].AMENDMENT = [];
+          }
+        }
+      });
+    });
+
+    if (output.MINES_ACT_PERMIT) {
+      output.MINES_ACT_PERMIT = input.filter(
+        (auth) => auth.project_summary_authorization_type === "MINES_ACT_PERMIT"
+      );
+    }
+
+    return output;
+  };
+
+  const handleRetryAMSSubmissionClicked = () => {
+    setIsLoaded(false);
+    // Transform authorizations
+    const transformedAuthorizations = transformProjectSummaryAuthorizations(
+      project.project_summary.authorizations
+    );
+
+    // Create a new project summary object with transformed authorizations
+    const projectSummary = {
+      ...project.project_summary,
+      authorizations: transformedAuthorizations,
+    };
+
+    // Ensure payload transformation
+    const payload = handleTransformPayload({
+      ...projectSummary,
+      ams_terms_agreed: true,
+      confirmation_of_submission: true,
+    });
+
+    // Normalize contacts' addresses
+    payload.contacts.forEach((contact) => {
+      if (Array.isArray(contact.address)) {
+        contact.address = contact.address.length === 0 ? null : contact.address.join(", ");
+      }
+    });
+
+    // Normalize facility operator's address
+    if (Array.isArray(payload.facility_operator.address)) {
+      payload.facility_operator.address =
+        payload.facility_operator.address.length === 0
+          ? null
+          : payload.facility_operator.address[0];
+    }
+
+    dispatch(
+      updateProjectSummary(
+        {
+          projectGuid: project.project_summary.project_guid,
+          projectSummaryGuid: project.project_summary.project_summary_guid,
+        },
+        payload
+      )
+    ).then(() => setIsLoaded(true));
+  };
+
   return (
     <>
-      <Row gutter={[0, 16]}>
-        <Col span={24}>
-          <Row justify="space-between">
-            <Col>
-              <Typography.Title level={4}>Project Description Overview</Typography.Title>
-            </Col>
-            <Col>
-              <Button onClick={handleViewProjectDescriptionClicked} type="primary">
-                {"View Project Description Details"}
-              </Button>
-            </Col>
-          </Row>
-        </Col>
-        <Col span={24}>
-          <Typography.Paragraph>
-            {`Below are the authorization submissions and their status in the project description. Both the Major Mines Office and Ministry of Environments reviews must be completed for this
-           stage to be considered complete.`}
-          </Typography.Paragraph>
+      {isLoaded ? (
+        <Row gutter={[0, 16]}>
+          <Col span={24}>
+            <Row justify="space-between">
+              <Col>
+                <Typography.Title level={4}>Project Description Overview</Typography.Title>
+              </Col>
+              <Col>
+                <Button onClick={handleViewProjectDescriptionClicked} type="primary">
+                  View Project Description Details
+                </Button>
+              </Col>
+            </Row>
+          </Col>
+          <Col span={24}>
+            <Typography.Paragraph>
+              Below are the authorization submissions and their status in the project description.
+              Both the Major Mines Office and Ministry of Environments reviews must be completed for
+              this stage to be considered complete.
+            </Typography.Paragraph>
 
-          <Callout
-            message={
-              <div className="nod-callout">
-                <h4>{"Submission Failed"}</h4>
-                <p>
-                  {
-                    "One or more of your environment authorizations has not been submitted successfully. Please retry the submission."
-                  }
-                </p>
-              </div>
-            }
-            severity={CALLOUT_SEVERITY.danger}
-          />
-
-          <Typography.Title level={3}>Submission Progress</Typography.Title>
-          <Typography.Title level={4}>Major Mines Office</Typography.Title>
-          <Typography.Title level={5}>Mines Act</Typography.Title>
-          <CoreTable dataSource={minesActData} columns={minesActColumns} />
-          <Typography.Title level={4}>Ministry of Environment</Typography.Title>
-          <Typography.Title level={5}>Environmental Management Act</Typography.Title>
-          {environmentalManagementActData?.length > 0 && (
-            <Alert
-              message={"Submission Failed Please Retry"}
-              showIcon
-              type="error"
-              description={
-                "One or more of your environment authorization application has not been submitted successfully. Please retry the submission."
+            <Callout
+              message={
+                <div className="nod-callout">
+                  <h4>Submission Failed</h4>
+                  <p>
+                    One or more of your environment authorization applications has not been
+                    submitted successfully. Please retry the submission.
+                  </p>
+                </div>
               }
-              action={
-                <Link to={GLOBAL_ROUTES.ADD_PROJECT_SUMMARY.dynamicRoute(project.mine_guid)}>
-                  <Button>Retry Failed Submission</Button>
-                </Link>
-              }
-              style={{ marginBottom: "12px" }}
+              severity={CALLOUT_SEVERITY.danger}
             />
-          )}
-          <CoreTable
-            rowKey="project_summary_authorization_guid"
-            dataSource={environmentalManagementActData}
-            columns={otherActColumns}
-          />
-          <br />
-          <Typography.Title level={5}>Water Sustainability Act</Typography.Title>
-          <CoreTable
-            rowKey="project_summary_authorization_guid"
-            dataSource={waterSustainabilityActData}
-            columns={otherActColumns}
-          />
-          <br />
-          <Typography.Title level={5}>Forestry Act</Typography.Title>
-          <CoreTable dataSource={forestryActData} columns={otherActColumns} />
-        </Col>
-      </Row>
+
+            <Typography.Title level={3}>Submission Progress</Typography.Title>
+            <Typography.Title level={4}>Major Mines Office</Typography.Title>
+            <Typography.Title level={5}>Mines Act</Typography.Title>
+            <CoreTable dataSource={minesActData} columns={minesActColumns} />
+            <Typography.Title level={4}>Ministry of Environment</Typography.Title>
+            <Typography.Title level={5}>Environmental Management Act</Typography.Title>
+            {environmentalManagementActData?.length > 0 && (
+              <Alert
+                message="Submission Failed Please Retry"
+                showIcon
+                type="error"
+                description={`Your environment authorization application was not submitted successfully. Please retry the submission or start a new application for the rejected authorization(s). You can link the submission to the new application on the Related Projects page. One or more of your environment authorization application has not been submitted successfully. Please retry the submission.`}
+                action={
+                  shouldDisplayRetryButton ? (
+                    <Button onClick={handleRetryAMSSubmissionClicked}>
+                      Retry Failed Submission
+                    </Button>
+                  ) : null
+                }
+                style={{ marginBottom: "12px" }}
+              />
+            )}
+            <CoreTable
+              rowKey="project_summary_authorization_guid"
+              dataSource={environmentalManagementActData}
+              columns={otherActColumns}
+            />
+            <br />
+            <Typography.Title level={5}>Water Sustainability Act</Typography.Title>
+            <CoreTable
+              rowKey="project_summary_authorization_guid"
+              dataSource={waterSustainabilityActData}
+              columns={otherActColumns}
+            />
+            <br />
+            <Typography.Title level={5}>Forestry Act</Typography.Title>
+            <CoreTable dataSource={forestryActData} columns={otherActColumns} />
+          </Col>
+        </Row>
+      ) : (
+        <Loading />
+      )}
     </>
   );
 };
