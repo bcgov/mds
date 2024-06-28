@@ -99,10 +99,7 @@ def offer_newest_amendment_to_current_permittee(permit_amendment_guid: str,
 
 @celery.task()
 def process_all_untp_map_for_orgbook():
-    """Revoke the existing credential and offer a new one with the newest amendment."""
-    # find all parties connected to orgbook
-    # find all most recent permit_amendments for each permit they are permittee's on.
-    # for each permit_amendment, produce the untp_cc_map payload
+    """Find all permit amendments connected to orgbook verified parties, preprocess and sign any new credentials."""
 
     # https://metabase-4c2ba9-prod.apps.silver.devops.gov.bc.ca/question/2937-permit-amendments-for-each-party-orgbook-entity
     permit_amendment_query_results = db.session.execute("""
@@ -148,6 +145,7 @@ def process_all_untp_map_for_orgbook():
 
         if existing_paob:
             #this hash has already been seen, do not make new record or publish
+            #this assumes acapy is not changing the result if the payload is unchanged
             continue
 
         paob = PermitAmendmentOrgBookPublish(
@@ -170,6 +168,8 @@ def process_all_untp_map_for_orgbook():
 
 
 def publish_all_pending_vc_to_orgbook():
+    """STUB for celery job to publis all pending vc to orgbook."""
+    ## Orgbook doesn't have this functionality yet.
     records_to_publish = PermitAmendmentOrgBookPublish.find_all_unpublished(unsafe=True)
 
     for record in records_to_publish:
@@ -288,23 +288,8 @@ class VerifiableCredentialManager():
         return credential
 
     @classmethod
-    def check_if_outdated(cls, pa_publish_record: PermitAmendmentOrgBookPublish):
-        traction_service = TractionService()
-        public_did_dict = traction_service.fetch_current_public_did()
-        public_did = "did:indy:bcovrin:test:" + public_did_dict["did"]
-
-        pa = PermitAmendment.find_by_permit_amendment_guid(pa_publish_record.permit_amendment_guid)
-
-        payload = cls.produce_untp_cc_map_payload(public_did, pa).json(by_alias=True)
-
-        #assume acapy hasn't changed, so just compare payload hash.
-        if md5(payload) != pa_publish_record.unsigned_payload_hash:
-            return True
-
-        return False
-
-    @classmethod
     def produce_untp_cc_map_payload(cls, did: str, permit_amendment: PermitAmendment):
+        """Produce payload for Mines Act Permit UNTP Conformity Credential from permit amendment and did."""
         ANONCRED_SCHEME = "https://hyperledger.github.io/anoncreds-spec/"
 
         permittee_appointment = MinePartyAppointment.find_by_permit_id(permit_amendment.permit_id)
