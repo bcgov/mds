@@ -60,8 +60,18 @@ export const ProjectDescriptionTab = () => {
     render: () => <Badge status={badgeStatus} text={text} />,
   });
 
+  const createStatusBadge = (text: string, badgeStatus: PresetStatusColorType) => ({
+    status: badgeStatus,
+    text: text,
+  });
+
+  const statusColumn = {
+    key: "status",
+    title: "Status",
+    render: (record) => <Badge status={record.status.status} text={record.status.text} />,
+  };
+
   const minesActStatusColumn = createStatusColumn("Submitted", "success");
-  let otherActStatusColumn = createStatusColumn("Failed", "error");
 
   const minesActColumns: ColumnsType<IAuthorizationSummary> = [
     renderTextColumn("project_type", "Type", false),
@@ -75,7 +85,7 @@ export const ProjectDescriptionTab = () => {
     renderTextColumn("permit_no", "Authorization", false),
     renderTextColumn("ams_tracking_number", "Tracking #", false),
     renderTextColumn("date_submitted", "Date", false),
-    otherActStatusColumn,
+    statusColumn,
   ];
 
   const parseProjectTypeLabel = (authType: string) => {
@@ -146,11 +156,10 @@ export const ProjectDescriptionTab = () => {
           : notApplicableText;
       const projectSummaryAuthorizationGuid = authorization?.project_summary_authorization_guid;
 
-      if (authorization?.ams_status_code === "500") {
-        otherActStatusColumn = createStatusColumn("Failed", "error");
+      let status = createStatusBadge("Rejected", "error");
+      if (authorization.ams_status_code === "500") {
+        status = createStatusBadge("Failed", "error");
         setShouldDisplayRetryButton(true);
-      } else {
-        otherActStatusColumn = createStatusColumn("Rejected", "error");
       }
 
       return {
@@ -159,6 +168,7 @@ export const ProjectDescriptionTab = () => {
         ams_tracking_number: notApplicableText,
         date_submitted: dateSubmitted,
         project_summary_authorization_guid: projectSummaryAuthorizationGuid,
+        status: status,
       };
     }
     return null;
