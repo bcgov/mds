@@ -19,3 +19,4 @@ export * from "./contact.interface";
 export * from "./projectLink.interface";
 export * from "./linkedProject.interface";
 export * from "./requirement.interface";
+export * from "./authorizationSummary.interface";

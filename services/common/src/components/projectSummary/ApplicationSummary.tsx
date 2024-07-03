@@ -13,11 +13,7 @@ import { Button, Alert, Typography, Col, Row } from "antd";
 import { useHistory } from "react-router-dom";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { FORM } from "@mds/common/constants/forms";
-
-interface IAuthorizationSummaryColumn {
-  type: string;
-  permit_no: string;
-}
+import { IAuthorizationSummary } from "@mds/common/interfaces";
 
 export const ApplicationSummary: FC = () => {
   const permits = useSelector(getPermits);
@@ -38,12 +34,12 @@ export const ApplicationSummary: FC = () => {
   const processedEnvironmentActPermitResult: any[] = [];
   let processedOtherActPermitResult: any[] = [];
 
-  const minesActColumns: ColumnsType<IAuthorizationSummaryColumn> = [
+  const minesActColumns: ColumnsType<IAuthorizationSummary> = [
     renderTextColumn("project_type", "Type", false),
     renderTextColumn("permit_no", "Permit", false),
   ];
 
-  const otherActColumns: ColumnsType<IAuthorizationSummaryColumn> = [
+  const otherActColumns: ColumnsType<IAuthorizationSummary> = [
     renderTextColumn("project_type", "Type", false),
     renderTextColumn("permit_no", "Authorization", false),
   ];
