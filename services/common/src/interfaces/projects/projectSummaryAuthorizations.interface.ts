@@ -23,5 +23,4 @@ export interface IProjectSummaryAuthorization {
   consent_documents?: IProjectSummaryDocument[];
   change_ownership_name_documents?: IProjectSummaryDocument[];
   clause_amendment_documents?: IProjectSummaryDocument[];
-  ams_status_code?: string;
 }

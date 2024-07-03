@@ -11,13 +11,7 @@ import {
   getFormattedProjectSummary,
   getProject,
 } from "@mds/common/redux/selectors/projectSelectors";
-import {
-  FORM,
-  Feature,
-  PROJECT_SUMMARY_WITH_AMS_SUBMISSION_SECTION,
-  AMS_STATUS_CODES_SUCCESS,
-  AMS_STATUS_CODE_FAIL,
-} from "@mds/common";
+import { FORM, Feature } from "@mds/common";
 import { getMineById } from "@mds/common/redux/reducers/mineReducer";
 import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
 import {
@@ -127,7 +121,7 @@ export const ProjectSummary: FC = () => {
 
   const handleUpdateProjectSummary = async (payload, message) => {
     setIsLoaded(false);
-    const projectSummaryResponse = await dispatch(
+    return dispatch(
       updateProjectSummary(
         {
           projectGuid,
@@ -136,38 +130,20 @@ export const ProjectSummary: FC = () => {
         payload,
         message
       )
-    );
-
-    await dispatch(
-      updateProject(
-        { projectGuid },
-        {
-          mrc_review_required: payload.mrc_review_required,
-          contacts: payload.contacts,
-        },
-        "Successfully updated project.",
-        false
-      )
-    );
-
-    await handleFetchData();
-    if (
-      tab === PROJECT_SUMMARY_WITH_AMS_SUBMISSION_SECTION &&
-      amsFeatureEnabled &&
-      projectSummaryResponse
-    ) {
-      const { data } = projectSummaryResponse;
-      const authorizations = data?.authorizations;
-      const areAuthorizationsSuccessful = authorizations.every(
-        (auth) => auth.ams_status_code === "200"
-      );
-      history.push(
-        routes.VIEW_PROJECT_SUBMISSION_STATUS_PAGE.dynamicRoute(
-          projectGuid,
-          areAuthorizationsSuccessful ? AMS_STATUS_CODES_SUCCESS : AMS_STATUS_CODE_FAIL
-        )
-      );
-    }
+    )
+      .then(async () => {
+        await dispatch(
+          updateProject(
+            { projectGuid },
+            { mrc_review_required: payload.mrc_review_required, contacts: payload.contacts },
+            "Successfully updated project.",
+            false
+          )
+        );
+      })
+      .then(async () => {
+        await handleFetchData();
+      });
   };
 
   const handleTabChange = (newTab: string) => {
@@ -186,7 +162,7 @@ export const ProjectSummary: FC = () => {
   };
 
   const handleSaveData = async (formValues, newActiveTab?: string) => {
-    let message = newActiveTab
+    const message = newActiveTab
       ? "Successfully updated the project description."
       : "Successfully submitted a project description to the Province of British Columbia.";
 
@@ -195,9 +171,6 @@ export const ProjectSummary: FC = () => {
       status_code = "DFT";
     } else if (!newActiveTab) {
       status_code = "SUB";
-      if (amsFeatureEnabled) {
-        message = null;
-      }
     }
     const values = { ...formValues, status_code: status_code };
 

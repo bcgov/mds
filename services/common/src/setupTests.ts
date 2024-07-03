@@ -13,13 +13,6 @@ Enzyme.configure({ adapter: new Adapter() });
   setTimeout(callback, 0); // eslint-disable-line @typescript-eslint/no-implied-eval
 };
 
-(<any>global).GLOBAL_ROUTES = {
-  EDIT_PROJECT: {
-    route: "test",
-    dynamicRoute: () => "test",
-  },
-};
-
 jest.mock("react", () => {
   const original = jest.requireActual("react");
   return {
