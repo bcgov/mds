@@ -117,7 +117,7 @@ class W3CCredentialUNTPResource(Resource, UserMixin):
     @api.expect(parser)
     @api.doc(
         description=
-        "returns a signed w3c credential for a specific permit_amendment using deprecated aca-py endpoint, but with did:indy:bcovrin:test:"
+        "returns a UNTP Conformity Credential for specific permit_amendment using deprecated aca-py endpoint, but with did:indy:bcovrin:test:"
     )
     @requires_any_of([EDIT_PARTY, MINESPACE_PROPONENT])
     def post(self):
