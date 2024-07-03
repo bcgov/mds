@@ -1,3 +1,6 @@
+import datetime
+import pytz
+
 from app.api.verifiable_credentials.manager import VerifiableCredentialManager
 from app.api.mines.mine.models.mine_type import MineType
 from tests.factories import create_mine_and_permit, PartyFactory, MinePartyAppointmentFactory, PartyOrgBookEntityFactory
@@ -74,7 +77,19 @@ class TestVerifiableCredentialManager:
         pa_cred = VerifiableCredentialManager.produce_untp_cc_map_payload(
             "did:test:10230123", permit.permit_amendments[0])
 
+        pa = permit.permit_amendments[0]
+
         assert pa_cred
+        assert str(pa_cred.credentialSubject.issuedTo.identifiers[0].identifierValue) == str(
+            poe.registration_id)
+        assert pa_cred.credentialSubject.validFrom == datetime(
+            pa.issue_date.year,
+            pa.issue_date.month,
+            pa.issue_date.day,
+            0,
+            0,
+            0,
+            tzinfo=pytz.timezone("UTC")).isoformat()
 
     def test_produce_untp_cc_map_payload_null_if_no_orgbook(self, db_session):
         mine, permit = create_mine_and_permit()
