@@ -16,18 +16,9 @@
   padding: 0;
 }
 
-.status-icon {
-  transform: scale(5);
-  margin-top: 5em;
-  margin-bottom: 2.5em;
-}
-
 .success-page {
-  @extend .status-icon;
-  color: $gov-green;
-}
-
-.fail-page {
-  @extend .status-icon;
-  color: $gov-red;
+  color: #008000;
+  transform: scale(7.0);
+  margin-top: 7.0em;
+  margin-bottom: 3.5em;
 }
