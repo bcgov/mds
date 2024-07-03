@@ -294,15 +294,16 @@ class VerifiableCredentialManager():
         """Produce payload for Mines Act Permit UNTP Conformity Credential from permit amendment and did."""
         ANONCRED_SCHEME = "https://hyperledger.github.io/anoncreds-spec/"
 
-        permittee_appointment = MinePartyAppointment.find_by_permit_id(permit_amendment.permit_id)
-        permittee_appointment.sort(key=lambda x: x.start_date, reverse=True)
-        curr_appt = permittee_appointment[0]
-        for pa in permittee_appointment:
+        curr_appt = permit_amendment.permittee_appointments[0]
+        for pa in permit_amendment.permittee_appointments:
             if curr_appt.start_date < pa.start_date:
                 curr_appt = pa
             else:
                 break
         orgbook_entity = curr_appt.party.party_orgbook_entity
+        if not orgbook_entity:
+            current_app.logger.warning("No Orgbook Entity, do not produce Mines Act Permit UNTP CC")
+            return None
 
         untp_party_cpo = base.Party(
             name="Chief Permitting Officer",
@@ -324,7 +325,7 @@ class VerifiableCredentialManager():
             identifiers=[
                 base.Identifier(
                     scheme=ANONCRED_SCHEME,
-                    identifierValue=orgbook_entity.registration_id,
+                    identifierValue=str(orgbook_entity.registration_id),
                     identifierURI=orgbook_cred_url,
                     verificationEvidence=base.Evidence(
                         format=codes.EvidenceFormat.W3C_VC, credentialReference=orgbook_cred_url))

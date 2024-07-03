@@ -1,13 +1,12 @@
 from app.api.verifiable_credentials.manager import VerifiableCredentialManager
 from app.api.mines.mine.models.mine_type import MineType
-from tests.factories import create_mine_and_permit, PartyFactory, MinePartyAppointmentFactory
+from tests.factories import create_mine_and_permit, PartyFactory, MinePartyAppointmentFactory, PartyOrgBookEntityFactory
 
 
 class TestVerifiableCredentialManager:
     """test MinesActPermit 1.1.1 attributes"""
 
-    def test_collect_attributes_for_mines_act_permit_111(self, test_client, db_session,
-                                                         auth_headers):
+    def test_collect_attributes_for_mines_act_permit_111(self, test_client, db_session):
         mine, permit = create_mine_and_permit()
         permittee_appt = MinePartyAppointmentFactory(permittee=True)
 
@@ -65,3 +64,23 @@ class TestVerifiableCredentialManager:
         assert attributes["latitude"] == str(pa.mine.latitude)
         assert attributes["longitude"] == str(pa.mine.longitude)
         assert attributes["bond_total"] == str(pa.permit.active_bond_total)
+
+    def test_produce_untp_cc_map_payload_happy(self, db_session):
+        mine, permit = create_mine_and_permit()
+        permittee_appt = MinePartyAppointmentFactory(permittee=True, permit_id=permit.permit_id)
+        poe = PartyOrgBookEntityFactory(party_guid=permittee_appt.party_guid)
+        permittee_appt.party.party_orgbook_entity = poe
+
+        pa_cred = VerifiableCredentialManager.produce_untp_cc_map_payload(
+            "did:test:10230123", permit.permit_amendments[0])
+
+        assert pa_cred
+
+    def test_produce_untp_cc_map_payload_null_if_no_orgbook(self, db_session):
+        mine, permit = create_mine_and_permit()
+        permittee_appt = MinePartyAppointmentFactory(permittee=True, permit_id=permit.permit_id)
+
+        pa_cred = VerifiableCredentialManager.produce_untp_cc_map_payload(
+            "did:test:10230123", permit.permit_amendments[0])
+
+        assert not pa_cred
