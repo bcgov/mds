@@ -824,6 +824,7 @@ select {
 // same effect as above but not legacy
 .ant-form-item-row {
   flex-direction: column;
+  margin-bottom: 1em;
 }
 
 .ant-legacy-form-item {
