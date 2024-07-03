@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 import pytz
 
 from app.api.verifiable_credentials.manager import VerifiableCredentialManager
