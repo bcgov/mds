@@ -28,7 +28,7 @@ def upgrade():
         sa.Column('update_timestamp', sa.DateTime(timezone=True), server_default=sa.text('NOW()'), nullable=False),
         sa.Column('deleted_ind', sa.Boolean(), server_default='FALSE', nullable=False),
         sa.Column('name', sa.String(length=300), nullable=False),
-        sa.Column('geomark_link', sa.String(length=300), nullable=True),
+        sa.Column('geomark_id', sa.String(length=300), nullable=True),
         sa.Column('error', sa.String(length=1000), nullable=True),
     )
     op.add_column('document', sa.Column('document_bundle_guid', UUID(as_uuid=True), sa.ForeignKey('document_bundle.bundle_guid'), nullable=True,))

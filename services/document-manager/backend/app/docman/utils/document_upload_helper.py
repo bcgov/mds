@@ -1,4 +1,5 @@
 import base64
+import mimetypes
 import os
 import time
 import zipfile
@@ -296,18 +297,29 @@ class DocumentUploadHelper:
     def validate_bundle(cls, bundle_documents):
         required_extensions = {'.shp', '.shx', '.dbf', '.prj'}
         optional_extensions = {'.sbn', '.sbx', '.xml'}
-        allowed_extensions = required_extensions.union(optional_extensions)
+        all_shape_file_extensions = required_extensions.union(optional_extensions)
+        valid_single_file_extensions = {'.kml', '.kmz'}
 
-        # assuming Document.file_display_name or similar method gives file name including extension
-        document_extensions = {os.path.splitext(doc.file_display_name)[1] for doc in bundle_documents}
+        if len(bundle_documents) == 1:
+            document_extension = os.path.splitext(bundle_documents[0].file_display_name)[1]
 
-        if not required_extensions.issubset(document_extensions):
-            missing_extensions = required_extensions - document_extensions
-            raise ValueError(f'Missing required file types: {", ".join(missing_extensions)}')
+            if document_extension in all_shape_file_extensions:
+                raise ValueError(f'${document_extension} must be uploaded as part of a shapefile')
+            if document_extension not in valid_single_file_extensions:
+                raise ValueError(f'Invalid file type: {document_extension}')
+        else:
+            allowed_extensions = required_extensions.union(optional_extensions)
 
-        extra_extensions = document_extensions - allowed_extensions
-        if extra_extensions:
-            raise ValueError(f'Found non spatial bundle file types in spatial bundle: {", ".join(extra_extensions)}')
+            # assuming Document.file_display_name or similar method gives file name including extension
+            document_extensions = {os.path.splitext(doc.file_display_name)[1] for doc in bundle_documents}
+
+            if not required_extensions.issubset(document_extensions):
+                missing_extensions = required_extensions - document_extensions
+                raise ValueError(f'Missing required file types: {", ".join(missing_extensions)}')
+
+            extra_extensions = document_extensions - allowed_extensions
+            if extra_extensions:
+                raise ValueError(f'Found non spatial bundle file types in spatial bundle: {", ".join(extra_extensions)}')
 
     @classmethod
     def zip_spatial_files(cls, bundle_documents, name):
@@ -316,43 +328,53 @@ class DocumentUploadHelper:
 
         with zipfile.ZipFile(shpz_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
             for doc in bundle_documents:
-                current_app.logger.info(f"Attempting to download document: {doc.file_display_name}")
                 response = oss_service.download_file(doc.object_store_path, doc.file_display_name, False)
 
                 if response.status_code == 200:
                     current_app.logger.info(f"Successfully downloaded document: {doc.file_display_name}")
-                    file_data = response.get_data()  # obtain file data from response body
+                    file_data = response.get_data()
 
-                    # Verify the file content and extension
-                    if not doc.file_display_name.endswith(('.shp', '.shx', '.dbf', '.prj')):
-                        current_app.logger.error(f"Invalid file type: {doc.file_display_name}")
-                        continue
-
-                    current_app.logger.info(f"Writing document: {doc.file_display_name} to zip file")
                     zipf.writestr(doc.file_display_name, file_data)
-                    current_app.logger.info(f"Successfully wrote document: {doc.file_display_name} to zip file")
                 else:
-                    current_app.logger.error(f"Failed to download document: {doc.file_display_name}, status code: {response.status_code}")
+                    raise Exception(f"Failed to download document: {doc.file_display_name}")
 
         return shpz_path
+    @classmethod
+    def download_kml_kmz_files(cls, doc):
+        # Download the file from object store
+        response = ObjectStoreStorageService().download_file(doc.object_store_path, doc.file_display_name, False)
+
+        # Check the response status
+        if response.status_code == 200:
+            file_data = response.get_data()  # obtain file data from response body
+            with open(doc.file_display_name, 'wb') as file:
+                file.write(file_data)
+        else:
+            raise FileNotFoundError(f"Failed to download file: {doc.file_display_name}")
 
     @classmethod
-    def send_shpz_to_geomark(cls, file_path):
+    def send_spatial_file_to_geomark(cls, file_path):
+        file_extension = os.path.splitext(file_path)[1].lstrip('.')
+
+        # Ensure the format is one of the allowed ones
+        assert file_extension in ['shpz', 'kml', 'kmz'], "Invalid file format. Must be one of: 'shpz', 'kml', 'kmz'."
+
+        mime_type = mimetypes.guess_type(file_path)[0]
+
+        url = 'https://apps.gov.bc.ca/pub/geomark/geomarks/new'
+
         with open(file_path, 'rb') as file:
             multipart_data = MultipartEncoder(
                 fields={
-                    'body': (os.path.basename(file_path), file, 'application/x-shp+zip'),
+                    'body': (os.path.basename(file_path), file, mime_type),
                     'resultFormat': 'json',
-                    'format': 'shpz',
+                    'format': file_extension,
                     'srid': '4326'
                 }
             )
-
             headers = {
                 'Content-Type': multipart_data.content_type
             }
-
-            url = 'https://apps.gov.bc.ca/pub/geomark/geomarks/new'
 
             # Send the request
             response = requests.post(
@@ -375,8 +397,14 @@ class DocumentUploadHelper:
 
         cls.validate_bundle(bundle_documents)
 
-        zip_file_path = cls.zip_spatial_files(bundle_documents, name)
-        geomark_response = cls.send_shpz_to_geomark(zip_file_path)
+        if len(bundle_documents) > 1:
+            file_path = f'{name}.shpz'
+            cls.zip_spatial_files(bundle_documents, name)
+        else:
+            file_path = bundle_documents[0].file_display_name
+            cls.download_kml_kmz_files(bundle_documents[0])
+
+        geomark_response = cls.send_spatial_file_to_geomark(file_path)
 
         bundle = DocumentBundle(
             name=name,
@@ -389,7 +417,7 @@ class DocumentUploadHelper:
             bundle.error = geomark_response['error']
 
         if geomark_response.get('url'):
-            bundle.geomark_link = geomark_response['url']
+            bundle.geomark_id = geomark_response['id']
 
         for doc in bundle_documents:
             doc.document_bundle = bundle
@@ -403,6 +431,6 @@ class DocumentUploadHelper:
         if bundle.error:
             raise BadRequest(bundle.error)
 
-        current_app.logger.info(f'Completed bundle upload: {bundle.geomark_link}')
+        current_app.logger.info(f'Completed bundle upload: {bundle.geomark_id}')
 
-        return {'url': bundle.geomark_link, 'docman_bundle_guid': bundle.bundle_guid}
+        return {'geomark_id': bundle.geomark_id, 'docman_bundle_guid': str(bundle.bundle_guid)}

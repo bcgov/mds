@@ -29,7 +29,7 @@ DOCMENT_BUNDLE_MODEL = api.model(
     'DocumentBundle', {
         'bundle_guid': fields.String,
         'name': fields.String,
-        'geomark_link': fields.String,
+        'geomark_id': fields.String,
         'error': fields.String
     })
 

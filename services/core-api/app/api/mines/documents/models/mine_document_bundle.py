@@ -11,5 +11,5 @@ class MineDocumentBundle(SoftDeleteMixin, AuditMixin, Base):
     bundle_guid = db.Column(UUID(as_uuid=True), nullable=False)
     bundle_name = db.Column(db.String(100), nullable=False)
     name = db.Column(db.String(100), nullable=False)
-    geomark_link = db.Column(db.String(100), nullable=True)
+    geomark_id = db.Column(db.String(100), nullable=True)
     docman_bundle_guid = db.Column(UUID(as_uuid=True), nullable=True)

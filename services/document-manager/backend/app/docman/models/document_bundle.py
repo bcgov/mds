@@ -10,7 +10,7 @@ class DocumentBundle(AuditMixin, Base):
 
     bundle_guid = db.Column(UUID(as_uuid=True), nullable=False, unique=True, primary_key=True, default=uuid.uuid4)
     name = db.Column(db.String(300), nullable=False)
-    geomark_link = db.Column(db.String(300), nullable=True)
+    geomark_id = db.Column(db.String(300), nullable=True)
     error = db.Column(db.String(1000), nullable=True)
 
     documents = db.relationship('Document', back_populates='document_bundle', lazy='selectin')
@@ -26,6 +26,6 @@ class DocumentBundle(AuditMixin, Base):
             'update_user': self.update_user,
             'update_timestamp': str(self.update_timestamp),
             'name': self.name,
-            'geomark_link': self.geomark_link,
+            'geomark_id': self.geomark_id,
             'error': self.error
         }

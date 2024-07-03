@@ -6,6 +6,6 @@ CREATE TABLE IF NOT EXISTS mine_document_bundle (
     update_timestamp TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
     deleted_ind BOOLEAN DEFAULT FALSE NOT NULL,
     name VARCHAR(300) NOT NULL,
-    geomark_link VARCHAR(300),
+    geomark_id VARCHAR(300),
     docman_bundle_guid UUID NOT NULL
 );
