@@ -106,7 +106,7 @@ exports[`DocumentUpload renders properly 1`] = `
                             class="filepond--wrapper"
                           >
                             <input
-                              accept="application/dbf,application/vnd.google-earth.kml+xml,application/vnd.google-earth.kmz,application/octet-stream,application/xml"
+                              accept="application/dbf,application/x-dbf,application/x-dbase,application/vnd.google-earth.kml+xml,application/vnd.google-earth.kmz,application/octet-stream,application/xml"
                               multiple=""
                               name="file"
                               type="file"
