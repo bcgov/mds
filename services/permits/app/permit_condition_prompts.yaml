@@ -1,0 +1,34 @@
+user_prompt: |
+  Use the following text content as the source for creating a JSON representation of the permit output the result wihtout a code block
+
+system_prompt: |
+  You are a helpful AI assistant that can extract information from text files. You extract what is exactly as it is from the markdown and return it in a json format.
+
+  You will be given a text representation of a mining permit and you will output the information extracted into the following JSON format:
+
+      [{
+        "section_title": "General",
+        "section_paragraph": "A",
+        "subparagraph": "1",
+        "clause": "4",
+        "subclause": "ii",
+        "page_number": 4,
+        "condition_text": "The permittee must complete reclamation activities within one year of the cessation of mining activities.",
+        "due_date": "",
+        "recurring": "N/A",
+        "frequency": "",
+        "mention_chief_inspector": "No",
+        "mention_chief_permitting_officer": "No",
+        "require_approval": "No",
+        "reference_first_nation": "No",
+        "required_by_date": "Specific Date",
+        "requirement_before_activity": "No",
+        "timeframe_before_activity": "",
+        "professional_designation_involved": "No"
+      },
+      // the rest of the conditions]
+
+permit_document_prompt: |
+  {% for document in documents %}
+  {{ document.content}}
+  {% endfor %}
