@@ -1,10 +1,11 @@
 import React, { FC, useState } from "react";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import FormWrapper, { FormWrapperProps } from "../../forms/FormWrapper";
+import FormWrapper from "../../forms/FormWrapper";
 import { change, Field, getFormValues, reset, touch } from "redux-form";
 import RenderFileUpload from "../../forms/RenderFileUpload";
 import { spatialDocumentBundle } from "@mds/common/redux/utils/Validate";
-import { OTHER_SPATIAL, XML } from "../../..";
+import { OTHER_SPATIAL, SPATIAL_DATA_STANDARDS_URL, XML } from "../../..";
 import { Alert, Button, Row, Steps, Typography } from "antd";
 import RenderCancelButton from "../../forms/RenderCancelButton";
 import RenderSubmitButton from "../../forms/RenderSubmitButton";
@@ -37,10 +38,10 @@ const AddSpatialDocumentsModal: FC<AddSpatialDocumentsModalProps> = ({
   };
 
   const [currentStep, setCurrentStep] = useState(0);
+  const [isResetting, setIsResetting] = useState(false);
 
-  const handleFileLoad = (document_name, document_manager_guid, version, fileInfo) => {
-    // console.log('docName, docManGuid, version', document_name, document_manager_guid, version, fileInfo);
-    const fileData = { document_name, document_manager_guid, version, size: fileInfo.size };
+  const handleFileLoad = (document_name, document_manager_guid, version) => {
+    const fileData = { document_name, document_manager_guid, version };
     const newUploadedFiles = [
       ...existingDocuments,
       transformFile ? transformFile(fileData) : fileData,
@@ -58,21 +59,30 @@ const AddSpatialDocumentsModal: FC<AddSpatialDocumentsModalProps> = ({
 
   const stepContent = [
     {
-      title: "Upload Spatial Data",
+      title: "Upload Spatial Data Files",
       content: (
         <>
-          <Typography.Title level={3}>Upload Bundle</Typography.Title>
-          <Typography.Paragraph>Upload one bundle of shapefiles at a time.</Typography.Paragraph>
-          <Alert
-            type="info"
-            showIcon
-            description={
-              <>
-                Visit <a href="www.google.ca">GIS Shapefile Standards</a> to learn more about
-                shapefile requirements and standards.
-              </>
-            }
-          />
+          <Typography.Title level={3}>Upload Spatial Bundle</Typography.Title>
+          <Typography.Paragraph>
+            You can only submit one KML, KMZ, or Shapefile at a time.
+          </Typography.Paragraph>
+          <Typography.Paragraph>
+            <Alert
+              type="info"
+              showIcon
+              description={
+                <>
+                  Visit <Link to={SPATIAL_DATA_STANDARDS_URL}>GIS Shapefile Standards</Link> to
+                  learn more about shapefile requirements and standards.
+                </>
+              }
+            />
+          </Typography.Paragraph>
+          <Typography.Title level={4}>Spatial Data</Typography.Title>
+          <Typography.Paragraph>
+            Shapefile component files must include the .shp, .shx, .dbf, and .prj files with the
+            same filename prefix.
+          </Typography.Paragraph>
         </>
       ),
     },
@@ -85,7 +95,7 @@ const AddSpatialDocumentsModal: FC<AddSpatialDocumentsModalProps> = ({
             Please confirm that the composed map below correctly represents your selected spatial
             data files.
           </Typography.Paragraph>
-          <ViewSpatialDetail spatialBundle={existingDocuments} />
+          <ViewSpatialDetail spatialDocuments={existingDocuments} />
         </>
       ),
     },
@@ -97,15 +107,15 @@ const AddSpatialDocumentsModal: FC<AddSpatialDocumentsModalProps> = ({
     <FormWrapper
       isModal
       name={modalFormName}
-      initialValues={{
-        [fieldName]: initialDocuments,
-      }}
-      onSubmit={(values) => {
+      onSubmit={async (values) => {
         const fileValues = values[fieldName];
+        const allFiles = [...fileValues, ...initialDocuments];
         if (isFinalStep) {
-          dispatch(change(formName, fieldName, fileValues));
+          dispatch(change(formName, fieldName, allFiles));
+          setIsResetting(true);
           setCurrentStep(0);
-          dispatch(reset(modalFormName));
+          await dispatch(reset(modalFormName));
+          setIsResetting(false);
         } else {
           setCurrentStep(currentStep + 1);
         }
@@ -117,23 +127,25 @@ const AddSpatialDocumentsModal: FC<AddSpatialDocumentsModalProps> = ({
       <Steps current={currentStep} items={stepContent}></Steps>
       {stepContent[currentStep].content}
       {/* hide the input between steps rather than re-render, to keep file data */}
-      <div className={currentStep !== 0 && "hidden"}>
-        <Field
-          name={fieldName}
-          onFileLoad={handleFileLoad}
-          onRemoveFile={handleRemoveFile}
-          component={RenderFileUpload}
-          maxFileSize="400MB"
-          label="Upload shapefiles"
-          abbrevLabel
-          listedFileTypes={["spatial"]}
-          required
-          validate={[spatialDocumentBundle]}
-          uploadUrl={uploadUrl}
-          allowRevert
-          acceptedFileTypesMap={spatialAcceptedFileTypesMap}
-        />
-      </div>
+      {!isResetting && (
+        <div className={currentStep !== 0 ? "hidden" : undefined}>
+          <Field
+            name={fieldName}
+            onFileLoad={handleFileLoad}
+            onRemoveFile={handleRemoveFile}
+            component={RenderFileUpload}
+            maxFileSize="400MB"
+            label="Upload shapefiles"
+            abbrevLabel
+            listedFileTypes={["spatial"]}
+            required
+            validate={[spatialDocumentBundle]}
+            uploadUrl={uploadUrl}
+            allowRevert
+            acceptedFileTypesMap={spatialAcceptedFileTypesMap}
+          />
+        </div>
+      )}
       <Row justify="end">
         <RenderCancelButton />
         {currentStep + 1 < stepContent.length ? (

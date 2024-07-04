@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { connect, useSelector } from "react-redux";
 import "filepond-polyfill";
 import { FilePond, registerPlugin } from "react-filepond";
@@ -25,6 +25,7 @@ import {
 import { BaseInputProps } from "./BaseInput";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleQuestion } from "@fortawesome/pro-light-svg-icons";
+import { FormContext } from "./FormWrapper";
 
 registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 
@@ -101,10 +102,11 @@ const defaultProps = {
   labelHref: undefined,
 };
 
-export const FileUpload = (props: FileUploadProps) => {
-  props = { ...defaultProps, ...props };
+export const FileUpload = (componentProps: FileUploadProps) => {
+  const props = { ...defaultProps, ...componentProps };
 
   const system = useSelector(getSystemFlag);
+  const { isEditMode } = useContext(FormContext);
 
   const [showWhirlpool, setShowWhirlpool] = useState(false);
 
@@ -184,9 +186,9 @@ export const FileUpload = (props: FileUploadProps) => {
       if (props.onError) {
         props.onError(file && file.name ? file.name : "", err);
       }
-    } catch (err) {
+    } catch (e) {
       notification.error({
-        message: `Failed to upload the file: ${err}`,
+        message: `Failed to upload the file: ${e}`,
         duration: 10,
       });
     }
@@ -279,13 +281,13 @@ export const FileUpload = (props: FileUploadProps) => {
         filename: file.name,
         filetype: file.type || APPLICATION_OCTET_STREAM,
       },
-      onError: (err, uploadResults) => {
-        setUploadResultsFor(fileId, uploadResults);
+      onError: (err, uploadResult) => {
+        setUploadResultsFor(fileId, uploadResult);
         handleError(file, err);
         error(err);
       },
-      onInit: (uploadData) => {
-        setUploadDataFor(fileId, uploadData);
+      onInit: (docUploadData) => {
+        setUploadDataFor(fileId, docUploadData);
       },
       onProgress: (bytesUploaded, bytesTotal) => {
         progress(true, bytesUploaded, bytesTotal);
@@ -451,9 +453,8 @@ export const FileUpload = (props: FileUploadProps) => {
   const fileValidateTypeLabelExpectedTypesMap = invert(props.acceptedFileTypesMap);
   const acceptedFileTypes = uniq(Object.values(props.acceptedFileTypesMap));
 
-  const getLabel = (props) => {
+  const getLabel = () => {
     let labelHrefElement = null;
-
     if (props.labelHref) {
       labelHrefElement = (
         <a href={props.labelHref} target="_blank" rel="noopener noreferrer">
@@ -495,6 +496,10 @@ export const FileUpload = (props: FileUploadProps) => {
     return <>{props.label}</>;
   };
 
+  if (!isEditMode) {
+    return null;
+  }
+
   return (
     <div className={showWhirlpool ? "whirlpool-container whirlpool-on" : "whirlpool-container"}>
       {system === SystemFlagEnum.core && (
@@ -522,12 +527,7 @@ export const FileUpload = (props: FileUploadProps) => {
       <Form.Item
         name={props.input?.name}
         required={props.required}
-        label={getLabel({
-          label: props.label,
-          labelHref: props.labelHref,
-          abbrevLabel: props.abbrevLabel,
-          acceptedFileTypesMap: props.acceptedFileTypesMap,
-        })}
+        label={getLabel()}
         validateStatus={
           props.meta?.touched
             ? (props.meta?.error && "error") || (props.meta?.warning && "warning")
@@ -553,7 +553,9 @@ export const FileUpload = (props: FileUploadProps) => {
             allowReorder={props.allowReorder}
             maxParallelUploads={1}
             maxFileSize={props.maxFileSize}
+            minFileSize="1"
             allowFileTypeValidation={acceptedFileTypes.length > 0}
+            //@ts-ignore TODO: Mat did a fix for this param?
             acceptedFileTypes={acceptedFileTypes}
             onaddfile={handleFileAdd}
             onprocessfiles={props.onProcessFiles}

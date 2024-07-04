@@ -1,23 +1,48 @@
-import React, { FC } from "react";
-import { useSelector } from "react-redux";
+import React, { FC, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import CoreTable from "../../common/CoreTable";
 import { renderTextColumn } from "../../common/CoreTableCommonColumns";
 import { formatDate } from "@mds/common/redux/utils/helpers";
-import { getUserInfo } from "@mds/common/redux/selectors/authenticationSelectors";
+import { getFormattedUserName } from "@mds/common/redux/selectors/authenticationSelectors";
+import {
+  fetchGeomarkMapData,
+  spatialBundlesFromFiles,
+  clearSpatialData,
+  getGeomarkMapData,
+} from "@mds/common/redux/slices/spatialDataSlice";
+import { IMineDocument } from "@mds/common/interfaces";
+import CoreMap from "../../common/Map";
 
 export interface ViewSpatialDetailProps {
-  spatialBundle: any[];
+  spatialDocuments: IMineDocument[];
 }
-const ViewSpatialDetail: FC<ViewSpatialDetailProps> = ({ spatialBundle }) => {
-  const { preferred_username } = useSelector(getUserInfo);
+const ViewSpatialDetail: FC<ViewSpatialDetailProps> = ({ spatialDocuments }) => {
+  const dispatch = useDispatch();
+  const username = useSelector(getFormattedUserName);
+  const geomarkMapData = useSelector(getGeomarkMapData);
+  const [mapLoaded, setMapLoaded] = useState(false);
+  const spatialBundle = spatialBundlesFromFiles(spatialDocuments)[0];
+
+  const handleFetchMapData = () => {
+    setMapLoaded(false);
+    dispatch(fetchGeomarkMapData(spatialBundle));
+  };
+
+  useEffect(() => {
+    if (!mapLoaded) {
+      handleFetchMapData();
+    }
+    return () => dispatch(clearSpatialData());
+  }, []);
+
   return (
     <>
-      <div> map goes here</div>
+      {geomarkMapData && <CoreMap geojsonFeature={geomarkMapData} />}
       <CoreTable
         size="small"
         rowKey="document_manager_guid"
         showHeader={false}
-        dataSource={spatialBundle}
+        dataSource={spatialDocuments}
         columns={[
           renderTextColumn("document_name", ""),
           {
@@ -28,15 +53,17 @@ const ViewSpatialDetail: FC<ViewSpatialDetailProps> = ({ spatialBundle }) => {
             },
           },
           {
-            key: "uploadDate",
-            render: () => {
-              return formatDate(new Date());
+            key: "upload_date",
+            dataIndex: "upload_date",
+            render: (text) => {
+              return formatDate(text ?? new Date());
             },
           },
           {
-            key: "uploadUser",
-            render: () => {
-              return preferred_username;
+            key: "create_user",
+            dataIndex: "create_user",
+            render: (text) => {
+              return text ?? username;
             },
           },
         ]}

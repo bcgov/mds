@@ -10,18 +10,27 @@ import * as Strings from "@mds/common/constants/strings";
 import { IMine } from "../..";
 import { Validate } from "@mds/common/redux/utils/Validate";
 import { SMALL_PIN } from "@mds/common/constants/assets";
+import { IGeoJsonFeature } from "@mds/common/interfaces/document/geojsonFeature.interface";
 
 /**
  * @React.FC LeafletMap.tsx is a Leaflet Map component.
  */
 
-interface LeafletMapProps {
+export interface LeafletMapProps {
   mine?: IMine;
   additionalPins?: string[][];
   controls?: boolean;
+  geojsonFeature?: IGeoJsonFeature;
+  minHeight?: number;
 }
 
-const LeafletMap: FC<LeafletMapProps> = ({ mine, additionalPins = [], controls = true }) => {
+const LeafletMap: FC<LeafletMapProps> = ({
+  mine,
+  additionalPins = [],
+  controls = true,
+  geojsonFeature,
+  minHeight = 200,
+}) => {
   // if mine does not have a location, set a default to center the map
   const hasMineLocation = mine?.mine_location?.latitude && mine?.mine_location?.longitude;
   const latLong = hasMineLocation
@@ -29,6 +38,7 @@ const LeafletMap: FC<LeafletMapProps> = ({ mine, additionalPins = [], controls =
       [mine.mine_location.latitude, mine.mine_location.longitude]
     : [Number(Strings.DEFAULT_LAT), Number(Strings.DEFAULT_LONG)];
 
+  const [isMapInitialized, setIsMapInitialized] = useState(false);
   const [map, setMap] = useState<Map>();
   const [layerGroup, setLayerGroup] = useState<LayerGroup>();
   const [placedPins, setPlacedPins] = useState<Array<Marker>>([]);
@@ -55,11 +65,11 @@ const LeafletMap: FC<LeafletMapProps> = ({ mine, additionalPins = [], controls =
       const lngVals = allPins.filter((pin) => pin[1] !== null).map((pin) => Number(pin[1]));
 
       if (latVals.length && lngVals.length) {
-        const maxLat = Math.max(...latVals);
-        const minLat = Math.min(...latVals);
+        const maxLat = Math.max(...latVals, geojsonFeature?.properties?.maxY);
+        const minLat = Math.min(...latVals, geojsonFeature?.properties?.minY);
 
-        const maxLng = Math.max(...lngVals);
-        const minLng = Math.min(...lngVals);
+        const maxLng = Math.max(...lngVals, geojsonFeature?.properties?.maxX);
+        const minLng = Math.min(...lngVals, geojsonFeature?.properties?.minX);
 
         // lat: higher is n, lower is s
         // lng: higher is e, lower is w
@@ -119,11 +129,22 @@ const LeafletMap: FC<LeafletMapProps> = ({ mine, additionalPins = [], controls =
     if (hasMineLocation) {
       createPin();
     }
-    fitBounds();
     if (!controls) {
       disableControls();
     }
   }, []);
+
+  useEffect(() => {
+    if (map && layerGroup) {
+      setIsMapInitialized(true);
+    }
+  }, [map, layerGroup]);
+
+  useEffect(() => {
+    if (isMapInitialized) {
+      fitBounds();
+    }
+  }, [isMapInitialized]);
 
   useEffect(() => {
     if (additionalPins.length > 0) {
@@ -138,7 +159,14 @@ const LeafletMap: FC<LeafletMapProps> = ({ mine, additionalPins = [], controls =
     }
   }, [additionalPins, layerGroup]);
 
-  return <div style={{ height: "100%", width: "100%", zIndex: 0 }} id="leaflet-map" />;
+  useEffect(() => {
+    if (isMapInitialized && geojsonFeature) {
+      L.geoJSON(geojsonFeature).addTo(map);
+      fitBounds();
+    }
+  }, [geojsonFeature, isMapInitialized]);
+
+  return <div style={{ height: "100%", width: "100%", zIndex: 0, minHeight }} id="leaflet-map" />;
 };
 
 export default LeafletMap;
