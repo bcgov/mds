@@ -1,6 +1,8 @@
 import base64
+import mimetypes
 import os
 import time
+import zipfile
 from urllib.parse import urlparse
 from wsgiref.handlers import format_date_time
 
@@ -16,15 +18,18 @@ from werkzeug.exceptions import BadRequest, NotFound, RequestEntityTooLarge, Int
 from datetime import datetime
 
 from werkzeug.exceptions import BadRequest, BadGateway, InternalServerError
-from flask import request, current_app
 
 from app.extensions import db
-from app.services.object_store_storage_service import ObjectStoreStorageService
 from app.docman.models.document import Document
 from app.docman.models.document_version import DocumentVersion
 from app.services.object_store_storage_service import ObjectStoreStorageService
 from werkzeug.utils import secure_filename
+
+from app.docman.models.document_bundle import DocumentBundle
+from requests_toolbelt import MultipartEncoder
+
 CACHE_TIMEOUT = TIMEOUT_24_HOURS
+
 
 def handle_status_and_update_doc(status, doc_guid):
     doc = Document.find_by_document_guid(doc_guid)
@@ -44,7 +49,7 @@ class DocumentUploadHelper:
         # If the object store is enabled, send the post request through to TUSD to the object store
         object_store_path = None
         s3_upload = None
-        multipart_upload_path=None
+        multipart_upload_path = None
         is_s3_multipart = False
 
         if Config.OBJECT_STORE_ENABLED:
@@ -55,7 +60,7 @@ class DocumentUploadHelper:
             path = base64.b64encode(file_path.encode('utf-8')).decode('utf-8')
             doc_guid = base64.b64encode(
                 document_guid.encode('utf-8')).decode('utf-8')
-            
+
             is_s3_multipart = headers.get('Upload-Protocol') == 's3-multipart'
             upload_metadata = request.headers['Upload-Metadata']
             headers['Upload-Metadata'] = f'{upload_metadata},path {path},doc_guid {doc_guid}'
@@ -65,12 +70,12 @@ class DocumentUploadHelper:
                     str(version_guid).encode('utf-8')).decode('utf-8')
 
                 headers['Upload-Metadata'] = headers['Upload-Metadata'] + \
-                    f',version_guid {ver_guid}'
+                                             f',version_guid {ver_guid}'
 
             # Send the request
             if is_s3_multipart:
                 object_store_path = Config.S3_PREFIX + 'multipart/' + doc_guid
-                multipart_upload_path=object_store_path
+                multipart_upload_path = object_store_path
                 s3_upload = ObjectStoreStorageService().create_multipart_upload(object_store_path, file_size)
             else:
                 object_store_path = cls._initialize_tusd_upload(document_guid, headers)
@@ -91,7 +96,7 @@ class DocumentUploadHelper:
 
         if not is_s3_multipart:
             cache.set(FILE_UPLOAD_EXPIRY(document_guid),
-                    upload_expiry, CACHE_TIMEOUT)
+                      upload_expiry, CACHE_TIMEOUT)
             cache.set(FILE_UPLOAD_SIZE(document_guid), file_size, CACHE_TIMEOUT)
             cache.set(FILE_UPLOAD_OFFSET(document_guid), 0, CACHE_TIMEOUT)
             cache.set(FILE_UPLOAD_PATH(document_guid), file_path, CACHE_TIMEOUT)
@@ -127,18 +132,19 @@ class DocumentUploadHelper:
             if not is_s3_multipart:
                 response.headers[
                     'Access-Control-Expose-Headers'] = response.headers[
-                    'Access-Control-Expose-Headers'] + ',Document-Version'
+                                                           'Access-Control-Expose-Headers'] + ',Document-Version'
 
         response.autocorrect_location_header = False
 
-        return response, object_store_path, multipart_upload_path, s3_upload['uploadId'] if s3_upload is not None else None
+        return response, object_store_path, multipart_upload_path, s3_upload[
+            'uploadId'] if s3_upload is not None else None
 
     @classmethod
     def _initialize_tusd_upload(cls, document_guid, headers):
         resp = None
         try:
             resp = requests.post(url=Config.TUSD_URL,
-                                     headers=headers, data=request.data)
+                                 headers=headers, data=request.data)
         except Exception as e:
             message = f'POST request to object store raised an exception:\n{e}'
             current_app.logger.error(message)
@@ -148,7 +154,7 @@ class DocumentUploadHelper:
         if resp.status_code != requests.codes.created:
             message = f'POST request to object store failed: {resp.status_code} ({resp.reason}): {resp._content}'
             current_app.logger.error(
-                    f'POST resp.request:\n{resp.request.__dict__}')
+                f'POST resp.request:\n{resp.request.__dict__}')
             current_app.logger.error(f'POST resp:\n{resp.__dict__}')
             current_app.logger.error(message)
             if resp.status_code == requests.codes.not_found:
@@ -157,16 +163,16 @@ class DocumentUploadHelper:
 
             # Set object store upload data in cache
         object_store_upload_resource = urlparse(
-                resp.headers['Location']).path.split('/')[-1]
+            resp.headers['Location']).path.split('/')[-1]
         object_store_path = Config.S3_PREFIX + \
-                object_store_upload_resource.split('+')[0]
+                            object_store_upload_resource.split('+')[0]
         cache.set(
-                OBJECT_STORE_UPLOAD_RESOURCE(
-                    document_guid), object_store_upload_resource,
-                CACHE_TIMEOUT)
+            OBJECT_STORE_UPLOAD_RESOURCE(
+                document_guid), object_store_upload_resource,
+            CACHE_TIMEOUT)
         cache.set(OBJECT_STORE_PATH(document_guid),
-                      object_store_path, CACHE_TIMEOUT)
-                  
+                  object_store_path, CACHE_TIMEOUT)
+
         return object_store_path
 
     @classmethod
@@ -200,11 +206,11 @@ class DocumentUploadHelper:
         return file_size, data, filename
 
     @classmethod
-    def complete_multipart_upload(cls, upload_id, parts, document, version=None):
+    def complete_multipart_upload(cls, upload_id, parts, document, version=None, is_bundle=False):
         ObjectStoreStorageService().complete_multipart_upload(upload_id, document.multipart_upload_path, parts)
 
         # File has been uploaded to S3 in the {Config.S3_PREFIX}/multipart folder, now move it to its final destination
-        key_prefix = Config.S3_PREFIX[:-1] if Config.S3_PREFIX and Config.S3_PREFIX !='/' else ''
+        key_prefix = Config.S3_PREFIX[:-1] if Config.S3_PREFIX and Config.S3_PREFIX != '/' else ''
         upload_destination_path = f'{key_prefix}{document.full_storage_path}'
         return cls.complete_upload(
             key=document.multipart_upload_path,
@@ -212,12 +218,12 @@ class DocumentUploadHelper:
             doc_guid=str(document.document_guid),
             versions=None,
             version_guid=str(version.id) if version is not None else None,
-            info_key=None
+            info_key=None,
+            is_bundle=is_bundle
         )
 
-
     @classmethod
-    def complete_upload(cls, key, new_key, doc_guid, versions=None, version_guid=None, info_key=None):
+    def complete_upload(cls, key, new_key, doc_guid, versions=None, version_guid=None, info_key=None, is_bundle=False):
         oss = ObjectStoreStorageService()
 
         # Copy the file to its new location
@@ -240,7 +246,9 @@ class DocumentUploadHelper:
             if doc.object_store_path != new_key:
                 doc.object_store_path = new_key
                 doc.update_user = 'mds'
-                doc.upload_completed_date = datetime.utcnow()
+
+                if not is_bundle:
+                    doc.upload_completed_date = datetime.utcnow()
 
                 db.session.add(doc)
 
@@ -285,3 +293,147 @@ class DocumentUploadHelper:
         handle_status_and_update_doc('Success', doc_guid)
 
         return ('', 204)
+
+    @classmethod
+    def validate_bundle(cls, bundle_documents):
+        required_extensions = {'.shp', '.shx', '.dbf', '.prj'}
+        optional_extensions = {'.sbn', '.sbx', '.xml'}
+        all_shape_file_extensions = required_extensions.union(optional_extensions)
+        valid_single_file_extensions = {'.kml', '.kmz'}
+
+        if len(bundle_documents) == 1:
+            document_extension = os.path.splitext(bundle_documents[0].file_display_name)[1]
+
+            if document_extension in all_shape_file_extensions:
+                raise ValueError(f'${document_extension} must be uploaded as part of a shapefile')
+            if document_extension not in valid_single_file_extensions:
+                raise ValueError(f'Invalid file type: {document_extension}')
+        else:
+            allowed_extensions = required_extensions.union(optional_extensions)
+
+            # assuming Document.file_display_name or similar method gives file name including extension
+            document_extensions = {os.path.splitext(doc.file_display_name)[1] for doc in bundle_documents}
+
+            if not required_extensions.issubset(document_extensions):
+                missing_extensions = required_extensions - document_extensions
+                raise ValueError(f'Missing required file types: {", ".join(missing_extensions)}')
+
+            extra_extensions = document_extensions - allowed_extensions
+            if extra_extensions:
+                raise ValueError(
+                    f'Found non spatial bundle file types in spatial bundle: {", ".join(extra_extensions)}')
+
+    @classmethod
+    def zip_spatial_files(cls, bundle_documents, file_path):
+        oss_service = ObjectStoreStorageService()
+
+        with zipfile.ZipFile(file_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+            for doc in bundle_documents:
+                response = oss_service.download_file(doc.object_store_path, doc.file_display_name, False)
+
+                if response.status_code == 200:
+                    current_app.logger.info(f"Successfully downloaded document: {doc.file_display_name}")
+                    file_data = response.get_data()
+
+                    zipf.writestr(doc.file_display_name, file_data)
+                else:
+                    raise Exception(f"Failed to download document: {doc.file_display_name}")
+
+    @classmethod
+    def download_kml_kmz_files(cls, doc, file_path):
+        # Download the file from object store
+        response = ObjectStoreStorageService().download_file(doc.object_store_path, doc.file_display_name, False)
+
+        # Check the response status
+        if response.status_code == 200:
+            file_data = response.get_data()  # obtain file data from response body
+
+            with open(file_path, 'wb') as file:
+                file.write(file_data)
+        else:
+            raise FileNotFoundError(f"Failed to download file: {doc.file_display_name}")
+
+    @classmethod
+    def send_spatial_file_to_geomark(cls, file_path):
+        try:
+            file_extension = os.path.splitext(file_path)[1].lstrip('.')
+
+            # Ensure the format is one of the allowed ones
+            assert file_extension in ['shpz', 'kml', 'kmz'], "Invalid file format. Must be one of: 'shpz', 'kml', 'kmz'."
+
+            mime_type = mimetypes.guess_type(file_path)[0]
+
+            url = 'https://apps.gov.bc.ca/pub/geomark/geomarks/new'
+
+            with open(file_path, 'rb') as file:
+                multipart_data = MultipartEncoder(
+                    fields={
+                        'body': (os.path.basename(file_path), file, mime_type),
+                        'resultFormat': 'json',
+                        'format': file_extension,
+                        'srid': '4326'
+                    }
+                )
+                headers = {
+                    'Content-Type': multipart_data.content_type
+                }
+                # Send the request
+                response = requests.post(
+                    url,
+                    data=multipart_data,
+                    headers=headers
+                )
+        finally:
+            # Delete the file
+            os.remove(file_path)
+
+        return response.json() if response.text.strip() else None
+
+    @classmethod
+    def complete_bundle_upload(cls, bundle_document_guids, name):
+        bundle_documents = Document.find_by_document_guid_many(bundle_document_guids)
+
+        if len(bundle_documents) != len(bundle_document_guids) or not bundle_documents:
+            raise NotFound('One or more documents not found')
+
+        cls.validate_bundle(bundle_documents)
+
+        # If this is a spatial bundle, zip it to .shpz
+        if len(bundle_documents) > 1:
+            file_path = secure_filename(f'tmp/spatial/{name}.shpz')
+            cls.zip_spatial_files(bundle_documents, file_path)
+        # Otherwise validate and download the single spatial file
+        else:
+            file_path = (f'tmp/spatial/{secure_filename(bundle_documents[0].file_display_name)}')
+            cls.download_kml_kmz_files(bundle_documents[0], file_path)
+
+        geomark_response = cls.send_spatial_file_to_geomark(file_path)
+
+        bundle = DocumentBundle(
+            name=name,
+        )
+
+        if not geomark_response:
+            raise RuntimeError(f'Geomark API request failed')
+
+        if geomark_response.get('error'):
+            bundle.error = geomark_response['error']
+
+        if geomark_response.get('url'):
+            bundle.geomark_id = geomark_response['id']
+
+        for doc in bundle_documents:
+            doc.document_bundle = bundle
+            if geomark_response.get('url'):
+                doc.upload_completed_date = datetime.utcnow()
+            db.session.add(doc)
+
+        db.session.add(bundle)
+        db.session.commit()
+
+        if bundle.error:
+            raise BadRequest(bundle.error)
+
+        current_app.logger.info(f'Completed bundle upload: {bundle.geomark_id}')
+
+        return {'geomark_id': bundle.geomark_id, 'docman_bundle_guid': str(bundle.bundle_guid)}

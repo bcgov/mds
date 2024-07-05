@@ -7,7 +7,7 @@ require("jest-localstorage-mock");
 Enzyme.configure({ adapter: new Adapter() });
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-(<any>global).REQUEST_HEADER = require(path.resolve(__dirname, "./redux/utils/RequestHeaders.js"));
+(<any>global).REQUEST_HEADER = require(path.resolve(__dirname, "./redux/utils/RequestHeaders.tsx"));
 
 (<any>global).requestAnimationFrame = (callback: any) => {
   setTimeout(callback, 0); // eslint-disable-line @typescript-eslint/no-implied-eval

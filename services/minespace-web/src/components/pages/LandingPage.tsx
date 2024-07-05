@@ -116,9 +116,10 @@ export const LandingPage = (props: { isAuthenticated: boolean }) => (
         </Typography.Paragraph>
 
         <Typography.Paragraph>
-          <Typography.Text>Add them to your Business BCeID</Typography.Text>
+          <Typography.Text>1. Add them to your Business BCeID</Typography.Text>
+          <br />
           <Typography.Text>
-            Let us know you want them to be able to access MineSpace
+            2. Let us know you want them to be able to access MineSpace
           </Typography.Text>
         </Typography.Paragraph>
 

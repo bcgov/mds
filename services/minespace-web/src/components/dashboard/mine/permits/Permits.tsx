@@ -68,6 +68,7 @@ export const Permits: FC<PermitsProps> = ({ mine, permits, explosivesPermits, ..
           explosivesPermits={explosivesPermits}
           majorMineInd={mine.major_mine_ind}
           openVCWalletInvitationModal={openVCWalletInvitationModal}
+          mineGuid={mine.mine_guid}
         />
       </Col>
     </Row>

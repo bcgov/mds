@@ -16,7 +16,7 @@ psycopg2-binary==2.9.6
 PyJWT==2.4.0
 cryptography==42.0.8
 pytest==8.0.0
-pytest-cov==4.1.0
+pytest-cov==5.0.0
 python-dateutil==2.8.2
 python-dotenv==0.10.3
 redis==4.6.0
@@ -54,4 +54,4 @@ opentelemetry-instrumentation-sqlalchemy==0.43b0
 opentelemetry-instrumentation-urllib3==0.43b0
 Pillow==10.3.0
 setuptools==65.5.1
-urllib3==2.2.1
+urllib3==2.2.2

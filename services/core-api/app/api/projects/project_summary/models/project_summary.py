@@ -20,7 +20,8 @@ from app.api.projects.project.models.project import Project
 from app.api.projects.project_contact.models.project_contact import ProjectContact
 from app.api.projects.project_summary.models.project_summary_contact import ProjectSummaryContact
 from app.api.projects.project_summary.models.project_summary_authorization import ProjectSummaryAuthorization
-from app.api.projects.project_summary.models.project_summary_authorization_document_xref import ProjectSummaryAuthorizationDocumentXref
+from app.api.projects.project_summary.models.project_summary_authorization_document_xref import \
+    ProjectSummaryAuthorizationDocumentXref
 from app.api.projects.project_summary.models.project_summary_permit_type import ProjectSummaryPermitType
 from app.api.parties.party.models.party import Party
 from app.api.parties.party.models.address import Address
@@ -32,7 +33,9 @@ import json
 
 from app.api.utils.feature_flag import is_feature_enabled, Feature
 
-from app.api.utils.common_validation_schemas import primary_address_schema, base_address_schema, address_na_schema, address_int_schema, party_base_schema, project_summary_base_schema
+from app.api.utils.common_validation_schemas import primary_address_schema, base_address_schema, address_na_schema, \
+    address_int_schema, party_base_schema, project_summary_base_schema
+
 
 class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'project_summary'
@@ -98,7 +101,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     facility_operator = db.relationship(
         'Party', lazy='joined', foreign_keys=facility_operator_guid
     )
-    
+
     nearest_municipality = db.relationship(
         'Municipality', lazy='joined', foreign_keys=nearest_municipality_guid
     )
@@ -169,7 +172,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             [(cls.project.has(Project.mine_guid.isnot(None)), Project.mine_guid)],
             else_=None
         )
-
 
     @hybrid_property
     def mine_name(self):
@@ -278,73 +280,73 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             return new_party
 
     def create_or_update_authorization(self, authorization):
-            updated_authorization_guid = authorization.get('project_summary_authorization_guid')
+        updated_authorization_guid = authorization.get('project_summary_authorization_guid')
 
-            if updated_authorization_guid:
-                updated_authorization = ProjectSummaryAuthorization.find_by_project_summary_authorization_guid(
-                    updated_authorization_guid)
-                updated_authorization.project_summary_permit_type = authorization.get(
-                    'project_summary_permit_type')
-                updated_authorization.existing_permits_authorizations = authorization.get(
-                    'existing_permits_authorizations')
-                updated_authorization.amendment_changes = authorization.get('amendment_changes')
-                updated_authorization.amendment_severity = authorization.get('amendment_severity')
-                updated_authorization.is_contaminated = authorization.get('is_contaminated')
-                updated_authorization.new_type = authorization.get('new_type')
-                updated_authorization.authorization_description = authorization.get('authorization_description')
-                updated_authorization.exemption_reason = authorization.get('exemption_reason')
-                updated_authorization.exemption_requested = authorization.get('exemption_requested')
-                updated_authorization.ams_tracking_number = authorization.get('ams_tracking_number')
-                updated_authorization.ams_outcome = authorization.get('ams_outcome')
-                updated_authorization.ams_status_code = authorization.get('ams_status_code')
+        if updated_authorization_guid:
+            updated_authorization = ProjectSummaryAuthorization.find_by_project_summary_authorization_guid(
+                updated_authorization_guid)
+            updated_authorization.project_summary_permit_type = authorization.get(
+                'project_summary_permit_type')
+            updated_authorization.existing_permits_authorizations = authorization.get(
+                'existing_permits_authorizations')
+            updated_authorization.amendment_changes = authorization.get('amendment_changes')
+            updated_authorization.amendment_severity = authorization.get('amendment_severity')
+            updated_authorization.is_contaminated = authorization.get('is_contaminated')
+            updated_authorization.new_type = authorization.get('new_type')
+            updated_authorization.authorization_description = authorization.get('authorization_description')
+            updated_authorization.exemption_reason = authorization.get('exemption_reason')
+            updated_authorization.exemption_requested = authorization.get('exemption_requested')
+            updated_authorization.ams_tracking_number = authorization.get('ams_tracking_number')
+            updated_authorization.ams_outcome = authorization.get('ams_outcome')
+            updated_authorization.ams_status_code = authorization.get('ams_status_code')
 
-                if authorization.get('amendment_documents') is not None:
-                    for doc in authorization.get('amendment_documents'):
-                        if doc.get('mine_document_guid') is None:
-                            mine_doc = MineDocument(
-                                mine_guid=self.mine_guid,
-                                document_name=doc.get('document_name'),
-                                document_manager_guid=doc.get('document_manager_guid'))
-                            project_summary_authorization_doc = ProjectSummaryAuthorizationDocumentXref(
-                                mine_document_guid=mine_doc.mine_document_guid,
-                                project_summary_authorization_guid=updated_authorization.project_summary_authorization_guid,
-                                project_summary_document_type_code=doc.get('project_summary_document_type_code'))
-                            project_summary_authorization_doc.mine_document = mine_doc
-                            updated_authorization.amendment_documents.append(project_summary_authorization_doc)
-            else:
-                new_authorization = ProjectSummaryAuthorization(
-                    project_summary_guid=self.project_summary_guid,
-                    project_summary_authorization_type=authorization.get(
-                        'project_summary_authorization_type'),
-                    project_summary_permit_type=authorization.get('project_summary_permit_type'),
-                    existing_permits_authorizations=authorization.get(
-                        'existing_permits_authorizations'),
-                    amendment_changes=authorization.get('amendment_changes'),
-                    amendment_severity=authorization.get('amendment_severity'),
-                    is_contaminated=authorization.get('is_contaminated'),
-                    new_type=authorization.get('new_type'),
-                    authorization_description=authorization.get('authorization_description'),
-                    exemption_reason=authorization.get('exemption_reason'),
-                    exemption_requested=authorization.get('exemption_requested'),
-                    ams_tracking_number=authorization.get('ams_tracking_number'),
-                    ams_outcome=authorization.get('ams_outcome')
-                )
-# Check only for new files
-                if authorization.get('amendment_documents') is not None:
-                    for doc in authorization.get('amendment_documents'):
-                        if doc.get('mine_document_guid') is None:
-                            mine_doc = MineDocument(
-                                mine_guid=self.mine_guid,
-                                document_name=doc.get('document_name'),
-                                document_manager_guid=doc.get('document_manager_guid'))
-                            project_summary_authorization_doc = ProjectSummaryAuthorizationDocumentXref(
-                                mine_document_guid=mine_doc.mine_document_guid,
-                                project_summary_authorization_guid=new_authorization.project_summary_authorization_guid,
-                                project_summary_document_type_code=doc.get('project_summary_document_type_code'))
-                            project_summary_authorization_doc.mine_document = mine_doc
-                            new_authorization.amendment_documents.append(project_summary_authorization_doc)
+            if authorization.get('amendment_documents') is not None:
+                for doc in authorization.get('amendment_documents'):
+                    if doc.get('mine_document_guid') is None:
+                        mine_doc = MineDocument(
+                            mine_guid=self.mine_guid,
+                            document_name=doc.get('document_name'),
+                            document_manager_guid=doc.get('document_manager_guid'))
+                        project_summary_authorization_doc = ProjectSummaryAuthorizationDocumentXref(
+                            mine_document_guid=mine_doc.mine_document_guid,
+                            project_summary_authorization_guid=updated_authorization.project_summary_authorization_guid,
+                            project_summary_document_type_code=doc.get('project_summary_document_type_code'))
+                        project_summary_authorization_doc.mine_document = mine_doc
+                        updated_authorization.amendment_documents.append(project_summary_authorization_doc)
+        else:
+            new_authorization = ProjectSummaryAuthorization(
+                project_summary_guid=self.project_summary_guid,
+                project_summary_authorization_type=authorization.get(
+                    'project_summary_authorization_type'),
+                project_summary_permit_type=authorization.get('project_summary_permit_type'),
+                existing_permits_authorizations=authorization.get(
+                    'existing_permits_authorizations'),
+                amendment_changes=authorization.get('amendment_changes'),
+                amendment_severity=authorization.get('amendment_severity'),
+                is_contaminated=authorization.get('is_contaminated'),
+                new_type=authorization.get('new_type'),
+                authorization_description=authorization.get('authorization_description'),
+                exemption_reason=authorization.get('exemption_reason'),
+                exemption_requested=authorization.get('exemption_requested'),
+                ams_tracking_number=authorization.get('ams_tracking_number'),
+                ams_outcome=authorization.get('ams_outcome')
+            )
+            # Check only for new files
+            if authorization.get('amendment_documents') is not None:
+                for doc in authorization.get('amendment_documents'):
+                    if doc.get('mine_document_guid') is None:
+                        mine_doc = MineDocument(
+                            mine_guid=self.mine_guid,
+                            document_name=doc.get('document_name'),
+                            document_manager_guid=doc.get('document_manager_guid'))
+                        project_summary_authorization_doc = ProjectSummaryAuthorizationDocumentXref(
+                            mine_document_guid=mine_doc.mine_document_guid,
+                            project_summary_authorization_guid=new_authorization.project_summary_authorization_guid,
+                            project_summary_document_type_code=doc.get('project_summary_document_type_code'))
+                        project_summary_authorization_doc.mine_document = mine_doc
+                        new_authorization.amendment_documents.append(project_summary_authorization_doc)
 
-                self.authorizations.append(new_authorization)
+            self.authorizations.append(new_authorization)
 
     @classmethod
     def validate_project_party(cls, party, section):
@@ -383,7 +385,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             'post_code': {
                 'type': 'string',
                 'nullable': True,
-            }, 
+            },
         }
 
         party_na_phone_schema = {
@@ -405,7 +407,9 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         party_type_code = party.get('party_type_code', None)
         address_data = party.get('address')
         base_schema = person_schema if (party_type_code == None or party_type_code == 'PER') else org_schema
-        address_type_code = address_data[0].get('address_type_code') if isinstance(address_data, list) else address_data.get('address_type_code')
+        address_type_code = address_data[0].get('address_type_code') if isinstance(address_data,
+                                                                                   list) else address_data.get(
+            'address_type_code')
 
         if address_type_code == 'INT':
             base_schema |= party_int_phone_schema
@@ -420,7 +424,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 'email': {
                     'required': True,
                     'type': 'string',
-                },    
+                },
             }
 
             if section == 'applicant':
@@ -437,30 +441,30 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             }
 
         base_schema |= {
-                'address': {
-                    'required': True,
-                    'anyof': [
-                        {
-                            'type': 'list',
-                            'empty': False,
-                            'schema': {
-                                'type': 'dict',
-                                'schema': address_schema,
-                            },
-                        },
-                        {
+            'address': {
+                'required': True,
+                'anyof': [
+                    {
+                        'type': 'list',
+                        'empty': False,
+                        'schema': {
                             'type': 'dict',
                             'schema': address_schema,
                         },
-                    ],
-                },    
+                    },
+                    {
+                        'type': 'dict',
+                        'schema': address_schema,
+                    },
+                ],
+            },
         }
-            
+
         v = Validator(base_schema, purge_unknown=True)
         if not v.validate(party):
             return json.dumps(v.errors)
         return True
-    
+
     @classmethod
     def validate_mine_component_offsite_infrastructure(self, data):
         draft_mine_offsite_schema = {
@@ -516,7 +520,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             }
 
         v = Validator(mine_offsite_schema, purge_unknown=True)
-       
+
         if not v.validate(data):
             return json.dumps(v.errors)
         return True
@@ -543,112 +547,112 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             'legal_land_owner_contact_number': {
                 'required': True,
                 'type': 'string',
-                'regex': '[0-9]{3}-[0-9]{3}-[0-9]{4}',               
+                'regex': '[0-9]{3}-[0-9]{3}-[0-9]{4}',
             },
             'legal_land_owner_email_address': {
                 'required': True,
-                'type': 'string',               
+                'type': 'string',
             },
         }
 
         v = Validator(legal_land_owner_schema, purge_unknown=True)
-       
+
         if not v.validate(data):
             return json.dumps(v.errors)
         return True
-    
+
     @classmethod
     def validate_location_access(self, data):
         draft_location_access_schema = {
-                'facility_latitude': {
-                    'nullable': True,
-                    'min': 47,
-                    'max': 60,
-                    'type': 'number',
-                },
-                'facility_longitude': {
-                    'nullable': True,
-                    'min': -140,
-                    'max': -113,
-                    'type': 'number',
-                },
-                'facility_coords_source': {
-                    'nullable': True,
-                    'type': 'string',
-                    'allowed': ['GPS', 'SUR', 'GGE', 'OTH'],
-                },
-                'nearest_municipality': {
-                    'nullable': True,
-                    'type': 'string',
-                },
-                'municipality': {
-                    'nullable': True,
-                    'type': 'dict',
-                    'schema': {
-                        'municipality_guid': {
-                            'required': True,
-                            'type': 'string',
-                        },
-                        'municipality_name': {
-                            'required': True,
-                            'type': 'string',
-                        },
+            'facility_latitude': {
+                'nullable': True,
+                'min': 47,
+                'max': 60,
+                'type': 'number',
+            },
+            'facility_longitude': {
+                'nullable': True,
+                'min': -140,
+                'max': -113,
+                'type': 'number',
+            },
+            'facility_coords_source': {
+                'nullable': True,
+                'type': 'string',
+                'allowed': ['GPS', 'SUR', 'GGE', 'OTH'],
+            },
+            'nearest_municipality': {
+                'nullable': True,
+                'type': 'string',
+            },
+            'municipality': {
+                'nullable': True,
+                'type': 'dict',
+                'schema': {
+                    'municipality_guid': {
+                        'required': True,
+                        'type': 'string',
+                    },
+                    'municipality_name': {
+                        'required': True,
+                        'type': 'string',
                     },
                 },
-                'facility_lease_no': {
-                    'nullable': True,
-                    'type': 'string',
-                },
-                'facility_pid_pin_crown_file_no': {
-                    'nullable': True,
-                    'type': 'string',
-                },
-                'legal_land_desc': {
-                    'nullable': True,
-                    'type': 'string',
-                },
+            },
+            'facility_lease_no': {
+                'nullable': True,
+                'type': 'string',
+            },
+            'facility_pid_pin_crown_file_no': {
+                'nullable': True,
+                'type': 'string',
+            },
+            'legal_land_desc': {
+                'nullable': True,
+                'type': 'string',
+            },
         }
 
         submission_location_access_schema = {
-                'facility_latitude': {
-                    'required': True,
-                    'min': 47,
-                    'max': 60,
-                    'type': 'number',
-                },
-                'facility_longitude': {
-                    'required': True,
-                    'min': -140,
-                    'max': -113,
-                    'type': 'number',
-                },
-                'facility_coords_source': {
-                    'required': True,
-                    'type': 'string',
-                    'allowed': ['GPS', 'SUR', 'GGE', 'OTH'],
-                },
-                'nearest_municipality': {
-                    'nullable': True,
-                    'type': 'string',
-                },
-                'municipality': {
-                    'nullable': True,
-                    'type': 'dict',
-                    'schema': {
-                        'municipality_guid': {
-                            'required': True,
-                            'type': 'string',
-                        },
-                        'municipality_name': {
-                            'required': True,
-                            'type': 'string',
-                        },
+            'facility_latitude': {
+                'required': True,
+                'min': 47,
+                'max': 60,
+                'type': 'number',
+            },
+            'facility_longitude': {
+                'required': True,
+                'min': -140,
+                'max': -113,
+                'type': 'number',
+            },
+            'facility_coords_source': {
+                'required': True,
+                'type': 'string',
+                'allowed': ['GPS', 'SUR', 'GGE', 'OTH'],
+            },
+            'nearest_municipality': {
+                'nullable': True,
+                'type': 'string',
+            },
+            'municipality': {
+                'nullable': True,
+                'type': 'dict',
+                'schema': {
+                    'municipality_guid': {
+                        'required': True,
+                        'type': 'string',
+                    },
+                    'municipality_name': {
+                        'required': True,
+                        'type': 'string',
                     },
                 },
-                'facility_lease_no': {
-                    'required': True,
-                    'type': 'string',
-                }
+            },
+            'facility_lease_no': {
+                'required': True,
+                'type': 'string',
+            }
         }
 
         status_code = data.get('status_code')
@@ -660,7 +664,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
         location_access_data_to_validate = data
         if facility_latitude != None and facility_longitude != None:
-            location_access_data_to_validate = {**data, 'facility_latitude': float(facility_latitude), 'facility_longitude': float(facility_longitude)}
+            location_access_data_to_validate = {**data, 'facility_latitude': float(facility_latitude),
+                                                'facility_longitude': float(facility_longitude)}
 
         location_access_schema = draft_location_access_schema
         if status_code == 'SUB':
@@ -704,11 +709,11 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 'facility_coords_source_desc': {
                     'required': True,
                     'type': 'string',
-                },     
+                },
             }
 
         v = Validator(location_access_schema, purge_unknown=True)
-       
+
         if not v.validate(location_access_data_to_validate):
             return json.dumps(v.errors)
         return True
@@ -743,7 +748,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             }
 
         v = Validator(declaration_schema, purge_unknown=True)
-       
+
         if not v.validate(data):
             return json.dumps(v.errors)
         return True
@@ -761,7 +766,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     def validate_project_summary(cls, data):
         status_code = data.get('status_code')
         ams_authorizations = data.get('ams_authorizations', None)
-        authorizations = data.get('authorizations',[])
+        authorizations = data.get('authorizations', [])
         contacts = data.get('contacts')
         applicant = data.get('applicant', None)
         agent = data.get('agent', None)
@@ -803,14 +808,14 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 'mine_component_and_offsite': [],
                 'declaration': [],
             }
-            
+
             # Validate Authorizations Involved
             if (status_code == 'SUB'
-                and len(ams_authorizations.get('amendments', [])) == 0 
-                and len(ams_authorizations.get('new', [])) == 0 
-                and len(authorizations) == 0):
+                    and len(ams_authorizations.get('amendments', [])) == 0
+                    and len(ams_authorizations.get('new', [])) == 0
+                    and len(authorizations) == 0):
                 errors_found['authorizations'].append('Authorizations Involved not provided')
-        
+
             for authorization in authorizations:
                 authorization_validation = ProjectSummaryAuthorization.validate_authorization(authorization, False)
                 if authorization_validation != True:
@@ -818,12 +823,14 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
             if ams_authorizations:
                 for authorization in ams_authorizations.get('amendments', []):
-                    ams_authorization_amendments_validation = ProjectSummaryAuthorization.validate_authorization(authorization, True)
+                    ams_authorization_amendments_validation = ProjectSummaryAuthorization.validate_authorization(
+                        authorization, True)
                     if ams_authorization_amendments_validation != True:
                         errors_found['authorizations'].append(ams_authorization_amendments_validation)
 
                 for authorization in ams_authorizations.get('new', []):
-                    ams_authorization_new_validation = ProjectSummaryAuthorization.validate_authorization(authorization, True)
+                    ams_authorization_new_validation = ProjectSummaryAuthorization.validate_authorization(authorization,
+                                                                                                          True)
                     if ams_authorization_new_validation != True:
                         errors_found['authorizations'].append(ams_authorization_new_validation)
 
@@ -842,18 +849,19 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 agent_validation = ProjectSummary.validate_project_party(agent, 'agent')
                 if agent_validation != True:
                     errors_found['agent'].append(agent_validation)
-        
+
             # Validate Mine Components and Offsite Infrastructure
             if status_code == 'SUB' and facility_operator == None:
                 errors_found['mine_component_and_offsite'].append('Facility address info not provided')
             elif facility_operator != None:
-                mine_offsite_party_validation = ProjectSummary.validate_project_party(facility_operator, 'mine_component_and_offsite')
+                mine_offsite_party_validation = ProjectSummary.validate_project_party(facility_operator,
+                                                                                      'mine_component_and_offsite')
                 if mine_offsite_party_validation != True:
                     errors_found['mine_component_and_offsite'].append(mine_offsite_party_validation)
 
             mine_offsite_validation = ProjectSummary.validate_mine_component_offsite_infrastructure(data)
             if mine_offsite_validation != True:
-                    errors_found['mine_component_and_offsite'].append(mine_offsite_validation)
+                errors_found['mine_component_and_offsite'].append(mine_offsite_validation)
 
             # Validate Location, Access and Land Use
             if status_code == 'SUB' and is_legal_land_owner == None:
@@ -882,7 +890,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         ams_tracking_result = next((item for item in ams_tracking_results if item.get(
             'project_summary_authorization_guid') == project_summary_authorization_guid), None)
         return ams_tracking_result
-        
+
     @classmethod
     def create(cls,
                project,
@@ -933,7 +941,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
             for authorization in ams_authorizations.get('new', []):
                 project_summary.create_or_update_authorization(authorization)
-        
 
         if add_to_session:
             project_summary.save(commit=False)
@@ -991,7 +998,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                regional_district_id=None,
                payment_contact=None,
                add_to_session=True):
-        
+
         # Update simple properties.
         # If we assign a project lead update status to Assigned and vice versa Submitted.
         if project_lead_party_guid and project.project_lead_party_guid is None:
@@ -1120,11 +1127,11 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         regional_district_name = regional_district_id is not None and Regions.find_by_id(
             regional_district_id).name or None
 
-
         if ams_authorizations:
-            ams_results = []
+            new_ams_results = []
+            amendment_ams_results = []
             if self.status_code == 'SUB':
-                ams_results = AMSApiService.create_new_ams_authorization(
+                new_ams_results = AMSApiService.create_new_ams_authorization(
                     ams_authorizations,
                     applicant,
                     nearest_municipality,
@@ -1151,12 +1158,50 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                     zoning_reason,
                     regional_district_name)
 
+                amendment_ams_results = AMSApiService.create_amendment_ams_authorization(
+                    ams_authorizations,
+                    applicant,
+                    nearest_municipality,
+                    agent,
+                    contacts,
+                    facility_type,
+                    facility_desc,
+                    facility_latitude,
+                    facility_longitude,
+                    facility_coords_source,
+                    facility_coords_source_desc,
+                    legal_land_desc,
+                    facility_operator,
+                    legal_land_owner_name,
+                    legal_land_owner_contact_number,
+                    legal_land_owner_email_address,
+                    is_landowner_aware_of_discharge_application,
+                    has_landowner_received_copy_of_application,
+                    facility_pid_pin_crown_file_no,
+                    company_alias,
+                    zoning,
+                    zoning_reason,
+                    regional_district_name,
+                    is_legal_land_owner,
+                    is_crown_land_federal_or_provincial
+                )
+
             for authorization in ams_authorizations.get('amendments', []):
+                if amendment_ams_results:
+                    ams_tracking_details = self.get_ams_tracking_details(amendment_ams_results,
+                                                                         authorization.get(
+                                                                             'project_summary_authorization_guid'))
+                    if ams_tracking_details:
+                        # if result does not have a statusCode attribute, it means the outcome is successful.
+                        authorization['ams_status_code'] = ams_tracking_details.get('statusCode', '200')
+                        authorization['ams_tracking_number'] = ams_tracking_details.get('trackingnumber', '0')
+                        authorization['ams_outcome'] = ams_tracking_details.get('outcome', ams_tracking_details.get(
+                            'errorMessage'))
                 self.create_or_update_authorization(authorization)
 
             for authorization in ams_authorizations.get('new', []):
-                if ams_results:
-                    ams_tracking_details = self.get_ams_tracking_details(ams_results,
+                if new_ams_results:
+                    ams_tracking_details = self.get_ams_tracking_details(new_ams_results,
                                                                          authorization.get(
                                                                              'project_summary_authorization_guid'))
                     if ams_tracking_details:

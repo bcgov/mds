@@ -8,6 +8,11 @@ on:
       - services/postgres/**
       - docker-compose
       - docker-compose.ci.yaml
+  push:
+    branches:
+      - develop
+    paths:
+      - services/core-api/**
 
 jobs:
   tests-verify-migrations:
@@ -29,6 +34,8 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Run Migrations First
         env:
@@ -38,12 +45,20 @@ jobs:
       - name: Run integration tests
         env:
           DOCKER_BUILDKIT: 1
-        run: docker-compose -f docker-compose.ci.yaml run backend pytest -q
-        
-  run-sonar-scan:
-    name: Run SonarCloud Scan
-    if: success()
-    uses: ./.github/workflows/sonarcloud-scan.yaml
-    with:
-      project-dir: services/core-api
-    secrets: inherit
+        run: |
+          docker-compose -f docker-compose.ci.yaml run backend coverage run -m pytest
+          docker-compose -f docker-compose.ci.yaml run backend coverage xml
+          sed -i "s/<source>\/app/<source>\/github\/workspace\/services\/core-api/g" services/core-api/coverage.xml
+      - name: Upload test coverage results
+        uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: core-api-test-results
+          path: |
+            services/core-api/coverage.xml
+      - name: Sonar Reporting
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        uses: SonarSource/sonarcloud-github-action@v2.1.1
+        with:
+          projectBaseDir: services/core-api

@@ -31,6 +31,7 @@ class DocumentUploadResource(Resource):
         document = Document.query.filter_by(
             document_guid=document_guid).one_or_none()
 
+        is_bundle = data.get('is_bundle', False)
 
         if not document:
             raise NotFound('Document not found')
@@ -65,5 +66,28 @@ class DocumentUploadResource(Resource):
             upload_id=data['upload_id'],
             parts=data['parts'],
             document=document,
-            version=version
+            version=version,
+            is_bundle=is_bundle
         )
+
+@api.route(f'/documents/complete-bundle')
+class DocumentBundleUploadResource(Resource):
+    parser = reqparse.RequestParser(trim=True)
+    parser.add_argument(
+        'bundle_document_guids', type=list, required=True, help='List of document guids that should be bundled.', location='json',
+    )
+    parser.add_argument('name', type=str, required=True, help='Name of bundle.', location='json')
+
+    @requires_any_of(DOCUMENT_UPLOAD_ROLES)
+    def patch(self):
+        data = self.parser.parse_args()
+        bundle_document_guids = data.get('bundle_document_guids')
+        name = data.get('name')
+
+        if not name:
+            raise BadRequest('Name not provided')
+
+        if not bundle_document_guids:
+            raise BadRequest('No documents provided to bundle')
+
+        return DocumentUploadHelper().complete_bundle_upload(bundle_document_guids, name)
