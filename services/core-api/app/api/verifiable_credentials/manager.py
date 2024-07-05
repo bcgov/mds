@@ -267,7 +267,7 @@ class VerifiableCredentialManager():
         #https://www.w3.org/TR/vc-data-model/
         id = permit_amendment.issue_date
         #convert to datetime with tzinfo
-        issuance_date = datetime(id.year, id.month, id.day, 0, 0, 0, tzinfo=ZoneInfo.tzname("UTC"))
+        issuance_date = datetime(id.year, id.month, id.day, 0, 0, 0, tzinfo=ZoneInfo("UTC"))
         credential = {
             "@context":
             ["https://www.w3.org/2018/credentials/v1", {
@@ -355,7 +355,7 @@ class VerifiableCredentialManager():
                         identifiers=[
                             base.Identifier(identifierValue="did:indy:candy:LTNyw5R14J66CrF7tmV3i8")
                         ]),
-                    effectiveDate=datetime(2024, 5, 14, tzinfo=ZoneInfo.tzname("UTC")).isoformat()),
+                    effectiveDate=datetime(2024, 5, 14, tzinfo=ZoneInfo("UTC").isoformat()),
                 subjectFacilities=[facility],
                 subjectProducts=products,
                 sustainabilityTopic=codes.SustainabilityTopic.Governance_Compliance)
@@ -368,7 +368,7 @@ class VerifiableCredentialManager():
             0,
             0,
             0,
-            tzinfo=ZoneInfo.tzname("UTC")).isoformat()
+            tzinfo=ZoneInfo("UTC")).isoformat()
 
         cred = cc.ConformityAttestation(
             id="http://example.com/attestation/123",
