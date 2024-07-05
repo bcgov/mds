@@ -271,12 +271,6 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/pre-applications/:projectGuid/project-description/:projectSummaryGuid/:mode/:tab"
   />
   <Route
-    component={[Function]}
-    exact={true}
-    key="/projects/:projectGuid/project-submission-status/:status"
-    path="/projects/:projectGuid/project-submission-status/:status"
-  />
-  <Route
     component={
       Object {
         "$$typeof": Symbol(react.memo),

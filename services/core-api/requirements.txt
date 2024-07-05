@@ -55,5 +55,5 @@ opentelemetry-instrumentation-sqlalchemy==0.43b0
 opentelemetry-instrumentation-urllib3==0.43b0
 Pillow==10.3.0
 setuptools==65.5.1
-urllib3==2.2.1
+urllib3==2.2.2
 untp_models==0.0.1

@@ -78,7 +78,6 @@ export const updateProjectSummary = (
     .then((response: AxiosResponse<IProjectSummary>) => {
       dispatch(success(reducerTypes.UPDATE_MINE_PROJECT_SUMMARY));
       dispatch(projectActions.storeProjectSummary(payload));
-
       return response;
     })
     .catch(() => {
@@ -100,7 +99,6 @@ export const updateProject = (
     errorToastMessage: "default",
     successToastMessage,
   };
-
   return CustomAxios(messages)
     .put(ENVIRONMENT.apiUrl + API.PROJECT(projectGuid), payload, createRequestHeader())
     .then((response: AxiosResponse<IProject>) => {
