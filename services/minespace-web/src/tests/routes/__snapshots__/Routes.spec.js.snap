@@ -73,6 +73,11 @@ exports[`PrivateRoutes  renders properly 1`] = `
     />
     <Route
       component={[Function]}
+      exact={true}
+      path="/projects/:projectGuid/project-submission-status/:status"
+    />
+    <Route
+      component={[Function]}
       path="/mines/:mineGuid/project-description/new/:tab"
     />
     <Route
