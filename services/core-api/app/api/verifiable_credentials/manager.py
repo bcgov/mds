@@ -295,11 +295,13 @@ class VerifiableCredentialManager():
         ANONCRED_SCHEME = "https://hyperledger.github.io/anoncreds-spec/"
 
         curr_appt = permit_amendment.permittee_appointments[0]
-        for pa in permit_amendment.permittee_appointments:
-            if curr_appt.start_date < pa.start_date:
-                curr_appt = pa
+        for pmt_appt in permit_amendment.permittee_appointments:
+            #find the last permittee appointment relevant to the amendment issue date.
+            if pmt_appt.start_date <= permit_amendment.issue_date:
+                curr_appt = pmt_appt
             else:
                 break
+
         orgbook_entity = curr_appt.party.party_orgbook_entity
         if not orgbook_entity:
             current_app.logger.warning("No Orgbook Entity, do not produce Mines Act Permit UNTP CC")
