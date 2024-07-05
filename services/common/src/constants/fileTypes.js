@@ -52,7 +52,7 @@ export const MESSAGE = {
 export const APPLICATION_OCTET_STREAM = "application/octet-stream";
 
 export const OTHER_SPATIAL = {
-  ".dbf": "application/dbf",
+  ".dbf": ["application/dbf", "application/x-dbf", "application/x-dbase"],
   ".kml": "application/vnd.google-earth.kml+xml",
   ".kmz": "application/vnd.google-earth.kmz",
   ".prj": APPLICATION_OCTET_STREAM,
