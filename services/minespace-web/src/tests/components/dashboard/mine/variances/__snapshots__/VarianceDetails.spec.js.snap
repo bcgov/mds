@@ -61,6 +61,7 @@ exports[`VarianceDetails renders properly 1`] = `
           "allowed_actions": Array [
             "Open in document viewer",
             "Download file",
+            "Replace file",
             "Archive file",
             "Delete",
           ],

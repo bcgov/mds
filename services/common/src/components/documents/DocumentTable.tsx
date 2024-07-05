@@ -138,7 +138,6 @@ export const DocumentTable: FC<DocumentTableProps> = ({
     dispatch(
       openModal({
         props: {
-          DocumentTable,
           title: `Delete ${docs?.length > 1 ? "Multiple Files" : "File"}`,
           closeModal: handleCloseModal,
           handleSubmit: async () => {
