@@ -324,11 +324,10 @@ class DocumentUploadHelper:
                     f'Found non spatial bundle file types in spatial bundle: {", ".join(extra_extensions)}')
 
     @classmethod
-    def zip_spatial_files(cls, bundle_documents, name):
+    def zip_spatial_files(cls, bundle_documents, file_path):
         oss_service = ObjectStoreStorageService()
-        shpz_path = secure_filename(f'{name}.shpz')
 
-        with zipfile.ZipFile(shpz_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        with zipfile.ZipFile(file_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
             for doc in bundle_documents:
                 response = oss_service.download_file(doc.object_store_path, doc.file_display_name, False)
 
@@ -340,10 +339,8 @@ class DocumentUploadHelper:
                 else:
                     raise Exception(f"Failed to download document: {doc.file_display_name}")
 
-        return shpz_path
-
     @classmethod
-    def download_kml_kmz_files(cls, doc):
+    def download_kml_kmz_files(cls, doc, file_path):
         # Download the file from object store
         response = ObjectStoreStorageService().download_file(doc.object_store_path, doc.file_display_name, False)
 
@@ -351,9 +348,6 @@ class DocumentUploadHelper:
         if response.status_code == 200:
             file_data = response.get_data()  # obtain file data from response body
 
-            dir_path = 'tmp/spatial'
-            os.makedirs(dir_path, exist_ok=True)
-            file_path = os.path.join(dir_path, doc.file_display_name)
             with open(file_path, 'wb') as file:
                 file.write(file_data)
         else:
@@ -361,16 +355,16 @@ class DocumentUploadHelper:
 
     @classmethod
     def send_spatial_file_to_geomark(cls, file_path):
-        file_extension = os.path.splitext(file_path)[1].lstrip('.')
-
-        # Ensure the format is one of the allowed ones
-        assert file_extension in ['shpz', 'kml', 'kmz'], "Invalid file format. Must be one of: 'shpz', 'kml', 'kmz'."
-
-        mime_type = mimetypes.guess_type(file_path)[0]
-
-        url = 'https://apps.gov.bc.ca/pub/geomark/geomarks/new'
-
         try:
+            file_extension = os.path.splitext(file_path)[1].lstrip('.')
+
+            # Ensure the format is one of the allowed ones
+            assert file_extension in ['shpz', 'kml', 'kmz'], "Invalid file format. Must be one of: 'shpz', 'kml', 'kmz'."
+
+            mime_type = mimetypes.guess_type(file_path)[0]
+
+            url = 'https://apps.gov.bc.ca/pub/geomark/geomarks/new'
+
             with open(file_path, 'rb') as file:
                 multipart_data = MultipartEncoder(
                     fields={
@@ -406,14 +400,14 @@ class DocumentUploadHelper:
 
         # If this is a spatial bundle, zip it to .shpz
         if len(bundle_documents) > 1:
-            file_path = secure_filename(f'{name}.shpz')
-            cls.zip_spatial_files(bundle_documents, name)
+            file_path = secure_filename(f'tmp/spatial/{name}.shpz')
+            cls.zip_spatial_files(bundle_documents, file_path)
         # Otherwise validate and download the single spatial file
         else:
-            file_path = bundle_documents[0].file_display_name
-            cls.download_kml_kmz_files(bundle_documents[0])
+            file_path = (f'tmp/spatial/{secure_filename(bundle_documents[0].file_display_name)}')
+            cls.download_kml_kmz_files(bundle_documents[0], file_path)
 
-        geomark_response = cls.send_spatial_file_to_geomark(os.path.join('tmp/spatial', file_path))
+        geomark_response = cls.send_spatial_file_to_geomark(file_path)
 
         bundle = DocumentBundle(
             name=name,
