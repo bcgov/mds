@@ -89,7 +89,7 @@ class TestVerifiableCredentialManager:
             0,
             0,
             0,
-            tzinfo=ZoneInfo("UTC")).isoformat()
+            tzinfo=ZoneInfo("UTC"))
 
     def test_produce_untp_cc_map_payload_null_if_no_orgbook(self, db_session):
         mine, permit = create_mine_and_permit()

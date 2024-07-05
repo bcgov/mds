@@ -355,20 +355,14 @@ class VerifiableCredentialManager():
                         identifiers=[
                             base.Identifier(identifierValue="did:indy:candy:LTNyw5R14J66CrF7tmV3i8")
                         ]),
-                    effectiveDate=datetime(2024, 5, 14, tzinfo=ZoneInfo("UTC").isoformat()),
+                    effectiveDate=datetime(2024, 5, 14, tzinfo=ZoneInfo("UTC"))),
                 subjectFacilities=[facility],
                 subjectProducts=products,
                 sustainabilityTopic=codes.SustainabilityTopic.Governance_Compliance)
         ]
         issue_date = permit_amendment.issue_date
         issuance_date_str = datetime(
-            issue_date.year,
-            issue_date.month,
-            issue_date.day,
-            0,
-            0,
-            0,
-            tzinfo=ZoneInfo("UTC")).isoformat()
+            issue_date.year, issue_date.month, issue_date.day, 0, 0, 0, tzinfo=ZoneInfo("UTC"))
 
         cred = cc.ConformityAttestation(
             id="http://example.com/attestation/123",
