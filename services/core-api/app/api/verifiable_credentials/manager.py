@@ -1,5 +1,4 @@
 # for midware/business level actions between requests and data access
-import pytz
 import json
 
 from typing import List, Union, Tuple
@@ -7,6 +6,7 @@ from pydantic import BaseModel, Field, ConfigDict
 from openlocationcode.openlocationcode import encode as plus_code_encode
 from hashlib import md5
 from datetime import datetime
+from zoneinfo import ZoneInfo
 from time import sleep
 from typing import List
 from flask import current_app
@@ -18,11 +18,8 @@ from app.extensions import db
 from app.config import Config
 from app.api.utils.feature_flag import Feature, is_feature_enabled
 
-from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
-from app.api.parties.party.models.party_orgbook_entity import PartyOrgBookEntity
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
-from app.api.mines.mine.models.mine_type import MineType
 from app.api.verifiable_credentials.models.credentials import PartyVerifiableCredentialMinesActPermit
 from app.api.verifiable_credentials.models.connection import PartyVerifiableCredentialConnection
 from app.api.verifiable_credentials.models.orgbook_publish_status import PermitAmendmentOrgBookPublish
@@ -270,7 +267,7 @@ class VerifiableCredentialManager():
         #https://www.w3.org/TR/vc-data-model/
         id = permit_amendment.issue_date
         #convert to datetime with tzinfo
-        issuance_date = datetime(id.year, id.month, id.day, 0, 0, 0, tzinfo=pytz.timezone("UTC"))
+        issuance_date = datetime(id.year, id.month, id.day, 0, 0, 0, tzinfo=ZoneInfo.tzname("UTC"))
         credential = {
             "@context":
             ["https://www.w3.org/2018/credentials/v1", {

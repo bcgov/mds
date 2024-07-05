@@ -1,5 +1,5 @@
 from datetime import datetime
-import pytz
+from zoneinfo import ZoneInfo
 
 from app.api.verifiable_credentials.manager import VerifiableCredentialManager
 from app.api.mines.mine.models.mine_type import MineType
@@ -89,7 +89,7 @@ class TestVerifiableCredentialManager:
             0,
             0,
             0,
-            tzinfo=pytz.timezone("UTC")).isoformat()
+            tzinfo=ZoneInfo.tzname("UTC")).isoformat()
 
     def test_produce_untp_cc_map_payload_null_if_no_orgbook(self, db_session):
         mine, permit = create_mine_and_permit()
