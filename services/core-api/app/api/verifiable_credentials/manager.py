@@ -197,8 +197,11 @@ class VerifiableCredentialManager():
         #not really a 'mine_type' if it's managed at the permit level.
         mine_type = [
             mt for mt in permit_amendment.permit.site_properties
-            if mt.mine_guid == permit_amendment.permit.mine_guid
+            if mt.mine_guid == permit_amendment.mine_guid
         ][0] if permit_amendment.permit.site_properties else None
+
+        #provide permit object the permit_amendment mine_guid
+        permit_amendment.permit._context_mine = permit_amendment.mine_guid
 
         mine_disturbance_list = []
         mine_commodity_list = []
