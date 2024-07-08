@@ -134,7 +134,7 @@ class W3CCredentialUNTPResource(Resource, UserMixin):
             raise BadRequest("Permit amendment not found")
         traction_service = TractionService()
         public_did_dict = traction_service.fetch_current_public_did()
-        public_did = "did:indy:bcovrin:test:" + public_did_dict["did"]
+        public_did = Config.CHIEF_PERMITTING_OFFICER_DID_WEB
         public_verkey = public_did_dict["verkey"]
 
         credential = VerifiableCredentialManager.produce_untp_cc_map_payload(
