@@ -294,6 +294,10 @@ class Config(object):
     CRED_DEF_ID_MINES_ACT_PERMIT = os.environ.get("CRED_DEF_ID_MINES_ACT_PERMIT",
                                                   "CRED_DEF_ID_MINES_ACT_PERMIT")
 
+    #The key pair in this did web MUST match the keypair of the did:indy:candy in Traction.
+    CHIEF_PERMITTING_OFFICER_DID_WEB = os.environ.get("CHIEF_PERMITTING_OFFICER_DID_WEB",
+                                                      "CHIEF_PERMITTING_OFFICER_DID_WEB")
+
 
 class TestConfig(Config):
     # The following configs are for testing purposes and all variables and keys are generated using dummy data.

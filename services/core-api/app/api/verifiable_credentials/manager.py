@@ -312,25 +312,23 @@ class VerifiableCredentialManager():
             identifiers=[
                 base.Identifier(
                     scheme=ANONCRED_SCHEME,
-                    identifierValue="did:indy:candy:A2UZSmrL9N5FDZGPu68wy",
                     identifierURI="https://candyscan.idlab.org/tx/CANDY_PROD/domain/321",
                     verificationEvidence=base.Evidence(
                         format=codes.EvidenceFormat.W3C_VC,
                         credentialReference=
-                        "https://candyscan.idlab.org/tx/CANDY_PROD/domain/321"            #this is an anoncred
+                        "did:web:untp.traceability.site:parties:regulators:CHIEF-PERMITTING-OFFICER" #this is an anoncred
                     ))
             ])
         orgbook_cred_url = f"https://orgbook.gov.bc.ca/entity/{orgbook_entity.registration_id}/credential/{orgbook_entity.credential_id}"
 
+        #this should have a did:web reference ideally, but orgbook doesn't have those yet.
         untp_party_business = base.Party(
             name=orgbook_entity.name_text,
             identifiers=[
                 base.Identifier(
                     scheme=ANONCRED_SCHEME,
                     identifierValue=str(orgbook_entity.registration_id),
-                    identifierURI=orgbook_cred_url,
-                    verificationEvidence=base.Evidence(
-                        format=codes.EvidenceFormat.W3C_VC, credentialReference=orgbook_cred_url))
+                    identifierURI=orgbook_cred_url)
             ])
 
         facility = cc.Facility(
@@ -353,12 +351,9 @@ class VerifiableCredentialManager():
                 referenceRegulation=cc.Regulation(
                     id="https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/96293_01",
                     name="BC Mines Act",
-                    issuingBody=base.Party(
-                        name="BC Government",
-                        identifiers=[
-                            base.Identifier(identifierValue="did:indy:candy:LTNyw5R14J66CrF7tmV3i8")
-                        ]),
+                    issuingBody=base.Party(name="BC Government"),
                     effectiveDate=datetime(2024, 5, 14, tzinfo=ZoneInfo("UTC")).isoformat()),
+                                                                                                   # Is there a did:web that attests to that legistlation?
                 subjectFacilities=[facility],
                 subjectProducts=products,
                 sustainabilityTopic=codes.SustainabilityTopic.Governance_Compliance)
