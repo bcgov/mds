@@ -312,6 +312,7 @@ class VerifiableCredentialManager():
             identifiers=[
                 base.Identifier(
                     scheme=ANONCRED_SCHEME,
+                    identifierValue="did:indy:candy:A2UZSmrL9N5FDZGPu68wy",
                     identifierURI="https://candyscan.idlab.org/tx/CANDY_PROD/domain/321",
                     verificationEvidence=base.Evidence(
                         format=codes.EvidenceFormat.W3C_VC,
