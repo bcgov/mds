@@ -23,7 +23,7 @@ api.add_resource(VerifiableCredentialCredentialExchangeResource,
 api.add_resource(VerifiableCredentialRevocationResource,
                  '/<string:party_guid>/mines-act-permits/revoke')
 
-api.add_resource(W3CCredentialResource, '/credentials/<string:vc_guid>')
+api.add_resource(W3CCredentialResource, '/credentials/<string:vc_unsigned_hash>')
 api.add_resource(W3CCredentialListResource, '/credentials/')
 api.add_resource(W3CCredentialDeprecatedResource, '/credentials/deprecated/')
 api.add_resource(W3CCredentialUNTPResource, '/untp-credentials')

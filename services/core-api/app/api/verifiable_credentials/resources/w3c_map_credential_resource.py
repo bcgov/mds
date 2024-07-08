@@ -1,4 +1,4 @@
-from json import dumps
+from json import dumps, loads
 from datetime import datetime
 from flask import current_app, request
 from werkzeug.exceptions import BadRequest
@@ -12,6 +12,7 @@ from app.extensions import api
 from app.api.utils.resources_mixins import UserMixin
 from app.api.services.traction_service import TractionService
 from app.api.verifiable_credentials.manager import VerifiableCredentialManager, process_all_untp_map_for_orgbook
+from app.api.verifiable_credentials.models.orgbook_publish_status import PermitAmendmentOrgBookPublish
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 
 from app.api.utils.feature_flag import Feature, is_feature_enabled
@@ -27,9 +28,10 @@ ISSUER_CREDENTIAL_REVOKED = "issuer_cred_rev"
 class W3CCredentialResource(Resource, UserMixin):
 
     @api.doc(description='Endpoint to get vc by uri, including guid.', params={})
-    @requires_any_of([VIEW_ALL])
-    def get(vc_guid: str):
-        return "Hello World"
+    def get(self, vc_unsigned_hash: str):
+        return loads(
+            PermitAmendmentOrgBookPublish.find_by_unsigned_payload_hash(
+                vc_unsigned_hash, unsafe=True).signed_credential)
 
 
 class W3CCredentialListResource(Resource, UserMixin):

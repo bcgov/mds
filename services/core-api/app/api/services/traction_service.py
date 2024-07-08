@@ -149,7 +149,7 @@ class TractionService():
         did,
         verkey,
         credential: BaseModel,
-    ):
+    ) -> dict:
         options = {"verificationMethod": did + "#verkey", "proofPurpose": "assertionMethod"}
         payload = {
             "doc": {

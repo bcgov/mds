@@ -30,6 +30,18 @@ from untp_models import codes, base, conformity_credential as cc
 task_logger = get_task_logger(__name__)
 
 
+#this should probably be imported from somewhere.
+class W3CCred(BaseModel):
+    model_config = ConfigDict(
+        populate_by_name=True, json_encoders={datetime: lambda v: v.isoformat()})
+
+    context: List[Union[str, dict]] = Field(alias="@context")
+    type: List[str]
+    issuer: dict[str, str]
+    issuanceDate: str
+    credentialSubject: cc.ConformityAttestation
+
+
 @celery.task()
 def revoke_all_credentials_for_permit(permit_guid: str, mine_guid: str, reason: str):
     cred_exch = PartyVerifiableCredentialMinesActPermit.find_by_permit_guid_and_mine_guid(
@@ -128,14 +140,12 @@ def process_all_untp_map_for_orgbook():
 
     current_app.logger.warning("public did: " + public_did)
 
-    records: List[Tuple[dict, PermitAmendmentOrgBookPublish]] = [] # list of tuples [payload, record]
+    records: List[Tuple[W3CCred,
+                        PermitAmendmentOrgBookPublish]] = [] # list of tuples [payload, record]
 
     for row in permit_amendment_query_results:
         pa = PermitAmendment.find_by_permit_amendment_guid(row[0], unsafe=True)
         pa_cred = VerifiableCredentialManager.produce_untp_cc_map_payload(public_did, pa)
-        current_app.logger.warning(
-            "bcreg_uri=" + str(pa_cred.credentialSubject.issuedTo.identifiers[0].identifierURI) +
-            ", for permit_amendment_guid=" + str(row[0]))
 
         payload_hash = md5(pa_cred.json(by_alias=True).encode('utf-8')).hexdigest()
         existing_paob = PermitAmendmentOrgBookPublish.find_by_unsigned_payload_hash(
@@ -158,9 +168,15 @@ def process_all_untp_map_for_orgbook():
         signed_cred = traction_service.sign_jsonld_credential_deprecated(
             public_did, public_verkey, cred_payload)
         if signed_cred:
-            record.signed_credential = json.dumps(signed_cred)
+            record.signed_credential = json.dumps(signed_cred["signed_cred"])
             record.sign_date = datetime.now()
         record.save()
+
+        current_app.logger.warning(
+            "bcreg_uri=" +
+            str(cred_payload.credentialSubject.issuedTo.identifiers[0].identifierURI) +
+            ", for permit_amendment_guid=" + str(row[0]))
+        current_app.logger.warning("unsigned_hash=" + str(record.unsigned_payload_hash))
 
     return [record for payload, record in records]
 
@@ -377,16 +393,6 @@ class VerifiableCredentialManager():
             issuedTo=untp_party_business,
             validFrom=issuance_date_str,                                                                                                                                   #shouldn't this just be in the w3c wrapper
             assessments=untp_assessments)
-
-        class W3CCred(BaseModel):
-            model_config = ConfigDict(
-                populate_by_name=True, json_encoders={datetime: lambda v: v.isoformat()})
-
-            context: List[Union[str, dict]] = Field(alias="@context")
-            type: List[str]
-            issuer: dict[str, str]
-            issuanceDate: str
-            credentialSubject: cc.ConformityAttestation
 
         w3c_cred = W3CCred(
             context=["https://www.w3.org/2018/credentials/v1", {
