@@ -133,10 +133,9 @@ def process_all_untp_map_for_orgbook():
     for row in permit_amendment_query_results:
         pa = PermitAmendment.find_by_permit_amendment_guid(row[0], unsafe=True)
         pa_cred = VerifiableCredentialManager.produce_untp_cc_map_payload(public_did, pa)
-        current_app.logger.warning("bcreg_uri=" +
-                                   str(pa_cred.credentialSubject.issuedTo.identifiers[0].
-                                       verificationEvidence.credentialReference) +
-                                   ", for permit_amendment_guid=" + str(row[0]))
+        current_app.logger.warning(
+            "bcreg_uri=" + str(pa_cred.credentialSubject.issuedTo.identifiers[0].identifierURI) +
+            ", for permit_amendment_guid=" + str(row[0]))
 
         payload_hash = md5(pa_cred.json(by_alias=True).encode('utf-8')).hexdigest()
         existing_paob = PermitAmendmentOrgBookPublish.find_by_unsigned_payload_hash(
