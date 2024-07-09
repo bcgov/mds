@@ -37,7 +37,7 @@ class W3CCred(BaseModel):
 
     context: List[Union[str, dict]] = Field(alias="@context")
     type: List[str]
-    issuer: dict[str, str]
+    issuer: Union[str, Dict[str, str]]
     issuanceDate: str
     credentialSubject: cc.ConformityAttestation
 
