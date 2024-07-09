@@ -37,7 +37,8 @@ class W3CCred(BaseModel):
 
     context: List[Union[str, dict]] = Field(alias="@context")
     type: List[str]
-    issuer: dict[str, str]
+    issuer: Union[str, Dict[str, str]]
+    # TODO: update to `validFrom` for vcdm 2.0 once available in aca-py/traction, which is an optional property
     issuanceDate: str
     credentialSubject: cc.ConformityAttestation
 
