@@ -150,6 +150,7 @@ class TractionService():
         verkey,
         credential: BaseModel,
     ) -> dict:
+        # #verkey suffix is indy's default, but could be aparameter later.
         options = {"verificationMethod": did + "#verkey", "proofPurpose": "assertionMethod"}
         payload = {
             "doc": {

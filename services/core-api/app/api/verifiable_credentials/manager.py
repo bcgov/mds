@@ -135,7 +135,7 @@ def process_all_untp_map_for_orgbook():
 
     traction_service = TractionService()
     public_did_dict = traction_service.fetch_current_public_did()
-    public_did = "did:indy:bcovrin:test:" + public_did_dict["did"]
+    public_did = Config.CHIEF_PERMITTING_OFFICER_DID_WEB
     public_verkey = public_did_dict["verkey"]
 
     current_app.logger.warning("public did: " + public_did)
@@ -163,15 +163,15 @@ def process_all_untp_map_for_orgbook():
         )
         records.append((pa_cred, paob))
 
+    current_app.logger.warning(f"public_verkey={public_verkey}")
     # send to traction to be signed
     for cred_payload, record in records:
         signed_cred = traction_service.sign_jsonld_credential_deprecated(
             public_did, public_verkey, cred_payload)
         if signed_cred:
-            record.signed_credential = json.dumps(signed_cred["signed_cred"])
+            record.signed_credential = json.dumps(signed_cred["signed_doc"])
             record.sign_date = datetime.now()
         record.save()
-
         current_app.logger.warning(
             "bcreg_uri=" +
             str(cred_payload.credentialSubject.issuedTo.identifiers[0].identifierURI) +
