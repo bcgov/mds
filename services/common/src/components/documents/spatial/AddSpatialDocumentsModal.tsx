@@ -119,13 +119,12 @@ const AddSpatialDocumentsModal: FC<AddSpatialDocumentsModalProps> = ({
         } else {
           const bundle_document_guids = newFiles.map((f) => f.document_manager_guid);
           const name = newFiles[0].document_name.split(".")[0];
-          await dispatch(createSpatialBundle({ name, bundle_document_guids })).then((resp) => {
-            if (resp.payload) {
-              setCurrentStep(currentStep + 1);
-            } else {
-              console.log("error time", resp);
-            }
-          });
+          const resp = await dispatch(createSpatialBundle({ name, bundle_document_guids }));
+          if (resp.payload) {
+            setCurrentStep(currentStep + 1);
+          } else {
+            console.log("error time", resp);
+          }
         }
       }}
       reduxFormConfig={{
