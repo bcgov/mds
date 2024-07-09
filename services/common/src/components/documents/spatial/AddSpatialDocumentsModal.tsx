@@ -11,6 +11,7 @@ import RenderCancelButton from "../../forms/RenderCancelButton";
 import RenderSubmitButton from "../../forms/RenderSubmitButton";
 import { closeModal } from "@mds/common/redux/actions/modalActions";
 import ViewSpatialDetail from "./ViewSpatialDetail";
+import { createSpatialBundle } from "@mds/common/redux/slices/spatialDataSlice";
 
 interface AddSpatialDocumentsModalProps {
   formName: string;
@@ -28,7 +29,6 @@ const AddSpatialDocumentsModal: FC<AddSpatialDocumentsModalProps> = ({
   const dispatch = useDispatch();
   const initialValues = useSelector(getFormValues(formName));
   const initialDocuments = initialValues[fieldName] ?? [];
-
   const modalFormName = `${formName}_${fieldName}`;
   const currentValues = useSelector(getFormValues(modalFormName));
   const existingDocuments = currentValues ? currentValues[fieldName] : [];
@@ -108,8 +108,8 @@ const AddSpatialDocumentsModal: FC<AddSpatialDocumentsModalProps> = ({
       isModal
       name={modalFormName}
       onSubmit={async (values) => {
-        const fileValues = values[fieldName];
-        const allFiles = [...fileValues, ...initialDocuments];
+        const newFiles = values[fieldName];
+        const allFiles = [...newFiles, ...initialDocuments];
         if (isFinalStep) {
           dispatch(change(formName, fieldName, allFiles));
           setIsResetting(true);
@@ -117,7 +117,15 @@ const AddSpatialDocumentsModal: FC<AddSpatialDocumentsModalProps> = ({
           await dispatch(reset(modalFormName));
           setIsResetting(false);
         } else {
-          setCurrentStep(currentStep + 1);
+          const bundle_document_guids = newFiles.map((f) => f.document_manager_guid);
+          const name = newFiles[0].document_name.split(".")[0];
+          await dispatch(createSpatialBundle({ name, bundle_document_guids })).then((resp) => {
+            if (resp.payload) {
+              setCurrentStep(currentStep + 1);
+            } else {
+              console.log("error time", resp);
+            }
+          });
         }
       }}
       reduxFormConfig={{

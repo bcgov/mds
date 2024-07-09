@@ -118,19 +118,16 @@ const spatialSlice = createAppSlice({
       }
     ),
     createSpatialBundle: create.asyncThunk(
-      async (document_guids: string[], thunkAPI) => {
-        // TODO: put something real
-        const url = `${ENVIRONMENT.apiUrl}${COMPLETE_SPATIAL_BUNDLE}`;
-        const payload = { document_guids };
+      async (payload: { bundle_document_guids: string[]; name: string }, thunkAPI) => {
+        const url = `${ENVIRONMENT.docManUrl}${COMPLETE_SPATIAL_BUNDLE}`;
 
         const headers = createRequestHeader();
         thunkAPI.dispatch(showLoading());
 
         const response = await CustomAxios({
           errorToastMessage: "default",
-        }).post(url, payload, headers);
+        }).patch(url, payload, headers);
         thunkAPI.dispatch(hideLoading());
-        console.log(response);
         return response.data;
       },
       {
@@ -157,7 +154,7 @@ const spatialSlice = createAppSlice({
   },
 });
 
-export const { fetchGeomarkMapData, clearSpatialData } = spatialSlice.actions;
+export const { createSpatialBundle, fetchGeomarkMapData, clearSpatialData } = spatialSlice.actions;
 export const { getGeomarkMapData, getSpatialBundle } = spatialSlice.selectors;
 export const spatialDataReducer = spatialSlice.reducer;
 export default spatialDataReducer;
