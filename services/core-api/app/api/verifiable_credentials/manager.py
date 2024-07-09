@@ -152,6 +152,9 @@ def process_all_untp_map_for_orgbook():
             continue
 
         pa_cred = VerifiableCredentialManager.produce_untp_cc_map_payload(public_did, pa)
+        if not pa_cred:
+            current_app.logger.warning(f"pa_cred could not be created")
+            continue
 
         payload_hash = md5(pa_cred.json(by_alias=True).encode('utf-8')).hexdigest()
         existing_paob = PermitAmendmentOrgBookPublish.find_by_unsigned_payload_hash(
