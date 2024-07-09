@@ -146,6 +146,11 @@ def process_all_untp_map_for_orgbook():
 
     for row in permit_amendment_query_results:
         pa = PermitAmendment.find_by_permit_amendment_guid(row[0], unsafe=True)
+        if not pa:
+            current_app.logger.warning(
+                f"Permit Amendment not found for permit_amendment_guid={row[0]}")
+            continue
+
         pa_cred = VerifiableCredentialManager.produce_untp_cc_map_payload(public_did, pa)
 
         payload_hash = md5(pa_cred.json(by_alias=True).encode('utf-8')).hexdigest()
@@ -178,6 +183,8 @@ def process_all_untp_map_for_orgbook():
             str(cred_payload.credentialSubject.issuedTo.identifiers[0].identifierURI) +
             ", for permit_amendment_guid=" + str(row[0]))
         current_app.logger.warning("unsigned_hash=" + str(record.unsigned_payload_hash))
+
+    print("num of records created: " + str(len(records or [])))
 
     return [record for payload, record in records]
 

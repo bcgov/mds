@@ -151,7 +151,6 @@ def register_commands(app):
         auth.apply_security = False
         with current_app.app_context() as app:
             result = process_all_untp_map_for_orgbook.apply_async()
-            print("num of records created: " + str(len(result or [])))
 
     @app.cli.command('publish_all_pending_vc_to_orgbook')
     def publish_all_pending_vc_to_orgbook():
