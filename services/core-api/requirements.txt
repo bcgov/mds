@@ -11,6 +11,7 @@ SQLAlchemy-Continuum==1.4.1
 GeoAlchemy2==0.6.3
 ldap3==2.6
 names==0.3.0
+openlocationcode==1.0.1
 petl==1.6.8
 psycopg2-binary==2.9.6
 PyJWT==2.4.0
@@ -55,3 +56,4 @@ opentelemetry-instrumentation-urllib3==0.43b0
 Pillow==10.3.0
 setuptools==65.5.1
 urllib3==2.2.2
+untp_models==0.0.1

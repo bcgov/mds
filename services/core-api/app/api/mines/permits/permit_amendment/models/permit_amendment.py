@@ -95,6 +95,13 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         order_by='desc(PartyVerifiableCredentialMinesActPermit.update_timestamp)')
     mines_act_permit_vc_locked = association_proxy("permit", 'mines_act_permit_vc_locked')
 
+    permittee_appointments = db.relationship(
+        "MinePartyAppointment",
+        lazy="selectin",
+        secondary='permit',
+        secondaryjoin='and_(foreign(Permit.permit_id) == remote(MinePartyAppointment.permit_id))',
+        order_by='desc(MinePartyAppointment.start_date)')
+
     @hybrid_property
     def issuing_inspector_name(self):
         title = "Inspector of Mines"
@@ -237,8 +244,9 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         return cls.query.filter_by(permit_amendment_id=_id).filter_by(deleted_ind=False).first()
 
     @classmethod
-    def find_by_permit_amendment_guid(cls, _guid) -> "PermitAmendment":
-        return cls.query.filter_by(permit_amendment_guid=_guid).filter_by(deleted_ind=False).first()
+    def find_by_permit_amendment_guid(cls, _guid, *, unsafe: bool = False) -> "PermitAmendment":
+        query = cls.query.unbound_unsafe() if unsafe else cls.query
+        return query.filter_by(permit_amendment_guid=_guid).filter_by(deleted_ind=False).first()
 
     @classmethod
     def find_by_permit_id(cls, _id):
