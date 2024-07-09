@@ -3,22 +3,15 @@ import { hideLoading, showLoading } from "react-redux-loading-bar";
 import CustomAxios from "@mds/common/redux/customAxios";
 import { COMPLETE_SPATIAL_BUNDLE, ENVIRONMENT, IMineDocument } from "../..";
 import { formatDate } from "../utils/helpers";
+import { IGeoJsonFeature } from "@mds/common/interfaces/document/geojsonFeature.interface";
+import { ISpatialBundle } from "@mds/common/interfaces/document/spatialBundle.interface";
 
 const createRequestHeader = REQUEST_HEADER.createRequestHeader;
 
-export interface ISpatialBundle {
-  bundle_id: number | string;
-  document_name: string;
-  upload_date: string;
-  bundleFiles: IMineDocument[];
-  geomark_link?: string;
-  isSingleFile: boolean;
-}
 export const spatialDataReducerType = "spatialData";
 
 export const spatialBundlesFromFiles = (files: IMineDocument[]): ISpatialBundle[] => {
-  const geomark_link =
-    "https://apps.gov.bc.ca/pub/geomark/geomarks/gm-abcdefghijklmnopqrstuvwxyz0000bc";
+  const geomark_id = "gm-abcdefghijklmnopqrstuvwxyz0000bc";
 
   const temp_indiv = files.filter(
     (f) => f.document_name.endsWith("kmz") || f.document_name.endsWith("kml")
@@ -26,7 +19,7 @@ export const spatialBundlesFromFiles = (files: IMineDocument[]): ISpatialBundle[
   const temp_spatial = files
     .filter((f) => !f.document_name.endsWith("kmz") && !f.document_name.endsWith("kml"))
     .map((f) => {
-      return { ...f, bundle_id: 1 };
+      return { ...f, bundle_id: "1" };
     });
   const spatial_bundle_ids = Array.from(
     new Set(temp_spatial.map((f) => f.bundle_id).filter(Boolean))
@@ -52,7 +45,7 @@ export const spatialBundlesFromFiles = (files: IMineDocument[]): ISpatialBundle[
       bundle_id: id,
       key: id,
       isParent: true,
-      geomark_link,
+      geomark_id,
       isSingleFile: false,
     };
   });
@@ -65,7 +58,7 @@ export const spatialBundlesFromFiles = (files: IMineDocument[]): ISpatialBundle[
         key: f.document_manager_guid,
         bundleFiles: [f],
         isParent: true,
-        geomark_link,
+        geomark_id,
         isSingleFile: true,
       };
     });
@@ -73,8 +66,8 @@ export const spatialBundlesFromFiles = (files: IMineDocument[]): ISpatialBundle[
 };
 
 interface SpatialDataState {
-  geoJsonData: any;
-  bundle_id: string | number;
+  geoJsonData: IGeoJsonFeature;
+  bundle_id: string;
   spatialBundle: ISpatialBundle;
 }
 
@@ -94,8 +87,9 @@ const spatialSlice = createAppSlice({
       state.spatialBundle = null;
     }),
     fetchGeomarkMapData: create.asyncThunk(
-      async ({ geomark_link, bundle_id }: ISpatialBundle, thunkAPI) => {
+      async ({ geomark_id, bundle_id }: ISpatialBundle, thunkAPI) => {
         thunkAPI.dispatch(showLoading());
+        const geomark_link = `https://apps.gov.bc.ca/pub/geomark/geomarks/${geomark_id}`;
 
         const suffix = "/feature.geojson";
         const url = `${geomark_link}${suffix}`;
@@ -110,7 +104,7 @@ const spatialSlice = createAppSlice({
       {
         fulfilled: (state, action) => {
           state.geoJsonData = action.payload.mapData;
-          state.bundle_id = action.payload.bundle_id;
+          state.bundle_id = action.payload.bundle_id.toString();
         },
         rejected: (_state, action) => {
           rejectHandler(action);
@@ -144,10 +138,8 @@ const spatialSlice = createAppSlice({
   selectors: {
     getGeomarkMapData: (state: SpatialDataState) => {
       return state.geoJsonData;
-      // if (bundle_id === state.bundle_id) {
-      //     return state.geoJsonData;
-      // }
     },
+    // TODO: not actually currently in use. Intended for getting the geomark_id on creating bundle
     getSpatialBundle: (state: SpatialDataState) => {
       return state.spatialBundle;
     },
