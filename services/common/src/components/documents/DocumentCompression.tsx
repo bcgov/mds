@@ -156,14 +156,3 @@ const DocumentCompression: FC<DocumentCompressionProps> = ({
 };
 
 export default DocumentCompression;
-
-// const mapDispatchToProps = (dispatch) =>
-//   bindActionCreators(
-//     {
-//       // documentsCompression,
-//       pollDocumentsCompressionProgress,
-//     },
-//     dispatch
-//   );
-
-// export default connect(null, mapDispatchToProps)(DocumentCompression);

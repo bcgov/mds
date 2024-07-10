@@ -1,20 +1,18 @@
-import React, { useContext, useEffect, useState } from "react";
-import { connect, useSelector } from "react-redux";
+import React, { FC, useContext, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "filepond-polyfill";
 import { FilePond, registerPlugin } from "react-filepond";
 import { Form, notification, Popover, Switch } from "antd";
-import { invert, uniq } from "lodash";
+import { uniq } from "lodash";
 import { FunnelPlotOutlined } from "@ant-design/icons";
 import "filepond/dist/filepond.min.css";
 import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import * as tus from "tus-js-client";
 import { HttpRequest, HttpResponse } from "tus-js-client";
-import { APPLICATION_OCTET_STREAM, ENVIRONMENT, SystemFlagEnum } from "@mds/common/index";
-import { bindActionCreators } from "redux";
+import { APPLICATION_OCTET_STREAM, ENVIRONMENT, Feature, SystemFlagEnum } from "@mds/common/index";
 import { pollDocumentUploadStatus } from "@mds/common/redux/actionCreators/documentActionCreator";
 import { FileUploadHelper } from "@mds/common/utils/fileUploadHelper";
-import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
 import { createRequestHeader } from "@mds/common/redux/utils/RequestHeaders";
 import { FLUSH_SOUND, WATER_SOUND } from "@mds/common/constants/assets";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
@@ -26,6 +24,7 @@ import { BaseInputProps } from "./BaseInput";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleQuestion } from "@fortawesome/pro-light-svg-icons";
 import { FormContext } from "./FormWrapper";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 
 registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 
@@ -37,7 +36,7 @@ type AfterSuccessActionType = [
 
 interface FileUploadProps extends BaseInputProps {
   uploadUrl: string;
-  acceptedFileTypesMap?: { [key: string]: string };
+  acceptedFileTypesMap?: { [extension: string]: string | string[] };
   onFileLoad?: (fileName?: string, documentGuid?: string, versionGuid?: string) => void;
   chunkSize?: number;
   onAbort?: () => void;
@@ -48,7 +47,6 @@ interface FileUploadProps extends BaseInputProps {
   pollDocumentUploadStatus: (documentGuid: string) => Promise<{ data: { status: string } }>;
   shouldAbortUpload?: boolean;
   shouldReplaceFile?: boolean;
-  file?: any;
   notificationDisabledStatusCodes?: number[];
 
   replaceFileUploadUrl?: string;
@@ -68,44 +66,53 @@ interface FileUploadProps extends BaseInputProps {
   listedFileTypes?: string[];
   // true for "We accept most common ${listedFileTypes.join()} files" language + popover
   abbrevLabel?: boolean;
-  maxFiles?: number;
   labelHref: string;
 
   beforeAddFile?: (file?: any) => any;
   beforeDropFile?: (file?: any) => any;
   onProcessFiles?: () => void;
-  onRemoveFile?: () => void;
+  onRemoveFile?: (error, file) => void;
   addFileStart?: () => void;
 }
 
-const defaultProps = {
-  maxFileSize: "750MB",
-  acceptedFileTypesMap: {},
-  onFileLoad: () => {},
-  onRemoveFile: () => {},
-  addFileStart: () => {},
-  chunkSize: 1048576, // 1MB
-  allowRevert: false,
-  allowMultiple: true,
-  allowReorder: false,
-  onProcessFiles: () => {},
-  onAbort: () => {},
-  onInit: () => {},
-  itemInsertLocation: "before" as ItemInsertLocationType,
-  labelInstruction:
-    '<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong>',
-  abbrevLabel: false,
-  beforeAddFile: () => {},
-  beforeDropFile: () => {},
-  file: null,
-  maxFiles: undefined,
-  labelHref: undefined,
-};
-
-export const FileUpload = (componentProps: FileUploadProps) => {
-  const props = { ...defaultProps, ...componentProps };
-
+export const FileUpload: FC<FileUploadProps> = ({
+  maxFileSize = "750MB",
+  acceptedFileTypesMap = {},
+  onFileLoad = () => {},
+  onRemoveFile = () => {},
+  addFileStart = () => {},
+  chunkSize = 1048576, // 1MB
+  allowRevert = false,
+  allowMultiple = true,
+  allowReorder = false,
+  onProcessFiles = () => {},
+  onAbort = () => {},
+  onInit = () => {},
+  itemInsertLocation = "before" as ItemInsertLocationType,
+  labelInstruction = '<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong>',
+  abbrevLabel = false,
+  beforeAddFile = () => {},
+  beforeDropFile = () => {},
+  labelHref,
+  label,
+  required,
+  meta,
+  input,
+  labelIdle,
+  listedFileTypes,
+  notificationDisabledStatusCodes,
+  onError,
+  afterSuccess,
+  importIsSuccessful,
+  onUploadResponse,
+  shouldReplaceFile,
+  uploadUrl,
+  replaceFileUploadUrl,
+  shouldAbortUpload,
+}) => {
   const system = useSelector(getSystemFlag);
+  const dispatch = useDispatch();
+  const { isFeatureEnabled } = useFeatureFlag();
   const { isEditMode } = useContext(FormContext);
 
   const [showWhirlpool, setShowWhirlpool] = useState(false);
@@ -119,27 +126,35 @@ export const FileUpload = (componentProps: FileUploadProps) => {
   // and replace file functionality
   const [uploadData, setUploadData] = useState<{ [fileId: string]: MultipartDocumentUpload }>({});
 
+  const getAcceptedFileTypesTypes = (): string[] => {
+    const allTypes = Object.values(acceptedFileTypesMap).reduce((acc, type) => {
+      const typeArray = Array.isArray(type) ? type : [type];
+      return [...acc, ...typeArray];
+    }, []);
+    return uniq(allTypes);
+  };
+
+  const acceptedFileMimeTypes: string[] = getAcceptedFileTypesTypes();
+  const acceptedFileTypeExtensions = uniq(Object.keys(acceptedFileTypesMap));
+
+  const getfileValidateTypeLabelExpectedTypes = () => {
+    const exts = acceptedFileTypeExtensions;
+    const fileTypeList =
+      exts.length === 1 ? exts[0] : `${exts.slice(0, -1).join(", ")} or ${exts[exts.length - 1]}`;
+    return `Accepts ${fileTypeList}`;
+  };
   const getFilePondLabel = () => {
-    const {
-      labelIdle,
-      labelInstruction,
-      listedFileTypes,
-      abbrevLabel,
-      acceptedFileTypesMap,
-    } = props;
     if (labelIdle) {
       return labelIdle;
     }
-    const fileTypeList = listedFileTypes ?? Object.keys(acceptedFileTypesMap);
+    const fileTypeList = listedFileTypes ?? acceptedFileTypeExtensions;
     let fileTypeDisplayString =
       fileTypeList.slice(0, -1).join(", ") + ", and " + fileTypeList.slice(-1);
     if (fileTypeList.length === 1) {
       fileTypeDisplayString = fileTypeList[0];
     }
 
-    const fileSize = props.maxFileSize
-      ? ` with max individual file size of ${props.maxFileSize}`
-      : "";
+    const fileSize = maxFileSize ? ` with max individual file size of ${maxFileSize}` : "";
     const secondLine = abbrevLabel
       ? `<div>We accept most common ${fileTypeDisplayString} files${fileSize}.</div>`
       : `<div>Accepted filetypes: ${fileTypeDisplayString}</div>`;
@@ -173,8 +188,8 @@ export const FileUpload = (componentProps: FileUploadProps) => {
 
       if (
         !(
-          props.notificationDisabledStatusCodes?.length &&
-          props.notificationDisabledStatusCodes?.includes(response.status_code)
+          notificationDisabledStatusCodes?.length &&
+          notificationDisabledStatusCodes?.includes(response.status_code)
         )
       ) {
         notification.error({
@@ -183,8 +198,8 @@ export const FileUpload = (componentProps: FileUploadProps) => {
         });
       }
 
-      if (props.onError) {
-        props.onError(file && file.name ? file.name : "", err);
+      if (onError) {
+        onError(file && file.name ? file.name : "", err);
       }
     } catch (e) {
       notification.error({
@@ -198,33 +213,29 @@ export const FileUpload = (componentProps: FileUploadProps) => {
     let intervalId; // eslint-disable-line prefer-const
 
     const pollUploadStatus = async () => {
-      const response = await props.pollDocumentUploadStatus(documentGuid);
+      const response = await dispatch(pollDocumentUploadStatus(documentGuid));
       if (response.data.status !== "In Progress") {
         clearInterval(intervalId);
         if (response.data.status === "Success") {
           load(documentGuid);
 
-          props.onFileLoad(file.name, documentGuid, versionGuid);
+          onFileLoad(file.name, documentGuid, versionGuid);
 
-          if (props?.afterSuccess?.action) {
+          if (afterSuccess?.action) {
             try {
-              if (props.afterSuccess?.irtGuid) {
-                await props.afterSuccess.action[1](
-                  props.afterSuccess?.projectGuid,
-                  props.afterSuccess?.irtGuid,
+              if (afterSuccess?.irtGuid) {
+                await afterSuccess.action[1](
+                  afterSuccess?.projectGuid,
+                  afterSuccess?.irtGuid,
                   file,
                   documentGuid
                 );
               } else {
-                await props.afterSuccess.action[0](
-                  props.afterSuccess?.projectGuid,
-                  file,
-                  documentGuid
-                );
+                await afterSuccess.action[0](afterSuccess?.projectGuid, file, documentGuid);
               }
-              props.importIsSuccessful(true);
+              importIsSuccessful(true);
             } catch (err) {
-              props.importIsSuccessful(false, err.response.data);
+              importIsSuccessful(false, err.response.data);
             }
 
             if (showWhirlpool) {
@@ -232,8 +243,8 @@ export const FileUpload = (componentProps: FileUploadProps) => {
             }
           }
         } else {
-          if (props.onError) {
-            props.onError(file && file.name ? file.name : "", response.data);
+          if (onError) {
+            onError(file && file.name ? file.name : "", response.data);
           }
 
           notification.error({
@@ -270,9 +281,9 @@ export const FileUpload = (componentProps: FileUploadProps) => {
     });
   };
 
-  function _s3MultipartUpload(fileId, uploadUrl, file, metadata, load, error, progress, abort) {
+  function _s3MultipartUpload(fileId, uploadToUrl, file, metadata, load, error, progress, abort) {
     return new FileUploadHelper(file, {
-      uploadUrl: ENVIRONMENT.apiUrl + uploadUrl,
+      uploadUrl: ENVIRONMENT.apiUrl + uploadToUrl,
       // Pass along results and upload configuration if exists from
       // previous upload attempts for this file. Occurs if retrying a failed upload.
       uploadResults: uploadResults[fileId],
@@ -295,16 +306,16 @@ export const FileUpload = (componentProps: FileUploadProps) => {
       onSuccess: (documentGuid, versionGuid) => {
         handleSuccess(documentGuid, file, load, abort, versionGuid);
       },
-      onUploadResponse: props.onUploadResponse,
+      onUploadResponse: onUploadResponse,
     });
   }
 
-  function _tusdUpload(fileId, uploadUrl, file, metadata, load, error, progress, abort) {
+  function _tusdUpload(fileId, uploadToUrl, file, metadata, load, error, progress, abort) {
     const upload = new tus.Upload(file, {
-      endpoint: ENVIRONMENT.apiUrl + uploadUrl,
+      endpoint: ENVIRONMENT.apiUrl + uploadToUrl,
       retryDelays: [100, 1000, 3000],
       removeFingerprintOnSuccess: true,
-      chunkSize: props.chunkSize,
+      chunkSize: chunkSize,
       metadata: {
         filename: file.name,
         filetype: file.type || APPLICATION_OCTET_STREAM,
@@ -326,7 +337,7 @@ export const FileUpload = (componentProps: FileUploadProps) => {
         progress(true, bytesUploaded, bytesTotal);
       },
       onAfterResponse: (request: HttpRequest, response: HttpResponse) => {
-        if (!props.onUploadResponse) {
+        if (!onUploadResponse) {
           return;
         }
         const responseBody = response.getBody();
@@ -336,7 +347,7 @@ export const FileUpload = (componentProps: FileUploadProps) => {
 
           const obj = JSON.parse(jsonString);
           if (obj) {
-            props.onUploadResponse(obj);
+            onUploadResponse(obj);
           }
         }
       },
@@ -376,12 +387,12 @@ export const FileUpload = (componentProps: FileUploadProps) => {
       setUploadDataFor(metadata.filepondid, null);
       setUploadResultsFor(metadata.filepondid, []);
 
-      const uploadUrl = props.shouldReplaceFile ? props.replaceFileUploadUrl : props.uploadUrl;
+      const uploadToUrl = shouldReplaceFile ? replaceFileUploadUrl : uploadUrl;
 
-      if (props.isFeatureEnabled("s3_multipart_upload")) {
+      if (isFeatureEnabled(Feature.MULTIPART_UPLOAD)) {
         upload = _s3MultipartUpload(
           metadata.filepondid,
-          uploadUrl,
+          uploadToUrl,
           file,
           metadata,
           load,
@@ -392,7 +403,7 @@ export const FileUpload = (componentProps: FileUploadProps) => {
       } else {
         upload = _tusdUpload(
           metadata.filepondid,
-          uploadUrl,
+          uploadToUrl,
           file,
           metadata,
           load,
@@ -414,13 +425,13 @@ export const FileUpload = (componentProps: FileUploadProps) => {
   };
 
   useEffect(() => {
-    if (props.shouldAbortUpload) {
+    if (shouldAbortUpload) {
       filepond.removeFile();
     }
-  }, [props.shouldAbortUpload]);
+  }, [shouldAbortUpload]);
 
   useEffect(() => {
-    if (props.shouldReplaceFile) {
+    if (shouldReplaceFile) {
       server.process(
         uploadProcess.fieldName,
         uploadProcess.file,
@@ -431,7 +442,7 @@ export const FileUpload = (componentProps: FileUploadProps) => {
         uploadProcess.abort
       );
     }
-  }, [props.shouldReplaceFile]);
+  }, [shouldReplaceFile]);
 
   useEffect(() => {
     return () => {
@@ -450,29 +461,26 @@ export const FileUpload = (componentProps: FileUploadProps) => {
     file.setMetadata("filepondid", file.id);
   };
 
-  const fileValidateTypeLabelExpectedTypesMap = invert(props.acceptedFileTypesMap);
-  const acceptedFileTypes = uniq(Object.values(props.acceptedFileTypesMap).flat());
-
   const getLabel = () => {
     let labelHrefElement = null;
-    if (props.labelHref) {
+    if (labelHref) {
       labelHrefElement = (
-        <a href={props.labelHref} target="_blank" rel="noopener noreferrer">
-          {props.label}
+        <a href={labelHref} target="_blank" rel="noopener noreferrer">
+          {label}
         </a>
       );
     }
 
-    if (props.abbrevLabel && Object.values(props.acceptedFileTypesMap).length > 0) {
+    if (abbrevLabel && acceptedFileTypeExtensions.length > 0) {
       return (
         <span>
-          {labelHrefElement ? labelHrefElement : props.label}{" "}
+          {labelHrefElement ? labelHrefElement : label}{" "}
           <span>
             <Popover
               content={
                 <>
                   <strong>Accepted File Types:</strong>
-                  <p>{Object.keys(props.acceptedFileTypesMap).join(", ")}</p>
+                  <p>{acceptedFileTypeExtensions.join(", ")}</p>
                 </>
               }
               placement="topLeft"
@@ -493,7 +501,7 @@ export const FileUpload = (componentProps: FileUploadProps) => {
       return labelHrefElement;
     }
 
-    return <>{props.label}</>;
+    return <>{label}</>;
   };
 
   if (!isEditMode) {
@@ -525,18 +533,16 @@ export const FileUpload = (componentProps: FileUploadProps) => {
         />
       )}
       <Form.Item
-        name={props.input?.name}
-        required={props.required}
+        name={input?.name}
+        required={required}
         label={getLabel()}
         validateStatus={
-          props.meta?.touched
-            ? (props.meta?.error && "error") || (props.meta?.warning && "warning")
-            : ""
+          meta?.touched ? (meta?.error && "error") || (meta?.warning && "warning") : ""
         }
         help={
-          props.meta?.touched &&
-          ((props.meta?.error && <span>{props.meta?.error}</span>) ||
-            (props.meta?.warning && <span>{props.meta?.warning}</span>))
+          meta?.touched &&
+          ((meta?.error && <span>{meta?.error}</span>) ||
+            (meta?.warning && <span>{meta?.warning}</span>))
         }
       >
         <>
@@ -544,35 +550,36 @@ export const FileUpload = (componentProps: FileUploadProps) => {
             ref={(ref) => (filepond = ref)}
             server={server}
             name="file"
-            beforeDropFile={props.beforeDropFile}
-            beforeAddFile={props.beforeAddFile}
-            allowRevert={props.allowRevert}
-            onremovefile={props.onRemoveFile}
-            allowMultiple={props.allowMultiple}
-            onaddfilestart={props.addFileStart}
-            allowReorder={props.allowReorder}
+            beforeDropFile={beforeDropFile}
+            beforeAddFile={beforeAddFile}
+            allowRevert={allowRevert}
+            onremovefile={onRemoveFile}
+            allowMultiple={allowMultiple}
+            onaddfilestart={addFileStart}
+            allowReorder={allowReorder}
             maxParallelUploads={1}
-            maxFileSize={props.maxFileSize}
+            maxFileSize={maxFileSize}
             minFileSize="1"
-            allowFileTypeValidation={acceptedFileTypes.length > 0}
-            //@ts-ignore TODO: Mat did a fix for this param?
-            acceptedFileTypes={acceptedFileTypes}
+            allowFileTypeValidation={acceptedFileMimeTypes.length > 0}
+            acceptedFileTypes={acceptedFileMimeTypes}
             onaddfile={handleFileAdd}
-            onprocessfiles={props.onProcessFiles}
-            onprocessfileabort={props.onAbort}
-            oninit={props.onInit}
+            onprocessfiles={onProcessFiles}
+            onprocessfileabort={onAbort}
+            oninit={onInit}
             labelIdle={getFilePondLabel()}
-            itemInsertLocation={props?.itemInsertLocation}
+            itemInsertLocation={itemInsertLocation}
             credits={null}
-            fileValidateTypeLabelExpectedTypesMap={fileValidateTypeLabelExpectedTypesMap}
+            fileValidateTypeLabelExpectedTypes={getfileValidateTypeLabelExpectedTypes()}
             fileValidateTypeDetectType={(source, type) =>
               new Promise((resolve, reject) => {
                 // If the browser can't automatically detect the file's MIME type, use the one stored in the "accepted file types" map.
                 if (!type) {
                   const exts = source.name.split(".");
-                  const ext = exts && exts.length > 0 && `.${exts.pop()}`;
-                  if (ext && ext in props.acceptedFileTypesMap) {
-                    type = props.acceptedFileTypesMap[ext];
+                  const ext = exts?.length > 0 && `.${exts.pop().toLowerCase()}`;
+
+                  if (ext && acceptedFileTypeExtensions.includes(ext)) {
+                    const match = acceptedFileTypesMap[ext];
+                    type = Array.isArray(match) ? match[0] : match;
                   } else {
                     reject(type);
                   }
@@ -587,12 +594,4 @@ export const FileUpload = (componentProps: FileUploadProps) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      pollDocumentUploadStatus,
-    },
-    dispatch
-  );
-
-export default withFeatureFlag(connect(null, mapDispatchToProps)(FileUpload));
+export default FileUpload;

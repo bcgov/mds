@@ -122,8 +122,6 @@ const AddSpatialDocumentsModal: FC<AddSpatialDocumentsModalProps> = ({
           const resp = await dispatch(createSpatialBundle({ name, bundle_document_guids }));
           if (resp.payload) {
             setCurrentStep(currentStep + 1);
-          } else {
-            console.log("error time", resp);
           }
         }
       }}
@@ -160,12 +158,9 @@ const AddSpatialDocumentsModal: FC<AddSpatialDocumentsModalProps> = ({
         ) : (
           <>
             <Button onClick={() => setCurrentStep(0)}>Back</Button>
+            <RenderSubmitButton buttonText="Upload Another" buttonProps={{ type: "ghost" }} />
             <RenderSubmitButton
-              buttonText="Save & Upload Another"
-              buttonProps={{ type: "ghost" }}
-            />
-            <RenderSubmitButton
-              buttonText="Save & Close"
+              buttonText="Confirm"
               buttonProps={{
                 onClick: () => {
                   dispatch(closeModal());

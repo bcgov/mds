@@ -12,5 +12,5 @@ export interface IMineDocument {
   archived_by?: string;
   active_ind?: boolean;
   versions?: IMineDocumentVersion[];
-  bundle_id?: string | number;
+  bundle_id?: string;
 }
