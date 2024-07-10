@@ -79,7 +79,6 @@ const DocumentCompression: FC<DocumentCompressionProps> = ({
       }, 2000);
     } else {
       dispatch(documentsCompression(mineGuid, documentManagerGuids)).then((response) => {
-        console.log("response", response);
         const taskId = response.data && response.data.task_id ? response.data.task_id : null;
         if (!taskId) {
           setTimeout(() => {
