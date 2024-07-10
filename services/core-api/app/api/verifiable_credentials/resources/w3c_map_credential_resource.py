@@ -1,7 +1,7 @@
-from json import dumps
+from json import dumps, loads
 from datetime import datetime
 from flask import current_app, request
-from werkzeug.exceptions import Forbidden
+from werkzeug.exceptions import BadRequest
 from flask_restx import Resource, reqparse
 from app.api.utils.include.user_info import User
 from app.api.utils.access_decorators import requires_any_of, MINESPACE_PROPONENT, EDIT_PARTY, VIEW_ALL
@@ -11,7 +11,8 @@ from app.extensions import api
 
 from app.api.utils.resources_mixins import UserMixin
 from app.api.services.traction_service import TractionService
-from app.api.verifiable_credentials.manager import VerifiableCredentialManager
+from app.api.verifiable_credentials.manager import VerifiableCredentialManager, process_all_untp_map_for_orgbook
+from app.api.verifiable_credentials.models.orgbook_publish_status import PermitAmendmentOrgBookPublish
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 
 from app.api.utils.feature_flag import Feature, is_feature_enabled
@@ -27,9 +28,10 @@ ISSUER_CREDENTIAL_REVOKED = "issuer_cred_rev"
 class W3CCredentialResource(Resource, UserMixin):
 
     @api.doc(description='Endpoint to get vc by uri, including guid.', params={})
-    @requires_any_of([VIEW_ALL])
-    def get(vc_guid: str):
-        return "Hello World"
+    def get(self, vc_unsigned_hash: str):
+        return loads(
+            PermitAmendmentOrgBookPublish.find_by_unsigned_payload_hash(
+                vc_unsigned_hash, unsafe=True).signed_credential)
 
 
 class W3CCredentialListResource(Resource, UserMixin):
@@ -102,4 +104,41 @@ class W3CCredentialDeprecatedResource(Resource, UserMixin):
         current_app.logger.warning(
             "credential signed by did:indy, not by did:web and using deprecated acapy endpoints" +
             dumps(signed_credential))
+        return signed_credential["signed_doc"]
+
+
+class W3CCredentialUNTPResource(Resource, UserMixin):
+    parser = reqparse.RequestParser(trim=True)
+    parser.add_argument(
+        'permit_amendment_guid',
+        type=str,
+        help='GUID of the permit amendment.',
+        location='json',
+        store_missing=False)
+
+    @api.expect(parser)
+    @api.doc(
+        description=
+        "returns a UNTP Conformity Credential for specific permit_amendment using deprecated aca-py endpoint, but with did:indy:bcovrin:test:"
+    )
+    @requires_any_of([EDIT_PARTY, MINESPACE_PROPONENT])
+    def post(self):
+        if not is_feature_enabled(Feature.JSONLD_MINES_ACT_PERMIT):
+            raise NotImplementedError("This feature is not enabled.")
+        current_app.logger.warning("untp endpoint")
+
+        data = self.parser.parse_args()
+        permit_amendment = PermitAmendment.find_by_permit_amendment_guid(
+            data["permit_amendment_guid"])
+        if not permit_amendment:
+            raise BadRequest("Permit amendment not found")
+        traction_service = TractionService()
+        public_did_dict = traction_service.fetch_current_public_did()
+        public_did = Config.CHIEF_PERMITTING_OFFICER_DID_WEB
+        public_verkey = public_did_dict["verkey"]
+
+        credential = VerifiableCredentialManager.produce_untp_cc_map_payload(
+            public_did, permit_amendment)
+        signed_credential = traction_service.sign_jsonld_credential_deprecated(
+            public_did, public_verkey, credential)
         return signed_credential["signed_doc"]

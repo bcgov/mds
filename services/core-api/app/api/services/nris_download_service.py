@@ -7,22 +7,10 @@ from app.api.constants import NRIS_REMOTE_TOKEN, TIMEOUT_60_MINUTES
 from app.config import Config
 
 
-def _change_default_cipher():
-    requests.packages.urllib3.disable_warnings()
-    requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS += 'HIGH:!DH:!aNULL'
-    try:
-        requests.packages.urllib3.contrib.pyopenssl.DEFAULT_SSL_CIPHER_LIST += 'HIGH:!DH:!aNULL'
-    except AttributeError:
-        # no pyopenssl support used / needed / available
-        pass
-
-
 def _get_NRIS_token():
     result = cache.get(NRIS_REMOTE_TOKEN)
 
     if result is None:
-
-        _change_default_cipher()
 
         params = {
             'disableDeveloperFilter': 'true',
@@ -52,8 +40,6 @@ def _get_NRIS_token():
 class NRISDownloadService():
     def download(file_url, file_name):
         _nris_token = _get_NRIS_token()
-
-        _change_default_cipher()
 
         file_download_req = requests.get(
             f'{file_url}', stream=True, headers={"Authorization": f"Bearer {_nris_token}"})

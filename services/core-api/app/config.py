@@ -4,20 +4,20 @@ import traceback
 
 from dotenv import load_dotenv, find_dotenv
 from celery.schedules import crontab
-from flask import current_app
+from flask import current_app, has_app_context, has_request_context
 from opentelemetry import trace
 import requests
-
 
 ENV_FILE = find_dotenv()
 if ENV_FILE:
     load_dotenv(ENV_FILE)
 
 
-
 class CustomFormatter(logging.Formatter):
+
     def format(self, record):
         KEY_CLOAK_CLIENT_ID = None
+
         def get_key_cloak_client_id():
             try:
                 # Check if the request is a valid HTTP request
@@ -26,10 +26,13 @@ class CustomFormatter(logging.Formatter):
                     from flask import request
 
                     # Check if the request has a bearer token
-                    bearer_token = request.headers.get('Authorization')
-                    if bearer_token and bearer_token.startswith('Bearer '):
-                        if getJwtManager().audience:
-                            return getJwtManager().audience
+                    if has_request_context():
+                        bearer_token = request.headers.get('Authorization')
+                        if bearer_token and bearer_token.startswith('Bearer '):
+                            if getJwtManager().audience:
+                                return getJwtManager().audience
+                    else:
+                        return "No Context"
             except Exception as e:
                 #print error only when there is a major error with implementation of getJwtManager()
                 print(traceback.format_exc())
@@ -63,11 +66,10 @@ class CustomFormatter(logging.Formatter):
 class Config(object):
     # Environment config
     FLASK_LOGGING_LEVEL = os.environ.get('FLASK_LOGGING_LEVEL',
-                                         'INFO')                # ['DEBUG','INFO','WARN','ERROR','CRITICAL']
+                                         'INFO')                      # ['DEBUG','INFO','WARN','ERROR','CRITICAL']
     WERKZEUG_LOGGING_LEVEL = os.environ.get('WERKZEUG_LOGGING_LEVEL',
-                                         'CRITICAL')  # ['DEBUG','INFO','WARN','ERROR','CRITICAL']
-    DISPLAY_WERKZEUG_LOG = os.environ.get('DISPLAY_WERKZEUG_LOG',
-                                            True)
+                                            'CRITICAL')               # ['DEBUG','INFO','WARN','ERROR','CRITICAL']
+    DISPLAY_WERKZEUG_LOG = os.environ.get('DISPLAY_WERKZEUG_LOG', True)
 
     LOGGING_DICT_CONFIG = {
         'version': 1,
@@ -117,24 +119,18 @@ class Config(object):
     NRIS_USER_NAME = os.environ.get('NRIS_USER_NAME', None)
     NRIS_PASS = os.environ.get('NRIS_PASS', None)
     ENVIRONMENT_NAME = os.environ.get('ENVIRONMENT_NAME', 'dev')
-    CORE_PROD_URL = os.environ.get('CORE_PRODUCTION_URL',
-                                         'https://minesdigitalservices.gov.bc.ca')
-    CORE_TEST_URL = os.environ.get('CORE_TEST_URL',
-                                         'https://mds-test.apps.silver.devops.gov.bc.ca')
-    CORE_DEV_URL = os.environ.get('CORE_DEV_URL',
-                                         'https://mds-dev.apps.silver.devops.gov.bc.ca')
-    CORE_LOCAL_URL = os.environ.get('CORE_LOCAL_URL',
-                                         'http://localhost:3000')
-    
-    MINESPACE_PROD_URL = os.environ.get('MINESPACE_PRODUCTION_URL',
-                                              'https://minespace.gov.bc.ca')
+    CORE_PROD_URL = os.environ.get('CORE_PRODUCTION_URL', 'https://minesdigitalservices.gov.bc.ca')
+    CORE_TEST_URL = os.environ.get('CORE_TEST_URL', 'https://mds-test.apps.silver.devops.gov.bc.ca')
+    CORE_DEV_URL = os.environ.get('CORE_DEV_URL', 'https://mds-dev.apps.silver.devops.gov.bc.ca')
+    CORE_LOCAL_URL = os.environ.get('CORE_LOCAL_URL', 'http://localhost:3000')
+
+    MINESPACE_PROD_URL = os.environ.get('MINESPACE_PRODUCTION_URL', 'https://minespace.gov.bc.ca')
     MINESPACE_TEST_URL = os.environ.get('MINESPACE_TEST_URL',
-                                              'https://minespace-test.apps.silver.devops.gov.bc.ca')
+                                        'https://minespace-test.apps.silver.devops.gov.bc.ca')
     MINESPACE_DEV_URL = os.environ.get('MINESPACE_DEV_URL',
-                                              'https://minespace-dev.apps.silver.devops.gov.bc.ca')
-    MINESPACE_LOCAL_URL = os.environ.get('MINESPACE_LOCAL_URL',
-                                              'http://localhost:3020')
-    
+                                       'https://minespace-dev.apps.silver.devops.gov.bc.ca')
+    MINESPACE_LOCAL_URL = os.environ.get('MINESPACE_LOCAL_URL', 'http://localhost:3020')
+
     MDS_NO_REPLY_EMAIL = os.environ.get('MDS_NO_REPLY_EMAIL', 'noreply-mds@gov.bc.ca')
     MDS_EMAIL = os.environ.get('MDS_EMAIL', 'mds@gov.bc.ca')
     MAJOR_MINES_OFFICE_EMAIL = os.environ.get('MAJOR_MINES_OFFICE_EMAIL', 'PermRecl@gov.bc.ca')
@@ -182,7 +178,6 @@ class Config(object):
     NROS_NOW_CLIENT_ID = os.environ.get('NROS_NOW_CLIENT_ID', None)
     NROS_NOW_TOKEN_URL = os.environ.get('NROS_NOW_TOKEN_URL', None)
     NROS_NOW_CLIENT_SECRET = os.environ.get('NROS_NOW_CLIENT_SECRET', None)
-    
 
     # Cache settings
     CACHE_TYPE = os.environ.get('CACHE_TYPE', 'redis')
@@ -201,14 +196,17 @@ class Config(object):
     SQLALCHEMY_ENGINE_OPTIONS = {'pool_timeout': 300, 'max_overflow': 20}
 
     # Flagsmith
-    FLAGSMITH_URL=os.environ.get('FLAGSMITH_URL', 'https://mds-flags-dev.apps.silver.devops.gov.bc.ca/api/v1/')
-    FLAGSMITH_KEY=os.environ.get('FLAGSMITH_KEY', '4Eu9eEMDmWVEHKDaKoeWY7')
+    FLAGSMITH_URL = os.environ.get('FLAGSMITH_URL',
+                                   'https://mds-flags-dev.apps.silver.devops.gov.bc.ca/api/v1/')
+    FLAGSMITH_KEY = os.environ.get('FLAGSMITH_KEY', '4Eu9eEMDmWVEHKDaKoeWY7')
 
     # Enable flag caching and evalutation. If set to True, FLAGSMITH_KEY must be set to a server side FLAGSMITH_KEY
-    FLAGSMITH_ENABLE_LOCAL_EVALUTION=os.environ.get('FLAGSMITH_ENABLE_LOCAL_EVALUTION', 'false') == 'true'
+    FLAGSMITH_ENABLE_LOCAL_EVALUTION = os.environ.get('FLAGSMITH_ENABLE_LOCAL_EVALUTION',
+                                                      'false') == 'true'
 
     # Kibana
-    KIBANA_BASE_URL = os.environ.get('KIBANA_BASE_URL', 'https://kibana-openshift-logging.apps.silver.devops.gov.bc.ca')
+    KIBANA_BASE_URL = os.environ.get(
+        'KIBANA_BASE_URL', 'https://kibana-openshift-logging.apps.silver.devops.gov.bc.ca')
 
     # NROS
     NROS_CLIENT_SECRET = os.environ.get('NROS_CLIENT_SECRET', None)
@@ -246,7 +244,6 @@ class Config(object):
         'https://mines-permitting-issuer-a3e512-dev.apps.silver.devops.gov.bc.ca/')
     VCR_ISSUER_SECRET_KEY = os.environ.get('VCR_ISSUER_SECRET_KEY', 'super-secret-key')
 
-
     # Common Services
     COMMON_SERVICES_CLIENT_ID = os.environ.get('COMMON_SERVICES_CLIENT_ID')
     COMMON_SERVICES_CLIENT_SECRET = os.environ.get('COMMON_SERVICES_CLIENT_SECRET')
@@ -277,7 +274,6 @@ class Config(object):
     CELERY_READBEAT_BROKER_URL = f'{CELERY_BROKER_URL}'
     CELERY_DEFAULT_QUEUE = 'core_tasks'
 
-
     CELERY_BEAT_SCHEDULE = {
         'notify_expiring_party_appointments': {
             'task': 'app.api.parties.party_appt.tasks.notify_expiring_party_appointments',
@@ -287,15 +283,21 @@ class Config(object):
             'task': 'app.api.parties.party_appt.tasks.notify_and_update_expired_party_appointments',
             'schedule': crontab(minute="*/15"),
         },
-
     }
     #Traction Verifiable Credentials DEFAULTS ARE FOR DEV
-    TRACTION_HOST = os.environ.get("TRACTION_HOST","https://traction-tenant-proxy-dev.apps.silver.devops.gov.bc.ca")
-    TRACTION_TENANT_ID = os.environ.get("TRACTION_TENANT_ID","GET_TENANT_ID_FROM_TRACTION")
-    TRACTION_WALLET_API_KEY = os.environ.get("TRACTION_WALLET_API_KEY","GET_WALLET_API_KEY_FROM_TRACTION")
-    TRACTION_WEBHOOK_X_API_KEY = os.environ.get("TRACTION_WEBHOOK_X_API_KEY","NO_X_API_KEY")
-    CRED_DEF_ID_MINES_ACT_PERMIT = os.environ.get("CRED_DEF_ID_MINES_ACT_PERMIT","CRED_DEF_ID_MINES_ACT_PERMIT")
-    
+    TRACTION_HOST = os.environ.get(
+        "TRACTION_HOST", "https://traction-tenant-proxy-dev.apps.silver.devops.gov.bc.ca")
+    TRACTION_TENANT_ID = os.environ.get("TRACTION_TENANT_ID", "GET_TENANT_ID_FROM_TRACTION")
+    TRACTION_WALLET_API_KEY = os.environ.get("TRACTION_WALLET_API_KEY",
+                                             "GET_WALLET_API_KEY_FROM_TRACTION")
+    TRACTION_WEBHOOK_X_API_KEY = os.environ.get("TRACTION_WEBHOOK_X_API_KEY", "NO_X_API_KEY")
+    CRED_DEF_ID_MINES_ACT_PERMIT = os.environ.get("CRED_DEF_ID_MINES_ACT_PERMIT",
+                                                  "CRED_DEF_ID_MINES_ACT_PERMIT")
+
+    #The key pair in this did web MUST match the keypair of the did:indy:candy in Traction.
+    CHIEF_PERMITTING_OFFICER_DID_WEB = os.environ.get("CHIEF_PERMITTING_OFFICER_DID_WEB",
+                                                      "CHIEF_PERMITTING_OFFICER_DID_WEB")
+
 
 class TestConfig(Config):
     # The following configs are for testing purposes and all variables and keys are generated using dummy data.

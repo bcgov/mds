@@ -8,7 +8,9 @@ interface TSFCardProps {
 
 export const TSFCard: FC<TSFCardProps> = (props) => {
   const tsf_eor = props.PartyRelationships.filter(
-    (pr) => pr.related_guid === props.tailingsStorageFacility.mine_tailings_storage_facility_guid
+    (pr) =>
+      pr.related_guid === props.tailingsStorageFacility.mine_tailings_storage_facility_guid &&
+      pr.mine_party_appt_type_code === "EOR"
   ).sort((a, b) => Date.parse(a.start_date) - Date.parse(b.start_date))[0];
   return (
     <div>

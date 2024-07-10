@@ -3,6 +3,7 @@ import uuid
 from sqlalchemy.dialects.postgresql import UUID
 from app.extensions import db
 
+
 from app.utils.models_mixins import AuditMixin, Base
 
 
@@ -10,6 +11,8 @@ class Document(AuditMixin, Base):
     __tablename__ = 'document'
     document_id = db.Column(db.Integer, primary_key=True)
     document_guid = db.Column(UUID(as_uuid=True), nullable=False, unique=True)
+    document_bundle_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('document_bundle.bundle_guid'), nullable=True)
+    document_bundle = db.relationship('DocumentBundle', back_populates='documents')
     full_storage_path = db.Column(db.String(4096), nullable=False)
     upload_started_date = db.Column(db.DateTime, nullable=False)
     upload_completed_date = db.Column(db.DateTime, nullable=True)
@@ -30,6 +33,7 @@ class Document(AuditMixin, Base):
     def json(self):
         return {
             'document_guid': str(self.document_guid),
+            'document_bundle_guid': str(self.document_bundle_guid),
             'full_storage_path': self.full_storage_path,
             'upload_started_date': str(self.upload_started_date),
             'upload_completed_date':
@@ -55,3 +59,7 @@ class Document(AuditMixin, Base):
             return cls.query.filter_by(document_guid=document_guid).first()
         except ValueError:
             return None
+
+    @classmethod
+    def find_by_document_guid_many(cls, document_guids):
+        return cls.query.filter(Document.document_guid.in_(document_guids)).all()
