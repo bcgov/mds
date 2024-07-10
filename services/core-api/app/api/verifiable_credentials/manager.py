@@ -403,21 +403,21 @@ class VerifiableCredentialManager():
             assessmentLevel=codes.AssessmentAssuranceCode.GovtApproval,
             type=codes.AttestationType.Certification,
             description=
-            "This is a conformity attestation for the existence and good standing of a mining permit under the Mines Act within British Columbia (a province of Canada).",
+            "This is a conformity attestation for the existence of a mining permit under the Mines Act within British Columbia (a province of Canada).",
             scope=cc.ConformityAssessmentScheme(
                 id=
                 "https://github.com/bcgov/bc-vcpedia/blob/main/credentials/bc-mines-act-permit/1.1.1/governance.md",
                 name="BC Mines Act Permit Credential (1.1.1) Governance Documentation"),
             issuedBy=untp_party_cpo,
             issuedTo=untp_party_business,
-            validFrom=issuance_date_str,                                                                                                                                   #shouldn't this just be in the w3c wrapper
+            validFrom=issuance_date_str,                                                                                                                 #shouldn't this just be in the w3c wrapper
             assessments=untp_assessments)
 
         w3c_cred = W3CCred(
             context=["https://www.w3.org/2018/credentials/v1", {
                 "@vocab": "urn:bcgov:attributes#"
             }],
-            type=["VerifiableCredential"],
+            type=["VerifiableCredential", "NonProductionCredential"],
             issuer={"id": did},
             issuanceDate=issuance_date_str,
             credentialSubject=cred)
