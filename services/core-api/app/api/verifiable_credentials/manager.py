@@ -139,6 +139,9 @@ def process_all_untp_map_for_orgbook():
     public_did = Config.CHIEF_PERMITTING_OFFICER_DID_WEB
     public_verkey = public_did_dict["verkey"]
 
+    assert public_did.startswith(
+        "did:web:"
+    ), f"Config.CHIEF_PERMITTING_OFFICER_DID_WEB = {Config.CHIEF_PERMITTING_OFFICER_DID_WEB} is not a did:web"
     current_app.logger.warning("public did: " + public_did)
 
     records: List[Tuple[W3CCred,
@@ -180,7 +183,11 @@ def process_all_untp_map_for_orgbook():
         if signed_cred:
             record.signed_credential = json.dumps(signed_cred["signed_doc"])
             record.sign_date = datetime.now()
-        record.save()
+        try:
+            record.save()
+        except IntegrityError:
+            current_app.logger.warning(f"ignoring duplicate={str(record.unsigned_payload_hash)}")
+            continue
         current_app.logger.warning(
             "bcreg_uri=" +
             str(cred_payload.credentialSubject.issuedTo.identifiers[0].identifierURI) +
