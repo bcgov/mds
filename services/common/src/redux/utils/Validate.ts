@@ -112,7 +112,7 @@ export const spatialDocumentBundle = (files: any[]) => {
       errors.push(`Invalid file types: ${invalidFiles.join(", ")}`);
     }
     const isSingleFile = files.length === 1 && singleTypes.includes(fileData[0][1].toLowerCase());
-    if (isSingleFile && !(errors.length > 0)) {
+    if (isSingleFile && errors.length === 0) {
       return;
     }
     const fileNameToCompare = fileData[0][0];

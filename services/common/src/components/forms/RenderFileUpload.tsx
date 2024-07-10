@@ -43,8 +43,6 @@ interface FileUploadProps extends BaseInputProps {
   onUploadResponse?: (data: MultipartDocumentUpload) => void;
   onError?: (fileName?: string, err?: any) => void;
   onInit?: () => void;
-  isFeatureEnabled: (feature: string) => boolean;
-  pollDocumentUploadStatus: (documentGuid: string) => Promise<{ data: { status: string } }>;
   shouldAbortUpload?: boolean;
   shouldReplaceFile?: boolean;
   notificationDisabledStatusCodes?: number[];
@@ -199,7 +197,7 @@ export const FileUpload: FC<FileUploadProps> = ({
       }
 
       if (onError) {
-        onError(file && file.name ? file.name : "", err);
+        onError(file?.name ?? "", err);
       }
     } catch (e) {
       notification.error({
@@ -244,7 +242,7 @@ export const FileUpload: FC<FileUploadProps> = ({
           }
         } else {
           if (onError) {
-            onError(file && file.name ? file.name : "", response.data);
+            onError(file?.name ?? "", response.data);
           }
 
           notification.error({
@@ -474,7 +472,7 @@ export const FileUpload: FC<FileUploadProps> = ({
     if (abbrevLabel && acceptedFileTypeExtensions.length > 0) {
       return (
         <span>
-          {labelHrefElement ? labelHrefElement : label}{" "}
+          {labelHrefElement ?? label}{" "}
           <span>
             <Popover
               content={
