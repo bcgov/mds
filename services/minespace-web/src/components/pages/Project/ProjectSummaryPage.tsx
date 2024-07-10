@@ -25,11 +25,17 @@ import {
   EDIT_PROJECT,
   EDIT_PROJECT_SUMMARY,
   MINE_DASHBOARD,
+  VIEW_PROJECT_SUBMISSION_STATUS_PAGE,
 } from "@/constants/routes";
 import ProjectSummaryForm, {
   getProjectFormTabs,
 } from "@mds/common/components/projectSummary/ProjectSummaryForm";
-import { Feature } from "@mds/common";
+import {
+  Feature,
+  PROJECT_SUMMARY_WITH_AMS_SUBMISSION_SECTION,
+  AMS_STATUS_CODES_SUCCESS,
+  AMS_STATUS_CODE_FAIL,
+} from "@mds/common";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { fetchRegions } from "@mds/common/redux/slices/regionsSlice";
 
@@ -88,7 +94,7 @@ export const ProjectSummaryPage = () => {
 
   const handleUpdateProjectSummary = async (payload, message) => {
     setIsLoaded(false);
-    return dispatch(
+    const projectSummaryResponse = await dispatch(
       updateProjectSummary(
         {
           projectGuid,
@@ -97,23 +103,38 @@ export const ProjectSummaryPage = () => {
         payload,
         message
       )
-    )
-      .then(async () => {
-        await dispatch(
-          updateProject(
-            { projectGuid },
-            {
-              mrc_review_required: payload.mrc_review_required,
-              contacts: payload.contacts,
-            },
-            "Successfully updated project.",
-            false
-          )
-        );
-      })
-      .then(async () => {
-        await handleFetchData();
-      });
+    );
+
+    await dispatch(
+      updateProject(
+        { projectGuid },
+        {
+          mrc_review_required: payload.mrc_review_required,
+          contacts: payload.contacts,
+        },
+        "Successfully updated project.",
+        false
+      )
+    );
+
+    await handleFetchData();
+    if (
+      tab === PROJECT_SUMMARY_WITH_AMS_SUBMISSION_SECTION &&
+      amsFeatureEnabled &&
+      projectSummaryResponse
+    ) {
+      const { data } = projectSummaryResponse;
+      const authorizations = data?.authorizations;
+      const areAuthorizationsSuccessful = authorizations.every(
+        (auth) => auth.ams_status_code === "200"
+      );
+      history.push(
+        VIEW_PROJECT_SUBMISSION_STATUS_PAGE.dynamicRoute(
+          projectGuid,
+          areAuthorizationsSuccessful ? AMS_STATUS_CODES_SUCCESS : AMS_STATUS_CODE_FAIL
+        )
+      );
+    }
   };
 
   const handleCreateProjectSummary = async (values, message) => {
@@ -143,7 +164,7 @@ export const ProjectSummaryPage = () => {
   };
 
   const handleSaveData = async (formValues, newActiveTab?: string) => {
-    const message = newActiveTab
+    let message = newActiveTab
       ? "Successfully updated the project description."
       : "Successfully submitted a project description to the Province of British Columbia.";
 
@@ -152,10 +173,12 @@ export const ProjectSummaryPage = () => {
       status_code = "DFT";
     } else if (!newActiveTab) {
       status_code = "SUB";
+      if (amsFeatureEnabled) {
+        message = null;
+      }
     }
 
     const values = { ...formValues, status_code: status_code };
-
     try {
       if (!isEditMode) {
         await handleCreateProjectSummary(values, message);

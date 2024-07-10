@@ -1,6 +1,7 @@
 .filepond--root {
     font-family: $default-font;
     font-size: 0.7rem;
+    margin-bottom: 0 !important;
 
     &,
     .filepond--drop-label {
