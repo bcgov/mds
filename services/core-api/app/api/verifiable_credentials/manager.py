@@ -1,6 +1,7 @@
 # for midware/business level actions between requests and data access
 import json
 
+from sqlalchemy.exc import IntegrityError
 from typing import List, Union, Tuple
 from pydantic import BaseModel, Field, ConfigDict
 from openlocationcode.openlocationcode import encode as plus_code_encode
