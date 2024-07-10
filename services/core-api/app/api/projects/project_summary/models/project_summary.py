@@ -577,7 +577,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 'type': 'number',
             },
             'facility_coords_source': {
-                'required': True,
+                'nullable': True,
                 'type': 'string',
                 'allowed': ['GPS', 'Survey', 'Google Earth, Google Maps, or other Satellite Imagery', 'Other'],
             },
