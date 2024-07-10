@@ -17,4 +17,6 @@ EXPOSE 5001
 
 RUN mkdir -p /tmp/celery
 
+RUN mkdir -p /tmp/spatial
+
 ENTRYPOINT [ "./init.sh" ]
