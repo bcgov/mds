@@ -125,7 +125,7 @@ export const ProjectSummaryPage = () => {
       projectSummaryResponse
     ) {
       const { data } = projectSummaryResponse;
-      const authorizations = data?.authorizations;
+      const authorizations = data?.authorizations ?? [];
       const areAuthorizationsSuccessful = authorizations
         .filter((authorization) =>
           AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES.includes(
