@@ -40,9 +40,9 @@ export const LegalLandOwnerInformation: FC = () => {
 
   const dataSourceOptions = [
     { value: "GPS", label: "GPS" },
-    { value: "SUR", label: "Survey" },
-    { value: "GGE", label: "Google Earth" },
-    { value: "OTH", label: "Other" },
+    { value: "Survey", label: "Survey" },
+    { value: "Google Earth, Google Maps, or other Satellite Imagery", label: "Google Earth" },
+    { value: "Other", label: "Other" },
   ];
 
   useEffect(() => {
@@ -172,7 +172,7 @@ export const LegalLandOwnerInformation: FC = () => {
           <CoreMap controls additionalPins={[pin]} />
         </Col>
       </Row>
-      {facility_coords_source === "OTH" && (
+      {facility_coords_source === "Other" && (
         <Field
           name="facility_coords_source_desc"
           required

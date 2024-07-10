@@ -17,6 +17,7 @@ import {
   PROJECT_SUMMARY_WITH_AMS_SUBMISSION_SECTION,
   AMS_STATUS_CODES_SUCCESS,
   AMS_STATUS_CODE_FAIL,
+  AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES,
 } from "@mds/common";
 import { getMineById } from "@mds/common/redux/reducers/mineReducer";
 import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
@@ -158,9 +159,13 @@ export const ProjectSummary: FC = () => {
     ) {
       const { data } = projectSummaryResponse;
       const authorizations = data?.authorizations;
-      const areAuthorizationsSuccessful = authorizations.every(
-        (auth) => auth.ams_status_code === "200"
-      );
+      const areAuthorizationsSuccessful = authorizations
+        .filter((authorization) =>
+          AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES.includes(
+            authorization.project_summary_authorization_type
+          )
+        )
+        .every((auth) => auth.ams_status_code === "200");
       history.push(
         routes.VIEW_PROJECT_SUBMISSION_STATUS_PAGE.dynamicRoute(
           projectGuid,

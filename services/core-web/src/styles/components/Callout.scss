@@ -1,0 +1,45 @@
+@mixin base-callout {
+    padding: 25px;
+    margin: 16px 0;
+    background-color: #f2f2f2;
+    font-size: 20px;
+}
+
+.bcgov-callout {
+    &--success {
+        @include base-callout;
+        border-left: 10px solid #5cb85c;
+    }
+
+    &--warning {
+        @include base-callout;
+        border-left: 10px solid #f0ad4e;
+    }
+
+    &--danger {
+        @include base-callout;
+        border-left: 10px solid #d9534f;
+    }
+
+    &--default {
+        @include base-callout;
+        border-left: 10px solid #d9534f;
+    }
+}
+
+.bcgov-callout--success>p,
+.bcgov-callout--warning>p,
+.bcgov-callout--danger>p {
+    margin-bottom: 0;
+}
+
+.bcgov-callout h1,
+h2,
+h3,
+h4 {
+    margin: 0;
+}
+
+.bcgov-callout .bcgov-callout-title {
+    font-weight: 700;
+}
