@@ -113,6 +113,5 @@ class MineDocument(SoftDeleteMixin, AuditMixin, Base):
             'archived_by': self.archived_by,
             'upload_date': str(self.upload_date),
             'versions': self.versions or [],
-            'mine_document_bundle_id': self.mine_document_bundle_id,
             'mine_document_bundle': self.mine_document_bundle.json() if self.mine_document_bundle else None,
         }

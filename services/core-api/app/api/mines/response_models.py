@@ -147,7 +147,6 @@ MINE_DOCUMENT_MODEL = api.model(
         'is_archived': fields.Boolean,
         'archived_date': fields.String,
         'archived_by': fields.String,
-        'mine_document_bundle_id': fields.Integer(attribute='mine_document_bundle_id'),
         'mine_document_bundle': fields.Nested(MINE_DOCUMENT_BUNDLE_MODEL),
         'versions': fields.List(fields.Nested(MINE_DOCUMENT_VERSION_MODEL)),
         'major_mine_application_document_xref': fields.Nested(MAJOR_MINE_APPLICATION_DOCUMENT_XREF_MODEL),
