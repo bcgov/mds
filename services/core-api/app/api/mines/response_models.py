@@ -125,6 +125,16 @@ INFORMATION_REQUIREMENTS_TABLE_DOCUMENT_XREF_MODEL = api.model(
         'information_requirements_table_document_type_code': fields.String
     })
 
+MINE_DOCUMENT_BUNDLE_MODEL = api.model(
+    'MineDocumentBundle', {
+        'bundle_id': fields.Integer,
+        'bundle_guid': fields.String,
+        'name': fields.String,
+        'geomark_id': fields.String,
+        'docman_bundle_guid': fields.String
+    }
+)
+
 MINE_DOCUMENT_MODEL = api.model(
     'MineDocument', {
         'mine_document_guid': fields.String,
@@ -137,6 +147,8 @@ MINE_DOCUMENT_MODEL = api.model(
         'is_archived': fields.Boolean,
         'archived_date': fields.String,
         'archived_by': fields.String,
+        'mine_document_bundle_id': fields.Integer(attribute='mine_document_bundle_id'),
+        'mine_document_bundle': fields.Nested(MINE_DOCUMENT_BUNDLE_MODEL),
         'versions': fields.List(fields.Nested(MINE_DOCUMENT_VERSION_MODEL)),
         'major_mine_application_document_xref': fields.Nested(MAJOR_MINE_APPLICATION_DOCUMENT_XREF_MODEL),
         'project_summary_document_xref': fields.Nested(PROJECT_SUMMARY_DOCUMENT_XREF_MODEL),

@@ -30,6 +30,9 @@ def create_app(test_config=None):
         dictConfig(Config.LOGGING_DICT_CONFIG)
     app = Flask(__name__)
 
+    if not os.path.exists('/tmp/spatial'):
+        os.makedirs('/tmp/spatial')
+
     trace.set_tracer_provider(TracerProvider())
 
     FlaskInstrumentor().instrument_app(app)
