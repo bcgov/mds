@@ -101,30 +101,31 @@ const AddSpatialDocumentsModal: FC<AddSpatialDocumentsModalProps> = ({
     },
   ];
 
-  const isFinalStep = currentStep === stepContent.length - 1;
+  const handleSubmit = async (values) => {
+    const isFinalStep = currentStep === stepContent.length - 1;
+    const newFiles = values[fieldName];
+    const allFiles = [...newFiles, ...initialDocuments];
+    if (isFinalStep) {
+      dispatch(change(formName, fieldName, allFiles));
+      setIsResetting(true);
+      setCurrentStep(0);
+      await dispatch(reset(modalFormName));
+      setIsResetting(false);
+    } else {
+      const bundle_document_guids = newFiles.map((f) => f.document_manager_guid);
+      const name = newFiles[0].document_name.split(".")[0];
+      const resp = await dispatch(createSpatialBundle({ name, bundle_document_guids }));
+      if (resp.payload) {
+        setCurrentStep(currentStep + 1);
+      }
+    }
+  };
 
   return (
     <FormWrapper
       isModal
       name={modalFormName}
-      onSubmit={async (values) => {
-        const newFiles = values[fieldName];
-        const allFiles = [...newFiles, ...initialDocuments];
-        if (isFinalStep) {
-          dispatch(change(formName, fieldName, allFiles));
-          setIsResetting(true);
-          setCurrentStep(0);
-          await dispatch(reset(modalFormName));
-          setIsResetting(false);
-        } else {
-          const bundle_document_guids = newFiles.map((f) => f.document_manager_guid);
-          const name = newFiles[0].document_name.split(".")[0];
-          const resp = await dispatch(createSpatialBundle({ name, bundle_document_guids }));
-          if (resp.payload) {
-            setCurrentStep(currentStep + 1);
-          }
-        }
-      }}
+      onSubmit={handleSubmit}
       reduxFormConfig={{
         touchOnChange: true,
       }}
