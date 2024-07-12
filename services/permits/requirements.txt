@@ -14,4 +14,5 @@ Pillow==10.3.
 pdfminer.six==20231228
 pyyaml==6.0.1
 ocrmypdf==16.4.1
-joblib==1.4.2
+pypdf==4.2.0
+json-repair==0.25.3
