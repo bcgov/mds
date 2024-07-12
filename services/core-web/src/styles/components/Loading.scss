@@ -1,4 +1,4 @@
-.loading-screen {
+#loading-screen {
   z-index: 99999;
   position: fixed;
   background: $default-overlay;
@@ -19,6 +19,7 @@
   min-height: 500px;
   width: 100%;
   position: relative;
+
   #spinner {
     // offset size of spinner to center
     left: 45% !important;

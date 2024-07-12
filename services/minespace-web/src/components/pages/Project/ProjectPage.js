@@ -24,7 +24,7 @@ import MajorMineApplicationEntryTab from "./MajorMineApplicationEntryTab";
 import DocumentsTab from "./DocumentsTab";
 import { MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES } from "./MajorMineApplicationPage";
 import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
-import { ProjectDescriptionTab } from "@mds/common/components/project/ProjectDescriptionTab";
+import ProjectDescriptionTab from "@mds/common/components/project/ProjectDescriptionTab";
 
 const propTypes = {
   mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
@@ -242,7 +242,7 @@ export class ProjectPage extends Component {
           <Row gutter={[0, 16]}>
             <Col span={24}>
               <Tabs
-                defaultActiveKey={tabs[0]}
+                defaultActiveKey={this.props.match.params?.tab || tabs[0]}
                 onChange={(activeTab) => this.handleTabChange(activeTab, irtStatus)}
                 type="card"
               >

@@ -1,7 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col, Typography, Button, Alert, Badge } from "antd";
 import Callout from "@mds/common/components/common/Callout";
-import { CALLOUT_SEVERITY } from "@mds/common/constants/strings";
+import {
+  CALLOUT_SEVERITY,
+  NOT_APPLICABLE,
+  ENVIRONMENTAL_MANAGMENT_ACT,
+  AMS_STATUS_CODES_SUCCESS,
+  AMS_STATUS_CODE_ERROR,
+} from "@mds/common/constants/strings";
+import {
+  AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES,
+  AMS_AUTHORIZATION_TYPES,
+  AMS_MINES_ACT_TYPE,
+  AMS_WATER_SUSTAINABILITY_ACT_TYPES,
+  AMS_FORESTRY_ACT_TYPE,
+} from "@mds/common/constants/enums";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { getProject } from "@mds/common/redux/selectors/projectSelectors";
 import { useSelector, useDispatch } from "react-redux";
@@ -30,7 +43,7 @@ import { isArray } from "lodash";
 import { removeNullValuesRecursive } from "@mds/common/constants/utils";
 import Loading from "@mds/common/components/common/Loading";
 
-export const ProjectDescriptionTab = () => {
+const ProjectDescriptionTab = () => {
   const [shouldDisplayRetryButton, setShouldDisplayRetryButton] = useState(false);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -38,6 +51,7 @@ export const ProjectDescriptionTab = () => {
   const [environmentalManagementActData, setEnvironmentalManagementActData] = useState([]);
   const [waterSustainabilityActData, setWaterSustainabilityActData] = useState([]);
   const [forestryActData, setForestryActData] = useState([]);
+  const [hasFailedAMSSubmission, setHasFailedAMSSubmission] = useState(false);
   const [isLoaded, setIsLoaded] = useState(true);
 
   const permits = useSelector(getPermits);
@@ -50,9 +64,7 @@ export const ProjectDescriptionTab = () => {
     getProjectSummaryAuthorizationTypesArray
   );
 
-  const notApplicableText = "N/A";
-
-  let processedOtherActPermitResult: any[] = [];
+  let processedEnvironmentActPermitResult: any[] = [];
 
   const createStatusColumn = (text: string, badgeStatus: PresetStatusColorType) => ({
     key: text,
@@ -71,16 +83,16 @@ export const ProjectDescriptionTab = () => {
     render: (record) => <Badge status={record.status.status} text={record.status.text} />,
   };
 
-  const minesActStatusColumn = createStatusColumn("Submitted", "success");
+  const nonAMSStatusColumn = createStatusColumn("Submitted", AMS_STATUS_CODES_SUCCESS);
 
-  const minesActColumns: ColumnsType<IAuthorizationSummary> = [
+  const nonAMSActColumns: ColumnsType<IAuthorizationSummary> = [
     renderTextColumn("project_type", "Type", false),
     renderTextColumn("permit_no", "Permit", false),
     renderTextColumn("date_submitted", "Date", false),
-    minesActStatusColumn,
+    nonAMSStatusColumn,
   ];
 
-  const otherActColumns: ColumnsType<IAuthorizationSummary> = [
+  const amsActColumns: ColumnsType<IAuthorizationSummary> = [
     renderTextColumn("project_type", "Type", false),
     renderTextColumn("permit_no", "Authorization", false),
     renderTextColumn("ams_tracking_number", "Tracking #", false),
@@ -107,21 +119,26 @@ export const ProjectDescriptionTab = () => {
 
   const getPermitNumber = (permit_guid: string): string => {
     const permit = permits.find(({ permit_guid: id }) => id === permit_guid);
-    return permit?.permit_no ?? notApplicableText;
+    return permit?.permit_no ?? NOT_APPLICABLE;
   };
 
-  const loadMinesActPermitData = (authorizations) => {
+  const loadOtherActPermitData = (authorizations, authTypes, setData) => {
     const result = authorizations
-      .filter(
-        (authorization) => authorization.project_summary_authorization_type === "MINES_ACT_PERMIT"
+      .filter((authorization) =>
+        Object.values(authTypes).includes(authorization.project_summary_authorization_type)
       )
       .map((authorization) => {
         const dateSubmitted = formatDateTimeTz(authorization.ams_submission_timestamp);
-        const projectType = parseProjectTypeLabel(authorization?.project_summary_permit_type[0]);
+        const projectType = authorization?.project_summary_permit_type.map((type) => (
+          <div key={authorization.project_summary_authorization_guid}>
+            {parseProjectTypeLabel(type)}
+          </div>
+        ));
         const permitNo =
-          authorization?.project_summary_permit_type[0] === "AMENDMENT"
+          authorization?.project_summary_permit_type[0] === AMS_AUTHORIZATION_TYPES.AMENDMENT &&
+          authorization?.existing_permits_authorizations
             ? getPermitNumber(authorization?.existing_permits_authorizations[0])
-            : notApplicableText;
+            : NOT_APPLICABLE;
         const projectSummaryAuthorizationGuid = authorization?.project_summary_authorization_guid;
 
         return {
@@ -132,16 +149,18 @@ export const ProjectDescriptionTab = () => {
         };
       });
 
-    setMinesActData(result);
+    setData(result);
   };
 
-  const processOtherActAuthorization = (
+  const processEnvironmentalActAuthorization = (
     authorization,
     permitAuthorizationType,
     projectSummaryAuthorizationType
   ) => {
     if (
-      (authorization.ams_status_code === "400" || authorization.ams_status_code === "500") &&
+      (authorization?.ams_status_code === "400" ||
+        authorization?.ams_status_code === "500" ||
+        authorization?.ams_status_code === "200") &&
       authorization.project_summary_authorization_type === projectSummaryAuthorizationType
     ) {
       const dateSubmitted = formatDateTimeTz(authorization.ams_submission_timestamp);
@@ -151,21 +170,28 @@ export const ProjectDescriptionTab = () => {
         projectSummaryAuthorizationType
       )} - ${permitTypeLabel}`;
       const permitNo =
-        authorization.project_summary_permit_type[0] === "AMENDMENT"
-          ? authorization.existing_permits_authorizations[0]
-          : notApplicableText;
+        authorization?.project_summary_permit_type[0] === AMS_AUTHORIZATION_TYPES.AMENDMENT &&
+        authorization?.existing_permits_authorizations
+          ? authorization?.existing_permits_authorizations[0]
+          : NOT_APPLICABLE;
       const projectSummaryAuthorizationGuid = authorization?.project_summary_authorization_guid;
+      const amsTrackingNumber =
+        authorization?.ams_tracking_number && authorization?.ams_tracking_number !== "0"
+          ? authorization?.ams_tracking_number
+          : NOT_APPLICABLE;
 
-      let status = createStatusBadge("Rejected", "error");
-      if (authorization.ams_status_code === "500") {
-        status = createStatusBadge("Failed", "error");
+      let status = createStatusBadge("Rejected", AMS_STATUS_CODE_ERROR);
+      if (authorization?.ams_status_code === "500") {
+        status = createStatusBadge("Failed", AMS_STATUS_CODE_ERROR);
         setShouldDisplayRetryButton(true);
+      } else if (authorization?.ams_status_code === "200") {
+        status = createStatusBadge("Submitted", AMS_STATUS_CODES_SUCCESS);
       }
 
       return {
         project_type: projectType,
         permit_no: permitNo,
-        ams_tracking_number: notApplicableText,
+        ams_tracking_number: amsTrackingNumber,
         date_submitted: dateSubmitted,
         project_summary_authorization_guid: projectSummaryAuthorizationGuid,
         status: status,
@@ -174,58 +200,63 @@ export const ProjectDescriptionTab = () => {
     return null;
   };
 
-  const processOtherActAuthorizations = (
+  const processEnvironmentalActAuthorizations = (
     authorizations,
     permitAuthorizationType,
     projectSummaryAuthorizationType
   ) => {
     const filteredResults = authorizations
       .map((authorization) =>
-        processOtherActAuthorization(
+        processEnvironmentalActAuthorization(
           authorization,
           permitAuthorizationType,
           projectSummaryAuthorizationType
         )
       )
       .filter(Boolean);
-    processedOtherActPermitResult.push(...filteredResults);
+
+    processedEnvironmentActPermitResult.push(...filteredResults);
   };
 
   const processAndSetData = (authorizations, types, actType, setData) => {
-    types.forEach((type) => {
-      processOtherActAuthorizations(authorizations, actType, type);
+    Object.values(types).forEach((type) => {
+      processEnvironmentalActAuthorizations(authorizations, actType, type);
     });
-    setData([...processedOtherActPermitResult]);
-    processedOtherActPermitResult = [];
+
+    const hasSubmissionErrors = processedEnvironmentActPermitResult.some(
+      (fr) => fr.status.status !== AMS_STATUS_CODES_SUCCESS
+    );
+    setHasFailedAMSSubmission(hasSubmissionErrors);
+    setData([...processedEnvironmentActPermitResult]);
+    processedEnvironmentActPermitResult = [];
   };
 
-  const loadOtherActPermitData = (authorizations) => {
-    const environmentalManagementActTypes = [
-      "AIR_EMISSIONS_DISCHARGE_PERMIT",
-      "EFFLUENT_DISCHARGE_PERMIT",
-      "REFUSE_DISCHARGE_PERMIT",
-      "MUNICIPAL_WASTEWATER_REGULATION",
-    ];
-    const waterSustainabilityActTypes = ["CHANGE_APPROVAL", "USE_APPROVAL", "WATER_LICENCE"];
-    const forestryActTypes = ["OCCUPANT_CUT_LICENCE"];
+  const loadEnvironmentActPermitData = (authorizations) => {
     processAndSetData(
       authorizations,
-      environmentalManagementActTypes,
-      "ENVIRONMENTAL_MANAGMENT_ACT",
+      AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES,
+      ENVIRONMENTAL_MANAGMENT_ACT,
       setEnvironmentalManagementActData
     );
-    processAndSetData(
-      authorizations,
-      waterSustainabilityActTypes,
-      "WATER_SUSTAINABILITY_ACT",
-      setWaterSustainabilityActData
-    );
-    processAndSetData(authorizations, forestryActTypes, "FORESTRY_ACT", setForestryActData);
   };
 
   useEffect(() => {
-    loadMinesActPermitData(project.project_summary.authorizations);
-    loadOtherActPermitData(project.project_summary.authorizations);
+    loadOtherActPermitData(
+      project.project_summary.authorizations,
+      AMS_MINES_ACT_TYPE,
+      setMinesActData
+    );
+    loadOtherActPermitData(
+      project.project_summary.authorizations,
+      AMS_WATER_SUSTAINABILITY_ACT_TYPES,
+      setWaterSustainabilityActData
+    );
+    loadOtherActPermitData(
+      project.project_summary.authorizations,
+      AMS_FORESTRY_ACT_TYPE,
+      setForestryActData
+    );
+    loadEnvironmentActPermitData(project.project_summary.authorizations);
   }, [
     project.project_summary.authorizations,
     transformedProjectSummaryAuthorizationTypes,
@@ -266,7 +297,7 @@ export const ProjectDescriptionTab = () => {
             authsOfType?.NEW.map((a) =>
               transformAuthorization(type, {
                 ...a,
-                project_summary_permit_type: ["NEW"],
+                project_summary_permit_type: [AMS_AUTHORIZATION_TYPES.NEW],
               })
             )
           );
@@ -274,7 +305,7 @@ export const ProjectDescriptionTab = () => {
             authsOfType?.AMENDMENT.map((a) =>
               transformAuthorization(type, {
                 ...a,
-                project_summary_permit_type: ["AMENDMENT"],
+                project_summary_permit_type: [AMS_AUTHORIZATION_TYPES.AMENDMENT],
               })
             )
           );
@@ -315,7 +346,7 @@ export const ProjectDescriptionTab = () => {
         if (!output[authType].types.includes(permitType)) {
           output[authType].types.push(permitType);
         }
-        if (permitType === "AMENDMENT") {
+        if (permitType === AMS_AUTHORIZATION_TYPES.AMENDMENT) {
           if (!authorization.amendment_changes) {
             authorization.amendment_changes = [];
           }
@@ -323,7 +354,7 @@ export const ProjectDescriptionTab = () => {
           if (!output[authType].NEW) {
             output[authType].NEW = [];
           }
-        } else if (permitType === "NEW") {
+        } else if (permitType === AMS_AUTHORIZATION_TYPES.NEW) {
           output[authType].NEW.push(authorization);
           if (!output[authType].AMENDMENT) {
             output[authType].AMENDMENT = [];
@@ -332,10 +363,12 @@ export const ProjectDescriptionTab = () => {
       });
     });
 
-    if (output.MINES_ACT_PERMIT) {
-      output.MINES_ACT_PERMIT = input.filter(
-        (auth) => auth.project_summary_authorization_type === "MINES_ACT_PERMIT"
-      );
+    for (const authType in output) {
+      if (!AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES[authType]) {
+        output[authType] = input.filter(
+          (auth) => auth.project_summary_authorization_type === authType
+        );
+      }
     }
 
     return output;
@@ -343,15 +376,16 @@ export const ProjectDescriptionTab = () => {
 
   const handleRetryAMSSubmissionClicked = async () => {
     setIsLoaded(false);
-
     try {
       const transformedAuthorizations = transformProjectSummaryAuthorizations(
         project.project_summary.authorizations
       );
+
       const projectSummary = {
         ...project.project_summary,
         authorizations: transformedAuthorizations,
       };
+
       const payload = handleTransformPayload({
         ...projectSummary,
         ams_terms_agreed: true,
@@ -361,7 +395,7 @@ export const ProjectDescriptionTab = () => {
       // Normalize contacts' addresses
       payload.contacts.forEach((contact) => {
         if (Array.isArray(contact.address)) {
-          contact.address = contact.address.length === 0 ? null : contact.address.join(", ");
+          contact.address = contact.address.length === 0 ? null : contact.address[0];
         }
       });
 
@@ -372,15 +406,18 @@ export const ProjectDescriptionTab = () => {
             ? null
             : payload.facility_operator.address[0];
       }
+
       await dispatch(
         updateProjectSummary(
           {
             projectGuid: project.project_summary.project_guid,
             projectSummaryGuid: project.project_summary.project_summary_guid,
           },
-          payload
+          payload,
+          null
         )
       );
+
       await dispatch(fetchProjectById(project.project_summary.project_guid));
       setIsLoaded(true);
     } catch (error) {
@@ -411,28 +448,49 @@ export const ProjectDescriptionTab = () => {
               this stage to be considered complete.
             </Typography.Paragraph>
 
-            <Callout
-              message={
-                <div className="nod-callout">
-                  <h4>Submission Failed</h4>
-                  <p>
-                    One or more of your environment authorization applications has not been
-                    submitted successfully. Please retry the submission.
-                  </p>
-                </div>
-              }
-              severity={CALLOUT_SEVERITY.danger}
-            />
+            {hasFailedAMSSubmission && (
+              <Callout
+                message={
+                  <div className="nod-callout">
+                    <h4>Submission Unsuccessful</h4>
+                    <p>
+                      One or more of your environment authorization applications has not been
+                      submitted successfully. Please retry the submission.
+                    </p>
+                  </div>
+                }
+                severity={CALLOUT_SEVERITY.danger}
+              />
+            )}
 
             <Typography.Title level={3}>Submission Progress</Typography.Title>
             <Typography.Title level={4}>Major Mines Office</Typography.Title>
             <Typography.Title level={5}>Mines Act</Typography.Title>
-            <CoreTable dataSource={minesActData} columns={minesActColumns} />
+            <CoreTable
+              rowKey="project_summary_authorization_guid"
+              dataSource={minesActData}
+              columns={nonAMSActColumns}
+            />
+            <br />
+            <Typography.Title level={5}>Water Sustainability Act</Typography.Title>
+            <CoreTable
+              rowKey="project_summary_authorization_guid"
+              dataSource={waterSustainabilityActData}
+              columns={nonAMSActColumns}
+            />
+            <br />
+            <Typography.Title level={5}>Forestry Act</Typography.Title>
+            <CoreTable
+              rowKey="project_summary_authorization_guid"
+              dataSource={forestryActData}
+              columns={nonAMSActColumns}
+            />
+            <br />
             <Typography.Title level={4}>Ministry of Environment</Typography.Title>
             <Typography.Title level={5}>Environmental Management Act</Typography.Title>
-            {environmentalManagementActData?.length > 0 && (
+            {hasFailedAMSSubmission && (
               <Alert
-                message="Submission Failed Please Retry"
+                message="Submission Unsuccessful"
                 showIcon
                 type="error"
                 description={`Your environment authorization application was not submitted successfully. Please retry the submission or start a new application for the rejected authorization(s). You can link the submission to the new application on the Related Projects page. One or more of your environment authorization application has not been submitted successfully. Please retry the submission.`}
@@ -449,18 +507,8 @@ export const ProjectDescriptionTab = () => {
             <CoreTable
               rowKey="project_summary_authorization_guid"
               dataSource={environmentalManagementActData}
-              columns={otherActColumns}
+              columns={amsActColumns}
             />
-            <br />
-            <Typography.Title level={5}>Water Sustainability Act</Typography.Title>
-            <CoreTable
-              rowKey="project_summary_authorization_guid"
-              dataSource={waterSustainabilityActData}
-              columns={otherActColumns}
-            />
-            <br />
-            <Typography.Title level={5}>Forestry Act</Typography.Title>
-            <CoreTable dataSource={forestryActData} columns={otherActColumns} />
           </Col>
         </Row>
       ) : (
@@ -469,4 +517,5 @@ export const ProjectDescriptionTab = () => {
     </>
   );
 };
+
 export default ProjectDescriptionTab;
