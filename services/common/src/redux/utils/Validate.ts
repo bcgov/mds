@@ -98,6 +98,60 @@ export const requiredNewFiles = (files: any[]) => {
   return hasNewFiles ? undefined : "This is a required field";
 };
 
+export const spatialDocumentBundle = (files: any[]) => {
+  const singleTypes = ["kml", "kmz"];
+  const mandatoryTypes = ["shp", "shx", "dbf", "prj"];
+  const optionalTypes = ["sbn", "sbx", "xml"];
+  const errors = [];
+
+  if (files?.length > 0) {
+    const fileData = files.map((file) => file.document_name.split("."));
+    const filesMultipleTypes = fileData.filter((data) => data.length > 2);
+    if (filesMultipleTypes.length > 0) {
+      const invalidFiles = filesMultipleTypes.map((file) => file.join("."));
+      errors.push(`Invalid file types: ${invalidFiles.join(", ")}`);
+    }
+    const isSingleFile = files.length === 1 && singleTypes.includes(fileData[0][1].toLowerCase());
+    if (isSingleFile && errors.length === 0) {
+      return;
+    }
+    const fileNameToCompare = fileData[0][0];
+    const fileNameMatch = fileData.every(([fileName]) => fileName === fileNameToCompare);
+    if (!fileNameMatch) {
+      return "Spatial document file names must match";
+    }
+
+    const getMatching = (fileType) =>
+      fileData.filter(([_name, type]) => type.toLowerCase() === fileType);
+    const missingRequired = [];
+    const duplicateTypes = [];
+    mandatoryTypes.forEach((fileType) => {
+      const matching = getMatching(fileType);
+      if (matching.length === 0) {
+        missingRequired.push(fileType);
+      }
+      if (matching.length > 1) {
+        duplicateTypes.push(fileType);
+      }
+    });
+    optionalTypes.forEach((fileType) => {
+      const matching = getMatching(fileType);
+      if (matching.length > 1) {
+        duplicateTypes.push(fileType);
+      }
+    });
+    if (missingRequired.length > 0) {
+      errors.push(`Spatial bundle is missing file types: ${missingRequired.join(", ")}`);
+    }
+    if (duplicateTypes.length > 0) {
+      errors.push(
+        `Spatial bundle can only have one instance of each type: ${duplicateTypes.join(", ")}`
+      );
+    }
+  }
+  return errors.length > 0 ? errors.join("\n") : undefined;
+};
+
 export const notnone = (value) => (value === "None" ? "Please select an item" : undefined);
 
 export const maxLength = memoize((max) => (value) =>

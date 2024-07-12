@@ -63,7 +63,7 @@ export const ProjectSummary: FC = () => {
   const isExistingProject = Boolean(projectGuid && projectSummaryGuid);
   const isDefaultLoaded = isExistingProject
     ? formattedProjectSummary?.project_summary_guid === projectSummaryGuid &&
-      formattedProjectSummary?.project_guid === projectGuid
+    formattedProjectSummary?.project_guid === projectGuid
     : mine?.mine_guid === mineGuid;
   const isDefaultEditMode = !isExistingProject || mode === "edit";
 
@@ -181,11 +181,11 @@ export const ProjectSummary: FC = () => {
     }
     const url = !isNewProject
       ? routes.EDIT_PROJECT_SUMMARY.dynamicRoute(
-          projectGuid,
-          projectSummaryGuid,
-          newTab,
-          !isEditMode
-        )
+        projectGuid,
+        projectSummaryGuid,
+        newTab,
+        !isEditMode
+      )
       : routes.ADD_PROJECT_SUMMARY.dynamicRoute(mineGuid, newTab);
     history.push(url);
   };

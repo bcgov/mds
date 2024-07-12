@@ -64,3 +64,16 @@ Object.defineProperty(window, "matchMedia", {
     dispatchEvent: jest.fn(),
   })),
 });
+
+// for leaflet, emaulate SVG support. jest has an open PR for SVG support but it's been 3 years
+const createElementNSOrig = global.document.createElementNS;
+global.document.createElementNS = function (namespaceURI, qualifiedName) {
+  if (namespaceURI === "http://www.w3.org/2000/svg" && qualifiedName === "svg") {
+    // eslint-disable-next-line prefer-rest-params
+    const element = createElementNSOrig.apply(this, arguments);
+    element.createSVGRect = function () {};
+    return element;
+  }
+  // eslint-disable-next-line prefer-rest-params
+  return createElementNSOrig.apply(this, arguments);
+};
