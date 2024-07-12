@@ -1,0 +1,1 @@
+ALTER TABLE project_summary ALTER COLUMN facility_coords_source TYPE character varying(60);
