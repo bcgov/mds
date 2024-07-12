@@ -35,6 +35,7 @@ import {
   PROJECT_SUMMARY_WITH_AMS_SUBMISSION_SECTION,
   AMS_STATUS_CODES_SUCCESS,
   AMS_STATUS_CODE_FAIL,
+  AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES,
 } from "@mds/common";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { fetchRegions } from "@mds/common/redux/slices/regionsSlice";
@@ -124,10 +125,14 @@ export const ProjectSummaryPage = () => {
       projectSummaryResponse
     ) {
       const { data } = projectSummaryResponse;
-      const authorizations = data?.authorizations;
-      const areAuthorizationsSuccessful = authorizations.every(
-        (auth) => auth.ams_status_code === "200"
-      );
+      const authorizations = data?.authorizations ?? [];
+      const areAuthorizationsSuccessful = authorizations
+        .filter((authorization) =>
+          AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES.includes(
+            authorization.project_summary_authorization_type
+          )
+        )
+        .every((auth) => auth.ams_status_code === "200");
       history.push(
         VIEW_PROJECT_SUBMISSION_STATUS_PAGE.dynamicRoute(
           projectGuid,
