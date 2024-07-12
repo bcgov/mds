@@ -449,3 +449,14 @@ export const CONTACTS_COUNTRY_OPTIONS = [
   { value: "USA", label: "United States" },
   { value: "INT", label: "International" },
 ];
+
+export const PROJECT_SUMMARY_WITH_AMS_SUBMISSION_SECTION = "declaration";
+export const AMS_STATUS_CODES_SUCCESS = "success";
+export const AMS_STATUS_CODE_FAIL = "fail";
+
+export const AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES = [
+  "AIR_EMISSIONS_DISCHARGE_PERMIT",
+  "EFFLUENT_DISCHARGE_PERMIT",
+  "REFUSE_DISCHARGE_PERMIT",
+  "MUNICIPAL_WASTEWATER_REGULATION",
+];

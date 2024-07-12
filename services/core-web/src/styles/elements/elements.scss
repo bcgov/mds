@@ -10,7 +10,8 @@ p {
   width: auto;
 }
 
-h1, h1.ant-typography {
+h1,
+h1.ant-typography {
   font-size: $default-h1;
   font-weight: $bold;
   color: $h1-color;
@@ -20,38 +21,46 @@ h1, h1.ant-typography {
   }
 }
 
-h2, h2.ant-typography {
+h2,
+h2.ant-typography {
   font-size: $default-h2;
   font-weight: $bold;
   color: $h2-color;
+
   @include mobile {
     font-size: $mobile-h2;
   }
 }
 
-h3, h3.ant-typography {
+h3,
+h3.ant-typography {
   font-size: $default-h3;
   font-weight: $bold;
   color: $h3-color;
+
   @include mobile {
     font-size: $mobile-h3;
   }
 }
 
-h4, h4.ant-typography {
+h4,
+h4.ant-typography {
   font-size: $default-h4;
   font-weight: $bold;
   color: $h4-color;
+
   @include mobile {
     font-size: $mobile-h4;
   }
 }
 
-h5, h5.ant-typography {
+h5,
+h5.ant-typography {
   font-size: $default-h5;
   font-weight: $light;
   color: $h5-color;
   text-transform: uppercase;
+
   @include mobile {
     font-size: $mobile-h5;
   }
@@ -62,6 +71,7 @@ h6 {
   font-weight: $bold;
   color: $h6-color;
   text-transform: uppercase;
+
   @include mobile {
     font-size: $mobile-h6;
   }
@@ -116,6 +126,7 @@ a.ant-typography,
   @extend p;
   color: $a-color;
   text-decoration: underline;
+
   &:hover {
     color: $a-color-hover;
     text-decoration: underline;
@@ -139,6 +150,7 @@ a.ant-typography,
   @extend p;
   color: #ffffff;
   text-decoration: underline;
+
   &:hover {
     color: #e0e0e0;
     text-decoration: underline;
@@ -157,6 +169,7 @@ hr {
   font-size: 32px;
   font-weight: $bold;
   color: $violet;
+
   @include mobile {
     font-size: 26px;
   }
@@ -166,6 +179,7 @@ hr {
   font-size: 18px;
   font-weight: $bold;
   color: $darkest-grey;
+
   @include mobile {
     font-size: 16px;
   }
@@ -177,11 +191,13 @@ hr {
   font-weight: $semi-bold;
   color: $ant-header-color;
 }
+
 .nested-table-header {
   font-size: $table-header;
   font-weight: $semi-bold;
   color: $ant-nested-header-color;
 }
+
 .field-title {
   font-size: $field-label;
   font-weight: $semi-bold;
