@@ -24,7 +24,14 @@ async def extract_permit_conditions(file: UploadFile = File(...)):
     try:
         pipeline = permit_condition_pipeline()
 
-        return pipeline.run({"PDFConverter": {"file_path": tmp.name}})
+        return pipeline.run({
+            "PDFConverter": {"file_path": tmp.name},
+            "prompt_builder": {
+                "template_variables": {
+                    "max_pages": 5
+                }
+            }
+        })
     finally:
         tmp.close()
 
