@@ -16,6 +16,4 @@ EXPOSE 5001
 
 RUN mkdir -p /tmp/celery && chmod 777 /tmp/celery
 
-RUN mkdir -p /tmp/spatial && chmod 777 /tmp/spatial
-
 CMD [ "opentelemetry-instrument", "flask", "run", "--no-reload"]
