@@ -400,11 +400,11 @@ class DocumentUploadHelper:
 
         # If this is a spatial bundle, zip it to .shpz
         if len(bundle_documents) > 1:
-            file_path = secure_filename(f'tmp/spatial/{name}.shpz')
+            file_path = secure_filename(f'/tmp/spatial/{name}.shpz')
             cls.zip_spatial_files(bundle_documents, file_path)
         # Otherwise validate and download the single spatial file
         else:
-            file_path = (f'tmp/spatial/{secure_filename(bundle_documents[0].file_display_name)}')
+            file_path = (f'/tmp/spatial/{secure_filename(bundle_documents[0].file_display_name)}')
             cls.download_kml_kmz_files(bundle_documents[0], file_path)
 
         geomark_response = cls.send_spatial_file_to_geomark(file_path)
