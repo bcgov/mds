@@ -40,21 +40,23 @@ class PermitConditionValidator():
         replies = [self._parse_reply(reply) for reply in data.messages]
 
         csv_content = StringIO()
-        writer = csv.writer(csv_content)
+        # writer = csv.writer(csv_content)
 
-        for reply in replies[0].content:
-            writer.writerow(reply.values())
-            # print(reply)
-            if reply and reply['condition_text'] and reply['condition_text'] != '':
-                self.last_condition_text = f"""
-                    section_title: {reply.get('section_title')}
-                    section_paragraph: {reply.get('section_paragraph')}
-                    subparagraph: {reply.get('subparagraph')}
-                    clause: {reply.get('clause')}
-                    subclause: {reply.get('subclause')}
 
-                    {reply['condition_text']}
-                """
+        for iteration in replies:
+            for reply in iteration.content[0]:
+                # writer.writerow(reply.values())
+                if reply and reply['condition_text'] and reply['condition_text'] != '':
+                    self.last_condition_text = f"""
+                        section_title: {reply.get('section_title')}
+                        section_paragraph: {reply.get('section_paragraph')}
+                        subparagraph: {reply.get('subparagraph')}
+                        clause: {reply.get('clause')}
+                        subclause: {reply.get('subclause')}
+
+                        {reply['condition_text']}
+                    """
+        print(self.last_condition_text)
                 
         logger.error(f'Finished pages {self.start_page + 1}-{self.start_page + 1 + self.max_pages} of {len(data.documents)}')
         logger.error(f'Found {len(replies[0].content)} replies')
