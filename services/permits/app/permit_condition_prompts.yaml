@@ -7,28 +7,104 @@ system_prompt: |
   - Geotechnical
   - Protection of Land and Watercourses or Environmental Land and Watercourses
 
-  You will be given a text representation of a mining permit and you will output the information extracted into the following JSON format. 
+  You will be given a text representation of a mining permit and you will output the information extracted into the following JSON format.
       [{
         "section_title": "General",
-        "section_paragraph": "A",
-        "subparagraph": "1",
-        "clause": "a",
-        "subclause": "ii",
-        "page_number": 4,
-        "condition_text": "The permittee must complete reclamation activities within one year of the cessation of mining activities.",
-        "due_date": "April 9, 2024",
-        "recurring": "Yes", 
-        "frequency": "Yearly",
-        "mention_chief_inspector": "Yes",
-        "mention_chief_permitting_officer": "Yes",
-        "require_approval": "Yes",
-        "reference_first_nation": "Yes",
-        "required_by_date": "Specific Date",
-        "requirement_before_activity": "Yes",
-        "timeframe_before_activity": "Yes",
-        "professional_designation_involved": "Yes"
+        "section_paragraph": "A", # Always uppercase letter starting from A
+        "paragraph_title": "Compliance with Mines Act and Code", # The title of the paragraph
+        "subparagraph": "1", # Always number, starting from 1
+        "clause": "a", # Always lowercase letter starting from a
+        "subclause": "ii", # Always lowercase roman numeral starting from i
+        "page_number": 4, # The page number the condition was found. Denoted by <--- REAL PAGE: --->
+        "condition_text": "The permittee must complete reclamation activities within one year of the cessation of mining activities."
       },
       // the rest of the conditions]
+
+  Here's an example of what a condition might look like:
+
+  ---
+  A. General  
+
+  1. Compliance with Mines Act and Code 
+
+  The permittee must comply with the Mines Act and the Health, Safety and Reclamation Code for Mines in British Columbia.
+
+  2. Permit  Approval 
+
+  (a) The Permittee is authorized under this permit ( M-179) for the following:  
+
+  (i) Development, including surface disturbance and works.
+  (ii) A mill throughput that does not exceed 2,500 tonnes per day, on an annual average basis.  
+
+  (b) The Permittee is not authorized under this permit (M- 179) for the following:  
+
+  (i) The conducting of any
+  ---
+
+  This should return
+
+  [
+    {
+        "section_title": "General",
+        "section_paragraph": "A",
+        "paragraph_title": "Compliance with Mines Act and Code"
+        "subparagraph": "1",
+        "clause": "",
+        "subclause": "",
+        "page_number": 1,
+        "condition_text": "The permittee must comply with the Mines Act and the Health, Safety and Reclamation Code for Mines in British Columbia."
+    },
+    {
+        "section_title": "General",
+        "section_paragraph": "A",
+        "paragraph_title": "Permit Approval",
+        "subparagraph": "3",
+        "clause": "a",
+        "subclause": "",
+        "page_number": 1,
+        "condition_text": "The Permittee is authorized under this permit ( M-179) for the following:"
+    },
+    {
+        "section_title": "General",
+        "section_paragraph": "A",
+        "paragraph_title": "Permit Approval",
+        "subparagraph": "3",
+        "clause": "a",
+        "subclause": "i",
+        "page_number": 1,
+        "condition_text": "Development, including surface disturbance and works."
+    },
+    {
+        "section_title": "General",
+        "section_paragraph": "A",
+        "paragraph_title": "Permit Approval",
+        "subparagraph": "3",
+        "clause": "a",
+        "subclause": "ii",
+        "page_number": 1,
+        "condition_text": "A mill throughput that does not exceed 2,500 tonnes per day, on an annual average basis."
+    },
+    {
+        "section_title": "General",
+        "section_paragraph": "A",
+        "paragraph_title": "Permit Approval",
+        "subparagraph": "3",
+        "clause": "b",
+        "subclause": "",
+        "page_number": "",
+        "condition_text": "The Permittee is not authorized under this permit (M- 179) for the following:"
+    },
+    {
+        "section_title": "General",
+        "section_paragraph": "A",
+        "paragraph_title": "Permit Approval",
+        "subparagraph": "2",
+        "clause": "b",
+        "subclause": "i",
+        "page_number": "",
+        "condition_text": "The conducting of any"
+    }
+  ]
 
 user_prompt: |
   Use the text below (delimited by -----------) as the source for creating a JSON representation of the permit output the result without a code block. Start at the first page and continue until you have extracted all the conditions.
@@ -43,10 +119,27 @@ permit_document_prompt: |
   -----------
   {% if start_page %}
     {% for document in documents[[start_page-1,0]|max:start_page+max_pages] %}
+      <--- REAL PAGE: {{[start_page-1,0]|max + loop.index}} --->
+
       {{ document.content}}
     {% endfor %}
   {% else %}
     {% for document in documents[0:max_pages] %}
+      <--- REAL PAGE: {{loop.index}} --->
+
       {{ document.content}}
     {% endfor %}
   {% endif %}
+
+extra_props: |
+  "due_date": "April 9, 2024",
+  "recurring": "Yes", 
+  "frequency": "Yearly",
+  "mention_chief_inspector": "Yes",
+  "mention_chief_permitting_officer": "Yes",
+  "require_approval": "Yes",
+  "reference_first_nation": "Yes",
+  "required_by_date": "Specific Date",
+  "requirement_before_activity": "Yes",
+  "timeframe_before_activity": "Yes",
+  "professional_designation_involved": "Yes"

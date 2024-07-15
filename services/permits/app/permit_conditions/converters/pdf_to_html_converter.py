@@ -80,12 +80,14 @@ class PDFToHTMLConverter():
             pdf_reader = PdfReader(doc)
 
             for idx,page in enumerate(pdf_reader.pages):
-                page_text = page.extract_text()
-                pages.append(page_text)
-                with open(f'app/extract/pdfreader-{idx}.txt', "w") as doc:
-                    doc.write(page_text)
+                page_text = page.extract_text(extraction_mode="layout", layout_mode_space_vertically=False, layout_mode_scale_weight=0.5)
 
-        # for page_num in range(num_pages):
+                if idx > 15 and idx < 25:
+                    pages.append(page_text)
+                    with open(f'app/extract/pdfreader-{idx}.txt', "w") as doc:
+                        doc.write(page_text)
+
+    # for page_num in range(num_pages):
         #     with open(file_path, "rb") as doc:
         #         output_string = StringIO()
 

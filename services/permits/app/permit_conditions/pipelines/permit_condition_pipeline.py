@@ -60,7 +60,7 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
         cache_key = hash_messages(messages)
 
         try:
-            with open(f'app/{cache_key}.pickle', 'rb') as f:
+            with open(f'app/cache/{cache_key}.pickle', 'rb') as f:
                 res = {
                     **pickle.load(f),
                 }
@@ -71,7 +71,7 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
             logger.error(e)
             res = super(CachedAzureOpenAIChatGenerator, self).run(messages=messages, generation_kwargs=generation_kwargs)
 
-            with open(f'app/{cache_key}.pickle', 'wb') as f:
+            with open(f'app/cache/{cache_key}.pickle', 'wb') as f:
                 pickle.dump(res, f, protocol=pickle.HIGHEST_PROTOCOL)
 
         return res['replies'][0]
@@ -86,7 +86,7 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
         prompt_tokens = reply.meta['usage']['prompt_tokens']
         total_tokens = reply.meta['usage']['total_tokens']
 
-        while reply.meta['finish_reason'] == 'length' or iteration > 10:
+        while reply.meta['finish_reason'] == 'length' or iteration < 10:
             logger.error('Partial json generated continuing query')
 
             messages = data.messages + [reply, ChatMessage.from_user("Continue!")]
