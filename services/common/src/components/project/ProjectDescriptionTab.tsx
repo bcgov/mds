@@ -39,9 +39,8 @@ import {
   updateProjectSummary,
   fetchProjectById,
 } from "@mds/common/redux/actionCreators/projectActionCreator";
-import { isArray } from "lodash";
-import { removeNullValuesRecursive } from "@mds/common/constants/utils";
 import Loading from "@mds/common/components/common/Loading";
+import { formatProjectPayload } from "@mds/common/utils/helpers";
 
 const ProjectDescriptionTab = () => {
   const [shouldDisplayRetryButton, setShouldDisplayRetryButton] = useState(false);
@@ -273,63 +272,6 @@ const ProjectDescriptionTab = () => {
     history.push(url);
   };
 
-  const transformAuthorizations = (valuesFromForm: any) => {
-    const { authorizations = {}, project_summary_guid } = valuesFromForm;
-
-    const transformAuthorization = (type, authorization) => {
-      return { ...authorization, project_summary_authorization_type: type, project_summary_guid };
-    };
-
-    let updatedAuthorizations = [];
-    let newAmsAuthorizations = [];
-    let amendAmsAuthorizations = [];
-
-    projectSummaryAuthorizationTypesArray.forEach((type) => {
-      const authsOfType = authorizations[type];
-      if (authsOfType) {
-        if (isArray(authsOfType)) {
-          const formattedAuthorizations = authsOfType.map((a) => {
-            return transformAuthorization(type, a);
-          });
-          updatedAuthorizations = updatedAuthorizations.concat(formattedAuthorizations);
-        } else {
-          newAmsAuthorizations = newAmsAuthorizations.concat(
-            authsOfType?.NEW.map((a) =>
-              transformAuthorization(type, {
-                ...a,
-                project_summary_permit_type: [AMS_AUTHORIZATION_TYPES.NEW],
-              })
-            )
-          );
-          amendAmsAuthorizations = amendAmsAuthorizations.concat(
-            authsOfType?.AMENDMENT.map((a) =>
-              transformAuthorization(type, {
-                ...a,
-                project_summary_permit_type: [AMS_AUTHORIZATION_TYPES.AMENDMENT],
-              })
-            )
-          );
-        }
-      }
-    });
-    return {
-      authorizations: updatedAuthorizations,
-      ams_authorizations: { amendments: amendAmsAuthorizations, new: newAmsAuthorizations },
-    };
-  };
-
-  const handleTransformPayload = (payload: any) => {
-    let payloadValues: any = {};
-    const updatedAuthorizations = transformAuthorizations(payload);
-    const values = removeNullValuesRecursive(payload);
-    payloadValues = {
-      ...values,
-      ...updatedAuthorizations,
-    };
-    delete payloadValues.authorizationTypes;
-    return payloadValues;
-  };
-
   /* Transforms project summary authorizations to match the
    *  shape of project summary authorization form values.
    */
@@ -372,6 +314,10 @@ const ProjectDescriptionTab = () => {
     }
 
     return output;
+  };
+
+  const handleTransformPayload = (valuesFromForm: any) => {
+    return formatProjectPayload(valuesFromForm, { projectSummaryAuthorizationTypesArray });
   };
 
   const handleRetryAMSSubmissionClicked = async () => {

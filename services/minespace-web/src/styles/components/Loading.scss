@@ -7,9 +7,13 @@
   bottom: 0;
   right: 0;
 
-  #loader {
+  .loader {
     width: 300px;
     height: 300px;
     @include center(true, true);
   }
+}
+
+.loader-color {
+  color: $gov-blue;
 }

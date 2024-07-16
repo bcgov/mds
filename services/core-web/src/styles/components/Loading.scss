@@ -8,11 +8,15 @@
   right: 0;
   opacity: 0.9;
 
-  #loader {
+  .loader {
     width: 300px;
     height: 300px;
     @include center(true, true);
   }
+}
+
+.loader-color {
+  color: $pure-white;
 }
 
 .loading-screen--small {

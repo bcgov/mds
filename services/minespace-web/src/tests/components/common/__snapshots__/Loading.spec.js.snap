@@ -5,7 +5,7 @@ exports[`Loading renders properly 1`] = `
   id="loading-screen"
 >
   <div
-    id="loader"
+    className="loader"
   >
     <img
       alt="Loading"

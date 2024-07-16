@@ -5,7 +5,7 @@ exports[`ProjectSummary renders properly 1`] = `
   id="loading-screen"
 >
   <div
-    id="loader"
+    class="loader"
   >
     <lottie-mock
       options="[object Object]"
