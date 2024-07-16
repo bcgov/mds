@@ -25,7 +25,7 @@ class NoticeOfDepartureDocumentXref(SoftDeleteMixin, AuditMixin, Base):
     mine_document = db.relationship('MineDocument', lazy='joined', overlaps="mine_documents,notice_of_departure")
 
     mine_guid = association_proxy('mine_document', 'mine_guid')
-    mine_document_bundle = association_proxy('mine_document', 'mine_document_bundle')
+    mine_document_bundle_id = association_proxy('mine_document', 'mine_document_bundle_id')
     document_manager_guid = association_proxy('mine_document', 'document_manager_guid')
     document_name = association_proxy('mine_document', 'document_name')
 
