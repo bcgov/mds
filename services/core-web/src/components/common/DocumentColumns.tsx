@@ -47,7 +47,7 @@ const documentWithTag = (
   );
 };
 
-export const renderTaggedColumn = (
+export const renderVersionTaggedColumn = (
   dataIndex: string,
   title: string,
   sortable = false,
@@ -104,7 +104,7 @@ export const documentNameColumn = (
   minimalView = false
 ) => {
   return minimalView
-    ? renderTaggedColumn(documentNameColumnIndex, title)
+    ? renderVersionTaggedColumn(documentNameColumnIndex, title)
     : renderDocumentLinkColumn(documentNameColumnIndex, title, true);
 };
 

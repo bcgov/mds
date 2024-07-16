@@ -35,6 +35,7 @@ import reportSubmissionReducer from "@mds/common/components/reports/reportSubmis
 import verifiableCredentialsReducer from "@mds/common/redux/slices/verifiableCredentialsSlice";
 import regionsReducer from "@mds/common/redux/slices/regionsSlice";
 import complianceCodeReducer, { complianceCodeReducerType } from "../slices/complianceCodesSlice";
+import spatialDataReducer, { spatialDataReducerType } from "../slices/spatialDataSlice";
 export const sharedReducer = {
   ...activityReducer,
   ...authenticationReducer,
@@ -79,5 +80,6 @@ export const sharedReducer = {
   reportSubmission: reportSubmissionReducer,
   verifiableCredentials: verifiableCredentialsReducer,
   regions: regionsReducer,
+  [spatialDataReducerType]: spatialDataReducer,
   [complianceCodeReducerType]: complianceCodeReducer,
 };

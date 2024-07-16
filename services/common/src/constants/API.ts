@@ -237,6 +237,7 @@ export const INCIDENT_CATEGORY_CODES = `/incidents/category-codes`;
 // Documents
 export const COMPLETE_MULTIPART_UPLOAD = (documentGuid) =>
   `/documents/${documentGuid}/complete-upload`;
+export const COMPLETE_SPATIAL_BUNDLE = "/documents/complete-bundle";
 
 // Work Information
 export const MINE_WORK_INFORMATIONS = (mineGuid) => `/mines/${mineGuid}/work-information`;

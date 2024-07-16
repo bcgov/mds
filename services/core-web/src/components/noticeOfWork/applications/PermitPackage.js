@@ -166,10 +166,10 @@ export class PermitPackage extends Component {
       <div>
         <DocumentCompression
           documentType={"all"}
-          rows={this.state.documents}
+          mineDocuments={this.state.documents}
           setCompressionModalVisible={(state) => this.setState({ isCompressionModal: state })}
           isCompressionModalVisible={this.state.isCompressionModal}
-          compressionInProgress={(state) => this.setState({ isCompressionInProgress: state })}
+          setCompressionInProgress={(state) => this.setState({ isCompressionInProgress: state })}
           showDownloadWarning={false}
         />
         <Button

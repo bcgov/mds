@@ -3,11 +3,11 @@ import { useSelector } from "react-redux";
 import { isDirty, isSubmitting } from "redux-form";
 import { FormContext } from "./FormWrapper";
 import { Button } from "antd";
-import { BaseButtonProps } from "antd/lib/button/button";
+import { ButtonProps } from "antd/lib/button/button";
 
 interface RenderSubmitButtonProps {
   buttonText?: string | ReactNode;
-  buttonProps?: BaseButtonProps;
+  buttonProps?: ButtonProps & React.RefAttributes<HTMLElement>;
 }
 
 const RenderSubmitButton: FC<RenderSubmitButtonProps> = ({

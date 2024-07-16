@@ -1,0 +1,269 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ViewSpatialDetail renders properly 1`] = `
+<div>
+  <div
+    class="leaflet-container leaflet-grab leaflet-touch-drag"
+    id="leaflet-map"
+    style="height: 100%; width: 100%; z-index: 0; min-height: 200px; position: relative;"
+    tabindex="0"
+  >
+    <div
+      class="leaflet-pane leaflet-map-pane"
+      style="left: 0px; top: 0px;"
+    >
+      <div
+        class="leaflet-pane leaflet-tile-pane"
+      >
+        <div
+          class="leaflet-layer "
+          style="z-index: 1;"
+        >
+          <div
+            class="leaflet-tile-container leaflet-zoom-animated"
+            style="z-index: 18; left: 0px; top: 0px;"
+          >
+            <img
+              alt=""
+              class="leaflet-tile"
+              role="presentation"
+              src="https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/0/0/0"
+              style="width: 256px; height: 256px; left: -36px; top: -81px;"
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        class="leaflet-pane leaflet-shadow-pane"
+      />
+      <div
+        class="leaflet-pane leaflet-overlay-pane"
+      >
+        <svg
+          height="0"
+          pointer-events="none"
+          style="left: 0px; top: 0px;"
+          viewBox="0 0 0 0"
+          width="0"
+        >
+          <g>
+            <path
+              class="leaflet-interactive"
+              d="M3 3L3 -3L-3 -3L-3 3z"
+              fill="#3388ff"
+              fill-opacity="0.2"
+              fill-rule="evenodd"
+              stroke="#3388ff"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-opacity="1"
+              stroke-width="3"
+            />
+          </g>
+        </svg>
+      </div>
+      <div
+        class="leaflet-pane leaflet-marker-pane"
+      />
+      <div
+        class="leaflet-pane leaflet-tooltip-pane"
+      />
+      <div
+        class="leaflet-pane leaflet-popup-pane"
+      />
+    </div>
+    <div
+      class="leaflet-control-container"
+    >
+      <div
+        class="leaflet-top leaflet-left"
+      >
+        <div
+          class="leaflet-control-zoom leaflet-bar leaflet-control"
+        >
+          <a
+            aria-label="Zoom in"
+            class="leaflet-control-zoom-in"
+            href="#"
+            role="button"
+            title="Zoom in"
+          >
+            +
+          </a>
+          <a
+            aria-label="Zoom out"
+            class="leaflet-control-zoom-out leaflet-disabled"
+            href="#"
+            role="button"
+            title="Zoom out"
+          >
+            −
+          </a>
+        </div>
+      </div>
+      <div
+        class="leaflet-top leaflet-right"
+      />
+      <div
+        class="leaflet-bottom leaflet-left"
+      />
+      <div
+        class="leaflet-bottom leaflet-right"
+      />
+    </div>
+  </div>
+  <div
+    class="ant-table-wrapper  core-table"
+  >
+    <div
+      class="ant-spin-nested-loading"
+    >
+      <div
+        class="ant-spin-container"
+      >
+        <div
+          class="ant-table ant-table-small"
+        >
+          <div
+            class="ant-table-container"
+          >
+            <div
+              class="ant-table-content"
+            >
+              <table
+                style="table-layout: auto;"
+              >
+                <colgroup />
+                <tbody
+                  class="ant-table-tbody"
+                >
+                  <tr
+                    class="ant-table-row ant-table-row-level-0 fade-in"
+                    data-row-key="5a5d71a5-8129-4678-bd2d-50ddb543d85a"
+                  >
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        class="document_name-column"
+                        title=""
+                      >
+                        shape.dbf
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      DBF
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      Jun 26 2024
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      idir\\username
+                    </td>
+                  </tr>
+                  <tr
+                    class="ant-table-row ant-table-row-level-0 fade-in"
+                    data-row-key="942a1535-2e84-4d28-831c-5c8c510ef116"
+                  >
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        class="document_name-column"
+                        title=""
+                      >
+                        shape.prj
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      PRJ
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      Jun 26 2024
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      idir\\username
+                    </td>
+                  </tr>
+                  <tr
+                    class="ant-table-row ant-table-row-level-0 fade-in"
+                    data-row-key="33013146-f3b1-4e44-83ef-dfc1d57b883a"
+                  >
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        class="document_name-column"
+                        title=""
+                      >
+                        shape.shp
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      SHP
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      Jun 26 2024
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      idir\\username
+                    </td>
+                  </tr>
+                  <tr
+                    class="ant-table-row ant-table-row-level-0 fade-in"
+                    data-row-key="1c77f818-3d7a-461c-902d-7546755f4661"
+                  >
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        class="document_name-column"
+                        title=""
+                      >
+                        shape.shx
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      SHX
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      Jun 26 2024
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      idir\\username
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

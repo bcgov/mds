@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AddPartyComponentWrapper renders properly 1`] = `
+<div>
+  <div>
+    <div>
+      <div
+        class="carousel carousel-slider"
+        style="width: 100%;"
+      >
+        <button
+          class="control-arrow control-prev control-disabled"
+          type="button"
+        />
+        <div
+          class="slider-wrapper axis-horizontal"
+        >
+          <ul
+            class="slider animated"
+            style="transform: translate3d(0%,0,0); transition-duration: 350ms;"
+          >
+            <li
+              class="slide selected"
+            >
+              <div>
+                <div
+                  class="fade-in"
+                >
+                  <div>
+                    modal content
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li
+              class="slide"
+            >
+              <div />
+            </li>
+          </ul>
+        </div>
+        <button
+          class="control-arrow control-next control-disabled"
+          type="button"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;

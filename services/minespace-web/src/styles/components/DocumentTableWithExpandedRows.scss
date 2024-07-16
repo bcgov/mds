@@ -36,9 +36,18 @@
     }
 }
 
-.file-name-container {
+.file-name-container,
+.tag-column-container {
     align-items: center;
     flex-basis: 90%;
+
+    &.child {
+        margin-left: 38px;
+    }
+
+    .tag-text-parent {
+        margin-left: 14px;
+    }
 
     @media (min-width: 769px) {
         justify-content: space-between;
@@ -64,4 +73,18 @@
     color: white;
     margin-left: 5px;
     background-color: $gov-blue;
+}
+
+.table-tag-primary {
+    color: $white;
+    background-color: $gov-blue;
+    border-radius: 25px;
+    border: none;
+
+    font-size: 11px;
+    margin-right: -8px;
+
+    svg.svg-inline--fa {
+        margin-right: 6px;
+    }
 }

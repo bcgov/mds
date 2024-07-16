@@ -110,6 +110,14 @@
     border-bottom: 1px dotted;
 }
 
+form .ant-row>button+button {
+    margin-left: 1em;
+}
+
+.ant-steps+* {
+    margin-top: 0.5em;
+}
+
 .ant-form-item-explain-error {
     margin-bottom: 15px;
 }

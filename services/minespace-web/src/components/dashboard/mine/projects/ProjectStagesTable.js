@@ -128,6 +128,7 @@ export class ProjectStagesTable extends Component {
         showHeader={false}
         pagination={false}
         columns={this.columns()}
+        rowKey="title"
         dataSource={this.transformRowData(this.props.projectStages)}
         locale={{ emptyText: "This project has no stage data." }}
       />
