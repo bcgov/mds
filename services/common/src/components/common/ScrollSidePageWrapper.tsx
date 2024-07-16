@@ -8,7 +8,7 @@ interface ScrollSidePageWrapperProps {
   headerHeight?: number;
 }
 
-export const coreHeaderHeight = 64; // match scss variable $header-height
+export const coreHeaderHeight = 62; // match scss variable $header-height
 
 const ScrollSidePageWrapper: FC<ScrollSidePageWrapperProps> = ({
   menuProps,

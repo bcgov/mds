@@ -59,10 +59,10 @@ $danger-btn-color-hover: darken($danger-btn-color, 20%);
 
 // Nav
 $nav-color: $darkest-grey;
-$nav-border-color: $medium-grey;
+$nav-border-color: transparent;
 $nav-height: 62px;
-$loading-bar-height: 2px;
-$header-height: $nav-height + $loading-bar-height;
+$loading-bar-height: 8px;
+$header-height: $nav-height;
 
 // Ant Component Overrides
 $h-divider-color: $darkest-grey;
