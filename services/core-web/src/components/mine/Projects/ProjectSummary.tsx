@@ -11,7 +11,14 @@ import {
   getFormattedProjectSummary,
   getProject,
 } from "@mds/common/redux/selectors/projectSelectors";
-import { FORM, Feature } from "@mds/common";
+import {
+  FORM,
+  Feature,
+  PROJECT_SUMMARY_WITH_AMS_SUBMISSION_SECTION,
+  AMS_STATUS_CODES_SUCCESS,
+  AMS_STATUS_CODE_FAIL,
+  AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES,
+} from "@mds/common";
 import { getMineById } from "@mds/common/redux/reducers/mineReducer";
 import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
 import {
@@ -56,7 +63,7 @@ export const ProjectSummary: FC = () => {
   const isExistingProject = Boolean(projectGuid && projectSummaryGuid);
   const isDefaultLoaded = isExistingProject
     ? formattedProjectSummary?.project_summary_guid === projectSummaryGuid &&
-      formattedProjectSummary?.project_guid === projectGuid
+    formattedProjectSummary?.project_guid === projectGuid
     : mine?.mine_guid === mineGuid;
   const isDefaultEditMode = !isExistingProject || mode === "edit";
 
@@ -121,7 +128,7 @@ export const ProjectSummary: FC = () => {
 
   const handleUpdateProjectSummary = async (payload, message) => {
     setIsLoaded(false);
-    return dispatch(
+    const projectSummaryResponse = await dispatch(
       updateProjectSummary(
         {
           projectGuid,
@@ -130,20 +137,42 @@ export const ProjectSummary: FC = () => {
         payload,
         message
       )
-    )
-      .then(async () => {
-        await dispatch(
-          updateProject(
-            { projectGuid },
-            { mrc_review_required: payload.mrc_review_required, contacts: payload.contacts },
-            "Successfully updated project.",
-            false
+    );
+
+    await dispatch(
+      updateProject(
+        { projectGuid },
+        {
+          mrc_review_required: payload.mrc_review_required,
+          contacts: payload.contacts,
+        },
+        "Successfully updated project.",
+        false
+      )
+    );
+
+    await handleFetchData();
+    if (
+      tab === PROJECT_SUMMARY_WITH_AMS_SUBMISSION_SECTION &&
+      amsFeatureEnabled &&
+      projectSummaryResponse
+    ) {
+      const { data } = projectSummaryResponse;
+      const authorizations = data?.authorizations ?? [];
+      const areAuthorizationsSuccessful = authorizations
+        .filter((authorization) =>
+          AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES.includes(
+            authorization.project_summary_authorization_type
           )
-        );
-      })
-      .then(async () => {
-        await handleFetchData();
-      });
+        )
+        .every((auth) => auth.ams_status_code === "200");
+      history.push(
+        routes.VIEW_PROJECT_SUBMISSION_STATUS_PAGE.dynamicRoute(
+          projectGuid,
+          areAuthorizationsSuccessful ? AMS_STATUS_CODES_SUCCESS : AMS_STATUS_CODE_FAIL
+        )
+      );
+    }
   };
 
   const handleTabChange = (newTab: string) => {
@@ -152,17 +181,17 @@ export const ProjectSummary: FC = () => {
     }
     const url = !isNewProject
       ? routes.EDIT_PROJECT_SUMMARY.dynamicRoute(
-          projectGuid,
-          projectSummaryGuid,
-          newTab,
-          !isEditMode
-        )
+        projectGuid,
+        projectSummaryGuid,
+        newTab,
+        !isEditMode
+      )
       : routes.ADD_PROJECT_SUMMARY.dynamicRoute(mineGuid, newTab);
     history.push(url);
   };
 
   const handleSaveData = async (formValues, newActiveTab?: string) => {
-    const message = newActiveTab
+    let message = newActiveTab
       ? "Successfully updated the project description."
       : "Successfully submitted a project description to the Province of British Columbia.";
 
@@ -171,6 +200,9 @@ export const ProjectSummary: FC = () => {
       status_code = "DFT";
     } else if (!newActiveTab) {
       status_code = "SUB";
+      if (amsFeatureEnabled) {
+        message = null;
+      }
     }
     const values = { ...formValues, status_code: status_code };
 

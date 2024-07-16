@@ -17,6 +17,7 @@ export enum Feature {
   CODE_REQUIRED_REPORTS = "code_required_reports",
   AMS_AGENT = "ams_agent",
   HSRC_CODE_EDIT = "hsrc_code_edit",
+  MULTIPART_UPLOAD = "s3_multipart_upload",
 }
 
 export const initializeFlagsmith = async (flagsmithUrl, flagsmithKey) => {

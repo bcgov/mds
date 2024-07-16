@@ -1788,6 +1788,7 @@ export const INCIDENT: IMineIncident = {
   status_code: "CLD",
   mine_name: "Test Mine",
   categories: [{ mine_incident_category_code: "ENV" }],
+  incident_timezone: "Canada/Pacific",
 };
 
 export const INCIDENTS = {

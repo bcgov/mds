@@ -426,10 +426,10 @@ exports[`ManageDocumentsTab renders properly 1`] = `
   <div
     className="side-menu--content"
   >
-    <Connect(DocumentCompression)
+    <DocumentCompression
       documentType="all"
       isCompressionModalVisible={false}
-      rows={Array []}
+      mineDocuments={Array []}
       setCompressionModalVisible={[Function]}
       showDownloadWarning={false}
     />

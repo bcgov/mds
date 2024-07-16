@@ -40,4 +40,5 @@ export interface IMineIncident {
   update_user: string;
   update_timestamp: string;
   mine_incident_report_no: string;
+  incident_timezone: string;
 }

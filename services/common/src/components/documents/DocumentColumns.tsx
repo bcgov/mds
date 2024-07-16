@@ -35,11 +35,10 @@ const documentWithTag = (
               placement="top"
               mouseEnterDelay={1}
             >
-              {/* DIFFERENCE FROM CORE: Core gives a color attribute of #5E46A1 to <Tag /> */}
               <Tag
                 icon={<ClockCircleOutlined />}
                 style={{ border: "none" }}
-                className="file-version-amount"
+                className="file-version-amount table-tag-primary"
               >
                 {record.number_prev_versions}
               </Tag>
@@ -52,7 +51,7 @@ const documentWithTag = (
   );
 };
 
-export const renderTaggedColumn = (
+export const renderVersionTaggedColumn = (
   dataIndex: string,
   title: string,
   sortable = false,
@@ -109,7 +108,7 @@ export const documentNameColumn = (
   minimalView = false
 ) => {
   return minimalView
-    ? renderTaggedColumn(documentNameColumnIndex, title)
+    ? renderVersionTaggedColumn(documentNameColumnIndex, title)
     : renderDocumentLinkColumn(documentNameColumnIndex, title, true);
 };
 
