@@ -4,12 +4,9 @@ from werkzeug.exceptions import BadRequest
 from app.extensions import api
 from app.api.utils.access_decorators import requires_any_of, EDIT_PARTY, MINESPACE_PROPONENT
 
-from app.api.parties.party.models.party import Party
 from app.api.verifiable_credentials.models.connection import PartyVerifiableCredentialConnection
 from app.api.services.traction_service import TractionService
-from app.api.verifiable_credentials.response_models import PARTY_VERIFIABLE_CREDENTIAL_CONNECTION
 from app.api.utils.resources_mixins import UserMixin
-from app.api.utils.feature_flag import Feature, is_feature_enabled
 
 
 class VerifiableCredentialConnectionResource(Resource, UserMixin):
@@ -20,7 +17,6 @@ class VerifiableCredentialConnectionResource(Resource, UserMixin):
 
         active_conn = PartyVerifiableCredentialConnection.find_active_by_party_guid(party_guid)
         conns = PartyVerifiableCredentialConnection.find_by_party_guid(party_guid)
-        current_app.logger.warning(conns)
         if not active_conn:
             raise BadRequest(f"party has no active connection party_guid={party_guid}")
 

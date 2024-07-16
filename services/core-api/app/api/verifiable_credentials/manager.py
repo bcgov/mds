@@ -131,15 +131,15 @@ def process_all_untp_map_for_orgbook():
 
                        """).fetchall()
 
-    current_app.logger.warning("Num of results from query to process:" +
-                               str(len(permit_amendment_query_results)))
+    task_logger.info("Num of results from query to process:" +
+                     str(len(permit_amendment_query_results)))
 
     traction_service = TractionService()
     public_did_dict = traction_service.fetch_current_public_did()
     public_did = Config.CHIEF_PERMITTING_OFFICER_DID_WEB
     public_verkey = public_did_dict["verkey"]
 
-    current_app.logger.warning("public did: " + public_did)
+    task_logger.info("public did: " + public_did)
 
     records: List[Tuple[W3CCred,
                         PermitAmendmentOrgBookPublish]] = [] # list of tuples [payload, record]
@@ -147,13 +147,12 @@ def process_all_untp_map_for_orgbook():
     for row in permit_amendment_query_results:
         pa = PermitAmendment.find_by_permit_amendment_guid(row[0], unsafe=True)
         if not pa:
-            current_app.logger.warning(
-                f"Permit Amendment not found for permit_amendment_guid={row[0]}")
+            task_logger.warning(f"Permit Amendment not found for permit_amendment_guid={row[0]}")
             continue
 
         pa_cred = VerifiableCredentialManager.produce_untp_cc_map_payload(public_did, pa)
         if not pa_cred:
-            current_app.logger.warning(f"pa_cred could not be created")
+            task_logger.warning(f"pa_cred could not be created")
             continue
 
         payload_hash = md5(pa_cred.json(by_alias=True).encode('utf-8')).hexdigest()
@@ -172,7 +171,7 @@ def process_all_untp_map_for_orgbook():
         )
         records.append((pa_cred, paob))
 
-    current_app.logger.warning(f"public_verkey={public_verkey}")
+    task_logger.info(f"public_verkey={public_verkey}")
     # send to traction to be signed
     for cred_payload, record in records:
         signed_cred = traction_service.sign_jsonld_credential_deprecated(
@@ -181,13 +180,12 @@ def process_all_untp_map_for_orgbook():
             record.signed_credential = json.dumps(signed_cred["signed_doc"])
             record.sign_date = datetime.now()
         record.save()
-        current_app.logger.warning(
-            "bcreg_uri=" +
-            str(cred_payload.credentialSubject.issuedTo.identifiers[0].identifierURI) +
-            ", for permit_amendment_guid=" + str(row[0]))
-        current_app.logger.warning("unsigned_hash=" + str(record.unsigned_payload_hash))
+        task_logger.info("bcreg_uri=" +
+                         str(cred_payload.credentialSubject.issuedTo.identifiers[0].identifierURI) +
+                         ", for permit_amendment_guid=" + str(row[0]))
+        task_logger.info("unsigned_hash=" + str(record.unsigned_payload_hash))
 
-    print("num of records created: " + str(len(records or [])))
+    task_logger.info("num of records created: " + str(len(records or [])))
 
     return [record for payload, record in records]
 
@@ -261,7 +259,7 @@ class VerifiableCredentialManager():
         credential_attrs["mine_no"] = permit_amendment.mine.mine_no
         credential_attrs["issue_date"] = int(
             permit_amendment.issue_date.strftime("%Y%m%d")) if is_feature_enabled(
-                Feature.VC_MINES_ACT_PERMIT_20) else permit_amendment.issue_date
+                Feature.VC_ANONCREDS_20) else permit_amendment.issue_date
         # https://github.com/hyperledger/aries-rfcs/tree/main/concepts/0441-present-proof-best-practices#dates-and-predicates
         credential_attrs["latitude"] = permit_amendment.mine.latitude
         credential_attrs["longitude"] = permit_amendment.mine.longitude
@@ -285,10 +283,6 @@ class VerifiableCredentialManager():
         } for attr, val in credential_attrs.items()]
 
         return attributes
-
-    @classmethod
-    def revoke_all_credentials_for_permit(cls, permit_guid: str):
-        pass
 
     @classmethod
     def produce_map_01_credential_payload(cls, did: str, permit_amendment: PermitAmendment):
@@ -334,17 +328,11 @@ class VerifiableCredentialManager():
             return None
 
         untp_party_cpo = base.Party(
-            name="Chief Permitting Officer",
+            name="Chief Permitting Officer of Mines",
             identifiers=[
                 base.Identifier(
-                    scheme=ANONCRED_SCHEME,
-                    identifierValue="did:indy:candy:A2UZSmrL9N5FDZGPu68wy",
-                    identifierURI="https://candyscan.idlab.org/tx/CANDY_PROD/domain/321",
-                    verificationEvidence=base.Evidence(
-                        format=codes.EvidenceFormat.W3C_VC,
-                        credentialReference=
-                        "did:web:untp.traceability.site:parties:regulators:CHIEF-PERMITTING-OFFICER" #this is an anoncred
-                    ))
+                    identifierValue=
+                    "did:web:untp.traceability.site:parties:regulators:CHIEF-PERMITTING-OFFICER")
             ])
         orgbook_cred_url = f"https://orgbook.gov.bc.ca/entity/{orgbook_entity.registration_id}/credential/{orgbook_entity.credential_id}"
 
@@ -378,7 +366,7 @@ class VerifiableCredentialManager():
                 referenceRegulation=cc.Regulation(
                     id="https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/96293_01",
                     name="BC Mines Act",
-                    issuingBody=base.Party(name="BC Government"),
+                    issuingBody=base.Party(name="Government of British Columbia"),
                     effectiveDate=datetime(2024, 5, 14, tzinfo=ZoneInfo("UTC")).isoformat()),
                                                                                                    # Is there a did:web that attests to that legistlation?
                 subjectFacilities=[facility],
@@ -391,7 +379,7 @@ class VerifiableCredentialManager():
             tzinfo=ZoneInfo("UTC")).isoformat()
 
         cred = cc.ConformityAttestation(
-            id="http://example.com/attestation/123",
+            id="http://example.com/govdomain/minesactpermit/123",
             assessmentLevel=codes.AssessmentAssuranceCode.GovtApproval,
             type=codes.AttestationType.Certification,
             description=
