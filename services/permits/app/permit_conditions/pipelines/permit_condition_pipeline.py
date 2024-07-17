@@ -105,7 +105,6 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
 
         reply.content = content
 
-        print('nnnnasdasd')
         if not reply.content.endswith(']'):
             reply.content += ']'
 
@@ -126,7 +125,7 @@ class PaginatedChatPromptBuilder(ChatPromptBuilder):
     def run(
         self,
         iteration: Optional[dict]=None,
-        template= None,
+        template=None,
         template_variables=None,
         **kwargs,
     ):
@@ -139,12 +138,18 @@ class PaginatedChatPromptBuilder(ChatPromptBuilder):
                 **iteration
             }
 
-            logger.error(template_variables)
-
         output = super(PaginatedChatPromptBuilder, self).run(template=template, template_variables=template_variables, **kwargs)
 
         logger.error(output['prompt'])
-        logger.error(len(kwargs['documents']))
+
+        with open('app/prompt.txt', 'a') as f:
+            f.write('\n\n--------------------------------\n\n')
+
+            for out in output['prompt']:
+                f.write(out.role)
+                f.write(out.content)
+                f.write('\n\n')
+
         return {
             'data': ChatData(output['prompt'], kwargs['documents'])
         }

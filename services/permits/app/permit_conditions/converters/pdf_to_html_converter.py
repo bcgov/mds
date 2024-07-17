@@ -21,6 +21,7 @@ from pdfminer.layout import LAParams
 import ocrmypdf
 logger = logging.getLogger(__name__)
 
+DEBUG_MODE = os.environ.get("DEBUG_MODE", "false").lower() == "true"
 
 @component
 class PDFToHTMLConverter():
@@ -51,28 +52,10 @@ class PDFToHTMLConverter():
 
         return resolve1(document.catalog['Pages'])['Count']
 
-
     def _read_pdf(
         self,
         file_path: Path,
     ) -> List[str]:
-        
-
-        logger.error('file_path:')
-        logger.error(file_path)
-       
-        layout_params = LAParams(
-            line_overlap=0.5,
-            char_margin=2.0,
-            line_margin=0.5,
-            word_margin=0.1,
-            boxes_flow=0.5,
-            detect_vertical=True,
-            all_texts=False,
-        )
-        
-        with open(file_path, "rb") as doc:
-            num_pages = self.num_pages(doc)
 
         pages = []
 
@@ -82,49 +65,10 @@ class PDFToHTMLConverter():
             for idx,page in enumerate(pdf_reader.pages):
                 page_text = page.extract_text(extraction_mode="layout", layout_mode_space_vertically=False, layout_mode_scale_weight=0.5)
 
-                if idx > 15 and idx < 25:
-                    pages.append(page_text)
-                    with open(f'app/extract/pdfreader-{idx}.txt', "w") as doc:
+                pages.append(page_text)
+
+                if DEBUG_MODE:
+                    with open(f'app/debug/pdfreader-{idx}.txt', "w") as doc:
                         doc.write(page_text)
 
-    # for page_num in range(num_pages):
-        #     with open(file_path, "rb") as doc:
-        #         output_string = StringIO()
-
-        #         extract_text_to_fp(
-        #             doc,
-        #             output_string,
-        #             caching=False,
-        #             codec=None,
-        #             laparams=layout_params,
-        #             output_type="text",
-        #             debug=True,
-        #             # page_numbers=[page_num]
-        #         )
-
-        #         out = output_string.getvalue()
-
-        #         if out == None or out.strip() == '':
-        #             logger.error('No text found in document, performing OCR')
-        #             ocrd_pdf = BytesIO()
-        #             self._ocr_pdf(file_path, ocrd_pdf)
-
-        #             logger.error('Finished ocr')
-        #             output_string = StringIO()
-        #             extract_text_to_fp(
-        #                 BytesIO(ocrd_pdf.getvalue()),
-        #                 output_string,
-        #                 caching=False,
-        #                 codec=None,
-        #                 laparams=layout_params,
-        #                 page_numbers=[0],
-        #                 output_type="text",
-        #                 debug=True
-        #             )
-        #             out = output_string.getvalue()
-
-        #         with open(f'app/extract/test-{page_num}.txt', "w") as doc:
-        #             doc.write(out)
-
-        #         pages.append(out)
         return pages
