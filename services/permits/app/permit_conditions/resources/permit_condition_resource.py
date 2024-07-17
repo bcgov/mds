@@ -28,7 +28,7 @@ async def extract_permit_conditions(file: UploadFile = File(...)):
             "PDFConverter": {"file_path": tmp.name},
             "prompt_builder": {
                 "template_variables": {
-                    "max_pages": 5
+                    "max_pages": 5,
                 }
             }
         })
