@@ -64,7 +64,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     facility_desc = db.Column(db.String(4000), nullable=True)
     facility_latitude = db.Column(db.Numeric(9, 7), nullable=True)
     facility_longitude = db.Column(db.Numeric(11, 7), nullable=True)
-    facility_coords_source = db.Column(db.String(3), nullable=True)
+    facility_coords_source = db.Column(db.String(60), nullable=True)
     facility_coords_source_desc = db.Column(db.String(4000), nullable=True)
     facility_pid_pin_crown_file_no = db.Column(db.String(100), nullable=True)
     legal_land_desc = db.Column(db.String(4000), nullable=True)
@@ -579,7 +579,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             'facility_coords_source': {
                 'nullable': True,
                 'type': 'string',
-                'allowed': ['GPS', 'SUR', 'GGE', 'OTH'],
+                'allowed': ['GPS', 'Survey', 'Google Earth, Google Maps, or other Satellite Imagery', 'Other'],
             },
             'nearest_municipality': {
                 'nullable': True,
@@ -629,7 +629,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             'facility_coords_source': {
                 'required': True,
                 'type': 'string',
-                'allowed': ['GPS', 'SUR', 'GGE', 'OTH'],
+                'allowed': ['GPS', 'Survey', 'Google Earth, Google Maps, or other Satellite Imagery', 'Other'],
             },
             'nearest_municipality': {
                 'nullable': True,
@@ -704,7 +704,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                     },
                 }
 
-        if facility_coords_source == 'OTH':
+        if facility_coords_source == 'Other':
             location_access_schema |= {
                 'facility_coords_source_desc': {
                     'required': True,

@@ -1,6 +1,7 @@
 # for midware/business level actions between requests and data access
 import json
 
+from sqlalchemy.exc import IntegrityError
 from typing import List, Union, Tuple
 from pydantic import BaseModel, Field, ConfigDict
 from openlocationcode.openlocationcode import encode as plus_code_encode
@@ -139,7 +140,10 @@ def process_all_untp_map_for_orgbook():
     public_did = Config.CHIEF_PERMITTING_OFFICER_DID_WEB
     public_verkey = public_did_dict["verkey"]
 
-    task_logger.info("public did: " + public_did)
+    assert public_did.startswith(
+        "did:web:"
+    ), f"Config.CHIEF_PERMITTING_OFFICER_DID_WEB = {Config.CHIEF_PERMITTING_OFFICER_DID_WEB} is not a did:web"
+    current_app.logger.warning("public did: " + public_did)
 
     records: List[Tuple[W3CCred,
                         PermitAmendmentOrgBookPublish]] = [] # list of tuples [payload, record]
@@ -179,11 +183,16 @@ def process_all_untp_map_for_orgbook():
         if signed_cred:
             record.signed_credential = json.dumps(signed_cred["signed_doc"])
             record.sign_date = datetime.now()
-        record.save()
-        task_logger.info("bcreg_uri=" +
-                         str(cred_payload.credentialSubject.issuedTo.identifiers[0].identifierURI) +
-                         ", for permit_amendment_guid=" + str(row[0]))
-        task_logger.info("unsigned_hash=" + str(record.unsigned_payload_hash))
+        try:
+            record.save()
+        except IntegrityError:
+            current_app.logger.warning(f"ignoring duplicate={str(record.unsigned_payload_hash)}")
+            continue
+        current_app.logger.warning(
+            "bcreg_uri=" +
+            str(cred_payload.credentialSubject.issuedTo.identifiers[0].identifierURI) +
+            ", for permit_amendment_guid=" + str(row[0]))
+        current_app.logger.warning("unsigned_hash=" + str(record.unsigned_payload_hash))
 
     task_logger.info("num of records created: " + str(len(records or [])))
 
@@ -383,21 +392,21 @@ class VerifiableCredentialManager():
             assessmentLevel=codes.AssessmentAssuranceCode.GovtApproval,
             type=codes.AttestationType.Certification,
             description=
-            "This is a conformity attestation for the existence and good standing of a mining permit under the Mines Act within British Columbia (a province of Canada).",
+            "This is a conformity attestation for the existence of a mining permit under the Mines Act within British Columbia (a province of Canada).",
             scope=cc.ConformityAssessmentScheme(
                 id=
                 "https://github.com/bcgov/bc-vcpedia/blob/main/credentials/bc-mines-act-permit/1.1.1/governance.md",
                 name="BC Mines Act Permit Credential (1.1.1) Governance Documentation"),
             issuedBy=untp_party_cpo,
             issuedTo=untp_party_business,
-            validFrom=issuance_date_str,                                                                                                                                   #shouldn't this just be in the w3c wrapper
+            validFrom=issuance_date_str,                                                                                                                 #shouldn't this just be in the w3c wrapper
             assessments=untp_assessments)
 
         w3c_cred = W3CCred(
             context=["https://www.w3.org/2018/credentials/v1", {
                 "@vocab": "urn:bcgov:attributes#"
             }],
-            type=["VerifiableCredential"],
+            type=["VerifiableCredential", "NonProductionCredential"],
             issuer={"id": did},
             issuanceDate=issuance_date_str,
             credentialSubject=cred)

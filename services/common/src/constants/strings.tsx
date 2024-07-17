@@ -189,6 +189,9 @@ export const CALLOUT_SEVERITY = {
   danger: "danger",
 };
 
+export const SPATIAL_DATA_STANDARDS_URL =
+  "https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/reclamation-closure/spatial-data-arr";
+
 export const MAJOR_MINES_APPLICATION_DOCUMENT_TYPE = {
   PRIMARY: "primary_documents",
   SPATIAL: "spatial_documents",
@@ -445,4 +448,15 @@ export const CONTACTS_COUNTRY_OPTIONS = [
   { value: "CAN", label: "Canada" },
   { value: "USA", label: "United States" },
   { value: "INT", label: "International" },
+];
+
+export const PROJECT_SUMMARY_WITH_AMS_SUBMISSION_SECTION = "declaration";
+export const AMS_STATUS_CODES_SUCCESS = "success";
+export const AMS_STATUS_CODE_FAIL = "fail";
+
+export const AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES = [
+  "AIR_EMISSIONS_DISCHARGE_PERMIT",
+  "EFFLUENT_DISCHARGE_PERMIT",
+  "REFUSE_DISCHARGE_PERMIT",
+  "MUNICIPAL_WASTEWATER_REGULATION",
 ];

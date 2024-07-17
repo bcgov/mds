@@ -8,6 +8,10 @@ const getStore = (preloadedState = {}) =>
       ...rootReducer,
       loadingBar: loadingBarReducer,
     },
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: false,
+      }),
     preloadedState,
     devTools: process.env.NODE_ENV === "development",
   });

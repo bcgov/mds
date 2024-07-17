@@ -20,6 +20,11 @@
   font-size: 24px !important;
 }
 
+.hidden {
+  visibility: hidden;
+  display: none;
+}
+
 .inline-flex {
   @include flex;
 

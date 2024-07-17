@@ -4,3 +4,8 @@ import { buildCreateSlice, asyncThunkCreator } from "@reduxjs/toolkit";
 export const createAppSlice = buildCreateSlice({
   creators: { asyncThunk: asyncThunkCreator },
 });
+
+export const rejectHandler = (action) => {
+  console.log(action.error);
+  console.log(action.error.stack);
+};
