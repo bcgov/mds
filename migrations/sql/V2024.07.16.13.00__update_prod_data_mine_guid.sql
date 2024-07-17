@@ -1,7 +1,8 @@
 /** 
  This query was used to get the mine guids for the old and new mine. Old Mine number = 1500438, new Mine number = 2000467
  SELECT * FROM mine WHERE mine_no in ('2000467', '1500438');
- old mine_guid 30c8a52d-3c44-4479-8d7f-c35d4d64d1c9, 
+ 
+ old mine_guid 30c8a52d-3c44-4479-8d7f-c35d4d64d1c9 
  new mine_guid: de5252ef-5342-456a-b7d3-981c96f53d6d 
  
  This query was used to get the permit id
@@ -51,4 +52,5 @@ UPDATE
 SET
     mine_guid = 'de5252ef-5342-456a-b7d3-981c96f53d6d'
 WHERE
-    permit_id = 49669;
+    permit_id = 49669
+    AND mine_guid = '30c8a52d-3c44-4479-8d7f-c35d4d64d1c9';
