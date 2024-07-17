@@ -641,29 +641,7 @@ const transformChildRowData = (
 });
 
 export const MinePermitTable: React.FC<RouteComponentProps & MinePermitTableProps> = (props) => {
-  const { isFeatureEnabled } = useFeatureFlag();
   const permitColumns = [...columns];
-
-  if (isFeatureEnabled(Feature.VERIFIABLE_CREDENTIALS)) {
-    const colourMap = {
-      "Not Active": "#D8292F",
-      Pending: "#F1C21B",
-      Active: "#45A776",
-    };
-
-    const issuanceColumn = {
-      title: "VC Issuance State",
-      dataIndex: "lastAmendedVC",
-      key: "lastAmendedVC",
-      render: (text) => {
-        const badgeText = text ? VC_CRED_ISSUE_STATES[text] : "N/A";
-        const colour = colourMap[badgeText] ?? "transparent";
-        return <Badge color={colour} text={badgeText} />;
-      },
-    };
-
-    permitColumns.splice(5, 0, issuanceColumn);
-  }
 
   const amendmentHistory = (permit) => {
     return permit?.permit_amendments?.map((amendment, index) =>

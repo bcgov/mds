@@ -37,7 +37,7 @@ export const PermitTabContainer: FC<PermitTabContainerProps> = ({ permits, ...pr
 
     const result =
       mine.major_mine_ind &&
-      isFeatureEnabled(Feature.VERIFIABLE_CREDENTIALS) &&
+      isFeatureEnabled(Feature.VC_ANONCREDS_MINESPACE) &&
       open_permits.length > 0;
     return result;
   };
