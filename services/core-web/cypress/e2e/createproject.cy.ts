@@ -38,7 +38,7 @@ describe("Major Projects", () => {
 
     // SAVE & CONTINUE - skip to Purpose & Authorization
     cy.contains("Save & Continue").click({ force: true });
-    cy.contains("Ministry Contact", { timeout: 10000 });
+    cy.contains("Project Lead", { timeout: 10000 });
     cy.contains("Purpose and Authorization", { timeout: 10000 }).click({ force: true });
     cy.contains("Regulatory Approval Type", { timeout: 10000 });
 
