@@ -1,11 +1,11 @@
-from fastapi import HTTPException, UploadFile, File
+from fastapi import HTTPException, Response, UploadFile, File
 from pydantic import BaseModel
-
+import tempfile
 from app.permit_conditions.pipelines.permit_condition_pipeline import permit_condition_pipeline
 
 from fastapi import APIRouter
 
-from services.permits.app.helpers.temporary_file import store_temporary
+from app.helpers.temporary_file import store_temporary
 
 router = APIRouter()
 
@@ -47,3 +47,23 @@ async def extract_permit_conditions(file: UploadFile = File(...)):
         })
     finally:
         tmp.close()
+
+
+@router.get("/permit_conditions/flow")
+async def render_permit_conditions_flow():
+    """
+    Renders the permit conditions flow as an image
+
+    Returns:
+        dict: A dictionary containing the rendered permit conditions flow.
+    """
+    pipeline = permit_condition_pipeline()
+
+    tmp_file = tempfile.NamedTemporaryFile()
+ 
+    try:
+        pipeline.draw(tmp_file.name)
+        with open(tmp_file.name, "rb") as img_content:
+            return Response(content=img_content.read(), media_type="image/png")
+    finally:
+        tmp_file.close()

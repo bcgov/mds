@@ -11,3 +11,5 @@ logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s', level=lo
 mds = FastAPI()
 mds.include_router(permit_condition_router)
 mds.include_router(permit_search_router)
+
+mds.add_middleware(OpenIdConnectMiddleware)
