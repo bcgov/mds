@@ -18,12 +18,11 @@ import BasicInformation from "@mds/common/components/projectSummary/BasicInforma
 import Applicant from "@mds/common/components/projectSummary/Applicant";
 import Declaration from "@mds/common/components/projectSummary/Declaration";
 import { ApplicationSummary } from "./ApplicationSummary";
-import { removeNullValuesRecursive } from "@mds/common/constants/utils";
 import { getProjectSummaryAuthorizationTypesArray } from "@mds/common/redux/selectors/staticContentSelectors";
-import { isArray } from "lodash";
 import { MinistryContact } from "./MinistryContact";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import { SystemFlagEnum } from "../..";
+import { formatProjectPayload } from "@mds/common/utils/helpers";
 
 interface ProjectSummaryFormProps {
   initialValues: IProjectSummary;
@@ -82,61 +81,8 @@ export const ProjectSummaryForm: FC<ProjectSummaryFormProps> = ({
     getProjectSummaryAuthorizationTypesArray
   );
 
-  const transformAuthorizations = (valuesFromForm: any) => {
-    const { authorizations = {}, project_summary_guid } = valuesFromForm;
-
-    const transformAuthorization = (type, authorization) => {
-      return { ...authorization, project_summary_authorization_type: type, project_summary_guid };
-    };
-
-    let updatedAuthorizations = [];
-    let newAmsAuthorizations = [];
-    let amendAmsAuthorizations = [];
-
-    projectSummaryAuthorizationTypesArray.forEach((type) => {
-      const authsOfType = authorizations[type];
-      if (authsOfType) {
-        if (isArray(authsOfType)) {
-          const formattedAuthorizations = authsOfType.map((a) => {
-            return transformAuthorization(type, a);
-          });
-          updatedAuthorizations = updatedAuthorizations.concat(formattedAuthorizations);
-        } else {
-          newAmsAuthorizations = newAmsAuthorizations.concat(
-            authsOfType?.NEW.map((a) =>
-              transformAuthorization(type, {
-                ...a,
-                project_summary_permit_type: ["NEW"],
-              })
-            )
-          );
-          amendAmsAuthorizations = amendAmsAuthorizations.concat(
-            authsOfType?.AMENDMENT.map((a) =>
-              transformAuthorization(type, {
-                ...a,
-                project_summary_permit_type: ["AMENDMENT"],
-              })
-            )
-          );
-        }
-      }
-    });
-    return {
-      authorizations: updatedAuthorizations,
-      ams_authorizations: { amendments: amendAmsAuthorizations, new: newAmsAuthorizations },
-    };
-  };
-
   const handleTransformPayload = (valuesFromForm: any) => {
-    let payloadValues: any = {};
-    const updatedAuthorizations = transformAuthorizations(valuesFromForm);
-    const values = removeNullValuesRecursive(valuesFromForm);
-    payloadValues = {
-      ...values,
-      ...updatedAuthorizations,
-    };
-    delete payloadValues.authorizationTypes;
-    return payloadValues;
+    return formatProjectPayload(valuesFromForm, { projectSummaryAuthorizationTypesArray });
   };
 
   const renderTabComponent = (tab) =>

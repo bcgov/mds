@@ -68,7 +68,9 @@ export const ProjectSubmissionStatusPage = () => {
               </Link>
             </p>
             <p>
-              <Link to={{}}>
+              <Link
+                to={GLOBAL_ROUTES?.EDIT_PROJECT.dynamicRoute(projectGuid, "project-description")}
+              >
                 <Button>View Project Description Overview</Button>
               </Link>
             </p>
@@ -93,7 +95,9 @@ export const ProjectSubmissionStatusPage = () => {
             </Typography.Paragraph>
             <div>
               <p>
-                <Link to={{}}>
+                <Link
+                  to={GLOBAL_ROUTES?.EDIT_PROJECT.dynamicRoute(projectGuid, "project-description")}
+                >
                   <Button type="primary">View Project Description Overview</Button>
                 </Link>
               </p>

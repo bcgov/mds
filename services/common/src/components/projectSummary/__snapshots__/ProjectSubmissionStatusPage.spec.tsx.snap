@@ -148,7 +148,7 @@ exports[`ProjectSubmissionStatusPage renders properly 1`] = `
             </p>
             <p>
               <a
-                href="/"
+                href="/test"
               >
                 <button
                   class="ant-btn ant-btn-default"

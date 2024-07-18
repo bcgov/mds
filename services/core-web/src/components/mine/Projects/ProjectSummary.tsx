@@ -87,9 +87,7 @@ export const ProjectSummary: FC = () => {
   };
 
   useEffect(() => {
-    if (!isLoaded) {
-      handleFetchData().then(() => setIsLoaded(true));
-    }
+    handleFetchData().then(() => setIsLoaded(true));
     return () => {
       dispatch(clearProjectSummary());
     };
@@ -161,11 +159,12 @@ export const ProjectSummary: FC = () => {
       const authorizations = data?.authorizations ?? [];
       const areAuthorizationsSuccessful = authorizations
         .filter((authorization) =>
-          AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES.includes(
+          Object.values(AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES).includes(
             authorization.project_summary_authorization_type
           )
         )
         .every((auth) => auth.ams_status_code === "200");
+
       history.push(
         routes.VIEW_PROJECT_SUBMISSION_STATUS_PAGE.dynamicRoute(
           projectGuid,

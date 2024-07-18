@@ -9,7 +9,10 @@ import { Feature } from "@mds/common";
 import { getMines } from "@mds/common/redux/selectors/mineSelectors";
 import { getProject } from "@mds/common/redux/selectors/projectSelectors";
 import { fetchProjectById } from "@mds/common/redux/actionCreators/projectActionCreator";
-import { fetchMineDocuments, fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
+import {
+  fetchMineDocuments,
+  fetchMineRecordById,
+} from "@mds/common/redux/actionCreators/mineActionCreator";
 import { fetchEMLIContactsByRegion } from "@mds/common/redux/actionCreators/minespaceActionCreator";
 import Loading from "@/components/common/Loading";
 import CustomPropTypes from "@/customPropTypes";
@@ -21,6 +24,7 @@ import MajorMineApplicationEntryTab from "./MajorMineApplicationEntryTab";
 import DocumentsTab from "./DocumentsTab";
 import { MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES } from "./MajorMineApplicationPage";
 import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
+import ProjectDescriptionTab from "@mds/common/components/project/ProjectDescriptionTab";
 
 const propTypes = {
   mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
@@ -41,7 +45,14 @@ const propTypes = {
   history: PropTypes.shape({ push: PropTypes.func, replace: PropTypes.func }).isRequired,
 };
 
-const tabs = ["overview", "irt-entry", "toc", "major-mine-application", "documents"];
+const tabs = [
+  "overview",
+  "project-description",
+  "irt-entry",
+  "toc",
+  "major-mine-application",
+  "documents",
+];
 
 export class ProjectPage extends Component {
   state = {
@@ -118,9 +129,9 @@ export class ProjectPage extends Component {
       const url =
         irtStatus === "APV"
           ? router.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
-            this.props.project.project_guid,
-            this.props.project.information_requirements_table?.irt_guid
-          )
+              this.props.project.project_guid,
+              this.props.project.information_requirements_table?.irt_guid
+            )
           : `/projects/${this.props.match.params?.projectGuid}/information-requirements-table/entry`;
       const urlState = irtStatus === "APV" ? { state: { current: 2 } } : {};
       return this.props.history.push({ pathname: url, ...urlState });
@@ -131,6 +142,10 @@ export class ProjectPage extends Component {
     }
     if (activeTab === "documents") {
       const url = `/projects/${this.props.match.params?.projectGuid}/documents`;
+      return this.props.history.push({ pathname: url });
+    }
+    if (activeTab === "project-description") {
+      const url = `/projects/${this.props.match.params?.projectGuid}/project-description`;
       return this.props.history.push({ pathname: url });
     }
     return null;
@@ -227,13 +242,18 @@ export class ProjectPage extends Component {
           <Row gutter={[0, 16]}>
             <Col span={24}>
               <Tabs
-                defaultActiveKey={tabs[0]}
+                defaultActiveKey={this.props.match.params?.tab || tabs[0]}
                 onChange={(activeTab) => this.handleTabChange(activeTab, irtStatus)}
                 type="card"
               >
                 <Tabs.TabPane tab="Overview" key="overview">
                   <ProjectOverviewTab navigateForward={this.navigateFromProjectStagesTable} />
                 </Tabs.TabPane>
+                {this.props.isFeatureEnabled(Feature.AMS_AGENT) && (
+                  <Tabs.TabPane tab="Project Description" key="project-description">
+                    <ProjectDescriptionTab />
+                  </Tabs.TabPane>
+                )}
                 <Tabs.TabPane tab="IRT" key="irt-entry">
                   <InformationRequirementsTableEntryTab
                     irt={this.props.project?.information_requirements_table}
