@@ -1,11 +1,11 @@
-from fastapi import FastAPI, HTTPException, UploadFile, File
+from fastapi import HTTPException, UploadFile, File
 from pydantic import BaseModel
-from fastapi.responses import StreamingResponse
 
 from app.permit_conditions.pipelines.permit_condition_pipeline import permit_condition_pipeline
-import tempfile
 
 from fastapi import APIRouter
+
+from services.permits.app.helpers.temporary_file import store_temporary
 
 router = APIRouter()
 
@@ -32,11 +32,7 @@ async def extract_permit_conditions(file: UploadFile = File(...)):
 
     # Write the uploaded file to a temporary file
     # so it can be processed by the pipeline.
-    tmp = tempfile.NamedTemporaryFile()
-
-    with open(tmp.name, "w") as f:
-        while contents := file.file.read(1024 * 1024):
-            tmp.write(contents)
+    tmp = store_temporary(file)
 
     try:
         pipeline = permit_condition_pipeline()
