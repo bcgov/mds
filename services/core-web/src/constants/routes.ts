@@ -226,6 +226,8 @@ export const VIEW_PROJECT_SUBMISSION_STATUS_PAGE = {
 export const EDIT_PROJECT = {
   route: "/pre-applications/:projectGuid/:tab",
   dynamicRoute: (projectGuid, tab = "overview") => `/pre-applications/${projectGuid}/${tab}`,
+  hashRoute: (projectGuid, tab = "overview", link) =>
+    `/pre-applications/${projectGuid}/${tab}/${link}`,
   component: Project,
 };
 

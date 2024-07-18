@@ -11,6 +11,7 @@ import ProjectDocumentsTabSection from "./ProjectDocumentsTabSection";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import ArchivedDocumentsSection from "./ArchivedDocumentsSection";
 import { getMineDocuments } from "@mds/common/redux/selectors/mineSelectors";
+import { formatUrlToUpperCaseString } from "@mds/common/redux/utils/helpers";
 
 interface ProjectDocumentsTabProps {
   project: IProject;
@@ -45,30 +46,54 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project, refreshDat
     "major-mine-application",
     isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE) && "archived-documents",
   ].filter(Boolean);
+
+  const menuOptions = tabs.map((t) => {
+    return { href: t, title: formatUrlToUpperCaseString(t) };
+  });
+  const sideBarRoute = {
+    url: GLOBAL_ROUTES?.EDIT_PROJECT,
+    params: [project.project_guid, "documents"],
+  };
+  const scrollSideMenuProps: ScrollSideMenuProps = {
+    menuOptions,
+    featureUrlRoute: sideBarRoute.url.hashRoute,
+    featureUrlRouteArguments: sideBarRoute.params,
+  };
   return (
     <>
-      {authsWithDocs.map((auth) => (
-        <ProjectDocumentsTabSection
-          id={getAuthorizationHeader(auth)}
-          key={auth.project_summary_authorization_guid}
-          onArchivedDocuments={refreshData}
-          documents={auth.amendment_documents}
-        />
-      ))}
-      <ProjectDocumentsTabSection
-        id="information-requirements-table"
-        key="information-requirements-table"
-        onArchivedDocuments={refreshData}
-        documents={project.information_requirements_table.documents}
+      <ScrollSidePageWrapper
+        headerHeight={0}
+        header={null}
+        menuProps={scrollSideMenuProps}
+        content={
+          <>
+            <div id="project-description">
+              {authsWithDocs.map((auth) => (
+                <ProjectDocumentsTabSection
+                  id={getAuthorizationHeader(auth)}
+                  key={auth.project_summary_authorization_guid}
+                  onArchivedDocuments={refreshData}
+                  documents={auth.amendment_documents}
+                />
+              ))}
+            </div>
+            <ProjectDocumentsTabSection
+              id="information-requirements-table"
+              key="information-requirements-table"
+              onArchivedDocuments={refreshData}
+              documents={project.information_requirements_table.documents}
+            />
+            <ProjectDocumentsTabSection
+              id="major-mine-application"
+              key="major-mine-application"
+              onArchivedDocuments={refreshData}
+              // @ts-ignore
+              documents={project.major_mine_application.documents}
+            />
+            <ArchivedDocumentsSection documents={mineDocuments} />
+          </>
+        }
       />
-      <ProjectDocumentsTabSection
-        id="major-mine-application"
-        key="major-mine-application"
-        onArchivedDocuments={refreshData}
-        // @ts-ignore
-        documents={project.major_mine_application.documents}
-      />
-      <ArchivedDocumentsSection documents={mineDocuments} />
     </>
   );
 };
