@@ -1,14 +1,14 @@
-
 from haystack import component
 import logging
+from json_repair import repair_json
+
 from app.permit_conditions.pipelines.chat_data import ChatData
 
 logger = logging.getLogger(__name__)
 
-from json_repair import repair_json
 
 @component
-class JSONRepair():
+class JSONRepair:
     @component.output_types(data=ChatData)
     def run(self, data: ChatData):
         """
@@ -24,5 +24,5 @@ class JSONRepair():
         """
         for msg in data.messages:
             msg.content = repair_json(msg.content)
-        
-        return {'data': data}
+
+        return {"data": data}

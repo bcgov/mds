@@ -1,9 +1,5 @@
-from fastapi import FastAPI, UploadFile, File
+from fastapi import UploadFile, File
 from pydantic import BaseModel
-from fastapi.responses import StreamingResponse
-
-from app.permit_conditions.pipelines.permit_condition_pipeline import permit_condition_pipeline
-import tempfile
 
 from fastapi import APIRouter
 
@@ -13,13 +9,15 @@ from pydantic import BaseModel
 
 router = APIRouter()
 
+
 class SearchRequest(BaseModel):
     query: str
+
 
 @router.post("/permit/index")
 async def index_permit(file: UploadFile = File(...)):
     tmp = store_temporary(file)
-    
+
     try:
         pipeline = indexing_pipeline()
 
@@ -27,10 +25,11 @@ async def index_permit(file: UploadFile = File(...)):
     finally:
         tmp.close()
 
+
 @router.post("/permit/query")
 async def search_permit(req: SearchRequest):
     pipeline = query_pipeline()
 
     res = pipeline.run({"retriever": {"query": req.query}})
 
-    return res['ranker']
+    return res["ranker"]
