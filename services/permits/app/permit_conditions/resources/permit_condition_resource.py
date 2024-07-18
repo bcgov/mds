@@ -1,13 +1,11 @@
-from fastapi import HTTPException, Response, UploadFile, File
-from pydantic import BaseModel
 import tempfile
+
+from app.helpers.temporary_file import store_temporary
 from app.permit_conditions.pipelines.permit_condition_pipeline import (
     permit_condition_pipeline,
 )
-
-from fastapi import APIRouter
-
-from app.helpers.temporary_file import store_temporary
+from fastapi import APIRouter, File, HTTPException, Response, UploadFile
+from pydantic import BaseModel
 
 router = APIRouter()
 

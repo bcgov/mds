@@ -3,11 +3,10 @@ import os
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+import ocrmypdf
+from haystack import Document, component, logging
 from pypdf import PdfReader
 from pypdf.errors import PdfReadError
-
-from haystack import Document, component, logging
-import ocrmypdf
 
 logger = logging.getLogger(__name__)
 

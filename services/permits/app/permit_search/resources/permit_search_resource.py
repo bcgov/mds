@@ -1,10 +1,6 @@
-from fastapi import UploadFile, File
-from pydantic import BaseModel
-
-from fastapi import APIRouter
-
 from app.helpers.temporary_file import store_temporary
 from app.permit_search.pipelines.pipelines import indexing_pipeline, query_pipeline
+from fastapi import APIRouter, File, UploadFile
 from pydantic import BaseModel
 
 router = APIRouter()

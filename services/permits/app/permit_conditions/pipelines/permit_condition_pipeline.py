@@ -1,27 +1,25 @@
-import os
-import yaml
-import os
-
-from haystack import Pipeline
-from haystack.dataclasses import ChatMessage
-from haystack.utils import Secret
 import logging
+import os
 
-logger = logging.getLogger(__name__)
-
-ROOT_DIR = os.path.abspath(os.curdir)
-
-from app.permit_conditions.validator.json_fixer import JSONRepair
+import yaml
+from app.permit_conditions.converters.pdf_to_text_converter import PDFToTextConverter
 from app.permit_conditions.pipelines.CachedAzureOpenAIChatGenerator import (
     CachedAzureOpenAIChatGenerator,
 )
 from app.permit_conditions.pipelines.PaginatedChatPromptBuilder import (
     PaginatedChatPromptBuilder,
 )
-from app.permit_conditions.converters.pdf_to_text_converter import PDFToTextConverter
+from app.permit_conditions.validator.json_fixer import JSONRepair
 from app.permit_conditions.validator.permit_condition_validator import (
     PermitConditionValidator,
 )
+from haystack import Pipeline
+from haystack.dataclasses import ChatMessage
+from haystack.utils import Secret
+
+logger = logging.getLogger(__name__)
+
+ROOT_DIR = os.path.abspath(os.curdir)
 
 api_key = os.environ.get("AZURE_API_KEY")
 deployment_name = os.environ.get("AZURE_DEPLOYMENT_NAME")

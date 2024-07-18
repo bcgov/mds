@@ -1,10 +1,11 @@
-from typing import Optional, List
-from haystack import component
 import json
-from haystack.dataclasses import ChatMessage
 import logging
-from pydantic import BaseModel
+from typing import List, Optional
+
 from app.permit_conditions.pipelines.chat_data import ChatData
+from haystack import component
+from haystack.dataclasses import ChatMessage
+from pydantic import BaseModel
 
 logger = logging.getLogger(__name__)
 

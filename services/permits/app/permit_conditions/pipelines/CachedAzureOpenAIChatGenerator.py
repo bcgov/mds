@@ -1,15 +1,13 @@
 import hashlib
-import struct
 import logging
-import pickle
 import os
-
-from haystack.components.generators.chat import AzureOpenAIChatGenerator
-from haystack.dataclasses import ChatMessage
-
-from haystack import component
+import pickle
+import struct
 
 from app.permit_conditions.pipelines.chat_data import ChatData
+from haystack import component
+from haystack.components.generators.chat import AzureOpenAIChatGenerator
+from haystack.dataclasses import ChatMessage
 
 ROOT_DIR = os.path.abspath(os.curdir)
 logger = logging.getLogger(__name__)

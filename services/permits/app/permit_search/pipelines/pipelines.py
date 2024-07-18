@@ -1,22 +1,20 @@
-from haystack import Pipeline
-from haystack.components.rankers import TransformersSimilarityRanker
+import logging
+import os
 
-from haystack_integrations.document_stores.elasticsearch import (
-    ElasticsearchDocumentStore,
+from haystack import Pipeline
+from haystack.components.converters import PDFMinerToDocument
+from haystack.components.preprocessors import DocumentCleaner, DocumentSplitter
+from haystack.components.rankers import (
+    LostInTheMiddleRanker,
+    TransformersSimilarityRanker,
 )
+from haystack.components.writers import DocumentWriter
 from haystack_integrations.components.retrievers.elasticsearch import (
     ElasticsearchBM25Retriever,
 )
-
-from haystack.components.preprocessors import DocumentCleaner
-from haystack.components.preprocessors import DocumentSplitter
-from haystack.components.writers import DocumentWriter
-from haystack.components.converters import PDFMinerToDocument
-from haystack.components.rankers import LostInTheMiddleRanker
-
-import os
-import logging
-
+from haystack_integrations.document_stores.elasticsearch import (
+    ElasticsearchDocumentStore,
+)
 
 logger = logging.getLogger(__name__)
 
