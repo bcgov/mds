@@ -10,11 +10,6 @@ from pydantic import BaseModel
 router = APIRouter()
 
 
-class FileResponse(BaseModel):
-    id: int
-    name: str
-
-
 @router.post("/permit_conditions")
 async def extract_permit_conditions(file: UploadFile = File(...)):
     """
