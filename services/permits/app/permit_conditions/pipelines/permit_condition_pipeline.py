@@ -12,7 +12,7 @@ from haystack.utils import Secret
 import logging
 logger = logging.getLogger(__name__)
 
-from services.permits.app.permit_conditions.converters.pdf_to_text_converter import PDFToTextConverter
+from app.permit_conditions.converters.pdf_to_text_converter import PDFToTextConverter
 from app.permit_conditions.validator.permit_condition_validator import PermitConditionValidator
 
 api_key = os.environ.get("AZURE_API_KEY")
