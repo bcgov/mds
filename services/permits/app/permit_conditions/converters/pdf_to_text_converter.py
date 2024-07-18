@@ -8,12 +8,14 @@ from pypdf.errors import PdfReadError
 
 from haystack import Document, component, logging
 import ocrmypdf
+
 logger = logging.getLogger(__name__)
 
 DEBUG_MODE = os.environ.get("DEBUG_MODE", "false").lower() == "true"
 
+
 @component
-class PDFToTextConverter():
+class PDFToTextConverter:
     """
     Converts a PDF file to text format using Pypdf
 
@@ -39,10 +41,12 @@ class PDFToTextConverter():
                 file_path,
             )
 
-            documents = [Document(content=text, meta=meta, id_hash_keys=id_hash_keys) for text in pages]
-        
-        return {'documents': documents}
+            documents = [
+                Document(content=text, meta=meta, id_hash_keys=id_hash_keys)
+                for text in pages
+            ]
 
+        return {"documents": documents}
 
     def _ocr_pdf(self, file_path, output_path):
         try:
@@ -58,10 +62,17 @@ class PDFToTextConverter():
                 pdf_reader = PdfReader(doc)
                 for idx, page in enumerate(pdf_reader.pages):
                     try:
-                        page_text = page.extract_text(extraction_mode="layout", layout_mode_space_vertically=False, layout_mode_scale_weight=0.5)
+                        page_text = page.extract_text(
+                            extraction_mode="layout",
+                            layout_mode_space_vertically=False,
+                            layout_mode_scale_weight=0.5,
+                        )
                         pages.append(page_text)
                         if DEBUG_MODE:
-                            with open(f'app/debug/pdfreader-{idx}.txt', "w") as debug_doc:
+                            fn = f"debug/pdfreader-{idx}.txt"
+                            os.makedirs(os.path.dirname(fn), exist_ok=True)
+
+                            with open(fn, "w") as debug_doc:
                                 debug_doc.write(page_text)
                     except PdfReadError as e:
                         logger.error(f"Error reading page {idx} of the PDF: {e}")
@@ -73,6 +84,8 @@ class PDFToTextConverter():
             logger.error(f"Error reading the PDF file: {e}")
             raise
         except Exception as e:
-            logger.error(f"An unexpected error occurred while reading the PDF file: {e}")
+            logger.error(
+                f"An unexpected error occurred while reading the PDF file: {e}"
+            )
             raise
         return pages

@@ -1,5 +1,3 @@
-
-
 import tempfile
 
 from fastapi import UploadFile
@@ -11,6 +9,5 @@ def store_temporary(file: UploadFile):
     with open(tmp.name, "w") as f:
         while contents := file.file.read(1024 * 1024):
             tmp.write(contents)
-    
+
     return tmp
-    

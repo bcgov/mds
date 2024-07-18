@@ -1,7 +1,9 @@
 from fastapi import HTTPException, Response, UploadFile, File
 from pydantic import BaseModel
 import tempfile
-from app.permit_conditions.pipelines.permit_condition_pipeline import permit_condition_pipeline
+from app.permit_conditions.pipelines.permit_condition_pipeline import (
+    permit_condition_pipeline,
+)
 
 from fastapi import APIRouter
 
@@ -9,9 +11,11 @@ from app.helpers.temporary_file import store_temporary
 
 router = APIRouter()
 
+
 class FileResponse(BaseModel):
     id: int
     name: str
+
 
 @router.post("/permit_conditions")
 async def extract_permit_conditions(file: UploadFile = File(...)):
@@ -28,7 +32,9 @@ async def extract_permit_conditions(file: UploadFile = File(...)):
         Any exceptions that occur during the extraction process.
     """
     if file.content_type != "application/pdf":
-        raise HTTPException(400, detail="Invalid file type. Only PDF files are supported.")
+        raise HTTPException(
+            400, detail="Invalid file type. Only PDF files are supported."
+        )
 
     # Write the uploaded file to a temporary file
     # so it can be processed by the pipeline.
@@ -37,14 +43,16 @@ async def extract_permit_conditions(file: UploadFile = File(...)):
     try:
         pipeline = permit_condition_pipeline()
 
-        return pipeline.run({
-            "PDFConverter": {"file_path": tmp.name},
-            "prompt_builder": {
-                "template_variables": {
-                    "max_pages": 5,
-                }
+        return pipeline.run(
+            {
+                "pdf_converter": {"file_path": tmp.name},
+                "prompt_builder": {
+                    "template_variables": {
+                        "max_pages": 5,
+                    }
+                },
             }
-        })
+        )
     finally:
         tmp.close()
 
@@ -60,7 +68,7 @@ async def render_permit_conditions_flow():
     pipeline = permit_condition_pipeline()
 
     tmp_file = tempfile.NamedTemporaryFile()
- 
+
     try:
         pipeline.draw(tmp_file.name)
         with open(tmp_file.name, "rb") as img_content:

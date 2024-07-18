@@ -1,23 +1,31 @@
 import os
-from haystack import Pipeline
 import yaml
 import os
 
-from app.permit_conditions.validator.json_fixer import JSONRepair
-from app.permit_conditions.pipelines.CachedAzureOpenAIChatGenerator import CachedAzureOpenAIChatGenerator
-from app.permit_conditions.pipelines.PaginatedChatPromptBuilder import PaginatedChatPromptBuilder
-ROOT_DIR = os.path.abspath(os.curdir)
+from haystack import Pipeline
 from haystack.dataclasses import ChatMessage
 from haystack.utils import Secret
 import logging
+
 logger = logging.getLogger(__name__)
 
+ROOT_DIR = os.path.abspath(os.curdir)
+
+from app.permit_conditions.validator.json_fixer import JSONRepair
+from app.permit_conditions.pipelines.CachedAzureOpenAIChatGenerator import (
+    CachedAzureOpenAIChatGenerator,
+)
+from app.permit_conditions.pipelines.PaginatedChatPromptBuilder import (
+    PaginatedChatPromptBuilder,
+)
 from app.permit_conditions.converters.pdf_to_text_converter import PDFToTextConverter
-from app.permit_conditions.validator.permit_condition_validator import PermitConditionValidator
+from app.permit_conditions.validator.permit_condition_validator import (
+    PermitConditionValidator,
+)
 
 api_key = os.environ.get("AZURE_API_KEY")
 deployment_name = os.environ.get("AZURE_DEPLOYMENT_NAME")
-base_url = os.environ.get("AZURE_BASE_URL") 
+base_url = os.environ.get("AZURE_BASE_URL")
 api_version = os.environ.get("AZURE_API_VERSION")
 
 assert api_key
@@ -25,12 +33,12 @@ assert deployment_name
 assert base_url
 assert api_version
 
-with open(f'{ROOT_DIR}/app/permit_condition_prompts.yaml', 'r') as file:
+with open(f"{ROOT_DIR}/app/permit_condition_prompts.yaml", "r") as file:
     prompts = yaml.safe_load(file)
 
-system_prompt = prompts['system_prompt']
-user_prompt = prompts['user_prompt']
-permit_document_prompt = prompts['permit_document_prompt']
+system_prompt = prompts["system_prompt"]
+user_prompt = prompts["user_prompt"]
+permit_document_prompt = prompts["permit_document_prompt"]
 
 assert system_prompt
 assert user_prompt
@@ -45,17 +53,14 @@ def permit_condition_pipeline():
         Pipeline: The pipeline object for extracting permit conditions.
     """
     index_pipeline = Pipeline()
-    
+
     llm = CachedAzureOpenAIChatGenerator(
         azure_endpoint=base_url,
         api_version=api_version,
         azure_deployment=deployment_name,
         api_key=Secret.from_token(api_key),
         timeout=600,
-        generation_kwargs={
-            'temperature': 0,
-            'max_tokens': 4096
-        }
+        generation_kwargs={"temperature": 0, "max_tokens": 4096},
     )
 
     pdf_converter = PDFToTextConverter()
@@ -63,9 +68,7 @@ def permit_condition_pipeline():
         template=[
             ChatMessage.from_system(system_prompt),
             ChatMessage.from_user(user_prompt),
-            ChatMessage.from_user(
-                permit_document_prompt
-            )
+            ChatMessage.from_user(permit_document_prompt),
         ]
     )
 
