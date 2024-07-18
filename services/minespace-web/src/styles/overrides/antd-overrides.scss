@@ -381,6 +381,24 @@ th.ant-descriptions-item.vertical-description {
 // Modals
 
 .ant-modal {
+
+  .ant-btn.modal__close {
+    position: absolute;
+    top: 7px;
+    color: $gov-blue;
+    font-size: 24px;
+    right: 14px;
+    z-index: 999;
+    border: none;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+
+    svg {
+      margin: 10px;
+    }
+  }
+
   &-content {
     border-radius: 0;
     background-clip: border-box;
