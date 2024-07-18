@@ -7,7 +7,7 @@ import { LOADER } from "@/constants/assets";
 const Loading = () => {
   return (
     <div id="loading-screen">
-      <div id="loader">
+      <div className="loader">
         <img src={LOADER} alt="Loading" />
       </div>
     </div>

@@ -3,10 +3,10 @@
 exports[`Index: shows loading before keycloak is instantiated 1`] = `
 <div>
   <div
-    class="loading-screen"
+    id="loading-screen"
   >
     <div
-      id="loader"
+      class="loader"
     >
       <lottie-mock
         options="[object Object]"

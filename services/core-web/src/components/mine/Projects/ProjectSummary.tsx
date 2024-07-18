@@ -63,7 +63,7 @@ export const ProjectSummary: FC = () => {
   const isExistingProject = Boolean(projectGuid && projectSummaryGuid);
   const isDefaultLoaded = isExistingProject
     ? formattedProjectSummary?.project_summary_guid === projectSummaryGuid &&
-    formattedProjectSummary?.project_guid === projectGuid
+      formattedProjectSummary?.project_guid === projectGuid
     : mine?.mine_guid === mineGuid;
   const isDefaultEditMode = !isExistingProject || mode === "edit";
 
@@ -87,9 +87,7 @@ export const ProjectSummary: FC = () => {
   };
 
   useEffect(() => {
-    if (!isLoaded) {
-      handleFetchData().then(() => setIsLoaded(true));
-    }
+    handleFetchData().then(() => setIsLoaded(true));
     return () => {
       dispatch(clearProjectSummary());
     };
@@ -161,11 +159,12 @@ export const ProjectSummary: FC = () => {
       const authorizations = data?.authorizations ?? [];
       const areAuthorizationsSuccessful = authorizations
         .filter((authorization) =>
-          AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES.includes(
+          Object.values(AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES).includes(
             authorization.project_summary_authorization_type
           )
         )
         .every((auth) => auth.ams_status_code === "200");
+
       history.push(
         routes.VIEW_PROJECT_SUBMISSION_STATUS_PAGE.dynamicRoute(
           projectGuid,
@@ -181,11 +180,11 @@ export const ProjectSummary: FC = () => {
     }
     const url = !isNewProject
       ? routes.EDIT_PROJECT_SUMMARY.dynamicRoute(
-        projectGuid,
-        projectSummaryGuid,
-        newTab,
-        !isEditMode
-      )
+          projectGuid,
+          projectSummaryGuid,
+          newTab,
+          !isEditMode
+        )
       : routes.ADD_PROJECT_SUMMARY.dynamicRoute(mineGuid, newTab);
     history.push(url);
   };

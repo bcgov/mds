@@ -21,8 +21,16 @@ import MajorMineApplicationEntryTab from "./MajorMineApplicationEntryTab";
 import DocumentsTab from "./DocumentsTab";
 import { MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES } from "./MajorMineApplicationPage";
 import ProjectDocumentsTab from "@mds/common/components/projects/ProjectDocumentsTab";
+import ProjectDescriptionTab from "@mds/common/components/project/ProjectDescriptionTab";
 
-const tabs = ["overview", "irt-entry", "toc", "major-mine-application", "documents"];
+const tabs = [
+  "overview",
+  "project-description",
+  "irt-entry",
+  "toc",
+  "major-mine-application",
+  "documents",
+];
 
 const ProjectPage: FC = () => {
   const { tab, projectGuid } = useParams<{
@@ -153,6 +161,9 @@ const ProjectPage: FC = () => {
       case "major-mine-application":
         url = `/projects/${projectGuid}/major-mine-application/entry`;
         return history.push(url);
+      case "project-description":
+        url = `/projects/${projectGuid}/project-description`;
+        return history.push(url);
       case "documents":
       case "old-documents":
         url = `/projects/${projectGuid}/documents`;
@@ -190,6 +201,11 @@ const ProjectPage: FC = () => {
       label: "Overview",
       key: "overview",
       children: <ProjectOverviewTab navigateForward={navigateFromProjectStagesTable} />,
+    },
+    {
+      label: "Project Description",
+      key: "project-description",
+      children: <ProjectDescriptionTab />,
     },
     {
       label: "IRT",

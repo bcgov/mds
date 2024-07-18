@@ -18,6 +18,22 @@
   padding: 11px;
 }
 
-.nod-table-link > a {
+.nod-table-link>a {
   color: #333;
+}
+
+.nod-callout {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.nod-callout>h4 {
+  color: $medium-grey;
+  font-weight: 700;
+}
+
+.nod-callout>p {
+  font-size: 1rem;
+  margin-bottom: 0;
 }

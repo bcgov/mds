@@ -12,8 +12,8 @@ const Loading = () => {
     animationData: loader,
   };
   return (
-    <div className="loading-screen">
-      <div id="loader">
+    <div id="loading-screen">
+      <div className="loader">
         <Lottie options={defaultOptions} />
       </div>
     </div>

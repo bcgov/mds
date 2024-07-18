@@ -18,6 +18,7 @@ export enum Feature {
   AMS_AGENT = "ams_agent",
   HSRC_CODE_EDIT = "hsrc_code_edit",
   MULTIPART_UPLOAD = "s3_multipart_upload",
+  SPATIAL_BUNDLE = "spatial_bundle",
 }
 
 export const initializeFlagsmith = async (flagsmithUrl, flagsmithKey) => {

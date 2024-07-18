@@ -2,7 +2,7 @@ import React, { FC, useContext, useEffect } from "react";
 import { change, Field, getFormValues } from "redux-form";
 import { useSelector, useDispatch } from "react-redux";
 import { Button, Typography } from "antd";
-import { CSV, DOCUMENT, EXCEL, IMAGE } from "@mds/common/constants/fileTypes";
+import { CSV, DOCUMENT, EXCEL, IMAGE, OTHER_SPATIAL, XML } from "@mds/common/constants/fileTypes";
 import DocumentTable from "../documents/DocumentTable";
 import {
   documentNameColumn,
@@ -18,6 +18,48 @@ import { openModal } from "@mds/common/redux/actions/modalActions";
 import AddSpatialDocumentsModal from "../documents/spatial/AddSpatialDocumentsModal";
 import SpatialDocumentTable from "../documents/spatial/SpatialDocumentTable";
 import { FormContext } from "../forms/FormWrapper";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { Feature } from "../..";
+
+const RenderOldDocuments = ({
+  documents,
+  documentColumns,
+  onFileLoad,
+  onRemoveFile,
+  fileUploadParams,
+}) => {
+  const spatialAcceptedFileTypesMap = { ...OTHER_SPATIAL, ...XML };
+  return (
+    <>
+      <Field
+        id="spatial_documents"
+        name="spatial_documents"
+        onFileLoad={(document_name, document_manager_guid, version) =>
+          onFileLoad(
+            document_name,
+            PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.SPATIAL,
+            document_manager_guid,
+            version
+          )
+        }
+        onRemoveFile={onRemoveFile}
+        params={fileUploadParams}
+        acceptedFileTypesMap={spatialAcceptedFileTypesMap}
+        listedFileTypes={["spatial"]}
+        component={ProjectSummaryFileUpload}
+        props={{
+          documents: documents,
+          label: "Upload spatial documents",
+        }}
+      />
+      <DocumentTable
+        documents={documents}
+        documentParent="project summary"
+        documentColumns={documentColumns}
+      />
+    </>
+  );
+};
 
 export const DocumentUpload: FC = () => {
   const dispatch = useDispatch();
@@ -31,6 +73,8 @@ export const DocumentUpload: FC = () => {
   } = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
 
   const { isEditMode } = useContext(FormContext);
+  const { isFeatureEnabled } = useFeatureFlag();
+  const spatialFeatureEnabled = isFeatureEnabled(Feature.SPATIAL_BUNDLE);
 
   const supportingAcceptedFileTypesMap = {
     ...DOCUMENT,
@@ -160,13 +204,24 @@ export const DocumentUpload: FC = () => {
         Upload spatial files to support the application. You may only upload specified spatial
         types.
       </Typography.Paragraph>
-
-      {isEditMode && (
-        <Button onClick={openSpatialDocumentModal} type="primary" className="block-button">
-          Upload Spatial Data
-        </Button>
+      {spatialFeatureEnabled ? (
+        <>
+          {isEditMode && (
+            <Button onClick={openSpatialDocumentModal} type="primary" className="block-button">
+              Upload Spatial Data
+            </Button>
+          )}
+          <SpatialDocumentTable documents={spatial_documents} />
+        </>
+      ) : (
+        <RenderOldDocuments
+          documents={spatial_documents}
+          documentColumns={documentColumns}
+          onFileLoad={onFileLoad}
+          onRemoveFile={onRemoveFile}
+          fileUploadParams={fileUploadParams}
+        />
       )}
-      <SpatialDocumentTable documents={spatial_documents} />
 
       <Typography.Title level={5}>Supporting Documents</Typography.Title>
       <Typography.Paragraph>
