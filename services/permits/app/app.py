@@ -1,6 +1,7 @@
+import logging
+
 from dotenv import find_dotenv, load_dotenv
 from fastapi import FastAPI
-import logging
 
 from .openid_connect_middleware import OpenIdConnectMiddleware
 from .permit_conditions.resources.permit_condition_resource import (

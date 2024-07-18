@@ -1,6 +1,7 @@
 import json
-import pytest
 from unittest.mock import MagicMock, patch
+
+import pytest
 from app.permit_conditions.pipelines.chat_data import ChatData
 from app.permit_conditions.validator.permit_condition_validator import (
     PermitConditionValidator,

@@ -1,12 +1,12 @@
 import os
 import pickle
-from unittest.mock import mock_open, patch, MagicMock
-import pytest
+from unittest.mock import MagicMock, mock_open, patch
 
-from app.permit_conditions.pipelines.chat_data import ChatData
+import pytest
 from app.permit_conditions.pipelines.CachedAzureOpenAIChatGenerator import (
     CachedAzureOpenAIChatGenerator,
 )
+from app.permit_conditions.pipelines.chat_data import ChatData
 from haystack.dataclasses import ChatMessage
 
 logger = MagicMock()

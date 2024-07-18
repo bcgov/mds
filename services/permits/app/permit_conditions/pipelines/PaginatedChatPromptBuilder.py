@@ -1,9 +1,9 @@
 import logging
-
 from typing import Optional
-from haystack.components.builders import ChatPromptBuilder
-from haystack import component
+
 from app.permit_conditions.pipelines.chat_data import ChatData
+from haystack import component
+from haystack.components.builders import ChatPromptBuilder
 
 logger = logging.getLogger(__name__)
 

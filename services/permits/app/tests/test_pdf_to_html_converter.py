@@ -1,11 +1,10 @@
 import os
 from pathlib import Path
-from unittest.mock import patch, mock_open, MagicMock
-import pytest
+from unittest.mock import MagicMock, mock_open, patch
 
+import pytest
 from app.permit_conditions.converters.pdf_to_text_converter import PDFToTextConverter
 from pypdf.errors import PdfReadError
-import os
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 

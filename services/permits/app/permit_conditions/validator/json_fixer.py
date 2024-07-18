@@ -1,8 +1,8 @@
-from haystack import component
 import logging
-from json_repair import repair_json
 
 from app.permit_conditions.pipelines.chat_data import ChatData
+from haystack import component
+from json_repair import repair_json
 
 logger = logging.getLogger(__name__)
 
