@@ -14,7 +14,6 @@ import {
 import { useParams } from "react-router-dom";
 import { getPermitByGuid } from "@mds/common/redux/selectors/permitSelectors";
 import { useSelector } from "react-redux";
-import { formatDate } from "@common/utils/helpers";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import { findOptionDescription, getDescriptionsFromCodes } from "@mds/common/redux/utils/helpers";
 import {
@@ -31,6 +30,7 @@ import {
 } from "@mds/common/components/documents/DocumentColumns";
 import { renderDateColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import { ColumnsType } from "antd/es/table";
+import { formatDate } from "@common/utils/helpers";
 
 const { Title, Paragraph } = Typography;
 
@@ -248,10 +248,7 @@ const ViewPermitOverview = () => {
             <Title level={4} className="margin-large--top">
               Permit Documents
             </Title>
-            <Paragraph>
-              Please upload any documents that support this permit. Documents uploaded here will be
-              viewable by Minespace users.
-            </Paragraph>
+            <Paragraph>Documents displayed here are viewable by Minespace users.</Paragraph>
             <Table
               className="margin-large--top"
               dataSource={latestAmendment.related_documents}

@@ -425,7 +425,7 @@ exports[`MinePermitInfo renders properly 1`] = `
       <div
         class="ant-typography"
       >
-        Please upload any documents that support this permit. Documents uploaded here will be viewable by Minespace users.
+        Documents displayed here are viewable by Minespace users.
       </div>
       <div
         class="ant-table-wrapper margin-large--top"
