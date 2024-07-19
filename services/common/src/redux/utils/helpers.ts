@@ -695,6 +695,7 @@ export const getDescriptionsFromCodes = (
   codeField: string,
   descriptionField = "description"
 ) => {
+  if (!Array.isArray(codes)) return "-";
   const descriptions = options.reduce((acc, option) => {
     if (codes.includes(option[codeField]) || codes.includes(option[descriptionField])) {
       acc.push(option[descriptionField]);
