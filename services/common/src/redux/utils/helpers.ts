@@ -60,7 +60,7 @@ export const createDropDownList = (
   labelFormatter = null,
   orderByAlphabetically = true
 ) => {
-  const options = array.map((item) => ({
+  const options = array?.map((item) => ({
     value: item[valueField],
     label: labelFormatter ? labelFormatter(item[labelField]) : item[labelField],
     isActive: isActiveField ? item[isActiveField] : true,
