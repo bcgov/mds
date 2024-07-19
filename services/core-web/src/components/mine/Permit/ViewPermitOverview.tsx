@@ -90,10 +90,6 @@ const ViewPermitOverview = () => {
                 <Paragraph strong>Permitee</Paragraph>
                 <Paragraph>{permit.current_permittee}</Paragraph>
               </Col>
-              <Col span={12}>
-                <Paragraph strong>Permittee BC Registry Number</Paragraph>
-                <Paragraph>????</Paragraph>
-              </Col>
             </Row>
             <Row>
               <Col span={12}>
