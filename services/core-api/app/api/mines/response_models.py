@@ -197,6 +197,8 @@ PERMIT_AMENDMENT_DOCUMENT_MODEL = api.model(
         'preamble_title': fields.String,
         'preamble_author': fields.String,
         'preamble_date': fields.DateTime,
+        'create_user': fields.String,
+        'create_timestamp': fields.DateTime
     })
 
 PERMIT_AMENDMENT_SHORT_MODEL = api.model(
@@ -321,6 +323,9 @@ PERMIT_MODEL = api.model(
         'exemption_fee_status_note': fields.String,
         'site_properties': fields.List(fields.Nested(MINE_TYPE_MODEL)),
         'permit_prefix': fields.String,
+        'status_changed_timestamp': fields.DateTime,
+        'update_user': fields.String,
+        'update_timestamp': fields.String
     })
 
 PERMIT_STATUS_CODE_MODEL = api.model('PermitStatusCode', {

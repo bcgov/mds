@@ -1,8 +1,10 @@
 import React, { FC } from "react";
-import { withRouter, Link, RouteComponentProps } from "react-router-dom";
-import { Menu, Dropdown, Button, Popconfirm } from "antd";
-import { PlusOutlined, SafetyCertificateOutlined, ReadOutlined } from "@ant-design/icons";
-import { connect } from "react-redux";
+import { Badge, Button, Dropdown, Menu, Popconfirm } from "antd";
+import { Link, RouteComponentProps, useHistory, useParams, withRouter } from "react-router-dom";
+import { PlusOutlined, ReadOutlined, SafetyCertificateOutlined } from "@ant-design/icons";
+import { useSelector } from "react-redux";
+import { Feature, isFeatureEnabled, VC_CRED_ISSUE_STATES } from "@mds/common/index";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { formatDate } from "@common/utils/helpers";
 import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
 import {
@@ -10,16 +12,17 @@ import {
   getPermitAmendmentTypeOptionsHash,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import * as Strings from "@mds/common/constants/strings";
-import { isEmpty } from "lodash";
 import { PERMIT_AMENDMENT_TYPES } from "@mds/common/constants/strings";
+import { isEmpty } from "lodash";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
-import { EDIT_OUTLINE_VIOLET, EDIT, CARAT, TRASHCAN } from "@/constants/assets";
+import { CARAT, EDIT, EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import DocumentLink from "@/components/common/DocumentLink";
 import DownloadAllDocumentsButton from "@/components/common/buttons/DownloadAllDocumentsButton";
 import * as route from "@/constants/routes";
-import { IPermit, IPermitPartyRelationship, IPermitAmendment, IMineDocument } from "@mds/common";
+import { VIEW_MINE_PERMIT } from "@/constants/routes";
+import { IMineDocument, IPermit, IPermitAmendment, IPermitPartyRelationship } from "@mds/common";
 import { ColumnsType } from "antd/lib/table";
 
 /**
@@ -69,6 +72,10 @@ interface MinePermitTableItem {
   openEditPermitModal: (arg1: any, arg2: IPermit | IPermitAmendment, arg3: any) => any;
   permitStatusOptionsHash: any;
 }
+
+const isPermit = (permit: IPermit | IPermitAmendment): permit is IPermit => {
+  return (permit as IPermit).permit_guid !== undefined;
+};
 
 const renderDocumentLink = (document, linkTitleOverride = null) => (
   <DocumentLink
@@ -225,6 +232,11 @@ const columns: ColumnsType<MinePermitTableItem> = [
     key: "addEditButton",
     align: "right",
     render: (text, record) => {
+      const history = useHistory();
+      const { id } = useParams<{ id: string }>();
+      const permitGuid = isPermit(record.permit)
+        ? record.permit.permit_guid
+        : record.permit?.permit_amendment_guid;
       const menu = (
         <Menu>
           <Menu.Item key="0">
@@ -310,6 +322,17 @@ const columns: ColumnsType<MinePermitTableItem> = [
               </button>
             </div>
           </AuthorizationWrapper>
+          {isFeatureEnabled(Feature.DIGITIZED_PERMITS) && (
+            <div className="custom-menu-item">
+              <button
+                type="button"
+                className="full"
+                onClick={() => history.push(VIEW_MINE_PERMIT.dynamicRoute(id, permitGuid))}
+              >
+                View
+              </button>
+            </div>
+          )}
         </Menu>
       );
 
@@ -637,8 +660,51 @@ const transformChildRowData = (
   ...amendment,
 });
 
-export const MinePermitTable: React.FC<RouteComponentProps & MinePermitTableProps> = (props) => {
+export const MinePermitTable: React.FC<RouteComponentProps & MinePermitTableProps> = ({
+  major_mine_ind,
+  openEditAmendmentModal,
+  handleDeletePermitAmendment,
+  handlePermitAmendmentIssueVC,
+  openViewConditionModal,
+  openEditPermitModal,
+  openAddPermitAmendmentModal,
+  openAddAmalgamatedPermitModal,
+  handleDeletePermit,
+  openAddPermitHistoricalAmendmentModal,
+  openEditSitePropertiesModal,
+  permits,
+  isLoaded,
+  expandedRowKeys,
+  onExpand,
+}) => {
+  const { isFeatureEnabled } = useFeatureFlag();
+  const { id } = useParams<{ id: string }>();
   const permitColumns = [...columns];
+
+  const partyRelationships = useSelector(getPartyRelationships);
+  const permitStatusOptionsHash = useSelector(getDropdownPermitStatusOptionsHash);
+  const permitAmendmentTypeOptionsHash = useSelector(getPermitAmendmentTypeOptionsHash);
+
+  if (isFeatureEnabled(Feature.VERIFIABLE_CREDENTIALS)) {
+    const colourMap = {
+      "Not Active": "#D8292F",
+      Pending: "#F1C21B",
+      Active: "#45A776",
+    };
+
+    const issuanceColumn = {
+      title: "VC Issuance State",
+      dataIndex: "lastAmendedVC",
+      key: "lastAmendedVC",
+      render: (text) => {
+        const badgeText = text ? VC_CRED_ISSUE_STATES[text] : "N/A";
+        const colour = colourMap[badgeText] ?? "transparent";
+        return <Badge color={colour} text={badgeText} />;
+      },
+    };
+
+    permitColumns.splice(5, 0, issuanceColumn);
+  }
 
   const amendmentHistory = (permit) => {
     return permit?.permit_amendments?.map((amendment, index) =>
@@ -646,36 +712,36 @@ export const MinePermitTable: React.FC<RouteComponentProps & MinePermitTableProp
         amendment,
         permit,
         permit.permit_amendments.length - index,
-        props.major_mine_ind,
-        props.openEditAmendmentModal,
-        props.handleDeletePermitAmendment,
-        props.handlePermitAmendmentIssueVC,
-        props.permitAmendmentTypeOptionsHash,
-        props.openViewConditionModal,
-        props.match.params.id
+        major_mine_ind,
+        openEditAmendmentModal,
+        handleDeletePermitAmendment,
+        handlePermitAmendmentIssueVC,
+        permitAmendmentTypeOptionsHash,
+        openViewConditionModal,
+        id
       )
     );
   };
 
-  const rowData = props.permits?.map((permit) =>
+  const rowData = permits?.map((permit) =>
     transformRowData(
       permit,
-      props.partyRelationships,
-      props.major_mine_ind,
-      props.openEditPermitModal,
-      props.openAddPermitAmendmentModal,
-      props.openAddAmalgamatedPermitModal,
-      props.permitStatusOptionsHash,
-      props.handleDeletePermit,
-      props.handleDeletePermitAmendment,
-      props.openAddPermitHistoricalAmendmentModal,
-      props.openEditSitePropertiesModal
+      partyRelationships,
+      major_mine_ind,
+      openEditPermitModal,
+      openAddPermitAmendmentModal,
+      openAddAmalgamatedPermitModal,
+      permitStatusOptionsHash,
+      handleDeletePermit,
+      handleDeletePermitAmendment,
+      openAddPermitHistoricalAmendmentModal,
+      openEditSitePropertiesModal
     )
   );
 
   return (
     <CoreTable
-      condition={props.isLoaded}
+      condition={isLoaded}
       dataSource={rowData}
       columns={permitColumns}
       classPrefix="permits"
@@ -684,19 +750,11 @@ export const MinePermitTable: React.FC<RouteComponentProps & MinePermitTableProp
         recordDescription: "amendment history",
         getDataSource: amendmentHistory,
         subTableColumns: childColumns,
-        expandedRowKeys: props.expandedRowKeys,
-        onExpand: props.onExpand,
+        expandedRowKeys: expandedRowKeys,
+        onExpand: onExpand,
       }}
     />
   );
 };
 
-const mapStateToProps = (state) => ({
-  partyRelationships: getPartyRelationships(state),
-  permitStatusOptionsHash: getDropdownPermitStatusOptionsHash(state),
-  permitAmendmentTypeOptionsHash: getPermitAmendmentTypeOptionsHash(state),
-});
-
-export default withRouter(
-  connect(mapStateToProps)(MinePermitTable) as FC<MinePermitTableProps & RouteComponentProps>
-);
+export default withRouter(MinePermitTable as FC<MinePermitTableProps & RouteComponentProps>);

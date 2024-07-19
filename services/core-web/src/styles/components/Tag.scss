@@ -1,0 +1,11 @@
+.tag {
+  background-color: #efedf6;
+  padding: 1px 8px;
+  border-radius: 2px;
+  border: 1px solid $primary-btn-color;
+
+  svg, svg path, svg rect, svg mask, span {
+    stroke: $primary-btn-color;
+    color: $primary-btn-color;
+  }
+}
