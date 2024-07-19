@@ -45,7 +45,7 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import CustomPropTypes from "@/customPropTypes";
 import Address from "@/components/common/Address";
 import CoreTable from "@mds/common/components/common/CoreTable";
-import { Feature, VC_CONNECTION_STATES, isFeatureEnabled } from "@mds/common";
+import { VC_CONNECTION_STATES } from "@mds/common";
 
 /**
  * @class PartyProfile - profile view for personnel/companies

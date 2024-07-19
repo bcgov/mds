@@ -1,11 +1,8 @@
 import React, { FC } from "react";
-import { Badge } from "antd";
 import { withRouter, Link, RouteComponentProps } from "react-router-dom";
 import { Menu, Dropdown, Button, Popconfirm } from "antd";
 import { PlusOutlined, SafetyCertificateOutlined, ReadOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
-import { Feature, VC_CRED_ISSUE_STATES } from "@mds/common/index";
-import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { formatDate } from "@common/utils/helpers";
 import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
 import {
