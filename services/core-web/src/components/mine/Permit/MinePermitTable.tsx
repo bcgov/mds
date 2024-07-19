@@ -1,9 +1,9 @@
 import React from "react";
-import { Badge, Button, Dropdown, Menu, Popconfirm } from "antd";
+import { Button, Dropdown, Menu, Popconfirm } from "antd";
 import { Link, RouteComponentProps, useHistory, useParams } from "react-router-dom";
 import { PlusOutlined, ReadOutlined, SafetyCertificateOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
-import { Feature, VC_CRED_ISSUE_STATES } from "@mds/common/index";
+import { Feature } from "@mds/common/index";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { formatDate } from "@common/utils/helpers";
 import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
@@ -689,27 +689,6 @@ export const MinePermitTable: React.FC<RouteComponentProps & MinePermitTableProp
   const partyRelationships = useSelector(getPartyRelationships);
   const permitStatusOptionsHash = useSelector(getDropdownPermitStatusOptionsHash);
   const permitAmendmentTypeOptionsHash = useSelector(getPermitAmendmentTypeOptionsHash);
-
-  if (isFeatureEnabled(Feature.VERIFIABLE_CREDENTIALS)) {
-    const colourMap = {
-      "Not Active": "#D8292F",
-      Pending: "#F1C21B",
-      Active: "#45A776",
-    };
-
-    const issuanceColumn = {
-      title: "VC Issuance State",
-      dataIndex: "lastAmendedVC",
-      key: "lastAmendedVC",
-      render: (text) => {
-        const badgeText = text ? VC_CRED_ISSUE_STATES[text] : "N/A";
-        const colour = colourMap[badgeText] ?? "transparent";
-        return <Badge color={colour} text={badgeText} />;
-      },
-    };
-
-    permitColumns.splice(5, 0, issuanceColumn);
-  }
 
   const amendmentHistory = (permit) => {
     return permit?.permit_amendments?.map((amendment, index) =>

@@ -61,11 +61,6 @@ exports[`MinePermitTable renders properly 1`] = `
                   </th>
                   <th
                     class="ant-table-cell"
-                  >
-                    VC Issuance State
-                  </th>
-                  <th
-                    class="ant-table-cell"
                     style="text-align: right;"
                   >
                     
@@ -80,7 +75,7 @@ exports[`MinePermitTable renders properly 1`] = `
                 >
                   <td
                     class="ant-table-cell"
-                    colspan="8"
+                    colspan="7"
                   >
                     No Data Yet
                   </td>
