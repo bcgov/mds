@@ -117,7 +117,6 @@ const ViewPermitOverview = () => {
                     "mine_tenure_type_code"
                   )}
                 </Paragraph>
-                {/*<Paragraph>{findOptionDescription(mineTenureTypeOptions, 'mine_tenure_type_code', mine.mine_type[0].)}</Paragraph>*/}
               </Col>
               <Col span={12}>
                 <Paragraph strong>Commodity</Paragraph>
