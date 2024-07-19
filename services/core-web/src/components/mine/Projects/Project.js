@@ -18,6 +18,7 @@ import NullScreen from "@/components/common/NullScreen";
 import DecisionPackageTab from "@/components/mine/Projects/DecisionPackageTab";
 import ProjectDocumentsTab from "./ProjectDocumentsTab";
 import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
+import ProjectDescriptionTab from "@mds/common/components/project/ProjectDescriptionTab";
 
 const propTypes = {
   project: CustomPropTypes.project.isRequired,
@@ -94,6 +95,9 @@ export class Project extends Component {
       case "overview":
         url = routes.EDIT_PROJECT.dynamicRoute(project_guid);
         break;
+      case "project-description":
+        url = routes.EDIT_PROJECT.dynamicRoute(project_guid, activeTab);
+        break;
       case "intro-project-overview":
         url = routes.INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(project_guid, irt_guid);
         break;
@@ -169,6 +173,13 @@ export class Project extends Component {
               </div>
             </LoadingWrapper>
           </Tabs.TabPane>
+          {this.props.isFeatureEnabled(Feature.AMS_AGENT) && (
+            <Tabs.TabPane tab="Project Description" key="project-description">
+              <div className="padding-lg">
+                <ProjectDescriptionTab />
+              </div>
+            </Tabs.TabPane>
+          )}
           <Tabs.TabPane
             tab="IRT"
             key="intro-project-overview"
