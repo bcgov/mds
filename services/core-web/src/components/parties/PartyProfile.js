@@ -45,7 +45,7 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import CustomPropTypes from "@/customPropTypes";
 import Address from "@/components/common/Address";
 import CoreTable from "@mds/common/components/common/CoreTable";
-import { Feature, VC_CONNECTION_STATES, isFeatureEnabled } from "@mds/common";
+import { VC_CONNECTION_STATES } from "@mds/common";
 
 /**
  * @class PartyProfile - profile view for personnel/companies
@@ -358,35 +358,30 @@ export class PartyProfile extends Component {
               )}
             </div>
 
-            {isFeatureEnabled(Feature.VERIFIABLE_CREDENTIALS) && party.party_type_code === "ORG" && (
-              <>
-                <div className="padding-md--top">
-                  Digital Wallet Connection Status:{" "}
-                  {VC_CONNECTION_STATES[party?.digital_wallet_connection_status]}
-                  {VC_CONNECTION_STATES[party?.digital_wallet_connection_status] === "Active" && (
-                    <Popconfirm
-                      title={
-                        <div>
-                          <p>
-                            Are you sure you want to delete the digitial wallet connection for
-                            &apos;
-                            {party.name}&apos;? This is irreversable and destructive.
-                          </p>
-                        </div>
-                      }
-                      onConfirm={this.deletePartyWalletConnection}
-                      okText="Yes"
-                      cancelText="No"
-                    >
-                      <Button type="danger">
-                        <img alt="pencil" className="padding-sm--right" src={EDIT} />
-                        Delete Wallet Connection
-                      </Button>
-                    </Popconfirm>
-                  )}
-                </div>
-              </>
-            )}
+            <div className="padding-md--top">
+              Digital Wallet Connection Status:{" "}
+              {VC_CONNECTION_STATES[party?.digital_wallet_connection_status]}
+              {VC_CONNECTION_STATES[party?.digital_wallet_connection_status] === "Active" && (
+                <Popconfirm
+                  title={
+                    <div>
+                      <p>
+                        Are you sure you want to delete the digitial wallet connection for &apos;
+                        {party.name}&apos;? This is irreversable and destructive.
+                      </p>
+                    </div>
+                  }
+                  onConfirm={this.deletePartyWalletConnection}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <Button type="danger">
+                    <img alt="pencil" className="padding-sm--right" src={EDIT} />
+                    Delete Wallet Connection
+                  </Button>
+                </Popconfirm>
+              )}
+            </div>
           </div>
           <div className="profile__content">
             <Tabs

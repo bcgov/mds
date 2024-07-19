@@ -1,7 +1,7 @@
 from json import dumps, loads
 from datetime import datetime
 from flask import current_app, request
-from werkzeug.exceptions import BadRequest
+from werkzeug.exceptions import BadRequest, ServiceUnavailable
 from flask_restx import Resource, reqparse
 from app.api.utils.include.user_info import User
 from app.api.utils.access_decorators import requires_any_of, MINESPACE_PROPONENT, EDIT_PARTY, VIEW_ALL
@@ -50,8 +50,8 @@ class W3CCredentialListResource(Resource, UserMixin):
     )
     @requires_any_of([EDIT_PARTY, MINESPACE_PROPONENT])
     def post(self):
-        if not is_feature_enabled(Feature.JSONLD_MINES_ACT_PERMIT):
-            raise NotImplementedError("This feature is not enabled.")
+        if not is_feature_enabled(Feature.VC_W3C):
+            raise ServiceUnavailable("This feature is not enabled.")
 
         data = self.parser.parse_args()
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(
@@ -85,8 +85,8 @@ class W3CCredentialDeprecatedResource(Resource, UserMixin):
     )
     @requires_any_of([EDIT_PARTY, MINESPACE_PROPONENT])
     def post(self):
-        if not is_feature_enabled(Feature.JSONLD_MINES_ACT_PERMIT):
-            raise NotImplementedError("This feature is not enabled.")
+        if not is_feature_enabled(Feature.VC_W3C):
+            raise ServiceUnavailable("This feature is not enabled.")
 
         data = self.parser.parse_args()
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(
@@ -119,13 +119,12 @@ class W3CCredentialUNTPResource(Resource, UserMixin):
     @api.expect(parser)
     @api.doc(
         description=
-        "returns a UNTP Conformity Credential for specific permit_amendment using deprecated aca-py endpoint, but with did:indy:bcovrin:test:"
+        "returns a UNTP Conformity Credential for specific permit_amendment using deprecated aca-py endpoint, but with DEV ONLY did:web"
     )
     @requires_any_of([EDIT_PARTY, MINESPACE_PROPONENT])
     def post(self):
-        if not is_feature_enabled(Feature.JSONLD_MINES_ACT_PERMIT):
-            raise NotImplementedError("This feature is not enabled.")
-        current_app.logger.warning("untp endpoint")
+        if not is_feature_enabled(Feature.VC_W3C):
+            raise ServiceUnavailable("This feature is not enabled.")
 
         data = self.parser.parse_args()
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(

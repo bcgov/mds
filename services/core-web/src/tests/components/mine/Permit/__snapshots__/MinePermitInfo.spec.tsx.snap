@@ -200,11 +200,6 @@ exports[`MinePermitInfo renders properly 1`] = `
                             </th>
                             <th
                               class="ant-table-cell"
-                            >
-                              VC Issuance State
-                            </th>
-                            <th
-                              class="ant-table-cell"
                               style="text-align: right;"
                             >
                               
@@ -293,23 +288,6 @@ exports[`MinePermitInfo renders properly 1`] = `
                               >
                                 Apr 01 2019
                               </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <span
-                                class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
-                              >
-                                <span
-                                  class="ant-badge-status-dot"
-                                  style="background: transparent;"
-                                />
-                                <span
-                                  class="ant-badge-status-text"
-                                >
-                                  N/A
-                                </span>
-                              </span>
                             </td>
                             <td
                               class="ant-table-cell"
@@ -413,23 +391,6 @@ exports[`MinePermitInfo renders properly 1`] = `
                               >
                                 Mar 07 2024
                               </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <span
-                                class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
-                              >
-                                <span
-                                  class="ant-badge-status-dot"
-                                  style="background: transparent;"
-                                />
-                                <span
-                                  class="ant-badge-status-text"
-                                >
-                                  N/A
-                                </span>
-                              </span>
                             </td>
                             <td
                               class="ant-table-cell"
