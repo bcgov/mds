@@ -689,14 +689,6 @@ export const getMineReportStatusDescription = (
   return MINE_REPORT_STATUS_DESCRIPTION_HASH[statusCode] || "";
 };
 
-export const getLatestPermitIssueDate = (permitRecord: IPermit) => {
-  const latestAmendment = permitRecord?.permit_amendments?.filter(
-    (a) => a.permit_amendment_status_code !== "DFT"
-  )[0];
-
-  return latestAmendment?.issue_date;
-};
-
 export const getDescriptionsFromCodes = (
   codes: string[],
   options: any[],
