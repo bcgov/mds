@@ -91,22 +91,6 @@ exports[`MinePermitInfo renders properly 1`] = `
             class="ant-typography"
           />
         </div>
-        <div
-          class="ant-col ant-col-12"
-        >
-          <div
-            class="ant-typography"
-          >
-            <strong>
-              Permittee BC Registry Number
-            </strong>
-          </div>
-          <div
-            class="ant-typography"
-          >
-            ????
-          </div>
-        </div>
       </div>
       <div
         class="ant-row"
