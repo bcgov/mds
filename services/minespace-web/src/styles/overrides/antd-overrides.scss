@@ -189,6 +189,39 @@ h5.ant-typography,
   }
 }
 
+// same style used on CORE: horizontal with underline highlight
+.core-tabs.ant-tabs {
+  &>.ant-tabs-nav {
+    .ant-tabs-nav-wrap {
+      border: none;
+      border-bottom: none !important;
+    }
+  }
+
+  &>.ant-tabs-nav {
+    .ant-tabs-tab {
+      color: $font-colour;
+      background-color: transparent !important;
+      font-weight: normal;
+
+      &:not(.ant-tabs-tab-active) {
+
+        &:hover,
+        .ant-tabs-tab-btn:active {
+          color: $font-colour !important;
+        }
+      }
+
+      &.ant-tabs-tab-active {
+        .ant-tabs-tab-btn {
+          color: $gov-blue !important;
+          // font-weight: normal;
+        }
+      }
+    }
+  }
+}
+
 // vertical-tabs
 .vertical-tabs {
   &.ant-tabs .ant-tabs-ink-bar {

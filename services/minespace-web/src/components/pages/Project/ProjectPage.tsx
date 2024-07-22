@@ -22,6 +22,7 @@ import DocumentsTab from "./DocumentsTab";
 import { MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES } from "./MajorMineApplicationPage";
 import ProjectDocumentsTab from "@mds/common/components/projects/ProjectDocumentsTab";
 import ProjectDescriptionTab from "@mds/common/components/project/ProjectDescriptionTab";
+import ScrollSidePageWrapper from "@mds/common/components/common/ScrollSidePageWrapper";
 
 const tabs = [
   "overview",
@@ -139,12 +140,14 @@ const ProjectPage: FC = () => {
     }
   };
 
-  const handleTabChange = (newActiveTab, irtStatus) => {
+  const handleTabChange = (newActiveTab) => {
     setActiveTab(newActiveTab);
     fetchArchivedDocuments(newActiveTab);
 
     let url: string;
     switch (newActiveTab) {
+      case "documents":
+      case "project-description":
       case "overview":
         url = router.EDIT_PROJECT.dynamicRoute(projectGuid, newActiveTab);
         return history.push(url);
@@ -161,10 +164,7 @@ const ProjectPage: FC = () => {
       case "major-mine-application":
         url = `/projects/${projectGuid}/major-mine-application/entry`;
         return history.push(url);
-      case "project-description":
-        url = `/projects/${projectGuid}/project-description`;
-        return history.push(url);
-      case "documents":
+
       case "old-documents":
         url = `/projects/${projectGuid}/documents`;
         return history.push({ pathname: url });
@@ -239,7 +239,7 @@ const ProjectPage: FC = () => {
       children: <ProjectDocumentsTab project={project} refreshData={() => handleFetchData(true)} />,
     },
   ];
-  return isLoaded ? (
+  const headerContent = (
     <>
       <Row>
         <Col span={24}>
@@ -254,17 +254,37 @@ const ProjectPage: FC = () => {
           </Link>
         </Col>
       </Row>
+    </>
+  );
+  return isLoaded ? (
+    <div className="fixed-tabs-container">
+      <div className="view--header">
+        <Row>
+          <Col span={24}>
+            <Typography.Title>{project_title}</Typography.Title>
+          </Col>
+        </Row>
+        <Row gutter={[0, 16]}>
+          <Col span={24}>
+            <Link to={router.MINE_DASHBOARD.dynamicRoute(mine_guid, "applications")}>
+              <ArrowLeftOutlined className="padding-sm-right" />
+              Back to: {mine_name} Mine Projects
+            </Link>
+          </Col>
+        </Row>
+      </div>
       <Row gutter={[0, 16]}>
         <Col span={24}>
           <Tabs
             defaultActiveKey={activeTab}
-            onChange={(newActiveTab) => handleTabChange(newActiveTab, irtStatus)}
-            type="card"
+            onChange={(newActiveTab) => handleTabChange(newActiveTab)}
+            // type="card"
+            className="core-tabs fixed-tabs-tabs"
             items={tabItems}
           />
         </Col>
       </Row>
-    </>
+    </div>
   ) : (
     <Loading />
   );

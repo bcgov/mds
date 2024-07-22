@@ -5,7 +5,7 @@ export interface IMajorMinesApplication {
   major_mine_application_guid: string;
   project_guid: string;
   status_code: string;
-  documents: Partial<IMajorMinesApplicationDocument>[];
+  documents: IMajorMinesApplicationDocument[];
   update_user: string;
   update_timestamp: string;
   create_user: string;

@@ -76,3 +76,30 @@
     text-overflow: ellipsis;
     overflow: hidden;
 }
+
+.fixed-tabs-container {
+    .view--header {
+        position: fixed;
+        width: 100%;
+        z-index: 1000;
+        background-color: $white;
+    }
+
+    .fixed-tabs-tabs {
+        &>.ant-tabs-nav {
+            position: fixed;
+            top: 203px;
+            width: 100%;
+            background-color: $white;
+            z-index: 1000;
+        }
+
+        &>.ant-tabs-content-holder {
+            margin-top: 225px;
+            position: relative;
+            padding-bottom: 225px;
+        }
+
+    }
+
+}

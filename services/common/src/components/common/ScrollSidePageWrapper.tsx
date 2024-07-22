@@ -39,12 +39,14 @@ const ScrollSidePageWrapper: FC<ScrollSidePageWrapperProps> = ({
 
   return (
     <div className="scroll-side-menu-wrapper">
-      <div
-        className={fixedTop ? "view--header fixed-scroll" : "view--header"}
-        style={{ paddingBottom: 0, height: headerHeight }}
-      >
-        {header}
-      </div>
+      {header && (
+        <div
+          className={fixedTop ? "view--header fixed-scroll" : "view--header"}
+          style={{ paddingBottom: 0, height: headerHeight }}
+        >
+          {header}
+        </div>
+      )}
       <div
         className={fixedTop ? "side-menu--fixed" : "side-menu"}
         style={{ top: headerHeight + coreHeaderHeight }}
@@ -54,7 +56,7 @@ const ScrollSidePageWrapper: FC<ScrollSidePageWrapperProps> = ({
       </div>
       <div
         className={fixedTop ? "side-menu--content with-fixed-top" : "side-menu--content"}
-        style={fixedTop ? { top: headerHeight } : {}}
+        style={fixedTop && header ? { top: headerHeight } : {}}
       >
         {content}
       </div>
