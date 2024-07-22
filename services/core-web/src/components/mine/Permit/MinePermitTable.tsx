@@ -212,10 +212,10 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
   const history = useHistory();
   const { isFeatureEnabled } = useFeatureFlag();
   const { id } = useParams<{ id: string }>();
+  const partyRelationships = useSelector(getPartyRelationships);
 
   const transformRowData = (
     permit,
-    partyRelationships,
     major_mine_ind,
     openEditPermitModal,
     openAddPermitAmendmentModal,
@@ -721,7 +721,6 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
 
   const permitColumns = [...columns];
 
-  const partyRelationships = useSelector(getPartyRelationships);
   const permitStatusOptionsHash = useSelector(getDropdownPermitStatusOptionsHash);
   const permitAmendmentTypeOptionsHash = useSelector(getPermitAmendmentTypeOptionsHash);
 
@@ -745,7 +744,6 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
   const rowData = permits?.map((permit) =>
     transformRowData(
       permit,
-      partyRelationships,
       major_mine_ind,
       openEditPermitModal,
       openAddPermitAmendmentModal,
