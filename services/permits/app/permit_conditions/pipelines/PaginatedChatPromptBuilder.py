@@ -6,6 +6,7 @@ from haystack import component
 from haystack.components.builders import ChatPromptBuilder
 
 logger = logging.getLogger(__name__)
+DEBUG_MODE = os.environ.get("DEBUG_MODE", "False").lower() == "true"
 
 
 @component
@@ -25,7 +26,6 @@ class PaginatedChatPromptBuilder(ChatPromptBuilder):
         template_variables=None,
         **kwargs,
     ):
-        logger.debug("Creating prompt")
 
         if iteration:
             # Merge "iteration" variables with the template variables
@@ -37,4 +37,8 @@ class PaginatedChatPromptBuilder(ChatPromptBuilder):
             template=template, template_variables=template_variables, **kwargs
         )
 
+        if DEBUG_MODE:
+            with open("debug/paginated_chat_prompt_builder_output.txt", "a") as f:
+                for prompt in output["prompt"]:
+                    f.write(prompt.content + "\n\n")
         return {"data": ChatData(output["prompt"], kwargs["documents"])}
