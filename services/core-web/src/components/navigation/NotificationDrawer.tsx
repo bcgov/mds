@@ -13,7 +13,6 @@ import { getUserInfo } from "@mds/common/redux/selectors/authenticationSelectors
 import { useHistory } from "react-router-dom";
 import { storeActivities } from "@mds/common/redux/actions/activityActions";
 import {
-  INFORMATION_REQUIREMENTS_TABLE,
   MINE_TAILINGS_DETAILS,
   NOTICE_OF_DEPARTURE,
   EDIT_PROJECT_SUMMARY,
@@ -121,9 +120,9 @@ const NotificationDrawer: FC<INotificationDrawerProps> = (props) => {
           notification.notification_document.metadata.entity_guid
         );
       case "InformationRequirementsTable":
-        return INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+        return EDIT_PROJECT.dynamicRoute(
           notification.notification_document.metadata.project.project_guid,
-          notification.notification_document.metadata.entity_guid
+          "information-requirements-table"
         );
       case "MajorMineApplication":
         return EDIT_PROJECT.dynamicRoute(

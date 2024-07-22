@@ -38,11 +38,6 @@ const MineDashboardRoutes = () => (
     <Route exact path={routes.EDIT_PROJECT.route} component={routes.EDIT_PROJECT.component} />
     <Route
       exact
-      path={routes.INFORMATION_REQUIREMENTS_TABLE.route}
-      component={routes.INFORMATION_REQUIREMENTS_TABLE.component}
-    />
-    <Route
-      exact
       path={routes.MINE_NOW_APPLICATIONS.route}
       component={routes.MINE_NOW_APPLICATIONS.component}
     />

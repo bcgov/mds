@@ -277,15 +277,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/projects/:projectGuid/project-submission-status/:status"
   />
   <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(WrappedComponent)",
-        "type": [Function],
-      }
-    }
+    component={[Function]}
     exact={true}
     key="/pre-applications/:projectGuid/:tab"
     path="/pre-applications/:projectGuid/:tab"
@@ -313,20 +305,6 @@ exports[`DashboardRoutes  renders properly 1`] = `
     exact={true}
     key="/pre-applications/:projectGuid/project-decision-package"
     path="/pre-applications/:projectGuid/project-decision-package"
-  />
-  <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(InformationRequirementsTableTab)",
-        "type": [Function],
-      }
-    }
-    exact={true}
-    key="/pre-applications/:projectGuid/information-requirements-table/:irtGuid/:tab"
-    path="/pre-applications/:projectGuid/information-requirements-table/:irtGuid/:tab"
   />
   <Route
     component={

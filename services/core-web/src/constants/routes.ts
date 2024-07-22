@@ -260,13 +260,6 @@ export const PROJECT_DECISION_PACKAGE = {
   component: DecisionPackageTab,
 };
 
-export const INFORMATION_REQUIREMENTS_TABLE = {
-  route: "/pre-applications/:projectGuid/information-requirements-table/:irtGuid/:tab",
-  dynamicRoute: (projectGuid, irtGuid, tab = "intro-project-overview") =>
-    `/pre-applications/${projectGuid}/information-requirements-table/${irtGuid}/${tab}`,
-  component: InformationRequirementsTableTab,
-};
-
 export const MINE_NOW_APPLICATIONS = {
   route: "/mine-dashboard/:id/permits-and-approvals/applications",
   dynamicRoute: (id, params?) =>
