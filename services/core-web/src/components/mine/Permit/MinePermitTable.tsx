@@ -34,6 +34,7 @@ const draftAmendment = "DFT";
 interface MinePermitTableProps {
   permits?: IPermit[];
   permit?: IPermit;
+  partyRelationships?: IPermitPartyRelationship[];
   major_mine_ind: boolean;
   openEditPermitModal: (arg1: any, arg2: IPermit) => any;
   openAddPermitAmendmentModal: (arg1: any, arg2: IPermit) => any;
