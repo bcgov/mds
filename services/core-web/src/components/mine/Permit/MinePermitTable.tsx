@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Dropdown, Menu, Popconfirm } from "antd";
-import { Link, RouteComponentProps, useHistory, useParams } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { PlusOutlined, ReadOutlined, SafetyCertificateOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { Feature } from "@mds/common/index";
@@ -51,7 +51,6 @@ interface MinePermitTableProps {
   permitAmendmentTypeOptionsHash?: any;
   openEditSitePropertiesModal: (arg1: any, arg2: IPermit) => any;
   openViewConditionModal: (arg1: any, arg2: any, arg3: any, arg4: string) => any;
-  match: any;
 }
 
 interface MinePermitTableItem {
@@ -195,7 +194,7 @@ const renderPermitNo = (permit) => {
     : permit.permit_no;
 };
 
-export const MinePermitTable: React.FC<RouteComponentProps & MinePermitTableProps> = ({
+export const MinePermitTable: React.FC<MinePermitTableProps> = ({
   major_mine_ind,
   openEditAmendmentModal,
   handleDeletePermitAmendment,
@@ -343,13 +342,13 @@ export const MinePermitTable: React.FC<RouteComponentProps & MinePermitTableProp
       key: "addEditButton",
       align: "right",
       render: (text, record) => {
-        const { id } = useParams<{ id: string }>();
         const permitGuid = isPermit(record.permit)
           ? record.permit.permit_guid
           : record.permit?.permit_amendment_guid;
-        const menu = (
-          <Menu>
-            <Menu.Item key="0">
+        const items = [
+          {
+            key: "0",
+            label: (
               <button
                 type="button"
                 className="full add-permit-dropdown-button"
@@ -360,79 +359,98 @@ export const MinePermitTable: React.FC<RouteComponentProps & MinePermitTableProp
                   {text.hasAmalgamated ? "Add Permit Amendment" : "Amalgamate Permit"}
                 </div>
               </button>
-            </Menu.Item>
-            {!text.hasAmalgamated && (
-              <Menu.Item key="1">
-                <button
-                  type="button"
-                  className="full add-permit-dropdown-button"
-                  onClick={(event) =>
-                    record.openAddPermitAmendmentModal(event, record.permit as IPermitAmendment)
-                  }
-                >
-                  <div>
-                    <PlusOutlined className="padding-sm add-permit-dropdown-button-icon" />
-                    Add Permit Amendment
-                  </div>
-                </button>
-              </Menu.Item>
-            )}
-            <AuthorizationWrapper permission={Permission.EDIT_HISTORICAL_AMENDMENTS}>
-              <div className="custom-menu-item">
-                <button
-                  type="button"
-                  className="full add-permit-dropdown-button"
-                  onClick={(event) =>
-                    record.openAddPermitHistoricalAmendmentModal(
-                      event,
-                      record.permit as IPermitAmendment
-                    )
-                  }
-                >
-                  <div>
-                    <PlusOutlined className="padding-sm add-permit-dropdown-button-icon" />
-                    Add Permit Historical Amendment
-                  </div>
-                </button>
-              </div>
-            </AuthorizationWrapper>
-            <AuthorizationWrapper permission={Permission.EDIT_SECURITIES}>
-              <div className="custom-menu-item">
-                <button
-                  type="button"
-                  className="full"
-                  onClick={(event) =>
-                    record.openEditPermitModal(event, record.permit, record.description)
-                  }
-                >
-                  <img
-                    alt="document"
-                    className="padding-sm"
-                    src={EDIT_OUTLINE_VIOLET}
-                    style={{ paddingRight: "15px" }}
-                  />
-                  Edit Permit Status
-                </button>
-              </div>
-            </AuthorizationWrapper>
-            <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-              <div className="custom-menu-item">
-                <button
-                  type="button"
-                  className="full"
-                  onClick={(event) => record.openEditSitePropertiesModal(event, record.permit)}
-                >
-                  <img
-                    alt="document"
-                    className="padding-sm"
-                    src={EDIT_OUTLINE_VIOLET}
-                    style={{ paddingRight: "15px" }}
-                  />
-                  Edit Site Properties
-                </button>
-              </div>
-            </AuthorizationWrapper>
-            {isFeatureEnabled(Feature.DIGITIZED_PERMITS) && (
+            ),
+          },
+          !text.hasAmalgamated && {
+            key: "1",
+            label: (
+              <button
+                type="button"
+                className="full add-permit-dropdown-button"
+                onClick={(event) =>
+                  record.openAddPermitAmendmentModal(event, record.permit as IPermitAmendment)
+                }
+              >
+                <div>
+                  <PlusOutlined className="padding-sm add-permit-dropdown-button-icon" />
+                  Add Permit Amendment
+                </div>
+              </button>
+            ),
+          },
+          {
+            key: "2",
+            label: (
+              <AuthorizationWrapper permission={Permission.EDIT_HISTORICAL_AMENDMENTS}>
+                <div className="custom-menu-item">
+                  <button
+                    type="button"
+                    className="full add-permit-dropdown-button"
+                    onClick={(event) =>
+                      record.openAddPermitHistoricalAmendmentModal(
+                        event,
+                        record.permit as IPermitAmendment
+                      )
+                    }
+                  >
+                    <div>
+                      <PlusOutlined className="padding-sm add-permit-dropdown-button-icon" />
+                      Add Permit Historical Amendment
+                    </div>
+                  </button>
+                </div>
+              </AuthorizationWrapper>
+            ),
+          },
+          {
+            key: "3",
+            label: (
+              <AuthorizationWrapper permission={Permission.EDIT_SECURITIES}>
+                <div className="custom-menu-item">
+                  <button
+                    type="button"
+                    className="full"
+                    onClick={(event) =>
+                      record.openEditPermitModal(event, record.permit, record.description)
+                    }
+                  >
+                    <img
+                      alt="document"
+                      className="padding-sm"
+                      src={EDIT_OUTLINE_VIOLET}
+                      style={{ paddingRight: "15px" }}
+                    />
+                    Edit Permit Status
+                  </button>
+                </div>
+              </AuthorizationWrapper>
+            ),
+          },
+          {
+            key: "4",
+            label: (
+              <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                <div className="custom-menu-item">
+                  <button
+                    type="button"
+                    className="full"
+                    onClick={(event) => record.openEditSitePropertiesModal(event, record.permit)}
+                  >
+                    <img
+                      alt="document"
+                      className="padding-sm"
+                      src={EDIT_OUTLINE_VIOLET}
+                      style={{ paddingRight: "15px" }}
+                    />
+                    Edit Site Properties
+                  </button>
+                </div>
+              </AuthorizationWrapper>
+            ),
+          },
+          isFeatureEnabled(Feature.DIGITIZED_PERMITS) && {
+            key: "5",
+            label: (
               <div className="custom-menu-item">
                 <button
                   type="button"
@@ -442,9 +460,11 @@ export const MinePermitTable: React.FC<RouteComponentProps & MinePermitTableProp
                   View
                 </button>
               </div>
-            )}
-          </Menu>
-        );
+            ),
+          },
+        ].filter(Boolean);
+
+        const menu = <Menu items={items} />;
 
         const isLinkedToNowApplication =
           (record.permit as IPermit).permit_amendments.filter(
@@ -611,10 +631,11 @@ export const MinePermitTable: React.FC<RouteComponentProps & MinePermitTableProp
       key: "operations",
       align: "right",
       render: (text, record) => {
-        const menu = (
-          <Menu>
-            <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-              <Menu.Item key="0">
+        const items = [
+          {
+            key: "0",
+            label: (
+              <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
                 <div className="custom-menu-item">
                   <button
                     type="button"
@@ -632,9 +653,12 @@ export const MinePermitTable: React.FC<RouteComponentProps & MinePermitTableProp
                     Edit
                   </button>
                 </div>
-              </Menu.Item>
-            </AuthorizationWrapper>
-            <Menu.Item key="1">
+              </AuthorizationWrapper>
+            ),
+          },
+          {
+            key: "1",
+            label: (
               <div className="custom-menu-item">
                 <button
                   type="button"
@@ -652,17 +676,30 @@ export const MinePermitTable: React.FC<RouteComponentProps & MinePermitTableProp
                   View Permit Conditions
                 </button>
               </div>
-            </Menu.Item>
-            {!record.is_generated_in_core && (
-              <Menu.Item key="2">{renderEditPermitConditions(text, record)}</Menu.Item>
-            )}
-            <Menu.Item key="3">
-              <DownloadAllDocumentsButton documents={record.permitAmendmentDocuments} />
-            </Menu.Item>
-            <Menu.Item key="4">{renderDeleteButtonForPermitAmendments(record)}</Menu.Item>
-            <Menu.Item key="5">{renderVerifyCredentials(text, record)}</Menu.Item>
-          </Menu>
-        );
+            ),
+          },
+          ...(!record.is_generated_in_core
+            ? [
+                {
+                  key: "2",
+                  label: renderEditPermitConditions(text, record),
+                },
+              ]
+            : []),
+          {
+            key: "3",
+            label: <DownloadAllDocumentsButton documents={record.permitAmendmentDocuments} />,
+          },
+          {
+            key: "4",
+            label: renderDeleteButtonForPermitAmendments(record),
+          },
+          {
+            key: "5",
+            label: renderVerifyCredentials(text, record),
+          },
+        ];
+        const menu = <Menu items={items} />;
         return (
           <div>
             {/* @ts-ignore */}
