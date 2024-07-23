@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 import { Feature } from "@mds/common/index";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { formatDate } from "@common/utils/helpers";
-import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
 import {
   getDropdownPermitStatusOptionsHash,
   getPermitAmendmentTypeOptionsHash,
@@ -22,7 +21,7 @@ import DocumentLink from "@/components/common/DocumentLink";
 import DownloadAllDocumentsButton from "@/components/common/buttons/DownloadAllDocumentsButton";
 import * as route from "@/constants/routes";
 import { VIEW_MINE_PERMIT } from "@/constants/routes";
-import { IMineDocument, IPermit, IPermitAmendment, IPermitPartyRelationship } from "@mds/common";
+import { IMineDocument, IPermit, IPermitAmendment } from "@mds/common";
 import { ColumnsType } from "antd/lib/table";
 
 /**
@@ -33,7 +32,6 @@ const draftAmendment = "DFT";
 
 interface MinePermitTableProps {
   permits?: IPermit[];
-  permit?: IPermit;
   major_mine_ind: boolean;
   openEditPermitModal: (arg1: any, arg2: IPermit) => any;
   openAddPermitAmendmentModal: (arg1: any, arg2: IPermit) => any;
@@ -211,7 +209,6 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
   const history = useHistory();
   const { isFeatureEnabled } = useFeatureFlag();
   const { id } = useParams<{ id: string }>();
-  const partyRelationships = useSelector(getPartyRelationships);
 
   const transformRowData = (
     permit,

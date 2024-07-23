@@ -48,7 +48,6 @@ interface MinePermitInfoProps {
   permits?: IPermit[];
   fetchPartyRelationships: (arg1: any) => any;
   openModal: (arg1: any) => void;
-  history: { push: (path: string) => void };
   closeModal: () => void;
   createPermit: ActionCreator<typeof createPermit>;
   fetchPermits: ActionCreator<typeof fetchPermits>;
@@ -364,12 +363,12 @@ export const MinePermitInfo: FC<MinePermitInfoProps> = (props) => {
 
   useEffect(() => {
     if (modifiedPermits && props.permits !== prevPermits) {
-      const currentPermits =
-        prevPermits &&
-        prevPermits.filter((p) => p.mine_guid === props.mineGuid).map((x) => x.permit_guid);
-      const nextPermits =
-        props.permits &&
-        props.permits.filter((p) => p.mine_guid === props.mineGuid).map((x) => x.permit_guid);
+      const currentPermits = prevPermits
+        ?.filter((p) => p.mine_guid === props.mineGuid)
+        .map((x) => x.permit_guid);
+      const nextPermits = props.permits
+        ?.filter((p) => p.mine_guid === props.mineGuid)
+        .map((x) => x.permit_guid);
 
       setExpandedRowKeys(
         modifiedPermitGuid
@@ -435,9 +434,7 @@ export const MinePermitInfo: FC<MinePermitInfoProps> = (props) => {
           })`}
           key="2"
         >
-          <>
-            <ExplosivesPermit isPermitTab />
-          </>
+          <ExplosivesPermit isPermitTab />
         </Tabs.TabPane>
         {isFeatureEnabled(Feature.VC_ANONCREDS_CORE) && (
           <Tabs.TabPane
@@ -449,9 +446,7 @@ export const MinePermitInfo: FC<MinePermitInfoProps> = (props) => {
             })`}
             key="3"
           >
-            <>
-              <DigitalPermitCredential />
-            </>
+            <DigitalPermitCredential />
           </Tabs.TabPane>
         )}
       </Tabs>
