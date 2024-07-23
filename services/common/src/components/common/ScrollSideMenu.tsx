@@ -89,7 +89,7 @@ export const ScrollSideMenu: FC<ScrollSideMenuProps> = ({
           );
           return (
             <Anchor.Link
-              key={title}
+              key={href}
               href={`#${href}`}
               title={titleElement}
               className="now-menu-link"
