@@ -3,6 +3,7 @@ from difflib import HtmlDiff, unified_diff
 from typing import Optional
 
 import pandas as pd
+from diff_match_patch import diff_match_patch
 from fuzzywuzzy import fuzz
 from jinja2 import Environment, FileSystemLoader
 from pydantic import BaseModel
@@ -109,10 +110,15 @@ env = Environment(loader=FileSystemLoader("."))
 template = env.get_template("app/report_template.html")
 context = {"comparison_results": [], "missing_conditions": [], "added_conditions": []}
 
+dmp = diff_match_patch()
+
 
 def diff(a, b):
-    diff = unified_diff(a.splitlines(), b.splitlines(), lineterm="")
-    return "\n".join(list(diff))
+    diffs = dmp.diff_main(a, b)
+    return dmp.diff_prettyHtml(diffs)
+    diff = html_diff.make_file(a.splitlines(), b.splitlines(), context=True)
+    return diff
+    # return "\n".join(list(diff))
 
 
 for key in missing_conditions:
@@ -135,7 +141,7 @@ for key in sorted(manual_content_dict.keys()):
         # Using fuzzy matching to allow for some differences
         match_percentage = fuzz.ratio(auto_condition_text, manual_condition_text)
         is_match = (
-            match_percentage > 90
+            match_percentage >= 100
         )  # Consider it a match if the similarity is above 90%
         if is_match:
             matching_score += 1

@@ -18,3 +18,4 @@ pypdf==4.2.0
 json-repair==0.25.3
 pytest==8.0.0
 fuzzywuzzy==0.18.0
+diff-match-patch==20230430
