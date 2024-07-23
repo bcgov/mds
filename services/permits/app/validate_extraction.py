@@ -1,40 +1,38 @@
 import argparse
-from difflib import HtmlDiff, unified_diff
-from typing import Optional
+import os
 
 import pandas as pd
 from diff_match_patch import diff_match_patch
 from fuzzywuzzy import fuzz
 from jinja2 import Environment, FileSystemLoader
-from pydantic import BaseModel
-
-
-# Define the Pydantic model
-class Content(BaseModel):
-    section_title: Optional[str] = None
-    section_paragraph: Optional[str] = None
-    paragraph_title: Optional[str] = None
-    subparagraph: Optional[str] = None
-    clause: Optional[str] = None
-    subclause: Optional[str] = None
-    page_number: Optional[str] = None
-    condition_text: Optional[str] = None
+from permit_conditions.validator.permit_condition_model import PermitCondition
 
 
 # Function to create Content instances from a DataFrame
 def create_content_instances(df):
     content_list = []
     for _, row in df.iterrows():
-        content = Content(
+        content = PermitCondition(
             section_title=row["section_title"],
             section_paragraph=row["section_paragraph"],
             paragraph_title=row["paragraph_title"],
             subparagraph=row["subparagraph"],
             clause=row["clause"],
             subclause=row["subclause"],
-            page_number=row["page_number"],
+            page_number=int(row["page_number"]) if row["page_number"] else None,
             condition_text=row["condition_text"],
         )
+
+        text = f"""
+            {content.section_paragraph}. {content.section_title}
+            {content.subparagraph}. {content.paragraph_title}
+            {"("+content.clause + ")" if content.clause else ""} {"("+content.subclause + ")" if content.subclause else ""}
+
+            {row["condition_text"]}
+        """
+
+        content.condition_text = text
+
         content_list.append(content)
     return content_list
 
@@ -102,8 +100,6 @@ comparison_results = []
 matching_score = 0
 total_comparable_conditions = 0
 
-# Initialize HTML diff instance
-html_diff = HtmlDiff(wrapcolumn=80)
 
 # Prepare the HTML report
 env = Environment(loader=FileSystemLoader("."))
@@ -114,23 +110,20 @@ dmp = diff_match_patch()
 
 
 def diff(a, b):
-    diffs = dmp.diff_main(a, b)
+    diffs = dmp.diff_main(b, a)
     return dmp.diff_prettyHtml(diffs)
-    diff = html_diff.make_file(a.splitlines(), b.splitlines(), context=True)
-    return diff
-    # return "\n".join(list(diff))
 
 
 for key in missing_conditions:
     diff_html = diff("", manual_content_dict[key].condition_text)
     context["missing_conditions"].append(
-        {"Key": key, "DiffHTML": diff_html, "state": "missing"}
+        {"Key": key, "DiffHTML": diff_html, "state": "missing", "match_percentage": 0}
     )
 
 for key in added_conditions:
     diff_html = diff(auto_content_dict[key].condition_text, "")
     context["added_conditions"].append(
-        {"Key": key, "DiffHTML": diff_html, "state": "added"}
+        {"Key": key, "DiffHTML": diff_html, "state": "added", "match_percentage": 0}
     )
 
 for key in sorted(manual_content_dict.keys()):
@@ -164,6 +157,7 @@ for key in sorted(manual_content_dict.keys()):
                 "Key": key,
                 "DiffHTML": diff_html,
                 "state": "match" if is_match else "nomatch",
+                "match_percentage": match_percentage,
             }
         )
 
@@ -198,9 +192,15 @@ context["all_conditions"] = sorted(
     key=lambda c: c.get("Key"),
 )
 
-# Render the HTML report
+auto_extracted_base = os.path.splitext(os.path.basename(args.auto_extracted_csv))[0]
+manual_extracted_base = os.path.splitext(os.path.basename(args.manual_extracted_csv))[0]
+
+report_prefix = f"{auto_extracted_base}_vs_{manual_extracted_base}"
+
 html_report = template.render(context)
-with open("comparison_report.html", "w") as f:
+
+html_report_filename = f"{report_prefix}_comparison_report.html"
+with open(html_report_filename, "w") as f:
     f.write(html_report)
 
 # Calculate the overall match_percentage
@@ -214,8 +214,8 @@ match_percentage = (
 # Create a DataFrame from the comparison results
 comparison_df = pd.DataFrame(comparison_results)
 
-# Output the detailed comparison report to a CSV file
-comparison_df.to_csv("comparison_report.csv", index=False)
+comparison_csv_filename = f"{report_prefix}_comparison_report.csv"
+comparison_df.to_csv(comparison_csv_filename, index=False)
 
 # Report the results
 print(f"The comparable CSV files match by {match_percentage:.2f}%")

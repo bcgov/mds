@@ -1,6 +1,5 @@
 from typing import List, Optional
 
-from haystack import Document
 from pydantic import BaseModel
 
 

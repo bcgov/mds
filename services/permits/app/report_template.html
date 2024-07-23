@@ -96,14 +96,15 @@
 
         {% for condition in all_conditions %}
         <div class="condition-item {{ condition.state }}" onclick="showCondition('{{ condition.Key }}')">{{
-            condition.Key }}</div>
+            condition.Key }} - {{ condition.match_percentage }}%
+        </div>
         {% endfor %}
     </div>
     <div id="content">
         <h1>Comparison Report</h1>
         {% for result in all_conditions %}
         <div id="{{ result.Key }}" class="condition-content">
-            <h2>{{ result.Key }}</h2>
+            <h2>{{ result.Key }} - {{ result.match_percentage }}%</h2>
             <div id="{{ result.Key }}-diff">
                 {{result.DiffHTML | safe}}
             </div>
