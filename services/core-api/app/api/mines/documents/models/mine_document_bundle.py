@@ -1,7 +1,6 @@
-from sqlalchemy.dialects.postgresql import UUID
-
+from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
 from app.extensions import db
-from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
+from sqlalchemy.dialects.postgresql import UUID
 
 
 class MineDocumentBundle(SoftDeleteMixin, AuditMixin, Base):
@@ -13,7 +12,7 @@ class MineDocumentBundle(SoftDeleteMixin, AuditMixin, Base):
     geomark_id = db.Column(db.String(300), nullable=True)
     docman_bundle_guid = db.Column(UUID(as_uuid=True))
 
-    bundle_documents = db.relationship('MineDocument', back_populates='mine_document_bundle')
+    # bundle_documents = db.relationship('MineDocument', back_populates='mine_document_bundle')
 
     def json(self):
         return {
