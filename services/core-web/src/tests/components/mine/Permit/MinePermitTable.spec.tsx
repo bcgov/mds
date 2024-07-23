@@ -2,6 +2,10 @@ import React from "react";
 import { shallow } from "enzyme";
 import { MinePermitTable } from "@/components/mine/Permit/MinePermitTable";
 import * as MOCK from "@/tests/mocks/dataMocks";
+import { render } from "@testing-library/react";
+import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
+import { BrowserRouter } from "react-router-dom";
+import ViewPermit from "@/components/mine/Permit/ViewPermit";
 
 const dispatchProps: any = {};
 const props: any = {};
@@ -26,6 +30,18 @@ const setupProps = () => {
   props.partyRelationships = MOCK.PARTYRELATIONSHIPS;
 };
 
+function mockFunction() {
+  const original = jest.requireActual("react-router-dom");
+  return {
+    ...original,
+    useParams: jest.fn().mockReturnValue({
+      id: "18133c75-49ad-4101-85f3-a43e35ae989a",
+    }),
+  };
+}
+
+jest.mock("react-router-dom", () => mockFunction());
+
 beforeEach(() => {
   setupDispatchProps();
   setupProps();
@@ -33,7 +49,13 @@ beforeEach(() => {
 
 describe("MinePermitTable", () => {
   it("renders properly", () => {
-    const component = shallow(<MinePermitTable {...dispatchProps} {...props} />);
-    expect(component).toMatchSnapshot();
+    const { container } = render(
+      <ReduxWrapper>
+        <BrowserRouter>
+          <MinePermitTable {...dispatchProps} {...props} />
+        </BrowserRouter>
+      </ReduxWrapper>
+    );
+    expect(container.firstChild).toMatchSnapshot();
   });
 });
