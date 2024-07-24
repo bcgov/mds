@@ -195,10 +195,13 @@ export const ProjectSummary: FC = () => {
       : "Successfully submitted a project description to the Province of British Columbia.";
 
     let status_code = formattedProjectSummary.status_code;
+    let is_historic = formattedProjectSummary.is_historic;
+
     if (!status_code || isNewProject) {
       status_code = "DFT";
     } else if (!newActiveTab) {
       status_code = "SUB";
+      is_historic = false;
       if (amsFeatureEnabled) {
         message = null;
       }
@@ -210,7 +213,7 @@ export const ProjectSummary: FC = () => {
         await handleCreateProjectSummary(values, message);
       }
       if (projectGuid && projectSummaryGuid) {
-        await handleUpdateProjectSummary(values, message);
+        await handleUpdateProjectSummary({ ...values, is_historic }, message);
         handleTabChange(newActiveTab);
         setIsLoaded(true);
       }

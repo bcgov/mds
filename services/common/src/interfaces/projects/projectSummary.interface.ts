@@ -30,4 +30,5 @@ export interface IProjectSummary {
   mrc_review_required?: boolean;
   project_lead_party_guid?: string;
   agent?: IParty;
+  is_historic: boolean;
 }
