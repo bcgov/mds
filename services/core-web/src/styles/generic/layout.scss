@@ -695,3 +695,16 @@ img.lessOpacity {
 .no-bg {
   background: transparent;
 }
+
+.faded-text {
+  color: $non-textual-grey;
+  text-decoration: none;
+}
+
+.plain-link {
+  text-decoration: none;
+}
+
+.grey-box {
+  width: 100%;
+}

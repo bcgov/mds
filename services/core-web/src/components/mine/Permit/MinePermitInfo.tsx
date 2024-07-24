@@ -30,7 +30,7 @@ import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
 import { getExplosivesPermits } from "@mds/common/redux/selectors/explosivesPermitSelectors";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
-import { IPermit, IMine, IPermitPartyRelationship, IExplosivesPermit, Feature } from "@mds/common";
+import { IPermit, IMine, IExplosivesPermit, Feature } from "@mds/common";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { DigitalPermitCredential } from "@/components/mine/DigitalPermitCredential/DigitalPermitCredential";
@@ -46,10 +46,8 @@ interface MinePermitInfoProps {
   mines: IMine[];
   mineGuid: string;
   permits?: IPermit[];
-  partyRelationships?: IPermitPartyRelationship[];
   fetchPartyRelationships: (arg1: any) => any;
   openModal: (arg1: any) => void;
-  history: { push: (path: string) => void };
   closeModal: () => void;
   createPermit: ActionCreator<typeof createPermit>;
   fetchPermits: ActionCreator<typeof fetchPermits>;
@@ -365,12 +363,12 @@ export const MinePermitInfo: FC<MinePermitInfoProps> = (props) => {
 
   useEffect(() => {
     if (modifiedPermits && props.permits !== prevPermits) {
-      const currentPermits =
-        prevPermits &&
-        prevPermits.filter((p) => p.mine_guid === props.mineGuid).map((x) => x.permit_guid);
-      const nextPermits =
-        props.permits &&
-        props.permits.filter((p) => p.mine_guid === props.mineGuid).map((x) => x.permit_guid);
+      const currentPermits = prevPermits
+        ?.filter((p) => p.mine_guid === props.mineGuid)
+        .map((x) => x.permit_guid);
+      const nextPermits = props.permits
+        ?.filter((p) => p.mine_guid === props.mineGuid)
+        .map((x) => x.permit_guid);
 
       setExpandedRowKeys(
         modifiedPermitGuid
@@ -413,7 +411,6 @@ export const MinePermitInfo: FC<MinePermitInfoProps> = (props) => {
             <MinePermitTable
               isLoaded={isLoaded}
               permits={props.permits}
-              partyRelationships={props.partyRelationships}
               major_mine_ind={mine.major_mine_ind}
               openEditPermitModal={openEditPermitModal}
               openEditAmendmentModal={openEditAmendmentModal}
@@ -437,11 +434,9 @@ export const MinePermitInfo: FC<MinePermitInfoProps> = (props) => {
           })`}
           key="2"
         >
-          <>
-            <ExplosivesPermit isPermitTab />
-          </>
+          <ExplosivesPermit isPermitTab />
         </Tabs.TabPane>
-        {isFeatureEnabled(Feature.VERIFIABLE_CREDENTIALS_2) && (
+        {isFeatureEnabled(Feature.VC_ANONCREDS_CORE) && (
           <Tabs.TabPane
             tab={`Digital Permit Credentials (${
               props.permits.filter(
@@ -451,9 +446,7 @@ export const MinePermitInfo: FC<MinePermitInfoProps> = (props) => {
             })`}
             key="3"
           >
-            <>
-              <DigitalPermitCredential />
-            </>
+            <DigitalPermitCredential />
           </Tabs.TabPane>
         )}
       </Tabs>

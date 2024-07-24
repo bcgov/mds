@@ -3,30 +3,39 @@ import mimetypes
 import os
 import time
 import zipfile
+from datetime import datetime
 from urllib.parse import urlparse
 from wsgiref.handlers import format_date_time
 
 import requests
 from app.config import Config
-from app.constants import OBJECT_STORE_PATH, OBJECT_STORE_UPLOAD_RESOURCE, FILE_UPLOAD_SIZE, FILE_UPLOAD_OFFSET, \
-    FILE_UPLOAD_PATH, FILE_UPLOAD_EXPIRY, TIMEOUT_24_HOURS, TUS_API_VERSION, TUS_API_SUPPORTED_VERSIONS, \
-    FORBIDDEN_FILETYPES
-from app.extensions import cache
-from flask import request, current_app, make_response, jsonify
-from werkzeug.exceptions import BadRequest, NotFound, RequestEntityTooLarge, InternalServerError, BadGateway
-
-from datetime import datetime
-
-from werkzeug.exceptions import BadRequest, BadGateway, InternalServerError
-
-from app.extensions import db
+from app.constants import (
+    FILE_UPLOAD_EXPIRY,
+    FILE_UPLOAD_OFFSET,
+    FILE_UPLOAD_PATH,
+    FILE_UPLOAD_SIZE,
+    FORBIDDEN_FILETYPES,
+    OBJECT_STORE_PATH,
+    OBJECT_STORE_UPLOAD_RESOURCE,
+    TIMEOUT_24_HOURS,
+    TUS_API_SUPPORTED_VERSIONS,
+    TUS_API_VERSION,
+)
 from app.docman.models.document import Document
-from app.docman.models.document_version import DocumentVersion
-from app.services.object_store_storage_service import ObjectStoreStorageService
-from werkzeug.utils import secure_filename
-
 from app.docman.models.document_bundle import DocumentBundle
+from app.docman.models.document_version import DocumentVersion
+from app.extensions import cache, db
+from app.services.object_store_storage_service import ObjectStoreStorageService
+from flask import current_app, jsonify, make_response, request
 from requests_toolbelt import MultipartEncoder
+from werkzeug.exceptions import (
+    BadGateway,
+    BadRequest,
+    InternalServerError,
+    NotFound,
+    RequestEntityTooLarge,
+)
+from werkzeug.utils import secure_filename
 
 CACHE_TIMEOUT = TIMEOUT_24_HOURS
 
@@ -400,11 +409,11 @@ class DocumentUploadHelper:
 
         # If this is a spatial bundle, zip it to .shpz
         if len(bundle_documents) > 1:
-            file_path = secure_filename(f'tmp/spatial/{name}.shpz')
+            file_path = f'/tmp/spatial/{secure_filename(name)}.shpz'
             cls.zip_spatial_files(bundle_documents, file_path)
         # Otherwise validate and download the single spatial file
         else:
-            file_path = (f'tmp/spatial/{secure_filename(bundle_documents[0].file_display_name)}')
+            file_path = (f'/tmp/spatial/{secure_filename(bundle_documents[0].file_display_name)}')
             cls.download_kml_kmz_files(bundle_documents[0], file_path)
 
         geomark_response = cls.send_spatial_file_to_geomark(file_path)

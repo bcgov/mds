@@ -1,119 +1,91 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MinePermitTable renders properly 1`] = `
-<CoreTable
-  classPrefix="permits"
-  columns={
-    Array [
-      Object {
-        "dataIndex": "permitNo",
-        "key": "permitNo",
-        "render": [Function],
-        "title": "Permit No.",
-      },
-      Object {
-        "dataIndex": "status",
-        "key": "status",
-        "render": [Function],
-        "title": "Status",
-      },
-      Object {
-        "dataIndex": "permittee",
-        "key": "permittee",
-        "render": [Function],
-        "title": "Permittee",
-      },
-      Object {
-        "dataIndex": "firstIssued",
-        "key": "firstIssued",
-        "render": [Function],
-        "title": "First Issued",
-      },
-      Object {
-        "dataIndex": "lastAmended",
-        "key": "lastAmended",
-        "render": [Function],
-        "title": "Last Amended",
-      },
-      Object {
-        "dataIndex": "lastAmendedVC",
-        "key": "lastAmendedVC",
-        "render": [Function],
-        "title": "VC Issuance State",
-      },
-      Object {
-        "align": "right",
-        "dataIndex": "addEditButton",
-        "key": "addEditButton",
-        "render": [Function],
-        "title": "",
-      },
-    ]
-  }
-  dataSource={Array []}
-  expandProps={
-    Object {
-      "expandedRowKeys": undefined,
-      "getDataSource": [Function],
-      "onExpand": [MockFunction],
-      "recordDescription": "amendment history",
-      "rowKey": "permit_amendment_guid",
-      "subTableColumns": Array [
-        Object {
-          "dataIndex": "amendmentNumber",
-          "key": "amendmentNumber",
-          "render": [Function],
-          "title": "#",
-          "width": "30px",
-        },
-        Object {
-          "dataIndex": "permit_amendment_type_code",
-          "key": "permit_amendment_type_code",
-          "render": [Function],
-          "title": "Type",
-          "width": "130px",
-        },
-        Object {
-          "dataIndex": "issueDate",
-          "key": "issueDate",
-          "render": [Function],
-          "title": "Date Issued",
-          "width": "130px",
-        },
-        Object {
-          "dataIndex": "authorizationEndDate",
-          "key": "authorizationEndDate",
-          "render": [Function],
-          "title": "Authorization End Date",
-          "width": "250px",
-        },
-        Object {
-          "dataIndex": "description",
-          "key": "description",
-          "render": [Function],
-          "title": "Description",
-        },
-        Object {
-          "dataIndex": "finalApplicationPackage",
-          "key": "finalApplicationPackage",
-          "render": [Function],
-          "title": "Permit Package",
-        },
-        Object {
-          "dataIndex": "documents",
-          "key": "documents",
-          "render": [Function],
-          "title": "Permit Files",
-        },
-        Object {
-          "align": "right",
-          "dataIndex": "operations",
-          "key": "operations",
-          "render": [Function],
-          "title": "",
-        },
-      ],
-    }
-  }
-/>
+<div
+  class="ant-table-wrapper permits-table core-table"
+>
+  <div
+    class="ant-spin-nested-loading"
+  >
+    <div
+      class="ant-spin-container"
+    >
+      <div
+        class="ant-table ant-table-empty"
+      >
+        <div
+          class="ant-table-container"
+        >
+          <div
+            class="ant-table-content"
+          >
+            <table
+              style="table-layout: auto;"
+            >
+              <colgroup>
+                <col
+                  class="ant-table-expand-icon-col"
+                />
+              </colgroup>
+              <thead
+                class="ant-table-thead"
+              >
+                <tr>
+                  <th
+                    class="ant-table-cell ant-table-row-expand-icon-cell"
+                  />
+                  <th
+                    class="ant-table-cell"
+                  >
+                    Permit No.
+                  </th>
+                  <th
+                    class="ant-table-cell"
+                  >
+                    Status
+                  </th>
+                  <th
+                    class="ant-table-cell"
+                  >
+                    Permittee
+                  </th>
+                  <th
+                    class="ant-table-cell"
+                  >
+                    First Issued
+                  </th>
+                  <th
+                    class="ant-table-cell"
+                  >
+                    Last Amended
+                  </th>
+                  <th
+                    class="ant-table-cell"
+                    style="text-align: right;"
+                  >
+                    
+                  </th>
+                </tr>
+              </thead>
+              <tbody
+                class="ant-table-tbody"
+              >
+                <tr
+                  class="ant-table-placeholder"
+                >
+                  <td
+                    class="ant-table-cell"
+                    colspan="7"
+                  >
+                    No Data Yet
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 `;

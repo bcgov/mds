@@ -2,19 +2,15 @@ from datetime import datetime
 from flask import current_app, request
 from werkzeug.exceptions import Forbidden
 from flask_restx import Resource
-from app.api.utils.include.user_info import User
 
 from app.config import Config
 from app.extensions import api
 
 from app.api.utils.resources_mixins import UserMixin
-from app.api.services.traction_service import TractionService
 
 from app.api.verifiable_credentials.models.connection import PartyVerifiableCredentialConnection
 from app.api.verifiable_credentials.models.credentials import PartyVerifiableCredentialMinesActPermit
 from app.api.verifiable_credentials.aries_constants import DIDExchangeRequesterState, IssueCredentialIssuerState
-
-from app.api.utils.feature_flag import Feature, is_feature_enabled
 
 PRESENT_PROOF = "present_proof"
 CONNECTIONS = "connections"
@@ -28,9 +24,6 @@ class TractionWebhookResource(Resource, UserMixin):
 
     @api.doc(description='Endpoint to recieve webhooks from Traction.', params={})
     def post(self, topic):
-        if not is_feature_enabled(Feature.TRACTION_VERIFIABLE_CREDENTIALS):
-            raise NotImplemented()
-
         #custom auth for traction
         if request.headers.get("x-api-key") != Config.TRACTION_WEBHOOK_X_API_KEY:
             return Forbidden("bad x-api-key")

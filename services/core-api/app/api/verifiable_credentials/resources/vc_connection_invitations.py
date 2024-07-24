@@ -1,6 +1,5 @@
-from flask import current_app
 from flask_restx import Resource
-from werkzeug.exceptions import NotFound, NotImplemented
+from werkzeug.exceptions import NotFound, ServiceUnavailable
 from app.extensions import api
 from app.api.utils.access_decorators import requires_any_of, EDIT_PARTY, MINESPACE_PROPONENT
 
@@ -17,8 +16,8 @@ class VerifiableCredentialConnectionInvitationsResource(Resource, UserMixin):
     @api.doc(description='Create a connection invitation for a party by guid', params={})
     @requires_any_of([EDIT_PARTY, MINESPACE_PROPONENT])
     def post(self, party_guid: str):
-        if not is_feature_enabled(Feature.TRACTION_VERIFIABLE_CREDENTIALS):
-            raise NotImplemented()
+        if not is_feature_enabled(Feature.VC_ANONCREDS_MINESPACE):
+            raise ServiceUnavailable()
         party = Party.find_by_party_guid(party_guid)
         if not party:
             raise NotFound(f"party not found with party_guid {party_guid}")
@@ -32,19 +31,23 @@ class VerifiableCredentialConnectionInvitationsResource(Resource, UserMixin):
     @requires_any_of([EDIT_PARTY, MINESPACE_PROPONENT])
     @api.marshal_with(PARTY_VERIFIABLE_CREDENTIAL_CONNECTION, code=200, envelope='records')
     def get(self, party_guid: str):
-        if not is_feature_enabled(Feature.TRACTION_VERIFIABLE_CREDENTIALS):
-            raise NotImplemented()
+        if not is_feature_enabled(Feature.VC_ANONCREDS_MINESPACE):
+            raise ServiceUnavailable()
+
         party_vc_conn = PartyVerifiableCredentialConnection.find_by_party_guid(
             party_guid=party_guid)
+
         return party_vc_conn
 
     @api.doc(description="Delete a connection for a party by guid", params={})
     @requires_any_of([EDIT_PARTY, MINESPACE_PROPONENT])
     def delete(self, party_guid):
-        if not is_feature_enabled(Feature.TRACTION_VERIFIABLE_CREDENTIALS):
-            raise NotImplemented()
+        if not is_feature_enabled(Feature.VC_ANONCREDS_MINESPACE):
+            raise ServiceUnavailable()
+
         party_vc_conn = PartyVerifiableCredentialConnection.find_by_party_guid(party_guid)
         if not party_vc_conn:
             raise NotFound(f"party_vc_conn not found with party_guid {party_guid}")
+
         party_vc_conn.delete()
         party_vc_conn.save()

@@ -164,12 +164,11 @@ export const fetchTailingsStorageFacility = (
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchMineRecords = (params) => (dispatch) => {
-  const defaultParams = params || String.DEFAULT_DASHBOARD_PARAMS;
+export const fetchMineRecords = (params = String.DEFAULT_DASHBOARD_PARAMS) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_RECORDS));
   dispatch(showLoading());
   return CustomAxios()
-    .get(ENVIRONMENT.apiUrl + API.MINE_LIST_QUERY(defaultParams), createRequestHeader())
+    .get(ENVIRONMENT.apiUrl + API.MINE_LIST_QUERY(params), createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_RECORDS));
       dispatch(mineActions.storeMineList(response.data));

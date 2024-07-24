@@ -63,7 +63,7 @@ export const ProjectSummary: FC = () => {
   const isExistingProject = Boolean(projectGuid && projectSummaryGuid);
   const isDefaultLoaded = isExistingProject
     ? formattedProjectSummary?.project_summary_guid === projectSummaryGuid &&
-    formattedProjectSummary?.project_guid === projectGuid
+      formattedProjectSummary?.project_guid === projectGuid
     : mine?.mine_guid === mineGuid;
   const isDefaultEditMode = !isExistingProject || mode === "edit";
 
@@ -180,11 +180,11 @@ export const ProjectSummary: FC = () => {
     }
     const url = !isNewProject
       ? routes.EDIT_PROJECT_SUMMARY.dynamicRoute(
-        projectGuid,
-        projectSummaryGuid,
-        newTab,
-        !isEditMode
-      )
+          projectGuid,
+          projectSummaryGuid,
+          newTab,
+          !isEditMode
+        )
       : routes.ADD_PROJECT_SUMMARY.dynamicRoute(mineGuid, newTab);
     history.push(url);
   };
@@ -195,10 +195,13 @@ export const ProjectSummary: FC = () => {
       : "Successfully submitted a project description to the Province of British Columbia.";
 
     let status_code = formattedProjectSummary.status_code;
+    let is_historic = formattedProjectSummary.is_historic;
+
     if (!status_code || isNewProject) {
       status_code = "DFT";
     } else if (!newActiveTab) {
       status_code = "SUB";
+      is_historic = false;
       if (amsFeatureEnabled) {
         message = null;
       }
@@ -210,7 +213,7 @@ export const ProjectSummary: FC = () => {
         await handleCreateProjectSummary(values, message);
       }
       if (projectGuid && projectSummaryGuid) {
-        await handleUpdateProjectSummary(values, message);
+        await handleUpdateProjectSummary({ ...values, is_historic }, message);
         handleTabChange(newActiveTab);
         setIsLoaded(true);
       }

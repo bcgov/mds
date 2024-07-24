@@ -175,6 +175,8 @@ class ProjectSummaryResource(Resource, UserMixin):
         required=False
     )
 
+    parser.add_argument('is_historic', type=bool, store_missing=False, required=True)
+
     @api.doc(
         description='Get a Project Description.',
         params={
@@ -202,8 +204,9 @@ class ProjectSummaryResource(Resource, UserMixin):
         project_summary = ProjectSummary.find_by_project_summary_guid(project_summary_guid)
         project = Project.find_by_project_guid(project_guid)
         data = self.parser.parse_args()
-
-        project_summary_validation = project_summary.validate_project_summary(data)
+        is_historic = data.get('is_historic')
+        
+        project_summary_validation = project_summary.validate_project_summary(data, is_historic)
         if any(project_summary_validation[i] != [] for i in project_summary_validation):
             current_app.logger.error(f'Project Summary schema validation failed with errors: {project_summary_validation}')
             raise BadRequest(project_summary_validation)
@@ -249,7 +252,8 @@ class ProjectSummaryResource(Resource, UserMixin):
                                data.get('contacts'),
                                data.get('company_alias'),
                                data.get('regional_district_id'),
-                               data.get('payment_contact'))
+                               data.get('payment_contact'),
+                               is_historic)
 
         project_summary.save()
         if prev_status == 'DFT' and project_summary.status_code == 'SUB':
