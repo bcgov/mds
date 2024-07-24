@@ -1,13 +1,14 @@
 from datetime import datetime
 
-from app.api.mines.documents.models.mine_document_bundle import MineDocumentBundle
-from app.api.utils.include.user_info import User
-from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
-from app.extensions import db
 from marshmallow import fields
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.schema import FetchedValue
+
+from app.api.utils.include.user_info import User
+from app.api.mines.documents.models.mine_document_bundle import MineDocumentBundle
+from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
+from app.extensions import db
 
 
 class MineDocument(SoftDeleteMixin, AuditMixin, Base):
@@ -33,8 +34,8 @@ class MineDocument(SoftDeleteMixin, AuditMixin, Base):
     archived_by = db.Column(db.String(60))
     versions = db.relationship('MineDocumentVersion', lazy='joined')
 
-    # mine_document_bundle_id = db.Column(db.Integer, db.ForeignKey('mine_document_bundle.bundle_id'))
-    # mine_document_bundle = db.relationship('MineDocumentBundle', back_populates='bundle_documents', uselist=False)
+    mine_document_bundle_id = db.Column(db.Integer, db.ForeignKey('mine_document_bundle.bundle_id'))
+    mine_document_bundle = db.relationship('MineDocumentBundle', back_populates='bundle_documents', uselist=False)
 
     major_mine_application_document_xref = db.relationship(
         'MajorMineApplicationDocumentXref',
@@ -112,5 +113,5 @@ class MineDocument(SoftDeleteMixin, AuditMixin, Base):
             'archived_by': self.archived_by,
             'upload_date': str(self.upload_date),
             'versions': self.versions or [],
-            # 'mine_document_bundle': self.mine_document_bundle.json() if self.mine_document_bundle else None,
+            'mine_document_bundle': self.mine_document_bundle.json() if self.mine_document_bundle else None,
         }

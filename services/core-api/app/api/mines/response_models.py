@@ -1,14 +1,12 @@
-from app.api.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
-from app.api.dams.dto import DAM_MODEL
-from app.api.parties.party_appt.models.mine_party_appt import (
-    MinePartyAcknowledgedStatus,
-    MinePartyAppointmentStatus,
-)
-from app.api.parties.response_models import PARTY
-from app.api.utils.feature_flag import Feature, is_feature_enabled
-from app.extensions import api
 from flask_restx import fields, marshal
 
+from app.api.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
+from app.api.dams.dto import DAM_MODEL
+from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointmentStatus, MinePartyAcknowledgedStatus
+from app.api.parties.response_models import PARTY
+from app.extensions import api
+
+from app.api.utils.feature_flag import is_feature_enabled, Feature
 
 class DateTime(fields.Raw):
 
@@ -149,7 +147,7 @@ MINE_DOCUMENT_MODEL = api.model(
         'is_archived': fields.Boolean,
         'archived_date': fields.String,
         'archived_by': fields.String,
-        # 'mine_document_bundle_id': fields.Integer,
+        'mine_document_bundle_id': fields.Integer,
         'versions': fields.List(fields.Nested(MINE_DOCUMENT_VERSION_MODEL)),
         'major_mine_application_document_xref': fields.Nested(MAJOR_MINE_APPLICATION_DOCUMENT_XREF_MODEL),
         'project_summary_document_xref': fields.Nested(PROJECT_SUMMARY_DOCUMENT_XREF_MODEL),
