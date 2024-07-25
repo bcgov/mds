@@ -1,12 +1,10 @@
 import React, { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ScrollSidePageWrapper from "../common/ScrollSidePageWrapper";
-import ScrollSideMenu, { ScrollSideMenuProps } from "../common/ScrollSideMenu";
-import { useParams } from "react-router-dom";
-import { getProject } from "@mds/common/redux/selectors/projectSelectors";
+import { ScrollSideMenuProps } from "../common/ScrollSideMenu";
 import { fetchProjectById } from "@mds/common/redux/actionCreators/projectActionCreator";
 import { Feature, IProject, IProjectSummaryAuthorization, SystemFlagEnum } from "../..";
-import { Col, Row, Typography } from "antd";
+import { Typography } from "antd";
 import ProjectDocumentsTabSection from "./ProjectDocumentsTabSection";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import ArchivedDocumentsSection from "./ArchivedDocumentsSection";
@@ -14,20 +12,50 @@ import { getMineDocuments } from "@mds/common/redux/selectors/mineSelectors";
 import { formatUrlToUpperCaseString } from "@mds/common/redux/utils/helpers";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import SpatialDocumentTable from "../documents/spatial/SpatialDocumentTable";
+import { fetchMineDocuments } from "@mds/common/redux/actionCreators/mineActionCreator";
+import { MineDocument } from "@mds/common/models/documents/document";
+import Loading from "../common/Loading";
 
 interface ProjectDocumentsTabProps {
   project: IProject;
-  refreshData: () => Promise<void>;
 }
-const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project, refreshData }) => {
+const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
+  const dispatch = useDispatch();
   const mineDocuments = useSelector(getMineDocuments);
   const { isFeatureEnabled } = useFeatureFlag();
   const systemFlag = useSelector(getSystemFlag);
   const isCore = systemFlag === SystemFlagEnum.core;
+  const [isLoaded, setIsLoaded] = useState(true);
+
+  const refreshData = async () => {
+    setIsLoaded(false);
+    await Promise.all([
+      dispatch(fetchProjectById(project.project_guid)),
+      dispatch(
+        fetchMineDocuments(project.mine_guid, {
+          is_archived: true,
+          project_guid: project.project_guid,
+        })
+      ),
+    ]);
+    setIsLoaded(true);
+  };
+
+  useEffect(() => {
+    dispatch(
+      fetchMineDocuments(project.mine_guid, {
+        is_archived: true,
+        project_guid: project.project_guid,
+      })
+    ).then((resp) => console.log(resp.data.records));
+  }, []);
 
   const authsWithDocs = project.project_summary.authorizations.filter(
     (auth) => auth.amendment_documents.length > 0
   );
+  const headerHeight = isCore ? 121 : 123;
+  const tabNavHeight = isCore ? 60 : 49;
+  const topOffset = headerHeight + tabNavHeight;
 
   const getAuthorizationHeader = (auth: IProjectSummaryAuthorization) => {
     const {
@@ -39,47 +67,49 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project, refreshDat
       project_summary_permit_type[0] === "AMENDMENT"
         ? `-amendment-(${existing_permits_authorizations[0]})`
         : "";
-    const res = `${project_summary_authorization_type}${permitNoString}`
+    return `${project_summary_authorization_type}${permitNoString}`
       .replace(/(_)/g, "-")
       .toLowerCase();
-    console.log(auth, res);
-    return res;
   };
 
-  const tabs = [
-    "project-description",
-    "information-requirements-table",
-    "primary-document",
-    "spatial-components",
-    "supporting-documents",
-    // "major-mine-application",
-    isCore && "ministry-decision-documentation",
-    isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE) && "archived-documents",
-  ].filter(Boolean);
+  const projectSummaryDocs = project?.project_summary?.documents ?? [];
 
-  const primaryDocuments = project.major_mine_application.documents.filter(
+  const pdSpatialDocuments = projectSummaryDocs.filter(
+    (doc) => doc.project_summary_document_type_code === "SPT"
+  );
+  const pdSupportingDocuments = projectSummaryDocs.filter(
+    (doc) => doc.project_summary_document_type_code === "SPR"
+  );
+
+  const majorMineAppDocs = project?.major_mine_application?.documents ?? [];
+
+  const primaryDocuments = majorMineAppDocs.filter(
     (doc) => doc.major_mine_application_document_type_code === "PRM"
   );
-  const spatialDocuments = project.major_mine_application.documents.filter(
+  const mmaSpatialDocuments = majorMineAppDocs.filter(
     (doc) => doc.major_mine_application_document_type_code === "SPT"
   );
-  const supportingDocuments = project.major_mine_application.documents.filter(
+  const mmaSupportingDocuments = majorMineAppDocs.filter(
     (doc) => doc.major_mine_application_document_type_code === "SPR"
   );
+  const ministryDecisionDocuments = project?.project_decision_package?.documents ?? [];
 
-  // const getTabs = () => {
-
-  const tabsTest2: any[] = [
+  const sections: any[] = [
     { href: "project-description" },
     ...authsWithDocs.map((auth) => {
-      const href = getAuthorizationHeader(auth);
+      const headingText = getAuthorizationHeader(auth);
+      const titleText = formatUrlToUpperCaseString(headingText);
+      const href = headingText.replace("(", "").replace(")", "");
+
       return {
         href,
-        title: <div className="sub-tab-1">{formatUrlToUpperCaseString(href)}</div>,
+        title: <div className="sub-tab-1">{titleText}</div>,
         content: (
           <ProjectDocumentsTabSection
             id={href}
+            title={titleText}
             key={auth.project_summary_authorization_guid}
+            canArchive={false}
             onArchivedDocuments={refreshData}
             documents={auth.amendment_documents}
           />
@@ -92,7 +122,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project, refreshDat
       content: (
         <>
           <Typography.Title level={3}>Spatial Components</Typography.Title>
-          <SpatialDocumentTable documents={[]} />
+          <SpatialDocumentTable documents={pdSpatialDocuments.map((d) => new MineDocument(d))} />
         </>
       ),
     },
@@ -102,7 +132,8 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project, refreshDat
       content: (
         <ProjectDocumentsTabSection
           id="pd-supporting-documents"
-          documents={[]}
+          title="Supporting Documents"
+          documents={pdSupportingDocuments.map((d) => new MineDocument(d))}
           onArchivedDocuments={refreshData}
         />
       ),
@@ -135,12 +166,10 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project, refreshDat
       href: "mma-spatial-components",
       title: <div className="sub-tab-1">Spatial Components</div>,
       content: (
-        <ProjectDocumentsTabSection
-          id="spatial-components"
-          key="spatial-components"
-          onArchivedDocuments={refreshData}
-          documents={spatialDocuments}
-        />
+        <>
+          <Typography.Title level={3}>Spatial Components</Typography.Title>
+          <SpatialDocumentTable documents={mmaSpatialDocuments.map((d) => new MineDocument(d))} />
+        </>
       ),
     },
     {
@@ -151,22 +180,28 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project, refreshDat
           id="supporting-documents"
           key="supporting-documents"
           onArchivedDocuments={refreshData}
-          documents={supportingDocuments}
+          documents={mmaSupportingDocuments}
         />
       ),
     },
-    isCore && { href: "ministry-decision-documentation" },
+    isCore && {
+      href: "ministry-decision-documentation",
+      content: (
+        <ProjectDocumentsTabSection
+          id="ministry-decision-documentation"
+          key="ministry-decision-documentation"
+          onArchivedDocuments={refreshData}
+          documents={ministryDecisionDocuments.map((doc) => new MineDocument(doc))}
+        />
+      ),
+    },
     isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE) && {
       href: "archived-documents",
       content: <ArchivedDocumentsSection documents={mineDocuments} />,
     },
   ].filter(Boolean);
-  // };
 
-  const menuOptions = tabs.map((t) => {
-    return { href: t, title: formatUrlToUpperCaseString(t) };
-  });
-  const menuOptions2 = tabsTest2.map((t) => {
+  const menuOptions = sections.map((t) => {
     return { href: t.href, title: t?.title ?? formatUrlToUpperCaseString(t.href) };
   });
   const sideBarRoute = {
@@ -174,80 +209,38 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project, refreshDat
     params: [project.project_guid, "documents"],
   };
   const scrollSideMenuProps: ScrollSideMenuProps = {
-    // menuOptions,
-    menuOptions: menuOptions2,
+    menuOptions,
     featureUrlRoute: sideBarRoute.url.hashRoute,
     featureUrlRouteArguments: sideBarRoute.params,
   };
-  return (
-    <>
-      {/* <> */}
-      {/* <ScrollSideMenu
-        menuOptions={menuOptions}
-        featureUrlRoute={sideBarRoute.url.hashRoute}
-        featureUrlRouteArguments={sideBarRoute.params}
-      /> */}
-      <ScrollSidePageWrapper
-        header={null}
-        headerHeight={225}
-        menuProps={scrollSideMenuProps}
-        content={
-          <>
-            {tabsTest2.map((tab) => {
-              if (!tab.content) {
-                const title = tab?.title ?? formatUrlToUpperCaseString(tab.href);
-                return (
-                  <Typography.Title level={2} id={tab.href} key={tab.href}>
-                    {title}
-                  </Typography.Title>
-                );
-              }
-              return (
-                <div id={tab.href} key={tab.href}>
-                  {tab.content}
-                </div>
-              );
-            })}
-            {/* <div id="project-description">
-          {authsWithDocs.map((auth) => (
-            <ProjectDocumentsTabSection
-              id={getAuthorizationHeader(auth)}
-              key={auth.project_summary_authorization_guid}
-              onArchivedDocuments={refreshData}
-              documents={auth.amendment_documents}
-            />
-          ))}
-        </div>
-          <ProjectDocumentsTabSection
-            id="information-requirements-table"
-            key="information-requirements-table"
-            onArchivedDocuments={refreshData}
-            documents={project.information_requirements_table.documents}
-          />
-          <ProjectDocumentsTabSection
-            id="primary-document"
-            key="primary-document"
-            onArchivedDocuments={refreshData}
-            documents={primaryDocuments}
-          />
-          <ProjectDocumentsTabSection
-            id="spatial-components"
-            key="spatial-components"
-            onArchivedDocuments={refreshData}
-            documents={spatialDocuments}
-          />
-          <ProjectDocumentsTabSection
-            id="supporting-documents"
-            key="supporting-documents"
-            onArchivedDocuments={refreshData}
-            documents={supportingDocuments}
-          />
 
-          <ArchivedDocumentsSection documents={mineDocuments} /> */}
-          </>
-        }
-      />
-    </>
+  return isLoaded ? (
+    <ScrollSidePageWrapper
+      header={null}
+      headerHeight={topOffset}
+      menuProps={scrollSideMenuProps}
+      content={
+        <>
+          {sections.map((section) => {
+            if (!section.content) {
+              const title = section?.title ?? formatUrlToUpperCaseString(section.href);
+              return (
+                <Typography.Title level={2} id={section.href} key={section.href}>
+                  {title}
+                </Typography.Title>
+              );
+            }
+            return (
+              <div id={section.href} key={section.href}>
+                {section.content}
+              </div>
+            );
+          })}
+        </>
+      }
+    />
+  ) : (
+    <Loading />
   );
 };
 

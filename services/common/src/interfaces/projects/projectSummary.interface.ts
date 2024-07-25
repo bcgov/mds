@@ -20,7 +20,7 @@ export interface IProjectSummary {
   expected_permit_application_date?: string;
   expected_permit_receipt_date?: string;
   expected_project_start_date?: string;
-  documents: Partial<IProjectSummaryDocument>[];
+  documents: IProjectSummaryDocument[];
   contacts: IProjectContact[];
   authorizations: IProjectSummaryAuthorization[];
   update_user: string;
@@ -30,4 +30,5 @@ export interface IProjectSummary {
   mrc_review_required?: boolean;
   project_lead_party_guid?: string;
   agent?: IParty;
+  authorizationTypes?: string[];
 }

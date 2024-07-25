@@ -34,7 +34,7 @@ export const UNAUTHORIZED_PAGE = "You do not have permission to access this page
 // to get HTML to render in a React String you send the string as a list of its parts, a mix of HTML and strings.
 export const CONTACT_ADMIN = [
   "Contact your system administrator at ",
-  <b>mds@gov.bc.ca</b>,
+  <b key="contact-admin">mds@gov.bc.ca</b>,
   " to request access",
 ];
 export const MMO_EMAIL = "permrecl@gov.bc.ca";

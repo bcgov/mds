@@ -7,26 +7,30 @@ import { formatUrlToUpperCaseString } from "@mds/common/redux/utils/helpers";
 
 interface ProjectDocumentsTabSectionProps {
   id: string;
+  title?: string;
   documents: IMineDocument[];
   onArchivedDocuments: () => Promise<void>;
+  canArchive?: boolean;
 }
 const ProjectDocumentsTabSection: FC<ProjectDocumentsTabSectionProps> = ({
   documents,
   onArchivedDocuments,
   id,
+  title,
+  canArchive = true,
 }) => {
-  const title = formatUrlToUpperCaseString(id);
+  const sectionTitle = title ?? formatUrlToUpperCaseString(id);
 
   return (
     <Row id={id}>
       <Col span={24}>
-        <Typography.Title level={3}>{title}</Typography.Title>
+        <Typography.Title level={3}>{sectionTitle}</Typography.Title>
       </Col>
       <Col span={24}>
         <DocumentTable
           documents={documents?.map((d) => new MineDocument(d)) ?? []}
           documentParent={title}
-          canArchiveDocuments={true}
+          canArchiveDocuments={canArchive}
           onArchivedDocuments={onArchivedDocuments}
           showVersionHistory={true}
           enableBulkActions={true}

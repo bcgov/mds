@@ -82,7 +82,7 @@ export const ScrollSideMenu: FC<ScrollSideMenuProps> = ({
       >
         {props.menuOptions.map(({ href, title, icon }) => {
           const titleElement = (
-            <div className="ellipsis-text">
+            <div className="side-nav-title">
               {icon && <span className="margin-medium--right">{icon}</span>}
               {title}
             </div>

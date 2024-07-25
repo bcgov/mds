@@ -21,7 +21,7 @@ beforeEach(() => {
   setupDispatchProps();
 });
 
-describe("ProjectDocumentsTab", () => {
+describe("MajorMineApplicationTab", () => {
   it("renders properly", () => {
     const component = shallow(
       <FeatureFlagContext.Provider

@@ -13,7 +13,6 @@ import InformationRequirementsTableTab from "@/components/mine/Projects/Informat
 import MajorMineApplicationTab from "@/components/mine/Projects/MajorMineApplicationTab";
 import NullScreen from "@/components/common/NullScreen";
 import DecisionPackageTab from "@/components/mine/Projects/DecisionPackageTab";
-import OldProjectDocumentsTab from "./ProjectDocumentsTab";
 import ProjectDescriptionTab from "@mds/common/components/project/ProjectDescriptionTab";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import ScrollSidePageWrapper from "@mds/common/components/common/ScrollSidePageWrapper";
@@ -66,9 +65,6 @@ const Project: FC = () => {
     let url = routes.EDIT_PROJECT.dynamicRoute(projectGuid, newActiveTab);
 
     switch (newActiveTab) {
-      case "old-documents":
-        url = routes.PROJECT_ALL_DOCUMENTS.dynamicRoute(projectGuid);
-        break;
       case "final-app":
         url = routes.PROJECT_FINAL_APPLICATION.dynamicRoute(projectGuid);
         break;
@@ -85,7 +81,7 @@ const Project: FC = () => {
     return <NullScreen type="generic" />;
   }
 
-  const headerHeight = 121;
+  const headerHeight = 121 + 60; // header + tab nav height
 
   const header = (
     <div className={"padding-lg"}>
@@ -115,47 +111,59 @@ const Project: FC = () => {
 
   // all the children need to be wrapped in <div className="padding-lg">
   const tabItems = [
-    { key: "overview", label: "Overview", children: <ProjectOverviewTab /> },
+    {
+      key: "overview",
+      label: "Overview",
+      children: (
+        <div className="padding-lg">
+          <ProjectOverviewTab />
+        </div>
+      ),
+    },
     isFeatureEnabled(Feature.AMS_AGENT) && {
       key: "project-description",
       label: "Project Description",
-      children: <ProjectDescriptionTab />,
+      children: (
+        <div className="padding-lg">
+          <ProjectDescriptionTab />
+        </div>
+      ),
     },
     {
       key: "information-requirements-table",
       label: "IRT",
       disabled: !hasInformationRequirementsTable,
-      children: <InformationRequirementsTableTab />,
+      children: (
+        <div className="padding-lg">
+          <InformationRequirementsTableTab />
+        </div>
+      ),
     },
     {
       key: "final-app",
       label: "Final Application",
       disabled: !hasFinalAplication,
-      children: <MajorMineApplicationTab />,
+      children: (
+        <div className="padding-lg">
+          <MajorMineApplicationTab />
+        </div>
+      ),
     },
     isFeatureEnabled(Feature.MAJOR_PROJECT_DECISION_PACKAGE) && {
       key: "decision-package",
       label: "Decision Package",
-      children: <DecisionPackageTab />,
-    },
-    isFeatureEnabled(Feature.MAJOR_PROJECT_ALL_DOCUMENTS) && {
-      key: "old-documents",
-      label: "All Documents",
-      children: <OldProjectDocumentsTab />,
+      children: (
+        <div className="padding-lg">
+          <DecisionPackageTab />
+        </div>
+      ),
     },
     isFeatureEnabled(Feature.MAJOR_PROJECT_ALL_DOCUMENTS) && {
       key: "documents",
-      label: "NEW All Documents",
-      children: (
-        <ProjectDocumentsTab
-          project={project}
-          refreshData={() => dispatch(fetchProjectById(project.project_guid))}
-        />
-      ),
+      label: "All Documents",
+      children: <ProjectDocumentsTab project={project} />,
     },
-  ]
-    .filter(Boolean)
-    .map((tab) => ({ ...tab, children: <div className="padding-lg">{tab.children}</div> }));
+  ].filter(Boolean);
 
   const sideBarRoute = {
     url: GLOBAL_ROUTES?.EDIT_PROJECT,

@@ -7,6 +7,7 @@
     .side-menu--fixed,
     .side-menu {
         margin-top: 15px;
+        background-color: $pure-white;
     }
 
     .side-menu--content {
@@ -16,10 +17,63 @@
     .side-menu--content.with-fixed-top {
         margin-top: 0;
     }
+
+    .side-nav-title {
+        text-wrap: wrap;
+        color: $violet;
+        line-height: 21px;
+        font-size: 14px;
+    }
 }
 
 // there is an issue where content (fade-in class?) renders in front of the menu, making it unclickable
 .side-menu--fixed,
 .side-menu {
-    z-index: 1000;
+    z-index: 999;
+
+    .ant-anchor-link {
+        padding: 6px 16px;
+    }
+
+    .ant-anchor-link-title {
+        .sub-tab-1 {
+            margin: -2px 0 -2px 16px;
+        }
+    }
+}
+
+.fixed-tabs-container {
+
+    // this is for the other tabs in project (ex: decision package)
+    // that don't use the wrapper to set the top offset in the component
+    // and may be removed if those pages are re-worked
+    .side-menu--fixed {
+        top: 181 + $header-height;
+    }
+
+    .view--header {
+        position: fixed;
+        width: 100%;
+        z-index: 1001;
+        background-color: $pure-white;
+        top: $header-height;
+    }
+
+    .fixed-tabs-tabs {
+        padding-top: 0;
+
+        &>.ant-tabs-nav {
+            position: fixed;
+            top: 183px;
+            width: 100%;
+            background-color: $pure-white;
+            z-index: 1001;
+        }
+
+        &>.ant-tabs-content-holder {
+            margin-top: 183px;
+        }
+
+    }
+
 }
