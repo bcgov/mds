@@ -1,7 +1,12 @@
 import React from "react";
 import { Button, Dropdown, Menu, Popconfirm } from "antd";
 import { Link, useHistory, useParams } from "react-router-dom";
-import { PlusOutlined, ReadOutlined, SafetyCertificateOutlined } from "@ant-design/icons";
+import {
+  PlusOutlined,
+  ReadOutlined,
+  SafetyCertificateOutlined,
+  EyeOutlined,
+} from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { Feature } from "@mds/common/index";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
@@ -340,8 +345,23 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
           ? record.permit.permit_guid
           : record.permit?.permit_amendment_guid;
         const items = [
-          {
+          isFeatureEnabled(Feature.DIGITIZED_PERMITS) && {
             key: "0",
+            label: (
+              <button
+                type="button"
+                className="full add-permit-dropdown-button"
+                onClick={() => history.push(VIEW_MINE_PERMIT.dynamicRoute(id, permitGuid))}
+              >
+                <div>
+                  <EyeOutlined className="padding-sm add-permit-dropdown-button-icon" />
+                  View
+                </div>
+              </button>
+            ),
+          },
+          {
+            key: "1",
             label: (
               <button
                 type="button"
@@ -356,7 +376,7 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
             ),
           },
           !text.hasAmalgamated && {
-            key: "1",
+            key: "2",
             label: (
               <button
                 type="button"
@@ -373,7 +393,7 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
             ),
           },
           {
-            key: "2",
+            key: "3",
             label: (
               <AuthorizationWrapper permission={Permission.EDIT_HISTORICAL_AMENDMENTS}>
                 <div className="custom-menu-item">
@@ -397,7 +417,7 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
             ),
           },
           {
-            key: "3",
+            key: "4",
             label: (
               <AuthorizationWrapper permission={Permission.EDIT_SECURITIES}>
                 <div className="custom-menu-item">
@@ -421,7 +441,7 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
             ),
           },
           {
-            key: "4",
+            key: "5",
             label: (
               <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
                 <div className="custom-menu-item">
@@ -440,20 +460,6 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
                   </button>
                 </div>
               </AuthorizationWrapper>
-            ),
-          },
-          isFeatureEnabled(Feature.DIGITIZED_PERMITS) && {
-            key: "5",
-            label: (
-              <div className="custom-menu-item">
-                <button
-                  type="button"
-                  className="full"
-                  onClick={() => history.push(VIEW_MINE_PERMIT.dynamicRoute(id, permitGuid))}
-                >
-                  View
-                </button>
-              </div>
             ),
           },
         ].filter(Boolean);

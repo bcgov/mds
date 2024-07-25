@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Col, Row, Tabs, Typography } from "antd";
+import { Col, Row, Tabs, Typography, Tag } from "antd";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getPermitByGuid } from "@mds/common/redux/selectors/permitSelectors";
@@ -72,10 +72,10 @@ const ViewPermit = () => {
           </Title>
         </Col>
         <Col>
-          <CoreTag icon={<FontAwesomeIcon icon={faLocationDot} />} text={mine?.mine_name} />
+          <Tag>{mine?.mine_name}</Tag>
         </Col>
         <Col>
-          <CoreTag icon={<CompanyIcon />} text={permit?.current_permittee} />
+          <Tag>{permit?.current_permittee}</Tag>
         </Col>
       </Row>
       <Tabs items={tabItems} />
