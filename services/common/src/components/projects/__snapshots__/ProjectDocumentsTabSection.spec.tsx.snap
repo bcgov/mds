@@ -9,11 +9,11 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
     <div
       class="ant-col ant-col-24"
     >
-      <h3
+      <h4
         class="ant-typography"
       >
         Test Title
-      </h3>
+      </h4>
     </div>
     <div
       class="ant-col ant-col-24"

@@ -24,7 +24,7 @@ const ProjectDocumentsTabSection: FC<ProjectDocumentsTabSectionProps> = ({
   return (
     <Row id={id}>
       <Col span={24}>
-        <Typography.Title level={3}>{sectionTitle}</Typography.Title>
+        <Typography.Title level={4}>{sectionTitle}</Typography.Title>
       </Col>
       <Col span={24}>
         <DocumentTable

@@ -4,7 +4,7 @@ import ScrollSidePageWrapper from "../common/ScrollSidePageWrapper";
 import { ScrollSideMenuProps } from "../common/ScrollSideMenu";
 import { fetchProjectById } from "@mds/common/redux/actionCreators/projectActionCreator";
 import { Feature, IProject, IProjectSummaryAuthorization, SystemFlagEnum } from "../..";
-import { Typography } from "antd";
+import { Alert, Col, Row, Typography } from "antd";
 import ProjectDocumentsTabSection from "./ProjectDocumentsTabSection";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import ArchivedDocumentsSection from "./ArchivedDocumentsSection";
@@ -47,7 +47,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
         is_archived: true,
         project_guid: project.project_guid,
       })
-    ).then((resp) => console.log(resp.data.records));
+    );
   }, []);
 
   const authsWithDocs = project.project_summary.authorizations.filter(
@@ -95,7 +95,19 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
   const ministryDecisionDocuments = project?.project_decision_package?.documents ?? [];
 
   const sections: any[] = [
-    { href: "project-description" },
+    {
+      href: "project-description",
+      content: (
+        <>
+          <Typography.Title level={3}>Project Description</Typography.Title>
+          <Alert
+            className={isCore ? "ant-alert-grey" : ""}
+            description="Refer back to Project Description Purpose and Authorization to see required document list."
+            showIcon
+          />
+        </>
+      ),
+    },
     ...authsWithDocs.map((auth) => {
       const headingText = getAuthorizationHeader(auth);
       const titleText = formatUrlToUpperCaseString(headingText);
@@ -121,7 +133,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
       title: <div className="sub-tab-1">Spatial Components</div>,
       content: (
         <>
-          <Typography.Title level={3}>Spatial Components</Typography.Title>
+          <Typography.Title level={4}>Spatial Components</Typography.Title>
           <SpatialDocumentTable documents={pdSpatialDocuments.map((d) => new MineDocument(d))} />
         </>
       ),
@@ -167,7 +179,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
       title: <div className="sub-tab-1">Spatial Components</div>,
       content: (
         <>
-          <Typography.Title level={3}>Spatial Components</Typography.Title>
+          <Typography.Title level={4}>Spatial Components</Typography.Title>
           <SpatialDocumentTable documents={mmaSpatialDocuments.map((d) => new MineDocument(d))} />
         </>
       ),
@@ -220,23 +232,25 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
       headerHeight={topOffset}
       menuProps={scrollSideMenuProps}
       content={
-        <>
+        <Row gutter={[16, 16]}>
           {sections.map((section) => {
             if (!section.content) {
               const title = section?.title ?? formatUrlToUpperCaseString(section.href);
               return (
-                <Typography.Title level={2} id={section.href} key={section.href}>
-                  {title}
-                </Typography.Title>
+                <Col span={24} key={section.href}>
+                  <Typography.Title level={3} id={section.href}>
+                    {title}
+                  </Typography.Title>
+                </Col>
               );
             }
             return (
-              <div id={section.href} key={section.href}>
+              <Col id={section.href} key={section.href} span={24}>
                 {section.content}
-              </div>
+              </Col>
             );
           })}
-        </>
+        </Row>
       }
     />
   ) : (
