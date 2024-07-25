@@ -12,7 +12,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
       <div>
         <div
           class="ant-anchor-wrapper"
-          style="max-height: calc(100vh - 267px);"
+          style="max-height: calc(100vh - 278px);"
         >
           <div
             class="ant-anchor ant-anchor-fixed"

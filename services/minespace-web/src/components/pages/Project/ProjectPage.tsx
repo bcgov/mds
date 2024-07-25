@@ -184,31 +184,43 @@ const ProjectPage: FC = () => {
     <MajorMineApplicationEntryTab mma={major_mine_application} />
   );
 
+  const pageClass = "padding-lg--top";
+
   const tabItems = [
     {
       label: "Overview",
       key: "overview",
-      children: <ProjectOverviewTab navigateForward={navigateFromProjectStagesTable} />,
+      children: (
+        <div className={pageClass}>
+          <ProjectOverviewTab navigateForward={navigateFromProjectStagesTable} />
+        </div>
+      ),
     },
     {
       label: "Project Description",
       key: "project-description",
-      children: <ProjectDescriptionTab />,
+      children: (
+        <div className={pageClass}>
+          <ProjectDescriptionTab />
+        </div>
+      ),
     },
     {
       label: "IRT",
       key: "irt-entry",
       children: (
-        <InformationRequirementsTableEntryTab
-          irt={information_requirements_table}
-          mrcReviewRequired={mrc_review_required}
-        />
+        <div className={pageClass}>
+          <InformationRequirementsTableEntryTab
+            irt={information_requirements_table}
+            mrcReviewRequired={mrc_review_required}
+          />
+        </div>
       ),
     },
     {
       label: "Application",
       key: "major-mine-application",
-      children: majorMineApplicationTabContent,
+      children: <div className={pageClass}>{majorMineApplicationTabContent}</div>,
     },
     {
       label: "Documents",

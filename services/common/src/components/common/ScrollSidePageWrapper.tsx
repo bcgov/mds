@@ -25,6 +25,7 @@ const ScrollSidePageWrapper: FC<ScrollSidePageWrapperProps> = ({
   const isCore = systemFlag === SystemFlagEnum.core;
 
   const systemHeaderHeight = isCore ? coreHeaderHeight : msHeaderHeight;
+  const contentPaddingY = isCore ? 15 : 26;
 
   const handleScroll = () => {
     let isMounted = true;
@@ -73,7 +74,7 @@ const ScrollSidePageWrapper: FC<ScrollSidePageWrapperProps> = ({
           style={{ top: menuTopOffset }}
         >
           {/* the 15 matches the margin/padding on the menu/content. Looks nicer */}
-          <ScrollSideMenu offsetTop={topOffset + 15} {...menuProps} />
+          <ScrollSideMenu offsetTop={topOffset + contentPaddingY} {...menuProps} />
         </div>
       )}
       <div className={contentClass} style={{ top: contentTopOffset }}>

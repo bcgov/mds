@@ -1,18 +1,20 @@
 // overriding styles that weren't quite working, confining changes to where wrapper is used
 .scroll-side-menu-wrapper {
     .view--header.fixed-scroll {
-        top: 62px;
+        top: $layout-header-height;
     }
 
     .side-menu--fixed,
     .side-menu {
-        margin-top: 15px;
+        margin-top: $fixed-page-margin;
         background-color: $white;
+        width: $side-menu-width;
 
         .ant-anchor-wrapper {
             border: 1px solid $background;
             border-radius: 5px;
             padding: 8px 0;
+            margin-left: 0;
 
             .ant-anchor {
                 padding-left: 0;
@@ -40,7 +42,7 @@
 
             .ant-anchor-link-active {
                 border-left: 4px solid $gov-blue;
-                background-color: rgba(189, 179, 216, 0.1490196078);
+                background-color: $light-grey-cool;
 
                 &>.ant-anchor-link-title {
                     font-weight: 700;
@@ -53,16 +55,13 @@
 
     .side-menu--fixed {
         position: fixed;
-        width: 240px;
     }
 
     .side-menu--content {
-        padding-top: 15px; // equal to the margin-top on side-menu to align them
-        padding: 20px;
+        padding: $fixed-page-margin 0 $fixed-page-margin $fixed-page-margin;
         position: relative;
-        padding-right: 20px;
-        left: 250px;
-        width: calc(100vw - 270px);
+        left: $side-menu-width;
+        width: calc(100% - $side-menu-width);
         margin-bottom: 900px;
     }
 
@@ -84,57 +83,31 @@
 }
 
 .fixed-tabs-container {
+    width: 100%;
+
     .view--header {
         position: fixed;
         width: 100%;
         z-index: 1000;
         background-color: $white;
+        padding: 0 $fixed-page-margin;
     }
 
     .fixed-tabs-tabs {
         &>.ant-tabs-nav {
             position: fixed;
-            top: 203px;
-            width: 100%;
+            top: $layout-header-height + 123px; //ProjectDocumentsTab->headerHeight
+            width: calc(100vw - ($fixed-page-margin * 2));
             background-color: $white;
             z-index: 1000;
+            margin-left: $fixed-page-margin;
+            height: 49px;
         }
 
         &>.ant-tabs-content-holder {
-            margin-top: 172px;
+            margin-top: 123px + 49px; // height + top property from .ant-tabs-nav above
             position: relative;
+            padding: 0 $fixed-page-margin;
         }
-    }
-}
-
-.side-menu:not(.side-menu--fixed) {
-    @media (min-width: $screen-xs) {
-        //480
-
-    }
-
-    @media (min-width: $screen-sm) {
-        //576
-
-    }
-
-    @media (min-width: $screen-md) {
-        // 768
-
-    }
-
-    @media (min-width: $screen-lg) {
-        // 992
-        // margin-left: calc(100vw / 48);
-    }
-
-    @media (min-width: $screen-xl) {
-        //1200
-        // margin-left: calc(100vw / 16);
-    }
-
-    @media (min-width: $screen-xxl) {
-        // 1600
-        // perfect
     }
 }
