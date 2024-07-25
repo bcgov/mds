@@ -6,7 +6,7 @@ from app.config import Config
 JWT_OIDC_WELL_KNOWN_CONFIG = os.getenv('JWT_OIDC_WELL_KNOWN_CONFIG')
 
 oidc_configuration = requests.get(JWT_OIDC_WELL_KNOWN_CONFIG).json()
-SEARCH_ENDPOINT = f'{Config.PERMITS_ENDPOINT}/haystack/query'
+SEARCH_ENDPOINT = f'{Config.PERMITS_ENDPOINT}/permit/query'
 
 class PermitSearchService:
 

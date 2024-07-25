@@ -112,9 +112,8 @@ export const MINE_HOME_PAGE = {
     if (newParams) {
       newParams = withoutDefaultParams(params, MINE_HOME_PAGE_MAP_DEFAULT_PARAMS);
     }
-    return `/dashboard/mines?map=true${
-      !isEmpty(newParams) ? `&${queryString.stringify({ ...newParams }, { sort: false })}` : ""
-    }`;
+    return `/dashboard/mines?map=true${!isEmpty(newParams) ? `&${queryString.stringify({ ...newParams }, { sort: false })}` : ""
+      }`;
   },
   component: Dashboard,
 };
@@ -218,8 +217,7 @@ export const EDIT_PROJECT_SUMMARY = {
     activeTab = "basic-information",
     viewMode = true
   ) =>
-    `/pre-applications/${projectGuid}/project-description/${projectSummaryGuid}/${
-      viewMode ? "view" : "edit"
+    `/pre-applications/${projectGuid}/project-description/${projectSummaryGuid}/${viewMode ? "view" : "edit"
     }/${activeTab}`,
   component: ProjectSummary,
 };
@@ -290,8 +288,7 @@ export const MINE_TAILINGS_DETAILS = {
   route:
     "/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab/:userAction",
   dynamicRoute: (tsfGuid, mineGuid, tab = "basic-information", isEditMode = false) =>
-    `/mine-dashboard/${mineGuid}/permits-and-approvals/tailings/${tsfGuid}/${tab}/${
-      isEditMode ? "edit" : "view"
+    `/mine-dashboard/${mineGuid}/permits-and-approvals/tailings/${tsfGuid}/${tab}/${isEditMode ? "edit" : "view"
     }`,
   component: MineTailingsDetailsPage,
 };
@@ -300,8 +297,7 @@ export const EDIT_TAILINGS_STORAGE_FACILITY = {
   route:
     "/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab/:userAction",
   dynamicRoute: (tsfGuid, mineGuid, tab = "basic-information", isEditMode = false) =>
-    `/mine-dashboard/${mineGuid}/permits-and-approvals/tailings/${tsfGuid}/${tab}/${
-      isEditMode ? "edit" : "view"
+    `/mine-dashboard/${mineGuid}/permits-and-approvals/tailings/${tsfGuid}/${tab}/${isEditMode ? "edit" : "view"
     }`,
   component: MineTailingsDetailsPage,
 };
@@ -563,8 +559,7 @@ export const EDIT_DAM = {
     isEditMode = false,
     canEditDam = false
   ) =>
-    `/mine-dashboard/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/${
-      isEditMode ? "edit" : "view"
+    `/mine-dashboard/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/${isEditMode ? "edit" : "view"
     }/${canEditDam ? "editDam" : "viewDam"}/dam/${damGuid}`,
   component: DamsDetailsPage,
 };

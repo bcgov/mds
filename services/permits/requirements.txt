@@ -1,13 +1,19 @@
 uvicorn==0.24.0.post1
-farm-haystack[elasticsearch8,pdf,inference,file-conversion]==1.24.1
-git+https://github.com/deepset-ai/haystack.git@v1.24.1#egg=rest_api&subdirectory=rest_api
---extra-index-url https://download.pytorch.org/whl/cpu
-torch==2.1.1
+haystack-ai==2.2.3
+elasticsearch-haystack==0.6.0
+hayhooks==0.0.15
+# --extra-index-url https://download.pytorch.org/whl/cpu
+# torch==2.1.1
 Authlib~=1.3.0
 requests~=2.32.3
 python-dotenv==1.0.0
-boto3
-unstructured[pdf]==0.12.4
+boto3==1.34.139
 fastapi==0.108.0
 pdf2image==1.17.0
-Pillow==10.3.0
+Pillow==10.3.
+pdfminer.six==20231228
+pyyaml==6.0.1
+ocrmypdf==16.4.1
+pypdf==4.2.0
+json-repair==0.25.3
+pytest==8.0.0

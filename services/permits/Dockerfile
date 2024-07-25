@@ -1,11 +1,11 @@
-FROM python:3.13-slim
+FROM python:3.12-slim
 
 WORKDIR /code
 
 COPY . /code
 
 RUN apt-get update \
-    && apt-get -y install tesseract-ocr ffmpeg libsm6 libxext6 poppler-utils
+    && apt-get -y install tesseract-ocr ffmpeg libsm6 libxext6 poppler-utils ghostscript
 
 ENV TESSDATA_PREFIX /usr/share/tesseract-ocr/5/tessdata
 
