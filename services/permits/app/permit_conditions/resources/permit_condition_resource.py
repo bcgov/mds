@@ -1,17 +1,28 @@
+import csv
+import json
 import tempfile
+from io import StringIO
 
 from app.helpers.temporary_file import store_temporary
 from app.permit_conditions.pipelines.permit_condition_pipeline import (
     permit_condition_pipeline,
+)
+from app.permit_conditions.validator.permit_condition_model import (
+    PermitCondition,
+    PermitConditions,
 )
 from fastapi import APIRouter, File, HTTPException, Response, UploadFile
 from pydantic import BaseModel
 
 router = APIRouter()
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 @router.post("/permit_conditions")
-async def extract_permit_conditions(file: UploadFile = File(...)):
+async def extract_permit_conditions(file: UploadFile = File(...)) -> PermitConditions:
     """
     Extracts permit conditions from a file.
 
@@ -41,13 +52,46 @@ async def extract_permit_conditions(file: UploadFile = File(...)):
                 "pdf_converter": {"file_path": tmp.name},
                 "prompt_builder": {
                     "template_variables": {
-                        "max_pages": 5,
+                        "max_pages": 6,
                     }
                 },
             }
-        )
+        )["validator"]
     finally:
         tmp.close()
+
+
+@router.post("/permit_conditions/csv")
+async def extract_permit_conditions_as_csv(
+    file: UploadFile = File(...),
+) -> PermitConditions:
+    # Extract permit conditions as a dictionary
+    conditions = (await extract_permit_conditions(file))["conditions"]
+
+    # Create a StringIO object to write CSV data
+    csv_data = StringIO()
+    # Define the fieldnames for the CSV file
+    fieldnames = list(PermitCondition.schema()["properties"].keys())
+
+    # Create a CSV writer
+    csv_writer = csv.DictWriter(csv_data, fieldnames=fieldnames)
+
+    # Write the header row
+    csv_writer.writeheader()
+
+    # Write each condition as a row in the CSV file
+    for condition in conditions:
+        csv_writer.writerow(json.loads(condition.json()))
+
+    # Reset the StringIO object to the beginning
+    csv_data.seek(0)
+
+    # Return the CSV file as a response
+    return Response(
+        content=csv_data.getvalue(),
+        media_type="text/csv",
+        headers={"Content-Disposition": 'attachment; filename="permit_conditions.csv"'},
+    )
 
 
 @router.get("/permit_conditions/flow")
