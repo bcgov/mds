@@ -58,6 +58,7 @@ import ReportSteps from "@mds/common/components/reports/ReportSteps";
 import ViewDigitalPermitCredential from "@/components/mine/DigitalPermitCredential/ViewDigitalPermitCredential";
 import ComplianceCodeManagement from "@/components/admin/complianceCodes/ComplianceCodeManagement";
 import ProjectSubmissionStatusPage from "@mds/common/components/projectSummary/ProjectSubmissionStatusPage";
+import ViewPermit from "@/components/mine/Permit/ViewPermit";
 
 const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));
@@ -111,8 +112,9 @@ export const MINE_HOME_PAGE = {
     if (newParams) {
       newParams = withoutDefaultParams(params, MINE_HOME_PAGE_MAP_DEFAULT_PARAMS);
     }
-    return `/dashboard/mines?map=true${!isEmpty(newParams) ? `&${queryString.stringify({ ...newParams }, { sort: false })}` : ""
-      }`;
+    return `/dashboard/mines?map=true${
+      !isEmpty(newParams) ? `&${queryString.stringify({ ...newParams }, { sort: false })}` : ""
+    }`;
   },
   component: Dashboard,
 };
@@ -153,6 +155,13 @@ export const MINE_PERMITS = {
   route: "/mine-dashboard/:id/permits-and-approvals/permits",
   dynamicRoute: (id) => `/mine-dashboard/${id}/permits-and-approvals/permits`,
   component: MinePermitInfo,
+};
+
+export const VIEW_MINE_PERMIT = {
+  route: "/mine-dashboard/:id/permits-and_approvals/permits/:permitGuid",
+  dynamicRoute: (id, permitGuid) =>
+    `/mine-dashboard/${id}/permits-and_approvals/permits/${permitGuid}`,
+  component: ViewPermit,
 };
 
 export const MINE_PERMIT_DIGITAL_CREDENTIALS = {
@@ -209,7 +218,8 @@ export const EDIT_PROJECT_SUMMARY = {
     activeTab = "basic-information",
     viewMode = true
   ) =>
-    `/pre-applications/${projectGuid}/project-description/${projectSummaryGuid}/${viewMode ? "view" : "edit"
+    `/pre-applications/${projectGuid}/project-description/${projectSummaryGuid}/${
+      viewMode ? "view" : "edit"
     }/${activeTab}`,
   component: ProjectSummary,
 };
@@ -280,7 +290,8 @@ export const MINE_TAILINGS_DETAILS = {
   route:
     "/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab/:userAction",
   dynamicRoute: (tsfGuid, mineGuid, tab = "basic-information", isEditMode = false) =>
-    `/mine-dashboard/${mineGuid}/permits-and-approvals/tailings/${tsfGuid}/${tab}/${isEditMode ? "edit" : "view"
+    `/mine-dashboard/${mineGuid}/permits-and-approvals/tailings/${tsfGuid}/${tab}/${
+      isEditMode ? "edit" : "view"
     }`,
   component: MineTailingsDetailsPage,
 };
@@ -289,7 +300,8 @@ export const EDIT_TAILINGS_STORAGE_FACILITY = {
   route:
     "/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab/:userAction",
   dynamicRoute: (tsfGuid, mineGuid, tab = "basic-information", isEditMode = false) =>
-    `/mine-dashboard/${mineGuid}/permits-and-approvals/tailings/${tsfGuid}/${tab}/${isEditMode ? "edit" : "view"
+    `/mine-dashboard/${mineGuid}/permits-and-approvals/tailings/${tsfGuid}/${tab}/${
+      isEditMode ? "edit" : "view"
     }`,
   component: MineTailingsDetailsPage,
 };
@@ -551,7 +563,8 @@ export const EDIT_DAM = {
     isEditMode = false,
     canEditDam = false
   ) =>
-    `/mine-dashboard/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/${isEditMode ? "edit" : "view"
+    `/mine-dashboard/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/${
+      isEditMode ? "edit" : "view"
     }/${canEditDam ? "editDam" : "viewDam"}/dam/${damGuid}`,
   component: DamsDetailsPage,
 };

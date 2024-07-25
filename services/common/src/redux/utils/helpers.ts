@@ -12,6 +12,7 @@ import {
   IComplianceArticle,
   IMineReportDefinition,
   IMineReportSubmission,
+  IPermit,
   ItemMap,
 } from "@mds/common/interfaces";
 import { MINE_REPORT_SUBMISSION_CODES } from "../..";
@@ -59,7 +60,7 @@ export const createDropDownList = (
   labelFormatter = null,
   orderByAlphabetically = true
 ) => {
-  const options = array.map((item) => ({
+  const options = array?.map((item) => ({
     value: item[valueField],
     label: labelFormatter ? labelFormatter(item[labelField]) : item[labelField],
     isActive: isActiveField ? item[isActiveField] : true,
@@ -686,4 +687,46 @@ export const getMineReportStatusDescription = (
     [MINE_REPORT_SUBMISSION_CODES.NRQ]: "This report is not requested",
   };
   return MINE_REPORT_STATUS_DESCRIPTION_HASH[statusCode] || "";
+};
+
+export const getDescriptionsFromCodes = (
+  codes: string[],
+  options: any[],
+  codeField: string,
+  descriptionField = "description"
+) => {
+  if (!Array.isArray(codes)) return "-";
+  const descriptions = options.reduce((acc, option) => {
+    if (codes.includes(option[codeField]) || codes.includes(option[descriptionField])) {
+      acc.push(option[descriptionField]);
+    }
+    return acc;
+  }, []);
+
+  if (descriptions.length === 0) return "-";
+
+  return descriptions.join(", ");
+};
+
+/**
+ * Finds the description of an option in a given array based on a comparison field and value.
+ * This is a helper for getting the description from a code in many of the core-static-content options
+ *
+ * @param {Array} options - The array of options to search.
+ * @param {string} comparisonField - The field in the options objects to compare.
+ * @param {any} comparisonValue - The value to compare with the comparisonField.
+ * @param nullReturnValue - The value to return if the option is not found
+ * @returns {string} - The description of the option with matching comparisonField and comparisonValue. If no match is found, returns '-'.
+ */
+export const findOptionDescription = (
+  options: any[],
+  comparisonField: string,
+  comparisonValue: any,
+  nullReturnValue = "-"
+): string => {
+  const option = options.find((opt) => opt[comparisonField] === comparisonValue);
+
+  if (!option) return nullReturnValue;
+
+  return option.description;
 };

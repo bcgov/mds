@@ -12,6 +12,7 @@ export * from "./mineVerifiedStatus.interface";
 export * from "./mineWorkInformation.interface";
 export * from "./incidents/mineIncident.interface";
 export * from "./incidents/mineIncidentDocument.interface";
+export * from "./mineTenureType.interface";
 export * from "./party";
 export * from "./tailingsStorageFacility";
 export * from "./document";

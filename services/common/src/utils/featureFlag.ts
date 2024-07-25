@@ -19,6 +19,7 @@ export enum Feature {
   AMS_AGENT = "ams_agent",
   HSRC_CODE_EDIT = "hsrc_code_edit",
   MULTIPART_UPLOAD = "s3_multipart_upload",
+  DIGITIZED_PERMITS = "digitized_permits",
   SPATIAL_BUNDLE = "spatial_bundle",
 }
 
