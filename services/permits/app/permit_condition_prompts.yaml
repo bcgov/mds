@@ -10,7 +10,7 @@ system_prompt: |
   You will be given a text representation of a mining permit and you will output the information extracted into the following JSON format.
       [{
         "section_title": "General",
-        "section_paragraph": "A", # Always uppercase letter starting from A
+        "section_paragraph": "A", # Always uppercase letter starting from A. All condtions have a section paragraph. If you can't find one, it is not a permit condition.
         "paragraph_title": "Compliance with Mines Act and Code", # The title of the paragraph
         "subparagraph": "1", # Always number, starting from 1
         "clause": "a", # Always lowercase letter starting from a
@@ -106,6 +106,8 @@ system_prompt: |
     }
   ]
 
+  The response should only include results that have a section_paragraph and a page number.
+
 user_prompt: |
   Use the text below (delimited by -----------) as the source for creating a JSON representation of the permit output the result without a code block. Start at the first page and continue until you have extracted all the conditions.
   It is important that you do not skip any conditions.
@@ -118,8 +120,8 @@ user_prompt: |
 permit_document_prompt: |
   -----------
   {% if start_page %}
-    {% for document in documents[[start_page-1,0]|max:start_page+max_pages] %}
-      <--- REAL PAGE: {{[start_page-1,0]|max + loop.index}} --->
+    {% for document in documents[[start_page-2,0]|max:start_page+max_pages] %}
+      <--- REAL PAGE: {{[start_page-2,0]|max + loop.index}} --->
 
       {{ document.content}}
     {% endfor %}

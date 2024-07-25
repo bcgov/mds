@@ -55,7 +55,6 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
         Returns:
             dict: The chat generation result.
         """
-        logger.error("quering openai")
         cache_key = hash_messages(messages)
 
         if DEBUG_MODE:
@@ -65,7 +64,7 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
                         **pickle.load(f),
                     }
             except:
-                logger.debug("No cache entry found. Quering OpenAI")
+                logger.info("No cache entry found. Quering OpenAI")
                 res = None
         else:
             res = None
@@ -109,7 +108,9 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
         # limit the number of iterations to 10 to avoid issues if GPT4 for some reason
         # keeps returning partial responses
         while reply.meta["finish_reason"] == "length" and iteration < 10:
-            logger.error("Partial json generated continuing query")
+            logger.info(
+                f"Partial json generated continuing query. Iteration: {iteration}"
+            )
 
             messages = data.messages + [reply, ChatMessage.from_user("Continue!")]
             reply = self.fetch_result(messages, generation_kwargs)

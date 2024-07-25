@@ -28,7 +28,7 @@ class PermitConditionValidator:
 
     def __init__(self):
         # The maximum number of pages to process in a single iteration
-        self.max_pages = 5
+        self.max_pages = 6
 
         # The number of the first page to start processing
         self.start_page = 0
@@ -71,11 +71,20 @@ class PermitConditionValidator:
                     {condition.condition_text}
                 """
 
+        with open(f"page_{self.start_page}.json", "w") as f:
+            f.write(
+                json.dumps(
+                    PermitConditions(conditions=conditions).model_dump(mode="json"),
+                    indent=4,
+                )
+            )
+
         # If there are more pages to process, return the next iteration
         if self.start_page + self.max_pages < len(data.documents):
             self.start_page = self.start_page + self.max_pages
 
             self.documents += conditions
+
             iter = {
                 "iteration": {
                     "start_page": self.start_page,
@@ -83,7 +92,6 @@ class PermitConditionValidator:
                 }
             }
 
-            logger.error(iter)
             return iter
         else:
             # If there are no more pages to process, return the conditions found
@@ -95,13 +103,23 @@ class PermitConditionValidator:
         try:
             content = json.loads(reply.content)
 
-            print("cooontent")
-            print(reply.content)
-            response = PermitConditions.parse_obj({"conditions": content})
+            conditions = []
+
+            for condition in content:
+                # sometimes, conditions are nested in a list in the response
+                # from the pipeline, so we need to flatten them
+                if isinstance(condition, list):
+                    for c in condition:
+                        conditions.append(c)
+                else:
+                    conditions.append(condition)
+
+            response = PermitConditions.parse_obj({"conditions": conditions})
 
             return response.conditions
         except Exception as e:
             logger.error(
                 f"Failed to parse permit condition. Content is not valid json. {e}"
             )
+            logger.error(reply.content)
             raise

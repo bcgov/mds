@@ -1,4 +1,5 @@
 import logging
+import os
 from typing import Optional
 
 from app.permit_conditions.pipelines.chat_data import ChatData
@@ -28,11 +29,15 @@ class PaginatedChatPromptBuilder(ChatPromptBuilder):
     ):
 
         if iteration:
+            logger.info(
+                f"Processing pages starting from page {iteration['start_page']}"
+            )
             # Merge "iteration" variables with the template variables
             # the iteration variable input contain the variables that are specific to the pagination we do
             # (start_page, last_condition_text)
             template_variables = {**template_variables, **iteration}
-
+        else:
+            logger.info("Processing pages starting from page 0")
         output = super(PaginatedChatPromptBuilder, self).run(
             template=template, template_variables=template_variables, **kwargs
         )

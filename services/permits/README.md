@@ -6,6 +6,7 @@ The Permit Service is a question-answering (QA) service built on top of deepset-
 
 ## Features
 
+- **Permit Condition Extraction**: The service provides functionality to extract conditions from Permit PDFs, and scripts to validate the extracted conditions to manually extracted ones
 - **Indexing**: Users can use the API to index Permit PDFs to make them searchable
 - **OCR**: PDFs can contain either text or images. In case of an Image, the service will use [tesseract-ocr](https://tesseract-ocr.github.io/) to extract text from the PDF
 - **NLP Models**: Utilizes deepset-ai's Haystack framework, which supports a variety of powerful NLP models to index the documents
@@ -38,17 +39,17 @@ The service should now be running and ready to accept user queries.
 
 ## Usage
 
-Swagger docs for the service can be found at [http://localhost:8004/haystack/docs](http://localhost:8004/haystack/docs).
+Swagger docs for the service can be found at [http://localhost:8004/docs](http://localhost:8004/docs).
 
 ### Key endpoints
 
 _Index document_
-`POST http://localhost:8004/haystack/file-upload`
+`POST http://localhost:8004/permit/index`
 
 This takes in a PDF file and run it through the `indexing` pipeline defined in `app/app.py`. Note: This can take a while depending on your specs.
 
 _Query_
-`POST http://localhost:8004/haystack/query`
+`POST http://localhost:8004/permit/query`
 This endpoint receives the question as a string and allows the requester to set additional parameters that will be passed on to the Haystack query pipeline defined in `app/app.py`. The endpoint performs a Keyword search on indexed documents.
 
 ### Kibana
@@ -92,3 +93,36 @@ mine_no,mine_name,permit_no,object_store_path,issue_date,document_name,permit_am
 ```
 
 An example query to generate this CSV can be found in the [Metabase Permit Digitization Candidates Metabase collection](https://metabase-4c2ba9-prod.apps.silver.devops.gov.bc.ca/question/2890-mds-permit-digitization-candidates)
+
+### Permit Condition Extraction
+
+_Extract Conditions_
+
+`POST http://localhost:8004/permit/extract_conditions`
+
+`POST http://localhost:8004/permit/extract_conditions/csv`
+
+The `extract_conditions` endpoint takes in a PDF file and extracts the conditions from the PDF. The endpoint returns the extracted conditions as a JSON object. The `extract_conditions/csv` endpoint returns the extracted conditions as a CSV file.
+
+The extraction process is done using a haystack pipeline with Azure OpenAI GPT4 doing the heavy lifting.
+
+#### Steps
+
+The pipeline consists of the following steps
+![Condition pipeline](docs/images/permit_condition_pipeline.png)
+
+1. PDFToTextConverter: Converts the PDF to text using PyPDF. Currently only supports text-based PDFs. It extracts each page as a separate "document" that is passed to the next step.
+2. PaginatedChatPromptBuilder: Takes the text from the PDF and builds a paginated chat prompt using the template defined in [app/permit_condition_prompts.yaml](app/permit_condition_prompts.yaml)
+3. CachedAzureOpenAIGPT4Generator: Uses Azure OpenAI GPT4 to generate the conditions from the paginated chat prompt. GPT4 can max return 4096 tokens at a time, so functionality is built in here to automatically "continue" the prompt if the response is to big (GPT4 returns a finish_reason of "length").
+4. JSONRepair. Fixes the JSON response from GPT4 to be a valid JSON object. Sometimes the response from GPT4 is not valid JSON, so this step attempts to fix it (e.g. has an extra " or a missing bracket)
+5. PermitConditionValidator. Validates that the extracted conditions are in a valid JSON format, if there are outstanding pages to be processed, it will pass this information back to the PaginatedChatPromptBuilder to continue from the last page processed.
+
+#### Validation
+
+The extracted conditions can be validated against manually extracted conditions using `extract_and_validate_pdf.py` script. This script takes in a PDF file and a CSV file with the expected conditions. The script will extract the conditions from the PDF and compare them to the expected conditions in the CSV file, and output a csv and html repot of the results
+
+Usage:
+
+```python
+extract_and_validate_pdf.py --pdf_csv_pairs <pdf_path> <expected_csv_path> --pdf_csv_pairs <pdf_path> <expected_csv_path> ...
+```
