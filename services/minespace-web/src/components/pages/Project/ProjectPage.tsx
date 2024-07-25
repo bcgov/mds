@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory, useParams } from "react-router-dom";
 import { Row, Col, Typography, Tabs } from "antd";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
-import { Feature, IProject } from "@mds/common";
+import { IProject } from "@mds/common";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import { getProject } from "@mds/common/redux/selectors/projectSelectors";
 import { fetchProjectById } from "@mds/common/redux/actionCreators/projectActionCreator";
@@ -18,11 +18,9 @@ import MajorMineApplicationReviewSubmit from "@/components/Forms/projects/majorM
 import ProjectOverviewTab from "./ProjectOverviewTab";
 import InformationRequirementsTableEntryTab from "./InformationRequirementsTableEntryTab";
 import MajorMineApplicationEntryTab from "./MajorMineApplicationEntryTab";
-import DocumentsTab from "./DocumentsTab";
 import { MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES } from "./MajorMineApplicationPage";
 import ProjectDocumentsTab from "@mds/common/components/projects/ProjectDocumentsTab";
 import ProjectDescriptionTab from "@mds/common/components/project/ProjectDescriptionTab";
-import ScrollSidePageWrapper from "@mds/common/components/common/ScrollSidePageWrapper";
 
 const tabs = [
   "overview",
@@ -65,7 +63,6 @@ const ProjectPage: FC = () => {
         filters = { major_mine_application_guid, is_archived: true };
       }
     }
-    console.log("fetching docs with filters", filters, mine_guid);
     dispatch(fetchMineDocuments(mine_guid, filters));
   };
 
@@ -119,12 +116,6 @@ const ProjectPage: FC = () => {
   };
 
   const handleFetchData = async (includeArchivedDocuments = false) => {
-    console.log(
-      "handleFetchData projectGuid, project, includeArchivedDocuments",
-      projectGuid,
-      project,
-      includeArchivedDocuments
-    );
     if (projectGuid && project?.project_guid !== projectGuid) {
       await dispatch(fetchProjectById(projectGuid));
     }
@@ -165,9 +156,6 @@ const ProjectPage: FC = () => {
         url = `/projects/${projectGuid}/major-mine-application/entry`;
         return history.push(url);
 
-      case "old-documents":
-        url = `/projects/${projectGuid}/documents`;
-        return history.push({ pathname: url });
       default:
         return null;
     }
@@ -223,39 +211,12 @@ const ProjectPage: FC = () => {
       children: majorMineApplicationTabContent,
     },
     {
-      label: "Old Documents",
-      key: "old-documents",
-      children: (
-        <DocumentsTab
-          //@ts-ignore
-          project={project}
-          refreshData={() => handleFetchData(true)}
-        />
-      ),
-    },
-    {
-      label: "New Documents",
+      label: "Documents",
       key: "documents",
-      children: <ProjectDocumentsTab project={project} refreshData={() => handleFetchData(true)} />,
+      children: <ProjectDocumentsTab project={project} />,
     },
   ];
-  const headerContent = (
-    <>
-      <Row>
-        <Col span={24}>
-          <Typography.Title>{project_title}</Typography.Title>
-        </Col>
-      </Row>
-      <Row gutter={[0, 16]}>
-        <Col span={24}>
-          <Link to={router.MINE_DASHBOARD.dynamicRoute(mine_guid, "applications")}>
-            <ArrowLeftOutlined className="padding-sm-right" />
-            Back to: {mine_name} Mine Projects
-          </Link>
-        </Col>
-      </Row>
-    </>
-  );
+
   return isLoaded ? (
     <div className="fixed-tabs-container">
       <div className="view--header">
@@ -277,8 +238,7 @@ const ProjectPage: FC = () => {
         <Col span={24}>
           <Tabs
             defaultActiveKey={activeTab}
-            onChange={(newActiveTab) => handleTabChange(newActiveTab)}
-            // type="card"
+            onChange={handleTabChange}
             className="core-tabs fixed-tabs-tabs"
             items={tabItems}
           />

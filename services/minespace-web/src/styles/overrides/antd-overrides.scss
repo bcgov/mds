@@ -196,9 +196,7 @@ h5.ant-typography,
       border: none;
       border-bottom: none !important;
     }
-  }
 
-  &>.ant-tabs-nav {
     .ant-tabs-tab {
       color: $font-colour;
       background-color: transparent !important;
@@ -215,7 +213,6 @@ h5.ant-typography,
       &.ant-tabs-tab-active {
         .ant-tabs-tab-btn {
           color: $gov-blue !important;
-          // font-weight: normal;
         }
       }
     }

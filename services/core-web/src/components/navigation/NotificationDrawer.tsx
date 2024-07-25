@@ -18,7 +18,6 @@ import {
   EDIT_PROJECT_SUMMARY,
   EDIT_PROJECT,
   VIEW_MINE_INCIDENT,
-  PROJECT_DOCUMENT_MANAGEMENT,
   REPORT_VIEW_EDIT,
 } from "@/constants/routes";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
@@ -144,8 +143,9 @@ const NotificationDrawer: FC<INotificationDrawerProps> = (props) => {
           "qualified-person"
         );
       case "DocumentManagement":
-        return PROJECT_DOCUMENT_MANAGEMENT.dynamicRoute(
-          notification.notification_document.metadata.entity_guid
+        return EDIT_PROJECT.dynamicRoute(
+          notification.notification_document.metadata.entity_guid,
+          "documents"
         );
       default:
         return null;

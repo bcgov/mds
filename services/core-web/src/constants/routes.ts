@@ -45,8 +45,6 @@ import MergeContactsDashboard from "@/components/admin/contacts/MergeContactsDas
 import MineSpaceEMLIContactManagement from "@/components/admin/contacts/EMLIContacts/MineSpaceEMLIContactManagement";
 import PermitConditionManagement from "@/components/mine/Permit/PermitConditionManagement";
 import Project from "@/components/mine/Projects/Project";
-import InformationRequirementsTableTab from "@/components/mine/Projects/InformationRequirementsTableTab";
-import ProjectDocumentsTab from "@/components/mine/Projects/ProjectDocumentsTab";
 import MajorMineApplicationTab from "@/components/mine/Projects/MajorMineApplicationTab";
 import DecisionPackageTab from "@/components/mine/Projects/DecisionPackageTab";
 import MineIncident from "@/components/mine/Incidents/MineIncident";
@@ -245,13 +243,6 @@ export const PROJECT_FINAL_APPLICATION = {
   component: MajorMineApplicationTab,
 };
 
-export const PROJECT_ALL_DOCUMENTS = {
-  route: "/pre-applications/:projectGuid/documents",
-  dynamicRoute: (projectGuid) => `/pre-applications/${projectGuid}/documents`,
-  hashRoute: (projectGuid, link) => `/pre-applications/${projectGuid}/documents/${link}`,
-  component: ProjectDocumentsTab,
-};
-
 export const PROJECT_DECISION_PACKAGE = {
   route: "/pre-applications/:projectGuid/project-decision-package",
   dynamicRoute: (projectGuid) => `/pre-applications/${projectGuid}/project-decision-package`,
@@ -320,12 +311,6 @@ export const VIEW_MINE_INCIDENT = {
   hashRoute: (mineGuid, mineIncidentGuid, link) =>
     `/mines/${mineGuid}/incidents/${mineIncidentGuid}${link}`,
   component: MineIncident,
-};
-
-export const PROJECT_DOCUMENT_MANAGEMENT = {
-  route: "/pre-applications/:projectGuid/documents",
-  dynamicRoute: (projectGuid) => `/pre-applications/${projectGuid}/documents`,
-  component: ProjectDocumentsTab,
 };
 
 export const CREATE_MINE_INCIDENT = {
