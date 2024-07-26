@@ -32,6 +32,7 @@ def test_put_project_summary(test_client, db_session, auth_headers):
     data['project_summary_title'] = 'Test Project Title - Updated'
     data['project_summary_description'] = project_summary.project_summary_description
     data['status_code'] = 'DFT'
+    data['is_historic'] = False
 
     put_resp = test_client.put(
         f'/projects/{project_summary.project.project_guid}/project-summaries/{project_summary.project_summary_guid}',
@@ -80,6 +81,7 @@ def test_update_project_summary_assign_project_lead(test_client, db_session, aut
     data['status_code'] = 'DFT'
     data['confirmation_of_submission'] = True
     data['project_lead_party_guid'] = party.party_guid
+    data['is_historic'] = False
 
     put_resp = test_client.put(
         f'/projects/{project.project_guid}/project-summaries/{project_summary.project_summary_guid}',
@@ -101,6 +103,7 @@ def test_submit_project_summary_without_ams_auths(test_client, db_session, auth_
     data['mine_guid'] = project_summary.project.mine_guid
     data['status_code'] = 'SUB'
     data['project_lead_party_guid'] = party.party_guid
+    data['is_historic'] = False
 
     # Basic info data
     data['project_summary_title'] = project_summary.project_summary_title
@@ -164,6 +167,7 @@ def test_update_project_summary_bad_request_with_validation_errors(test_client, 
     data['status_code'] = 'SUB'
     data['project_lead_party_guid'] = party.party_guid
     data['documents'] = []
+    data['is_historic'] = False
 
     # Basic info data
     data['project_summary_title'] = project_summary.project_summary_title
@@ -225,6 +229,7 @@ def test_update_project_summary_validation_success(test_client, db_session, auth
     data['status_code'] = 'SUB'
     data['project_lead_party_guid'] = party.party_guid
     data['documents'] = []
+    data['is_historic'] = False
 
     # Basic info data
     data['project_summary_title'] = project_summary.project_summary_title

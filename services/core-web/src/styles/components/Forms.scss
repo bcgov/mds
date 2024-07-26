@@ -17,6 +17,14 @@
   padding-left: 10px;
 }
 
+.ant-checkbox-group-item {
+  min-width: 0;
+
+  &>span {
+    max-width: 100%;
+  }
+}
+
 // copied corresponding styles from .has-error .ant-input, added border details
 .has-error .ant-checkbox-group,
 .has-error .ant-checkbox-group:hover {
@@ -141,4 +149,8 @@
   &:hover {
     color: $violet;
   }
+}
+
+.form-item-hidden {
+  max-width: 100%;
 }

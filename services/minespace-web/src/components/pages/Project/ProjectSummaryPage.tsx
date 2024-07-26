@@ -175,22 +175,24 @@ export const ProjectSummaryPage = () => {
       : "Successfully submitted a project description to the Province of British Columbia.";
 
     let status_code = projectSummary.status_code;
+    let is_historic = projectSummary.is_historic;
     if (!status_code || !isEditMode) {
       status_code = "DFT";
     } else if (!newActiveTab) {
       status_code = "SUB";
+      is_historic = false;
       if (amsFeatureEnabled) {
         message = null;
       }
     }
 
-    const values = { ...formValues, status_code: status_code };
+    const values = { ...formValues, status_code };
     try {
       if (!isEditMode) {
         await handleCreateProjectSummary(values, message);
       }
       if (projectGuid && projectSummaryGuid) {
-        await handleUpdateProjectSummary(values, message);
+        await handleUpdateProjectSummary({ ...values, is_historic }, message);
         handleTabChange(newActiveTab);
         setIsLoaded(true);
       }
