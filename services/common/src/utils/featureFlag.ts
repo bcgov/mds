@@ -9,8 +9,9 @@ export enum Feature {
   ESUP_PERMIT_AMENDMENT = "esup_permit_amendment",
   FLAGSMITH = "flagsmith",
   TSF_V2 = "tsf_v2",
-  VERIFIABLE_CREDENTIALS = "verifiable_credentials",
-  VERIFIABLE_CREDENTIALS_2 = "verifiable_credentials_2.0",
+  VC_ANONCREDS_CORE = "vc_anoncreds_core",
+  VC_ANONCREDS_MINESPACE = "vc_anoncreds_minespace",
+  VC_W3C = "vc_w3c",
   MINESPACE_ESUPS = "minespace_esups",
   REPORT_ERROR = "report_error",
   MAJOR_PROJECT_LINK_PROJECTS = "major_project_link_projects",
@@ -18,6 +19,7 @@ export enum Feature {
   AMS_AGENT = "ams_agent",
   HSRC_CODE_EDIT = "hsrc_code_edit",
   MULTIPART_UPLOAD = "s3_multipart_upload",
+  DIGITIZED_PERMITS = "digitized_permits",
   SPATIAL_BUNDLE = "spatial_bundle",
 }
 

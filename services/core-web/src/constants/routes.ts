@@ -56,6 +56,7 @@ import ReportSteps from "@mds/common/components/reports/ReportSteps";
 import ViewDigitalPermitCredential from "@/components/mine/DigitalPermitCredential/ViewDigitalPermitCredential";
 import ComplianceCodeManagement from "@/components/admin/complianceCodes/ComplianceCodeManagement";
 import ProjectSubmissionStatusPage from "@mds/common/components/projectSummary/ProjectSubmissionStatusPage";
+import ViewPermit from "@/components/mine/Permit/ViewPermit";
 
 const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));
@@ -152,6 +153,13 @@ export const MINE_PERMITS = {
   route: "/mine-dashboard/:id/permits-and-approvals/permits",
   dynamicRoute: (id) => `/mine-dashboard/${id}/permits-and-approvals/permits`,
   component: MinePermitInfo,
+};
+
+export const VIEW_MINE_PERMIT = {
+  route: "/mine-dashboard/:id/permits-and_approvals/permits/:permitGuid",
+  dynamicRoute: (id, permitGuid) =>
+    `/mine-dashboard/${id}/permits-and_approvals/permits/${permitGuid}`,
+  component: ViewPermit,
 };
 
 export const MINE_PERMIT_DIGITAL_CREDENTIALS = {

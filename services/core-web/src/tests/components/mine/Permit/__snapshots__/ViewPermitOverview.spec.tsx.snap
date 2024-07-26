@@ -1,0 +1,666 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MinePermitInfo renders properly 1`] = `
+<div
+  class="view-permits-content"
+>
+  <div
+    class="ant-row ant-row-space-between ant-row-middle"
+  >
+    <div
+      class="ant-col"
+    >
+      <h2
+        class="ant-typography margin-none padding-lg--top padding-lg--bottom"
+      >
+        Permit Overview
+      </h2>
+    </div>
+    <div
+      class="ant-col"
+    >
+      <button
+        class="ant-btn ant-btn-primary"
+        type="button"
+      >
+        <span>
+          Edit Permit
+        </span>
+      </button>
+    </div>
+  </div>
+  <div
+    class="ant-row"
+  >
+    <div
+      class="ant-col ant-col-12 view-permits-detail-section"
+    >
+      <h4
+        class="ant-typography"
+      >
+        Permit Details
+      </h4>
+      <div
+        class="ant-row"
+      >
+        <div
+          class="ant-col ant-col-12"
+        >
+          <div
+            class="ant-typography"
+          >
+            <strong>
+              Issue Date
+            </strong>
+          </div>
+          <div
+            class="ant-typography"
+          >
+            Apr 01 2020
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-12"
+        >
+          <div
+            class="ant-typography"
+          >
+            <strong>
+              Authorization End Date
+            </strong>
+          </div>
+          <div
+            class="ant-typography"
+          />
+        </div>
+      </div>
+      <div
+        class="ant-row"
+      >
+        <div
+          class="ant-col ant-col-12"
+        >
+          <div
+            class="ant-typography"
+          >
+            <strong>
+              Permitee
+            </strong>
+          </div>
+          <div
+            class="ant-typography"
+          />
+        </div>
+      </div>
+      <div
+        class="ant-row"
+      >
+        <div
+          class="ant-col ant-col-12"
+        >
+          <div
+            class="ant-typography"
+          >
+            <strong>
+              Permit Type
+            </strong>
+          </div>
+          <div
+            class="ant-typography"
+          >
+            Permit Amendment
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-12"
+        >
+          <div
+            class="ant-typography"
+          >
+            <strong>
+              Permit Number
+            </strong>
+          </div>
+          <div
+            class="ant-typography"
+          >
+            C-12345
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-row"
+      >
+        <div
+          class="ant-col ant-col-12"
+        >
+          <div
+            class="ant-typography"
+          >
+            <strong>
+              Tenure
+            </strong>
+          </div>
+          <div
+            class="ant-typography"
+          >
+            Mineral, Placer
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-12"
+        >
+          <div
+            class="ant-typography"
+          >
+            <strong>
+              Commodity
+            </strong>
+          </div>
+          <div
+            class="ant-typography"
+          >
+            Aluminum
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-row"
+      >
+        <div
+          class="ant-col ant-col-12"
+        >
+          <div
+            class="ant-typography"
+          >
+            <strong>
+              Disturbance
+            </strong>
+          </div>
+          <div
+            class="ant-typography"
+          >
+            Underground
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-12"
+        >
+          <div
+            class="ant-typography"
+          >
+            <strong>
+              Inspection Fee Status
+            </strong>
+          </div>
+          <div
+            class="ant-typography"
+          >
+            -
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-row"
+      >
+        <div
+          class="ant-col ant-col-24"
+        >
+          <div
+            class="ant-typography"
+          >
+            <strong>
+              Fee Exemption Note
+            </strong>
+          </div>
+          <div
+            class="ant-typography"
+          >
+            
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-row"
+      >
+        <div
+          class="ant-col ant-col-24"
+        >
+          <div
+            class="ant-typography"
+          >
+            <strong>
+              Description
+            </strong>
+          </div>
+          <div
+            class="ant-typography"
+          >
+            Amendment
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-divider ant-divider-horizontal"
+        role="separator"
+      />
+      <div
+        class="ant-row"
+      >
+        <div
+          class="ant-col ant-col-12"
+        >
+          <div
+            class="ant-typography"
+          >
+            <strong>
+              Security
+            </strong>
+          </div>
+          <div
+            class="ant-typography"
+          >
+            $
+            8000000.00
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-12"
+        >
+          <div
+            class="ant-typography"
+          >
+            <strong>
+              Security Received
+            </strong>
+          </div>
+          <div
+            class="ant-typography"
+          >
+            
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-row"
+      >
+        <div
+          class="ant-col ant-col-24"
+        >
+          <div
+            class="ant-typography"
+          >
+            <strong>
+              Assessed Liability Adjustment
+            </strong>
+          </div>
+          <div
+            class="ant-typography"
+          >
+            $
+            7000000
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-divider ant-divider-horizontal"
+        role="separator"
+      />
+      <div
+        class="ant-row"
+      >
+        <div
+          class="ant-col ant-col-24"
+        >
+          <div
+            class="ant-typography"
+          >
+            <strong>
+              Tailings Storage Facility Operating Count
+            </strong>
+          </div>
+          <div
+            class="ant-typography"
+          >
+            1
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-row"
+      >
+        <div
+          class="ant-col ant-col-24"
+        >
+          <div
+            class="ant-typography"
+          >
+            <strong>
+              Tailings Storage Facility Care and Maintenance Count
+            </strong>
+          </div>
+          <div
+            class="ant-typography"
+          >
+            0
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-col ant-col-12 view-permits-detail-section"
+    >
+      <h4
+        class="ant-typography"
+      >
+        Permit Status
+      </h4>
+      <div
+        class="ant-row"
+      >
+        <div
+          class="ant-col ant-col-12"
+        >
+          <div
+            class="ant-typography"
+          >
+            <strong>
+              Permit Status
+            </strong>
+          </div>
+          <div
+            class="ant-typography"
+          >
+            Open
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-row"
+      >
+        <div
+          class="ant-col ant-col-24"
+        >
+          <div
+            class="ant-typography"
+          >
+            <strong>
+              Remaining Outstanding Liability Amount (if any)
+            </strong>
+          </div>
+          <div
+            class="ant-typography"
+          >
+            
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-row ant-row-space-between"
+      >
+        <div
+          class="ant-col ant-col-12"
+        >
+          <div
+            class="ant-typography"
+          >
+            Updated by: 
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-12"
+        >
+          <div
+            class="ant-typography"
+          >
+            Updated Date: 
+          </div>
+        </div>
+      </div>
+      <h4
+        class="ant-typography margin-large--top"
+      >
+        Permit Documents
+      </h4>
+      <div
+        class="ant-typography"
+      >
+        Documents displayed here are viewable by Minespace users.
+      </div>
+      <div
+        class="ant-table-wrapper margin-large--top"
+      >
+        <div
+          class="ant-spin-nested-loading"
+        >
+          <div
+            class="ant-spin-container"
+          >
+            <div
+              class="ant-table"
+            >
+              <div
+                class="ant-table-container"
+              >
+                <div
+                  class="ant-table-content"
+                >
+                  <table
+                    style="table-layout: auto;"
+                  >
+                    <colgroup />
+                    <thead
+                      class="ant-table-thead"
+                    >
+                      <tr>
+                        <th
+                          aria-label="File Name"
+                          class="ant-table-cell ant-table-column-has-sorters"
+                          tabindex="0"
+                        >
+                          <div
+                            class="ant-table-column-sorters"
+                          >
+                            <span
+                              class="ant-table-column-title"
+                            >
+                              File Name
+                            </span>
+                            <span
+                              class="ant-table-column-sorter ant-table-column-sorter-full"
+                            >
+                              <span
+                                class="ant-table-column-sorter-inner"
+                              >
+                                <span
+                                  aria-label="caret-up"
+                                  class="anticon anticon-caret-up ant-table-column-sorter-up"
+                                  role="presentation"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    data-icon="caret-up"
+                                    fill="currentColor"
+                                    focusable="false"
+                                    height="1em"
+                                    viewBox="0 0 1024 1024"
+                                    width="1em"
+                                  >
+                                    <path
+                                      d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                    />
+                                  </svg>
+                                </span>
+                                <span
+                                  aria-label="caret-down"
+                                  class="anticon anticon-caret-down ant-table-column-sorter-down"
+                                  role="presentation"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    data-icon="caret-down"
+                                    fill="currentColor"
+                                    focusable="false"
+                                    height="1em"
+                                    viewBox="0 0 1024 1024"
+                                    width="1em"
+                                  >
+                                    <path
+                                      d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </span>
+                          </div>
+                        </th>
+                        <th
+                          aria-label="Created By"
+                          class="ant-table-cell ant-table-column-has-sorters"
+                          tabindex="0"
+                        >
+                          <div
+                            class="ant-table-column-sorters"
+                          >
+                            <span
+                              class="ant-table-column-title"
+                            >
+                              Created By
+                            </span>
+                            <span
+                              class="ant-table-column-sorter ant-table-column-sorter-full"
+                            >
+                              <span
+                                class="ant-table-column-sorter-inner"
+                              >
+                                <span
+                                  aria-label="caret-up"
+                                  class="anticon anticon-caret-up ant-table-column-sorter-up"
+                                  role="presentation"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    data-icon="caret-up"
+                                    fill="currentColor"
+                                    focusable="false"
+                                    height="1em"
+                                    viewBox="0 0 1024 1024"
+                                    width="1em"
+                                  >
+                                    <path
+                                      d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                    />
+                                  </svg>
+                                </span>
+                                <span
+                                  aria-label="caret-down"
+                                  class="anticon anticon-caret-down ant-table-column-sorter-down"
+                                  role="presentation"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    data-icon="caret-down"
+                                    fill="currentColor"
+                                    focusable="false"
+                                    height="1em"
+                                    viewBox="0 0 1024 1024"
+                                    width="1em"
+                                  >
+                                    <path
+                                      d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </span>
+                          </div>
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Updated
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody
+                      class="ant-table-tbody"
+                    >
+                      <tr
+                        class="ant-table-row ant-table-row-level-0"
+                      >
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="inline-flex flex-between file-name-container"
+                            title="File Name"
+                          >
+                            <div
+                              class="file-name-text"
+                            >
+                              <a
+                                class="ant-dropdown-trigger ant-dropdown-link"
+                                role="button"
+                                tabindex="0"
+                              >
+                                Adams_amendment_1.pdf
+                                 
+                                <span
+                                  aria-label="down"
+                                  class="anticon anticon-down"
+                                  role="img"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    class=""
+                                    data-icon="down"
+                                    fill="currentColor"
+                                    focusable="false"
+                                    height="1em"
+                                    viewBox="64 64 896 896"
+                                    width="1em"
+                                  >
+                                    <path
+                                      d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                                    />
+                                  </svg>
+                                </span>
+                              </a>
+                            </div>
+                            <span
+                              class="file-history-container"
+                            />
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="create_user-column"
+                            title="Created By"
+                          >
+                            N/A
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            title="Updated"
+                          >
+                            N/A
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

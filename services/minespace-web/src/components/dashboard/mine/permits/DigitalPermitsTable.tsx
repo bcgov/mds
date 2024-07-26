@@ -53,7 +53,7 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
   ];
 
   const showVCColumn =
-    isFeatureEnabled(Feature.VERIFIABLE_CREDENTIALS) &&
+    isFeatureEnabled(Feature.VC_ANONCREDS_MINESPACE) &&
     props.majorMineInd &&
     props.permits.some((p) => {
       // look for *any* active wallet connections to show the issuance column/action

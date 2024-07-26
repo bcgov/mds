@@ -1,14 +1,17 @@
-from starlette.middleware.base import RequestResponseEndpoint, BaseHTTPMiddleware
+from app.jwt_manager import validate_oidc_token
+from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
 from starlette.requests import Request
 from starlette.responses import JSONResponse
-
-from app.jwt_manager import validate_oidc_token
 
 
 class OpenIdConnectMiddleware(BaseHTTPMiddleware):
     async def dispatch(
-            self, request: Request, call_next: RequestResponseEndpoint
+        self, request: Request, call_next: RequestResponseEndpoint
     ) -> JSONResponse:
+        if request.url.path == "/docs" or request.url.path == "/openapi.json":
+            # Allow swagger UI to load without auth
+            return await call_next(request)
+
         authorization = request.headers.get("Authorization")
         if not authorization:
             return JSONResponse(

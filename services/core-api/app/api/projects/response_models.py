@@ -214,6 +214,7 @@ PROJECT_SUMMARY_MODEL = api.model(
         'municipality': fields.Nested(MUNICIPALITY_MODEL),
         'regional_district_id': fields.Integer,
         'payment_contact': fields.Nested(PARTY),
+        'is_historic': fields.Boolean,
     })
 
 REQUIREMENTS_MODEL = api.model(

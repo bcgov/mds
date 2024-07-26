@@ -48,6 +48,14 @@
   padding-left: 10px;
 }
 
+.ant-checkbox-group-item {
+  min-width: 0;
+
+  &>span {
+    max-width: 100%;
+  }
+}
+
 // Divider
 
 .ant-divider:not(.ant-divider-plain) {

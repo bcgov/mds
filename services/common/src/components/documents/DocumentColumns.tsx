@@ -12,6 +12,7 @@ import ClockCircleOutlined from "@ant-design/icons/ClockCircleOutlined";
 import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
 import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls";
 import DocumentLink from "./DocumentLink";
+import { IPermitAmendmentDocument } from "@mds/common/interfaces";
 
 const documentWithTag = (
   record: MineDocument,
@@ -78,7 +79,7 @@ export const renderDocumentLinkColumn = (
   title = "File Name",
   sortable = true,
   docManGuidIndex = "document_manager_guid"
-): ColumnType<MineDocument> => {
+): ColumnType<MineDocument | IPermitAmendmentDocument> => {
   return {
     title,
     dataIndex,

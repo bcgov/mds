@@ -3,6 +3,11 @@
 exports[`DashboardRoutes  renders properly 1`] = `
 <Switch>
   <Route
+    component={[Function]}
+    exact={true}
+    path="/mine-dashboard/:id/permits-and_approvals/permits/:permitGuid"
+  />
+  <Route
     exact={true}
     path="/mine-dashboard/:id/"
     render={[Function]}
@@ -181,6 +186,12 @@ exports[`DashboardRoutes  renders properly 1`] = `
     exact={true}
     key="/mine-dashboard/:id/permits-and-approvals/permits"
     path="/mine-dashboard/:id/permits-and-approvals/permits"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
+    key="/mine-dashboard/:id/permits-and_approvals/permits/:permitGuid"
+    path="/mine-dashboard/:id/permits-and_approvals/permits/:permitGuid"
   />
   <Route
     component={[Function]}

@@ -16,3 +16,6 @@ export * from "./updatePermitAmendmentPayload.interface";
 export * from "./patchPermitNumber.interface";
 export * from "./draftPermitAmendment.interface";
 export * from "./patchPermitVCLocked.interface";
+export * from "./exemptionFeeStatusOption.interface";
+export * from "./permitStatusOption.interface";
+export * from "./permitTypeOption.interface";

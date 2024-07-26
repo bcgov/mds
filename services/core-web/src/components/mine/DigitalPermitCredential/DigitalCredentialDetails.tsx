@@ -1,5 +1,5 @@
 import { Col, Row, Skeleton, Typography } from "antd";
-import { formatDate } from "@mds/common/redux/utils/helpers";
+import { formatDate, getDescriptionsFromCodes } from "@mds/common/redux/utils/helpers";
 import ExplosivesPermitMap from "@mds/common/components/explosivespermits/ExplosivesPermitMap";
 import React, { FC } from "react";
 import {
@@ -32,30 +32,6 @@ const DigitalCredentialDetails: FC<DigitalCredentialDetailsProps> = ({ permitRec
     )[0];
 
     return latestAmendment?.issue_date;
-  };
-
-  const getCommodityDescriptionFromCode = (codes: string[]) => {
-    const commodityDescription = mineCommodityOptions.reduce(
-      (acc, option: IMineCommodityOption) => {
-        if (codes?.includes(option.mine_commodity_code) || codes?.includes(option.description))
-          acc.push(option.description);
-        return acc;
-      },
-      []
-    );
-    return commodityDescription.join(", ") ?? "";
-  };
-
-  const getMineDisturbanceFromCode = (codes: string[]) => {
-    const disturbanceDescriptions = mineDisturbanceOptions.reduce(
-      (acc, option: IMineDisturbanceOption) => {
-        if (codes?.includes(option.mine_disturbance_code) || codes?.includes(option.description))
-          acc.push(option.description);
-        return acc;
-      },
-      []
-    );
-    return disturbanceDescriptions.join(", ");
   };
 
   const latitude: number = permitRecord?.latitude ?? mine.mine_location.latitude;
@@ -121,13 +97,21 @@ const DigitalCredentialDetails: FC<DigitalCredentialDetailsProps> = ({ permitRec
             <Col span={8}>
               <Paragraph>Mine Disturbance</Paragraph>
               <Paragraph>
-                {getMineDisturbanceFromCode(permitRecord?.site_properties.mine_disturbance_code)}
+                {getDescriptionsFromCodes(
+                  permitRecord?.site_properties.mine_disturbance_code,
+                  mineDisturbanceOptions,
+                  "mine_disturbance_code"
+                )}
               </Paragraph>
             </Col>
             <Col span={8}>
               <Paragraph>Mine Commodity</Paragraph>
               <Paragraph>
-                {getCommodityDescriptionFromCode(permitRecord?.site_properties.mine_commodity_code)}
+                {getDescriptionsFromCodes(
+                  permitRecord.site_properties.mine_commodity_code,
+                  mineCommodityOptions,
+                  "mine_commodity_code"
+                )}
               </Paragraph>
             </Col>
             <Col span={8}>
