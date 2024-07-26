@@ -1,0 +1,113 @@
+// overriding styles that weren't quite working, confining changes to where wrapper is used
+.scroll-side-menu-wrapper {
+    .view--header.fixed-scroll {
+        top: $layout-header-height;
+    }
+
+    .side-menu--fixed,
+    .side-menu {
+        margin-top: $fixed-page-margin;
+        background-color: $white;
+        width: $side-menu-width;
+
+        .ant-anchor-wrapper {
+            border: 1px solid $background;
+            border-radius: 5px;
+            padding: 8px 0;
+            margin-left: 0;
+
+            .ant-anchor {
+                padding-left: 0;
+            }
+
+            .ant-anchor-link {
+                line-height: 2.2;
+                border-bottom: none;
+                padding: 6px 16px;
+            }
+
+            .ant-anchor-link-title {
+                margin-left: 10px;
+                text-decoration: none;
+                color: $gov-blue;
+
+                &:only-child {
+                    margin-bottom: 0;
+                }
+
+                .sub-tab-1 {
+                    margin: -2px 0 -2px 16px;
+                }
+            }
+
+            .ant-anchor-link-active {
+                border-left: 4px solid $gov-blue;
+                background-color: $light-grey-cool;
+
+                &>.ant-anchor-link-title {
+                    font-weight: 700;
+                    text-decoration: none;
+                    color: $gov-blue;
+                }
+            }
+        }
+    }
+
+    .side-menu--fixed {
+        position: fixed;
+    }
+
+    .side-menu--content {
+        padding: $fixed-page-margin 0 $fixed-page-margin $fixed-page-margin;
+        position: relative;
+        left: $side-menu-width;
+        width: calc(100% - $side-menu-width);
+        margin-bottom: 900px;
+    }
+
+    .side-menu--content.with-fixed-top {
+        margin-top: 0;
+    }
+
+    .side-nav-title {
+        text-wrap: wrap;
+        line-height: 21px;
+        font-size: 14px;
+    }
+}
+
+// there is an issue where content (fade-in class?) renders in front of the menu, making it unclickable
+.side-menu--fixed,
+.side-menu {
+    z-index: 7;
+}
+
+.fixed-tabs-container {
+    width: 100%;
+
+    .view--header {
+        position: fixed;
+        width: 100%;
+        z-index: 1000;
+        background-color: $white;
+        padding: 0 $fixed-page-margin;
+    }
+
+    .fixed-tabs-tabs {
+        &>.ant-tabs-nav {
+            position: fixed;
+            top: $layout-header-height + 123px; //ProjectDocumentsTab->headerHeight
+            width: calc(100vw - ($fixed-page-margin * 2));
+            background-color: $white;
+            z-index: 1000;
+            margin-left: $fixed-page-margin;
+            height: 49px;
+        }
+
+        &>.ant-tabs-content-holder {
+            margin-top: 123px + 49px; // height + top property from .ant-tabs-nav above
+            position: relative;
+            padding: 0 $fixed-page-margin;
+        }
+    }
+}

@@ -45,8 +45,6 @@ import MergeContactsDashboard from "@/components/admin/contacts/MergeContactsDas
 import MineSpaceEMLIContactManagement from "@/components/admin/contacts/EMLIContacts/MineSpaceEMLIContactManagement";
 import PermitConditionManagement from "@/components/mine/Permit/PermitConditionManagement";
 import Project from "@/components/mine/Projects/Project";
-import InformationRequirementsTableTab from "@/components/mine/Projects/InformationRequirementsTableTab";
-import ProjectDocumentsTab from "@/components/mine/Projects/ProjectDocumentsTab";
 import MajorMineApplicationTab from "@/components/mine/Projects/MajorMineApplicationTab";
 import DecisionPackageTab from "@/components/mine/Projects/DecisionPackageTab";
 import MineIncident from "@/components/mine/Incidents/MineIncident";
@@ -234,6 +232,8 @@ export const VIEW_PROJECT_SUBMISSION_STATUS_PAGE = {
 export const EDIT_PROJECT = {
   route: "/pre-applications/:projectGuid/:tab",
   dynamicRoute: (projectGuid, tab = "overview") => `/pre-applications/${projectGuid}/${tab}`,
+  hashRoute: (projectGuid, tab = "overview", link) =>
+    `/pre-applications/${projectGuid}/${tab}/${link}`,
   component: Project,
 };
 
@@ -251,26 +251,12 @@ export const PROJECT_FINAL_APPLICATION = {
   component: MajorMineApplicationTab,
 };
 
-export const PROJECT_ALL_DOCUMENTS = {
-  route: "/pre-applications/:projectGuid/documents",
-  dynamicRoute: (projectGuid) => `/pre-applications/${projectGuid}/documents`,
-  hashRoute: (projectGuid, link) => `/pre-applications/${projectGuid}/documents/${link}`,
-  component: ProjectDocumentsTab,
-};
-
 export const PROJECT_DECISION_PACKAGE = {
   route: "/pre-applications/:projectGuid/project-decision-package",
   dynamicRoute: (projectGuid) => `/pre-applications/${projectGuid}/project-decision-package`,
   hashRoute: (projectGuid, link) =>
     `/pre-applications/${projectGuid}/project-decision-package/${link}`,
   component: DecisionPackageTab,
-};
-
-export const INFORMATION_REQUIREMENTS_TABLE = {
-  route: "/pre-applications/:projectGuid/information-requirements-table/:irtGuid/:tab",
-  dynamicRoute: (projectGuid, irtGuid, tab = "intro-project-overview") =>
-    `/pre-applications/${projectGuid}/information-requirements-table/${irtGuid}/${tab}`,
-  component: InformationRequirementsTableTab,
 };
 
 export const MINE_NOW_APPLICATIONS = {
@@ -333,12 +319,6 @@ export const VIEW_MINE_INCIDENT = {
   hashRoute: (mineGuid, mineIncidentGuid, link) =>
     `/mines/${mineGuid}/incidents/${mineIncidentGuid}${link}`,
   component: MineIncident,
-};
-
-export const PROJECT_DOCUMENT_MANAGEMENT = {
-  route: "/pre-applications/:projectGuid/documents",
-  dynamicRoute: (projectGuid) => `/pre-applications/${projectGuid}/documents`,
-  component: ProjectDocumentsTab,
 };
 
 export const CREATE_MINE_INCIDENT = {

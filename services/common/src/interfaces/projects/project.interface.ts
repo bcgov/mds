@@ -1,10 +1,10 @@
 import {
-  ICreateProjectSummary,
   IInformationRequirementsTable,
   IMajorMinesApplication,
   IProjectContact,
   IProjectDecisionPackage,
   IProjectLink,
+  IProjectSummary,
 } from "@mds/common/index";
 
 export interface IProject {
@@ -18,7 +18,7 @@ export interface IProject {
   proponent_project_id: string;
   mrc_review_required: boolean;
   contacts: IProjectContact[];
-  project_summary: ICreateProjectSummary;
+  project_summary: IProjectSummary;
   information_requirements_table: IInformationRequirementsTable;
   major_mine_application: IMajorMinesApplication;
   project_decision_package: IProjectDecisionPackage;

@@ -174,10 +174,7 @@ export class ProjectOverviewTab extends Component {
       link: (
         <Link
           data-cy="final-irt-view-link"
-          to={routes.INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
-            project_guid,
-            this.props.project.information_requirements_table.irt_guid
-          )}
+          to={routes.EDIT_PROJECT.dynamicRoute(project_guid, "information-requirements-table")}
         >
           <Button
             className="full-mobile margin-small"

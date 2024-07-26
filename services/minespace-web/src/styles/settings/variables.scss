@@ -22,6 +22,7 @@ $gov-blue: #003366;
 $light-grey: #ded9d9;
 $lightest-grey: #f4f0f0;
 $lightest-grey-alt: #f8f7f7;
+$light-grey-cool: #F7F8FA;
 $med-grey: #bcbec5;
 $off-white: #fcf8f8;
 $pure-white: #ffffff;
@@ -131,3 +132,7 @@ $default-padding-xxl: 50px;
 
 $default-box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
 $default-round-top-border: 60px 60px 0 0;
+
+// pages with fixed side menu/tabs
+$fixed-page-margin: 26px;
+$side-menu-width: 240px;

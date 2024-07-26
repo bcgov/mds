@@ -82,6 +82,8 @@ export const VIEW_PROJECT_SUBMISSION_STATUS_PAGE = {
 export const EDIT_PROJECT = {
   route: "/projects/:projectGuid/:tab",
   dynamicRoute: (projectGuid, activeTab = "overview") => `/projects/${projectGuid}/${activeTab}`,
+  hashRoute: (projectGuid, activeTab = "overview", link) =>
+    `/projects/${projectGuid}/${activeTab}/${link}`,
   component: ProjectPage,
 };
 

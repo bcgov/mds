@@ -81,12 +81,12 @@ exports[`ReportPage renders view mode properly 1`] = `
   </div>
   <div
     class="side-menu"
-    style="top: 204px;"
+    style="top: 202px;"
   >
     <div>
       <div
         class="ant-anchor-wrapper"
-        style="max-height: calc(100vh - 219px);"
+        style="max-height: calc(100vh - 217px);"
       >
         <div
           class="ant-anchor ant-anchor-fixed"
@@ -108,7 +108,7 @@ exports[`ReportPage renders view mode properly 1`] = `
               title=""
             >
               <div
-                class="ellipsis-text"
+                class="side-nav-title"
               >
                 Regulatory Authority
               </div>
@@ -123,7 +123,7 @@ exports[`ReportPage renders view mode properly 1`] = `
               title=""
             >
               <div
-                class="ellipsis-text"
+                class="side-nav-title"
               >
                 Report Type
               </div>
@@ -138,7 +138,7 @@ exports[`ReportPage renders view mode properly 1`] = `
               title=""
             >
               <div
-                class="ellipsis-text"
+                class="side-nav-title"
               >
                 Report Information
               </div>
@@ -153,7 +153,7 @@ exports[`ReportPage renders view mode properly 1`] = `
               title=""
             >
               <div
-                class="ellipsis-text"
+                class="side-nav-title"
               >
                 Report Contact Information
               </div>
@@ -168,7 +168,7 @@ exports[`ReportPage renders view mode properly 1`] = `
               title=""
             >
               <div
-                class="ellipsis-text"
+                class="side-nav-title"
               >
                 Documentation
               </div>
@@ -183,7 +183,7 @@ exports[`ReportPage renders view mode properly 1`] = `
               title=""
             >
               <div
-                class="ellipsis-text"
+                class="side-nav-title"
               >
                 Comments
               </div>
@@ -195,6 +195,7 @@ exports[`ReportPage renders view mode properly 1`] = `
   </div>
   <div
     class="side-menu--content"
+    style="top: 0px;"
   >
     <div
       class="ant-alert ant-alert-warning ant-alert-with-description"

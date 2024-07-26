@@ -13,11 +13,6 @@ global.requestAnimationFrame = (callback) => {
   setTimeout(callback, 0);
 };
 
-jest.mock("react-lottie", () => ({
-  __esModule: true,
-  default: "lottie-mock",
-}));
-
 jest.mock("@mds/common/providers/featureFlags/useFeatureFlag", () => ({
   useFeatureFlag: () => ({
     isFeatureEnabled: () => true,

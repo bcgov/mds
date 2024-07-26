@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Index: shows loading before keycloak is instantiated 1`] = `
+exports[`ProjectPage renders properly 1`] = `
 <div>
   <div
     id="loading-screen"

@@ -28,11 +28,6 @@ jest.mock("react", () => {
   };
 });
 
-jest.mock("react-lottie", () => ({
-  __esModule: true,
-  default: "lottie-mock",
-}));
-
 jest.mock("@mds/common/providers/featureFlags/useFeatureFlag", () => ({
   useFeatureFlag: () => ({
     isFeatureEnabled: () => true,
