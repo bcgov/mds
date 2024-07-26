@@ -57,7 +57,7 @@ def extract_and_validate_conditions(pdf_csv_pairs):
     oauth_session = authenticate_with_oauth()
 
     pairs = []
-    for pdf_path, expected_csv_path in args.pdf_csv_pairs:
+    for pdf_path, expected_csv_path in pdf_csv_pairs:
         print(f"Processing {pdf_path}...")
 
         # 1. Extract conditions from PDF
