@@ -7,10 +7,10 @@ import argparse
 import os
 
 import pandas as pd
+from app.permit_conditions.validator.permit_condition_model import PermitCondition
 from diff_match_patch import diff_match_patch
 from fuzzywuzzy import fuzz
 from jinja2 import Environment, FileSystemLoader
-from permit_conditions.validator.permit_condition_model import PermitCondition
 
 
 # Function to create Content instances from a DataFrame
