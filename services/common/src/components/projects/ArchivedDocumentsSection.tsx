@@ -30,9 +30,7 @@ const ArchivedDocumentsSection: FC<ArchivedDocumentsSectionProps> = ({
   return (
     <div id={href}>
       <Typography.Title level={titleLevel}>
-        <DeleteOutlined
-        // className="violet"
-        />
+        <DeleteOutlined />
         &nbsp;Archived Documents
       </Typography.Title>
       <Typography.Paragraph>
