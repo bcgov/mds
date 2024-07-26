@@ -6,7 +6,7 @@ services:
       dockerfile: './Dockerfile'
     volumes:
       - ./:/opt/pipelines
-      - ./app:/code/app
+      - ./:/code
       - fileuploads:/file-uploads
     ports:
       - 8004:80
