@@ -43,173 +43,19 @@ exports[`ViewPermit renders properly 1`] = `
       class="ant-col"
       style="padding-left: 8px; padding-right: 8px;"
     >
-      <div
-        class="ant-row ant-row-space-between ant-row-middle tag"
+      <span
+        class="ant-tag"
       >
-        <svg
-          aria-hidden="true"
-          class="svg-inline--fa fa-location-dot "
-          data-icon="location-dot"
-          data-prefix="fal"
-          focusable="false"
-          role="img"
-          viewBox="0 0 384 512"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M352 192c0-88.4-71.6-160-160-160S32 103.6 32 192c0 15.6 5.4 37 16.6 63.4c10.9 25.9 26.2 54 43.6 82.1c34.1 55.3 74.4 108.2 99.9 140c25.4-31.8 65.8-84.7 99.9-140c17.3-28.1 32.7-56.3 43.6-82.1C346.6 229 352 207.6 352 192zm32 0c0 87.4-117 243-168.3 307.2c-12.3 15.3-35.1 15.3-47.4 0C117 435 0 279.4 0 192C0 86 86 0 192 0S384 86 384 192zm-240 0a48 48 0 1 0 96 0 48 48 0 1 0 -96 0zm48 80a80 80 0 1 1 0-160 80 80 0 1 1 0 160z"
-            fill="currentColor"
-          />
-        </svg>
-        <span
-          class="ant-typography margin-medium--left"
-        >
-          mine3
-        </span>
-      </div>
+        mine3
+      </span>
     </div>
     <div
       class="ant-col"
       style="padding-left: 8px; padding-right: 8px;"
     >
-      <div
-        class="ant-row ant-row-space-between ant-row-middle tag"
-      >
-        <span
-          class="anticon"
-          role="img"
-        >
-          <svg
-            fill="none"
-            height="24"
-            viewBox="0 0 24 24"
-            width="24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M7 3H17C18.1046 3 19 3.89543 19 5V21H5V5C5 3.89543 5.89543 3 7 3Z"
-              fill="transparent"
-              stroke="#3C3636"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="1"
-            />
-            <mask
-              fill="white"
-              id="path-2-inside-1"
-            >
-              <rect
-                height="3"
-                rx="0.5"
-                width="4"
-                x="7"
-                y="5"
-              />
-            </mask>
-            <rect
-              height="3"
-              mask="url(#path-2-inside-1)"
-              rx="0.5"
-              stroke="#3C3636"
-              stroke-width="2"
-              width="4"
-              x="7"
-              y="5"
-            />
-            <mask
-              fill="white"
-              id="path-3-inside-2"
-            >
-              <rect
-                height="3"
-                rx="0.5"
-                width="4"
-                x="13"
-                y="5"
-              />
-            </mask>
-            <rect
-              height="3"
-              mask="url(#path-3-inside-2)"
-              rx="0.5"
-              stroke="#3C3636"
-              stroke-width="2"
-              width="4"
-              x="13"
-              y="5"
-            />
-            <mask
-              fill="white"
-              id="path-4-inside-3"
-            >
-              <rect
-                height="3"
-                rx="0.5"
-                width="4"
-                x="7"
-                y="10"
-              />
-            </mask>
-            <rect
-              height="3"
-              mask="url(#path-4-inside-3)"
-              rx="0.5"
-              stroke="#3C3636"
-              stroke-width="2"
-              width="4"
-              x="7"
-              y="10"
-            />
-            <mask
-              fill="white"
-              id="path-5-inside-4"
-            >
-              <rect
-                height="3"
-                rx="0.5"
-                width="4"
-                x="13"
-                y="10"
-              />
-            </mask>
-            <rect
-              height="3"
-              mask="url(#path-5-inside-4)"
-              rx="0.5"
-              stroke="#3C3636"
-              stroke-width="2"
-              width="4"
-              x="13"
-              y="10"
-            />
-            <mask
-              fill="white"
-              id="path-6-inside-5"
-            >
-              <rect
-                height="6"
-                rx="0.5"
-                width="4"
-                x="13"
-                y="15"
-              />
-            </mask>
-            <rect
-              height="6"
-              mask="url(#path-6-inside-5)"
-              rx="0.5"
-              stroke="#3C3636"
-              stroke-width="2"
-              width="4"
-              x="13"
-              y="15"
-            />
-          </svg>
-        </span>
-        <span
-          class="ant-typography margin-medium--left"
-        />
-      </div>
+      <span
+        class="ant-tag"
+      />
     </div>
   </div>
   <div
@@ -254,21 +100,6 @@ exports[`ViewPermit renders properly 1`] = `
               tabindex="0"
             >
               Permit Conditions
-            </div>
-          </div>
-          <div
-            class="ant-tabs-tab"
-            data-node-key="3"
-          >
-            <div
-              aria-controls="rc-tabs-test-panel-3"
-              aria-selected="false"
-              class="ant-tabs-tab-btn"
-              id="rc-tabs-test-tab-3"
-              role="tab"
-              tabindex="0"
-            >
-              Reports
             </div>
           </div>
           <div
@@ -541,7 +372,7 @@ exports[`ViewPermit renders properly 1`] = `
                     <div
                       class="ant-typography"
                     >
-                      -
+                      
                     </div>
                   </div>
                 </div>
@@ -602,7 +433,7 @@ exports[`ViewPermit renders properly 1`] = `
                     <div
                       class="ant-typography"
                     >
-                      -
+                      
                     </div>
                   </div>
                 </div>
@@ -716,7 +547,7 @@ exports[`ViewPermit renders properly 1`] = `
                     <div
                       class="ant-typography"
                     >
-                      -
+                      
                     </div>
                   </div>
                 </div>

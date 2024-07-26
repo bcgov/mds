@@ -11,16 +11,20 @@
 
 .view-permits-content {
   background-color: #f9f9f9;
+  margin-top: 16px;
+  margin-bottom: 16px;
   margin-left: -20px;
   margin-right: -20px;
-  padding: 0 20px;
+  padding: 0 20px 16px;
   p {
     margin: 0;
   }
   .ant-row:nth-child(2) {
+    padding-top: 16px;
+    padding-bottom: 16px;
     background-color: #fff;
     > .ant-col:nth-child(1) {
-      border-right: 1px solid $non-textual-grey;
+      border-right: 1px solid $light-grey;
     }
     .ant-row {
       padding: 0;

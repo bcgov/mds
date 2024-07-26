@@ -154,7 +154,7 @@ const ViewPermitOverview = () => {
             <Row>
               <Col span={24}>
                 <Paragraph strong>Fee Exemption Note</Paragraph>
-                <Paragraph>{permit.exemption_fee_status_note ?? "-"}</Paragraph>
+                <Paragraph>{permit.exemption_fee_status_note ?? ""}</Paragraph>
               </Col>
             </Row>
             <Row>
@@ -174,14 +174,14 @@ const ViewPermitOverview = () => {
                 <Paragraph>
                   {latestAmendment.security_received_date
                     ? formatDate(latestAmendment.security_received_date)
-                    : "-"}
+                    : ""}
                 </Paragraph>
               </Col>
             </Row>
             <Row>
               <Col span={24}>
                 <Paragraph strong>Assessed Liability Adjustment</Paragraph>
-                <Paragraph>${latestAmendment.liability_adjustment ?? "-"}</Paragraph>
+                <Paragraph>${latestAmendment.liability_adjustment ?? ""}</Paragraph>
               </Col>
             </Row>
             <Divider />
@@ -233,7 +233,7 @@ const ViewPermitOverview = () => {
             <Row>
               <Col span={24}>
                 <Paragraph strong>Remaining Outstanding Liability Amount (if any)</Paragraph>
-                <Paragraph>{permit.remaining_static_liability ?? "-"}</Paragraph>
+                <Paragraph>{permit.remaining_static_liability ?? ""}</Paragraph>
               </Col>
             </Row>
             <Row justify="space-between">
