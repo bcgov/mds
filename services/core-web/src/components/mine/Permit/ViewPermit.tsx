@@ -4,13 +4,9 @@ import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getPermitByGuid } from "@mds/common/redux/selectors/permitSelectors";
 import { IMine, IPermit } from "@mds/common";
-import { faLocationDot } from "@fortawesome/pro-light-svg-icons";
-import CoreTag from "@mds/common/components/common/CoreTag";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import CompanyIcon from "@mds/common/assets/icons/CompanyIcon";
 import ViewPermitOverview from "@/components/mine/Permit/ViewPermitOverview";
 import ViewPermitConditions from "@/components/mine/Permit/ViewPermitConditions";
-import ViewPermitReports from "@/components/mine/Permit/ViewPermitReports";
+
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import * as routes from "@/constants/routes";
@@ -47,11 +43,6 @@ const ViewPermit = () => {
       key: "2",
       label: "Permit Conditions",
       children: <ViewPermitConditions />,
-    },
-    {
-      key: "3",
-      label: "Reports",
-      children: <ViewPermitReports />,
     },
   ];
 
