@@ -1221,6 +1221,7 @@ class ProjectSummaryFactory(BaseFactory):
     documents = []
     authorizations = []
     deleted_ind = False
+    is_historic = False
 
     expected_draft_irt_submission_date = None
     expected_permit_application_date = None
