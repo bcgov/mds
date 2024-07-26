@@ -1,11 +1,9 @@
 import React from "react";
-import { shallow } from "enzyme";
 import { MinePermitTable } from "@/components/mine/Permit/MinePermitTable";
 import * as MOCK from "@/tests/mocks/dataMocks";
 import { render } from "@testing-library/react";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { BrowserRouter } from "react-router-dom";
-import ViewPermit from "@/components/mine/Permit/ViewPermit";
 
 const dispatchProps: any = {};
 const props: any = {};

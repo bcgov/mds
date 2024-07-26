@@ -216,7 +216,7 @@ exports[`MinePermitInfo renders properly 1`] = `
           <div
             class="ant-typography"
           >
-            -
+            
           </div>
         </div>
       </div>
@@ -277,7 +277,7 @@ exports[`MinePermitInfo renders properly 1`] = `
           <div
             class="ant-typography"
           >
-            -
+            
           </div>
         </div>
       </div>
@@ -391,7 +391,7 @@ exports[`MinePermitInfo renders properly 1`] = `
           <div
             class="ant-typography"
           >
-            -
+            
           </div>
         </div>
       </div>
