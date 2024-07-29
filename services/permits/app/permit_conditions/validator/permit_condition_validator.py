@@ -1,6 +1,7 @@
 import json
 import logging
 import operator
+import os
 from functools import reduce
 from typing import List, Optional
 
@@ -16,6 +17,8 @@ from haystack.dataclasses import ChatMessage
 from pydantic import BaseModel, Field
 
 logger = logging.getLogger(__name__)
+
+DEBUG_MODE = os.environ.get("DEBUG_MODE", "false").lower() == "true"
 
 
 class ExtractionIteration(BaseModel):
@@ -71,13 +74,14 @@ class PermitConditionValidator:
                     {condition.condition_text}
                 """
 
-        with open(f"page_{self.start_page}.json", "w") as f:
-            f.write(
-                json.dumps(
-                    PermitConditions(conditions=conditions).model_dump(mode="json"),
-                    indent=4,
+        if DEBUG_MODE:
+            with open(f"page_{self.start_page}.json", "w") as f:
+                f.write(
+                    json.dumps(
+                        PermitConditions(conditions=conditions).model_dump(mode="json"),
+                        indent=4,
+                    )
                 )
-            )
 
         # If there are more pages to process, return the next iteration
         if self.start_page + self.max_pages < len(data.documents):
