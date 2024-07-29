@@ -80,13 +80,20 @@ class GeomarkHelper:
 
             url = f'{self.GEOMARK_URL_BASE}/geomarks/new'
 
+            # https://apps.gov.bc.ca/pub/geomark/docs/coordinateSystems.html
+            accepted_projection = {
+                'shpz': '3005', # BC Albers
+                'kmz': '3005', # BC Albers
+                'kml': '4326', # WGS 84 <-- kml files are always in this projection
+            }
+
             with open(file_path, 'rb') as file:
                 multipart_data = MultipartEncoder(
                     fields={
                         'body': (os.path.basename(file_path), file, mime_type),
                         'resultFormat': 'json',
                         'format': file_extension,
-                        'srid': '4326'
+                        'srid': accepted_projection[file_extension] # Validate that the projection is correct
                     }
                 )
                 headers = {
@@ -104,15 +111,15 @@ class GeomarkHelper:
 
         response_data = response.json() if response.text.strip() else None
 
-        if response_data:
-            if not response_data.get('id'):
-                raise InternalServerError('Error uploading spatial file to Geomark. No id returned from Geomark service')
-            
-            gemoark_id = response_data['id']
+        if response_data:            
+            gemoark_id = response_data.get('id')
 
-            current_app.logger.info(f"Geomark {gemoark_id} was successfully created")
-
-            if self.GEOMARK_PERSIST:
-                self.add_geomark_to_group(gemoark_id, self.GEOMARK_GROUP)
+            if gemoark_id:
+                current_app.logger.info(f"Geomark {gemoark_id} was successfully created")
+        
+                if self.GEOMARK_PERSIST:
+                    self.add_geomark_to_group(gemoark_id, self.GEOMARK_GROUP)
+            else:
+                current_app.logger.error('Error uploading spatial file to Geomark: ', response.text)
 
         return response.json() if response.text.strip() else None
