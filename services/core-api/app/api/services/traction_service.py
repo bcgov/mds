@@ -1,17 +1,16 @@
-import requests, json
-from pydantic import AnyUrl, BaseModel
-from typing import Union
+import requests
 from flask import current_app
-from uuid import UUID
 from app.config import Config
 from app.api.parties.party.models.party import Party
 from app.api.verifiable_credentials.aries_constants import DIDExchangeRequesterState
 from app.api.verifiable_credentials.models.connection import PartyVerifiableCredentialConnection
+from app.api.utils.feature_flag import Feature, is_feature_enabled
 
 traction_token_url = Config.TRACTION_HOST + "/multitenancy/tenant/" + Config.TRACTION_TENANT_ID + "/token"
 traction_oob_create_invitation = Config.TRACTION_HOST + "/out-of-band/create-invitation"
 traction_connections = Config.TRACTION_HOST + "/connections"
-traction_offer_credential = Config.TRACTION_HOST + "/issue-credential/send-offer"
+traction_offer_credential_V1 = Config.TRACTION_HOST + "/issue-credential/send-offer"
+traction_offer_credential_V2 = Config.TRACTION_HOST + "/issue-credential-2.0/send-offer"
 revoke_credential_url = Config.TRACTION_HOST + "/revocation/revoke"
 fetch_credential_exchanges = Config.TRACTION_HOST + "/issue-credential/records"
 traction_deprecated_jsonld_sign = Config.TRACTION_HOST + "/jsonld/sign"
@@ -93,6 +92,11 @@ class TractionService():
         return True
 
     def offer_mines_act_permit_111(self, connection_id, attributes):
+        if is_feature_enabled(Feature.VC_ANONCREDS_20):
+            return self.offer_V2_mines_act_permit_111(connection_id, attributes)
+        return self.offer_V1_mines_act_permit_111(connection_id, attributes)
+
+    def offer_V1_mines_act_permit_111(self, connection_id, attributes):
         # https://github.com/bcgov/bc-vcpedia/blob/main/credentials/bc-mines-act-permit/1.1.1/governance.md#261-schema-definition
         payload = {
             "auto_issue": True,
@@ -107,7 +111,30 @@ class TractionService():
         }
 
         cred_offer_resp = requests.post(
-            traction_offer_credential, json=payload, headers=self.get_headers())
+            traction_offer_credential_V1, json=payload, headers=self.get_headers())
+        assert cred_offer_resp.status_code == 200, f"cred_offer_resp={cred_offer_resp.json()}"
+        return cred_offer_resp.json()
+
+    def offer_V2_mines_act_permit_111(self, connection_id, attributes):
+        # https://github.com/bcgov/bc-vcpedia/blob/main/credentials/bc-mines-act-permit/1.1.1/governance.md#261-schema-definition
+        payload = {
+            "auto_issue": True,
+            "comment": "VC to provide proof of a permit and some basic details",
+            "connection_id": str(connection_id),
+            "filter": {
+                "indy": {
+                    "cred_def_id": Config.CRED_DEF_ID_MINES_ACT_PERMIT
+                }
+            },
+            "credential_preview": {
+                "@type": "issue-credential/1.0/credential-preview",
+                "attributes": attributes,
+            },
+            "trace": True
+        }
+
+        cred_offer_resp = requests.post(
+            traction_offer_credential_V2, json=payload, headers=self.get_headers())
         assert cred_offer_resp.status_code == 200, f"cred_offer_resp={cred_offer_resp.json()}"
         return cred_offer_resp.json()
 
