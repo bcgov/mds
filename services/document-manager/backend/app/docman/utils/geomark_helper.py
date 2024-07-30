@@ -54,7 +54,6 @@ class GeomarkHelper:
         encoded_signature = url_encode(signature)
 
         url = f"{self.GEOMARK_URL_BASE}/geomarkGroups/{group_id}/geomarks/add?geomarkId={geomark_id}&signature={encoded_signature}&time={timestamp}"
-        print(url)
         response = requests.post(url, headers = {'Accept': 'application/json'})
 
         if response.status_code != 200:
