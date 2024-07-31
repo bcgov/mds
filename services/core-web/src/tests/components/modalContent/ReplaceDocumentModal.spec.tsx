@@ -1,10 +1,10 @@
 import React from "react";
-import { render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { store } from "@/App";
 import { MINEDOCUMENTS } from "@/tests/mocks/dataMocks";
 import matchMedia from "@/tests/mocks/matchMedia";
 import ReplaceDocumentModal from "@mds/common/components/documents/ReplaceDocumentModal";
+import { shallow } from "enzyme";
 
 const props = {
   document: MINEDOCUMENTS[0],
@@ -23,11 +23,11 @@ beforeAll(() => {
 
 describe("ReplaceDocumentModal", () => {
   it("renders properly", () => {
-    const { container } = render(
+    const { container } = shallow(
       <Provider store={store}>
         <ReplaceDocumentModal {...props} />
       </Provider>
     );
-    expect(container.firstChild).toMatchSnapshot();
+    expect(container).toMatchSnapshot();
   });
 });
