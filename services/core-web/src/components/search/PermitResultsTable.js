@@ -9,6 +9,8 @@ import {
   renderHighlightedTextColumn,
   renderTextColumn,
 } from "@mds/common/components/common/CoreTableCommonColumns";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { Feature } from "@mds/common";
 
 /**
  * @class  PermitResultsTable - displays a table of mine search results
@@ -23,8 +25,29 @@ const propTypes = {
 const defaultProps = {};
 
 export const PermitResultsTable = (props) => {
+  const { isFeatureEnabled } = useFeatureFlag();
+
   const columns = [
-    renderHighlightedTextColumn("permit_no", "Permit No.", props.highlightRegex),
+    {
+      title: "Permit No.",
+      key: "permit_no",
+      render: (record) => {
+        if (isFeatureEnabled(Feature.DIGITIZED_PERMITS)) {
+          return (
+            <Link
+              to={router.VIEW_MINE_PERMIT.dynamicRoute(
+                record.mine[0].mine_guid,
+                record.permit_guid
+              )}
+            >
+              <Highlight search={props.highlightRegex}>{record.permit_no}</Highlight>
+            </Link>
+          );
+        } else {
+          return <Highlight search={props.highlightRegex}>{record.permit_no}</Highlight>;
+        }
+      },
+    },
     renderHighlightedTextColumn("current_permittee", "Permittee", props.highlightRegex),
     renderTextColumn("current_permittee", "Permittee"),
     {
