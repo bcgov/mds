@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Col, Row, Tabs, Typography, Tag } from "antd";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,6 +25,11 @@ const ViewPermit = () => {
   const permit: IPermit = useSelector(getPermitByGuid(permitGuid));
   const mine: IMine = useSelector((state) => getMineById(state, id));
 
+  const latestAmendment = useMemo(() => {
+    if (!permit) return undefined;
+    return permit.permit_amendments[permit.permit_amendments.length - 1];
+  }, [permit]);
+
   useEffect(() => {
     if (!permit?.permit_id) {
       dispatch(fetchPermits(id));
@@ -37,17 +42,20 @@ const ViewPermit = () => {
     }
   }, [mine]);
 
+  const canViewConditions = latestAmendment?.conditions?.length > 0;
+
   const tabItems = [
     {
       key: "1",
       label: "Permit Overview",
       children: <ViewPermitOverview />,
     },
-    // {
-    //   key: "2",
-    //   label: "Permit Conditions",
-    //   children: <ViewPermitConditions />,
-    // },
+    {
+      key: "2",
+      label: "Permit Conditions",
+      children: <ViewPermitConditions />,
+      disabled: !canViewConditions,
+    },
   ];
 
   return (
