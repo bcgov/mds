@@ -34,6 +34,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
       dispatch(
         fetchMineDocuments(project.mine_guid, {
           is_archived: true,
+          project_guid: project.project_guid,
         })
       ),
     ]);
@@ -44,6 +45,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
     dispatch(
       fetchMineDocuments(project.mine_guid, {
         is_archived: true,
+        project_guid: project.project_guid,
       })
     );
   }, []);
