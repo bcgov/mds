@@ -11,6 +11,10 @@ import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreat
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import * as routes from "@/constants/routes";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
+import CoreTag from "@mds/common/components/common/CoreTag";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import CompanyIcon from "@mds/common/assets/icons/CompanyIcon";
+import { faLocationDot } from "@fortawesome/pro-light-svg-icons";
 
 const { Title, Text } = Typography;
 
@@ -39,11 +43,11 @@ const ViewPermit = () => {
       label: "Permit Overview",
       children: <ViewPermitOverview />,
     },
-    {
-      key: "2",
-      label: "Permit Conditions",
-      children: <ViewPermitConditions />,
-    },
+    // {
+    //   key: "2",
+    //   label: "Permit Conditions",
+    //   children: <ViewPermitConditions />,
+    // },
   ];
 
   return (
@@ -63,10 +67,10 @@ const ViewPermit = () => {
           </Title>
         </Col>
         <Col>
-          <Tag>{mine?.mine_name}</Tag>
+          <CoreTag icon={<FontAwesomeIcon icon={faLocationDot} />} text={mine?.mine_name} />
         </Col>
         <Col>
-          <Tag>{permit?.current_permittee}</Tag>
+          <CoreTag icon={<CompanyIcon />} text={permit?.current_permittee} />
         </Col>
       </Row>
       <Tabs items={tabItems} />

@@ -7220,6 +7220,7 @@ export const PROJECT_SUMMARY: IProjectSummary = {
   expected_permit_application_date: "2020-11-12T22:18:19+00:00",
   expected_permit_receipt_date: "2020-11-20T22:18:19+00:00",
   expected_project_start_date: "2020-11-22T22:18:19+00:00",
+  is_historic: false,
   documents: [
     {
       project_summary_id: 1304,
@@ -7479,6 +7480,7 @@ export const PROJECT_SUMMARIES = {
       expected_permit_application_date: "2020-11-12T22:18:19+00:00",
       expected_permit_receipt_date: "2020-11-20T22:18:19+00:00",
       expected_project_start_date: "2020-11-22T22:18:19+00:00",
+      is_historic: false,
       documents: [],
       contacts: [],
     },

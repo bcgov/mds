@@ -37,6 +37,8 @@ from werkzeug.exceptions import (
 )
 from werkzeug.utils import secure_filename
 
+from .geomark_helper import GeomarkHelper
+
 CACHE_TIMEOUT = TIMEOUT_24_HOURS
 
 
@@ -363,42 +365,6 @@ class DocumentUploadHelper:
             raise FileNotFoundError(f"Failed to download file: {doc.file_display_name}")
 
     @classmethod
-    def send_spatial_file_to_geomark(cls, file_path):
-        try:
-            file_extension = os.path.splitext(file_path)[1].lstrip('.')
-
-            # Ensure the format is one of the allowed ones
-            assert file_extension in ['shpz', 'kml', 'kmz'], "Invalid file format. Must be one of: 'shpz', 'kml', 'kmz'."
-
-            mime_type = mimetypes.guess_type(file_path)[0]
-
-            url = 'https://apps.gov.bc.ca/pub/geomark/geomarks/new'
-
-            with open(file_path, 'rb') as file:
-                multipart_data = MultipartEncoder(
-                    fields={
-                        'body': (os.path.basename(file_path), file, mime_type),
-                        'resultFormat': 'json',
-                        'format': file_extension,
-                        'srid': '4326'
-                    }
-                )
-                headers = {
-                    'Content-Type': multipart_data.content_type
-                }
-                # Send the request
-                response = requests.post(
-                    url,
-                    data=multipart_data,
-                    headers=headers
-                )
-        finally:
-            # Delete the file
-            os.remove(file_path)
-
-        return response.json() if response.text.strip() else None
-
-    @classmethod
     def complete_bundle_upload(cls, bundle_document_guids, name):
         bundle_documents = Document.find_by_document_guid_many(bundle_document_guids)
 
@@ -416,7 +382,7 @@ class DocumentUploadHelper:
             file_path = (f'/tmp/spatial/{secure_filename(bundle_documents[0].file_display_name)}')
             cls.download_kml_kmz_files(bundle_documents[0], file_path)
 
-        geomark_response = cls.send_spatial_file_to_geomark(file_path)
+        geomark_response = GeomarkHelper().send_spatial_file_to_geomark(file_path)
 
         bundle = DocumentBundle(
             name=name,
