@@ -168,7 +168,7 @@ TSF_ALLOWED_CONTACT_TYPES = ['EOR', 'TQP']
 MDS_EMAIL = 'mds@gov.bc.ca'
 MAJOR_MINES_OFFICE_EMAIL = Config.MAJOR_MINES_OFFICE_EMAIL
 MAJOR_MINES_NOD_NOTFICATION_EMAILS = [
-    MAJOR_MINES_OFFICE_EMAIL, 'sean.shaw@gov.bc.ca', 'Teresa.Morris@gov.bc.ca', 'Kelsey.Norlund@gov.bc.ca',
+    MAJOR_MINES_OFFICE_EMAIL, 'sean.shaw@gov.bc.ca', 'Magda.Kingsley@gov.bc.ca', 'Kelsey.Norlund@gov.bc.ca',
     'Kristy.Emery@gov.bc.ca', 'Samuel.Barnes@gov.bc.ca', 'Brent.Timmons@gov.bc.ca'
     ]
 VARIANCE_APPLICATION_EMAIL = 'hermanus.henning@gov.bc.ca'
@@ -177,7 +177,7 @@ MINESPACE_TSF_UPDATE_EMAIL = [
 ]
 INCIDENTS_EMAIL = 'mineincidents@gov.bc.ca'
 PROJECT_SUMMARY_EMAILS = [
-    MAJOR_MINES_OFFICE_EMAIL, MDS_EMAIL,'Teresa.Morris@gov.bc.ca', 
+    MAJOR_MINES_OFFICE_EMAIL, MDS_EMAIL,'Magda.Kingsley@gov.bc.ca', 
     'Kelsey.Norlund@gov.bc.ca', 'Kristy.Emery@gov.bc.ca', 'Samuel.Barnes@gov.bc.ca'
 ]
 

@@ -12,10 +12,8 @@ exports[`PermitResultsTable renders properly 1`] = `
     columns={
       Array [
         Object {
-          "dataIndex": "permit_no",
           "key": "permit_no",
           "render": [Function],
-          "sorter": [Function],
           "title": "Permit No.",
         },
         Object {
