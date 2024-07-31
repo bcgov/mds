@@ -67,9 +67,9 @@ const ViewPermitOverview = () => {
             Permit Overview
           </Title>
         </Col>
-        <Col>
+        {/* <Col>
           <Button type="primary">Edit Permit</Button>
-        </Col>
+        </Col> */}
       </Row>
       {permit && mine ? (
         <Row>

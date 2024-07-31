@@ -11,6 +11,8 @@ import {
   renderTextColumn,
 } from "@mds/common/components/common/CoreTableCommonColumns";
 import CoreTable from "@mds/common/components/common/CoreTable";
+import { Feature } from "@mds/common";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 
 /**
  * @class  MineResultsTable - displays a table of mine search results
@@ -27,6 +29,9 @@ const propTypes = {
 const defaultProps = {};
 
 export const MineResultsTable = (props) => {
+  const { isFeatureEnabled } = useFeatureFlag();
+  const digitizedPermitsEnabled = isFeatureEnabled(Feature.DIGITIZED_PERMITS);
+
   const columns = [
     {
       title: "Mine Name",
@@ -44,10 +49,24 @@ export const MineResultsTable = (props) => {
     {
       title: "Permit No.",
       key: "permit_no",
-      render: (record) =>
-        record.mine_permit.map((permit) => (
-          <p key={"mine-permits" + permit.permit_no}>{permit.permit_no}</p>
-        )),
+      render: (record) => {
+        return record.mine_permit.map((permit) => {
+          if (digitizedPermitsEnabled) {
+            return (
+              <p>
+                <Link
+                  key={"mine-permits" + permit.permit_no}
+                  to={router.VIEW_MINE_PERMIT.dynamicRoute(record.mine_guid, permit.permit_guid)}
+                >
+                  {permit.permit_no}
+                </Link>
+              </p>
+            );
+          } else {
+            return <p key={"mine-permits" + permit.permit_no}>{permit.permit_no}</p>;
+          }
+        });
+      },
     },
     renderTextColumn("mine_region", "Region"),
     {
