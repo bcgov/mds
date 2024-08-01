@@ -12,6 +12,8 @@ from app.api.verifiable_credentials.models.connection import PartyVerifiableCred
 from app.api.verifiable_credentials.models.credentials import PartyVerifiableCredentialMinesActPermit
 from app.api.verifiable_credentials.aries_constants import DIDExchangeRequesterState, IssueCredentialIssuerState
 
+from app.api.services.traction_service import TractionService
+
 PRESENT_PROOF = "present_proof"
 CONNECTIONS = "connections"
 CREDENTIAL_OFFER = "issue_credential"
@@ -41,6 +43,27 @@ class TractionWebhookResource(Resource, UserMixin):
                 invitation_id=invitation_id).first()
             assert vc_conn, f"connection.invitation_msg_id={invitation_id} not found. webhook_body={webhook_body}"
             if not vc_conn.connection_id:
+                # check if party already has a connection
+                existing_vc_conn = PartyVerifiableCredentialConnection.query.unbound_unsafe(
+                ).filter(PartyVerifiableCredentialConnection.party_guid == vc_conn.party_guid,
+                         PartyVerifiableCredentialConnection.connection_id != None).first()
+                if existing_vc_conn:
+                    current_app.logger.warning(
+                        f"party_guid={vc_conn.party_guid} already has a connection_id={existing_vc_conn.connection_id}"
+                    )
+                    #acapy has started creating a connection delete it so it cannot be completed.
+                    traction_svc = TractionService()
+
+                    #delete connection record
+                    if not traction_svc.delete_connection(webhook_body["connection_id"]):
+                        current_app.logger.error(
+                            f"error when deleting connection in traction, active aries connnection unusable by CORE, connection_id={webhook_body['connection_id']}"
+                        )
+                    #delete oob invitation record
+                    if not traction_svc.reject_invitation(webhook_body["connection_id"]):
+                        current_app.logger.error(
+                            f"error occured while attempting to reject the connection")
+
                 vc_conn.connection_id = webhook_body["connection_id"]
 
             if vc_conn.last_webhook_timestamp and vc_conn.last_webhook_timestamp >= webhook_timestamp:
