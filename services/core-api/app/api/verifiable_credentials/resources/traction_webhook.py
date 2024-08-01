@@ -63,7 +63,7 @@ class TractionWebhookResource(Resource, UserMixin):
                     if not traction_svc.reject_invitation(webhook_body["connection_id"]):
                         current_app.logger.error(
                             f"error occured while attempting to reject the connection")
-
+                    return
                 vc_conn.connection_id = webhook_body["connection_id"]
 
             if vc_conn.last_webhook_timestamp and vc_conn.last_webhook_timestamp >= webhook_timestamp:
