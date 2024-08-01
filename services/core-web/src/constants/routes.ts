@@ -125,7 +125,7 @@ export const CONTACT_HOME_PAGE = {
 };
 
 // Mine Dashboard Routes
-export const MINE_SUMMARY = {
+export const MINE_DASHBOARD = {
   route: "/mine-dashboard/:id/",
   dynamicRoute: (id) => `/mine-dashboard/${id}/`,
   component: MineDashboard,
@@ -156,9 +156,11 @@ export const MINE_PERMITS = {
 };
 
 export const VIEW_MINE_PERMIT = {
-  route: "/mine-dashboard/:id/permits-and_approvals/permits/:permitGuid",
-  dynamicRoute: (id, permitGuid) =>
-    `/mine-dashboard/${id}/permits-and_approvals/permits/${permitGuid}`,
+  route: "/mine-dashboard/:id/permits-and-approvals/permits/:permitGuid/:tab",
+  dynamicRoute: (id, permitGuid, tab = "overview") =>
+    `/mine-dashboard/${id}/permits-and-approvals/permits/${permitGuid}/${tab}`,
+  hashRoute: (id, permitGuid, tab = "overview", link) =>
+    `/mine-dashboard/${id}/permits-and-approvals/permits/${permitGuid}/${tab}/${link}`,
   component: ViewPermit,
 };
 

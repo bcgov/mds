@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { FC, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button, Col, Row, Typography } from "antd";
@@ -11,20 +11,26 @@ import {
   getPermitConditionCategoryOptions,
   getPermitConditionTypeOptions,
 } from "@mds/common/redux/selectors/staticContentSelectors";
+import PermitConditionLayer from "./PermitConditionLayer";
+import { IPermitAmendment } from "@mds/common";
 
 const { Title } = Typography;
 
-const ViewPermitConditions = () => {
-  const { id, permitGuid } = useParams<{ id: string; permitGuid: string }>();
-  const permit: IPermit = useSelector(getPermitByGuid(permitGuid));
-  const mine: IMine = useSelector((state) => getMineById(state, id));
+interface PermitConditionProps {
+  latestAmendment: IPermitAmendment;
+}
+
+const PermitConditions: FC<PermitConditionProps> = ({ latestAmendment }) => {
+  // const { id, permitGuid } = useParams<{ id: string; permitGuid: string }>();
+  // const permit: IPermit = useSelector(getPermitByGuid(permitGuid));
+  // const mine: IMine = useSelector((state) => getMineById(state, id));
   const permitConditionCategoryOptions = useSelector(getPermitConditionCategoryOptions);
   const permitConditiontypeOptions = useSelector(getPermitConditionTypeOptions);
 
-  const latestAmendment = useMemo(() => {
-    if (!permit) return undefined;
-    return permit.permit_amendments[permit.permit_amendments.length - 1];
-  }, [permit]);
+  // const latestAmendment = useMemo(() => {
+  //   if (!permit) return undefined;
+  //   return permit.permit_amendments[permit.permit_amendments.length - 1];
+  // }, [permit]);
 
   const permitConditions = latestAmendment?.conditions;
 
@@ -40,13 +46,26 @@ const ViewPermitConditions = () => {
             Permit Conditions
           </Title>
         </Col>
-        {/* <Col>
-          <Button type="primary">Edit Permit</Button>
-        </Col> */}
       </Row>
-      <Row gutter={[16, 16]}></Row>
+      <Row gutter={[16, 16]}>
+        <Col span={24}>
+          {permitConditionCategoryOptions.map((category) => {
+            const matching = permitConditions.filter(
+              (c) => c.condition_category_code === category.condition_category_code
+            );
+            return (
+              <>
+                <Title level={3}>{category.description}</Title>
+                {matching.map((m) => (
+                  <PermitConditionLayer condition={m} key={m.permit_condition_id} level={0} />
+                ))}
+              </>
+            );
+          })}
+        </Col>
+      </Row>
     </div>
   );
 };
 
-export default ViewPermitConditions;
+export default PermitConditions;

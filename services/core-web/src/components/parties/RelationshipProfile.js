@@ -208,7 +208,7 @@ export class RelationshipProfile extends Component {
             <div className="inline-flex between">
               <div className="inline-flex">
                 <p>
-                  <Link to={router.MINE_SUMMARY.dynamicRoute(mine.mine_guid, "contacts")}>
+                  <Link to={router.MINE_DASHBOARD.dynamicRoute(mine.mine_guid, "contacts")}>
                     {mine && mine.mine_name}
                   </Link>
                 </p>

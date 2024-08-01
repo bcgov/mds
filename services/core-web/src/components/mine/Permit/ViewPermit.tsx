@@ -1,14 +1,15 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Col, Row, Tabs, Typography, Tag } from "antd";
-import { Link, useParams } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getPermitByGuid } from "@mds/common/redux/selectors/permitSelectors";
 import { IMine, IPermit } from "@mds/common";
 import ViewPermitOverview from "@/components/mine/Permit/ViewPermitOverview";
-import ViewPermitConditions from "@/components/mine/Permit/ViewPermitConditions";
+import ViewPermitConditions from "@/components/mine/Permit/PermitConditions";
 
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
+import CorePageHeader from "@mds/common/components/common/CorePageHeader";
 import * as routes from "@/constants/routes";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
 import CoreTag from "@mds/common/components/common/CoreTag";
@@ -21,9 +22,12 @@ const { Title, Text } = Typography;
 const ViewPermit = () => {
   const dispatch = useDispatch();
 
-  const { id, permitGuid } = useParams<{ id: string; permitGuid: string }>();
+  const { id, permitGuid, tab } = useParams<{ id: string; permitGuid: string; tab: string }>();
   const permit: IPermit = useSelector(getPermitByGuid(permitGuid));
   const mine: IMine = useSelector((state) => getMineById(state, id));
+
+  const [activeTab, setActiveTab] = useState(tab ?? "overview");
+  const history = useHistory();
 
   const latestAmendment = useMemo(() => {
     if (!permit) return undefined;
@@ -46,42 +50,39 @@ const ViewPermit = () => {
 
   const tabItems = [
     {
-      key: "1",
+      key: "overview",
       label: "Permit Overview",
       children: <ViewPermitOverview />,
     },
     {
-      key: "2",
+      key: "conditions",
       label: "Permit Conditions",
-      children: <ViewPermitConditions />,
+      children: <ViewPermitConditions latestAmendment={latestAmendment} />,
       disabled: !canViewConditions,
     },
   ];
 
+  const handleTabChange = (newActiveTab: string) => {
+    setActiveTab(newActiveTab);
+    return history.push(routes.VIEW_MINE_PERMIT.dynamicRoute(id, permitGuid, newActiveTab));
+  };
+
   return (
-    <div className="view-permits margin-large--top padding-lg--left padding-lg--right">
-      <Row className="margin-large--bottom">
-        <Col>
-          <Link to={routes.MINE_PERMITS.dynamicRoute(id)} className="faded-text">
-            All Permits
-          </Link>
-          <Text> / Permit {permit?.permit_no ?? ""}</Text>
-        </Col>
-      </Row>
-      <Row align="middle" gutter={16}>
-        <Col>
-          <Title level={1} className="padding-lg--right margin-none">
-            Permit {permit?.permit_no ?? ""}
-          </Title>
-        </Col>
-        <Col>
-          <CoreTag icon={<FontAwesomeIcon icon={faLocationDot} />} text={mine?.mine_name} />
-        </Col>
-        <Col>
-          <CoreTag icon={<CompanyIcon />} text={permit?.current_permittee} />
-        </Col>
-      </Row>
-      <Tabs items={tabItems} />
+    <div
+    // className="view-permits margin-large--top padding-lg--left padding-lg--right"
+    >
+      <CorePageHeader
+        entityLabel={permit?.permit_no ?? ""}
+        entityType="Permit"
+        mineGuid={id}
+        current_permittee={permit?.current_permittee ?? ""}
+        breadCrumbs={[{ route: routes.MINE_PERMITS.dynamicRoute(id), text: "All Permits" }]}
+        tabProps={{
+          items: tabItems,
+          defaultActiveKey: activeTab,
+          onChange: handleTabChange,
+        }}
+      />
     </div>
   );
 };
