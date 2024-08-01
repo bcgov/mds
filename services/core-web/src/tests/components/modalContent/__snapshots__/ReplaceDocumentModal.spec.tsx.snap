@@ -1,110 +1,140 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ReplaceDocumentModal renders properly 1`] = `
+exports[`ReplaceDocumentModal renders correctly and matches the snapshot 1`] = `
 <form
-  class="ant-form ant-form-vertical"
+  class="ant-form ant-form-vertical common-form common-form-ADD_EDIT_PROJECT_SUMMARY form-edit"
+  id="ADD_EDIT_PROJECT_SUMMARY"
 >
-  <div
-    class="ant-alert ant-alert-warning"
-    data-show="true"
-    role="alert"
+  <form
+    class="ant-form ant-form-vertical"
   >
-    <span
-      aria-label="exclamation-circle"
-      class="anticon anticon-exclamation-circle ant-alert-icon"
-      role="img"
+    <div
+      class="ant-alert ant-alert-warning ant-alert-with-description"
+      data-show="true"
+      role="alert"
     >
-      <svg
-        aria-hidden="true"
-        data-icon="exclamation-circle"
-        fill="currentColor"
-        focusable="false"
-        height="1em"
-        viewBox="64 64 896 896"
-        width="1em"
+      <span
+        aria-label="exclamation-circle"
+        class="anticon anticon-exclamation-circle ant-alert-icon"
+        role="img"
       >
-        <path
-          d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm-32 232c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v272c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V296zm32 440a48.01 48.01 0 010-96 48.01 48.01 0 010 96z"
-        />
-      </svg>
-    </span>
-    <div
-      class="ant-alert-content"
-    />
-  </div>
-  <div
-    class="ant-typography margin-large--top"
-  >
-    <strong>
-      Original Document
-    </strong>
-  </div>
-  <div
-    class="ant-row ant-row-space-between padding-md--sides padding-sm--y"
-  >
-    <div
-      class="ant-col ant-col-10"
-    >
-      <span
-        class="ant-typography"
-      />
+        <svg
+          aria-hidden="true"
+          data-icon="exclamation-circle"
+          fill="currentColor"
+          focusable="false"
+          height="1em"
+          viewBox="64 64 896 896"
+          width="1em"
+        >
+          <path
+            d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+          />
+          <path
+            d="M464 688a48 48 0 1096 0 48 48 0 10-96 0zm24-112h48c4.4 0 8-3.6 8-8V296c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8z"
+          />
+        </svg>
+      </span>
+      <div
+        class="ant-alert-content"
+      >
+        <div
+          class="ant-alert-description"
+        >
+          This is a test alert message.
+        </div>
+      </div>
     </div>
     <div
-      class="ant-col"
+      class="ant-typography margin-large--top"
     >
-      <span
-        class="ant-typography"
-      />
+      <strong>
+        Original Document
+      </strong>
     </div>
     <div
-      class="ant-col"
-    >
-      <span
-        class="ant-typography"
-      />
-    </div>
-    <div
-      class="ant-col"
-    >
-      <span
-        class="ant-typography"
-      />
-    </div>
-  </div>
-  <div
-    class="whirlpool-container"
-  >
-    <div
-      class="ant-form-item"
+      class="ant-row ant-row-space-between padding-md--sides padding-sm--y"
     >
       <div
-        class="ant-row ant-form-item-row"
+        class="ant-col ant-col-10"
+      >
+        <span
+          class="ant-typography"
+        >
+          05.4_Parent_Conduct.pdf
+        </span>
+      </div>
+      <div
+        class="ant-col"
+      >
+        <span
+          class="ant-typography"
+        />
+      </div>
+      <div
+        class="ant-col"
+      >
+        <span
+          class="ant-typography"
+        />
+      </div>
+      <div
+        class="ant-col"
+      >
+        <span
+          class="ant-typography"
+        />
+      </div>
+    </div>
+    <div
+      class="whirlpool-container"
+    >
+      <div
+        class="ant-form-item ant-form-item-with-help"
       >
         <div
-          class="ant-col ant-form-item-label"
-        >
-          <label
-            class=""
-            title=""
-          />
-        </div>
-        <div
-          class="ant-col ant-form-item-control"
+          class="ant-row ant-form-item-row"
         >
           <div
-            class="ant-form-item-control-input"
+            class="ant-col ant-form-item-label"
+          >
+            <label
+              class=""
+              for="fileUpload"
+              title=""
+            />
+          </div>
+          <div
+            class="ant-col ant-form-item-control"
           >
             <div
-              class="ant-form-item-control-input-content"
+              class="ant-form-item-control-input"
             >
               <div
-                class="filepond--wrapper"
+                class="ant-form-item-control-input-content"
               >
-                <input
-                  accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,application/vnd.oasis.opendocument.text,application/vnd.oasis.opendocument.text-template,application/vnd.oasis.opendocument.text-web,application/vnd.oasis.opendocument.text-master,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,image/jpg,image/jpeg,image/png,image/jp2,image/tiff,image/heic,image/heif,application/vnd.geo+json,application/gml+xml,application/dbf,application/x-dbf,application/x-dbase,application/vnd.google-earth.kml+xml,application/vnd.google-earth.kmz,application/octet-stream,text/csv,application/xml,text/xml"
-                  multiple=""
-                  name="file"
-                  type="file"
+                <div
+                  class="filepond--wrapper"
+                >
+                  <input
+                    accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,application/vnd.oasis.opendocument.text,application/vnd.oasis.opendocument.text-template,application/vnd.oasis.opendocument.text-web,application/vnd.oasis.opendocument.text-master,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,image/jpg,image/jpeg,image/png,image/jp2,image/tiff,image/heic,image/heif,application/vnd.geo+json,application/gml+xml,application/dbf,application/x-dbf,application/x-dbase,application/vnd.google-earth.kml+xml,application/vnd.google-earth.kmz,application/octet-stream,text/csv,application/xml,text/xml"
+                    multiple=""
+                    name="file"
+                    type="file"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              style="display: flex; flex-wrap: nowrap;"
+            >
+              <div
+                class="ant-form-item-explain ant-form-item-explain-connected"
+                id="fileUpload_help"
+                role="alert"
+              >
+                <div
+                  class=""
                 />
               </div>
             </div>
@@ -112,27 +142,27 @@ exports[`ReplaceDocumentModal renders properly 1`] = `
         </div>
       </div>
     </div>
-  </div>
-  <div
-    class="ant-modal-footer"
-  >
-    <button
-      class="ant-btn ant-btn-default full-mobile"
-      type="button"
+    <div
+      class="ant-modal-footer"
     >
-      <span>
-        Cancel
-      </span>
-    </button>
-    <button
-      class="ant-btn ant-btn-primary full-mobile"
-      disabled=""
-      type="button"
-    >
-      <span>
-        Replace
-      </span>
-    </button>
-  </div>
+      <button
+        class="ant-btn ant-btn-default full-mobile"
+        type="button"
+      >
+        <span>
+          Cancel
+        </span>
+      </button>
+      <button
+        class="ant-btn ant-btn-primary full-mobile"
+        disabled=""
+        type="button"
+      >
+        <span>
+          Replace
+        </span>
+      </button>
+    </div>
+  </form>
 </form>
 `;

@@ -1,32 +1,28 @@
 import React from "react";
-import { render } from "@testing-library/react";
-import { Provider } from "react-redux";
-import { store } from "@/App";
-import { MINEDOCUMENTS } from "@/tests/mocks/dataMocks";
-import matchMedia from "@/tests/mocks/matchMedia";
 import ReplaceDocumentModal from "@mds/common/components/documents/ReplaceDocumentModal";
 
+import { render } from "@testing-library/react";
+import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
+import { MINEDOCUMENTS } from "@mds/common/tests/mocks/dataMocks";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import { FORM } from "@mds/common/constants/forms";
+
 const props = {
-  document: MINEDOCUMENTS[0],
+  document: MINEDOCUMENTS.records[0],
   handleSubmit: jest.fn().mockReturnValue(Promise.resolve()),
   closeModal: jest.fn(),
   postNewDocumentVersion: jest.fn().mockReturnValue(Promise.resolve()),
+  alertMessage: "This is a test alert message.",
 };
 
-beforeEach(() => {
-  props.document = MINEDOCUMENTS;
-});
-
-beforeAll(() => {
-  window.matchMedia = matchMedia;
-});
-
 describe("ReplaceDocumentModal", () => {
-  it("renders properly", () => {
+  it("renders correctly and matches the snapshot", () => {
     const { container } = render(
-      <Provider store={store}>
-        <ReplaceDocumentModal {...props} />
-      </Provider>
+      <ReduxWrapper initialState={{}}>
+        <FormWrapper name={FORM.ADD_EDIT_PROJECT_SUMMARY} initialValues={{}} onSubmit={() => {}}>
+          <ReplaceDocumentModal {...props} />
+        </FormWrapper>
+      </ReduxWrapper>
     );
     expect(container.firstChild).toMatchSnapshot();
   });
