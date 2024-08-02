@@ -23,6 +23,10 @@ def traction_issue_credential_problem_report(cred_ex_id: str):
     return Config.TRACTION_HOST + f"/issue-credential/records/{cred_ex_id}/problem-report"
 
 
+def traction_reject_invitation(connection_id: str):
+    return Config.TRACTION_HOST + f"/didexchange/{connection_id}/reject"
+
+
 class VerificableCredentialWorkflowError(Exception):
     pass
 
@@ -89,6 +93,12 @@ class TractionService():
         revoke_resp = requests.delete(
             traction_connections + "/" + str(connection_id), headers=self.get_headers())
         assert revoke_resp.status_code == 200, f"revoke_resp={revoke_resp.json()}"
+        return True
+
+    def reject_invitation(self, connection_id) -> bool:
+        reject_resp = requests.delete(
+            traction_reject_invitation(connection_id), headers=self.get_headers())
+        assert reject_resp.status_code == 200, f"reject_resp={reject_resp.json()}"
         return True
 
     def offer_mines_act_permit_111(self, connection_id, attributes):

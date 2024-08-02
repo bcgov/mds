@@ -1,8 +1,10 @@
-import os
-from flask import current_app
 import logging
+import os
 import traceback
+
+from flask import current_app
 from opentelemetry import trace
+
 
 class CustomFormatter(logging.Formatter):
     def format(self, record):
@@ -132,6 +134,11 @@ class Config(object):
                                             'CRITICAL')  # ['DEBUG','INFO','WARN','ERROR','CRITICAL']
     DISPLAY_WERKZEUG_LOG = os.environ.get('DISPLAY_WERKZEUG_LOG',
                                           True)
+    
+    GEOMARK_URL_BASE = os.environ.get('GEOMARK_URL_BASE', 'https://test.apps.gov.bc.ca/pub/geomark')
+    GEOMARK_SECRET_KEY = os.environ.get('GEOMARK_SECRET_KEY', None)
+    GEOMARK_GROUP = os.environ.get('GEOMARK_GROUP', None)
+    GEOMARK_PERSIST = os.environ.get('GEOMARK_PERSIST', 'true') == 'true'
 
     LOGGING_DICT_CONFIG = {
         'version': 1,

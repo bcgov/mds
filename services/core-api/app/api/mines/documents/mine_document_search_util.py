@@ -2,6 +2,9 @@ from app.api.projects.major_mine_application.models.major_mine_application impor
 from app.api.projects.major_mine_application.models.major_mine_application_document_xref import MajorMineApplicationDocumentXref
 from app.api.projects.project_decision_package.models.project_decision_package import ProjectDecisionPackage
 from app.api.projects.project_decision_package.models.project_decision_package_document_xref import ProjectDecisionPackageDocumentXref
+from app.api.projects.project_summary.models.project_summary_authorization import ProjectSummaryAuthorization
+from app.api.projects.project_summary.models.project_summary_authorization_document_xref import \
+    ProjectSummaryAuthorizationDocumentXref
 from app.api.projects.project_summary.models.project_summary_document_xref import ProjectSummaryDocumentXref
 from app.api.projects.project_summary.models.project_summary import ProjectSummary
 from app.api.projects.project.models.project import Project
@@ -35,6 +38,7 @@ class MineDocumentSearchUtil():
             # - Project Summary
             # - Project Decision Package
             # - Information Requirements Table
+            # - Project Summary Authorization
             application_docs = qy.join(MajorMineApplicationDocumentXref)\
                 .join(MajorMineApplication)\
                 .filter(MajorMineApplication.project_guid == project_guid)
@@ -50,8 +54,13 @@ class MineDocumentSearchUtil():
             irt_docs = qy.join(InformationRequirementsTableDocumentXref)\
                 .join(InformationRequirementsTable)\
                 .filter(InformationRequirementsTable.project_guid == project_guid)
+
+            application_authorization_docs = qy.join(ProjectSummaryAuthorizationDocumentXref)\
+                .join(ProjectSummaryAuthorization) \
+                .join(ProjectSummary) \
+                .filter(ProjectSummary.project_guid == project_guid)
             
-            qy = application_docs.union(summary_docs, decision_docs, irt_docs)
+            qy = application_docs.union(summary_docs, decision_docs, irt_docs, application_authorization_docs)
 
         if major_mine_application_guid is not None:
             qy = qy.join(MajorMineApplicationDocumentXref)\

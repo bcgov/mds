@@ -30,6 +30,7 @@ class ProjectSummaryAuthorizationDocumentXref(Base):
     upload_date = association_proxy('mine_document', 'upload_date')
     versions = association_proxy('mine_document', 'versions')
     create_user = association_proxy('mine_document', 'create_user')
+    is_archived = association_proxy('mine_document', 'is_archived')
 
     def __repr__(self):
         return f'{self.__class__.__name__} {self.project_summary_authorization_document_xref_guid}'
