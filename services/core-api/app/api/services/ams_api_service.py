@@ -74,6 +74,12 @@ class AMSApiService():
         return 'Yes' if value else 'No'
 
     @classmethod
+    def __format_ams_document_url(cls, project_guid):
+        if project_guid is None:
+            return ''
+        return f"{Config.AMS_DOCUMENT_URL}/{project_guid}/documents"
+
+    @classmethod
     def __set_contact_details(cls, contact):
         contact_details = {
             'em_lastname': contact.get('last_name', ''),
@@ -193,7 +199,8 @@ class AMSApiService():
                                      company_alias,
                                      zoning,
                                      zoning_reason,
-                                     regional_district_name
+                                     regional_district_name,
+                                     project_guid
                                      ):
         """Creates a new AMS authorization application"""
 
@@ -264,7 +271,8 @@ class AMSApiService():
                             'facilityoperatortitle': facility_operator.get('job_title', ''),
                             'regionaldistrict': {
                                 'name': regional_district_name
-                            }
+                            },
+                            'documents': cls.__format_ams_document_url(project_guid)
                         }
                         payload = json.dumps(ams_authorization_data)
                         response = requests.post(Config.AMS_URL, data=payload, headers=headers)
@@ -329,7 +337,8 @@ class AMSApiService():
                                            zoning_reason,
                                            regional_district_name,
                                            is_legal_land_owner,
-                                           is_crown_land_federal_or_provincial
+                                           is_crown_land_federal_or_provincial,
+                                           project_guid
                                            ):
         """Creates an AMS authorization application amendment"""
 
@@ -410,7 +419,8 @@ class AMSApiService():
                         'newlandownerphonenumber': cls.__format_phone_number(legal_land_owner_contact_number),
                         'newlandowneremail': legal_land_owner_email_address,
                         'newistheapplicantthelandowner': cls.__boolean_to_yes_no(is_legal_land_owner),
-                        'newlandfedorprov': cls.__boolean_to_yes_no(is_crown_land_federal_or_provincial)
+                        'newlandfedorprov': cls.__boolean_to_yes_no(is_crown_land_federal_or_provincial),
+                        'documents': cls.__format_ams_document_url(project_guid)
                     }
                     payload = json.dumps(ams_authorization_data)
                     response = requests.post(Config.AMS_URL, data=payload, headers=headers)
