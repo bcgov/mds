@@ -91,16 +91,16 @@ class TractionService():
         return response
 
     def delete_connection(self, connection_id) -> bool:
-        revoke_resp = requests.delete(
+        delete_resp = requests.delete(
             traction_connections + "/" + str(connection_id), headers=self.get_headers())
-        assert revoke_resp.status_code == 200, f"revoke_resp={revoke_resp.json()}"
-        return True
+        current_app.logger.info(f"traction_service.delete_connection returned {delete_resp.status_code}")
+        return delete_resp.ok
 
     def reject_invitation(self, connection_id) -> bool:
         reject_resp = requests.delete(
             traction_reject_invitation(connection_id), headers=self.get_headers())
-        assert reject_resp.status_code == 200, f"reject_resp={reject_resp.json()}"
-        return True
+        current_app.logger.info(f"traction_service.delete_connection returned {reject_resp.status_code}")
+        return reject_resp.ok
 
     def offer_mines_act_permit_111(self, connection_id, attributes):
         # https://github.com/bcgov/bc-vcpedia/blob/main/credentials/bc-mines-act-permit/1.1.1/governance.md#261-schema-definition
