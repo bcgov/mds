@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-
+import { Field } from "redux-form";
 import { Alert, Button, Col, Form, notification, Row, Typography } from "antd";
 import { MineDocument } from "@mds/common/models/documents/document";
 import { formatDate } from "@mds/common/redux/utils/helpers";
@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { IMAGE, DOCUMENT, EXCEL, SPATIAL } from "@mds/common/constants/fileTypes";
 import { postNewDocumentVersion } from "@mds/common/redux/actionCreators/documentActionCreator";
-import { IMineDocumentVersion } from "@mds/common";
+import { IMineDocumentVersion } from "@mds/common/interfaces";
 import { FilePondFile } from "filepond";
 
 interface ReplaceDocumentModalProps {
@@ -109,7 +109,7 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
         </Col>
       </Row>
 
-      <RenderFileUpload
+      <Field
         id="fileUpload"
         name="fileUpload"
         component={RenderFileUpload}
