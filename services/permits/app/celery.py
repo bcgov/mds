@@ -20,7 +20,6 @@ password = os.environ.get("ELASTICSEARCH_PASSWORD", "")
 scheme, hostname = host.split('://')
 
 backend_url = f'elasticsearch+{scheme}://{username}:{password}@{hostname}/celery'
-print(backend_url)
 celery_app = Celery(__name__, broker=CACHE_REDIS_URL, backend=backend_url)
 celery_app.backend.doc_type = None
 celery_app.conf.task_default_queue = 'permits'

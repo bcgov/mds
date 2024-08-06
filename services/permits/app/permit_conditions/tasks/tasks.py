@@ -11,6 +11,14 @@ from app.permit_conditions.pipelines.permit_condition_pipeline import (
 
 @contextmanager
 def task_context(task):
+    # Creates a context that is bound to the given task so the task can be accessed
+    # by each step of the pipeline (for example to update the task state / meta (e.g. for a progress indicator))
+    # usage:
+    # with task_context(self):
+    #  ....
+    # from app.permit_conditions.context import context
+    # context.get().update_state(state="PROGRESS", meta={"stage": "pdf_to_text_converter"})
+
     t = context.set(task)
 
     try:
