@@ -25,7 +25,7 @@ const ScrollSidePageWrapper: FC<ScrollSidePageWrapperProps> = ({
   const isCore = systemFlag === SystemFlagEnum.core;
 
   const systemHeaderHeight = isCore ? coreHeaderHeight : msHeaderHeight;
-  const contentPaddingY = isCore ? 15 : 26;
+  const contentPaddingY = isCore ? 24 : 26;
 
   const handleScroll = () => {
     let isMounted = true;
@@ -73,7 +73,7 @@ const ScrollSidePageWrapper: FC<ScrollSidePageWrapperProps> = ({
           className={isFixedTop ? "side-menu--fixed" : "side-menu"}
           style={{ top: menuTopOffset }}
         >
-          {/* the 15 matches the margin/padding on the menu/content. Looks nicer */}
+          {/* the 24 matches the margin/padding on the menu/content. Looks nicer */}
           <ScrollSideMenu offsetTop={topOffset + contentPaddingY} {...menuProps} />
         </div>
       )}

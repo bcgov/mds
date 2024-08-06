@@ -12,12 +12,6 @@ import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import CorePageHeader from "@mds/common/components/common/CorePageHeader";
 import * as routes from "@/constants/routes";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
-import CoreTag from "@mds/common/components/common/CoreTag";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import CompanyIcon from "@mds/common/assets/icons/CompanyIcon";
-import { faLocationDot } from "@fortawesome/pro-light-svg-icons";
-
-const { Title, Text } = Typography;
 
 const ViewPermit = () => {
   const dispatch = useDispatch();
@@ -69,7 +63,8 @@ const ViewPermit = () => {
 
   return (
     <div
-    // className="view-permits margin-large--top padding-lg--left padding-lg--right"
+      className="fixed-tabs-container"
+      // className="view-permits margin-large--top padding-lg--left padding-lg--right"
     >
       <CorePageHeader
         entityLabel={permit?.permit_no ?? ""}

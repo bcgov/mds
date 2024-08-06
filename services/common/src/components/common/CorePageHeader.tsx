@@ -44,42 +44,50 @@ const CorePageHeader: FC<CorePageHeaderProps> = ({
   }, [mineGuid]);
 
   return (
-    <div className="view--header">
-      <Row>
-        <Col>
-          {breadCrumbs.map((crumb) => {
-            return (
-              <>
-                <Link to={crumb.route} className="faded-text" key={crumb.route}>
-                  {crumb.text}
-                </Link>{" "}
-                /
-              </>
-            );
-          })}
-          <Text>
-            {entityType} {entityLabel}
-          </Text>
-        </Col>
-      </Row>
-      <Row align="middle" gutter={16}>
-        <Col>
-          <Title level={1}>
-            {entityType} {entityLabel}
-          </Title>
-        </Col>
-        <Col>
-          <CoreTag
-            icon={<FontAwesomeIcon icon={faLocationDot} />}
-            text={mine?.mine_name}
-            link={GLOBAL_ROUTES?.MINE_DASHBOARD.dynamicRoute(mineGuid)}
-          />
-        </Col>
-        <Col>
-          <CoreTag icon={<CompanyIcon />} text={current_permittee} />
-        </Col>
-      </Row>
-      {tabProps && <Tabs className="core-tabs fixed-tabs-tabs" {...tabProps} />}
+    <div className="core-page">
+      <div className="view--header padding-lg--top padding-lg--sides core-page-header">
+        <Row className="margin-large--bottom">
+          <Col>
+            {breadCrumbs.map((crumb) => {
+              return (
+                <>
+                  <Link to={crumb.route} className="faded-text" key={crumb.route}>
+                    {crumb.text}
+                  </Link>{" "}
+                  /{" "}
+                </>
+              );
+            })}
+            <Text>
+              {entityType} {entityLabel}
+            </Text>
+          </Col>
+        </Row>
+        <Row align="middle" gutter={16}>
+          <Col>
+            <Title level={1} className="padding-lg--right margin-none">
+              {entityType} {entityLabel}
+            </Title>
+          </Col>
+          <Col>
+            <CoreTag
+              icon={<FontAwesomeIcon icon={faLocationDot} />}
+              text={mine?.mine_name}
+              link={GLOBAL_ROUTES?.MINE_DASHBOARD.dynamicRoute(mineGuid)}
+            />
+          </Col>
+          <Col>
+            <CoreTag icon={<CompanyIcon />} text={current_permittee} />
+          </Col>
+        </Row>
+      </div>
+      {tabProps && (
+        <Tabs
+          className="core-tabs fixed-tabs-tabs padding-md--top"
+          {...tabProps}
+          tabBarStyle={{ paddingLeft: 20, paddingRight: 20 }}
+        />
+      )}
     </div>
   );
 };

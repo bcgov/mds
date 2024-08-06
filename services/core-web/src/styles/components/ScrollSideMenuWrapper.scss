@@ -6,12 +6,20 @@
 
     .side-menu--fixed,
     .side-menu {
-        margin-top: 15px;
-        background-color: $pure-white;
+        margin-top: $fixed-page-margin;
+        margin-left: $fixed-page-margin;
+        width: $side-menu-width;
+
+        .ant-anchor-wrapper {
+            background-color: transparent;
+            border: none;
+        }
     }
 
     .side-menu--content {
-        padding-top: 15px; // equal to the margin-top on side-menu to align them
+        padding-top: $fixed-page-margin; // equal to the margin-top on side-menu to align them
+        left: $side-menu-width + $fixed-page-margin;
+        width: calc(100% - ($side-menu-width + $fixed-page-margin));
     }
 
     .side-menu--content.with-fixed-top {

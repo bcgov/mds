@@ -1,18 +1,12 @@
-import React, { FC, useMemo } from "react";
+import React, { FC, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button, Col, Row, Typography } from "antd";
-
-import { IPermit } from "@mds/common/interfaces/permits/permit.interface";
-import { IMine } from "@mds/common/interfaces/mine.interface";
-import { getPermitByGuid } from "@mds/common/redux/selectors/permitSelectors";
-import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
-import {
-  getPermitConditionCategoryOptions,
-  getPermitConditionTypeOptions,
-} from "@mds/common/redux/selectors/staticContentSelectors";
+import { getPermitConditionCategoryOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import PermitConditionLayer from "./PermitConditionLayer";
-import { IPermitAmendment } from "@mds/common";
+import { IPermitAmendment, IPermitCondition } from "@mds/common";
+import { VIEW_MINE_PERMIT } from "@/constants/routes";
+import ScrollSidePageWrapper from "@mds/common/components/common/ScrollSidePageWrapper";
 
 const { Title } = Typography;
 
@@ -21,50 +15,101 @@ interface PermitConditionProps {
 }
 
 const PermitConditions: FC<PermitConditionProps> = ({ latestAmendment }) => {
-  // const { id, permitGuid } = useParams<{ id: string; permitGuid: string }>();
-  // const permit: IPermit = useSelector(getPermitByGuid(permitGuid));
-  // const mine: IMine = useSelector((state) => getMineById(state, id));
+  const { id, permitGuid } = useParams<{ id: string; permitGuid: string }>();
+  const [isExpanded, setIsExpanded] = useState(false);
   const permitConditionCategoryOptions = useSelector(getPermitConditionCategoryOptions);
-  const permitConditiontypeOptions = useSelector(getPermitConditionTypeOptions);
-
-  // const latestAmendment = useMemo(() => {
-  //   if (!permit) return undefined;
-  //   return permit.permit_amendments[permit.permit_amendments.length - 1];
-  // }, [permit]);
 
   const permitConditions = latestAmendment?.conditions;
-
   console.log(permitConditions);
-  console.log("permitConditionCategoryOptions", permitConditionCategoryOptions);
-  console.log("permitConditiontypeOptions", permitConditiontypeOptions);
+  console.log("isExpanded", isExpanded);
+  const permitConditionCategories = permitConditionCategoryOptions
+    .map((cat) => {
+      const conditions =
+        permitConditions?.filter(
+          (c) => c.condition_category_code === cat.condition_category_code
+        ) ?? [];
+      return conditions.length > 0
+        ? { href: cat.condition_category_code.toLowerCase(), title: cat.description, conditions }
+        : false;
+    })
+    .filter(Boolean);
+
+  const scrollSideMenuProps = {
+    menuOptions: permitConditionCategories,
+    featureUrlRoute: VIEW_MINE_PERMIT.hashRoute,
+    featureUrlRouteArguments: [id, permitGuid, "conditions"],
+  };
+
+  const topOffset = 109 + 49; // header + tab nav
+
+  const handleUpdateCondition = (condition: IPermitCondition) => {
+    console.log("not implemented", condition);
+    return Promise.resolve();
+  };
+
+  const handleAddCondition = (newCondition: Partial<IPermitCondition>) => {
+    console.log("not implemented", newCondition);
+    return Promise.resolve();
+  };
 
   return (
-    <div className="view-permits-content">
-      <Row justify="space-between" align="middle" gutter={[16, 16]}>
-        <Col>
-          <Title className="margin-none padding-lg--top padding-lg--bottom" level={2}>
-            Permit Conditions
-          </Title>
-        </Col>
-      </Row>
-      <Row gutter={[16, 16]}>
-        <Col span={24}>
-          {permitConditionCategoryOptions.map((category) => {
-            const matching = permitConditions.filter(
-              (c) => c.condition_category_code === category.condition_category_code
-            );
-            return (
-              <>
-                <Title level={3}>{category.description}</Title>
-                {matching.map((m) => (
-                  <PermitConditionLayer condition={m} key={m.permit_condition_id} level={0} />
-                ))}
-              </>
-            );
-          })}
-        </Col>
-      </Row>
-    </div>
+    <ScrollSidePageWrapper
+      header={null}
+      headerHeight={topOffset}
+      menuProps={scrollSideMenuProps}
+      content={
+        <Row align="middle" justify="space-between" gutter={[10, 16]}>
+          <Col span={24}>
+            <Title className="margin-none" level={2}>
+              Permit Conditions
+            </Title>
+          </Col>
+
+          <Col>
+            <Row gutter={10}>
+              <Col>
+                <Button type="ghost" onClick={() => setIsExpanded(!isExpanded)}>
+                  {isExpanded ? "Collapse" : "Expand"} All Conditions
+                </Button>
+              </Col>
+              <Col>
+                <Button type="ghost">Open Permit in Document Viewer</Button>
+              </Col>
+            </Row>
+          </Col>
+
+          <Col>
+            <Button type="ghost">Reorder</Button>
+          </Col>
+          <Col span={24}>
+            <div className="core-page-content">
+              <Row gutter={[16, 16]}>
+                {permitConditionCategories.map((category) => {
+                  return (
+                    <>
+                      <Col span={24} key={category.href}>
+                        <Title level={3} className="margin-none">
+                          {category.title} ({category.conditions.length})
+                        </Title>
+                      </Col>
+                      {category.conditions.map((sc) => (
+                        <Col span={24} key={sc.permit_condition_id}>
+                          <PermitConditionLayer
+                            condition={sc}
+                            handleUpdateCondition={handleUpdateCondition}
+                            isExpanded={isExpanded}
+                          />
+                        </Col>
+                      ))}
+                    </>
+                  );
+                })}
+              </Row>
+            </div>
+          </Col>
+        </Row>
+      }
+    />
   );
 };
 
