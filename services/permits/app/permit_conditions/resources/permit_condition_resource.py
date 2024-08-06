@@ -82,8 +82,10 @@ def results(task_id: str) -> PermitConditions:
 
     if res.status == "SUCCESS":
         return res.get()
+    elif res.status == "FAILURE":
+        raise HTTPException(500, detail=f"Task failed to complete: {res.status}")
     else:
-        raise HTTPException(400, detail=f"Task has not completed successfully. Current status: {res.status}")
+        raise HTTPException(202, detail=f"Task has not completed yet. Current status: {res.status}")
 
 @router.get("/permit_conditions/results/csv")
 def results(task_id: str):
@@ -124,9 +126,10 @@ def results(task_id: str):
             headers={"Content-Disposition": 'attachment; filename="permit_conditions.csv"'},
         )
 
-        
+    elif res.status == "FAILURE":
+        raise HTTPException(500, detail=f"Task failed to complete: {res.status}")
     else:
-        raise HTTPException(400, detail=f"Task has not completed successfully. Current status: {res.status}")
+        raise HTTPException(202, detail=f"Task has not completed yet. Current status: {res.status}")
 
 
 @router.get("/permit_conditions/flow")

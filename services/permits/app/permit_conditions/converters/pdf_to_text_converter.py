@@ -65,11 +65,7 @@ class PDFToTextConverter:
                 pdf_reader = PdfReader(doc)
                 for idx, page in enumerate(pdf_reader.pages):
                     try:
-                        page_text = page.extract_text(
-                            # extraction_mode="",
-                            # layout_mode_space_vertically=False,
-                            # layout_mode_scale_weight=0.5,
-                        )
+                        page_text = page.extract_text()
                         pages.append(page_text)
                         if DEBUG_MODE:
                             fn = f"debug/pdfreader-{idx}.txt"
