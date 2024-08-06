@@ -214,6 +214,8 @@ def validate_condition(csv_pairs):
             key=lambda c: c.get("Key"),
         )
 
+        print([c.get("Key") for c in match_results["context_comparison_results"]])
+
         # 5. Calculate the overall match_percentage (how many conditions match 100% between the two csvs)
         total_conditions = (
             match_results["total_comparable_conditions"]
