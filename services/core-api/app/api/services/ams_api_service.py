@@ -74,10 +74,10 @@ class AMSApiService():
         return 'Yes' if value else 'No'
 
     @classmethod
-    def __format_ams_document_url(cls, project_guid):
+    def __get_ams_document_url(cls, project_guid):
         if project_guid is None:
             return ''
-        return f"{Config.AMS_DOCUMENT_URL}/{project_guid}/documents"
+        return f"{Config.AMS_DOCUMENT_BASE_URL}/pre-applications/{project_guid}/documents"
 
     @classmethod
     def __set_contact_details(cls, contact):
@@ -272,7 +272,7 @@ class AMSApiService():
                             'regionaldistrict': {
                                 'name': regional_district_name
                             },
-                            'documents': cls.__format_ams_document_url(project_guid)
+                            'documents': cls.__get_ams_document_url(project_guid)
                         }
                         payload = json.dumps(ams_authorization_data)
                         response = requests.post(Config.AMS_URL, data=payload, headers=headers)
@@ -420,7 +420,7 @@ class AMSApiService():
                         'newlandowneremail': legal_land_owner_email_address,
                         'newistheapplicantthelandowner': cls.__boolean_to_yes_no(is_legal_land_owner),
                         'newlandfedorprov': cls.__boolean_to_yes_no(is_crown_land_federal_or_provincial),
-                        'documents': cls.__format_ams_document_url(project_guid)
+                        'documents': cls.__get_ams_document_url(project_guid)
                     }
                     payload = json.dumps(ams_authorization_data)
                     response = requests.post(Config.AMS_URL, data=payload, headers=headers)
