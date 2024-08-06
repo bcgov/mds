@@ -32,13 +32,13 @@ class JobStatus(BaseModel):
 @router.post("/permit_conditions")
 async def extract_permit_conditions(file: UploadFile = File(...)) -> JobStatus:
     """
-    Extracts permit conditions from a file.
+    Asynchronously extracts permit conditions from the given PDF file.
 
     Args:
         file (UploadFile): The file to extract permit conditions from.
 
     Returns:
-        dict: A dictionary containing the extracted permit conditions.
+        dict: A dictionary containing the id of the job and its status.
 
     Raises:
         Any exceptions that occur during the extraction process.
@@ -61,11 +61,23 @@ async def extract_permit_conditions(file: UploadFile = File(...)) -> JobStatus:
 
 @router.get("/permit_conditions/status")
 def status(task_id: str) -> JobStatus:
+    """
+    Get the status of a permit conditions extraction job.
+    Args:
+        The task ID of the job.
+    """
     res = run_permit_condition_pipeline.app.AsyncResult(task_id)
     return JobStatus(id=res.task_id, status=res.status, meta=res.info)
 
 @router.get("/permit_conditions/results")
 def results(task_id: str) -> PermitConditions:
+    """
+    Get the results of a permit conditions extraction job.
+    Args:
+        The task ID of the job.
+    Raises:
+        400 Bad Request: If the task has not completed successfully
+    """
     res = run_permit_condition_pipeline.app.AsyncResult(task_id)
 
     if res.status == "SUCCESS":
@@ -75,6 +87,13 @@ def results(task_id: str) -> PermitConditions:
 
 @router.get("/permit_conditions/results/csv")
 def results(task_id: str):
+    """
+    Get the results of a permit conditions extraction job in a csv format
+    Args:
+        The task ID of the job.
+    Raises:
+        400 Bad Request: If the task has not completed successfully
+    """
     res = run_permit_condition_pipeline.app.AsyncResult(task_id)
 
     if res.status == "SUCCESS":
