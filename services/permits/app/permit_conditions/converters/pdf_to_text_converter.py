@@ -1,9 +1,11 @@
 import logging
 import os
 from pathlib import Path
+from time import sleep
 from typing import Any, Dict, List, Optional
 
 import ocrmypdf
+from app.permit_conditions.context import context
 from haystack import Document, component, logging
 from pypdf import PdfReader
 from pypdf.errors import PdfReadError
@@ -35,6 +37,8 @@ class PDFToTextConverter:
         id_hash_keys: Optional[List[str]] = None,
         documents: Optional[List[Document]] = None,
     ) -> List[Document]:
+        context.get().update_state(state="PROGRESS", meta={"stage": "pdf_to_text_converter"})
+
         if not documents:
             pages = self._read_pdf(
                 file_path,
@@ -62,9 +66,9 @@ class PDFToTextConverter:
                 for idx, page in enumerate(pdf_reader.pages):
                     try:
                         page_text = page.extract_text(
-                            extraction_mode="layout",
-                            layout_mode_space_vertically=False,
-                            layout_mode_scale_weight=0.5,
+                            # extraction_mode="",
+                            # layout_mode_space_vertically=False,
+                            # layout_mode_scale_weight=0.5,
                         )
                         pages.append(page_text)
                         if DEBUG_MODE:
