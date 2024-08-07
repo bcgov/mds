@@ -28,8 +28,8 @@ jobs:
         env:
           DOCKER_BUILDKIT: 1
         run: |
-          docker compose -f docker-compose.yaml run haystack coverage run -m pytest
-          docker compose -f docker-compose.yaml run haystack coverage xml
+          docker compose -f docker-compose.yaml run -e AZURE_API_KEY=testkey haystack coverage run -m pytest
+          docker compose -f docker-compose.yaml run -e AZURE_API_KEY=testkey haystack coverage xml
           sed -i "s/<source>\/code/<source>\/github\/workspace\/services\/permits/g" services/permits/coverage.xml
       - name: Upload test coverage results
         uses: actions/upload-artifact@v4
