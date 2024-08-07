@@ -21,6 +21,9 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+      - name: Set up env variables
+        run: |
+          INPUT=yes LOAD_EXTERNAL=no make env
       - name: Run integration tests
         env:
           DOCKER_BUILDKIT: 1
