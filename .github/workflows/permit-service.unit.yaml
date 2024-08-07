@@ -1,0 +1,43 @@
+name: Permit Service Tests
+
+on:
+  pull_request:
+    paths:
+      - services/permits/**
+      - docker-compose.yaml
+      - docker-compose.ci.yaml
+  push:
+    branches:
+      - develop
+    paths:
+      - services/permits/**
+
+jobs:
+  run-permit-tests:
+    name: run-permit-tests
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Run integration tests
+        env:
+          DOCKER_BUILDKIT: 1
+        run: |
+          docker compose -f docker-compose.yaml run haystack coverage run -m pytest
+          docker compose -f docker-compose.yaml run haystack coverage xml
+          sed -i "s/<source>\/code/<source>\/github\/workspace\/services\/permits/g" services/permits/coverage.xml
+      - name: Upload test coverage results
+        uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: permits-test-results
+          path: |
+            services/permits/coverage.xml
+      - name: Sonar Reporting
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        uses: SonarSource/sonarcloud-github-action@v2.1.1
+        with:
+          projectBaseDir: services/permits
