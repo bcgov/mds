@@ -88,7 +88,7 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
         subject = f'IRT Submitted for {self.project.mine_name}'
         body = f'<p>{self.project.mine_name} (Mine no: {self.project.mine_no}) has updated {self.project.project_title} by submitting an IRT.</p>'
 
-        link = f'{Config.CORE_PROD_URL}/pre-applications/{self.project.project_guid}/information-requirements-table/{self.irt_guid}/intro-project-overview'
+        link = f'{Config.CORE_WEB_URL}/pre-applications/{self.project.project_guid}/information-requirements-table/{self.irt_guid}/intro-project-overview'
         body += f'<p>View IRT in Core: <a href="{link}" target="_blank">{link}</a></p>'
         EmailService.send_email(subject, recipients, body)
 
