@@ -1,14 +1,17 @@
 import React from "react";
-import { Button, Dropdown, Menu, Popconfirm } from "antd";
-import { Link, useHistory, useParams } from "react-router-dom";
+import { Modal, notification } from "antd";
+import { useHistory, useParams } from "react-router-dom";
 import {
   PlusOutlined,
   ReadOutlined,
   SafetyCertificateOutlined,
   EyeOutlined,
+  DownloadOutlined,
+  EditOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
 import { useSelector } from "react-redux";
-import { Feature } from "@mds/common/index";
+import { Feature, USER_ROLES } from "@mds/common/index";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { formatDate } from "@common/utils/helpers";
 import {
@@ -18,16 +21,21 @@ import {
 import * as Strings from "@mds/common/constants/strings";
 import { PERMIT_AMENDMENT_TYPES } from "@mds/common/constants/strings";
 import { isEmpty } from "lodash";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as Permission from "@/constants/permissions";
-import { CARAT, EDIT, EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import DocumentLink from "@/components/common/DocumentLink";
-import DownloadAllDocumentsButton from "@/components/common/buttons/DownloadAllDocumentsButton";
 import * as route from "@/constants/routes";
 import { VIEW_MINE_PERMIT } from "@/constants/routes";
 import { IMineDocument, IPermit, IPermitAmendment } from "@mds/common";
 import { ColumnsType } from "antd/lib/table";
+import {
+  ITableAction,
+  renderActionsColumn,
+  renderCategoryColumn,
+  renderTextColumn,
+} from "@mds/common/components/common/CoreTableCommonColumns";
+import { getDocumentDownloadToken } from "@mds/common/redux/utils/actionlessNetworkCalls";
+import { downloadDocument, waitFor } from "@/components/common/downloads/helpers";
+import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
 
 /**
  * @class  MinePermitTable - displays a table of permits and permit amendments
@@ -37,7 +45,6 @@ const draftAmendment = "DFT";
 
 interface MinePermitTableProps {
   permits?: IPermit[];
-  major_mine_ind: boolean;
   openEditPermitModal: (arg1: any, arg2: IPermit) => any;
   openAddPermitAmendmentModal: (arg1: any, arg2: IPermit) => any;
   openAddAmalgamatedPermitModal: (arg1: any, arg2: IPermit) => any;
@@ -59,22 +66,8 @@ interface MinePermitTableItem {
   is_generated_in_core: boolean;
   amendmentNumber: string;
   conditions: any;
-  openViewConditionModal: (arg1: any, arg2: any, arg3: any, arg4: string) => any;
-  openEditAmendmentModal: (arg1: any, arg2: any, arg3: IPermit) => any;
-  permitAmendmentTypeOptionsHash: any;
-  handleDeletePermit(permit_guid: any): void;
-  openEditSitePropertiesModal: (arg1: any, arg2: IPermit | IPermitAmendment) => any;
   description: string;
-  openAddPermitAmendmentModal: (arg1: any, arg2: IPermitAmendment) => any;
-  openAddPermitHistoricalAmendmentModal: (arg1: any, arg2: IPermitAmendment) => any;
-  openAddAmalgamatedPermitModal: (arg1: any, arg2: IPermit | IPermitAmendment) => any;
-  openEditPermitModal: (arg1: any, arg2: IPermit | IPermitAmendment, arg3: any) => any;
-  permitStatusOptionsHash: any;
 }
-
-const isPermit = (permit: IPermit | IPermitAmendment): permit is IPermit => {
-  return (permit as IPermit).permit_guid !== undefined;
-};
 
 const renderDocumentLink = (document, linkTitleOverride = null) => (
   <DocumentLink
@@ -96,94 +89,6 @@ const finalApplicationPackage = (amendment) => {
   return finalAppPackageCore.concat(finalAppPackageImported);
 };
 
-const renderDeleteButtonForPermitAmendments = (record) => {
-  if (record.amendmentType === PERMIT_AMENDMENT_TYPES.original) {
-    return;
-  }
-
-  const isLinkedToNowApplication =
-    !isEmpty(record.now_application_guid) && record.is_generated_in_core;
-
-  // eslint-disable-next-line consistent-return
-  return (
-    <AuthorizationWrapper permission={Permission.ADMIN}>
-      <Popconfirm
-        placement="topLeft"
-        title={
-          isLinkedToNowApplication
-            ? "You cannot delete permit amendment generated in Core with associated NoW application."
-            : "Are you sure you want to delete this amendment and all related documents?"
-        }
-        okText={isLinkedToNowApplication ? "Ok" : "Delete"}
-        cancelText="Cancel"
-        onConfirm={
-          isLinkedToNowApplication ? () => {} : () => record.handleDeletePermitAmendment(record)
-        }
-      >
-        <div className="custom-menu-item">
-          <button type="button" className="full add-permit-dropdown-button">
-            <img
-              src={TRASHCAN}
-              alt="Remove Permit Amendment"
-              className="icon-sm padding-sm--right violet"
-            />
-            Delete
-          </button>
-        </div>
-      </Popconfirm>
-    </AuthorizationWrapper>
-  );
-};
-
-const renderVerifyCredentials = (text, record) => {
-  return (
-    <AuthorizationWrapper permission={Permission.ADMIN}>
-      <Popconfirm
-        placement="topLeft"
-        title={`Are you sure you want to Issue this permit as a Verifiable Credential to OrgBook entity: ${record.permit.current_permittee}?`}
-        onConfirm={(event) => record.handlePermitAmendmentIssueVC(event, record, record.permit)}
-        okText="Issue"
-        cancelText="Cancel"
-      >
-        <div className="custom-menu-item">
-          <button type="button" className="full add-permit-dropdown-button">
-            <SafetyCertificateOutlined className="icon-sm padding-md--right violet" />
-            Verify
-          </button>
-        </div>
-      </Popconfirm>
-    </AuthorizationWrapper>
-  );
-};
-
-const renderEditPermitConditions = (text, record) => {
-  return (
-    <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-      <div className="custom-menu-item">
-        <Link
-          to={route.EDIT_PERMIT_CONDITIONS.dynamicRoute(
-            record.mineGuid,
-            record.permit_amendment_guid
-          )}
-        >
-          <button
-            type="button"
-            className="full add-permit-dropdown-button"
-            style={{ fontSize: "0.875rem", color: "rgba(0, 0, 0, 0.65)" }}
-          >
-            <img
-              src={EDIT_OUTLINE_VIOLET}
-              alt="Edit"
-              className="icon-sm padding-sm--right violet"
-            />
-            Edit Permit Conditions
-          </button>
-        </Link>
-      </div>
-    </AuthorizationWrapper>
-  );
-};
-
 const renderPermitNo = (permit) => {
   const permitNoShouldLinkToDocument =
     permit.permit_amendments[0] &&
@@ -195,7 +100,6 @@ const renderPermitNo = (permit) => {
 };
 
 export const MinePermitTable: React.FC<MinePermitTableProps> = ({
-  major_mine_ind,
   openEditAmendmentModal,
   handleDeletePermitAmendment,
   handlePermitAmendmentIssueVC,
@@ -215,18 +119,21 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
   const { isFeatureEnabled } = useFeatureFlag();
   const { id } = useParams<{ id: string }>();
 
-  const transformRowData = (
-    permit,
-    major_mine_ind,
-    openEditPermitModal,
-    openAddPermitAmendmentModal,
-    openAddAmalgamatedPermitModal,
-    permitStatusOptionsHash,
-    handleDeletePermit,
-    handleDeletePermitAmendment,
-    openAddPermitHistoricalAmendmentModal,
-    openEditSitePropertiesModal
-  ) => {
+  const permitStatusOptionsHash = useSelector(getDropdownPermitStatusOptionsHash);
+  const permitAmendmentTypeOptionsHash = useSelector(getPermitAmendmentTypeOptionsHash);
+
+  const userCanEditPermits = useSelector((state) =>
+    userHasRole(state, USER_ROLES.role_edit_permits)
+  );
+  const userIsAdmin = useSelector((state) => userHasRole(state, USER_ROLES.role_admin));
+  const userHistorical = useSelector((state) =>
+    userHasRole(state, USER_ROLES.role_edit_historical_amendments)
+  );
+  const userSecurities = useSelector((state) =>
+    userHasRole(state, USER_ROLES.role_edit_securities)
+  );
+
+  const transformRowData = (permit) => {
     const latestAmendment = permit.permit_amendments.filter(
       (a) => a.permit_amendment_status_code !== draftAmendment
     )[0];
@@ -238,6 +145,7 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
 
     return {
       ...permit,
+      permit,
       key: permit.permit_guid,
       lastAmended:
         (latestAmendment && formatDate(latestAmendment.issue_date)) || Strings.EMPTY_FIELD,
@@ -249,223 +157,88 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
         (a) => a.permit_amendment_status_code !== draftAmendment
       ),
       status: permit.permit_status_code,
-      addEditButton: {
-        major_mine_ind,
-        hasAmalgamated,
-      },
-      openEditPermitModal,
-      openAddPermitAmendmentModal,
-      openAddAmalgamatedPermitModal,
-      permitStatusOptionsHash,
-      permit,
-      handleDeletePermit,
-      handleDeletePermitAmendment,
-      openAddPermitHistoricalAmendmentModal,
-      openEditSitePropertiesModal,
+      hasAmalgamated,
     };
   };
 
-  const transformChildRowData = (
-    amendment,
-    record,
+  const transformChildRowData = (amendment, record, amendmentNumber, mineGuid) => ({
     amendmentNumber,
-    major_mine_ind,
-    openEditAmendmentModal,
-    handleDeletePermitAmendment,
-    handlePermitAmendmentIssueVC,
-    permitAmendmentTypeOptionsHash,
-    openViewConditionModal,
-    mineGuid
-  ) => ({
-    amendmentNumber,
+    permit: record.permit,
+    ...amendment,
     isAmalgamated: amendment.permit_amendment_type_code === PERMIT_AMENDMENT_TYPES.amalgamated,
     receivedDate: formatDate(amendment.received_date) || Strings.EMPTY_FIELD,
     issueDate: formatDate(amendment.issue_date) || Strings.EMPTY_FIELD,
     authorizationEndDate: formatDate(amendment.authorization_end_date) || Strings.EMPTY_FIELD,
     description: amendment.description || Strings.EMPTY_FIELD,
     isAssociatedWithNOWApplicationImportedToCore: "",
-    openEditAmendmentModal,
-    openViewConditionModal,
-    permit: record.permit,
-    documents: amendment.related_documents,
-    handleDeletePermitAmendment,
-    handlePermitAmendmentIssueVC,
     finalApplicationPackage: finalApplicationPackage(amendment),
     maps: amendment.now_application_documents?.filter(
       (doc) => doc.now_application_document_sub_type_code === "MDO"
     ),
-    permitAmendmentTypeOptionsHash,
+    documents: amendment.related_documents,
     permitAmendmentDocuments: amendment.related_documents.map((doc) => ({
       key: doc.mine_report_submission_guid,
       documentManagerGuid: doc.document_manager_guid,
       filename: doc.document_name,
     })),
     mineGuid,
-    ...amendment,
   });
 
-  const columns: ColumnsType<MinePermitTableItem> = [
-    {
-      title: "Permit No.",
-      dataIndex: "permitNo",
-      key: "permitNo",
-      render: (text, record) => <div title="Permit No.">{renderPermitNo(record.permit)}</div>,
+  // EDIT_PERMITS required for *every* item- enforced at menu-level
+  const actions: ITableAction[] = [
+    isFeatureEnabled(Feature.DIGITIZED_PERMITS) && {
+      key: "view",
+      label: "View",
+      clickFunction: (_, record) =>
+        history.push(
+          VIEW_MINE_PERMIT.dynamicRoute(
+            id,
+            record.permit.permit_guid ?? record.permit.permit_amendment_guid
+          )
+        ),
+      icon: <EyeOutlined />,
     },
     {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      render: (text, record) => <div title="Status">{record.permitStatusOptionsHash[text]}</div>,
+      key: "amalgamate-amend",
+      label: "Add Permit Amendment",
+      icon: <PlusOutlined />,
+      clickFunction: (event, record) => openAddAmalgamatedPermitModal(event, record.permit),
     },
     {
-      title: "Permittee",
-      dataIndex: "permittee",
-      key: "permittee",
-      render: (text) => <div title="Permittee">{text}</div>,
+      key: "amalgamate",
+      label: "Amalgamate Permit",
+      icon: <PlusOutlined />,
+      clickFunction: (event, record) => openAddAmalgamatedPermitModal(event, record.permit),
     },
     {
-      title: "First Issued",
-      dataIndex: "firstIssued",
-      key: "firstIssued",
-      render: (text) => <div title="First Issued">{text}</div>,
+      key: "add-amendment",
+      label: "Add Permit Amendment",
+      icon: <PlusOutlined />,
+      clickFunction: (event, record) => openAddPermitAmendmentModal(event, record.permit),
     },
-    {
-      title: "Last Amended",
-      dataIndex: "lastAmended",
-      key: "lastAmended",
-      render: (text) => <div title="Last Amended">{text}</div>,
+    userHistorical && {
+      key: "add-historical-amend",
+      label: "Add Permit Historical Amendment",
+      icon: <PlusOutlined />,
+      clickFunction: (event, record) => openAddPermitHistoricalAmendmentModal(event, record.permit),
     },
-    {
-      title: "",
-      dataIndex: "addEditButton",
-      key: "addEditButton",
-      align: "right",
-      render: (text, record) => {
-        const permitGuid = isPermit(record.permit)
-          ? record.permit.permit_guid
-          : record.permit?.permit_amendment_guid;
-        const items = [
-          isFeatureEnabled(Feature.DIGITIZED_PERMITS) && {
-            key: "0",
-            label: (
-              <button
-                type="button"
-                className="full add-permit-dropdown-button"
-                onClick={() => history.push(VIEW_MINE_PERMIT.dynamicRoute(id, permitGuid))}
-              >
-                <div>
-                  <EyeOutlined className="padding-sm add-permit-dropdown-button-icon" />
-                  View
-                </div>
-              </button>
-            ),
-          },
-          {
-            key: "1",
-            label: (
-              <button
-                type="button"
-                className="full add-permit-dropdown-button"
-                onClick={(event) => record.openAddAmalgamatedPermitModal(event, record.permit)}
-              >
-                <div>
-                  <PlusOutlined className="padding-sm add-permit-dropdown-button-icon" />
-                  {text.hasAmalgamated ? "Add Permit Amendment" : "Amalgamate Permit"}
-                </div>
-              </button>
-            ),
-          },
-          !text.hasAmalgamated && {
-            key: "2",
-            label: (
-              <button
-                type="button"
-                className="full add-permit-dropdown-button"
-                onClick={(event) =>
-                  record.openAddPermitAmendmentModal(event, record.permit as IPermitAmendment)
-                }
-              >
-                <div>
-                  <PlusOutlined className="padding-sm add-permit-dropdown-button-icon" />
-                  Add Permit Amendment
-                </div>
-              </button>
-            ),
-          },
-          {
-            key: "3",
-            label: (
-              <AuthorizationWrapper permission={Permission.EDIT_HISTORICAL_AMENDMENTS}>
-                <div className="custom-menu-item">
-                  <button
-                    type="button"
-                    className="full add-permit-dropdown-button"
-                    onClick={(event) =>
-                      record.openAddPermitHistoricalAmendmentModal(
-                        event,
-                        record.permit as IPermitAmendment
-                      )
-                    }
-                  >
-                    <div>
-                      <PlusOutlined className="padding-sm add-permit-dropdown-button-icon" />
-                      Add Permit Historical Amendment
-                    </div>
-                  </button>
-                </div>
-              </AuthorizationWrapper>
-            ),
-          },
-          {
-            key: "4",
-            label: (
-              <AuthorizationWrapper permission={Permission.EDIT_SECURITIES}>
-                <div className="custom-menu-item">
-                  <button
-                    type="button"
-                    className="full"
-                    onClick={(event) =>
-                      record.openEditPermitModal(event, record.permit, record.description)
-                    }
-                  >
-                    <img
-                      alt="document"
-                      className="padding-sm"
-                      src={EDIT_OUTLINE_VIOLET}
-                      style={{ paddingRight: "15px" }}
-                    />
-                    Edit Permit Status
-                  </button>
-                </div>
-              </AuthorizationWrapper>
-            ),
-          },
-          {
-            key: "5",
-            label: (
-              <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-                <div className="custom-menu-item">
-                  <button
-                    type="button"
-                    className="full"
-                    onClick={(event) => record.openEditSitePropertiesModal(event, record.permit)}
-                  >
-                    <img
-                      alt="document"
-                      className="padding-sm"
-                      src={EDIT_OUTLINE_VIOLET}
-                      style={{ paddingRight: "15px" }}
-                    />
-                    Edit Site Properties
-                  </button>
-                </div>
-              </AuthorizationWrapper>
-            ),
-          },
-        ].filter(Boolean);
-
-        const menu = <Menu items={items} />;
-
+    userSecurities && {
+      key: "edit-permit-status",
+      label: "Edit Permit Status",
+      icon: <EditOutlined />,
+      clickFunction: (event, record) => openEditPermitModal(event, record.permit),
+    },
+    userCanEditPermits && {
+      key: "edit-site-properties",
+      label: "Edit Site Properties",
+      icon: <EditOutlined />,
+      clickFunction: (event, record) => openEditSitePropertiesModal(event, record.permit),
+    },
+    userIsAdmin && {
+      key: "delete-permit",
+      label: "Delete",
+      icon: <DeleteOutlined />,
+      clickFunction: (_, record) => {
         const isLinkedToNowApplication =
           (record.permit as IPermit).permit_amendments.filter(
             (amendment) =>
@@ -473,9 +246,7 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
           ).length > 0;
 
         const isAnyBondsAssociatedTo = (record.permit as IPermit)?.bonds?.length > 0;
-
         const isDeletionAllowed = !isAnyBondsAssociatedTo && !isLinkedToNowApplication;
-
         const issues = [];
 
         if (!isDeletionAllowed) {
@@ -484,71 +255,177 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
               "Permit has amendments generated in Core which are associated with a NoW application."
             );
           }
-
           if (isAnyBondsAssociatedTo) {
             issues.push("Permit has associated bond records.");
           }
         }
 
-        const deletePermitPopUp = (
-          <Popconfirm
-            placement="topLeft"
-            title={
-              issues && issues.length > 0 ? (
-                <div style={{ whiteSpace: "pre-wrap" }}>
-                  <p>You cannot delete this permit due to following issues:</p>
-                  <ul>
-                    {issues.map((issue, index) => (
-                      <li key={index}>{issue}</li>
-                    ))}
-                  </ul>
-                </div>
-              ) : (
-                "Are you sure you want to delete this permit and all related permit amendments and permit documents?"
-              )
-            }
-            onConfirm={
-              isDeletionAllowed
-                ? () => record.handleDeletePermit((record.permit as IPermit).permit_guid)
-                : () => {}
-            }
-            okText={isDeletionAllowed ? "Delete" : "Ok"}
-            cancelText="Cancel"
-          >
-            <Button ghost type="primary" size="small">
-              <img src={TRASHCAN} alt="Remove Permit" />
-            </Button>
-          </Popconfirm>
-        );
-
-        return (
-          <div className="btn--middle flex">
-            <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-              {/* @ts-ignore */}
-              <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
-                {/* @ts-ignore */}
-                <Button type="secondary" className="permit-table-button">
-                  <div className="padding-sm">
-                    <img className="padding-sm--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
-                    Add/Edit
-                    <img
-                      className="padding-sm--right icon-svg-filter"
-                      src={CARAT}
-                      alt="Menu"
-                      style={{ paddingLeft: "5px" }}
-                    />
-                  </div>
-                </Button>
-              </Dropdown>
-            </AuthorizationWrapper>
-            <AuthorizationWrapper permission={Permission.ADMIN}>
-              {deletePermitPopUp}
-            </AuthorizationWrapper>
-          </div>
-        );
+        const title =
+          issues.length > 0
+            ? "You cannot delete this permit due to the following issues:"
+            : "Are you sure you want to delete this permit and all related permit amendments and permit documents?";
+        const content =
+          issues.length > 0 ? (
+            <div style={{ whiteSpace: "pre-wrap" }}>
+              <ul>
+                {issues.map((issue) => (
+                  <li key={issue}>{issue}</li>
+                ))}
+              </ul>
+            </div>
+          ) : null;
+        const onOk = isDeletionAllowed
+          ? () => handleDeletePermit((record.permit as IPermit).permit_guid)
+          : () => {};
+        return Modal.confirm({
+          title,
+          content,
+          onOk,
+          okText: isDeletionAllowed ? "Delete" : "Ok",
+          cancelText: "Cancel",
+        });
       },
     },
-  ];
+  ].filter(Boolean);
+
+  const recordActionsFilter = (record, actionItems) => {
+    const filterOut = record.hasAmalgamated
+      ? ["amalgamate", "add-amendment"]
+      : ["amalgamate-amend"];
+    return actionItems.filter(({ key }) => !filterOut.includes(key));
+  };
+
+  const actionsMenu = renderActionsColumn({ actions, recordActionsFilter });
+
+  const columns: ColumnsType<MinePermitTableItem> = [
+    {
+      title: "Permit No.",
+      key: "permitNo",
+      render: (record) => <div title="Permit No.">{renderPermitNo(record.permit)}</div>,
+    },
+    renderCategoryColumn("status", "Status", permitStatusOptionsHash),
+    renderTextColumn("permittee", "Permittee"),
+    renderTextColumn("firstIssued", "First Issued"),
+    renderTextColumn("lastAmended", "Last Amended"),
+    userCanEditPermits && actionsMenu,
+  ].filter(Boolean);
+
+  const handleNavigateToPermitConditions = (record) => {
+    return history.push(
+      route.EDIT_PERMIT_CONDITIONS.dynamicRoute(record.mineGuid, record.permit_amendment_guid)
+    );
+  };
+
+  // from DownloadAllDocumentsButton/MineReportTable.js - I think there is a new way to accomplish this
+  const handleDownloadAll = (record) => {
+    const documents = record.documents;
+    const docURLS = [];
+
+    const totalFiles = documents.length;
+    if (totalFiles === 0) {
+      return;
+    }
+    documents.forEach((doc) =>
+      getDocumentDownloadToken(doc.document_manager_guid, doc.document_name, docURLS)
+    );
+
+    waitFor(() => docURLS.length === documents.length).then(async () => {
+      for (const url of docURLS) {
+        downloadDocument(url);
+
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+      }
+      notification.success({
+        message: `Successfully Downloaded: ${totalFiles} files.`,
+        duration: 10,
+      });
+    });
+  };
+
+  const childActions: ITableAction[] = [
+    userCanEditPermits && {
+      key: "edit",
+      label: "Edit",
+      icon: <EditOutlined />,
+      clickFunction: (event, record) =>
+        openEditAmendmentModal(event, record, record.permit as IPermit),
+    },
+    {
+      key: "view-permit-conditions",
+      label: "View Permit Conditions",
+      clickFunction: (event, record) =>
+        openViewConditionModal(
+          event,
+          record.conditions,
+          record.amendmentNumber,
+          record.permit.permit_no
+        ),
+      icon: <ReadOutlined />,
+    },
+    userCanEditPermits && {
+      key: "edit-permit-conditions",
+      label: "Edit Permit Conditions",
+      icon: <EditOutlined />,
+      clickFunction: (_, record) => handleNavigateToPermitConditions(record),
+    },
+    {
+      key: "download-all",
+      label: "Download All",
+      icon: <DownloadOutlined />,
+      clickFunction: (_, record) => {
+        handleDownloadAll(record);
+      },
+    },
+    userIsAdmin && {
+      key: "delete",
+      label: "Delete",
+      icon: <DeleteOutlined />,
+      clickFunction: (_, record) => {
+        const isLinkedToNowApplication =
+          !isEmpty(record.now_application_guid) && record.is_generated_in_core;
+
+        let title = "Are you sure you want to delete this amendment and all related documents?";
+        let okText = "Delete";
+        let onOk = () => handleDeletePermitAmendment(record);
+        if (isLinkedToNowApplication) {
+          title =
+            "You cannot delete permit amendment generated in Core with associated NoW application.";
+          okText = "Ok";
+          onOk = () => {};
+        }
+        return Modal.confirm({ title, okText, cancelText: "Cancel", onOk });
+      },
+    },
+    userIsAdmin && {
+      key: "verify",
+      label: "Verify",
+      clickFunction: (event, record) => {
+        return Modal.confirm({
+          title: `Are you sure you want to Issue this permit as a Verifiable Credential to OrgBook entity: ${record.permit.current_permittee}?`,
+          okText: "Issue",
+          cancelText: "Cancel",
+          onOk: () => handlePermitAmendmentIssueVC(event, record, record.permit),
+        });
+      },
+      icon: <SafetyCertificateOutlined />,
+    },
+  ].filter(Boolean);
+
+  const childActionsFilter = (record, actionItems) => {
+    let filtered = actionItems;
+    if (record.amendmentType === PERMIT_AMENDMENT_TYPES.original) {
+      filtered = filtered.filter((a) => a.key !== "delete");
+    }
+    if (record.is_generated_in_core) {
+      filtered = filtered.filter((a) => a.key !== "edit-permit-conditions");
+    }
+    return filtered;
+  };
+
+  const childActionsMenu = renderActionsColumn({
+    actions: childActions,
+    recordActionsFilter: childActionsFilter,
+  });
 
   const childColumns: ColumnsType<MinePermitTableItem> = [
     {
@@ -559,28 +436,11 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
       render: (text) => <div title="Amendment">{text}</div>,
     },
     {
-      title: "Type",
-      dataIndex: "permit_amendment_type_code",
-      key: "permit_amendment_type_code",
+      ...renderTextColumn("permit_amendment_type_code", "Type", permitAmendmentTypeOptionsHash),
       width: "130px",
-      render: (text, record) => (
-        <div title="Type">{record.permitAmendmentTypeOptionsHash[text]}</div>
-      ),
     },
-    {
-      title: "Date Issued",
-      dataIndex: "issueDate",
-      key: "issueDate",
-      width: "130px",
-      render: (text) => <div title="Issue Date">{text}</div>,
-    },
-    {
-      title: "Authorization End Date",
-      dataIndex: "authorizationEndDate",
-      key: "authorizationEndDate",
-      width: "250px",
-      render: (text) => <div title="Authorization End Date">{text}</div>,
-    },
+    { ...renderTextColumn("issueDate", "Date Issued"), width: "130px" },
+    { ...renderTextColumn("authorizationEndDate", "Authorization End Date"), width: "250px" },
     {
       title: "Description",
       dataIndex: "description",
@@ -600,8 +460,8 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
       render: (text) => (
         <div title="Permit Package">
           <ul>
-            {text?.map((file, index) => (
-              <li key={index} className="wrapped-text">
+            {text?.map((file) => (
+              <li key={file.document_manager_guid} className="wrapped-text">
                 {renderDocumentLink(file.mine_document)}
               </li>
             ))}
@@ -616,8 +476,8 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
       render: (text) => (
         <div title="Permit Files">
           <ul>
-            {text?.map((file, index) => (
-              <li key={index} className="wrapped-text">
+            {text?.map((file) => (
+              <li key={file.document_manager_guid} className="wrapped-text">
                 {renderDocumentLink(file)}
               </li>
             ))}
@@ -625,138 +485,18 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
         </div>
       ),
     },
-    {
-      title: "",
-      dataIndex: "operations",
-      key: "operations",
-      align: "right",
-      render: (text, record) => {
-        const items = [
-          {
-            key: "0",
-            label: (
-              <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-                <div className="custom-menu-item">
-                  <button
-                    type="button"
-                    className="full add-permit-dropdown-button"
-                    onClick={(event) =>
-                      record.openEditAmendmentModal(event, record, record.permit as IPermit)
-                    }
-                  >
-                    <img
-                      src={EDIT_OUTLINE_VIOLET}
-                      alt="Edit"
-                      className="icon-sm padding-sm--right violet"
-                      style={{ paddingLeft: "13px" }}
-                    />
-                    Edit
-                  </button>
-                </div>
-              </AuthorizationWrapper>
-            ),
-          },
-          {
-            key: "1",
-            label: (
-              <div className="custom-menu-item">
-                <button
-                  type="button"
-                  className="full add-permit-dropdown-button"
-                  onClick={(event) =>
-                    record.openViewConditionModal(
-                      event,
-                      record.conditions,
-                      record.amendmentNumber,
-                      record.permit.permit_no
-                    )
-                  }
-                >
-                  <ReadOutlined className="padding-md--right icon-sm violet" />
-                  View Permit Conditions
-                </button>
-              </div>
-            ),
-          },
-          ...(!record.is_generated_in_core
-            ? [
-                {
-                  key: "2",
-                  label: renderEditPermitConditions(text, record),
-                },
-              ]
-            : []),
-          {
-            key: "3",
-            label: <DownloadAllDocumentsButton documents={record.permitAmendmentDocuments} />,
-          },
-          {
-            key: "4",
-            label: renderDeleteButtonForPermitAmendments(record),
-          },
-          {
-            key: "5",
-            label: renderVerifyCredentials(text, record),
-          },
-        ];
-        const menu = <Menu items={items} />;
-        return (
-          <div>
-            {/* @ts-ignore */}
-            <Dropdown overlay={menu} placement="bottomLeft">
-              {/* @ts-ignore */}
-              <Button type="secondary" className="permit-table-button">
-                Actions
-                <img
-                  className="padding-sm--right icon-svg-filter"
-                  src={CARAT}
-                  alt="Menu"
-                  style={{ paddingLeft: "5px" }}
-                />
-              </Button>
-            </Dropdown>
-          </div>
-        );
-      },
-    },
+    childActionsMenu,
   ];
 
   const permitColumns = [...columns];
 
-  const permitStatusOptionsHash = useSelector(getDropdownPermitStatusOptionsHash);
-  const permitAmendmentTypeOptionsHash = useSelector(getPermitAmendmentTypeOptionsHash);
-
   const amendmentHistory = (permit) => {
     return permit?.permit_amendments?.map((amendment, index) =>
-      transformChildRowData(
-        amendment,
-        permit,
-        permit.permit_amendments.length - index,
-        major_mine_ind,
-        openEditAmendmentModal,
-        handleDeletePermitAmendment,
-        handlePermitAmendmentIssueVC,
-        permitAmendmentTypeOptionsHash,
-        openViewConditionModal,
-        id
-      )
+      transformChildRowData(amendment, permit, permit.permit_amendments.length - index, id)
     );
   };
 
-  const rowData = permits?.map((permit) =>
-    transformRowData(
-      permit,
-      major_mine_ind,
-      openEditPermitModal,
-      openAddPermitAmendmentModal,
-      openAddAmalgamatedPermitModal,
-      permitStatusOptionsHash,
-      handleDeletePermit,
-      handleDeletePermitAmendment,
-      openAddPermitHistoricalAmendmentModal,
-      openEditSitePropertiesModal
-    )
-  );
+  const rowData = permits?.map((permit) => transformRowData(permit));
 
   return (
     <CoreTable

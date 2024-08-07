@@ -411,7 +411,6 @@ export const MinePermitInfo: FC<MinePermitInfoProps> = (props) => {
             <MinePermitTable
               isLoaded={isLoaded}
               permits={props.permits}
-              major_mine_ind={mine.major_mine_ind}
               openEditPermitModal={openEditPermitModal}
               openEditAmendmentModal={openEditAmendmentModal}
               openEditSitePropertiesModal={openEditSitePropertiesModal}
