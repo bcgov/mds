@@ -77,7 +77,7 @@ class AMSApiService():
     def __get_ams_document_url(cls, project_guid):
         if project_guid is None:
             return ''
-        return f"{Config.AMS_DOCUMENT_BASE_URL}/pre-applications/{project_guid}/documents"
+        return f"{Config.CORE_WEB_URL}/pre-applications/{project_guid}/documents"
 
     @classmethod
     def __set_contact_details(cls, contact):
