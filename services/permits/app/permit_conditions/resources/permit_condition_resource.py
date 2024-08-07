@@ -3,8 +3,9 @@ import json
 import os
 import tempfile
 from io import StringIO
-from typing import Optional
+from typing import Optional, Union
 
+from app.helpers.celery_task_status import CeleryTaskStatus
 from app.helpers.temporary_file import store_temporary
 from app.permit_conditions.pipelines.permit_condition_pipeline import (
     permit_condition_pipeline,
@@ -15,6 +16,7 @@ from app.permit_conditions.validator.permit_condition_model import (
     PermitConditions,
 )
 from fastapi import APIRouter, File, HTTPException, Response, UploadFile
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 router = APIRouter()
@@ -27,6 +29,9 @@ class JobStatus(BaseModel):
     id: str
     status: str
     meta: Optional[dict] = None
+
+class InProgressJobStatusResponse(BaseModel):
+    detail: str
 
 
 @router.post("/permit_conditions")
@@ -69,7 +74,7 @@ def status(task_id: str) -> JobStatus:
     res = run_permit_condition_pipeline.app.AsyncResult(task_id)
     return JobStatus(id=res.task_id, status=res.status, meta=res.info)
 
-@router.get("/permit_conditions/results")
+@router.get("/permit_conditions/results", response_model=PermitConditions, responses={202: {"model": InProgressJobStatusResponse}})
 def results(task_id: str) -> PermitConditions:
     """
     Get the results of a permit conditions extraction job.
@@ -80,15 +85,15 @@ def results(task_id: str) -> PermitConditions:
     """
     res = run_permit_condition_pipeline.app.AsyncResult(task_id)
 
-    if res.status == "SUCCESS":
+    if res.status == CeleryTaskStatus.SUCCESS.name:
         return res.get()
-    elif res.status == "FAILURE":
+    elif res.status == CeleryTaskStatus.FAILURE.name:
         raise HTTPException(500, detail=f"Task failed to complete: {res.status}")
     else:
-        raise HTTPException(202, detail=f"Task has not completed yet. Current status: {res.status}")
+        return JSONResponse(status_code=202, content={"detail": f"Task has not completed yet. Current status: {res.status}"})
 
-@router.get("/permit_conditions/results/csv")
-def results(task_id: str):
+@router.get("/permit_conditions/results/csv", responses={202: {"model": InProgressJobStatusResponse}})
+def results(task_id: str) -> str:
     """
     Get the results of a permit conditions extraction job in a csv format
     Args:
@@ -98,7 +103,7 @@ def results(task_id: str):
     """
     res = run_permit_condition_pipeline.app.AsyncResult(task_id)
 
-    if res.status == "SUCCESS":
+    if res.status == CeleryTaskStatus.SUCCESS.name:
         conditions = PermitConditions(conditions=res.get()['conditions'])
 
         # Create a StringIO object to write CSV data
@@ -126,10 +131,10 @@ def results(task_id: str):
             headers={"Content-Disposition": 'attachment; filename="permit_conditions.csv"'},
         )
 
-    elif res.status == "FAILURE":
+    elif res.status == CeleryTaskStatus.FAILURE.name:
         raise HTTPException(500, detail=f"Task failed to complete: {res.status}")
     else:
-        raise HTTPException(202, detail=f"Task has not completed yet. Current status: {res.status}")
+        return JSONResponse(status_code=202, content={"detail": f"Task has not completed yet. Current status: {res.status}"})
 
 
 @router.get("/permit_conditions/flow")
