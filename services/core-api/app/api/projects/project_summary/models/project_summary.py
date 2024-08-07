@@ -1162,7 +1162,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                     company_alias,
                     zoning,
                     zoning_reason,
-                    regional_district_name)
+                    regional_district_name,
+                    project.project_guid)
 
                 amendment_ams_results = AMSApiService.create_amendment_ams_authorization(
                     ams_authorizations,
@@ -1189,7 +1190,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                     zoning_reason,
                     regional_district_name,
                     is_legal_land_owner,
-                    is_crown_land_federal_or_provincial
+                    is_crown_land_federal_or_provincial,
+                    project.project_guid
                 )
 
             for authorization in ams_authorizations.get('amendments', []):
@@ -1246,7 +1248,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 "mine_name": mine.mine_name,
                 "mine_no": mine.mine_no,
             },
-            "core_project_summary_link": f'{Config.CORE_PROD_URL}/pre-applications/{self.project.project_guid}/overview'
+            "core_project_summary_link": f'{Config.CORE_WEB_URL}/pre-applications/{self.project.project_guid}/overview'
         }
 
         minespace_context = {

@@ -119,10 +119,7 @@ class Config(object):
     NRIS_USER_NAME = os.environ.get('NRIS_USER_NAME', None)
     NRIS_PASS = os.environ.get('NRIS_PASS', None)
     ENVIRONMENT_NAME = os.environ.get('ENVIRONMENT_NAME', 'dev')
-    CORE_PROD_URL = os.environ.get('CORE_PRODUCTION_URL', 'https://minesdigitalservices.gov.bc.ca')
-    CORE_TEST_URL = os.environ.get('CORE_TEST_URL', 'https://mds-test.apps.silver.devops.gov.bc.ca')
-    CORE_DEV_URL = os.environ.get('CORE_DEV_URL', 'https://mds-dev.apps.silver.devops.gov.bc.ca')
-    CORE_LOCAL_URL = os.environ.get('CORE_LOCAL_URL', 'http://localhost:3000')
+    CORE_WEB_URL = os.environ.get('CORE_WEB_URL', 'http://localhost:3000')
 
     MINESPACE_PROD_URL = os.environ.get('MINESPACE_PRODUCTION_URL', 'https://minespace.gov.bc.ca')
     MINESPACE_TEST_URL = os.environ.get('MINESPACE_TEST_URL',
