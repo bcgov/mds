@@ -308,7 +308,7 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
     renderTextColumn("firstIssued", "First Issued"),
     renderTextColumn("lastAmended", "Last Amended"),
     userCanEditPermits && actionsMenu,
-  ];
+  ].filter(Boolean);
 
   const handleNavigateToPermitConditions = (record) => {
     return history.push(
