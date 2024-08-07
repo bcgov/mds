@@ -10,7 +10,7 @@ python-dotenv==1.0.0
 boto3==1.34.139
 fastapi==0.108.0
 pdf2image==1.17.0
-Pillow==10.3.
+Pillow==10.3.0
 pdfminer.six==20231228
 pyyaml==6.0.1
 ocrmypdf==16.4.1
