@@ -49,8 +49,6 @@ services:
         condition: service_healthy
       elasticsearch:
         condition: service_healthy
-      # nlm-ingestor:
-      #   condition: service_started
       haystack:
         condition: service_started
       redis:

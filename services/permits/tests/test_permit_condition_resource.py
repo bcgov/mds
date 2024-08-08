@@ -2,13 +2,14 @@ from unittest import mock
 
 import httpx
 import pytest
-from app.app import mds  # Import your FastAPI app here
+from app.app import mds
 from app.helpers.celery_task_status import CeleryTaskStatus
 from app.permit_conditions.tasks.tasks import run_permit_condition_pipeline
 from fastapi.testclient import TestClient
 
-# Create a TestClient using the FastAPI app
 client = TestClient(mds)
+mds.user_middleware.clear()
+mds.middleware_stack = mds.build_middleware_stack()
 
 @pytest.fixture
 def mock_run_permit_condition_pipeline(mocker):
