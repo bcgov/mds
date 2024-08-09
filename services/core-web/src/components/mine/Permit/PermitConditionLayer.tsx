@@ -15,7 +15,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   level = 0,
 }) => {
   const expandClass = isExpanded ? "condition-expanded" : "condition-collapsed";
-  const className = `condition-layer condition-layer--${level} fade-in`;
+  const className = `condition-layer condition-layer--${level} condition-${condition.condition_type_code} fade-in`;
   return (
     <div className={className}>
       <div className={expandClass}>

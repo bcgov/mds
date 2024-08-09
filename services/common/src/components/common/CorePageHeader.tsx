@@ -46,7 +46,7 @@ const CorePageHeader: FC<CorePageHeaderProps> = ({
   return (
     <div className="core-page">
       <div className="view--header padding-lg--top padding-lg--sides core-page-header">
-        <Row className="margin-large--bottom">
+        <Row>
           <Col>
             {breadCrumbs.map((crumb) => {
               return (
@@ -65,7 +65,7 @@ const CorePageHeader: FC<CorePageHeaderProps> = ({
         </Row>
         <Row align="middle" gutter={16}>
           <Col>
-            <Title level={1} className="padding-lg--right margin-none">
+            <Title level={1} className="margin-none">
               {entityType} {entityLabel}
             </Title>
           </Col>

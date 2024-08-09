@@ -40,7 +40,7 @@ const PermitConditions: FC<PermitConditionProps> = ({ latestAmendment }) => {
     featureUrlRouteArguments: [id, permitGuid, "conditions"],
   };
 
-  const topOffset = 109 + 49; // header + tab nav
+  const topOffset = 99 + 49; // header + tab nav
 
   const handleUpdateCondition = (condition: IPermitCondition) => {
     console.log("not implemented", condition);
@@ -88,7 +88,7 @@ const PermitConditions: FC<PermitConditionProps> = ({ latestAmendment }) => {
                   return (
                     <>
                       <Col span={24} key={category.href}>
-                        <Title level={3} className="margin-none">
+                        <Title level={3} className="margin-none" id={category.href}>
                           {category.title} ({category.conditions.length})
                         </Title>
                       </Col>

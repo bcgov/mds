@@ -1250,9 +1250,9 @@ export const PERMITS: IPermit[] = [
     bonds: [],
     exemption_fee_status_code: "",
     exemption_fee_status_note: "",
-    permit_prefix: "",
-    update_user: "",
-    update_timestamp: "",
+    permit_prefix: "C",
+    update_user: "update-user",
+    update_timestamp: "2019-04-05 21:05:40.123456+00:00",
   },
   {
     permit_id: "2484",
@@ -1311,8 +1311,8 @@ export const PERMITS: IPermit[] = [
       mine_type_detail: [],
     },
     permit_prefix: "M",
-    update_user: "",
-    update_timestamp: "",
+    update_user: "update-user",
+    update_timestamp: "2019-04-05 21:05:40.123456+00:00",
   },
 ];
 
