@@ -93,7 +93,7 @@ def validate_phone_no(phone_no, address_type_code='CAN'):
 
 def get_current_core_or_ms_env_url(app):
     if app == 'core':
-        core_config_property = f'CORE_{(Config.ENVIRONMENT_NAME).upper()}_URL'
+        core_config_property = 'CORE_WEB_URL'
         return getattr(Config, core_config_property)
     elif app == 'ms':
         ms_config_property = f'MINESPACE_{(Config.ENVIRONMENT_NAME).upper()}_URL'

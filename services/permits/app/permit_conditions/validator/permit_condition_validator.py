@@ -101,7 +101,7 @@ class PermitConditionValidator:
             # If there are no more pages to process, return the conditions found
             all_replies = self.documents + conditions
 
-            return {"conditions": all_replies}
+            return {"conditions": PermitConditions(conditions=all_replies)}
 
     def _parse_reply(self, reply) -> List[PromptResponse]:
         try:
@@ -118,7 +118,11 @@ class PermitConditionValidator:
                 else:
                     conditions.append(condition)
 
-            response = PermitConditions.parse_obj({"conditions": conditions})
+            for c in conditions:
+                if 'page_number' in c and c.get('page_number') == '':
+                    c['page_number'] = None
+
+            response = PermitConditions.model_validate({"conditions": conditions})
 
             return response.conditions
         except Exception as e:

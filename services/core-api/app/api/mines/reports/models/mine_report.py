@@ -253,7 +253,7 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
             body_verb = 'uploaded document(s) to' if is_edit else 'submitted'
             body = f'<p>{self.mine.mine_name} (Mine no: {self.mine.mine_no}) has {body_verb} a "{self.mine_report_definition_report_name}" report.</p>'
 
-            link = f'{Config.CORE_PROD_URL}/mine-dashboard/{self.mine.mine_guid}/reports/code-required-reports'
+            link = f'{Config.CORE_WEB_URL}/mine-dashboard/{self.mine.mine_guid}/reports/code-required-reports'
             body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
             EmailService.send_email(subject, recipients, body)
 

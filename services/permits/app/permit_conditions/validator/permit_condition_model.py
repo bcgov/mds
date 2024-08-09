@@ -23,8 +23,9 @@ class PermitCondition(BaseModel):
     subparagraph: str = None
     clause: str = None
     subclause: str = None
-    page_number: int = None
+    page_number: Optional[int] = None
     condition_text: str = None
+    original_condition_text:Optional[str] = None
 
 
 class PermitConditions(BaseModel):

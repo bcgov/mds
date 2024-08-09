@@ -1,5 +1,12 @@
 services:
-  haystack-api:
+
+  nlm-ingestor:
+    container_name: nlm_ingestor
+    image: ghcr.io/nlmatics/nlm-ingestor:latest
+    ports:
+      - 5010:5001
+  
+  haystack:
     container_name: haystack
     build:
       context: './'
@@ -17,12 +24,35 @@ services:
       - ROOT_PATH=/haystack
       - FILE_UPLOAD_PATH=/file-uploads
       - HAYSTACK_TELEMETRY_ENABLED=False
+  haystack_celery:
+    container_name: haystack_celery
+    build:
+      context: './'
+      dockerfile: './Dockerfile'
+    volumes:
+      - ./:/opt/pipelines
+      - ./:/code
+      - fileuploads:/file-uploads
+    command: >-
+      python -m watchdog.watchmedo auto-restart
+      -d app/ -p '*.py' --recursive --
+      celery -A app.celery worker --loglevel=info -n permit_service@%h --concurrency=1 -Q permits
+    restart: on-failure
+    environment:
+      - DOCUMENTSTORE_PARAMS_HOST=elasticsearch
+      - TOKENIZERS_PARALLELISM=false
+      - ROOT_PATH=/haystack
+      - FILE_UPLOAD_PATH=/file-uploads
+      - HAYSTACK_TELEMETRY_ENABLED=False
     depends_on:
       kibana:
         condition: service_healthy
       elasticsearch:
         condition: service_healthy
-  
+      haystack:
+        condition: service_started
+      redis:
+        condition: service_started
   elasticsearch:
     image: "docker.elastic.co/elasticsearch/elasticsearch:8.12.1"
     container_name: elasticsearch
@@ -33,6 +63,7 @@ services:
       - discovery.type=single-node
       - xpack.security.enabled=false
       - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
+      - cluster.routing.allocation.disk.threshold_enabled=false
 
     volumes:
       - esdata01:/usr/share/elasticsearch/data

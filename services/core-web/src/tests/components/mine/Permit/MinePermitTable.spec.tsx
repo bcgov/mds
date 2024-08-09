@@ -1,32 +1,9 @@
 import React from "react";
 import { MinePermitTable } from "@/components/mine/Permit/MinePermitTable";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { render } from "@testing-library/react";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { BrowserRouter } from "react-router-dom";
-
-const dispatchProps: any = {};
-const props: any = {};
-
-const setupDispatchProps = () => {
-  dispatchProps.openEditPermitModal = jest.fn();
-  dispatchProps.openAddPermitAmendmentModal = jest.fn();
-  dispatchProps.openAddAmalgamatedPermitModal = jest.fn();
-  dispatchProps.openAddPermitHistoricalAmendmentModal = jest.fn();
-  dispatchProps.openEditAmendmentModal = jest.fn();
-  dispatchProps.onExpand = jest.fn();
-  dispatchProps.handleDeletePermit = jest.fn();
-  dispatchProps.handleDeletePermitAmendment = jest.fn();
-  dispatchProps.handlePermitAmendmentIssueVC = jest.fn();
-  dispatchProps.openEditSitePropertiesModal = jest.fn();
-  dispatchProps.openViewConditionModal = jest.fn();
-};
-
-const setupProps = () => {
-  props.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
-  props.permits = MOCK.MINES.mines[MOCK.MINES.mineIds[0]].mine_permit_numbers;
-  props.partyRelationships = MOCK.PARTYRELATIONSHIPS;
-};
 
 function mockFunction() {
   const original = jest.requireActual("react-router-dom");
@@ -40,17 +17,27 @@ function mockFunction() {
 
 jest.mock("react-router-dom", () => mockFunction());
 
-beforeEach(() => {
-  setupDispatchProps();
-  setupProps();
-});
-
 describe("MinePermitTable", () => {
   it("renders properly", () => {
     const { container } = render(
       <ReduxWrapper>
         <BrowserRouter>
-          <MinePermitTable {...dispatchProps} {...props} />
+          <MinePermitTable
+            isLoaded
+            permits={MOCK.PERMITS}
+            openEditPermitModal={jest.fn()}
+            openEditAmendmentModal={jest.fn()}
+            openEditSitePropertiesModal={jest.fn()}
+            openAddPermitAmendmentModal={jest.fn()}
+            openAddPermitHistoricalAmendmentModal={jest.fn()}
+            openAddAmalgamatedPermitModal={jest.fn()}
+            handlePermitAmendmentIssueVC={jest.fn()}
+            expandedRowKeys={[]}
+            onExpand={jest.fn()}
+            handleDeletePermit={jest.fn()}
+            handleDeletePermitAmendment={jest.fn()}
+            openViewConditionModal={jest.fn()}
+          />
         </BrowserRouter>
       </ReduxWrapper>
     );

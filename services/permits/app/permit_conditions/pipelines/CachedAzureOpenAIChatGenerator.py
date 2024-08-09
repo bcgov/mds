@@ -35,6 +35,10 @@ def hash_messages(messages):
 
 @component
 class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
+
+    def __init__(self, **kwargs):
+        super(CachedAzureOpenAIChatGenerator, self).__init__(**kwargs)
+        self.it = 0
     """
     A class that represents a cached version of the AzureOpenAIChatGenerator.
 
@@ -86,6 +90,7 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
 
     @component.output_types(data=ChatData)
     def run(self, data: ChatData, generation_kwargs=None, iteration=0):
+        self.it+=1
         """
         Runs the chat generation process.
 
@@ -127,5 +132,9 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
         reply.meta["usage"]["completion_tokens"] = completion_tokens
         reply.meta["usage"]["prompt_tokens"] = prompt_tokens
         reply.meta["usage"]["total_tokens"] = total_tokens
+
+        if DEBUG_MODE:
+            with open(f"debug/cached_azure_openai_chat_generator_output_{iteration}.txt", "w") as f:
+                f.write(reply.content)
 
         return {"data": ChatData([reply], data.documents)}

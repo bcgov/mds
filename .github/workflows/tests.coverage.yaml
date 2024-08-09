@@ -42,12 +42,12 @@ jobs:
         env:
           DOCKER_BUILDKIT: 1
         run: |
-          docker-compose -f docker-compose.ci.yaml up -d backend
+          docker compose -f docker-compose.ci.yaml up -d backend
 
       - name: Generate coverage report
         run: |
-          docker-compose -f docker-compose.ci.yaml exec -T backend coverage run --source=app --branch -m pytest -rx
-          docker-compose -f docker-compose.ci.yaml exec -T backend coverage xml
+          docker compose -f docker-compose.ci.yaml exec -T backend coverage run --source=app --branch -m pytest -rx
+          docker compose -f docker-compose.ci.yaml exec -T backend coverage xml
 
       # Strange relative paths were done to work with paths created in docker context but coverage format is not in docker context
       - name: Format backend report
@@ -97,12 +97,12 @@ jobs:
         env:
           DOCKER_BUILDKIT: 1
         run: |
-          docker-compose -f docker-compose.ci.yaml up -d frontend
+          docker compose -f docker-compose.ci.yaml up -d frontend
 
       # During this, rewrite frontend report from docker context path to runner paths
       - name: Generate frontend coverage reports
         run: |
-          docker-compose -f docker-compose.ci.yaml exec -T frontend npm run test:coverage
+          docker compose -f docker-compose.ci.yaml exec -T frontend npm run test:coverage
           docker cp mds_frontend:/app/coverage/clover.xml services/core-web/clover.xml
           sed -i "s|path=\"/app|path=\"$GITHUB_WORKSPACE/services/core-web|g" services/core-web/clover.xml
 
@@ -154,13 +154,13 @@ jobs:
         env:
           DOCKER_BUILDKIT: 1
         run: |
-          docker-compose -f docker-compose.ci.yaml up -d minespace
+          docker compose -f docker-compose.ci.yaml up -d minespace
 
       # During this, rewrite  minespace report from docker context path to runner paths
       - name: Generate MineSpace coverage reports
         run: |
-          docker-compose -f docker-compose.ci.yaml exec -T minespace npm test -- -u
-          docker-compose -f docker-compose.ci.yaml exec -T minespace npm run test:coverage
+          docker compose -f docker-compose.ci.yaml exec -T minespace npm test -- -u
+          docker compose -f docker-compose.ci.yaml exec -T minespace npm run test:coverage
           docker cp mds_minespace:/app/coverage/clover.xml services/minespace-web/clover.xml
           sed -i "s|path=\"/app|path=\"$GITHUB_WORKSPACE/services/minespace-web|g" services/minespace-web/clover.xml
 

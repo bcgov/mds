@@ -208,7 +208,9 @@ exports[`ViewPermit renders properly 1`] = `
         </span>
         <span
           class="ant-typography margin-medium--left"
-        />
+        >
+          Current Permittee
+        </span>
       </div>
     </div>
   </div>
@@ -372,7 +374,9 @@ exports[`ViewPermit renders properly 1`] = `
                     </div>
                     <div
                       class="ant-typography"
-                    />
+                    >
+                      Current Permittee
+                    </div>
                   </div>
                 </div>
                 <div
@@ -443,7 +447,7 @@ exports[`ViewPermit renders properly 1`] = `
                     <div
                       class="ant-typography"
                     >
-                      Aluminum
+                      -
                     </div>
                   </div>
                 </div>
@@ -463,7 +467,7 @@ exports[`ViewPermit renders properly 1`] = `
                     <div
                       class="ant-typography"
                     >
-                      Underground
+                      -
                     </div>
                   </div>
                   <div
@@ -560,7 +564,7 @@ exports[`ViewPermit renders properly 1`] = `
                     <div
                       class="ant-typography"
                     >
-                      
+                      Apr 03 2019
                     </div>
                   </div>
                 </div>
@@ -674,7 +678,7 @@ exports[`ViewPermit renders properly 1`] = `
                     <div
                       class="ant-typography"
                     >
-                      
+                      0
                     </div>
                   </div>
                 </div>
@@ -688,6 +692,7 @@ exports[`ViewPermit renders properly 1`] = `
                       class="ant-typography"
                     >
                       Updated by: 
+                      
                     </div>
                   </div>
                   <div
@@ -697,6 +702,7 @@ exports[`ViewPermit renders properly 1`] = `
                       class="ant-typography"
                     >
                       Updated Date: 
+                      
                     </div>
                   </div>
                 </div>
