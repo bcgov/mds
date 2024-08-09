@@ -906,8 +906,9 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                authorizations=[],
                ams_authorizations=None,
                submission_date=None,
-               add_to_session=True,
-               is_historic=False):
+               add_to_session=True):
+
+        is_historic = not is_feature_enabled(Feature.AMS_AGENT)
 
         project_summary = cls(
             project_summary_description=project_summary_description,
