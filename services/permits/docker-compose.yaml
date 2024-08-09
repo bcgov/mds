@@ -33,6 +33,7 @@ services:
       - ./:/opt/pipelines
       - ./:/code
       - fileuploads:/file-uploads
+      - certs:/permitsdata/certs
     command: >-
       python -m watchdog.watchmedo auto-restart
       -d app/ -p '*.py' --recursive --
@@ -44,6 +45,8 @@ services:
       - ROOT_PATH=/haystack
       - FILE_UPLOAD_PATH=/file-uploads
       - HAYSTACK_TELEMETRY_ENABLED=False
+      - ELASTICSEARCH_CA_CERT=/permitsdata/certs/ca/ca.crt
+
     depends_on:
       kibana:
         condition: service_healthy
@@ -53,6 +56,48 @@ services:
         condition: service_started
       redis:
         condition: service_started
+  create_certs:
+    container_name: create_certs
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.1
+    command: >
+      bash -c '
+      if [ ! -f certs/ca.zip ]; then
+        echo "Creating CA";
+        bin/elasticsearch-certutil ca --silent --pem -out /certs/ca.zip;
+        unzip /certs/ca.zip -d /certs;
+      fi;
+
+      if [[ ! -f /certs/bundle.zip ]]; then
+          cat << EOF >> instances.yml
+          instances:
+            - name: elasticsearch
+              dns:
+                - elasticsearch 
+                - localhost
+              ip:
+                - 127.0.0.1
+      EOF
+          bin/elasticsearch-certutil cert --silent --pem -out /certs/bundle.zip --in instances.yml --ca-cert /certs/ca/ca.crt --ca-key /certs/ca/ca.key;
+          unzip /certs/bundle.zip -d /certs; 
+        fi;
+        echo "Setting file permissions"
+        chown -R root:root /certs;
+        find . -type d -exec chmod 750 \{\} \;;
+        find . -type f -exec chmod 640 \{\} \;;
+        echo "Waiting for Elasticsearch availability";
+        until curl -s --cacert /certs/ca/ca.crt https://elasticsearch:9200 | grep -q "missing authentication credentials"; do sleep 30; done;
+        echo "Setting kibana_system password";
+        until curl -s -X POST --cacert /certs/ca/ca.crt -u "${ELASTICSEARCH_USERNAME}:${ELASTICSEARCH_PASSWORD}" -H "Content-Type: application/json" https://elasticsearch:9200/_security/user/kibana_system/_password -d "{\"password\":\"${ELASTICSEARCH_PASSWORD}\"}" | grep -q "^{}"; do sleep 10; done;
+        echo "All done!";
+      '
+    user: "0"
+    working_dir: /usr/share/elasticsearch
+    volumes: ['certs:/certs']
+    healthcheck:
+      test: ["CMD-SHELL", "[ -f /certs/elasticsearch/elasticsearch.crt ]"]
+      timeout: 5s
+      retries: 120
+
   elasticsearch:
     image: "docker.elastic.co/elasticsearch/elasticsearch:8.12.1"
     container_name: elasticsearch
@@ -60,39 +105,74 @@ services:
       - 9200:9200
     restart: on-failure
     environment:
+      - ELASTIC_PASSWORD=${ELASTICSEARCH_PASSWORD}
       - discovery.type=single-node
-      - xpack.security.enabled=false
+      - xpack.security.enabled=true
       - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
+      - node.name=elasticsearch
+      - cluster.name=elasticsearch
       - cluster.routing.allocation.disk.threshold_enabled=false
+      - xpack.security.enabled="true"
+      - xpack.security.transport.ssl.enabled="true"
+      - xpack.security.http.ssl.enabled="true"
+      - xpack.security.transport.ssl.verification_mode=certificate
+      - xpack.security.transport.ssl.key=/usr/share/elasticsearch/config/certs/elasticsearch/elasticsearch.key
+      - xpack.security.transport.ssl.certificate=/usr/share/elasticsearch/config/certs/elasticsearch/elasticsearch.crt
+      - xpack.security.transport.ssl.certificate_authorities=/usr/share/elasticsearch/config/certs/ca/ca.crt
+      - xpack.security.http.ssl.key=/usr/share/elasticsearch/config/certs/elasticsearch/elasticsearch.key
+      - xpack.security.http.ssl.certificate=/usr/share/elasticsearch/config/certs/elasticsearch/elasticsearch.crt
+      - xpack.security.http.ssl.certificate_authorities=/usr/share/elasticsearch/config/certs/ca/ca.crt
 
     volumes:
       - esdata01:/usr/share/elasticsearch/data
-
+      - certs:/usr/share/elasticsearch/config/certs
     healthcheck:
-        test: curl --fail http://localhost:9200/_cat/health || exit 1
-        interval: 10s
-        timeout: 1s
-        retries: 10
+      test:
+        [
+          "CMD-SHELL",
+          "curl -s --cacert config/certs/ca/ca.crt https://localhost:9200 | grep -q 'missing authentication credentials'",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 120
+
+    depends_on:
+      create_certs:
+        condition: service_healthy
   kibana:
     image: "docker.elastic.co/kibana/kibana:8.12.1"
     ports:
       - 5601:5601
     depends_on:
-      - elasticsearch
+      elasticsearch:
+        condition: service_healthy
     container_name: kibana
-
+    volumes:
+      - certs:/usr/share/kibana/config/certs
+      - kibanadata:/usr/share/kibana/data
     environment:
-     - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+     - SERVERNAME=kibana
+     - ELASTICSEARCH_HOSTS=https://elasticsearch:9200
+     - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
+     - ELASTICSEARCH_USERNAME=kibana_system
+     - ELASTICSEARCH_PASSWORD=${ELASTICSEARCH_PASSWORD}
+
     healthcheck:
-        test: curl --fail http://localhost:5601/api/status || exit 1
-        interval: 10s
-        timeout: 1s
-        retries: 10
+      test:
+        [
+          "CMD-SHELL",
+          "curl -s -I http://localhost:5601 | grep -q 'HTTP/1.1 302 Found'",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 120
 networks:
   default:
     driver: "bridge"
 
 volumes:
+  certs:
   fileuploads:
+  kibanadata:
   esdata01:
     driver: local
