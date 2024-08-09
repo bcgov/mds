@@ -39,14 +39,14 @@ const documentWithTag = (
               <Tag
                 icon={<ClockCircleOutlined />}
                 style={{ border: "none" }}
-                className="file-version-amount table-tag-primary"
+                className="table-tag table-tag--primary"
               >
                 {record.number_prev_versions}
               </Tag>
             </Tooltip>
           </span>
         ) : null}
-        {record.is_archived ? <Tag>{"Archived"}</Tag> : null}
+        {record.is_archived ? <Tag className="table-tag table-tag--grey">{"Archived"}</Tag> : null}
       </span>
     </div>
   );

@@ -152,7 +152,7 @@ export const renderTaggedColumn = (
           <div className={`tag-text-${containerClass}`}>{text}</div>
           {tagText && (
             <div className="file-history-container">
-              <Tag className="table-tag-primary" icon={icon}>
+              <Tag className="table-tag table-tag--primary" icon={icon}>
                 {tagText}
               </Tag>
             </div>
