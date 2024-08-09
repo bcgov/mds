@@ -64,7 +64,6 @@ services:
       redis:
         condition: service_started
   create_certs:
-    tty: true
     container_name: create_certs
     image: docker.elastic.co/elasticsearch/elasticsearch:8.12.1
     command: >
