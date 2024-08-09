@@ -64,11 +64,16 @@ services:
       redis:
         condition: service_started
   create_certs:
+    tty: true
     container_name: create_certs
     image: docker.elastic.co/elasticsearch/elasticsearch:8.12.1
     command: >
       bash -c '
-      if [ ! -f certs/ca.zip ]; then
+      ### 1. Create CA and certificates for elasticsearch.
+      ### 2. Wait for elasticsearch to spin up
+      ### 3. Set a password for the `kibana_system` so it can connect to elasticsearch
+
+      if [ ! -f /certs/ca.zip ]; then
         echo "Creating CA";
         bin/elasticsearch-certutil ca --silent --pem -out /certs/ca.zip;
         unzip /certs/ca.zip -d /certs;

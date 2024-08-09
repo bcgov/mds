@@ -35,7 +35,7 @@ The Permit Service is a question-answering (QA) service built on top of deepset-
    make permits
    ```
 
-The service should now be running and ready to accept user queries.
+The service should now be running and ready to accept user queries. Note: It can take a couple of minutes for all the services to start (especially elasticsearch can be slow to spin up).
 
 ## Usage
 
