@@ -27,4 +27,4 @@ if DEBUG_MODE:
     if not os.path.exists("debug"):
         os.makedirs("debug")
 
-mds.add_middleware(OpenIdConnectMiddleware)
+# mds.add_middleware(OpenIdConnectMiddleware)

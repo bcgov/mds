@@ -85,7 +85,7 @@ ms:
 
 permits:
 	@echo "+\n++ Running Permit Service ...\n+"
-	@docker compose $(DC_FILE) up -d haystack-api
+	@docker compose $(DC_FILE) up -d haystack haystack_celery
 
 extra:
 	@echo "+\n++ Building tertiary services ...\n+"
