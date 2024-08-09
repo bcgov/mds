@@ -15,6 +15,7 @@ services:
       - ./:/opt/pipelines
       - ./:/code
       - fileuploads:/file-uploads
+      - certs:/permitsdata/certs
     ports:
       - 8004:80
     restart: on-failure
@@ -24,6 +25,12 @@ services:
       - ROOT_PATH=/haystack
       - FILE_UPLOAD_PATH=/file-uploads
       - HAYSTACK_TELEMETRY_ENABLED=False
+      - ELASTICSEARCH_CA_CERT=/permitsdata/certs/ca/ca.crt
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
   haystack_celery:
     container_name: haystack_celery
     build:

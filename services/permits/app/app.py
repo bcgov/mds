@@ -26,5 +26,7 @@ mds.include_router(permit_search_router)
 if DEBUG_MODE:
     if not os.path.exists("debug"):
         os.makedirs("debug")
+    if not os.path.exists("app/cache"):
+        os.makedirs("app/cache")
 
 mds.add_middleware(OpenIdConnectMiddleware)
