@@ -21,6 +21,7 @@ export enum Feature {
   MULTIPART_UPLOAD = "s3_multipart_upload",
   DIGITIZED_PERMITS = "digitized_permits",
   SPATIAL_BUNDLE = "spatial_bundle",
+  PERMIT_CONDITIONS_PAGE = "permit_conditions_page",
 }
 
 export const initializeFlagsmith = async (flagsmithUrl, flagsmithKey) => {

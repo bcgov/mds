@@ -12,6 +12,8 @@ import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import CorePageHeader from "@mds/common/components/common/CorePageHeader";
 import * as routes from "@/constants/routes";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { Feature } from "@mds/common/utils/featureFlag";
 
 const ViewPermit = () => {
   const dispatch = useDispatch();
@@ -19,6 +21,8 @@ const ViewPermit = () => {
   const { id, permitGuid, tab } = useParams<{ id: string; permitGuid: string; tab: string }>();
   const permit: IPermit = useSelector(getPermitByGuid(permitGuid));
   const mine: IMine = useSelector((state) => getMineById(state, id));
+  const { isFeatureEnabled } = useFeatureFlag();
+  const enablePermitConditionsTab = isFeatureEnabled(Feature.PERMIT_CONDITIONS_PAGE);
 
   const [activeTab, setActiveTab] = useState(tab ?? "overview");
   const history = useHistory();
@@ -48,13 +52,13 @@ const ViewPermit = () => {
       label: "Permit Overview",
       children: <ViewPermitOverview />,
     },
-    {
+    enablePermitConditionsTab && {
       key: "conditions",
       label: "Permit Conditions",
       children: <ViewPermitConditions latestAmendment={latestAmendment} />,
       disabled: !canViewConditions,
     },
-  ];
+  ].filter(Boolean);
 
   const handleTabChange = (newActiveTab: string) => {
     setActiveTab(newActiveTab);

@@ -50,12 +50,12 @@ const CorePageHeader: FC<CorePageHeaderProps> = ({
           <Col>
             {breadCrumbs.map((crumb) => {
               return (
-                <>
-                  <Link to={crumb.route} className="faded-text" key={crumb.route}>
+                <React.Fragment key={crumb.route}>
+                  <Link to={crumb.route} className="faded-text">
                     {crumb.text}
                   </Link>{" "}
                   /{" "}
-                </>
+                </React.Fragment>
               );
             })}
             <Text>

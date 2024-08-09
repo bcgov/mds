@@ -28,8 +28,9 @@ const PermitConditions: FC<PermitConditionProps> = ({ latestAmendment }) => {
         permitConditions?.filter(
           (c) => c.condition_category_code === cat.condition_category_code
         ) ?? [];
+      const title = cat.description.replace("Conditions", "").trim();
       return conditions.length > 0
-        ? { href: cat.condition_category_code.toLowerCase(), title: cat.description, conditions }
+        ? { href: cat.condition_category_code.toLowerCase(), title, conditions }
         : false;
     })
     .filter(Boolean);
