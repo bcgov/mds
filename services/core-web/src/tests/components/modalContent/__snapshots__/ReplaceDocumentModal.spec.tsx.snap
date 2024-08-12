@@ -2,11 +2,12 @@
 
 exports[`ReplaceDocumentModal renders correctly and matches the snapshot 1`] = `
 <form
-  class="ant-form ant-form-vertical common-form common-form-ADD_EDIT_PROJECT_SUMMARY form-edit"
-  id="ADD_EDIT_PROJECT_SUMMARY"
+  class="ant-form ant-form-vertical common-form common-form-REPLACE_DOCUMENT form-edit"
+  id="REPLACE_DOCUMENT"
 >
   <form
-    class="ant-form ant-form-vertical"
+    class="ant-form ant-form-vertical common-form common-form-REPLACE_DOCUMENT form-edit"
+    id="REPLACE_DOCUMENT"
   >
     <div
       class="ant-alert ant-alert-warning ant-alert-with-description"
@@ -100,7 +101,7 @@ exports[`ReplaceDocumentModal renders correctly and matches the snapshot 1`] = `
           >
             <label
               class=""
-              for="fileUpload"
+              for="REPLACE_DOCUMENT_fileUpload"
               title=""
             />
           </div>
@@ -130,7 +131,7 @@ exports[`ReplaceDocumentModal renders correctly and matches the snapshot 1`] = `
             >
               <div
                 class="ant-form-item-explain ant-form-item-explain-connected"
-                id="fileUpload_help"
+                id="REPLACE_DOCUMENT_fileUpload_help"
                 role="alert"
               >
                 <div

@@ -7,7 +7,7 @@ import { MINEDOCUMENTS } from "@mds/common/tests/mocks/dataMocks";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import { FORM } from "@mds/common/constants/forms";
 
-const props: any = {
+const props = {
   document: MINEDOCUMENTS.records[0],
   handleSubmit: jest.fn().mockReturnValue(Promise.resolve()),
   closeModal: jest.fn(),
@@ -19,7 +19,7 @@ describe("ReplaceDocumentModal", () => {
   it("renders correctly and matches the snapshot", () => {
     const { container } = render(
       <ReduxWrapper initialState={{}}>
-        <FormWrapper name={FORM.ADD_EDIT_PROJECT_SUMMARY} initialValues={{}} onSubmit={() => {}}>
+        <FormWrapper name={FORM.REPLACE_DOCUMENT} initialValues={{}} onSubmit={() => {}}>
           <ReplaceDocumentModal {...props} />
         </FormWrapper>
       </ReduxWrapper>
