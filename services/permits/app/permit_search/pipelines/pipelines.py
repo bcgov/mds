@@ -19,7 +19,7 @@ from haystack_integrations.document_stores.elasticsearch import (
 logger = logging.getLogger(__name__)
 
 ca_cert = os.environ.get("ELASTICSEARCH_CA_CERT", None)
-host = os.environ.get("ELASTICSEARCH_HOST", "http://elasticsearch:9200")
+host = os.environ.get("ELASTICSEARCH_HOST", "https://elasticsearch:9200")
 username = os.environ.get("ELASTICSEARCH_USERNAME", "")
 password = os.environ.get("ELASTICSEARCH_PASSWORD", "")
 

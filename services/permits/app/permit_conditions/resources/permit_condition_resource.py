@@ -93,7 +93,7 @@ def results(task_id: str) -> PermitConditions:
         return JSONResponse(status_code=202, content={"detail": f"Task has not completed yet. Current status: {res.status}"})
 
 @router.get("/permit_conditions/results/csv", responses={202: {"model": InProgressJobStatusResponse}})
-def results(task_id: str) -> str:
+def csv_results(task_id: str) -> str:
     """
     Get the results of a permit conditions extraction job in a csv format
     Args:
