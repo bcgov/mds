@@ -272,7 +272,7 @@ exports[`SpatialDocumentTable renders properly 1`] = `
                           class="file-history-container"
                         >
                           <span
-                            class="ant-tag table-tag-primary"
+                            class="ant-tag table-tag table-tag--primary"
                           >
                             <svg
                               aria-hidden="true"
