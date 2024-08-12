@@ -59,9 +59,10 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
     );
   }, []);
 
-  const authsWithDocs = project.project_summary.authorizations.filter(
-    (auth) => auth.amendment_documents.length > 0
-  );
+  const authsWithDocs =
+    project?.project_summary?.authorizations?.filter(
+      (auth) => auth.amendment_documents.length > 0
+    ) ?? [];
   const headerHeight = isCore ? 121 : 123;
   const tabNavHeight = isCore ? 60 : 49;
   const topOffset = headerHeight + tabNavHeight;
@@ -82,7 +83,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
   };
 
   const projectSummaryDocs =
-    project?.project_summary?.documents.map(
+    project?.project_summary?.documents?.map(
       (d) =>
         new MineDocument({
           ...d,
