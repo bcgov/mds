@@ -101,12 +101,29 @@ const AddSpatialDocumentsModal: FC<AddSpatialDocumentsModalProps> = ({
     },
   ];
 
+  const addBundleIdToFiles = ({
+    docman_bundle_guid,
+    geomark_id,
+  }: {
+    docman_bundle_guid: string;
+    geomark_id: string;
+  }) => {
+    const newFiles = currentValues[fieldName].map((f) => {
+      return {
+        ...f,
+        docman_bundle_guid,
+        geomark_id,
+        bundle_id: docman_bundle_guid,
+      };
+    });
+    dispatch(change(modalFormName, fieldName, [...initialDocuments, ...newFiles]));
+    dispatch(change(formName, fieldName, [...initialDocuments, ...newFiles]));
+  };
+
   const handleSubmit = async (values) => {
     const isFinalStep = currentStep === stepContent.length - 1;
     const newFiles = values[fieldName];
-    const allFiles = [...newFiles, ...initialDocuments];
     if (isFinalStep) {
-      dispatch(change(formName, fieldName, allFiles));
       setIsResetting(true);
       setCurrentStep(0);
       await dispatch(reset(modalFormName));
@@ -116,6 +133,7 @@ const AddSpatialDocumentsModal: FC<AddSpatialDocumentsModalProps> = ({
       const name = newFiles[0].document_name.split(".")[0];
       const resp = await dispatch(createSpatialBundle({ name, bundle_document_guids }));
       if (resp.payload) {
+        addBundleIdToFiles(resp.payload);
         setCurrentStep(currentStep + 1);
       }
     }

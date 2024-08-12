@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { GenericDocTableProps } from "@mds/common/interfaces/document/documentTableProps.interface";
 import CoreTable from "../../common/CoreTable";
@@ -25,9 +25,20 @@ interface SpatialDocumentTableProps extends GenericDocTableProps<ISpatialBundle>
 const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({ documents, categoryText }) => {
   const dispatch = useDispatch();
   const [isCompressionModalVisible, setIsCompressionModalVisible] = useState(false);
+  const [spatialBundles, setSpatialBundles] = useState([]);
+
+  const handleGetSpatialBundles = async () => {
+    const newSpatialBundles = await spatialBundlesFromFiles(documents);
+    setSpatialBundles(newSpatialBundles);
+  };
+
+  useEffect(() => {
+    if (documents) {
+      handleGetSpatialBundles();
+    }
+  }, [documents]);
 
   const mineDocuments = documents.map((doc) => new MineDocument(doc));
-  const spatial_bundles = spatialBundlesFromFiles(documents);
 
   const downloadSpatialBundle = () => {
     setIsCompressionModalVisible(true);
@@ -60,7 +71,11 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({ documents, catego
       clickFunction: (_, record) => downloadFileFromDocumentManager(record),
     },
     { key: "download-all", label: "Download All", clickFunction: downloadSpatialBundle },
-    { key: "view-detail", label: "View Details", clickFunction: viewSpatialBundle },
+    {
+      key: "view-detail",
+      label: "View Details",
+      clickFunction: viewSpatialBundle,
+    },
   ];
 
   const categoryColumn = categoryText
@@ -78,7 +93,10 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({ documents, catego
     ...categoryColumn,
     uploadDateColumn("upload_date", "Last Modified"),
     uploadedByColumn("create_user", "Created By"),
-    renderActionsColumn({ actions, recordActionsFilter }),
+    renderActionsColumn({
+      actions,
+      recordActionsFilter,
+    }),
   ];
 
   return (
@@ -90,7 +108,7 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({ documents, catego
         showDownloadWarning={false}
       />
       <CoreTable
-        dataSource={spatial_bundles}
+        dataSource={spatialBundles}
         columns={columns}
         expandProps={{
           getDataSource: (record) => record.bundleFiles,

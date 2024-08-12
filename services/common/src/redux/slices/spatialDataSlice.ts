@@ -6,52 +6,90 @@ import { formatDate } from "../utils/helpers";
 import { IGeoJsonFeature } from "@mds/common/interfaces/document/geojsonFeature.interface";
 import { ISpatialBundle } from "@mds/common/interfaces/document/spatialBundle.interface";
 
+interface ItempMineDocumentWithGeomarkId extends IMineDocument {
+  geomark_id?: string;
+}
+
 const createRequestHeader = REQUEST_HEADER.createRequestHeader;
 
 export const spatialDataReducerType = "spatialData";
 
-export const spatialBundlesFromFiles = (files: IMineDocument[]): ISpatialBundle[] => {
-  const geomark_id = "gm-abcdefghijklmnopqrstuvwxyz0000bc";
+export const spatialBundlesFromFiles = async (
+  files: ItempMineDocumentWithGeomarkId[]
+): Promise<ISpatialBundle[]> => {
+  const newFilesWithGeomarkIds = files.some((f) => f.geomark_id);
 
   const temp_indiv = files.filter(
     (f) => f.document_name.endsWith("kmz") || f.document_name.endsWith("kml")
   );
+
+  // Get the core-api spatial bundles.  If these have not yet been created assign the document_name to the mine_document_bundle_id temporarily
   const temp_spatial = files
     .filter((f) => !f.document_name.endsWith("kmz") && !f.document_name.endsWith("kml"))
     .map((f) => {
-      return { ...f, bundle_id: "1" };
+      return {
+        ...f,
+        mine_document_bundle_id: f.mine_document_bundle_id ?? f.document_name.split(".")[0],
+      };
     });
+
   const spatial_bundle_ids = Array.from(
-    new Set(temp_spatial.map((f) => f.bundle_id).filter(Boolean))
+    new Set(temp_spatial.map((f) => f.mine_document_bundle_id).filter(Boolean))
   );
 
-  const spatial_bundles = spatial_bundle_ids.map((id) => {
-    const bundleFiles = temp_spatial
-      .filter((f) => f.bundle_id === id)
-      .map((f) => ({ ...f, key: f.document_manager_guid }));
-    const bundleSize = bundleFiles.length;
-    const document_name = bundleFiles[0].document_name.split(".")[0];
-    const create_user = bundleFiles[0].create_user;
-    const upload_date = bundleFiles[0]?.upload_date
-      ? bundleFiles.sort((a, b) => a.upload_date.localeCompare(b.upload_date))[0].upload_date
-      : formatDate(new Date());
+  const headers = createRequestHeader();
 
-    return {
-      document_name,
-      bundleFiles,
-      upload_date,
-      create_user,
-      bundleSize,
-      bundle_id: id,
-      key: id,
-      isParent: true,
-      geomark_id,
-      isSingleFile: false,
-    };
-  });
-  const individualFiles = temp_indiv
-    .filter((f) => !f.bundle_id)
-    .map((f) => {
+  const spatial_bundles = await Promise.all(
+    spatial_bundle_ids.map(async (id) => {
+      let response;
+      if (!newFilesWithGeomarkIds) {
+        const url = `${ENVIRONMENT.apiUrl}/mines/document-bundle/${id}`;
+        response = await CustomAxios({
+          errorToastMessage: "default",
+        }).get(url, headers);
+      }
+
+      const bundleFiles = temp_spatial
+        .filter((f) => f.mine_document_bundle_id === id)
+        .map((f) => ({ ...f, key: f.document_manager_guid }));
+
+      const geomark_id = response?.data ? response?.data?.geomark_id : bundleFiles?.[0].geomark_id;
+
+      const bundleSize = bundleFiles.length;
+      const document_name = bundleFiles[0].document_name.split(".")[0];
+      const create_user = bundleFiles[0].create_user;
+      const upload_date = bundleFiles[0]?.upload_date
+        ? bundleFiles.sort((a, b) => a.upload_date.localeCompare(b.upload_date))[0].upload_date
+        : formatDate(new Date());
+
+      return {
+        document_name,
+        bundleFiles,
+        upload_date,
+        create_user,
+        bundleSize,
+        bundle_id: id,
+        key: id,
+        isParent: true,
+        geomark_id,
+        isSingleFile: false,
+      };
+    })
+  );
+
+  const individualFiles = await Promise.all(
+    temp_indiv.map(async (f) => {
+      let response;
+
+      if (f.mine_document_bundle_id) {
+        const url = `${ENVIRONMENT.apiUrl}/mines/document-bundle/${f.mine_document_bundle_id}`;
+        response = await CustomAxios({
+          errorToastMessage: "default",
+        }).get(url, headers);
+      }
+
+      const geomark_id = response?.data ? response?.data?.geomark_id : f.geomark_id;
+
       return {
         ...f,
         bundle_id: f.document_manager_guid,
@@ -61,7 +99,9 @@ export const spatialBundlesFromFiles = (files: IMineDocument[]): ISpatialBundle[
         geomark_id,
         isSingleFile: true,
       };
-    });
+    })
+  );
+
   return [...spatial_bundles, ...individualFiles];
 };
 
@@ -89,7 +129,7 @@ const spatialSlice = createAppSlice({
     fetchGeomarkMapData: create.asyncThunk(
       async ({ geomark_id, bundle_id }: ISpatialBundle, thunkAPI) => {
         thunkAPI.dispatch(showLoading());
-        const geomark_link = `https://apps.gov.bc.ca/pub/geomark/geomarks/${geomark_id}`;
+        const geomark_link = `${process.env.GEOMARK_URL_BASE}/geomarks/${geomark_id}`;
 
         const suffix = "/feature.geojson";
         const url = `${geomark_link}${suffix}`;
@@ -139,14 +179,13 @@ const spatialSlice = createAppSlice({
     getGeomarkMapData: (state: SpatialDataState) => {
       return state.geoJsonData;
     },
-    // TODO: not actually currently in use. Intended for getting the geomark_id on creating bundle
-    getSpatialBundle: (state: SpatialDataState) => {
-      return state.spatialBundle;
+    getSpatialBundleGuid: (state: SpatialDataState) => {
+      return state.bundle_id;
     },
   },
 });
 
 export const { createSpatialBundle, fetchGeomarkMapData, clearSpatialData } = spatialSlice.actions;
-export const { getGeomarkMapData, getSpatialBundle } = spatialSlice.selectors;
+export const { getGeomarkMapData, getSpatialBundleGuid } = spatialSlice.selectors;
 export const spatialDataReducer = spatialSlice.reducer;
 export default spatialDataReducer;

@@ -5,10 +5,10 @@ import { renderTextColumn } from "../../common/CoreTableCommonColumns";
 import { formatDate } from "@mds/common/redux/utils/helpers";
 import { getFormattedUserName } from "@mds/common/redux/selectors/authenticationSelectors";
 import {
-  fetchGeomarkMapData,
-  spatialBundlesFromFiles,
   clearSpatialData,
+  fetchGeomarkMapData,
   getGeomarkMapData,
+  spatialBundlesFromFiles,
 } from "@mds/common/redux/slices/spatialDataSlice";
 import { IMineDocument } from "@mds/common/interfaces";
 import CoreMap from "../../common/Map";
@@ -16,12 +16,27 @@ import CoreMap from "../../common/Map";
 export interface ViewSpatialDetailProps {
   spatialDocuments: IMineDocument[];
 }
+
 const ViewSpatialDetail: FC<ViewSpatialDetailProps> = ({ spatialDocuments }) => {
+  const [spatialBundle, setSpatialBundle] = useState(null);
+
   const dispatch = useDispatch();
   const username = useSelector(getFormattedUserName);
   const geomarkMapData = useSelector(getGeomarkMapData);
   const [mapLoaded, setMapLoaded] = useState(false);
-  const spatialBundle = spatialBundlesFromFiles(spatialDocuments)[0];
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  const handleGetSpatialBundles = async () => {
+    const spatialBundles = await spatialBundlesFromFiles(spatialDocuments);
+    setSpatialBundle(spatialBundles[0]);
+    setIsLoaded(true);
+  };
+
+  useEffect(() => {
+    if (spatialDocuments && !isLoaded) {
+      handleGetSpatialBundles();
+    }
+  }, [spatialDocuments]);
 
   const handleFetchMapData = () => {
     setMapLoaded(false);
@@ -29,11 +44,11 @@ const ViewSpatialDetail: FC<ViewSpatialDetailProps> = ({ spatialDocuments }) => 
   };
 
   useEffect(() => {
-    if (!mapLoaded) {
+    if (!mapLoaded && spatialBundle) {
       handleFetchMapData();
     }
     return () => dispatch(clearSpatialData());
-  }, []);
+  }, [spatialBundle]);
 
   return (
     <>
