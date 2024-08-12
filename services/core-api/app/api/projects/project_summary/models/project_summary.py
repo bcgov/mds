@@ -6,6 +6,7 @@ from sqlalchemy.schema import FetchedValue
 from sqlalchemy import case
 from werkzeug.exceptions import BadRequest
 
+from app.api.mines.documents.models.mine_document_bundle import MineDocumentBundle
 from app.api.parties.party import PartyOrgBookEntity
 from app.api.regions.models.regions import Regions
 from app.api.services.ams_api_service import AMSApiService
@@ -1085,6 +1086,28 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
         self.nearest_municipality_guid = nearest_municipality
 
+        spatial_docs = [doc for doc in documents if doc['project_summary_document_type_code'] == 'SPT']
+        spatial_bundles_guids = set()
+
+        # Create a mine_document_bundle for each unique docman_bundle_guid attached to the spatial documents
+        for doc in spatial_docs:
+            docman_bundle_guid = doc.get('docman_bundle_guid')
+            if docman_bundle_guid is not None:
+                mine_doc_bundle = MineDocumentBundle.find_by_docman_bundle_guid(docman_bundle_guid)
+
+                if docman_bundle_guid not in spatial_bundles_guids and mine_doc_bundle is None:
+                    mine_doc_bundle = MineDocumentBundle(
+                        geomark_id=doc.get('geomark_id'),
+                        docman_bundle_guid=docman_bundle_guid,
+                        name=doc.get('document_name'))
+                    mine_doc_bundle.save()
+                    spatial_bundles_guids.add(docman_bundle_guid)
+
+                    # Assign the mine_document_bundle_id to all matching documents in the documents list
+                    for doc in documents:
+                        if doc.get('docman_bundle_guid') == docman_bundle_guid:
+                            doc['mine_document_bundle_id'] = mine_doc_bundle.bundle_id
+
         # Create or update existing documents.
         for doc in documents:
             mine_document_guid = doc.get('mine_document_guid')
@@ -1097,7 +1120,9 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 mine_doc = MineDocument(
                     mine_guid=self.mine_guid,
                     document_name=doc.get('document_name'),
-                    document_manager_guid=doc.get('document_manager_guid'))
+                    document_manager_guid=doc.get('document_manager_guid'),
+                    mine_document_bundle_id=doc['mine_document_bundle_id'] if doc.get('mine_document_bundle_id') else None
+                )
                 project_summary_doc = ProjectSummaryDocumentXref(
                     mine_document_guid=mine_doc.mine_document_guid,
                     project_summary_id=self.project_summary_id,

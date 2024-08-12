@@ -34,7 +34,7 @@ class MineDocument(SoftDeleteMixin, AuditMixin, Base):
     archived_by = db.Column(db.String(60))
     versions = db.relationship('MineDocumentVersion', lazy='joined')
 
-    mine_document_bundle_id = db.Column(db.Integer, db.ForeignKey('mine_document_bundle.bundle_id'))
+    mine_document_bundle_id = db.Column(db.String, db.ForeignKey('mine_document_bundle.bundle_id'))
     mine_document_bundle = db.relationship('MineDocumentBundle', back_populates='bundle_documents', uselist=False)
 
     major_mine_application_document_xref = db.relationship(
