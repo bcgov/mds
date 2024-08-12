@@ -46,7 +46,9 @@ class TractionWebhookResource(Resource, UserMixin):
                 # check if party already has a connection
                 existing_vc_conn = PartyVerifiableCredentialConnection.query.unbound_unsafe(
                 ).filter(PartyVerifiableCredentialConnection.party_guid == vc_conn.party_guid,
-                         PartyVerifiableCredentialConnection.connection_id != None).first()
+                         PartyVerifiableCredentialConnection.connection_id != webhook_body["connection_id"],
+                        PartyVerifiableCredentialConnection.connection_id != None).first()
+                
                 if existing_vc_conn:
                     current_app.logger.warning(
                         f"party_guid={vc_conn.party_guid} already has a connection_id={existing_vc_conn.connection_id}"
