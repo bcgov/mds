@@ -7,7 +7,7 @@ import { MINEDOCUMENTS } from "@mds/common/tests/mocks/dataMocks";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import { FORM } from "@mds/common/constants/forms";
 
-const props = {
+const props: any = {
   document: MINEDOCUMENTS.records[0],
   handleSubmit: jest.fn().mockReturnValue(Promise.resolve()),
   closeModal: jest.fn(),

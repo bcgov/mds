@@ -98,7 +98,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
   );
 
   const majorMineAppDocs =
-    project?.major_mine_application?.documents.map(
+    project?.major_mine_application?.documents?.map(
       (d) =>
         new MineDocument({
           ...d,
