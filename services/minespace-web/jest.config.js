@@ -12,6 +12,7 @@ module.exports = {
   verbose: true,
   testEnvironmentOptions: {
     url: "http://localhost",
+    customExportConditions: [""],
   },
   testEnvironment: "jest-environment-jsdom-global",
   setupFiles: [

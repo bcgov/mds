@@ -1,6 +1,7 @@
 import Enzyme from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import path from "path";
+import server from "@/tests/server";
 
 require("jest-localstorage-mock");
 
@@ -12,6 +13,14 @@ global.REQUEST_HEADER = require(path.resolve(__dirname, "../common/utils/Request
 global.requestAnimationFrame = (callback) => {
   setTimeout(callback, 0);
 };
+
+beforeAll(() => {
+  server.listen({ onUnhandledRequest: "warn" });
+});
+
+afterAll(() => {
+  server.close();
+});
 
 jest.mock("@mds/common/providers/featureFlags/useFeatureFlag", () => ({
   useFeatureFlag: () => ({

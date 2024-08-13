@@ -14,6 +14,8 @@ module.exports = {
     "services/core-web/cypress/**",
     "services/common/jest.polyfills.js",
     "services/minespace-web/jest.polyfills.js",
+    "services/core-web/jest.polyfills.js",
+    "services/core-web/jest.config.js",
   ],
   parserOptions: {
     project: [
