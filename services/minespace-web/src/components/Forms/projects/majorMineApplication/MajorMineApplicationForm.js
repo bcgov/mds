@@ -7,7 +7,7 @@ import { Field, reduxForm, change, formValueSelector } from "redux-form";
 import { remove } from "lodash";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Col, Row, Typography } from "antd";
+import { Col, Row, Typography, Button } from "antd";
 import { required } from "@common/utils/Validate";
 import {
   MAJOR_MINES_APPLICATION_DOCUMENT_TYPE,
@@ -28,8 +28,15 @@ import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocum
 import { MajorMineApplicationDocument } from "@mds/common/models/documents/document";
 import { renderCategoryColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import * as Strings from "@mds/common/constants/strings";
+import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
+import AddSpatialDocumentsModal from "@mds/common/components/documents/spatial/AddSpatialDocumentsModal";
+import SpatialDocumentTable from "@mds/common/components/documents/spatial/SpatialDocumentTable";
+import { PROJECT_SUMMARY_DOCUMENT_TYPE_CODE } from "@mds/common/constants";
+import * as API from "@mds/common/constants/API";
 
 const propTypes = {
+  openModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
   project: customPropTypes.project.isRequired,
   change: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
@@ -105,6 +112,23 @@ export class MajorMineApplicationForm extends Component {
       );
     }
     return null;
+  };
+
+  openSpatialDocumentModal = () => {
+    this.props.openModal({
+      props: {
+        title: "Upload Spatial Data",
+        formName: FORM.ADD_MINE_MAJOR_APPLICATION,
+        fieldName: "spatial_documents",
+        uploadUrl: API.MAJOR_MINE_APPLICATION_DOCUMENTS(this.props.project?.project_guid),
+        transformFile: (fileData) => ({
+          ...fileData,
+          major_mine_application_document_type_code:
+            MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE.SPATIAL,
+        }),
+      },
+      content: AddSpatialDocumentsModal,
+    });
   };
 
   render() {
@@ -214,8 +238,11 @@ export class MajorMineApplicationForm extends Component {
             Please upload spatial files to support your application. You must upload at least one
             spatial file to support your application.
           </Typography.Text>
-
-          <Field
+          <Button onClick={this.openSpatialDocumentModal} type="primary" className="block-button">
+            Upload Spatial Data
+          </Button>
+          <SpatialDocumentTable documents={this.props.spatial_documents} />
+          {/* <Field
             id={MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SPATIAL}
             name={MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SPATIAL}
             label="Upload spatial components"
@@ -253,7 +280,7 @@ export class MajorMineApplicationForm extends Component {
               onArchivedDocuments={() => this.props.refreshData()}
               enableBulkActions={true}
             />
-          )}
+          )} */}
           <br />
           <Typography.Title level={5}>Upload supporting application documents</Typography.Title>
           <Typography.Text>
@@ -342,6 +369,8 @@ const mapDispatchToProps = (dispatch) =>
     {
       change,
       fetchMineDocuments,
+      openModal,
+      closeModal,
     },
     dispatch
   );
