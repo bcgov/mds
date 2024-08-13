@@ -1,315 +1,129 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MajorMineApplicationForm renders properly 1`] = `
-<div>
-  <Form
-    colon={true}
-    hideRequiredMark={false}
-    layout="vertical"
-    onSubmit={[Function]}
-  >
-    <Row>
-      <Col
-        span={24}
-      >
-        <ForwardRef
-          level={4}
-        >
-          Basic Information
-        </ForwardRef>
-        <ForwardRef>
-          Please ensure the following information is correct and up to date. If changes are needed please edit your 
-          <Link
-            to="/projects/8132462392222/project-description/undefined/basic-information"
-          >
-            project description
-          </Link>
-          .
-        </ForwardRef>
-      </Col>
-    </Row>
-    <Row>
-      <Col
-        span={12}
-        style={
+<MajorMineApplicationForm
+  change={[MockFunction]}
+  primary_documents={Array []}
+  project={
+    Object {
+      "contacts": Array [],
+      "information_requirements_table": Object {
+        "irt_guid": "c16afb82-144c-4138-9a36-ba5c24c43d8a",
+        "requirements": Array [
           Object {
-            "marginRight": "40px",
-          }
-        }
-      >
-        <ForwardRef
-          level={5}
-        >
-          Primary Contact
-        </ForwardRef>
-        <Field
-          component={[Function]}
-          disabled={true}
-          id="primary_contact"
-          name="primary_contact"
-        />
-      </Col>
-      <Col
-        span={11}
-      >
-        <ForwardRef
-          level={5}
-        >
-          Mine Name
-        </ForwardRef>
-        <Field
-          component={[Function]}
-          disabled={true}
-          id="mine_name"
-          name="mine_name"
-        />
-      </Col>
-    </Row>
-    <ForwardRef
-      level={4}
-    >
-      Application Files
-    </ForwardRef>
-    <ForwardRef
-      level={5}
-    >
-      Upload primary application document
-    </ForwardRef>
-    <ForwardRef>
-      Please upload the main document for the submission. If your single document contains all supporting information you may not need to include separate supporting documentation.
-    </ForwardRef>
-    <Field
-      acceptedFileTypesMap={
-        Object {
-          ".aih": "application/octet-stream",
-          ".ain": "application/octet-stream",
-          ".atx": "application/octet-stream",
-          ".cpg": "application/octet-stream",
-          ".csv": "text/csv",
-          ".dbf": Array [
-            "application/dbf",
-            "application/x-dbf",
-            "application/x-dbase",
-          ],
-          ".doc": "application/msword",
-          ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-          ".fbn": "application/octet-stream",
-          ".fbx": "application/octet-stream",
-          ".geojson": "application/vnd.geo+json",
-          ".gml": "application/gml+xml",
-          ".ixs": "application/octet-stream",
-          ".kml": "application/vnd.google-earth.kml+xml",
-          ".kmz": "application/vnd.google-earth.kmz",
-          ".mxs": "application/octet-stream",
-          ".odm": "application/vnd.oasis.opendocument.text-master",
-          ".odt": "application/vnd.oasis.opendocument.text",
-          ".oth": "application/vnd.oasis.opendocument.text-web",
-          ".ott": "application/vnd.oasis.opendocument.text-template",
-          ".pdf": "application/pdf",
-          ".prj": "application/octet-stream",
-          ".rtf": "application/rtf",
-          ".sbn": "application/octet-stream",
-          ".sbx": "application/octet-stream",
-          ".shp": "application/octet-stream",
-          ".shp.xml": "text/xml",
-          ".shpz": "application/octet-stream",
-          ".shx": "application/octet-stream",
-          ".wkt": "application/octet-stream",
-          ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-          ".xml": "application/xml",
-        }
-      }
-      allowMultiple={true}
-      component={[Function]}
-      id="primary_documents"
-      label="Upload primary application document"
-      labelIdle="<strong>Drag & Drop your files or <span class=\\"filepond--label-action\\">Browse</span></strong><div>(Accepted filetypes: .kmx .doc .docx .xlsx .pdf)</div>"
-      name="primary_documents"
-      onFileLoad={[Function]}
-      onRemoveFile={[Function]}
-      projectGuid="8132462392222"
-      uploadType="primary_document"
-      validate={
-        Array [
-          [Function],
-        ]
-      }
-    />
-    <br />
-    <ForwardRef
-      level={5}
-    >
-      Upload spatial documents
-    </ForwardRef>
-    <ForwardRef(Text)>
-      Please upload spatial files to support your application. You must upload at least one spatial file to support your application.
-    </ForwardRef(Text)>
-    <Field
-      acceptedFileTypesMap={
-        Object {
-          ".aih": "application/octet-stream",
-          ".ain": "application/octet-stream",
-          ".atx": "application/octet-stream",
-          ".cpg": "application/octet-stream",
-          ".csv": "text/csv",
-          ".dbf": Array [
-            "application/dbf",
-            "application/x-dbf",
-            "application/x-dbase",
-          ],
-          ".doc": "application/msword",
-          ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-          ".fbn": "application/octet-stream",
-          ".fbx": "application/octet-stream",
-          ".geojson": "application/vnd.geo+json",
-          ".gml": "application/gml+xml",
-          ".ixs": "application/octet-stream",
-          ".kml": "application/vnd.google-earth.kml+xml",
-          ".kmz": "application/vnd.google-earth.kmz",
-          ".mxs": "application/octet-stream",
-          ".odm": "application/vnd.oasis.opendocument.text-master",
-          ".odt": "application/vnd.oasis.opendocument.text",
-          ".oth": "application/vnd.oasis.opendocument.text-web",
-          ".ott": "application/vnd.oasis.opendocument.text-template",
-          ".pdf": "application/pdf",
-          ".prj": "application/octet-stream",
-          ".rtf": "application/rtf",
-          ".sbn": "application/octet-stream",
-          ".sbx": "application/octet-stream",
-          ".shp": "application/octet-stream",
-          ".shp.xml": "text/xml",
-          ".shpz": "application/octet-stream",
-          ".shx": "application/octet-stream",
-          ".wkt": "application/octet-stream",
-          ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-          ".xml": "application/xml",
-        }
-      }
-      allowMultiple={true}
-      component={[Function]}
-      id="spatial_documents"
-      label="Upload spatial components"
-      labelIdle="<strong>Drag & Drop your files or <span class=\\"filepond--label-action\\">Browse</span></strong><div>(Accepted filetypes: .kmx .doc .docx .xlsx .pdf)</div>"
-      name="spatial_documents"
-      onFileLoad={[Function]}
-      onRemoveFile={[Function]}
-      projectGuid="8132462392222"
-      uploadType="spatial_document"
-    />
-    <br />
-    <ForwardRef
-      level={5}
-    >
-      Upload supporting application documents
-    </ForwardRef>
-    <ForwardRef(Text)>
-      Upload additional files that support your primary document submission. You can include many types of files such as:
-    </ForwardRef(Text)>
-    <ul>
-      <li>
-        Application
-      </li>
-      <li>
-        Mapping
-      </li>
-      <li>
-        Procedures and Plans
-      </li>
-      <li>
-        Site Studies and Assessments
-      </li>
-      <li>
-        Plans and Transfers
-      </li>
-      <li>
-        Site Studies and Assessments
-      </li>
-    </ul>
-    <Field
-      acceptedFileTypesMap={
-        Object {
-          ".aih": "application/octet-stream",
-          ".ain": "application/octet-stream",
-          ".atx": "application/octet-stream",
-          ".cpg": "application/octet-stream",
-          ".csv": "text/csv",
-          ".dbf": Array [
-            "application/dbf",
-            "application/x-dbf",
-            "application/x-dbase",
-          ],
-          ".doc": "application/msword",
-          ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-          ".fbn": "application/octet-stream",
-          ".fbx": "application/octet-stream",
-          ".geojson": "application/vnd.geo+json",
-          ".gml": "application/gml+xml",
-          ".ixs": "application/octet-stream",
-          ".kml": "application/vnd.google-earth.kml+xml",
-          ".kmz": "application/vnd.google-earth.kmz",
-          ".mxs": "application/octet-stream",
-          ".odm": "application/vnd.oasis.opendocument.text-master",
-          ".odt": "application/vnd.oasis.opendocument.text",
-          ".oth": "application/vnd.oasis.opendocument.text-web",
-          ".ott": "application/vnd.oasis.opendocument.text-template",
-          ".pdf": "application/pdf",
-          ".prj": "application/octet-stream",
-          ".rtf": "application/rtf",
-          ".sbn": "application/octet-stream",
-          ".sbx": "application/octet-stream",
-          ".shp": "application/octet-stream",
-          ".shp.xml": "text/xml",
-          ".shpz": "application/octet-stream",
-          ".shx": "application/octet-stream",
-          ".wkt": "application/octet-stream",
-          ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-          ".xml": "application/xml",
-        }
-      }
-      allowMultiple={true}
-      component={[Function]}
-      id="supporting_documents"
-      label="Upload supporting application documents"
-      labelIdle="<strong>Drag & Drop your files or <span class=\\"filepond--label-action\\">Browse</span></strong><div>(Accepted filetypes: .kmx .doc .docx .xlsx .pdf)</div>"
-      name="supporting_documents"
-      onFileLoad={[Function]}
-      onRemoveFile={[Function]}
-      projectGuid="8132462392222"
-      uploadType="supporting_document"
-    />
-    <ArchivedDocumentsSection
-      additionalColumns={
-        Array [
-          Object {
-            "className": undefined,
-            "dataIndex": "category_code",
-            "key": "category_code",
-            "render": [Function],
-            "sorter": [Function],
-            "title": "Category",
-          },
-        ]
-      }
-      documentColumns={
-        Array [
-          Object {
-            "dataIndex": "document_name",
-            "key": "document_name",
-            "render": [Function],
-            "sorter": [Function],
-            "title": "File Name",
+            "comment": "Indigenous",
+            "deleted_ind": false,
+            "irt_requirements_xref_guid": "e2627ea7-1bcd-4df4-bba2-e1d96f6d4889",
+            "methods": false,
+            "required": false,
+            "requirement_guid": "1ec24233-5a51-45bb-9fd8-ada055c13e87",
+            "version": 2,
           },
           Object {
-            "dataIndex": "upload_date",
-            "key": "upload_date",
-            "render": [Function],
-            "sorter": [Function],
-            "title": "Uploaded",
+            "comment": "Nation",
+            "deleted_ind": false,
+            "irt_requirements_xref_guid": "f3dd5aeb-b48d-4209-b7df-1fa773a3628f",
+            "methods": false,
+            "required": false,
+            "requirement_guid": "a4d1f134-bd37-40d8-abb9-faec6c3d5ae0",
+            "version": 2,
           },
-        ]
-      }
-      documents={Array []}
-    />
-  </Form>
-</div>
+          Object {
+            "comment": "hello",
+            "deleted_ind": false,
+            "irt_requirements_xref_guid": "0dc94297-ff8e-4548-b903-9f75a3ebd060",
+            "methods": false,
+            "required": false,
+            "requirement_guid": "c26cd541-642d-4cb5-985a-26c6e1bef26b",
+            "version": 2,
+          },
+          Object {
+            "comment": "First",
+            "deleted_ind": false,
+            "irt_requirements_xref_guid": "a3c1d302-c167-422e-9d39-ee8e19b56157",
+            "methods": false,
+            "required": false,
+            "requirement_guid": "da1b8ff9-7a8b-4311-a6ab-0169f0070e5d",
+            "version": 2,
+          },
+          Object {
+            "comment": "carp",
+            "deleted_ind": false,
+            "irt_requirements_xref_guid": "9ceb3468-134c-4fd9-9596-cb1239f47e0f",
+            "methods": false,
+            "required": false,
+            "requirement_guid": "e2c995d0-37ef-4588-ad91-76b6f2b07ab1",
+            "version": 2,
+          },
+        ],
+      },
+      "major_mine_application": Object {
+        "major_mine_application_guid": "c16afb82-144c-4138-9a36-ba5c24c43d8a",
+      },
+      "mine_guid": "60300a07-376c-46f1-a984-88a813f91438",
+      "project_guid": "8132462392222",
+      "project_links": Array [
+        Object {
+          "create_timestamp": "2023-11-27T18:27:20.598193-07:00",
+          "create_user": "test@bctest",
+          "project": Object {
+            "contacts": Array [
+              Object {
+                "name": "Test Contact",
+              },
+            ],
+            "information_requirements_table": Object {
+              "irt_guid": "awxyz12345",
+              "status_code": "APV",
+            },
+            "major_mine_application": Object {
+              "major_mine_application_guid": "abcde12345",
+              "status_code": "DFT",
+            },
+            "project_guid": "8132462392222",
+            "project_summary": Object {
+              "project_summary_guid": "6bab1df6-e181-435a-abc0-e99466411880",
+              "status_code": "SUB",
+            },
+            "project_title": "Test Mine",
+            "proponent_project_id": "Test-123",
+            "update_timestamp": "2023-08-04T09:21:06.028471-06:00",
+          },
+          "project_guid": "8132462392222",
+          "project_link_guid": "90de19e1-7292-4646-af0a-260bd14b1d45",
+          "related_project": Object {
+            "contacts": Array [
+              Object {
+                "name": "Tom Tester",
+              },
+            ],
+            "information_requirements_table": Object {
+              "irt_guid": "awxyz12345",
+              "status_code": "APV",
+            },
+            "major_mine_application": Object {
+              "major_mine_application_guid": "abcde12345",
+              "status_code": "WDN",
+            },
+            "project_guid": "913246239223",
+            "project_summary": Object {
+              "project_summary_guid": "a2e76a72-f306-4973-bda8-37018d15baa2",
+              "status_code": "DFT",
+            },
+            "project_title": "Test Coal",
+            "proponent_project_id": "TEST-1001",
+            "update_timestamp": "2023-08-24T15:49:16.702250-06:00",
+          },
+          "related_project_guid": "d7411155-dc79-4fa9-8975-c22594aab7ec",
+          "update_timestamp": "2023-11-27T18:27:20.598307-07:00",
+          "update_user": "test@bctest",
+        },
+      ],
+      "project_summary": Object {},
+      "proponent_project_id": "Test-ID",
+    }
+  }
+  spatial_documents={Array []}
+  supporting_documents={Array []}
+/>
 `;

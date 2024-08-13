@@ -31,10 +31,12 @@ import * as Strings from "@mds/common/constants/strings";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import AddSpatialDocumentsModal from "@mds/common/components/documents/spatial/AddSpatialDocumentsModal";
 import SpatialDocumentTable from "@mds/common/components/documents/spatial/SpatialDocumentTable";
-import { PROJECT_SUMMARY_DOCUMENT_TYPE_CODE } from "@mds/common/constants";
 import * as API from "@mds/common/constants/API";
+import { SPATIAL_DATA_STANDARDS_URL, Feature } from "@mds/common";
+import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
 
 const propTypes = {
+  isFeatureEnabled: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   project: customPropTypes.project.isRequired,
@@ -233,54 +235,71 @@ export class MajorMineApplicationForm extends Component {
           )}
 
           <br />
-          <Typography.Title level={5}>Upload spatial documents</Typography.Title>
+          <Typography.Title level={5}>Spatial Data Files</Typography.Title>
           <Typography.Text>
             Please upload spatial files to support your application. You must upload at least one
-            spatial file to support your application.
+            KML, KMZ, or Shapefile at a time. Visit{" "}
+            <Link to={SPATIAL_DATA_STANDARDS_URL}>GIS Shapefile Standards</Link> to learn more about
+            shapefile requirements and standards.
           </Typography.Text>
-          <Button onClick={this.openSpatialDocumentModal} type="primary" className="block-button">
-            Upload Spatial Data
-          </Button>
-          <SpatialDocumentTable documents={this.props.spatial_documents} />
-          {/* <Field
-            id={MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SPATIAL}
-            name={MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SPATIAL}
-            label="Upload spatial components"
-            onFileLoad={(documentName, document_manager_guid) => {
-              this.onFileLoad(
-                documentName,
-                document_manager_guid,
-                MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE.SPATIAL,
-                MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SPATIAL
-              );
-            }}
-            onRemoveFile={(err, fileItem) => {
-              this.onRemoveFile(
-                err,
-                fileItem,
-                MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SPATIAL,
-                this.props.spatial_documents
-              );
-            }}
-            projectGuid={this.props.project?.project_guid}
-            labelIdle={
-              '<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><div>(Accepted filetypes: .kmx .doc .docx .xlsx .pdf)</div>'
-            }
-            allowMultiple
-            acceptedFileTypesMap={this.acceptedFileTypesMap}
-            component={MajorMineApplicationFileUpload}
-            uploadType="spatial_document"
-          />
-          {spatialDocuments?.length > 0 && (
-            <DocumentTable
-              documents={spatialDocuments}
-              documentColumns={documentColumns}
-              documentParent="Major Mine Application"
-              canArchiveDocuments={true}
-              onArchivedDocuments={() => this.props.refreshData()}
-              enableBulkActions={true}
-            />
-          )} */}
+          <br />
+          {this.props.isFeatureEnabled(Feature.MAJOR_PROJECT_ALL_DOCUMENTS) ? (
+            <>
+              <Button
+                onClick={this.openSpatialDocumentModal}
+                type="primary"
+                className="block-button"
+                style={{ marginTop: 12 }}
+              >
+                Upload Spatial Data
+              </Button>
+              {this.props.spatial_documents?.length > 0 && (
+                <SpatialDocumentTable documents={this.props.spatial_documents} />
+              )}
+            </>
+          ) : (
+            <>
+              <Field
+                id={MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SPATIAL}
+                name={MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SPATIAL}
+                label="Upload spatial components"
+                onFileLoad={(documentName, document_manager_guid) => {
+                  this.onFileLoad(
+                    documentName,
+                    document_manager_guid,
+                    MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE.SPATIAL,
+                    MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SPATIAL
+                  );
+                }}
+                onRemoveFile={(err, fileItem) => {
+                  this.onRemoveFile(
+                    err,
+                    fileItem,
+                    MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SPATIAL,
+                    this.props.spatial_documents
+                  );
+                }}
+                projectGuid={this.props.project?.project_guid}
+                labelIdle={
+                  '<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><div>(Accepted filetypes: .kmx .doc .docx .xlsx .pdf)</div>'
+                }
+                allowMultiple
+                acceptedFileTypesMap={this.acceptedFileTypesMap}
+                component={MajorMineApplicationFileUpload}
+                uploadType="spatial_document"
+              />
+              {spatialDocuments?.length > 0 && (
+                <DocumentTable
+                  documents={spatialDocuments}
+                  documentColumns={documentColumns}
+                  documentParent="Major Mine Application"
+                  canArchiveDocuments={true}
+                  onArchivedDocuments={() => this.props.refreshData()}
+                  enableBulkActions={true}
+                />
+              )}
+            </>
+          )}
           <br />
           <Typography.Title level={5}>Upload supporting application documents</Typography.Title>
           <Typography.Text>
@@ -386,4 +405,4 @@ export default compose(
     onSubmitSuccess: resetForm(FORM.ADD_MINE_MAJOR_APPLICATION),
     onSubmit: () => {},
   })
-)(MajorMineApplicationForm);
+)(withFeatureFlag(MajorMineApplicationForm));

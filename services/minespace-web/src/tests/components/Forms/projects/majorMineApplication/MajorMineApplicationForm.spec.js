@@ -2,6 +2,7 @@ import React from "react";
 import { shallow } from "enzyme";
 import { MajorMineApplicationForm } from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationForm";
 import * as MOCK from "@/tests/mocks/dataMocks";
+import FeatureFlagContext from "@mds/common/providers/featureFlags/featureFlag.context";
 
 const dispatchProps = {};
 const props = {};
@@ -21,7 +22,15 @@ beforeEach(() => {
 
 describe("MajorMineApplicationForm", () => {
   it("renders properly", () => {
-    const component = shallow(<MajorMineApplicationForm {...dispatchProps} {...props} />);
+    const component = shallow(
+      <FeatureFlagContext.Provider
+        value={{
+          isFeatureEnabled: () => true,
+        }}
+      >
+        <MajorMineApplicationForm {...dispatchProps} {...props} />
+      </FeatureFlagContext.Provider>
+    );
     expect(component).toMatchSnapshot();
   });
 });
