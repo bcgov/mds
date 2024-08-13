@@ -211,7 +211,7 @@ export const DocumentUpload: FC = () => {
               Upload Spatial Data
             </Button>
           )}
-          <SpatialDocumentTable documents={documents} />
+          <SpatialDocumentTable documents={spatial_documents} />
         </>
       ) : (
         <RenderOldDocuments

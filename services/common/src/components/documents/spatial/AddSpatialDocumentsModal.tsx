@@ -127,6 +127,7 @@ const AddSpatialDocumentsModal: FC<AddSpatialDocumentsModalProps> = ({
     const newFiles = values[fieldName];
     if (isFinalStep) {
       dispatch(change(formName, fieldName, [...initialDocuments, ...newFiles]));
+      dispatch(change(formName, "spatial_documents", [...initialDocuments, ...newFiles]));
       setIsResetting(true);
       setCurrentStep(0);
       await dispatch(reset(modalFormName));

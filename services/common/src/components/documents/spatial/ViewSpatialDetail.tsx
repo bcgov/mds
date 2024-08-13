@@ -33,7 +33,7 @@ const ViewSpatialDetail: FC<ViewSpatialDetailProps> = ({ spatialDocuments }) => 
   const handleGetSpatialBundles = async () => {
     if (!spatialDocuments[0].geomark_id) {
       const spatialBundles = groupSpatialBundles(spatialDocuments);
-      await dispatch(() => fetchSpatialBundle(spatialBundles[0].bundle_id));
+      await dispatch(fetchSpatialBundle(spatialBundles[0].bundle_id));
       setBundleNotYetCreated(false);
     } else {
       setBundleNotYetCreated(true);
