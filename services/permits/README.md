@@ -35,7 +35,7 @@ The Permit Service is a question-answering (QA) service built on top of deepset-
    make permits
    ```
 
-The service should now be running and ready to accept user queries.
+The service should now be running and ready to accept user queries. Note: It can take a couple of minutes for all the services to start (especially elasticsearch can be slow to spin up).
 
 ## Usage
 
@@ -56,7 +56,7 @@ This endpoint receives the question as a string and allows the requester to set 
 
 Kibana can be accessed at http://localhost:5601/.
 
-If Kibana prompts you to enter an address for elasticsearch, put in http://elasticsearch:9200. No further setup should be necessary in order to use the app.
+If Kibana prompts you to enter an address for elasticsearch, put in https://elasticsearch:9200. No further setup should be necessary in order to use the app.
 
 In order to view documents in Kibana:
 
@@ -124,5 +124,5 @@ The extracted conditions can be validated against manually extracted conditions 
 Usage:
 
 ```python
-extract_and_validate_pdf.py --pdf_csv_pairs <pdf_path> <expected_csv_path> --pdf_csv_pairs <pdf_path> <expected_csv_path> ...
+python -m app.extract_and_validate_pdf --pdf_csv_pairs <pdf_path> <expected_csv_path> --pdf_csv_pairs <pdf_path> <expected_csv_path> ...
 ```

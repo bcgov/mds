@@ -1,9 +1,24 @@
 .modal__close {
   position: absolute;
-  top: 3px;
+  top: 7px;
   color: $violet;
   font-size: 24px;
-  right: 0;
+  right: 14px;
   z-index: 999;
   border: none;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+
+  svg {
+    margin: 10px;
+  }
+}
+
+.ant-modal-wrap {
+  z-index: 1001;
+}
+
+.ant-modal-mask {
+  z-index: 1001;
 }

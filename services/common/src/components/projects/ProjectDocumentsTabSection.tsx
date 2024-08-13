@@ -1,14 +1,14 @@
 import React, { FC } from "react";
 import { Row, Col, Typography } from "antd";
 import DocumentTable from "../documents/DocumentTable";
-import { IMineDocument } from "../..";
 import { MineDocument } from "@mds/common/models/documents/document";
 import { formatUrlToUpperCaseString } from "@mds/common/redux/utils/helpers";
+import { renderTextColumn } from "../common/CoreTableCommonColumns";
 
 interface ProjectDocumentsTabSectionProps {
   id: string;
   title?: string;
-  documents: IMineDocument[];
+  documents: MineDocument[];
   onArchivedDocuments: () => Promise<void>;
   canArchive?: boolean;
 }
@@ -28,8 +28,9 @@ const ProjectDocumentsTabSection: FC<ProjectDocumentsTabSectionProps> = ({
       </Col>
       <Col span={24}>
         <DocumentTable
-          documents={documents?.map((d) => new MineDocument(d)) ?? []}
+          documents={documents ?? []}
           documentParent={title}
+          additionalColumns={[renderTextColumn("category", "Category")]}
           canArchiveDocuments={canArchive}
           onArchivedDocuments={onArchivedDocuments}
           showVersionHistory={true}

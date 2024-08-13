@@ -75,7 +75,7 @@ class PermitConditionValidator:
                 """
 
         if DEBUG_MODE:
-            with open(f"page_{self.start_page}.json", "w") as f:
+            with open(f"debug/validator_page_{self.start_page}.json", "w") as f:
                 f.write(
                     json.dumps(
                         PermitConditions(conditions=conditions).model_dump(mode="json"),

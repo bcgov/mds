@@ -12,12 +12,14 @@ interface ArchivedDocumentsSectionProps {
   documents: MineDocument[];
   titleLevel?: 1 | 2 | 3 | 4 | 5;
   href?: string;
+  showCategory?: boolean;
 }
 
 const ArchivedDocumentsSection: FC<ArchivedDocumentsSectionProps> = ({
   titleLevel = 4,
   href = "archived-documents",
   documents,
+  showCategory = true,
 }) => {
   const { isFeatureEnabled } = useFeatureFlag();
 
@@ -25,7 +27,9 @@ const ArchivedDocumentsSection: FC<ArchivedDocumentsSectionProps> = ({
     return <></>;
   }
 
-  const additionalColumns = [renderCategoryColumn("category_code", "Category", CATEGORY_CODE)];
+  const additionalColumns = showCategory
+    ? [renderCategoryColumn("category_code", "Category", CATEGORY_CODE)]
+    : [];
 
   return (
     <div id={href}>

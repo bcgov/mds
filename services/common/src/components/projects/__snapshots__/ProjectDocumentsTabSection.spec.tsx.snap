@@ -173,6 +173,11 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                             </div>
                           </th>
                           <th
+                            class="ant-table-cell"
+                          >
+                            Category
+                          </th>
+                          <th
                             aria-label="File Type"
                             class="ant-table-cell ant-table-column-has-sorters"
                             tabindex="0"
@@ -411,6 +416,16 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                             class="ant-table-cell"
                           >
                             <div
+                              class="category-column"
+                              title="Category"
+                            >
+                              N/A
+                            </div>
+                          </td>
+                          <td
+                            class="ant-table-cell"
+                          >
+                            <div
                               class="file_type-column"
                               title="File Type"
                             >
@@ -515,6 +530,16 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                               <span
                                 class="file-history-container"
                               />
+                            </div>
+                          </td>
+                          <td
+                            class="ant-table-cell"
+                          >
+                            <div
+                              class="category-column"
+                              title="Category"
+                            >
+                              N/A
                             </div>
                           </td>
                           <td
@@ -631,6 +656,16 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                             class="ant-table-cell"
                           >
                             <div
+                              class="category-column"
+                              title="Category"
+                            >
+                              N/A
+                            </div>
+                          </td>
+                          <td
+                            class="ant-table-cell"
+                          >
+                            <div
                               class="file_type-column"
                               title="File Type"
                             >
@@ -735,6 +770,16 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                               <span
                                 class="file-history-container"
                               />
+                            </div>
+                          </td>
+                          <td
+                            class="ant-table-cell"
+                          >
+                            <div
+                              class="category-column"
+                              title="Category"
+                            >
+                              N/A
                             </div>
                           </td>
                           <td
@@ -851,6 +896,16 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                             class="ant-table-cell"
                           >
                             <div
+                              class="category-column"
+                              title="Category"
+                            >
+                              N/A
+                            </div>
+                          </td>
+                          <td
+                            class="ant-table-cell"
+                          >
+                            <div
                               class="file_type-column"
                               title="File Type"
                             >
@@ -955,6 +1010,16 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                               <span
                                 class="file-history-container"
                               />
+                            </div>
+                          </td>
+                          <td
+                            class="ant-table-cell"
+                          >
+                            <div
+                              class="category-column"
+                              title="Category"
+                            >
+                              N/A
                             </div>
                           </td>
                           <td

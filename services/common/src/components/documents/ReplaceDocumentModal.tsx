@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import { Field } from "redux-form";
-import { Alert, Button, Col, Form, notification, Row, Typography } from "antd";
+import { Alert, Button, Col, notification, Row, Typography } from "antd";
 import { MineDocument } from "@mds/common/models/documents/document";
 import { formatDate } from "@mds/common/redux/utils/helpers";
 import RenderFileUpload from "@mds/common/components/forms/RenderFileUpload";
@@ -12,6 +12,8 @@ import { IMAGE, DOCUMENT, EXCEL, SPATIAL } from "@mds/common/constants/fileTypes
 import { postNewDocumentVersion } from "@mds/common/redux/actionCreators/documentActionCreator";
 import { IMineDocumentVersion } from "@mds/common/interfaces";
 import { FilePondFile } from "filepond";
+import FormWrapper from "../forms/FormWrapper";
+import { FORM } from "@mds/common/constants/forms";
 
 interface ReplaceDocumentModalProps {
   document: MineDocument;
@@ -89,7 +91,7 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
   };
 
   return (
-    <Form layout="vertical" onFinish={() => props.handleSubmit(document).then(props.closeModal)}>
+    <FormWrapper name={FORM.REPLACE_DOCUMENT} onSubmit={handleReplaceSubmit}>
       <Alert message="" showIcon type="warning" description={alertMessage} />
       <Typography.Paragraph strong className="margin-large--top">
         Original Document
@@ -141,10 +143,9 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
           Replace
         </Button>
       </div>
-    </Form>
+    </FormWrapper>
   );
 };
-
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {

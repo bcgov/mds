@@ -63,22 +63,25 @@
     }
 }
 
-.file-version-amount {
-    color: white;
-    margin-left: 5px;
-}
-
-.table-tag-primary {
+.table-tag {
     color: $white;
-    background-color: $violet;
     border-radius: 25px;
     border: none;
 
     font-size: 11px;
     padding: 4px 8px !important;
     margin-right: -8px !important;
+    margin-left: 5px;
 
     svg.svg-inline--fa {
         margin-right: 6px;
+    }
+
+    &--primary {
+        background-color: $violet;
+    }
+
+    &--grey {
+        background-color: $gov-grey;
     }
 }
