@@ -1562,7 +1562,7 @@ __metadata:
     "@syncfusion/ej2-react-filemanager": 26.1.35
     "@syncfusion/ej2-react-pdfviewer": 26.1.35
     "@syncfusion/ej2-splitbuttons": 26.1.35
-    "@testing-library/jest-dom": ^6.4.8
+    "@testing-library/jest-dom": 6.4.8
     clean-webpack-plugin: 4.0.0
     copy-webpack-plugin: 10.1.0
     flagsmith: 3.19.1
@@ -1572,7 +1572,7 @@ __metadata:
     imagemin: 8.0.1
     jest: 29.7.0
     jest-canvas-mock: 2.1.0
-    jest-dom: ^4.0.0
+    jest-dom: 4.0.0
     jest-environment-jsdom: 29.7.0
     jest-environment-jsdom-global: 4.0.0
     jest-junit: 6.4.0
@@ -1632,6 +1632,7 @@ __metadata:
     "@mds/common": 0.1.0
     "@react-keycloak/web": 3.4.0
     "@reduxjs/toolkit": 2.0.1
+    "@testing-library/jest-dom": 6.4.8
     "@testing-library/react": 12.1.5
     "@types/jest": 24.9.1
     "@types/lodash": 4.17.5
@@ -1688,6 +1689,7 @@ __metadata:
     image-webpack-loader: 8.1.0
     jest: 29.7.0
     jest-canvas-mock: 2.1.0
+    jest-dom: 4.0.0
     jest-environment-jsdom: 29.7.0
     jest-environment-jsdom-global: 4.0.0
     jest-junit: 6.4.0
@@ -1704,6 +1706,7 @@ __metadata:
     moment: 2.29.4
     moment-timezone: 0.5.43
     moment-timezone-data-webpack-plugin: 1.5.1
+    msw: 2.3.5
     postcss-loader: 7.3.3
     prettier: 1.19.1
     promise.prototype.finally: 3.1.2
@@ -1746,6 +1749,7 @@ __metadata:
     tsconfig-paths-webpack-plugin: ^4.1.0
     tus-js-client: 3.1.0
     typescript: 4.7.4
+    undici: ^6.19.7
     url-loader: 2.3.0
     uuid: 8.3.1
     webpack: 5.88.1
@@ -1780,6 +1784,7 @@ __metadata:
     "@mds/common": 0.1.0
     "@react-keycloak/web": ^3.4.0
     "@reduxjs/toolkit": 2.0.1
+    "@testing-library/jest-dom": 6.4.8
     "@types/jest": 24.9.1
     "@types/lodash": 4.17.5
     "@types/react": 16.9.49
@@ -1826,6 +1831,7 @@ __metadata:
     http-server-spa: 1.3.0
     jest: 29.7.0
     jest-canvas-mock: 2.1.0
+    jest-dom: 4.0.0
     jest-environment-jsdom: 29.7.0
     jest-environment-jsdom-global: 4.0.0
     jest-junit: 6.4.0
@@ -1842,7 +1848,7 @@ __metadata:
     moment: ^2.24.0
     moment-timezone: 0.5.43
     moment-timezone-data-webpack-plugin: 1.5.1
-    msw: ^2.3.5
+    msw: 2.3.5
     optimize-css-assets-webpack-plugin: 6.0.1
     pm2: 5.3.1
     postcss-loader: 7.3.3
@@ -1878,6 +1884,7 @@ __metadata:
     ts-node: 10.9.1
     tus-js-client: 3.1.0
     typescript: 4.7.4
+    undici: 6.19.7
     url-loader: 2.3.0
     webpack: 5.88.1
     webpack-bundle-analyzer: 4.9.1
@@ -2561,7 +2568,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/jest-dom@npm:^6.4.8":
+"@testing-library/jest-dom@npm:6.4.8":
   version: 6.4.8
   resolution: "@testing-library/jest-dom@npm:6.4.8"
   dependencies:
@@ -11202,7 +11209,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-dom@npm:^4.0.0":
+"jest-dom@npm:4.0.0":
   version: 4.0.0
   resolution: "jest-dom@npm:4.0.0"
   checksum: d65b87a1973c0cec83179d60b755784a5215ff221fdb508486545ed739ba26c1d5bf51f00d73ca4791482a30d96e962396b170f0a4fa7176074159ec2317c946
@@ -13168,7 +13175,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"msw@npm:2.3.5, msw@npm:^2.3.5":
+"msw@npm:2.3.5":
   version: 2.3.5
   resolution: "msw@npm:2.3.5"
   dependencies:
@@ -19222,7 +19229,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici@npm:^6.19.7":
+"undici@npm:6.19.7, undici@npm:^6.19.7":
   version: 6.19.7
   resolution: "undici@npm:6.19.7"
   checksum: ccf7f311cc2f7109e03c433190cb13d45c581905a70674992b0d8469c36ec1ae011824f41ba0c4a85b9771e4dd30a94228315c316215f76fafcb8e3b91ffbc22
