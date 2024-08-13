@@ -6,19 +6,11 @@ import { formatDate } from "../utils/helpers";
 import { IGeoJsonFeature } from "@mds/common/interfaces/document/geojsonFeature.interface";
 import { ISpatialBundle } from "@mds/common/interfaces/document/spatialBundle.interface";
 
-interface ItempMineDocumentWithGeomarkId extends IMineDocument {
-  geomark_id?: string;
-}
-
 const createRequestHeader = REQUEST_HEADER.createRequestHeader;
 
 export const spatialDataReducerType = "spatialData";
 
-export const spatialBundlesFromFiles = async (
-  files: ItempMineDocumentWithGeomarkId[]
-): Promise<ISpatialBundle[]> => {
-  const newFilesWithGeomarkIds = files.some((f) => f.geomark_id);
-
+export const groupSpatialBundles = (files: IMineDocument[]) => {
   const temp_indiv = files.filter(
     (f) => f.document_name.endsWith("kmz") || f.document_name.endsWith("kml")
   );
@@ -37,70 +29,41 @@ export const spatialBundlesFromFiles = async (
     new Set(temp_spatial.map((f) => f.mine_document_bundle_id).filter(Boolean))
   );
 
-  const headers = createRequestHeader();
+  const spatial_bundles = spatial_bundle_ids.map((id) => {
+    const bundleFiles = temp_spatial
+      .filter((f) => f.mine_document_bundle_id === id)
+      .map((f) => ({ ...f, key: f.document_manager_guid }));
 
-  const spatial_bundles = await Promise.all(
-    spatial_bundle_ids.map(async (id) => {
-      let response;
-      if (!newFilesWithGeomarkIds) {
-        const url = `${ENVIRONMENT.apiUrl}/mines/document-bundle/${id}`;
-        response = await CustomAxios({
-          errorToastMessage: "default",
-        }).get(url, headers);
-      }
+    const bundleSize = bundleFiles.length;
+    const document_name = bundleFiles[0].document_name.split(".")[0];
+    const create_user = bundleFiles[0].create_user;
+    const upload_date = bundleFiles[0]?.upload_date
+      ? bundleFiles.sort((a, b) => a.upload_date.localeCompare(b.upload_date))[0].upload_date
+      : formatDate(new Date());
 
-      const bundleFiles = temp_spatial
-        .filter((f) => f.mine_document_bundle_id === id)
-        .map((f) => ({ ...f, key: f.document_manager_guid }));
+    return {
+      document_name,
+      bundleFiles,
+      upload_date,
+      create_user,
+      bundleSize,
+      bundle_id: id,
+      key: id,
+      isParent: true,
+      isSingleFile: false,
+    };
+  });
 
-      const geomark_id = response?.data ? response?.data?.geomark_id : bundleFiles?.[0].geomark_id;
-
-      const bundleSize = bundleFiles.length;
-      const document_name = bundleFiles[0].document_name.split(".")[0];
-      const create_user = bundleFiles[0].create_user;
-      const upload_date = bundleFiles[0]?.upload_date
-        ? bundleFiles.sort((a, b) => a.upload_date.localeCompare(b.upload_date))[0].upload_date
-        : formatDate(new Date());
-
-      return {
-        document_name,
-        bundleFiles,
-        upload_date,
-        create_user,
-        bundleSize,
-        bundle_id: id,
-        key: id,
-        isParent: true,
-        geomark_id,
-        isSingleFile: false,
-      };
-    })
-  );
-
-  const individualFiles = await Promise.all(
-    temp_indiv.map(async (f) => {
-      let response;
-
-      if (f.mine_document_bundle_id) {
-        const url = `${ENVIRONMENT.apiUrl}/mines/document-bundle/${f.mine_document_bundle_id}`;
-        response = await CustomAxios({
-          errorToastMessage: "default",
-        }).get(url, headers);
-      }
-
-      const geomark_id = response?.data ? response?.data?.geomark_id : f.geomark_id;
-
-      return {
-        ...f,
-        bundle_id: f.document_manager_guid,
-        key: f.document_manager_guid,
-        bundleFiles: [f],
-        isParent: true,
-        geomark_id,
-        isSingleFile: true,
-      };
-    })
-  );
+  const individualFiles = temp_indiv.map((f) => {
+    return {
+      ...f,
+      bundle_id: f.mine_document_bundle_id ?? f.document_name.split(".")[0],
+      key: f.document_manager_guid,
+      bundleFiles: [f],
+      isParent: true,
+      isSingleFile: true,
+    };
+  });
 
   return [...spatial_bundles, ...individualFiles];
 };
@@ -127,7 +90,7 @@ const spatialSlice = createAppSlice({
       state.spatialBundle = null;
     }),
     fetchGeomarkMapData: create.asyncThunk(
-      async ({ geomark_id, bundle_id }: ISpatialBundle, thunkAPI) => {
+      async (geomark_id: string, thunkAPI) => {
         thunkAPI.dispatch(showLoading());
         const geomark_link = `${process.env.GEOMARK_URL_BASE}/geomarks/${geomark_id}`;
 
@@ -139,12 +102,32 @@ const spatialSlice = createAppSlice({
         }).get(url);
 
         thunkAPI.dispatch(hideLoading());
-        return { mapData: response.data, bundle_id };
+        return { mapData: response.data };
       },
       {
         fulfilled: (state, action) => {
           state.geoJsonData = action.payload.mapData;
-          state.bundle_id = action.payload.bundle_id.toString();
+        },
+        rejected: (_state, action) => {
+          rejectHandler(action);
+        },
+      }
+    ),
+    fetchSpatialBundle: create.asyncThunk(
+      async (mine_document_bundle_id: string, thunkAPI) => {
+        thunkAPI.dispatch(showLoading());
+        const headers = createRequestHeader();
+        const url = `${ENVIRONMENT.apiUrl}/mines/document-bundle/${mine_document_bundle_id}`;
+        const response = await CustomAxios({
+          errorToastMessage: "default",
+        }).get(url, headers);
+        thunkAPI.dispatch(hideLoading());
+        return response.data;
+      },
+      {
+        fulfilled: (state, action) => {
+          state.spatialBundle = action.payload;
+          state.bundle_id = action.payload.mine_document_bundle_id;
         },
         rejected: (_state, action) => {
           rejectHandler(action);
@@ -182,10 +165,18 @@ const spatialSlice = createAppSlice({
     getSpatialBundleGuid: (state: SpatialDataState) => {
       return state.bundle_id;
     },
+    getSpatialBundle: (state: SpatialDataState) => {
+      return state.spatialBundle;
+    },
   },
 });
 
-export const { createSpatialBundle, fetchGeomarkMapData, clearSpatialData } = spatialSlice.actions;
-export const { getGeomarkMapData, getSpatialBundleGuid } = spatialSlice.selectors;
+export const {
+  createSpatialBundle,
+  fetchGeomarkMapData,
+  clearSpatialData,
+  fetchSpatialBundle,
+} = spatialSlice.actions;
+export const { getGeomarkMapData, getSpatialBundleGuid, getSpatialBundle } = spatialSlice.selectors;
 export const spatialDataReducer = spatialSlice.reducer;
 export default spatialDataReducer;

@@ -1,17 +1,22 @@
 module.exports = {
   transform: {
-    '^.+\\.(t|j)sx?$': ['ts-jest', {
-      "tsConfigFile": "./tsconfig.json",
-      isolatedModules: true
-    }]
+    "^.+\\.(t|j)sx?$": [
+      "ts-jest",
+      {
+        tsConfigFile: "./tsconfig.json",
+        isolatedModules: true,
+      },
+    ],
   },
   maxWorkers: 4,
   verbose: true,
   testEnvironmentOptions: {
-    url: 'http://localhost'
+    customExportConditions: [""],
+    url: "http://localhost",
   },
   testEnvironment: "jest-environment-jsdom-global",
-  setupFiles: ["jest-localstorage-mock", "jest-canvas-mock", "./src/setupTests.ts"],
+  setupFiles: ["./jest.polyfills.js", "jest-localstorage-mock", "jest-canvas-mock"],
+  setupFilesAfterEnv: ["./src/setupTests.ts"],
   collectCoverageFrom: ["**/src/**/*.{js,ts,tsx}"],
   moduleNameMapper: {
     "@mds/common/(.*)": "<rootDir>/../common/src/$1",
@@ -21,7 +26,7 @@ module.exports = {
       "<rootDir>/src/assetsTransformer.js",
     "\\.(css|less|scss)$": "<rootDir>/src/assetsTransformer.js",
     "^uuid$": "uuid",
-    "^esm-browser$": "esm-browser"
+    "^esm-browser$": "esm-browser",
   },
 
   transformIgnorePatterns: ["node_modules", "../../node_modules", "vendor"],

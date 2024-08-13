@@ -1,6 +1,15 @@
 import Enzyme from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import path from "path";
+import server from "@/tests/server";
+
+beforeAll(() => {
+  server.listen({ onUnhandledRequest: "warn" });
+});
+
+afterAll(() => {
+  server.close();
+});
 
 require("jest-localstorage-mock");
 

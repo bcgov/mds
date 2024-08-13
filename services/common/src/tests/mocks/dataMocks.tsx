@@ -7295,10 +7295,11 @@ export const PROJECT_SUMMARY: IProjectSummary = {
       archived_date: null,
       archived_by: null,
       versions: [],
+      geomark_id: "gm-04F2D5A935644D54945169786C942C6F",
     },
     {
       project_summary_id: 1304,
-      bundle_id: "1",
+      geomark_id: "gm-04F2D5A935644D54945169786C942C6F",
       project_summary_document_type_code: "SPT",
       mine_document_guid: "ffbf5b37-3520-4bf2-9050-2bc857ca6df9",
       mine_guid: "60300a07-376c-46f1-a984-88a813f91438",
@@ -7313,7 +7314,7 @@ export const PROJECT_SUMMARY: IProjectSummary = {
     },
     {
       project_summary_id: 1304,
-      bundle_id: "1",
+      geomark_id: "gm-04F2D5A935644D54945169786C942C6F",
       project_summary_document_type_code: "SPT",
       mine_document_guid: "64dff8f0-7f94-4eef-9ac1-7b70fd90e053",
       mine_guid: "60300a07-376c-46f1-a984-88a813f91438",
@@ -7328,7 +7329,7 @@ export const PROJECT_SUMMARY: IProjectSummary = {
     },
     {
       project_summary_id: 1304,
-      bundle_id: "1",
+      geomark_id: "gm-04F2D5A935644D54945169786C942C6F",
       project_summary_document_type_code: "SPT",
       mine_document_guid: "11fe5376-cd0e-4929-bcc2-85540fd121ed",
       mine_guid: "60300a07-376c-46f1-a984-88a813f91438",
@@ -7343,7 +7344,7 @@ export const PROJECT_SUMMARY: IProjectSummary = {
     },
     {
       project_summary_id: 1304,
-      bundle_id: "1",
+      geomark_id: "gm-04F2D5A935644D54945169786C942C6F",
       project_summary_document_type_code: "SPT",
       mine_document_guid: "b869134f-bcf8-47d9-ac61-c90835e20601",
       mine_guid: "60300a07-376c-46f1-a984-88a813f91438",

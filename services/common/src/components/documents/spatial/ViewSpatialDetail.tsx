@@ -7,28 +7,38 @@ import { getFormattedUserName } from "@mds/common/redux/selectors/authentication
 import {
   clearSpatialData,
   fetchGeomarkMapData,
+  fetchSpatialBundle,
   getGeomarkMapData,
-  spatialBundlesFromFiles,
+  getSpatialBundle,
+  groupSpatialBundles,
 } from "@mds/common/redux/slices/spatialDataSlice";
 import { IMineDocument } from "@mds/common/interfaces";
 import CoreMap from "../../common/Map";
+import { getIsModalOpen } from "@mds/common/redux/selectors/modalSelectors";
 
 export interface ViewSpatialDetailProps {
-  spatialDocuments: IMineDocument[];
+  spatialDocuments: (IMineDocument & { geomark_id?: string })[];
 }
 
 const ViewSpatialDetail: FC<ViewSpatialDetailProps> = ({ spatialDocuments }) => {
-  const [spatialBundle, setSpatialBundle] = useState(null);
-
   const dispatch = useDispatch();
   const username = useSelector(getFormattedUserName);
+  const spatialBundle = useSelector(getSpatialBundle);
   const geomarkMapData = useSelector(getGeomarkMapData);
+  const isModalOpen = useSelector(getIsModalOpen);
   const [mapLoaded, setMapLoaded] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [bundleNotYetCreated, setBundleNotYetCreated] = useState<boolean | null>();
 
   const handleGetSpatialBundles = async () => {
-    const spatialBundles = await spatialBundlesFromFiles(spatialDocuments);
-    setSpatialBundle(spatialBundles[0]);
+    if (!spatialDocuments[0].geomark_id) {
+      const spatialBundles = groupSpatialBundles(spatialDocuments);
+      await dispatch(() => fetchSpatialBundle(spatialBundles[0].bundle_id));
+      setBundleNotYetCreated(false);
+    } else {
+      setBundleNotYetCreated(true);
+    }
+
     setIsLoaded(true);
   };
 
@@ -36,19 +46,26 @@ const ViewSpatialDetail: FC<ViewSpatialDetailProps> = ({ spatialDocuments }) => 
     if (spatialDocuments && !isLoaded) {
       handleGetSpatialBundles();
     }
-  }, [spatialDocuments]);
+  }, [spatialDocuments, isModalOpen]);
 
   const handleFetchMapData = () => {
     setMapLoaded(false);
-    dispatch(fetchGeomarkMapData(spatialBundle));
+    const geomarkId = bundleNotYetCreated
+      ? spatialDocuments[0].geomark_id
+      : spatialBundle.geomark_id;
+
+    dispatch(fetchGeomarkMapData(geomarkId));
   };
 
   useEffect(() => {
-    if (!mapLoaded && spatialBundle) {
+    if ((!mapLoaded && spatialBundle) || bundleNotYetCreated) {
       handleFetchMapData();
     }
-    return () => dispatch(clearSpatialData());
-  }, [spatialBundle]);
+    return () => {
+      setMapLoaded(false);
+      dispatch(clearSpatialData());
+    };
+  }, [spatialBundle, bundleNotYetCreated, isModalOpen]);
 
   return (
     <>

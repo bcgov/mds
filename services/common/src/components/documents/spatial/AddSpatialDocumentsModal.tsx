@@ -57,6 +57,10 @@ const AddSpatialDocumentsModal: FC<AddSpatialDocumentsModalProps> = ({
     dispatch(change(modalFormName, fieldName, newUploadedFiles));
   };
 
+  const filesHaveGeomarkIds = () => {
+    return existingDocuments.some((d) => d.geomark_id);
+  };
+
   const stepContent = [
     {
       title: "Upload Spatial Data Files",
@@ -95,7 +99,7 @@ const AddSpatialDocumentsModal: FC<AddSpatialDocumentsModalProps> = ({
             Please confirm that the composed map below correctly represents your selected spatial
             data files.
           </Typography.Paragraph>
-          <ViewSpatialDetail spatialDocuments={existingDocuments} />
+          {filesHaveGeomarkIds() && <ViewSpatialDetail spatialDocuments={existingDocuments} />}
         </>
       ),
     },
@@ -113,17 +117,16 @@ const AddSpatialDocumentsModal: FC<AddSpatialDocumentsModalProps> = ({
         ...f,
         docman_bundle_guid,
         geomark_id,
-        bundle_id: docman_bundle_guid,
       };
     });
     dispatch(change(modalFormName, fieldName, [...initialDocuments, ...newFiles]));
-    dispatch(change(formName, fieldName, [...initialDocuments, ...newFiles]));
   };
 
   const handleSubmit = async (values) => {
     const isFinalStep = currentStep === stepContent.length - 1;
     const newFiles = values[fieldName];
     if (isFinalStep) {
+      dispatch(change(formName, fieldName, [...initialDocuments, ...newFiles]));
       setIsResetting(true);
       setCurrentStep(0);
       await dispatch(reset(modalFormName));

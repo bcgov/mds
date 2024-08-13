@@ -98,7 +98,7 @@ export const DocumentUpload: FC = () => {
     document_manager_guid: string,
     version?: { document_manager_version_guid: string; document_manager_guid: string }
   ) => {
-    let newUploadedFiles = [];
+    let newUploadedFiles: any[];
     if (version.document_manager_version_guid) {
       const ConnectedVersion = dispatch(
         postNewDocumentVersion({
@@ -211,7 +211,7 @@ export const DocumentUpload: FC = () => {
               Upload Spatial Data
             </Button>
           )}
-          <SpatialDocumentTable documents={spatial_documents} />
+          <SpatialDocumentTable documents={documents} />
         </>
       ) : (
         <RenderOldDocuments

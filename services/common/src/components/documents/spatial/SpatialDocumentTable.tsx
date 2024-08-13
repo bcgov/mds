@@ -12,7 +12,7 @@ import { openModal } from "@mds/common/redux/actions/modalActions";
 import ViewSpatialDetailModal from "./ViewSpatialDetailModal";
 import DocumentCompression from "../DocumentCompression";
 import { MineDocument } from "@mds/common/models/documents/document";
-import { spatialBundlesFromFiles } from "@mds/common/redux/slices/spatialDataSlice";
+import { groupSpatialBundles } from "@mds/common/redux/slices/spatialDataSlice";
 import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls";
 import { ISpatialBundle } from "@mds/common/interfaces/document/spatialBundle.interface";
 import { IMineDocument } from "@mds/common/interfaces";
@@ -28,7 +28,7 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({ documents, catego
   const [spatialBundles, setSpatialBundles] = useState([]);
 
   const handleGetSpatialBundles = async () => {
-    const newSpatialBundles = await spatialBundlesFromFiles(documents);
+    const newSpatialBundles = groupSpatialBundles(documents);
     setSpatialBundles(newSpatialBundles);
   };
 
@@ -100,7 +100,7 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({ documents, catego
   ];
 
   return (
-    <>
+    <div data-testid="spatial-document-table">
       <DocumentCompression
         mineDocuments={mineDocuments}
         setCompressionModalVisible={setIsCompressionModalVisible}
@@ -118,7 +118,7 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({ documents, catego
           rowExpandable: (record) => !record.isSingleFile && record.isParent,
         }}
       />
-    </>
+    </div>
   );
 };
 

@@ -8,4 +8,5 @@ export interface IProjectSummaryDocument extends IMineDocument {
   project_summary_id: number;
   project_summary_document_type_code: string;
   category?: string;
+  geomark_id?: string;
 }

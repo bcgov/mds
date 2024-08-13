@@ -12,6 +12,8 @@ module.exports = {
     "services/core-web/webpack.parts.js",
     "services/core-web/cypress.config.ts",
     "services/core-web/cypress/**",
+    "services/common/jest.polyfills.js",
+    "services/minespace-web/jest.polyfills.js",
   ],
   parserOptions: {
     project: [
