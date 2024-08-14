@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react";
+import React, { FC, ReactNode, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Col, Row, Tabs, TabsProps, Typography } from "antd";
 import { Link } from "react-router-dom";
@@ -22,6 +22,7 @@ interface CorePageHeaderProps {
   current_permittee: string; // would be ideal to get this from the mine
   breadCrumbs?: BreadCrumb[];
   tabProps?: TabsProps;
+  extraElement?: ReactNode;
 }
 
 const { Title, Text } = Typography;
@@ -33,6 +34,7 @@ const CorePageHeader: FC<CorePageHeaderProps> = ({
   entityType,
   breadCrumbs,
   tabProps,
+  extraElement,
 }) => {
   const mine = useSelector((state) => getMineById(state, mineGuid));
   const dispatch = useDispatch();
@@ -63,22 +65,30 @@ const CorePageHeader: FC<CorePageHeaderProps> = ({
             </Text>
           </Col>
         </Row>
-        <Row align="middle" gutter={16}>
+        <Row align="middle" gutter={16} justify="space-between">
           <Col>
-            <Title level={1} className="margin-none">
-              {entityType} {entityLabel}
-            </Title>
+            <Row align="middle" gutter={16}>
+              <Col>
+                <Title level={1} className="margin-none">
+                  {entityType} {entityLabel}
+                </Title>
+              </Col>
+              <Col>
+                <CoreTag
+                  icon={<FontAwesomeIcon icon={faLocationDot} />}
+                  text={mine?.mine_name}
+                  link={GLOBAL_ROUTES?.MINE_DASHBOARD.dynamicRoute(mineGuid)}
+                />
+              </Col>
+              {current_permittee && (
+                <Col>
+                  <CoreTag icon={<CompanyIcon />} text={current_permittee} />
+                </Col>
+              )}
+            </Row>
           </Col>
-          <Col>
-            <CoreTag
-              icon={<FontAwesomeIcon icon={faLocationDot} />}
-              text={mine?.mine_name}
-              link={GLOBAL_ROUTES?.MINE_DASHBOARD.dynamicRoute(mineGuid)}
-            />
-          </Col>
-          <Col>
-            <CoreTag icon={<CompanyIcon />} text={current_permittee} />
-          </Col>
+
+          {extraElement && <Col className="core-header-extra">{extraElement}</Col>}
         </Row>
       </div>
       {tabProps && (

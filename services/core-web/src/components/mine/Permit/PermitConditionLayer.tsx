@@ -1,16 +1,14 @@
 import React, { FC } from "react";
-import { IPermitCondition } from "@mds/common";
+import { IPermitCondition } from "@mds/common/interfaces/permits/permitCondition.interface";
 
 interface PermitConditionLayerProps {
   condition: IPermitCondition;
   level?: number;
-  handleUpdateCondition?: (condition: IPermitCondition) => Promise<void>;
   isExpanded?: boolean;
 }
 
 const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   condition,
-  handleUpdateCondition,
   isExpanded,
   level = 0,
 }) => {
@@ -19,7 +17,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   return (
     <div className={className}>
       <div className={expandClass}>
-        <p>
+        <p className={className}>
           {condition.step} {condition.condition}
         </p>
         {condition?.sub_conditions?.map((condition) => {
@@ -28,11 +26,11 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
               condition={condition}
               key={condition.permit_condition_id}
               level={level + 1}
-              handleUpdateCondition={handleUpdateCondition}
             />
           );
         })}
       </div>
+      {/* Content added here will show up at the top level when conditions are collapsed */}
     </div>
   );
 };

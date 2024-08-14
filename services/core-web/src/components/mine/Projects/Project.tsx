@@ -16,7 +16,6 @@ import DecisionPackageTab from "@/components/mine/Projects/DecisionPackageTab";
 import ProjectDescriptionTab from "@mds/common/components/project/ProjectDescriptionTab";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import ScrollSidePageWrapper from "@mds/common/components/common/ScrollSidePageWrapper";
-import { ScrollSideMenuProps } from "@mds/common/components/common/ScrollSideMenu";
 import ProjectDocumentsTab from "@mds/common/components/projects/ProjectDocumentsTab";
 
 const Project: FC = () => {
@@ -165,23 +164,11 @@ const Project: FC = () => {
     },
   ].filter(Boolean);
 
-  const sideBarRoute = {
-    url: GLOBAL_ROUTES?.EDIT_PROJECT,
-    params: [projectGuid, activeTab],
-  };
-
-  const scrollSideMenuProp: ScrollSideMenuProps = {
-    menuOptions: [],
-    featureUrlRoute: sideBarRoute.url.hashRoute,
-    featureUrlRouteArguments: sideBarRoute.params,
-  };
-
   return (
     <div className="page fixed-tabs-container">
       <ScrollSidePageWrapper
         headerHeight={headerHeight}
         header={header}
-        menuProps={scrollSideMenuProp}
         content={
           <LoadingWrapper condition={isLoaded}>
             <Tabs

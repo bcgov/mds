@@ -28,7 +28,7 @@
 
     .side-nav-title {
         text-wrap: wrap;
-        color: $violet;
+        color: $darkest-grey;
         line-height: 21px;
         font-size: 14px;
     }
@@ -40,10 +40,14 @@
     z-index: 999;
 
     .ant-anchor-link {
-        padding: 6px 16px;
+        padding: 11px 16px;
     }
 
     .ant-anchor-link-title {
+        &-active .side-nav-title {
+            color: $violet;
+        }
+
         .sub-tab-1 {
             margin: -2px 0 -2px 16px;
         }

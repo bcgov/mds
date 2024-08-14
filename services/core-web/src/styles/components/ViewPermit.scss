@@ -1,21 +1,14 @@
-.view-permits {
-  background-color: #fff;
-
-  .ant-typography {
-    margin: 0;
-  }
-}
-
-.view-permits h4 {
-  color: $primary-color;
-}
-
 .view-permits-content {
   background-color: #f9f9f9;
   padding: 0 20px 16px;
 
-  p {
+  p,
+  .ant-typography {
     margin: 0;
+  }
+
+  h4.ant-typography {
+    color: $primary-color;
   }
 
   .ant-row:nth-child(2) {
@@ -47,15 +40,5 @@
 
   .ant-row {
     margin: 8px 0;
-  }
-}
-
-.view-permits>.ant-tabs {
-  .ant-tabs-tab.ant-tabs-tab-disabled {
-    color: $non-textual-grey;
-  }
-
-  .ant-tabs-nav {
-    margin: 0;
   }
 }

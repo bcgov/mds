@@ -47,24 +47,3 @@
 
     }
 }
-
-.condition-layer {
-    padding: 12px 8px 0 8px;
-    font-weight: normal;
-
-    &--0 {
-        border: 1px solid $transparent-dark-grey;
-        border-radius: 4px;
-        padding-bottom: 12px;
-        font-weight: 700;
-
-        >.condition-collapsed {
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 3;
-            line-clamp: 3;
-            text-overflow: ellipsis;
-            overflow: hidden;
-        }
-    }
-}

@@ -134,89 +134,6 @@
   word-wrap: break-word;
 }
 
-// BUTTON
-.ant-btn,
-.ant-btn-sm,
-// secondary is deprecated --> move to default
-.ant-btn-secondary,
-.ant-btn-default {
-  position: inherit;
-  margin-bottom: 10px;
-  padding: 0 16px;
-  color: $secondary-btn-color;
-  border: 1px solid $secondary-btn-color;
-
-  &:hover {
-    color: $secondary-btn-color-hover;
-    border-color: $secondary-btn-border-color-hover;
-  }
-
-  span {
-    font-size: $font-size-base;
-  }
-}
-
-label .ant-btn {
-  margin: 0px;
-}
-
-.ant-btn-icon-only {
-  >svg.svg-inline--fa {
-    font-size: 1rem;
-    vertical-align: 2em;
-    margin-left: -0.35em
-  }
-}
-
-.ant-input-search-button {
-  height: 34px;
-  width: 46px;
-  margin: 0;
-  border: 1px solid #d9d9d9;
-}
-
-
-.ant-btn-danger {
-  background-color: $danger-btn-color;
-  color: white;
-  border: 1px solid $danger-btn-color;
-
-  &:hover {
-    background-color: $danger-btn-color-hover;
-    color: white;
-    border: 1px solid $danger-btn-color-hover;
-  }
-
-  &:focus {
-    background-color: $danger-btn-color-hover;
-    color: white;
-    border: 1px solid $danger-btn-color-hover;
-  }
-}
-
-.ant-btn-link {
-  &:focus {
-    color: $pure-white;
-  }
-}
-
-.btn-danger--icon {
-  &:hover {
-    color: $danger-btn-color-hover;
-  }
-}
-
-.ant-btn-tertiary {
-  font-weight: $light;
-  color: $pure-white;
-  border: 1px solid $tertiary-btn-color;
-  background-color: $tertiary-btn-color;
-
-  &:hover {
-    color: $pure-white;
-    background-color: $tertiary-btn-color-hover;
-  }
-}
 
 .ant-pagination-prev .ant-pagination-item-link,
 .ant-pagination-next .ant-pagination-item-link,
@@ -242,33 +159,6 @@ label .ant-btn {
   margin: 2px;
 }
 
-.ant-btn-primary {
-  font-weight: $light;
-  color: $pure-white;
-  background-color: $primary-btn-color;
-  border-color: $primary-btn-color;
-
-  &:hover,
-  &:focus {
-    color: $pure-white;
-    background-color: $primary-btn-color-hover;
-    border-color: $primary-btn-border-color-hover;
-  }
-}
-
-.ant-btn-ghost {
-  color: $primary-btn-color;
-  border: 2px solid $primary-btn-color;
-  background-color: $pure-white;
-
-  &:hover,
-  &:active {
-    background-color: $transparent-violet;
-    color: $hover-violet;
-    border-color: $hover-violet;
-  }
-}
-
 .ant-popover {
   width: 500px;
 }
@@ -285,6 +175,7 @@ label .ant-btn {
 
 .ant-btn-background-ghost {
   border-style: none;
+  border: none !important;
   box-shadow: none;
 
   &:hover {

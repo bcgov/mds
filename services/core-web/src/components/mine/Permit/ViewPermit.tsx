@@ -1,6 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Col, Row, Tabs, Typography, Tag } from "antd";
-import { Link, useHistory, useParams } from "react-router-dom";
+import React, { FC, useEffect, useMemo, useState } from "react";
+import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getPermitByGuid } from "@mds/common/redux/selectors/permitSelectors";
 import { IMine, IPermit } from "@mds/common";
@@ -14,8 +13,11 @@ import * as routes from "@/constants/routes";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils/featureFlag";
+import { PresetStatusColorType } from "antd/es/_util/colors";
+import { Badge } from "antd";
+import { ActionMenuButton } from "@mds/common/components/common/ActionMenu";
 
-const ViewPermit = () => {
+const ViewPermit: FC = () => {
   const dispatch = useDispatch();
 
   const { id, permitGuid, tab } = useParams<{ id: string; permitGuid: string; tab: string }>();
@@ -46,6 +48,11 @@ const ViewPermit = () => {
 
   const canViewConditions = latestAmendment?.conditions?.length > 0;
 
+  const getConditionBadge = () => {
+    const conditionStatus: PresetStatusColorType = canViewConditions ? "success" : "error";
+    return <Badge status={conditionStatus} />;
+  };
+
   const tabItems = [
     {
       key: "overview",
@@ -54,7 +61,7 @@ const ViewPermit = () => {
     },
     enablePermitConditionsTab && {
       key: "conditions",
-      label: "Permit Conditions",
+      label: <>{getConditionBadge()} Permit Conditions</>,
       children: <ViewPermitConditions latestAmendment={latestAmendment} />,
       disabled: !canViewConditions,
     },
@@ -65,17 +72,25 @@ const ViewPermit = () => {
     return history.push(routes.VIEW_MINE_PERMIT.dynamicRoute(id, permitGuid, newActiveTab));
   };
 
+  const headerActions = [
+    {
+      key: "test",
+      label: "Test",
+      clickFunction: () => console.log("action not implemented", permit),
+    },
+  ];
+
+  const headerActionComponent = <ActionMenuButton actions={headerActions} />;
+
   return (
-    <div
-      className="fixed-tabs-container"
-      // className="view-permits margin-large--top padding-lg--left padding-lg--right"
-    >
+    <div className="fixed-tabs-container">
       <CorePageHeader
         entityLabel={permit?.permit_no ?? ""}
         entityType="Permit"
         mineGuid={id}
         current_permittee={permit?.current_permittee ?? ""}
         breadCrumbs={[{ route: routes.MINE_PERMITS.dynamicRoute(id), text: "All Permits" }]}
+        extraElement={headerActionComponent}
         tabProps={{
           items: tabItems,
           defaultActiveKey: activeTab,

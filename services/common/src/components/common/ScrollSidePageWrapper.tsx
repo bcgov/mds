@@ -6,7 +6,7 @@ import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelecto
 
 interface ScrollSidePageWrapperProps {
   content: ReactNode;
-  menuProps: ScrollSideMenuProps;
+  menuProps?: ScrollSideMenuProps;
   header: ReactNode;
   headerHeight?: number;
 }
@@ -47,7 +47,7 @@ const ScrollSidePageWrapper: FC<ScrollSidePageWrapperProps> = ({
     handleScroll();
   }, []);
 
-  const hasMenu = menuProps.menuOptions.length > 0;
+  const hasMenu = Boolean(menuProps);
   const hasHeader = Boolean(header);
 
   const contentClass = [hasMenu && "side-menu--content", isFixedTop && "with-fixed-top"]

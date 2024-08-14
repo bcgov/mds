@@ -22,6 +22,7 @@ export enum Feature {
   DIGITIZED_PERMITS = "digitized_permits",
   SPATIAL_BUNDLE = "spatial_bundle",
   PERMIT_CONDITIONS_PAGE = "permit_conditions_page",
+  MODIFY_PERMIT_CONDITIONS = "modify_permit_conditions",
 }
 
 export const initializeFlagsmith = async (flagsmithUrl, flagsmithKey) => {
