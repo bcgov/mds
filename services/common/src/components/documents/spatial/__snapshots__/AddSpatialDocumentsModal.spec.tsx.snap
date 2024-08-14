@@ -232,7 +232,7 @@ exports[`AddSpatialDocumentsModal renders properly 1`] = `
         class="ant-row ant-row-end"
       >
         <button
-          class="ant-btn ant-btn-default"
+          class="ant-btn ant-btn-default core-btn core-btn-default"
           type="button"
         >
           <span>
