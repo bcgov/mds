@@ -14,7 +14,7 @@ import {
   MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE,
 } from "@mds/common/constants/strings";
 import { resetForm } from "@common/utils/helpers";
-import { DOCUMENT, MODERN_EXCEL, SPATIAL } from "@mds/common";
+import { DOCUMENT, MODERN_EXCEL, SPATIAL, SPATIAL_DATA_STANDARDS_URL, Feature } from "@mds/common";
 import * as routes from "@/constants/routes";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
@@ -32,7 +32,6 @@ import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import AddSpatialDocumentsModal from "@mds/common/components/documents/spatial/AddSpatialDocumentsModal";
 import SpatialDocumentTable from "@mds/common/components/documents/spatial/SpatialDocumentTable";
 import * as API from "@mds/common/constants/API";
-import { SPATIAL_DATA_STANDARDS_URL, Feature } from "@mds/common";
 import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
 
 const propTypes = {
