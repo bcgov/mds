@@ -134,7 +134,7 @@ const spatialSlice = createAppSlice({
         },
       }
     ),
-    createSpatialBundle: create.asyncThunk(
+    createDocmanSpatialBundle: create.asyncThunk(
       async (payload: { bundle_document_guids: string[]; name: string }, thunkAPI) => {
         const url = `${ENVIRONMENT.docManUrl}${COMPLETE_SPATIAL_BUNDLE}`;
 
@@ -172,7 +172,7 @@ const spatialSlice = createAppSlice({
 });
 
 export const {
-  createSpatialBundle,
+  createDocmanSpatialBundle,
   fetchGeomarkMapData,
   clearSpatialData,
   fetchSpatialBundle,

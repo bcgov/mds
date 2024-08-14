@@ -11,7 +11,7 @@ import RenderCancelButton from "../../forms/RenderCancelButton";
 import RenderSubmitButton from "../../forms/RenderSubmitButton";
 import { closeModal } from "@mds/common/redux/actions/modalActions";
 import ViewSpatialDetail from "./ViewSpatialDetail";
-import { createSpatialBundle } from "@mds/common/redux/slices/spatialDataSlice";
+import { createDocmanSpatialBundle } from "@mds/common/redux/slices/spatialDataSlice";
 
 interface AddSpatialDocumentsModalProps {
   formName: string;
@@ -105,7 +105,7 @@ const AddSpatialDocumentsModal: FC<AddSpatialDocumentsModalProps> = ({
     },
   ];
 
-  const addBundleIdToFiles = ({
+  const addDocmanBundleInfotoFiles = ({
     docman_bundle_guid,
     geomark_id,
   }: {
@@ -119,15 +119,14 @@ const AddSpatialDocumentsModal: FC<AddSpatialDocumentsModalProps> = ({
         geomark_id,
       };
     });
-    dispatch(change(modalFormName, fieldName, [...initialDocuments, ...newFiles]));
+    dispatch(change(modalFormName, fieldName, newFiles));
   };
 
   const handleSubmit = async (values) => {
     const isFinalStep = currentStep === stepContent.length - 1;
     const newFiles = values[fieldName];
     if (isFinalStep) {
-      dispatch(change(formName, fieldName, [...initialDocuments, ...newFiles]));
-      dispatch(change(formName, "spatial_documents", [...initialDocuments, ...newFiles]));
+      dispatch(change(formName, fieldName, [...newFiles, ...initialDocuments]));
       setIsResetting(true);
       setCurrentStep(0);
       await dispatch(reset(modalFormName));
@@ -135,9 +134,9 @@ const AddSpatialDocumentsModal: FC<AddSpatialDocumentsModalProps> = ({
     } else {
       const bundle_document_guids = newFiles.map((f) => f.document_manager_guid);
       const name = newFiles[0].document_name.split(".")[0];
-      const resp = await dispatch(createSpatialBundle({ name, bundle_document_guids }));
+      const resp = await dispatch(createDocmanSpatialBundle({ name, bundle_document_guids }));
       if (resp.payload) {
-        addBundleIdToFiles(resp.payload);
+        addDocmanBundleInfotoFiles(resp.payload);
         setCurrentStep(currentStep + 1);
       }
     }
