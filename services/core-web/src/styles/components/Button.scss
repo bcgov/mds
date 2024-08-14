@@ -23,7 +23,7 @@
     font-size: $font-size-sm;
   }
 
-  &.ant-btn-primary:not(.ant-btn-background-ghost) {
+  &-primary {
     color: $pure-white;
     background-color: $primary-btn-color;
     border-color: $primary-btn-color;
