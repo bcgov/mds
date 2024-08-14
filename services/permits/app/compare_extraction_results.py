@@ -1,7 +1,7 @@
 ###
 # Utility script to compare extracted permit conditions from CSV files to generate a csv and html report of how well they match
 # Usage: python compare_extraction_results.py --csv_pairs <auto_extracted_csv> <manual_extracted_csv> --csv_pairs <auto_extracted_csv> <manual_extracted_csv> ...
-# CSV files should have the following columns: section_title, section_paragraph, paragraph_title, subparagraph, clause, subclause, page_number, condition_text
+# CSV files should have the following columns: section_title, section_paragraph, condition_title, subparagraph, clause, subclause, page_number, condition_text
 ###
 import argparse
 import logging
@@ -13,6 +13,7 @@ from app.permit_conditions.validator.permit_condition_model import PermitConditi
 from diff_match_patch import diff_match_patch
 from fuzzywuzzy import fuzz
 from jinja2 import Environment, FileSystemLoader
+from natsort import natsorted
 from pydantic import ValidationError
 
 logger = logging.getLogger(__name__)
@@ -25,13 +26,15 @@ def create_content_instances(df):
             content = PermitCondition(
                 section_title=row["section_title"],
                 section_paragraph=row["section_paragraph"],
-                paragraph_title=row["paragraph_title"],
+                condition_title=row["condition_title"],
                 subparagraph=row["subparagraph"],
                 clause=row["clause"],
                 subclause=row["subclause"],
+                paragraph_title=row.get("paragraph_title", ""),
                 page_number=int(row["page_number"]) if (row.get("page_number") and row['page_number'] != '') else 0,
                 condition_text=row["condition_text"],
                 original_condition_text=row["condition_text"],
+                subsubclause=row.get('subsubclause', '')
             )
         except ValidationError as e:
             logger.error(f"Failed parsing of permit condition: {e}")
@@ -41,8 +44,8 @@ def create_content_instances(df):
         # This will be used as the text for comparison purposes
         text = f"""
             {content.section_paragraph}. {content.section_title}
-            {content.subparagraph}. {content.paragraph_title}
-            {"("+content.clause + ")" if content.clause else ""} {"("+content.subclause + ")" if content.subclause else ""}
+            {content.subparagraph}. {content.condition_title}
+            {"("+content.clause + ")" if content.clause else ""} {"("+content.subclause + ")" if content.subclause else ""} {"("+content.subsubclause + ")" if content.subsubclause else ""}
 
             {content.condition_text}
         """
@@ -63,6 +66,7 @@ def create_comparison_key(condition):
                 condition.subparagraph,
                 condition.clause,
                 condition.subclause,
+                condition.subsubclause,
             ],
         )
     )
@@ -160,10 +164,10 @@ def validate_condition(csv_pairs):
                 {
                     "Key": key,
                     "auto_section_title": "",
-                    "auto_paragraph_title": "",
+                    "auto_condition_title": "",
                     "auto_extracted_condition": "",
                     "manual_section_title": manual_content_dict[key].section_title,
-                    "manual_paragraph_title": manual_content_dict[key].paragraph_title,
+                    "manual_condition_title": manual_content_dict[key].condition_title,
                     "manual_extracted_condition": manual_content_dict[key].original_condition_text,
                     "match_percentage": 0,
                     "is_match": False,
@@ -185,10 +189,10 @@ def validate_condition(csv_pairs):
                 {
                     "Key": key,
                     "auto_section_title": auto_content_dict[key].section_title,
-                    "auto_paragraph_title": auto_content_dict[key].paragraph_title,
+                    "auto_condition_title": auto_content_dict[key].condition_title,
                     "auto_extracted_condition": auto_content_dict[key].original_condition_text,
                     "manual_section_title": "",
-                    "manual_paragraph_title": "",
+                    "manual_condition_title": "",
                     "manual_extracted_condition": "",
                     "manual_extracted_condition": "",
                     "match_percentage": 0,
@@ -205,13 +209,11 @@ def validate_condition(csv_pairs):
         context["comparison_results"] += match_results["context_comparison_results"]
         comparison_results += match_results["comparison_results"]
 
-        context["all_conditions"] = sorted(
-            (
-                context["comparison_results"]
-                + context["missing_conditions"]
-                + context["added_conditions"]
-            ),
-            key=lambda c: c.get("Key"),
+        context["all_conditions"] = natsorted(
+            context["comparison_results"]
+            + context["missing_conditions"]
+            + context["added_conditions"],
+            key=lambda x: x["Key"],
         )
 
         # 5. Calculate the overall match_percentage (how many conditions match 100% between the two csvs)
@@ -273,10 +275,10 @@ def compare_matching_conditions(
                 {
                     "Key": key,
                     "auto_section_title": auto_content_dict[key].section_title,
-                    "auto_paragraph_title": auto_content_dict[key].paragraph_title,
+                    "auto_condition_title": auto_content_dict[key].condition_title,
                     "auto_extracted_condition": auto_content_dict[key].original_condition_text,
                     "manual_section_title": manual_content_dict[key].section_title,
-                    "manual_paragraph_title": manual_content_dict[key].paragraph_title,
+                    "manual_condition_title": manual_content_dict[key].condition_title,
                     "manual_extracted_condition": manual_content_dict[key].original_condition_text,
                     "match_percentage": match_percentage,
                     "is_match": is_match,

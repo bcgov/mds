@@ -11,11 +11,13 @@ system_prompt: |
       [{
         "section_title": "General",
         "section_paragraph": "A", # Always uppercase letter starting from A. All condtions have a section paragraph. If you can't find one, it is not a permit condition.
-        "paragraph_title": "Compliance with Mines Act and Code", # The title of the paragraph
+        "paragraph_title": "Compliance with Mines Act and Code", # The title of the paragraph the condition belongs to
         "subparagraph": "1", # Always number, starting from 1
         "clause": "a", # Always lowercase letter starting from a
         "subclause": "ii", # Always lowercase roman numeral starting from i
+        "subsubclause": "b", # Captures any lists that are nested within the subclause.
         "page_number": 4, # The page number the condition was found. Denoted by <--- REAL PAGE: --->
+        "condition_title": "Underground Mine", <-- This is the title of the condition if one is found. Leave blank if not found.
         "condition_text": "The permittee must complete reclamation activities within one year of the cessation of mining activities."
       },
       // the rest of the conditions]
@@ -31,14 +33,22 @@ system_prompt: |
 
   2. Permit  Approval 
 
-  (a) The Permittee is authorized under this permit ( M-179) for the following:  
+  (a) The Permittee is authorized under this permit ( M-179) for the following: 
 
-  (i) Development, including surface disturbance and works.
-  (ii) A mill throughput that does not exceed 2,500 tonnes per day, on an annual average basis.  
+    (i) Development, including surface disturbance and works;
+    (ii) A mill throughput that does not exceed 2,500 tonnes per day, on an annual average basis; and
+    (iii) The construction of a plant.
+      a) This is a subsubclause
 
-  (b) The Permittee is not authorized under this permit (M- 179) for the following:  
+  (b) Tree planting
 
-  (i) The conducting of any
+  The Permittee is not authorized under this permit (M- 179) for the following:  
+
+    (i) The conducting of any
+
+  (c) Shaking hands
+
+    (i) the permittee must always shake hands with the chief inspector
   ---
 
   This should return
@@ -47,52 +57,91 @@ system_prompt: |
     {
         "section_title": "General",
         "section_paragraph": "A",
-        "paragraph_title": "Compliance with Mines Act and Code"
         "subparagraph": "1",
+        "paragraph_title": "Compliance with Mines Act and Code",
         "clause": "",
         "subclause": "",
         "page_number": 1,
+        "condition_title": "Compliance with Mines Act and Code",
         "condition_text": "The permittee must comply with the Mines Act and the Health, Safety and Reclamation Code for Mines in British Columbia."
     },
     {
         "section_title": "General",
         "section_paragraph": "A",
         "paragraph_title": "Permit Approval",
-        "subparagraph": "3",
-        "clause": "a",
+        "subparagraph": "2",
+        "clause": "",
         "subclause": "",
         "page_number": 1,
-        "condition_text": "The Permittee is authorized under this permit ( M-179) for the following:"
+        "condition_title": "Permit Approval",
+        "condition_text": ""
     },
     {
         "section_title": "General",
         "section_paragraph": "A",
         "paragraph_title": "Permit Approval",
-        "subparagraph": "3",
+        "subparagraph": "2",
+        "clause": "a",
+        "subclause": "",
+        "page_number": 1,
+        "condition_title": "",
+        "condition_text": "The Permittee is authorized under this permit (M-179) for the following:"
+    },
+    {
+        "section_title": "General",
+        "section_paragraph": "A",
+        "paragraph_title": "Permit Approval",
+        "subparagraph": "2",
         "clause": "a",
         "subclause": "i",
         "page_number": 1,
-        "condition_text": "Development, including surface disturbance and works."
+        "condition_title": "",
+        "condition_text": "Development, including surface disturbance and works;"
     },
     {
         "section_title": "General",
         "section_paragraph": "A",
         "paragraph_title": "Permit Approval",
-        "subparagraph": "3",
+        "subparagraph": "2",
         "clause": "a",
         "subclause": "ii",
         "page_number": 1,
-        "condition_text": "A mill throughput that does not exceed 2,500 tonnes per day, on an annual average basis."
+        "condition_title": "",
+        "condition_text": "A mill throughput that does not exceed 2,500 tonnes per day, on an annual average basis; and"
     },
     {
         "section_title": "General",
         "section_paragraph": "A",
         "paragraph_title": "Permit Approval",
-        "subparagraph": "3",
+        "subparagraph": "2",
+        "clause": "a",
+        "subclause": "iii",
+        "page_number": 1,
+        "condition_title": "",
+        "condition_text": "The construction of a plant."
+    },
+    {
+        "section_title": "General",
+        "section_paragraph": "A",
+        "paragraph_title": "Permit Approval",
+        "subparagraph": "2",
+        "clause": "a",
+        "subclause": "iii",
+        "subsubclause": "a",
+        "page_number": 1,
+        "condition_title": "",
+        "condition_text": "This is a subsubclause"
+    },
+    {
+        "section_title": "General",
+        "section_paragraph": "A",
+        "subparagraph": "2",
+        "paragraph_title": "Permit Approval",
         "clause": "b",
         "subclause": "",
         "page_number": "",
-        "condition_text": "The Permittee is not authorized under this permit (M- 179) for the following:"
+        "condition_title": "Tree planting",
+        "condition_text": "The Permittee is not authorized under this permit (M-179) for the following:"
     },
     {
         "section_title": "General",
@@ -102,11 +151,41 @@ system_prompt: |
         "clause": "b",
         "subclause": "i",
         "page_number": "",
+        "condition_title": "",
         "condition_text": "The conducting of any"
+    },
+    {
+        "section_title": "General",
+        "section_paragraph": "A",
+        "subparagraph": "2",
+        "paragraph_title": "Permit Approval",
+        "clause": "c",
+        "subclause": "",
+        "page_number": "",
+        "condition_title": "Shaking hands",
+        "condition_text": "1""
+    },
+    {
+        "section_title": "General",
+        "section_paragraph": "A",
+        "paragraph_title": "Permit Approval",
+        "subparagraph": "2",
+        "clause": "c",
+        "subclause": "i",
+        "page_number": "",
+        "condition_title": "",
+        "condition_text": "the permittee must always shake hands with the chief inspector"
     }
   ]
 
-  The response should only include results that have a section_paragraph and a page number.
+  Important: Conditions with subclauses should output the parent clause as a separate item. For example a condition B.1.a with two subclauses should output
+  - B.1
+  - B.1.a
+  - B.1.a.i
+  and
+  - B.1.a.ii
+
+    The response should only include results that have a section_paragraph and a page number. Make sure to not strip out "; and" from the text as they are important for the condition text.
 
 user_prompt: |
   Use the text below (delimited by -----------) as the source for creating a JSON representation of the permit output the result without a code block. Start at the first page and continue until you have extracted all the conditions.

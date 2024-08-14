@@ -7,6 +7,7 @@ from typing import List, Optional
 
 from app.permit_conditions.pipelines.chat_data import ChatData
 from app.permit_conditions.validator.permit_condition_model import (
+    ConditionType,
     PermitCondition,
     PermitConditions,
     PromptResponse,
@@ -101,7 +102,37 @@ class PermitConditionValidator:
             # If there are no more pages to process, return the conditions found
             all_replies = self.documents + conditions
 
-            return {"conditions": PermitConditions(conditions=all_replies)}
+            # all_replies = sorted(all_replies, key=lambda x: f"{x.section_paragraph}.{x.clause}.{x.subclause}.{x.subsubclause}")
+            
+            # group conditions by key (section_paragraph, clause, subclause, subsubclause)
+
+            grouped_replies = {x.key(): x for x in all_replies}
+
+            # for cond in all_replies:
+            #     key = cond.key()
+            #     parent_cond = cond.create_parent()
+
+            #     if parent_cond.key() not in grouped_replies and parent_cond.condition_type() != ConditionType.SECTION:
+            #         cond.condition_title = ''
+
+            #         grouped_replies[parent_cond.key()] = parent_cond
+
+            #         logger.info(f"Parent clause: {parent_cond.key()} of {key} is missing")
+
+            #     parent = grouped_replies.get(parent_cond.key())
+            #     if parent and cond and parent.condition_title == cond.condition_title:
+            #         cond.condition_title = ''
+
+            #     if parent and cond and parent.condition_text == cond.condition_text:
+            #         parent.condition_text = ''
+            #     if cond.section_paragraph == 'C' and cond.subparagraph == '4' and cond.clause == 'c' and cond.subclause == 'i':
+            #         print('Condition 1:')
+            #         print(cond.condition_title, cond.paragraph_title)
+            #         print('Parent condition:')
+            #         print(parent.condition_title, parent.paragraph_title)
+
+            sorted_replies = sorted(grouped_replies.values(), key=lambda x: x.key())
+            return {"conditions": PermitConditions(conditions=sorted_replies)}
 
     def _parse_reply(self, reply) -> List[PromptResponse]:
         try:
@@ -118,11 +149,68 @@ class PermitConditionValidator:
                 else:
                     conditions.append(condition)
 
+            actual_conditions = []
             for c in conditions:
                 if 'page_number' in c and c.get('page_number') == '':
                     c['page_number'] = None
+                
+                has_sub_cond = False
+                for key, value in c.items():
+                    if isinstance(value, list):
+                        for cond in value:
+                            actual_conditions.append(cond)
+                        has_sub_cond = True
+                if not has_sub_cond:
+                    actual_conditions.append(c)
+            
+            transformed = []
 
-            response = PermitConditions.model_validate({"conditions": conditions})
+            for c in actual_conditions:
+                if c.get('numbering'):
+                    tp = c.get('type')
+                    section = c.get('section')
+                    paragraph = c.get('paragraph'),
+                    subparagraph=c.get('subparagraph'),
+                    clause=c.get('clause'),
+                    subclause=c.get('subclause'),
+                    subsubclause=c.get('subsubclause'),
+                    title=c.get('title'),
+                    page_number=c.get('page_number'),
+                    condition_text=c.get('text'),
+
+                    if tp == 'section':
+                        section = c.get('numbering')
+                    if tp == 'paragraph':
+                        paragraph = c.get('numbering')
+                    if tp == 'subparagraph':
+                        subparagraph = c.get('numbering')
+                    if tp == 'clause':
+                        clause = c.get('numbering')
+                    if tp == 'subclause':
+                        subclause = c.get('numbering')
+                    if tp == 'subsubclause':
+                        subsubclause = c.get('numbering')
+
+                    def _clean(text):
+                        return text.replace('.', '').replace('(', '').replace(')', '').replace(' ', '').strip()
+
+                    c = PermitCondition(
+                        section=_clean(section),
+                        paragraph=_clean(paragraph),
+                        subparagraph=_clean(subparagraph),
+                        clause=_clean(clause),
+                        subclause=_clean(subclause),
+                        subsubclause=_clean(subsubclause),
+                        condition_title=title,
+                        condition_text=condition_text,
+                        page_number=page_number,
+                    )
+
+                    transformed.append(c)
+                else:
+                    transformed.append(c)
+
+            response = PermitConditions.model_validate({"conditions": transformed})
 
             return response.conditions
         except Exception as e:

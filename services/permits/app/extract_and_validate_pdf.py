@@ -8,6 +8,7 @@ import json
 import os
 from time import sleep
 
+import oauthlib
 from app.compare_extraction_results import validate_condition
 from dotenv import find_dotenv, load_dotenv
 from oauthlib.oauth2 import BackendApplicationClient
@@ -42,12 +43,31 @@ def authenticate_with_oauth():
     )
     return oauth_session
 
+def refresh_token(oauth_session):
+    oauth_session.fetch_token(
+        TOKEN_URL,
+        client_secret=PERMITS_CLIENT_SECRET,
+    )
+
+    return oauth_session
+
+def request(oauth_session, url, method, **kwargs):
+    try:
+        response = getattr(oauth_session, method)(url, **kwargs)
+        response.raise_for_status()
+    except oauthlib.oauth2.rfc6749.errors.TokenExpiredError:
+        print('Token expired. Refreshing token...')
+        oauth_session = refresh_token(oauth_session)
+        response = getattr(oauth_session, method)(url, **kwargs)
+        response.raise_for_status()
+
+    return response
 
 def extract_conditions_from_pdf(pdf_path, oauth_session):
     # Kick off the permit conditions extraction process
     with open(pdf_path, "rb") as pdf_file:
         files = {"file": (os.path.basename(pdf_path), pdf_file, "application/pdf")}
-        response = oauth_session.post(f"{PERMIT_SERVICE_ENDPOINT}/permit_conditions", files=files)
+        response = request(oauth_session, f"{PERMIT_SERVICE_ENDPOINT}/permit_conditions", 'post', files=files)
         response.raise_for_status()
     
     task_id = response.json().get('id')
@@ -60,12 +80,11 @@ def extract_conditions_from_pdf(pdf_path, oauth_session):
     # Poll the status endpoint until the task is complete
     while status not in ("SUCCESS", "FAILURE"):
         sleep(3)
-        status_response = oauth_session.get(f"{PERMIT_SERVICE_ENDPOINT}/permit_conditions/status", params={"task_id": task_id})
+        status_response = request(oauth_session, f"{PERMIT_SERVICE_ENDPOINT}/permit_conditions/status", 'get', params={"task_id": task_id})
         status_response.raise_for_status()
 
         status = status_response.json().get('status')
 
-        print(json.dumps(status_response.json(), indent=2))
 
     if status != "SUCCESS":
         raise Exception(f"Failed to extract conditions from PDF. Task status: {status}")

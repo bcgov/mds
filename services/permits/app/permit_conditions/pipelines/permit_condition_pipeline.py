@@ -52,16 +52,8 @@ def permit_condition_pipeline():
     """
     index_pipeline = Pipeline()
 
-    llm = CachedAzureOpenAIChatGenerator(
-        azure_endpoint=base_url,
-        api_version=api_version,
-        azure_deployment=deployment_name,
-        api_key=Secret.from_token(api_key),
-        timeout=600,
-        generation_kwargs={"temperature": 0, "max_tokens": 4096},
-    )
-
     pdf_converter = PDFToTextConverter()
+
     prompt_builder = PaginatedChatPromptBuilder(
         template=[
             ChatMessage.from_system(system_prompt),
@@ -69,6 +61,25 @@ def permit_condition_pipeline():
             ChatMessage.from_user(permit_document_prompt),
         ]
     )
+
+    temperature = 0
+    max_tokens = 4096
+
+    llm = CachedAzureOpenAIChatGenerator(
+        azure_endpoint=base_url,
+        api_version=api_version,
+        azure_deployment=deployment_name,
+        api_key=Secret.from_token(api_key),
+        timeout=600,
+        generation_kwargs={"temperature": temperature, "max_tokens": max_tokens},
+    )
+    
+    logger.info("Initialized Azure OpenAI Chat Generator with the following parameters:")
+    logger.info(f"Endpoint: {base_url}")
+    logger.info(f"API Version: {api_version}")
+    logger.info(f"Deployment: {deployment_name}")
+    logger.info(f"Temperature: {temperature}")
+    logger.info(f"Max Tokens: {max_tokens}")
 
     json_fixer = JSONRepair()
 

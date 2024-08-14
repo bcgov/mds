@@ -16,6 +16,7 @@ pyyaml==6.0.1
 ocrmypdf==16.4.1
 pypdf==4.2.0
 json-repair==0.25.3
+natsort==8.4.0
 pytest==8.0.0
 fuzzywuzzy==0.18.0
 oauthlib==3.2.2

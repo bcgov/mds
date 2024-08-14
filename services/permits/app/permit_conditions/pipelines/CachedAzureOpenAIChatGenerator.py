@@ -13,7 +13,7 @@ ROOT_DIR = os.path.abspath(os.curdir)
 logger = logging.getLogger(__name__)
 
 DEBUG_MODE = os.environ.get("DEBUG_MODE", "False").lower() == "true"
-
+AZURE_DEPLOYMENT_NAME = os.environ.get("AZURE_DEPLOYMENT_NAME")
 
 def hash_messages(messages):
     """
@@ -25,12 +25,15 @@ def hash_messages(messages):
     Returns:
         str: The SHA256 hash digest of the messages.
     """
-    hash = hashlib.sha256()
-    for message in messages:
-        hash.update(struct.pack("I", len(message.content)))
-        hash.update(message.content.encode())
 
-    return hash.hexdigest()
+    to_hash = messages + [ChatMessage.from_user(AZURE_DEPLOYMENT_NAME)]
+
+    hsh = hashlib.sha256()
+    for message in to_hash:
+        hsh.update(struct.pack("I", len(message.content)))
+        hsh.update(message.content.encode())
+
+    return hsh.hexdigest()
 
 
 @component
@@ -134,7 +137,7 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
         reply.meta["usage"]["total_tokens"] = total_tokens
 
         if DEBUG_MODE:
-            with open(f"debug/cached_azure_openai_chat_generator_output_{iteration}.txt", "w") as f:
+            with open(f"debug/cached_azure_openai_chat_generator_output_{self.it}_{iteration}.txt", "w") as f:
                 f.write(reply.content)
 
         return {"data": ChatData([reply], data.documents)}
