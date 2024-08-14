@@ -32,7 +32,6 @@
     "@syncfusion/ej2-react-pdfviewer": "26.1.35",
     "@syncfusion/ej2-splitbuttons": "26.1.35",
     "flagsmith": "3.19.1",
-    "msw": "2.3.5",
     "p-limit": "3.1.0",
     "query-string": "5.1.1",
     "ts-loader": "9.5.1"
@@ -45,6 +44,7 @@
     "react-router-dom": "5.3.3"
   },
   "devDependencies": {
+    "msw": "2.3.5",
     "@testing-library/jest-dom": "6.4.8",
     "clean-webpack-plugin": "4.0.0",
     "copy-webpack-plugin": "10.1.0",
@@ -63,7 +63,7 @@
     "terser-webpack-plugin": "5.3.9",
     "ts-jest": "29.1.2",
     "typescript": "4.7.4",
-    "undici": "^6.19.7",
+    "undici": "6.19.7",
     "webpack": "5.88.1",
     "webpack-cli": "5.1.4",
     "webpack-dev-server": "4.15.1",

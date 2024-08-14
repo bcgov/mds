@@ -1,7 +1,12 @@
 import { createAppSlice, rejectHandler } from "@mds/common/redux/createAppSlice";
 import { hideLoading, showLoading } from "react-redux-loading-bar";
 import CustomAxios from "@mds/common/redux/customAxios";
-import { COMPLETE_SPATIAL_BUNDLE, ENVIRONMENT, IMineDocument } from "../..";
+import {
+  COMPLETE_SPATIAL_BUNDLE,
+  CORE_API_DOCUMENT_BUNDLE,
+  ENVIRONMENT,
+  IMineDocument,
+} from "../..";
 import { formatDate } from "../utils/helpers";
 import { IGeoJsonFeature } from "@mds/common/interfaces/document/geojsonFeature.interface";
 import { ISpatialBundle } from "@mds/common/interfaces/document/spatialBundle.interface";
@@ -117,7 +122,7 @@ const spatialSlice = createAppSlice({
       async (mine_document_bundle_id: string, thunkAPI) => {
         thunkAPI.dispatch(showLoading());
         const headers = createRequestHeader();
-        const url = `${ENVIRONMENT.apiUrl}/mines/document-bundle/${mine_document_bundle_id}`;
+        const url = `${ENVIRONMENT.apiUrl}${CORE_API_DOCUMENT_BUNDLE}${mine_document_bundle_id}`;
         const response = await CustomAxios({
           errorToastMessage: "default",
         }).get(url, headers);
