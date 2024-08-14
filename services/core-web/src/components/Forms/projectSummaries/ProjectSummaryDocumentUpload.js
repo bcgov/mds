@@ -7,7 +7,7 @@ import { remove } from "lodash";
 import { Typography, Row, Col } from "antd";
 import { bindActionCreators } from "redux";
 import CustomPropTypes from "@/customPropTypes";
-import DocumentTable from "@/components/common/DocumentTable";
+import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import { ProjectSummaryFileUpload } from "@/components/Forms/projectSummaries/ProjectSummaryFileUpload";
 import * as FORM from "@/constants/forms";
 import { DOCUMENT, EXCEL, IMAGE } from "@/constants/fileTypes";

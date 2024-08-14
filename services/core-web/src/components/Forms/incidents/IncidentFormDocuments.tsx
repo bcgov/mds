@@ -10,7 +10,7 @@ import {
   formatDocumentRecords,
   INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD,
 } from "@/components/Forms/incidents/IncidentForm";
-import DocumentTable from "@/components/common/DocumentTable";
+import DocumentTable from "@mds/common/components/documents/DocumentTable";
 
 interface IncidentFormDocumentsProps {
   documents: IMineIncidentDocument[];

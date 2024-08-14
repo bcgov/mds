@@ -19,7 +19,7 @@ import * as routes from "@/constants/routes";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import { documentNameColumn, uploadDateColumn } from "@/components/common/DocumentColumns";
-import DocumentTable from "@/components/common/DocumentTable";
+import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import customPropTypes from "@/customPropTypes";
 import MajorMineApplicationFileUpload from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationFileUpload";
 import { fetchMineDocuments } from "@mds/common/redux/actionCreators/mineActionCreator";

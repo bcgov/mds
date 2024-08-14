@@ -31,7 +31,7 @@ import {
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import { INCIDENT_CONTACT_METHOD_OPTIONS } from "@mds/common";
 import * as FORM from "@/constants/forms";
-import DocumentTable from "@/components/common/DocumentTable";
+import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import {
   documentNameColumn,
   uploadDateColumn,

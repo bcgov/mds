@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`DocumentTable renders properly 1`] = `
-<DocumentTable
-  documents={Array []}
-  isViewOnly={true}
-  removeDocument={[MockFunction]}
-/>
-`;
