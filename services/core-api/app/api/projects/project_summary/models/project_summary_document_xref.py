@@ -29,9 +29,11 @@ class ProjectSummaryDocumentXref(Base):
     mine_guid = association_proxy('mine_document', 'mine_guid')
     document_manager_guid = association_proxy('mine_document', 'document_manager_guid')
     document_name = association_proxy('mine_document', 'document_name')
+    update_timestamp = association_proxy('mine_document', 'update_timestamp')
     upload_date = association_proxy('mine_document', 'upload_date')
     versions = association_proxy('mine_document', 'versions')
     create_user = association_proxy('mine_document', 'create_user')
+    mine_document_bundle_id = association_proxy('mine_document', 'mine_document_bundle_id')
 
     def __repr__(self):
         return f'{self.__class__.__name__} {self.project_summary_document_xref_guid}'

@@ -96,6 +96,8 @@ export class MineDocument implements IMineDocument {
 
   public document_manager_version_guid?: string;
 
+  public mine_document_bundle_id?: string;
+
   constructor(jsonObject: any) {
     this.mine_document_guid = jsonObject.mine_document_guid;
     this.mine_guid = jsonObject.mine_guid;
@@ -113,6 +115,7 @@ export class MineDocument implements IMineDocument {
     this.entity_title = jsonObject.entity_title ?? "";
     this.document_manager_version_guid = jsonObject.document_manager_version_guid ?? undefined;
     this.setCalculatedProperties(jsonObject);
+    this.mine_document_bundle_id = jsonObject?.mine_document_bundle_id ?? undefined;
   }
 
   protected makeChild(params: any, _constructorArgs: any) {

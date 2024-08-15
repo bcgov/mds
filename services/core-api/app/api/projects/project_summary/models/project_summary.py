@@ -6,6 +6,7 @@ from sqlalchemy.schema import FetchedValue
 from sqlalchemy import case
 from werkzeug.exceptions import BadRequest
 
+from app.api.mines.documents.models.mine_document_bundle import MineDocumentBundle
 from app.api.parties.party import PartyOrgBookEntity
 from app.api.regions.models.regions import Regions
 from app.api.services.ams_api_service import AMSApiService
@@ -906,8 +907,9 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                authorizations=[],
                ams_authorizations=None,
                submission_date=None,
-               add_to_session=True,
-               is_historic=False):
+               add_to_session=True):
+
+        is_historic = not is_feature_enabled(Feature.AMS_AGENT)
 
         project_summary = cls(
             project_summary_description=project_summary_description,
@@ -1084,6 +1086,13 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
         self.nearest_municipality_guid = nearest_municipality
 
+        spatial_docs = [doc for doc in documents if doc['project_summary_document_type_code'] == 'SPT']
+        updated_spatial_docs = MineDocumentBundle.update_spatial_mine_document_with_bundle_id(spatial_docs)
+
+        # update the original documents array with the updated spatial documents
+        documents = [doc for doc in documents if doc['project_summary_document_type_code'] != 'SPT']
+        documents.extend(updated_spatial_docs)
+
         # Create or update existing documents.
         for doc in documents:
             mine_document_guid = doc.get('mine_document_guid')
@@ -1096,7 +1105,9 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 mine_doc = MineDocument(
                     mine_guid=self.mine_guid,
                     document_name=doc.get('document_name'),
-                    document_manager_guid=doc.get('document_manager_guid'))
+                    document_manager_guid=doc.get('document_manager_guid'),
+                    mine_document_bundle_id=doc['mine_document_bundle_id'] if doc.get('mine_document_bundle_id') else None
+                )
                 project_summary_doc = ProjectSummaryDocumentXref(
                     mine_document_guid=mine_doc.mine_document_guid,
                     project_summary_id=self.project_summary_id,
@@ -1162,7 +1173,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                     company_alias,
                     zoning,
                     zoning_reason,
-                    regional_district_name)
+                    regional_district_name,
+                    project.project_guid)
 
                 amendment_ams_results = AMSApiService.create_amendment_ams_authorization(
                     ams_authorizations,
@@ -1189,7 +1201,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                     zoning_reason,
                     regional_district_name,
                     is_legal_land_owner,
-                    is_crown_land_federal_or_provincial
+                    is_crown_land_federal_or_provincial,
+                    project.project_guid
                 )
 
             for authorization in ams_authorizations.get('amendments', []):
@@ -1246,7 +1259,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 "mine_name": mine.mine_name,
                 "mine_no": mine.mine_no,
             },
-            "core_project_summary_link": f'{Config.CORE_PROD_URL}/pre-applications/{self.project.project_guid}/overview'
+            "core_project_summary_link": f'{Config.CORE_WEB_URL}/pre-applications/{self.project.project_guid}/overview'
         }
 
         minespace_context = {

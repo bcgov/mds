@@ -26,7 +26,7 @@ jobs:
         env:
           DOCKER_BUILDKIT: 1
         run: |
-          docker-compose -f docker-compose.ci.yaml up --force-recreate --exit-code-from flyway-verify flyway-verify
+          docker compose -f docker-compose.ci.yaml up --force-recreate --exit-code-from flyway-verify flyway-verify
 
   tests-integration-backend:
     name: tests-integration-backend
@@ -40,14 +40,14 @@ jobs:
       - name: Run Migrations First
         env:
           DOCKER_BUILDKIT: 1
-        run: docker-compose -f docker-compose.ci.yaml up --force-recreate --exit-code-from flyway flyway
+        run: docker compose -f docker-compose.ci.yaml up --force-recreate --exit-code-from flyway flyway
 
       - name: Run integration tests
         env:
           DOCKER_BUILDKIT: 1
         run: |
-          docker-compose -f docker-compose.ci.yaml run backend coverage run -m pytest
-          docker-compose -f docker-compose.ci.yaml run backend coverage xml
+          docker compose -f docker-compose.ci.yaml run backend coverage run -m pytest
+          docker compose -f docker-compose.ci.yaml run backend coverage xml
           sed -i "s/<source>\/app/<source>\/github\/workspace\/services\/core-api/g" services/core-api/coverage.xml
       - name: Upload test coverage results
         uses: actions/upload-artifact@v4

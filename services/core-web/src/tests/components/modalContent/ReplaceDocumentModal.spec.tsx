@@ -19,9 +19,7 @@ describe("ReplaceDocumentModal", () => {
   it("renders correctly and matches the snapshot", () => {
     const { container } = render(
       <ReduxWrapper initialState={{}}>
-        <FormWrapper name={FORM.ADD_EDIT_PROJECT_SUMMARY} initialValues={{}} onSubmit={() => {}}>
-          <ReplaceDocumentModal {...props} />
-        </FormWrapper>
+        <ReplaceDocumentModal {...props} />
       </ReduxWrapper>
     );
     expect(container.firstChild).toMatchSnapshot();

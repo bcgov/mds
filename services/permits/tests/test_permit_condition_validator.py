@@ -11,7 +11,7 @@ from haystack.dataclasses import ChatMessage, Document
 logger = MagicMock()
 
 valid_reply_content = (
-    '{"condition_text": "Valid condition", "section_title": "Section 1"}'
+    '[{"condition_text": "Valid condition", "section_title": "General", "section_paragraph": "A", "subparagraph": "1", "clause": "a", "subclause": "i", "page_number": 2}]'
 )
 invalid_reply_content = "Invalid JSON"
 
@@ -36,9 +36,9 @@ def test_run_with_valid_replies():
         documents=documents[:2],
     )
     result = validator.run(chat_data)
-    assert "documents" in result
-    assert len(result["documents"]) == 2
-    assert result["documents"][0].content["condition_text"] == "Valid condition"
+    assert "conditions" in result
+    assert len(result["conditions"].conditions) == 2
+    assert result['conditions'].conditions[0].condition_text == "Valid condition"
 
 
 def test_run_with_invalid_replies():

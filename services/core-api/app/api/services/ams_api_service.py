@@ -74,6 +74,12 @@ class AMSApiService():
         return 'Yes' if value else 'No'
 
     @classmethod
+    def __get_ams_document_url(cls, project_guid):
+        if project_guid is None:
+            return ''
+        return f"{Config.CORE_WEB_URL}/pre-applications/{project_guid}/documents"
+
+    @classmethod
     def __set_contact_details(cls, contact):
         contact_details = {
             'em_lastname': contact.get('last_name', ''),
@@ -193,7 +199,8 @@ class AMSApiService():
                                      company_alias,
                                      zoning,
                                      zoning_reason,
-                                     regional_district_name
+                                     regional_district_name,
+                                     project_guid
                                      ):
         """Creates a new AMS authorization application"""
 
@@ -213,9 +220,10 @@ class AMSApiService():
             if authorization_list.__len__() > 0:
                 for authorization in authorization_list:
                     existing_ams_status_code = authorization.get('ams_status_code')
-                    if existing_ams_status_code != '200':
-                        current_project_summary_authorization_guid = authorization.get(
-                            'project_summary_authorization_guid')
+                    current_project_summary_authorization_guid = authorization.get(
+                        'project_summary_authorization_guid')
+                    
+                    if existing_ams_status_code != '200' and current_project_summary_authorization_guid:
                         current_project_summary_authorization_type = authorization.get(
                             'project_summary_authorization_type')
                         ams_authorization_data = {
@@ -264,7 +272,8 @@ class AMSApiService():
                             'facilityoperatortitle': facility_operator.get('job_title', ''),
                             'regionaldistrict': {
                                 'name': regional_district_name
-                            }
+                            },
+                            'documents': cls.__get_ams_document_url(project_guid)
                         }
                         payload = json.dumps(ams_authorization_data)
                         response = requests.post(Config.AMS_URL, data=payload, headers=headers)
@@ -329,7 +338,8 @@ class AMSApiService():
                                            zoning_reason,
                                            regional_district_name,
                                            is_legal_land_owner,
-                                           is_crown_land_federal_or_provincial
+                                           is_crown_land_federal_or_provincial,
+                                           project_guid
                                            ):
         """Creates an AMS authorization application amendment"""
 
@@ -352,9 +362,9 @@ class AMSApiService():
                 existing_ams_status_code = authorization.get('ams_status_code')
                 amendment_changes = authorization.get('amendment_changes', [])
                 existing_permits_authorizations = authorization.get('existing_permits_authorizations', [])
-                if existing_ams_status_code != '200':
-                    current_project_summary_authorization_guid = authorization.get(
+                current_project_summary_authorization_guid = authorization.get(
                         'project_summary_authorization_guid')
+                if existing_ams_status_code != '200' and current_project_summary_authorization_guid:
                     current_project_summary_authorization_type = authorization.get(
                         'project_summary_authorization_type')
                     ams_authorization_data = {
@@ -410,7 +420,8 @@ class AMSApiService():
                         'newlandownerphonenumber': cls.__format_phone_number(legal_land_owner_contact_number),
                         'newlandowneremail': legal_land_owner_email_address,
                         'newistheapplicantthelandowner': cls.__boolean_to_yes_no(is_legal_land_owner),
-                        'newlandfedorprov': cls.__boolean_to_yes_no(is_crown_land_federal_or_provincial)
+                        'newlandfedorprov': cls.__boolean_to_yes_no(is_crown_land_federal_or_provincial),
+                        'documents': cls.__get_ams_document_url(project_guid)
                     }
                     payload = json.dumps(ams_authorization_data)
                     response = requests.post(Config.AMS_URL, data=payload, headers=headers)

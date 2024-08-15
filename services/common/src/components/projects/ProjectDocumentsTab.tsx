@@ -3,7 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import ScrollSidePageWrapper from "../common/ScrollSidePageWrapper";
 import { ScrollSideMenuProps } from "../common/ScrollSideMenu";
 import { fetchProjectById } from "@mds/common/redux/actionCreators/projectActionCreator";
-import { Feature, IProject, IProjectSummaryAuthorization, SystemFlagEnum } from "../..";
+import {
+  CATEGORY_CODE,
+  Feature,
+  IProject,
+  IProjectSummaryAuthorization,
+  SystemFlagEnum,
+} from "../..";
 import { Alert, Col, Row, Typography } from "antd";
 import ProjectDocumentsTabSection from "./ProjectDocumentsTabSection";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
@@ -15,6 +21,7 @@ import SpatialDocumentTable from "../documents/spatial/SpatialDocumentTable";
 import { fetchMineDocuments } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { MineDocument } from "@mds/common/models/documents/document";
 import Loading from "../common/Loading";
+import { getProjectSummaryDocumentTypesHash } from "@mds/common/redux/selectors/staticContentSelectors";
 
 interface ProjectDocumentsTabProps {
   project: IProject;
@@ -22,6 +29,8 @@ interface ProjectDocumentsTabProps {
 const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
   const dispatch = useDispatch();
   const mineDocuments = useSelector(getMineDocuments);
+  const projectSummaryDocumentTypesHash = useSelector(getProjectSummaryDocumentTypesHash);
+
   const { isFeatureEnabled } = useFeatureFlag();
   const systemFlag = useSelector(getSystemFlag);
   const isCore = systemFlag === SystemFlagEnum.core;
@@ -50,9 +59,10 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
     );
   }, []);
 
-  const authsWithDocs = project.project_summary.authorizations.filter(
-    (auth) => auth.amendment_documents.length > 0
-  );
+  const authsWithDocs =
+    project?.project_summary?.authorizations?.filter(
+      (auth) => auth.amendment_documents.length > 0
+    ) ?? [];
   const headerHeight = isCore ? 121 : 123;
   const tabNavHeight = isCore ? 60 : 49;
   const topOffset = headerHeight + tabNavHeight;
@@ -72,28 +82,54 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
       .toLowerCase();
   };
 
-  const projectSummaryDocs = project?.project_summary?.documents ?? [];
+  const projectSummaryDocs =
+    project?.project_summary?.documents?.map(
+      (d) =>
+        new MineDocument({
+          ...d,
+          category: projectSummaryDocumentTypesHash[d.project_summary_document_type_code],
+        })
+    ) ?? [];
 
   const pdSpatialDocuments = projectSummaryDocs.filter(
-    (doc) => doc.project_summary_document_type_code === "SPT"
+    (doc) => doc.category === projectSummaryDocumentTypesHash.SPT
   );
   const pdSupportingDocuments = projectSummaryDocs.filter(
-    (doc) => doc.project_summary_document_type_code === "SPR"
+    (doc) => doc.category === projectSummaryDocumentTypesHash.SPR
   );
 
-  const majorMineAppDocs = project?.major_mine_application?.documents ?? [];
+  const majorMineAppDocs =
+    project?.major_mine_application?.documents?.map(
+      (d) =>
+        new MineDocument({
+          ...d,
+          category: CATEGORY_CODE[d.major_mine_application_document_type_code],
+        })
+    ) ?? [];
 
-  const primaryDocuments = majorMineAppDocs.filter(
-    (doc) => doc.major_mine_application_document_type_code === "PRM"
-  );
-  const mmaSpatialDocuments = majorMineAppDocs.filter(
-    (doc) => doc.major_mine_application_document_type_code === "SPT"
-  );
+  const primaryDocuments = majorMineAppDocs.filter((doc) => doc.category === CATEGORY_CODE.PRM);
+  const mmaSpatialDocuments = majorMineAppDocs.filter((doc) => doc.category === CATEGORY_CODE.SPT);
   const mmaSupportingDocuments = majorMineAppDocs.filter(
-    (doc) => doc.major_mine_application_document_type_code === "SPR"
+    (doc) => doc.category === CATEGORY_CODE.SPR
   );
-  const ministryDecisionDocuments = project?.project_decision_package?.documents ?? [];
+  const ministryDecisionDocuments =
+    project?.project_decision_package?.documents?.map(
+      (d) =>
+        new MineDocument({
+          ...d,
+          category: CATEGORY_CODE[d.project_decision_package_document_type_code],
+        })
+    ) ?? [];
+  const irtDocuments =
+    project?.information_requirements_table?.documents?.map(
+      (d) =>
+        new MineDocument({
+          ...d,
+          category: CATEGORY_CODE[d.information_requirements_table_document_type_code],
+        })
+    ) ?? [];
 
+  const spatialCategoryText = "Spatial Files";
   const sections: any[] = [
     {
       href: "project-description",
@@ -123,7 +159,13 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
             key={auth.project_summary_authorization_guid}
             canArchive={false}
             onArchivedDocuments={refreshData}
-            documents={auth.amendment_documents}
+            documents={auth.amendment_documents.map(
+              (d) =>
+                new MineDocument({
+                  ...d,
+                  category: projectSummaryDocumentTypesHash[d.project_summary_document_type_code],
+                })
+            )}
           />
         ),
       };
@@ -134,7 +176,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
       content: (
         <>
           <Typography.Title level={4}>Spatial Components</Typography.Title>
-          <SpatialDocumentTable documents={pdSpatialDocuments.map((d) => new MineDocument(d))} />
+          <SpatialDocumentTable documents={pdSpatialDocuments} categoryText={spatialCategoryText} />
         </>
       ),
     },
@@ -145,7 +187,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
         <ProjectDocumentsTabSection
           id="pd-supporting-documents"
           title="Supporting Documents"
-          documents={pdSupportingDocuments.map((d) => new MineDocument(d))}
+          documents={pdSupportingDocuments}
           onArchivedDocuments={refreshData}
         />
       ),
@@ -157,7 +199,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
           id="information-requirements-table"
           key="information-requirements-table"
           onArchivedDocuments={refreshData}
-          documents={project.information_requirements_table.documents}
+          documents={irtDocuments}
         />
       ),
     },
@@ -180,7 +222,10 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
       content: (
         <>
           <Typography.Title level={4}>Spatial Components</Typography.Title>
-          <SpatialDocumentTable documents={mmaSpatialDocuments.map((d) => new MineDocument(d))} />
+          <SpatialDocumentTable
+            documents={mmaSpatialDocuments}
+            categoryText={spatialCategoryText}
+          />
         </>
       ),
     },
@@ -203,13 +248,13 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
           id="ministry-decision-documentation"
           key="ministry-decision-documentation"
           onArchivedDocuments={refreshData}
-          documents={ministryDecisionDocuments.map((doc) => new MineDocument(doc))}
+          documents={ministryDecisionDocuments}
         />
       ),
     },
     isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE) && {
       href: "archived-documents",
-      content: <ArchivedDocumentsSection documents={mineDocuments} />,
+      content: <ArchivedDocumentsSection documents={mineDocuments} showCategory={false} />,
     },
   ].filter(Boolean);
 

@@ -4,7 +4,9 @@
 ###
 
 import argparse
+import json
 import os
+from time import sleep
 
 from app.compare_extraction_results import validate_condition
 from dotenv import find_dotenv, load_dotenv
@@ -19,13 +21,13 @@ PERMITS_CLIENT_ID = os.getenv("PERMITS_CLIENT_ID", None)
 PERMITS_CLIENT_SECRET = os.getenv("PERMITS_CLIENT_SECRET", None)
 TOKEN_URL = os.getenv("TOKEN_URL", None)
 AUTHORIZATION_URL = os.getenv("AUTHORIZATION_URL", None)
-PERMIT_CSV_ENDPOINT = os.getenv("PERMIT_CSV_ENDPOINT", None)
+PERMIT_SERVICE_ENDPOINT = os.getenv("PERMIT_SERVICE_ENDPOINT", None)
 
 assert PERMITS_CLIENT_ID, "PERMITS_CLIENT_ID is not set"
 assert PERMITS_CLIENT_SECRET, "PERMITS_CLIENT_SECRET is not set"
 assert TOKEN_URL, "TOKEN_URL is not set"
 assert AUTHORIZATION_URL, "AUTHORIZATION_URL is not set"
-assert PERMIT_CSV_ENDPOINT, "PERMIT_CSV_ENDPOINT is not set"
+assert PERMIT_SERVICE_ENDPOINT, "PERMIT_SERVICE_ENDPOINT is not set"
 
 
 def authenticate_with_oauth():
@@ -41,13 +43,37 @@ def authenticate_with_oauth():
     return oauth_session
 
 
-def extract_conditions_from_pdf(pdf_path, endpoint_url, oauth_session):
-    # Extract conditions from PDF
+def extract_conditions_from_pdf(pdf_path, oauth_session):
+    # Kick off the permit conditions extraction process
     with open(pdf_path, "rb") as pdf_file:
         files = {"file": (os.path.basename(pdf_path), pdf_file, "application/pdf")}
-        response = oauth_session.post(endpoint_url, files=files)
+        response = oauth_session.post(f"{PERMIT_SERVICE_ENDPOINT}/permit_conditions", files=files)
         response.raise_for_status()
-        return response.content.decode("utf-8")
+    
+    task_id = response.json().get('id')
+
+    if not task_id:
+        raise Exception("Failed to extract conditions from PDF. No task ID returned from permit extractions endpoint.")
+    
+    status = None
+
+    # Poll the status endpoint until the task is complete
+    while status not in ("SUCCESS", "FAILURE"):
+        sleep(3)
+        status_response = oauth_session.get(f"{PERMIT_SERVICE_ENDPOINT}/permit_conditions/status", params={"task_id": task_id})
+        status_response.raise_for_status()
+
+        status = status_response.json().get('status')
+
+        print(json.dumps(status_response.json(), indent=2))
+
+    if status != "SUCCESS":
+        raise Exception(f"Failed to extract conditions from PDF. Task status: {status}")
+
+    success_response = oauth_session.get(f"{PERMIT_SERVICE_ENDPOINT}/permit_conditions/results/csv", params={"task_id": task_id})
+    success_response.raise_for_status()
+
+    return success_response.content.decode("utf-8")
 
 
 # Process each pair of PDF and expected CSV
@@ -62,7 +88,7 @@ def extract_and_validate_conditions(pdf_csv_pairs):
 
         # 1. Extract conditions from PDF
         extracted_csv_content = extract_conditions_from_pdf(
-            pdf_path, PERMIT_CSV_ENDPOINT, oauth_session
+            pdf_path, oauth_session
         )
 
         # 2. Save the extracted CSV content to a temporary file
@@ -76,6 +102,8 @@ def extract_and_validate_conditions(pdf_csv_pairs):
     validate_condition(pairs)
 
 
+print(__name__)
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Process PDF documents, extract permit conditions, and validate against expected CSV results."
@@ -84,6 +112,7 @@ if __name__ == "__main__":
         "--pdf_csv_pairs",
         nargs=2,
         action="append",
+        required=True,
         help="""
             Pairs of PDF file and expected CSV file. Each pair should be specified as two consecutive file paths.
             Usage: python extract_and_validate_pdf.py --pdf_csv_pairs <pdf_path> <expected_csv_path> --pdf_csv_pairs <pdf_path> <expected_csv_path> ...
