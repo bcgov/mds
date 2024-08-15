@@ -305,22 +305,23 @@ exports[`ViewPermit renders properly 1`] = `
               </div>
             </div>
             <div
-              class="ant-tabs-tab ant-tabs-tab-disabled"
+              class="ant-tabs-tab"
               data-node-key="conditions"
             >
               <div
                 aria-controls="rc-tabs-test-panel-conditions"
-                aria-disabled="true"
+                aria-disabled="false"
                 aria-selected="false"
                 class="ant-tabs-tab-btn"
                 id="rc-tabs-test-tab-conditions"
                 role="tab"
+                tabindex="0"
               >
                 <span
                   class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
                 >
                   <span
-                    class="ant-badge-status-dot ant-badge-status-error"
+                    class="ant-badge-status-dot ant-badge-status-success"
                   />
                 </span>
                  Permit Conditions
