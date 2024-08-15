@@ -14,7 +14,7 @@ type CoreCustomType = typeof AdditionalTypes[number];
 // therefore it can be styled freely
 const defaultButtonType = "dashed";
 
-interface CoreButtonProps extends Omit<ButtonProps, "type"> {
+export interface CoreButtonProps extends Omit<ButtonProps, "type"> {
   type: ButtonType | CoreCustomType;
 }
 
