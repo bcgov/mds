@@ -11,7 +11,7 @@ import RenderCancelButton from "../../forms/RenderCancelButton";
 import RenderSubmitButton from "../../forms/RenderSubmitButton";
 import { closeModal } from "@mds/common/redux/actions/modalActions";
 import ViewSpatialDetail from "./ViewSpatialDetail";
-import { createSpatialBundle } from "@mds/common/redux/slices/spatialDataSlice";
+import { createDocmanSpatialBundle } from "@mds/common/redux/slices/spatialDataSlice";
 
 interface AddSpatialDocumentsModalProps {
   formName: string;
@@ -57,6 +57,10 @@ const AddSpatialDocumentsModal: FC<AddSpatialDocumentsModalProps> = ({
     dispatch(change(modalFormName, fieldName, newUploadedFiles));
   };
 
+  const filesHaveGeomarkIds = () => {
+    return existingDocuments.some((d) => d.geomark_id);
+  };
+
   const stepContent = [
     {
       title: "Upload Spatial Data Files",
@@ -95,18 +99,34 @@ const AddSpatialDocumentsModal: FC<AddSpatialDocumentsModalProps> = ({
             Please confirm that the composed map below correctly represents your selected spatial
             data files.
           </Typography.Paragraph>
-          <ViewSpatialDetail spatialDocuments={existingDocuments} />
+          {filesHaveGeomarkIds() && <ViewSpatialDetail spatialDocuments={existingDocuments} />}
         </>
       ),
     },
   ];
 
+  const addDocmanBundleInfotoFiles = ({
+    docman_bundle_guid,
+    geomark_id,
+  }: {
+    docman_bundle_guid: string;
+    geomark_id: string;
+  }) => {
+    const newFiles = currentValues[fieldName].map((f) => {
+      return {
+        ...f,
+        docman_bundle_guid,
+        geomark_id,
+      };
+    });
+    dispatch(change(modalFormName, fieldName, newFiles));
+  };
+
   const handleSubmit = async (values) => {
     const isFinalStep = currentStep === stepContent.length - 1;
     const newFiles = values[fieldName];
-    const allFiles = [...newFiles, ...initialDocuments];
     if (isFinalStep) {
-      dispatch(change(formName, fieldName, allFiles));
+      dispatch(change(formName, fieldName, [...newFiles, ...initialDocuments]));
       setIsResetting(true);
       setCurrentStep(0);
       await dispatch(reset(modalFormName));
@@ -114,8 +134,9 @@ const AddSpatialDocumentsModal: FC<AddSpatialDocumentsModalProps> = ({
     } else {
       const bundle_document_guids = newFiles.map((f) => f.document_manager_guid);
       const name = newFiles[0].document_name.split(".")[0];
-      const resp = await dispatch(createSpatialBundle({ name, bundle_document_guids }));
+      const resp = await dispatch(createDocmanSpatialBundle({ name, bundle_document_guids }));
       if (resp.payload) {
+        addDocmanBundleInfotoFiles(resp.payload);
         setCurrentStep(currentStep + 1);
       }
     }

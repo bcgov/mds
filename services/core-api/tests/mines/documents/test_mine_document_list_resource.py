@@ -84,7 +84,7 @@ class TestMineDocumentListResource:
         MineDocumentFactory(mine=mine)
         MineDocumentFactory(mine=mine)
 
-        assert len(mine.mine_documents) == 3
+        assert len(mine.mine_documents) == 4
 
         get_resp = test_client.get(
             f'/mines/{mine.mine_guid}/documents?project_summary_guid={ps.project_summary_guid}',
@@ -94,7 +94,7 @@ class TestMineDocumentListResource:
         assert get_resp.status_code == 200
         get_data = json.loads(get_resp.data.decode())
 
-        assert len(get_data['records']) == 1
+        assert len(get_data['records']) == 2
         assert str(ps.documents[0].mine_document_guid) == get_data['records'][0]['mine_document_guid']
 
     def test_list_resource_filter_by_project_decision_package_guid(self, test_client, db_session, auth_headers, setup_info):
@@ -107,7 +107,7 @@ class TestMineDocumentListResource:
         MineDocumentFactory(mine=mine)
         MineDocumentFactory(mine=mine)
 
-        assert len(mine.mine_documents) == 4
+        assert len(mine.mine_documents) == 5
 
         get_resp = test_client.get(
             f'/mines/{mine.mine_guid}/documents?project_decision_package_guid={ps.project_decision_package_guid}',

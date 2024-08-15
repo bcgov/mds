@@ -5,35 +5,67 @@ import { renderTextColumn } from "../../common/CoreTableCommonColumns";
 import { formatDate } from "@mds/common/redux/utils/helpers";
 import { getFormattedUserName } from "@mds/common/redux/selectors/authenticationSelectors";
 import {
-  fetchGeomarkMapData,
-  spatialBundlesFromFiles,
   clearSpatialData,
+  fetchGeomarkMapData,
+  fetchSpatialBundle,
   getGeomarkMapData,
+  getSpatialBundle,
+  groupSpatialBundles,
 } from "@mds/common/redux/slices/spatialDataSlice";
 import { IMineDocument } from "@mds/common/interfaces";
 import CoreMap from "../../common/Map";
+import { getIsModalOpen } from "@mds/common/redux/selectors/modalSelectors";
 
 export interface ViewSpatialDetailProps {
-  spatialDocuments: IMineDocument[];
+  spatialDocuments: (IMineDocument & { geomark_id?: string })[];
 }
+
 const ViewSpatialDetail: FC<ViewSpatialDetailProps> = ({ spatialDocuments }) => {
   const dispatch = useDispatch();
   const username = useSelector(getFormattedUserName);
+  const spatialBundle = useSelector(getSpatialBundle);
   const geomarkMapData = useSelector(getGeomarkMapData);
+  const isModalOpen = useSelector(getIsModalOpen);
   const [mapLoaded, setMapLoaded] = useState(false);
-  const spatialBundle = spatialBundlesFromFiles(spatialDocuments)[0];
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [bundleNotYetCreated, setBundleNotYetCreated] = useState<boolean | null>();
 
-  const handleFetchMapData = () => {
-    setMapLoaded(false);
-    dispatch(fetchGeomarkMapData(spatialBundle));
+  const handleGetSpatialBundles = async () => {
+    if (!spatialDocuments[0].geomark_id) {
+      const spatialBundles = groupSpatialBundles(spatialDocuments);
+      await dispatch(fetchSpatialBundle(spatialBundles[0].bundle_id));
+      setBundleNotYetCreated(false);
+    } else {
+      setBundleNotYetCreated(true);
+    }
+
+    setIsLoaded(true);
   };
 
   useEffect(() => {
-    if (!mapLoaded) {
+    if (spatialDocuments && !isLoaded) {
+      handleGetSpatialBundles();
+    }
+  }, [spatialDocuments, isModalOpen]);
+
+  const handleFetchMapData = () => {
+    setMapLoaded(false);
+    const geomarkId = bundleNotYetCreated
+      ? spatialDocuments[0].geomark_id
+      : spatialBundle.geomark_id;
+
+    dispatch(fetchGeomarkMapData(geomarkId));
+  };
+
+  useEffect(() => {
+    if ((!mapLoaded && spatialBundle) || bundleNotYetCreated) {
       handleFetchMapData();
     }
-    return () => dispatch(clearSpatialData());
-  }, []);
+    return () => {
+      setMapLoaded(false);
+      dispatch(clearSpatialData());
+    };
+  }, [spatialBundle, bundleNotYetCreated, isModalOpen]);
 
   return (
     <>

@@ -14,12 +14,15 @@ const spatialDocuments = MOCK.PROJECT_SUMMARY.documents
   .map((d) => new MineDocument(d));
 
 describe("SpatialDocumentTable", () => {
-  it("renders properly", () => {
-    const { container } = render(
+  it("renders properly", async () => {
+    const { container, findByTestId } = render(
       <ReduxWrapper>
         <SpatialDocumentTable documents={spatialDocuments} />
       </ReduxWrapper>
     );
+    const spatialTable = await findByTestId("spatial-document-table");
+    expect(spatialTable).toBeInTheDocument();
+
     expect(container).toMatchSnapshot();
   });
 });
