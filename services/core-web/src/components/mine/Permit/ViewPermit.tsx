@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getPermitByGuid } from "@mds/common/redux/selectors/permitSelectors";
 import { IMine, IPermit } from "@mds/common";
 import ViewPermitOverview from "@/components/mine/Permit/ViewPermitOverview";
-import ViewPermitConditions from "@/components/mine/Permit/PermitConditions";
+import PermitConditions from "@/components/mine/Permit/PermitConditions";
 
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
@@ -62,7 +62,7 @@ const ViewPermit: FC = () => {
     enablePermitConditionsTab && {
       key: "conditions",
       label: <>{getConditionBadge()} Permit Conditions</>,
-      children: <ViewPermitConditions latestAmendment={latestAmendment} />,
+      children: <PermitConditions latestAmendment={latestAmendment} />,
       disabled: !canViewConditions,
     },
   ].filter(Boolean);
