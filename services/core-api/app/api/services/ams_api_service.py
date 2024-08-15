@@ -220,9 +220,10 @@ class AMSApiService():
             if authorization_list.__len__() > 0:
                 for authorization in authorization_list:
                     existing_ams_status_code = authorization.get('ams_status_code')
-                    if existing_ams_status_code != '200':
-                        current_project_summary_authorization_guid = authorization.get(
-                            'project_summary_authorization_guid')
+                    current_project_summary_authorization_guid = authorization.get(
+                        'project_summary_authorization_guid')
+                    
+                    if existing_ams_status_code != '200' and current_project_summary_authorization_guid:
                         current_project_summary_authorization_type = authorization.get(
                             'project_summary_authorization_type')
                         ams_authorization_data = {
@@ -361,9 +362,9 @@ class AMSApiService():
                 existing_ams_status_code = authorization.get('ams_status_code')
                 amendment_changes = authorization.get('amendment_changes', [])
                 existing_permits_authorizations = authorization.get('existing_permits_authorizations', [])
-                if existing_ams_status_code != '200':
-                    current_project_summary_authorization_guid = authorization.get(
+                current_project_summary_authorization_guid = authorization.get(
                         'project_summary_authorization_guid')
+                if existing_ams_status_code != '200' and current_project_summary_authorization_guid:
                     current_project_summary_authorization_type = authorization.get(
                         'project_summary_authorization_type')
                     ams_authorization_data = {
