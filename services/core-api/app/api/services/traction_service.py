@@ -1,4 +1,7 @@
 import requests
+from typing import Tuple
+
+from pydantic import BaseModel
 from flask import current_app
 from app.config import Config
 from app.api.parties.party.models.party import Party
@@ -103,12 +106,12 @@ class TractionService():
             f"traction_service.delete_connection returned {reject_resp.status_code}")
         return reject_resp.ok
 
-    def offer_mines_act_permit_111(self, connection_id, attributes):
+    def offer_mines_act_permit_111(self, connection_id, attributes) -> Tuple[dict, str]:
         if is_feature_enabled(Feature.VC_ANONCREDS_20):
             return self.offer_V2_mines_act_permit_111(connection_id, attributes)
         return self.offer_V1_mines_act_permit_111(connection_id, attributes)
 
-    def offer_V1_mines_act_permit_111(self, connection_id, attributes):
+    def offer_V1_mines_act_permit_111(self, connection_id, attributes) -> Tuple[dict, str]:
         # https://github.com/bcgov/bc-vcpedia/blob/main/credentials/bc-mines-act-permit/1.1.1/governance.md#261-schema-definition
         payload = {
             "auto_issue": True,
@@ -125,9 +128,9 @@ class TractionService():
         cred_offer_resp = requests.post(
             traction_offer_credential_V1, json=payload, headers=self.get_headers())
         assert cred_offer_resp.status_code == 200, f"cred_offer_resp={cred_offer_resp.json()}"
-        return cred_offer_resp.json()
+        return cred_offer_resp.json(), cred_offer_resp.json()["credential_exchange_id"]
 
-    def offer_V2_mines_act_permit_111(self, connection_id, attributes):
+    def offer_V2_mines_act_permit_111(self, connection_id, attributes) -> Tuple[dict, str]:
         # https://github.com/bcgov/bc-vcpedia/blob/main/credentials/bc-mines-act-permit/1.1.1/governance.md#261-schema-definition
         payload = {
             "auto_issue": True,
@@ -148,7 +151,7 @@ class TractionService():
         cred_offer_resp = requests.post(
             traction_offer_credential_V2, json=payload, headers=self.get_headers())
         assert cred_offer_resp.status_code == 200, f"cred_offer_resp={cred_offer_resp.json()}"
-        return cred_offer_resp.json()
+        return cred_offer_resp.json(), cred_offer_resp.json()["cred_ex_id"]
 
     def revoke_credential(self, connection_id, rev_reg_id, cred_rev_id, comment):
         payload = {
