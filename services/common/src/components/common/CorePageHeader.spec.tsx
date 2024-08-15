@@ -2,7 +2,7 @@ import React from "react";
 import { render } from "@testing-library/react";
 import CorePageHeader from "./CorePageHeader";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
-import { AUTHENTICATION, MINES, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
+import { MINES } from "@mds/common/constants/reducerTypes";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { BrowserRouter } from "react-router-dom";
 
