@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Field, change, formValueSelector } from "redux-form";
+import { Field, change, getFormValues } from "redux-form";
 import "@ant-design/compatible/assets/index.css";
 import { Col, Row, Typography, Button } from "antd";
 import { required } from "@common/utils/Validate";
@@ -23,7 +23,10 @@ import SpatialDocumentTable from "@mds/common/components/documents/spatial/Spati
 import * as API from "@mds/common/constants/API";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
-
+import { MajorMineApplicationDocument } from "@mds/common/models/documents/document";
+import { renderCategoryColumn } from "@mds/common/components/common/CoreTableCommonColumns";
+import * as Strings from "@mds/common/constants/strings";
+import { getMineDocuments } from "@mds/common/redux/selectors/mineSelectors";
 interface MajorMineApplicationFormProps {
   project: any;
   handleSubmit: () => void;
@@ -35,6 +38,14 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
   handleSubmit,
   refreshData,
 }) => {
+  const dispatch = useDispatch();
+
+  const formValues = useSelector(getFormValues(FORM.ADD_MINE_MAJOR_APPLICATION));
+
+  const { primary_documents = [], spatial_documents = [], supporting_documents = [] } =
+    formValues || {};
+
+  const mineDocuments = useSelector(getMineDocuments);
   const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
   const { isFeatureEnabled } = useFeatureFlag();
 
@@ -44,17 +55,10 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
     ...MODERN_EXCEL,
   };
 
-  const dispatch = useDispatch();
-
-  const primaryDocuments = useSelector((state: any) =>
-    formValueSelector(FORM.ADD_MINE_MAJOR_APPLICATION)(state, "primary_documents")
-  );
-  const spatialDocuments = useSelector((state: any) =>
-    formValueSelector(FORM.ADD_MINE_MAJOR_APPLICATION)(state, "spatial_documents")
-  );
-  const supportingDocuments = useSelector((state: any) =>
-    formValueSelector(FORM.ADD_MINE_MAJOR_APPLICATION)(state, "supporting_documents")
-  );
+  useEffect(() => {
+    if (!spatial_documents.length)
+      dispatch(change(FORM.ADD_MINE_MAJOR_APPLICATION, "spatial_documents", []));
+  }, [spatial_documents.length]);
 
   const onFileLoad = (
     fileName: string,
@@ -141,18 +145,18 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
   };
 
   const documentColumns = [documentNameColumn(), uploadDateColumn()];
-  const primaryDocumentsList = uniqueDocs(
-    primaryDocuments,
+  const primaryDocument = uniqueDocs(
+    primary_documents,
     project?.major_mine_application?.documents,
     "PRM"
   );
-  const spatialDocumentsList = uniqueDocs(
-    spatialDocuments,
+  const spatialDocument = uniqueDocs(
+    spatial_documents,
     project?.major_mine_application?.documents,
     "SPT"
   );
-  const supportDocumentsList = uniqueDocs(
-    supportingDocuments,
+  const supportDocuments = uniqueDocs(
+    supporting_documents,
     project?.major_mine_application?.documents,
     "SPR"
   );
@@ -216,7 +220,7 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
               err,
               fileItem,
               MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.PRIMARY,
-              primaryDocuments
+              primary_documents
             );
           }}
           projectGuid={project?.project_guid}
@@ -229,9 +233,9 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
           uploadType="primary_document"
           validate={[required]}
         />
-        {primaryDocumentsList?.length > 0 && (
+        {primaryDocument?.length > 0 && (
           <DocumentTable
-            documents={primaryDocumentsList}
+            documents={primaryDocument}
             documentColumns={documentColumns}
             documentParent="Major Mine Application"
             canArchiveDocuments={true}
@@ -258,9 +262,9 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
             >
               Upload Spatial Data
             </Button>
-            {spatialDocumentsList?.length > 0 && (
+            {spatialDocument?.length > 0 && (
               <SpatialDocumentTable
-                documents={spatialDocumentsList}
+                documents={spatialDocument}
                 documentColumns={documentColumns}
                 documentParent="Major Mine Application"
                 onArchivedDocuments={refreshData}
@@ -286,7 +290,7 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
                   err,
                   fileItem,
                   MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SPATIAL,
-                  spatialDocuments
+                  spatial_documents
                 );
               }}
               projectGuid={project?.project_guid}
@@ -298,9 +302,9 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
               component={MajorMineApplicationFileUpload}
               uploadType="spatial_document"
             />
-            {spatialDocuments?.length > 0 && (
+            {spatialDocument?.length > 0 && (
               <DocumentTable
-                documents={spatialDocuments}
+                documents={spatialDocument}
                 documentColumns={documentColumns}
                 documentParent="Major Mine Application"
                 canArchiveDocuments={true}
@@ -333,7 +337,7 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
               err,
               fileItem,
               MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.SUPPORTING,
-              supportingDocuments
+              supporting_documents
             );
           }}
           projectGuid={project?.project_guid}
@@ -345,9 +349,9 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
           component={MajorMineApplicationFileUpload}
           uploadType="supporting_document"
         />
-        {supportDocumentsList?.length > 0 && (
+        {supportDocuments?.length > 0 && (
           <DocumentTable
-            documents={supportDocumentsList}
+            documents={supportDocuments}
             documentColumns={documentColumns}
             documentParent="Major Mine Application"
             canArchiveDocuments={true}
@@ -358,9 +362,15 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
 
         <br />
         <ArchivedDocumentsSection
-          mineGuid={project?.mine_guid}
-          majorMineApplicationGuid={project?.major_mine_application?.major_mine_application_guid}
-          refreshData={refreshData}
+          additionalColumns={[
+            renderCategoryColumn("category_code", "Category", Strings.CATEGORY_CODE, true),
+          ]}
+          documentColumns={documentColumns}
+          documents={
+            mineDocuments && mineDocuments.length > 0
+              ? mineDocuments.map((doc) => new MajorMineApplicationDocument(doc))
+              : []
+          }
         />
         <br />
       </FormWrapper>
