@@ -159,7 +159,7 @@ export const VIEW_MINE_PERMIT = {
   route: "/mine-dashboard/:id/permits-and-approvals/permits/:permitGuid/:tab",
   dynamicRoute: (id, permitGuid, tab = "overview") =>
     `/mine-dashboard/${id}/permits-and-approvals/permits/${permitGuid}/${tab}`,
-  hashRoute: (id, permitGuid, tab = "overview", link) =>
+  hashRoute: (id, permitGuid, tab = "overview", link = "") =>
     `/mine-dashboard/${id}/permits-and-approvals/permits/${permitGuid}/${tab}/${link}`,
   component: ViewPermit,
 };
