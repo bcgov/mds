@@ -7,26 +7,29 @@ import * as MOCK from "@/tests/mocks/dataMocks";
 import * as FORM from "@/constants/forms";
 import { reduxForm } from "redux-form";
 import { ReduxWrapper as CommonReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
-import { ReduxWrapper as MinespaceReduxWrapper } from "@/tests/utils/ReduxWrapper";
+
 import { BrowserRouter } from "react-router-dom";
+import configureStore from "redux-mock-store";
+import { Provider } from "react-redux";
 
-// const mockStore = configureStore([]);
-// const store = mockStore({
-//   form: {
-//     ADD_MINE_MAJOR_APPLICATION: {
-//       values: {
-//         primary_documents: [],
-//         spatial_documents: [],
-//         supporting_documents: [],
-//       },
-//     },
-//   },
-//   MINES: {
-//     mineDocuments: [],
-//   },
-//   AUTHENTICATION: true,
-// });
+const mockStore = configureStore([]);
+const initialState = {
+  form: {
+    ADD_MINE_MAJOR_APPLICATION: {
+      values: {
+        primary_documents: [],
+        spatial_documents: [],
+        supporting_documents: [],
+      },
+    },
+  },
+  MINES: {
+    mineDocuments: [],
+  },
+  AUTHENTICATION: true,
+};
 
+const store = mockStore(initialState);
 const dispatchProps: any = {};
 const props: any = {};
 
@@ -45,21 +48,23 @@ beforeEach(() => {
   setupProps();
 });
 
-const DecoratedMajorMineApplicationForm = reduxForm({
+const MajorMineApplicationReduxForm = reduxForm({
   form: FORM.ADD_MINE_MAJOR_APPLICATION,
 })(MajorMineApplicationForm as any);
 
+const WrappedMajorMineApplicationForm = () => (
+  <BrowserRouter>
+    <CommonReduxWrapper initialState={initialState}>
+      <Provider store={store}>
+        <MajorMineApplicationReduxForm {...dispatchProps} {...props} />
+      </Provider>
+    </CommonReduxWrapper>
+  </BrowserRouter>
+);
+
 describe("MajorMineApplicationForm", () => {
   it("renders properly", () => {
-    const { container } = render(
-      <CommonReduxWrapper initialState={{}}>
-        <MinespaceReduxWrapper initialState={{}}>
-          <BrowserRouter>
-            <DecoratedMajorMineApplicationForm {...dispatchProps} {...props} />
-          </BrowserRouter>
-        </MinespaceReduxWrapper>
-      </CommonReduxWrapper>
-    );
+    const { container } = render(<WrappedMajorMineApplicationForm />);
     expect(container).toMatchSnapshot();
   });
 });
