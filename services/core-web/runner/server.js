@@ -1,7 +1,12 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const express = require("express");
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const cacheControl = require("express-cache-controller");
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const dotenv = require("dotenv").config({ path: `${__dirname}/.env` });
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const expressStaticGzip = require("express-static-gzip");
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const helmet = require("helmet");
 
 // Content Security Policy is managed by the environment variable CONTENT_SECURITY_POLICY defined
@@ -84,6 +89,7 @@ app.get(`${BASE_PATH}/env`, (req, res) => {
     flagsmithKey: process.env.FLAGSMITH_KEY,
     flagsmithUrl: process.env.FLAGSMITH_URL,
     syncfusionLicense: process.env.SYNCFUSION_LICENSE_KEY,
+    geoMarkUrl: process.env.GEOMARK_URL_BASE,
   });
 });
 
