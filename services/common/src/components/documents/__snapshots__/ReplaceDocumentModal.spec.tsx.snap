@@ -149,7 +149,7 @@ exports[`ReplaceDocumentModal renders correctly and matches the snapshot 1`] = `
     class="ant-modal-footer"
   >
     <button
-      class="ant-btn ant-btn-default"
+      class="ant-btn ant-btn-default core-btn core-btn-default"
       type="button"
     >
       <span>
