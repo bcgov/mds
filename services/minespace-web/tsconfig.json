@@ -33,8 +33,7 @@
     "../../.eslintrc.js",
     "../common/src/@Types/**/*",
     "webpack.parts.js",
-    "jest.config.js",
-    "runner/server.js"
+    "jest.config.js"
   ],
   "exclude": ["node_modules", "src/**/*.test.ts", "src/**/*.test.tsx"]
 }
