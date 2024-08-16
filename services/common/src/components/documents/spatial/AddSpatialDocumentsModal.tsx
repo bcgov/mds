@@ -76,8 +76,11 @@ const AddSpatialDocumentsModal: FC<AddSpatialDocumentsModalProps> = ({
               showIcon
               description={
                 <>
-                  Visit <Link to={SPATIAL_DATA_STANDARDS_URL}>GIS Shapefile Standards</Link> to
-                  learn more about shapefile requirements and standards.
+                  Visit{" "}
+                  <Link to={{ pathname: SPATIAL_DATA_STANDARDS_URL }} target="_blank">
+                    GIS Shapefile Standards
+                  </Link>{" "}
+                  to learn more about shapefile requirements and standards.
                 </>
               }
             />

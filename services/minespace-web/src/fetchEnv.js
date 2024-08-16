@@ -23,7 +23,8 @@ export default function fetchEnv() {
         env.environment,
         env.flagsmithKey,
         env.flagsmithUrl,
-        env.syncfusionLicense
+        env.syncfusionLicense,
+        env.geoMarkUrl
       );
 
       setupKeycloak(
