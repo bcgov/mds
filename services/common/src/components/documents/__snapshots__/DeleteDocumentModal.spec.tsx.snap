@@ -1,0 +1,167 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DeleteDocumentModal renders correctly and matches the snapshot 1`] = `
+<form
+  class="ant-form ant-form-vertical common-form common-form-DELETE_DOCUMENT form-edit"
+  id="DELETE_DOCUMENT"
+>
+  <div
+    class="ant-typography"
+  >
+    <div
+      class="ant-alert ant-alert-warning ant-alert-with-description"
+      data-show="true"
+      role="alert"
+    >
+      <span
+        aria-label="exclamation-circle"
+        class="anticon anticon-exclamation-circle ant-alert-icon"
+        role="img"
+      >
+        <svg
+          aria-hidden="true"
+          data-icon="exclamation-circle"
+          fill="currentColor"
+          focusable="false"
+          height="1em"
+          viewBox="64 64 896 896"
+          width="1em"
+        >
+          <path
+            d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+          />
+          <path
+            d="M464 688a48 48 0 1096 0 48 48 0 10-96 0zm24-112h48c4.4 0 8-3.6 8-8V296c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8z"
+          />
+        </svg>
+      </span>
+      <div
+        class="ant-alert-content"
+      >
+        <div
+          class="ant-alert-message"
+        >
+          Deleted files are not reviewed as part of the submission
+        </div>
+        <div
+          class="ant-alert-description"
+        >
+          By deleting this file, you are deleting all of its previous versions. This action cannot be undone.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="ant-typography"
+  >
+    <strong>
+      You're about to delete the following file
+      
+      :
+    </strong>
+  </div>
+  <div>
+    <div />
+    <div
+      class="ant-table-wrapper  core-table"
+    >
+      <div
+        class="ant-spin-nested-loading"
+      >
+        <div
+          class="ant-spin-container"
+        >
+          <div
+            class="ant-table ant-table-small"
+          >
+            <div
+              class="ant-table-container"
+            >
+              <div
+                class="ant-table-content"
+              >
+                <table
+                  style="table-layout: auto;"
+                >
+                  <colgroup />
+                  <thead
+                    class="ant-table-thead"
+                  >
+                    <tr>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        File Name
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Uploaded
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    class="ant-table-tbody"
+                  >
+                    <tr
+                      class="ant-table-row ant-table-row-level-0 ant-table-row-minimal"
+                      data-row-key="11d15c31-5f0a-4a18-94de-e04e3ca7936f"
+                    >
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="inline-flex flex-between file-name-container"
+                          title="File Name"
+                        >
+                          <div
+                            class=""
+                          >
+                            05.4_Parent_Conduct.pdf
+                          </div>
+                          <span
+                            class="file-history-container"
+                          />
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          title="Uploaded"
+                        >
+                          Feb 06 2024
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="ant-modal-footer"
+  >
+    <button
+      class="ant-btn ant-btn-default"
+      type="button"
+    >
+      <span>
+        Cancel
+      </span>
+    </button>
+    <button
+      class="ant-btn ant-btn-primary"
+      type="submit"
+    >
+      <span>
+        Delete
+      </span>
+    </button>
+  </div>
+</form>
+`;

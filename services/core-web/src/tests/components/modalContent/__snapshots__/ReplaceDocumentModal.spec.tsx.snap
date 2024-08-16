@@ -66,21 +66,27 @@ exports[`ReplaceDocumentModal renders correctly and matches the snapshot 1`] = `
     >
       <span
         class="ant-typography"
-      />
+      >
+        .pdf
+      </span>
     </div>
     <div
       class="ant-col"
     >
       <span
         class="ant-typography"
-      />
+      >
+        Feb 06 2024
+      </span>
     </div>
     <div
       class="ant-col"
     >
       <span
         class="ant-typography"
-      />
+      >
+        create-user@bceid
+      </span>
     </div>
   </div>
   <div
@@ -114,7 +120,7 @@ exports[`ReplaceDocumentModal renders correctly and matches the snapshot 1`] = `
                 class="filepond--wrapper"
               >
                 <input
-                  accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,application/vnd.oasis.opendocument.text,application/vnd.oasis.opendocument.text-template,application/vnd.oasis.opendocument.text-web,application/vnd.oasis.opendocument.text-master,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,image/jpg,image/jpeg,image/png,image/jp2,image/tiff,image/heic,image/heif,application/vnd.geo+json,application/gml+xml,application/dbf,application/x-dbf,application/x-dbase,application/vnd.google-earth.kml+xml,application/vnd.google-earth.kmz,application/octet-stream,text/csv,application/xml,text/xml"
+                  accept="application/pdf"
                   multiple=""
                   name="file"
                   type="file"
@@ -143,7 +149,7 @@ exports[`ReplaceDocumentModal renders correctly and matches the snapshot 1`] = `
     class="ant-modal-footer"
   >
     <button
-      class="ant-btn ant-btn-default full-mobile"
+      class="ant-btn ant-btn-default"
       type="button"
     >
       <span>
@@ -151,9 +157,9 @@ exports[`ReplaceDocumentModal renders correctly and matches the snapshot 1`] = `
       </span>
     </button>
     <button
-      class="ant-btn ant-btn-primary full-mobile"
+      class="ant-btn ant-btn-primary"
       disabled=""
-      type="button"
+      type="submit"
     >
       <span>
         Replace
