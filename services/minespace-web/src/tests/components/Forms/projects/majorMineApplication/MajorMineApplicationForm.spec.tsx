@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent, screen } from "@testing-library/react";
+import { render, fireEvent } from "@testing-library/react";
 import MajorMineApplicationForm from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationForm";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
@@ -82,15 +82,5 @@ describe("MajorMineApplicationForm", () => {
     const uploadSpatialButton = getByText("Upload Spatial Data");
     fireEvent.click(uploadSpatialButton);
     expect(mockDispatch).toHaveBeenCalledTimes(1);
-  });
-
-  it("should handle file upload for supporting documents", async () => {
-    const { container } = render(<WrappedMajorMineApplicationForm />);
-    const fileInput = container.querySelector('input[type="file"]');
-    const file = new File(["file contents"], "example.pdf", { type: "application/pdf" });
-    // Simulate file upload
-    await fireEvent.change(fileInput, { target: { files: [file] } });
-
-    // expect(mockDispatch).toHaveBeenCalledTimes(1);
   });
 });

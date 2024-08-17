@@ -39,9 +39,9 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
   refreshData,
 }) => {
   const dispatch = useDispatch();
-  const formValues = useSelector(getFormValues(FORM.ADD_MINE_MAJOR_APPLICATION));
 
-  const { primary_documents, spatial_documents, supporting_documents } = formValues || {};
+  const { primary_documents, spatial_documents, supporting_documents } =
+    useSelector(getFormValues(FORM.ADD_MINE_MAJOR_APPLICATION)) || {};
   const mineDocuments = useSelector(getMineDocuments);
   const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
   const { isFeatureEnabled } = useFeatureFlag();
@@ -106,15 +106,15 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
         ? mmaDocuments.filter((doc) => doc.major_mine_application_document_type_code === type_code)
         : []),
     ];
-    const document_manager_guids = documents.map((o) => o.document_manager_guid);
 
-    if (documents.length > 0) {
-      return documents.filter(
-        ({ document_manager_guid }, index) =>
-          !document_manager_guids.includes(document_manager_guid, index + 1)
-      );
-    }
-    return [];
+    const existingDocumentGuids = new Set<string>();
+    const uniqueDocuments = documents.filter((doc) => {
+      const isDuplicate = existingDocumentGuids.has(doc.document_manager_guid);
+      existingDocumentGuids.add(doc.document_manager_guid);
+      return !isDuplicate;
+    });
+
+    return uniqueDocuments;
   };
 
   const openSpatialDocumentModal = () => {
