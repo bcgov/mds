@@ -88,7 +88,37 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
         }
         deletePermission={true}
         documentParent="Major Mine Application"
-        documents={Array []}
+        documents={
+          Array [
+            MajorMineApplicationDocument {
+              "allowed_actions": Array [
+                "Open in document viewer",
+                "Download file",
+              ],
+              "archived_by": null,
+              "archived_date": null,
+              "category": undefined,
+              "category_code": undefined,
+              "create_user": "testuser",
+              "document_manager_guid": "e4d520e4-abf2-4755-881d-ca0b4b1923ab",
+              "document_manager_version_guid": undefined,
+              "document_name": "test.pdf",
+              "entity_title": "",
+              "file_type": ".pdf",
+              "is_archived": false,
+              "is_latest_version": true,
+              "key": "2006dfac-1ad1-4929-bbec-853060cffaf5",
+              "major_mine_application_document_type_code": "PRM",
+              "mine_document_guid": "2006dfac-1ad1-4929-bbec-853060cffaf5",
+              "mine_guid": "60300a07-376c-46f1-a984-88a813f91438",
+              "number_prev_versions": 0,
+              "update_timestamp": "2024-08-16 21:49:05.348319-07:00",
+              "update_user": undefined,
+              "upload_date": "2024-08-16 21:49:05.348326-07:00",
+              "versions": Array [],
+            },
+          ]
+        }
         enableBulkActions={true}
         handleDeleteDocument={[Function]}
         onArchivedDocuments={[Function]}
@@ -109,7 +139,36 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
         }
         deletePermission={true}
         documentParent="Major Mine Application"
-        documents={Array []}
+        documents={
+          Array [
+            MajorMineApplicationDocument {
+              "allowed_actions": Array [
+                "Download file",
+              ],
+              "archived_by": null,
+              "archived_date": null,
+              "category": undefined,
+              "category_code": undefined,
+              "create_user": "testuser",
+              "document_manager_guid": "5c910ea7-31ec-4064-8f73-5ce151d25af8",
+              "document_manager_version_guid": undefined,
+              "document_name": "gm-abcdefghijklmnopqrstuvwxyz0000b.kmz",
+              "entity_title": "",
+              "file_type": ".kmz",
+              "is_archived": false,
+              "is_latest_version": true,
+              "key": "8b11c651-40ae-4245-bfa5-930d09fb77cb",
+              "major_mine_application_document_type_code": "SPT",
+              "mine_document_guid": "8b11c651-40ae-4245-bfa5-930d09fb77cb",
+              "mine_guid": "60300a07-376c-46f1-a984-88a813f91438",
+              "number_prev_versions": 0,
+              "update_timestamp": "2024-08-16 21:49:05.348408-07:00",
+              "update_user": undefined,
+              "upload_date": "2024-08-16 21:49:05.348413-07:00",
+              "versions": Array [],
+            },
+          ]
+        }
         enableBulkActions={true}
         handleDeleteDocument={[Function]}
         onArchivedDocuments={[Function]}
@@ -130,7 +189,36 @@ exports[`MajorMineApplicationReviewSubmit renders properly 1`] = `
         }
         deletePermission={true}
         documentParent="Major Mine Application"
-        documents={Array []}
+        documents={
+          Array [
+            MajorMineApplicationDocument {
+              "allowed_actions": Array [
+                "Download file",
+              ],
+              "archived_by": null,
+              "archived_date": null,
+              "category": undefined,
+              "category_code": undefined,
+              "create_user": "testuser",
+              "document_manager_guid": "5c910ea7-31ec-4064-8f73-5ce151d25af8",
+              "document_manager_version_guid": undefined,
+              "document_name": "gm-abcdefghijklmnopqrstuvwxyz0000b.kmz",
+              "entity_title": "",
+              "file_type": ".kmz",
+              "is_archived": false,
+              "is_latest_version": true,
+              "key": "8b11c651-40ae-4245-bfa5-930d09fb77cb",
+              "major_mine_application_document_type_code": "SPR",
+              "mine_document_guid": "8b11c651-40ae-4245-bfa5-930d09fb77cb",
+              "mine_guid": "60300a07-376c-46f1-a984-88a813f91438",
+              "number_prev_versions": 0,
+              "update_timestamp": "2024-08-16 21:49:05.348408-07:00",
+              "update_user": undefined,
+              "upload_date": "2024-08-16 21:49:05.348413-07:00",
+              "versions": Array [],
+            },
+          ]
+        }
         enableBulkActions={true}
         handleDeleteDocument={[Function]}
         onArchivedDocuments={[Function]}

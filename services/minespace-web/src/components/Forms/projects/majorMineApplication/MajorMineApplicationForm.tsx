@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Field, change, getFormValues } from "redux-form";
@@ -39,12 +39,9 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
   refreshData,
 }) => {
   const dispatch = useDispatch();
-
   const formValues = useSelector(getFormValues(FORM.ADD_MINE_MAJOR_APPLICATION));
 
-  const { primary_documents = [], spatial_documents = [], supporting_documents = [] } =
-    formValues || {};
-
+  const { primary_documents, spatial_documents, supporting_documents } = formValues || {};
   const mineDocuments = useSelector(getMineDocuments);
   const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
   const { isFeatureEnabled } = useFeatureFlag();
@@ -54,11 +51,6 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
     ...DOCUMENT,
     ...MODERN_EXCEL,
   };
-
-  useEffect(() => {
-    if (!spatial_documents.length)
-      dispatch(change(FORM.ADD_MINE_MAJOR_APPLICATION, "spatial_documents", []));
-  }, [spatial_documents.length]);
 
   const onFileLoad = (
     fileName: string,
@@ -122,7 +114,7 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
           !document_manager_guids.includes(document_manager_guid, index + 1)
       );
     }
-    return null;
+    return [];
   };
 
   const openSpatialDocumentModal = () => {
@@ -132,7 +124,7 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
           title: "Upload Spatial Data",
           formName: FORM.ADD_MINE_MAJOR_APPLICATION,
           fieldName: "spatial_documents",
-          uploadUrl: API.MAJOR_MINE_APPLICATION_DOCUMENTS(project?.project_guid),
+          uploadUrl: API.MAJOR_MINE_APPLICATION_DOCUMENTS(project.project_guid),
           transformFile: (fileData: any) => ({
             ...fileData,
             major_mine_application_document_type_code:
@@ -163,7 +155,15 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
 
   return (
     <div>
-      <FormWrapper name={FORM.ADD_MINE_MAJOR_APPLICATION} onSubmit={handleSubmit}>
+      <FormWrapper
+        name={FORM.ADD_MINE_MAJOR_APPLICATION}
+        initialValues={{
+          primary_documents: [],
+          spatial_documents: [],
+          supporting_documents: [],
+        }}
+        onSubmit={handleSubmit}
+      >
         <Row>
           <Col span={24}>
             <Typography.Title level={4}>Basic Information</Typography.Title>
@@ -172,8 +172,8 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
               needed please edit your&nbsp;
               <Link
                 to={routes.EDIT_PROJECT_SUMMARY.dynamicRoute(
-                  project?.project_guid,
-                  project?.project_summary?.project_summary_guid
+                  project.project_guid,
+                  project.project_summary.project_summary_guid
                 )}
               >
                 project description
@@ -223,7 +223,7 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
               primary_documents
             );
           }}
-          projectGuid={project?.project_guid}
+          projectGuid={project.project_guid}
           labelIdle={
             '<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><div>(Accepted filetypes: .kmx .doc .docx .xlsx .pdf)</div>'
           }
@@ -233,7 +233,7 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
           uploadType="primary_document"
           validate={[required]}
         />
-        {primaryDocument?.length > 0 && (
+        {primaryDocument.length > 0 && (
           <DocumentTable
             documents={primaryDocument}
             documentColumns={documentColumns}
@@ -262,7 +262,7 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
             >
               Upload Spatial Data
             </Button>
-            {spatialDocument?.length > 0 && (
+            {spatialDocument.length > 0 && (
               <SpatialDocumentTable
                 documents={spatialDocument}
                 documentColumns={documentColumns}
@@ -293,7 +293,7 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
                   spatial_documents
                 );
               }}
-              projectGuid={project?.project_guid}
+              projectGuid={project.project_guid}
               labelIdle={
                 '<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><div>(Accepted filetypes: .kmx .doc .docx .xlsx .pdf)</div>'
               }
@@ -302,7 +302,7 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
               component={MajorMineApplicationFileUpload}
               uploadType="spatial_document"
             />
-            {spatialDocument?.length > 0 && (
+            {spatialDocument.length > 0 && (
               <DocumentTable
                 documents={spatialDocument}
                 documentColumns={documentColumns}
@@ -340,7 +340,7 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
               supporting_documents
             );
           }}
-          projectGuid={project?.project_guid}
+          projectGuid={project.project_guid}
           labelIdle={
             '<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><div>(Accepted filetypes: .kmx .doc .docx .xlsx .pdf)</div>'
           }
@@ -349,7 +349,7 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
           component={MajorMineApplicationFileUpload}
           uploadType="supporting_document"
         />
-        {supportDocuments?.length > 0 && (
+        {supportDocuments.length > 0 && (
           <DocumentTable
             documents={supportDocuments}
             documentColumns={documentColumns}
