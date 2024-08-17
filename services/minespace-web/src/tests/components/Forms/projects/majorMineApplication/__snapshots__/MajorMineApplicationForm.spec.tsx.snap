@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MajorMineApplicationForm renders properly when feature is enabled 1`] = `
+exports[`MajorMineApplicationForm renders properly 1`] = `
 <div>
   <div>
     <form

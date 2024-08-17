@@ -92,7 +92,7 @@ const WrappedMajorMineApplicationForm = () => (
 );
 
 describe("MajorMineApplicationForm", () => {
-  it("renders properly when feature is enabled", () => {
+  it("renders properly", () => {
     const { container } = render(<WrappedMajorMineApplicationForm />);
     expect(container).toMatchSnapshot();
   });

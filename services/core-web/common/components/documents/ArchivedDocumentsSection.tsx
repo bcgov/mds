@@ -13,9 +13,6 @@ interface ArchivedDocumentsSectionProps {
   titleLevel?: 1 | 2 | 3 | 4 | 5;
   additionalColumns?: ColumnType<MineDocument>[];
   href?: string;
-  mineGuid?: string;
-  majorMineApplicationGuid?: string;
-  refreshData?: () => void;
 }
 
 const ArchivedDocumentsSection = (props: ArchivedDocumentsSectionProps) => {
