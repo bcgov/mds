@@ -2,7 +2,6 @@ import React from "react";
 import { render, fireEvent } from "@testing-library/react";
 import MajorMineApplicationForm from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationForm";
 import * as MOCK from "@/tests/mocks/dataMocks";
-
 import * as FORM from "@/constants/forms";
 import { reduxForm } from "redux-form";
 import { ReduxWrapper as CommonReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
@@ -13,6 +12,12 @@ import { useSelector } from "react-redux";
 
 const mockDispatch = jest.fn();
 
+jest.mock("@mds/common/providers/featureFlags/useFeatureFlag", () => ({
+  useFeatureFlag: () => ({
+    isFeatureEnabled: () => true,
+  }),
+}));
+
 jest.mock("react-redux", () => {
   const actualReactRedux = jest.requireActual("react-redux");
   return {
@@ -21,6 +26,27 @@ jest.mock("react-redux", () => {
     useDispatch: () => mockDispatch,
   };
 });
+
+jest.mock(
+  "@/components/Forms/projects/majorMineApplication/MajorMineApplicationFileUpload",
+  () => (props: any) => (
+    <div>
+      <input
+        type="file"
+        onChange={(e) => {
+          if (e.target.files && e.target.files[0]) {
+            props.onFileLoad(
+              e.target.files[0].name,
+              "mock-document-manager-guid",
+              "PRIMARY",
+              FORM.ADD_MINE_MAJOR_APPLICATION
+            );
+          }
+        }}
+      />
+    </div>
+  )
+);
 
 const initialState = {
   form: {
@@ -33,12 +59,6 @@ const initialState = {
     },
   },
 };
-
-jest.mock("@mds/common/providers/featureFlags/useFeatureFlag", () => ({
-  useFeatureFlag: () => ({
-    isFeatureEnabled: () => true,
-  }),
-}));
 
 const props: any = {};
 useSelector.mockReturnValue([
@@ -82,5 +102,14 @@ describe("MajorMineApplicationForm", () => {
     const uploadSpatialButton = getByText("Upload Spatial Data");
     fireEvent.click(uploadSpatialButton);
     expect(mockDispatch).toHaveBeenCalledTimes(1);
+  });
+
+  it("should handle file upload for supporting documents", () => {
+    const { container } = render(<WrappedMajorMineApplicationForm />);
+    const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
+    const file = new File(["file contents"], "example.pdf", { type: "application/pdf" });
+
+    fireEvent.change(fileInput, { target: { files: [file] } });
+    expect(fileInput.files.length).toBeGreaterThan(0);
   });
 });

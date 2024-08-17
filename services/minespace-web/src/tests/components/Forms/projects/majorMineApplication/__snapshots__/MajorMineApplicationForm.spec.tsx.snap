@@ -133,63 +133,10 @@ exports[`MajorMineApplicationForm renders properly when feature is enabled 1`] =
       >
         Please upload the main document for the submission. If your single document contains all supporting information you may not need to include separate supporting documentation.
       </div>
-      <div
-        class="whirlpool-container"
-      >
-        <div
-          class="ant-form-item ant-form-item-with-help"
-        >
-          <div
-            class="ant-row ant-form-item-row"
-          >
-            <div
-              class="ant-col ant-form-item-label"
-            >
-              <label
-                class=""
-                for="ADD_MINE_MAJOR_APPLICATION_primary_document"
-                title=""
-              >
-                Upload primary application document
-              </label>
-            </div>
-            <div
-              class="ant-col ant-form-item-control"
-            >
-              <div
-                class="ant-form-item-control-input"
-              >
-                <div
-                  class="ant-form-item-control-input-content"
-                >
-                  <div
-                    class="filepond--wrapper"
-                  >
-                    <input
-                      accept="application/vnd.geo+json,application/gml+xml,application/dbf,application/x-dbf,application/x-dbase,application/vnd.google-earth.kml+xml,application/vnd.google-earth.kmz,application/octet-stream,text/csv,application/xml,text/xml,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,application/vnd.oasis.opendocument.text,application/vnd.oasis.opendocument.text-template,application/vnd.oasis.opendocument.text-web,application/vnd.oasis.opendocument.text-master,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                      multiple=""
-                      name="file"
-                      type="file"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div
-                style="display: flex; flex-wrap: nowrap;"
-              >
-                <div
-                  class="ant-form-item-explain ant-form-item-explain-connected"
-                  id="ADD_MINE_MAJOR_APPLICATION_primary_document_help"
-                  role="alert"
-                >
-                  <div
-                    class=""
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div>
+        <input
+          type="file"
+        />
       </div>
       <div>
         <div
@@ -877,63 +824,10 @@ exports[`MajorMineApplicationForm renders properly when feature is enabled 1`] =
       >
         Additional documentation that supports your application can be uploaded here.
       </div>
-      <div
-        class="whirlpool-container"
-      >
-        <div
-          class="ant-form-item ant-form-item-with-help"
-        >
-          <div
-            class="ant-row ant-form-item-row"
-          >
-            <div
-              class="ant-col ant-form-item-label"
-            >
-              <label
-                class=""
-                for="ADD_MINE_MAJOR_APPLICATION_supporting_document"
-                title=""
-              >
-                Upload supporting documents
-              </label>
-            </div>
-            <div
-              class="ant-col ant-form-item-control"
-            >
-              <div
-                class="ant-form-item-control-input"
-              >
-                <div
-                  class="ant-form-item-control-input-content"
-                >
-                  <div
-                    class="filepond--wrapper"
-                  >
-                    <input
-                      accept="application/vnd.geo+json,application/gml+xml,application/dbf,application/x-dbf,application/x-dbase,application/vnd.google-earth.kml+xml,application/vnd.google-earth.kmz,application/octet-stream,text/csv,application/xml,text/xml,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,application/vnd.oasis.opendocument.text,application/vnd.oasis.opendocument.text-template,application/vnd.oasis.opendocument.text-web,application/vnd.oasis.opendocument.text-master,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                      multiple=""
-                      name="file"
-                      type="file"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div
-                style="display: flex; flex-wrap: nowrap;"
-              >
-                <div
-                  class="ant-form-item-explain ant-form-item-explain-connected"
-                  id="ADD_MINE_MAJOR_APPLICATION_supporting_document_help"
-                  role="alert"
-                >
-                  <div
-                    class=""
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div>
+        <input
+          type="file"
+        />
       </div>
       <div>
         <div
