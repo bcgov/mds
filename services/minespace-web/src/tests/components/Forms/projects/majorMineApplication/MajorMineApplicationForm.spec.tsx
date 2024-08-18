@@ -1,7 +1,7 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react";
 import MajorMineApplicationForm from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationForm";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import * as FORM from "@/constants/forms";
 import { reduxForm } from "redux-form";
 import { ReduxWrapper as CommonReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
@@ -52,24 +52,16 @@ const initialState = {
   form: {
     ADD_MINE_MAJOR_APPLICATION: {
       values: {
-        primary_documents: [MOCK.PROJECT.major_mine_application.documents[0]],
-        spatial_documents: [MOCK.PROJECT.major_mine_application.documents[1]],
-        supporting_documents: [MOCK.PROJECT.major_mine_application.documents[2]],
+        primary_documents: [MOCK.PROJECTS.records[0].major_mine_application.documents[0]],
+        spatial_documents: [MOCK.PROJECTS.records[0].major_mine_application.documents[1]],
+        supporting_documents: [],
       },
     },
   },
 };
 
 const props: any = {};
-useSelector.mockReturnValue([
-  {
-    active_ind: "True",
-    document_manager_guid: "4c7d88d6-e78d-48cf-a860-89b6a1e8903b",
-    document_name: "05.4_Parent_Conduct.pdf",
-    mine_document_guid: "11d15c31-5f0a-4a18-94de-e04e3ca7936f",
-    mine_guid: "60300a07-376c-46f1-a984-88a813f91438",
-  },
-]);
+useSelector.mockReturnValue([MOCK.MINEDOCUMENTS.records[0]]);
 
 beforeEach(() => {
   props.project = MOCK.PROJECT;
