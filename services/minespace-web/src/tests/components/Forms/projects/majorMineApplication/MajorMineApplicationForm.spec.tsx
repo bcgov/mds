@@ -104,7 +104,7 @@ describe("MajorMineApplicationForm", () => {
     expect(mockDispatch).toHaveBeenCalled();
   });
 
-  it("should handle file upload for one document", () => {
+  it("should handle file upload for document", () => {
     const { container } = render(<WrappedMajorMineApplicationForm />);
     const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
     const file = new File(["file contents"], "example.pdf", { type: "application/pdf" });
@@ -112,7 +112,7 @@ describe("MajorMineApplicationForm", () => {
     expect(fileInput.files.length).toBeGreaterThan(0);
   });
 
-  it("should handle file removal for one document", () => {
+  it("should handle file removal for document", () => {
     const { container } = render(<WrappedMajorMineApplicationForm />);
     const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
     const file = new File(["file contents"], "example.pdf", { type: "application/pdf" });
