@@ -45,10 +45,12 @@ class TractionWebhookResource(Resource, UserMixin):
             if not vc_conn.connection_id:
                 # check if party already has a connection
                 existing_vc_conn = PartyVerifiableCredentialConnection.query.unbound_unsafe(
-                ).filter(PartyVerifiableCredentialConnection.party_guid == vc_conn.party_guid,
-                         PartyVerifiableCredentialConnection.connection_id != webhook_body["connection_id"],
-                        PartyVerifiableCredentialConnection.connection_id != None).first()
-                
+                ).filter(
+                    PartyVerifiableCredentialConnection.party_guid == vc_conn.party_guid,
+                    PartyVerifiableCredentialConnection.connection_id
+                    != webhook_body["connection_id"],
+                    PartyVerifiableCredentialConnection.connection_id != None).first()
+
                 if existing_vc_conn:
                     current_app.logger.warning(
                         f"party_guid={vc_conn.party_guid} already has a connection_id={existing_vc_conn.connection_id}"
@@ -56,11 +58,9 @@ class TractionWebhookResource(Resource, UserMixin):
                     #acapy has started creating a connection delete it so it cannot be completed.
                     traction_svc = TractionService()
 
-                    #delete connection record
-                    if not traction_svc.delete_connection(webhook_body["connection_id"]):
-                        current_app.logger.error(
-                            f"error when deleting connection in traction, active aries connnection unusable by CORE, connection_id={webhook_body['connection_id']}"
-                        )
+                    #delete connection record, do not care about result.
+                    traction_svc.delete_connection(webhook_body["connection_id"])
+
                     #delete oob invitation record
                     if not traction_svc.reject_invitation(webhook_body["connection_id"]):
                         current_app.logger.error(

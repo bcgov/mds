@@ -7,6 +7,7 @@ import factory.fuzzy
 
 from app.api.dams import Dam
 from app.api.dams.models.dam import DamType, OperatingStatus, ConsequenceClassification
+from app.api.mines.documents.models.mine_document_bundle import MineDocumentBundle
 from app.api.mines.explosives_permit_amendment.models.explosives_permit_amendment import ExplosivesPermitAmendment
 from app.api.mines.reports.models.mine_report_definition_compliance_article_xref import \
     MineReportDefinitionComplianceArticleXref
@@ -311,6 +312,35 @@ class VarianceDocumentFactory(BaseFactory):
     variance_id = factory.SelfAttribute('variance.variance_id')
     variance_document_category_code = factory.LazyFunction(RandomVarianceDocumentCategoryCode)
 
+class MineDocumentBundleFactory(BaseFactory):
+    class Meta:
+        model = MineDocumentBundle
+
+    bundle_guid = GUID
+    name = factory.Faker('word')
+    geomark_id = factory.Faker('word')
+    docman_bundle_guid = GUID
+
+    bundle_documents = []
+
+class MineDocumentSpatialFactory(MineDocumentFactory):
+    mine_document_bundle = factory.SubFactory(MineDocumentBundleFactory)
+
+class ProjectSummarySpatialDocumentFactory(BaseFactory):
+    class Meta:
+        model = ProjectSummaryDocumentXref
+
+    class Params:
+        mine_document = factory.SubFactory(
+            'tests.factories.MineDocumentSpatialFactory',
+            mine_guid=factory.SelfAttribute('..project_summary.mine_guid')
+        )
+        project_summary = factory.SubFactory('tests.factories.ProjectSummaryFactory')
+
+    project_summary_document_xref_guid = GUID
+    mine_document_guid = factory.SelfAttribute('mine_document.mine_document_guid')
+    project_summary_id = factory.SelfAttribute('project_summary.project_summary_id')
+    project_summary_document_type_code = factory.LazyFunction(RandomProjectSummaryDocumentTypeCode)
 
 class ProjectSummaryDocumentFactory(BaseFactory):
     class Meta:
@@ -1237,6 +1267,9 @@ class ProjectSummaryFactory(BaseFactory):
             extracted = 1
 
         ProjectSummaryDocumentFactory.create_batch(
+            size=extracted, project_summary=obj, mine_document__mine=None, **kwargs)
+
+        ProjectSummarySpatialDocumentFactory.create_batch(
             size=extracted, project_summary=obj, mine_document__mine=None, **kwargs)
 
 
