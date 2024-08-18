@@ -85,12 +85,13 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
     documentTypeFieldForm: string,
     documentsForm: any[]
   ) => {
-    const newFiles = uploadedFiles.filter(
+    const newFiles = uploadedFiles?.filter(
       (file) => file.document_manager_guid !== fileItem.serverId
     );
+
     setUploadedFiles(newFiles);
 
-    const newDocumentsForm = documentsForm.filter(
+    const newDocumentsForm = documentsForm?.filter(
       (doc) => doc.document_manager_guid !== fileItem.serverId
     );
 

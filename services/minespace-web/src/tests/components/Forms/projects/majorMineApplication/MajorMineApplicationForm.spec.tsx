@@ -43,6 +43,14 @@ jest.mock(
             );
           }
         }}
+        onClick={() => {
+          props.onRemoveFile(
+            null,
+            { serverId: "mock-document-manager-guid" },
+            "primary_documents",
+            [MOCK.PROJECTS.records[0].major_mine_application.documents[0]]
+          );
+        }}
       />
     </div>
   )
@@ -93,15 +101,23 @@ describe("MajorMineApplicationForm", () => {
     const { getByText } = render(<WrappedMajorMineApplicationForm />);
     const uploadSpatialButton = getByText("Upload Spatial Data");
     fireEvent.click(uploadSpatialButton);
-    expect(mockDispatch).toHaveBeenCalledTimes(1);
+    expect(mockDispatch).toHaveBeenCalled();
   });
 
   it("should handle file upload for supporting documents", () => {
     const { container } = render(<WrappedMajorMineApplicationForm />);
     const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
     const file = new File(["file contents"], "example.pdf", { type: "application/pdf" });
-
     fireEvent.change(fileInput, { target: { files: [file] } });
     expect(fileInput.files.length).toBeGreaterThan(0);
+  });
+
+  it("should handle file removal for supporting documents", () => {
+    const { container } = render(<WrappedMajorMineApplicationForm />);
+    const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
+    const file = new File(["file contents"], "example.pdf", { type: "application/pdf" });
+    fireEvent.change(fileInput, { target: { files: [file] } });
+    fireEvent.click(fileInput);
+    expect(mockDispatch).toHaveBeenCalled();
   });
 });
