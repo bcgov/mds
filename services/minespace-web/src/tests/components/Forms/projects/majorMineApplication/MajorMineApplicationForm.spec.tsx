@@ -62,7 +62,7 @@ const initialState = {
       values: {
         primary_documents: [MOCK.PROJECTS.records[0].major_mine_application.documents[0]],
         spatial_documents: [MOCK.PROJECTS.records[0].major_mine_application.documents[1]],
-        supporting_documents: [],
+        supporting_documents: [MOCK.PROJECTS.records[0].major_mine_application.documents[2]],
       },
     },
   },
