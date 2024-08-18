@@ -72,7 +72,7 @@ const props: any = {};
 useSelector.mockReturnValue([MOCK.MINEDOCUMENTS.records[0]]);
 
 beforeEach(() => {
-  props.project = MOCK.PROJECT;
+  props.project = MOCK.PROJECTS.records[0];
   props.handleSubmit = jest.fn();
   props.refreshData = jest.fn();
 });
@@ -104,7 +104,7 @@ describe("MajorMineApplicationForm", () => {
     expect(mockDispatch).toHaveBeenCalled();
   });
 
-  it("should handle file upload for supporting documents", () => {
+  it("should handle file upload for one document", () => {
     const { container } = render(<WrappedMajorMineApplicationForm />);
     const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
     const file = new File(["file contents"], "example.pdf", { type: "application/pdf" });
@@ -112,7 +112,7 @@ describe("MajorMineApplicationForm", () => {
     expect(fileInput.files.length).toBeGreaterThan(0);
   });
 
-  it("should handle file removal for supporting documents", () => {
+  it("should handle file removal for one document", () => {
     const { container } = render(<WrappedMajorMineApplicationForm />);
     const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
     const file = new File(["file contents"], "example.pdf", { type: "application/pdf" });
