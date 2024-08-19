@@ -461,9 +461,6 @@ th.ant-descriptions-item.vertical-description {
   &-footer {
     border: none;
     padding: 0;
-
-    // empty rule to prevent build error
-    .ant-btn {}
   }
 }
 
