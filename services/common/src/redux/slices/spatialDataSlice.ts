@@ -97,7 +97,7 @@ const spatialSlice = createAppSlice({
     fetchGeomarkMapData: create.asyncThunk(
       async (geomark_id: string, thunkAPI) => {
         thunkAPI.dispatch(showLoading());
-        const geomark_link = `${process.env.GEOMARK_URL_BASE}/geomarks/${geomark_id}`;
+        const geomark_link = `${ENVIRONMENT.geoMarkUrl}/geomarks/${geomark_id}`;
 
         const suffix = "/feature.geojson";
         const url = `${geomark_link}${suffix}`;

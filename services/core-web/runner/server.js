@@ -84,6 +84,7 @@ app.get(`${BASE_PATH}/env`, (req, res) => {
     flagsmithKey: process.env.FLAGSMITH_KEY,
     flagsmithUrl: process.env.FLAGSMITH_URL,
     syncfusionLicense: process.env.SYNCFUSION_LICENSE_KEY,
+    geoMarkUrl: process.env.GEOMARK_URL_BASE,
   });
 });
 
