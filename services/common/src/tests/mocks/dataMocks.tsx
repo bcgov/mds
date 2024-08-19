@@ -7514,7 +7514,7 @@ export const PROJECT_SUMMARY: IProjectSummary = {
     {
       project_summary_id: 1304,
       project_summary_document_type_code: "SPT",
-      mine_document_guid: "b869134f-bcf8-47d9-ac61-c90835e20601",
+      mine_document_guid: "b869134f-bcf8-47d9-ac61-c90835e20602",
       mine_guid: "60300a07-376c-46f1-a984-88a813f91438",
       document_manager_guid: "1c77f818-3d7a-461c-902d-7546755f4661",
       document_name: "shape.shx",

@@ -4,7 +4,6 @@ import { ColumnType } from "antd/es/table";
 export interface GenericDocTableProps<T> {
   additionalColumnProps?: { key: string; colProps: any }[];
   additionalColumns?: ColumnType<T>[];
-  archiveMineDocuments?: (mineGuid: string, mineDocumentGuids: string[]) => void | Promise<void>;
   canArchiveDocuments?: boolean;
   defaultSortKeys?: string[];
   documentColumns?: ColumnType<unknown>[];
@@ -18,7 +17,6 @@ export interface GenericDocTableProps<T> {
   isViewOnly?: boolean;
   onArchivedDocuments?: (docs?: T[]) => void | Promise<void>;
   onReplaceDocument?: (document: T) => void | Promise<void>;
-  openDocument?: any;
   removeDocument?: (event, doc_guid: string, mine_guid: string) => void | Promise<void>;
   replaceAlertMessage?: string;
   showVersionHistory?: boolean;
