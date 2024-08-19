@@ -31,7 +31,7 @@ const columns = [
     key: "mine_name",
     render: (text, record) => (
       <div key={record.key} title="Mine Name">
-        <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)}>{text}</Link>
+        <Link to={router.MINE_DASHBOARD.dynamicRoute(record.key)}>{text}</Link>
       </div>
     ),
     sorter: nullableStringSorter("mine_name"),

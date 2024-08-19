@@ -586,7 +586,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                               >
                                 <div>
                                   <button
-                                    class="ant-btn ant-btn-default ant-dropdown-trigger actions-dropdown-button "
+                                    class="ant-btn ant-btn-text ant-dropdown-trigger actions-dropdown-button"
                                     data-cy="menu-actions-button"
                                     type="button"
                                   >
@@ -674,7 +674,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                               >
                                 <div>
                                   <button
-                                    class="ant-btn ant-btn-default ant-dropdown-trigger actions-dropdown-button "
+                                    class="ant-btn ant-btn-text ant-dropdown-trigger actions-dropdown-button"
                                     data-cy="menu-actions-button"
                                     type="button"
                                   >
@@ -1176,7 +1176,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                                   >
                                     <div>
                                       <button
-                                        class="ant-btn ant-btn-default ant-dropdown-trigger actions-dropdown-button "
+                                        class="ant-btn ant-btn-text ant-dropdown-trigger actions-dropdown-button"
                                         data-cy="menu-actions-button"
                                         type="button"
                                       >
@@ -1296,7 +1296,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                                   >
                                     <div>
                                       <button
-                                        class="ant-btn ant-btn-default ant-dropdown-trigger actions-dropdown-button "
+                                        class="ant-btn ant-btn-text ant-dropdown-trigger actions-dropdown-button"
                                         data-cy="menu-actions-button"
                                         type="button"
                                       >
@@ -1416,7 +1416,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                                   >
                                     <div>
                                       <button
-                                        class="ant-btn ant-btn-default ant-dropdown-trigger actions-dropdown-button "
+                                        class="ant-btn ant-btn-text ant-dropdown-trigger actions-dropdown-button"
                                         data-cy="menu-actions-button"
                                         type="button"
                                       >
@@ -1536,7 +1536,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                                   >
                                     <div>
                                       <button
-                                        class="ant-btn ant-btn-default ant-dropdown-trigger actions-dropdown-button "
+                                        class="ant-btn ant-btn-text ant-dropdown-trigger actions-dropdown-button"
                                         data-cy="menu-actions-button"
                                         type="button"
                                       >
@@ -1656,7 +1656,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                                   >
                                     <div>
                                       <button
-                                        class="ant-btn ant-btn-default ant-dropdown-trigger actions-dropdown-button "
+                                        class="ant-btn ant-btn-text ant-dropdown-trigger actions-dropdown-button"
                                         data-cy="menu-actions-button"
                                         type="button"
                                       >
@@ -1776,7 +1776,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                                   >
                                     <div>
                                       <button
-                                        class="ant-btn ant-btn-default ant-dropdown-trigger actions-dropdown-button "
+                                        class="ant-btn ant-btn-text ant-dropdown-trigger actions-dropdown-button"
                                         data-cy="menu-actions-button"
                                         type="button"
                                       >

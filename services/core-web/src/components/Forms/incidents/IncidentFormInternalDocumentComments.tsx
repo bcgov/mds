@@ -10,7 +10,7 @@ import {
 } from "@/components/Forms/incidents/IncidentForm";
 import { useParams } from "react-router-dom";
 import IncidentFileUpload from "@/components/Forms/incidents/IncidentFileUpload";
-import { DocumentTable } from "@/components/common/DocumentTable";
+import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import { MinistryInternalComments } from "@/components/mine/Incidents/MinistryInternalComments";
 
 interface IncidentFormInternalDocumentCommentsProps {

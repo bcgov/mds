@@ -8,7 +8,7 @@ exports[`RenderCancelButton component renders properly, does not show confirm on
   >
     <button
       ant-click-animating-without-extra-node="false"
-      class="ant-btn ant-btn-default"
+      class="ant-btn ant-btn-default core-btn core-btn-default"
       type="button"
     >
       <span>

@@ -16,6 +16,8 @@ module.exports = {
     "services/minespace-web/jest.polyfills.js",
     "services/core-web/jest.polyfills.js",
     "services/core-web/jest.config.js",
+    "services/core-web/runner/server.js",
+    "services/minespace-web/runner/server.js",
   ],
   parserOptions: {
     project: [

@@ -37,7 +37,7 @@ const columns = [
     sorter: true,
     width: 150,
     render: (text, record) => (
-      <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)} title="Name" data-cy="mine-link">
+      <Link to={router.MINE_DASHBOARD.dynamicRoute(record.key)} title="Name" data-cy="mine-link">
         {text}
         {record.verified_status && record.verified_status.healthy_ind && (
           <img

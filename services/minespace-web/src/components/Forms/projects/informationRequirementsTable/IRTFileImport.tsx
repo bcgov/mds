@@ -13,7 +13,7 @@ import { getProject } from "@mds/common/redux/selectors/projectSelectors";
 import { MODERN_EXCEL } from "@mds/common/constants/fileTypes";
 import * as FORM from "@/constants/forms";
 import LinkButton from "@/components/common/LinkButton";
-import DocumentTable from "@/components/common/DocumentTable";
+import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import IRTFileUpload from "@/components/Forms/projects/informationRequirementsTable/IRTFileUpload";
 import {
   renderCategoryColumn,

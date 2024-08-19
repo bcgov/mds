@@ -99,8 +99,8 @@ export const MineBondTable = (props) => {
         return (
           <AuthorizationWrapper permission={Permission.EDIT_SECURITIES}>
             <Button
-              type="secondary"
-              className="permit-table-button"
+              type="text"
+              className="actions-dropdown-button"
               onClick={(event) => props.openAddBondModal(event, record.permit_guid)}
             >
               <div className="padding-sm">
@@ -203,8 +203,8 @@ export const MineBondTable = (props) => {
         return (
           <div>
             <Button
-              type="secondary"
-              className="permit-table-button"
+              type="text"
+              className="actions-dropdown-button"
               onClick={(event) => props.openViewBondModal(event, record)}
             >
               <div className="padding-sm">
@@ -213,7 +213,7 @@ export const MineBondTable = (props) => {
             </Button>
             <AuthorizationWrapper permission={Permission.EDIT_SECURITIES}>
               <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
-                <Button type="secondary" className="permit-table-button">
+                <Button type="text" className="actions-dropdown-button">
                   <div className="padding-sm">
                     <img
                       className="padding-sm--right icon-svg-filter"

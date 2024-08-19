@@ -120,13 +120,16 @@ exports[`AddSpatialDocumentsModal renders properly 1`] = `
             <div
               class="ant-alert-description"
             >
-              Visit 
+              Visit
+               
               <a
-                href="/https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/reclamation-closure/spatial-data-arr"
+                href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/reclamation-closure/spatial-data-arr"
+                target="_blank"
               >
                 GIS Shapefile Standards
               </a>
-               to learn more about shapefile requirements and standards.
+               
+              to learn more about shapefile requirements and standards.
             </div>
           </div>
         </div>
@@ -232,7 +235,7 @@ exports[`AddSpatialDocumentsModal renders properly 1`] = `
         class="ant-row ant-row-end"
       >
         <button
-          class="ant-btn ant-btn-default"
+          class="ant-btn ant-btn-default core-btn core-btn-default"
           type="button"
         >
           <span>

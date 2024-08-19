@@ -5,6 +5,8 @@
 // Primary Colours
 $black: #161616;
 $darkest-grey: #313132;
+$transparent-dark-grey: #31313226;
+$dark-grey: #494949;
 $medium-grey: #606060;
 $violet: #5e46a1;
 $transparent-violet: #bdb3d826;
@@ -137,3 +139,7 @@ $default-padding-xxl: 50px;
 
 $default-box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
 $default-round-top-border: 60px 60px 0 0;
+
+// pages with fixed side menu/tabs
+$fixed-page-margin: 24px;
+$side-menu-width: 292px;

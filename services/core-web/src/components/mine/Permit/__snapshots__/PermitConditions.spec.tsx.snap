@@ -1,0 +1,505 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PermitConditions renders properly 1`] = `
+<div>
+  <div
+    class="scroll-side-menu-wrapper"
+  >
+    <div
+      class="side-menu"
+      style="top: 0px;"
+    >
+      <div>
+        <div
+          class="ant-anchor-wrapper"
+          style="max-height: calc(100vh - 254px);"
+        >
+          <div
+            class="ant-anchor ant-anchor-fixed"
+          >
+            <div
+              class="ant-anchor-ink"
+            >
+              <span
+                class="ant-anchor-ink-ball-visible ant-anchor-ink-ball"
+                style="top: -4.5px;"
+              />
+            </div>
+            <div
+              class="ant-anchor-link now-menu-link ant-anchor-link-active"
+            >
+              <a
+                class="ant-anchor-link-title ant-anchor-link-title-active"
+                href="#hsc"
+                title=""
+              >
+                <div
+                  class="side-nav-title"
+                >
+                  Health and Safety
+                </div>
+              </a>
+            </div>
+            <div
+              class="ant-anchor-link now-menu-link"
+            >
+              <a
+                class="ant-anchor-link-title"
+                href="#elc"
+                title=""
+              >
+                <div
+                  class="side-nav-title"
+                >
+                  Environmental Land and Watercourses
+                </div>
+              </a>
+            </div>
+            <div
+              class="ant-anchor-link now-menu-link"
+            >
+              <a
+                class="ant-anchor-link-title"
+                href="#rcc"
+                title=""
+              >
+                <div
+                  class="side-nav-title"
+                >
+                  Reclamation and Closure Program
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="side-menu--content"
+      style="top: 0px;"
+    >
+      <div
+        class="ant-row ant-row-space-between ant-row-middle"
+        style="margin: -8px -5px -8px -5px;"
+      >
+        <div
+          class="ant-col ant-col-24"
+          style="padding: 8px 5px 8px 5px;"
+        >
+          <h2
+            class="ant-typography margin-none"
+          >
+            Permit Conditions
+          </h2>
+        </div>
+        <div
+          class="ant-col"
+          style="padding: 8px 5px 8px 5px;"
+        >
+          <div
+            class="ant-row"
+            style="margin-left: -5px; margin-right: -5px;"
+          >
+            <div
+              class="ant-col"
+              style="padding-left: 5px; padding-right: 5px;"
+            >
+              <button
+                class="ant-btn ant-btn-dashed core-btn core-btn-tertiary fa-icon-container"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="svg-inline--fa fa-arrows-from-line "
+                  data-icon="arrows-from-line"
+                  data-prefix="fal"
+                  focusable="false"
+                  role="img"
+                  viewBox="0 0 448 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M235.3 4.7c-3-3-7.1-4.7-11.3-4.7s-8.3 1.7-11.3 4.7l-80 80c-6.2 6.2-6.2 16.4 0 22.6s16.4 6.2 22.6 0L208 54.6V176c0 8.8 7.2 16 16 16s16-7.2 16-16V54.6l52.7 52.7c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6l-80-80zM0 256c0 8.8 7.2 16 16 16H432c8.8 0 16-7.2 16-16s-7.2-16-16-16H16c-8.8 0-16 7.2-16 16zM224 512c4.2 0 8.3-1.7 11.3-4.7l80-80c6.2-6.2 6.2-16.4 0-22.6s-16.4-6.2-22.6 0L240 457.4 240 336c0-8.8-7.2-16-16-16s-16 7.2-16 16l0 121.4-52.7-52.7c-6.2-6.2-16.4-6.2-22.6 0s-6.2 16.4 0 22.6l80 80c3 3 7.1 4.7 11.3 4.7z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <span>
+                  Expand All Conditions
+                </span>
+              </button>
+            </div>
+            <div
+              class="ant-col"
+              style="padding-left: 5px; padding-right: 5px;"
+            >
+              <button
+                class="ant-btn ant-btn-dashed core-btn core-btn-tertiary"
+                type="button"
+              >
+                <span
+                  aria-label="file"
+                  class="anticon anticon-file"
+                  role="img"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class=""
+                    data-icon="file"
+                    fill="currentColor"
+                    focusable="false"
+                    height="1em"
+                    viewBox="64 64 896 896"
+                    width="1em"
+                  >
+                    <path
+                      d="M854.6 288.6L639.4 73.4c-6-6-14.1-9.4-22.6-9.4H192c-17.7 0-32 14.3-32 32v832c0 17.7 14.3 32 32 32h640c17.7 0 32-14.3 32-32V311.3c0-8.5-3.4-16.7-9.4-22.7zM790.2 326H602V137.8L790.2 326zm1.8 562H232V136h302v216a42 42 0 0042 42h216v494z"
+                    />
+                  </svg>
+                </span>
+                <span>
+                  Open Permit in Document Viewer
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col"
+          style="padding: 8px 5px 8px 5px;"
+        >
+          <button
+            class="ant-btn ant-btn-dashed core-btn core-btn-tertiary fa-icon-container"
+            type="button"
+          >
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-bars-staggered "
+              data-icon="bars-staggered"
+              data-prefix="fal"
+              focusable="false"
+              role="img"
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M0 80c0-8.8 7.2-16 16-16H432c8.8 0 16 7.2 16 16s-7.2 16-16 16H16C7.2 96 0 88.8 0 80zM64 240c0-8.8 7.2-16 16-16H496c8.8 0 16 7.2 16 16s-7.2 16-16 16H80c-8.8 0-16-7.2-16-16zM448 400c0 8.8-7.2 16-16 16H16c-8.8 0-16-7.2-16-16s7.2-16 16-16H432c8.8 0 16 7.2 16 16z"
+                fill="currentColor"
+              />
+            </svg>
+            <span>
+              Reorder
+            </span>
+          </button>
+        </div>
+        <div
+          class="ant-col ant-col-24"
+          style="padding: 8px 5px 8px 5px;"
+        >
+          <div
+            class="core-page-content"
+          >
+            <div
+              class="ant-row"
+              style="margin: -8px -8px -8px -8px;"
+            >
+              <div
+                class="ant-col ant-col-24"
+                style="padding: 8px 8px 8px 8px;"
+              >
+                <div
+                  class="ant-row ant-row-space-between"
+                >
+                  <h3
+                    class="ant-typography margin-none"
+                    id="hsc"
+                  >
+                    Health and Safety
+                     (
+                    1
+                    )
+                  </h3>
+                  <button
+                    class="ant-btn ant-btn-primary core-btn core-btn-primary"
+                    type="button"
+                  >
+                    <span>
+                      Add Condition
+                    </span>
+                  </button>
+                </div>
+              </div>
+              <div
+                class="ant-col ant-col-24"
+                style="padding: 8px 8px 8px 8px;"
+              >
+                <div
+                  class="condition-layer condition-layer--0 condition-SEC fade-in"
+                >
+                  <div
+                    class="condition-collapsed"
+                  >
+                    <p
+                      class="condition-layer condition-layer--0 condition-SEC fade-in"
+                    >
+                      1.
+                       
+                      Section decade check including.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="ant-col ant-col-24"
+                style="padding: 8px 8px 8px 8px;"
+              >
+                <div
+                  class="ant-row ant-row-space-between"
+                >
+                  <h3
+                    class="ant-typography margin-none"
+                    id="elc"
+                  >
+                    Environmental Land and Watercourses
+                     (
+                    2
+                    )
+                  </h3>
+                  <button
+                    class="ant-btn ant-btn-primary core-btn core-btn-primary"
+                    type="button"
+                  >
+                    <span>
+                      Add Condition
+                    </span>
+                  </button>
+                </div>
+              </div>
+              <div
+                class="ant-col ant-col-24"
+                style="padding: 8px 8px 8px 8px;"
+              >
+                <div
+                  class="condition-layer condition-layer--0 condition-SEC fade-in"
+                >
+                  <div
+                    class="condition-collapsed"
+                  >
+                    <p
+                      class="condition-layer condition-layer--0 condition-SEC fade-in"
+                    >
+                      1.
+                       
+                      International clear those TV individual look.
+                    </p>
+                    <div
+                      class="condition-layer condition-layer--1 condition-CON fade-in"
+                    >
+                      <div
+                        class="condition-collapsed"
+                      >
+                        <p
+                          class="condition-layer condition-layer--1 condition-CON fade-in"
+                        >
+                          a.
+                           
+                          See store understand company interview value factor.
+                        </p>
+                        <div
+                          class="condition-layer condition-layer--2 condition-LIS fade-in"
+                        >
+                          <div
+                            class="condition-collapsed"
+                          >
+                            <p
+                              class="condition-layer condition-layer--2 condition-LIS fade-in"
+                            >
+                              i.
+                               
+                              Mr item fall study although.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="condition-layer condition-layer--1 condition-SEC fade-in"
+                    >
+                      <div
+                        class="condition-collapsed"
+                      >
+                        <p
+                          class="condition-layer condition-layer--1 condition-SEC fade-in"
+                        >
+                          b.
+                           
+                          words words words sub-section
+                        </p>
+                        <div
+                          class="condition-layer condition-layer--2 condition-CON fade-in"
+                        >
+                          <div
+                            class="condition-collapsed"
+                          >
+                            <p
+                              class="condition-layer condition-layer--2 condition-CON fade-in"
+                            >
+                              i.
+                               
+                              a condition added underneath the section, with a lot of detail added to it, which is probably important for documents like permits
+                            </p>
+                            <div
+                              class="condition-layer condition-layer--3 condition-LIS fade-in"
+                            >
+                              <div
+                                class="condition-collapsed"
+                              >
+                                <p
+                                  class="condition-layer condition-layer--3 condition-LIS fade-in"
+                                >
+                                  1.
+                                   
+                                  a detailed list item desribing exactly what must be done to accomplish the parent condition
+                                </p>
+                              </div>
+                            </div>
+                            <div
+                              class="condition-layer condition-layer--3 condition-LIS fade-in"
+                            >
+                              <div
+                                class="condition-collapsed"
+                              >
+                                <p
+                                  class="condition-layer condition-layer--3 condition-LIS fade-in"
+                                >
+                                  2.
+                                   
+                                  but, that wasn't quite enough information, another list item will expand on other responsibilities associated with this permit
+                                </p>
+                              </div>
+                            </div>
+                            <div
+                              class="condition-layer condition-layer--3 condition-LIS fade-in"
+                            >
+                              <div
+                                class="condition-collapsed"
+                              >
+                                <p
+                                  class="condition-layer condition-layer--3 condition-LIS fade-in"
+                                >
+                                  3.
+                                   
+                                  good things come in 3s, so another list item is added to the condition
+                                </p>
+                                <div
+                                  class="condition-layer condition-layer--4 condition-LIS fade-in"
+                                >
+                                  <div
+                                    class="condition-collapsed"
+                                  >
+                                    <p
+                                      class="condition-layer condition-layer--4 condition-LIS fade-in"
+                                    >
+                                      a.
+                                       
+                                      we want to show nesting to 5 levels, so one list item gets a child
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="ant-col ant-col-24"
+                style="padding: 8px 8px 8px 8px;"
+              >
+                <div
+                  class="condition-layer condition-layer--0 condition-SEC fade-in"
+                >
+                  <div
+                    class="condition-collapsed"
+                  >
+                    <p
+                      class="condition-layer condition-layer--0 condition-SEC fade-in"
+                    >
+                      2.
+                       
+                      Another condition under the ELC condition category code, and it may even be long enough to take up 2 lines
+                    </p>
+                    <div
+                      class="condition-layer condition-layer--1 condition-CON fade-in"
+                    >
+                      <div
+                        class="condition-collapsed"
+                      >
+                        <p
+                          class="condition-layer condition-layer--1 condition-CON fade-in"
+                        >
+                          a.
+                           
+                          It should probably have a sub-item because that's pretty fun and normal for permit conditions. Really it should be long enough to have it cut off at some point if we just add more words, but the question is how many will be necessary?
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="ant-col ant-col-24"
+                style="padding: 8px 8px 8px 8px;"
+              >
+                <div
+                  class="ant-row ant-row-space-between"
+                >
+                  <h3
+                    class="ant-typography margin-none"
+                    id="rcc"
+                  >
+                    Reclamation and Closure Program
+                     (
+                    1
+                    )
+                  </h3>
+                  <button
+                    class="ant-btn ant-btn-primary core-btn core-btn-primary"
+                    type="button"
+                  >
+                    <span>
+                      Add Condition
+                    </span>
+                  </button>
+                </div>
+              </div>
+              <div
+                class="ant-col ant-col-24"
+                style="padding: 8px 8px 8px 8px;"
+              >
+                <div
+                  class="condition-layer condition-layer--0 condition-SEC fade-in"
+                >
+                  <div
+                    class="condition-collapsed"
+                  >
+                    <p
+                      class="condition-layer condition-layer--0 condition-SEC fade-in"
+                    >
+                      1.
+                       
+                      Reflect miss police tough such single force.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

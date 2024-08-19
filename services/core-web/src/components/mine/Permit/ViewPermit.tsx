@@ -1,29 +1,38 @@
-import React, { useEffect } from "react";
-import { Col, Row, Tabs, Typography, Tag } from "antd";
-import { Link, useParams } from "react-router-dom";
+import React, { FC, useEffect, useMemo, useState } from "react";
+import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getPermitByGuid } from "@mds/common/redux/selectors/permitSelectors";
 import { IMine, IPermit } from "@mds/common";
 import ViewPermitOverview from "@/components/mine/Permit/ViewPermitOverview";
-import ViewPermitConditions from "@/components/mine/Permit/ViewPermitConditions";
+import PermitConditions from "@/components/mine/Permit/PermitConditions";
 
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
+import CorePageHeader from "@mds/common/components/common/CorePageHeader";
 import * as routes from "@/constants/routes";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
-import CoreTag from "@mds/common/components/common/CoreTag";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import CompanyIcon from "@mds/common/assets/icons/CompanyIcon";
-import { faLocationDot } from "@fortawesome/pro-light-svg-icons";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { Feature } from "@mds/common/utils/featureFlag";
+import { PresetStatusColorType } from "antd/es/_util/colors";
+import { Badge } from "antd";
+import { ActionMenuButton } from "@mds/common/components/common/ActionMenu";
 
-const { Title, Text } = Typography;
-
-const ViewPermit = () => {
+const ViewPermit: FC = () => {
   const dispatch = useDispatch();
 
-  const { id, permitGuid } = useParams<{ id: string; permitGuid: string }>();
+  const { id, permitGuid, tab } = useParams<{ id: string; permitGuid: string; tab: string }>();
   const permit: IPermit = useSelector(getPermitByGuid(permitGuid));
   const mine: IMine = useSelector((state) => getMineById(state, id));
+  const { isFeatureEnabled } = useFeatureFlag();
+  const enablePermitConditionsTab = isFeatureEnabled(Feature.PERMIT_CONDITIONS_PAGE);
+
+  const [activeTab, setActiveTab] = useState(tab ?? "overview");
+  const history = useHistory();
+
+  const latestAmendment = useMemo(() => {
+    if (!permit) return undefined;
+    return permit.permit_amendments[permit.permit_amendments.length - 1];
+  }, [permit]);
 
   useEffect(() => {
     if (!permit?.permit_id) {
@@ -37,43 +46,57 @@ const ViewPermit = () => {
     }
   }, [mine]);
 
+  const canViewConditions = latestAmendment?.conditions?.length > 0;
+
+  const getConditionBadge = () => {
+    const conditionStatus: PresetStatusColorType = canViewConditions ? "success" : "error";
+    return <Badge status={conditionStatus} />;
+  };
+
   const tabItems = [
     {
-      key: "1",
+      key: "overview",
       label: "Permit Overview",
       children: <ViewPermitOverview />,
     },
-    // {
-    //   key: "2",
-    //   label: "Permit Conditions",
-    //   children: <ViewPermitConditions />,
-    // },
+    enablePermitConditionsTab && {
+      key: "conditions",
+      label: <>{getConditionBadge()} Permit Conditions</>,
+      children: <PermitConditions latestAmendment={latestAmendment} />,
+      disabled: !canViewConditions,
+    },
+  ].filter(Boolean);
+
+  const handleTabChange = (newActiveTab: string) => {
+    setActiveTab(newActiveTab);
+    return history.push(routes.VIEW_MINE_PERMIT.dynamicRoute(id, permitGuid, newActiveTab));
+  };
+
+  const headerActions = [
+    {
+      key: "test",
+      label: "Test",
+      clickFunction: () => console.log("action not implemented", permit),
+    },
   ];
 
+  const headerActionComponent = <ActionMenuButton actions={headerActions} />;
+
   return (
-    <div className="view-permits margin-large--top padding-lg--left padding-lg--right">
-      <Row className="margin-large--bottom">
-        <Col>
-          <Link to={routes.MINE_PERMITS.dynamicRoute(id)} className="faded-text">
-            All Permits
-          </Link>
-          <Text> / Permit {permit?.permit_no ?? ""}</Text>
-        </Col>
-      </Row>
-      <Row align="middle" gutter={16}>
-        <Col>
-          <Title level={1} className="padding-lg--right margin-none">
-            Permit {permit?.permit_no ?? ""}
-          </Title>
-        </Col>
-        <Col>
-          <CoreTag icon={<FontAwesomeIcon icon={faLocationDot} />} text={mine?.mine_name} />
-        </Col>
-        <Col>
-          <CoreTag icon={<CompanyIcon />} text={permit?.current_permittee} />
-        </Col>
-      </Row>
-      <Tabs items={tabItems} />
+    <div className="fixed-tabs-container">
+      <CorePageHeader
+        entityLabel={permit?.permit_no ?? ""}
+        entityType="Permit"
+        mineGuid={id}
+        current_permittee={permit?.current_permittee ?? ""}
+        breadCrumbs={[{ route: routes.MINE_PERMITS.dynamicRoute(id), text: "All Permits" }]}
+        extraElement={headerActionComponent}
+        tabProps={{
+          items: tabItems,
+          defaultActiveKey: activeTab,
+          onChange: handleTabChange,
+        }}
+      />
     </div>
   );
 };

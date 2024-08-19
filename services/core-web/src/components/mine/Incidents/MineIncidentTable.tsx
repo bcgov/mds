@@ -172,7 +172,7 @@ const MineIncidentTable: FC<MineIncidentTableProps> = (props) => {
       className: hideColumn(!isDashboardView),
       render: (text, record) => (
         <div title="Mine" className={hideColumn(!isDashboardView)}>
-          <Link to={router.MINE_SUMMARY.dynamicRoute(record.incident.mine_guid)}>{text}</Link>
+          <Link to={router.MINE_DASHBOARD.dynamicRoute(record.incident.mine_guid)}>{text}</Link>
         </div>
       ),
     },
