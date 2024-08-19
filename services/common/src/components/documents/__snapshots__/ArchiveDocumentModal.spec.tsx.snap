@@ -2,8 +2,8 @@
 
 exports[`ArchiveDocumentModal renders correctly and matches the snapshot 1`] = `
 <form
-  class="ant-form ant-form-vertical common-form common-form-ARCHIVE_DCUMENT form-edit"
-  id="ARCHIVE_DCUMENT"
+  class="ant-form ant-form-vertical common-form common-form-ARCHIVE_DOCUMENT form-edit"
+  id="ARCHIVE_DOCUMENT"
 >
   <div
     class="ant-typography"
