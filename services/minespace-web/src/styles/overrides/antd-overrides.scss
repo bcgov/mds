@@ -621,6 +621,9 @@ th.ant-descriptions-item.vertical-description {
 .ant-modal-footer {
   padding-right: 24px;
   padding-bottom: 24px;
+
+  // empty rule to prevent build error
+  .ant-btn {}
 }
 
 // Collapse Component
