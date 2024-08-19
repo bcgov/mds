@@ -8,7 +8,7 @@ import { ColumnType } from "antd/es/table";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 
 interface ArchivedDocumentsSectionProps {
-  documents?: MineDocument[];
+  documents: MineDocument[];
   documentColumns?: ColumnType<MineDocument>[];
   titleLevel?: 1 | 2 | 3 | 4 | 5;
   additionalColumns?: ColumnType<MineDocument>[];

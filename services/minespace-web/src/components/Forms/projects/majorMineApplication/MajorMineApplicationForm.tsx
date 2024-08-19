@@ -9,12 +9,16 @@ import {
   MAJOR_MINES_APPLICATION_DOCUMENT_TYPE,
   MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE,
 } from "@mds/common/constants/strings";
-import { DOCUMENT, Feature, MODERN_EXCEL, SPATIAL, SPATIAL_DATA_STANDARDS_URL } from "@mds/common";
+import {
+  DOCUMENT,
+  Feature,
+  FORM,
+  MODERN_EXCEL,
+  SPATIAL,
+  SPATIAL_DATA_STANDARDS_URL,
+} from "@mds/common";
 import * as routes from "@/constants/routes";
-import * as FORM from "@/constants/forms";
-import { renderConfig } from "@/components/common/config";
-import { documentNameColumn, uploadDateColumn } from "@/components/common/DocumentColumns";
-import DocumentTable from "@/components/common/DocumentTable";
+
 import MajorMineApplicationFileUpload from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationFileUpload";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 import { openModal } from "@mds/common/redux/actions/modalActions";
@@ -27,6 +31,13 @@ import { MajorMineApplicationDocument } from "@mds/common/models/documents/docum
 import { renderCategoryColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import * as Strings from "@mds/common/constants/strings";
 import { getMineDocuments } from "@mds/common/redux/selectors/mineSelectors";
+
+import {
+  documentNameColumn,
+  uploadDateColumn,
+} from "@mds/common/components/documents/DocumentColumns";
+import DocumentTable from "@mds/common/components/documents/DocumentTable";
+import RenderField from "@mds/common/components/forms/RenderField";
 interface MajorMineApplicationFormProps {
   project: any;
   handleSubmit: () => void;
@@ -186,16 +197,11 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
         <Row>
           <Col span={12} style={{ marginRight: "40px" }}>
             <Typography.Title level={5}>Primary Contact</Typography.Title>
-            <Field
-              id="primary_contact"
-              name="primary_contact"
-              disabled
-              component={renderConfig.FIELD}
-            />
+            <Field id="primary_contact" name="primary_contact" disabled component={RenderField} />
           </Col>
           <Col span={11}>
             <Typography.Title level={5}>Mine Name</Typography.Title>
-            <Field id="mine_name" name="mine_name" disabled component={renderConfig.FIELD} />
+            <Field id="mine_name" name="mine_name" disabled component={RenderField} />
           </Col>
         </Row>
         <Typography.Title level={4}>Application Files</Typography.Title>

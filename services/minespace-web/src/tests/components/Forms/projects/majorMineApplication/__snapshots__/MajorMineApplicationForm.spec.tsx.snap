@@ -44,34 +44,43 @@ exports[`MajorMineApplicationForm renders properly 1`] = `
             Primary Contact
           </h5>
           <div
-            class="ant-row ant-legacy-form-item"
+            class="ant-form-item ant-form-item-with-help"
           >
             <div
-              class="ant-col ant-legacy-form-item-control-wrapper"
+              class="ant-row ant-form-item-row"
             >
               <div
-                class="ant-legacy-form-item-control"
+                class="ant-col ant-form-item-control"
               >
-                <span
-                  class="ant-legacy-form-item-children"
+                <div
+                  class="ant-form-item-control-input"
                 >
                   <div
-                    class="inline-flex"
-                    style="flex-direction: column;"
+                    class="ant-form-item-control-input-content"
                   >
-                    
                     <input
                       class="ant-input ant-input-disabled"
                       disabled=""
                       id="primary_contact"
                       name="primary_contact"
-                      placeholder=""
                       type="text"
                       value=""
                     />
-                    
                   </div>
-                </span>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_MINE_MAJOR_APPLICATION_primary_contact_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -85,34 +94,43 @@ exports[`MajorMineApplicationForm renders properly 1`] = `
             Mine Name
           </h5>
           <div
-            class="ant-row ant-legacy-form-item"
+            class="ant-form-item ant-form-item-with-help"
           >
             <div
-              class="ant-col ant-legacy-form-item-control-wrapper"
+              class="ant-row ant-form-item-row"
             >
               <div
-                class="ant-legacy-form-item-control"
+                class="ant-col ant-form-item-control"
               >
-                <span
-                  class="ant-legacy-form-item-children"
+                <div
+                  class="ant-form-item-control-input"
                 >
                   <div
-                    class="inline-flex"
-                    style="flex-direction: column;"
+                    class="ant-form-item-control-input-content"
                   >
-                    
                     <input
                       class="ant-input ant-input-disabled"
                       disabled=""
                       id="mine_name"
                       name="mine_name"
-                      placeholder=""
                       type="text"
                       value=""
                     />
-                    
                   </div>
-                </span>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="ADD_MINE_MAJOR_APPLICATION_mine_name_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -139,37 +157,18 @@ exports[`MajorMineApplicationForm renders properly 1`] = `
         />
       </div>
       <div>
+        <div />
         <div
-          style="float: right; margin-bottom: 8px; margin-right: 8px;"
+          style="float: right;"
         >
           <button
-            class="ant-btn ant-btn-default ant-dropdown-trigger ant-btn ant-btn-primary"
+            class="ant-btn ant-btn-default ant-btn ant-btn-primary"
             disabled=""
             type="button"
           >
-            <span>
-              Action
-            </span>
-            <span
-              aria-label="down"
-              class="anticon anticon-down"
-              role="img"
-            >
-              <svg
-                aria-hidden="true"
-                class=""
-                data-icon="down"
-                fill="currentColor"
-                focusable="false"
-                height="1em"
-                viewBox="64 64 896 896"
-                width="1em"
-              >
-                <path
-                  d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
-                />
-              </svg>
-            </span>
+            <div>
+              Download
+            </div>
           </button>
         </div>
         <div
@@ -833,37 +832,18 @@ exports[`MajorMineApplicationForm renders properly 1`] = `
         />
       </div>
       <div>
+        <div />
         <div
-          style="float: right; margin-bottom: 8px; margin-right: 8px;"
+          style="float: right;"
         >
           <button
-            class="ant-btn ant-btn-default ant-dropdown-trigger ant-btn ant-btn-primary"
+            class="ant-btn ant-btn-default ant-btn ant-btn-primary"
             disabled=""
             type="button"
           >
-            <span>
-              Action
-            </span>
-            <span
-              aria-label="down"
-              class="anticon anticon-down"
-              role="img"
-            >
-              <svg
-                aria-hidden="true"
-                class=""
-                data-icon="down"
-                fill="currentColor"
-                focusable="false"
-                height="1em"
-                viewBox="64 64 896 896"
-                width="1em"
-              >
-                <path
-                  d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
-                />
-              </svg>
-            </span>
+            <div>
+              Download
+            </div>
           </button>
         </div>
         <div

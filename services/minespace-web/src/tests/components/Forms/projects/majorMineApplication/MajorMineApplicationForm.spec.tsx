@@ -2,7 +2,7 @@ import React from "react";
 import { render, fireEvent } from "@testing-library/react";
 import MajorMineApplicationForm from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationForm";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
-import * as FORM from "@/constants/forms";
+import { FORM } from "@mds/common";
 import { reduxForm } from "redux-form";
 import { ReduxWrapper as CommonReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { ReduxWrapper as MinespaceReduxWrapper } from "@/tests/utils/ReduxWrapper";
@@ -11,12 +11,6 @@ import { BrowserRouter } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const mockDispatch = jest.fn();
-
-jest.mock("@mds/common/providers/featureFlags/useFeatureFlag", () => ({
-  useFeatureFlag: () => ({
-    isFeatureEnabled: () => true,
-  }),
-}));
 
 jest.mock("react-redux", () => {
   const actualReactRedux = jest.requireActual("react-redux");
