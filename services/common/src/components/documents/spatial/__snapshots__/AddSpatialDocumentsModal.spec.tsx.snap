@@ -3,256 +3,251 @@
 exports[`AddSpatialDocumentsModal renders properly 1`] = `
 <div>
   <form
-    class="ant-form ant-form-vertical common-form common-form-formName form-edit"
-    id="formName"
+    class="ant-form ant-form-vertical common-form common-form-formName_fieldName form-edit"
+    id="formName_fieldName"
   >
-    <form
-      class="ant-form ant-form-vertical common-form common-form-formName_fieldName form-edit"
-      id="formName_fieldName"
+    <div
+      class="ant-steps ant-steps-horizontal ant-steps-label-horizontal"
     >
       <div
-        class="ant-steps ant-steps-horizontal ant-steps-label-horizontal"
+        class="ant-steps-item ant-steps-item-process ant-steps-item-active"
+        content="[object Object]"
       >
         <div
-          class="ant-steps-item ant-steps-item-process ant-steps-item-active"
-          content="[object Object]"
+          class="ant-steps-item-container"
         >
           <div
-            class="ant-steps-item-container"
+            class="ant-steps-item-tail"
+          />
+          <div
+            class="ant-steps-item-icon"
+          >
+            <span
+              class="ant-steps-icon"
+            >
+              1
+            </span>
+          </div>
+          <div
+            class="ant-steps-item-content"
           >
             <div
-              class="ant-steps-item-tail"
+              class="ant-steps-item-title"
+            >
+              Upload Spatial Data Files
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-steps-item ant-steps-item-wait"
+        content="[object Object]"
+      >
+        <div
+          class="ant-steps-item-container"
+        >
+          <div
+            class="ant-steps-item-tail"
+          />
+          <div
+            class="ant-steps-item-icon"
+          >
+            <span
+              class="ant-steps-icon"
+            >
+              2
+            </span>
+          </div>
+          <div
+            class="ant-steps-item-content"
+          >
+            <div
+              class="ant-steps-item-title"
+            >
+              Review
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <h3
+      class="ant-typography"
+    >
+      Upload Spatial Bundle
+    </h3>
+    <div
+      class="ant-typography"
+    >
+      You can only submit one KML, KMZ, or Shapefile at a time.
+    </div>
+    <div
+      class="ant-typography"
+    >
+      <div
+        class="ant-alert ant-alert-info ant-alert-with-description"
+        data-show="true"
+        role="alert"
+      >
+        <span
+          aria-label="info-circle"
+          class="anticon anticon-info-circle ant-alert-icon"
+          role="img"
+        >
+          <svg
+            aria-hidden="true"
+            data-icon="info-circle"
+            fill="currentColor"
+            focusable="false"
+            height="1em"
+            viewBox="64 64 896 896"
+            width="1em"
+          >
+            <path
+              d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
             />
-            <div
-              class="ant-steps-item-icon"
-            >
-              <span
-                class="ant-steps-icon"
-              >
-                1
-              </span>
-            </div>
-            <div
-              class="ant-steps-item-content"
-            >
-              <div
-                class="ant-steps-item-title"
-              >
-                Upload Spatial Data Files
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          class="ant-steps-item ant-steps-item-wait"
-          content="[object Object]"
-        >
-          <div
-            class="ant-steps-item-container"
-          >
-            <div
-              class="ant-steps-item-tail"
+            <path
+              d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"
             />
-            <div
-              class="ant-steps-item-icon"
+          </svg>
+        </span>
+        <div
+          class="ant-alert-content"
+        >
+          <div
+            class="ant-alert-description"
+          >
+            Visit
+             
+            <a
+              href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/reclamation-closure/spatial-data-arr"
+              target="_blank"
             >
-              <span
-                class="ant-steps-icon"
-              >
-                2
-              </span>
-            </div>
-            <div
-              class="ant-steps-item-content"
-            >
-              <div
-                class="ant-steps-item-title"
-              >
-                Review
-              </div>
-            </div>
+              GIS Shapefile Standards
+            </a>
+             
+            to learn more about shapefile requirements and standards.
           </div>
         </div>
       </div>
-      <h3
-        class="ant-typography"
-      >
-        Upload Spatial Bundle
-      </h3>
+    </div>
+    <h4
+      class="ant-typography"
+    >
+      Spatial Data
+    </h4>
+    <div
+      class="ant-typography"
+    >
+      Shapefile component files must include the .shp, .shx, .dbf, and .prj files with the same filename prefix.
+    </div>
+    <div>
       <div
-        class="ant-typography"
-      >
-        You can only submit one KML, KMZ, or Shapefile at a time.
-      </div>
-      <div
-        class="ant-typography"
+        class="whirlpool-container"
       >
         <div
-          class="ant-alert ant-alert-info ant-alert-with-description"
-          data-show="true"
-          role="alert"
-        >
-          <span
-            aria-label="info-circle"
-            class="anticon anticon-info-circle ant-alert-icon"
-            role="img"
-          >
-            <svg
-              aria-hidden="true"
-              data-icon="info-circle"
-              fill="currentColor"
-              focusable="false"
-              height="1em"
-              viewBox="64 64 896 896"
-              width="1em"
-            >
-              <path
-                d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
-              />
-              <path
-                d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"
-              />
-            </svg>
-          </span>
-          <div
-            class="ant-alert-content"
-          >
-            <div
-              class="ant-alert-description"
-            >
-              Visit
-               
-              <a
-                href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/reclamation-closure/spatial-data-arr"
-                target="_blank"
-              >
-                GIS Shapefile Standards
-              </a>
-               
-              to learn more about shapefile requirements and standards.
-            </div>
-          </div>
-        </div>
-      </div>
-      <h4
-        class="ant-typography"
-      >
-        Spatial Data
-      </h4>
-      <div
-        class="ant-typography"
-      >
-        Shapefile component files must include the .shp, .shx, .dbf, and .prj files with the same filename prefix.
-      </div>
-      <div>
-        <div
-          class="whirlpool-container"
+          class="ant-form-item ant-form-item-with-help"
         >
           <div
-            class="ant-form-item ant-form-item-with-help"
+            class="ant-row ant-form-item-row"
           >
             <div
-              class="ant-row ant-form-item-row"
+              class="ant-col ant-form-item-label"
             >
-              <div
-                class="ant-col ant-form-item-label"
+              <label
+                class="ant-form-item-required"
+                for="formName_fieldName_fieldName"
+                title=""
               >
-                <label
-                  class="ant-form-item-required"
-                  for="formName_fieldName_fieldName"
-                  title=""
-                >
+                <span>
+                  Upload shapefiles
+                   
                   <span>
-                    Upload shapefiles
-                     
-                    <span>
-                      <span
-                        class="form-dashed-underline"
+                    <span
+                      class="form-dashed-underline"
+                    >
+                      Accepted file types
+                       
+                      <svg
+                        aria-hidden="true"
+                        class="svg-inline--fa fa-circle-question "
+                        data-icon="circle-question"
+                        data-prefix="fal"
+                        focusable="false"
+                        role="img"
+                        style="width: 15px;"
+                        viewBox="0 0 512 512"
+                        xmlns="http://www.w3.org/2000/svg"
                       >
-                        Accepted file types
-                         
-                        <svg
-                          aria-hidden="true"
-                          class="svg-inline--fa fa-circle-question "
-                          data-icon="circle-question"
-                          data-prefix="fal"
-                          focusable="false"
-                          role="img"
-                          style="width: 15px;"
-                          viewBox="0 0 512 512"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M480 256A224 224 0 1 0 32 256a224 224 0 1 0 448 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm168.7-86.2c6.5-24.6 28.7-41.8 54.2-41.8H280c35.5 0 64 29 64 64.3c0 24-13.4 46.2-34.9 57.2L272 268.3V288c0 8.8-7.2 16-16 16s-16-7.2-16-16V258.5c0-6 3.4-11.5 8.7-14.3l45.8-23.4c10.7-5.4 17.5-16.6 17.5-28.7c0-17.8-14.4-32.3-32-32.3H222.9c-10.9 0-20.5 7.4-23.2 17.9l-.2 .7c-2.2 8.5-11 13.7-19.5 11.4s-13.7-11-11.4-19.5l.2-.7zM232 352a24 24 0 1 1 48 0 24 24 0 1 1 -48 0z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </span>
+                        <path
+                          d="M480 256A224 224 0 1 0 32 256a224 224 0 1 0 448 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm168.7-86.2c6.5-24.6 28.7-41.8 54.2-41.8H280c35.5 0 64 29 64 64.3c0 24-13.4 46.2-34.9 57.2L272 268.3V288c0 8.8-7.2 16-16 16s-16-7.2-16-16V258.5c0-6 3.4-11.5 8.7-14.3l45.8-23.4c10.7-5.4 17.5-16.6 17.5-28.7c0-17.8-14.4-32.3-32-32.3H222.9c-10.9 0-20.5 7.4-23.2 17.9l-.2 .7c-2.2 8.5-11 13.7-19.5 11.4s-13.7-11-11.4-19.5l.2-.7zM232 352a24 24 0 1 1 48 0 24 24 0 1 1 -48 0z"
+                          fill="currentColor"
+                        />
+                      </svg>
                     </span>
                   </span>
-                </label>
-              </div>
+                </span>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
               <div
-                class="ant-col ant-form-item-control"
+                class="ant-form-item-control-input"
               >
                 <div
-                  class="ant-form-item-control-input"
+                  class="ant-form-item-control-input-content"
                 >
                   <div
-                    class="ant-form-item-control-input-content"
+                    class="filepond--wrapper"
                   >
-                    <div
-                      class="filepond--wrapper"
-                    >
-                      <input
-                        accept="application/dbf,application/x-dbf,application/x-dbase,application/vnd.google-earth.kml+xml,application/vnd.google-earth.kmz,application/octet-stream,application/xml"
-                        multiple=""
-                        name="file"
-                        type="file"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div
-                  style="display: flex; flex-wrap: nowrap;"
-                >
-                  <div
-                    class="ant-form-item-explain ant-form-item-explain-connected"
-                    id="formName_fieldName_fieldName_help"
-                    role="alert"
-                  >
-                    <div
-                      class=""
+                    <input
+                      accept="application/dbf,application/x-dbf,application/x-dbase,application/vnd.google-earth.kml+xml,application/vnd.google-earth.kmz,application/octet-stream,application/xml"
+                      multiple=""
+                      name="file"
+                      type="file"
                     />
                   </div>
                 </div>
               </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="formName_fieldName_fieldName_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div
-        class="ant-row ant-row-end"
+    </div>
+    <div
+      class="ant-row ant-row-end"
+    >
+      <button
+        class="ant-btn ant-btn-default core-btn core-btn-default"
+        type="button"
       >
-        <button
-          class="ant-btn ant-btn-default core-btn core-btn-default"
-          type="button"
-        >
-          <span>
-            Cancel
-          </span>
-        </button>
-        <button
-          class="ant-btn ant-btn-primary"
-          disabled=""
-          type="submit"
-        >
-          <span>
-            Continue
-          </span>
-        </button>
-      </div>
-    </form>
+        <span>
+          Cancel
+        </span>
+      </button>
+      <button
+        class="ant-btn ant-btn-primary"
+        disabled=""
+        type="submit"
+      >
+        <span>
+          Continue
+        </span>
+      </button>
+    </div>
   </form>
 </div>
 `;
