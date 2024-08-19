@@ -490,7 +490,7 @@ exports[`MajorMineApplicationForm renders properly 1`] = `
         Please upload spatial files to support your application. You must upload at least one KML, KMZ, or Shapefile at a time. Visit
          
         <a
-          href="/https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/reclamation-closure/spatial-data-arr"
+          href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/reclamation-closure/spatial-data-arr"
         >
           GIS Shapefile Standards
         </a>

@@ -231,14 +231,10 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
             );
           }}
           projectGuid={project.project_guid}
-          labelIdle={
-            '<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><div>(Accepted filetypes: .kmx .doc .docx .xlsx .pdf)</div>'
-          }
           allowMultiple
           acceptedFileTypesMap={acceptedFileTypesMap}
           component={MajorMineApplicationFileUpload}
           uploadType="primary_document"
-          validate={[required]}
         />
         {primaryDocument.length > 0 && (
           <DocumentTable
@@ -256,8 +252,8 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
         <Typography.Paragraph>
           Please upload spatial files to support your application. You must upload at least one KML,
           KMZ, or Shapefile at a time. Visit{" "}
-          <Link to={SPATIAL_DATA_STANDARDS_URL}>GIS Shapefile Standards</Link> to learn more about
-          shapefile requirements and standards.
+          <Link to={{ pathname: SPATIAL_DATA_STANDARDS_URL }}>GIS Shapefile Standards</Link> to
+          learn more about shapefile requirements and standards.
         </Typography.Paragraph>
         {isFeatureEnabled(Feature.SPATIAL_BUNDLE) ? (
           <>
@@ -301,9 +297,6 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
                 );
               }}
               projectGuid={project.project_guid}
-              labelIdle={
-                '<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><div>(Accepted filetypes: .kmx .doc .docx .xlsx .pdf)</div>'
-              }
               allowMultiple
               acceptedFileTypesMap={acceptedFileTypesMap}
               component={MajorMineApplicationFileUpload}
@@ -348,9 +341,6 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
             );
           }}
           projectGuid={project.project_guid}
-          labelIdle={
-            '<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><div>(Accepted filetypes: .kmx .doc .docx .xlsx .pdf)</div>'
-          }
           allowMultiple
           acceptedFileTypesMap={acceptedFileTypesMap}
           component={MajorMineApplicationFileUpload}
