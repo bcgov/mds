@@ -15,6 +15,7 @@ import {
 import { closeModal } from "@mds/common/redux/actions/modalActions";
 import { HSRCEditForm } from "./HSRCEditForm";
 import { ReportEditForm } from "./ReportEditForm";
+import CoreButton from "@mds/common/components/common/CoreButton";
 
 const ComplianceCodeViewEditForm: FC<{
   initialValues: IComplianceArticle;
@@ -100,9 +101,14 @@ const ComplianceCodeViewEditForm: FC<{
           <Row style={{ width: "100%" }} justify="end">
             <RenderCancelButton />
             {currentStep > 0 && (
-              <Button className="full-mobile ant-btn-tertiary" onClick={previous} disabled={false}>
+              <CoreButton
+                className="full-mobile"
+                type="filled-tertiary"
+                onClick={previous}
+                disabled={false}
+              >
                 Back
-              </Button>
+              </CoreButton>
             )}
 
             {isEditMode ? (

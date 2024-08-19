@@ -158,7 +158,7 @@ export const MineReportTable = (props) => {
       className: hideColumn(!props.isDashboardView),
       render: (text, record) => (
         <div title="Mine" className={hideColumn(!props.isDashboardView)}>
-          <Link to={router.MINE_SUMMARY.dynamicRoute(record.mine_guid)}>{text}</Link>
+          <Link to={router.MINE_DASHBOARD.dynamicRoute(record.mine_guid)}>{text}</Link>
         </div>
       ),
     },

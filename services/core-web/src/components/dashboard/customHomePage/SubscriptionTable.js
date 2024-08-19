@@ -72,7 +72,7 @@ export class SubscriptionTable extends Component {
         dataIndex: "mineName",
         render: (text, record) => (
           <div title="Name">
-            <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)}>{text}</Link>
+            <Link to={router.MINE_DASHBOARD.dynamicRoute(record.key)}>{text}</Link>
           </div>
         ),
       },

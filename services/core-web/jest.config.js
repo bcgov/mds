@@ -16,7 +16,7 @@ module.exports = {
   },
   testEnvironment: "jest-environment-jsdom-global",
   setupFiles: ["./jest.polyfills.js", "jest-localstorage-mock", "jest-canvas-mock"],
-  setupFilesAfterEnv: ["./src/setupTests.js"],
+  setupFilesAfterEnv: ["./src/setupTests.ts"],
   snapshotFormat: {
     escapeString: true,
     printBasicPrototype: true,

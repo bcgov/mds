@@ -53,7 +53,7 @@ export class NavBar extends Component {
       <Menu.ItemGroup title="Please re-verify the following mines:" />
       {this.props.currentUserUnverifiedMines.map((mineVerificationStatus) => (
         <Menu.Item key={mineVerificationStatus.mine_guid}>
-          <Link to={router.MINE_SUMMARY.dynamicRoute(mineVerificationStatus.mine_guid)}>
+          <Link to={router.MINE_DASHBOARD.dynamicRoute(mineVerificationStatus.mine_guid)}>
             {mineVerificationStatus.mine_name}
           </Link>
         </Menu.Item>

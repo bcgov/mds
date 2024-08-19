@@ -400,20 +400,20 @@ export class ViewPartyRelationships extends Component {
 
     return (
       partyRelationshipsInGroup.length !== 0 && [
-        <Row gutter={16}>
+        <Row gutter={16} key="0">
           <Col span={24}>
             <h4>{this.getGroupTitle(group)}</h4>
             <Divider />
           </Col>
         </Row>,
 
-        <Row gutter={16}>
+        <Row gutter={16} key="1">
           {partyRelationshipsInGroup.map((partyRelationship) =>
             this.renderPartyRelationship(partyRelationship)
           )}
           {this.renderInactiveRelationships(partyRelationshipsInGroup)}
         </Row>,
-        <div>
+        <div key="2">
           <br />
           <br />
         </div>,
@@ -437,7 +437,7 @@ export class ViewPartyRelationships extends Component {
         okText: "Ok",
         cancelText: "Cancel",
         onConfirm: () =>
-          this.props.history.push(router.MINE_SUMMARY.dynamicRoute(this.props.mine.mine_guid)),
+          this.props.history.push(router.MINE_DASHBOARD.dynamicRoute(this.props.mine.mine_guid)),
       },
     }[selectedPartyRelationshipType]);
 
@@ -469,7 +469,6 @@ export class ViewPartyRelationships extends Component {
               placement="topRight"
               {...this.confirmationProps(this.state.selectedPartyRelationshipType)}
             >
-              {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
               <button
                 type="button"
                 ref={this.RoleConfirmation}

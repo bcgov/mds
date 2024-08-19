@@ -117,7 +117,7 @@ export const renderActionsColumn = ({
         <div>
           {items.length > 0 && (
             <Dropdown menu={{ items }} placement="bottomLeft" disabled={isRowSelected}>
-              <Button data-cy="menu-actions-button" className="actions-dropdown-button ">
+              <Button data-cy="menu-actions-button" className="actions-dropdown-button" type="text">
                 {text}
                 <CaretDownOutlined alt={dropdownAltText} />
               </Button>

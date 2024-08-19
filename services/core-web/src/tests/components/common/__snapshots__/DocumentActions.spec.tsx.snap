@@ -26,7 +26,8 @@ exports[`DocumentActions renders properly 1`] = `
     placement="bottomLeft"
   >
     <Button
-      className="permit-table-button"
+      className="actions-dropdown-button"
+      type="text"
     >
       Actions
       <img

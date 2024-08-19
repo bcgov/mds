@@ -6,12 +6,20 @@
 
     .side-menu--fixed,
     .side-menu {
-        margin-top: 15px;
-        background-color: $pure-white;
+        margin-top: $fixed-page-margin;
+        margin-left: $fixed-page-margin;
+        width: $side-menu-width;
+
+        .ant-anchor-wrapper {
+            background-color: transparent;
+            border: none;
+        }
     }
 
     .side-menu--content {
-        padding-top: 15px; // equal to the margin-top on side-menu to align them
+        padding-top: $fixed-page-margin; // equal to the margin-top on side-menu to align them
+        left: $side-menu-width + $fixed-page-margin;
+        width: calc(100% - ($side-menu-width + $fixed-page-margin));
     }
 
     .side-menu--content.with-fixed-top {
@@ -20,7 +28,7 @@
 
     .side-nav-title {
         text-wrap: wrap;
-        color: $violet;
+        color: $darkest-grey;
         line-height: 21px;
         font-size: 14px;
     }
@@ -32,10 +40,14 @@
     z-index: 999;
 
     .ant-anchor-link {
-        padding: 6px 16px;
+        padding: 11px 16px;
     }
 
     .ant-anchor-link-title {
+        &-active .side-nav-title {
+            color: $violet;
+        }
+
         .sub-tab-1 {
             margin: -2px 0 -2px 16px;
         }

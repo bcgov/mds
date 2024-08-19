@@ -74,7 +74,10 @@ export const LeafletPopup = (props) => {
     <div style={{ width: "220px" }}>
       <div>
         <StaticRouter context={props.context} basename={process.env.BASE_PATH}>
-          <Link to={router.MINE_SUMMARY.dynamicRoute(props.mine.mine_guid)} title="Go to mine page">
+          <Link
+            to={router.MINE_DASHBOARD.dynamicRoute(props.mine.mine_guid)}
+            title="Go to mine page"
+          >
             {props.mine.mine_name}
             {verifiedStatus && verifiedStatus.healthy_ind && (
               <img
@@ -116,7 +119,7 @@ export const LeafletPopup = (props) => {
         <strong>TSF</strong> {tsf}
       </div>
       {/* <StaticRouter context={props.context} basename={process.env.BASE_PATH}>
-        <Link to={router.MINE_SUMMARY.dynamicRoute(props.mine.mine_guid)}>
+        <Link to={router.MINE_DASHBOARD.dynamicRoute(props.mine.mine_guid)}>
           <div className="mineMapPopUpButton">
             <Button type="primary">View Mine</Button>
           </div>

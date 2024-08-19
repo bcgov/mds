@@ -86,7 +86,7 @@ exports[`ReportPage renders view mode properly 1`] = `
     <div>
       <div
         class="ant-anchor-wrapper"
-        style="max-height: calc(100vh - 217px);"
+        style="max-height: calc(100vh - 226px);"
       >
         <div
           class="ant-anchor ant-anchor-fixed"
@@ -1080,7 +1080,7 @@ exports[`ReportPage renders view mode properly 1`] = `
                                 >
                                   <div>
                                     <button
-                                      class="ant-btn ant-btn-default ant-dropdown-trigger actions-dropdown-button "
+                                      class="ant-btn ant-btn-text ant-dropdown-trigger actions-dropdown-button"
                                       data-cy="menu-actions-button"
                                       type="button"
                                     >

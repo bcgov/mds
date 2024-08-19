@@ -2,32 +2,6 @@
   filter: brightness(0) saturate(100%) invert(33%) sepia(15%) saturate(2661%) hue-rotate(216deg) brightness(89%) contrast(92%);
 }
 
-.permit-table-button,
-.actions-dropdown-button {
-  margin: 0;
-  border: 0;
-  color: $violet;
-  background: transparent;
-  box-shadow: none;
-  padding-left: 5px;
-  padding-right: 0px;
-
-  &:hover {
-    border: 0;
-    color: $violet;
-    background: none;
-  }
-
-  div {
-    display: flex;
-    align-items: center;
-
-    img {
-      min-height: 18px;
-    }
-  }
-}
-
 .add-permit-dropdown-button {
   border: none;
 

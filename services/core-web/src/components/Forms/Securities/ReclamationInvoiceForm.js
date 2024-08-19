@@ -10,7 +10,7 @@ import { RECLAMATION_INVOICE_DOCUMENTS } from "@mds/common/constants/API";
 import RenderDate from "@/components/common/RenderDate";
 import RenderField from "@/components/common/RenderField";
 import * as FORM from "@/constants/forms";
-import DocumentTable from "@/components/common/DocumentTable";
+import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import CustomPropTypes from "@/customPropTypes";
 import FileUpload from "@/components/common/FileUpload";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";

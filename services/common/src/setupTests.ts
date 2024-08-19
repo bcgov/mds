@@ -20,6 +20,10 @@ Enzyme.configure({ adapter: new Adapter() });
     route: "test",
     dynamicRoute: () => "test",
   },
+  MINE_DASHBOARD: {
+    route: "test",
+    dynamicRoute: () => "test",
+  },
 };
 
 beforeAll(() => {

@@ -2,7 +2,7 @@ import React from "react";
 import { Row, Col, Typography } from "antd";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
-import DocumentTable from "@/components/common/DocumentTable";
+import DocumentTable from "@mds/common/components/documents/DocumentTable";
 
 const propTypes = {
   title: PropTypes.string.isRequired,

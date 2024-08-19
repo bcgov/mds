@@ -15,10 +15,10 @@ const DashboardRoutes = () => {
       />
       <Route
         exact
-        path={routes.MINE_SUMMARY.route}
+        path={routes.MINE_DASHBOARD.route}
         render={({ match }) => <Redirect to={routes.MINE_GENERAL.dynamicRoute(match.params.id)} />}
       />
-      <Route path={routes.MINE_SUMMARY.route} component={routes.MINE_SUMMARY.component} />
+      <Route path={routes.MINE_DASHBOARD.route} component={routes.MINE_DASHBOARD.component} />
       <Route
         exact
         path={routes.ADMIN_DASHBOARD.route}
