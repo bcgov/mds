@@ -14,7 +14,6 @@ interface ArchivedDocumentsSectionProps {
   titleLevel?: 1 | 2 | 3 | 4 | 5;
   href?: string;
   showCategory?: boolean;
-  additionalColumns?: ColumnType<MineDocument>[];
   documentColumns?: ColumnType<MineDocument>[];
 }
 

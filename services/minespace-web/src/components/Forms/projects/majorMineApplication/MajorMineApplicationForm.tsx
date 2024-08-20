@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Field, change, getFormValues } from "redux-form";
 import { Col, Row, Typography, Button } from "antd";
 import {
-  CATEGORY_CODE,
   MAJOR_MINES_APPLICATION_DOCUMENT_TYPE,
   MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE,
 } from "@mds/common/constants/strings";
@@ -28,7 +27,6 @@ import * as API from "@mds/common/constants/API";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import { MajorMineApplicationDocument } from "@mds/common/models/documents/document";
-import { renderCategoryColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 
 import { getMineDocuments } from "@mds/common/redux/selectors/mineSelectors";
 
@@ -360,9 +358,7 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
 
         <br />
         <ArchivedDocumentsSection
-          additionalColumns={[
-            renderCategoryColumn("category_code", "Category", CATEGORY_CODE, true),
-          ]}
+          showCategory={true}
           documentColumns={documentColumns}
           documents={
             mineDocuments && mineDocuments.length > 0
