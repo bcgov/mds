@@ -25,6 +25,7 @@ export const generateActionMenuItems = (actionItems: ITableAction[], record) => 
         <button
           type="button"
           className={`full actions-dropdown-button`}
+          data-testid={`action-button-${action.key}`}
           onClick={(event) => action.clickFunction(event, record)}
         >
           <div>{action.label}</div>
