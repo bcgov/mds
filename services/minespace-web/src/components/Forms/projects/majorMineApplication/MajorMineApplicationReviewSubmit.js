@@ -166,7 +166,7 @@ export const MajorMineApplicationReviewSubmit = (props) => {
             handleDeleteDocument={handleDeleteDocument}
             deletePayload={{ projectGuid, majorMineApplicationGuid }}
             deletePermission
-            canArchiveDocuments={true}
+            canArchiveDocuments={false}
             onArchivedDocuments={() => props.refreshData()}
             showVersionHistory={true}
             enableBulkActions={true}

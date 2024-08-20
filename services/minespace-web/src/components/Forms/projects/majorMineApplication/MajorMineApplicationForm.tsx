@@ -20,7 +20,7 @@ import {
 import * as routes from "@/constants/routes";
 
 import MajorMineApplicationFileUpload from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationFileUpload";
-import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
+
 import { openModal } from "@mds/common/redux/actions/modalActions";
 import AddSpatialDocumentsModal from "@mds/common/components/documents/spatial/AddSpatialDocumentsModal";
 import SpatialDocumentTable from "@mds/common/components/documents/spatial/SpatialDocumentTable";
@@ -38,6 +38,7 @@ import {
 } from "@mds/common/components/documents/DocumentColumns";
 import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import RenderField from "@mds/common/components/forms/RenderField";
+import ArchivedDocumentsSection from "@mds/common/components/projects/ArchivedDocumentsSection";
 interface MajorMineApplicationFormProps {
   project: IProject;
   handleSubmit: () => void;
