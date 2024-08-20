@@ -1592,7 +1592,7 @@ exports[`MajorMineApplicationForm renders properly 1`] = `
                                 class="create_user-column"
                                 title="Created By"
                               >
-                                N/A
+                                create-user@bceid
                               </div>
                             </td>
                             <td
