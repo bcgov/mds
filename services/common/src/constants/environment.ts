@@ -14,7 +14,7 @@ export const DEFAULT_ENVIRONMENT = {
   flagsmithKey: "4Eu9eEMDmWVEHKDaKoeWY7",
   flagsmithUrl: "https://mds-flags-dev.apps.silver.devops.gov.bc.ca/api/v1/",
   syncfusionLicense: process.env.SYNCFUSION_LICENSE_KEY || "-",
-  geoMarkUrl: process.env.GEOMARK_URL_BASE,
+  geoMarkUrl: process.env.GEOMARK_URL_BASE || "https://test.apps.gov.bc.ca/pub/geomark",
 };
 
 export const ENVIRONMENT = {

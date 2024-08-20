@@ -1,40 +1,48 @@
 import React, { FC, useState } from "react";
 import { Field } from "redux-form";
-import { Alert, Button, Col, notification, Row, Typography } from "antd";
+import { useDispatch } from "react-redux";
+import { Alert, Col, notification, Row, Typography } from "antd";
 import { MineDocument } from "@mds/common/models/documents/document";
 import { formatDate } from "@mds/common/redux/utils/helpers";
 import RenderFileUpload from "@mds/common/components/forms/RenderFileUpload";
 import { NEW_VERSION_DOCUMENTS } from "@mds/common/constants/API";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { IMAGE, DOCUMENT, EXCEL, SPATIAL } from "@mds/common/constants/fileTypes";
 import { postNewDocumentVersion } from "@mds/common/redux/actionCreators/documentActionCreator";
 import { IMineDocumentVersion } from "@mds/common/interfaces";
 import { FilePondFile } from "filepond";
 import FormWrapper from "../forms/FormWrapper";
 import { FORM } from "@mds/common/constants/forms";
+import { closeModal } from "@mds/common/redux/actions/modalActions";
+import RenderCancelButton from "../forms/RenderCancelButton";
+import RenderSubmitButton from "../forms/RenderSubmitButton";
 
 interface ReplaceDocumentModalProps {
   document: MineDocument;
-  postNewDocumentVersion: ActionCreator<typeof postNewDocumentVersion>;
   alertMessage: string;
   handleSubmit(document: MineDocument): Promise<void>;
-  closeModal(): void;
 }
 
 const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
+  const dispatch = useDispatch();
   const { document, alertMessage } = props;
   const [versionGuid, setVersionGuid] = useState<string>();
   const [disableReplace, setDisableReplace] = useState<boolean>(true);
   const [updatedDocument, setUpdatedDocument] = useState<MineDocument>(document);
 
-  const acceptedFileTypesMap = {
-    ...DOCUMENT,
-    ...EXCEL,
-    ...IMAGE,
-    ...SPATIAL,
+  const getAcceptedFileTypes = () => {
+    const allAcceptedFileTypesMap = {
+      ...DOCUMENT,
+      ...EXCEL,
+      ...IMAGE,
+      ...SPATIAL,
+    };
+    const { file_type } = document;
+    if (!file_type || !allAcceptedFileTypesMap[file_type]) {
+      return allAcceptedFileTypesMap;
+    }
+    return { [file_type]: allAcceptedFileTypesMap[file_type] };
   };
+  const acceptedFileTypesMap = getAcceptedFileTypes();
 
   const onFileLoad = async (fileName: string, document_manager_guid: string) => {
     setDisableReplace(false);
@@ -75,23 +83,25 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
 
   const handleReplaceSubmit = async () => {
     if (versionGuid) {
-      const ConnectedVersion = await props.postNewDocumentVersion({
-        mineGuid: document.mine_guid,
-        mineDocumentGuid: document.mine_document_guid,
-        documentManagerVersionGuid: versionGuid,
-      });
+      const ConnectedVersion = await dispatch(
+        postNewDocumentVersion({
+          mineGuid: document.mine_guid,
+          mineDocumentGuid: document.mine_document_guid,
+          documentManagerVersionGuid: versionGuid,
+        })
+      );
 
       const newDocument = new MineDocument({
         ...updatedDocument,
         versions: [ConnectedVersion.data as IMineDocumentVersion, ...document.versions].reverse(),
       });
 
-      props.handleSubmit(newDocument).then(props.closeModal);
+      props.handleSubmit(newDocument).then(() => dispatch(closeModal()));
     }
   };
 
   return (
-    <FormWrapper name={FORM.REPLACE_DOCUMENT} onSubmit={handleReplaceSubmit}>
+    <FormWrapper name={FORM.REPLACE_DOCUMENT} onSubmit={handleReplaceSubmit} isModal>
       <Alert message="" showIcon type="warning" description={alertMessage} />
       <Typography.Paragraph strong className="margin-large--top">
         Original Document
@@ -131,27 +141,15 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
       />
 
       <div className="ant-modal-footer">
-        <Button className="full-mobile" onClick={props.closeModal}>
-          Cancel
-        </Button>
-        <Button
-          className="full-mobile"
-          type="primary"
-          onClick={handleReplaceSubmit}
-          disabled={disableReplace}
-        >
-          Replace
-        </Button>
+        <RenderCancelButton />
+        <RenderSubmitButton
+          buttonText="Replace"
+          disableOnClean={false}
+          buttonProps={{ disabled: disableReplace }}
+        />
       </div>
     </FormWrapper>
   );
 };
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      postNewDocumentVersion,
-    },
-    dispatch
-  );
 
-export default connect(null, mapDispatchToProps)(ReplaceDocumentModal);
+export default ReplaceDocumentModal;
