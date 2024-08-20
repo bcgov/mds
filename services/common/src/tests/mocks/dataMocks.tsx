@@ -7,6 +7,7 @@ import {
   IProjectSummary,
   IInformationRequirementsTable,
   IPermit,
+  IMineDocument,
 } from "@mds/common/interfaces";
 import {
   MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODES,
@@ -1987,14 +1988,16 @@ export const PARTY_RELATIONSHIP_TYPE_HASH = {
   TQP: "TSF Qualified Person",
 };
 
-export const MINEDOCUMENTS = {
+export const MINEDOCUMENTS: { records: IMineDocument[] } = {
   records: [
     {
-      active_ind: "True",
+      active_ind: true,
       document_manager_guid: "4c7d88d6-e78d-48cf-a860-89b6a1e8903b",
       document_name: "05.4_Parent_Conduct.pdf",
       mine_document_guid: "11d15c31-5f0a-4a18-94de-e04e3ca7936f",
       mine_guid: "a2036de0-ce47-4f2c-a245-bbabb17cadc5",
+      upload_date: "2024-02-06 21:05:40.315908+00:00",
+      create_user: "create-user@bceid",
     },
   ],
 };
@@ -7533,7 +7536,7 @@ export const PROJECT_SUMMARY: IProjectSummary = {
     {
       project_summary_id: 1304,
       project_summary_document_type_code: "SPT",
-      mine_document_guid: "b869134f-bcf8-47d9-ac61-c90835e20601",
+      mine_document_guid: "b869134f-bcf8-47d9-ac61-c90835e20602",
       mine_guid: "60300a07-376c-46f1-a984-88a813f91438",
       document_manager_guid: "1c77f818-3d7a-461c-902d-7546755f4661",
       document_name: "shape.shx",

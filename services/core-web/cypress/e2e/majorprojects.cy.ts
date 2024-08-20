@@ -100,7 +100,7 @@ describe("Major Projects", () => {
     }).as("downloadRequest");
     cy.wait(2500);
     cy.get("[data-cy=menu-actions-button]")
-      .first()
+      .last()
       .click({ force: true });
 
     // Click the Download file button in the dropdown
