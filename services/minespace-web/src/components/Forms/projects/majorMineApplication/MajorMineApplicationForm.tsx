@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Field, change, getFormValues } from "redux-form";
-import "@ant-design/compatible/assets/index.css";
 import { Col, Row, Typography, Button } from "antd";
-import { required } from "@common/utils/Validate";
 import {
+  CATEGORY_CODE,
   MAJOR_MINES_APPLICATION_DOCUMENT_TYPE,
   MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE,
 } from "@mds/common/constants/strings";
@@ -13,6 +12,7 @@ import {
   DOCUMENT,
   Feature,
   FORM,
+  IProject,
   MODERN_EXCEL,
   SPATIAL,
   SPATIAL_DATA_STANDARDS_URL,
@@ -29,7 +29,7 @@ import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFla
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import { MajorMineApplicationDocument } from "@mds/common/models/documents/document";
 import { renderCategoryColumn } from "@mds/common/components/common/CoreTableCommonColumns";
-import * as Strings from "@mds/common/constants/strings";
+
 import { getMineDocuments } from "@mds/common/redux/selectors/mineSelectors";
 
 import {
@@ -39,7 +39,7 @@ import {
 import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import RenderField from "@mds/common/components/forms/RenderField";
 interface MajorMineApplicationFormProps {
-  project: any;
+  project: IProject;
   handleSubmit: () => void;
   refreshData: () => void;
 }
@@ -360,7 +360,7 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
         <br />
         <ArchivedDocumentsSection
           additionalColumns={[
-            renderCategoryColumn("category_code", "Category", Strings.CATEGORY_CODE, true),
+            renderCategoryColumn("category_code", "Category", CATEGORY_CODE, true),
           ]}
           documentColumns={documentColumns}
           documents={
