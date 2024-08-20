@@ -7,14 +7,12 @@ import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFla
 import DocumentTable from "../documents/DocumentTable";
 import { renderCategoryColumn } from "../common/CoreTableCommonColumns";
 import { CATEGORY_CODE } from "../..";
-import { ColumnType } from "antd/es/table";
 
 interface ArchivedDocumentsSectionProps {
   documents: MineDocument[];
   titleLevel?: 1 | 2 | 3 | 4 | 5;
   href?: string;
   showCategory?: boolean;
-  documentColumns?: ColumnType<MineDocument>[];
 }
 
 const ArchivedDocumentsSection: FC<ArchivedDocumentsSectionProps> = ({

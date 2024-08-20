@@ -30,10 +30,6 @@ import { MajorMineApplicationDocument } from "@mds/common/models/documents/docum
 
 import { getMineDocuments } from "@mds/common/redux/selectors/mineSelectors";
 
-import {
-  documentNameColumn,
-  uploadDateColumn,
-} from "@mds/common/components/documents/DocumentColumns";
 import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import RenderField from "@mds/common/components/forms/RenderField";
 import ArchivedDocumentsSection from "@mds/common/components/projects/ArchivedDocumentsSection";
@@ -147,7 +143,6 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
     );
   };
 
-  const documentColumns = [documentNameColumn(), uploadDateColumn()];
   const primaryDocument = uniqueDocs(
     primary_documents,
     project?.major_mine_application?.documents,
@@ -238,7 +233,6 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
         {primaryDocument.length > 0 && (
           <DocumentTable
             documents={primaryDocument}
-            documentColumns={documentColumns}
             documentParent="Major Mine Application"
             canArchiveDocuments={true}
             onArchivedDocuments={() => refreshData()}
@@ -267,7 +261,6 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
             {spatialDocument.length > 0 && (
               <SpatialDocumentTable
                 documents={spatialDocument}
-                documentColumns={documentColumns}
                 documentParent="Major Mine Application"
                 onArchivedDocuments={refreshData}
               />
@@ -304,7 +297,6 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
             {spatialDocument.length > 0 && (
               <DocumentTable
                 documents={spatialDocument}
-                documentColumns={documentColumns}
                 documentParent="Major Mine Application"
                 canArchiveDocuments={true}
                 onArchivedDocuments={refreshData}
@@ -348,7 +340,6 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
         {supportDocuments.length > 0 && (
           <DocumentTable
             documents={supportDocuments}
-            documentColumns={documentColumns}
             documentParent="Major Mine Application"
             canArchiveDocuments={true}
             onArchivedDocuments={() => refreshData()}
@@ -359,7 +350,6 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
         <br />
         <ArchivedDocumentsSection
           showCategory={true}
-          documentColumns={documentColumns}
           documents={
             mineDocuments && mineDocuments.length > 0
               ? mineDocuments.map((doc) => new MajorMineApplicationDocument(doc))
