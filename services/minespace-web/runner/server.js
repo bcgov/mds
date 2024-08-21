@@ -1,6 +1,6 @@
 const express = require("express");
 const cacheControl = require("express-cache-controller");
-const dotenv = require("dotenv").config('./env');
+const dotenv = require("dotenv").config("./env");
 const expressStaticGzip = require("express-static-gzip");
 const helmet = require("helmet");
 
@@ -32,20 +32,26 @@ app.use(
   })
 );
 
-app.use(helmet({
-  contentSecurityPolicy: CONTENT_SECURITY_POLICY ? {
-    directives: CONTENT_SECURITY_POLICY
-  } : false
-}));
+app.use(
+  helmet({
+    contentSecurityPolicy: CONTENT_SECURITY_POLICY
+      ? {
+          directives: CONTENT_SECURITY_POLICY,
+        }
+      : false,
+  })
+);
 
 const staticServe = expressStaticGzip(`${__dirname}/${BUILD_DIR}`, {
   enableBrotli: true,
   maxAge: "1y",
-  customCompressions: [{
-    encodingName: 'deflate',
-    fileExtension: 'zz'
-  }],
-  orderPreference: ['br', 'gzip']
+  customCompressions: [
+    {
+      encodingName: "deflate",
+      fileExtension: "zz",
+    },
+  ],
+  orderPreference: ["br", "gzip"],
 });
 
 app.get(`${BASE_PATH}/env`, (req, res) => {
@@ -67,6 +73,7 @@ app.get(`${BASE_PATH}/env`, (req, res) => {
     flagsmithKey: process.env.FLAGSMITH_KEY,
     flagsmithUrl: process.env.FLAGSMITH_URL,
     syncfusionLicense: process.env.SYNCFUSION_LICENSE_KEY,
+    geoMarkUrl: process.env.GEOMARK_URL_BASE,
   });
 });
 
@@ -93,7 +100,6 @@ app.use(`${BASE_PATH}/`, staticServe);
 app.use(`${BASE_PATH}*`, staticServe);
 app.use(`/`, staticServe);
 app.use(`*`, staticServe);
-
 
 const server = app.listen(PORT, "0.0.0.0", () => console.log("Server running"));
 server.keepAliveTimeout = 15 * 1000;

@@ -2,6 +2,7 @@ from datetime import datetime
 from flask import current_app, request
 from werkzeug.exceptions import Forbidden
 from flask_restx import Resource
+from sqlalchemy import and_
 
 from app.config import Config
 from app.extensions import api
@@ -45,11 +46,11 @@ class TractionWebhookResource(Resource, UserMixin):
             if not vc_conn.connection_id:
                 # check if party already has a connection
                 existing_vc_conn = PartyVerifiableCredentialConnection.query.unbound_unsafe(
-                ).filter(
-                    PartyVerifiableCredentialConnection.party_guid == vc_conn.party_guid,
-                    PartyVerifiableCredentialConnection.connection_id
-                    != webhook_body["connection_id"],
-                    PartyVerifiableCredentialConnection.connection_id != None).first()
+                    and_(
+                        PartyVerifiableCredentialConnection.party_guid == vc_conn.party_guid,
+                        PartyVerifiableCredentialConnection.connection_id
+                        != webhook_body["connection_id"],
+                        PartyVerifiableCredentialConnection.connection_id != None)).first()
 
                 if existing_vc_conn:
                     current_app.logger.warning(

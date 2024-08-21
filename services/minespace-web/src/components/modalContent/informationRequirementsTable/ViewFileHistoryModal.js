@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Button } from "antd";
 import CustomPropTypes from "@/customPropTypes";
-import DocumentTable from "@/components/common/DocumentTable";
+import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import {
   renderCategoryColumn,
   renderDateColumn,

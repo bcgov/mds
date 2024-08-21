@@ -7,6 +7,7 @@ import {
   IProjectSummary,
   IInformationRequirementsTable,
   IPermit,
+  IMineDocument,
 } from "@mds/common/interfaces";
 import {
   MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODES,
@@ -1194,7 +1195,177 @@ export const PERMITS: IPermit[] = [
         permit_conditions_last_updated_by: "Condition Updater",
         permit_conditions_last_updated_date: "2019-04-04",
         has_permit_conditions: false,
-        conditions: [],
+        conditions: [
+          {
+            permit_condition_id: 1639,
+            permit_amendment_id: 2,
+            permit_condition_guid: "6fd71a4d-a55e-4e0b-a249-0ed54c3d2387",
+            condition: "Section decade check including.",
+            condition_type_code: "SEC",
+            condition_category_code: "HSC",
+            parent_permit_condition_id: null,
+            sub_conditions: [],
+            step: "1.",
+            display_order: 1,
+          },
+          {
+            permit_condition_id: 1646,
+            permit_amendment_id: 2,
+            permit_condition_guid: "49aab01f-1c4a-4f5b-8fb8-1a1baf17388b",
+            condition: "Reflect miss police tough such single force.",
+            condition_type_code: "SEC",
+            condition_category_code: "RCC",
+            parent_permit_condition_id: null,
+            sub_conditions: [],
+            step: "1.",
+            display_order: 1,
+          },
+          {
+            permit_condition_id: 1650,
+            permit_amendment_id: 2,
+            permit_condition_guid: "36c2ac6b-fcc1-4f24-a327-2a27151a0791",
+            condition: "International clear those TV individual look.",
+            condition_type_code: "SEC",
+            condition_category_code: "ELC",
+            parent_permit_condition_id: null,
+            sub_conditions: [
+              {
+                permit_condition_id: 1641,
+                permit_amendment_id: 2,
+                permit_condition_guid: "a35014df-ca0e-46ce-a956-e219f6821706",
+                condition: "See store understand company interview value factor.",
+                condition_type_code: "CON",
+                condition_category_code: "ELC",
+                parent_permit_condition_id: 1650,
+                sub_conditions: [
+                  {
+                    permit_condition_id: 1644,
+                    permit_amendment_id: 2,
+                    permit_condition_guid: "29f9002c-b873-4b02-a71d-db95b26c0333",
+                    condition: "Mr item fall study although.",
+                    condition_type_code: "LIS",
+                    condition_category_code: "ELC",
+                    parent_permit_condition_id: 1641,
+                    sub_conditions: [],
+                    step: "i.",
+                    display_order: 1,
+                  },
+                ],
+                step: "a.",
+                display_order: 1,
+              },
+              {
+                permit_condition_id: 12507,
+                permit_amendment_id: 2,
+                permit_condition_guid: "895a1221-7d29-4008-9c96-32fedda6f0c1",
+                condition: "words words words sub-section",
+                condition_type_code: "SEC",
+                condition_category_code: "ELC",
+                parent_permit_condition_id: 1650,
+                sub_conditions: [
+                  {
+                    permit_condition_id: 12509,
+                    permit_amendment_id: 2,
+                    permit_condition_guid: "c2d7133c-a1ee-4542-8a66-bb9f6501838e",
+                    condition:
+                      "a condition added underneath the section, with a lot of detail added to it, which is probably important for documents like permits",
+                    condition_type_code: "CON",
+                    condition_category_code: "ELC",
+                    parent_permit_condition_id: 12507,
+                    sub_conditions: [
+                      {
+                        permit_condition_id: 12510,
+                        permit_amendment_id: 2,
+                        permit_condition_guid: "3ba99ce6-d4bc-42ef-8a1c-03b2be315c43",
+                        condition:
+                          "a detailed list item desribing exactly what must be done to accomplish the parent condition",
+                        condition_type_code: "LIS",
+                        condition_category_code: "ELC",
+                        parent_permit_condition_id: 12509,
+                        sub_conditions: [],
+                        step: "1.",
+                        display_order: 1,
+                      },
+                      {
+                        permit_condition_id: 12511,
+                        permit_amendment_id: 2,
+                        permit_condition_guid: "25603323-f16b-4316-a79b-5561227aad55",
+                        condition:
+                          "but, that wasn't quite enough information, another list item will expand on other responsibilities associated with this permit",
+                        condition_type_code: "LIS",
+                        condition_category_code: "ELC",
+                        parent_permit_condition_id: 12509,
+                        sub_conditions: [],
+                        step: "2.",
+                        display_order: 2,
+                      },
+                      {
+                        permit_condition_id: 12512,
+                        permit_amendment_id: 2,
+                        permit_condition_guid: "5d012c32-6af5-4b7d-912a-36e7d02157a9",
+                        condition:
+                          "good things come in 3s, so another list item is added to the condition",
+                        condition_type_code: "LIS",
+                        condition_category_code: "ELC",
+                        parent_permit_condition_id: 12509,
+                        sub_conditions: [
+                          {
+                            permit_condition_id: 12513,
+                            permit_amendment_id: 2,
+                            permit_condition_guid: "bd79804e-4953-4fe9-89fb-7c5bba8dd587",
+                            condition:
+                              "we want to show nesting to 5 levels, so one list item gets a child",
+                            condition_type_code: "LIS",
+                            condition_category_code: "ELC",
+                            parent_permit_condition_id: 12512,
+                            sub_conditions: [],
+                            step: "a.",
+                            display_order: 1,
+                          },
+                        ],
+                        step: "3.",
+                        display_order: 3,
+                      },
+                    ],
+                    step: "i.",
+                    display_order: 1,
+                  },
+                ],
+                step: "b.",
+                display_order: 2,
+              },
+            ],
+            step: "1.",
+            display_order: 1,
+          },
+          {
+            permit_condition_id: 12514,
+            permit_amendment_id: 2,
+            permit_condition_guid: "3fdc069d-d0b1-4678-b663-2c29848b4c64",
+            condition:
+              "Another condition under the ELC condition category code, and it may even be long enough to take up 2 lines",
+            condition_type_code: "SEC",
+            condition_category_code: "ELC",
+            parent_permit_condition_id: null,
+            sub_conditions: [
+              {
+                permit_condition_id: 12515,
+                permit_amendment_id: 2,
+                permit_condition_guid: "f1f53337-dc2f-4b9c-be15-2727141e9a63",
+                condition:
+                  "It should probably have a sub-item because that's pretty fun and normal for permit conditions. Really it should be long enough to have it cut off at some point if we just add more words, but the question is how many will be necessary?",
+                condition_type_code: "CON",
+                condition_category_code: "ELC",
+                parent_permit_condition_id: 12514,
+                sub_conditions: [],
+                step: "a.",
+                display_order: 1,
+              },
+            ],
+            step: "2.",
+            display_order: 2,
+          },
+        ],
         is_generated_in_core: false,
         preamble_text: "words",
         vc_credential_exch_state: VC_CRED_ISSUE_STATES.issued,
@@ -1250,9 +1421,9 @@ export const PERMITS: IPermit[] = [
     bonds: [],
     exemption_fee_status_code: "",
     exemption_fee_status_note: "",
-    permit_prefix: "",
-    update_user: "",
-    update_timestamp: "",
+    permit_prefix: "C",
+    update_user: "update-user",
+    update_timestamp: "2019-04-05 21:05:40.123456+00:00",
   },
   {
     permit_id: "2484",
@@ -1311,8 +1482,8 @@ export const PERMITS: IPermit[] = [
       mine_type_detail: [],
     },
     permit_prefix: "M",
-    update_user: "",
-    update_timestamp: "",
+    update_user: "update-user",
+    update_timestamp: "2019-04-05 21:05:40.123456+00:00",
   },
 ];
 
@@ -1817,14 +1988,16 @@ export const PARTY_RELATIONSHIP_TYPE_HASH = {
   TQP: "TSF Qualified Person",
 };
 
-export const MINEDOCUMENTS = {
+export const MINEDOCUMENTS: { records: IMineDocument[] } = {
   records: [
     {
-      active_ind: "True",
+      active_ind: true,
       document_manager_guid: "4c7d88d6-e78d-48cf-a860-89b6a1e8903b",
       document_name: "05.4_Parent_Conduct.pdf",
       mine_document_guid: "11d15c31-5f0a-4a18-94de-e04e3ca7936f",
       mine_guid: "a2036de0-ce47-4f2c-a245-bbabb17cadc5",
+      upload_date: "2024-02-06 21:05:40.315908+00:00",
+      create_user: "create-user@bceid",
     },
   ],
 };
@@ -7174,7 +7347,29 @@ export const PROJECTS = {
         documents: [],
       },
       major_mine_application: {
-        documents: [],
+        documents: [
+          {
+            mine_guid: "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
+            document_name: "test.pdf",
+            document_manager_guid: "5c910ea7-31ec-4064-8f73-5ce151d25af8",
+            major_mine_application_id: 7,
+            major_mine_application_document_type_code: "PRM",
+          },
+          {
+            mine_guid: "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
+            document_name: "test.kmz",
+            document_manager_guid: "6d910ea7-31ec-4064-8f73-5ce151d25af0",
+            major_mine_application_id: 8,
+            major_mine_application_document_type_code: "SPT",
+          },
+          {
+            mine_guid: "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
+            document_name: "test.pdf",
+            document_manager_guid: "8f910ea7-31ec-4064-8f73-5ce151d25af1",
+            major_mine_application_id: 9,
+            major_mine_application_document_type_code: "SPR",
+          },
+        ],
       },
       project_decision_package: {
         documents: [],
@@ -7298,7 +7493,6 @@ export const PROJECT_SUMMARY: IProjectSummary = {
     },
     {
       project_summary_id: 1304,
-      bundle_id: "1",
       project_summary_document_type_code: "SPT",
       mine_document_guid: "ffbf5b37-3520-4bf2-9050-2bc857ca6df9",
       mine_guid: "60300a07-376c-46f1-a984-88a813f91438",
@@ -7313,7 +7507,6 @@ export const PROJECT_SUMMARY: IProjectSummary = {
     },
     {
       project_summary_id: 1304,
-      bundle_id: "1",
       project_summary_document_type_code: "SPT",
       mine_document_guid: "64dff8f0-7f94-4eef-9ac1-7b70fd90e053",
       mine_guid: "60300a07-376c-46f1-a984-88a813f91438",
@@ -7328,7 +7521,6 @@ export const PROJECT_SUMMARY: IProjectSummary = {
     },
     {
       project_summary_id: 1304,
-      bundle_id: "1",
       project_summary_document_type_code: "SPT",
       mine_document_guid: "11fe5376-cd0e-4929-bcc2-85540fd121ed",
       mine_guid: "60300a07-376c-46f1-a984-88a813f91438",
@@ -7343,9 +7535,8 @@ export const PROJECT_SUMMARY: IProjectSummary = {
     },
     {
       project_summary_id: 1304,
-      bundle_id: "1",
       project_summary_document_type_code: "SPT",
-      mine_document_guid: "b869134f-bcf8-47d9-ac61-c90835e20601",
+      mine_document_guid: "b869134f-bcf8-47d9-ac61-c90835e20602",
       mine_guid: "60300a07-376c-46f1-a984-88a813f91438",
       document_manager_guid: "1c77f818-3d7a-461c-902d-7546755f4661",
       document_name: "shape.shx",
@@ -8387,3 +8578,11 @@ export const REGIONS = [
     regional_district_id: 4786592,
   },
 ];
+
+export const GEOMARK_DATA = {
+  bundle_id: "17",
+  bundle_guid: "8bc450d7-3ad0-4417-82f3-c90d33ae56b4",
+  name: "gm-68784BEB127941D5AA703E3E7CE6E728.prj",
+  geomark_id: "gm-57A8E3675DE04A889E418E846C53C394",
+  docman_bundle_guid: "3249a079-10dd-44ec-8db6-bff7177e3151",
+};

@@ -12,7 +12,6 @@ import {
   FORM,
   IMineReportSubmission,
   MINE_REPORT_STATUS_HASH,
-  MINE_REPORT_SUBMISSION_CODES,
   MineReportTypeUrlParam,
 } from "@mds/common";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
@@ -42,9 +41,6 @@ const ReportPage: FC = () => {
     getLatestReportSubmission(state, reportGuid)
   );
 
-  const [selectedStatus, setSelectedStatus] = useState<MINE_REPORT_SUBMISSION_CODES>(
-    latestSubmission?.mine_report_submission_status_code
-  );
   const [isLoaded, setIsLoaded] = useState(Boolean(latestSubmission && mine));
   const [isEditMode, setIsEditMode] = useState(false);
 
@@ -68,10 +64,6 @@ const ReportPage: FC = () => {
       dispatch(fetchMineRecordById(mineGuid));
     }
   }, [mineGuid, reportGuid]);
-
-  useEffect(() => {
-    setSelectedStatus(latestSubmission?.mine_report_submission_status_code);
-  }, [latestSubmission?.mine_report_submission_status_code]);
 
   const cancelConfirmWrapper = (cancelFunction) =>
     !isFormDirty
@@ -175,7 +167,7 @@ const ReportPage: FC = () => {
               className="page-header-title-tag tag-primary"
             >
               <Link
-                to={routes.MINE_SUMMARY.dynamicRoute(mine?.mine_guid)}
+                to={routes.MINE_DASHBOARD.dynamicRoute(mine?.mine_guid)}
                 style={{ textDecoration: "none" }}
               >
                 {mine?.mine_name}

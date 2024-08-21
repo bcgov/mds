@@ -28,7 +28,7 @@ exports[`VarianceDetails renders properly 1`] = `
       notesss
     </DescriptionsItem>
   </Descriptions>
-  <Connect(DocumentTable)
+  <DocumentTable
     documentColumns={
       Array [
         Object {
@@ -76,6 +76,7 @@ exports[`VarianceDetails renders properly 1`] = `
           "is_archived": false,
           "is_latest_version": true,
           "key": "33e6b965-2402-4229-a213-23bbe7fd3e99",
+          "mine_document_bundle_id": undefined,
           "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
           "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
           "number_prev_versions": 0,

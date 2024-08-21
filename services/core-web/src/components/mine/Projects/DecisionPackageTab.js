@@ -18,7 +18,7 @@ import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import * as routes from "@/constants/routes";
 import customPropTypes from "@/customPropTypes";
 import ScrollSideMenu from "@mds/common/components/common/ScrollSideMenu";
-import DocumentTable from "@/components/common/DocumentTable";
+import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import UpdateDecisionPackageStatusForm from "@/components/Forms/majorMineApplication/UpdateDecisionPackageStatusForm";
 import { modalConfig } from "@/components/modalContent/config";
 import { getProjectDecisionPackageStatusCodesHash } from "@mds/common/redux/selectors/staticContentSelectors";

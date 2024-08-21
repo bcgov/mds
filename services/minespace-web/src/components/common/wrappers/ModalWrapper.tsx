@@ -9,7 +9,7 @@ const ModalWrapper: FC = () => {
   const ChildComponent = useSelector(getContent);
   const childProps = useSelector(getProps);
   const dispatch = useDispatch();
-  const dispatchCloseModal = () => dispatch(closeModal);
+  const dispatchCloseModal = () => dispatch(closeModal());
 
   return (
     <CommonModalWrapper>

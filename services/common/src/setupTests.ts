@@ -1,6 +1,8 @@
 import Enzyme from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import path from "path";
+import "@testing-library/jest-dom";
+import server from "@mds/common/tests/server";
 
 require("jest-localstorage-mock");
 
@@ -18,7 +20,23 @@ Enzyme.configure({ adapter: new Adapter() });
     route: "test",
     dynamicRoute: () => "test",
   },
+  MINE_DASHBOARD: {
+    route: "test",
+    dynamicRoute: () => "test",
+  },
 };
+
+beforeAll(() => {
+  server.listen();
+});
+
+afterEach(() => {
+  server.resetHandlers();
+});
+
+afterAll(() => {
+  server.close();
+});
 
 jest.mock("react", () => {
   const original = jest.requireActual("react");

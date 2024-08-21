@@ -76,8 +76,8 @@ export const MineReclamationInvoiceTable = (props) => {
         return (
           <AuthorizationWrapper permission={Permission.EDIT_SECURITIES}>
             <Button
-              type="secondary"
-              className="permit-table-button"
+              type="text"
+              className="actions-dropdown-button"
               onClick={(event) =>
                 props.openAddReclamationInvoiceModal(event, record, props.getBalance(record))
               }
@@ -139,8 +139,8 @@ export const MineReclamationInvoiceTable = (props) => {
           <div>
             <AuthorizationWrapper permission={Permission.EDIT_SECURITIES}>
               <Button
-                type="secondary"
-                className="permit-table-button"
+                type="text"
+                className="actions-dropdown-button"
                 onClick={(event) =>
                   props.openEditReclamationInvoiceModal(event, record, props.getBalance(record))
                 }

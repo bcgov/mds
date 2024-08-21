@@ -9,7 +9,7 @@ import {
   removeDocumentFromMajorMineApplication,
   fetchProjectById,
 } from "@mds/common/redux/actionCreators/projectActionCreator";
-import DocumentTable from "@/components/common/DocumentTable";
+import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import { documentNameColumn, uploadDateColumn } from "@/components/common/DocumentColumns";
 import CustomPropTypes from "@/customPropTypes";
 import MajorMineApplicationCallout from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationCallout";
@@ -166,7 +166,7 @@ export const MajorMineApplicationReviewSubmit = (props) => {
             handleDeleteDocument={handleDeleteDocument}
             deletePayload={{ projectGuid, majorMineApplicationGuid }}
             deletePermission
-            canArchiveDocuments={true}
+            canArchiveDocuments={false}
             onArchivedDocuments={() => props.refreshData()}
             showVersionHistory={true}
             enableBulkActions={true}

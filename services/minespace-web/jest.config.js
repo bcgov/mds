@@ -12,9 +12,11 @@ module.exports = {
   verbose: true,
   testEnvironmentOptions: {
     url: "http://localhost",
+    customExportConditions: [""],
   },
   testEnvironment: "jest-environment-jsdom-global",
-  setupFiles: ["./src/setupTests.js", "jest-localstorage-mock", "jest-canvas-mock"],
+  setupFiles: ["./jest.polyfills.js", "jest-localstorage-mock", "jest-canvas-mock"],
+  setupFilesAfterEnv: ["./src/setupTests.js"],
   snapshotFormat: {
     escapeString: true,
     printBasicPrototype: true,

@@ -1,17 +1,37 @@
 import Enzyme from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import path from "path";
+import server from "@/tests/server";
+import "@testing-library/jest-dom";
 
 require("jest-localstorage-mock");
 
 Enzyme.configure({ adapter: new Adapter() });
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-global.REQUEST_HEADER = require(path.resolve(__dirname, "../common/utils/RequestHeaders.js"));
+(<any>global).REQUEST_HEADER = require(path.resolve(
+  __dirname,
+  "../common/utils/RequestHeaders.js"
+));
 
-global.requestAnimationFrame = (callback) => {
-  setTimeout(callback, 0);
+(<any>global).requestAnimationFrame = (callback: any) => {
+  setTimeout(callback, 0); // eslint-disable-line @typescript-eslint/no-implied-eval
 };
+
+(<any>global).GLOBAL_ROUTES = {
+  MINE_DASHBOARD: {
+    route: "test",
+    dynamicRoute: () => "test",
+  },
+};
+
+beforeAll(() => {
+  server.listen({ onUnhandledRequest: "warn" });
+});
+
+afterAll(() => {
+  server.close();
+});
 
 jest.mock("@mds/common/providers/featureFlags/useFeatureFlag", () => ({
   useFeatureFlag: () => ({

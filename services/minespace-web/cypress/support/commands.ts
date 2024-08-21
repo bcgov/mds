@@ -20,6 +20,7 @@ Cypress.Commands.add("login", () => {
     siteminder_url: Cypress.env("CYPRESS_KEYCLOAK_URL"),
     environment: Cypress.env("CYPRESS_ENVIRONMENT"),
     vcauthn_pres_req_conf_id: "minespace-access-0.1-dev",
+    geoMarkUrl: Cypress.env("GEOMARK_URL_BASE"),
   };
 
   cy.intercept("GET", environmentUrl, (req) => {
