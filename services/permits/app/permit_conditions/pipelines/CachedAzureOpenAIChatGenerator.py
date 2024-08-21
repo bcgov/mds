@@ -120,7 +120,7 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
                 f"Partial json generated continuing query. Iteration: {iteration}"
             )
 
-            messages = data.messages + [reply, ChatMessage.from_user("Continue!")]
+            messages = data.messages + [reply, ChatMessage.from_user("Your response got cut off. Continue from where you left off.")]
             reply = self.fetch_result(messages, generation_kwargs)
             content += reply.content
 
@@ -130,6 +130,9 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
             total_tokens += reply.meta["usage"]["total_tokens"]
 
             iteration += 1
+            if DEBUG_MODE:
+                with open(f"debug/cached_azure_openai_chat_generator_output_{self.it}_{iteration}.txt", "w") as f:
+                    f.write(reply.content)
 
         reply.content = content
         reply.meta["usage"]["completion_tokens"] = completion_tokens
@@ -137,7 +140,7 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
         reply.meta["usage"]["total_tokens"] = total_tokens
 
         if DEBUG_MODE:
-            with open(f"debug/cached_azure_openai_chat_generator_output_{self.it}_{iteration}.txt", "w") as f:
+            with open(f"debug/cached_azure_openai_chat_generator_output_{self.it}.txt", "w") as f:
                 f.write(reply.content)
 
         return {"data": ChatData([reply], data.documents)}

@@ -4,8 +4,10 @@
 # CSV files should have the following columns: section_title, section_paragraph, condition_title, subparagraph, clause, subclause, page_number, condition_text
 ###
 import argparse
+import json
 import logging
 import os
+from difflib import SequenceMatcher
 
 import numpy as np
 import pandas as pd
@@ -23,18 +25,29 @@ def create_content_instances(df):
     content_list = []
     for _, row in df.iterrows():
         try:
+            try:
+                if isinstance(row.get("meta"), str):
+                    meta = row.get("meta").replace("\"\"", "\"")
+                    meta = json.loads(meta)
+                else:
+                    meta = row.get('meta', {"bounding_box": {}})
+
+            except json.JSONDecodeError:
+                logger.error(f"Failed parsing of permit condition meta: {row.get('meta')}")
+                raise
             content = PermitCondition(
                 section_title=row["section_title"],
-                section_paragraph=row["section_paragraph"],
-                condition_title=row["condition_title"],
+                section=row["section"],
+                paragraph=row["paragraph"],
                 subparagraph=row["subparagraph"],
                 clause=row["clause"],
-                subclause=row["subclause"],
-                paragraph_title=row.get("paragraph_title", ""),
+                subclause=row.get("subclause", ''),
+                subsubclause=row.get('subsubclause', ''),
+                condition_title=row.get("condition_title"),
                 page_number=int(row["page_number"]) if (row.get("page_number") and row['page_number'] != '') else 0,
                 condition_text=row["condition_text"],
                 original_condition_text=row["condition_text"],
-                subsubclause=row.get('subsubclause', '')
+                meta=meta
             )
         except ValidationError as e:
             logger.error(f"Failed parsing of permit condition: {e}")
@@ -42,12 +55,17 @@ def create_content_instances(df):
             raise
 
         # This will be used as the text for comparison purposes
-        text = f"""
-            {content.section_paragraph}. {content.section_title}
-            {content.subparagraph}. {content.condition_title}
-            {"("+content.clause + ")" if content.clause else ""} {"("+content.subclause + ")" if content.subclause else ""} {"("+content.subsubclause + ")" if content.subsubclause else ""}
 
-            {content.condition_text}
+        if content.condition_title:
+            txt = f"{content.condition_title}\n\n{content.condition_text}"
+        else:
+            txt = content.condition_text
+
+        section = '.'.join(filter(None, [content.section, content.paragraph, content.subparagraph, content.clause, content.subclause, content.subsubclause]))
+
+        text = f"""
+            {section}
+            {txt}
         """
 
         content.condition_text = text
@@ -62,7 +80,8 @@ def create_comparison_key(condition):
         filter(
             None,
             [
-                condition.section_paragraph,
+                condition.section,
+                condition.paragraph,
                 condition.subparagraph,
                 condition.clause,
                 condition.subclause,
@@ -109,6 +128,9 @@ def validate_condition(csv_pairs):
     for csv_pair in csv_pairs:
         auto_extracted_csv, manual_extracted_csv = csv_pair
 
+        with open(auto_extracted_csv, "r") as f:
+    
+            print(f.read())
         # 1. Parse csv files to dicts
         auto_extracted_df = pd.read_csv(
             auto_extracted_csv, dtype=str, keep_default_na=False
@@ -157,6 +179,7 @@ def validate_condition(csv_pairs):
                     "DiffHTML": diff_html,
                     "state": "missing",
                     "match_percentage": 0,
+                    "metadata": {}
                 }
             )
 
@@ -182,6 +205,7 @@ def validate_condition(csv_pairs):
                     "DiffHTML": diff_html,
                     "state": "added",
                     "match_percentage": 0,
+                    "metadata": auto_content_dict[key].meta if auto_content_dict[key].meta else {"bounding_box": {}}
                 }
             )
 
@@ -265,7 +289,9 @@ def compare_matching_conditions(
             total_comparable_conditions += 1
             auto_condition_text = auto_content_dict[key].condition_text
             manual_condition_text = manual_content_dict[key].condition_text
+            # match_percentage = SequenceMatcher(None, auto_condition_text.replace('\n', ''), manual_condition_text.replace('\n', '')).ratio() * 100
             match_percentage = fuzz.ratio(auto_condition_text.replace('\n', ''), manual_condition_text.replace('\n', ''))
+
             is_match = match_percentage >= 100
 
             if is_match:
@@ -292,6 +318,7 @@ def compare_matching_conditions(
                     "DiffHTML": diff_html,
                     "state": "match" if is_match else "nomatch",
                     "match_percentage": match_percentage,
+                    "metadata": auto_content_dict[key].meta if auto_content_dict[key].meta else {"bounding_box": {}}
                 }
             )
 

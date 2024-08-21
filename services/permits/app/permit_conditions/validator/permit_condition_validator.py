@@ -21,6 +21,14 @@ logger = logging.getLogger(__name__)
 
 DEBUG_MODE = os.environ.get("DEBUG_MODE", "false").lower() == "true"
 
+def _clean(text) -> str:
+    if not text:
+        return ''
+    if isinstance(text, str):
+        return text.replace(".", "").replace("(", "").replace(")", "").replace(" ", "").strip()
+    else:
+        return str(text)
+
 
 class ExtractionIteration(BaseModel):
     start_page: int
@@ -65,14 +73,15 @@ class PermitConditionValidator:
                 and condition.condition_text is not None
                 and condition.condition_text != ""
             ):
-                self.last_condition_text = f"""
-                    section_title: {condition.section_title}
-                    section_paragraph: {condition.section_paragraph}
-                    subparagraph: {condition.subparagraph}
-                    clause: {condition.clause}
-                    subclause: {condition.subclause}
+                sec_par = ", ".join(filter(None, [f"section: {condition.section}" if condition.section else None,
+                f"paragraph: {condition.paragraph}" if condition.paragraph else None,
+                f"subparagraph: {condition.subparagraph}" if condition.subparagraph else None,
+                f"clause: {condition.clause}" if condition.clause else None,
+                f"subclause: {condition.subclause}" if condition.subclause else None,
+                f"subsubclause: {condition.subsubclause}" if condition.subsubclause else None]))
 
-                    {condition.condition_text}
+                self.last_condition_text = f"""
+                The last condition that was extracted was found in {sec_par}, {"and had roughly the following text: \n\n" + condition.condition_text if condition.condition_text else {"and had the following title: {condition.title}" if condition.condition_title else ""}}
                 """
 
         if DEBUG_MODE:
@@ -132,22 +141,34 @@ class PermitConditionValidator:
             #         print(parent.condition_title, parent.paragraph_title)
 
             sorted_replies = sorted(grouped_replies.values(), key=lambda x: x.key())
+
+            sections = {c.section: c for c in sorted_replies if c.condition_type() == ConditionType.SECTION}
+
+            logger.info('seeeections')
+            logger.info(sections)
+
+            for cond in sorted_replies:
+                logger.info(f'{cond.section} {cond.type}')
+                sec = sections.get(cond.section)
+                if sec:
+                    cond.section_title = sec.section_title
+
+
             return {"conditions": PermitConditions(conditions=sorted_replies)}
 
     def _parse_reply(self, reply) -> List[PromptResponse]:
         try:
-            content = json.loads(reply.content)
+            conditions = json.loads(reply.content)
 
-            conditions = []
 
-            for condition in content:
-                # sometimes, conditions are nested in a list in the response
-                # from the pipeline, so we need to flatten them
-                if isinstance(condition, list):
-                    for c in condition:
-                        conditions.append(c)
-                else:
-                    conditions.append(condition)
+            # for condition in content:
+            #     # sometimes, conditions are nested in a list in the response
+            #     # from the pipeline, so we need to flatten them
+            #     if isinstance(condition, list):
+            #         for c in condition:
+            #             conditions.append(c)
+            #     else:
+            #         conditions.append(condition)
 
             actual_conditions = []
             for c in conditions:
@@ -165,50 +186,44 @@ class PermitConditionValidator:
             
             transformed = []
 
+            flattened = []
             for c in actual_conditions:
-                if c.get('numbering'):
-                    tp = c.get('type')
-                    section = c.get('section')
-                    paragraph = c.get('paragraph'),
-                    subparagraph=c.get('subparagraph'),
-                    clause=c.get('clause'),
-                    subclause=c.get('subclause'),
-                    subsubclause=c.get('subsubclause'),
-                    title=c.get('title'),
-                    page_number=c.get('page_number'),
-                    condition_text=c.get('text'),
-
-                    if tp == 'section':
-                        section = c.get('numbering')
-                    if tp == 'paragraph':
-                        paragraph = c.get('numbering')
-                    if tp == 'subparagraph':
-                        subparagraph = c.get('numbering')
-                    if tp == 'clause':
-                        clause = c.get('numbering')
-                    if tp == 'subclause':
-                        subclause = c.get('numbering')
-                    if tp == 'subsubclause':
-                        subsubclause = c.get('numbering')
-
-                    def _clean(text):
-                        return text.replace('.', '').replace('(', '').replace(')', '').replace(' ', '').strip()
-
-                    c = PermitCondition(
-                        section=_clean(section),
-                        paragraph=_clean(paragraph),
-                        subparagraph=_clean(subparagraph),
-                        clause=_clean(clause),
-                        subclause=_clean(subclause),
-                        subsubclause=_clean(subsubclause),
-                        condition_title=title,
-                        condition_text=condition_text,
-                        page_number=page_number,
-                    )
-
-                    transformed.append(c)
+                if isinstance(c, list):
+                    flattened += c
                 else:
-                    transformed.append(c)
+                    flattened.append(c)
+
+            for c in flattened:
+                if isinstance(c, list):
+                    raise Exception(f"Invalid condition format. Conditions should not be nested in a list. {len(c)}")
+                if not isinstance(c, dict):
+                    logger.info(f'Invalid condition format. Condition is not a dictionary. {c}')
+                    continue
+                tp = _clean(c.get('type'))
+                section = _clean(c.get('section_number', ''))
+                paragraph = _clean(c.get('paragraph_number', ''))
+                subparagraph = _clean(c.get('subparagraph_number', ''))
+                clause = _clean(c.get('clause_number', ''))
+                subclause = _clean(c.get('subclause_number', ''))
+                subsubclause = _clean(c.get('subsubclause_number', ''))
+                title = c.get('title')
+                page_number = c.get('page_number')
+                condition_text = c.get('text')
+
+                c = PermitCondition(
+                    type=tp,
+                    section=section,
+                    paragraph=paragraph,
+                    subparagraph=subparagraph,
+                    clause=clause,
+                    subclause=subclause,
+                    subsubclause=subsubclause,
+                    condition_title=title,
+                    condition_text=condition_text,
+                    page_number=page_number,
+                )
+
+                transformed.append(c)
 
             response = PermitConditions.model_validate({"conditions": transformed})
 

@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import List, Optional
+from typing import Any, List, Optional
 
 from pydantic import BaseModel
 
@@ -23,43 +23,58 @@ class ConditionType(Enum):
     CLAUSE = "clause"
     SUBPARAGRAPH = "subparagraph"
     SECTION = "section"
-
+    PARAGRAPH = "paragraph"
 
 class PermitCondition(BaseModel):
-    section_title: str = None
-    section_paragraph: Optional[str] = None
-    condition_title: Optional[str] = None
-    paragraph_title: Optional[str] = None
+    section: str = None
+    section_title: Optional[str] = None
+    paragraph: Optional[str] = None
     subparagraph: Optional[str] = None
     clause: Optional[str] = None
     subclause: Optional[str] = None
     subsubclause: Optional[str] = None
+    condition_title: Optional[str] = None
     page_number: Optional[int] = None
     condition_text: Optional[str] = None
-    original_condition_text:Optional[str] = None
+    original_condition_text: Optional[str] = None
+    type: Optional[str] = None
+    meta: Optional[dict] = None
+
+    def __init__(self, /, **data: Any):
+        if data.get('type') == 'section':
+            data['section_title'] = data.get('condition_title')
+        
+        for key in ['section', 'paragraph', 'subparagraph', 'clause', 'subclause', 'subsubclause']:
+            if key in data and data[key] is not None:
+                data[key] = data[key].strip()
+
+        super(PermitCondition, self).__init__(**data)
 
     def condition_type(self):
-        if self.subsubclause:
+        if self.subsubclause != '':
             return ConditionType.SUBSUBCLAUSE
-        if self.subclause:
+        if self.subclause != '':
             return ConditionType.SUBCLAUSE
-        if self.clause:
+        if self.clause != '':
             return ConditionType.CLAUSE
-        if self.subparagraph:
+        if self.subparagraph != '':
             return ConditionType.SUBPARAGRAPH
-        if self.section_paragraph:
+        if self.paragraph != '':
+            return ConditionType.PARAGRAPH
+        if self.section != '':
             return ConditionType.SECTION
     def key(self):
         if self.subsubclause:
-            return f"{self.section_paragraph}.{self.subparagraph}.{self.clause}.{self.subclause}.{self.subsubclause}"
+            return f"{self.section}.{self.paragraph}.{self.subparagraph}.{self.clause}.{self.subclause}.{self.subsubclause}"
         if self.subclause:
-            return f"{self.section_paragraph}.{self.subparagraph}.{self.clause}.{self.subclause}"
+            return f"{self.section}.{self.paragraph}.{self.subparagraph}.{self.clause}.{self.subclause}"
         if self.clause:
-            return f"{self.section_paragraph}.{self.subparagraph}.{self.clause}"
+            return f"{self.section}.{self.paragraph}.{self.subparagraph}.{self.clause}"
         if self.subparagraph:
-            return f"{self.section_paragraph}.{self.subparagraph}"
-        if self.section_paragraph:
-            return f"{self.section_paragraph}"
+            return f"{self.section}.{self.paragraph}.{self.subparagraph}"
+        if self.paragraph:
+            return f"{self.section}.{self.paragraph}"
+        return f"{self.section}"
     
     def create_parent(self):
         parent_subclause = self.subclause if self.subsubclause else ''

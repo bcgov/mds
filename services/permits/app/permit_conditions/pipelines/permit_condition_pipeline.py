@@ -2,6 +2,9 @@ import logging
 import os
 
 import yaml
+from app.permit_conditions.converters.azure_document_intelligence_converter import (
+    AzureDocumentIntelligenceConverter,
+)
 from app.permit_conditions.converters.pdf_to_text_converter import PDFToTextConverter
 from app.permit_conditions.pipelines.CachedAzureOpenAIChatGenerator import (
     CachedAzureOpenAIChatGenerator,
@@ -10,6 +13,12 @@ from app.permit_conditions.pipelines.PaginatedChatPromptBuilder import (
     PaginatedChatPromptBuilder,
 )
 from app.permit_conditions.validator.json_fixer import JSONRepair
+from app.permit_conditions.validator.permit_condition_section_combiner import (
+    PermitConditionSectionCombiner,
+)
+from app.permit_conditions.validator.permit_condition_section_combiner_gpt import (
+    PermitConditionSectionCombinerGpt,
+)
 from app.permit_conditions.validator.permit_condition_validator import (
     PermitConditionValidator,
 )
@@ -34,9 +43,9 @@ assert api_version
 with open(f"{ROOT_DIR}/app/permit_condition_prompts.yaml", "r") as file:
     prompts = yaml.safe_load(file)
 
-system_prompt = prompts["system_prompt"]
-user_prompt = prompts["user_prompt"]
-permit_document_prompt = prompts["permit_document_prompt"]
+system_prompt = prompts["system_prompt_2"]
+user_prompt = prompts["user_prompt_2"]
+permit_document_prompt = prompts["permit_document_prompt_2"]
 
 assert system_prompt
 assert user_prompt
@@ -52,7 +61,8 @@ def permit_condition_pipeline():
     """
     index_pipeline = Pipeline()
 
-    pdf_converter = PDFToTextConverter()
+    # pdf_converter = PDFToTextConverter()
+    pdf_converter = AzureDocumentIntelligenceConverter()
 
     prompt_builder = PaginatedChatPromptBuilder(
         template=[
@@ -62,7 +72,7 @@ def permit_condition_pipeline():
         ]
     )
 
-    temperature = 0
+    temperature = 0.7
     max_tokens = 4096
 
     llm = CachedAzureOpenAIChatGenerator(
@@ -83,7 +93,11 @@ def permit_condition_pipeline():
 
     json_fixer = JSONRepair()
 
-    validator = PermitConditionValidator()
+    # validator = PermitConditionValidator()
+
+    validator = PermitConditionSectionCombiner()
+
+    # validator = PermitConditionSectionCombinerGpt()
 
     index_pipeline.add_component("pdf_converter", pdf_converter)
     index_pipeline.add_component("prompt_builder", prompt_builder)
@@ -91,6 +105,7 @@ def permit_condition_pipeline():
     index_pipeline.add_component("json_fixer", json_fixer)
     index_pipeline.add_component("validator", validator)
 
+    # index_pipeline.connect("pdf_converter", "validator")
     index_pipeline.connect("pdf_converter", "prompt_builder")
     index_pipeline.connect("prompt_builder", "llm")
     index_pipeline.connect("llm", "json_fixer")

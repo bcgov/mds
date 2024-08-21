@@ -106,6 +106,8 @@ def csv_results(task_id: str) -> str:
     if res.status == CeleryTaskStatus.SUCCESS.name:
         conditions = PermitConditions(conditions=res.get()['conditions'])
 
+        for c in conditions.conditions:
+            c.meta = json.dumps(c.meta)
         # Create a StringIO object to write CSV data
         csv_data = StringIO()
         # Define the fieldnames for the CSV file
