@@ -71,6 +71,15 @@ export const getPermitByGuid = (permitGuid) =>
     return permit && formatPermit(permit);
   });
 
+export const getLatestAmendmentByPermitGuid = (permitGuid) =>
+  createSelector([getPermitByGuid(permitGuid)], (permit) => {
+    if (!permit?.permit_amendments) {
+      return undefined;
+    }
+    // sorted on BE: 'desc(PermitAmendment.issue_date), desc(PermitAmendment.permit_amendment_id)'
+    return permit.permit_amendments.filter((a) => a.permit_amendment_status_code !== draft)[0];
+  });
+
 export const getPermits = createSelector([getUnformattedPermits], (permits) => {
   const formattedPermits = permits.map((permit) => formatPermit(permit));
   return formattedPermits;

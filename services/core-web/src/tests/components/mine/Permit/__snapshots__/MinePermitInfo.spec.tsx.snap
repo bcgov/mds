@@ -275,7 +275,7 @@ exports[`MinePermitInfo renders properly 1`] = `
                                 class="firstIssued-column"
                                 title="First Issued"
                               >
-                                Apr 01 2020
+                                Apr 01 2019
                               </div>
                             </td>
                             <td
@@ -285,7 +285,7 @@ exports[`MinePermitInfo renders properly 1`] = `
                                 class="lastAmended-column"
                                 title="Last Amended"
                               >
-                                Apr 01 2019
+                                Apr 01 2020
                               </div>
                             </td>
                           </tr>

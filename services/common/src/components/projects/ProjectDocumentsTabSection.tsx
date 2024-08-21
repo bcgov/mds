@@ -8,6 +8,7 @@ import { renderTextColumn } from "../common/CoreTableCommonColumns";
 interface ProjectDocumentsTabSectionProps {
   id: string;
   title?: string;
+  titleLevel?: 1 | 2 | 3 | 4 | 5;
   documents: MineDocument[];
   onArchivedDocuments: () => Promise<void>;
   canArchive?: boolean;
@@ -17,6 +18,7 @@ const ProjectDocumentsTabSection: FC<ProjectDocumentsTabSectionProps> = ({
   onArchivedDocuments,
   id,
   title,
+  titleLevel = 4,
   canArchive = true,
 }) => {
   const sectionTitle = title ?? formatUrlToUpperCaseString(id);
@@ -24,7 +26,7 @@ const ProjectDocumentsTabSection: FC<ProjectDocumentsTabSectionProps> = ({
   return (
     <Row id={id}>
       <Col span={24}>
-        <Typography.Title level={4}>{sectionTitle}</Typography.Title>
+        <Typography.Title level={titleLevel}>{sectionTitle}</Typography.Title>
       </Col>
       <Col span={24}>
         <DocumentTable

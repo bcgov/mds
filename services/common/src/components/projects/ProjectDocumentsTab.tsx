@@ -198,6 +198,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
         <ProjectDocumentsTabSection
           id="information-requirements-table"
           key="information-requirements-table"
+          titleLevel={3}
           onArchivedDocuments={refreshData}
           documents={irtDocuments}
         />

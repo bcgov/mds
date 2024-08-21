@@ -36,7 +36,7 @@ describe("MinePermitInfo", () => {
     const { container } = render(
       <ReduxWrapper initialState={initialState}>
         <BrowserRouter>
-          <ViewPermitOverview />
+          <ViewPermitOverview latestAmendment={MOCK.PERMITS[0].permit_amendments[0]} />
         </BrowserRouter>
       </ReduxWrapper>
     );

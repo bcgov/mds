@@ -1,8 +1,11 @@
-import React, { FC, useEffect, useMemo, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getPermitByGuid } from "@mds/common/redux/selectors/permitSelectors";
-import { IMine, IPermit } from "@mds/common";
+import {
+  getLatestAmendmentByPermitGuid,
+  getPermitByGuid,
+} from "@mds/common/redux/selectors/permitSelectors";
+import { IMine, IPermit, IPermitAmendment } from "@mds/common";
 import ViewPermitOverview from "@/components/mine/Permit/ViewPermitOverview";
 import PermitConditions from "@/components/mine/Permit/PermitConditions";
 
@@ -22,17 +25,13 @@ const ViewPermit: FC = () => {
 
   const { id, permitGuid, tab } = useParams<{ id: string; permitGuid: string; tab: string }>();
   const permit: IPermit = useSelector(getPermitByGuid(permitGuid));
+  const latestAmendment: IPermitAmendment = useSelector(getLatestAmendmentByPermitGuid(permitGuid));
   const mine: IMine = useSelector((state) => getMineById(state, id));
   const { isFeatureEnabled } = useFeatureFlag();
   const enablePermitConditionsTab = isFeatureEnabled(Feature.PERMIT_CONDITIONS_PAGE);
 
   const [activeTab, setActiveTab] = useState(tab ?? "overview");
   const history = useHistory();
-
-  const latestAmendment = useMemo(() => {
-    if (!permit) return undefined;
-    return permit.permit_amendments[permit.permit_amendments.length - 1];
-  }, [permit]);
 
   useEffect(() => {
     if (!permit?.permit_id) {
@@ -57,7 +56,7 @@ const ViewPermit: FC = () => {
     {
       key: "overview",
       label: "Permit Overview",
-      children: <ViewPermitOverview />,
+      children: <ViewPermitOverview latestAmendment={latestAmendment} />,
     },
     enablePermitConditionsTab && {
       key: "conditions",
