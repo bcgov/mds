@@ -41,7 +41,7 @@ export const getDraftPermitAmendmentForNOW = createSelector(
   }
 );
 
-const formatPermit = (permit) => {
+export const formatPermit = (permit) => {
   const site_properties = {
     mine_tenure_type_code: "",
     mine_commodity_code: [],
