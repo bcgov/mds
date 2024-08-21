@@ -7347,7 +7347,29 @@ export const PROJECTS = {
         documents: [],
       },
       major_mine_application: {
-        documents: [],
+        documents: [
+          {
+            mine_guid: "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
+            document_name: "test.pdf",
+            document_manager_guid: "5c910ea7-31ec-4064-8f73-5ce151d25af8",
+            major_mine_application_id: 7,
+            major_mine_application_document_type_code: "PRM",
+          },
+          {
+            mine_guid: "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
+            document_name: "test.kmz",
+            document_manager_guid: "6d910ea7-31ec-4064-8f73-5ce151d25af0",
+            major_mine_application_id: 8,
+            major_mine_application_document_type_code: "SPT",
+          },
+          {
+            mine_guid: "40fb0ca4-4dfb-4660-a184-6d031a21f3e9",
+            document_name: "test.pdf",
+            document_manager_guid: "8f910ea7-31ec-4064-8f73-5ce151d25af1",
+            major_mine_application_id: 9,
+            major_mine_application_document_type_code: "SPR",
+          },
+        ],
       },
       project_decision_package: {
         documents: [],
