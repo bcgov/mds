@@ -116,11 +116,12 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
     def create(cls,
                project,
                status_code,
-               documents=[],
+               documents=None,
                add_to_session=True):
         major_mine_application = cls(
             project_guid=project.project_guid,
             status_code=status_code)
+        documents = documents or []
 
         if add_to_session:
             major_mine_application.save(commit=False)
