@@ -35,6 +35,8 @@ class MajorMineApplicationDocumentXref(Base):
     create_user = association_proxy('mine_document', 'create_user')
     versions = association_proxy('mine_document', 'versions')
     update_timestamp = association_proxy('mine_document', 'update_timestamp')
+    mine_document_bundle = association_proxy('mine_document', 'mine_document_bundle')
+    mine_document_bundle_id = association_proxy('mine_document', 'mine_document_bundle_id')
 
     def __repr__(self):
         return f'{self.__class__.__name__} {self.major_mine_application_document_xref_guid}'

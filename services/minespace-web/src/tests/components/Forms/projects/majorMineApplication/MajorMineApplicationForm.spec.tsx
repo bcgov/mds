@@ -50,6 +50,12 @@ jest.mock(
   )
 );
 
+jest.mock("@mds/common/components/documents/DocumentTable", () => (props: any) => (
+  <div>
+    <button onClick={() => props.onArchivedDocuments()}>Archive Documents</button>
+  </div>
+));
+
 const initialState = {
   form: {
     ADD_MINE_MAJOR_APPLICATION: {
@@ -113,5 +119,14 @@ describe("MajorMineApplicationForm", () => {
     fireEvent.change(fileInput, { target: { files: [file] } });
     fireEvent.click(fileInput);
     expect(mockDispatch).toHaveBeenCalled();
+  });
+
+  describe("MajorMineApplicationForm", () => {
+    it("should call refreshData when documents are archived", () => {
+      const { getAllByText } = render(<WrappedMajorMineApplicationForm />);
+      const archiveButtons = getAllByText("Archive Documents");
+      fireEvent.click(archiveButtons[0]);
+      expect(props.refreshData).toHaveBeenCalled();
+    });
   });
 });
