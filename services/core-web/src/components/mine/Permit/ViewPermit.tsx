@@ -19,6 +19,13 @@ import { Feature } from "@mds/common/utils/featureFlag";
 import { PresetStatusColorType } from "antd/es/_util/colors";
 import { Badge } from "antd";
 import { ActionMenuButton } from "@mds/common/components/common/ActionMenu";
+import {
+  getPermitExtractionByGuid,
+  initiatePermitExtraction,
+  PermitExtractionStatus,
+} from "@mds/common/redux/slices/permitServiceSlice";
+
+const tabs = ["overview", "conditions"];
 
 const ViewPermit: FC = () => {
   const dispatch = useDispatch();
@@ -29,8 +36,9 @@ const ViewPermit: FC = () => {
   const mine: IMine = useSelector((state) => getMineById(state, id));
   const { isFeatureEnabled } = useFeatureFlag();
   const enablePermitConditionsTab = isFeatureEnabled(Feature.PERMIT_CONDITIONS_PAGE);
+  const permitExtraction = useSelector(getPermitExtractionByGuid(permitGuid));
 
-  const [activeTab, setActiveTab] = useState(tab ?? "overview");
+  const [activeTab, setActiveTab] = useState(tab ?? tabs[0]);
   const history = useHistory();
 
   useEffect(() => {
@@ -45,6 +53,10 @@ const ViewPermit: FC = () => {
     }
   }, [mine]);
 
+  useEffect(() => {
+    console.log("extraction updated:", permitExtraction);
+  }, [permitExtraction]);
+
   const canViewConditions = latestAmendment?.conditions?.length > 0;
 
   const getConditionBadge = () => {
@@ -54,12 +66,12 @@ const ViewPermit: FC = () => {
 
   const tabItems = [
     {
-      key: "overview",
+      key: tabs[0],
       label: "Permit Overview",
       children: <ViewPermitOverview latestAmendment={latestAmendment} />,
     },
     enablePermitConditionsTab && {
-      key: "conditions",
+      key: tabs[1],
       label: <>{getConditionBadge()} Permit Conditions</>,
       children: <PermitConditions latestAmendment={latestAmendment} />,
       disabled: !canViewConditions,
@@ -71,15 +83,23 @@ const ViewPermit: FC = () => {
     return history.push(routes.VIEW_MINE_PERMIT.dynamicRoute(id, permitGuid, newActiveTab));
   };
 
-  const headerActions = [
-    {
-      key: "test",
-      label: "Test",
-      clickFunction: () => console.log("action not implemented", permit),
-    },
-  ];
+  const canStartExtraction =
+    !permitExtraction?.status || permitExtraction.status === PermitExtractionStatus.error;
+  const onConditionsTab = tab === tabs[1];
 
-  const headerActionComponent = <ActionMenuButton actions={headerActions} />;
+  const headerActions = [
+    onConditionsTab &&
+      canStartExtraction && {
+        key: "extract",
+        label: "Extract Permit Conditions",
+        clickFunction: () => dispatch(initiatePermitExtraction({ permit_guid: permitGuid })),
+      },
+  ].filter(Boolean);
+
+  const headerActionComponent =
+    enablePermitConditionsTab && headerActions.length > 0 ? (
+      <ActionMenuButton actions={headerActions} />
+    ) : null;
 
   return (
     <div className="fixed-tabs-container">
