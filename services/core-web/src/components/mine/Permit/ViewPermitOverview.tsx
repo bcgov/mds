@@ -1,5 +1,5 @@
-import React, { useMemo } from "react";
-import { Button, Col, Divider, Row, Skeleton, Table, Typography } from "antd";
+import React, { FC } from "react";
+import { Col, Divider, Row, Skeleton, Table, Typography } from "antd";
 import {
   IExemptionFeeStatusOption,
   IMine,
@@ -7,6 +7,7 @@ import {
   IMineDisturbanceOption,
   IMineTenureType,
   IPermit,
+  IPermitAmendment,
   IPermitAmendmentDocument,
   IPermitStatusOption,
   IPermitTypeOption,
@@ -34,7 +35,11 @@ import { formatDate } from "@common/utils/helpers";
 
 const { Title, Paragraph } = Typography;
 
-const ViewPermitOverview = () => {
+interface ViewPermitOverviewProps {
+  latestAmendment: IPermitAmendment;
+}
+
+const ViewPermitOverview: FC<ViewPermitOverviewProps> = ({ latestAmendment }) => {
   const mineCommodityOptions: IMineCommodityOption[] = useSelector(getMineCommodityOptions);
   const mineDisturbanceOptions: IMineDisturbanceOption[] = useSelector(getMineDisturbanceOptions);
   const exemptionFeeStatusOptions: IExemptionFeeStatusOption[] = useSelector(
@@ -47,11 +52,6 @@ const ViewPermitOverview = () => {
   const { id, permitGuid } = useParams<{ id: string; permitGuid: string }>();
   const permit: IPermit = useSelector(getPermitByGuid(permitGuid));
   const mine: IMine = useSelector((state) => getMineById(state, id));
-
-  const latestAmendment = useMemo(() => {
-    if (!permit) return undefined;
-    return permit.permit_amendments[permit.permit_amendments.length - 1];
-  }, [permit]);
 
   const documentColumns: ColumnsType<IPermitAmendmentDocument> = [
     renderDocumentLinkColumn("document_name", "File Name", true),

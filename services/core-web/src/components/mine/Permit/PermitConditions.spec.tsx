@@ -37,7 +37,7 @@ describe("PermitConditions", () => {
   it("renders properly", () => {
     const { container } = render(
       <ReduxWrapper initialState={initialState}>
-        <PermitConditions latestAmendment={MOCK.PERMITS[0].permit_amendments[1]} />
+        <PermitConditions latestAmendment={MOCK.PERMITS[0].permit_amendments[0]} />
       </ReduxWrapper>
     );
     expect(container).toMatchSnapshot();
