@@ -20,7 +20,7 @@ requests==2.32.3
 SQLAlchemy==2.0.19
 uwsgi==2.0.23
 uwsgitop==0.11
-Werkzeug==2.3.6
+Werkzeug==3.0.3
 boto3==1.28.15
 celery==5.3.1
 numpy==1.26.4

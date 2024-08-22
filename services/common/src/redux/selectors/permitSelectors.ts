@@ -41,7 +41,7 @@ export const getDraftPermitAmendmentForNOW = createSelector(
   }
 );
 
-const formatPermit = (permit) => {
+export const formatPermit = (permit) => {
   const site_properties = {
     mine_tenure_type_code: "",
     mine_commodity_code: [],
@@ -69,6 +69,15 @@ export const getPermitByGuid = (permitGuid) =>
   createSelector([getUnformattedPermits], (permits) => {
     const permit = permits.find((p) => p.permit_guid === permitGuid);
     return permit && formatPermit(permit);
+  });
+
+export const getLatestAmendmentByPermitGuid = (permitGuid) =>
+  createSelector([getPermitByGuid(permitGuid)], (permit) => {
+    if (!permit?.permit_amendments) {
+      return undefined;
+    }
+    // sorted on BE: 'desc(PermitAmendment.issue_date), desc(PermitAmendment.permit_amendment_id)'
+    return permit.permit_amendments.filter((a) => a.permit_amendment_status_code !== draft)[0];
   });
 
 export const getPermits = createSelector([getUnformattedPermits], (permits) => {
