@@ -33,7 +33,7 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
         return party_credential_exchanges
 
     @api.doc(
-        description="Create a connection invitation for a party by guid",
+        description="Send credential offer for permit_amendment_guid to connection for a party by guid",
         params={
             "party_guid":
             "guid for party with wallet connection",
@@ -90,10 +90,10 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
             raise BadRequest("Party does not have an active Digital Wallet connection")
         else:
             traction_svc = TractionService()
-            response = traction_svc.offer_mines_act_permit_111(active_connections[0].connection_id,
+            response, cred_exch_id = traction_svc.offer_mines_act_permit_111(active_connections[0].connection_id,
                                                                attributes)
             map_vc = PartyVerifiableCredentialMinesActPermit(
-                cred_exch_id=response["credential_exchange_id"],
+                cred_exch_id=cred_exch_id,
                 party_guid=party_guid,
                 permit_amendment_guid=permit_amendment_guid)
             map_vc.save()
