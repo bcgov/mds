@@ -395,7 +395,7 @@ exports[`MinePermitInfo renders properly 1`] = `
             class="ant-typography"
           >
             Updated by: 
-            
+            update-user
           </div>
         </div>
         <div
@@ -405,7 +405,7 @@ exports[`MinePermitInfo renders properly 1`] = `
             class="ant-typography"
           >
             Updated Date: 
-            
+            Apr 05 2019
           </div>
         </div>
       </div>

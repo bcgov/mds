@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Descriptions } from "antd";
 import { formatDate } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
-import DocumentTable from "@/components/common/DocumentTable";
+import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import { documentNameColumn, uploadDateColumn } from "@/components/common/DocumentColumns";
 import * as Strings from "@/constants/strings";
 import { renderCategoryColumn } from "@mds/common/components/common/CoreTableCommonColumns";

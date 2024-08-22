@@ -38,7 +38,7 @@ export const MineResultsTable = (props) => {
       dataIndex: "mine_name",
       key: "mine_name",
       render: (text, record) => (
-        <Link to={router.MINE_SUMMARY.dynamicRoute(record.mine_guid)}>
+        <Link to={router.MINE_DASHBOARD.dynamicRoute(record.mine_guid)}>
           <Highlight search={props.highlightRegex}>{text}</Highlight>
         </Link>
       ),

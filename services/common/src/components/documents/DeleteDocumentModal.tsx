@@ -1,21 +1,20 @@
 import React, { FC } from "react";
-
-import { Alert, Button, Form, Typography } from "antd";
+import { Alert, Typography } from "antd";
 import { MineDocument } from "@mds/common/models/documents/document";
 import DocumentTable from "./DocumentTable";
+import FormWrapper from "../forms/FormWrapper";
+import RenderCancelButton from "../forms/RenderCancelButton";
+import RenderSubmitButton from "../forms/RenderSubmitButton";
+import { FORM } from "@mds/common/constants";
 
 interface DeleteDocumentModalProps {
   documents: MineDocument[];
   handleSubmit(documents: MineDocument[]): Promise<void>;
-  closeModal(): void;
 }
 
-const DeleteDocumentModal: FC<DeleteDocumentModalProps> = (props: DeleteDocumentModalProps) => {
+const DeleteDocumentModal: FC<DeleteDocumentModalProps> = ({ documents, handleSubmit }) => {
   return (
-    <Form
-      layout="vertical"
-      onFinish={() => props.handleSubmit(props.documents).then(props.closeModal)}
-    >
+    <FormWrapper name={FORM.DELETE_DOCUMENT} onSubmit={() => handleSubmit(documents)} isModal>
       <Typography.Paragraph>
         <Alert
           message="Deleted files are not reviewed as part of the submission"
@@ -26,24 +25,20 @@ const DeleteDocumentModal: FC<DeleteDocumentModalProps> = (props: DeleteDocument
       </Typography.Paragraph>
 
       <Typography.Paragraph strong>
-        You&apos;re about to delete the following file{props.documents?.length > 1 ? "s" : ""}:
+        You&apos;re about to delete the following file{documents?.length > 1 ? "s" : ""}:
       </Typography.Paragraph>
 
       <DocumentTable
-        documents={props.documents}
+        documents={documents}
         view="minimal"
         excludedColumnKeys={["actions", "category"]}
       />
 
       <div className="ant-modal-footer">
-        <Button className="full-mobile" onClick={props.closeModal}>
-          Cancel
-        </Button>
-        <Button className="full-mobile" type="primary" htmlType="submit">
-          Delete
-        </Button>
+        <RenderCancelButton />
+        <RenderSubmitButton buttonText="Delete" disableOnClean={false} />
       </div>
-    </Form>
+    </FormWrapper>
   );
 };
 

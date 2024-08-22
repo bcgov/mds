@@ -4,22 +4,17 @@ import ReplaceDocumentModal from "@mds/common/components/documents/ReplaceDocume
 import { render } from "@testing-library/react";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { MINEDOCUMENTS } from "@mds/common/tests/mocks/dataMocks";
-import FormWrapper from "@mds/common/components/forms/FormWrapper";
-import { FORM } from "@mds/common/constants/forms";
-
-const props = {
-  document: MINEDOCUMENTS.records[0],
-  handleSubmit: jest.fn().mockReturnValue(Promise.resolve()),
-  closeModal: jest.fn(),
-  postNewDocumentVersion: jest.fn().mockReturnValue(Promise.resolve()),
-  alertMessage: "This is a test alert message.",
-};
+import { MineDocument } from "@mds/common/models/documents/document";
 
 describe("ReplaceDocumentModal", () => {
   it("renders correctly and matches the snapshot", () => {
     const { container } = render(
-      <ReduxWrapper initialState={{}}>
-        <ReplaceDocumentModal {...props} />
+      <ReduxWrapper>
+        <ReplaceDocumentModal
+          document={new MineDocument(MINEDOCUMENTS.records[0])}
+          handleSubmit={jest.fn().mockReturnValue(Promise.resolve())}
+          alertMessage="This is a test alert message."
+        />
       </ReduxWrapper>
     );
     expect(container.firstChild).toMatchSnapshot();

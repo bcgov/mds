@@ -25,11 +25,15 @@
       transition: none;
       color: $white;
       border-color: #8C8C8C;
+
       input {
         flex-basis: 115px;
       }
+
       &.search-not-focussed {
-        input, .ant-input-prefix {
+
+        input,
+        .ant-input-prefix {
           opacity: 0.6;
         }
       }
@@ -68,10 +72,11 @@
     &-focused {
       box-shadow: none;
     }
+
     .ant-input {
       background-color: transparent;
       color: inherit;
-      
+
       &::placeholder {
         color: $white;
       }
@@ -102,12 +107,18 @@
       border: none;
       vertical-align: top;
 
+      span {
+        font-size: $font-size-base;
+        font-weight: $regular;
+      }
+
       &:hover {
         color: $pure-white;
         background-color: $primary-btn-color;
         border: none;
         border-radius: 0;
       }
+
       &:focus {
         color: $pure-white;
         background-color: $primary-btn-color;
@@ -193,6 +204,7 @@
   border-radius: 0;
   border-top: 1px solid $violet;
   position: inherit;
+
   // if the activeClass is on nav, change default hover color to white, else leave violet
   .ant-menu-submenu-title:hover {
     color: $pure-white;
@@ -201,14 +213,17 @@
 
 // MINE SUMMARY NAVIGATION
 .sub-menu {
+
   a,
   link {
     color: $darkest-grey;
     text-decoration: none;
+
     &:hover {
       color: $pure-white;
     }
   }
+
   background-color: $light-grey;
 
   li:hover {
@@ -224,15 +239,16 @@
 .navbar-dropdown-menu-item {
   @extend .ant-dropdown-menu-item;
   background-color: transparent !important;
+
   &:hover {
     background-color: $primary-btn-color !important;
   }
 }
 
-.navbar-dropdown-menu > :first-child {
+.navbar-dropdown-menu> :first-child {
   padding-top: 9px;
 }
 
-.navbar-dropdown-menu > :last-child {
+.navbar-dropdown-menu> :last-child {
   padding-bottom: 9px;
 }

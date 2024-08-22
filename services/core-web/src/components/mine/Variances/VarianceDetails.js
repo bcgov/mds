@@ -4,7 +4,7 @@ import { formatDate } from "@common/utils/helpers";
 import * as Strings from "@mds/common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 
-import DocumentTable from "@/components/common/DocumentTable";
+import DocumentTable from "@mds/common/components/documents/DocumentTable";
 
 const propTypes = {
   variance: CustomPropTypes.variance.isRequired,

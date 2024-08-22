@@ -3,8 +3,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { isDirty } from "redux-form";
 import { FormContext } from "./FormWrapper";
 import { closeModal } from "@mds/common/redux/actions/modalActions";
-import { Button, Modal, ModalFuncProps } from "antd";
+import { Modal, ModalFuncProps } from "antd";
 import { BaseButtonProps } from "antd/lib/button/button";
+import CoreButton from "../common/CoreButton";
 
 export const cancelConfirmWrapper = (
   cancelFunction,
@@ -64,10 +65,11 @@ const RenderCancelButton: FC<RenderCancelButtonProps> = ({
     ? () => cancelConfirmWrapper(handleCancel, isFormDirty, cancelModalProps)
     : handleCancel;
 
+  const buttonType = buttonProps?.type ?? "default";
   return (
-    <Button {...buttonProps} onClick={() => buttonCancelFunction()}>
+    <CoreButton {...buttonProps} type={buttonType} onClick={() => buttonCancelFunction()}>
       {isEditMode ? buttonText : viewButtonText}
-    </Button>
+    </CoreButton>
   );
 };
 

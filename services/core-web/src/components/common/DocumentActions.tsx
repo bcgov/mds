@@ -65,7 +65,7 @@ export const DocumentActions: FC<DocumentActionsProps> = (props) => {
   return (
     <div>
       <Dropdown menu={{ items }} placement="bottomLeft">
-        <Button className="permit-table-button">
+        <Button className="actions-dropdown-button" type="text">
           Actions
           <img
             className="padding-sm--right icon-svg-filter"

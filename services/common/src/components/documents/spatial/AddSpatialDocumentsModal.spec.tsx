@@ -2,21 +2,29 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import AddSpatialDocumentsModal from "./AddSpatialDocumentsModal";
-import FormWrapper from "../../forms/FormWrapper";
 import { BrowserRouter } from "react-router-dom";
 
+const initialState = {
+  form: {
+    formName: {
+      registeredFields: {
+        fieldName: { name: "fieldName", type: "Field", count: 1 },
+      },
+      initial: { fieldName: [] },
+      values: { fieldName: [] },
+    },
+  },
+};
 describe("AddSpatialDocumentsModal", () => {
   it("renders properly", () => {
     const { container } = render(
-      <ReduxWrapper>
+      <ReduxWrapper initialState={initialState}>
         <BrowserRouter>
-          <FormWrapper name="formName" onSubmit={() => {}} initialValues={{ fieldName: [] }}>
-            <AddSpatialDocumentsModal
-              formName="formName"
-              fieldName="fieldName"
-              uploadUrl="uploadUrl"
-            />
-          </FormWrapper>
+          <AddSpatialDocumentsModal
+            formName="formName"
+            fieldName="fieldName"
+            uploadUrl="uploadUrl"
+          />
         </BrowserRouter>
       </ReduxWrapper>
     );

@@ -1,0 +1,49 @@
+.core-page {
+    background-color: #F9F9F9;
+
+    .view--header {
+        h1.ant-typography {
+            line-height: 54px;
+            letter-spacing: -0.5px;
+        }
+    }
+
+    .fixed-tabs-tabs {
+
+        &>.ant-tabs-nav {
+            top: calc(99px + $header-height);
+        }
+
+        &>.ant-tabs-content-holder {
+            margin-top: (99px + 49px);
+        }
+
+    }
+
+    .ant-tabs-nav {
+        margin-bottom: 0;
+        height: 45px;
+
+        .ant-tabs-tab {
+            padding: 12px 0 7px 0;
+        }
+    }
+
+    h2.ant-typography {
+        line-height: 42px;
+        color: $dark-grey;
+    }
+
+    h3.ant-typography {
+        color: $dark-grey;
+    }
+
+    .core-page-content {
+        padding: $fixed-page-margin;
+        border-radius: 4px;
+        // offset-x, offset-y, blur, spread, colour
+        box-shadow: 0 0 2px 0 $transparent-dark-grey; // $darkest-grey at 10% opacity
+        background-color: $pure-white;
+
+    }
+}

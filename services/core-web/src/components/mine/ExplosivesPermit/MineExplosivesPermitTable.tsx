@@ -233,7 +233,7 @@ const MineExplosivesPermitTable: FC<RouteComponentProps & MineExplosivesPermitTa
                     menu={{ items: generateActionMenuItems(currentMenu, record) }}
                     placement="bottomLeft"
                   >
-                    <Button className="permit-table-button">
+                    <Button className="actions-dropdown-button" type="text">
                       <div className="padding-sm">
                         <img
                           className="padding-sm--right icon-svg-filter"

@@ -14,6 +14,7 @@ export const DEFAULT_ENVIRONMENT = {
   flagsmithKey: "4Eu9eEMDmWVEHKDaKoeWY7",
   flagsmithUrl: "https://mds-flags-dev.apps.silver.devops.gov.bc.ca/api/v1/",
   syncfusionLicense: process.env.SYNCFUSION_LICENSE_KEY || "-",
+  geoMarkUrl: process.env.GEOMARK_URL_BASE || "https://test.apps.gov.bc.ca/pub/geomark",
 };
 
 export const ENVIRONMENT = {
@@ -26,6 +27,7 @@ export const ENVIRONMENT = {
   flagsmithUrl: "<FLAGSMITH_URL>",
   syncfusionLicense: "<SYNCFUSION_LICENSE_KEY>",
   _loaded: false,
+  geoMarkUrl: "<GEOMARK_URL_BASE>",
 };
 
 export const KEYCLOAK = {
@@ -58,7 +60,8 @@ export function setupEnvironment(
   environment,
   flagsmithKey,
   flagsmithUrl,
-  syncfusionLicence
+  syncfusionLicence,
+  geoMarkUrl
 ) {
   if (!apiUrl) {
     throw new Error("apiUrl Is Mandatory");
@@ -85,6 +88,9 @@ export function setupEnvironment(
   if (!flagsmithUrl) {
     throw new Error("flagsmithUrl Is Mandatory");
   }
+  if (!geoMarkUrl) {
+    throw new Error("geoMarkUrl Is Mandatory");
+  }
 
   ENVIRONMENT.apiUrl = apiUrl;
   ENVIRONMENT.docManUrl = docManUrl;
@@ -94,6 +100,7 @@ export function setupEnvironment(
   ENVIRONMENT.flagsmithKey = flagsmithKey;
   ENVIRONMENT.flagsmithUrl = flagsmithUrl;
   ENVIRONMENT.syncfusionLicense = syncfusionLicence;
+  ENVIRONMENT.geoMarkUrl = geoMarkUrl;
 
   ENVIRONMENT._loaded = true;
 }
