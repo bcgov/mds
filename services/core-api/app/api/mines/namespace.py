@@ -22,6 +22,7 @@ from app.api.mines.permits.permit.resources.permit import PermitResource, Permit
 from app.api.mines.permits.permit.resources.permit_status_code import PermitStatusCodeResource
 from app.api.mines.permits.permit_amendment.resources.permit_amendment import PermitAmendmentResource, PermitAmendmentListResource
 from app.api.mines.permits.permit_amendment.resources.permit_amendment_document import PermitAmendmentDocumentListResource, PermitAmendmentDocumentResource
+from app.api.mines.permits.permit_extraction.resources.permit_condition_extraction_resource import PermitConditionExtractionResource, PermitConditionExtractionProgressResource
 from app.api.mines.permits.permit_amendment.resources.permit_amendment_vc import PermitAmendmentVCResource
 from app.api.mines.permits.permit.resources.permit_document_upload import PermitDocumentUploadInitializationResource
 from app.api.mines.explosives_permit.resources.explosives_permit import ExplosivesPermitResource
@@ -154,6 +155,8 @@ api.add_resource(
     PermitAmendmentResource,
     '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>')
 
+api.add_resource(PermitConditionExtractionResource, '/permits/extraction')
+api.add_resource(PermitConditionExtractionProgressResource, '/permits/extraction/<string:task_id>')
 api.add_resource(
     PermitAmendmentVCResource,
     '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>/verifiable-credential'

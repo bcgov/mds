@@ -2,6 +2,12 @@ import requests
 from authlib.integrations.requests_client import OAuth2Session
 import os
 from app.config import Config
+
+from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
+from app.api.mines.permits.permit_amendment.models.permit_amendment_document import (
+    PermitAmendmentDocument,
+)
+from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
 from app.api.mines.permits.permit.models.permit import Permit
 
 JWT_OIDC_WELL_KNOWN_CONFIG = os.getenv('JWT_OIDC_WELL_KNOWN_CONFIG')
@@ -28,5 +34,30 @@ class PermitSearchService:
 
         return results['documents']
 
-    def initialize_permit_extraction(self, permit_guid):
-        permit = Permit.find_by_permit_guid(permit_guid)
+    def initialize_permit_extraction(self, permit_amendment_guid, permit_amendment_document_guid):
+        """
+        Begins the process of extracting permit conditions from the PDF document
+        """
+        document = PermitAmendmentDocument.find_by_permit_amendment_document_guid(permit_amendment_document_guid)
+
+        if not document:
+            raise BadRequest('Permit document not found')
+        if document.permit_amendment.permit_amendment_document_guid != permit_amendment_guid:
+            raise BadRequest('Permit document must be associated with the permit')
+        
+        try:
+            file_path = ""
+            with open(file_path, 'rb') as document_data:
+                multipart_data = MultipartEncoder(
+                    fields={
+                        'file': (os.path.basename(file_path), file, mime_type)
+                    }
+                )
+                headers = {
+                    'Content-Type': multipart_data.content_type
+                }
+        
+            results = self.session.post(EXTRACTION_ENDPOINT, data=multipart_data, headers=headers).json()
+            return results
+        except:
+            raise Exception('Something went wrong')

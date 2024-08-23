@@ -55,8 +55,9 @@ const permitServiceSlice = createAppSlice({
       },
       {
         fulfilled: (state, action) => {
-          const { permit_guid, taskId, status } = action.payload;
-          state.extractions[permit_guid] = { taskId, status };
+          const { permit_amendment_guid } = action.meta.arg;
+          const { taskId, status } = action.payload;
+          state.extractions[permit_amendment_guid] = { taskId, status };
         },
         pending: (state, action) => {
           const { permit_amendment_guid } = action.meta.arg;
