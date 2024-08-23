@@ -91,8 +91,9 @@ export const STANDARD_PERMIT_CONDITIONS = (noticeOfWorkType) =>
 export const STANDARD_PERMIT_CONDITION = (permitConditionGuid) =>
   `/mines/permits/standard-conditions/${permitConditionGuid}`;
 
-export const PERMIT_SERVICE_EXTRACTION = (permitGuid: string, taskId = "") =>
-  `/mines/permits/${permitGuid}/service/${taskId}`;
+export const PERMIT_SERVICE_EXTRACTION = `/mines/permits/extraction`;
+export const POLL_PERMIT_SERVICE_EXTRACTION = (taskId: string) =>
+  `/mines/permits/extraction/${taskId}`;
 
 // Permits - Notices of Departure
 export const NOTICES_OF_DEPARTURE = () => `/notices-of-departure`;

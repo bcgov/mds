@@ -36,7 +36,10 @@ const ViewPermit: FC = () => {
   const mine: IMine = useSelector((state) => getMineById(state, id));
   const { isFeatureEnabled } = useFeatureFlag();
   const enablePermitConditionsTab = isFeatureEnabled(Feature.PERMIT_CONDITIONS_PAGE);
-  const permitExtraction = useSelector(getPermitExtractionByGuid(permitGuid));
+  const permitExtraction = useSelector(
+    getPermitExtractionByGuid(latestAmendment?.permit_amendment_guid)
+  );
+  const documents = latestAmendment?.related_documents ?? [];
 
   const [activeTab, setActiveTab] = useState(tab ?? tabs[0]);
   const history = useHistory();
@@ -84,18 +87,27 @@ const ViewPermit: FC = () => {
   };
 
   const canStartExtraction =
-    !permitExtraction?.status ||
+    (documents.length > 0 && !permitExtraction?.status) ||
     [PermitExtractionStatus.error, PermitExtractionStatus.not_started].includes(
-      permitExtraction.status
+      permitExtraction?.status
     );
   const onConditionsTab = tab === tabs[1];
+
+  const handleInitiateExtraction = () => {
+    dispatch(
+      initiatePermitExtraction({
+        permit_amendment_guid: latestAmendment?.permit_amendment_guid,
+        permit_amendment_document_guid: documents[0].permit_amendment_document_guid,
+      })
+    );
+  };
 
   const headerActions = [
     onConditionsTab && {
       key: "extract",
       label: "Extract Permit Conditions",
       disabled: !canStartExtraction,
-      clickFunction: () => dispatch(initiatePermitExtraction({ permit_guid: permitGuid })),
+      clickFunction: handleInitiateExtraction,
     },
   ].filter(Boolean);
 
