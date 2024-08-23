@@ -136,6 +136,7 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
             ...fileData,
             major_mine_application_document_type_code:
               MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE.SPATIAL,
+            mine_guid: project?.mine_guid,
           }),
         },
         content: AddSpatialDocumentsModal,
@@ -245,8 +246,14 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
         <Typography.Paragraph>
           Please upload spatial files to support your application. You must upload at least one KML,
           KMZ, or Shapefile at a time. Visit{" "}
-          <Link to={{ pathname: SPATIAL_DATA_STANDARDS_URL }}>GIS Shapefile Standards</Link> to
-          learn more about shapefile requirements and standards.
+          <Link
+            to={{ pathname: SPATIAL_DATA_STANDARDS_URL }}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GIS Shapefile Standards
+          </Link>{" "}
+          to learn more about shapefile requirements and standards.
         </Typography.Paragraph>
         {isFeatureEnabled(Feature.SPATIAL_BUNDLE) ? (
           <>
@@ -258,9 +265,9 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
             >
               Upload Spatial Data
             </Button>
-            {spatialDocument.length > 0 && (
+            {spatial_documents?.length > 0 && (
               <SpatialDocumentTable
-                documents={spatialDocument}
+                documents={spatial_documents}
                 documentParent="Major Mine Application"
                 onArchivedDocuments={refreshData}
               />

@@ -4,6 +4,8 @@ from sqlalchemy.dialects.postgresql import UUID
 
 from sqlalchemy.schema import FetchedValue
 from werkzeug.exceptions import BadRequest, NotFound
+
+from app.api.mines.documents.models.mine_document_bundle import MineDocumentBundle
 from app.extensions import db
 
 from app.config import Config
@@ -114,21 +116,30 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
     def create(cls,
                project,
                status_code,
-               documents=[],
+               documents=None,
                add_to_session=True):
         major_mine_application = cls(
             project_guid=project.project_guid,
             status_code=status_code)
+        documents = documents or []
 
         if add_to_session:
             major_mine_application.save(commit=False)
 
         if documents:
+            spatial_docs = [doc for doc in documents if doc['major_mine_application_document_type_code'] == 'SPT']
+            updated_spatial_docs = MineDocumentBundle.update_spatial_mine_document_with_bundle_id(spatial_docs)
+
+            # update the original documents array with the updated spatial documents
+            documents = [doc for doc in documents if doc['major_mine_application_document_type_code'] != 'SPT']
+            documents.extend(updated_spatial_docs)
+
             for doc in documents:
                 mine_doc = MineDocument(
                     mine_guid=project.mine_guid,
                     document_name=doc.get('document_name'),
-                    document_manager_guid=doc.get('document_manager_guid'))
+                    document_manager_guid=doc.get('document_manager_guid'),
+                    mine_document_bundle_id=doc['mine_document_bundle_id'] if doc.get('mine_document_bundle_id') else None)
                 major_mine_application_doc = MajorMineApplicationDocumentXref(
                     mine_document_guid=mine_doc.mine_document_guid,
                     major_mine_application_id=major_mine_application.major_mine_application_id,
