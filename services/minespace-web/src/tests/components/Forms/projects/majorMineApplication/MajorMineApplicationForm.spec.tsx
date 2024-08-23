@@ -121,12 +121,10 @@ describe("MajorMineApplicationForm", () => {
     expect(mockDispatch).toHaveBeenCalled();
   });
 
-  describe("MajorMineApplicationForm", () => {
-    it("should call refreshData when documents are archived", () => {
-      const { getAllByText } = render(<WrappedMajorMineApplicationForm />);
-      const archiveButtons = getAllByText("Archive Documents");
-      fireEvent.click(archiveButtons[0]);
-      expect(props.refreshData).toHaveBeenCalled();
-    });
+  it("should call refreshData when documents are archived", () => {
+    const { getAllByText } = render(<WrappedMajorMineApplicationForm />);
+    const archiveButtons = getAllByText("Archive Documents");
+    fireEvent.click(archiveButtons[0]);
+    expect(props.refreshData).toHaveBeenCalled();
   });
 });
