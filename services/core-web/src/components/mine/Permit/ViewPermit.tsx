@@ -84,16 +84,19 @@ const ViewPermit: FC = () => {
   };
 
   const canStartExtraction =
-    !permitExtraction?.status || permitExtraction.status === PermitExtractionStatus.error;
+    !permitExtraction?.status ||
+    [PermitExtractionStatus.error, PermitExtractionStatus.not_started].includes(
+      permitExtraction.status
+    );
   const onConditionsTab = tab === tabs[1];
 
   const headerActions = [
-    onConditionsTab &&
-      canStartExtraction && {
-        key: "extract",
-        label: "Extract Permit Conditions",
-        clickFunction: () => dispatch(initiatePermitExtraction({ permit_guid: permitGuid })),
-      },
+    onConditionsTab && {
+      key: "extract",
+      label: "Extract Permit Conditions",
+      disabled: !canStartExtraction,
+      clickFunction: () => dispatch(initiatePermitExtraction({ permit_guid: permitGuid })),
+    },
   ].filter(Boolean);
 
   const headerActionComponent =

@@ -2,11 +2,16 @@ import requests
 from authlib.integrations.requests_client import OAuth2Session
 import os
 from app.config import Config
+from app.api.mines.permits.permit.models.permit import Permit
 
 JWT_OIDC_WELL_KNOWN_CONFIG = os.getenv('JWT_OIDC_WELL_KNOWN_CONFIG')
 
 oidc_configuration = requests.get(JWT_OIDC_WELL_KNOWN_CONFIG).json()
 SEARCH_ENDPOINT = f'{Config.PERMITS_ENDPOINT}/permit/query'
+EXTRACTION_ENDPOINT = f'{Config.PERMITS_ENDPOINT}/permit_conditions'
+EXTRACTION_STATUS_ENDPOINT = f'{Config.PERMITS_ENDPOINT}/permit_conditions/status'
+EXTRACTION__RESULTS_ENDPOINT = f'{Config.PERMITS_ENDPOINT}/permit_conditions/results'
+
 
 class PermitSearchService:
 
@@ -22,3 +27,6 @@ class PermitSearchService:
         results = self.session.post(SEARCH_ENDPOINT, json={'query': search_term,'debug': False, 'params': {}}).json()
 
         return results['documents']
+
+    def initialize_permit_extraction(self, permit_guid):
+        permit = Permit.find_by_permit_guid(permit_guid)
