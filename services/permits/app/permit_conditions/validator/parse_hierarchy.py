@@ -7,6 +7,13 @@ from app.permit_conditions.validator.next_character_in_sequence import (
 
 logger = logging.getLogger(__name__)
 
+# Patterns for different types of numbering at the beginning of a string.
+# Example:
+# 1. This is a test. <- 1.
+# a. This is another test. <- a.
+# i. This is yet another test. <- i.
+# (1) This is a test. <- (1)
+# B) This is another test. <- B)
 patterns = [
     {
         'name': 'uppercase_letter',
@@ -29,8 +36,28 @@ patterns = [
 by_name = {pattern['name']: pattern['pattern'] for pattern in patterns}
 
 def split_numbering(paragraphs):
-    for idx, paragraph in enumerate(paragraphs):
+    """
+    Given a list of paragraphs, this function will split the numbering from the text
+    and return the paragraphs with the numbering and text separated.
+
+    Args:
+        paragraphs (list): A list of paragraphs.
+    
+    Returns:
+        list: A list of paragraphs with the numbering and text separated.
+
+    Example:
+        Input: 
+            - [{'text': '1. This is a test.'}, {'text': 'a. This is another test.'}]
+        Output:
+            - [{'numbering': '1.', 'text': 'This is a test.', 'regex': 'number'}, {'numbering': '2.', 'text': 'This is another test.', 'regex': 'lowercase_letter'}]
+        
+
+    """
+    for paragraph in paragraphs:
         paragraph['original_text'] = paragraph['text']
+
+        # Find what pattern matches the paragraph (if any)
         pattern = next((pattern for pattern in patterns if pattern['pattern'].match(paragraph['text'])), None)
 
         if not pattern:
@@ -43,81 +70,13 @@ def split_numbering(paragraphs):
         paragraph['regex'] = pattern['name']
         paragraph['numbering'] = numbering.strip()
 
+        # Remove the numbering found from the beginning of the paragraph
         paragraph['text'] = re.sub(by_name[paragraph['regex']], '', paragraph['text'])
+
+        # Remove any leading whitespace or non-word characters from the beginning of the paragraph
         paragraph['text'] = re.sub(r'^\W+', '', paragraph['text']).strip()
 
-    # for idx, paragraph in enumerate(paragraphs):
-    #     # Handle roman numerals gracefully. i could either be a roman numeral or a lowercase letter. We need to check the
-    #     # previous and next paragraphs to determine which one it is.
-
-    #     # if paragraph['regex'] == 'lowercase_letter' and idx>0:
-    #     #     previous = paragraphs[idx - 1] if idx > 0 else None
-            
-    #     #     matches_roman = by_name['roman_numeral'].match(paragraph['text'])
-
-    #     #     # if the current pararaph matches a roman numeral, we can check assume it is a roman numeral if the previous
-    #     #     # paragraph was not an h) (because that's the only time i would be new section instead of a subsection)
-    #     #     if matches_roman and (previous['regex'] != 'lower_case' or previous['regex'] == 'roman_numeral'):
-    #     #         paragraph['regex'] = 'roman_numeral'
-
-    #     #     # In the unfortunate event paragraph h) has a subparagraph i) scan the next paragraphs until you get to one
-    #     #     # that is not a roman numeral. If during that time you hit another i), you can assume the current paragraph
-    #     #     # was intended as a child to the previous paragraph.
-    #     #     if matches_roman and previous['regex'] == 'lower_case' and previous['numbering'] == 'h':
-    #     #         for next_ps in paragraphs[idx + 1:]:
-    #     #             matches_lowercase = by_name['lowercase_letter'].match(next_ps['text'])
-    #     #             matches_roman = by_name['roman_numeral'].match(next_ps['text'])
-
-    #     #             if matches_roman and next_ps['numbering'] == paragraph['numbering']:
-    #     #                 paragraph['regex'] = 'roman_numeral'
-    #     #                 break
-
-    #     #             if matches_lowercase and not matches_roman:
-    #     #                 break
-        
-    #     # # if paragraph['text'] == 'b) Water Management2':
-    #     # #     import pdb; pdb.set_trace()
-    #     # # We 
-    #     # if paragraph['regex'] == 'roman_numeral':
-    #     #     for prev_sub in paragraphs[:idx][::-1]:
-    #     #         if prev_sub['regex'] != 'roman_numeral':
-    #     #             break
-    #     #         if prev_sub['regex'] == 'roman_numeral' and prev_sub['numbering'] == paragraph['numbering']:
-    #     #             paragraph['regex'] = 'lowercase_letter'
-    #     #             break
-    #     if paragraph['regex']:
-    #         paragraph['text'] = re.sub(by_name[paragraph['regex']], '', paragraph['text'])
-    #         paragraph['text'] = re.sub(r'^\W+', '', paragraph['text']).strip()
     
-    return paragraphs
-
-def match(paragraph):
-    for pattern in patterns:
-        if pattern['pattern'].match(paragraph['text']):
-            return pattern['name']
-    return None
-
-def percent_increase(prev, curr):
-    prev_bounding_box = prev.get('bounding_box') or {}
-    bounding_box = curr.get('bounding_box') or {}
-
-    if prev_bounding_box.get('left') and bounding_box.get('left'):
-        increase = (bounding_box['left']-prev_bounding_box['left']) *100/prev_bounding_box['left']
-        return increase
-    
-    return None
-def build_hierarchy(paragraphs):
-    current_section = None
-    current_paragraph = None
-    current_subparagraph = None
-    current_clause = None
-    current_subclause = None
-    current_subsubclause = None
-
-    structure = []
-    last_paragraph = {}
-
-    level = 0
     for idx, p in enumerate(paragraphs):
         regx = p['regex']
 
@@ -133,86 +92,110 @@ def build_hierarchy(paragraphs):
                     regx = 'roman_numeral'
 
                 if prev_p and prev_p['regex'] == 'lowercase_letter' and prev_p['numbering'] == 'h':
-                    increase = percent_increase(prev_p, p)
+                    increase = _percent_increase(prev_p, p)
                     if increase and increase > 15:
                         regx = 'roman_numeral'
                 
                 p['regex'] = regx
-            found = regx in structure
-            skip_last_update = False
 
-            if not found:
-                structure.append(regx)
-                if len(structure) > 1:
-                    level += 1
-            else:
-                nw_level = structure.index(regx)
+    return paragraphs
 
-                percent = percent_increase(last_paragraph[regx], p)
+def match(paragraph):
+    for pattern in patterns:
+        if pattern['pattern'].match(paragraph['text']):
+            return pattern['name']
+    return None
 
-                percent_curr = percent_increase(paragraphs[idx-1], p) if idx > 0 else None
+def _percent_increase(prev, curr):
+    # Calculate the percentage increase between the left bounding box of the current and previous paragraph
+    prev_bounding_box = prev.get('bounding_box') or {}
+    bounding_box = curr.get('bounding_box') or {}
 
-                # if p['text'] == 'No personnel must work alone within this zone at any time;':
-                #     import pdb; pdb.set_trace()
-                if nw_level != level:
-                    if nw_level < level and percent and percent > 10:
-                        if percent_curr and percent_curr > 10:
-                            level +=1
-                            skip_last_update = True
-                    elif nw_level < level and (percent_curr and (percent_curr > -10 and percent_curr < 10)):
-                        pass
-                    else:
-                        level = nw_level
-                    # elif not percent_curr or percent_curr > 10 or percent_curr < -10:
-                    #     level = nw_level
-                else:
-                    level = nw_level        
+    if prev_bounding_box.get('left') and bounding_box.get('left'):
+        increase = (bounding_box['left']-prev_bounding_box['left']) *100/prev_bounding_box['left']
+        return increase
+    
+    return None
 
-            if level == 0:
-                current_section = p['numbering']
-                current_paragraph = None
-                current_subparagraph = None
-                current_clause = None
-                current_subclause = None
-                current_subsubclause = None
-            elif level == 1:
-                current_paragraph = p['numbering']
-                current_subparagraph = None
-                current_clause = None
-                current_subclause = None
-                current_subsubclause = None
-            elif level == 2:
-                current_subparagraph = p['numbering']
-                current_clause = None
-                current_subclause = None
-                current_subsubclause = None
-            elif level == 3:
-                current_clause = p['numbering']
-                current_subclause = None
-                current_subsubclause = None
-            elif level == 4:
-                current_subclause = p['numbering']
-                current_subsubclause = None
-            elif level == 5:
-                current_subsubclause = p['numbering']
+
+def _update_hierarchy_state(hierarchy_state, level, numbering):
+    hierarchy_keys = ['section', 'paragraph', 'subparagraph', 'clause', 'subclause', 'subsubclause']
+
+
+    for i, key in enumerate(hierarchy_keys):
+        if i == level:
+            hierarchy_state[key] = numbering
+        elif i > level:
+            hierarchy_state[key] = None
+    return hierarchy_state
+
+
+def build_hierarchy(paragraphs):
+    hierarchy_state = {key: None for key in ['section', 'paragraph', 'subparagraph', 'clause', 'subclause', 'subsubclause']}
+    structure = []
+    last_paragraph = {}
+    level = 0
+
+    for idx, paragraph in enumerate(paragraphs):
+        regx = paragraph['regex']
+
+        if regx:
+            level, skip_last_update = _update_level(paragraphs, structure, last_paragraph, level, idx, paragraph, regx)
+            hierarchy_state = _update_hierarchy_state(hierarchy_state, level, paragraph['numbering'])
+
 
             if not skip_last_update:
-                last_paragraph[regx] = p
-        p['section'] = current_section
-        p['paragraph'] = current_paragraph
-        p['subparagraph'] = current_subparagraph
-        p['clause'] = current_clause
-        p['subclause'] = current_subclause      
-        p['subsubclause'] = current_subsubclause
-        del p['original_text']
+                last_paragraph[regx] = paragraph
+
+        for key in hierarchy_state:
+            paragraph[key] = hierarchy_state[key]
+        del paragraph['original_text']
+
 
 
     return paragraphs
 
+NEW_PARAGRAPH_THRESHOLD = 10 # If indentation is 10% greater than the previous paragraph, it's likely a new indentation level (e.g. a new section, paragraph, etc.). No science behind it, other than observation of a couple of example outputs from Document intelligence.
+
+def _update_level(paragraphs, structure, last_paragraph, level, idx, p, regx):
+
+    if regx not in structure:
+        # If we have not encountered this type of numbering before, add it to the structure and increase the level we're at
+        structure.append(regx)
+        if len(structure) > 1:
+            level += 1
+        return level, False
+
+
+    # Compare the current paragraph with the previous one of the same numbering system to determine if we should decrease the level
+    percent = _percent_increase(last_paragraph[regx], p)
+
+    # Compare the current paragraph with the previous parabraph to determine if we should increase the level
+    percent_curr = _percent_increase(paragraphs[idx-1], p) if idx > 0 else None
+
+    level_of_last_matching_numbering = structure.index(regx)
+
+
+    # If the current paragraph is at the same level as the last paragraph of the same numbering system, we don't need to update the level
+    if level_of_last_matching_numbering == level:
+        return level, False
+    
+    def _is_new_paragraph():
+        return percent_curr and percent_curr > NEW_PARAGRAPH_THRESHOLD
+
+    if level_of_last_matching_numbering < level and percent and percent > NEW_PARAGRAPH_THRESHOLD:
+        if _is_new_paragraph():
+            return level + 1, True
+        else:
+            return level, False
+    elif level_of_last_matching_numbering < level and (percent_curr and (percent_curr > -NEW_PARAGRAPH_THRESHOLD and percent_curr < NEW_PARAGRAPH_THRESHOLD)):
+        return level, False
+    else:
+        return level_of_last_matching_numbering, False
+
 
 def parse_hierarchy(paragraphs):
     paragraphs = split_numbering(paragraphs)
-
     paragraphs = build_hierarchy(paragraphs)
 
     return paragraphs

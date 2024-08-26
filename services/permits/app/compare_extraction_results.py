@@ -128,9 +128,6 @@ def validate_condition(csv_pairs):
     for csv_pair in csv_pairs:
         auto_extracted_csv, manual_extracted_csv = csv_pair
 
-        with open(auto_extracted_csv, "r") as f:
-    
-            print(f.read())
         # 1. Parse csv files to dicts
         auto_extracted_df = pd.read_csv(
             auto_extracted_csv, dtype=str, keep_default_na=False
@@ -289,7 +286,6 @@ def compare_matching_conditions(
             total_comparable_conditions += 1
             auto_condition_text = auto_content_dict[key].condition_text
             manual_condition_text = manual_content_dict[key].condition_text
-            # match_percentage = SequenceMatcher(None, auto_condition_text.replace('\n', ''), manual_condition_text.replace('\n', '')).ratio() * 100
             match_percentage = fuzz.ratio(auto_condition_text.replace('\n', ''), manual_condition_text.replace('\n', ''))
 
             is_match = match_percentage >= 100

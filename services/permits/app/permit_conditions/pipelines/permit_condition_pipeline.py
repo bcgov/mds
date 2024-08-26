@@ -43,9 +43,9 @@ assert api_version
 with open(f"{ROOT_DIR}/app/permit_condition_prompts.yaml", "r") as file:
     prompts = yaml.safe_load(file)
 
-system_prompt = prompts["system_prompt_2"]
-user_prompt = prompts["user_prompt_2"]
-permit_document_prompt = prompts["permit_document_prompt_2"]
+system_prompt = prompts["system_prompt"]
+user_prompt = prompts["user_prompt"]
+permit_document_prompt = prompts["permit_document_prompt"]
 
 assert system_prompt
 assert user_prompt

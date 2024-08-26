@@ -95,5 +95,5 @@ def test_run_with_valid_data_multiple_iterations():
         # Make sure the second iteration contained the reply from the first iteration
         # and a command to continue the generation
         mock_fetch_result.assert_called_with(
-            data.messages + [expected_reply, ChatMessage.from_user("Your response got cut off. continue from where you left off.")], {}
+            data.messages + [expected_reply, ChatMessage.from_user("Your response got cut off. Continue from where you left off.")], {}
         )

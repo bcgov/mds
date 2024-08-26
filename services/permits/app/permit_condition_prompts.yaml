@@ -2,44 +2,30 @@ system_prompt: |
   You are a helpful AI assistant that can extract information from text files. You extract what is exactly as it is from the text and return it in a json format.
 
 user_prompt: |
-  You will be given a text that contains a tree of conditions. Each condition can optionally contain a sub-list of conditions. The conditions are structured as follows (type):
-
+  You will be given a csv file of textual paragraphs that represent a tree of conditions.
+  Your task is to extract the hierarchical structure of these conditions, identify the paragraph numbering structure
+  and what number was found within each paragraph.
+  Give each level a type based on the level of hierarchy and what it represents the hirararchical structure should be represented as follows:
   section -> paragraph -> subparagraph -> clause -> subclause -> subsubclause
-
-  Important: Permit conditions are found under "Conditions" or "Permit Conditions". Do not include conditions from preamble, headers or table of contents. Sections are named in these categories but not always:
-
-  - General
-  - Health and Safety
-  - Geotechnical
-  - Protection of Land and Watercourses or Environmental Land and Watercourses
-  - Reclamation and Closure Program
-
-  Your task is to extract these conditions and return them in a json format with the following fields:
-  - type
-  - numbering
-  - title
-  - text
-  - section_number #  Always uppercase letter starting from A
-  - paragraph_number # Always number, starting from 1
-  - subparagraph_number # Always lowercase letter starting from a
-  - clause_number # Always lowercase roman numeral starting from i
-  - subclause_number # Captures any lists that are nested within the clause
-  - subsubclause_number # Captures any lists that are nested within the subclause
-  - page_number
-
-  For each of them, output the type, numbering, and title (if found) in addition to the text. We also need to know what section, paragraph, subparagraph, clause, subclause, and subsubclause it belongs to.
-
-  Make the output a flat list of dictionaries, where each dictionary represents a condition.
-  The <--- REAL PAGE: ---> tag is used to denote the page_number where the condition was found.
-
-  {% if last_condition_text %}
-  {{ last_condition_text }}
-
-  Find the last condition extracted, and continue with the next condition after that - do not include any conditions before that point in the text.
-
-  {% endif %}
-
-  Here's the content of the text file, delimited by -----------. Output the results without a code block.
+  The output should be formatted as a CSV object without a code block, and contain the following columns:  
+    
+  - id: id of the condition as found in the input  
+  - type: type of the condition (section, paragraph, subparagraph, clause, subclause, subsubclause)  
+  - paragraph_type: title | text - does the input text look like a title or text  
+  - numbering: the numbering structure of the condition if found. (e.g A or a or 1 or ii or (a) etc)
+  The input is a csv file with the following columns. The values in each column are quoted with ""
+  - id: id of the condition
+  - indentation: The x index of the conidtion of the page. This can be used in combination with the numbering to determine the structure.
+  - text: The text of the condition. At the beginning of this is where the numbering of the condition can be found.
+    
+  Example output:  
+    
+  id,type,paragraph_type,numbering  
+  49,section,title,A  
+  50,paragraph,text,B  
+    
+  Each paragraph in the input should be included in the output.  
+  Here's the CSV input (delimited by ---------)
 
 permit_document_prompt: |
   -----------
@@ -69,40 +55,6 @@ extra_props: |
   "requirement_before_activity": "Yes",
   "timeframe_before_activity": "Yes",
   "professional_designation_involved": "Yes"
-
-system_prompt_2: |
-  You are a helpful AI assistant that can identify nested structures in text.
-
-user_prompt_3: |
-  You will be given a csv file of textual paragraphs that represent a tree of conditions.
-  Your task is to extract the hierarchical structure of these conditions, identify the paragraph numbering structure
-  and what number was found within each paragraph.
-  Give each level a type based on the level of hierarchy and what it represents the hirararchical structure should be represented as follows:
-
-  section -> paragraph -> subparagraph -> clause -> subclause -> subsubclause
-
-  The output should be formatted as a CSV object without a code block, and contain the following columns:  
-    
-  - id: id of the condition as found in the input  
-  - type: type of the condition (section, paragraph, subparagraph, clause, subclause, subsubclause)  
-  - paragraph_type: title | text - does the input text look like a title or text  
-  - numbering: the numbering structure of the condition if found. (e.g A or a or 1 or ii or (a) etc)
-
-  The input is a csv file with the following columns. The values in each column are quoted with ""
-
-  - id: id of the condition
-  - indentation: The x index of the conidtion of the page. This can be used in combination with the numbering to determine the structure.
-  - text: The text of the condition. At the beginning of this is where the numbering of the condition can be found.
-    
-  Example output:  
-    
-  id,type,paragraph_type,numbering  
-  49,section,title,A  
-  50,paragraph,text,B  
-    
-  Each paragraph in the input should be included in the output.  
-
-  Here's the CSV input (delimited by ---------)
 
 permit_document_prompt_2: |
   -----------
@@ -142,31 +94,5 @@ user_prompt_2: |
   - indentation: You can ignore this
 
   Important: Output the full json structure without code blocks or other text. Do not output any other explanation or questions that is not in the json format.
-
-  Here's the CSV input (delimited by ---------)
-
-user_prompt_4: |
-  Your task is to identify the hierarchy of the given text based on indentation and numbering of each, and determine the parent of each condition if it exists.
-
-  The text is structured as a tree like this:
-
-  section -> paragraph -> subparagraph -> clause -> subclause -> subsubclause
-
-  The input is a CSV with the following format:
-  - id: id of the condition      
-  - indentation: The x index of the condition of the page. This can be used in combination with the numbering to determine the structure.      
-  - text: The text of the condition. The text is indented to give us an idea of the structure. The numbering of the condition can be found after the leading whitespace (e.g. A. (a), i), (i). 2. etc.)      
-      
-  Output should be a json structure with the following properties:
-  - id: the id of the condition
-  - parent_id: the type of the condition. The parent_id is the id of the parent condition if it exists, otherwise it should be null.
-  - numbering: the numbering of the condition (if found)
-
-
-  Pay attention to the numbering of the conditions when intendation is similar. Numbering of the same type (e.g. lowercase letter) at the same level should likely be siblings if they share a parent  
-  If numbering is not found for a paragraph, it should be nested under the last numbered sibling.
-  Important: Output the full json structure without code blocks or other text. Do not output any other explanation or questions that is not in the json format.
-
-  The section we want you to focus on is section A. General.
 
   Here's the CSV input (delimited by ---------)
