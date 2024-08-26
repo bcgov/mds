@@ -109,6 +109,7 @@ services:
     ports:
       - 5000:5000
     volumes:
+      - ./migrations:/migrations
       - ./services/core-api:/app
       - core_api_logs:/var/log/core-api
     depends_on:

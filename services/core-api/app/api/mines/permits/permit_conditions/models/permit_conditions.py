@@ -40,6 +40,8 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
                                            db.ForeignKey('permit_conditions.permit_condition_id'))
     display_order = db.Column(db.Integer, nullable=False)
 
+    __versioned__ = {}
+
     all_sub_conditions = db.relationship(
         'PermitConditions',
         lazy='joined',
