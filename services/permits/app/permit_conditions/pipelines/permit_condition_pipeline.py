@@ -86,11 +86,10 @@ def permit_condition_pipeline():
     index_pipeline.add_component("json_fixer", json_fixer)
     index_pipeline.add_component("validator", validator)
 
-    index_pipeline.connect("cache_checker", "pdf_converter")
     index_pipeline.connect("pdf_converter", "prompt_builder")
     index_pipeline.connect("prompt_builder", "llm")
     index_pipeline.connect("llm", "json_fixer")
     index_pipeline.connect("json_fixer", "validator")
     index_pipeline.connect("validator.iteration", "prompt_builder.iteration")
-
+    index_pipeline.connect("pdf_converter.documents", "cache_checker.items")
     return index_pipeline
