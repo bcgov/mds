@@ -42,7 +42,7 @@ def generate_history_table_migration(table):
 
 def generate_backfill_history_migration(table, version_table_name, table_class):
     data_migdt = (datetime.datetime.today() + datetime.timedelta(minutes=1)).strftime('%Y.%m.%d.%H.%M')
-    migration_name = f'/migrations/V{data_migdt}__add_{version_table_name}_history_table_backfill.sql'
+    migration_name = f'/migrations/sql/V{data_migdt}__add_{version_table_name}_history_table_backfill.sql'
 
     with open(migration_name, 'w') as f:
         table_columns = []
@@ -69,7 +69,7 @@ def generate_backfill_history_migration(table, version_table_name, table_class):
 def generate_version_table_migration(version_table_name, version_table_definition):
     dt = datetime.datetime.today().strftime('%Y.%m.%d.%H.%M')
 
-    migration_name = f'/migrations/V{dt}__add_{version_table_name}_history_table.sql'
+    migration_name = f'/migrations/sql/V{dt}__add_{version_table_name}_history_table.sql'
 
     version_table_create_statement = str(CreateTable(version_table_definition).compile(dialect=postgresql.dialect())).strip()
 
