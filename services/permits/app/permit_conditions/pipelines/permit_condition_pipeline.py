@@ -16,6 +16,8 @@ from app.permit_conditions.validator.permit_condition_validator import (
 from haystack import Pipeline
 from haystack.dataclasses import ChatMessage
 from haystack.utils import Secret
+from haystack.components.caching import CacheChecker
+from haystack.document_stores.in_memory import InMemoryDocumentStore
 
 logger = logging.getLogger(__name__)
 
@@ -52,6 +54,9 @@ def permit_condition_pipeline():
     """
     index_pipeline = Pipeline()
 
+    document_store = InMemoryDocumentStore()
+    cache_checker = CacheChecker(document_store=document_store, cache_field="file_path")
+
     llm = CachedAzureOpenAIChatGenerator(
         azure_endpoint=base_url,
         api_version=api_version,
@@ -74,12 +79,14 @@ def permit_condition_pipeline():
 
     validator = PermitConditionValidator()
 
+    index_pipeline.add_component("cache_checker", cache_checker)
     index_pipeline.add_component("pdf_converter", pdf_converter)
     index_pipeline.add_component("prompt_builder", prompt_builder)
     index_pipeline.add_component("llm", llm)
     index_pipeline.add_component("json_fixer", json_fixer)
     index_pipeline.add_component("validator", validator)
 
+    index_pipeline.connect("cache_checker", "pdf_converter")
     index_pipeline.connect("pdf_converter", "prompt_builder")
     index_pipeline.connect("prompt_builder", "llm")
     index_pipeline.connect("llm", "json_fixer")
