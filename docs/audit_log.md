@@ -28,7 +28,7 @@ It's currently integrated into the MDS system for tracking changes for Tailings 
 2.  Create a version table for the model by running the following command:
 
     ```bash
-    make generate_version_table_migration TABLE=mine
+    make generate_history_table_migration TABLE=mine
     ```
 
     This will generate a flyway migration file that creates a version table for the specified model and a migration, and
