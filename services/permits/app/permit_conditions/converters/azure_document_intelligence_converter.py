@@ -72,7 +72,7 @@ class AzureDocumentIntelligenceConverter:
 
     def add_metadata_to_document(self, idx, p):
         # Generate a unique ID for the paragraph that can be used to identify it later
-        fle = hashlib.md5(p['content'].encode())
+        fle = hashlib.md5(p.content.encode())
         fle.update(str(idx).encode())
         paragraph_id = fle.hexdigest()[:7]
 
@@ -84,9 +84,9 @@ class AzureDocumentIntelligenceConverter:
 
         top, right, bottom, left = min(y), max(x), max(y), min(x)
 
-        content = {"id": paragraph_id, "text": p['content'], "role": p['role'], 'sort_key': idx +1}
+        content = {"id": paragraph_id, "text": p.content, "role": p.role, 'sort_key': idx +1}
         # Add a bounding_box metadata field to the paragraph
-        meta = {"bounding_box": {"top": top, "right": right, "bottom": bottom, "left": left}}
+        meta = {"bounding_box": {"top": top, "right": right, "bottom": bottom, "left": left}, "role": p.role}
 
         return Document(content=json.dumps(content, indent=None), meta=meta)
 

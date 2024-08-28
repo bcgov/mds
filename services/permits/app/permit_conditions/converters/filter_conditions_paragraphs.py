@@ -1,24 +1,13 @@
 import csv
-import hashlib
 import io
 import json
 import logging
 import os
-import pickle
-import shutil
-import uuid
-from pathlib import Path
-from time import sleep
 from typing import Any, Dict, List, Optional
 
-import ocrmypdf
 import pandas as pd
 from app.permit_conditions.context import context
-from azure.ai.formrecognizer import AnalyzeResult, DocumentAnalysisClient
-from azure.core.credentials import AzureKeyCredential
 from haystack import Document, component, logging
-from pypdf import PdfReader
-from pypdf.errors import PdfReadError
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +16,15 @@ DEBUG_MODE = os.environ.get("DEBUG_MODE", "false").lower() == "true"
 @component
 class FilterConditionsParagraphsConverter:
     """
-    Filters paragraphs from a list of documents to extract only the paragraphs that contain permit conditions.
+    Filters paragraphs from a list of documents to extract only the paragraphs that contain permit conditions
+    based on the bounding box and the role of the paragraph (title / sectionHeader etc.) identified by Document Intelligence.
+
+        - Try to identify the bounding boxes of the page headers and exclude paragraphs that overlap it.
+        - Try to identify the start of the conditions section and exclude paragraphs that come before it.
+        - Exclude paragraphs identified with roles we don't care about e.g. (pageNumber, footnote, pageFooter etc.)
+    
+    Also adds a csv representation of the filtered paragraphs to the list of documents as the first item so it can be passed along to
+    GPT4 to generate questions for each condition.
 
     Args:
         documents (List[Document]): The list of documents to filter.
@@ -48,106 +45,116 @@ class FilterConditionsParagraphsConverter:
             doc.content = json.loads(doc.content)
 
         filtered_paragraphs = filter_paragraphs(documents)
-        docs = []
 
-        cs = self.create_csv_representation(filtered_paragraphs)
-        docs = [Document(content=cs, meta={"_type": "csv"})] + docs
+        if DEBUG_MODE:
+            with open("debug/filter_conditions.json", "w") as f:
+                cnt = [{ "meta": d.meta, "content": d.content} for d in filtered_paragraphs]
+                f.write(json.dumps(cnt, indent=4))
+
+        cs = _create_csv_representation(filtered_paragraphs)
+
+        for d in filtered_paragraphs:
+            d.content = json.dumps(d.content)
+
+        docs = [Document(content=cs, meta={"_type": "csv"})] + filtered_paragraphs
 
         return {"documents": docs}
 
-    def create_csv_representation(self, docs):
-        content = []
-        for doc in docs:
-            cnt = json.loads(doc.content)
-            del cnt['role']
-            del cnt['sort_key']
-            cnt['text'] = f"{cnt['text'][:30]}"
-            content.append(cnt)
-
-        if DEBUG_MODE:
-            with open("debug/azure_document_intelligence_converter_result.json", "w") as f:
-                json.dump(content, f, indent=4)
-
-        content = json.dumps(content)
-
-        jsn = pd.read_json(io.StringIO(content))
-
-        cs = jsn.to_csv(index=False, header=True, quoting=csv.QUOTE_ALL, encoding='utf-8', sep=',', columns=['id', 'indentation', 'text'])
-        return cs
-
-
-
-# Check if a paragraph is within the page header regions
-def is_in_page_header(paragraph, header_regions):
-    # Find the maximum top y-coordinate across all bounding regions of the paragraph
-    max_paragraph_top_y = max(
-        max(point.y for point in region.polygon)
-        for region in paragraph.bounding_regions
-    )
-
-    # Compare this minimum top y-coordinate with the bottom y-coordinates of the header regions
-    for header_region in header_regions:
-        header_bottom_y = min(point.y for point in header_region.polygon)
-        if max_paragraph_top_y < header_bottom_y:
-            # The paragraph is above the bottom of the header region
-            return True
-    return False
-
-
-def is_in_page_header(paragraph, max_page_header_y):
-    if max_page_header_y is not None:
-        bounding_region_polygon = paragraph.bounding_regions[0].polygon
-        min_y_coordinate = min(br.y for br in bounding_region_polygon)
-        return min_y_coordinate < max_page_header_y
-    return False
-
 
 def filter_paragraphs(paragraphs):
+    # Filter out paragraphs that are part of the page header
+    paragraphs, max_page_header_y = _exclude_paragraphs_overlapping_page_header(paragraphs)
+
+    # Filter out paragraphs that are not part of the conditions section
+    paragraphs = _exclude_paragraphs_not_in_conditions_section(paragraphs)
+
+    # Filter out paragraphs that are not paragraphs
+    paragraphs = _exclude_paragraphs_with_non_paragraph_roles(paragraphs, max_page_header_y)
+
+    logger.info(f"Found {len(paragraphs)} paragraphs after filtering, {max_page_header_y}")
+
+    return paragraphs
+
+def _is_in_page_header(paragraph, max_page_header_y):
+    if max_page_header_y is not None:
+        return paragraph.meta['bounding_box']['top'] < max_page_header_y
+    return False
+
+
+def _exclude_paragraphs_overlapping_page_header(paragraphs):
     # Identify the bottom of the paragraph first paragraph identified by doc intelligence as a page header
     # We use this to filter out paragraphs that are part of the page header
-    page_header_bottom = identify_bottom_of_first_page_header(paragraphs)
-
-    if page_header_bottom:
-        brs = page_header_bottom.bounding_regions[0].polygon
-        max_page_header_y = max([br.y for br in brs])
-    else:
-        max_page_header_y = None
-
+    max_page_header_y = _identify_bottom_of_first_page_header(paragraphs)
+    
     # Filter out paragraphs that are part of the page header
-    non_header_paragraphs = list(filter(lambda p: not is_in_page_header(p), paragraphs))
+    non_header_paragraphs = list(filter(lambda p: not _is_in_page_header(p, max_page_header_y), paragraphs))
 
-    # Find the first paragraph that contains the word "conditions" in it - this is likely the start of the conditions section
-    idx_of_conditions_header = next(i for i, p in enumerate(non_header_paragraphs) if "conditions" in p.content.lower())
+    part_of_header = list(filter(lambda p: _is_in_page_header(p, max_page_header_y), paragraphs))
 
-    # The first condition is likely the next section after the conditions header
-    first_condition_index = next((i for i, p in enumerate(non_header_paragraphs[idx_of_conditions_header:]) if p.role in ("title", "sectionHeading")), None)
+    for p in part_of_header:
+        logger.info(f"Excluded paragraph due to header overlap: {p.content['text']}")
 
-    filtered_paragraphs = non_header_paragraphs[first_condition_index:]
+    if len(non_header_paragraphs) > 0:
+        return non_header_paragraphs, max_page_header_y
+    return paragraphs, max_page_header_y
 
+def _exclude_paragraphs_not_in_conditions_section(paragraphs):
+    # Find the first section header / title that contains the word "conditions" in it - this is likely the start of the conditions section
+    idx_of_conditions_header = next((i for i, p in enumerate(paragraphs) if "conditions" in p.content['text'].lower() and p.content['role'] in ("sectionHeading", "title")), None)
+
+    first_condition_index = 0
+
+    if idx_of_conditions_header is not None:
+        # The first condition is likely in the next section after the conditions header, try to find it
+        first_condition_index = next((idx_of_conditions_header + i + 1 for i, p in enumerate(paragraphs[idx_of_conditions_header + 1:]) if p.content['role'] in ("title", "sectionHeading")), None)
+        if not first_condition_index:
+            first_condition_index = idx_of_conditions_header
+    filtered_paragraphs = paragraphs[first_condition_index:]
+
+    return filtered_paragraphs
+
+def _exclude_paragraphs_with_non_paragraph_roles(paragraphs, max_page_header_y):
     filterf = ["pageNumber", "footnote", "pageFooter"]
 
     if max_page_header_y is not None:
         filterf.append("pageHeader")
 
-    # Exclude paragraphs that are page numbers, footnotes, or page footers
-    filtered_paragraphs = [p for p in filtered_paragraphs if p.role not in filterf]
+    return  [p for p in paragraphs if p.content['role'] not in filterf]
 
-    logger.info(f"Found {len(filtered_paragraphs)} paragraphs after filtering, {max_page_header_y}")
-
-    return filtered_paragraphs
-
-def identify_bottom_of_first_page_header(paragraphs):
+def _identify_bottom_of_first_page_header(paragraphs):
     # Find the first paragraph that is identified as a page header
     is_like_page_header = False
 
-    page_header_start_idx = next((i for i, p in enumerate(paragraphs) if p.role == "pageHeader"), None)
+    page_header_start_idx = next((i for i, p in enumerate(paragraphs) if p.content['role'] == "pageHeader"), None)
 
-    if page_header_start_idx:
-        page_header_end_idx = next((i - 1 for i, p in enumerate(paragraphs[page_header_start_idx:]) if p.role == "pageHeader"), None)
+    if page_header_start_idx is not None:
 
-        is_like_page_header = next((True for p in paragraphs[page_header_start_idx:page_header_end_idx] if "permit no" in p.content.lower() or "page" in p.content.lower()), False)
+        page_header_end_idx = next((page_header_start_idx+i for i, p in enumerate(paragraphs[page_header_start_idx+1:]) if p.content['role'] and p.content['role'] != 'pageHeader'), None)
+
+        is_like_page_header = next((True for p in paragraphs[page_header_start_idx:page_header_end_idx+1] if "permit no" in p.content['text'].lower() or "page" in p.content['text'].lower()), False)
     
-        if page_header_start_idx and page_header_end_idx and is_like_page_header:
-            brs = paragraphs[page_header_end_idx].bounding_regions[0].polygon
-            return max([br.y for br in brs])
+        if page_header_start_idx is not None and page_header_end_idx is not None and is_like_page_header:
+            return paragraphs[page_header_end_idx].meta['bounding_box']['bottom'] 
     return None
+
+
+def _create_csv_representation(docs):
+    content = []
+    for doc in docs:
+        indentation = doc.meta['bounding_box']['left']
+        cnt = json.loads(json.dumps(doc.content))
+        cnt['indentation'] = indentation
+        del cnt['role']
+
+        if 'sort_key' in cnt:
+            del cnt['sort_key']
+        cnt['text'] = f"{cnt['text'][:30]}"
+        content.append(cnt)
+
+
+    content = json.dumps(content)
+
+    jsn = pd.read_json(io.StringIO(content))
+
+    cs = jsn.to_csv(index=False, header=True, quoting=csv.QUOTE_ALL, encoding='utf-8', sep=',', columns=['id', 'indentation', 'text'])
+    return cs

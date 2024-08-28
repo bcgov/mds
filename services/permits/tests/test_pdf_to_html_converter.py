@@ -6,21 +6,12 @@ import pytest
 from app.permit_conditions.converters.pdf_to_text_converter import PDFToTextConverter
 from app.permit_conditions.tasks.tasks import task_context
 from pypdf.errors import PdfReadError
+from tests.mocks import MockContext
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 SAMPLE_PDF_PATH = Path(ROOT_DIR + "/sample_pdf.pdf")
 SAMPLE_PDF_OCR_PATH = Path(ROOT_DIR + "/sample_pdf_ocr.pdf")
-
-class MockCeleryTask:
-    def update_state(self, state, meta):
-        pass
-
-class MockContext:
-    def get():
-        return MockCeleryTask()
-    def update_state(self, state, meta):
-        pass
 
 MockDocument = MagicMock()
 
