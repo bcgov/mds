@@ -7789,7 +7789,7 @@ export const AUTHORIZATION_INVOLVED = {
     SPR: "Supporting Documents",
     MAP: "Location Map",
     GEN: "General",
-    DFA: "Discharge Factor Amendment",
+    DFA: "Discharge Factor",
   },
   formValues: {
     authorizations: {

@@ -4,7 +4,11 @@ import { DOCUMENT, EXCEL, IMAGE, SPATIAL } from "@mds/common/constants/fileTypes
 import { PROJECT_SUMMARY_DOCUMENTS } from "@mds/common/constants/API";
 import RenderFileUpload from "@mds/common/components/forms/RenderFileUpload";
 import { IProjectSummaryDocument } from "../..";
-import { PROJECT_SUMMARY_DOCUMENT_TYPE_CODE } from "../..";
+import {
+  PROJECT_SUMMARY_DOCUMENT_TYPE_CODE,
+  DISCHARGE_FACTOR_FORM_AMENDMENT,
+  DISCHARGE_FACTOR_FORM_NEW,
+} from "../..";
 import { requiredList } from "@mds/common/redux/utils/Validate";
 
 interface AuthorizationSupportDocumentUploadProps {
@@ -75,7 +79,7 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
     } else if (type === "CON") {
       valuesToCheckFor = ["TRA", "NAM"];
     } else if (type === "CAF") {
-      valuesToCheckFor = ["MMR", "RCH"];
+      valuesToCheckFor = ["MMR", "RCH", "ILT", "IGT", "DDL"];
     }
 
     return amendmentChanges?.some((val) => valuesToCheckFor.includes(val));
@@ -110,14 +114,12 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
       />
       {(!isAmendment ||
         (isAmendment &&
-          isDocumentTypeRequired(
-            PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.DISCHARGE_FACTOR_AMENDMENT
-          ))) && (
+          isDocumentTypeRequired(PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.DISCHARGE_FACTOR))) && (
         <Field
           id="DischargeFactorFormUpload"
           name="discharge_documents"
-          label="Discharge Factor Amendment Form (PDF, 318KB)"
-          labelHref="https://www2.gov.bc.ca/assets/gov/environment/waste-management/waste-discharge-authorization/guides/forms/epd-ema-06_amend_discharge_factor_amendment_form.pdf"
+          label="Discharge Factor Form (PDF, 318KB)"
+          labelHref={isAmendment ? DISCHARGE_FACTOR_FORM_AMENDMENT : DISCHARGE_FACTOR_FORM_NEW}
           component={RenderFileUpload}
           required
           validate={[requiredList]}
@@ -131,7 +133,7 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
             handleFileLoad(
               document_name,
               document_manager_guid,
-              PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.DISCHARGE_FACTOR_AMENDMENT
+              PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.DISCHARGE_FACTOR
             )
           }
           onRemoveFile={handleRemoveFile}
@@ -246,7 +248,8 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
         name="support_documents"
         label="Supporting Document"
         component={RenderFileUpload}
-        required={false}
+        required={showExemptionSection}
+        validate={showExemptionSection ? [requiredList] : []}
         allowRevert
         allowMultiple
         acceptedFileTypesMap={acceptedFileTypesMap}

@@ -227,7 +227,7 @@ const RenderEMAPermitCommonSections = ({ code, isAmendment, index }) => {
 
 const RenderEMANewPermitSection = ({ code }) => {
   return (
-    <div className="grey-box">
+    <div className="grey-box margin-medium--left margin-large--bottom">
       <FormSection name={`${code}.NEW[0]`}>
         <Field
           name="new_type"
@@ -264,6 +264,13 @@ const RenderEMANewPermitSection = ({ code }) => {
           required
           validate={[requiredRadioButton]}
         />
+        <Field
+          label="Is this Authorization required for remediation of a contaminated site?"
+          name="is_contaminated"
+          required
+          validate={[requiredRadioButton]}
+          component={RenderRadioButtons}
+        />
         <RenderEMAPermitCommonSections isAmendment={false} code={code} index={0} />
       </FormSection>
     </div>
@@ -278,7 +285,7 @@ const RenderEMAAmendFieldArray = ({ fields, code }) => {
   return (
     <>
       {fields.map((amendment: string, index) => (
-        <Col className="grey-box" key={amendment}>
+        <Col className="grey-box margin-large--top" key={amendment}>
           <FormSection name={amendment}>
             <Field
               label={
@@ -374,7 +381,7 @@ const RenderEMAAuthCodeFormSection = ({ code }) => {
   };
 
   return (
-    <>
+    <div className="margin-large--left">
       <Field
         name={`${code}.types`}
         component={RenderGroupCheckbox}
@@ -386,7 +393,11 @@ const RenderEMAAuthCodeFormSection = ({ code }) => {
         }}
         onChange={handleChangeAuthType}
         props={{
-          label: "What type of authorization is involved in your application?",
+          label: (
+            <span className="margin-large--top">
+              What type of authorization is involved in your application?
+            </span>
+          ),
           options: [
             {
               disabled: hasAmendments,
@@ -406,7 +417,7 @@ const RenderEMAAuthCodeFormSection = ({ code }) => {
                       <Button
                         onClick={addAmendment}
                         icon={<PlusCircleFilled />}
-                        className="btn-sm-padding"
+                        className="btn-sm-padding margin-large--bottom"
                       >
                         Add another amendment
                       </Button>
@@ -424,7 +435,7 @@ const RenderEMAAuthCodeFormSection = ({ code }) => {
         }}
       />
       {hasNew && <RenderEMANewPermitSection code={code} />}
-    </>
+    </div>
   );
 };
 
@@ -484,7 +495,7 @@ const RenderAuthCodeFormSection = ({ authorizationType, code }) => {
   // other authorizations, have single record so index with [0]
   return (
     <FormSection name={`${code}[0]`}>
-      <Row>
+      <Row className="grey-box margin-large--top margin-medium--bottom">
         <Field
           name="project_summary_permit_type"
           props={{
@@ -564,7 +575,7 @@ export const AuthorizationsInvolved = () => {
           <FormSection name="authorizations">
             {transformedProjectSummaryAuthorizationTypes.map((authorization) => {
               return (
-                <div key={authorization.code}>
+                <div key={authorization.code} className="margin-large--bottom">
                   <Typography.Title level={5}>{authorization.description}</Typography.Title>
                   {authorization.children.map((child) => {
                     const checked = formValues.authorizationTypes?.includes(child.code);
@@ -584,39 +595,42 @@ export const AuthorizationsInvolved = () => {
                               <>
                                 {child.code === "MINES_ACT_PERMIT" && (
                                   <Alert
+                                    className="margin-large--y"
                                     message="You are submitting a Major Mine Application to the Chief Permitting Officer"
                                     description={
-                                      <ul>
-                                        <li>
-                                          For intent to depart from a Mines Act authorized mine plan
-                                          and reclamation program, as per HSRC code 10.1.18, submit
-                                          a{" "}
-                                          {isCore ? (
-                                            "Notice of Departure"
-                                          ) : (
-                                            <Link
-                                              to={GLOBAL_ROUTES?.MINE_DASHBOARD.dynamicRoute(
-                                                formValues?.mine_guid,
-                                                "nods"
-                                              )}
-                                            >
-                                              Notice of Departure
-                                            </Link>
-                                          )}{" "}
-                                          through MineSpace
-                                        </li>
-                                        <li>
-                                          For exploration work outside the permit mine area without
-                                          expanding the production area, submit a Notice of Work
-                                          application via FrontCounter BC to amend your MX or CX
-                                          permit.
-                                        </li>
-                                        <li>
-                                          For induced polarization surveys or exploration drilling
-                                          within the permit mine area, submit a Notification of
-                                          Deemed Authorization application via FrontCounter BC.
-                                        </li>
-                                      </ul>
+                                      <div className="list-position-outside">
+                                        <ul>
+                                          <li>
+                                            For intent to depart from a Mines Act authorized mine
+                                            plan and reclamation program, as per HSRC code 10.2.9,
+                                            submit a{" "}
+                                            {isCore ? (
+                                              "Notice of Departure"
+                                            ) : (
+                                              <Link
+                                                to={GLOBAL_ROUTES?.MINE_DASHBOARD.dynamicRoute(
+                                                  formValues?.mine_guid,
+                                                  "nods"
+                                                )}
+                                              >
+                                                Notice of Departure
+                                              </Link>
+                                            )}{" "}
+                                            through MineSpace
+                                          </li>
+                                          <li>
+                                            For exploration work outside the permit mine area
+                                            without expanding the production area, submit a Notice
+                                            of Work application via FrontCounter BC to amend your MX
+                                            or CX permit.
+                                          </li>
+                                          <li>
+                                            For induced polarization surveys or exploration drilling
+                                            within the permit mine area, submit a Notification of
+                                            Deemed Authorization application via FrontCounter BC.
+                                          </li>
+                                        </ul>
+                                      </div>
                                     }
                                     type="info"
                                     showIcon
