@@ -34,10 +34,17 @@ class PermitCondition(BaseModel):
     id: Optional[str] = None
 
     def __init__(self, /, **data: Any):
-        if data.get('type') == 'section':
-            data['section_title'] = data.get('condition_title')
-        
-        for key in ['section', 'paragraph', 'subparagraph', 'clause', 'subclause', 'subsubclause']:
+        if data.get("type") == "section":
+            data["section_title"] = data.get("condition_title")
+
+        for key in [
+            "section",
+            "paragraph",
+            "subparagraph",
+            "clause",
+            "subclause",
+            "subsubclause",
+        ]:
             if key in data and data[key] is not None:
                 data[key] = data[key].strip()
 

@@ -15,6 +15,7 @@ logger = logging.getLogger(__name__)
 
 DEBUG_MODE = os.environ.get("DEBUG_MODE", "false").lower() == "true"
 
+
 class ExtractionIteration(BaseModel):
     start_page: int
     last_condition_text: str
@@ -25,7 +26,6 @@ class PermitConditionSectionCombiner:
 
     @component.output_types(
         conditions=PermitConditions,
-        permit_condition_csv=Optional[List[Document]]
     )
     def run(self, documents: List[Document]):
         """
@@ -65,7 +65,7 @@ class PermitConditionSectionCombiner:
             }
         ]
 
-        
+
         """
         document_json = [
             {**json.loads(doc.content), **{"meta": doc.meta}} for doc in documents
@@ -83,16 +83,21 @@ class PermitConditionSectionCombiner:
         # Combine conditions that have the exact same section, paragraph, etc.
         # This is the case when a condition has both a "title" and associated text. They're split into two separate paragraphs, but should really be one.
         for p in parsed_docs:
-            matching_cond = next((
-                c for c in conditions if (
-                    c.section == p.get("section") and
-                    c.paragraph == p.get("paragraph") and
-                    c.subparagraph == p.get("subparagraph") and
-                    c.subclause == p.get("subclause") and
-                    c.subsubclause == p.get("subsusubparagraph") and
-                    c.clause == p.get("clause")
-                )
-            ), None)
+            matching_cond = next(
+                (
+                    c
+                    for c in conditions
+                    if (
+                        c.section == p.get("section")
+                        and c.paragraph == p.get("paragraph")
+                        and c.subparagraph == p.get("subparagraph")
+                        and c.subclause == p.get("subclause")
+                        and c.subsubclause == p.get("subsusubparagraph")
+                        and c.clause == p.get("clause")
+                    )
+                ),
+                None,
+            )
 
             if matching_cond:
                 # Combine the text and titles of condtions that have the same section, paragraph, etc.
@@ -103,35 +108,49 @@ class PermitConditionSectionCombiner:
                 # The permittee should do a, b, and c.
                 # ```
                 # In this case, the condition is split into two paragraphs, but should be combined into one with the following props
-                # 
+                #
                 # Condition Title: Test condition
                 # Condition Text: The permittee should do a, b, and c.
                 if not matching_cond.condition_title:
                     matching_cond.condition_title = matching_cond.condition_text
-                    matching_cond.condition_text = p['text']
-                    matching_cond.id = p['id']
+                    matching_cond.condition_text = p["text"]
+                    matching_cond.id = p["id"]
 
-                    if matching_cond.meta['bounding_box'] and p['meta']['bounding_box']:
-                        matching_cond.meta['bounding_box']['bottom'] = max(matching_cond.meta['bounding_box']['bottom'], p['meta']['bounding_box']['bottom'])
-                        matching_cond.meta['bounding_box']['top'] = min(matching_cond.meta['bounding_box']['top'], p['meta']['bounding_box']['top'])
-                        matching_cond.meta['bounding_box']['left'] = min(matching_cond.meta['bounding_box']['left'], p['meta']['bounding_box']['left'])
-                        matching_cond.meta['bounding_box']['right'] = max(matching_cond.meta['bounding_box']['right'], p['meta']['bounding_box']['right'])
-                    
-                    matching_cond.meta = {**p['meta'], **matching_cond.meta}
+                    if matching_cond.meta["bounding_box"] and p["meta"]["bounding_box"]:
+                        matching_cond.meta["bounding_box"]["bottom"] = max(
+                            matching_cond.meta["bounding_box"]["bottom"],
+                            p["meta"]["bounding_box"]["bottom"],
+                        )
+                        matching_cond.meta["bounding_box"]["top"] = min(
+                            matching_cond.meta["bounding_box"]["top"],
+                            p["meta"]["bounding_box"]["top"],
+                        )
+                        matching_cond.meta["bounding_box"]["left"] = min(
+                            matching_cond.meta["bounding_box"]["left"],
+                            p["meta"]["bounding_box"]["left"],
+                        )
+                        matching_cond.meta["bounding_box"]["right"] = max(
+                            matching_cond.meta["bounding_box"]["right"],
+                            p["meta"]["bounding_box"]["right"],
+                        )
+
+                    matching_cond.meta = {**p["meta"], **matching_cond.meta}
             else:
-                conditions.append(PermitCondition(
-                    section=p.get('section') or '',
-                    section_title='',
-                    paragraph=p.get('paragraph'),
-                    subparagraph=p.get('subparagraph'),
-                    clause=p.get('clause'),
-                    subclause=p.get('subclause'),
-                    subsubclause=p.get('subsubclause'),
-                    condition_title=p.get('title'),
-                    condition_text=p.get('text'),
-                    page_number=p.get('page_number') or 1,
-                    id=p.get('id'),
-                    meta=p.get('meta')
-                ))
+                conditions.append(
+                    PermitCondition(
+                        section=p.get("section") or "",
+                        section_title="",
+                        paragraph=p.get("paragraph"),
+                        subparagraph=p.get("subparagraph"),
+                        clause=p.get("clause"),
+                        subclause=p.get("subclause"),
+                        subsubclause=p.get("subsubclause"),
+                        condition_title=p.get("title"),
+                        condition_text=p.get("text"),
+                        page_number=p.get("page_number") or 1,
+                        id=p.get("id"),
+                        meta=p.get("meta"),
+                    )
+                )
 
         return {"conditions": PermitConditions(conditions=conditions)}

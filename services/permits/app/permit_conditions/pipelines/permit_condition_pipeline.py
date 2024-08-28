@@ -5,6 +5,13 @@ import yaml
 from app.permit_conditions.converters.azure_document_intelligence_converter import (
     AzureDocumentIntelligenceConverter,
 )
+from app.permit_conditions.converters.filter_conditions_paragraphs import (
+    FilterConditionsParagraphsConverter,
+)
+from app.permit_conditions.converters.metadata_converter import (
+    ConditionsMetadataCombiner,
+)
+from app.permit_conditions.converters.pdf_to_text_converter import PDFToTextConverter
 from app.permit_conditions.pipelines.CachedAzureOpenAIChatGenerator import (
     CachedAzureOpenAIChatGenerator,
 )
@@ -15,13 +22,12 @@ from app.permit_conditions.validator.json_fixer import JSONRepair
 from app.permit_conditions.validator.permit_condition_section_combiner import (
     PermitConditionSectionCombiner,
 )
+from app.permit_conditions.validator.permit_condition_validator import (
+    PermitConditionValidator,
+)
 from haystack import Pipeline
 from haystack.dataclasses import ChatMessage
 from haystack.utils import Secret
-from app.permit_conditions.converters.filter_conditions_paragraphs import FilterConditionsParagraphsConverter
-from app.permit_conditions.validator.permit_condition_validator import PermitConditionValidator
-from app.permit_conditions.converters.pdf_to_text_converter import PDFToTextConverter
-from app.permit_conditions.converters.metadata_converter import ConditionsMetadataCombiner
 
 logger = logging.getLogger(__name__)
 
@@ -47,7 +53,6 @@ permit_document_prompt = prompts["permit_document_prompt_meta_questions"]
 assert system_prompt
 assert user_prompt
 assert permit_document_prompt
-
 
 
 def permit_condition_pipeline():
@@ -80,8 +85,10 @@ def permit_condition_pipeline():
         timeout=600,
         generation_kwargs={"temperature": temperature, "max_tokens": max_tokens},
     )
-    
-    logger.info("Initialized Azure OpenAI Chat Generator with the following parameters:")
+
+    logger.info(
+        "Initialized Azure OpenAI Chat Generator with the following parameters:"
+    )
     logger.info(f"Endpoint: {base_url}")
     logger.info(f"API Version: {api_version}")
     logger.info(f"Deployment: {deployment_name}")
@@ -105,7 +112,9 @@ def permit_condition_pipeline():
     index_pipeline.connect("pdf_converter.documents", "filter_paragraphs")
     index_pipeline.connect("filter_paragraphs", "parse_hierarchy")
 
-    index_pipeline.connect("pdf_converter.permit_condition_csv", "prompt_builder.documents")
+    index_pipeline.connect(
+        "pdf_converter.permit_condition_csv", "prompt_builder.documents"
+    )
     index_pipeline.connect("prompt_builder", "llm")
     index_pipeline.connect("llm", "json_fixer")
 
@@ -145,7 +154,7 @@ def permit_condition_gpt_pipeline():
         timeout=600,
         generation_kwargs={"temperature": temperature, "max_tokens": max_tokens},
     )
-    
+
     json_fixer = JSONRepair()
     validator = PermitConditionValidator()
 

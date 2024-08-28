@@ -6,10 +6,10 @@ import logging
 import os
 import pickle
 import shutil
-import pandas as pd
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+import pandas as pd
 from app.permit_conditions.context import context
 from azure.ai.formrecognizer import AnalyzeResult, DocumentAnalysisClient
 from azure.core.credentials import AzureKeyCredential
@@ -22,6 +22,7 @@ DEBUG_MODE = os.environ.get("DEBUG_MODE", "false").lower() == "true"
 DOCUMENTINTELLIGENCE_ENDPOINT = os.environ.get("DOCUMENTINTELLIGENCE_ENDPOINT")
 DOCUMENTINTELLIGENCE_API_KEY = os.environ.get("DOCUMENTINTELLIGENCE_API_KEY")
 DOCUMENTINTELLIGENCE_API_VERSION = os.environ.get("DOCUMENTINTELLIGENCE_API_VERSION")
+
 
 @component
 class AzureDocumentIntelligenceConverter:
@@ -37,21 +38,24 @@ class AzureDocumentIntelligenceConverter:
         List[Document]: The converted documents in text format.
     """
 
-    @component.output_types(documents=List[Document], permit_condition_csv=List[Document])
+    @component.output_types(
+        documents=List[Document], permit_condition_csv=List[Document]
+    )
     def run(
         self,
         file_path: Path,
         meta: Optional[Dict[str, Any]] = None,
         id_hash_keys: Optional[List[str]] = None,
-        documents: Optional[List[Document]] = None,
-    ) -> List[Document]:
-        context.get().update_state(state="PROGRESS", meta={"stage": "pdf_to_text_converter"})
+    ):
+        context.get().update_state(
+            state="PROGRESS", meta={"stage": "pdf_to_text_converter"}
+        )
 
         if DEBUG_MODE:
-            shutil.rmtree('debug', ignore_errors=True)
-            os.makedirs('debug')
+            shutil.rmtree("debug", ignore_errors=True)
+            os.makedirs("debug")
 
-        cache_key = hashlib.md5(open(file_path,'rb').read()).hexdigest()
+        cache_key = hashlib.md5(open(file_path, "rb").read()).hexdigest()
 
         result = None
 
@@ -62,6 +66,7 @@ class AzureDocumentIntelligenceConverter:
             result = self.run_document_intelligence(file_path)
 
         if DEBUG_MODE:
+
             self.write_to_cache(cache_key, result)
 
         docs = []
@@ -73,7 +78,10 @@ class AzureDocumentIntelligenceConverter:
 
         permit_condition_csv = _create_csv_representation(docs)
 
-        return {"documents": docs, "permit_condition_csv": [Document(content=permit_condition_csv)]}
+        return {
+            "documents": docs,
+            "permit_condition_csv": [Document(content=permit_condition_csv)],
+        }
 
     def add_metadata_to_document(self, idx, p):
         # Generate a unique ID for the paragraph that can be used to identify it later
@@ -89,25 +97,38 @@ class AzureDocumentIntelligenceConverter:
 
         top, right, bottom, left = min(y), max(x), max(y), min(x)
 
-        content = {"id": paragraph_id, "text": p.content, "role": p.role, 'sort_key': idx +1}
+        content = {
+            "id": paragraph_id,
+            "text": p.content,
+            "role": p.role,
+            "sort_key": idx + 1,
+        }
         # Add a bounding_box metadata field to the paragraph
-        meta = {"bounding_box": {"top": top, "right": right, "bottom": bottom, "left": left}, "role": p.role}
-
+        meta = {
+            "bounding_box": {
+                "top": top,
+                "right": right,
+                "bottom": bottom,
+                "left": left,
+            },
+            "role": p.role,
+        }
 
         return Document(content=json.dumps(content, indent=None), meta=meta)
 
     def run_document_intelligence(self, file_path):
         document_intelligence_client = DocumentAnalysisClient(
-                endpoint=DOCUMENTINTELLIGENCE_ENDPOINT,
-                credential=AzureKeyCredential(DOCUMENTINTELLIGENCE_API_KEY),
-                api_version=DOCUMENTINTELLIGENCE_API_VERSION
-            )
+            endpoint=DOCUMENTINTELLIGENCE_ENDPOINT,
+            credential=AzureKeyCredential(DOCUMENTINTELLIGENCE_API_KEY),
+            api_version=DOCUMENTINTELLIGENCE_API_VERSION,
+        )
 
         with open(file_path, "rb") as f:
             poller = document_intelligence_client.begin_analyze_document(
-                    "prebuilt-layout", document=f,
-                )
-            
+                "prebuilt-layout",
+                document=f,
+            )
+
         result: AnalyzeResult = poller.result()
         return result
 
@@ -123,15 +144,23 @@ class AzureDocumentIntelligenceConverter:
         try:
             with open(f"app/cache/{cache_key}.pickle", "rb") as f:
                 result = pickle.load(f)
-                logger.info('cache entry found')
+                logger.info("cache entry found")
         except Exception as e:
             logger.info("No cache entry found. Quering Azure Document Intelligence")
             result = None
         return result
 
+
 def _create_csv_representation(docs):
     content = json.dumps([json.loads(doc.content) for doc in docs])
     jsn = pd.read_json(io.StringIO(content))
 
-    cs = jsn.to_csv(index=False, header=True, quoting=csv.QUOTE_ALL, encoding='utf-8', sep=',', columns=['id', 'text'])
+    cs = jsn.to_csv(
+        index=False,
+        header=True,
+        quoting=csv.QUOTE_ALL,
+        encoding="utf-8",
+        sep=",",
+        columns=["id", "text"],
+    )
     return cs

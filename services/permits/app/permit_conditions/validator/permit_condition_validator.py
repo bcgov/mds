@@ -119,8 +119,8 @@ class PermitConditionValidator:
                     conditions.append(condition)
 
             for c in conditions:
-                if 'page_number' in c and c.get('page_number') == '':
-                    c['page_number'] = None
+                if "page_number" in c and c.get("page_number") == "":
+                    c["page_number"] = None
 
             response = PermitConditions.model_validate({"conditions": conditions})
 
