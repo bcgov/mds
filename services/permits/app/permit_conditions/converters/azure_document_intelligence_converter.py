@@ -1,9 +1,12 @@
+import csv
 import hashlib
+import io
 import json
 import logging
 import os
 import pickle
 import shutil
+import pandas as pd
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -34,7 +37,7 @@ class AzureDocumentIntelligenceConverter:
         List[Document]: The converted documents in text format.
     """
 
-    @component.output_types(documents=List[Document])
+    @component.output_types(documents=List[Document], permit_condition_csv=List[Document])
     def run(
         self,
         file_path: Path,
@@ -68,7 +71,9 @@ class AzureDocumentIntelligenceConverter:
 
             docs.append(doc)
 
-        return {"documents": docs}
+        permit_condition_csv = _create_csv_representation(docs)
+
+        return {"documents": docs, "permit_condition_csv": [Document(content=permit_condition_csv)]}
 
     def add_metadata_to_document(self, idx, p):
         # Generate a unique ID for the paragraph that can be used to identify it later
@@ -87,6 +92,7 @@ class AzureDocumentIntelligenceConverter:
         content = {"id": paragraph_id, "text": p.content, "role": p.role, 'sort_key': idx +1}
         # Add a bounding_box metadata field to the paragraph
         meta = {"bounding_box": {"top": top, "right": right, "bottom": bottom, "left": left}, "role": p.role}
+
 
         return Document(content=json.dumps(content, indent=None), meta=meta)
 
@@ -122,3 +128,10 @@ class AzureDocumentIntelligenceConverter:
             logger.info("No cache entry found. Quering Azure Document Intelligence")
             result = None
         return result
+
+def _create_csv_representation(docs):
+    content = json.dumps([json.loads(doc.content) for doc in docs])
+    jsn = pd.read_json(io.StringIO(content))
+
+    cs = jsn.to_csv(index=False, header=True, quoting=csv.QUOTE_ALL, encoding='utf-8', sep=',', columns=['id', 'text'])
+    return cs

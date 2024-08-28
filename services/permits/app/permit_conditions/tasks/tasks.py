@@ -36,13 +36,8 @@ def run_permit_condition_pipeline(self, file_name: str, meta: dict):
         result = pipeline.run(
             {
                 "pdf_converter": {"file_path": file_name},
-                # "prompt_builder": {
-                #     "template_variables": {
-                #         "max_pages": 6,
-                #     }
-                # },
             }
-        )["validator"]
+        )["combine_metadata"]
 
         conditions = result["conditions"]
 

@@ -51,14 +51,10 @@ class FilterConditionsParagraphsConverter:
                 cnt = [{ "meta": d.meta, "content": d.content} for d in filtered_paragraphs]
                 f.write(json.dumps(cnt, indent=4))
 
-        cs = _create_csv_representation(filtered_paragraphs)
-
         for d in filtered_paragraphs:
             d.content = json.dumps(d.content)
 
-        docs = [Document(content=cs, meta={"_type": "csv"})] + filtered_paragraphs
-
-        return {"documents": docs}
+        return {"documents": filtered_paragraphs}
 
 
 def filter_paragraphs(paragraphs):
@@ -136,25 +132,3 @@ def _identify_bottom_of_first_page_header(paragraphs):
         if page_header_start_idx is not None and page_header_end_idx is not None and is_like_page_header:
             return paragraphs[page_header_end_idx].meta['bounding_box']['bottom'] 
     return None
-
-
-def _create_csv_representation(docs):
-    content = []
-    for doc in docs:
-        indentation = doc.meta['bounding_box']['left']
-        cnt = json.loads(json.dumps(doc.content))
-        cnt['indentation'] = indentation
-        del cnt['role']
-
-        if 'sort_key' in cnt:
-            del cnt['sort_key']
-        cnt['text'] = f"{cnt['text'][:30]}"
-        content.append(cnt)
-
-
-    content = json.dumps(content)
-
-    jsn = pd.read_json(io.StringIO(content))
-
-    cs = jsn.to_csv(index=False, header=True, quoting=csv.QUOTE_ALL, encoding='utf-8', sep=',', columns=['id', 'indentation', 'text'])
-    return cs

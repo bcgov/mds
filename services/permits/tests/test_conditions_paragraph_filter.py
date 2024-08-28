@@ -11,7 +11,6 @@ from app.permit_conditions.converters.filter_conditions_paragraphs import (
     FilterConditionsParagraphsConverter,
     filter_paragraphs,
     _identify_bottom_of_first_page_header,
-    _create_csv_representation
 )
 from app.permit_conditions.tasks.tasks import task_context
 from tests.mocks import MockContext
@@ -36,10 +35,9 @@ def test_run():
 
         result = converter.run(documents)
 
-        assert len(result["documents"]) == 3
-        assert result["documents"][0].content == '"id","indentation","text"\n"abc123","10","paragraph 1"\n"abc234","20","paragraph 2"\n'
-        assert json.loads(result["documents"][1].content)['text'] == 'paragraph 1'
-        assert json.loads(result["documents"][2].content)['text'] == 'paragraph 2'
+        assert len(result["documents"]) == 2
+        assert json.loads(result["documents"][0].content)['text'] == 'paragraph 1'
+        assert json.loads(result["documents"][1].content)['text'] == 'paragraph 2'
 
 
 def test_create_csv_representation():

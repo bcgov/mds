@@ -1,46 +1,19 @@
 import json
 import logging
-import operator
 import os
-import re
-from functools import reduce
 from typing import List, Optional
 
-from app.permit_conditions.pipelines.chat_data import ChatData
 from app.permit_conditions.validator.parse_hierarchy import parse_hierarchy
 from app.permit_conditions.validator.permit_condition_model import (
-    ConditionType,
     PermitCondition,
     PermitConditions,
-    PromptResponse,
-    RootPromptResponse,
 )
 from haystack import Document, component
-from haystack.components.preprocessors import DocumentCleaner
-from haystack.dataclasses import ChatMessage
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 logger = logging.getLogger(__name__)
 
 DEBUG_MODE = os.environ.get("DEBUG_MODE", "false").lower() == "true"
-
-def _clean(text) -> str:
-    if not text:
-        return ''
-    if isinstance(text, str):
-        cont = text.replace(".", "").replace("(", "").replace(")", "").replace(" ", "").strip()
-        cleaner = DocumentCleaner(
-        ascii_only=True,
-            remove_empty_lines=True,
-            remove_extra_whitespaces=True,
-            remove_repeated_substrings=False)
-        
-        doc = cleaner.clean(Document(content=cont))
-
-        return doc.content
-
-    else:
-        return str(text)
 
 class ExtractionIteration(BaseModel):
     start_page: int
@@ -51,19 +24,54 @@ class ExtractionIteration(BaseModel):
 class PermitConditionSectionCombiner:
 
     @component.output_types(
-        documents=Optional[List[PromptResponse]], iteration=Optional[dict]
+        conditions=PermitConditions,
+        permit_condition_csv=Optional[List[Document]]
     )
     def run(self, documents: List[Document]):
         """
-        Validate the extracted permit conditions, output information about the next pages
-        that needs processing if the current iteration is not the last one, otherwise return
-        the conditions found.
-        """
+        Given a list of documents that have their numbering identified (e.g.) a, B, 1, 3, and bounding boxes identified, this step will
+        use that to infer the hierarchy of the conditions. It will also combine conditions that have the same section, paragraph, etc. into one condition.
 
-        document_json = [
-            {**json.loads(doc.content),**doc.meta, **{"meta": doc.meta}} for doc in documents[1:]
+        Example input:
+
+        [{
+            "text": "This is a test.",
+            "numbering": "A",
+            "regex": "uppercase_letter",
+        },
+        {
+            "text": "This is another.",
+            "numbering": "1",
+            "regex": "number",
+        },
+        {
+            "text": "This is yet another test.",
+            "numbering": None,
+            "regex": None,
+        }]
+
+        Output:
+
+        [
+            {
+                "condition_text": "This is a test.",
+                "section": "A",
+            },
+            {
+                "condition_text": "This is yet another test.",
+                "condition_title": "This is another.",
+                "section": "A",
+                "paragraph": "1",
+            }
         ]
 
+        
+        """
+        document_json = [
+            {**json.loads(doc.content), **{"meta": doc.meta}} for doc in documents
+        ]
+
+        # Infer the hierarchy of the conditions
         parsed_docs = parse_hierarchy(document_json)
 
         if DEBUG_MODE:
@@ -72,6 +80,8 @@ class PermitConditionSectionCombiner:
 
         conditions = []
 
+        # Combine conditions that have the exact same section, paragraph, etc.
+        # This is the case when a condition has both a "title" and associated text. They're split into two separate paragraphs, but should really be one.
         for p in parsed_docs:
             matching_cond = next((
                 c for c in conditions if (
@@ -99,7 +109,15 @@ class PermitConditionSectionCombiner:
                 if not matching_cond.condition_title:
                     matching_cond.condition_title = matching_cond.condition_text
                     matching_cond.condition_text = p['text']
+                    matching_cond.id = p['id']
 
+                    if matching_cond.meta['bounding_box'] and p['meta']['bounding_box']:
+                        matching_cond.meta['bounding_box']['bottom'] = max(matching_cond.meta['bounding_box']['bottom'], p['meta']['bounding_box']['bottom'])
+                        matching_cond.meta['bounding_box']['top'] = min(matching_cond.meta['bounding_box']['top'], p['meta']['bounding_box']['top'])
+                        matching_cond.meta['bounding_box']['left'] = min(matching_cond.meta['bounding_box']['left'], p['meta']['bounding_box']['left'])
+                        matching_cond.meta['bounding_box']['right'] = max(matching_cond.meta['bounding_box']['right'], p['meta']['bounding_box']['right'])
+                    
+                    matching_cond.meta = {**p['meta'], **matching_cond.meta}
             else:
                 conditions.append(PermitCondition(
                     section=p.get('section') or '',
@@ -112,6 +130,8 @@ class PermitConditionSectionCombiner:
                     condition_title=p.get('title'),
                     condition_text=p.get('text'),
                     page_number=p.get('page_number') or 1,
+                    id=p.get('id'),
                     meta=p.get('meta')
                 ))
+
         return {"conditions": PermitConditions(conditions=conditions)}

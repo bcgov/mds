@@ -1,6 +1,50 @@
 system_prompt: |
   You are a helpful AI assistant that can extract information from text files. You extract what is exactly as it is from the text and return it in a json format.
 
+permit_document_prompt_meta_questions: |
+  -----------
+  {{documents[0].content}}
+
+user_prompt_meta_questions: |
+  Your task is to answer questions for each of the paragraphs in the input text and return the answers in a JSON format.
+
+  You will be given a mining permit and should answer the questions for each condition of the text in the text. The questions are as follows:
+
+  "require_report": Does this paragraph require a report to be submitted? (type: boolean)
+  "due_date": When is the report due date? (type: date)
+  "recurring": Is this a recurring report requirement? (type: boolean)
+  "frequency": Frequency of the report - "Yearly", "Monthly", "Daily", "Weekly", "Bi-weekly", "Quarterly", "Semi-annually", "Annually", "Bi-annually", "As needed", "Other" (type: string)
+  "mention_chief_inspector": Does this paragraph mention the Chief Inspector? (type: boolean)
+  "mention_chief_permitting_officer": Does this paragraph mention the Chief Permitting Officer? (type: boolean)
+
+  Output should be a json structured as follows:
+  {
+    "paragraphs": [
+      {
+        "id": "the id of the paragraph",
+        "meta": [
+          {
+            "question": "the question",
+            "question_key": "the key of the question",
+            "answer": "the answer"
+          }
+        ]
+      },
+      ...
+    ]
+  }
+
+  The input is a csv file with the following columns. The values in each column are quoted with ""
+  - id: id of the paragraph
+  - text: The text of the paragraph
+
+  Each line in the input should have a corresponding output if an answer to any of the questions is found.
+
+  Very Important: Output the full json structure without code blocks or other text. Do not output any other explanation or questions that is not in the json format.
+
+  Here's the CSV input (delimited by ---------)
+
+# The following prompts are currently not in use. They are kept here for future reference.
 user_prompt: |
   You will be given a csv file of textual paragraphs that represent a tree of conditions.
   Your task is to extract the hierarchical structure of these conditions, identify the paragraph numbering structure
@@ -42,57 +86,3 @@ permit_document_prompt: |
       {{ document.content}}
     {% endfor %}
   {% endif %}
-
-extra_props: |
-  "due_date": "April 9, 2024",
-  "recurring": "Yes", 
-  "frequency": "Yearly",
-  "mention_chief_inspector": "Yes",
-  "mention_chief_permitting_officer": "Yes",
-  "require_approval": "Yes",
-  "reference_first_nation": "Yes",
-  "required_by_date": "Specific Date",
-  "requirement_before_activity": "Yes",
-  "timeframe_before_activity": "Yes",
-  "professional_designation_involved": "Yes"
-
-permit_document_prompt_2: |
-  -----------
-  {{documents[0].content}}
-
-user_prompt_2: |
-  Your task is to answer questions for each of the paragraphs in the input text and return the answers in a JSON format.
-
-  You will be given a mining permit and should answer the questions for each paragraph in the text. The questions are as follows:
-
-  "due_date": When is the due date? (type: date)
-  "recurring": Is this a recurring requirement? (type: boolean)
-  "frequency": "Yearly", "Monthly", "Daily", "Weekly", "Bi-weekly", "Quarterly", "Semi-annually", "Annually", "Bi-annually", "As needed", "Other" (type: string)
-  "mention_chief_inspector": Does this paragraph mention the Chief Inspector? (type: boolean)
-  "mention_chief_permitting_officer": Does this paragraph mention the Chief Permitting Officer? (type: boolean)
-
-  Output should be a json structured as follows:
-  {
-    "paragraphs": [
-      {
-        "id": "the id of the paragraph",
-        "meta": [
-          {
-            "question": "the question",
-            "question_key": "the key of the question",
-            "answer": "the answer"
-          }
-        ]
-      },
-      ...
-    ]
-  }
-
-  The input is a csv file with the following columns. The values in each column are quoted with ""
-  - id: id of the paragraph
-  - text: The text of the paragraph
-  - indentation: You can ignore this
-
-  Important: Output the full json structure without code blocks or other text. Do not output any other explanation or questions that is not in the json format.
-
-  Here's the CSV input (delimited by ---------)
