@@ -40,7 +40,7 @@ class FilterConditionsParagraphsConverter:
         documents: List[Document],
         meta: Optional[Dict[str, Any]] = None,
         id_hash_keys: Optional[List[str]] = None,
-    ) -> List[Document]:
+    ) -> dict:
         context.get().update_state(
             state="PROGRESS", meta={"stage": "filter_conditions_paragraphs"}
         )

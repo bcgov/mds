@@ -117,22 +117,7 @@ class PermitConditionSectionCombiner:
                     matching_cond.id = p["id"]
 
                     if matching_cond.meta["bounding_box"] and p["meta"]["bounding_box"]:
-                        matching_cond.meta["bounding_box"]["bottom"] = max(
-                            matching_cond.meta["bounding_box"]["bottom"],
-                            p["meta"]["bounding_box"]["bottom"],
-                        )
-                        matching_cond.meta["bounding_box"]["top"] = min(
-                            matching_cond.meta["bounding_box"]["top"],
-                            p["meta"]["bounding_box"]["top"],
-                        )
-                        matching_cond.meta["bounding_box"]["left"] = min(
-                            matching_cond.meta["bounding_box"]["left"],
-                            p["meta"]["bounding_box"]["left"],
-                        )
-                        matching_cond.meta["bounding_box"]["right"] = max(
-                            matching_cond.meta["bounding_box"]["right"],
-                            p["meta"]["bounding_box"]["right"],
-                        )
+                        self._combine_bounding_boxes(p, matching_cond)
 
                     matching_cond.meta = {**p["meta"], **matching_cond.meta}
             else:
@@ -154,3 +139,21 @@ class PermitConditionSectionCombiner:
                 )
 
         return {"conditions": PermitConditions(conditions=conditions)}
+
+    def _combine_bounding_boxes(self, p, matching_cond):
+        matching_cond.meta["bounding_box"]["bottom"] = max(
+            matching_cond.meta["bounding_box"]["bottom"],
+            p["meta"]["bounding_box"]["bottom"],
+        )
+        matching_cond.meta["bounding_box"]["top"] = min(
+            matching_cond.meta["bounding_box"]["top"],
+            p["meta"]["bounding_box"]["top"],
+        )
+        matching_cond.meta["bounding_box"]["left"] = min(
+            matching_cond.meta["bounding_box"]["left"],
+            p["meta"]["bounding_box"]["left"],
+        )
+        matching_cond.meta["bounding_box"]["right"] = max(
+            matching_cond.meta["bounding_box"]["right"],
+            p["meta"]["bounding_box"]["right"],
+        )

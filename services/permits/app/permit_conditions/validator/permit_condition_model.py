@@ -18,7 +18,7 @@ class PromptResponseMeta(BaseModel):
 
 
 class PermitCondition(BaseModel):
-    section: str = None
+    section: Optional[str] = None
     section_title: Optional[str] = None
     paragraph: Optional[str] = None
     subparagraph: Optional[str] = None

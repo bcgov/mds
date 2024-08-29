@@ -36,7 +36,7 @@ class ConditionsMetadataCombiner:
         self,
         conditions: PermitConditions,
         data: ChatData,
-    ) -> List[PermitCondition]:
+    ) -> dict:
 
         context.get().update_state(
             state="PROGRESS", meta={"stage": "conditions_metadata_combiner"}

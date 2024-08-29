@@ -117,7 +117,7 @@ def results(task_id: str) -> PermitConditions:
     "/permit_conditions/results/csv",
     responses={202: {"model": InProgressJobStatusResponse}},
 )
-def csv_results(task_id: str) -> str:
+def csv_results(task_id: str) -> JSONResponse:
     """
     Get the results of a permit conditions extraction job in a csv format
     Args:

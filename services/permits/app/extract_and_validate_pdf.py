@@ -31,6 +31,10 @@ assert AUTHORIZATION_URL, "AUTHORIZATION_URL is not set"
 assert PERMIT_SERVICE_ENDPOINT, "PERMIT_SERVICE_ENDPOINT is not set"
 
 
+class PDFExtractionError(Exception):
+    pass
+
+
 def authenticate_with_oauth():
     oauth_client = BackendApplicationClient(client_id=PERMITS_CLIENT_ID)
     oauth_session = OAuth2Session(
@@ -81,7 +85,7 @@ def extract_conditions_from_pdf(pdf_path, oauth_session):
     task_id = response.json().get("id")
 
     if not task_id:
-        raise Exception(
+        raise PDFExtractionError(
             "Failed to extract conditions from PDF. No task ID returned from permit extractions endpoint."
         )
 
@@ -101,7 +105,9 @@ def extract_conditions_from_pdf(pdf_path, oauth_session):
         status = status_response.json().get("status")
 
     if status != "SUCCESS":
-        raise Exception(f"Failed to extract conditions from PDF. Task status: {status}")
+        raise PDFExtractionError(
+            f"Failed to extract conditions from PDF. Task status: {status}"
+        )
 
     success_response = oauth_session.get(
         f"{PERMIT_SERVICE_ENDPOINT}/permit_conditions/results/csv",

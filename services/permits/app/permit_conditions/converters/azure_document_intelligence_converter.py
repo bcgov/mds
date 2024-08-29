@@ -145,7 +145,7 @@ class AzureDocumentIntelligenceConverter:
             with open(f"app/cache/{cache_key}.pickle", "rb") as f:
                 result = pickle.load(f)
                 logger.info("cache entry found")
-        except Exception as e:
+        except Exception:
             logger.info("No cache entry found. Quering Azure Document Intelligence")
             result = None
         return result

@@ -180,36 +180,23 @@ def _update_level(paragraphs, structure, last_paragraph, level, idx, p, regx):
             level += 1
         return level, False
 
-    # Compare the current paragraph with the previous one of the same numbering system to determine if we should increase, decrease or keep the level
-    percent = _percent_increase(last_paragraph[regx], p)
-    percent_curr = _percent_increase(paragraphs[idx - 1], p) if idx > 0 else None
-
     level_of_last_matching_numbering = structure.index(regx)
 
     # If the current paragraph is at the same level as the last paragraph of the same numbering system, we don't need to update the level
     if level_of_last_matching_numbering == level:
         return level, False
 
-    def _found_new_numbering_scheme():
-        return percent_curr and percent_curr > NEW_PARAGRAPH_THRESHOLD
-
     # If we previously found the same numbering system, but the current paragraph is more indented than the previous one, it's likely a new level
     # Example: lowercase letter (a) could be used both for subparagraphs, and subclauses
-    if (
-        level_of_last_matching_numbering < level
-        and percent
-        and percent > NEW_PARAGRAPH_THRESHOLD
+    if level_of_last_matching_numbering < level and _has_indent_increased(
+        last_paragraph[regx], p
     ):
-        if _found_new_numbering_scheme():
+        if _has_indent_increased(paragraphs[idx - 1], p):
             return level + 1, True
         else:
             return level, False
-    elif level_of_last_matching_numbering < level and (
-        percent_curr
-        and (
-            percent_curr > -NEW_PARAGRAPH_THRESHOLD
-            and percent_curr < NEW_PARAGRAPH_THRESHOLD
-        )
+    elif level_of_last_matching_numbering < level and _is_indent_the_same(
+        paragraphs[idx - 1], p
     ):
         return level, False
     else:
@@ -231,21 +218,29 @@ def _is_actually_roman_numeral(paragraphs, paragraph, idx):
 
     if prev_p and prev_p["regex"] == "roman_numeral":
         # If the previous paragraph is a roman numeral, this is likely a roman numeral if the indentation is the same
-        increase = _percent_increase(prev_p, paragraph)
-        if (
-            increase is not None
-            and increase < NEW_PARAGRAPH_THRESHOLD
-            and increase > -NEW_PARAGRAPH_THRESHOLD
-        ):
+        if _is_indent_the_same(prev_p, paragraph):
             regx = "roman_numeral"
 
     if prev_p and prev_p["regex"] == "lowercase_letter" and prev_p["numbering"] == "h":
         # If the previous paragraph was an h, it's likely a roman numeral if it's more indented than the previous paragraph
-        increase = _percent_increase(prev_p, paragraph)
-        if increase and increase > NEW_PARAGRAPH_THRESHOLD:
+        if _has_indent_increased(prev_p, paragraph):
             regx = "roman_numeral"
 
     return regx == "roman_numeral"
+
+
+def _has_indent_increased(p1, p2):
+    percent_increase = _percent_increase(p1, p2)
+    return percent_increase and percent_increase > NEW_PARAGRAPH_THRESHOLD
+
+
+def _is_indent_the_same(p1, p2):
+    percent_increase = _percent_increase(p1, p2)
+    return (
+        percent_increase is not None
+        and percent_increase < NEW_PARAGRAPH_THRESHOLD
+        and percent_increase > -NEW_PARAGRAPH_THRESHOLD
+    )
 
 
 def _percent_increase(prev, curr):
