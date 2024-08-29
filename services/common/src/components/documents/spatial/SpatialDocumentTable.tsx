@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { GenericDocTableProps } from "@mds/common/interfaces/document/documentTableProps.interface";
 import CoreTable from "../../common/CoreTable";
 import { uploadDateColumn, uploadedByColumn } from "../DocumentColumns";
@@ -16,6 +16,8 @@ import { groupSpatialBundles } from "@mds/common/redux/slices/spatialDataSlice";
 import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls";
 import { ISpatialBundle } from "@mds/common/interfaces/document/spatialBundle.interface";
 import { IMineDocument } from "@mds/common/interfaces";
+import { getFormattedUserName } from "@mds/common/redux/selectors/authenticationSelectors";
+import moment from "moment";
 
 interface SpatialDocumentTableProps extends GenericDocTableProps<ISpatialBundle> {
   documents: IMineDocument[];
@@ -26,9 +28,24 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({ documents, catego
   const dispatch = useDispatch();
   const [isCompressionModalVisible, setIsCompressionModalVisible] = useState(false);
   const [spatialBundles, setSpatialBundles] = useState([]);
+  const username = useSelector(getFormattedUserName);
 
   const handleGetSpatialBundles = async () => {
-    const newSpatialBundles = groupSpatialBundles(documents);
+    // Provide default upload_date / create_user for new documents so they don't show
+    // up as emtpy columns in the table
+    const docs = documents.map((doc) => {
+      if (doc.mine_document_guid) {
+        return doc;
+      }
+
+      return {
+        ...doc,
+        upload_date: doc.upload_date ?? moment().toISOString(),
+        create_user: doc.create_user ?? username,
+      };
+    });
+
+    const newSpatialBundles = groupSpatialBundles(docs);
     setSpatialBundles(newSpatialBundles);
   };
 
