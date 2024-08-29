@@ -482,6 +482,11 @@ html {
   }
 
   margin: $default-margin-lg !important;
+
+  &--y {
+    margin-top: $default-margin-lg !important;
+    margin-bottom: $default-margin-lg !important;
+  }
 }
 
 .margin-xlarge {
@@ -707,4 +712,14 @@ img.lessOpacity {
 
 .grey-box {
   width: 100%;
+  border: 1px solid #f2f2f2;
+  padding: 16px 24px;
+}
+
+.list-position-outside {
+  padding-inline-start: 15px;
+
+  li {
+    list-style-position: outside;
+  }
 }

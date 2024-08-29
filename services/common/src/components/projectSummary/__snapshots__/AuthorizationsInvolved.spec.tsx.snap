@@ -100,7 +100,9 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                     />
                   </div>
                   <div>
-                    <div>
+                    <div
+                      class="margin-large--bottom"
+                    >
                       <h5
                         class="ant-typography"
                       >
@@ -141,7 +143,9 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                         </div>
                       </div>
                     </div>
-                    <div>
+                    <div
+                      class="margin-large--bottom"
+                    >
                       <h5
                         class="ant-typography"
                       >
@@ -284,7 +288,9 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                         </div>
                       </div>
                     </div>
-                    <div>
+                    <div
+                      class="margin-large--bottom"
+                    >
                       <h5
                         class="ant-typography"
                       >
@@ -393,7 +399,9 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                         </div>
                       </div>
                     </div>
-                    <div>
+                    <div
+                      class="margin-large--bottom"
+                    >
                       <h5
                         class="ant-typography"
                       >
@@ -434,7 +442,9 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                         </div>
                       </div>
                     </div>
-                    <div>
+                    <div
+                      class="margin-large--bottom"
+                    >
                       <h5
                         class="ant-typography"
                       >
