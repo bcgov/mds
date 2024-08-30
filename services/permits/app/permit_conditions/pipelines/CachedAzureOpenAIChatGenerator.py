@@ -5,13 +5,11 @@ import pickle
 import struct
 
 from app.permit_conditions.pipelines.chat_data import ChatData
-from haystack import component
 from haystack.components.generators.chat import AzureOpenAIChatGenerator
 from haystack.dataclasses import ChatMessage
 from haystack import component, Document
 from haystack.components.caching import CacheChecker
 from haystack_integrations.document_stores.elasticsearch import ElasticsearchDocumentStore
-from haystack.components.writers import DocumentWriter
 
 ROOT_DIR = os.path.abspath(os.curdir)
 logger = logging.getLogger(__name__)

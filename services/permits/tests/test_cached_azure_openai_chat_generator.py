@@ -3,11 +3,15 @@ import pickle
 from unittest.mock import MagicMock, mock_open, patch
 
 import pytest
+from haystack import Document
+
 from app.permit_conditions.pipelines.CachedAzureOpenAIChatGenerator import (
     CachedAzureOpenAIChatGenerator,
 )
 from app.permit_conditions.pipelines.chat_data import ChatData
 from haystack.dataclasses import ChatMessage
+from haystack.components.caching import CacheChecker
+
 
 logger = MagicMock()
 
@@ -97,3 +101,60 @@ def test_run_with_valid_data_multiple_iterations():
         mock_fetch_result.assert_called_with(
             data.messages + [expected_reply, ChatMessage.from_user("Continue!")], {}
         )
+
+
+def test_fetch_result_with_cache_hit():
+    mock_document = MagicMock(spec=Document)
+    mock_document.content = "Cached reply"
+    mock_document.meta = {
+        "name": "ChatBot",
+        "role": "assistant",
+        "model": "gpt-3.5",
+        "index": "permits",
+        "finish_reason": "complete",
+        "usage": {
+            "completion_tokens": 10,
+            "prompt_tokens": 5,
+            "total_tokens": 15
+        }
+    }
+
+    mock_cache_checker = MagicMock(spec=CacheChecker)
+    mock_cache_checker.run.return_value = {
+        "hits": [mock_document]
+    }
+
+    with patch.object(
+            CachedAzureOpenAIChatGenerator,
+            'fetch_result',
+            return_value=mock_document
+    ) as mock_fetch_result, \
+            patch(
+                'app.permit_conditions.pipelines.CachedAzureOpenAIChatGenerator.ElasticsearchDocumentStore') as MockElasticsearchDocumentStore, \
+            patch('app.permit_conditions.pipelines.CachedAzureOpenAIChatGenerator.CacheChecker',
+                  return_value=mock_cache_checker), \
+            patch('app.permit_conditions.pipelines.CachedAzureOpenAIChatGenerator.Document',
+                  return_value=mock_document), \
+            patch('app.permit_conditions.pipelines.CachedAzureOpenAIChatGenerator.ChatMessage',
+                  return_value=ChatMessage(content="Cached reply", role="assistant", name=None,
+                                           meta=mock_document.meta)):
+
+        generator = CachedAzureOpenAIChatGenerator()
+
+        messages = [ChatMessage(content="test_message", role="user", name=None, meta={})]
+        generation_kwargs = {}
+
+        result = generator.run(ChatData(messages=messages, documents=[]), generation_kwargs)
+
+        assert len(result["data"].messages) == 1
+        chat_response = result["data"].messages[0]
+
+        assert chat_response.content == "Cached reply"
+        assert chat_response.meta["name"] == "ChatBot"
+        assert chat_response.meta["role"] == "assistant"
+        assert chat_response.meta["usage"]["total_tokens"] == 15
+        assert chat_response.meta["usage"]["completion_tokens"] == 10
+        assert chat_response.meta["usage"]["prompt_tokens"] == 5
+
+        mock_fetch_result.assert_called_once_with(messages, generation_kwargs)
+        MockElasticsearchDocumentStore.assert_not_called()
