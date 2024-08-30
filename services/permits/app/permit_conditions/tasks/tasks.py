@@ -42,8 +42,9 @@ def run_permit_condition_pipeline(self, file_name: str, meta: dict):
                     }
                 },
             }
-        )["validator"]
+        )
 
-        conditions = result["conditions"]
-
+        conditions = result["validator"]["conditions"]
+        # cache_checker = pipeline.get_component("cached_document_builder")
+        # print("cached_document_builder", result["cache_checker"])
         return conditions.model_dump()

@@ -6,6 +6,7 @@ from app.permit_conditions.converters.pdf_to_text_converter import PDFToTextConv
 from app.permit_conditions.pipelines.CachedAzureOpenAIChatGenerator import (
     CachedAzureOpenAIChatGenerator,
 )
+from app.permit_conditions.pipelines.CachedDocumentBuilder import CachedDocumentBuilder
 from app.permit_conditions.pipelines.PaginatedChatPromptBuilder import (
     PaginatedChatPromptBuilder,
 )
@@ -17,7 +18,8 @@ from haystack import Pipeline
 from haystack.dataclasses import ChatMessage
 from haystack.utils import Secret
 from haystack.components.caching import CacheChecker
-from haystack.document_stores.in_memory import InMemoryDocumentStore
+from haystack_integrations.document_stores.elasticsearch import ElasticsearchDocumentStore
+from haystack.components.writers import DocumentWriter
 
 logger = logging.getLogger(__name__)
 
@@ -44,6 +46,11 @@ assert system_prompt
 assert user_prompt
 assert permit_document_prompt
 
+ca_cert = os.environ.get("ELASTICSEARCH_CA_CERT", None)
+host = os.environ.get("ELASTICSEARCH_HOST", "https://elasticsearch:9200")
+username = os.environ.get("ELASTICSEARCH_USERNAME", "")
+password = os.environ.get("ELASTICSEARCH_PASSWORD", "")
+
 
 def permit_condition_pipeline():
     """
@@ -54,8 +61,16 @@ def permit_condition_pipeline():
     """
     index_pipeline = Pipeline()
 
-    document_store = InMemoryDocumentStore()
-    cache_checker = CacheChecker(document_store=document_store, cache_field="file_path")
+    # document_store = ElasticsearchDocumentStore(hosts=[host],
+    #                                             basic_auth=("elastic", "elastic"),
+    #                                             index="permits",
+    #                                             embedding_similarity_function="cosine",
+    #                                             ca_certs=ca_cert if ca_cert else None,
+    #                                             verify_certs=True if ca_cert else False)
+    #
+    # cache_checker = CacheChecker(document_store=document_store, cache_field="cache_key")
+    # document_writer = DocumentWriter(document_store=document_store)
+    # cached_document_builder = CachedDocumentBuilder()
 
     llm = CachedAzureOpenAIChatGenerator(
         azure_endpoint=base_url,
@@ -79,7 +94,9 @@ def permit_condition_pipeline():
 
     validator = PermitConditionValidator()
 
-    index_pipeline.add_component("cache_checker", cache_checker)
+    # index_pipeline.add_component("cache_checker", cache_checker)
+    # index_pipeline.add_component("document_writer", document_writer)
+    # index_pipeline.add_component("cached_document_builder", cached_document_builder)
     index_pipeline.add_component("pdf_converter", pdf_converter)
     index_pipeline.add_component("prompt_builder", prompt_builder)
     index_pipeline.add_component("llm", llm)
@@ -91,5 +108,7 @@ def permit_condition_pipeline():
     index_pipeline.connect("llm", "json_fixer")
     index_pipeline.connect("json_fixer", "validator")
     index_pipeline.connect("validator.iteration", "prompt_builder.iteration")
-    index_pipeline.connect("pdf_converter.documents", "cache_checker.items")
+    # index_pipeline.connect("llm.response", "cached_document_builder")
+    # index_pipeline.connect("cached_document_builder", "document_writer")
+    # print("document_store_filter", document_store.count_documents())
     return index_pipeline

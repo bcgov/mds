@@ -42,7 +42,7 @@ class PermitConditionValidator:
         self.last_condition_text = None
 
     @component.output_types(
-        documents=Optional[List[PromptResponse]], iteration=Optional[dict]
+        documents=Optional[List[PromptResponse]], iteration=Optional[dict], response=Optional[List[PermitCondition]]
     )
     def run(self, data: ChatData):
         """
@@ -101,7 +101,7 @@ class PermitConditionValidator:
             # If there are no more pages to process, return the conditions found
             all_replies = self.documents + conditions
 
-            return {"conditions": PermitConditions(conditions=all_replies)}
+            return {"conditions": PermitConditions(conditions=all_replies),"response": PermitConditions(conditions=all_replies).conditions}
 
     def _parse_reply(self, reply) -> List[PromptResponse]:
         try:
