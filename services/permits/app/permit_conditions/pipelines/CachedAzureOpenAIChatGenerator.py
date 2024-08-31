@@ -69,7 +69,7 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
         cache_key = hash_messages(messages)
 
         document_store = ElasticsearchDocumentStore(hosts=[host],
-                                                    basic_auth=("elastic", "elastic"),
+                                                    basic_auth=(username, password),
                                                     index="permits",
                                                     embedding_similarity_function="cosine",
                                                     ca_certs=ca_cert if ca_cert else None,
