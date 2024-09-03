@@ -5,7 +5,7 @@ import {
   getLatestAmendmentByPermitGuid,
   getPermitByGuid,
 } from "@mds/common/redux/selectors/permitSelectors";
-import { IMine, IPermit, IPermitAmendment } from "@mds/common";
+import { IMine, IPermit, IPermitAmendment, USER_ROLES } from "@mds/common";
 import ViewPermitOverview from "@/components/mine/Permit/ViewPermitOverview";
 import PermitConditions from "@/components/mine/Permit/PermitConditions";
 
@@ -24,6 +24,7 @@ import {
   initiatePermitExtraction,
   PermitExtractionStatus,
 } from "@mds/common/redux/slices/permitServiceSlice";
+import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
 
 const tabs = ["overview", "conditions"];
 
@@ -38,6 +39,9 @@ const ViewPermit: FC = () => {
   const enablePermitConditionsTab = isFeatureEnabled(Feature.PERMIT_CONDITIONS_PAGE);
   const permitExtraction = useSelector(
     getPermitExtractionByGuid(latestAmendment?.permit_amendment_guid)
+  );
+  const userCanEditConditions = useSelector((state) =>
+    userHasRole(state, USER_ROLES.role_edit_template_conditions)
   );
   const documents = latestAmendment?.related_documents ?? [];
 
@@ -96,19 +100,31 @@ const ViewPermit: FC = () => {
   const handleInitiateExtraction = () => {
     dispatch(
       initiatePermitExtraction({
-        permit_amendment_guid: latestAmendment?.permit_amendment_guid,
+        permit_amendment_id: latestAmendment?.permit_amendment_id,
         permit_amendment_document_guid: documents[0].permit_amendment_document_guid,
       })
     );
   };
 
   const headerActions = [
+    onConditionsTab &&
+      userCanEditConditions && {
+        key: "extract",
+        label: "Extract Permit Conditions",
+        disabled: !canStartExtraction,
+        clickFunction: handleInitiateExtraction,
+      },
     onConditionsTab && {
-      key: "extract",
-      label: "Extract Permit Conditions",
-      disabled: !canStartExtraction,
-      clickFunction: handleInitiateExtraction,
+      key: "check_progress",
+      label: "Check Extraction Progress",
+      clickFunction: () => console.log("not implemented"),
     },
+    onConditionsTab &&
+      userCanEditConditions && {
+        key: "delete_conditions",
+        label: "Delete Permit Conditions",
+        clickFunction: () => console.log("not implemented"),
+      },
   ].filter(Boolean);
 
   const headerActionComponent =

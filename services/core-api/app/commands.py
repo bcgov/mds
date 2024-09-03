@@ -171,3 +171,12 @@ def register_commands(app):
             flask generate_history_table_migration mine_tailings_storage_facility
         """
         generate_history_table_migration(table)
+
+    @app.cli.command()
+    def extract_permit_conditions(document_manager_guid):
+        """
+        comments go here
+        """
+        from app.api.mines.permits.permit_extraction.permit_extraction_tasks import initialize_permit_extraction
+        with current_app.app_context():
+            initialize_permit_extraction(document_manager_guid)

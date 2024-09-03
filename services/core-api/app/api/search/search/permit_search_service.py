@@ -9,7 +9,9 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment_document imp
 )
 from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
 from app.api.mines.permits.permit.models.permit import Permit
+from app.api.services.document_manager_service import DocumentManagerService
 
+from flask import current_app
 JWT_OIDC_WELL_KNOWN_CONFIG = os.getenv('JWT_OIDC_WELL_KNOWN_CONFIG')
 
 oidc_configuration = requests.get(JWT_OIDC_WELL_KNOWN_CONFIG).json()
@@ -31,21 +33,23 @@ class PermitSearchService:
         Performs a search against the permit service by the `search_term`.
         """
         results = self.session.post(SEARCH_ENDPOINT, json={'query': search_term,'debug': False, 'params': {}}).json()
-
         return results['documents']
 
-    def initialize_permit_extraction(self, permit_amendment_guid, permit_amendment_document_guid):
+    def initialize_permit_extraction(self, document_manager_guid):
         """
         Begins the process of extracting permit conditions from the PDF document
         """
-        document = PermitAmendmentDocument.find_by_permit_amendment_document_guid(permit_amendment_document_guid)
+        current_app.logger.info('initialize_permit_extraction!!!!!')
+        document = DocumentManagerService().get_document_version()
+        # document = PermitAmendmentDocument.find_by_permit_amendment_document_guid(permit_amendment_document_guid)
 
-        if not document:
-            raise BadRequest('Permit document not found')
-        if document.permit_amendment.permit_amendment_document_guid != permit_amendment_guid:
-            raise BadRequest('Permit document must be associated with the permit')
-        
+        # if not document:
+        #     raise BadRequest('Permit document not found')
+        # if document.permit_amendment.permit_amendment_guid != permit_amendment_guid:
+        #     raise BadRequest('Permit document must be associated with the permit amendment')
+        current_app.logger.info(document)
         try:
+            current_app.logger.info('HI TARA FROM START TRY')
             file_path = ""
             with open(file_path, 'rb') as document_data:
                 multipart_data = MultipartEncoder(
@@ -56,7 +60,7 @@ class PermitSearchService:
                 headers = {
                     'Content-Type': multipart_data.content_type
                 }
-        
+            current_app.logger.info('HI TARA FROM END TRY')
             results = self.session.post(EXTRACTION_ENDPOINT, data=multipart_data, headers=headers).json()
             return results
         except:

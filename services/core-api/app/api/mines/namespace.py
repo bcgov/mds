@@ -155,8 +155,8 @@ api.add_resource(
     PermitAmendmentResource,
     '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>')
 
-api.add_resource(PermitConditionExtractionResource, '/permits/extraction')
-api.add_resource(PermitConditionExtractionProgressResource, '/permits/extraction/<string:task_id>')
+api.add_resource(PermitConditionExtractionResource, '/permits/condition-extraction')
+api.add_resource(PermitConditionExtractionProgressResource, '/permits/condition-extraction/<string:task_id>')
 api.add_resource(
     PermitAmendmentVCResource,
     '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>/verifiable-credential'

@@ -22,11 +22,11 @@ export enum PermitExtractionStatus {
 
 interface PermitExtraction {
   status: PermitExtractionStatus;
-  taskId: string;
+  task_id: string;
 }
 
 interface PermitServiceState {
-  // object of: permit_amendment_guid: {status: x, taskId: y}
+  // object of: permit_amendment_id: {status: x, task_id: y}
   extractions: ItemMap<PermitExtraction>;
 }
 
@@ -40,7 +40,7 @@ const permitServiceSlice = createAppSlice({
   reducers: (create) => ({
     initiatePermitExtraction: create.asyncThunk(
       async (
-        payload: { permit_amendment_guid: string; permit_amendment_document_guid: string },
+        payload: { permit_amendment_id: number; permit_amendment_document_guid: string },
         thunkAPI
       ) => {
         const headers = createRequestHeader();
@@ -55,30 +55,30 @@ const permitServiceSlice = createAppSlice({
       },
       {
         fulfilled: (state, action) => {
-          const { permit_amendment_guid } = action.meta.arg;
-          const { taskId, status } = action.payload;
-          state.extractions[permit_amendment_guid] = { taskId, status };
+          const { permit_amendment_id } = action.meta.arg;
+          const { task_id, status } = action.payload;
+          state.extractions[permit_amendment_id] = { task_id, status };
         },
         pending: (state, action) => {
-          const { permit_amendment_guid } = action.meta.arg;
-          state.extractions[permit_amendment_guid] = {
+          const { permit_amendment_id } = action.meta.arg;
+          state.extractions[permit_amendment_id] = {
             status: PermitExtractionStatus.in_progress,
-            taskId: null,
+            task_id: null,
           };
         },
         rejected: (state, action) => {
-          const { permit_amendment_guid } = action.meta.arg;
-          state.extractions[permit_amendment_guid] = {
+          const { permit_amendment_id } = action.meta.arg;
+          state.extractions[permit_amendment_id] = {
             status: PermitExtractionStatus.error,
-            taskId: null,
+            task_id: null,
           };
           rejectHandler(action);
         },
       }
     ),
     fetchPermitExtractionStatus: create.asyncThunk(
-      async (payload: { permit_amendment_guid: string; taskId: string }, thunkAPI) => {
-        const { permit_amendment_guid, taskId } = payload;
+      async (payload: { permit_amendment_id: string; task_id: string }, thunkAPI) => {
+        const { permit_amendment_id, task_id } = payload;
 
         const headers = createRequestHeader();
         thunkAPI.dispatch(showLoading());
@@ -86,8 +86,8 @@ const permitServiceSlice = createAppSlice({
         const response = await CustomAxios({
           errorToastMessage: "default",
         }).get(
-          `${ENVIRONMENT.apiUrl}${POLL_PERMIT_SERVICE_EXTRACTION(taskId)}`,
-          { permit_amendment_guid },
+          `${ENVIRONMENT.apiUrl}${POLL_PERMIT_SERVICE_EXTRACTION(task_id)}`,
+          { permit_amendment_id },
           headers
         );
 
@@ -96,9 +96,9 @@ const permitServiceSlice = createAppSlice({
       },
       {
         fulfilled: (state, action) => {
-          const { permit_amendment_guid } = action.meta.arg;
+          const { permit_amendment_id } = action.meta.arg;
           const { task_id, status } = action.payload;
-          state.extractions[permit_amendment_guid] = { taskId: task_id, status };
+          state.extractions[permit_amendment_id] = { task_id: task_id, status };
         },
         rejected: (state, action) => {
           rejectHandler(action);
@@ -116,9 +116,9 @@ const permitServiceSlice = createAppSlice({
 export const { getPermitExtractionState } = permitServiceSlice.selectors;
 export const { initiatePermitExtraction, fetchPermitExtractionStatus } = permitServiceSlice.actions;
 
-export const getPermitExtractionByGuid = (permit_amendment_guid: string) =>
+export const getPermitExtractionByGuid = (permit_amendment_id: string) =>
   createSelector([getPermitExtractionState], (extractions) => {
-    return extractions[permit_amendment_guid];
+    return extractions[permit_amendment_id];
   });
 
 const permitServiceReducer = permitServiceSlice.reducer;
