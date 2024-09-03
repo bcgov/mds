@@ -66,7 +66,7 @@ class PermitConditionValidator:
             ):
                 self.last_condition_text = f"""
                     section_title: {condition.section_title}
-                    section_paragraph: {condition.section_paragraph}
+                    section_paragraph: {condition.paragraph}
                     subparagraph: {condition.subparagraph}
                     clause: {condition.clause}
                     subclause: {condition.subclause}
@@ -119,8 +119,8 @@ class PermitConditionValidator:
                     conditions.append(condition)
 
             for c in conditions:
-                if 'page_number' in c and c.get('page_number') == '':
-                    c['page_number'] = None
+                if "page_number" in c and c.get("page_number") == "":
+                    c["page_number"] = None
 
             response = PermitConditions.model_validate({"conditions": conditions})
 

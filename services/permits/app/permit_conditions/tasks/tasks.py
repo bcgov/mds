@@ -26,23 +26,21 @@ def task_context(task):
     finally:
         context.reset(t)
 
+
 @celery_app.task(bind=True)
 def run_permit_condition_pipeline(self, file_name: str, meta: dict):
     with task_context(self):
         pipeline = permit_condition_pipeline()
 
-        self.update_state(state="PROGRESS", meta={"stage": "start", file_name: file_name, **meta})
+        self.update_state(
+            state="PROGRESS", meta={"stage": "start", file_name: file_name, **meta}
+        )
 
         result = pipeline.run(
             {
                 "pdf_converter": {"file_path": file_name},
-                "prompt_builder": {
-                    "template_variables": {
-                        "max_pages": 6,
-                    }
-                },
             }
-        )["validator"]
+        )["combine_metadata"]
 
         conditions = result["conditions"]
 
