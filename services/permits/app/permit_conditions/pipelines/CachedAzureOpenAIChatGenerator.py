@@ -21,6 +21,7 @@ host = os.environ.get("ELASTICSEARCH_HOST", "https://elasticsearch:9200")
 username = os.environ.get("ELASTICSEARCH_USERNAME", "")
 password = os.environ.get("ELASTICSEARCH_PASSWORD", "")
 
+
 def hash_messages(messages):
     """
     Calculates the SHA256 hash digest of a list of messages.
@@ -90,48 +91,32 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
                                            role=cached_result["hits"][0].meta["role"],
                                            meta=cached_result["hits"][0].meta)]}
         if not existing_reply_found:
-            if DEBUG_MODE:
-                try:
-                    with open(f"app/cache/{cache_key}.pickle", "rb") as f:
-                        res = {
-                            **pickle.load(f),
-                        }
-                except:
-                    logger.info("No cache entry found. Quering OpenAI")
-                    res = None
-            else:
-                res = None
+            try:
+                res = super(CachedAzureOpenAIChatGenerator, self).run(
+                    messages=messages, generation_kwargs=generation_kwargs
+                )
+            except Exception as e:
+                logger.error(f"Error while querying OpenAI: {e}")
+                raise
 
-            if not res:
-                try:
-                    res = super(CachedAzureOpenAIChatGenerator, self).run(
-                        messages=messages, generation_kwargs=generation_kwargs
-                    )
-                except Exception as e:
-                    logger.error(f"Error while querying OpenAI: {e}")
-                    raise
-
-                if DEBUG_MODE:
-                    with open(f"app/cache/{cache_key}.pickle", "wb") as f:
-                        pickle.dump(res, f, protocol=pickle.HIGHEST_PROTOCOL)
             documents = [
-            Document(content=res["replies"][0].content, meta={"cache_key": cache_key,
-                                                              "name": res["replies"][0].name,
-                                                              "role": res["replies"][0].role,
-                                                              "model": res["replies"][0].meta["model"],
-                                                              "index": res["replies"][0].meta["index"],
-                                                              "finish_reason": res["replies"][0].meta[
-                                                                  "finish_reason"],  #
-                                                              "usage": {"completion_tokens":
-                                                                            res["replies"][0].meta["usage"][
-                                                                                "completion_tokens"],
-                                                                        "prompt_tokens":
-                                                                            res["replies"][0].meta["usage"][
-                                                                                "prompt_tokens"],
-                                                                        "total_tokens":
-                                                                            res["replies"][0].meta["usage"][
-                                                                                "total_tokens"]}
-                                                              })
+                Document(content=res["replies"][0].content, meta={"cache_key": cache_key,
+                                                                  "name": res["replies"][0].name,
+                                                                  "role": res["replies"][0].role,
+                                                                  "model": res["replies"][0].meta["model"],
+                                                                  "index": res["replies"][0].meta["index"],
+                                                                  "finish_reason": res["replies"][0].meta[
+                                                                      "finish_reason"],  #
+                                                                  "usage": {"completion_tokens":
+                                                                                res["replies"][0].meta["usage"][
+                                                                                    "completion_tokens"],
+                                                                            "prompt_tokens":
+                                                                                res["replies"][0].meta["usage"][
+                                                                                    "prompt_tokens"],
+                                                                            "total_tokens":
+                                                                                res["replies"][0].meta["usage"][
+                                                                                    "total_tokens"]}
+                                                                  })
             ]
             document_store.write_documents(documents)
         return res["replies"][0]
@@ -182,8 +167,8 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
             iteration += 1
             if DEBUG_MODE:
                 with open(
-                    f"debug/cached_azure_openai_chat_generator_output_{self.it}_{iteration}.txt",
-                    "w",
+                        f"debug/cached_azure_openai_chat_generator_output_{self.it}_{iteration}.txt",
+                        "w",
                 ) as f:
                     f.write(reply.content)
 
@@ -194,7 +179,7 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
 
         if DEBUG_MODE:
             with open(
-                f"debug/cached_azure_openai_chat_generator_output_{self.it}.txt", "w"
+                    f"debug/cached_azure_openai_chat_generator_output_{self.it}.txt", "w"
             ) as f:
                 f.write(reply.content)
 
