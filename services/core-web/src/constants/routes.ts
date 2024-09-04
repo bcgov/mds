@@ -405,7 +405,7 @@ export const INCIDENTS_DASHBOARD = {
 
 export const REPORTS_DASHBOARD = {
   route: "/dashboard/reporting/reports",
-  dynamicRoute: ({ page, per_page, ...params }) =>
+  dynamicRoute: ({ page = Strings.DEFAULT_PAGE, per_page = Strings.DEFAULT_PER_PAGE, ...params }) =>
     `/dashboard/reporting/reports?${queryString.stringify(
       { page, per_page, ...withoutNullParams(params) },
       { sort: false }

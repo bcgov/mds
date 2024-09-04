@@ -1,59 +1,64 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { compose } from "redux";
-import PropTypes from "prop-types";
-import { Field, reduxForm, formValueSelector } from "redux-form";
+import React, { FC, FormEventHandler, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Field, getFormValues, reset } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row } from "antd";
 import {
-  getDropdownMineReportStatusOptions,
   getDropdownMineReportCategoryOptions,
-  getMineReportDefinitionOptions,
+  getDropdownMineReportStatusOptions,
   getDropdownPermitConditionCategoryOptions,
+  getMineReportDefinitionOptions,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { createDropDownList, sortListObjectsByPropertyLocaleCompare } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
-import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@mds/common/constants/strings";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import { MineReportParams } from "@mds/common";
 
-const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
-  handleReset: PropTypes.func.isRequired,
-  reset: PropTypes.func.isRequired,
-  dropdownMineReportStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-  mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-  dropdownMineReportCategoryOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-  selectedMineReportCategory: PropTypes.string,
-  selectedMineReportDefinitionGuid: PropTypes.string,
-  mineReportType: PropTypes.string.isRequired,
-  dropdownPermitConditionCategoryOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem)
-    .isRequired,
-  permits: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
-};
+interface ReportFilterFormProps {
+  onSubmit: FormEventHandler<HTMLFormElement>;
+  onReset: () => void;
+  initialValues: MineReportParams;
+  mineReportType: string;
+}
 
-const defaultProps = {
-  selectedMineReportCategory: undefined,
-  selectedMineReportDefinitionGuid: undefined,
-  permits: [],
-};
+export const ReportFilterForm: FC<ReportFilterFormProps> = ({
+  onReset,
+  onSubmit,
+  initialValues,
+  mineReportType,
+}) => {
+  const dispatch = useDispatch();
+  const [
+    dropdownMineReportDefinitionOptionsFiltered,
+    setDropdownMineReportDefinitionOptionsFiltered,
+  ] = useState([]);
+  const [
+    dropdownMineReportCategoryOptionsFiltered,
+    setDropdownMineReportCategoryOptionsFiltered,
+  ] = useState();
 
-const selector = formValueSelector(FORM.FILTER_REPORTS);
+  const permits = useSelector(getPermits);
+  const dropdownMineReportStatusOptions = useSelector(getDropdownMineReportStatusOptions);
+  const dropdownPermitConditionCategoryOptions = useSelector(
+    getDropdownPermitConditionCategoryOptions
+  );
+  const dropdownMineReportCategoryOptions = useSelector(getDropdownMineReportCategoryOptions);
+  const mineReportDefinitionOptions = useSelector(getMineReportDefinitionOptions);
+  const {
+    report_type: selectedMineReportCategory,
+    report_name: selectedMineReportDefinitionGuid,
+  } = useSelector((state) => getFormValues(FORM.FILTER_REPORTS)(state) ?? {});
 
-export class ReportFilterForm extends Component {
-  state = {
-    dropdownMineReportDefinitionOptionsFiltered: [],
-    dropdownMineReportCategoryOptionsFiltered: [],
+  const handleReset = () => {
+    dispatch(reset(FORM.FILTER_REPORTS));
+    onReset();
   };
 
-  handleReset = () => {
-    this.props.reset();
-    this.props.handleReset();
-  };
-
-  updateMineReportDefinitionOptions = (
+  const updateMineReportDefinitionOptions = (
     mineReportDefinitionOptions,
     selectedMineReportCategory = undefined
   ) => {
@@ -67,85 +72,78 @@ export class ReportFilterForm extends Component {
       );
     }
 
-    let dropdownMineReportDefinitionOptionsFiltered = createDropDownList(
+    let newDropdownMineReportDefinitionOptionsFiltered = createDropDownList(
       mineReportDefinitionOptionsFiltered,
       "report_name",
       "mine_report_definition_guid"
     );
-    dropdownMineReportDefinitionOptionsFiltered = sortListObjectsByPropertyLocaleCompare(
-      dropdownMineReportDefinitionOptionsFiltered,
+    newDropdownMineReportDefinitionOptionsFiltered = sortListObjectsByPropertyLocaleCompare(
+      newDropdownMineReportDefinitionOptionsFiltered,
       "label"
     );
 
-    this.setState({
-      dropdownMineReportDefinitionOptionsFiltered,
-    });
+    setDropdownMineReportDefinitionOptionsFiltered(newDropdownMineReportDefinitionOptionsFiltered);
   };
 
-  updateMineReportCategoryOptions = (
+  const updateMineReportCategoryOptions = (
     dropdownMineReportCategoryOptions,
     selectedMineReportDefinitionGuid = undefined
   ) => {
-    let dropdownMineReportCategoryOptionsFiltered = dropdownMineReportCategoryOptions;
+    let newDropdownMineReportCategoryOptionsFiltered = dropdownMineReportCategoryOptions;
 
     if (selectedMineReportDefinitionGuid) {
-      const selectedMineReportDefinition = this.props.mineReportDefinitionOptions.filter(
+      const selectedMineReportDefinition = mineReportDefinitionOptions.filter(
         (option) => option.mine_report_definition_guid === selectedMineReportDefinitionGuid
       )[0];
 
-      dropdownMineReportCategoryOptionsFiltered = dropdownMineReportCategoryOptions.filter((cat) =>
-        selectedMineReportDefinition.categories
-          .map((category) => category.mine_report_category)
-          .includes(cat.value)
+      newDropdownMineReportCategoryOptionsFiltered = dropdownMineReportCategoryOptions.filter(
+        (cat) =>
+          selectedMineReportDefinition.categories
+            .map((category) => category.mine_report_category)
+            .includes(cat.value)
       );
     }
 
-    this.setState({
-      dropdownMineReportCategoryOptionsFiltered,
-    });
+    setDropdownMineReportCategoryOptionsFiltered(newDropdownMineReportCategoryOptionsFiltered);
   };
 
-  componentWillMount = () => {
-    this.updateMineReportDefinitionOptions(this.props.mineReportDefinitionOptions);
-    this.updateMineReportCategoryOptions(this.props.dropdownMineReportCategoryOptions);
-  };
+  useEffect(() => {
+    updateMineReportDefinitionOptions(mineReportDefinitionOptions);
+    updateMineReportCategoryOptions(dropdownMineReportCategoryOptions);
+  }, []);
 
-  componentWillReceiveProps = (nextProps) => {
-    if (nextProps.mineReportDefinitionOptions !== this.props.mineReportDefinitionOptions) {
-      this.updateMineReportDefinitionOptions(nextProps.mineReportDefinitionOptions);
-    }
+  useEffect(() => {
+    updateMineReportDefinitionOptions(mineReportDefinitionOptions);
+  }, [mineReportDefinitionOptions]);
 
-    if (
-      nextProps.dropdownMineReportCategoryOptions !== this.props.dropdownMineReportCategoryOptions
-    ) {
-      this.updateMineReportCategoryOptions(nextProps.dropdownMineReportCategoryOptions);
-    }
+  useEffect(() => {
+    updateMineReportCategoryOptions(mineReportDefinitionOptions);
+  }, [dropdownMineReportCategoryOptions]);
 
-    if (nextProps.selectedMineReportCategory !== this.props.selectedMineReportCategory) {
-      this.updateMineReportDefinitionOptions(
-        nextProps.mineReportDefinitionOptions,
-        nextProps.selectedMineReportCategory
-      );
-    }
+  useEffect(() => {
+    updateMineReportDefinitionOptions(mineReportDefinitionOptions, selectedMineReportCategory);
+  }, [selectedMineReportCategory]);
 
-    if (
-      nextProps.selectedMineReportDefinitionGuid !== this.props.selectedMineReportDefinitionGuid
-    ) {
-      this.updateMineReportCategoryOptions(
-        nextProps.dropdownMineReportCategoryOptions,
-        nextProps.selectedMineReportDefinitionGuid
-      );
-    }
-  };
+  useEffect(() => {
+    updateMineReportCategoryOptions(
+      dropdownMineReportCategoryOptions,
+      selectedMineReportDefinitionGuid
+    );
+  }, [selectedMineReportDefinitionGuid]);
 
-  render() {
-    let permitDropdown = [];
-    if (this.props.permits) {
-      permitDropdown = createDropDownList(this.props.permits, "permit_no", "permit_guid");
-    }
+  let permitDropdown = [];
+  if (permits) {
+    permitDropdown = createDropDownList(permits, "permit_no", "permit_guid");
+  }
 
-    return (
-      <Form layout="vertical" onSubmit={this.props.handleSubmit} onReset={this.handleReset}>
+  return (
+    <FormWrapper
+      name={FORM.FILTER_REPORTS}
+      reduxFormConfig={{ touchOnBlur: false, enableReinitialize: true }}
+      onSubmit={onSubmit}
+      initialValues={initialValues}
+    >
+      <Form layout="vertical" onReset={handleReset}>
         <div>
           <Row gutter={16}>
             <Col md={8} sm={24}>
@@ -156,14 +154,14 @@ export class ReportFilterForm extends Component {
                 placeholder="Select report type"
                 component={renderConfig.SELECT}
                 data={
-                  this.props.mineReportType === Strings.MINE_REPORTS_TYPE.codeRequiredReports
-                    ? this.state.dropdownMineReportCategoryOptionsFiltered
-                    : this.props.dropdownPermitConditionCategoryOptions
+                  mineReportType === Strings.MINE_REPORTS_TYPE.codeRequiredReports
+                    ? dropdownMineReportCategoryOptionsFiltered
+                    : dropdownPermitConditionCategoryOptions
                 }
                 format={null}
               />
             </Col>
-            {this.props.mineReportType === Strings.MINE_REPORTS_TYPE.codeRequiredReports && (
+            {mineReportType === Strings.MINE_REPORTS_TYPE.codeRequiredReports && (
               <Col md={8} sm={24}>
                 <Field
                   id="report_name"
@@ -171,12 +169,12 @@ export class ReportFilterForm extends Component {
                   label="Report Name"
                   placeholder="Select report name"
                   component={renderConfig.SELECT}
-                  data={this.state.dropdownMineReportDefinitionOptionsFiltered}
+                  data={dropdownMineReportDefinitionOptionsFiltered}
                   format={null}
                 />
               </Col>
             )}
-            {this.props.mineReportType === Strings.MINE_REPORTS_TYPE.permitRequiredReports && (
+            {mineReportType === Strings.MINE_REPORTS_TYPE.permitRequiredReports && (
               <Col md={8} sm={24}>
                 <Field
                   id="permit_guid"
@@ -263,7 +261,7 @@ export class ReportFilterForm extends Component {
                 label="Status"
                 placeholder="Select status"
                 component={renderConfig.MULTI_SELECT}
-                data={this.props.dropdownMineReportStatusOptions}
+                data={dropdownMineReportStatusOptions}
                 format={null}
               />
             </Col>
@@ -276,7 +274,10 @@ export class ReportFilterForm extends Component {
                 component={renderConfig.SELECT}
                 data={[
                   { value: "true", label: "Received Only" },
-                  { value: "false", label: "Received and Unreceived" },
+                  {
+                    value: "false",
+                    label: "Received and Unreceived",
+                  },
                 ]}
                 format={null}
               />
@@ -284,7 +285,7 @@ export class ReportFilterForm extends Component {
           </Row>
         </div>
         <div className="right center-mobile">
-          <Button className="full-mobile" type="secondary" htmlType="reset">
+          <Button className="full-mobile" htmlType="reset">
             Clear Filters
           </Button>
           <Button className="full-mobile" type="primary" htmlType="submit">
@@ -292,26 +293,8 @@ export class ReportFilterForm extends Component {
           </Button>
         </div>
       </Form>
-    );
-  }
-}
+    </FormWrapper>
+  );
+};
 
-ReportFilterForm.propTypes = propTypes;
-ReportFilterForm.defaultProps = defaultProps;
-
-export default compose(
-  connect((state) => ({
-    dropdownMineReportStatusOptions: getDropdownMineReportStatusOptions(state, false),
-    dropdownMineReportCategoryOptions: getDropdownMineReportCategoryOptions(state, false),
-    dropdownPermitConditionCategoryOptions: getDropdownPermitConditionCategoryOptions(state),
-    mineReportDefinitionOptions: getMineReportDefinitionOptions(state),
-    selectedMineReportCategory: selector(state, "report_type"),
-    selectedMineReportDefinitionGuid: selector(state, "report_name"),
-    permits: getPermits(state),
-  })),
-  reduxForm({
-    form: FORM.FILTER_REPORTS,
-    touchOnBlur: false,
-    enableReinitialize: true,
-  })
-)(ReportFilterForm);
+export default ReportFilterForm;

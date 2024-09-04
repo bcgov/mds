@@ -4,6 +4,8 @@ from datetime import datetime
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
 from werkzeug.exceptions import BadRequest
 from sqlalchemy import asc, desc, func, or_
+
+from app.api.mines.reports.report_helpers import ReportFilterHelper
 from app.extensions import api
 from app.api.utils.access_decorators import requires_any_of, VIEW_ALL
 from app.api.utils.resources_mixins import UserMixin
@@ -63,7 +65,9 @@ class ReportsResource(Resource, UserMixin):
             'region': request.args.getlist('region', type=str),
         }
 
-        records, pagination_details = self._apply_filters_and_pagination(args)
+        query = MineReport.query.filter_by(deleted_ind=False)
+
+        records, pagination_details = ReportFilterHelper.apply_filters_and_pagination(query, args)
         if not records:
             raise BadRequest('Unable to fetch reports.')
         return {

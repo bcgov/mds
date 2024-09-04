@@ -1,4 +1,5 @@
 import uuid
+
 from flask import current_app
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
@@ -352,22 +353,6 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
                 r for r in reports if category.upper() in
                 [c.mine_report_category.upper() for c in r.mine_report_definition.categories]
             ]
-        except ValueError:
-            return None
-
-    @classmethod
-    def find_by_mine_guid_and_report_type(cls,
-                                          _id,
-                                          reports_type=MINE_REPORT_TYPE['CODE REQUIRED REPORTS']):
-        try:
-            uuid.UUID(_id, version=4)
-            reports = cls.query.filter_by(mine_guid=_id).filter_by(deleted_ind=False).order_by(
-                cls.due_date.asc())
-            if reports_type == MINE_REPORT_TYPE['PERMIT REQUIRED REPORTS']:
-                reports = reports.filter(MineReport.permit_condition_category_code.isnot(None))
-            elif reports_type == MINE_REPORT_TYPE['CODE REQUIRED REPORTS']:
-                reports = reports.filter(MineReport.permit_condition_category_code.is_(None))
-            return reports.all()
         except ValueError:
             return None
 
