@@ -201,7 +201,7 @@ export const MajorMineApplicationPage: FC = () => {
             id="step2-next"
             type="primary"
             htmlType="submit"
-            disabled={formValues?.primary_documents?.length === 0}
+            disabled={formValues?.primary_documents?.length === 0 || !isFormDirty}
           >
             Review & Submit
           </Button>
