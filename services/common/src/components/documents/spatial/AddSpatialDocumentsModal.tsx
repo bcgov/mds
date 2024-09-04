@@ -165,7 +165,7 @@ const AddSpatialDocumentsModal: FC<AddSpatialDocumentsModalProps> = ({
             onRemoveFile={handleRemoveFile}
             component={RenderFileUpload}
             maxFileSize="400MB"
-            label="Upload shapefiles"
+            label="Upload Spatial File"
             abbrevLabel
             listedFileTypes={["spatial"]}
             required

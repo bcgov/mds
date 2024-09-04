@@ -25,7 +25,6 @@ documents = [
     Document(),
 ]
 
-
 def test_run_with_valid_replies():
     validator = PermitConditionValidator()
     chat_data = ChatData(

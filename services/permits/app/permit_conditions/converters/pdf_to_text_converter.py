@@ -1,5 +1,6 @@
 import logging
 import os
+import shutil
 from pathlib import Path
 from time import sleep
 from typing import Any, Dict, List, Optional
@@ -37,7 +38,13 @@ class PDFToTextConverter:
         id_hash_keys: Optional[List[str]] = None,
         documents: Optional[List[Document]] = None,
     ) -> List[Document]:
-        context.get().update_state(state="PROGRESS", meta={"stage": "pdf_to_text_converter"})
+        context.get().update_state(
+            state="PROGRESS", meta={"stage": "pdf_to_text_converter"}
+        )
+
+        if DEBUG_MODE:
+            shutil.rmtree("debug", ignore_errors=True)
+            os.makedirs("debug")
 
         if not documents:
             pages = self._read_pdf(

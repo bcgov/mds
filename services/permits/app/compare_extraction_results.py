@@ -1,11 +1,13 @@
 ###
 # Utility script to compare extracted permit conditions from CSV files to generate a csv and html report of how well they match
 # Usage: python compare_extraction_results.py --csv_pairs <auto_extracted_csv> <manual_extracted_csv> --csv_pairs <auto_extracted_csv> <manual_extracted_csv> ...
-# CSV files should have the following columns: section_title, section_paragraph, paragraph_title, subparagraph, clause, subclause, page_number, condition_text
+# CSV files should have the following columns: section_title, section_paragraph, condition_title, subparagraph, clause, subclause, page_number, condition_text
 ###
 import argparse
+import json
 import logging
 import os
+from difflib import SequenceMatcher
 
 import numpy as np
 import pandas as pd
@@ -13,25 +15,46 @@ from app.permit_conditions.validator.permit_condition_model import PermitConditi
 from diff_match_patch import diff_match_patch
 from fuzzywuzzy import fuzz
 from jinja2 import Environment, FileSystemLoader
+from natsort import natsorted
 from pydantic import ValidationError
 
 logger = logging.getLogger(__name__)
+
 
 # Function to create Content instances from a DataFrame
 def create_content_instances(df):
     content_list = []
     for _, row in df.iterrows():
         try:
+            try:
+                if isinstance(row.get("meta"), str):
+                    meta = row.get("meta").replace('""', '"')
+                    meta = json.loads(meta)
+                else:
+                    meta = row.get("meta", {"bounding_box": {}})
+
+            except json.JSONDecodeError:
+                logger.error(
+                    f"Failed parsing of permit condition meta: {row.get('meta')}"
+                )
+                raise
             content = PermitCondition(
                 section_title=row["section_title"],
-                section_paragraph=row["section_paragraph"],
-                paragraph_title=row["paragraph_title"],
+                section=row["section"],
+                paragraph=row["paragraph"],
                 subparagraph=row["subparagraph"],
                 clause=row["clause"],
-                subclause=row["subclause"],
-                page_number=int(row["page_number"]) if (row.get("page_number") and row['page_number'] != '') else 0,
+                subclause=row.get("subclause", ""),
+                subsubclause=row.get("subsubclause", ""),
+                condition_title=row.get("condition_title"),
+                page_number=(
+                    int(row["page_number"])
+                    if (row.get("page_number") and row["page_number"] != "")
+                    else 0
+                ),
                 condition_text=row["condition_text"],
                 original_condition_text=row["condition_text"],
+                meta=meta,
             )
         except ValidationError as e:
             logger.error(f"Failed parsing of permit condition: {e}")
@@ -39,12 +62,29 @@ def create_content_instances(df):
             raise
 
         # This will be used as the text for comparison purposes
-        text = f"""
-            {content.section_paragraph}. {content.section_title}
-            {content.subparagraph}. {content.paragraph_title}
-            {"("+content.clause + ")" if content.clause else ""} {"("+content.subclause + ")" if content.subclause else ""}
 
-            {content.condition_text}
+        if content.condition_title:
+            txt = f"{content.condition_title}\n\n{content.condition_text}"
+        else:
+            txt = content.condition_text
+
+        section = ".".join(
+            filter(
+                None,
+                [
+                    content.section,
+                    content.paragraph,
+                    content.subparagraph,
+                    content.clause,
+                    content.subclause,
+                    content.subsubclause,
+                ],
+            )
+        )
+
+        text = f"""
+            {section}
+            {txt}
         """
 
         content.condition_text = text
@@ -59,10 +99,12 @@ def create_comparison_key(condition):
         filter(
             None,
             [
-                condition.section_paragraph,
+                condition.section,
+                condition.paragraph,
                 condition.subparagraph,
                 condition.clause,
                 condition.subclause,
+                condition.subsubclause,
             ],
         )
     )
@@ -95,7 +137,6 @@ def write_csv_report(comparison_results, report_prefix):
 
     comparison_csv_filename = f"{report_prefix}_comparison_report.xlsx"
 
-
     comparison_df.to_excel(comparison_csv_filename)
 
     return comparison_csv_filename
@@ -117,7 +158,9 @@ def validate_condition(csv_pairs):
         auto_extracted_content = create_content_instances(auto_extracted_df)
         manual_extracted_content = create_content_instances(manual_extracted_df)
 
-        print(f'Found {len(auto_extracted_content)} conditions in {auto_extracted_csv} and {len(manual_extracted_content)} conditions in {manual_extracted_csv}')
+        print(
+            f"Found {len(auto_extracted_content)} conditions in {auto_extracted_csv} and {len(manual_extracted_content)} conditions in {manual_extracted_csv}"
+        )
 
         # 3. Find missing and added conditions
         auto_content_dict = {
@@ -153,6 +196,7 @@ def validate_condition(csv_pairs):
                     "DiffHTML": diff_html,
                     "state": "missing",
                     "match_percentage": 0,
+                    "metadata": {},
                 }
             )
 
@@ -160,11 +204,13 @@ def validate_condition(csv_pairs):
                 {
                     "Key": key,
                     "auto_section_title": "",
-                    "auto_paragraph_title": "",
+                    "auto_condition_title": "",
                     "auto_extracted_condition": "",
                     "manual_section_title": manual_content_dict[key].section_title,
-                    "manual_paragraph_title": manual_content_dict[key].paragraph_title,
-                    "manual_extracted_condition": manual_content_dict[key].original_condition_text,
+                    "manual_condition_title": manual_content_dict[key].condition_title,
+                    "manual_extracted_condition": manual_content_dict[
+                        key
+                    ].original_condition_text,
                     "match_percentage": 0,
                     "is_match": False,
                 }
@@ -178,6 +224,11 @@ def validate_condition(csv_pairs):
                     "DiffHTML": diff_html,
                     "state": "added",
                     "match_percentage": 0,
+                    "metadata": (
+                        auto_content_dict[key].meta
+                        if auto_content_dict[key].meta
+                        else {"bounding_box": {}}
+                    ),
                 }
             )
 
@@ -185,10 +236,12 @@ def validate_condition(csv_pairs):
                 {
                     "Key": key,
                     "auto_section_title": auto_content_dict[key].section_title,
-                    "auto_paragraph_title": auto_content_dict[key].paragraph_title,
-                    "auto_extracted_condition": auto_content_dict[key].original_condition_text,
+                    "auto_condition_title": auto_content_dict[key].condition_title,
+                    "auto_extracted_condition": auto_content_dict[
+                        key
+                    ].original_condition_text,
                     "manual_section_title": "",
-                    "manual_paragraph_title": "",
+                    "manual_condition_title": "",
                     "manual_extracted_condition": "",
                     "manual_extracted_condition": "",
                     "match_percentage": 0,
@@ -205,13 +258,11 @@ def validate_condition(csv_pairs):
         context["comparison_results"] += match_results["context_comparison_results"]
         comparison_results += match_results["comparison_results"]
 
-        context["all_conditions"] = sorted(
-            (
-                context["comparison_results"]
-                + context["missing_conditions"]
-                + context["added_conditions"]
-            ),
-            key=lambda c: c.get("Key"),
+        context["all_conditions"] = natsorted(
+            context["comparison_results"]
+            + context["missing_conditions"]
+            + context["added_conditions"],
+            key=lambda x: x["Key"],
         )
 
         # 5. Calculate the overall match_percentage (how many conditions match 100% between the two csvs)
@@ -255,7 +306,6 @@ def compare_matching_conditions(
     total_comparable_conditions = 0
     matching_score = 0
 
-    
     # Compare how well the text matches for conditions that are present in both csvs
     # and gemerate a html diff for each pair of conditions
     for key in sorted(manual_content_dict.keys()):
@@ -263,7 +313,11 @@ def compare_matching_conditions(
             total_comparable_conditions += 1
             auto_condition_text = auto_content_dict[key].condition_text
             manual_condition_text = manual_content_dict[key].condition_text
-            match_percentage = fuzz.ratio(auto_condition_text.replace('\n', ''), manual_condition_text.replace('\n', ''))
+            match_percentage = fuzz.ratio(
+                auto_condition_text.replace("\n", ""),
+                manual_condition_text.replace("\n", ""),
+            )
+
             is_match = match_percentage >= 100
 
             if is_match:
@@ -273,11 +327,15 @@ def compare_matching_conditions(
                 {
                     "Key": key,
                     "auto_section_title": auto_content_dict[key].section_title,
-                    "auto_paragraph_title": auto_content_dict[key].paragraph_title,
-                    "auto_extracted_condition": auto_content_dict[key].original_condition_text,
+                    "auto_condition_title": auto_content_dict[key].condition_title,
+                    "auto_extracted_condition": auto_content_dict[
+                        key
+                    ].original_condition_text,
                     "manual_section_title": manual_content_dict[key].section_title,
-                    "manual_paragraph_title": manual_content_dict[key].paragraph_title,
-                    "manual_extracted_condition": manual_content_dict[key].original_condition_text,
+                    "manual_condition_title": manual_content_dict[key].condition_title,
+                    "manual_extracted_condition": manual_content_dict[
+                        key
+                    ].original_condition_text,
                     "match_percentage": match_percentage,
                     "is_match": is_match,
                 }
@@ -290,6 +348,11 @@ def compare_matching_conditions(
                     "DiffHTML": diff_html,
                     "state": "match" if is_match else "nomatch",
                     "match_percentage": match_percentage,
+                    "metadata": (
+                        auto_content_dict[key].meta
+                        if auto_content_dict[key].meta
+                        else {"bounding_box": {}}
+                    ),
                 }
             )
 

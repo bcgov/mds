@@ -53,7 +53,8 @@ services:
       - FILE_UPLOAD_PATH=/file-uploads
       - HAYSTACK_TELEMETRY_ENABLED=False
       - ELASTICSEARCH_CA_CERT=/permitsdata/certs/ca/ca.crt
-
+    env_file:
+      - .env
     depends_on:
       kibana:
         condition: service_healthy
@@ -100,6 +101,7 @@ services:
         until curl -s --cacert /certs/ca/ca.crt https://elasticsearch:9200 | grep -q "missing authentication credentials"; do sleep 30; done;
         echo "Setting kibana_system password";
         until curl -s -X POST --cacert /certs/ca/ca.crt -u "${ELASTICSEARCH_USERNAME}:${ELASTICSEARCH_PASSWORD}" -H "Content-Type: application/json" https://elasticsearch:9200/_security/user/kibana_system/_password -d "{\"password\":\"${ELASTICSEARCH_PASSWORD}\"}" | grep -q "^{}"; do sleep 10; done;
+        sleep 3;
         echo "All done!";
       '
     user: "0"

@@ -16,6 +16,7 @@ pyyaml==6.0.1
 ocrmypdf==16.4.1
 pypdf==4.2.0
 json-repair==0.25.3
+natsort==8.4.0
 pytest==8.0.0
 fuzzywuzzy==0.18.0
 oauthlib==3.2.2
@@ -28,3 +29,5 @@ watchdog==4.0.1
 pytest-cov==5.0.0
 pytest-asyncio==0.23.8
 pytest-mock==3.14.0
+azure-ai-formrecognizer==3.3.3
+azure-core==1.30.2
