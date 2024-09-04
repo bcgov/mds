@@ -6102,6 +6102,10 @@ export const MINE_REPORTS = [
 
 export const MINE_REPORT_RESPONSE = {
   records: MINE_REPORTS,
+  current_page: 1,
+  items_per_page: 25,
+  total: 25,
+  total_pages: 1,
 };
 
 export const REPORTS_PAGE_DATA = {
