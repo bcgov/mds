@@ -941,10 +941,16 @@ export const getTransformedProjectSummaryAuthorizationTypes = createSelector(
       // eslint-disable-next-line array-callback-return, consistent-return
       parents.map(({ code, children }) => {
         if (code === child.project_summary_authorization_type_group_id) {
-          return children.push({
-            code: child.project_summary_authorization_type,
-            description: child.description,
-          });
+          /* 
+          This if condition below was added to temporarily remove Municipal Wastewater Regulation as an option.
+          The option will be added back in the future.
+          */
+          if (child.project_summary_authorization_type !== "MUNICIPAL_WASTEWATER_REGULATION") {
+            return children.push({
+              code: child.project_summary_authorization_type,
+              description: child.description,
+            });
+          }
         }
       });
     });

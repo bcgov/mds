@@ -7042,7 +7042,6 @@ export const PROJECT_SUMMARY_AUTHORIZATION_TYPES_TRANSFORMED = [
       { code: "AIR_EMISSIONS_DISCHARGE_PERMIT", description: "Air emissions discharge permit" },
       { code: "EFFLUENT_DISCHARGE_PERMIT", description: "Effluent discharge permit" },
       { code: "REFUSE_DISCHARGE_PERMIT", description: "Refuse discharge permit" },
-      { code: "MUNICIPAL_WASTEWATER_REGULATION", description: "Municipal Wastewater Regulation" },
     ],
   },
   {
