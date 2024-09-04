@@ -226,16 +226,16 @@ exports[`MajorMinesApplicationPage renders properly 1`] = `
         class="ant-col ant-col-24"
       >
         <div
-          class="bcgov-callout--warning nod-callout-text"
+          class="bcgov-callout--danger nod-callout-text"
         >
           <div
             class="information-requirements-table-callout"
           >
             <h4>
-              Confirm your Submission
+              Further information is required
             </h4>
             <p>
-              Please confirm the contents of your submission below. When you are happy with your review click the submit button to begin the review process.
+              Your submission has been reviewed and some changes are required for completing the review process. Please check your inbox for more information.
             </p>
           </div>
         </div>
