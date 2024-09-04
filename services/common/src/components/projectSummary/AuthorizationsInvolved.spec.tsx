@@ -6,6 +6,7 @@ import { FORM } from "@mds/common/constants/forms";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { PERMITS, PROJECTS, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
+import { BrowserRouter } from "react-router-dom";
 
 const initialState = {
   [PROJECTS]: {
@@ -30,7 +31,9 @@ describe("AuthorizationsInvolved", () => {
           initialValues={MOCK.PERMITS}
           onSubmit={() => {}}
         >
-          <AuthorizationsInvolved />
+          <BrowserRouter>
+            <AuthorizationsInvolved />
+          </BrowserRouter>
         </FormWrapper>
       </ReduxWrapper>
     );

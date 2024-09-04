@@ -151,6 +151,38 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                       >
                         Environmental Management Act
                       </h5>
+                      <div
+                        class="ant-typography"
+                      >
+                        For registration under the
+                         
+                        <a
+                          href="https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/87_2012"
+                          target="_blank"
+                        >
+                          Municipal Wastewater Regulation
+                        </a>
+                         
+                        and
+                         
+                        <a
+                          href="https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/63_88_00"
+                          target="_blank"
+                        >
+                          Hazardous Waste Regulation,
+                        </a>
+                         
+                        please refer to the
+                         
+                        <a
+                          href="https://www2.gov.bc.ca/gov/content/environment/waste-management/waste-discharge-authorization"
+                          target="_blank"
+                        >
+                          waste discharge authorization
+                        </a>
+                         
+                        guideline.
+                      </div>
                       <div>
                         <div
                           class="ant-row"
@@ -247,40 +279,6 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                               <span>
                                 <b>
                                   Refuse discharge permit
-                                </b>
-                              </span>
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                      <div>
-                        <div
-                          class="ant-row"
-                          style="margin-top: -8px; margin-bottom: -8px;"
-                        >
-                          <div
-                            class="ant-col"
-                            style="padding-top: 8px; padding-bottom: 8px;"
-                          >
-                            <label
-                              class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item"
-                            >
-                              <span
-                                class="ant-checkbox"
-                              >
-                                <input
-                                  class="ant-checkbox-input"
-                                  data-cy="checkbox-authorization-MUNICIPAL_WASTEWATER_REGULATION"
-                                  type="checkbox"
-                                  value="MUNICIPAL_WASTEWATER_REGULATION"
-                                />
-                                <span
-                                  class="ant-checkbox-inner"
-                                />
-                              </span>
-                              <span>
-                                <b>
-                                  Municipal Wastewater Regulation
                                 </b>
                               </span>
                             </label>

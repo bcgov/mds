@@ -48,7 +48,13 @@ import {
 import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import { MineDocument } from "@mds/common/models/documents/document";
 import { Link } from "react-router-dom";
-import { PROJECT_SUMMARY_DOCUMENT_TYPE_CODE_STATE } from "../..";
+import {
+  PROJECT_SUMMARY_DOCUMENT_TYPE_CODE_STATE,
+  ENVIRONMENTAL_MANAGMENT_ACT,
+  MUNICIPAL_WASTEWATER_REGULATION_URL,
+  HAZARDOUS_WASTE_REGULATION_URL,
+  WASTE_DISCHARGE_AUTHORIZATIONS_URL,
+} from "../..";
 import { SystemFlagEnum } from "@mds/common/constants/enums";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 
@@ -185,10 +191,10 @@ const RenderEMAPermitCommonSections = ({ code, isAmendment, index }) => {
           <Alert
             description={
               <>
-                If yes, please attach a <b>letter with rationale</b> to support this exemption at{" "}
-                <b>Document Upload</b> section. Please note that requests may not always be granted.
-                Incomplete applications may be returned if they don&apos;t meet Ministry
-                requirements and the application fee may not be refunded.
+                <b>If yes, a final application form is required in the supporting document below</b>
+                . Note that exemptions aren&apos;t guaranteed. Incomplete applications may be
+                returned without refund if they don&apos;t meet Ministry requirements. Ministry
+                staff will contact you to discuss your exemption request.
               </>
             }
             showIcon
@@ -577,6 +583,24 @@ export const AuthorizationsInvolved = () => {
               return (
                 <div key={authorization.code} className="margin-large--bottom">
                   <Typography.Title level={5}>{authorization.description}</Typography.Title>
+                  {authorization.code === ENVIRONMENTAL_MANAGMENT_ACT && (
+                    <Typography.Paragraph>
+                      For registration under the{" "}
+                      <Link to={{ pathname: MUNICIPAL_WASTEWATER_REGULATION_URL }} target="_blank">
+                        Municipal Wastewater Regulation
+                      </Link>{" "}
+                      and{" "}
+                      <Link to={{ pathname: HAZARDOUS_WASTE_REGULATION_URL }} target="_blank">
+                        Hazardous Waste Regulation,
+                      </Link>{" "}
+                      please refer to the{" "}
+                      <Link to={{ pathname: WASTE_DISCHARGE_AUTHORIZATIONS_URL }} target="_blank">
+                        waste discharge authorization
+                      </Link>{" "}
+                      guideline.
+                    </Typography.Paragraph>
+                  )}
+
                   {authorization.children.map((child) => {
                     const checked = formValues.authorizationTypes?.includes(child.code);
                     return (
