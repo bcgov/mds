@@ -368,6 +368,7 @@ export const DocumentTable: FC<DocumentTableProps> = ({
     : {};
 
   const coreTableProps = {
+    rowKey: "document_manager_guid",
     condition: isLoaded,
     dataSource: documents,
     columns: columns,

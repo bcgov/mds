@@ -14,6 +14,8 @@ const propTypes = {
   labelIdle: PropTypes.string.isRequired,
   allowMultiple: PropTypes.bool.isRequired,
   maxFiles: PropTypes.number,
+  required: PropTypes.bool,
+  validate: PropTypes.arrayOf(PropTypes.func),
 };
 
 const defaultProps = {
@@ -34,6 +36,8 @@ export const MajorMineApplicationFileUpload = (props) => (
     onRemoveFile={props.onRemoveFile}
     allowRevert
     allowMultiple={props.allowMultiple}
+    required={props.required}
+    validate={props.validate}
   />
 );
 

@@ -1040,7 +1040,7 @@ exports[`ReportPage renders view mode properly 1`] = `
                             >
                               <tr
                                 class="ant-table-row ant-table-row-level-0 table-row-align-middle no-sub-table-expandable-rows fade-in"
-                                data-row-key="cdb43e9c-ad56-4839-97ac-658b1e50c132"
+                                data-row-key="08fbb3e3-c1b2-4e9f-94e6-84a9a077125f"
                               >
                                 <td
                                   class="ant-table-cell ant-table-cell-with-append"

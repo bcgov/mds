@@ -1,5 +1,5 @@
-import handlers from "./handlers";
+import commonHandlers from "./handlers";
 import { setupServer } from "msw/node";
 
-const server = setupServer(...handlers);
+const server = setupServer(...commonHandlers);
 export default server;
