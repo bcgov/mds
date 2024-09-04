@@ -2,36 +2,286 @@
 
 exports[`MajorMinesApplicationPage renders properly 1`] = `
 <div>
-  <div
-    id="loading-screen"
+  <form
+    class="ant-form ant-form-vertical common-form common-form-ADD_MINE_MAJOR_APPLICATION form-edit"
+    id="ADD_MINE_MAJOR_APPLICATION"
   >
     <div
-      aria-busy="true"
-      aria-live="polite"
-      class="ant-spin ant-spin-spinning"
+      class="ant-row"
     >
-      <span
-        aria-label="loading"
-        class="anticon anticon-loading loader loader-color ant-spin-dot"
-        role="img"
-        style="font-size: 170px; margin-top: 70px;"
+      <div
+        class="ant-col ant-col-24"
       >
-        <svg
-          aria-hidden="true"
-          class="anticon-spin"
-          data-icon="loading"
-          fill="currentColor"
-          focusable="false"
-          height="1em"
-          viewBox="0 0 1024 1024"
-          width="1em"
+        <h1
+          class="ant-typography"
         >
-          <path
-            d="M988 548c-19.9 0-36-16.1-36-36 0-59.4-11.6-117-34.6-171.3a440.45 440.45 0 00-94.3-139.9 437.71 437.71 0 00-139.9-94.3C629 83.6 571.4 72 512 72c-19.9 0-36-16.1-36-36s16.1-36 36-36c69.1 0 136.2 13.5 199.3 40.3C772.3 66 827 103 874 150c47 47 83.9 101.8 109.7 162.7 26.7 63.1 40.2 130.2 40.2 199.3.1 19.9-16 36-35.9 36z"
-          />
-        </svg>
-      </span>
+          Major Mine Application - Sample Mine
+        </h1>
+      </div>
     </div>
-  </div>
+    <div
+      class="ant-row"
+    >
+      <div
+        class="ant-col ant-col-24"
+      >
+        <a
+          href="/projects/35633148-57f8-4967-be35-7f89abfbd02e/overview"
+        >
+          <span
+            aria-label="arrow-left"
+            class="anticon anticon-arrow-left padding-sm--right"
+            role="img"
+          >
+            <svg
+              aria-hidden="true"
+              class=""
+              data-icon="arrow-left"
+              fill="currentColor"
+              focusable="false"
+              height="1em"
+              viewBox="64 64 896 896"
+              width="1em"
+            >
+              <path
+                d="M872 474H286.9l350.2-304c5.6-4.9 2.2-14-5.2-14h-88.5c-3.9 0-7.6 1.4-10.5 3.9L155 487.8a31.96 31.96 0 000 48.3L535.1 866c1.5 1.3 3.3 2 5.2 2h91.5c7.4 0 10.8-9.2 5.2-14L286.9 550H872c4.4 0 8-3.6 8-8v-60c0-4.4-3.6-8-8-8z"
+              />
+            </svg>
+          </span>
+          Back to: 
+          Test Project Title
+           Project Overview page
+        </a>
+      </div>
+    </div>
+    <br />
+    <div
+      class="ant-row"
+    >
+      <div
+        class="ant-col ant-col-15"
+      >
+        <h2
+          class="ant-typography"
+        >
+          Create New Major Mine Application
+        </h2>
+      </div>
+      <div
+        class="ant-col ant-col-9"
+      >
+        <div
+          style="display: inline; float: right;"
+        >
+          <p>
+            <button
+              class="ant-btn ant-btn-default full-mobile"
+              id="step-back"
+              style="margin-right: 20px;"
+              type="button"
+            >
+              <span>
+                Back
+              </span>
+            </button>
+            <button
+              class="ant-btn ant-btn-primary"
+              disabled=""
+              id="step2-next"
+              type="submit"
+            >
+              <span>
+                Review & Submit
+              </span>
+            </button>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-row"
+    >
+      <div
+        class="ant-steps ant-steps-horizontal ant-steps-label-horizontal"
+        style="margin-left: 8%; margin-right: 8%;"
+      >
+        <div
+          buttons="[object Object]"
+          class="ant-steps-item ant-steps-item-finish"
+          content="[object Object]"
+        >
+          <div
+            class="ant-steps-item-container"
+          >
+            <div
+              class="ant-steps-item-tail"
+            />
+            <div
+              class="ant-steps-item-icon"
+            >
+              <span
+                class="ant-steps-icon"
+              >
+                <span
+                  aria-label="check"
+                  class="anticon anticon-check ant-steps-finish-icon"
+                  role="img"
+                >
+                  <svg
+                    aria-hidden="true"
+                    data-icon="check"
+                    fill="currentColor"
+                    focusable="false"
+                    height="1em"
+                    viewBox="64 64 896 896"
+                    width="1em"
+                  >
+                    <path
+                      d="M912 190h-69.9c-9.8 0-19.1 4.5-25.1 12.2L404.7 724.5 207 474a32 32 0 00-25.1-12.2H112c-6.7 0-10.4 7.7-6.3 12.9l273.9 347c12.8 16.2 37.4 16.2 50.3 0l488.4-618.9c4.1-5.1.4-12.8-6.3-12.8z"
+                    />
+                  </svg>
+                </span>
+              </span>
+            </div>
+            <div
+              class="ant-steps-item-content"
+            >
+              <div
+                class="ant-steps-item-title"
+              >
+                Get Started
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          buttons="[object Object]"
+          class="ant-steps-item ant-steps-item-process ant-steps-item-active"
+          content="[object Object]"
+        >
+          <div
+            class="ant-steps-item-container"
+          >
+            <div
+              class="ant-steps-item-tail"
+            />
+            <div
+              class="ant-steps-item-icon"
+            >
+              <span
+                class="ant-steps-icon"
+              >
+                2
+              </span>
+            </div>
+            <div
+              class="ant-steps-item-content"
+            >
+              <div
+                class="ant-steps-item-title"
+              >
+                Create Submission
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          buttons="[object Object]"
+          class="ant-steps-item ant-steps-item-wait"
+          content="[object Object]"
+        >
+          <div
+            class="ant-steps-item-container"
+          >
+            <div
+              class="ant-steps-item-tail"
+            />
+            <div
+              class="ant-steps-item-icon"
+            >
+              <span
+                class="ant-steps-icon"
+              >
+                3
+              </span>
+            </div>
+            <div
+              class="ant-steps-item-content"
+            >
+              <div
+                class="ant-steps-item-title"
+              >
+                Review & Submit
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div
+      class="ant-row"
+    >
+      <div
+        class="ant-col ant-col-24"
+      >
+        <div
+          class="bcgov-callout--warning nod-callout-text"
+        >
+          <div
+            class="information-requirements-table-callout"
+          >
+            <h4>
+              Confirm your Submission
+            </h4>
+            <p>
+              Please confirm the contents of your submission below. When you are happy with your review click the submit button to begin the review process.
+            </p>
+          </div>
+        </div>
+        <div>
+          <div
+            data-testid="mma-form"
+          >
+            Major Mine Application Form
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-row"
+    >
+      <div
+        class="ant-col ant-col-24"
+      >
+        <div
+          style="display: inline; float: right;"
+        >
+          <p>
+            <button
+              class="ant-btn ant-btn-default full-mobile"
+              id="step-back"
+              style="margin-right: 20px;"
+              type="button"
+            >
+              <span>
+                Back
+              </span>
+            </button>
+            <button
+              class="ant-btn ant-btn-primary"
+              disabled=""
+              id="step2-next"
+              type="submit"
+            >
+              <span>
+                Review & Submit
+              </span>
+            </button>
+          </p>
+        </div>
+      </div>
+    </div>
+  </form>
 </div>
 `;
