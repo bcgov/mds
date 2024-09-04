@@ -47,9 +47,9 @@ const defaultParams: MineReportParams = {
 };
 
 export const MineReportInfo: FC = () => {
-  const mineReports = useSelector((state) => getMineReports(state));
-  const mineReportDefinitionOptions = useSelector((state) => getMineReportDefinitionOptions(state));
-  const mines = useSelector((state) => getMines(state));
+  const mineReports = useSelector(getMineReports);
+  const mineReportDefinitionOptions = useSelector(getMineReportDefinitionOptions);
+  const mines = useSelector(getMines);
   const pageData = useSelector(getReportsPageData);
 
   const { id: mineGuid } = useParams<{ id: string }>();
@@ -244,6 +244,7 @@ export const MineReportInfo: FC = () => {
       ...defaultParams,
     });
     history.replace(routes.MINE_REPORTS.dynamicRoute(mineGuid, reportType, defaultParams));
+    dispatch(fetchMineReports(mineGuid, mine_reports_type, defaultParams));
   };
 
   const handleOpenRequestReportModal = () => {

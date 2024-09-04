@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
 import MineReportTable from "@/components/mine/Reports/MineReportTable";
-import { IMineReport, IMineReportPageData, MineReportParams } from "@mds/common";
+import { IMineReport, IPageData, MineReportParams } from "@mds/common";
 
 interface ReportsTableProps {
   openEditReportModal: (event, onSubmit, report) => void;
@@ -10,7 +10,7 @@ interface ReportsTableProps {
   handlePageChange: (updateNOWList, tableFilters) => void;
   handleSearch: (updateNOWList, tableFilters) => void;
   reports: IMineReport[];
-  pageData: IMineReportPageData;
+  pageData: IPageData<IMineReport>;
   params: MineReportParams;
   isLoaded: boolean;
   isDashboardView?: boolean;
