@@ -390,7 +390,7 @@ class VerifiableCredentialManager():
         cred = cc.ConformityAttestation(
             id="http://example.com/govdomain/minesactpermit/123",
             assessmentLevel=codes.AssessmentAssuranceCode.GovtApproval,
-            type=codes.AttestationType.Certification,
+            attestationType=codes.AttestationType.Certification,
             description=
             "This is a conformity attestation for the existence of a mining permit under the Mines Act within British Columbia (a province of Canada).",
             scope=cc.ConformityAssessmentScheme(
@@ -403,10 +403,13 @@ class VerifiableCredentialManager():
             assessments=untp_assessments)
 
         w3c_cred = W3CCred(
-            context=["https://www.w3.org/2018/credentials/v1", {
-                "@vocab": "urn:bcgov:attributes#"
-            }],
-            type=["VerifiableCredential", "NonProductionCredential"],
+            context=[
+                "https://www.w3.org/2018/credentials/v1", {
+                    "@vocab":
+                    "https://test.uncefact.org/vocabulary/untp/dcc/0/untp-dcc-context-0.3.9.jsonld"
+                }
+            ],
+            type=["VerifiableCredential", "DigitalConformityCredential", "NonProductionCredential"],
             issuer={"id": did},
             issuanceDate=issuance_date_str,
             credentialSubject=cred)
