@@ -1,3 +1,4 @@
+import datetime
 import json
 import uuid
 
@@ -28,6 +29,50 @@ def test_get_permit_required_reports_for_mine(test_client, db_session, auth_head
     get_data = json.loads(get_resp.data.decode())
     assert len(get_data['records']) == 1
     assert get_resp.status_code == 200
+
+    # Test with pagination
+    get_resp = test_client.get(
+        f'/mines/{mine.mine_guid}/reports?page=1&per_page=2',
+        headers=auth_headers['full_auth_header']
+    )
+    get_data = json.loads(get_resp.data.decode())
+    assert len(get_data['records']) <= 2
+    assert get_resp.status_code == 200
+
+    # Test sort by due_date in ascending order
+    get_resp = test_client.get(
+        f'/mines/{mine.mine_guid}/reports?sort_field=due_date&sort_dir=asc',
+        headers=auth_headers['full_auth_header']
+    )
+    get_data = json.loads(get_resp.data.decode())
+    assert get_resp.status_code == 200
+    assert len(get_data['records']) == THREE_REPORTS
+    for i in range(len(get_data['records']) - 1):
+        assert datetime.strptime(get_data['records'][i]['due_date'], '%Y-%m-%d') <= datetime.strptime(
+            get_data['records'][i + 1]['due_date'], '%Y-%m-%d')
+
+    # Test filter by a specific report name
+    specific_report_name = mine.mine_reports[0].report_name
+    get_resp = test_client.get(
+        f'/mines/{mine.mine_guid}/reports?report_name={specific_report_name}',
+        headers=auth_headers['full_auth_header']
+    )
+    get_data = json.loads(get_resp.data.decode())
+    assert get_resp.status_code == 200
+    assert all(report['report_name'] == specific_report_name for report in get_data['records'])
+
+    # Test filter by received date range
+    start_date = '2023-01-01'
+    end_date = '2023-12-31'
+    get_resp = test_client.get(
+        f'/mines/{mine.mine_guid}/reports?received_date_after={start_date}&received_date_before={end_date}',
+        headers=auth_headers['full_auth_header']
+    )
+    get_data = json.loads(get_resp.data.decode())
+    assert get_resp.status_code == 200
+    for report in get_data['records']:
+        received_date = datetime.strptime(report['received_date'], '%Y-%m-%d')
+        assert datetime.strptime(start_date, '%Y-%m-%d') <= received_date <= datetime.strptime(end_date, '%Y-%m-%d')
 
 def test_get_a_report_for_a_mine(test_client, db_session, auth_headers):
     mine = MineFactory(mine_reports=ONE_REPORT)
