@@ -1,5 +1,6 @@
 import uuid
 from difflib import SequenceMatcher
+from typing import List, Optional
 
 from app.api.mines.permits.permit_conditions.models.permit_condition_category import (
     PermitConditionCategory,
@@ -11,6 +12,11 @@ from app.api.mines.permits.permit_extraction.models.permit_extraction_task impor
     PermitExtractionTask,
 )
 from app.extensions import db
+
+from .models.permit_condition_result import (
+    CreatePermitConditionsResult,
+    PermitConditionResult,
+)
 
 indentation_type_code_mapping = {
     0: None,
@@ -28,85 +34,106 @@ def create_permit_conditions_from_task(task: PermitExtractionTask):
     result = task.task_result
     last_condition_id_by_hierarchy = {}
     condition_categories = PermitConditionCategory.get_all()
-    
     current_category = None
-    for idx, condition in enumerate(result['conditions']):
-        condition_numbering_structure = [
-            condition.get('section', '') or '',
-            condition.get('paragraph', '') or '',
-            condition.get('subparagraph', '') or '',
-            condition.get('clause', '') or '',
-            condition.get('subclause', '') or '',
-            condition.get('subsubclause', '') or '',
-        ]
 
+    result = CreatePermitConditionsResult.model_validate(result)
+
+    for idx, condition in enumerate(result.conditions):
         
-
-        if is_condition_toplevel_section(condition):        
-            section_category = map_condition_to_category(condition_categories, condition)
+        if condition.is_top_level_section:        
+            section_category = _map_condition_to_category(condition_categories, condition)
 
             if section_category:
                 current_category = section_category
         else:            
-            parent = determine_parent(condition_numbering_structure, last_condition_id_by_hierarchy)
-            step = find_numbering_for_condition(condition_numbering_structure)
+            parent = _determine_parent(condition, last_condition_id_by_hierarchy)
+            type_code = _map_condition_to_type_code(condition)
+
             title_cond = None
-            indentation = next((i for i, x in enumerate(condition_numbering_structure) if x), 0)
-            type_code = indentation_type_code_mapping[indentation]
+            if condition.condition_title:
+                title_cond = _create_title_condition(task, current_category, condition, parent, idx, type_code)
 
-            if condition.get('condition_title'):
-                title_cond = PermitConditions(
-                    permit_amendment_id=task.permit_amendment.permit_amendment_id,
-                    permit_condition_guid=uuid.uuid4(),
-                    condition_category_code=current_category,
-                    condition=condition['condition_title'],
-                    condition_type_code=type_code,
-                    parent_permit_condition_id=parent.permit_condition_id if parent else None,
-                    display_order=idx,
-                    _step=step,
-                )
-                db.session.add(title_cond)
-                db.session.flush()  # This assigns an ID to title_cond without committing the transaction
+            parent_condition_id = _get_parent_condition_id(title_cond, parent)
+            cond = _create_permit_condition(task, current_category, condition, parent_condition_id, idx, type_code)
 
-
-            parent_condition_id = title_cond.permit_condition_id if title_cond else parent.permit_condition_id if parent else None
-
-            cond = PermitConditions(
-                permit_amendment_id=task.permit_amendment.permit_amendment_id,
-                permit_condition_guid=uuid.uuid4(),
-                condition_category_code=current_category,
-                condition=condition['condition_text'],
-                condition_type_code=type_code,
-                parent_permit_condition_id=parent_condition_id,
-                display_order=idx,
-                _step=step if not condition.get('condition_title') else ' ',
-            )
-            db.session.add(cond)
-            db.session.flush()  # This assigns an ID to cond without committing the transaction
-
-            hierarchy_key = ".".join(condition_numbering_structure)
+            hierarchy_key = ".".join(condition.numbering_structure)
             last_condition_id_by_hierarchy[hierarchy_key] = cond
     db.session.commit()
 
-def determine_parent(hierarchy, last_condition_id_by_hierarchy):
+    
+
+def _map_condition_to_type_code(condition: PermitConditionResult):
+    """
+    The type code is based on the indentation level of the condition
+    Example: ['A', '1', 'a', 'i', ''] would have an indentation of 4 -> type code is 'LIS'
+    Example: ['A', '1', '', '', ''] would have an indentation of 2 -> type code is 'CON'
+    Example: ['A', '', '', '', ''] would have an indentation of 1 -> type code is 'SEC'
+    """
+    indentation = next((i-1 for i, x in enumerate(condition.numbering_structure) if x == ''), 0)
+    type_code = indentation_type_code_mapping[indentation]
+    return type_code
+
+def _create_title_condition(task, current_category, condition, parent, idx, type_code) -> PermitConditionResult:
+    condition = PermitConditions(
+        permit_amendment_id=task.permit_amendment.permit_amendment_id,
+        permit_condition_guid=uuid.uuid4(),
+        condition_category_code=current_category,
+        condition=condition.condition_title,
+        condition_type_code=type_code,
+        parent_permit_condition_id=parent.permit_condition_id if parent else None,
+        display_order=idx,
+        _step=condition.step,
+    )
+
+    db.session.add(condition)
+    db.session.flush()  # This assigns an ID to title_cond without committing the transaction
+    return condition
+
+def _get_parent_condition_id(title_cond: PermitConditionResult, parent: PermitConditionResult) -> Optional[str]:
+    if title_cond:
+        # If the condition has a title, the parent is the title condition
+        return title_cond.permit_condition_id
+    elif parent:
+        return parent.permit_condition_id
+    else:
+        return None
+
+def _create_permit_condition(task, current_category, condition, parent_condition_id, idx, type_code) -> PermitConditions:
+    condition = PermitConditions(
+        permit_amendment_id=task.permit_amendment.permit_amendment_id,
+        permit_condition_guid=uuid.uuid4(),
+        condition_category_code=current_category,
+        condition=condition.condition_text,
+        condition_type_code=type_code,
+        parent_permit_condition_id=parent_condition_id,
+        display_order=idx,
+        _step=condition.step if not condition.condition_title else '', # If the condition has a title, the parent is the title condition, which has the numbering associated with it already
+    )
+    db.session.add(condition)
+    db.session.flush()  # This assigns an ID to cond without committing the transaction
+
+    return condition
+
+
+def _determine_parent(condition: PermitConditionResult, last_condition_id_by_number_structure) -> Optional[PermitConditionResult]:
     """
     Determine the parent ID based on the hierarchy.
+
+    Example:
+    - If the hierarchy is ['A', '1', 'a', 'i', ''], the parent is the condition with the hierarchy ['A', '1', 'a', '', '']
     """
-    parent_hierarchy = [item for item in hierarchy if item][:-1]
+    number_structure = condition.numbering_structure
+    parent_number_structure = [item for item in number_structure if item][:-1]
 
-    if len(parent_hierarchy) < len(hierarchy):
-        parent_hierarchy += [''] * (len(hierarchy) - len(parent_hierarchy))
+    if len(parent_number_structure) < len(number_structure):
+        parent_number_structure += [''] * (len(number_structure) - len(parent_number_structure))
 
-    parent_key = ".".join(parent_hierarchy)
+    parent_key = ".".join(parent_number_structure)
 
-    parent = last_condition_id_by_hierarchy.get(parent_key)
+    parent = last_condition_id_by_number_structure.get(parent_key)
     return parent
 
-
-def find_numbering_for_condition(hierarchy):
-    return next(cond for cond in reversed(hierarchy) if cond and cond != '')
-
-def map_condition_to_category(condition_categories, condition):
+def _map_condition_to_category(condition_categories: List[PermitConditionCategory], condition: PermitConditionResult) -> Optional[str]:
     """
     Finds the matching PermitConditionCategory code for the given condition based on the title or text it contains.
 
@@ -125,14 +152,11 @@ def map_condition_to_category(condition_categories, condition):
     """
     for cat in condition_categories:
         desc = cat.description.lower().replace('conditions', '')
-        text = condition.get('condition_title') if condition.get('condition_title') else condition.get('condition_text')
+        text = condition.condition_title if condition.condition_title else condition.condition_text
         text = text.lower().replace('conditions', '')
 
         if SequenceMatcher(None, desc, text).ratio() > 0.6:
             return cat.condition_category_code
     return None
-
-def is_condition_toplevel_section(r):
-    return r.get('section') and not r.get('paragraph') and not r.get('subparagraph') and not r.get('clause') and not r.get('subclause') and not r.get('subsubclause')
 
     

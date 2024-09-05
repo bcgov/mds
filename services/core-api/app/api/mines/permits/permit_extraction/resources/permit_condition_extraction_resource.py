@@ -7,9 +7,6 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment_document imp
 from app.api.mines.permits.permit_conditions.models.permit_conditions import (
     PermitConditions,
 )
-from app.api.mines.permits.permit_extraction.create_permit_conditions import (
-    create_permit_conditions_from_task,
-)
 from app.api.mines.permits.permit_extraction.models.permit_extraction_task import (
     PermitExtractionTask,
 )
@@ -21,16 +18,13 @@ from app.api.mines.permits.permit_extraction.tasks import (
 )
 from app.api.search.search.permit_search_service import PermitSearchService
 from app.api.utils.access_decorators import (
-    MINESPACE_PROPONENT,
     VIEW_ALL,
     requires_any_of,
     requires_role_edit_standard_permit_conditions,
 )
 from app.api.utils.resources_mixins import UserMixin
-from app.config import Config
 from app.extensions import api
-from flask import current_app
-from flask_restx import Resource, inputs, reqparse
+from flask_restx import Resource, reqparse
 from werkzeug.exceptions import BadRequest
 
 
@@ -99,13 +93,17 @@ class PermitConditionExtractionResource(Resource, UserMixin):
         args = parser.parse_args()
 
         amd = PermitAmendment.find_by_permit_amendment_id(args.get('permit_amendment_id'))
+
+        if not amd:
+            raise BadRequest('Permit amendment not found')
+
         tasks = PermitExtractionTask.get_by_permit_amendment_guid(amd.permit_amendment_guid)
 
         return tasks
     
 
     @api.doc(description='Delete all permit conditions associated with permit amendment')
-    @requires_any_of([VIEW_ALL])
+    @requires_role_edit_standard_permit_conditions
     def delete(self):
         parser = reqparse.RequestParser()
 
@@ -131,6 +129,9 @@ class PermitConditionExtractionProgressResource(Resource, UserMixin):
         if not task_id:
             raise BadRequest('No task id provided')
         
-        task = PermitExtractionTask.get_by_task_id(task_id).first()
+        task = PermitExtractionTask.get_by_permit_extraction_task_id(task_id).first()
+
+        if not task:
+            raise BadRequest('Task not found')
 
         return task
