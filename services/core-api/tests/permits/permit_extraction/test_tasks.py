@@ -24,7 +24,7 @@ def celery_app(request, app):
     return app
 
 
-def test_poll_update_permit_extraction_status_success(permit_search_service_mock, celery_app, test_client, create_permit_conditions_mock):
+def test_poll_update_permit_extraction_status_success(permit_search_service_mock, celery_app, test_client, create_permit_conditions_mock, db_session):
     permit_search_service_mock.return_value.update_task_status.return_value = mock.Mock(
         task_status='SUCCESS'
     )
@@ -35,7 +35,7 @@ def test_poll_update_permit_extraction_status_success(permit_search_service_mock
     assert result.task_status == 'SUCCESS'
 
 
-def test_poll_update_permit_extraction_status_failure(permit_search_service_mock, celery_app, test_client, create_permit_conditions_mock):
+def test_poll_update_permit_extraction_status_failure(permit_search_service_mock, celery_app, test_client, create_permit_conditions_mock, db_session):
     permit_search_service_mock.return_value.update_task_status.return_value = mock.Mock(
         task_status='FAILURE'
     )
@@ -45,7 +45,7 @@ def test_poll_update_permit_extraction_status_failure(permit_search_service_mock
     assert result.task_status == 'FAILURE'
 
 
-def test_poll_update_permit_extraction_status_retry(permit_search_service_mock, celery_app, test_client, create_permit_conditions_mock):
+def test_poll_update_permit_extraction_status_retry(permit_search_service_mock, celery_app, test_client, create_permit_conditions_mock, db_session):
     permit_search_service_mock.return_value.update_task_status.return_value = mock.Mock(
         task_status='IN_PROGRESS'
     )

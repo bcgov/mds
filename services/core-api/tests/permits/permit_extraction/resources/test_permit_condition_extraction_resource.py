@@ -3,30 +3,19 @@ import uuid
 
 import pytest
 import responses
-from app.api.mines.permits.permit_amendment.models.permit_amendment import (
-    PermitAmendment,
-)
 from app.api.mines.permits.permit_conditions.models.permit_conditions import (
     PermitConditions,
 )
 from app.api.mines.permits.permit_extraction.models.permit_extraction_task import (
     PermitExtractionTask,
 )
-from app.api.mines.permits.permit_extraction.resources.permit_condition_extraction_resource import (
-    PermitConditionExtractionResource,
-)
 from app.config import Config
 from app.extensions import db
-from tests.factories import (
-    PermitAmendmentDocumentFactory,
-    PermitAmendmentFactory,
-    PermitConditionsFactory,
-    create_mine_and_permit,
-)
+from tests.factories import PermitAmendmentDocumentFactory, create_mine_and_permit
 
 
 @pytest.fixture(scope='function')
-def test_data(test_client):
+def pc_test_data(test_client, db_session):
     mine, permit = create_mine_and_permit()
 
     amendment = permit.permit_amendments[0]
@@ -35,8 +24,8 @@ def test_data(test_client):
     yield (amendment, amendment_document)
 
 
-def test_post_permit_condition_fails_with_existing_conditions(test_data, auth_headers, test_client):
-    amendment, amendment_document = test_data
+def test_post_permit_condition_fails_with_existing_conditions(pc_test_data, auth_headers, test_client, db_session):
+    amendment, amendment_document = pc_test_data
 
     data = {
         'permit_amendment_id': str(amendment.permit_amendment_id),
@@ -51,8 +40,8 @@ def test_post_permit_condition_fails_with_existing_conditions(test_data, auth_he
     assert data['status'] == 400
 
 
-def test_post_permit_condition_fails_with_invalid_document(test_client, auth_headers, test_data):
-    amendment, amendment_document = test_data
+def test_post_permit_condition_fails_with_invalid_document(test_client, auth_headers, pc_test_data, db_session):
+    amendment, amendment_document = pc_test_data
 
     data = {
         'permit_amendment_id': uuid.uuid4(),
@@ -66,7 +55,7 @@ def test_post_permit_condition_fails_with_invalid_document(test_client, auth_hea
     assert data['message'] == '400 Bad Request: Permit document must be associated with the permit amendment'
     assert data['status'] == 400  
 
-def test_post_permit_condition_fails_with_invalid_permit_amendment(test_client, auth_headers):
+def test_post_permit_condition_fails_with_invalid_permit_amendment(test_client, auth_headers, db_session):
     # Prepare the request data
     mine, permit = create_mine_and_permit()
 
@@ -85,8 +74,8 @@ def test_post_permit_condition_fails_with_invalid_permit_amendment(test_client, 
     assert data['status'] == 400  
 
 @responses.activate
-def test_post_permit_condition_extraction(test_client, auth_headers, test_data):
-    amendment, amendment_document = test_data
+def test_post_permit_condition_extraction(test_client, auth_headers, pc_test_data, db_session):
+    amendment, amendment_document = pc_test_data
     PermitConditions.query.filter_by(permit_amendment_id=amendment.permit_amendment_id).delete()
     responses.add(responses.POST, f'https://test.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/token', json={'access_token':'123'})
     responses.add(responses.GET, f'{Config.DOCUMENT_MANAGER_URL}/documents', body="abc", headers={'Content-Type': 'application/octet-stream', 'Content-Disposition': 'filename=test.pdf'}, status=200)
@@ -110,9 +99,9 @@ def test_post_permit_condition_extraction(test_client, auth_headers, test_data):
     assert response_data['task_status'] == 'PENDING'
 
 
-def test_get_permit_extraction_tasks(test_client, auth_headers, test_data):
+def test_get_permit_extraction_tasks(test_client, auth_headers, pc_test_data, db_session):
     # Create test data
-    permit_amendment, permit_amendment_document = test_data
+    permit_amendment, permit_amendment_document = pc_test_data
     task1 = PermitExtractionTask(
         permit_extraction_task_id=uuid.uuid4(),
         permit_amendment_guid=permit_amendment.permit_amendment_guid,
@@ -147,15 +136,15 @@ def test_get_permit_extraction_tasks(test_client, auth_headers, test_data):
     assert response_data['tasks'][1]['permit_extraction_task_id'] == str(task1.permit_extraction_task_id)
     assert response_data['tasks'][0]['permit_extraction_task_id'] == str(task2.permit_extraction_task_id)
 
-def test_get_permit_extraction_tasks_fails_with_unknown_permit_amendment(test_client, auth_headers):
+def test_get_permit_extraction_tasks_fails_with_unknown_permit_amendment(test_client, auth_headers, db_session):
     response = test_client.get('/mines/permits/condition-extraction?permit_amendment_id=123123', headers=auth_headers['full_auth_header'])
     assert response.status_code == 400
     assert response.json['message'] == '400 Bad Request: Permit amendment not found'
 
 
-def test_delete_permit_conditions(test_client, auth_headers, test_data):
+def test_delete_permit_conditions(test_client, auth_headers, pc_test_data, db_session):
     # Create test data
-    amendment, amendment_document = test_data
+    amendment, amendment_document = pc_test_data
 
     assert PermitConditions.query.filter_by(permit_amendment_id=amendment.permit_amendment_id, deleted_ind=False).count() > 0
 
@@ -166,8 +155,8 @@ def test_delete_permit_conditions(test_client, auth_headers, test_data):
     assert PermitConditions.query.filter_by(permit_amendment_id=amendment.permit_amendment_id, deleted_ind=False).count() == 0
 
 
-def test_get_permit_extraction_tasks(test_client, auth_headers, test_data):
-    permit_amendment, permit_amendment_document = test_data
+def test_get_permit_extraction_tasks(test_client, auth_headers, pc_test_data, db_session):
+    permit_amendment, permit_amendment_document = pc_test_data
     task1 = PermitExtractionTask(
         permit_extraction_task_id=uuid.uuid4(),
         permit_amendment_guid=permit_amendment.permit_amendment_guid,
@@ -207,7 +196,7 @@ def test_get_permit_extraction_tasks(test_client, auth_headers, test_data):
     assert response_data['permit_extraction_task_id'] == str(task2.permit_extraction_task_id)
 
 
-def test_get_permit_extraction_tasks_fails_with_unknown_permit_amendment(test_client, auth_headers):
+def test_get_permit_extraction_tasks_fails_with_unknown_permit_amendment(test_client, auth_headers, db_session):
     response = test_client.get(f'/mines/permits/condition-extraction/{str(uuid.uuid4())}', headers=auth_headers['full_auth_header'])
     assert response.status_code == 400
     assert response.json['message'] == '400 Bad Request: Task not found'

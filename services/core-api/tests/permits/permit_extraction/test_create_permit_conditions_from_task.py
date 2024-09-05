@@ -12,7 +12,7 @@ from tests.factories import create_mine_and_permit
 
 
 @pytest.fixture(scope="function")
-def permit_amendment(test_client):
+def permit_amendment(test_client, db_session):
     # Create a sample PermitExtractionTask object
     mine, permit = create_mine_and_permit()
     permit_amendment = permit.permit_amendments[0]
@@ -21,7 +21,7 @@ def permit_amendment(test_client):
     yield permit_amendment
 
 
-def test_create_permit_conditions_from_task(permit_amendment):
+def test_create_permit_conditions_from_task(permit_amendment, db_session):
 
     task = PermitExtractionTask(
         task_result={
