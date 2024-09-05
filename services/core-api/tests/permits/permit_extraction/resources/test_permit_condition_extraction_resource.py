@@ -1,5 +1,6 @@
 import json
 import uuid
+from unittest import mock
 
 import pytest
 import responses
@@ -11,6 +12,7 @@ from app.api.mines.permits.permit_extraction.models.permit_extraction_task impor
 )
 from app.config import Config
 from app.extensions import db
+from app.tasks.celery import celery
 from tests.factories import PermitAmendmentDocumentFactory, create_mine_and_permit
 
 
@@ -74,7 +76,10 @@ def test_post_permit_condition_fails_with_invalid_permit_amendment(test_client, 
     assert data['status'] == 400  
 
 @responses.activate
-def test_post_permit_condition_extraction(test_client, auth_headers, pc_test_data, db_session):
+@mock.patch('app.api.mines.permits.permit_extraction.resources.permit_condition_extraction_resource.poll_update_permit_extraction_status.delay')
+def test_post_permit_condition_extraction(delay, test_client, auth_headers, pc_test_data, db_session):
+    delay.return_value = mock.Mock(id='123')
+
     amendment, amendment_document = pc_test_data
     PermitConditions.query.filter_by(permit_amendment_id=amendment.permit_amendment_id).delete()
     responses.add(responses.POST, f'https://test.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/token', json={'access_token':'123'})
@@ -85,7 +90,6 @@ def test_post_permit_condition_extraction(test_client, auth_headers, pc_test_dat
         'permit_amendment_id': str(amendment.permit_amendment_id),
         'permit_amendment_document_guid': str(amendment_document.permit_amendment_document_guid)
     }
-
     # Send the POST request
     response = test_client.post('/mines/permits/condition-extraction', json=data, headers=auth_headers['full_auth_header'])
     # Check the response status code
@@ -97,6 +101,9 @@ def test_post_permit_condition_extraction(test_client, auth_headers, pc_test_dat
     assert 'core_status_task_id' in response_data
     assert 'task_status' in response_data
     assert response_data['task_status'] == 'PENDING'
+    
+    delay.assert_called_once_with(uuid.UUID(response_data['permit_extraction_task_id']))
+
 
 
 def test_get_permit_extraction_tasks(test_client, auth_headers, pc_test_data, db_session):
