@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -23,8 +23,12 @@ import {
   getPermitExtractionByGuid,
   initiatePermitExtraction,
   PermitExtractionStatus,
+  fetchPermitExtractionTasks,
+  deletePermitConditions,
+  fetchPermitExtractionStatus,
 } from "@mds/common/redux/slices/permitServiceSlice";
 import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
+import { permitAmendment } from "@/customPropTypes/permits";
 
 const tabs = ["overview", "conditions"];
 
@@ -38,8 +42,9 @@ const ViewPermit: FC = () => {
   const { isFeatureEnabled } = useFeatureFlag();
   const enablePermitConditionsTab = isFeatureEnabled(Feature.PERMIT_CONDITIONS_PAGE);
   const permitExtraction = useSelector(
-    getPermitExtractionByGuid(latestAmendment?.permit_amendment_guid)
+    getPermitExtractionByGuid(latestAmendment?.permit_amendment_id)
   );
+
   const userCanEditConditions = useSelector((state) =>
     userHasRole(state, USER_ROLES.role_edit_template_conditions)
   );
@@ -47,6 +52,11 @@ const ViewPermit: FC = () => {
 
   const [activeTab, setActiveTab] = useState(tab ?? tabs[0]);
   const history = useHistory();
+
+  const [isNewImport, setIsNewImport] = useState(false);
+
+  const statusTimerRef = useRef(null);
+  const [pollForStatus, setPollForStatus] = useState(false);
 
   useEffect(() => {
     if (!permit?.permit_id) {
@@ -61,8 +71,54 @@ const ViewPermit: FC = () => {
   }, [mine]);
 
   useEffect(() => {
-    console.log("extraction updated:", permitExtraction);
-  }, [permitExtraction]);
+    if (permitExtraction?.task_status === PermitExtractionStatus.complete && isNewImport) {
+      dispatch(fetchPermits(id));
+    }
+
+    if (permitExtraction?.task_status === PermitExtractionStatus.in_progress) {
+      setIsNewImport(false);
+      setPollForStatus(true);
+    } else {
+      setPollForStatus(false);
+    }
+  }, [permitExtraction?.task_status, isNewImport]);
+
+  useEffect(() => {
+    if (latestAmendment) {
+      dispatch(
+        fetchPermitExtractionTasks({ permit_amendment_id: latestAmendment.permit_amendment_id })
+      );
+    }
+  }, [latestAmendment]);
+
+  useEffect(() => {
+    const startPoll = () => {
+      statusTimerRef.current = setInterval(() => {
+        dispatch(
+          fetchPermitExtractionStatus({
+            permit_amendment_id: latestAmendment.permit_amendment_id,
+            task_id: permitExtraction.task_id,
+          })
+        );
+      }, 5000);
+    };
+
+    const stopPoll = () => {
+      if (statusTimerRef.current) {
+        clearInterval(statusTimerRef.current);
+      }
+    };
+
+    if (pollForStatus) {
+      startPoll();
+    } else {
+      stopPoll();
+    }
+
+    return () => {
+      stopPoll();
+    };
+  }, [pollForStatus, permitExtraction?.task_id]);
 
   const canViewConditions = latestAmendment?.conditions?.length > 0;
 
@@ -81,7 +137,6 @@ const ViewPermit: FC = () => {
       key: tabs[1],
       label: <>{getConditionBadge()} Permit Conditions</>,
       children: <PermitConditions latestAmendment={latestAmendment} />,
-      disabled: !canViewConditions,
     },
   ].filter(Boolean);
 
@@ -97,13 +152,23 @@ const ViewPermit: FC = () => {
     );
   const onConditionsTab = tab === tabs[1];
 
-  const handleInitiateExtraction = () => {
-    dispatch(
+  const handleInitiateExtraction = async () => {
+    await dispatch(
       initiatePermitExtraction({
         permit_amendment_id: latestAmendment?.permit_amendment_id,
         permit_amendment_document_guid: documents[0].permit_amendment_document_guid,
       })
     );
+    setIsNewImport(true);
+  };
+
+  const handleDeleteConditions = async () => {
+    setIsNewImport(false);
+    await dispatch(
+      deletePermitConditions({ permit_amendment_id: latestAmendment?.permit_amendment_id })
+    );
+
+    dispatch(fetchPermits(id));
   };
 
   const headerActions = [
@@ -123,7 +188,7 @@ const ViewPermit: FC = () => {
       userCanEditConditions && {
         key: "delete_conditions",
         label: "Delete Permit Conditions",
-        clickFunction: () => console.log("not implemented"),
+        clickFunction: handleDeleteConditions,
       },
   ].filter(Boolean);
 

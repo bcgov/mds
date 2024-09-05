@@ -57,3 +57,4 @@ Pillow==10.3.0
 setuptools==65.5.1
 urllib3==2.2.2
 untp_models==0.0.1
+requests_toolbelt==1.0.0
