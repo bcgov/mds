@@ -31,13 +31,16 @@ describe("`fetchMineReports` action creator", () => {
   const mineGuid = "1234567";
   const reportsType = Strings.MINE_REPORTS_TYPE.codeRequiredReports;
 
-  const url = `${ENVIRONMENT.apiUrl}${API.MINE_REPORTS(mineGuid, reportsType)}`;
+  const url = `${ENVIRONMENT.apiUrl}${API.MINE_REPORTS(mineGuid, {
+    mine_reports_type: reportsType,
+  })}`;
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
     return fetchMineReports(
       mineGuid,
-      reportsType
+      reportsType,
+      {}
     )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);

@@ -12,7 +12,7 @@ import {
   updateMineReport,
 } from "@mds/common/redux/actionCreators/reportActionCreator";
 import { changeModalTitle, closeModal, openModal } from "@mds/common/redux/actions/modalActions";
-import { getMineReports } from "@mds/common/redux/selectors/reportSelectors";
+import { getMineReports, getReportsPageData } from "@mds/common/redux/selectors/reportSelectors";
 import { getMineReportDefinitionOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getMines } from "@mds/common/redux/selectors/mineSelectors";
 import * as Strings from "@mds/common/constants/strings";
@@ -28,6 +28,7 @@ import { Feature, IMine, MINE_REPORTS_ENUM, MineReportParams, MineReportType } f
 import PlusOutlined from "@ant-design/icons/PlusOutlined";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { RequestReportForm } from "@/components/Forms/reports/RequestReportForm";
+import ResponsivePagination from "@/components/common/ResponsivePagination";
 
 const defaultParams: MineReportParams = {
   report_name: undefined,
@@ -46,9 +47,10 @@ const defaultParams: MineReportParams = {
 };
 
 export const MineReportInfo: FC = () => {
-  const mineReports = useSelector((state) => getMineReports(state));
-  const mineReportDefinitionOptions = useSelector((state) => getMineReportDefinitionOptions(state));
-  const mines = useSelector((state) => getMines(state));
+  const mineReports = useSelector(getMineReports);
+  const mineReportDefinitionOptions = useSelector(getMineReportDefinitionOptions);
+  const mines = useSelector(getMines);
+  const pageData = useSelector(getReportsPageData);
 
   const { id: mineGuid } = useParams<{ id: string }>();
 
@@ -72,7 +74,7 @@ export const MineReportInfo: FC = () => {
     const newParams = { ...defaultParams, ...params };
     history.replace(routes.MINE_REPORTS.dynamicRoute(mineGuid, reportType, newParams));
 
-    dispatch(fetchMineReports(mineGuid, mine_reports_type)).then(() => {
+    dispatch(fetchMineReports(mineGuid, mine_reports_type, params)).then(() => {
       setIsLoaded(true);
       setStateParams(newParams);
     });
@@ -161,7 +163,7 @@ export const MineReportInfo: FC = () => {
   }, [location]);
 
   const refreshReportData = () => {
-    return dispatch(fetchMineReports(mineGuid, mine_reports_type));
+    return dispatch(fetchMineReports(mineGuid, mine_reports_type, stateParams ?? defaultParams));
   };
 
   const handleEditReport = (report) => {
@@ -180,6 +182,19 @@ export const MineReportInfo: FC = () => {
     return dispatch(deleteMineReport(report.mine_guid, report.mine_report_guid)).then(() =>
       refreshReportData()
     );
+  };
+
+  const handleReportFilterSubmit = (params) => {
+    setStateParams(params);
+    history.replace(routes.MINE_REPORTS.dynamicRoute(mineGuid, reportType, params));
+    dispatch(fetchMineReports(mineGuid, mine_reports_type, params));
+  };
+
+  const onPageChange = (page, per_page) => {
+    const newParams = { ...stateParams, page, per_page };
+    setStateParams(newParams);
+    handleReportFilterSubmit(newParams);
+    handleFiltering(mineReports, { ...stateParams, page, per_page });
   };
 
   // TODO: remove with CODE_REQUIRED_REPORTS flag
@@ -224,16 +239,12 @@ export const MineReportInfo: FC = () => {
     );
   };
 
-  const handleReportFilterSubmit = (params) => {
-    setStateParams(params);
-    history.replace(routes.MINE_REPORTS.dynamicRoute(mineGuid, reportType, params));
-  };
-
   const handleReportFilterReset = () => {
     setStateParams({
       ...defaultParams,
     });
     history.replace(routes.MINE_REPORTS.dynamicRoute(mineGuid, reportType, defaultParams));
+    dispatch(fetchMineReports(mineGuid, mine_reports_type, defaultParams));
   };
 
   const handleOpenRequestReportModal = () => {
@@ -300,7 +311,7 @@ export const MineReportInfo: FC = () => {
         </div>
         <ReportFilterForm
           onSubmit={handleReportFilterSubmit}
-          handleReset={handleReportFilterReset}
+          onReset={handleReportFilterReset}
           initialValues={stateParams}
           mineReportType={mine_reports_type}
         />
@@ -318,6 +329,14 @@ export const MineReportInfo: FC = () => {
         sortDir={stateParams.sort_dir}
         mineReportType={mine_reports_type}
       />
+      <div className="center">
+        <ResponsivePagination
+          onPageChange={onPageChange}
+          currentPage={Number(pageData.current_page)}
+          pageTotal={Number(pageData.total)}
+          itemsPerPage={Number(pageData.items_per_page)}
+        />
+      </div>
     </div>
   );
 };

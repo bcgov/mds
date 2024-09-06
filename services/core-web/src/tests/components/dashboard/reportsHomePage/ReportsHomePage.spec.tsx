@@ -1,14 +1,14 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import { MineReportInfo } from "@/components/mine/Reports/MineReportInfo";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
-import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
-import { AUTHENTICATION, STATIC_CONTENT, SystemFlagEnum } from "@mds/common";
-import { MINES, REPORTS } from "@mds/common/constants/reducerTypes";
+import { AUTHENTICATION, MINES, REPORTS, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
 import { BrowserRouter } from "react-router-dom";
+import ReportsHomePage from "@/components/dashboard/reportsHomePage/ReportsHomePage";
+import { SystemFlagEnum } from "@mds/common";
+import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 
 const initialState: any = {
-  [REPORTS]: { mineReports: MOCK.MINE_REPORTS, reportsPageData: MOCK.PAGE_DATA },
+  [REPORTS]: { reports: MOCK.MINE_REPORTS, reportsPageData: MOCK.REPORTS_PAGE_DATA },
   [MINES]: MOCK.MINES,
   [STATIC_CONTENT]: MOCK.BULK_STATIC_CONTENT_RESPONSE,
   [AUTHENTICATION]: {
@@ -26,7 +26,7 @@ function mockFunction() {
       reportType: "code-required-reports",
     }),
     useLocation: jest.fn().mockReturnValue({
-      search: "",
+      search: "page=1&per_page=1",
     }),
     useHistory: jest.fn().mockReturnValue({
       push: jest.fn(),
@@ -37,15 +37,15 @@ function mockFunction() {
 }
 jest.mock("react-router-dom", () => mockFunction());
 
-describe("MineReportInfo", () => {
-  it("renders properly", () => {
+describe("ReportsHomePage", () => {
+  it("renders properly", async () => {
     const { container } = render(
-      <ReduxWrapper initialState={initialState}>
-        <BrowserRouter>
-          <MineReportInfo />
-        </BrowserRouter>
-      </ReduxWrapper>
+      <BrowserRouter>
+        <ReduxWrapper initialState={initialState}>
+          <ReportsHomePage />
+        </ReduxWrapper>
+      </BrowserRouter>
     );
-    expect(container.firstChild).toMatchSnapshot();
+    expect(container).toMatchSnapshot();
   });
 });

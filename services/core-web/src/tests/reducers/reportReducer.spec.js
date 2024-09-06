@@ -22,7 +22,8 @@ describe("reportReducer", () => {
 
   it("receives STORE_MINE_REPORTS", () => {
     const expectedValue = getBaseExpectedValue();
-    expectedValue.mineReports = Mocks.MINE_REPORTS;
+    expectedValue.mineReports = Mocks.MINE_REPORT_RESPONSE.records;
+    expectedValue.reportsPageData = Mocks.MINE_REPORT_RESPONSE;
     const result = reportReducer(undefined, storeMineReports(Mocks.MINE_REPORT_RESPONSE));
     expect(result).toEqual(expectedValue);
   });
