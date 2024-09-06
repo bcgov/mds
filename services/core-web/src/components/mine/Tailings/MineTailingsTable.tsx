@@ -252,7 +252,7 @@ const MineTailingsTable: FC<RouteComponentProps & MineTailingsTableProps> = (pro
           ? null
           : {
               rowKey: "dam_guid",
-              rowExpandable: (record: any) => record.dams.length > 0,
+              rowExpandable: (record: any) => record.dams?.length > 0,
               recordDescription: "associated dams",
               getDataSource: (record: any) => record.dams,
               subTableColumns: damColumns,

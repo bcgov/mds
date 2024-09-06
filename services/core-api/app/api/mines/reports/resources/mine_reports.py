@@ -2,9 +2,12 @@ import uuid
 from flask_restx import Resource
 from flask import request, current_app
 from datetime import datetime
+
+from sqlalchemy.orm import joinedload
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
 from app.api.constants import MINE_REPORT_TYPE
+from app.api.mines.reports.models.mine_report_category import MineReportCategory
 from app.api.mines.reports.models.mine_report_contact import MineReportContact
 from app.api.mines.reports.report_helpers import ReportFilterHelper
 from app.extensions import api
@@ -106,6 +109,10 @@ class MineReportListResource(Resource, UserMixin):
             query = query.filter(MineReport.permit_condition_category_code.isnot(None))
         elif reports_type == MINE_REPORT_TYPE['CODE REQUIRED REPORTS']:
             query = query.filter(MineReport.permit_condition_category_code.is_(None))
+        elif reports_type == MINE_REPORT_TYPE['TAILINGS REPORTS']:
+            query = query.join(MineReport.mine_report_definition).join(MineReportDefinition.categories).filter(
+                MineReportCategory.mine_report_category == 'TSF'
+            )
 
         records, pagination_details = ReportFilterHelper.apply_filters_and_pagination(query, args)
 

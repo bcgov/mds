@@ -1,10 +1,23 @@
 import React from "react";
-import { shallow } from "enzyme";
 import { MineTailingsInfoTabs } from "@/components/mine/Tailings/MineTailingsInfoTabs";
 import * as MOCK from "@/tests/mocks/dataMocks";
+import { AUTHENTICATION, SystemFlagEnum, USER_ROLES } from "@mds/common";
+import { REPORTS, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
+import { render } from "@testing-library/react";
+import { BrowserRouter } from "react-router-dom";
 
-const props = {};
-const dispatchProps = {};
+const props: any = {};
+const dispatchProps: any = {};
+
+const initialState: any = {
+  [REPORTS]: { mineReports: MOCK.MINE_REPORTS, reportsPageData: MOCK.PAGE_DATA },
+  [STATIC_CONTENT]: MOCK.BULK_STATIC_CONTENT_RESPONSE,
+  [AUTHENTICATION]: {
+    systemFlag: SystemFlagEnum.core,
+    userAccessData: [USER_ROLES.role_minespace_proponent, USER_ROLES.role_edit_tsf],
+  },
+};
 
 jest.mock("@mds/common/providers/featureFlags/useFeatureFlag", () => ({
   useFeatureFlag: () => ({
@@ -20,6 +33,7 @@ const setupProps = () => {
   props.TSFOperatingStatusCodeHash = {};
   props.consequenceClassificationStatusCodeHash = {};
   props.enabledTabs = ["reports", "map", "tsf"];
+  props.userRoles = [USER_ROLES.role_minespace_proponent];
 };
 
 const setupDispatchProps = () => {
@@ -43,7 +57,13 @@ beforeEach(() => {
 
 describe("MineTailingsInfoTabs", () => {
   it("renders properly", () => {
-    const component = shallow(<MineTailingsInfoTabs {...props} {...dispatchProps} />);
-    expect(component).toMatchSnapshot();
+    const { container } = render(
+      <ReduxWrapper initialState={initialState}>
+        <BrowserRouter>
+          <MineTailingsInfoTabs {...props} {...dispatchProps} />
+        </BrowserRouter>
+      </ReduxWrapper>
+    );
+    expect(container.firstChild).toMatchSnapshot();
   });
 });
