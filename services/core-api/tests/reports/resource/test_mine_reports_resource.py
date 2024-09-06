@@ -46,7 +46,7 @@ def test_get_code_required_reports_for_mine(test_client, db_session, auth_header
 
     # Test filter by a specific report name
     specific_report_name = mine.mine_reports[0].mine_report_guid
-    current_app.logger.debug(specific_report_name)
+
     get_resp = test_client.get(
         f'/mines/{mine.mine_guid}/reports?mine_reports_type=CRR&report_name={specific_report_name}',
         headers=auth_headers['full_auth_header']
