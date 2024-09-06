@@ -485,10 +485,12 @@ describe("Validate class", () => {
     });
 
     it("returns `A negative value will decrease the current assessed liability` if value is a negative number", () => {
-      const value = -1000;
-      expect(assessedLiabilityNegativeWarning(value)).toEqual(
+      const negativeValue = -1000;
+      const positiveValue = 1000;
+      expect(assessedLiabilityNegativeWarning(negativeValue)).toEqual(
         `A negative value will decrease the current assessed liability`
       );
+      expect(assessedLiabilityNegativeWarning(positiveValue)).toEqual(undefined);
     });
   });
 });
