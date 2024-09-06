@@ -462,9 +462,7 @@ export const DISCHARGE_FACTOR_FORM_NEW =
 export const DISCHARGE_FACTOR_FORM_AMENDMENT =
   "https://www2.gov.bc.ca/assets/gov/environment/waste-management/waste-discharge-authorization/guides/forms/epd-ema-06_amend_discharge_factor_amendment_form.pdf";
 
-export const MUNICIPAL_WASTEWATER_REGULATION_URL =
-  "https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/87_2012";
-export const HAZARDOUS_WASTE_REGULATION_URL =
-  "https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/63_88_00";
-export const WASTE_DISCHARGE_AUTHORIZATIONS_URL =
-  "https://www2.gov.bc.ca/gov/content/environment/waste-management/waste-discharge-authorization";
+export const WASTE_DISCHARGE_NEW_AUTHORIZATIONS_URL =
+  "https://www2.gov.bc.ca/gov/content/environment/waste-management/waste-discharge-authorization/apply";
+export const WASTE_DISCHARGE_AMENDMENT_AUTHORIZATIONS_URL =
+  "https://www2.gov.bc.ca/gov/content/environment/waste-management/waste-discharge-authorization/change";

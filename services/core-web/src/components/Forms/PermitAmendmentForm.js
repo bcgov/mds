@@ -13,6 +13,7 @@ import {
   dateNotInFuture,
   number,
   validateSelectOptions,
+  assessedLiabilityNegativeWarning,
 } from "@common/utils/Validate";
 import { resetForm, currencyMask } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
@@ -201,6 +202,7 @@ export class PermitAmendmentForm extends Component {
                 {...currencyMask}
                 validate={[number]}
                 disabled={this.props.securityNotRequired}
+                warn={[assessedLiabilityNegativeWarning]}
               />
             </Form.Item>
             <Form.Item>

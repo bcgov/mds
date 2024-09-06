@@ -51,9 +51,8 @@ import { Link } from "react-router-dom";
 import {
   PROJECT_SUMMARY_DOCUMENT_TYPE_CODE_STATE,
   ENVIRONMENTAL_MANAGMENT_ACT,
-  MUNICIPAL_WASTEWATER_REGULATION_URL,
-  HAZARDOUS_WASTE_REGULATION_URL,
-  WASTE_DISCHARGE_AUTHORIZATIONS_URL,
+  WASTE_DISCHARGE_NEW_AUTHORIZATIONS_URL,
+  WASTE_DISCHARGE_AMENDMENT_AUTHORIZATIONS_URL,
 } from "../..";
 import { SystemFlagEnum } from "@mds/common/constants/enums";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
@@ -585,17 +584,20 @@ export const AuthorizationsInvolved = () => {
                   <Typography.Title level={5}>{authorization.description}</Typography.Title>
                   {authorization.code === ENVIRONMENTAL_MANAGMENT_ACT && (
                     <Typography.Paragraph>
-                      For registration under the{" "}
-                      <Link to={{ pathname: MUNICIPAL_WASTEWATER_REGULATION_URL }} target="_blank">
-                        Municipal Wastewater Regulation
+                      For registration under the Municipal Wastewater Regulation and Hazardous Waste
+                      Regulation, please refer to the{" "}
+                      <Link
+                        to={{ pathname: WASTE_DISCHARGE_NEW_AUTHORIZATIONS_URL }}
+                        target="_blank"
+                      >
+                        new authorization
                       </Link>{" "}
-                      and{" "}
-                      <Link to={{ pathname: HAZARDOUS_WASTE_REGULATION_URL }} target="_blank">
-                        Hazardous Waste Regulation,
-                      </Link>{" "}
-                      please refer to the{" "}
-                      <Link to={{ pathname: WASTE_DISCHARGE_AUTHORIZATIONS_URL }} target="_blank">
-                        waste discharge authorization
+                      or{" "}
+                      <Link
+                        to={{ pathname: WASTE_DISCHARGE_AMENDMENT_AUTHORIZATIONS_URL }}
+                        target="_blank"
+                      >
+                        authorization amendment
                       </Link>{" "}
                       guideline.
                     </Typography.Paragraph>

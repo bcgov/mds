@@ -725,6 +725,13 @@ select {
   margin-bottom: 6px;
 }
 
+.ant-legacy-form-item-control.has-warning {
+  .ant-legacy-form-explain {
+    color: #694f16 !important;
+  }
+}
+
+
 .ant-legacy-form-vertical {
   .ant-legacy-form-item {
     padding-bottom: 2px;
