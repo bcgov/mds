@@ -154,7 +154,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                       <div
                         class="ant-typography"
                       >
-                        For registration under the Municipal Wastewater Regulation and Hazardous Waste Regulation, please refer to the 
+                        For registration under the Municipal Wastewater Regulation and Hazardous Waste Regulation, please refer to the
                          
                         <a
                           href="https://www2.gov.bc.ca/gov/content/environment/waste-management/waste-discharge-authorization/apply"
