@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { Divider, Tabs } from "antd";
 import {
   deleteMineReport,
@@ -17,7 +17,7 @@ import {
   getITRBExemptionStatusCodeOptionsHash,
   getTSFOperatingStatusCodeOptionsHash,
 } from "@mds/common/redux/selectors/staticContentSelectors";
-import { getMineReports } from "@mds/common/redux/selectors/reportSelectors";
+import { getMineReports, getReportsPageData } from "@mds/common/redux/selectors/reportSelectors";
 import { getMineGuid, getMines } from "@mds/common/redux/selectors/mineSelectors";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import { getMineReportDefinitionOptions } from "@mds/common/redux/reducers/staticContentReducer";
@@ -37,6 +37,7 @@ import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFla
 import { Feature } from "@mds/common";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import { USER_ROLES } from "@mds/common";
+import ResponsivePagination from "@/components/common/ResponsivePagination";
 
 /**
  * @class  MineTailingsInfoTabs - all tenure information related to the mine.
@@ -67,6 +68,8 @@ const defaultParams = {
 };
 
 export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
+  const pageData = useSelector(getReportsPageData);
+
   const [isLoaded, setIsLoaded] = useState(false);
   const [mine, setMine] = useState<IMine>({} as IMine);
   const [params, setParams] = useState({ sort_field: "received_date", sort_dir: "desc" });
@@ -91,7 +94,9 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
     return props
       .updateMineReport(report.mine_guid, report.mine_report_guid, report)
       .then(() => props.closeModal())
-      .then(() => props.fetchMineReports(report.mine_guid, defaultParams.mineReportType));
+      .then(() =>
+        props.fetchMineReports(report.mine_guid, defaultParams.mineReportType, defaultParams)
+      );
   };
 
   const handleEditTailings = (values) => {
@@ -103,7 +108,7 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
       )
       .then(() => {
         props.fetchMineRecordById(props.mineGuid);
-        props.fetchMineReports(props.mineGuid, defaultParams.mineReportType);
+        props.fetchMineReports(props.mineGuid, defaultParams.mineReportType, defaultParams);
       })
       .then(() => props.closeModal());
   };
@@ -111,7 +116,9 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
   const handleRemoveReport = (report) => {
     return props
       .deleteMineReport(report.mine_guid, report.mine_report_guid)
-      .then(() => props.fetchMineReports(report.mine_guid, defaultParams.mineReportType));
+      .then(() =>
+        props.fetchMineReports(report.mine_guid, defaultParams.mineReportType, defaultParams)
+      );
   };
 
   const openEditReportModal = (event, onSubmit, report) => {
@@ -155,12 +162,20 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
       .createTailingsStorageFacility(props.mineGuid, values)
       .then(() => {
         props.fetchMineRecordById(props.mineGuid);
-        props.fetchMineReports(props.mineGuid, defaultParams.mineReportType);
+        props.fetchMineReports(props.mineGuid, defaultParams.mineReportType, defaultParams);
       })
       .finally(() => {
         props.closeModal();
         setIsLoaded(false);
       });
+  };
+
+  const onPageChange = (page, per_page) => {
+    props.fetchMineReports(props.mineGuid, defaultParams.mineReportType, {
+      ...defaultParams,
+      page,
+      per_page,
+    });
   };
 
   const openTailingsModal = (event, onSubmit, title) => {
@@ -259,6 +274,14 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
                 sortDir={params.sort_dir}
                 mineReportType={Strings.MINE_REPORTS_TYPE.codeRequiredReports}
               />
+              <div className="center">
+                <ResponsivePagination
+                  onPageChange={onPageChange}
+                  currentPage={Number(pageData.current_page)}
+                  pageTotal={Number(pageData.total)}
+                  itemsPerPage={Number(pageData.items_per_page)}
+                />
+              </div>
             </div>
           </Tabs.TabPane>
         )}
