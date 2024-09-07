@@ -348,6 +348,6 @@ export const validateIfApplicationTypeCorrespondsToPermitNumber = (
 };
 
 export const assessedLiabilityNegativeWarning = (value) =>
-  value && (Number.isNaN(Number(value)) || Number(value) <= 0)
+  positiveNumber(value)
     ? "A negative value will decrease the current assessed liability"
     : undefined;
