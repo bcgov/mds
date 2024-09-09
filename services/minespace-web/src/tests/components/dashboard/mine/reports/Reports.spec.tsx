@@ -7,9 +7,7 @@ import { SidebarProvider } from "@mds/common/components/common/SidebarWrapper";
 import { REPORTS, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
 
 const initialState = {
-  [REPORTS]: {
-    mineReports: MOCK.MINE_REPORTS,
-  },
+  [REPORTS]: { mineReports: MOCK.MINE_REPORTS, reportsPageData: MOCK.PAGE_DATA },
   [STATIC_CONTENT]: {
     mineReportDefinitionOptions: MOCK.BULK_STATIC_CONTENT_RESPONSE.mineReportDefinitionOptions,
   },
