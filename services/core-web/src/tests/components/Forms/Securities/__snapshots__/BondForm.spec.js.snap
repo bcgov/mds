@@ -35,6 +35,11 @@ exports[`BondForm renders properly 1`] = `
               [Function],
             ]
           }
+          warn={
+            Array [
+              [Function],
+            ]
+          }
         />
       </FormItem>
     </Col>

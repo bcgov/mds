@@ -15,6 +15,7 @@ import {
   dateNotBeforeOther,
   dateNotAfterOther,
   validateSelectOptions,
+  assessedLiabilityNegativeWarning,
 } from "@common/utils/Validate";
 import { resetForm, upperCase, currencyMask } from "@common/utils/helpers";
 import { BOND_DOCUMENTS } from "@mds/common/constants/API";
@@ -166,6 +167,7 @@ export class BondForm extends Component {
                 {...currencyMask}
                 validate={[required, number, currency]}
                 disabled={this.props.editBond}
+                warn={[assessedLiabilityNegativeWarning]}
               />
             </Form.Item>
           </Col>

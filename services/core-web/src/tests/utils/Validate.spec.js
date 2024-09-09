@@ -12,6 +12,7 @@ import {
   validateStartDate,
   validateDateRanges,
   validateIncidentDate,
+  assessedLiabilityNegativeWarning,
 } from "@common/utils/Validate";
 
 describe("Validate class", () => {
@@ -475,6 +476,21 @@ describe("Validate class", () => {
       expect(errors.end_date).toContain(existingName);
       expect(errors.end_date).toContain(existingName2);
       expect(errors.end_date).toContain(apptType);
+    });
+  });
+  describe("`assessedLiabilityNegativeWarning` function", () => {
+    it("returns `undefined` if `value` is not negative", () => {
+      const value = 1000;
+      expect(assessedLiabilityNegativeWarning(value)).toEqual(undefined);
+    });
+
+    it("returns `A negative value will decrease the current assessed liability` if value is a negative number", () => {
+      const negativeValue = -1000;
+      const positiveValue = 1000;
+      expect(assessedLiabilityNegativeWarning(negativeValue)).toEqual(
+        `A negative value will decrease the current assessed liability`
+      );
+      expect(assessedLiabilityNegativeWarning(positiveValue)).toEqual(undefined);
     });
   });
 });

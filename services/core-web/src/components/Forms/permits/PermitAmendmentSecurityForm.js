@@ -6,7 +6,12 @@ import { Field, reduxForm, formValueSelector, change } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm } from "antd";
-import { currency, required, validateSelectOptions } from "@common/utils/Validate";
+import {
+  currency,
+  required,
+  validateSelectOptions,
+  assessedLiabilityNegativeWarning,
+} from "@common/utils/Validate";
 import { currencyMask } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { securityNotRequiredReasonOptions } from "@/constants/NOWConditions";
@@ -84,6 +89,7 @@ export const PermitAmendmentSecurityForm = (props) => {
             allowClear
             {...currencyMask}
             validate={[currency]}
+            warn={[assessedLiabilityNegativeWarning]}
           />
         </Col>
         <Col md={12} sm={24}>
