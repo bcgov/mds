@@ -37,7 +37,7 @@ import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFla
 import { Feature } from "@mds/common";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import { USER_ROLES } from "@mds/common";
-import ResponsivePagination from "@/components/common/ResponsivePagination";
+import ResponsivePagination from "@mds/common/components/common/ResponsivePagination";
 
 /**
  * @class  MineTailingsInfoTabs - all tenure information related to the mine.

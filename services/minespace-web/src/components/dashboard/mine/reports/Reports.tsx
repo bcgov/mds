@@ -9,7 +9,7 @@ import {
   updateMineReport,
 } from "@mds/common/redux/actionCreators/reportActionCreator";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
-import { getMineReports } from "@mds/common/redux/selectors/reportSelectors";
+import { getMineReports, getReportsPageData } from "@mds/common/redux/selectors/reportSelectors";
 import ReportsTable from "@/components/dashboard/mine/reports/ReportsTable";
 import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -19,6 +19,7 @@ import * as routes from "@/constants/routes";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Link as ScrollLink, Element } from "react-scroll";
 import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
+import ResponsivePagination from "@mds/common/components/common/ResponsivePagination";
 
 export const Reports: FC = () => {
   const dispatch = useDispatch();
@@ -26,6 +27,7 @@ export const Reports: FC = () => {
   const { isFeatureEnabled } = useFeatureFlag();
 
   const { mine } = useContext<{ mine: IMine }>(SidebarContext);
+  const pageData = useSelector(getReportsPageData);
 
   const mineReports: IMineReport[] = useSelector(getMineReports);
 
@@ -139,6 +141,15 @@ export const Reports: FC = () => {
     );
   };
 
+  const onPageChange = (page, per_page) => {
+    dispatch(
+      fetchMineReports(mine.mine_guid, null, {
+        page,
+        per_page,
+      })
+    );
+  };
+
   return (
     <Row>
       <Col span={24}>
@@ -201,7 +212,16 @@ export const Reports: FC = () => {
               openEditReportModal={openEditReportModal}
               mineReports={codeRequiredReports}
               isLoaded={isLoaded}
+              backendPaginated
             />
+            <Row justify="center" className="margin-large--bottom">
+              <ResponsivePagination
+                onPageChange={onPageChange}
+                currentPage={Number(pageData.current_page)}
+                pageTotal={Number(pageData.total)}
+                itemsPerPage={Number(pageData.items_per_page)}
+              />
+            </Row>
             <Element name="permitRequiredReports">
               <Typography.Title level={4}>Permit Required Reports</Typography.Title>
             </Element>

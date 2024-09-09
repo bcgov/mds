@@ -32,6 +32,7 @@ interface ReportsTableProps {
   openEditReportModal: (event: React.MouseEvent, record: IMineReport) => void;
   openReport: (record: IMineReport) => void;
   isLoaded: boolean;
+  backendPaginated: boolean;
 }
 
 const DEFAULT_PAGE_SIZE = 10;
@@ -67,7 +68,7 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
   ];
 
   let columns: ColumnsType<IMineReport> = [
-    renderTextColumn("report_name", "Report Name", true),
+    renderTextColumn("report_name", "Report Name", !props.backendPaginated),
     {
       title: "Code Section",
       key: "code_section",
@@ -81,7 +82,7 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
         </div>
       ),
     },
-    renderTextColumn("submission_year", "Compliance Year", true, null, 5),
+    renderTextColumn("submission_year", "Compliance Year", !props.backendPaginated, null, 5),
     renderTextColumn("due_date", "Due", true, null, 5),
     renderTextColumn(["latest_submission", "received_date"], "Submitted On", true),
     renderTextColumn("created_by_idir", "Requested By", true),
@@ -166,7 +167,7 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
       rowKey={(record) => record.mine_report_guid}
       emptyText="This mine has no report data."
       dataSource={props.mineReports}
-      pagination={pagination}
+      pagination={props.backendPaginated ? false : pagination}
     />
   );
 };

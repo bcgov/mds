@@ -28,7 +28,7 @@ import { Feature, IMine, MINE_REPORTS_ENUM, MineReportParams, MineReportType } f
 import PlusOutlined from "@ant-design/icons/PlusOutlined";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { RequestReportForm } from "@/components/Forms/reports/RequestReportForm";
-import ResponsivePagination from "@/components/common/ResponsivePagination";
+import ResponsivePagination from "@mds/common/components/common/ResponsivePagination";
 
 const defaultParams: MineReportParams = {
   report_name: undefined,

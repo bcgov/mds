@@ -18,7 +18,7 @@ import {
 import * as routes from "@/constants/routes";
 import NoticeOfWorkTable from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkTable";
 import NoticeOfWorkSearch from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkSearch";
-import ResponsivePagination from "@/components/common/ResponsivePagination";
+import ResponsivePagination from "@mds/common/components/common/ResponsivePagination";
 import { PageTracker } from "@common/utils/trackers";
 import { INoticeOfWorkApplication, IPageData, IOption, INoticeOfWork } from "@mds/common";
 import { RootState } from "@/App";
