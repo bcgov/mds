@@ -389,6 +389,7 @@ class VerifiableCredentialManager():
 
         cred = cc.ConformityAttestation(
             id="http://example.com/govdomain/minesactpermit/123",
+            type="ConformityAttestation",
             assessmentLevel=codes.AssessmentAssuranceCode.GovtApproval,
             attestationType=codes.AttestationType.Certification,
             description=
