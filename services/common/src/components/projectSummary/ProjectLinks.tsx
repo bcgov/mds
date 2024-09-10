@@ -1,12 +1,17 @@
 import React, { FC, useEffect, useState } from "react";
 import { getProject, getProjects } from "@mds/common/redux/selectors/projectSelectors";
 import { useSelector, useDispatch } from "react-redux";
-import { Field, change } from "redux-form";
+import { Field, change, getFormValues } from "redux-form";
 import ProjectLinksTable from "@mds/common/components/projectSummary/ProjectLinksTable";
 import { ILinkedProject, IProject } from "@mds/common/interfaces";
 
 import { Button, Col, Row, Typography } from "antd";
-import { FORM, USER_ROLES, getProjectStatusDescription } from "@mds/common/constants";
+import {
+  FORM,
+  USER_ROLES,
+  getProjectStatusDescription,
+  isFieldDisabled,
+} from "@mds/common/constants";
 import { isProponent, userHasRole } from "@mds/common/redux/reducers/authenticationReducer";
 import {
   createProjectLinks,
@@ -15,6 +20,7 @@ import {
 import { dateSorter } from "@mds/common/redux/utils/helpers";
 import RenderMultiSelect from "../forms/RenderMultiSelect";
 import * as Strings from "@mds/common/constants/strings";
+import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 
 interface ProjectLinksProps {
   viewProject: (record: ILinkedProject) => string;
@@ -26,6 +32,8 @@ const ProjectLinkInput = ({ unrelatedProjects = [], mineGuid, projectGuid }) => 
   const [currentSelection, setCurrentSelection] = useState([]);
   const formName = FORM.ADD_EDIT_PROJECT_SUMMARY;
   const fieldName = "linked-projects";
+  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
+  const systemFlag = useSelector(getSystemFlag);
 
   if (!projectGuid) {
     return (
@@ -67,7 +75,12 @@ const ProjectLinkInput = ({ unrelatedProjects = [], mineGuid, projectGuid }) => 
           component={RenderMultiSelect}
           onChange={(...args) => handleChange(args)}
         />
-        <Button type="primary" onClick={addRelatedProjects} className="block-button">
+        <Button
+          disabled={isFieldDisabled(systemFlag, formValues.status_code)}
+          type="primary"
+          onClick={addRelatedProjects}
+          className="block-button"
+        >
           Add
         </Button>
       </Col>

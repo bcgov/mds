@@ -152,6 +152,7 @@ export enum PROJECT_SUMMARY_STATUS_CODES {
   OHD = "On Hold",
   SUB = "Submitted",
   UNR = "Under review",
+  CHR = "Change Requested",
 }
 
 export enum MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODES {

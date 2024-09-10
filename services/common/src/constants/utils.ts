@@ -1,3 +1,5 @@
+import { SystemFlagEnum } from "./enums";
+
 export const serverSidePaginationOptions = (pageData) => {
   return {
     defaultCurrent: 1,
@@ -62,4 +64,30 @@ export const getProjectStatusDescription = (
     return "Inactive";
   }
   return "Active";
+};
+
+export const isFieldDisabled = (
+  systemFlag,
+  projectSummaryStatusCode = "",
+  isAuthorizationPage = false
+) => {
+  const disabledStatuses = new Set(["WDN", "SUB"]);
+  const msEnabledStatuses = new Set(["DFT", "CHR"]);
+  const coreEnabledStatuses = new Set(["ASG", "UNR", "CHR", "OHD"]);
+
+  if (disabledStatuses.has(projectSummaryStatusCode)) return true;
+
+  const isMsEnabled =
+    systemFlag === SystemFlagEnum.ms && msEnabledStatuses.has(projectSummaryStatusCode);
+  const isCoreEnabled =
+    systemFlag === SystemFlagEnum.core && coreEnabledStatuses.has(projectSummaryStatusCode);
+  const isFieldEnabled = isMsEnabled || isCoreEnabled;
+
+  if (!isFieldEnabled) return true;
+
+  if (isAuthorizationPage) {
+    return projectSummaryStatusCode !== "DFT";
+  }
+
+  return false;
 };

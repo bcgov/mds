@@ -1,11 +1,17 @@
 import React from "react";
 import { Typography } from "antd";
-import { Field } from "redux-form";
+import { Field, getFormValues } from "redux-form";
 import { maxLength, required } from "@mds/common/redux/utils/Validate";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
+import { useSelector } from "react-redux";
+import { FORM, isFieldDisabled } from "@mds/common/constants";
+import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 
 export const BasicInformation = () => {
+  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
+  const systemFlag = useSelector(getSystemFlag);
+
   return (
     <>
       <Typography.Title level={3}>Basic Information</Typography.Title>
@@ -16,6 +22,7 @@ export const BasicInformation = () => {
         required
         component={RenderField}
         validate={[maxLength(300), required]}
+        disabled={isFieldDisabled(systemFlag, formValues.status_code)}
       />
       <Field
         id="proponent_project_id"
@@ -24,6 +31,7 @@ export const BasicInformation = () => {
         labelSubtitle="If your company uses a tracking number to identify projects, please provide it here."
         component={RenderField}
         validate={[maxLength(20)]}
+        disabled={isFieldDisabled(systemFlag, formValues.status_code)}
       />
       <Field
         id="project_summary_description"
@@ -35,6 +43,7 @@ export const BasicInformation = () => {
         minRows={10}
         maximumCharacters={4000}
         validate={[maxLength(4000), required]}
+        disabled={isFieldDisabled(systemFlag, formValues.status_code)}
       />
     </>
   );

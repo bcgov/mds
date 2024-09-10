@@ -1,11 +1,12 @@
 import React, { FC, useEffect, useState } from "react";
 import { withRouter, Link, Prompt, useParams, useHistory, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { reset } from "redux-form";
+import { reset, getFormValues } from "redux-form";
 import * as routes from "@/constants/routes";
 import { Button, Col, Row, Tag } from "antd";
 import EnvironmentOutlined from "@ant-design/icons/EnvironmentOutlined";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
+import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 
 import {
   getFormattedProjectSummary,
@@ -18,6 +19,7 @@ import {
   AMS_STATUS_CODES_SUCCESS,
   AMS_STATUS_CODE_FAIL,
   AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES,
+  isFieldDisabled,
 } from "@mds/common";
 import { getMineById } from "@mds/common/redux/reducers/mineReducer";
 import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
@@ -74,6 +76,8 @@ export const ProjectSummary: FC = () => {
   const [isEditMode, setIsEditMode] = useState(isDefaultEditMode);
   const activeTab = tab ?? projectFormTabs[0];
   const mineName = mine?.mine_name ?? formattedProjectSummary?.mine_name ?? "";
+  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
+  const systemFlag = useSelector(getSystemFlag);
 
   const handleFetchData = async () => {
     setIsLoaded(false);
@@ -282,7 +286,11 @@ export const ProjectSummary: FC = () => {
             </Link>
           </Col>
           <Col>
-            <Button type="primary" onClick={() => setIsEditMode(!isEditMode)}>
+            <Button
+              disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+              type="primary"
+              onClick={() => setIsEditMode(!isEditMode)}
+            >
               {isEditMode ? "Cancel" : "Edit Project Description"}
             </Button>
           </Col>
