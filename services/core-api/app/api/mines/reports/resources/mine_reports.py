@@ -114,7 +114,7 @@ class MineReportListResource(Resource, UserMixin):
                 MineReportCategory.mine_report_category == 'TSF'
             )
 
-        records, pagination_details = ReportFilterHelper.apply_filters_and_pagination(query, args)
+        records, pagination_details = ReportFilterHelper.apply_filters_and_pagination(query, args, mine_guid)
 
         if not records:
             raise BadRequest('Unable to fetch reports')
