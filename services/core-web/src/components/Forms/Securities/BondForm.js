@@ -446,6 +446,6 @@ BondForm.defaultProps = defaultProps;
 
 export default reduxForm({
   form: FORM.ADD_BOND,
-  touchOnBlur: false,
+  touchOnBlur: true,
   onSubmitSuccess: resetForm(FORM.ADD_BOND),
 })(BondForm);

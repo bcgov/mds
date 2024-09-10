@@ -80,7 +80,7 @@ exports[`AddBondModal renders properly 1`] = `
     shouldWarn={[Function]}
     submitAsSideEffect={false}
     title="Add Bond"
-    touchOnBlur={false}
+    touchOnBlur={true}
     touchOnChange={false}
     updateUnregisteredFields={false}
   />

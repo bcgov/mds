@@ -152,7 +152,7 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   reduxForm({
     form: FORM.EDIT_PERMIT,
-    touchOnBlur: false,
+    touchOnBlur: true,
     enableReinitialize: true,
   })
 )(PermitAmendmentSecurityForm);
