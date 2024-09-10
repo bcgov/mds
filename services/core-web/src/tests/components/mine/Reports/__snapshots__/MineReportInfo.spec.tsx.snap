@@ -30,7 +30,8 @@ exports[`MineReportInfo renders properly 1`] = `
       <br />
     </div>
     <form
-      class="ant-legacy-form ant-legacy-form-vertical"
+      class="ant-form ant-form-vertical common-form common-form-FILTER_REPORTS form-edit"
+      id="FILTER_REPORTS"
     >
       <div>
         <div
@@ -294,157 +295,161 @@ exports[`MineReportInfo renders properly 1`] = `
             style="padding-left: 8px; padding-right: 8px;"
           >
             <div
-              class="ant-row ant-legacy-form-item"
+              class="ant-form-item"
             >
               <div
-                class="ant-col ant-legacy-form-item-label"
-              >
-                <label
-                  class=""
-                  title="Due Date Range"
-                >
-                  Due Date Range
-                </label>
-              </div>
-              <div
-                class="ant-col ant-legacy-form-item-control-wrapper"
+                class="ant-row ant-form-item-row"
               >
                 <div
-                  class="ant-legacy-form-item-control"
+                  class="ant-col ant-form-item-label"
                 >
-                  <span
-                    class="ant-legacy-form-item-children"
+                  <label
+                    class=""
+                    title="Due Date Range"
+                  >
+                    Due Date Range
+                  </label>
+                </div>
+                <div
+                  class="ant-col ant-form-item-control"
+                >
+                  <div
+                    class="ant-form-item-control-input"
                   >
                     <div
-                      class="ant-row"
-                      style="margin-left: -8px; margin-right: -8px;"
+                      class="ant-form-item-control-input-content"
                     >
                       <div
-                        class="ant-col ant-col-sm-24 ant-col-md-12"
-                        style="padding-left: 8px; padding-right: 8px;"
+                        class="ant-row"
+                        style="margin-left: -8px; margin-right: -8px;"
                       >
                         <div
-                          class="ant-row ant-legacy-form-item"
+                          class="ant-col ant-col-sm-24 ant-col-md-12"
+                          style="padding-left: 8px; padding-right: 8px;"
                         >
                           <div
-                            class="ant-col ant-legacy-form-item-control-wrapper"
+                            class="ant-row ant-legacy-form-item"
                           >
                             <div
-                              class="ant-legacy-form-item-control"
+                              class="ant-col ant-legacy-form-item-control-wrapper"
                             >
-                              <span
-                                class="ant-legacy-form-item-children"
+                              <div
+                                class="ant-legacy-form-item-control"
                               >
-                                <div
-                                  class="ant-picker"
+                                <span
+                                  class="ant-legacy-form-item-children"
                                 >
                                   <div
-                                    class="ant-picker-input"
+                                    class="ant-picker"
                                   >
-                                    <input
-                                      autocomplete="off"
-                                      id="due_date_start"
-                                      name="due_date_start"
-                                      placeholder="Select earliest date"
-                                      readonly=""
-                                      size="12"
-                                      title=""
-                                      value=""
-                                    />
-                                    <span
-                                      class="ant-picker-suffix"
+                                    <div
+                                      class="ant-picker-input"
                                     >
+                                      <input
+                                        autocomplete="off"
+                                        id="due_date_start"
+                                        name="due_date_start"
+                                        placeholder="Select earliest date"
+                                        readonly=""
+                                        size="12"
+                                        title=""
+                                        value=""
+                                      />
                                       <span
-                                        aria-label="calendar"
-                                        class="anticon anticon-calendar"
-                                        role="img"
+                                        class="ant-picker-suffix"
                                       >
-                                        <svg
-                                          aria-hidden="true"
-                                          data-icon="calendar"
-                                          fill="currentColor"
-                                          focusable="false"
-                                          height="1em"
-                                          viewBox="64 64 896 896"
-                                          width="1em"
+                                        <span
+                                          aria-label="calendar"
+                                          class="anticon anticon-calendar"
+                                          role="img"
                                         >
-                                          <path
-                                            d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z"
-                                          />
-                                        </svg>
+                                          <svg
+                                            aria-hidden="true"
+                                            data-icon="calendar"
+                                            fill="currentColor"
+                                            focusable="false"
+                                            height="1em"
+                                            viewBox="64 64 896 896"
+                                            width="1em"
+                                          >
+                                            <path
+                                              d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z"
+                                            />
+                                          </svg>
+                                        </span>
                                       </span>
-                                    </span>
+                                    </div>
                                   </div>
-                                </div>
-                              </span>
+                                </span>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <div
-                        class="ant-col ant-col-sm-24 ant-col-md-12"
-                        style="padding-left: 8px; padding-right: 8px;"
-                      >
                         <div
-                          class="ant-row ant-legacy-form-item"
+                          class="ant-col ant-col-sm-24 ant-col-md-12"
+                          style="padding-left: 8px; padding-right: 8px;"
                         >
                           <div
-                            class="ant-col ant-legacy-form-item-control-wrapper"
+                            class="ant-row ant-legacy-form-item"
                           >
                             <div
-                              class="ant-legacy-form-item-control"
+                              class="ant-col ant-legacy-form-item-control-wrapper"
                             >
-                              <span
-                                class="ant-legacy-form-item-children"
+                              <div
+                                class="ant-legacy-form-item-control"
                               >
-                                <div
-                                  class="ant-picker"
+                                <span
+                                  class="ant-legacy-form-item-children"
                                 >
                                   <div
-                                    class="ant-picker-input"
+                                    class="ant-picker"
                                   >
-                                    <input
-                                      autocomplete="off"
-                                      id="due_date_end"
-                                      name="due_date_end"
-                                      placeholder="Select latest date"
-                                      readonly=""
-                                      size="12"
-                                      title=""
-                                      value=""
-                                    />
-                                    <span
-                                      class="ant-picker-suffix"
+                                    <div
+                                      class="ant-picker-input"
                                     >
+                                      <input
+                                        autocomplete="off"
+                                        id="due_date_end"
+                                        name="due_date_end"
+                                        placeholder="Select latest date"
+                                        readonly=""
+                                        size="12"
+                                        title=""
+                                        value=""
+                                      />
                                       <span
-                                        aria-label="calendar"
-                                        class="anticon anticon-calendar"
-                                        role="img"
+                                        class="ant-picker-suffix"
                                       >
-                                        <svg
-                                          aria-hidden="true"
-                                          data-icon="calendar"
-                                          fill="currentColor"
-                                          focusable="false"
-                                          height="1em"
-                                          viewBox="64 64 896 896"
-                                          width="1em"
+                                        <span
+                                          aria-label="calendar"
+                                          class="anticon anticon-calendar"
+                                          role="img"
                                         >
-                                          <path
-                                            d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z"
-                                          />
-                                        </svg>
+                                          <svg
+                                            aria-hidden="true"
+                                            data-icon="calendar"
+                                            fill="currentColor"
+                                            focusable="false"
+                                            height="1em"
+                                            viewBox="64 64 896 896"
+                                            width="1em"
+                                          >
+                                            <path
+                                              d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z"
+                                            />
+                                          </svg>
+                                        </span>
                                       </span>
-                                    </span>
+                                    </div>
                                   </div>
-                                </div>
-                              </span>
+                                </span>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -454,157 +459,161 @@ exports[`MineReportInfo renders properly 1`] = `
             style="padding-left: 8px; padding-right: 8px;"
           >
             <div
-              class="ant-row ant-legacy-form-item"
+              class="ant-form-item"
             >
               <div
-                class="ant-col ant-legacy-form-item-label"
-              >
-                <label
-                  class=""
-                  title="Received Date Range"
-                >
-                  Received Date Range
-                </label>
-              </div>
-              <div
-                class="ant-col ant-legacy-form-item-control-wrapper"
+                class="ant-row ant-form-item-row"
               >
                 <div
-                  class="ant-legacy-form-item-control"
+                  class="ant-col ant-form-item-label"
                 >
-                  <span
-                    class="ant-legacy-form-item-children"
+                  <label
+                    class=""
+                    title="Received Date Range"
+                  >
+                    Received Date Range
+                  </label>
+                </div>
+                <div
+                  class="ant-col ant-form-item-control"
+                >
+                  <div
+                    class="ant-form-item-control-input"
                   >
                     <div
-                      class="ant-row"
-                      style="margin-left: -8px; margin-right: -8px;"
+                      class="ant-form-item-control-input-content"
                     >
                       <div
-                        class="ant-col ant-col-sm-24 ant-col-md-12"
-                        style="padding-left: 8px; padding-right: 8px;"
+                        class="ant-row"
+                        style="margin-left: -8px; margin-right: -8px;"
                       >
                         <div
-                          class="ant-row ant-legacy-form-item"
+                          class="ant-col ant-col-sm-24 ant-col-md-12"
+                          style="padding-left: 8px; padding-right: 8px;"
                         >
                           <div
-                            class="ant-col ant-legacy-form-item-control-wrapper"
+                            class="ant-row ant-legacy-form-item"
                           >
                             <div
-                              class="ant-legacy-form-item-control"
+                              class="ant-col ant-legacy-form-item-control-wrapper"
                             >
-                              <span
-                                class="ant-legacy-form-item-children"
+                              <div
+                                class="ant-legacy-form-item-control"
                               >
-                                <div
-                                  class="ant-picker"
+                                <span
+                                  class="ant-legacy-form-item-children"
                                 >
                                   <div
-                                    class="ant-picker-input"
+                                    class="ant-picker"
                                   >
-                                    <input
-                                      autocomplete="off"
-                                      id="received_date_start"
-                                      name="received_date_start"
-                                      placeholder="Select earliest date"
-                                      readonly=""
-                                      size="12"
-                                      title=""
-                                      value=""
-                                    />
-                                    <span
-                                      class="ant-picker-suffix"
+                                    <div
+                                      class="ant-picker-input"
                                     >
+                                      <input
+                                        autocomplete="off"
+                                        id="received_date_start"
+                                        name="received_date_start"
+                                        placeholder="Select earliest date"
+                                        readonly=""
+                                        size="12"
+                                        title=""
+                                        value=""
+                                      />
                                       <span
-                                        aria-label="calendar"
-                                        class="anticon anticon-calendar"
-                                        role="img"
+                                        class="ant-picker-suffix"
                                       >
-                                        <svg
-                                          aria-hidden="true"
-                                          data-icon="calendar"
-                                          fill="currentColor"
-                                          focusable="false"
-                                          height="1em"
-                                          viewBox="64 64 896 896"
-                                          width="1em"
+                                        <span
+                                          aria-label="calendar"
+                                          class="anticon anticon-calendar"
+                                          role="img"
                                         >
-                                          <path
-                                            d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z"
-                                          />
-                                        </svg>
+                                          <svg
+                                            aria-hidden="true"
+                                            data-icon="calendar"
+                                            fill="currentColor"
+                                            focusable="false"
+                                            height="1em"
+                                            viewBox="64 64 896 896"
+                                            width="1em"
+                                          >
+                                            <path
+                                              d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z"
+                                            />
+                                          </svg>
+                                        </span>
                                       </span>
-                                    </span>
+                                    </div>
                                   </div>
-                                </div>
-                              </span>
+                                </span>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <div
-                        class="ant-col ant-col-sm-24 ant-col-md-12"
-                        style="padding-left: 8px; padding-right: 8px;"
-                      >
                         <div
-                          class="ant-row ant-legacy-form-item"
+                          class="ant-col ant-col-sm-24 ant-col-md-12"
+                          style="padding-left: 8px; padding-right: 8px;"
                         >
                           <div
-                            class="ant-col ant-legacy-form-item-control-wrapper"
+                            class="ant-row ant-legacy-form-item"
                           >
                             <div
-                              class="ant-legacy-form-item-control"
+                              class="ant-col ant-legacy-form-item-control-wrapper"
                             >
-                              <span
-                                class="ant-legacy-form-item-children"
+                              <div
+                                class="ant-legacy-form-item-control"
                               >
-                                <div
-                                  class="ant-picker"
+                                <span
+                                  class="ant-legacy-form-item-children"
                                 >
                                   <div
-                                    class="ant-picker-input"
+                                    class="ant-picker"
                                   >
-                                    <input
-                                      autocomplete="off"
-                                      id="received_date_end"
-                                      name="received_date_end"
-                                      placeholder="Select latest date"
-                                      readonly=""
-                                      size="12"
-                                      title=""
-                                      value=""
-                                    />
-                                    <span
-                                      class="ant-picker-suffix"
+                                    <div
+                                      class="ant-picker-input"
                                     >
+                                      <input
+                                        autocomplete="off"
+                                        id="received_date_end"
+                                        name="received_date_end"
+                                        placeholder="Select latest date"
+                                        readonly=""
+                                        size="12"
+                                        title=""
+                                        value=""
+                                      />
                                       <span
-                                        aria-label="calendar"
-                                        class="anticon anticon-calendar"
-                                        role="img"
+                                        class="ant-picker-suffix"
                                       >
-                                        <svg
-                                          aria-hidden="true"
-                                          data-icon="calendar"
-                                          fill="currentColor"
-                                          focusable="false"
-                                          height="1em"
-                                          viewBox="64 64 896 896"
-                                          width="1em"
+                                        <span
+                                          aria-label="calendar"
+                                          class="anticon anticon-calendar"
+                                          role="img"
                                         >
-                                          <path
-                                            d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z"
-                                          />
-                                        </svg>
+                                          <svg
+                                            aria-hidden="true"
+                                            data-icon="calendar"
+                                            fill="currentColor"
+                                            focusable="false"
+                                            height="1em"
+                                            viewBox="64 64 896 896"
+                                            width="1em"
+                                          >
+                                            <path
+                                              d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z"
+                                            />
+                                          </svg>
+                                        </span>
                                       </span>
-                                    </span>
+                                    </div>
                                   </div>
-                                </div>
-                              </span>
+                                </span>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -897,8 +906,8 @@ exports[`MineReportInfo renders properly 1`] = `
         class="right center-mobile"
       >
         <button
-          class="ant-btn ant-btn-secondary full-mobile"
-          type="reset"
+          class="ant-btn ant-btn-default full-mobile"
+          type="button"
         >
           <span>
             Clear Filters
@@ -1001,6 +1010,11 @@ exports[`MineReportInfo renders properly 1`] = `
         </div>
       </div>
     </div>
+  </div>
+  <div
+    class="center"
+  >
+    <div />
   </div>
 </div>
 `;

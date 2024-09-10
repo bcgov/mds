@@ -18,7 +18,7 @@ import {
 import { getProjects, getProjectPageData } from "@mds/common/redux/selectors/projectSelectors";
 import { bindActionCreators } from "redux";
 import * as router from "@/constants/routes";
-import ResponsivePagination from "@/components/common/ResponsivePagination";
+import ResponsivePagination from "@mds/common/components/common/ResponsivePagination";
 import CustomPropTypes from "@/customPropTypes";
 import MajorProjectSearch from "./MajorProjectSearch";
 import MajorProjectTable from "./MajorProjectTable";

@@ -47,7 +47,7 @@ const propTypes = {
   sortDir: PropTypes.string,
   isPaginated: PropTypes.bool,
   isDashboardView: PropTypes.bool,
-  mineReportType: PropTypes.string.isRequired,
+  mineReportType: PropTypes.string,
 };
 
 const defaultProps = {
