@@ -30,7 +30,7 @@ import {
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import * as Strings from "@mds/common/constants/strings";
 import { PageTracker } from "@common/utils/trackers";
-import ResponsivePagination from "@/components/common/ResponsivePagination";
+import ResponsivePagination from "@mds/common/components/common/ResponsivePagination";
 import CustomPropTypes from "@/customPropTypes";
 import MineList from "@/components/dashboard/minesHomePage/MineList";
 import MineSearch from "@/components/dashboard/minesHomePage/MineSearch";

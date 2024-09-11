@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import ResponsivePagination from "@/components/common/ResponsivePagination";
+import ResponsivePagination from "@mds/common/components/common/ResponsivePagination";
 import MineReportTable from "@/components/mine/Reports/MineReportTable";
 import { IMineReport, IPageData, MineReportParams } from "@mds/common";
 

@@ -18,7 +18,7 @@ import * as FORM from "@/constants/forms";
 import * as Permission from "@/constants/permissions";
 import ContactSearch from "@/components/dashboard/contactsHomePage/ContactSearch";
 import ContactList from "@/components/dashboard/contactsHomePage/ContactList";
-import ResponsivePagination from "@/components/common/ResponsivePagination";
+import ResponsivePagination from "@mds/common/components/common/ResponsivePagination";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as routes from "@/constants/routes";
 import { modalConfig } from "@/components/modalContent/config";

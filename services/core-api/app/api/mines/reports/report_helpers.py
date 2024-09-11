@@ -15,7 +15,7 @@ class ReportFilterHelper:
         return {'model': model, 'field': field, 'op': op, 'value': argfield}
 
     @staticmethod
-    def apply_filters_and_pagination(query, args):
+    def apply_filters_and_pagination(query, args, mine_guid=None):
         sort_models = {
             "mine_report_id": 'MineReport',
             "mine_report_category": 'MineReportCategoryXref',
@@ -24,6 +24,7 @@ class ReportFilterHelper:
             "received_date": 'MineReport',
             "submission_year": 'MineReport',
             "mine_report_status_code": 'MineReportSubmissionStatusCode',
+            "mine_report_status": 'MineReportSubmissionStatusCode',
             "created_by_idir": 'MineReport',
             "mine_name": 'Mine',
         }
@@ -36,6 +37,7 @@ class ReportFilterHelper:
             "received_date": 'received_date',
             "submission_year": 'submission_year',
             "mine_report_status_code": 'mine_report_status_description',
+            "mine_report_status": 'mine_report_status_description',
             "created_by_idir": 'created_by_idir',
             "mine_name": 'mine_name',
         }
@@ -47,7 +49,7 @@ class ReportFilterHelper:
             query = query.join(Mine)
 
         if args["report_type"] or args["report_name"] or (args['sort_field'] and sort_models[
-            args['sort_field']] in ['MineReportCategoryXref', 'MineReportDefinition']):
+            args['sort_field']] in ['MineReportCategoryXref', 'MineReportDefinition'] and not mine_guid):
             query = query.join(
                 MineReportDefinition, MineReport.mine_report_definition_id ==
                                       MineReportDefinition.mine_report_definition_id)
@@ -115,9 +117,12 @@ class ReportFilterHelper:
             ]
             conditions.append({'or': search_conditions})
 
+        if mine_guid:
+            query = query.filter(MineReport.mine_guid == mine_guid)
+
         filtered_query = apply_filters(query, conditions)
 
-        if args['sort_field'] == 'mine_report_status_code':
+        if args['sort_field'] == 'mine_report_status_code' or args['sort_field'] == 'mine_report_status':
             if args['sort_dir'] == 'asc':
                 filtered_query = filtered_query.order_by(
                     asc(MineReport.mine_report_status_description))
