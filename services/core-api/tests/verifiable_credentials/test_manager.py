@@ -80,8 +80,7 @@ class TestVerifiableCredentialManager:
         pa = permit.permit_amendments[0]
 
         assert pa_cred
-        assert str(pa_cred.credentialSubject.issuedTo.identifiers[0].identifierValue) == str(
-            poe.registration_id)
+        assert str(pa_cred.credentialSubject.issuedToParty.registeredId) == str(poe.registration_id)
         assert pa_cred.credentialSubject.validFrom == datetime(
             pa.issue_date.year,
             pa.issue_date.month,
