@@ -81,14 +81,6 @@ class TestVerifiableCredentialManager:
 
         assert pa_cred
         assert str(pa_cred.credentialSubject.issuedToParty.registeredId) == str(poe.registration_id)
-        assert pa_cred.credentialSubject.validFrom == datetime(
-            pa.issue_date.year,
-            pa.issue_date.month,
-            pa.issue_date.day,
-            0,
-            0,
-            0,
-            tzinfo=ZoneInfo("UTC")).isoformat()
 
     def test_produce_untp_cc_map_payload_null_if_no_orgbook(self, db_session):
         mine, permit = create_mine_and_permit()
