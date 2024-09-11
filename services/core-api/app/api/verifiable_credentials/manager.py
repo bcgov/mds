@@ -336,51 +336,61 @@ class VerifiableCredentialManager():
             current_app.logger.warning("No Orgbook Entity, do not produce Mines Act Permit UNTP CC")
             return None
 
-        untp_party_cpo = base.Party(
+        untp_party_cpo = base.Entity(
+            id="did:web:untp.traceability.site:parties:regulators:CHIEF-PERMITTING-OFFICER",
             name="Chief Permitting Officer of Mines",
-            identifiers=[
-                base.Identifier(
-                    identifierValue=
-                    "did:web:untp.traceability.site:parties:regulators:CHIEF-PERMITTING-OFFICER")
-            ])
+            registeredId=
+            "did:web:untp.traceability.site:parties:regulators:CHIEF-PERMITTING-OFFICER",
+            idScheme=base.IdentifierScheme(
+                id="https://w3c-ccg.github.io/did-method-web/", name="DID Web"))
         orgbook_cred_url = f"https://orgbook.gov.bc.ca/entity/{orgbook_entity.registration_id}/credential/{orgbook_entity.credential_id}"
 
         #this should have a did:web reference ideally, but orgbook doesn't have those yet.
-        untp_party_business = base.Party(
+        untp_party_business = base.Entity(
+            id=orgbook_cred_url,
             name=orgbook_entity.name_text,
-            identifiers=[
-                base.Identifier(
-                    scheme=ANONCRED_SCHEME,
-                    identifierValue=str(orgbook_entity.registration_id),
-                    identifierURI=orgbook_cred_url)
-            ])
+            idScheme=base.IdentifierScheme(id=ANONCRED_SCHEME, name="anoncred"),
+            registeredId=str(orgbook_entity.registration_id))
 
         facility = cc.Facility(
+            id="https://mines.nrs.gov.bc.ca/PLACEHOLDER",
             name=permit_amendment.mine.mine_name,
             geolocation=
             f'https://plus.codes/{plus_code_encode(permit_amendment.mine.latitude, permit_amendment.mine.longitude)}',
-            verifiedByCAB=True)
+            registeredId="mine_no",
+            idScheme=base.IdentifierScheme(
+                id="https://www2.gov.bc.ca/PLACEHOLDER", name="FACILITY_PLACEHOLDER"),
+            IDverifiedByCAB=True)
 
         products = [
             cc.Product(
+                id="https://unstats.un.org/unsd/classifications/Econ/cpc/PLACEHOLDER",
                 name=c,
-                classifications=cc.Classification(
-                    scheme="https://unstats.un.org/unsd/classifications/Econ/cpc",
-                    classifierName=c),
-                verifiedByCAB=False) for c in permit_amendment.mine.commodities
+                registeredId=c,
+                idScheme=base.IdentifierScheme(
+                    id="https://unstats.un.org/unsd/classifications/Econ/cpc",
+                    name="Central Product Classification (UNCEFACT)"),
+                IDverifiedByCAB=False) for c in permit_amendment.mine.commodities
         ]
 
         untp_assessments = [
             cc.ConformityAssessment(
+                id="https://mines.nrs.gov.bc.ca/ASSESSMENT_ID_PLACEHOLDER",
                 referenceRegulation=cc.Regulation(
                     id="https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/96293_01",
                     name="BC Mines Act",
-                    issuingBody=base.Party(name="Government of British Columbia"),
+                    jurisdictionCountry="CA",
+                    administeredBy=base.Entity(
+                        id="https://www2.gov.bc.ca/gov/content/home",
+                        name="Government of British Columbia",
+                        registeredId="BC-GOV",
+                        idScheme=base.IdentifierScheme(
+                            id="https://www2.gov.bc.ca/gov/content/home", name="BC-GOV")),
                     effectiveDate=datetime(2024, 5, 14, tzinfo=ZoneInfo("UTC")).isoformat()),
+                conformityTopic=codes.ConformityTopicCode.Governance_Compliance,
                                                                                                    # Is there a did:web that attests to that legistlation?
-                subjectFacilities=[facility],
-                subjectProducts=products,
-                sustainabilityTopic=codes.SustainabilityTopic.Governance_Compliance)
+                assessedFacilities=[facility],
+                assessedProducts=products)
         ]
         issue_date = permit_amendment.issue_date
         issuance_date_str = datetime(
@@ -390,24 +400,26 @@ class VerifiableCredentialManager():
         cred = cc.ConformityAttestation(
             id="http://example.com/govdomain/minesactpermit/123",
             type="ConformityAttestation",
-            assessmentLevel=codes.AssessmentAssuranceCode.GovtApproval,
+            assessmentLevel=codes.AssessmentLevelCode.GovtApproval,
             attestationType=codes.AttestationType.Certification,
-            description=
-            "This is a conformity attestation for the existence of a mining permit under the Mines Act within British Columbia (a province of Canada).",
             scope=cc.ConformityAssessmentScheme(
                 id=
-                "https://github.com/bcgov/bc-vcpedia/blob/main/credentials/bc-mines-act-permit/1.1.1/governance.md",
+                "https://bcgov.github.io/digital-trust-toolkit/docs/governance/mining/bc-mines-act-permit/1.1.1/governance",
                 name="BC Mines Act Permit Credential (1.1.1) Governance Documentation"),
-            issuedBy=untp_party_cpo,
-            issuedTo=untp_party_business,
-            validFrom=issuance_date_str,                                                                                                                 #shouldn't this just be in the w3c wrapper
+            authorisations=base.Endorsement(
+                id=
+                "https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/mines-contact-info",
+                name="BC Chief Permitting Officer of Mines",
+                issuingAuthority=untp_party_cpo),
+            issuedToParty=untp_party_business,
+            validFrom=issuance_date_str,                                                                                     #shouldn't this just be in the w3c wrapper
             assessments=untp_assessments)
 
         w3c_cred = W3CCred(
             context=[
-                "https://www.w3.org/2018/credentials/v1", {
-                    "@vocab":
-                    "https://test.uncefact.org/vocabulary/untp/dcc/0/untp-dcc-context-0.3.9.jsonld"
+                "https://www.w3.org/2018/credentials/v1",
+                "https://test.uncefact.org/vocabulary/untp/dcc/0/untp-dcc-context-0.3.10.jsonld", {
+                    "name": "https://schema.org/name"
                 }
             ],
             type=["VerifiableCredential", "DigitalConformityCredential", "NonProductionCredential"],
