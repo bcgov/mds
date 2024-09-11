@@ -50,6 +50,243 @@ exports[`ProjectDescriptionTab renders properly 1`] = `
       >
         Submission Progress
       </h3>
+      <h4
+        class="ant-typography"
+      >
+        Major Mines Office
+      </h4>
+      <h5
+        class="ant-typography"
+      >
+        Mines Act
+      </h5>
+      <div
+        class="ant-table-wrapper  core-table"
+      >
+        <div
+          class="ant-spin-nested-loading"
+        >
+          <div
+            class="ant-spin-container"
+          >
+            <div
+              class="ant-table"
+            >
+              <div
+                class="ant-table-container"
+              >
+                <div
+                  class="ant-table-content"
+                >
+                  <table
+                    style="table-layout: auto;"
+                  >
+                    <colgroup />
+                    <thead
+                      class="ant-table-thead"
+                    >
+                      <tr>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Type
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Permit
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Date
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Status
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody
+                      class="ant-table-tbody"
+                    >
+                      <tr
+                        class="ant-table-row ant-table-row-level-0 fade-in"
+                        data-row-key="4d04995c-f90d-42fd-a951-60d9891f242c"
+                      >
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="project_type-column"
+                            title="Type"
+                          >
+                            <div />
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="permit_no-column"
+                            title="Permit"
+                          >
+                            N/A
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="date_submitted-column"
+                            title="Date"
+                          >
+                            May 24 2024, 12:17 (PDT)
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <span
+                            class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                          >
+                            <span
+                              class="ant-badge-status-dot ant-badge-status-success"
+                            />
+                            <span
+                              class="ant-badge-status-text"
+                            >
+                              Submitted
+                            </span>
+                          </span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <h5
+        class="ant-typography"
+      >
+        Forestry Act
+      </h5>
+      <div
+        class="ant-table-wrapper  core-table"
+      >
+        <div
+          class="ant-spin-nested-loading"
+        >
+          <div
+            class="ant-spin-container"
+          >
+            <div
+              class="ant-table"
+            >
+              <div
+                class="ant-table-container"
+              >
+                <div
+                  class="ant-table-content"
+                >
+                  <table
+                    style="table-layout: auto;"
+                  >
+                    <colgroup />
+                    <thead
+                      class="ant-table-thead"
+                    >
+                      <tr>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Type
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Permit
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Date
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Status
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody
+                      class="ant-table-tbody"
+                    >
+                      <tr
+                        class="ant-table-row ant-table-row-level-0 fade-in"
+                        data-row-key="80fa60e3-0c8b-48e1-aede-ed2830e8ca42"
+                      >
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="project_type-column"
+                            title="Type"
+                          >
+                            <div />
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="permit_no-column"
+                            title="Permit"
+                          >
+                            N/A
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="date_submitted-column"
+                            title="Date"
+                          >
+                            May 24 2024, 12:17 (PDT)
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <span
+                            class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                          >
+                            <span
+                              class="ant-badge-status-dot ant-badge-status-success"
+                            />
+                            <span
+                              class="ant-badge-status-text"
+                            >
+                              Submitted
+                            </span>
+                          </span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
     </div>
   </div>
 </div>

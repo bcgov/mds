@@ -1145,7 +1145,10 @@ export const PROJECT = {
   project_guid: "8132462392222",
   mine_guid: "60300a07-376c-46f1-a984-88a813f91438",
   proponent_project_id: "Test-ID",
-  project_summary: {},
+  project_summary: {
+    project_summary_guid: "6bab1df6-e181-435a-abc0-e99466411880",
+    status_code: "SUB",
+  },
   information_requirements_table: {
     irt_guid: "c16afb82-144c-4138-9a36-ba5c24c43d8a",
     requirements: [

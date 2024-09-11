@@ -10,7 +10,6 @@ const initialState = {
   [PROJECTS]: {
     projects: MOCK.PROJECTS.records,
     project: MOCK.PROJECT,
-    projectSummary: { ...MOCK.PROJECT_SUMMARY, status_code: "SUB" },
   },
   [MINES]: MOCK.MINES,
 };
