@@ -29,7 +29,7 @@ const Project: FC = () => {
   const [isValid, setIsValid] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
 
-  const { information_requirements_table, major_mine_application } = project;
+  const { information_requirements_table, major_mine_application, project_summary } = project;
 
   const hasInformationRequirementsTable = Boolean(information_requirements_table?.irt_guid);
   const hasFinalAplication = Boolean(major_mine_application?.major_mine_application_guid);
@@ -119,15 +119,16 @@ const Project: FC = () => {
         </div>
       ),
     },
-    isFeatureEnabled(Feature.AMS_AGENT) && {
-      key: "project-description",
-      label: "Project Description",
-      children: (
-        <div className="padding-lg">
-          <ProjectDescriptionTab />
-        </div>
-      ),
-    },
+    isFeatureEnabled(Feature.AMS_AGENT) &&
+      project_summary?.status_code === "SUB" && {
+        key: "project-description",
+        label: "Project Description",
+        children: (
+          <div className="padding-lg">
+            <ProjectDescriptionTab />
+          </div>
+        ),
+      },
     {
       key: "information-requirements-table",
       label: "IRT",

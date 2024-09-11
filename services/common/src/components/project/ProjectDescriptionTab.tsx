@@ -7,6 +7,7 @@ import {
   ENVIRONMENTAL_MANAGMENT_ACT,
   AMS_STATUS_CODES_SUCCESS,
   AMS_STATUS_CODE_ERROR,
+  WASTE_DISCHARGE_AUTHORIZATION_PROCESS,
 } from "@mds/common/constants/strings";
 import {
   AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES,
@@ -22,7 +23,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { renderTextColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import { IAuthorizationSummary } from "@mds/common/interfaces";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 
 import {
   getDropdownProjectSummaryPermitTypes,
@@ -378,7 +379,7 @@ const ProjectDescriptionTab = () => {
           <Col span={24}>
             <Row justify="space-between">
               <Col>
-                <Typography.Title level={4}>Project Description Overview</Typography.Title>
+                <Typography.Title level={2}>Project Description Overview</Typography.Title>
               </Col>
               <Col>
                 <Button onClick={handleViewProjectDescriptionClicked} type="primary">
@@ -410,51 +411,77 @@ const ProjectDescriptionTab = () => {
             )}
 
             <Typography.Title level={3}>Submission Progress</Typography.Title>
-            <Typography.Title level={4}>Major Mines Office</Typography.Title>
-            <Typography.Title level={5}>Mines Act</Typography.Title>
-            <CoreTable
-              rowKey="project_summary_authorization_guid"
-              dataSource={minesActData}
-              columns={nonAMSActColumns}
-            />
-            <br />
-            <Typography.Title level={5}>Water Sustainability Act</Typography.Title>
-            <CoreTable
-              rowKey="project_summary_authorization_guid"
-              dataSource={waterSustainabilityActData}
-              columns={nonAMSActColumns}
-            />
-            <br />
-            <Typography.Title level={5}>Forestry Act</Typography.Title>
-            <CoreTable
-              rowKey="project_summary_authorization_guid"
-              dataSource={forestryActData}
-              columns={nonAMSActColumns}
-            />
-            <br />
-            <Typography.Title level={4}>Ministry of Environment</Typography.Title>
-            <Typography.Title level={5}>Environmental Management Act</Typography.Title>
-            {hasFailedAMSSubmission && (
-              <Alert
-                message="Submission Unsuccessful"
-                showIcon
-                type="error"
-                description={`Your environment authorization application was not submitted successfully. Please retry the submission or start a new application for the rejected authorization(s). You can link the submission to the new application on the Related Projects page. One or more of your environment authorization application has not been submitted successfully. Please retry the submission.`}
-                action={
-                  shouldDisplayRetryButton ? (
-                    <Button onClick={handleRetryAMSSubmissionClicked}>
-                      Retry Failed Submission
-                    </Button>
-                  ) : null
-                }
-                style={{ marginBottom: "12px" }}
-              />
+            {minesActData.length > 0 && (
+              <>
+                <Typography.Title level={4}>Major Mines Office</Typography.Title>
+                <Typography.Title level={5}>Mines Act</Typography.Title>
+                <CoreTable
+                  rowKey="project_summary_authorization_guid"
+                  dataSource={minesActData}
+                  columns={nonAMSActColumns}
+                />
+                <br />
+              </>
             )}
-            <CoreTable
-              rowKey="project_summary_authorization_guid"
-              dataSource={environmentalManagementActData}
-              columns={amsActColumns}
-            />
+            {waterSustainabilityActData.length > 0 && (
+              <>
+                <Typography.Title level={5}>Water Sustainability Act</Typography.Title>
+                <CoreTable
+                  rowKey="project_summary_authorization_guid"
+                  dataSource={waterSustainabilityActData}
+                  columns={nonAMSActColumns}
+                />
+                <br />
+              </>
+            )}
+            {forestryActData.length > 0 && (
+              <>
+                <Typography.Title level={5}>Forestry Act</Typography.Title>
+                <CoreTable
+                  rowKey="project_summary_authorization_guid"
+                  dataSource={forestryActData}
+                  columns={nonAMSActColumns}
+                />
+                <br />
+              </>
+            )}
+            {environmentalManagementActData.length > 0 && (
+              <>
+                <Typography.Title level={4}>Ministry of Environment</Typography.Title>
+                <Typography.Title level={5}>Environmental Management Act</Typography.Title>
+                <Typography.Paragraph>
+                  An Environmental Protection Officer will contact you once your application is
+                  reviewed and accepted. In the meantime, to learn about the ministry’s structured
+                  application process and timelines to get a waste discharge authorization, please
+                  visit{" "}
+                  <Link to={{ pathname: WASTE_DISCHARGE_AUTHORIZATION_PROCESS }} target="_blank">
+                    The waste discharge authorization process
+                  </Link>
+                  .
+                </Typography.Paragraph>
+                {hasFailedAMSSubmission && (
+                  <Alert
+                    message="Submission Unsuccessful"
+                    showIcon
+                    type="error"
+                    description={`Your environment authorization application was not submitted successfully. Please retry the submission or start a new application for the rejected authorization(s). You can link the submission to the new application on the Related Projects page. One or more of your environment authorization application has not been submitted successfully. Please retry the submission.`}
+                    action={
+                      shouldDisplayRetryButton ? (
+                        <Button onClick={handleRetryAMSSubmissionClicked}>
+                          Retry Failed Submission
+                        </Button>
+                      ) : null
+                    }
+                    style={{ marginBottom: "12px" }}
+                  />
+                )}
+                <CoreTable
+                  rowKey="project_summary_authorization_guid"
+                  dataSource={environmentalManagementActData}
+                  columns={amsActColumns}
+                />
+              </>
+            )}
           </Col>
         </Row>
       ) : (

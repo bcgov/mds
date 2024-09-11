@@ -96,7 +96,7 @@
     .fixed-tabs-tabs {
         &>.ant-tabs-nav {
             position: fixed;
-            top: $layout-header-height + 123px; //ProjectDocumentsTab->headerHeight
+            top: $layout-header-height + 103px; //ProjectDocumentsTab->headerHeight
             width: calc(100vw - ($fixed-page-margin * 2));
             background-color: $white;
             z-index: 1000;
