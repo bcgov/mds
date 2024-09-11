@@ -259,7 +259,14 @@ class ProjectSummaryResource(Resource, UserMixin):
         if prev_status == 'DFT' and project_summary.status_code == 'SUB':
             project_summary.send_project_summary_email(mine)
             # Trigger notification for newly submitted Project Summary
-            message = f'A Major Mine Description called ({project.project_title}) has been submitted for ({project.mine_name})'
+            message = f'A new major project description for ({project.project_title}) has been submitted for ({project.mine_name})'
+            extra_data = {'project': {'project_guid': str(project.project_guid)}}
+            trigger_notification(message, ActivityType.major_mine_desc_submitted, project.mine, 'ProjectSummary', project_summary.project_summary_guid, extra_data)
+
+        if project_summary.status_code == 'CHR':
+            project_summary.send_project_summary_email(mine)
+            # Trigger notification for changes requested Project Summary
+            message = f'Changes have been requested for ({project.project_title}) by the ministry for ({project.mine_name})'
             extra_data = {'project': {'project_guid': str(project.project_guid)}}
             trigger_notification(message, ActivityType.major_mine_desc_submitted, project.mine, 'ProjectSummary', project_summary.project_summary_guid, extra_data)
 

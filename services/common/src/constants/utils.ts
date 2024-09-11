@@ -71,23 +71,31 @@ export const isFieldDisabled = (
   projectSummaryStatusCode = "",
   isAuthorizationPage = false
 ) => {
-  const disabledStatuses = new Set(["WDN", "SUB", "COM"]);
-  const msEnabledStatuses = new Set(["DFT", "CHR"]);
-  const coreEnabledStatuses = new Set(["ASG", "UNR", "CHR", "OHD"]);
+  const disabledStatuses = new Set(["WDN", "COM"]);
+  const statusMapping = {
+    [SystemFlagEnum.ms]: new Set(["DFT", "CHR"]),
+    [SystemFlagEnum.core]: new Set(["ASG", "UNR", "CHR", "OHD"]),
+  };
 
   if (disabledStatuses.has(projectSummaryStatusCode)) return true;
 
-  const isMsEnabled =
-    systemFlag === SystemFlagEnum.ms && msEnabledStatuses.has(projectSummaryStatusCode);
-  const isCoreEnabled =
-    systemFlag === SystemFlagEnum.core && coreEnabledStatuses.has(projectSummaryStatusCode);
-  const isFieldEnabled = isMsEnabled || isCoreEnabled;
+  const enabledStatuses = statusMapping[systemFlag];
+  const isFieldEnabled = enabledStatuses?.has(projectSummaryStatusCode) ?? false;
 
   if (!isFieldEnabled) return true;
 
-  if (isAuthorizationPage) {
-    return projectSummaryStatusCode !== "DFT";
-  }
+  return isAuthorizationPage ? projectSummaryStatusCode !== "DFT" : false;
+};
 
-  return false;
+export const isDocumentDisabled = (systemFlag, projectSummaryStatusCode = "") => {
+  const disabledStatuses = new Set(["WDN", "COM"]);
+  const statusMapping = {
+    [SystemFlagEnum.ms]: new Set(["DFT", "SUB", "ASG", "CHR"]),
+    [SystemFlagEnum.core]: new Set(["ASG", "UNR", "CHR", "OHD"]),
+  };
+
+  if (disabledStatuses.has(projectSummaryStatusCode)) return true;
+
+  const enabledStatuses = statusMapping[systemFlag];
+  return !enabledStatuses?.has(projectSummaryStatusCode);
 };
