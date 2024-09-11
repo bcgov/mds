@@ -225,6 +225,7 @@ const RenderEMAPermitCommonSections = ({ code, isAmendment, index, isDisabled })
         showExemptionSection={showExemptionSection}
         isAmendment={isAmendment}
         amendmentChanges={sectionValues?.amendment_changes}
+        isDisabled={isDisabled}
       />
       <DocumentTable
         documents={tableDocuments}
@@ -634,7 +635,7 @@ export const AuthorizationsInvolved = () => {
                         <Row gutter={[0, 16]}>
                           <Col>
                             <Checkbox
-                              disabled={isFieldDisabled(systemFlag, formValues.status_code, true)}
+                              disabled={isFieldDisabled(systemFlag, formValues?.status_code, true)}
                               data-cy={`checkbox-authorization-${child.code}`}
                               value={child.code}
                               checked={checked}
@@ -690,7 +691,7 @@ export const AuthorizationsInvolved = () => {
                                 <RenderAuthCodeFormSection
                                   isDisabled={isFieldDisabled(
                                     systemFlag,
-                                    formValues.status_code,
+                                    formValues?.status_code,
                                     true
                                   )}
                                   code={child?.code}

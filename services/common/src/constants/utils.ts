@@ -71,7 +71,7 @@ export const isFieldDisabled = (
   projectSummaryStatusCode = "",
   isAuthorizationPage = false
 ) => {
-  const disabledStatuses = new Set(["WDN", "SUB"]);
+  const disabledStatuses = new Set(["WDN", "SUB", "COM"]);
   const msEnabledStatuses = new Set(["DFT", "CHR"]);
   const coreEnabledStatuses = new Set(["ASG", "UNR", "CHR", "OHD"]);
 

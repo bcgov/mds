@@ -66,6 +66,7 @@ const ProjectLinkInput = ({ unrelatedProjects = [], mineGuid, projectGuid }) => 
     <Row align="bottom" justify="start">
       <Col>
         <Field
+          disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
           id="linked-projects"
           name="linked-projects"
           props={{
@@ -76,7 +77,7 @@ const ProjectLinkInput = ({ unrelatedProjects = [], mineGuid, projectGuid }) => 
           onChange={(...args) => handleChange(args)}
         />
         <Button
-          disabled={isFieldDisabled(systemFlag, formValues.status_code)}
+          disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
           type="primary"
           onClick={addRelatedProjects}
           className="block-button"
