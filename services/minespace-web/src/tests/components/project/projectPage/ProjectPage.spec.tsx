@@ -4,11 +4,13 @@ import * as MOCK from "@/tests/mocks/dataMocks";
 import { render } from "@testing-library/react";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { PROJECTS, MINES } from "@mds/common/constants/reducerTypes";
+import FeatureFlagContext from "@mds/common/providers/featureFlags/featureFlag.context";
 
 const initialState = {
   [PROJECTS]: {
     projects: MOCK.PROJECTS.records,
     project: MOCK.PROJECT,
+    projectSummary: { ...MOCK.PROJECT_SUMMARY, status_code: "SUB" },
   },
   [MINES]: MOCK.MINES,
 };
@@ -37,7 +39,13 @@ describe("ProjectPage", () => {
   it("renders properly", () => {
     const { container } = render(
       <ReduxWrapper initialState={initialState}>
-        <ProjectPage />
+        <FeatureFlagContext.Provider
+          value={{
+            isFeatureEnabled: () => true,
+          }}
+        >
+          <ProjectPage />
+        </FeatureFlagContext.Provider>
       </ReduxWrapper>
     );
     expect(container).toMatchSnapshot();
