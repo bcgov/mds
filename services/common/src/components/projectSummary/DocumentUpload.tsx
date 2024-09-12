@@ -13,7 +13,7 @@ import ProjectSummaryFileUpload from "./ProjectSummaryFileUpload";
 import {
   ENVIRONMENT,
   FORM,
-  isDocumentDisabled,
+  isDocumentFieldDisabled,
   PROJECT_SUMMARY_DOCUMENT_TYPE_CODE,
 } from "@mds/common/constants";
 import { postNewDocumentVersion } from "@mds/common/redux/actionCreators/documentActionCreator";
@@ -216,7 +216,7 @@ export const DocumentUpload: FC = () => {
         <>
           {isEditMode && (
             <Button
-              disabled={isDocumentDisabled(systemFlag, status_code)}
+              disabled={isDocumentFieldDisabled(systemFlag, status_code)}
               onClick={openSpatialDocumentModal}
               type="primary"
               className="block-button"
@@ -240,7 +240,7 @@ export const DocumentUpload: FC = () => {
       <Typography.Paragraph>
         Upload any supporting document and draft of{" "}
         <LinkButton
-          disabled={isDocumentDisabled(systemFlag, status_code)}
+          disabled={isDocumentFieldDisabled(systemFlag, status_code)}
           onClick={() =>
             downloadIRTTemplate(
               ENVIRONMENT.apiUrl + API.INFORMATION_REQUIREMENTS_TABLE_TEMPLATE_DOWNLOAD
@@ -252,7 +252,7 @@ export const DocumentUpload: FC = () => {
         following the official template here. It is required to upload your final IRT in the form
         provided to proceed to the final application.
       </Typography.Paragraph>
-      {!isDocumentDisabled(systemFlag, status_code) && (
+      {!isDocumentFieldDisabled(systemFlag, status_code) && (
         <Field
           id="support_documents"
           name="support_documents"
