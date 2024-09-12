@@ -21,6 +21,8 @@ import MajorMineApplicationEntryTab from "./MajorMineApplicationEntryTab";
 import { MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES } from "./MajorMineApplicationPage";
 import ProjectDocumentsTab from "@mds/common/components/projects/ProjectDocumentsTab";
 import ProjectDescriptionTab from "@mds/common/components/project/ProjectDescriptionTab";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { Feature } from "@mds/common";
 
 const tabs = [
   "overview",
@@ -39,6 +41,7 @@ const ProjectPage: FC = () => {
     projectGuid: string;
   }>();
   const history = useHistory();
+  const { isFeatureEnabled } = useFeatureFlag();
 
   const [isLoaded, setIsLoaded] = useState(false);
   const [activeTab, setActiveTab] = useState(tab ?? tabs[0]);
@@ -50,6 +53,7 @@ const ProjectPage: FC = () => {
     information_requirements_table,
     major_mine_application,
     mrc_review_required,
+    project_summary,
   } = project;
   const mine = useSelector((state) => getMineById(state, mine_guid)) ?? {};
   const { mine_name } = mine;
@@ -196,15 +200,16 @@ const ProjectPage: FC = () => {
         </div>
       ),
     },
-    {
-      label: "Project Description",
-      key: "project-description",
-      children: (
-        <div className={pageClass}>
-          <ProjectDescriptionTab />
-        </div>
-      ),
-    },
+    isFeatureEnabled(Feature.AMS_AGENT) &&
+      project_summary?.status_code === "SUB" && {
+        label: "Project Description",
+        key: "project-description",
+        children: (
+          <div className={pageClass}>
+            <ProjectDescriptionTab />
+          </div>
+        ),
+      },
     {
       label: "IRT",
       key: "irt-entry",

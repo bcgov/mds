@@ -466,3 +466,5 @@ export const WASTE_DISCHARGE_NEW_AUTHORIZATIONS_URL =
   "https://www2.gov.bc.ca/gov/content/environment/waste-management/waste-discharge-authorization/apply";
 export const WASTE_DISCHARGE_AMENDMENT_AUTHORIZATIONS_URL =
   "https://www2.gov.bc.ca/gov/content/environment/waste-management/waste-discharge-authorization/change";
+export const WASTE_DISCHARGE_AUTHORIZATION_PROCESS =
+  "https://www2.gov.bc.ca/gov/content/environment/waste-management/waste-discharge-authorization/process";
