@@ -287,7 +287,7 @@ export const ProjectSummary: FC = () => {
           </Col>
           <Col>
             <Button
-              disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+              disabled={formValues?.status_code === "WDN" || formValues?.status_code === "COM"}
               type="primary"
               onClick={() => setIsEditMode(!isEditMode)}
             >

@@ -97,7 +97,7 @@ export const isDocumentFieldDisabled = (systemFlag, projectSummaryStatusCode = "
   const disabledStatuses = new Set(["WDN", "COM"]);
   const enabledStatusMapping = {
     [SystemFlagEnum.ms]: new Set(["DFT", "SUB", "ASG", "CHR"]),
-    [SystemFlagEnum.core]: new Set(["DFT", "ASG", "UNR", "CHR", "OHD"]),
+    [SystemFlagEnum.core]: new Set(["DFT", "SUB", "ASG", "UNR", "CHR", "OHD"]),
   };
 
   if (disabledStatuses.has(projectSummaryStatusCode)) return true;
