@@ -42,8 +42,7 @@ exports[`BasicInformation renders properly 1`] = `
               class="ant-form-item-control-input-content"
             >
               <input
-                class="ant-input ant-input-disabled"
-                disabled=""
+                class="ant-input"
                 id="project_summary_title"
                 name="project_summary_title"
                 type="text"
@@ -108,8 +107,7 @@ exports[`BasicInformation renders properly 1`] = `
               class="ant-form-item-control-input-content"
             >
               <input
-                class="ant-input ant-input-disabled"
-                disabled=""
+                class="ant-input"
                 id="proponent_project_id"
                 name="proponent_project_id"
                 type="text"
@@ -170,8 +168,7 @@ exports[`BasicInformation renders properly 1`] = `
               class="ant-form-item-control-input-content"
             >
               <textarea
-                class="ant-input ant-input-disabled"
-                disabled=""
+                class="ant-input"
                 id="project_summary_description"
                 name="project_summary_description"
                 style="height: 0px; resize: none; min-height: -40px;"

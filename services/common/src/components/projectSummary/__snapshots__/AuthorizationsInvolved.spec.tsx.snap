@@ -118,15 +118,14 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                             style="padding-top: 8px; padding-bottom: 8px;"
                           >
                             <label
-                              class="ant-checkbox-wrapper ant-checkbox-wrapper-disabled ant-checkbox-wrapper-in-form-item"
+                              class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item"
                             >
                               <span
-                                class="ant-checkbox ant-checkbox-disabled"
+                                class="ant-checkbox"
                               >
                                 <input
                                   class="ant-checkbox-input"
                                   data-cy="checkbox-authorization-MINES_ACT_PERMIT"
-                                  disabled=""
                                   type="checkbox"
                                   value="MINES_ACT_PERMIT"
                                 />
@@ -185,15 +184,14 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                             style="padding-top: 8px; padding-bottom: 8px;"
                           >
                             <label
-                              class="ant-checkbox-wrapper ant-checkbox-wrapper-disabled ant-checkbox-wrapper-in-form-item"
+                              class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item"
                             >
                               <span
-                                class="ant-checkbox ant-checkbox-disabled"
+                                class="ant-checkbox"
                               >
                                 <input
                                   class="ant-checkbox-input"
                                   data-cy="checkbox-authorization-AIR_EMISSIONS_DISCHARGE_PERMIT"
-                                  disabled=""
                                   type="checkbox"
                                   value="AIR_EMISSIONS_DISCHARGE_PERMIT"
                                 />
@@ -220,15 +218,14 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                             style="padding-top: 8px; padding-bottom: 8px;"
                           >
                             <label
-                              class="ant-checkbox-wrapper ant-checkbox-wrapper-disabled ant-checkbox-wrapper-in-form-item"
+                              class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item"
                             >
                               <span
-                                class="ant-checkbox ant-checkbox-disabled"
+                                class="ant-checkbox"
                               >
                                 <input
                                   class="ant-checkbox-input"
                                   data-cy="checkbox-authorization-EFFLUENT_DISCHARGE_PERMIT"
-                                  disabled=""
                                   type="checkbox"
                                   value="EFFLUENT_DISCHARGE_PERMIT"
                                 />
@@ -255,15 +252,14 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                             style="padding-top: 8px; padding-bottom: 8px;"
                           >
                             <label
-                              class="ant-checkbox-wrapper ant-checkbox-wrapper-disabled ant-checkbox-wrapper-in-form-item"
+                              class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item"
                             >
                               <span
-                                class="ant-checkbox ant-checkbox-disabled"
+                                class="ant-checkbox"
                               >
                                 <input
                                   class="ant-checkbox-input"
                                   data-cy="checkbox-authorization-REFUSE_DISCHARGE_PERMIT"
-                                  disabled=""
                                   type="checkbox"
                                   value="REFUSE_DISCHARGE_PERMIT"
                                 />
@@ -299,15 +295,14 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                             style="padding-top: 8px; padding-bottom: 8px;"
                           >
                             <label
-                              class="ant-checkbox-wrapper ant-checkbox-wrapper-disabled ant-checkbox-wrapper-in-form-item"
+                              class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item"
                             >
                               <span
-                                class="ant-checkbox ant-checkbox-disabled"
+                                class="ant-checkbox"
                               >
                                 <input
                                   class="ant-checkbox-input"
                                   data-cy="checkbox-authorization-CHANGE_APPROVAL"
-                                  disabled=""
                                   type="checkbox"
                                   value="CHANGE_APPROVAL"
                                 />
@@ -334,15 +329,14 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                             style="padding-top: 8px; padding-bottom: 8px;"
                           >
                             <label
-                              class="ant-checkbox-wrapper ant-checkbox-wrapper-disabled ant-checkbox-wrapper-in-form-item"
+                              class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item"
                             >
                               <span
-                                class="ant-checkbox ant-checkbox-disabled"
+                                class="ant-checkbox"
                               >
                                 <input
                                   class="ant-checkbox-input"
                                   data-cy="checkbox-authorization-USE_APPROVAL"
-                                  disabled=""
                                   type="checkbox"
                                   value="USE_APPROVAL"
                                 />
@@ -369,15 +363,14 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                             style="padding-top: 8px; padding-bottom: 8px;"
                           >
                             <label
-                              class="ant-checkbox-wrapper ant-checkbox-wrapper-disabled ant-checkbox-wrapper-in-form-item"
+                              class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item"
                             >
                               <span
-                                class="ant-checkbox ant-checkbox-disabled"
+                                class="ant-checkbox"
                               >
                                 <input
                                   class="ant-checkbox-input"
                                   data-cy="checkbox-authorization-WATER_LICENCE"
-                                  disabled=""
                                   type="checkbox"
                                   value="WATER_LICENCE"
                                 />
@@ -413,15 +406,14 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                             style="padding-top: 8px; padding-bottom: 8px;"
                           >
                             <label
-                              class="ant-checkbox-wrapper ant-checkbox-wrapper-disabled ant-checkbox-wrapper-in-form-item"
+                              class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item"
                             >
                               <span
-                                class="ant-checkbox ant-checkbox-disabled"
+                                class="ant-checkbox"
                               >
                                 <input
                                   class="ant-checkbox-input"
                                   data-cy="checkbox-authorization-OCCUPANT_CUT_LICENCE"
-                                  disabled=""
                                   type="checkbox"
                                   value="OCCUPANT_CUT_LICENCE"
                                 />
@@ -457,15 +449,14 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                             style="padding-top: 8px; padding-bottom: 8px;"
                           >
                             <label
-                              class="ant-checkbox-wrapper ant-checkbox-wrapper-disabled ant-checkbox-wrapper-in-form-item"
+                              class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item"
                             >
                               <span
-                                class="ant-checkbox ant-checkbox-disabled"
+                                class="ant-checkbox"
                               >
                                 <input
                                   class="ant-checkbox-input"
                                   data-cy="checkbox-authorization-OTHER"
-                                  disabled=""
                                   type="checkbox"
                                   value="OTHER"
                                 />
