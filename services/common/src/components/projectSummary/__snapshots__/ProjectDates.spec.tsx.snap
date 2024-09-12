@@ -62,13 +62,14 @@ exports[`ProjectDates renders properly 1`] = `
               class="ant-form-item-control-input-content"
             >
               <div
-                class="ant-picker"
+                class="ant-picker ant-picker-disabled"
               >
                 <div
                   class="ant-picker-input"
                 >
                   <input
                     autocomplete="off"
+                    disabled=""
                     id="expected_draft_irt_submission_date"
                     name="expected_draft_irt_submission_date"
                     placeholder="Please select date"
@@ -155,13 +156,14 @@ exports[`ProjectDates renders properly 1`] = `
               class="ant-form-item-control-input-content"
             >
               <div
-                class="ant-picker"
+                class="ant-picker ant-picker-disabled"
               >
                 <div
                   class="ant-picker-input"
                 >
                   <input
                     autocomplete="off"
+                    disabled=""
                     id="expected_permit_application_date"
                     name="expected_permit_application_date"
                     placeholder="Please select date"
@@ -248,13 +250,14 @@ exports[`ProjectDates renders properly 1`] = `
               class="ant-form-item-control-input-content"
             >
               <div
-                class="ant-picker"
+                class="ant-picker ant-picker-disabled"
               >
                 <div
                   class="ant-picker-input"
                 >
                   <input
                     autocomplete="off"
+                    disabled=""
                     id="expected_permit_receipt_date"
                     name="expected_permit_receipt_date"
                     placeholder="Please select date"
@@ -341,13 +344,14 @@ exports[`ProjectDates renders properly 1`] = `
               class="ant-form-item-control-input-content"
             >
               <div
-                class="ant-picker"
+                class="ant-picker ant-picker-disabled"
               >
                 <div
                   class="ant-picker-input"
                 >
                   <input
                     autocomplete="off"
+                    disabled=""
                     id="expected_project_start_date"
                     name="expected_project_start_date"
                     placeholder="Please select date"

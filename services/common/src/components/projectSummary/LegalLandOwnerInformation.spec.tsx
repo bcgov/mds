@@ -32,6 +32,9 @@ describe("LegalLandOwnerInformation Component", () => {
         },
       },
       STATIC_CONTENT,
+      ["AUTHENTICATION"]: {
+        systemFlag: "core",
+      },
     });
     const { container, getByText } = render(
       <Provider store={store}>{WrappedLegalLandOwnerInformation}</Provider>
@@ -49,6 +52,9 @@ describe("LegalLandOwnerInformation Component", () => {
         },
       },
       STATIC_CONTENT,
+      ["AUTHENTICATION"]: {
+        systemFlag: "core",
+      },
     });
     const { getByText } = render(
       <Provider store={store}>{WrappedLegalLandOwnerInformation}</Provider>
@@ -75,6 +81,9 @@ describe("LegalLandOwnerInformation Component", () => {
         },
       },
       STATIC_CONTENT,
+      ["AUTHENTICATION"]: {
+        systemFlag: "core",
+      },
     });
     const { getByText } = render(
       <Provider store={store}>{WrappedLegalLandOwnerInformation}</Provider>
