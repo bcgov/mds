@@ -201,8 +201,6 @@ class TractionService():
 
         payload = Payload(doc={"options": options, "credential": credential}, verkey=verkey)
 
-        current_app.logger.warning(
-            payload.model_dump(by_alias=True, exclude_none=True, mode="json"))
         post_resp = requests.post(
             traction_deprecated_jsonld_sign,
             json=payload.model_dump(by_alias=True, exclude_none=True, mode="json"),

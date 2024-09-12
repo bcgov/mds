@@ -143,7 +143,7 @@ def process_all_untp_map_for_orgbook():
     assert public_did.startswith(
         "did:web:"
     ), f"Config.CHIEF_PERMITTING_OFFICER_DID_WEB = {Config.CHIEF_PERMITTING_OFFICER_DID_WEB} is not a did:web"
-    current_app.logger.warning("public did: " + public_did)
+    task_logger.info("public did: " + public_did)
 
     records: List[Tuple[W3CCred,
                         PermitAmendmentOrgBookPublish]] = [] # list of tuples [payload, record]
@@ -186,13 +186,12 @@ def process_all_untp_map_for_orgbook():
         try:
             record.save()
         except IntegrityError:
-            current_app.logger.warning(f"ignoring duplicate={str(record.unsigned_payload_hash)}")
+            task_logger.warning(f"ignoring duplicate={str(record.unsigned_payload_hash)}")
             continue
-        current_app.logger.warning(
-            "bcreg_uri=" +
-            str(cred_payload.credentialSubject.issuedTo.identifiers[0].identifierURI) +
-            ", for permit_amendment_guid=" + str(row[0]))
-        current_app.logger.warning("unsigned_hash=" + str(record.unsigned_payload_hash))
+        task_logger.info("bcreg_uri=" +
+                         str(cred_payload.credentialSubject.issuedTo.identifiers[0].identifierURI) +
+                         ", for permit_amendment_guid=" + str(row[0]))
+        task_logger.warning("unsigned_hash=" + str(record.unsigned_payload_hash))
 
     task_logger.info("num of records created: " + str(len(records or [])))
 
