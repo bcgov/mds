@@ -410,11 +410,15 @@ const ProjectDescriptionTab = () => {
               />
             )}
 
-            <Typography.Title level={3}>Submission Progress</Typography.Title>
+            <Typography.Title level={3} className="font-colour">
+              Submission Progress
+            </Typography.Title>
             {minesActData.length > 0 && (
               <>
-                <Typography.Title level={4}>Major Mines Office</Typography.Title>
-                <Typography.Title level={5}>Mines Act</Typography.Title>
+                <Typography.Title level={5} className="primary-colour">
+                  Major Mines Office
+                </Typography.Title>
+                <Typography.Text className="desktop-bold">Mines Act</Typography.Text>
                 <CoreTable
                   rowKey="project_summary_authorization_guid"
                   dataSource={minesActData}
@@ -425,7 +429,7 @@ const ProjectDescriptionTab = () => {
             )}
             {waterSustainabilityActData.length > 0 && (
               <>
-                <Typography.Title level={5}>Water Sustainability Act</Typography.Title>
+                <Typography.Text className="desktop-bold">Water Sustainability Act</Typography.Text>
                 <CoreTable
                   rowKey="project_summary_authorization_guid"
                   dataSource={waterSustainabilityActData}
@@ -436,7 +440,7 @@ const ProjectDescriptionTab = () => {
             )}
             {forestryActData.length > 0 && (
               <>
-                <Typography.Title level={5}>Forestry Act</Typography.Title>
+                <Typography.Text className="desktop-bold">Forestry Act</Typography.Text>
                 <CoreTable
                   rowKey="project_summary_authorization_guid"
                   dataSource={forestryActData}
@@ -447,8 +451,12 @@ const ProjectDescriptionTab = () => {
             )}
             {environmentalManagementActData.length > 0 && (
               <>
-                <Typography.Title level={4}>Ministry of Environment</Typography.Title>
-                <Typography.Title level={5}>Environmental Management Act</Typography.Title>
+                <Typography.Title level={5} className="primary-colour">
+                  Ministry of Environment
+                </Typography.Title>
+                <Typography.Text className="desktop-bold">
+                  Environmental Management Act
+                </Typography.Text>
                 <Typography.Paragraph>
                   An Environmental Protection Officer will contact you once your application is
                   reviewed and accepted. In the meantime, to learn about the ministry’s structured

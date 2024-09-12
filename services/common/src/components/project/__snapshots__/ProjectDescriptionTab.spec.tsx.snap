@@ -46,20 +46,20 @@ exports[`ProjectDescriptionTab renders properly 1`] = `
         Below are the authorization submissions and their status in the project description. Both the Major Mines Office and Ministry of Environments reviews must be completed for this stage to be considered complete.
       </div>
       <h3
-        class="ant-typography"
+        class="ant-typography font-colour"
       >
         Submission Progress
       </h3>
-      <h4
-        class="ant-typography"
+      <h5
+        class="ant-typography primary-colour"
       >
         Major Mines Office
-      </h4>
-      <h5
-        class="ant-typography"
+      </h5>
+      <span
+        class="ant-typography desktop-bold"
       >
         Mines Act
-      </h5>
+      </span>
       <div
         class="ant-table-wrapper  core-table"
       >
@@ -171,11 +171,11 @@ exports[`ProjectDescriptionTab renders properly 1`] = `
         </div>
       </div>
       <br />
-      <h5
-        class="ant-typography"
+      <span
+        class="ant-typography desktop-bold"
       >
         Forestry Act
-      </h5>
+      </span>
       <div
         class="ant-table-wrapper  core-table"
       >
