@@ -188,22 +188,24 @@ class TractionService():
 
     def sign_jsonld_credential_deprecated(
         self,
-        did,
-        verkey,
+        did: str,
+        verkey: str,
         credential: BaseModel,
     ) -> dict:
         # #verkey suffix is indy's default, but could be aparameter later.
         options = {"verificationMethod": did + "#verkey", "proofPurpose": "assertionMethod"}
-        payload = {
-            "doc": {
-                "options": options,
-                "credential": credential.dict(by_alias=True, exclude_none=True)
-            },
-            "verkey": verkey,
-        }
+
+        class Payload(BaseModel):
+            doc: dict
+            verkey: str
+
+        payload = Payload(doc={"options": options, "credential": credential}, verkey=verkey)
+
         post_resp = requests.post(
-            traction_deprecated_jsonld_sign, json=payload, headers=self.get_headers())
-        assert post_resp.status_code == 200, f"post_resp={post_resp.json()}"
+            traction_deprecated_jsonld_sign,
+            json=payload.model_dump(by_alias=True, exclude_none=True, mode="json"),
+            headers=self.get_headers())
+        assert post_resp.status_code == 200, f"post_resp={post_resp.__dict__}"
         return post_resp.json()
 
     def fetch_a_random_did_key(self):
