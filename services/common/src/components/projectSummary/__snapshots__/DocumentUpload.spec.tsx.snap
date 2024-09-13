@@ -283,7 +283,7 @@ exports[`DocumentUpload renders properly 1`] = `
     <div
       class="ant-typography"
     >
-      Upload any supporting document and draft of
+      Please upload any supporting documents such as a draft of the
        
       <a
         role="link"
@@ -291,8 +291,9 @@ exports[`DocumentUpload renders properly 1`] = `
       >
         Information Requirements Table (IRT)
       </a>
+      .
        
-      following the official template here. It is required to upload your final IRT in the form provided to proceed to the final application.
+      To proceed to the final application, you must upload your final Joint Application IRT using the form provided in the next phase.
     </div>
     <div
       class="whirlpool-container"

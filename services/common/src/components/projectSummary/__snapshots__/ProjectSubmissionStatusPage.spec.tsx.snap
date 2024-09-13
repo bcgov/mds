@@ -59,7 +59,7 @@ exports[`ProjectSubmissionStatusPage renders properly 1`] = `
         class="ant-col ant-col-24"
       >
         <div
-          style="text-align: center;"
+          class="status-page-content"
         >
           <div
             class="ant-row"
@@ -101,26 +101,7 @@ exports[`ProjectSubmissionStatusPage renders properly 1`] = `
             >
               Thank you, your application has been submitted successfully!
             </h4>
-            You can track the submission status in Project Description Overview.
-          </div>
-          <div
-            class="ant-typography"
-          >
-            If your application requires
-             
-            <a
-              href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/coordinated-authorizations"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              Information Requirements Table (IRT)
-            </a>
-            ,
-          </div>
-          <div
-            class="ant-typography"
-          >
-            download
+            Your submission tracking number and status are available in the Project Description Overview. If your application requires an Information Requirements Table(IRT), please download the 
              
             <a
               role="link"

@@ -2,7 +2,8 @@ import React, { FC, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { isNil } from "lodash";
 import { Typography, Button, Row, Col, Popconfirm } from "antd";
-import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashAlt } from "@fortawesome/pro-light-svg-icons";
 import PlusOutlined from "@ant-design/icons/PlusOutlined";
 import { Field, FieldArray, arrayPush, getFormValues, change } from "redux-form";
 import {
@@ -57,26 +58,33 @@ const RenderContacts = ({ fields }) => {
               </>
             ) : (
               <>
-                <Row gutter={16}>
-                  <Col span={10}>
-                    <Typography.Title level={5}>
-                      Additional project contact #{index}
-                    </Typography.Title>
-                  </Col>
-                  <Col span={12}>
-                    <Popconfirm
-                      placement="topLeft"
-                      title="Are you sure you want to remove this contact?"
-                      onConfirm={() => fields.remove(index)}
-                      okText="Remove"
-                      cancelText="Cancel"
-                    >
-                      <Button type="primary" size="small" ghost>
-                        <DeleteOutlined className="padding-sm--left icon-sm" />
-                      </Button>
-                    </Popconfirm>
-                  </Col>
-                </Row>
+                <Col span={24}>
+                  <Row gutter={16}>
+                    <Col>
+                      <Typography.Title level={5}>
+                        Additional project contact #{index}
+                      </Typography.Title>
+                    </Col>
+                    <Col>
+                      <Popconfirm
+                        placement="topLeft"
+                        title="Are you sure you want to remove this contact?"
+                        onConfirm={() => fields.remove(index)}
+                        okText="Remove"
+                        cancelText="Cancel"
+                      >
+                        <Button
+                          style={{ marginTop: 0 }}
+                          className="fa-icon-container btn-sm-padding"
+                          icon={<FontAwesomeIcon icon={faTrashAlt} />}
+                          type="default"
+                        >
+                          Delete
+                        </Button>
+                      </Popconfirm>
+                    </Col>
+                  </Row>
+                </Col>
               </>
             )}
             <Row gutter={16}>
