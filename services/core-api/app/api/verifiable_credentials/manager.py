@@ -1,6 +1,6 @@
 # for midware/business level actions between requests and data access
 import json
-
+from uuid import UUID, uuid4
 from sqlalchemy.exc import IntegrityError
 from typing import List, Union, Tuple
 from pydantic import BaseModel, Field, ConfigDict
@@ -25,6 +25,7 @@ from app.api.verifiable_credentials.models.credentials import PartyVerifiableCre
 from app.api.verifiable_credentials.models.connection import PartyVerifiableCredentialConnection
 from app.api.verifiable_credentials.models.orgbook_publish_status import PermitAmendmentOrgBookPublish
 from app.api.services.traction_service import TractionService
+from app.api.services.issue_to_orgbook_service import OrgBookIssuerService
 
 from untp_models import codes, base, conformity_credential as cc
 
@@ -32,7 +33,7 @@ task_logger = get_task_logger(__name__)
 
 
 #this should probably be imported from somewhere.
-class W3CCred(BaseModel):
+class DigitalConformityCredential(BaseModel):
     model_config = ConfigDict(
         populate_by_name=True, json_encoders={datetime: lambda v: v.isoformat()})
 
@@ -145,7 +146,7 @@ def process_all_untp_map_for_orgbook():
     ), f"Config.CHIEF_PERMITTING_OFFICER_DID_WEB = {Config.CHIEF_PERMITTING_OFFICER_DID_WEB} is not a did:web"
     current_app.logger.warning("public did: " + public_did)
 
-    records: List[Tuple[W3CCred,
+    records: List[Tuple[DigitalConformityCredential,
                         PermitAmendmentOrgBookPublish]] = [] # list of tuples [payload, record]
 
     for row in permit_amendment_query_results:
@@ -153,8 +154,9 @@ def process_all_untp_map_for_orgbook():
         if not pa:
             task_logger.warning(f"Permit Amendment not found for permit_amendment_guid={row[0]}")
             continue
-
-        pa_cred = VerifiableCredentialManager.produce_untp_cc_map_payload(public_did, pa)
+        new_credential_uuid = uuid4()
+        pa_cred = VerifiableCredentialManager.produce_untp_cc_map_payload(
+            public_did, pa, new_credential_uuid)
         if not pa_cred:
             task_logger.warning(f"pa_cred could not be created")
             continue
@@ -172,7 +174,8 @@ def process_all_untp_map_for_orgbook():
             permit_amendment_guid=row[0],
             party_guid=row[1],
             unsigned_payload_hash=payload_hash,
-        )
+            orgbook_credential_id=str(new_credential_uuid))
+
         records.append((pa_cred, paob))
 
     task_logger.info(f"public_verkey={public_verkey}")
@@ -203,12 +206,33 @@ def publish_all_pending_vc_to_orgbook():
     """STUB for celery job to publis all pending vc to orgbook."""
     ## Orgbook doesn't have this functionality yet.
     records_to_publish = PermitAmendmentOrgBookPublish.find_all_unpublished(unsafe=True)
+    orgbook_issuer_service = OrgBookIssuerService()
+    num_success = 0
+    num_failed = 0
 
     for record in records_to_publish:
         current_app.logger.warning("NOT sending cred to orgbook")
         current_app.logger.warning(record.signed_credential)
-        # resp = requests.post(ORGBOOK_W3C_CRED_POST, record.signed_credential)
-        # assert resp.status_code == 200, f"resp={resp.json()}"
+
+        payload = {
+            "options": {
+                "format": "vc_di",
+                "type": "BCMinesActPermit",
+                "version": "0.0.1",
+                "credentialId": record.orgbook_credential_id
+            },
+            "securedDocument": record.signed_credential
+        }
+        resp = orgbook_issuer_service.publish_untp_dcc_to_orgbook(payload)
+        if resp.status_code != 200:
+            current_app.logger.warning("Failed to publish to orgbook, error: " + resp.text)
+            num_failed += 1
+        else:
+            record.publish_state = True
+            record.save()
+            num_success += 1
+
+    return f"num_success: {num_success}. num_failed: {num_failed}."
 
 
 class VerifiableCredentialManager():
@@ -319,7 +343,8 @@ class VerifiableCredentialManager():
         return credential
 
     @classmethod
-    def produce_untp_cc_map_payload(cls, did: str, permit_amendment: PermitAmendment):
+    def produce_untp_cc_map_payload(cls, did: str, permit_amendment: PermitAmendment,
+                                    new_credential_id: UUID):
         """Produce payload for Mines Act Permit UNTP Conformity Credential from permit amendment and did."""
         ANONCRED_SCHEME = "https://hyperledger.github.io/anoncreds-spec/"
 
@@ -388,7 +413,7 @@ class VerifiableCredentialManager():
             tzinfo=ZoneInfo("UTC")).isoformat()
 
         cred = cc.ConformityAttestation(
-            id="http://example.com/govdomain/minesactpermit/123",
+            id="http://example.com/govdomain/minesactpermit/" + new_credential_id,
             assessmentLevel=codes.AssessmentAssuranceCode.GovtApproval,
             type=codes.AttestationType.Certification,
             description=
@@ -402,7 +427,7 @@ class VerifiableCredentialManager():
             validFrom=issuance_date_str,                                                                                                                 #shouldn't this just be in the w3c wrapper
             assessments=untp_assessments)
 
-        w3c_cred = W3CCred(
+        w3c_cred = DigitalConformityCredential(
             context=["https://www.w3.org/2018/credentials/v1", {
                 "@vocab": "urn:bcgov:attributes#"
             }],

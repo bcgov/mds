@@ -1,4 +1,5 @@
 from json import dumps, loads
+from uuid import UUID, uuid4
 from datetime import datetime
 from flask import current_app, request
 from werkzeug.exceptions import BadRequest, ServiceUnavailable
@@ -137,7 +138,7 @@ class W3CCredentialUNTPResource(Resource, UserMixin):
         public_verkey = public_did_dict["verkey"]
 
         credential = VerifiableCredentialManager.produce_untp_cc_map_payload(
-            public_did, permit_amendment)
+            public_did, permit_amendment, uuid4())
         signed_credential = traction_service.sign_jsonld_credential_deprecated(
             public_did, public_verkey, credential)
         return signed_credential["signed_doc"]

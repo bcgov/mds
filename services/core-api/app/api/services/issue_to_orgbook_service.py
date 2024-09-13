@@ -5,6 +5,8 @@ from datetime import datetime, timedelta
 from flask import request, current_app
 from app.config import Config
 
+ORGBOOK_W3C_CRED_POST = Config.ORGBOOK_API_URL + "/credentials"
+
 
 class OrgBookIssuerService():
     """This class is used to connect to an issuer controller, which handles the nuance and handshakes involved with issuing
@@ -103,3 +105,8 @@ class OrgBookIssuerService():
             })
         current_app.logger.debug('issue-credential call returned successfully')
         return response
+
+    def publish_untp_dcc_to_orgbook(self, payload):
+        resp = requests.post(
+            ORGBOOK_W3C_CRED_POST, json=payload, headers={'Content-Type': 'application/json'})
+        assert resp.status_code == 201, f"Error publishing to OrgBook: {resp.text}"
