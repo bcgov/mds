@@ -122,11 +122,13 @@ def process_all_untp_map_for_orgbook():
                         inner join mine_party_appt mpa on p.party_guid = mpa.party_guid
                         inner join permit pmt on pmt.permit_id = mpa.permit_id
                         inner join permit_amendment pa on pa.permit_id = pmt.permit_id
-
+                        inner join mine m on pa.mine_guid = m.mine_guid
+                        
                         where mpa.permit_id is not null
                         and mpa.mine_party_appt_type_code = 'PMT'
                         and mpa.deleted_ind = false
-
+                        and m.major_mine_ind = true
+                        
                         group by pa.permit_amendment_guid, pa.description, pa.issue_date, pa.permit_amendment_status_code, mpa.deleted_ind, pmt.permit_no, mpa.permit_id, poe.party_guid, p.party_name, poe.name_text, poe.registration_id
                         order by pmt.permit_no, pa.issue_date;
 
