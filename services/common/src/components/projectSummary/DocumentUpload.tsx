@@ -10,7 +10,12 @@ import {
   uploadedByColumn,
 } from "../documents/DocumentColumns";
 import ProjectSummaryFileUpload from "./ProjectSummaryFileUpload";
-import { ENVIRONMENT, FORM, PROJECT_SUMMARY_DOCUMENT_TYPE_CODE } from "@mds/common/constants";
+import {
+  ENVIRONMENT,
+  FORM,
+  isDocumentFieldDisabled,
+  PROJECT_SUMMARY_DOCUMENT_TYPE_CODE,
+} from "@mds/common/constants";
 import { postNewDocumentVersion } from "@mds/common/redux/actionCreators/documentActionCreator";
 import LinkButton from "../common/LinkButton";
 import * as API from "@mds/common/constants/API";
@@ -20,6 +25,7 @@ import SpatialDocumentTable from "../documents/spatial/SpatialDocumentTable";
 import { FormContext } from "../forms/FormWrapper";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "../..";
+import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 
 const RenderOldDocuments = ({
   documents,
@@ -63,6 +69,7 @@ const RenderOldDocuments = ({
 
 export const DocumentUpload: FC = () => {
   const dispatch = useDispatch();
+  const systemFlag = useSelector(getSystemFlag);
   const {
     spatial_documents = [],
     support_documents = [],
@@ -70,6 +77,7 @@ export const DocumentUpload: FC = () => {
     project_guid,
     project_summary_guid,
     documents,
+    status_code,
   } = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
 
   const { isEditMode } = useContext(FormContext);
@@ -207,7 +215,12 @@ export const DocumentUpload: FC = () => {
       {spatialFeatureEnabled ? (
         <>
           {isEditMode && (
-            <Button onClick={openSpatialDocumentModal} type="primary" className="block-button">
+            <Button
+              disabled={isDocumentFieldDisabled(systemFlag, status_code)}
+              onClick={openSpatialDocumentModal}
+              type="primary"
+              className="block-button"
+            >
               Upload Spatial Data
             </Button>
           )}
@@ -227,6 +240,7 @@ export const DocumentUpload: FC = () => {
       <Typography.Paragraph>
         Upload any supporting document and draft of{" "}
         <LinkButton
+          disabled={isDocumentFieldDisabled(systemFlag, status_code)}
           onClick={() =>
             downloadIRTTemplate(
               ENVIRONMENT.apiUrl + API.INFORMATION_REQUIREMENTS_TABLE_TEMPLATE_DOWNLOAD
@@ -238,27 +252,29 @@ export const DocumentUpload: FC = () => {
         following the official template here. It is required to upload your final IRT in the form
         provided to proceed to the final application.
       </Typography.Paragraph>
-      <Field
-        id="support_documents"
-        name="support_documents"
-        onFileLoad={(document_name, document_manager_guid, version) =>
-          onFileLoad(
-            document_name,
-            PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.SUPPORTING,
-            document_manager_guid,
-            version
-          )
-        }
-        onRemoveFile={onRemoveFile}
-        params={fileUploadParams}
-        acceptedFileTypesMap={supportingAcceptedFileTypesMap}
-        listedFileTypes={["document", "image", "spreadsheet"]}
-        component={ProjectSummaryFileUpload}
-        props={{
-          documents: documents,
-          label: "Upload Files",
-        }}
-      />
+      {!isDocumentFieldDisabled(systemFlag, status_code) && (
+        <Field
+          id="support_documents"
+          name="support_documents"
+          onFileLoad={(document_name, document_manager_guid, version) =>
+            onFileLoad(
+              document_name,
+              PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.SUPPORTING,
+              document_manager_guid,
+              version
+            )
+          }
+          onRemoveFile={onRemoveFile}
+          params={fileUploadParams}
+          acceptedFileTypesMap={supportingAcceptedFileTypesMap}
+          listedFileTypes={["document", "image", "spreadsheet"]}
+          component={ProjectSummaryFileUpload}
+          props={{
+            documents: documents,
+            label: "Upload Files",
+          }}
+        />
+      )}
       <DocumentTable
         documents={support_documents}
         documentParent="project summary"
