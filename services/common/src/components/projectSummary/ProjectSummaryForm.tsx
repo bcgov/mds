@@ -19,7 +19,7 @@ import Applicant from "@mds/common/components/projectSummary/Applicant";
 import Declaration from "@mds/common/components/projectSummary/Declaration";
 import { ApplicationSummary } from "./ApplicationSummary";
 import { getProjectSummaryAuthorizationTypesArray } from "@mds/common/redux/selectors/staticContentSelectors";
-import { MinistryContact } from "./MinistryContact";
+import { ProjectManagement } from "./ProjectManagement";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import { SystemFlagEnum } from "../..";
 import { formatProjectPayload } from "@mds/common/utils/helpers";
@@ -50,7 +50,7 @@ export const getProjectFormTabs = (amsFeatureEnabled: boolean, isCore = false) =
     "declaration",
   ];
   if (isCore) {
-    projectFormTabs.splice(1, 0, "ministry-contact");
+    projectFormTabs.splice(1, 0, "project-management");
   }
 
   return amsFeatureEnabled
@@ -87,7 +87,7 @@ export const ProjectSummaryForm: FC<ProjectSummaryFormProps> = ({
 
   const renderTabComponent = (tab) =>
     ({
-      "ministry-contact": <MinistryContact />,
+      "project-management": <ProjectManagement />,
       "location-access-and-land-use": <LegalLandOwnerInformation />,
       "basic-information": <BasicInformation />,
       "related-projects": (
