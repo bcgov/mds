@@ -28,6 +28,17 @@ PROJECT_SUMMARY_MODEL_ATTRIBUTES = api.model(
     }
 )
 
+PROJECT_SUMMARY_MINISTRY_COMMENT = api.model(
+    'Internal Ministry Comment', {
+        'project_summary_guid': fields.String,
+        'project_summary_ministry_comment_guid': fields.String,
+        'content': fields.String,
+        'update_user': fields.String,
+        'update_timestamp': fields.DateTime,
+        'create_user': fields.String,
+        'create_timestamp': fields.DateTime
+    })
+
 PROJECT_CONTACT_MODEL_ATTRIBUTES = api.model(
     'ProjectContact', {
         'first_name': fields.String,

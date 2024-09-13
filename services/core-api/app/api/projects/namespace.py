@@ -5,6 +5,8 @@ from app.api.projects.project_link.resources.project_link_resource import Projec
 from app.api.projects.project_summary.resources.project_summary import ProjectSummaryResource
 from app.api.projects.project_summary.resources.project_summary_list import ProjectSummaryListGetResource, ProjectSummaryListPostResource
 from app.api.projects.project_summary.resources.project_summary_document_types import ProjectSummaryDocumentTypeResource
+from app.api.projects.project_summary.resources.project_summary_ministry_comment import \
+    ProjectSummaryMinistryCommentResource
 from app.api.projects.project_summary.resources.project_summary_status_codes import ProjectSummaryStatusCodeResource
 from app.api.projects.project_summary.resources.project_summary_document_upload import ProjectSummaryDocumentUploadResource
 from app.api.projects.project_summary.resources.project_summary_uploaded_document import ProjectSummaryUploadedDocumentResource
@@ -53,6 +55,10 @@ api.add_resource(ProjectSummaryDocumentTypeResource, '/project-summary-document-
 api.add_resource(ProjectSummaryStatusCodeResource, '/project-summary-status-codes')
 api.add_resource(ProjectSummaryPermitTypeResource, '/project-summary-permit-types')
 api.add_resource(ProjectSummaryAuthorizationTypeResource, '/project-summary-authorization-types')
+
+# Project Summary Ministry Comments
+api.add_resource(ProjectSummaryMinistryCommentResource,
+                 '/<string:project_summary_guid>/ministry-comments')
 
 # Information Requirements Table (IRT)
 api.add_resource(InformationRequirementsTableDownloadResource,
