@@ -7,11 +7,7 @@ import RenderSelect from "../forms/RenderSelect";
 import { FORM } from "@mds/common/constants/forms";
 import { getDropdownProjectSummaryStatusCodes } from "@mds/common/redux/selectors/staticContentSelectors";
 import { Alert, Typography } from "antd";
-import {
-  CLEAR_PROJECT_SUMMARY_MINISTRY_COMMENTS,
-  IGroupedDropdownList,
-  IProjectSummaryMinistryComment,
-} from "../..";
+import { IGroupedDropdownList, IProjectSummaryMinistryComment } from "../..";
 import { getDropdownProjectLeads } from "@mds/common/redux/selectors/partiesSelectors";
 import MinistryCommentPanel from "@mds/core-web/src/components/common/comments/MinistryCommentPanel";
 import * as Permission from "@mds/core-web/src/constants/permissions";

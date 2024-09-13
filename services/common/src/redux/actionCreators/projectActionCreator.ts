@@ -19,6 +19,7 @@ import {
   IMajorMinesApplication,
   IProjectDecisionPackage,
   IProjectPageData,
+  IProjectSummaryMinistryComment,
 } from "@mds/common/interfaces";
 import { AppThunk } from "@mds/common/interfaces/appThunk.type";
 import { AxiosResponse } from "axios";
@@ -667,4 +668,46 @@ export const deleteProjectLink = (
       dispatch(error(reducerTypes.DELETE_PROJECT_LINK));
     })
     .finally(() => dispatch(hideLoading()));
+};
+
+export const createProjectSummaryMinistryComment = (
+  projectSummaryGuid: string,
+  payload: Partial<IProjectSummaryMinistryComment>
+): AppThunk<Promise<AxiosResponse<any>>> => (
+  dispatch
+): Promise<AxiosResponse<IProjectSummaryMinistryComment>> => {
+  dispatch(showLoading());
+  return CustomAxios()
+    .post(
+      `${ENVIRONMENT.apiUrl}${API.PROJECT_SUMMARY_MINISTRY_COMMENTS(projectSummaryGuid)}`,
+      payload,
+      createRequestHeader()
+    )
+    .then((response: AxiosResponse<IProjectSummaryMinistryComment>) => {
+      dispatch(success(reducerTypes.CREATE_PROJECT_SUMMARY_MINISTRY_COMMENTS));
+      dispatch(projectActions.addProjectSummaryMinistryComment(response.data));
+      return response;
+    })
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const fetchProjectSummaryMinistryComments = (
+  projectSummaryGuid: string
+): AppThunk<Promise<AxiosResponse<any>>> => (dispatch): Promise<AxiosResponse<any>> => {
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl}${API.PROJECT_SUMMARY_MINISTRY_COMMENTS(projectSummaryGuid)}`,
+      createRequestHeader()
+    )
+    .then((response: AxiosResponse<{ records: IProjectSummaryMinistryComment[] }>) => {
+      dispatch(success(reducerTypes.GET_PROJECT_SUMMARY_MINISTRY_COMMENTS));
+      dispatch(projectActions.storeProjectSummaryMinistryComments(response.data));
+      return response;
+    })
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const clearProjectSummaryMinistryComments = (): AppThunk => (dispatch): void => {
+  dispatch(projectActions.clearProjectSummaryMinistryComments());
 };

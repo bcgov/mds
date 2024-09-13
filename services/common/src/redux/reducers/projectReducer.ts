@@ -8,6 +8,7 @@ import {
   IProjectDecisionPackage,
   IProjectPageData,
   IProjectSummary,
+  IProjectSummaryMinistryComment,
 } from "../..";
 
 interface IProjectReducerState {
@@ -21,6 +22,7 @@ interface IProjectReducerState {
   requirements: IInformationRequirementsTable[];
   majorMinesApplication: IMajorMinesApplication;
   projectDecisionPackage: IProjectDecisionPackage;
+  projectSummaryMinistryComments: IProjectSummaryMinistryComment[];
 }
 const initialState: IProjectReducerState = {
   projects: [],
@@ -33,6 +35,7 @@ const initialState: IProjectReducerState = {
   requirements: [],
   majorMinesApplication: {} as IMajorMinesApplication,
   projectDecisionPackage: {} as IProjectDecisionPackage,
+  projectSummaryMinistryComments: [] as IProjectSummaryMinistryComment[],
 };
 
 export const projectReducer = (state = initialState, action) => {
@@ -140,6 +143,21 @@ export const projectReducer = (state = initialState, action) => {
           project_links: [...newLinks],
         },
       };
+    case actionTypes.STORE_PROJECT_SUMMARY_MINISTRY_COMMENTS:
+      return {
+        ...state,
+        projectSummaryMinistryComments: action.payload.records,
+      };
+    case actionTypes.ADD_PROJECT_SUMMARY_MINISTRY_COMMENT:
+      return {
+        ...state,
+        projectSummaryMinistryComments: [...state.projectSummaryMinistryComments, action.payload],
+      };
+    case actionTypes.CLEAR_PROJECT_SUMMARY_MINISTRY_COMMENTS:
+      return {
+        ...state,
+        projectSummaryMinistryComments: [],
+      };
     default:
       return state;
   }
@@ -163,5 +181,7 @@ export const getMajorMinesApplication = (state: RootState) => state[PROJECTS].ma
 export const getProjectDecisionPackage = (state: RootState) =>
   state[PROJECTS].projectDecisionPackage;
 export const getProjectLinks = (state: RootState) => state[PROJECTS].project?.project_links;
+export const getProjectSummaryMinistryComments = (state: RootState) =>
+  state[PROJECTS].projectSummaryMinistryComments;
 
 export default projectReducerObject;
