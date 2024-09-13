@@ -101,7 +101,7 @@ exports[`ProjectSubmissionStatusPage renders properly 1`] = `
             >
               Thank you, your application has been submitted successfully!
             </h4>
-            Your submission tracking number and status are available in the Project Description Overview. If your application requires an Information Requirements Table(IRT), please download the 
+            Your submission tracking number and status are available in the Project Description Overview. If your application requires an Information Requirements Table(IRT), please download the
              
             <a
               role="link"

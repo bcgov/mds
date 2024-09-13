@@ -291,9 +291,7 @@ exports[`DocumentUpload renders properly 1`] = `
       >
         Information Requirements Table (IRT)
       </a>
-      .
-       
-      To proceed to the final application, you must upload your final Joint Application IRT using the form provided in the next phase.
+      . To proceed to the final application, you must upload your final Joint Application IRT using the form provided in the next phase.
     </div>
     <div
       class="whirlpool-container"

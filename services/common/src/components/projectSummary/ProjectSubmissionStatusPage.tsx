@@ -49,29 +49,6 @@ export const ProjectSubmissionStatusPage = () => {
             </LinkButton>{" "}
             for the next phase.
           </Typography.Paragraph>
-          {/* <Typography.Paragraph>
-            If your application requires{" "}
-            <a
-              href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/coordinated-authorizations"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Information Requirements Table (IRT)
-            </a>
-            ,
-          </Typography.Paragraph> */}
-          {/* <Typography.Paragraph>
-            <LinkButton
-              onClick={() =>
-                downloadIRTTemplate(
-                  ENVIRONMENT.apiUrl + API.INFORMATION_REQUIREMENTS_TABLE_TEMPLATE_DOWNLOAD
-                )
-              }
-            >
-              IRT template
-            </LinkButton>{" "}
-            for the next phase.
-          </Typography.Paragraph> */}
           <div>
             <p>
               <Link to={GLOBAL_ROUTES?.EDIT_PROJECT.dynamicRoute(projectGuid)}>
