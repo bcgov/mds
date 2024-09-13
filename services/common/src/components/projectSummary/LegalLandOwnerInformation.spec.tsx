@@ -6,6 +6,7 @@ import { reduxForm, reducer as formReducer } from "redux-form";
 import { LegalLandOwnerInformation } from "@mds/common/components/projectSummary/LegalLandOwnerInformation";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import FormWrapper from "../forms/FormWrapper";
+import { AUTHENTICATION } from "@mds/common/constants/reducerTypes";
 
 const mockStore = configureStore({
   form: formReducer,
@@ -32,6 +33,9 @@ describe("LegalLandOwnerInformation Component", () => {
         },
       },
       STATIC_CONTENT,
+      [AUTHENTICATION]: {
+        systemFlag: "core",
+      },
     });
     const { container, getByText } = render(
       <Provider store={store}>{WrappedLegalLandOwnerInformation}</Provider>
@@ -49,6 +53,9 @@ describe("LegalLandOwnerInformation Component", () => {
         },
       },
       STATIC_CONTENT,
+      [AUTHENTICATION]: {
+        systemFlag: "core",
+      },
     });
     const { getByText } = render(
       <Provider store={store}>{WrappedLegalLandOwnerInformation}</Provider>
@@ -75,6 +82,9 @@ describe("LegalLandOwnerInformation Component", () => {
         },
       },
       STATIC_CONTENT,
+      [AUTHENTICATION]: {
+        systemFlag: "core",
+      },
     });
     const { getByText } = render(
       <Provider store={store}>{WrappedLegalLandOwnerInformation}</Provider>

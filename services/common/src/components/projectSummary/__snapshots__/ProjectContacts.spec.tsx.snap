@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProjectContacts Component should render the component with expected fields 1`] = `
+<div>
+  <form
+    class="ant-form ant-form-vertical common-form common-form-ADD_EDIT_PROJECT_SUMMARY form-edit"
+    id="ADD_EDIT_PROJECT_SUMMARY"
+  >
+    <h3
+      class="ant-typography"
+    >
+      Project Contacts
+    </h3>
+    <a
+      role="link"
+      tabindex="0"
+      title="Add additional project contacts"
+    >
+      <span
+        aria-label="plus"
+        class="anticon anticon-plus"
+        role="img"
+      >
+        <svg
+          aria-hidden="true"
+          class=""
+          data-icon="plus"
+          fill="currentColor"
+          focusable="false"
+          height="1em"
+          viewBox="64 64 896 896"
+          width="1em"
+        >
+          <path
+            d="M482 152h60q8 0 8 8v704q0 8-8 8h-60q-8 0-8-8V160q0-8 8-8z"
+          />
+          <path
+            d="M192 474h672q8 0 8 8v60q0 8-8 8H160q-8 0-8-8v-60q0-8 8-8z"
+          />
+        </svg>
+      </span>
+       Add additional project contacts
+    </a>
+  </form>
+</div>
+`;

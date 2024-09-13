@@ -15,13 +15,14 @@ import {
 } from "@mds/common/redux/utils/Validate";
 import { normalizePhone } from "@mds/common/redux/utils/helpers";
 import LinkButton from "@mds/common/components/common/LinkButton";
-import { FORM } from "@mds/common/constants/forms";
+import { FORM, isFieldDisabled } from "@mds/common/constants";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import { CONTACTS_COUNTRY_OPTIONS } from "@mds/common/constants";
 import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
+import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 
-const RenderContacts = ({ fields }) => {
+const RenderContacts = ({ fields, isDisabled }) => {
   const dispatch = useDispatch();
   const provinceOptions = useSelector(getDropdownProvinceOptions);
   const handleClearProvince = (currentCountry, addressTypeCode, subDivisionCode, field) => {
@@ -90,6 +91,7 @@ const RenderContacts = ({ fields }) => {
             <Row gutter={16}>
               <Col md={12} sm={24}>
                 <Field
+                  disabled={isDisabled}
                   name={`${field}.first_name`}
                   label="First Name"
                   component={RenderField}
@@ -99,6 +101,7 @@ const RenderContacts = ({ fields }) => {
               </Col>
               <Col md={12} sm={24}>
                 <Field
+                  disabled={isDisabled}
                   name={`${field}.last_name`}
                   label="Last Name"
                   component={RenderField}
@@ -111,6 +114,7 @@ const RenderContacts = ({ fields }) => {
             <Row gutter={16}>
               <Col md={12} sm={24}>
                 <Field
+                  disabled={isDisabled}
                   name={`${field}.job_title`}
                   id={`${field}.job_title`}
                   label="Job Title"
@@ -119,6 +123,7 @@ const RenderContacts = ({ fields }) => {
               </Col>
               <Col md={12} sm={24}>
                 <Field
+                  disabled={isDisabled}
                   name={`${field}.company_name`}
                   id={`${field}.company_name`}
                   label="Company Name"
@@ -130,6 +135,7 @@ const RenderContacts = ({ fields }) => {
             <Row gutter={16}>
               <Col md={8} sm={19}>
                 <Field
+                  disabled={isDisabled}
                   name={`${field}.phone_number`}
                   id={`${field}.phone_number`}
                   label="Contact Number"
@@ -141,6 +147,7 @@ const RenderContacts = ({ fields }) => {
               </Col>
               <Col md={4} sm={5}>
                 <Field
+                  disabled={isDisabled}
                   name={`${field}.phone_extension`}
                   id={`${field}.phone_extension`}
                   label="Ext."
@@ -150,6 +157,7 @@ const RenderContacts = ({ fields }) => {
               </Col>
               <Col md={12} sm={24}>
                 <Field
+                  disabled={isDisabled}
                   name={`${field}.email`}
                   id={`${field}.email`}
                   label="Email"
@@ -164,6 +172,7 @@ const RenderContacts = ({ fields }) => {
             <Row gutter={16}>
               <Col md={19} sm={24}>
                 <Field
+                  disabled={isDisabled}
                   name={`${field}.address.address_line_1`}
                   label="Street"
                   required={isPrimary}
@@ -172,13 +181,19 @@ const RenderContacts = ({ fields }) => {
                 />
               </Col>
               <Col md={5} sm={24}>
-                <Field name={`${field}.address.suite_no`} label="Unit #" component={RenderField} />
+                <Field
+                  disabled={isDisabled}
+                  name={`${field}.address.suite_no`}
+                  label="Unit #"
+                  component={RenderField}
+                />
               </Col>
             </Row>
 
             <Row gutter={16}>
               <Col md={12} sm={24}>
                 <Field
+                  disabled={isDisabled}
                   name={`${field}.address.address_type_code`}
                   label="Country"
                   required={isPrimary}
@@ -192,6 +207,7 @@ const RenderContacts = ({ fields }) => {
               </Col>
               <Col md={12} sm={24}>
                 <Field
+                  disabled={isDisabled}
                   name={`${field}.address.sub_division_code`}
                   label="Province"
                   required={isPrimary && !isInternational}
@@ -205,6 +221,7 @@ const RenderContacts = ({ fields }) => {
             <Row gutter={16}>
               <Col md={12} sm={24}>
                 <Field
+                  disabled={isDisabled}
                   name={`${field}.address.city`}
                   label="City"
                   required={isPrimary}
@@ -214,6 +231,7 @@ const RenderContacts = ({ fields }) => {
               </Col>
               <Col md={12} sm={24}>
                 <Field
+                  disabled={isDisabled}
                   name={`${field}.address.post_code`}
                   label="Postal Code"
                   component={RenderField}
@@ -238,6 +256,7 @@ const RenderContacts = ({ fields }) => {
         );
       })}
       <LinkButton
+        disabled={isDisabled}
         onClick={() => fields.push({ is_primary: false })}
         title="Add additional project contacts"
       >
@@ -251,6 +270,7 @@ export const ProjectContacts: FC = () => {
   const dispatch = useDispatch();
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
   const { contacts } = formValues;
+  const systemFlag = useSelector(getSystemFlag);
 
   useEffect(() => {
     if (isNil(contacts) || contacts.length === 0) {
@@ -261,7 +281,11 @@ export const ProjectContacts: FC = () => {
   return (
     <>
       <Typography.Title level={3}>Project Contacts</Typography.Title>
-      <FieldArray name="contacts" props={{}} component={RenderContacts} />
+      <FieldArray
+        name="contacts"
+        props={{ isDisabled: isFieldDisabled(systemFlag, formValues?.status_code) }}
+        component={RenderContacts}
+      />
     </>
   );
 };

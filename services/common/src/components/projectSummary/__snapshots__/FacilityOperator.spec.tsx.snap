@@ -1,0 +1,1086 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FacilityOperator Component should render the component with expected fields 1`] = `
+<div>
+  <form
+    class="ant-form ant-form-vertical common-form common-form-ADD_EDIT_PROJECT_SUMMARY form-edit"
+    id="ADD_EDIT_PROJECT_SUMMARY"
+  >
+    <h3
+      class="ant-typography"
+    >
+      Mine Components and Offsite Infrastructure
+    </h3>
+    <div
+      class="ant-form-item ant-form-item-with-help"
+    >
+      <div
+        class="ant-row ant-form-item-row"
+      >
+        <div
+          class="ant-col ant-form-item-label"
+        >
+          <label
+            class="ant-form-item-required"
+            for="ADD_EDIT_PROJECT_SUMMARY_facility_type"
+            title=""
+          >
+            <div
+              style="width: 100%;"
+            >
+              Facility Type
+              <br />
+              <span
+                class="label-subtitle"
+              >
+                List the proposed facility type and/or mining activity.
+              </span>
+            </div>
+          </label>
+        </div>
+        <div
+          class="ant-col ant-form-item-control"
+        >
+          <div
+            class="ant-form-item-control-input"
+          >
+            <div
+              class="ant-form-item-control-input-content"
+            >
+              <input
+                class="ant-input"
+                name="facility_type"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            style="display: flex; flex-wrap: nowrap;"
+          >
+            <div
+              class="ant-form-item-explain ant-form-item-explain-connected"
+              id="ADD_EDIT_PROJECT_SUMMARY_facility_type_help"
+              role="alert"
+            >
+              <div
+                class=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-form-item ant-form-item-with-help"
+    >
+      <div
+        class="ant-row ant-form-item-row"
+      >
+        <div
+          class="ant-col ant-form-item-label"
+        >
+          <label
+            class="ant-form-item-required"
+            for="ADD_EDIT_PROJECT_SUMMARY_facility_desc"
+            title=""
+          >
+            <div
+              style="width: 100%;"
+            >
+              Facility Description
+              <br />
+              <span
+                class="label-subtitle"
+              >
+                Briefly describe: Overview of the project. The primary activity of the facility. If there is not enough space, you may attach additional information, including conceptual site plans.
+              </span>
+            </div>
+          </label>
+        </div>
+        <div
+          class="ant-col ant-form-item-control"
+        >
+          <div
+            class="ant-form-item-control-input"
+          >
+            <div
+              class="ant-form-item-control-input-content"
+            >
+              <textarea
+                class="ant-input"
+                name="facility_desc"
+                style="height: 0px; resize: none; min-height: -12px;"
+              />
+              <div
+                class="ant-row ant-row-space-between form-item-help facility_desc-form-help"
+              >
+                <span>
+                  Maximum 4000 characters
+                </span>
+                <span
+                  class="flex-end"
+                >
+                  4000 / 4000
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            style="display: flex; flex-wrap: nowrap;"
+          >
+            <div
+              class="ant-form-item-explain ant-form-item-explain-connected"
+              id="ADD_EDIT_PROJECT_SUMMARY_facility_desc_help"
+              role="alert"
+            >
+              <div
+                class=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-row margin-large--bottom"
+    >
+      <div
+        class="ant-col ant-col-12"
+      >
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class="ant-form-item-required"
+                for="ADD_EDIT_PROJECT_SUMMARY_regional_district_id"
+                title=""
+              >
+                <div
+                  style="width: 100%;"
+                >
+                  Facility's Regional Location
+                </div>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <div
+                    aria-required="true"
+                    class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                    data-cy="regional_district_id"
+                  >
+                    <div
+                      class="ant-select-selector"
+                    >
+                      <span
+                        class="ant-select-selection-search"
+                      >
+                        <input
+                          aria-activedescendant="ADD_EDIT_PROJECT_SUMMARY_regional_district_id_list_0"
+                          aria-autocomplete="list"
+                          aria-controls="ADD_EDIT_PROJECT_SUMMARY_regional_district_id_list"
+                          aria-haspopup="listbox"
+                          aria-owns="ADD_EDIT_PROJECT_SUMMARY_regional_district_id_list"
+                          aria-required="true"
+                          autocomplete="off"
+                          class="ant-select-selection-search-input"
+                          id="ADD_EDIT_PROJECT_SUMMARY_regional_district_id"
+                          role="combobox"
+                          type="search"
+                          value=""
+                        />
+                      </span>
+                      <span
+                        class="ant-select-selection-placeholder"
+                      >
+                        Please select
+                      </span>
+                    </div>
+                    <span
+                      aria-hidden="true"
+                      class="ant-select-arrow"
+                      style="user-select: none;"
+                      unselectable="on"
+                    >
+                      <span
+                        aria-label="down"
+                        class="anticon anticon-down ant-select-suffix"
+                        role="img"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          data-icon="down"
+                          fill="currentColor"
+                          focusable="false"
+                          height="1em"
+                          viewBox="64 64 896 896"
+                          width="1em"
+                        >
+                          <path
+                            d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                          />
+                        </svg>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="ADD_EDIT_PROJECT_SUMMARY_regional_district_id_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <h5
+      class="ant-typography"
+    >
+      Facility Address
+    </h5>
+    <div
+      class="ant-row"
+      style="margin-left: -8px; margin-right: -8px;"
+    >
+      <div
+        class="ant-col ant-col-sm-24 ant-col-md-19"
+        style="padding-left: 8px; padding-right: 8px;"
+      >
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class="ant-form-item-required"
+                for="ADD_EDIT_PROJECT_SUMMARY_facility_operator.address.address_line_1"
+                title=""
+              >
+                <div
+                  style="width: 100%;"
+                >
+                  Street
+                </div>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <input
+                    class="ant-input"
+                    name="facility_operator.address.address_line_1"
+                    type="text"
+                    value=""
+                  />
+                  <div
+                    class="form-item-help facility_operator.address.address_line_1-form-help"
+                  >
+                    If no civic address, describe location (e.g. 3km north of Sechelt, BC, on Highway 101)
+                  </div>
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="ADD_EDIT_PROJECT_SUMMARY_facility_operator.address.address_line_1_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-col ant-col-sm-24 ant-col-md-5"
+        style="padding-left: 8px; padding-right: 8px;"
+      >
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class=""
+                for="ADD_EDIT_PROJECT_SUMMARY_facility_operator.address.suite_no"
+                title=""
+              >
+                <div>
+                  Unit #
+                   
+                  <span
+                    class="form-item-optional"
+                  >
+                     (optional)
+                  </span>
+                </div>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <input
+                    class="ant-input"
+                    name="facility_operator.address.suite_no"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="ADD_EDIT_PROJECT_SUMMARY_facility_operator.address.suite_no_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-form-item ant-form-item-with-help"
+    >
+      <div
+        class="ant-row ant-form-item-row"
+      >
+        <div
+          class="ant-col ant-form-item-label"
+        >
+          <label
+            class="ant-form-item-required"
+            for="ADD_EDIT_PROJECT_SUMMARY_facility_operator.address.city"
+            title=""
+          >
+            <div
+              style="width: 100%;"
+            >
+              City
+            </div>
+          </label>
+        </div>
+        <div
+          class="ant-col ant-form-item-control"
+        >
+          <div
+            class="ant-form-item-control-input"
+          >
+            <div
+              class="ant-form-item-control-input-content"
+            >
+              <input
+                class="ant-input"
+                name="facility_operator.address.city"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            style="display: flex; flex-wrap: nowrap;"
+          >
+            <div
+              class="ant-form-item-explain ant-form-item-explain-connected"
+              id="ADD_EDIT_PROJECT_SUMMARY_facility_operator.address.city_help"
+              role="alert"
+            >
+              <div
+                class=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-form-item ant-form-item-with-help"
+    >
+      <div
+        class="ant-row ant-form-item-row"
+      >
+        <div
+          class="ant-col ant-form-item-label"
+        >
+          <label
+            class="ant-form-item-required"
+            for="ADD_EDIT_PROJECT_SUMMARY_facility_operator.address.sub_division_code"
+            title=""
+          >
+            <div
+              style="width: 100%;"
+            >
+              Province
+            </div>
+          </label>
+        </div>
+        <div
+          class="ant-col ant-form-item-control"
+        >
+          <div
+            class="ant-form-item-control-input"
+          >
+            <div
+              class="ant-form-item-control-input-content"
+            >
+              <div
+                aria-required="true"
+                class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                data-cy="facility_operator.address.sub_division_code"
+              >
+                <div
+                  class="ant-select-selector"
+                >
+                  <span
+                    class="ant-select-selection-search"
+                  >
+                    <input
+                      aria-activedescendant="ADD_EDIT_PROJECT_SUMMARY_facility_operator.address.sub_division_code_list_0"
+                      aria-autocomplete="list"
+                      aria-controls="ADD_EDIT_PROJECT_SUMMARY_facility_operator.address.sub_division_code_list"
+                      aria-haspopup="listbox"
+                      aria-owns="ADD_EDIT_PROJECT_SUMMARY_facility_operator.address.sub_division_code_list"
+                      aria-required="true"
+                      autocomplete="off"
+                      class="ant-select-selection-search-input"
+                      id="ADD_EDIT_PROJECT_SUMMARY_facility_operator.address.sub_division_code"
+                      role="combobox"
+                      type="search"
+                      value=""
+                    />
+                  </span>
+                  <span
+                    class="ant-select-selection-placeholder"
+                  >
+                    Please select
+                  </span>
+                </div>
+                <span
+                  aria-hidden="true"
+                  class="ant-select-arrow"
+                  style="user-select: none;"
+                  unselectable="on"
+                >
+                  <span
+                    aria-label="down"
+                    class="anticon anticon-down ant-select-suffix"
+                    role="img"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      data-icon="down"
+                      fill="currentColor"
+                      focusable="false"
+                      height="1em"
+                      viewBox="64 64 896 896"
+                      width="1em"
+                    >
+                      <path
+                        d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            style="display: flex; flex-wrap: nowrap;"
+          >
+            <div
+              class="ant-form-item-explain ant-form-item-explain-connected"
+              id="ADD_EDIT_PROJECT_SUMMARY_facility_operator.address.sub_division_code_help"
+              role="alert"
+            >
+              <div
+                class=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-form-item ant-form-item-with-help"
+    >
+      <div
+        class="ant-row ant-form-item-row"
+      >
+        <div
+          class="ant-col ant-form-item-label"
+        >
+          <label
+            class=""
+            for="ADD_EDIT_PROJECT_SUMMARY_facility_operator.address.post_code"
+            title=""
+          >
+            <div>
+              Postal Code
+               
+              <span
+                class="form-item-optional"
+              >
+                 (optional)
+              </span>
+            </div>
+          </label>
+        </div>
+        <div
+          class="ant-col ant-form-item-control"
+        >
+          <div
+            class="ant-form-item-control-input"
+          >
+            <div
+              class="ant-form-item-control-input-content"
+            >
+              <input
+                class="ant-input"
+                name="facility_operator.address.post_code"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            style="display: flex; flex-wrap: nowrap;"
+          >
+            <div
+              class="ant-form-item-explain ant-form-item-explain-connected"
+              id="ADD_EDIT_PROJECT_SUMMARY_facility_operator.address.post_code_help"
+              role="alert"
+            >
+              <div
+                class=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-form-item ant-form-item-with-help"
+    >
+      <div
+        class="ant-row ant-form-item-row"
+      >
+        <div
+          class="ant-col ant-form-item-label"
+        >
+          <label
+            class="ant-form-item-required"
+            for="ADD_EDIT_PROJECT_SUMMARY_zoning"
+            title=""
+          >
+            <div
+              style="width: 100%;"
+            >
+              Is appropriate zoning in place for this facility?
+            </div>
+          </label>
+        </div>
+        <div
+          class="ant-col ant-form-item-control"
+        >
+          <div
+            class="ant-form-item-control-input"
+          >
+            <div
+              class="ant-form-item-control-input-content"
+            >
+              <div
+                class="ant-radio-group ant-radio-group-solid"
+              >
+                <label
+                  class="ant-radio-wrapper ant-radio-wrapper-in-form-item"
+                >
+                  <span
+                    class="ant-radio"
+                  >
+                    <input
+                      class="ant-radio-input"
+                      name="zoning"
+                      type="radio"
+                      value="true"
+                    />
+                    <span
+                      class="ant-radio-inner"
+                    />
+                  </span>
+                  <span>
+                    Yes
+                  </span>
+                </label>
+                <label
+                  class="ant-radio-wrapper ant-radio-wrapper-in-form-item"
+                >
+                  <span
+                    class="ant-radio"
+                  >
+                    <input
+                      class="ant-radio-input"
+                      name="zoning"
+                      type="radio"
+                      value="false"
+                    />
+                    <span
+                      class="ant-radio-inner"
+                    />
+                  </span>
+                  <span>
+                    No
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            style="display: flex; flex-wrap: nowrap;"
+          >
+            <div
+              class="ant-form-item-explain ant-form-item-explain-connected"
+              id="ADD_EDIT_PROJECT_SUMMARY_zoning_help"
+              role="alert"
+            >
+              <div
+                class=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-row"
+      style="margin-left: -8px; margin-right: -8px;"
+    >
+      <div
+        class="ant-col ant-col-sm-24 ant-col-md-12"
+        style="padding-left: 8px; padding-right: 8px;"
+      >
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class="ant-form-item-required"
+                for="ADD_EDIT_PROJECT_SUMMARY_facility_operator.first_name"
+                title=""
+              >
+                <div
+                  style="width: 100%;"
+                >
+                  Facility Operator First Name
+                </div>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <input
+                    class="ant-input"
+                    name="facility_operator.first_name"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="ADD_EDIT_PROJECT_SUMMARY_facility_operator.first_name_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-col ant-col-sm-24 ant-col-md-12"
+        style="padding-left: 8px; padding-right: 8px;"
+      >
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class="ant-form-item-required"
+                for="ADD_EDIT_PROJECT_SUMMARY_facility_operator.party_name"
+                title=""
+              >
+                <div
+                  style="width: 100%;"
+                >
+                  Last Name
+                </div>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <input
+                    class="ant-input"
+                    name="facility_operator.party_name"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="ADD_EDIT_PROJECT_SUMMARY_facility_operator.party_name_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-col ant-col-sm-24 ant-col-md-12"
+        style="padding-left: 8px; padding-right: 8px;"
+      >
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class=""
+                for="ADD_EDIT_PROJECT_SUMMARY_facility_operator.job_title"
+                title=""
+              >
+                <div>
+                  Facility Operator Title
+                   
+                  <span
+                    class="form-item-optional"
+                  >
+                     (optional)
+                  </span>
+                </div>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <input
+                    class="ant-input"
+                    name="facility_operator.job_title"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="ADD_EDIT_PROJECT_SUMMARY_facility_operator.job_title_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-row"
+      style="margin-left: -8px; margin-right: -8px;"
+    >
+      <div
+        class="ant-col ant-col-sm-19 ant-col-md-8"
+        style="padding-left: 8px; padding-right: 8px;"
+      >
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class="ant-form-item-required"
+                for="ADD_EDIT_PROJECT_SUMMARY_facility_operator.phone_no"
+                title=""
+              >
+                <div
+                  style="width: 100%;"
+                >
+                  Facility Operator Contact Number
+                </div>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <input
+                    class="ant-input"
+                    name="facility_operator.phone_no"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="ADD_EDIT_PROJECT_SUMMARY_facility_operator.phone_no_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-col ant-col-sm-5 ant-col-md-4"
+        style="padding-left: 8px; padding-right: 8px;"
+      >
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class=""
+                for="ADD_EDIT_PROJECT_SUMMARY_facility_operator.phone_ext"
+                title=""
+              >
+                <div>
+                  Ext.
+                   
+                  <span
+                    class="form-item-optional"
+                  >
+                     (optional)
+                  </span>
+                </div>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <input
+                    class="ant-input"
+                    name="facility_operator.phone_ext"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="ADD_EDIT_PROJECT_SUMMARY_facility_operator.phone_ext_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-col ant-col-sm-24 ant-col-md-12"
+        style="padding-left: 8px; padding-right: 8px;"
+      >
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class=""
+                for="ADD_EDIT_PROJECT_SUMMARY_facility_operator.email"
+                title=""
+              >
+                <div>
+                  Facility Operator Email Address
+                   
+                  <span
+                    class="form-item-optional"
+                  >
+                     (optional)
+                  </span>
+                </div>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <input
+                    class="ant-input"
+                    name="facility_operator.email"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="ADD_EDIT_PROJECT_SUMMARY_facility_operator.email_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+`;

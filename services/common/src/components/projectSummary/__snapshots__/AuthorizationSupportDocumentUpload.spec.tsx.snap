@@ -1,0 +1,280 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AuthorizationSupportDocumentUpload Component should render the component with expected fields 1`] = `
+<div>
+  <form
+    class="ant-form ant-form-vertical common-form common-form-ADD_EDIT_PROJECT_SUMMARY form-edit"
+    id="ADD_EDIT_PROJECT_SUMMARY"
+  >
+    <div>
+      <div
+        class="whirlpool-container"
+      >
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class="ant-form-item-required"
+                for="ADD_EDIT_PROJECT_SUMMARY_location_documents"
+                title=""
+              >
+                <span>
+                  <a
+                    href="https://www2.gov.bc.ca/assets/gov/environment/waste-management/waste-discharge-authorization/guides/forms/epd-ema-08_location_map_form.pdf"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Location Map
+                  </a>
+                   
+                  <span>
+                    <span
+                      class="form-dashed-underline"
+                    >
+                      Accepted file types
+                       
+                      <svg
+                        aria-hidden="true"
+                        class="svg-inline--fa fa-circle-question "
+                        data-icon="circle-question"
+                        data-prefix="fal"
+                        focusable="false"
+                        role="img"
+                        style="width: 15px;"
+                        viewBox="0 0 512 512"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M480 256A224 224 0 1 0 32 256a224 224 0 1 0 448 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm168.7-86.2c6.5-24.6 28.7-41.8 54.2-41.8H280c35.5 0 64 29 64 64.3c0 24-13.4 46.2-34.9 57.2L272 268.3V288c0 8.8-7.2 16-16 16s-16-7.2-16-16V258.5c0-6 3.4-11.5 8.7-14.3l45.8-23.4c10.7-5.4 17.5-16.6 17.5-28.7c0-17.8-14.4-32.3-32-32.3H222.9c-10.9 0-20.5 7.4-23.2 17.9l-.2 .7c-2.2 8.5-11 13.7-19.5 11.4s-13.7-11-11.4-19.5l.2-.7zM232 352a24 24 0 1 1 48 0 24 24 0 1 1 -48 0z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </span>
+                  </span>
+                </span>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <div
+                    class="filepond--wrapper"
+                  >
+                    <input
+                      accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,application/vnd.oasis.opendocument.text,application/vnd.oasis.opendocument.text-template,application/vnd.oasis.opendocument.text-web,application/vnd.oasis.opendocument.text-master,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,image/jpg,image/jpeg,image/png,image/jp2,image/tiff,image/heic,image/heif,application/vnd.geo+json,application/gml+xml,application/dbf,application/x-dbf,application/x-dbase,application/vnd.google-earth.kml+xml,application/vnd.google-earth.kmz,application/octet-stream,text/csv,application/xml,text/xml"
+                      multiple=""
+                      name="file"
+                      type="file"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="ADD_EDIT_PROJECT_SUMMARY_location_documents_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="whirlpool-container"
+      >
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class="ant-form-item-required"
+                for="ADD_EDIT_PROJECT_SUMMARY_discharge_documents"
+                title=""
+              >
+                <span>
+                  <a
+                    href="https://www2.gov.bc.ca/assets/gov/environment/waste-management/waste-discharge-authorization/guides/forms/epd-ema-03_new_auth_discharge_factors_application_form.pdf"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Discharge Factor Form (PDF, 318KB)
+                  </a>
+                   
+                  <span>
+                    <span
+                      class="form-dashed-underline"
+                    >
+                      Accepted file types
+                       
+                      <svg
+                        aria-hidden="true"
+                        class="svg-inline--fa fa-circle-question "
+                        data-icon="circle-question"
+                        data-prefix="fal"
+                        focusable="false"
+                        role="img"
+                        style="width: 15px;"
+                        viewBox="0 0 512 512"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M480 256A224 224 0 1 0 32 256a224 224 0 1 0 448 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm168.7-86.2c6.5-24.6 28.7-41.8 54.2-41.8H280c35.5 0 64 29 64 64.3c0 24-13.4 46.2-34.9 57.2L272 268.3V288c0 8.8-7.2 16-16 16s-16-7.2-16-16V258.5c0-6 3.4-11.5 8.7-14.3l45.8-23.4c10.7-5.4 17.5-16.6 17.5-28.7c0-17.8-14.4-32.3-32-32.3H222.9c-10.9 0-20.5 7.4-23.2 17.9l-.2 .7c-2.2 8.5-11 13.7-19.5 11.4s-13.7-11-11.4-19.5l.2-.7zM232 352a24 24 0 1 1 48 0 24 24 0 1 1 -48 0z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </span>
+                  </span>
+                </span>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <div
+                    class="filepond--wrapper"
+                  >
+                    <input
+                      accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,application/vnd.oasis.opendocument.text,application/vnd.oasis.opendocument.text-template,application/vnd.oasis.opendocument.text-web,application/vnd.oasis.opendocument.text-master,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,image/jpg,image/jpeg,image/png,image/jp2,image/tiff,image/heic,image/heif,application/vnd.geo+json,application/gml+xml,application/dbf,application/x-dbf,application/x-dbase,application/vnd.google-earth.kml+xml,application/vnd.google-earth.kmz,application/octet-stream,text/csv,application/xml,text/xml"
+                      multiple=""
+                      name="file"
+                      type="file"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="ADD_EDIT_PROJECT_SUMMARY_discharge_documents_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="whirlpool-container"
+      >
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class=""
+                for="ADD_EDIT_PROJECT_SUMMARY_support_documents"
+                title=""
+              >
+                <span>
+                  Supporting Document
+                   
+                  <span>
+                    <span
+                      class="form-dashed-underline"
+                    >
+                      Accepted file types
+                       
+                      <svg
+                        aria-hidden="true"
+                        class="svg-inline--fa fa-circle-question "
+                        data-icon="circle-question"
+                        data-prefix="fal"
+                        focusable="false"
+                        role="img"
+                        style="width: 15px;"
+                        viewBox="0 0 512 512"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M480 256A224 224 0 1 0 32 256a224 224 0 1 0 448 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm168.7-86.2c6.5-24.6 28.7-41.8 54.2-41.8H280c35.5 0 64 29 64 64.3c0 24-13.4 46.2-34.9 57.2L272 268.3V288c0 8.8-7.2 16-16 16s-16-7.2-16-16V258.5c0-6 3.4-11.5 8.7-14.3l45.8-23.4c10.7-5.4 17.5-16.6 17.5-28.7c0-17.8-14.4-32.3-32-32.3H222.9c-10.9 0-20.5 7.4-23.2 17.9l-.2 .7c-2.2 8.5-11 13.7-19.5 11.4s-13.7-11-11.4-19.5l.2-.7zM232 352a24 24 0 1 1 48 0 24 24 0 1 1 -48 0z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </span>
+                  </span>
+                </span>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <div
+                    class="filepond--wrapper"
+                  >
+                    <input
+                      accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,application/vnd.oasis.opendocument.text,application/vnd.oasis.opendocument.text-template,application/vnd.oasis.opendocument.text-web,application/vnd.oasis.opendocument.text-master,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,image/jpg,image/jpeg,image/png,image/jp2,image/tiff,image/heic,image/heif,application/vnd.geo+json,application/gml+xml,application/dbf,application/x-dbf,application/x-dbase,application/vnd.google-earth.kml+xml,application/vnd.google-earth.kmz,application/octet-stream,text/csv,application/xml,text/xml"
+                      multiple=""
+                      name="file"
+                      type="file"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="ADD_EDIT_PROJECT_SUMMARY_support_documents_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+`;

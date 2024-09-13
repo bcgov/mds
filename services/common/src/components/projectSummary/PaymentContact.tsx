@@ -19,7 +19,7 @@ import { FORM, CONTACTS_COUNTRY_OPTIONS } from "../..";
 
 const { Title, Paragraph } = Typography;
 
-export const PaymentContact: FC = () => {
+export const PaymentContact = ({ isDisabled }) => {
   const dispatch = useDispatch();
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
   const { payment_contact = {} } = formValues;
@@ -53,6 +53,7 @@ export const PaymentContact: FC = () => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <Field
+            disabled={isDisabled}
             name="payment_contact.first_name"
             label="First Name"
             required
@@ -62,6 +63,7 @@ export const PaymentContact: FC = () => {
         </Col>
         <Col md={12} sm={24}>
           <Field
+            disabled={isDisabled}
             name="payment_contact.party_name"
             label="Last Name"
             required
@@ -73,6 +75,7 @@ export const PaymentContact: FC = () => {
       <Row gutter={16}>
         <Col md={8} sm={19}>
           <Field
+            disabled={isDisabled}
             name="payment_contact.phone_no"
             label="Contact Number"
             required
@@ -86,6 +89,7 @@ export const PaymentContact: FC = () => {
         </Col>
         <Col md={12} sm={24}>
           <Field
+            disabled={isDisabled}
             name="payment_contact.email"
             label="Email Address"
             required
@@ -98,6 +102,7 @@ export const PaymentContact: FC = () => {
       <Row gutter={16}>
         <Col md={19} sm={24}>
           <Field
+            disabled={isDisabled}
             name="payment_contact.address[0].address_line_1"
             label="Street"
             component={RenderField}
@@ -105,6 +110,7 @@ export const PaymentContact: FC = () => {
         </Col>
         <Col md={5} sm={24}>
           <Field
+            disabled={isDisabled}
             name="payment_contact.address[0].suite_no"
             label="Unit #"
             component={RenderField}
@@ -114,6 +120,7 @@ export const PaymentContact: FC = () => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <Field
+            disabled={isDisabled}
             name="payment_contact.address[0].address_type_code"
             label="Country"
             data={CONTACTS_COUNTRY_OPTIONS}
@@ -122,6 +129,7 @@ export const PaymentContact: FC = () => {
         </Col>
         <Col md={12} sm={24}>
           <Field
+            disabled={isDisabled}
             name="payment_contact.address[0].sub_division_code"
             label="Province"
             data={provinceOptions.filter(
@@ -134,10 +142,16 @@ export const PaymentContact: FC = () => {
 
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <Field name="payment_contact.address[0].city" label="City" component={RenderField} />
+          <Field
+            disabled={isDisabled}
+            name="payment_contact.address[0].city"
+            label="City"
+            component={RenderField}
+          />
         </Col>
         <Col md={12} sm={24}>
           <Field
+            disabled={isDisabled}
             name="payment_contact.address[0].post_code"
             label="Postal Code"
             component={RenderField}

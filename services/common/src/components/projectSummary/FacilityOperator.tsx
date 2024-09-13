@@ -12,15 +12,17 @@ import {
 } from "@mds/common/redux/utils/Validate";
 import RenderField from "../forms/RenderField";
 import RenderSelect from "../forms/RenderSelect";
-import { FORM } from "../..";
+import { FORM, isFieldDisabled } from "../..";
 import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import RenderRadioButtons from "../forms/RenderRadioButtons";
 import RenderAutoSizeField from "../forms/RenderAutoSizeField";
 import { normalizePhone } from "@mds/common/redux/utils/helpers";
 import { getRegionOptions } from "@mds/common/redux/slices/regionsSlice";
+import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 
 export const FacilityOperator: FC = () => {
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
+  const systemFlag = useSelector(getSystemFlag);
 
   const { zoning } = formValues;
 
@@ -42,6 +44,7 @@ export const FacilityOperator: FC = () => {
         label="Facility Type"
         labelSubtitle="List the proposed facility type and/or mining activity."
         component={RenderField}
+        disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
       />
       <Field
         name="facility_desc"
@@ -52,6 +55,7 @@ export const FacilityOperator: FC = () => {
         maximumCharacters={4000}
         rows={3}
         component={RenderAutoSizeField}
+        disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
       />
       <Row className="margin-large--bottom">
         <Col span={12}>
@@ -62,6 +66,7 @@ export const FacilityOperator: FC = () => {
             label="Facility's Regional Location"
             component={RenderSelect}
             data={regionOptions}
+            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
           />
         </Col>
       </Row>
@@ -75,13 +80,20 @@ export const FacilityOperator: FC = () => {
             validate={[required, maxLength(400)]}
             component={RenderField}
             help="If no civic address, describe location (e.g. 3km north of Sechelt, BC, on Highway 101)"
+            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
           />
         </Col>
         <Col md={5} sm={24}>
-          <Field name="facility_operator.address.suite_no" label="Unit #" component={RenderField} />
+          <Field
+            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+            name="facility_operator.address.suite_no"
+            label="Unit #"
+            component={RenderField}
+          />
         </Col>
       </Row>
       <Field
+        disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
         name="facility_operator.address.city"
         label="City"
         required
@@ -89,6 +101,7 @@ export const FacilityOperator: FC = () => {
         component={RenderField}
       />
       <Field
+        disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
         name="facility_operator.address.sub_division_code"
         label="Province"
         required
@@ -97,6 +110,7 @@ export const FacilityOperator: FC = () => {
         component={RenderSelect}
       />
       <Field
+        disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
         name="facility_operator.address.post_code"
         label="Postal Code"
         component={RenderField}
@@ -104,6 +118,7 @@ export const FacilityOperator: FC = () => {
       />
 
       <Field
+        disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
         name="zoning"
         label="Is appropriate zoning in place for this facility?"
         required
@@ -112,6 +127,7 @@ export const FacilityOperator: FC = () => {
       />
       {zoning === false && (
         <Field
+          disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
           name="zoning_reason"
           label="If no, state the reason"
           required
@@ -122,6 +138,7 @@ export const FacilityOperator: FC = () => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <Field
+            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
             name="facility_operator.first_name"
             label="Facility Operator First Name"
             required
@@ -131,6 +148,7 @@ export const FacilityOperator: FC = () => {
         </Col>
         <Col md={12} sm={24}>
           <Field
+            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
             name="facility_operator.party_name"
             label="Last Name"
             required
@@ -140,6 +158,7 @@ export const FacilityOperator: FC = () => {
         </Col>
         <Col md={12} sm={24}>
           <Field
+            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
             name="facility_operator.job_title"
             label="Facility Operator Title"
             component={RenderField}
@@ -150,6 +169,7 @@ export const FacilityOperator: FC = () => {
       <Row gutter={16}>
         <Col md={8} sm={19}>
           <Field
+            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
             name="facility_operator.phone_no"
             label="Facility Operator Contact Number"
             required
@@ -163,6 +183,7 @@ export const FacilityOperator: FC = () => {
         </Col>
         <Col md={12} sm={24}>
           <Field
+            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
             name="facility_operator.email"
             label="Facility Operator Email Address"
             validate={[email]}
