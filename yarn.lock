@@ -940,6 +940,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fortawesome/pro-regular-svg-icons@npm:6.5.1":
+  version: 6.5.1
+  resolution: "@fortawesome/pro-regular-svg-icons@npm:6.5.1::__archiveUrl=https%3A%2F%2Fartifacts.developer.gov.bc.ca%3A443%2Fartifactory%2Fapi%2Fnpm%2Fm4c2-mds%2Ffortawesome-pro-regular-svg-icons-6.5.1.tgz"
+  dependencies:
+    "@fortawesome/fontawesome-common-types": 6.5.1
+  checksum: 79c068123ee4e4205e68f0faaada049b2e108320e941651724305bc524657446ef96a9a33785c1342d054701acefd9476b94908d3c163f2031b5da190ec30c43
+  languageName: node
+  linkType: hard
+
 "@fortawesome/pro-solid-svg-icons@npm:6.5.1":
   version: 6.5.1
   resolution: "@fortawesome/pro-solid-svg-icons@npm:6.5.1::__archiveUrl=https%3A%2F%2Fartifacts.developer.gov.bc.ca%3A443%2Fartifactory%2Fapi%2Fnpm%2Fm4c2-mds%2Ffortawesome-pro-solid-svg-icons-6.5.1.tgz"
@@ -1627,6 +1636,7 @@ __metadata:
     "@fortawesome/fontawesome-pro": 6.4.2
     "@fortawesome/fontawesome-svg-core": 6.5.1
     "@fortawesome/pro-light-svg-icons": 6.5.1
+    "@fortawesome/pro-regular-svg-icons": 6.5.1
     "@fortawesome/react-fontawesome": 0.2.0
     "@hot-loader/react-dom": 16.13.0
     "@mds/common": 0.1.0
