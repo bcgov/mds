@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS project_summary_ministry_comment
 (
     project_summary_ministry_comment_guid uuid                     DEFAULT gen_random_uuid() PRIMARY KEY,
     project_summary_guid                  uuid                                   NOT NULL,
-    content                               character varying(300)                 NOT NULL,
+    content                               character varying(500)                 NOT NULL,
     deleted_ind                           boolean                  DEFAULT false NOT NULL,
     create_user                           character varying(60)                  NOT NULL,
     create_timestamp                      timestamp with time zone DEFAULT now() NOT NULL,
