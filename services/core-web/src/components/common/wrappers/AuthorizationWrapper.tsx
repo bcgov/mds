@@ -1,14 +1,13 @@
 /* eslint-disable */
 import React from "react";
 import ReactDOMServer from "react-dom/server";
-import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
 import { startCase, camelCase } from "lodash";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
-import { USER_ROLES } from "@mds/common";
-import { detectDevelopmentEnvironment, detectProdEnvironment } from "@mds/common";
 import { Tooltip } from "antd";
 import * as Permission from "@/constants/permissions";
+import { detectDevelopmentEnvironment, detectProdEnvironment, USER_ROLES } from "@mds/common";
+import PropTypes from "prop-types";
 
 /**
  * @constant AuthorizationWrapper conditionally renders react children depending
@@ -76,7 +75,7 @@ export const AuthorizationWrapper = (props) => {
   const title = () => {
     const permission = props.permission ? `${USER_ROLES[props.permission]}` : "";
     const inTest = props.inTesting ? "Not Visible in Production" : "";
-    const majorMine = props.isMajorMine !== undefined ? "Only Visible to Major Mines" : "";
+    const majorMine = props?.isMajorMine !== undefined ? "Only Visible to Major Mines" : "";
     return (
       <ul style={{ listStyle: "none", marginBottom: "0" }}>
         {permission && <li>{startCase(camelCase(permission))}</li>}
