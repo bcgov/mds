@@ -4,9 +4,8 @@ import { Avatar, Col, Divider, List, Row, Spin } from "antd";
 
 import CommentEditor from "@mds/common/components/comments/CommentEditor";
 import MinistryComment from "@mds/common/components/comments/MinistryComment";
-import * as Style from "@mds/core-web/src/constants/styles";
-import AuthorizationWrapper from "@mds/core-web/src/components/common/wrappers/AuthorizationWrapper";
 import { IMinistryComment } from "@mds/common/interfaces/projects/ministryComment.interface";
+import AuthorizationWrapper from "@mds/common/wrappers/AuthorizationWrapper";
 
 interface MinistryCommentPanelProps {
   loading: boolean;
@@ -72,9 +71,7 @@ export const MinistryCommentPanel: FC<MinistryCommentPanelProps> = ({
         />
       ) : (
         <div className="center margin-xlarge">
-          <Spin
-            indicator={<LoadingOutlined style={{ fontSize: 30, color: Style.COLOR.mediumGrey }} />}
-          />
+          <Spin indicator={<LoadingOutlined style={{ fontSize: 30, color: "#6b6363" }} />} />
         </div>
       )}
     </>

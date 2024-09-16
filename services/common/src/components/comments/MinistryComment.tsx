@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { timeAgo } from "@mds/core-web/common/utils/helpers";
+import { timeAgo } from "@mds/common/redux/utils/helpers";
 
 interface MinistryCommentProps {
   children?: React.ReactNode;
