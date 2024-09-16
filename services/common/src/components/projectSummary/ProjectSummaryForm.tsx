@@ -35,6 +35,8 @@ interface ProjectSummaryFormProps {
 // converted to a function to make feature flag easier to work with
 // when removing feature flag, convert back to array
 export const getProjectFormTabs = (amsFeatureEnabled: boolean, isCore = false) => {
+  const { isFeatureEnabled } = useFeatureFlag();
+
   const projectFormTabs = [
     "basic-information",
     "related-projects",
@@ -50,7 +52,11 @@ export const getProjectFormTabs = (amsFeatureEnabled: boolean, isCore = false) =
     "declaration",
   ];
   if (isCore) {
-    projectFormTabs.splice(1, 0, "project-management");
+    projectFormTabs.splice(
+      1,
+      0,
+      isFeatureEnabled(Feature.MAJOR_PROJECT_REFACTOR) ? "project-management" : "ministry-contact"
+    );
   }
 
   return amsFeatureEnabled
@@ -88,6 +94,8 @@ export const ProjectSummaryForm: FC<ProjectSummaryFormProps> = ({
   const renderTabComponent = (tab) =>
     ({
       "project-management": <ProjectManagement />,
+      // TODO: FEATURE.MAJOR_PROJECT_REFACTOR - 'ministry-contact' can be removed once this flag is removed
+      "ministry-contact": <ProjectManagement />,
       "location-access-and-land-use": <LegalLandOwnerInformation />,
       "basic-information": <BasicInformation />,
       "related-projects": (
