@@ -241,7 +241,7 @@ export class MajorMineApplicationTab extends Component {
             </Col>
             <Col xs={24} md={12}>
               <Descriptions layout="vertical" colon={false} style={{ maxWidth: "95%" }}>
-                <Descriptions.Item label="Project Management" className="vertical-description">
+                <Descriptions.Item label="Ministry Contact" className="vertical-description">
                   <Input
                     value={this.props.project?.project_lead_name || Strings.EMPTY_FIELD}
                     disabled
