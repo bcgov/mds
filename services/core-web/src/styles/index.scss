@@ -16,6 +16,7 @@
 // GENERIC - Very high level, far-reaching styles. Contains Normalize.css, Box-sizing rules, CSS resets etc.
 @import "./generic/Normalize.scss";
 @import "./generic/layout.scss";
+@import "./generic/helpers.scss";
 
 // ELEMENTS - Bare, un-classed HTML elements (like H1, A, etc.). This layer is rarely touched after initial setup.
 @import "./elements/elements.scss";
@@ -63,5 +64,6 @@
 @import "./components/Callout.scss";
 @import "./components/CorePageHeader.scss";
 @import "./components/PermitConditions.scss";
+@import "./components/ProjectSummary.scss";
 
 // UTILITIES - utilities and helper classes. This layer has the highest specificity.
