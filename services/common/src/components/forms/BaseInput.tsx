@@ -93,7 +93,8 @@ export const BaseViewInput: FC<BaseViewInputProps> = ({ label = "", value = "" }
 export const getFormItemLabel = (
   label: string | ReactNode,
   isRequired: boolean,
-  labelSubtitle?: string | ReactNode
+  labelSubtitle?: string | ReactNode,
+  showOptional = true
 ) => {
   if (!label) {
     return "";
@@ -113,7 +114,7 @@ export const getFormItemLabel = (
   }
   return (
     <div>
-      {label} <span className="form-item-optional">&nbsp;(optional)</span>
+      {label} {showOptional && <span className="form-item-optional">&nbsp;(optional)</span>}
       {labelSubtitle && (
         <>
           <br />
