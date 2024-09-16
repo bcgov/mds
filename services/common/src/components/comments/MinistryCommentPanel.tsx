@@ -1,46 +1,43 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { UserOutlined, LoadingOutlined } from "@ant-design/icons";
-import { Avatar, Divider, Row, Col, Spin, List } from "antd";
+import React, { FC } from "react";
+import { LoadingOutlined, UserOutlined } from "@ant-design/icons";
+import { Avatar, Col, Divider, List, Row, Spin } from "antd";
 
 import CommentEditor from "@mds/common/components/comments/CommentEditor";
 import MinistryComment from "@mds/common/components/comments/MinistryComment";
-import * as Style from "@mds/common/constants/styles";
-import AuthorizationWrapper from "@mds/common/wrappers/AuthorizationWrapper";
+import * as Style from "@mds/core-web/src/constants/styles";
+import AuthorizationWrapper from "@mds/core-web/src/components/common/wrappers/AuthorizationWrapper";
+import { IMinistryComment } from "@mds/common/interfaces/projects/ministryComment.interface";
 
-const propTypes = {
-  loading: PropTypes.bool,
-  renderEditor: PropTypes.bool,
-  comments: PropTypes.any,
-  createPermission: PropTypes.string,
-  onSubmit: PropTypes.func,
-  onChange: PropTypes.func,
-};
+interface MinistryCommentPanelProps {
+  loading: boolean;
+  renderEditor: boolean;
+  comments: IMinistryComment[];
+  createPermission: string;
+  onSubmit: (data: any) => void;
+  maxLength?: number;
+}
 
-const defaultProps = {
-  renderEditor: false,
-  loading: false,
-  createPermission: undefined,
-  onChange: () => {},
-  onSubmit: () => {},
-};
-
-export const MinistryCommentPanel = (props) => {
-  const { comments, createPermission, renderEditor, loading } = props;
-
+export const MinistryCommentPanel: FC<MinistryCommentPanelProps> = ({
+  comments,
+  createPermission,
+  renderEditor,
+  loading,
+  onSubmit,
+  maxLength,
+}) => {
   return (
     <>
       {renderEditor && (
-        <AuthorizationWrapper permission={createPermission} showToolTip={false}>
+        <AuthorizationWrapper permission={createPermission}>
           <Row>
             <Col span={2}>
               <Avatar size="small" icon={<UserOutlined />} />
             </Col>
             <Col span={22}>
               <CommentEditor
+                maxLength={maxLength}
                 addCommentPermission={createPermission}
-                onChange={props.onChange}
-                onSubmit={props.onSubmit}
+                onSubmit={onSubmit}
               />
               <Divider />
             </Col>
@@ -62,11 +59,7 @@ export const MinistryCommentPanel = (props) => {
                         <Avatar size="small" icon={<UserOutlined />} />
                       </Col>
                       <Col span={21}>
-                        <MinistryComment
-                          author={item.author}
-                          datetime={item.datetime}
-                          actions={item.actions}
-                        >
+                        <MinistryComment author={item.author} datetime={item.datetime}>
                           {item.content}
                         </MinistryComment>
                       </Col>
@@ -80,7 +73,6 @@ export const MinistryCommentPanel = (props) => {
       ) : (
         <div className="center margin-xlarge">
           <Spin
-            id="spinner"
             indicator={<LoadingOutlined style={{ fontSize: 30, color: Style.COLOR.mediumGrey }} />}
           />
         </div>
@@ -88,8 +80,5 @@ export const MinistryCommentPanel = (props) => {
     </>
   );
 };
-
-MinistryCommentPanel.defaultProps = defaultProps;
-MinistryCommentPanel.propTypes = propTypes;
 
 export default MinistryCommentPanel;

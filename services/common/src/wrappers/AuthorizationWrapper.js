@@ -1,10 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { startCase, camelCase } from "lodash";
-import { USER_ROLES, detectDevelopmentEnvironment, detectProdEnvironment } from "@mds/common";
 import { Tooltip } from "antd";
 import { useSelector } from "react-redux";
 import { userHasRole } from "@mds/common/redux/reducers/authenticationReducer";
+import { detectDevelopmentEnvironment, detectProdEnvironment } from "@mds/common/utils";
+import { USER_ROLES } from "@mds/common/constants";
 
 /**
  * @constant AuthorizationWrapper conditionally renders react children depending

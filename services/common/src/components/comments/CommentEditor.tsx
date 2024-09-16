@@ -4,12 +4,12 @@ import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Input } from "antd";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
-import { USER_ROLES } from "@mds/common";
+import { USER_ROLES } from "@mds/common/index";
 
 interface CommentEditorProps {
   onSubmit: (data: any) => void;
   addCommentPermission: string;
-  maxLength: number;
+  maxLength?: number;
 }
 
 export const CommentEditor: FC<CommentEditorProps> = ({

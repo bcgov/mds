@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { CommentEditor } from "@/components/common/comments/CommentEditor";
+import { CommentEditor } from "@mds/common/components/comments/CommentEditor";
 
 const dispatchProps = {};
 const props = {};

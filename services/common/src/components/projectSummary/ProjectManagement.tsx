@@ -9,7 +9,6 @@ import { getDropdownProjectSummaryStatusCodes } from "@mds/common/redux/selector
 import { Alert, Col, Row, Typography } from "antd";
 import { Feature, IGroupedDropdownList, IProjectSummaryMinistryComment } from "../..";
 import { getDropdownProjectLeads } from "@mds/common/redux/selectors/partiesSelectors";
-import MinistryCommentPanel from "@mds/core-web/src/components/common/comments/MinistryCommentPanel";
 import * as Permission from "@mds/core-web/src/constants/permissions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -20,6 +19,7 @@ import {
 import { getProjectSummaryMinistryComments } from "@mds/common/redux/selectors/projectSelectors";
 import { faLock } from "@fortawesome/pro-regular-svg-icons";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import MinistryCommentPanel from "@mds/common/components/comments/MinistryCommentPanel";
 
 const { Paragraph, Title } = Typography;
 
