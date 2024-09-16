@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory, useParams } from "react-router-dom";
 import { Row, Col, Typography, Tabs } from "antd";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
-import { IProject } from "@mds/common";
+import { IProject } from "@mds/common/interfaces/projects/project.interface";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import { getProject } from "@mds/common/redux/selectors/projectSelectors";
 import { fetchProjectById } from "@mds/common/redux/actionCreators/projectActionCreator";
@@ -55,6 +55,7 @@ const ProjectPage: FC = () => {
     mrc_review_required,
     project_summary,
   } = project;
+
   const mine = useSelector((state) => getMineById(state, mine_guid)) ?? {};
   const { mine_name } = mine;
   const { status_code: irtStatus, irt_guid } = information_requirements_table ?? {};
@@ -72,7 +73,7 @@ const ProjectPage: FC = () => {
 
   const navigateFromProjectStagesTable = (source, status) => {
     switch (source) {
-      case "IRT":
+      case "IRT": {
         if (status === "APV") {
           return history.push({
             pathname: router.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
@@ -88,6 +89,7 @@ const ProjectPage: FC = () => {
         }
         // @ts-ignore
         return irtTab.click();
+      }
       case "MMA":
         if (MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES.includes(status)) {
           return history.push({
@@ -108,7 +110,7 @@ const ProjectPage: FC = () => {
           ),
           state: { current: 1 },
         });
-      default:
+      default: {
         // equiv of !status?
         const mmaTab = document.querySelector('[id*="major-mine-application"]');
         if (!mmaTab) {
@@ -116,6 +118,7 @@ const ProjectPage: FC = () => {
         }
         // @ts-ignore
         return mmaTab.click();
+      }
     }
   };
 
@@ -146,7 +149,7 @@ const ProjectPage: FC = () => {
       case "overview":
         url = router.EDIT_PROJECT.dynamicRoute(projectGuid, newActiveTab);
         return history.push(url);
-      case "irt-entry":
+      case "irt-entry": {
         url =
           irtStatus === "APV"
             ? router.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
@@ -156,6 +159,7 @@ const ProjectPage: FC = () => {
             : `/projects/${projectGuid}/information-requirements-table/entry`;
         const urlState = irtStatus == "APV" ? { state: { current: 2 } } : {};
         return history.push({ pathname: url, ...urlState });
+      }
       case "major-mine-application":
         url = `/projects/${projectGuid}/major-mine-application/entry`;
         return history.push(url);
@@ -173,11 +177,9 @@ const ProjectPage: FC = () => {
     setActiveTab(tab);
   }, [tab]);
 
-  //@ts-ignore
   const majorMineApplicationTabContent = MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES.includes(
     mmaStatus
   ) ? (
-    //@ts-ignore
     <MajorMineApplicationReviewSubmit
       project={project}
       applicationSubmitted
