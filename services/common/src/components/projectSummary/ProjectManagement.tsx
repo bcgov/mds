@@ -93,7 +93,7 @@ export const ProjectManagement: FC = () => {
             />
           )}
           <Alert
-            message={projectSummaryStatusCodes.find((code) => code.value === status_code).label}
+            message={projectSummaryStatusCodes.find((code) => code.value === status_code)?.label}
             type="warning"
             showIcon
             className="margin-large--bottom"
@@ -142,7 +142,10 @@ export const ProjectManagement: FC = () => {
                 Add comments to this project description for future reference. Anything written in
                 these comments may be requested under FOIPPA. Keep it professional and concise.
               </Paragraph>
-              <div className="project-summary-ministry-comments">
+              <div
+                className="project-summary-ministry-comments"
+                data-testid="ministry-comments-section"
+              >
                 <MinistryCommentPanel
                   renderEditor={true}
                   onSubmit={submitComment}

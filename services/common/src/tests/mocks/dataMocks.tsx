@@ -1496,6 +1496,7 @@ export const USER_ACCESS_DATA = [
   "uma_authorization",
   "core_admin",
   "core_edit_reports",
+  "role_edit_project_summaries",
 ];
 
 export const DISTURBANCE_OPTIONS = {
@@ -7654,6 +7655,36 @@ export const PROJECT_SUMMARY: IProjectSummary = {
     },
   ],
 };
+
+export const PROJECT_SUMMARY_MINISTRY_COMMENTS = [
+  {
+    project_summary_guid: PROJECT_SUMMARY.project_summary_guid,
+    project_summary_ministry_comment_guid: "12725e3d-f5b8-4e98-b67a-ac8b0d8653bc",
+    content: "this is a comment",
+    update_user: "idr\\test",
+    update_timestamp: "2024-09-12T20:52:15.764779+00:00",
+    create_user: "idr\\test",
+    create_timestamp: "2024-09-12T20:52:15.764771+00:00",
+  },
+  {
+    project_summary_guid: PROJECT_SUMMARY.project_summary_guid,
+    project_summary_ministry_comment_guid: "595c0cec-e8cc-45ce-a49e-d3bdefb2b8cd",
+    content: "this is a comment number 2",
+    update_user: "idr\\test",
+    update_timestamp: "2024-09-12T22:50:43.686860+00:00",
+    create_user: "idr\\test",
+    create_timestamp: "2024-09-12T22:50:43.686847+00:00",
+  },
+  {
+    project_summary_guid: PROJECT_SUMMARY.project_summary_guid,
+    project_summary_ministry_comment_guid: "9be4292c-0340-4750-aa46-2a1414b5001c",
+    content: "this is a comment number 2",
+    update_user: "idr\\test",
+    update_timestamp: "2024-09-12T22:56:05.089748+00:00",
+    create_user: "idr\\test",
+    create_timestamp: "2024-09-12T22:56:05.089711+00:00",
+  },
+];
 
 export const PROJECT: IProject = {
   project_guid: "35633148-57f8-4967-be35-7f89abfbd02e",
