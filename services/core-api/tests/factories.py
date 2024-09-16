@@ -12,6 +12,7 @@ from app.api.mines.explosives_permit_amendment.models.explosives_permit_amendmen
 from app.api.mines.reports.models.mine_report_definition_compliance_article_xref import \
     MineReportDefinitionComplianceArticleXref
 from app.api.projects.project_link.models.project_link import ProjectLink
+from app.api.projects.project_summary.models.project_summary_ministry_comment import ProjectSummaryMinistryComment
 from app.extensions import db
 from tests.status_code_gen import *
 from app.api.mines.documents.models.mine_document import MineDocument
@@ -1272,6 +1273,17 @@ class ProjectSummaryFactory(BaseFactory):
         ProjectSummarySpatialDocumentFactory.create_batch(
             size=extracted, project_summary=obj, mine_document__mine=None, **kwargs)
 
+    @factory.post_generation
+    def ministry_comments(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        ProjectSummaryMinistryCommentFactory.create_batch(
+            size=extracted, project_summary=obj, **kwargs)
+
 
 class ProjectSummaryContactFactory(BaseFactory):
     class Meta:
@@ -1291,6 +1303,15 @@ class ProjectSummaryContactFactory(BaseFactory):
     job_title = None
     company_name = None
 
+class ProjectSummaryMinistryCommentFactory(BaseFactory):
+    class Meta:
+        model = ProjectSummaryMinistryComment
+
+    class Params:
+        project_summary = factory.SubFactory(ProjectSummaryFactory)
+
+    project_summary_guid = factory.SelfAttribute('project_summary.project_summary_guid')
+    content = factory.Faker('paragraph', nb_sentences=3, variable_nb_sentences=True)
 
 class ProjectContactFactory(BaseFactory):
     class Meta:
