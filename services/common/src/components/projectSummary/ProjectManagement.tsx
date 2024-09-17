@@ -20,6 +20,7 @@ import { getProjectSummaryMinistryComments } from "@mds/common/redux/selectors/p
 import { faLock } from "@fortawesome/pro-regular-svg-icons";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import MinistryCommentPanel from "@mds/common/components/comments/MinistryCommentPanel";
+import { requiredList } from "@mds/common/redux/utils/Validate";
 
 const { Paragraph, Title } = Typography;
 
@@ -88,6 +89,7 @@ export const ProjectManagement: FC = () => {
               id="status_code"
               name="status_code"
               required
+              validate={[requiredList]}
               component={RenderSelect}
               data={projectSummaryStatusCodes}
             />

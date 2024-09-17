@@ -1,9 +1,10 @@
 import React from "react";
-import { shallow } from "enzyme";
 import { CommentEditor } from "@mds/common/components/comments/CommentEditor";
+import { render } from "@testing-library/react";
+import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 
-const dispatchProps = {};
-const props = {};
+const dispatchProps: any = {};
+const props: any = {};
 
 const setupDispatchProps = () => {
   dispatchProps.onSubmit = jest.fn();
@@ -20,7 +21,11 @@ beforeEach(() => {
 
 describe("Comment", () => {
   it("renders properly", () => {
-    const wrapper = shallow(<CommentEditor {...dispatchProps} {...props} />);
-    expect(wrapper).toMatchSnapshot();
+    const { container } = render(
+      <ReduxWrapper>
+        <CommentEditor {...dispatchProps} {...props} />
+      </ReduxWrapper>
+    );
+    expect(container).toMatchSnapshot();
   });
 });

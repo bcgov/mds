@@ -1,8 +1,6 @@
 import React, { FC } from "react";
 import { useSelector } from "react-redux";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Input } from "antd";
+import { Button, Form, Input } from "antd";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import { USER_ROLES } from "@mds/common/index";
 
