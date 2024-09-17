@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Comment renders properly 1`] = `
+<div>
+  <div>
+    <div
+      class="ant-form-item"
+    >
+      <div
+        class="ant-row ant-form-item-row"
+      >
+        <div
+          class="ant-col ant-form-item-control"
+        >
+          <div
+            class="ant-form-item-control-input"
+          >
+            <div
+              class="ant-form-item-control-input-content"
+            >
+              <div
+                class="ant-input-textarea ant-input-textarea-show-count ant-input-textarea-in-form-item"
+                data-count="0 / 300"
+              >
+                <textarea
+                  class="ant-input"
+                  name="comment"
+                  placeholder="Enter your comment here"
+                  rows="4"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button
+      class="ant-btn ant-btn-primary"
+      disabled=""
+      type="button"
+    >
+      <span>
+        Add Comment
+      </span>
+    </button>
+  </div>
+</div>
+`;
