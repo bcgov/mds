@@ -21,6 +21,7 @@ import { fetchMineDocuments } from "@mds/common/redux/actionCreators/mineActionC
 import Loading from "@mds/common/components/common/Loading";
 
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import { getFormattedProjectApplication } from "@mds/common/redux/selectors/projectSelectors";
 
 export const MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES = ["SUB", "UNR", "APV"];
 
@@ -29,6 +30,7 @@ export const MajorMineApplicationPage: FC = () => {
   const dispatch = useDispatch();
   const { projectGuid } = useParams<{ projectGuid: string }>();
   const project = useSelector(getProject);
+  const majorMineApplication = useSelector(getFormattedProjectApplication);
   const formValues = useSelector(getFormValues(FORM.ADD_MINE_MAJOR_APPLICATION));
   const isFormDirty = useSelector(isDirty(FORM.ADD_MINE_MAJOR_APPLICATION));
 
@@ -39,14 +41,12 @@ export const MajorMineApplicationPage: FC = () => {
   const [loaded, setLoaded] = useState(false);
   const [confirmedSubmission, setConfirmedSubmission] = useState(false);
   const majorMineApplicationGuid =
-    project?.major_mine_application?.major_mine_application_guid ??
-    formValues?.major_mine_application_guid;
+    majorMineApplication?.major_mine_application_guid ?? formValues?.major_mine_application_guid;
 
   const mineName = project?.mine_name ?? "";
   const title = `Major Mine Application - ${mineName}`;
-  const primaryContact = project?.contacts?.filter((contact) => contact.is_primary === true)[0];
 
-  const applicationStatus = project?.major_mine_application?.status_code;
+  const applicationStatus = majorMineApplication?.status_code;
   const applicationSubmitted = MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES.includes(
     applicationStatus
   );
@@ -212,7 +212,7 @@ export const MajorMineApplicationPage: FC = () => {
       title: "Review & Submit",
       content: (
         <MajorMineApplicationReviewSubmit
-          setConfirmedSubmission={toggleConfirmedSubmission}
+          toggleConfirmedSubmission={toggleConfirmedSubmission}
           confirmedSubmission={confirmedSubmission}
           project={project}
           refreshData={handleFetchData}
@@ -258,35 +258,9 @@ export const MajorMineApplicationPage: FC = () => {
     },
   ];
 
-  const getContactName = (contact) => {
-    if (!contact) {
-      return;
-    }
-    if (contact?.company_name) {
-      return contact.company_name;
-    }
-    return [contact?.first_name, contact?.last_name]
-      .filter(Boolean)
-      .join(" ")
-      .trim();
-  };
-
   const initialValues = {
     mine_name: mineName,
-    primary_contact: getContactName(primaryContact),
-    primary_documents:
-      project?.major_mine_application?.documents?.filter(
-        (d) => d.major_mine_application_document_type_code === "PRM"
-      ) ?? [],
-    spatial_documents:
-      project?.major_mine_application?.documents?.filter(
-        (d) => d.major_mine_application_document_type_code === "SPT"
-      ) ?? [],
-    supporting_documents:
-      project?.major_mine_application?.documents?.filter(
-        (d) => d.major_mine_application_document_type_code === "SPR"
-      ) ?? [],
-    ...project?.major_mine_application,
+    ...majorMineApplication,
   };
 
   return loaded ? (
