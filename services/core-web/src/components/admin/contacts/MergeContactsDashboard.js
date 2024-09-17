@@ -18,7 +18,7 @@ import * as Strings from "@mds/common/constants/strings";
 import * as routes from "@/constants/routes";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import { modalConfig } from "@/components/modalContent/config";
-import * as Permission from "@mds/common/constants/permissions";
+import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 

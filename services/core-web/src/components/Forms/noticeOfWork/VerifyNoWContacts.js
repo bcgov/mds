@@ -24,7 +24,7 @@ import { fetchPartyById, updateParty } from "@mds/common/redux/actionCreators/pa
 import { storeSubsetSearchResults } from "@mds/common/redux/actions/searchActions";
 import { TRASHCAN, PROFILE_NOCIRCLE } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as Permission from "@mds/common/constants/permissions";
+import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import {
   getSearchResults,

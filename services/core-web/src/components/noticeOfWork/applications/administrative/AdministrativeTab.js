@@ -25,7 +25,7 @@ import { getDocumentContextTemplate } from "@/reducers/documentReducer";
 import { getGeneratableNoticeOfWorkApplicationDocumentTypeOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getDropdownInspectors } from "@mds/common/redux/selectors/partiesSelectors";
 import CustomPropTypes from "@/customPropTypes";
-import * as Permission from "@mds/common/constants/permissions";
+import * as Permission from "@/constants/permissions";
 import * as FORM from "@/constants/forms";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";

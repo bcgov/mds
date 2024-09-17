@@ -25,7 +25,7 @@ import {
   generateExplosivesPermitDocument,
 } from "@/actionCreators/documentActionCreator";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as Permission from "@mds/common/constants/permissions";
+import * as Permission from "@/constants/permissions";
 import AddButton from "@/components/common/buttons/AddButton";
 import MineExplosivesPermitTable from "@/components/mine/ExplosivesPermit/MineExplosivesPermitTable";
 import { modalConfig } from "@/components/modalContent/config";

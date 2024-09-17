@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import UpdateNOWInspectorsForm from "@/components/Forms/noticeOfWork/UpdateNOWInspectorsForm";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
-import * as Permission from "@mds/common/constants/permissions";
+import * as Permission from "@/constants/permissions";
 import { EDIT_OUTLINE } from "@/constants/assets";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 

@@ -16,7 +16,7 @@ import {
 import { PERMIT, CLOUD_CHECK_MARK } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
-import * as Permission from "@mds/common/constants/permissions";
+import * as Permission from "@/constants/permissions";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,

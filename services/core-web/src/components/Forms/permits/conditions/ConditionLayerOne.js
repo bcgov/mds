@@ -6,7 +6,7 @@ import { maxBy } from "lodash";
 import Highlight from "react-highlighter";
 import { TRASHCAN, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
-import * as Permission from "@mds/common/constants/permissions";
+import * as Permission from "@/constants/permissions";
 import ConditionLayerTwo from "@/components/Forms/permits/conditions/ConditionLayerTwo";
 import ConditionForm from "@/components/Forms/permits/conditions/ConditionForm";
 import AddCondition from "./AddCondition";

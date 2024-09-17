@@ -6,7 +6,7 @@ import {
   fetchMineIncidentNotes,
 } from "@mds/common/redux/actionCreators/incidentActionCreator";
 import MinistryCommentPanel from "@mds/common/components/comments/MinistryCommentPanel";
-import * as Permission from "@mds/common/constants/permissions";
+import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 interface MinistryInternalCommentsProps {

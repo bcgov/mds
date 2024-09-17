@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import * as Strings from "@mds/common/constants/strings";
 import { formatMoney } from "@common/utils/helpers";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as Permission from "@mds/common/constants/permissions";
+import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import { EDIT, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import CoreTable from "@mds/common/components/common/CoreTable";

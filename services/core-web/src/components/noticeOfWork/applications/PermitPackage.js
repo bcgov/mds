@@ -17,7 +17,7 @@ import {
   getNOWProgress,
 } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import { EDIT_OUTLINE_VIOLET, EDIT_OUTLINE } from "@/constants/assets";
-import * as Permission from "@mds/common/constants/permissions";
+import * as Permission from "@/constants/permissions";
 import { getDropdownNoticeOfWorkApplicationReviewTypeOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import DocumentCompression from "@mds/common/components/documents/DocumentCompression";

@@ -19,7 +19,7 @@ import {
 import AddButton from "@/components/common/buttons/AddButton";
 import Condition from "@/components/Forms/permits/conditions/Condition";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
-import * as Permission from "@mds/common/constants/permissions";
+import * as Permission from "@/constants/permissions";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { IDraftPermitAmendment } from "@mds/common";
 

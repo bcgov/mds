@@ -19,7 +19,7 @@ import { storeTsf } from "@mds/common/redux/actions/tailingsActions";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as Permission from "@mds/common/constants/permissions";
+import * as Permission from "@/constants/permissions";
 import { EDIT_DAM, MINE_TAILINGS_DETAILS } from "@/constants/routes";
 import { IDam, ITailingsStorageFacility } from "@mds/common";
 import { ColumnsType } from "antd/lib/table";

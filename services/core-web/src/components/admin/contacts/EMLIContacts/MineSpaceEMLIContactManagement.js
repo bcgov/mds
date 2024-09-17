@@ -18,7 +18,7 @@ import {
 } from "@mds/common/redux/actionCreators/minespaceActionCreator";
 import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as Permission from "@mds/common/constants/permissions";
+import * as Permission from "@/constants/permissions";
 import EMLIContactsTable from "@/components/admin/contacts/EMLIContacts/EMLIContactsTable";
 import AddButton from "@/components/common/buttons/AddButton";
 

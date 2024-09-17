@@ -6,7 +6,7 @@ import * as Strings from "@mds/common/constants/strings";
 import { TRASHCAN, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as Permission from "@mds/common/constants/permissions";
+import * as Permission from "@/constants/permissions";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
 import { renderTextColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 

@@ -7,7 +7,7 @@ import { highlightPermitConditionVariables } from "@common/utils/helpers";
 import { UpOutlined, DownOutlined } from "@ant-design/icons";
 import { TRASHCAN, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
-import * as Permission from "@mds/common/constants/permissions";
+import * as Permission from "@/constants/permissions";
 import ConditionLayerFive from "@/components/Forms/permits/conditions/ConditionLayerFive";
 import AddCondition from "@/components/Forms/permits/conditions/AddCondition";
 import ConditionForm from "./ConditionForm";

@@ -27,7 +27,7 @@ import {
   updateComplianceCodes,
 } from "@mds/common/redux/slices/complianceCodesSlice";
 import AuthorizationGuard from "@/HOC/AuthorizationGuard";
-import * as Permission from "@mds/common/constants/permissions";
+import * as Permission from "@/constants/permissions";
 import { faLink } from "@fortawesome/pro-light-svg-icons";
 import { EMPTY_FIELD } from "@mds/common";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

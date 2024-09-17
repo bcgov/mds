@@ -27,7 +27,7 @@ import { getDraftPermitAmendmentForNOW } from "@mds/common/redux/selectors/permi
 import { ClockCircleOutlined, EyeOutlined, DownOutlined } from "@ant-design/icons";
 import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as Permission from "@mds/common/constants/permissions";
+import * as Permission from "@/constants/permissions";
 
 /**
  * @constant NOWProgressActions conditionally renders NoW progress actions for each tab

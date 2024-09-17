@@ -3,7 +3,7 @@ import { shallow } from "enzyme";
 import ReactDOMServer from "react-dom/server";
 import { USER_ROLES } from "@mds/common";
 import { AuthorizationWrapper } from "@/components/common/wrappers/AuthorizationWrapper";
-import * as PERMISSIONS from "@mds/common/constants/permissions";
+import * as PERMISSIONS from "@/constants/permissions";
 
 let props = {};
 

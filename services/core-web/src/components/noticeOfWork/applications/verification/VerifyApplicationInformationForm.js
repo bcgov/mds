@@ -10,7 +10,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { clearAllSearchResults } from "@mds/common/redux/actionCreators/searchActionCreator";
 import PropTypes from "prop-types";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as Permission from "@mds/common/constants/permissions";
+import * as Permission from "@/constants/permissions";
 import * as FORM from "@/constants/forms";
 import { resetForm } from "@common/utils/helpers";
 import EditNOWMineAndLocation from "@/components/Forms/noticeOfWork/EditNOWMineAndLocation";

@@ -30,7 +30,7 @@ import { PERMIT_AMENDMENT_TYPES } from "@mds/common/constants/strings";
 import { getNOWProgress } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import { modalConfig } from "@/components/modalContent/config";
 import * as FORM from "@/constants/forms";
-import * as Permission from "@mds/common/constants/permissions";
+import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import GeneratePermitForm from "@/components/Forms/permits/GeneratePermitForm";
 import { EDIT_OUTLINE } from "@/constants/assets";

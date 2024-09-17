@@ -46,7 +46,7 @@ import { NOTICE_OF_DEPARTURE_DOCUMENTS } from "@/constants/API";
 import { renderConfig } from "@/components/common/config";
 import FileUpload from "@/components/common/FileUpload";
 import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
-import * as Permission from "@mds/common/constants/permissions";
+import * as Permission from "@/constants/permissions";
 import { renderDocumentLinkColumn } from "../common/DocumentColumns";
 
 interface renderContactsProps {

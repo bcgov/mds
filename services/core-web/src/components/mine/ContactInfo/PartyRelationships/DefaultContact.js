@@ -7,7 +7,7 @@ import { EMPTY_FIELD } from "@mds/common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as router from "@/constants/routes";
-import * as Permission from "@mds/common/constants/permissions";
+import * as Permission from "@/constants/permissions";
 import DocumentLink from "@/components/common/DocumentLink";
 
 const propTypes = {

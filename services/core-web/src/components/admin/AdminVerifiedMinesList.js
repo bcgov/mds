@@ -9,7 +9,7 @@ import CoreTable from "@mds/common/components/common/CoreTable";
 import * as router from "@/constants/routes";
 import { fetchMineVerifiedStatuses } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
-import * as Permission from "@mds/common/constants/permissions";
+import * as Permission from "@/constants/permissions";
 import {
   renderDateColumn,
   renderTextColumn,

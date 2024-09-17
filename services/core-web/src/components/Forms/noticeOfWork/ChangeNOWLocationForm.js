@@ -11,7 +11,7 @@ import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
 import MineCard from "@/components/mine/NoticeOfWork/MineCard";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as Permission from "@mds/common/constants/permissions";
+import * as Permission from "@/constants/permissions";
 import EditNOWMineAndLocation from "@/components/Forms/noticeOfWork/EditNOWMineAndLocation";
 
 const propTypes = {
