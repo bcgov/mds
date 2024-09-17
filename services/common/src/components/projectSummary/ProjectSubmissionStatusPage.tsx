@@ -23,7 +23,7 @@ export const ProjectSubmissionStatusPage = () => {
 
   const renderContent = () => {
     let content = (
-      <div style={{ textAlign: "center" }}>
+      <div className="status-page-content">
         <>
           <Row>
             <Col span={24}>
@@ -35,21 +35,9 @@ export const ProjectSubmissionStatusPage = () => {
             <Typography.Title level={4}>
               Thank you, your application has been submitted successfully!
             </Typography.Title>
-            You can track the submission status in Project Description Overview.
-          </Typography.Paragraph>
-          <Typography.Paragraph>
-            If your application requires{" "}
-            <a
-              href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/coordinated-authorizations"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Information Requirements Table (IRT)
-            </a>
-            ,
-          </Typography.Paragraph>
-          <Typography.Paragraph>
-            download{" "}
+            Your submission tracking number and status are available in the Project Description
+            Overview. If your application requires an Information Requirements Table(IRT), please
+            download the{" "}
             <LinkButton
               onClick={() =>
                 downloadIRTTemplate(

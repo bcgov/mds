@@ -238,7 +238,7 @@ export const DocumentUpload: FC = () => {
 
       <Typography.Title level={5}>Supporting Documents</Typography.Title>
       <Typography.Paragraph>
-        Upload any supporting document and draft of{" "}
+        Please upload any supporting documents such as a draft of the{" "}
         <LinkButton
           disabled={isDocumentFieldDisabled(systemFlag, status_code)}
           onClick={() =>
@@ -248,9 +248,9 @@ export const DocumentUpload: FC = () => {
           }
         >
           Information Requirements Table (IRT)
-        </LinkButton>{" "}
-        following the official template here. It is required to upload your final IRT in the form
-        provided to proceed to the final application.
+        </LinkButton>
+        . To proceed to the final application, you must upload your final Joint Application IRT
+        using the form provided in the next phase.
       </Typography.Paragraph>
       {!isDocumentFieldDisabled(systemFlag, status_code) && (
         <Field
