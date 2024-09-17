@@ -676,6 +676,7 @@ export const createProjectSummaryMinistryComment = (
 ): AppThunk<Promise<AxiosResponse<any>>> => (
   dispatch
 ): Promise<AxiosResponse<IProjectSummaryMinistryComment>> => {
+  dispatch(request(reducerTypes.CREATE_PROJECT_SUMMARY_MINISTRY_COMMENTS));
   dispatch(showLoading());
   return CustomAxios()
     .post(
@@ -688,12 +689,16 @@ export const createProjectSummaryMinistryComment = (
       dispatch(projectActions.addProjectSummaryMinistryComment(response.data));
       return response;
     })
+    .catch(() => {
+      dispatch(error(reducerTypes.CREATE_PROJECT_SUMMARY_MINISTRY_COMMENTS));
+    })
     .finally(() => dispatch(hideLoading()));
 };
 
 export const fetchProjectSummaryMinistryComments = (
   projectSummaryGuid: string
 ): AppThunk<Promise<AxiosResponse<any>>> => (dispatch): Promise<AxiosResponse<any>> => {
+  dispatch(request(reducerTypes.GET_PROJECT_SUMMARY_MINISTRY_COMMENTS));
   dispatch(showLoading());
   return CustomAxios()
     .get(
@@ -704,6 +709,9 @@ export const fetchProjectSummaryMinistryComments = (
       dispatch(success(reducerTypes.GET_PROJECT_SUMMARY_MINISTRY_COMMENTS));
       dispatch(projectActions.storeProjectSummaryMinistryComments(response.data));
       return response;
+    })
+    .catch(() => {
+      dispatch(error(reducerTypes.GET_PROJECT_SUMMARY_MINISTRY_COMMENTS));
     })
     .finally(() => dispatch(hideLoading()));
 };
