@@ -28,7 +28,6 @@ import {
   fetchPermitExtractionStatus,
 } from "@mds/common/redux/slices/permitServiceSlice";
 import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
-import { permitAmendment } from "@/customPropTypes/permits";
 
 const tabs = ["overview", "conditions"];
 
@@ -120,10 +119,17 @@ const ViewPermit: FC = () => {
     };
   }, [pollForStatus, permitExtraction?.task_id]);
 
-  const canViewConditions = latestAmendment?.conditions?.length > 0;
+  const hasConditions = latestAmendment?.conditions?.length > 0;
+
+  const canStartExtraction =
+    ((documents.length > 0 && !permitExtraction?.status) ||
+      [PermitExtractionStatus.error, PermitExtractionStatus.not_started].includes(
+        permitExtraction?.status
+      )) &&
+    !hasConditions;
 
   const getConditionBadge = () => {
-    const conditionStatus: PresetStatusColorType = canViewConditions ? "success" : "error";
+    const conditionStatus: PresetStatusColorType = hasConditions ? "success" : "error";
     return <Badge status={conditionStatus} />;
   };
 
@@ -145,11 +151,6 @@ const ViewPermit: FC = () => {
     return history.push(routes.VIEW_MINE_PERMIT.dynamicRoute(id, permitGuid, newActiveTab));
   };
 
-  const canStartExtraction =
-    (documents.length > 0 && !permitExtraction?.status) ||
-    [PermitExtractionStatus.error, PermitExtractionStatus.not_started].includes(
-      permitExtraction?.status
-    );
   const onConditionsTab = tab === tabs[1];
 
   const handleInitiateExtraction = async () => {
@@ -188,6 +189,7 @@ const ViewPermit: FC = () => {
       userCanEditConditions && {
         key: "delete_conditions",
         label: "Delete Permit Conditions",
+        disabled: !hasConditions,
         clickFunction: handleDeleteConditions,
       },
   ].filter(Boolean);

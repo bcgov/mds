@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Button, Col, Row, Typography } from "antd";
+import { Col, Row, Typography } from "antd";
 import FileOutlined from "@ant-design/icons/FileOutlined";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -80,57 +80,68 @@ const PermitConditions: FC<PermitConditionProps> = ({ latestAmendment }) => {
     return <LoadingOutlined style={{ fontSize: 120 }} />;
   }
 
-  return permitExtraction?.task_status === PermitExtractionStatus.in_progress ? (
-    <>
-      <Row align="middle" justify="space-between" gutter={[10, 16]}>
-        <Col span={24}>
-          <Title className="margin-none" level={2}>
-            Permit Conditions
-          </Title>
-        </Col>
-        <Col span={24}>
-          <Row gutter={10} style={{ background: "#fff" }} justify={"center"}>
-            <div className="null-screen fade-in" style={{ maxWidth: "1024px" }}>
-              <div>
-                <LoadingOutlined style={{ fontSize: 120 }} />
-                <h3>Extracting permit conditions</h3>
-                <p>
-                  We are extracing the permit conditions. This process may take anywhere from a few
-                  minutes to an hour. Feel free to leave and return later to continue your work.
-                </p>
-              </div>
+  const RenderExtractionStart = () => (
+    <Row align="middle" justify="space-between" gutter={[10, 16]}>
+      <Col span={24}>
+        <Title className="margin-none" level={2}>
+          Permit Conditions
+        </Title>
+      </Col>
+      <Col span={24}>
+        <Row gutter={10} style={{ background: "#fff" }} justify={"center"}>
+          <div className="null-screen fade-in" style={{ maxWidth: "1024px" }}>
+            <div>
+              <img alt="mine_img" src={PERMIT} />
+              <h3>Start extracting permit conditions</h3>
+              <p>
+                Start extracting the latest permit conditions. This process supports the ministry in
+                permit drafting and compliance by building a comprehensive condition repository,
+                adding report requirements, and making it easier to track, update, and share permit
+                conditions accross your team.
+              </p>
             </div>
-          </Row>
-        </Col>
-      </Row>
-    </>
-  ) : !permitExtraction || !permitConditions?.length ? (
-    <>
-      <Row align="middle" justify="space-between" gutter={[10, 16]}>
-        <Col span={24}>
-          <Title className="margin-none" level={2}>
-            Permit Conditions
-          </Title>
-        </Col>
-        <Col span={24}>
-          <Row gutter={10} style={{ background: "#fff" }} justify={"center"}>
-            <div className="null-screen fade-in" style={{ maxWidth: "1024px" }}>
-              <div>
-                <img alt="mine_img" src={PERMIT} />
-                <h3>Start extracting permit conditions</h3>
-                <p>
-                  Start extracting the latest permit conditions. This process supports the ministry
-                  in permit drafting and compliance by building a comprehensive condition
-                  repository, adding report requirements, and making it easier to track, update, and
-                  share permit conditions accross your team.
-                </p>
-              </div>
+          </div>
+        </Row>
+      </Col>
+    </Row>
+  );
+
+  const RenderExtractionProgress = () => (
+    <Row align="middle" justify="space-between" gutter={[10, 16]}>
+      <Col span={24}>
+        <Title className="margin-none" level={2}>
+          Permit Conditions
+        </Title>
+      </Col>
+      <Col span={24}>
+        <Row gutter={10} style={{ background: "#fff" }} justify={"center"}>
+          <div className="null-screen fade-in" style={{ maxWidth: "1024px" }}>
+            <div>
+              <LoadingOutlined style={{ fontSize: 120 }} />
+              <h3>Extracting permit conditions</h3>
+              <p>
+                We are extracing the permit conditions. This process may take anywhere from a few
+                minutes to an hour. Feel free to leave and return later to continue your work.
+              </p>
             </div>
-          </Row>
-        </Col>
-      </Row>
-    </>
-  ) : (
+          </div>
+        </Row>
+      </Col>
+    </Row>
+  );
+
+  const isExtractionInProgress =
+    permitExtraction?.task_status === PermitExtractionStatus.in_progress;
+  const canStartExtraction = !permitExtraction && !permitConditions?.length;
+
+  if (isExtractionInProgress) {
+    return <RenderExtractionProgress />;
+  }
+  if (canStartExtraction) {
+    return <RenderExtractionStart />;
+  }
+
+  return (
     <ScrollSidePageWrapper
       header={null}
       headerHeight={topOffset}

@@ -88,6 +88,7 @@ export interface ITableAction {
   label: string;
   clickFunction: (event, record) => any;
   icon?: ReactNode;
+  disabled?: boolean;
 }
 
 export const renderActionsColumn = ({
