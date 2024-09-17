@@ -7,7 +7,7 @@ import { getNoticeOfWorkApplicationApplicationReviewTypeHash } from "@mds/common
 import * as Strings from "@mds/common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
-import * as Permission from "@/constants/permissions";
+import * as Permission from "@mds/common/constants/permissions";
 import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import DocumentLink from "@/components/common/DocumentLink";
 import CoreTable from "@mds/common/components/common/CoreTable";

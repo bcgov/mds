@@ -26,7 +26,7 @@ import { getDropdownInspectors } from "@mds/common/redux/selectors/partiesSelect
 import { DEFAULT_PER_PAGE, DEFAULT_PAGE } from "@mds/common";
 import * as ROUTES from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
-import * as Permission from "@/constants/permissions";
+import * as Permission from "@mds/common/constants/permissions";
 import AddButton from "@/components/common/buttons/AddButton";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 

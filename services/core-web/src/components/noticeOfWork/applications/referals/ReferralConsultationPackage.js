@@ -25,7 +25,7 @@ import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
-import * as Permission from "@/constants/permissions";
+import * as Permission from "@mds/common/constants/permissions";
 import {
   documentsCompression,
   pollDocumentsCompressionProgress,

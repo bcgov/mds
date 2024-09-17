@@ -8,7 +8,7 @@ import NOWSubmissionDocuments from "@/components/noticeOfWork/applications/NOWSu
 import { COLOR } from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
-import * as Permission from "@/constants/permissions";
+import * as Permission from "@mds/common/constants/permissions";
 import NOWDocuments from "../noticeOfWork/applications/NOWDocuments";
 
 const propTypes = {

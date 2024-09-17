@@ -7,7 +7,7 @@ import Highlight from "react-highlighter";
 import { highlightPermitConditionVariables } from "@common/utils/helpers";
 import { TRASHCAN, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
-import * as Permission from "@/constants/permissions";
+import * as Permission from "@mds/common/constants/permissions";
 import ConditionLayerThree from "@/components/Forms/permits/conditions/ConditionLayerThree";
 import AddCondition from "@/components/Forms/permits/conditions/AddCondition";
 import ConditionForm from "@/components/Forms/permits/conditions/ConditionForm";

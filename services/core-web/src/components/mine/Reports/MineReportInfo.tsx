@@ -16,7 +16,7 @@ import { getMineReports, getReportsPageData } from "@mds/common/redux/selectors/
 import { getMineReportDefinitionOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getMines } from "@mds/common/redux/selectors/mineSelectors";
 import * as Strings from "@mds/common/constants/strings";
-import * as Permission from "@/constants/permissions";
+import * as Permission from "@mds/common/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import AddButton from "@/components/common/buttons/AddButton";
 import MineReportTable from "@/components/mine/Reports/MineReportTable";

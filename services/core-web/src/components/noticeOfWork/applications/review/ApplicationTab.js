@@ -25,7 +25,7 @@ import {
 import { flattenObject } from "@common/utils/helpers";
 import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
 import * as Strings from "@mds/common/constants/strings";
-import * as Permission from "@/constants/permissions";
+import * as Permission from "@mds/common/constants/permissions";
 import { exportNoticeOfWorkApplicationDocument } from "@/actionCreators/documentActionCreator";
 import CustomPropTypes from "@/customPropTypes";
 import ReviewNOWApplication from "@/components/noticeOfWork/applications/review/ReviewNOWApplication";

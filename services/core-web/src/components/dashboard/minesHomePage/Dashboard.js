@@ -40,7 +40,7 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import * as router from "@/constants/routes";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import MineMapLeaflet from "@/components/maps/MineMapLeaflet";
-import * as Permission from "@/constants/permissions";
+import * as Permission from "@mds/common/constants/permissions";
 import * as ModalContent from "@/constants/modalContent";
 import AddButton from "@/components/common/buttons/AddButton";
 

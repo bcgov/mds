@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Row, Col } from "antd";
 import PropTypes from "prop-types";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
-import * as Permission from "@/constants/permissions";
+import * as Permission from "@mds/common/constants/permissions";
 import AdminNavigation from "@/components/admin/AdminNavigation";
 import AdminDashboardRoutes from "@/routes/AdminDashboardRoutes";
 

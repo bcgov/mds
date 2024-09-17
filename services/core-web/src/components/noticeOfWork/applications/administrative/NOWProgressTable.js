@@ -34,7 +34,7 @@ import { COLOR } from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import { modalConfig } from "@/components/modalContent/config";
-import * as Permission from "@/constants/permissions";
+import * as Permission from "@mds/common/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { APPLICATION_PROGRESS_TRACKING } from "@/constants/NOWConditions";
 

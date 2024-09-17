@@ -28,7 +28,7 @@ import * as Strings from "@mds/common/constants/strings";
 import DocumentLink from "@/components/common/DocumentLink";
 import AddButton from "@/components/common/buttons/AddButton";
 import { modalConfig } from "@/components/modalContent/config";
-import * as Permission from "@/constants/permissions";
+import * as Permission from "@mds/common/constants/permissions";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import ReferralConsultationPackage from "@/components/noticeOfWork/applications/referals/ReferralConsultationPackage";

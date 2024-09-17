@@ -23,7 +23,7 @@ import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { getMines, getMineGuid } from "@mds/common/redux/selectors/mineSelectors";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import ExplosivesPermit from "@/components/mine/ExplosivesPermit/ExplosivesPermit";
-import * as Permission from "@/constants/permissions";
+import * as Permission from "@mds/common/constants/permissions";
 import AddButton from "@/components/common/buttons/AddButton";
 import MinePermitTable from "@/components/mine/Permit/MinePermitTable";
 import * as ModalContent from "@/constants/modalContent";

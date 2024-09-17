@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import { DefaultContact } from "@/components/mine/ContactInfo/PartyRelationships/DefaultContact";
-import * as Permission from "@/constants/permissions";
+import * as Permission from "@mds/common/constants/permissions";
 
 const propTypes = {
   partyRelationship: CustomPropTypes.partyRelationship.isRequired,

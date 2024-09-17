@@ -11,7 +11,7 @@ import { getNoticeOfWork } from "@mds/common/redux/selectors/noticeOfWorkSelecto
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import CustomPropTypes from "@/customPropTypes";
 import { EDIT_OUTLINE } from "@/constants/assets";
-import * as Permission from "@/constants/permissions";
+import * as Permission from "@mds/common/constants/permissions";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import PermitAmendmentSecurityForm from "@/components/Forms/permits/PermitAmendmentSecurityForm";
 

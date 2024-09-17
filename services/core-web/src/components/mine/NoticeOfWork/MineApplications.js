@@ -16,7 +16,7 @@ import { getMineGuid } from "@mds/common/redux/selectors/mineSelectors";
 import { formatQueryListParams } from "@common/utils/helpers";
 import * as router from "@/constants/routes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as Permission from "@/constants/permissions";
+import * as Permission from "@mds/common/constants/permissions";
 import AddButton from "@/components/common/buttons/AddButton";
 import CustomPropTypes from "@/customPropTypes";
 import MineNoticeOfWorkTable from "@/components/mine/NoticeOfWork/MineNoticeOfWorkTable";

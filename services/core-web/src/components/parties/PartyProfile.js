@@ -40,7 +40,7 @@ import { modalConfig } from "@/components/modalContent/config";
 import Loading from "@/components/common/Loading";
 import * as routes from "@/constants/routes";
 import * as ModalContent from "@/constants/modalContent";
-import * as Permission from "@/constants/permissions";
+import * as Permission from "@mds/common/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import CustomPropTypes from "@/customPropTypes";
 import Address from "@/components/common/Address";

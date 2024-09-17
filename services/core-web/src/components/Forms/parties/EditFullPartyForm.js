@@ -21,7 +21,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
 import PartyOrgBookForm from "@/components/Forms/parties/PartyOrgBookForm";
 import { ORGBOOK_ENTITY_URL, ORGBOOK_CREDENTIAL_URL } from "@/constants/routes";
-import * as Permission from "@/constants/permissions";
+import * as Permission from "@mds/common/constants/permissions";
 import PartySignatureUpload from "./PartySignatureUpload";
 
 const propTypes = {

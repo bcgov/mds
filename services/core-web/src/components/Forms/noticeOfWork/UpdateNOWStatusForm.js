@@ -10,7 +10,7 @@ import { resetForm } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as Permission from "@/constants/permissions";
+import * as Permission from "@mds/common/constants/permissions";
 
 const propTypes = {
   dropdownNoticeOfWorkApplicationStatusOptions: CustomPropTypes.options.isRequired,

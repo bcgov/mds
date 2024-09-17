@@ -11,7 +11,7 @@ import {
   getExplosivesPermitClosedBadgeStatusType,
 } from "@/constants/theme";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as Permission from "@/constants/permissions";
+import * as Permission from "@mds/common/constants/permissions";
 import DocumentLink from "@/components/common/DocumentLink";
 import { CARAT, EDIT, TRASHCAN } from "@/constants/assets";
 import { CoreTooltip } from "@/components/common/CoreTooltip";

@@ -9,7 +9,6 @@ import { getDropdownProjectSummaryStatusCodes } from "@mds/common/redux/selector
 import { Alert, Col, Row, Typography } from "antd";
 import { Feature, IGroupedDropdownList, IProjectSummaryMinistryComment } from "../..";
 import { getDropdownProjectLeads } from "@mds/common/redux/selectors/partiesSelectors";
-import * as Permission from "@mds/core-web/src/constants/permissions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   clearProjectSummaryMinistryComments,
@@ -21,6 +20,7 @@ import { faLock } from "@fortawesome/pro-regular-svg-icons";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import MinistryCommentPanel from "@mds/common/components/comments/MinistryCommentPanel";
 import { requiredList } from "@mds/common/redux/utils/Validate";
+import { EDIT_PROJECT_SUMMARIES } from "@mds/common/constants/permissions";
 
 const { Paragraph, Title } = Typography;
 
@@ -160,7 +160,7 @@ export const ProjectManagement: FC = () => {
                     actions: null,
                     datetime: comment.update_timestamp,
                   }))}
-                  createPermission={Permission.EDIT_PROJECT_SUMMARIES}
+                  createPermission={EDIT_PROJECT_SUMMARIES}
                 />
               </div>
             </div>

@@ -13,7 +13,7 @@ import { formatDate } from "@common/utils/helpers";
 import * as Strings from "@mds/common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as Permission from "@/constants/permissions";
+import * as Permission from "@mds/common/constants/permissions";
 import { RED_CLOCK, EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import DocumentLink from "@/components/common/DocumentLink";
 import * as router from "@/constants/routes";

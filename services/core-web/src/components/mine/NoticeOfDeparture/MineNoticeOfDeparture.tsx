@@ -17,7 +17,7 @@ import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSel
 import { modalConfig } from "@/components/modalContent/config";
 import { MINE_NOTICES_OF_DEPARTURE } from "@/constants/routes";
 import MineNoticeOfDepartureTable from "./MineNoticeOfDepartureTable";
-import * as Permission from "@/constants/permissions";
+import * as Permission from "@mds/common/constants/permissions";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 
 interface IMineNoticeOfDepartureProps {

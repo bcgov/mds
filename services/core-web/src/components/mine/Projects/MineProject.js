@@ -9,7 +9,7 @@ import { getMines, getMineGuid } from "@mds/common/redux/selectors/mineSelectors
 import { getProjectSummaryStatusCodesHash } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getProjects } from "@mds/common/redux/selectors/projectSelectors";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as Permission from "@/constants/permissions";
+import * as Permission from "@mds/common/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import MineProjectTable from "./MineProjectTable";
 import * as routes from "@/constants/routes";

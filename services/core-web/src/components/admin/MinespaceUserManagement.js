@@ -20,7 +20,7 @@ import CustomPropTypes from "@/customPropTypes";
 import NewMinespaceUser from "@/components/admin/NewMinespaceUser";
 import MinespaceUserList from "@/components/admin/MinespaceUserList";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
-import * as Permission from "@/constants/permissions";
+import * as Permission from "@mds/common/constants/permissions";
 import { modalConfig } from "@/components/modalContent/config";
 
 /**

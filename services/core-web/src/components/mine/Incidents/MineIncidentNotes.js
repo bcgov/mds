@@ -10,7 +10,7 @@ import {
 } from "@mds/common/redux/actionCreators/incidentActionCreator";
 import CommentPanel from "@/components/common/comments/CommentPanel";
 import CustomPropTypes from "@/customPropTypes";
-import * as Permission from "@/constants/permissions";
+import * as Permission from "@mds/common/constants/permissions";
 
 const propTypes = {
   notes: PropTypes.arrayOf(CustomPropTypes.incidentNote).isRequired,

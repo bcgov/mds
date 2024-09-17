@@ -3,7 +3,7 @@ import { Row, Col } from "antd";
 import PropTypes from "prop-types";
 import StandardPermitConditions from "@/components/Forms/permits/conditions/StandardPermitConditions";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
-import * as Permission from "@/constants/permissions";
+import * as Permission from "@mds/common/constants/permissions";
 import PermitConditionsNavigation from "@/components/admin/permitConditions/PermitConditionsNavigation";
 
 const propTypes = {

@@ -25,7 +25,7 @@ import UploadPermitDocument from "@/components/noticeOfWork/applications/permitG
 import ReviewSiteProperties from "@/components/noticeOfWork/applications/review/ReviewSiteProperties";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as Permission from "@/constants/permissions";
+import * as Permission from "@mds/common/constants/permissions";
 
 const propTypes = {
   isAmendment: PropTypes.bool.isRequired,

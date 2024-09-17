@@ -11,7 +11,7 @@ import CommentEditor from "@mds/common/components/comments/CommentEditor";
 import Comment from "@/components/common/comments/Comment";
 import * as Style from "@/constants/styles";
 import { TRASHCAN } from "@/constants/assets";
-import * as Permission from "@/constants/permissions";
+import * as Permission from "@mds/common/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import CustomPropTypes from "@/customPropTypes";
 

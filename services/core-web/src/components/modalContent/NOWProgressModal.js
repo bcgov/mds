@@ -5,7 +5,7 @@ import Highlight from "react-highlighter";
 import { connect } from "react-redux";
 import { getFormValues } from "redux-form";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as Permission from "@/constants/permissions";
+import * as Permission from "@mds/common/constants/permissions";
 import * as FORM from "@/constants/forms";
 
 const propTypes = {

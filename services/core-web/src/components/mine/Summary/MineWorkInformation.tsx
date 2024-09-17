@@ -14,7 +14,7 @@ import * as Strings from "@mds/common/constants/strings";
 import { getMineWorkInformations } from "@mds/common/redux/selectors/workInformationSelectors";
 import AddButton from "@/components/common/buttons/AddButton";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as Permission from "@/constants/permissions";
+import * as Permission from "@mds/common/constants/permissions";
 import { formatDate, formatDateTime } from "@common/utils/helpers";
 import { isEmpty } from "lodash";
 import { modalConfig } from "@/components/modalContent/config";
