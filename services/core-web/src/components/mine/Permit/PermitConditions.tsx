@@ -17,6 +17,12 @@ import ScrollSidePageWrapper from "@mds/common/components/common/ScrollSidePageW
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils/featureFlag";
 import CoreButton from "@mds/common/components/common/CoreButton";
+import { LoadingOutlined } from "@ant-design/icons";
+import {
+  getPermitExtractionByGuid,
+  PermitExtractionStatus,
+} from "@mds/common/redux/slices/permitServiceSlice";
+import { RenderExtractionProgress, RenderExtractionStart } from "./PermitConditionExtraction";
 
 const { Title } = Typography;
 
@@ -33,6 +39,11 @@ const PermitConditions: FC<PermitConditionProps> = ({ latestAmendment }) => {
   const permitConditionCategoryOptions = useSelector(getPermitConditionCategoryOptions);
 
   const permitConditions = latestAmendment?.conditions;
+  const permitExtraction = useSelector(
+    getPermitExtractionByGuid(latestAmendment?.permit_amendment_id)
+  );
+
+  const fetchingPermits = useSelector((state) => state.GET_PERMITS?.isFetching);
 
   const permitConditionCategories = permitConditionCategoryOptions
     .map((cat) => {
@@ -64,6 +75,21 @@ const PermitConditions: FC<PermitConditionProps> = ({ latestAmendment }) => {
     console.log("not implemented", newCondition);
     return Promise.resolve();
   };
+
+  if (fetchingPermits) {
+    return <LoadingOutlined style={{ fontSize: 120 }} />;
+  }
+
+  const isExtractionInProgress =
+    permitExtraction?.task_status === PermitExtractionStatus.in_progress;
+  const canStartExtraction = !permitExtraction && !permitConditions?.length;
+
+  if (isExtractionInProgress) {
+    return <RenderExtractionProgress />;
+  }
+  if (canStartExtraction) {
+    return <RenderExtractionStart />;
+  }
 
   return (
     <ScrollSidePageWrapper

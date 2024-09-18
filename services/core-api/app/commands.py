@@ -1,16 +1,24 @@
-import click
-
-from sqlalchemy.exc import DBAPIError
 from multiprocessing.dummy import Pool as ThreadPool
-from flask import current_app
 
+import click
+from app.api.mines.permits.permit.models.permit import Permit
 from app.api.utils.include.user_info import User
 from app.extensions import db
+from flask import current_app
+from sqlalchemy.exc import DBAPIError
+from tests.factories import (
+    MineFactory,
+    MinePartyAppointmentFactory,
+    MinespaceSubscriptionFactory,
+    MinespaceUserFactory,
+    NOWApplicationIdentityFactory,
+    NOWSubmissionFactory,
+)
 
-from app.api.mines.permits.permit.models.permit import Permit
-
-from tests.factories import MineFactory, MinePartyAppointmentFactory, MinespaceSubscriptionFactory, MinespaceUserFactory, NOWSubmissionFactory, NOWApplicationIdentityFactory
-from .cli_commands.generate_history_table_migration import generate_history_table_migration
+from .cli_commands.generate_history_table_migration import (
+    generate_history_table_migration,
+    generate_table_migration,
+)
 
 
 def register_commands(app):
@@ -115,8 +123,8 @@ def register_commands(app):
 
     @app.cli.command('notify_expiring_party_appointments')
     def notify_expiring_party_appointments():
-        from app.api.parties.party_appt import notify_expiring_party_appointments
         from app import auth
+        from app.api.parties.party_appt import notify_expiring_party_appointments
         auth.apply_security = False
 
         with current_app.app_context():
@@ -124,8 +132,10 @@ def register_commands(app):
 
     @app.cli.command('notify_and_update_expired_party_appointments')
     def notify_and_update_expired_party_appointments():
-        from app.api.parties.party_appt import notify_and_update_expired_party_appointments
         from app import auth
+        from app.api.parties.party_appt import (
+            notify_and_update_expired_party_appointments,
+        )
         auth.apply_security = False
 
         with current_app.app_context():
@@ -135,8 +145,10 @@ def register_commands(app):
     @click.argument('credential_exchange_id')
     @click.argument('permit_guid')
     def revoke_mines_act_permits_for_permit(credential_exchange_id, permit_guid):
-        from app.api.verifiable_credentials.manager import revoke_all_credentials_for_permit
         from app import auth
+        from app.api.verifiable_credentials.manager import (
+            revoke_all_credentials_for_permit,
+        )
         auth.apply_security = False
         with current_app.app_context():
             permit = Permit.query.unbound_unsafe().filter_by(permit_guid=permit_guid).first()
@@ -146,16 +158,20 @@ def register_commands(app):
 
     @app.cli.command('process_all_untp_map_for_orgbook')
     def process_all_untp_map_for_orgbook():
-        from app.api.verifiable_credentials.manager import process_all_untp_map_for_orgbook
         from app import auth
+        from app.api.verifiable_credentials.manager import (
+            process_all_untp_map_for_orgbook,
+        )
         auth.apply_security = False
         with current_app.app_context() as app:
             result = process_all_untp_map_for_orgbook.apply_async()
 
     @app.cli.command('publish_all_pending_vc_to_orgbook')
     def publish_all_pending_vc_to_orgbook():
-        from app.api.verifiable_credentials.manager import publish_all_pending_vc_to_orgbook
         from app import auth
+        from app.api.verifiable_credentials.manager import (
+            publish_all_pending_vc_to_orgbook,
+        )
         auth.apply_security = False
         with current_app.app_context():
             result = publish_all_pending_vc_to_orgbook()
@@ -171,3 +187,15 @@ def register_commands(app):
             flask generate_history_table_migration mine_tailings_storage_facility
         """
         generate_history_table_migration(table)
+
+    @app.cli.command('generate_table_migration')
+    @click.argument('table')
+    def do_generate_table_command(table):
+        """
+        Generate a migration file that contains the table definition for the specified table.
+        Uses SQLAlchemy-continuum to generate the table definition.
+
+        Example usage:
+            flask generate_table_migration mine_tailings_storage_facility
+        """
+        generate_table_migration(table)

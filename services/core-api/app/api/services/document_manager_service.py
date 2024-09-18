@@ -1,17 +1,27 @@
-import time
-import requests
 import base64
 import io
 import json
-from tusclient import client
+import logging
+import re
+import time
+import uuid
 
-from flask import Response, current_app, request as flask_request
-from flask_restx import marshal, fields
-from app.config import Config
-from app.api.now_applications.response_models import NOW_SUBMISSION_DOCUMENT
-from app.api.now_applications.models.now_application_document_identity_xref import NOWApplicationDocumentIdentityXref
+import requests
+from app.api.constants import DOWNLOAD_TOKEN, TIMEOUT_5_MINUTES
 from app.api.mines.documents.mine_document_search_util import MineDocumentSearchUtil
 from app.api.mines.documents.models.mine_document import MineDocument
+from app.api.now_applications.models.now_application_document_identity_xref import (
+    NOWApplicationDocumentIdentityXref,
+)
+from app.api.now_applications.response_models import NOW_SUBMISSION_DOCUMENT
+from app.config import Config
+from app.extensions import cache
+from flask import Response, current_app
+from flask import request as flask_request
+from flask_restx import fields, marshal
+from tusclient import client
+
+logger = logging.getLogger(__name__)
 
 ALLOWED_DOCUMENT_CATEGORIES = [
     'tailings', 'permits', 'variances', 'incidents', 'reports', 'mine_party_appts', 'noticeofwork',
@@ -270,3 +280,37 @@ class DocumentManagerService():
                 raise Exception('Timed out while waiting for file upload to finish')
 
             time.sleep(1)
+
+    @classmethod
+    def create_download_token(cls, document_guid):
+        token_guid = uuid.uuid4()
+        cache.set(DOWNLOAD_TOKEN(token_guid), document_guid, TIMEOUT_5_MINUTES)
+        return token_guid
+
+    @classmethod
+    def download_document_to_file(cls, document_guid, file_obj):
+        token = cls.create_download_token(document_guid)
+
+        resp = requests.get(
+            url=f'{Config.DOCUMENT_MANAGER_URL}/documents?token={token}',
+            headers=flask_request.headers,
+            stream=True
+        )
+        
+        if resp.status_code != 200:
+            raise Exception(f'Failed to download document. {resp.status_code}: {resp.text}')
+
+        file_name = None
+
+        content_disposition = resp.headers['content-disposition']
+
+        if content_disposition:
+            fname = re.findall("filename=(.+)", content_disposition)
+
+            if len(fname) > 0:
+                file_name = fname[0]
+
+        for chunk in resp.iter_content(chunk_size=1024):
+            if chunk:
+                file_obj.write(chunk)
+        return file_name, file_obj

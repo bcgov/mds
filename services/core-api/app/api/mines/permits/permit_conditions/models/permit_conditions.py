@@ -1,17 +1,15 @@
+import uuid
 from datetime import datetime
 
-import uuid
-
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import validates, backref
-from app.extensions import db
-from sqlalchemy.schema import FetchedValue
-from marshmallow import fields, validate
-from sqlalchemy.ext.hybrid import hybrid_property
-
 from app.api.utils.field_template import FieldTemplate
-from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.utils.list_lettering_helpers import num_to_letter, num_to_roman
+from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
+from app.extensions import db
+from marshmallow import fields, validate
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.orm import backref, validates
+from sqlalchemy.schema import FetchedValue
 
 
 class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
@@ -39,6 +37,7 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
     parent_permit_condition_id = db.Column(db.Integer,
                                            db.ForeignKey('permit_conditions.permit_condition_id'))
     display_order = db.Column(db.Integer, nullable=False)
+    _step = db.Column('step', db.String, nullable=True)
 
     __versioned__ = {}
 
@@ -54,6 +53,9 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
 
     @hybrid_property
     def step(self):
+        if self._step:
+            return self._step
+
         depth = 0
         condition = self
         while condition.parent_permit_condition_id is not None:

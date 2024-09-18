@@ -1,0 +1,1 @@
+ALTER TABLE permit_conditions_version ADD COLUMN step VARCHAR(50);
