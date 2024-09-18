@@ -1,0 +1,264 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReportsHomePage renders properly 1`] = `
+<div>
+  <div
+    class="landing-page"
+  >
+    <div
+      class="landing-page__header"
+    >
+      <div>
+        <h1>
+          Browse Reports
+        </h1>
+      </div>
+    </div>
+    <div
+      class="landing-page__content"
+    >
+      <div
+        class="page__content"
+      >
+        <div>
+          <div
+            class="ant-row"
+          >
+            <div
+              class="ant-col ant-col-xs-20 ant-col-xs-offset-2 ant-col-md-12 ant-col-md-offset-6"
+            >
+              <span
+                class="advanced-search__container"
+              >
+                <form
+                  class="ant-form ant-form-vertical"
+                >
+                  <div
+                    class="ant-row"
+                    style="margin-left: -3px; margin-right: -3px;"
+                  >
+                    <div
+                      class="ant-col ant-col-xs-24 ant-col-md-24"
+                      style="padding-left: 3px; padding-right: 3px;"
+                    >
+                      <div
+                        class="ant-row ant-legacy-form-item"
+                      >
+                        <div
+                          class="ant-col ant-legacy-form-item-control-wrapper"
+                        >
+                          <div
+                            class="ant-legacy-form-item-control"
+                          >
+                            <span
+                              class="ant-legacy-form-item-children"
+                            >
+                              <div
+                                class="inline-flex"
+                                style="flex-direction: column;"
+                              >
+                                
+                                <span
+                                  class="ant-input-affix-wrapper"
+                                >
+                                  <input
+                                    class="ant-input"
+                                    id="search"
+                                    name="search"
+                                    placeholder="Search by mine name or number"
+                                    type="text"
+                                    value=""
+                                  />
+                                  <span
+                                    class="ant-input-suffix"
+                                  >
+                                    <span
+                                      class="ant-input-clear-icon ant-input-clear-icon-hidden"
+                                      role="button"
+                                      tabindex="-1"
+                                    >
+                                      <span
+                                        aria-label="close-circle"
+                                        class="anticon anticon-close-circle"
+                                        role="img"
+                                      >
+                                        <svg
+                                          aria-hidden="true"
+                                          data-icon="close-circle"
+                                          fill="currentColor"
+                                          fill-rule="evenodd"
+                                          focusable="false"
+                                          height="1em"
+                                          viewBox="64 64 896 896"
+                                          width="1em"
+                                        >
+                                          <path
+                                            d="M512 64c247.4 0 448 200.6 448 448S759.4 960 512 960 64 759.4 64 512 264.6 64 512 64zm127.98 274.82h-.04l-.08.06L512 466.75 384.14 338.88c-.04-.05-.06-.06-.08-.06a.12.12 0 00-.07 0c-.03 0-.05.01-.09.05l-45.02 45.02a.2.2 0 00-.05.09.12.12 0 000 .07v.02a.27.27 0 00.06.06L466.75 512 338.88 639.86c-.05.04-.06.06-.06.08a.12.12 0 000 .07c0 .03.01.05.05.09l45.02 45.02a.2.2 0 00.09.05.12.12 0 00.07 0c.02 0 .04-.01.08-.05L512 557.25l127.86 127.87c.04.04.06.05.08.05a.12.12 0 00.07 0c.03 0 .05-.01.09-.05l45.02-45.02a.2.2 0 00.05-.09.12.12 0 000-.07v-.02a.27.27 0 00-.05-.06L557.25 512l127.87-127.86c.04-.04.05-.06.05-.08a.12.12 0 000-.07c0-.03-.01-.05-.05-.09l-45.02-45.02a.2.2 0 00-.09-.05.12.12 0 00-.07 0z"
+                                          />
+                                        </svg>
+                                      </span>
+                                    </span>
+                                  </span>
+                                </span>
+                                
+                              </div>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="left center-mobile"
+                  >
+                    <button
+                      class="ant-btn ant-btn-default btn--dropdown"
+                      type="button"
+                    >
+                      <span>
+                        Expand Filters
+                      </span>
+                      <span
+                        aria-label="down"
+                        class="anticon anticon-down"
+                        role="img"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class=""
+                          data-icon="down"
+                          fill="currentColor"
+                          focusable="false"
+                          height="1em"
+                          viewBox="64 64 896 896"
+                          width="1em"
+                        >
+                          <path
+                            d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                          />
+                        </svg>
+                      </span>
+                    </button>
+                  </div>
+                  <div
+                    class="right center-mobile"
+                  >
+                    <button
+                      class="ant-btn ant-btn-secondary full-mobile"
+                      type="reset"
+                    >
+                      <span>
+                        Clear Filters
+                      </span>
+                    </button>
+                    <button
+                      class="ant-btn ant-btn-primary full-mobile"
+                      type="submit"
+                    >
+                      <span>
+                        Apply Filters
+                      </span>
+                    </button>
+                  </div>
+                </form>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div
+            class="tab__content"
+          >
+            <div
+              class="ant-table-wrapper"
+            >
+              <div
+                class="ant-spin-nested-loading"
+              >
+                <div
+                  class="ant-spin-container"
+                >
+                  <div
+                    class="ant-table"
+                  >
+                    <div
+                      class="ant-table-container"
+                    >
+                      <div
+                        class="ant-table-content"
+                      >
+                        <table
+                          style="table-layout: auto;"
+                        >
+                          <colgroup />
+                          <thead
+                            class="ant-table-thead"
+                          >
+                            <tr>
+                              <th
+                                class="ant-table-cell"
+                              >
+                                Mine
+                              </th>
+                              <th
+                                class="ant-table-cell"
+                              >
+                                Report Name
+                              </th>
+                              <th
+                                class="ant-table-cell"
+                              >
+                                Compliance Year
+                              </th>
+                              <th
+                                class="ant-table-cell"
+                              >
+                                Status
+                              </th>
+                              <th
+                                class="ant-table-cell"
+                              >
+                                Due
+                              </th>
+                              <th
+                                class="ant-table-cell"
+                              >
+                                Received
+                              </th>
+                              <th
+                                class="ant-table-cell column-hide"
+                              >
+                                Requested By
+                              </th>
+                              <th
+                                class="ant-table-cell"
+                              >
+                                Documents
+                              </th>
+                              <th
+                                class="ant-table-cell actions-column"
+                              />
+                            </tr>
+                          </thead>
+                          <tbody
+                            class="ant-table-tbody"
+                          />
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="center"
+            >
+              <div />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import ResponsivePagination from "@/components/common/ResponsivePagination";
+import ResponsivePagination from "@mds/common/components/common/ResponsivePagination";
 
 let props = {};
 let dispatchProps = {};

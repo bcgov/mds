@@ -1,7 +1,12 @@
 import { createSelector } from "reselect";
 import { uniq } from "lodash";
 import * as projectReducer from "../reducers/projectReducer";
-import { IParty, IProjectContact, IProjectSummaryDocument } from "../..";
+import {
+  IParty,
+  IProjectContact,
+  IProjectSummaryDocument,
+  MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE,
+} from "../..";
 import { getTransformedProjectSummaryAuthorizationTypes } from "./staticContentSelectors";
 
 export const {
@@ -39,6 +44,22 @@ const formatProjectSummaryDocuments = (documents = []): IProjectSummaryDocument[
     allDocuments[fieldName] = matching;
   });
   return allDocuments;
+};
+
+const getContactName = (contact) => {
+  if (!contact) {
+    return;
+  }
+
+  const contactName = contact?.name ?? contact?.company_name;
+  if (contactName) {
+    return contactName;
+  }
+
+  return [contact?.first_name, contact?.last_name]
+    .filter(Boolean)
+    .join(" ")
+    .trim();
 };
 
 const formatProjectContact = (contacts): IProjectContact[] => {
@@ -87,6 +108,32 @@ export const getAmsAuthorizationTypes = createSelector(
     return authTypes
       ?.find((parent) => parent.code === "ENVIRONMENTAL_MANAGMENT_ACT")
       ?.children?.map((c) => c.code);
+  }
+);
+
+export const getFormattedProjectApplication = createSelector(
+  [getMajorMinesApplication, getProject],
+  (app, project) => {
+    const allDocuments = app?.documents ?? [];
+    const primary_documents = allDocuments.filter(
+      (d) =>
+        d.major_mine_application_document_type_code ===
+        MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE.PRIMARY
+    );
+    const spatial_documents = allDocuments.filter(
+      (d) =>
+        d.major_mine_application_document_type_code ===
+        MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE.SPATIAL
+    );
+    const supporting_documents = allDocuments.filter(
+      (d) =>
+        d.major_mine_application_document_type_code ===
+        MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE.SUPPORTING
+    );
+
+    const primaryContact = project?.contacts?.filter((contact) => contact.is_primary === true)[0];
+    const primary_contact = getContactName(primaryContact);
+    return { ...app, primary_documents, spatial_documents, supporting_documents, primary_contact };
   }
 );
 

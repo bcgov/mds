@@ -9,56 +9,57 @@ import RenderCheckbox from "../forms/RenderCheckbox";
 import PageFoldScrollWrapper from "../common/PageFoldScrollWrapper";
 
 const terms = (
-  <ol>
+  <ol type="1" className="declaration-page-content">
     <li>
-      In this section: “Applicant” means the applicant as identified in section 2 of this
-      application form;
-    </li>
-    <li>
-      “Authorization” means the permit, approval, operational certificate, or amended permit,
-      approval, operational certificate, sought pursuant to this application;
-    </li>
-    <li>
-      “Director” means any statutory decision maker under EMA; “EMA” means the Environmental
-      Management Act, S.B.C. 2003, c. 53, as amended or replaced from time to time;
-    </li>
-    <li>
-      “FOIPPA” means the Freedom of Information and Protection of Privacy Act, R.S.B.C. 1996, c.
-      165, as amended or replaced from time to time;
-    </li>
-    <li>
-      “Province” means His Majesty King in Right of British Columbia; “Regulatory Document” means:
-    </li>
-    <li>a) this application form,</li>
-    <li>
-      b) any document that the Applicant submits or causes to be provided submitted to the Province
-      or the Director in
-    </li>
-    <li>support of this application, and</li>
-    <li>
-      c) any document that the Applicant submitted or causes to be submitted to the Director or the
-      Province pursuant to
-      <ol type="a">
-        <li>the Authorization;</li>
-        <li>
-          any regulation made under EMA that regulates the facility described above or the discharge
-          of waste from
-        </li>
-        <li>that facility; or</li>
-        <li>
-          any order issued under EMA directed against the Applicant that is related to the facility
-          described above or
-        </li>
-        <li>the discharge of waste from that facility.</li>
-      </ol>
+      In this section:
+      <div style={{ paddingLeft: "15px" }}>
+        <div>
+          “Applicant” means the applicant as identified on the Applicant Information tab of this
+          application form;
+        </div>
+        <div>
+          “Authorization” means the permit, approval, operational certificate, or amended permit,
+          approval, operational certificate, sought pursuant to this application;
+        </div>
+        <div>“Director” means any statutory decision maker under EMA;</div>
+        <div>
+          “EMA” means the Environmental Management Act, S.B.C. 2003, c. 53, as amended or replaced
+          from time to time;
+        </div>
+        <div>
+          “FOIPPA” means the Freedom of Information and Protection of Privacy Act, R.S.B.C. 1996, c.
+          165, as amended or replaced from time to time;
+        </div>
+        <div>“Province” means His Majesty the King in Right of British Columbia;</div>
+        <div>“Regulatory Document” means:</div>
+        <ol type="a">
+          <li>this application form,</li>
+          <li>
+            any document that the Applicant submits or causes to be provided submitted to the
+            Director or the Province in support of this application, and
+          </li>
+          <li>
+            any document that the Applicant submitted or causes to be submitted to the Director or
+            the Province pursuant to:
+          </li>
+          <ol type="i">
+            <li>the Authorization;</li>
+            <li>
+              any regulation made under EMA that regulates the facility described above or the
+              discharge of waste from that facility; or
+            </li>
+            <li>
+              any order issued under EMA directed against the Applicant that is related to the
+              facility described above or the discharge of waste from that facility.
+            </li>
+          </ol>
+        </ol>
+      </div>
     </li>
     <li>
       In consideration of the Province receiving this application, subject to paragraph 3, the
-      Applicant hereby irrevocably authorizes
-    </li>
-    <li>
-      the Province to publish on the B.C. government website the entirety of any Regulatory
-      Document.
+      Applicant hereby irrevocably authorizes the Province to publish on the B.C. government website
+      the entirety of any Regulatory Document.
     </li>
     <li>
       Despite paragraph 2, if the Applicant clearly identifies on the face of a Regulatory Document
@@ -77,9 +78,9 @@ const terms = (
       that arise from the publication of a Regulatory Document.
     </li>
     <li>
-      The Applicant certifies that the information provided in this registration form is true,
+      The Applicant certifies that the information provided in this application form is true,
       complete and accurate, and acknowledges that the submission of insufficient information may
-      result in this registration being returned causing delays in the registration review process.
+      result in this application being returned causing delays in the application review process.
     </li>
   </ol>
 );

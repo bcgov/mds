@@ -26,6 +26,7 @@ interface AuthorizationSupportDocumentUploadProps {
   showExemptionSection: boolean;
   isAmendment: boolean;
   amendmentChanges: string[];
+  isDisabled: boolean;
 }
 
 export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocumentUploadProps> = ({
@@ -38,6 +39,7 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
   showExemptionSection,
   isAmendment,
   amendmentChanges,
+  isDisabled,
 }) => {
   const handleRemoveFile = (error, fileToRemove) => {
     if (error) {
@@ -89,37 +91,12 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
 
   return (
     <div>
-      <Field
-        id="LocationMapDocumentUpload"
-        name="location_documents"
-        label="Location Map"
-        labelHref="https://www2.gov.bc.ca/assets/gov/environment/waste-management/waste-discharge-authorization/guides/forms/epd-ema-08_location_map_form.pdf"
-        component={RenderFileUpload}
-        required
-        validate={[requiredList]}
-        allowRevert
-        allowMultiple
-        acceptedFileTypesMap={acceptedFileTypesMap}
-        listedFileTypes={["document", "image", "spreadsheet", "spatial"]}
-        abbrevLabel={true}
-        uploadUrl={PROJECT_SUMMARY_DOCUMENTS({ projectGuid, projectSummaryGuid, mineGuid })}
-        onFileLoad={(document_name, document_manager_guid) =>
-          handleFileLoad(
-            document_name,
-            document_manager_guid,
-            PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.LOCATION_MAP
-          )
-        }
-        onRemoveFile={handleRemoveFile}
-      />
-      {(!isAmendment ||
-        (isAmendment &&
-          isDocumentTypeRequired(PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.DISCHARGE_FACTOR))) && (
+      {!isDisabled && (
         <Field
-          id="DischargeFactorFormUpload"
-          name="discharge_documents"
-          label="Discharge Factor Form (PDF, 318KB)"
-          labelHref={isAmendment ? DISCHARGE_FACTOR_FORM_AMENDMENT : DISCHARGE_FACTOR_FORM_NEW}
+          id="LocationMapDocumentUpload"
+          name="location_documents"
+          label="Location Map"
+          labelHref="https://www2.gov.bc.ca/assets/gov/environment/waste-management/waste-discharge-authorization/guides/forms/epd-ema-08_location_map_form.pdf"
           component={RenderFileUpload}
           required
           validate={[requiredList]}
@@ -133,13 +110,41 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
             handleFileLoad(
               document_name,
               document_manager_guid,
-              PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.DISCHARGE_FACTOR
+              PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.LOCATION_MAP
             )
           }
           onRemoveFile={handleRemoveFile}
         />
       )}
-      {isAmendment && (
+      {!isDisabled &&
+        (!isAmendment ||
+          (isAmendment &&
+            isDocumentTypeRequired(PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.DISCHARGE_FACTOR))) && (
+          <Field
+            id="DischargeFactorFormUpload"
+            name="discharge_documents"
+            label="Discharge Factor Form (PDF, 318KB)"
+            labelHref={isAmendment ? DISCHARGE_FACTOR_FORM_AMENDMENT : DISCHARGE_FACTOR_FORM_NEW}
+            component={RenderFileUpload}
+            required
+            validate={[requiredList]}
+            allowRevert
+            allowMultiple
+            acceptedFileTypesMap={acceptedFileTypesMap}
+            listedFileTypes={["document", "image", "spreadsheet", "spatial"]}
+            abbrevLabel={true}
+            uploadUrl={PROJECT_SUMMARY_DOCUMENTS({ projectGuid, projectSummaryGuid, mineGuid })}
+            onFileLoad={(document_name, document_manager_guid) =>
+              handleFileLoad(
+                document_name,
+                document_manager_guid,
+                PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.DISCHARGE_FACTOR
+              )
+            }
+            onRemoveFile={handleRemoveFile}
+          />
+        )}
+      {!isDisabled && isAmendment && (
         <div>
           {isDocumentTypeRequired(PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.CONSENT_LETTER) && (
             <Field
@@ -165,61 +170,63 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
               onRemoveFile={handleRemoveFile}
             />
           )}
-          {isDocumentTypeRequired(PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.CLAUSE_AMENDMENT_FORM) && (
-            <Field
-              id="ClauseAmendmentFormUpload"
-              name="clause_amendment_documents"
-              label="Clause Amendment Form (PDF, 276KB)"
-              labelHref="https://www2.gov.bc.ca/assets/gov/environment/waste-management/waste-discharge-authorization/guides/forms/epd-ema-07_amend_clause_amendment_form.pdf"
-              component={RenderFileUpload}
-              required
-              validate={[requiredList]}
-              allowRevert
-              allowMultiple
-              acceptedFileTypesMap={acceptedFileTypesMap}
-              listedFileTypes={["document", "image", "spreadsheet", "spatial"]}
-              abbrevLabel={true}
-              uploadUrl={PROJECT_SUMMARY_DOCUMENTS({ projectGuid, projectSummaryGuid, mineGuid })}
-              onFileLoad={(document_name, document_manager_guid) =>
-                handleFileLoad(
-                  document_name,
-                  document_manager_guid,
-                  PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.CLAUSE_AMENDMENT_FORM
-                )
-              }
-              onRemoveFile={handleRemoveFile}
-            />
-          )}
-          {isDocumentTypeRequired(
-            PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.CHANGE_OF_OWNERSHIP_NAME_OR_ADDRESS_FORM
-          ) && (
-            <Field
-              id="ChangeOfOwnershipNameOrAddressFormUpload"
-              name="change_ownership_name_documents"
-              label="Change of Ownership, Name or Address Form (PDF, 464KB)"
-              labelHref="https://www2.gov.bc.ca/assets/gov/environment/waste-management/waste-discharge-authorization/guides/forms/epd-ema-a2_change_of_ownership_name_or_address_form.pdf"
-              component={RenderFileUpload}
-              required
-              validate={[requiredList]}
-              allowRevert
-              allowMultiple
-              acceptedFileTypesMap={acceptedFileTypesMap}
-              listedFileTypes={["document", "image", "spreadsheet", "spatial"]}
-              abbrevLabel={true}
-              uploadUrl={PROJECT_SUMMARY_DOCUMENTS({ projectGuid, projectSummaryGuid, mineGuid })}
-              onFileLoad={(document_name, document_manager_guid) =>
-                handleFileLoad(
-                  document_name,
-                  document_manager_guid,
-                  PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.CHANGE_OF_OWNERSHIP_NAME_OR_ADDRESS_FORM
-                )
-              }
-              onRemoveFile={handleRemoveFile}
-            />
-          )}
+          {!isDisabled &&
+            isDocumentTypeRequired(PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.CLAUSE_AMENDMENT_FORM) && (
+              <Field
+                id="ClauseAmendmentFormUpload"
+                name="clause_amendment_documents"
+                label="Clause Amendment Form (PDF, 276KB)"
+                labelHref="https://www2.gov.bc.ca/assets/gov/environment/waste-management/waste-discharge-authorization/guides/forms/epd-ema-07_amend_clause_amendment_form.pdf"
+                component={RenderFileUpload}
+                required
+                validate={[requiredList]}
+                allowRevert
+                allowMultiple
+                acceptedFileTypesMap={acceptedFileTypesMap}
+                listedFileTypes={["document", "image", "spreadsheet", "spatial"]}
+                abbrevLabel={true}
+                uploadUrl={PROJECT_SUMMARY_DOCUMENTS({ projectGuid, projectSummaryGuid, mineGuid })}
+                onFileLoad={(document_name, document_manager_guid) =>
+                  handleFileLoad(
+                    document_name,
+                    document_manager_guid,
+                    PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.CLAUSE_AMENDMENT_FORM
+                  )
+                }
+                onRemoveFile={handleRemoveFile}
+              />
+            )}
+          {!isDisabled &&
+            isDocumentTypeRequired(
+              PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.CHANGE_OF_OWNERSHIP_NAME_OR_ADDRESS_FORM
+            ) && (
+              <Field
+                id="ChangeOfOwnershipNameOrAddressFormUpload"
+                name="change_ownership_name_documents"
+                label="Change of Ownership, Name or Address Form (PDF, 464KB)"
+                labelHref="https://www2.gov.bc.ca/assets/gov/environment/waste-management/waste-discharge-authorization/guides/forms/epd-ema-a2_change_of_ownership_name_or_address_form.pdf"
+                component={RenderFileUpload}
+                required
+                validate={[requiredList]}
+                allowRevert
+                allowMultiple
+                acceptedFileTypesMap={acceptedFileTypesMap}
+                listedFileTypes={["document", "image", "spreadsheet", "spatial"]}
+                abbrevLabel={true}
+                uploadUrl={PROJECT_SUMMARY_DOCUMENTS({ projectGuid, projectSummaryGuid, mineGuid })}
+                onFileLoad={(document_name, document_manager_guid) =>
+                  handleFileLoad(
+                    document_name,
+                    document_manager_guid,
+                    PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.CHANGE_OF_OWNERSHIP_NAME_OR_ADDRESS_FORM
+                  )
+                }
+                onRemoveFile={handleRemoveFile}
+              />
+            )}
         </div>
       )}
-      {showExemptionSection && (
+      {!isDisabled && showExemptionSection && (
         <Field
           id="ExemptionLetterUpload"
           name="exemption_documents"
@@ -243,28 +250,30 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
           onRemoveFile={handleRemoveFile}
         />
       )}
-      <Field
-        id="SupportDocumentUpload"
-        name="support_documents"
-        label="Supporting Document"
-        component={RenderFileUpload}
-        required={showExemptionSection}
-        validate={showExemptionSection ? [requiredList] : []}
-        allowRevert
-        allowMultiple
-        acceptedFileTypesMap={acceptedFileTypesMap}
-        listedFileTypes={["document", "image", "spreadsheet", "spatial"]}
-        abbrevLabel={true}
-        uploadUrl={PROJECT_SUMMARY_DOCUMENTS({ projectGuid, projectSummaryGuid, mineGuid })}
-        onFileLoad={(document_name, document_manager_guid) =>
-          handleFileLoad(
-            document_name,
-            document_manager_guid,
-            PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.SUPPORTING
-          )
-        }
-        onRemoveFile={handleRemoveFile}
-      />
+      {!isDisabled && (
+        <Field
+          id="SupportDocumentUpload"
+          name="support_documents"
+          label="Supporting Document"
+          component={RenderFileUpload}
+          required={showExemptionSection}
+          validate={showExemptionSection ? [requiredList] : []}
+          allowRevert
+          allowMultiple
+          acceptedFileTypesMap={acceptedFileTypesMap}
+          listedFileTypes={["document", "image", "spreadsheet", "spatial"]}
+          abbrevLabel={true}
+          uploadUrl={PROJECT_SUMMARY_DOCUMENTS({ projectGuid, projectSummaryGuid, mineGuid })}
+          onFileLoad={(document_name, document_manager_guid) =>
+            handleFileLoad(
+              document_name,
+              document_manager_guid,
+              PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.SUPPORTING
+            )
+          }
+          onRemoveFile={handleRemoveFile}
+        />
+      )}
     </div>
   );
 };

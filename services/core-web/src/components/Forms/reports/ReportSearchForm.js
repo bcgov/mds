@@ -5,9 +5,8 @@ import { compose } from "redux";
 import { UpOutlined, DownOutlined } from "@ant-design/icons";
 import { isEmpty, some, negate } from "lodash";
 import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row } from "antd";
+import { Button, Col, Row, Form } from "antd";
 import {
   getDropdownMineReportStatusOptions,
   getDropdownMineReportCategoryOptions,

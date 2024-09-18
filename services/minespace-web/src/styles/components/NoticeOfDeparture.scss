@@ -15,6 +15,7 @@
   background: #FFFFFF;
   border-radius: 4px;
   color: #5E46A1;
+
   &:hover {
     color: #FFFFFF;
   }
@@ -34,12 +35,13 @@
   justify-content: center;
 }
 
-.nod-callout > h4 {
+.nod-callout>h4 {
   color: $font-colour;
-  font-weight: 700;
+  font-weight: $bold;
+  font-size: $default-p;
 }
 
-.nod-callout > p {
+.nod-callout>p {
   font-size: 1rem;
   margin-bottom: 0;
 }

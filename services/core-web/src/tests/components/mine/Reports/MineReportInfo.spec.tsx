@@ -8,7 +8,7 @@ import { MINES, REPORTS } from "@mds/common/constants/reducerTypes";
 import { BrowserRouter } from "react-router-dom";
 
 const initialState: any = {
-  [REPORTS]: { mineReports: MOCK.MINE_REPORTS },
+  [REPORTS]: { mineReports: MOCK.MINE_REPORTS, reportsPageData: MOCK.PAGE_DATA },
   [MINES]: MOCK.MINES,
   [STATIC_CONTENT]: MOCK.BULK_STATIC_CONTENT_RESPONSE,
   [AUTHENTICATION]: {

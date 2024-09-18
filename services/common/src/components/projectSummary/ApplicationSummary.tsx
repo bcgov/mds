@@ -12,8 +12,9 @@ import { ColumnsType } from "antd/es/table";
 import { Button, Alert, Typography, Col, Row } from "antd";
 import { useHistory } from "react-router-dom";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
-import { FORM } from "@mds/common/constants/forms";
+import { FORM, isFieldDisabled } from "@mds/common/constants";
 import { IAuthorizationSummary } from "@mds/common/interfaces";
+import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 
 export const ApplicationSummary: FC = () => {
   const permits = useSelector(getPermits);
@@ -33,6 +34,7 @@ export const ApplicationSummary: FC = () => {
 
   const processedEnvironmentActPermitResult: any[] = [];
   let processedOtherActPermitResult: any[] = [];
+  const systemFlag = useSelector(getSystemFlag);
 
   const minesActColumns: ColumnsType<IAuthorizationSummary> = [
     renderTextColumn("project_type", "Type", false),
@@ -245,7 +247,11 @@ export const ApplicationSummary: FC = () => {
           <Typography.Title level={5}>Mines Act</Typography.Title>
         </Col>
         <Col md={12} sm={24} style={{ textAlign: "right" }}>
-          <Button type="default" onClick={handleEditClicked}>
+          <Button
+            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+            type="default"
+            onClick={handleEditClicked}
+          >
             Edit
           </Button>
         </Col>
@@ -258,7 +264,11 @@ export const ApplicationSummary: FC = () => {
           <Typography.Title level={5}>Environmental Management Act</Typography.Title>
         </Col>
         <Col md={12} sm={24} style={{ textAlign: "right" }}>
-          <Button type="default" onClick={handleEditClicked}>
+          <Button
+            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+            type="default"
+            onClick={handleEditClicked}
+          >
             Edit
           </Button>
         </Col>
@@ -270,7 +280,11 @@ export const ApplicationSummary: FC = () => {
           <Typography.Title level={5}>Water Sustainability Act</Typography.Title>
         </Col>
         <Col md={12} sm={24} style={{ textAlign: "right" }}>
-          <Button type="default" onClick={handleEditClicked}>
+          <Button
+            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+            type="default"
+            onClick={handleEditClicked}
+          >
             Edit
           </Button>
         </Col>
@@ -282,7 +296,11 @@ export const ApplicationSummary: FC = () => {
           <Typography.Title level={5}>Forestry Act</Typography.Title>
         </Col>
         <Col md={12} sm={24} style={{ textAlign: "right" }}>
-          <Button type="default" onClick={handleEditClicked}>
+          <Button
+            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+            type="default"
+            onClick={handleEditClicked}
+          >
             Edit
           </Button>
         </Col>
@@ -294,7 +312,11 @@ export const ApplicationSummary: FC = () => {
           <Typography.Title level={5}>Other Legislation</Typography.Title>
         </Col>
         <Col md={12} sm={24} style={{ textAlign: "right" }}>
-          <Button type="default" onClick={handleEditClicked}>
+          <Button
+            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+            type="default"
+            onClick={handleEditClicked}
+          >
             Edit
           </Button>
         </Col>
