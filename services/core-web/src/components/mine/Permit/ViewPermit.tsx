@@ -180,11 +180,6 @@ const ViewPermit: FC = () => {
         disabled: !canStartExtraction,
         clickFunction: handleInitiateExtraction,
       },
-    onConditionsTab && {
-      key: "check_progress",
-      label: "Check Extraction Progress",
-      clickFunction: () => console.log("not implemented"),
-    },
     onConditionsTab &&
       userCanEditConditions && {
         key: "delete_conditions",

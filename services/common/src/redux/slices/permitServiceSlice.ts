@@ -124,7 +124,7 @@ const permitServiceSlice = createAppSlice({
 
     fetchPermitExtractionStatus: create.asyncThunk(
       async (payload: { permit_amendment_id: number; task_id: string }, thunkAPI) => {
-        const { permit_amendment_id, task_id } = payload;
+        const { task_id } = payload;
 
         const headers = createRequestHeader();
         thunkAPI.dispatch(showLoading());
