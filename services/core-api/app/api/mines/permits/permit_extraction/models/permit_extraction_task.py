@@ -24,6 +24,10 @@ class PermitExtractionTask(AuditMixin, Base):
     permit_amendment = db.relationship('PermitAmendment', lazy='select')
 
     @staticmethod
+    def get_by_task_id(task_id):
+        return PermitExtractionTask.query.filter_by(task_id=task_id).order_by(PermitExtractionTask.create_timestamp.desc())
+
+    @staticmethod
     def get_by_permit_extraction_task_id(permit_extraction_task_id):
         return PermitExtractionTask.query.filter_by(permit_extraction_task_id=permit_extraction_task_id).order_by(PermitExtractionTask.create_timestamp.desc())
     
