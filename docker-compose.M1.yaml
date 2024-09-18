@@ -1,5 +1,6 @@
 version: "3"
-
+include:
+  - ./services/permits/docker-compose.yaml
 services:
 
   ####################### Keycloak for Cypress #######################
