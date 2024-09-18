@@ -73,6 +73,15 @@ const ProjectPage: FC = () => {
 
   const navigateFromProjectStagesTable = (source, status) => {
     switch (source) {
+      case "DES": {
+        const projectDescriptionTab = document.querySelector('[id*="project-description"]');
+        if (!projectDescriptionTab) {
+          return null;
+        }
+
+        // @ts-ignore
+        return projectDescriptionTab.click();
+      }
       case "IRT": {
         if (status === "APV") {
           return history.push({
@@ -203,7 +212,7 @@ const ProjectPage: FC = () => {
       ),
     },
     isFeatureEnabled(Feature.AMS_AGENT) &&
-      project_summary?.status_code === "SUB" && {
+      project_summary?.submission_date && {
         label: "Project Description",
         key: "project-description",
         children: (
