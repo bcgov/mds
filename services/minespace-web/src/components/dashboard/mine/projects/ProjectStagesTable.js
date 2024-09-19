@@ -63,24 +63,31 @@ export class ProjectStagesTable extends Component {
       render: (text, record) => {
         let link;
         if (record.project_stage === "Project description") {
-          let buttonLabel;
-          if (record.stage_status === "SUB") {
-            buttonLabel = "View";
-          } else {
-            buttonLabel = "Resume";
-          }
-          link = (
-            <Link
-              to={routes.EDIT_PROJECT_SUMMARY.dynamicRoute(
-                record.stage?.payload?.project_guid,
-                record.stage?.payload?.project_summary_guid
-              )}
-            >
-              <Button className="full-mobile margin-small" type="secondary">
-                {buttonLabel}
+          let payload = record.stage?.payload;
+          if (payload?.submission_date) {
+            link = (
+              <Button
+                className="full-mobile margin-small"
+                type="secondary"
+                onClick={() => record?.navigate_forward()}
+              >
+                View
               </Button>
-            </Link>
-          );
+            );
+          } else {
+            link = (
+              <Link
+                to={routes.EDIT_PROJECT_SUMMARY.dynamicRoute(
+                  payload?.project_guid,
+                  payload?.project_summary_guid
+                )}
+              >
+                <Button className="full-mobile margin-small" type="secondary">
+                  Resume
+                </Button>
+              </Link>
+            );
+          }
         }
         if (record.project_stage === "IRT") {
           let buttonLabel;

@@ -120,7 +120,7 @@ const Project: FC = () => {
       ),
     },
     isFeatureEnabled(Feature.AMS_AGENT) &&
-      project_summary?.status_code === "SUB" && {
+      project_summary?.submission_date && {
         key: "project-description",
         label: "Project Description",
         children: (
