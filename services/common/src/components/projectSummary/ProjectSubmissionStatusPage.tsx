@@ -36,7 +36,7 @@ export const ProjectSubmissionStatusPage = () => {
               Thank you, your application has been submitted successfully!
             </Typography.Title>
             Your submission tracking number and status are available in the Project Description
-            Overview. If your application requires an Information Requirements Table(IRT), please
+            Overview. If your application requires an Information Requirements Table (IRT), please
             download the{" "}
             <LinkButton
               onClick={() =>
