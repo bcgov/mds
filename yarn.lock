@@ -666,6 +666,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@date-fns/utc@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@date-fns/utc@npm:2.1.0"
+  checksum: 924ca45afa948a6f618ade184e490deb6d0cfdaab40ac833afd409cf5fc0b09cfab14e37c4503a790711178a5e27e2a68172f15208cd9e0542d635aa24ab4113
+  languageName: node
+  linkType: hard
+
 "@discoveryjs/json-ext@npm:0.5.7, @discoveryjs/json-ext@npm:^0.5.0":
   version: 0.5.7
   resolution: "@discoveryjs/json-ext@npm:0.5.7"
@@ -1554,6 +1561,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@mds/common@workspace:services/common"
   dependencies:
+    "@date-fns/utc": ^2.1.0
     "@reduxjs/toolkit": 2.0.1
     "@syncfusion/ej2-base": 26.1.37
     "@syncfusion/ej2-buttons": 26.1.35
