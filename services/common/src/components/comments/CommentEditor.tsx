@@ -1,8 +1,7 @@
 import React, { FC } from "react";
 import { useSelector } from "react-redux";
 import { Button, Form, Input } from "antd";
-import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
-import { USER_ROLES } from "@mds/common/index";
+import { userHasRole } from "@mds/common/redux/reducers/authenticationReducer";
 
 interface CommentEditorProps {
   onSubmit: (data: any) => void;
@@ -15,8 +14,6 @@ export const CommentEditor: FC<CommentEditorProps> = ({
   addCommentPermission,
   maxLength = 300,
 }) => {
-  const userRoles = useSelector(getUserAccessData);
-
   const [submitting, setSubmitting] = React.useState(false);
   const [comment, setComment] = React.useState("");
 
@@ -37,9 +34,9 @@ export const CommentEditor: FC<CommentEditorProps> = ({
     setComment(e.target.value);
   };
 
-  const canAddComment = addCommentPermission
-    ? userRoles.includes(USER_ROLES[addCommentPermission])
-    : true;
+  const hasRole = useSelector((state) => userHasRole(state, addCommentPermission));
+
+  const canAddComment = addCommentPermission ? hasRole : true;
 
   return (
     <div>
