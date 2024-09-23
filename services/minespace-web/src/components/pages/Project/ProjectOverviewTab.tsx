@@ -13,10 +13,10 @@ import {
   getProject,
   getProjectSummary,
 } from "@mds/common/redux/selectors/projectSelectors";
-import * as Strings from "@/constants/strings";
-import { formatDate } from "@/utils/helpers";
 import MinistryContactItem from "@/components/dashboard/mine/overview/MinistryContactItem";
-import ProjectStagesTable from "../../dashboard/mine/projects/ProjectStagesTable";
+import { EMPTY_FIELD, UNKNOWN } from "@mds/common";
+import { formatDate } from "@common/utils/helpers";
+import ProjectStagesTable from "@/components/dashboard/mine/projects/ProjectStagesTable";
 
 interface ProjectOverviewTabProps {
   navigateForward: (source: string, status?: string) => void;
@@ -41,7 +41,7 @@ export const ProjectOverviewTab: FC<ProjectOverviewTabProps> = ({ navigateForwar
           const isPrimary = c.is_primary;
           const hasJobTitle = c.job_title;
           const name = [c?.first_name, c?.last_name].join(" ").trim();
-          let title;
+          let title: string;
           if (isPrimary) {
             title = "Primary Contact";
           } else if (hasJobTitle) {
@@ -55,7 +55,7 @@ export const ProjectOverviewTab: FC<ProjectOverviewTabProps> = ({ navigateForwar
                 </Typography.Text>
               )}
               <br />
-              <Typography.Text>{name || Strings.EMPTY_FIELD}</Typography.Text>
+              <Typography.Text>{name || EMPTY_FIELD}</Typography.Text>
               <br />
               <Typography.Text>{c.phone_number}</Typography.Text>
               <br />
@@ -125,14 +125,14 @@ export const ProjectOverviewTab: FC<ProjectOverviewTabProps> = ({ navigateForwar
                 label="Estimated IRT Submission"
                 className="vertical-description"
               >
-                {formatDate(expected_draft_irt_submission_date) || Strings.UNKNOWN}
+                {formatDate(expected_draft_irt_submission_date) || UNKNOWN}
               </Descriptions.Item>
               <Descriptions.Item
                 span={12}
                 label="Desired date to receive permit/amendment(s)"
                 className="vertical-description"
               >
-                {formatDate(expected_permit_receipt_date) || Strings.UNKNOWN}
+                {formatDate(expected_permit_receipt_date) || UNKNOWN}
               </Descriptions.Item>
             </Descriptions>
           </Col>
@@ -143,14 +143,14 @@ export const ProjectOverviewTab: FC<ProjectOverviewTabProps> = ({ navigateForwar
                 label="Estimated Permit Application Submission"
                 className="vertical-description"
               >
-                {formatDate(expected_permit_application_date) || Strings.UNKNOWN}
+                {formatDate(expected_permit_application_date) || UNKNOWN}
               </Descriptions.Item>
               <Descriptions.Item
                 span={12}
                 label="Anticipated work start"
                 className="vertical-description"
               >
-                {formatDate(expected_project_start_date) || Strings.UNKNOWN}
+                {formatDate(expected_project_start_date) || UNKNOWN}
               </Descriptions.Item>
             </Descriptions>
           </Col>

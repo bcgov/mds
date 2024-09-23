@@ -1,17 +1,17 @@
-import React from "react";
+import React, { FC } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
 import { Button, Table } from "antd";
 import * as routes from "@/constants/routes";
 import { ColumnsType } from "antd/es/table";
 import { getProjectSummary } from "@mds/common/redux/reducers/projectReducer";
+import { IProjectStage } from "@mds/common";
 
-const propTypes = {
-  projectStages: PropTypes.arrayOf(PropTypes.any).isRequired,
-};
+interface ProjectStagesTableProps {
+  projectStages: IProjectStage[];
+}
 
-export const ProjectStagesTable = ({ projectStages }) => {
+export const ProjectStagesTable: FC<ProjectStagesTableProps> = ({ projectStages }) => {
   const projectSummary = useSelector(getProjectSummary);
   const transformRowData = (projectStages) =>
     projectStages &&
@@ -91,7 +91,7 @@ export const ProjectStagesTable = ({ projectStages }) => {
           }
         }
         if (record.project_stage === "IRT") {
-          let buttonLabel;
+          let buttonLabel: string;
           if (!record.stage_status) {
             buttonLabel = "Start";
           } else if (record.stage_status === "APV") {
@@ -140,7 +140,5 @@ export const ProjectStagesTable = ({ projectStages }) => {
     />
   );
 };
-
-ProjectStagesTable.propTypes = propTypes;
 
 export default ProjectStagesTable;
