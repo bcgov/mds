@@ -285,7 +285,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                           style="text-align: right;"
                         >
                           <button
-                            class="ant-btn ant-btn-secondary full-mobile margin-small"
+                            class="ant-btn ant-btn-default full-mobile margin-small"
                             type="button"
                           >
                             <span>
@@ -335,7 +335,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                           style="text-align: right;"
                         >
                           <button
-                            class="ant-btn ant-btn-secondary full-mobile margin-small"
+                            class="ant-btn ant-btn-default full-mobile margin-small"
                             type="button"
                           >
                             <span>
@@ -385,7 +385,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                           style="text-align: right;"
                         >
                           <button
-                            class="ant-btn ant-btn-secondary full-mobile margin-small"
+                            class="ant-btn ant-btn-default full-mobile margin-small"
                             type="button"
                           >
                             <span>
