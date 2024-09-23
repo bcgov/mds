@@ -77,6 +77,7 @@ export const ProjectOverviewTab: FC<ProjectOverviewTabProps> = ({ navigateForwar
     expected_permit_receipt_date,
     expected_project_start_date,
   } = projectSummary;
+
   const projectStages = [
     {
       title: "Project description",
