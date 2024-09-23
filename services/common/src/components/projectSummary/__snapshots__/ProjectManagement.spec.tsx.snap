@@ -1,0 +1,638 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Project Management renders properly 1`] = `
+<div>
+  <form
+    class="ant-form ant-form-vertical common-form common-form-ADD_EDIT_PROJECT_SUMMARY form-edit"
+    id="ADD_EDIT_PROJECT_SUMMARY"
+  >
+    <div>
+      <h3
+        class="ant-typography"
+      >
+        Project Management
+      </h3>
+      <div
+        class="ant-typography"
+      >
+        Need help with this feature? Here's the 
+        <a>
+          guide
+        </a>
+         to help you learn more or get step-by-step instructions.
+      </div>
+      <h3
+        class="ant-typography color-primary"
+      >
+        EMLI Status
+      </h3>
+      <h4
+        class="ant-typography"
+      >
+        Project Status
+      </h4>
+      <div
+        class="ant-typography"
+      >
+        Project status is shared with the proponent via MineSpace. Changing the status will notify the project’s Primary Contact.
+      </div>
+      <div
+        class="ant-form-item ant-form-item-with-help"
+      >
+        <div
+          class="ant-row ant-form-item-row"
+        >
+          <div
+            class="ant-col ant-form-item-control"
+          >
+            <div
+              class="ant-form-item-control-input"
+            >
+              <div
+                class="ant-form-item-control-input-content"
+              >
+                <div
+                  aria-required="true"
+                  class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                  data-cy="status_code"
+                >
+                  <div
+                    class="ant-select-selector"
+                  >
+                    <span
+                      class="ant-select-selection-search"
+                    >
+                      <input
+                        aria-activedescendant="status_code_list_0"
+                        aria-autocomplete="list"
+                        aria-controls="status_code_list"
+                        aria-haspopup="listbox"
+                        aria-owns="status_code_list"
+                        aria-required="true"
+                        autocomplete="off"
+                        class="ant-select-selection-search-input"
+                        id="status_code"
+                        role="combobox"
+                        type="search"
+                        value=""
+                      />
+                    </span>
+                    <span
+                      class="ant-select-selection-item"
+                      title="Assigned"
+                    >
+                      Assigned
+                    </span>
+                  </div>
+                  <span
+                    aria-hidden="true"
+                    class="ant-select-arrow"
+                    style="user-select: none;"
+                    unselectable="on"
+                  >
+                    <span
+                      aria-label="down"
+                      class="anticon anticon-down ant-select-suffix"
+                      role="img"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        data-icon="down"
+                        fill="currentColor"
+                        focusable="false"
+                        height="1em"
+                        viewBox="64 64 896 896"
+                        width="1em"
+                      >
+                        <path
+                          d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                        />
+                      </svg>
+                    </span>
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    class="ant-select-clear"
+                    style="user-select: none;"
+                    unselectable="on"
+                  >
+                    <span
+                      aria-label="close-circle"
+                      class="anticon anticon-close-circle"
+                      role="img"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        data-icon="close-circle"
+                        fill="currentColor"
+                        fill-rule="evenodd"
+                        focusable="false"
+                        height="1em"
+                        viewBox="64 64 896 896"
+                        width="1em"
+                      >
+                        <path
+                          d="M512 64c247.4 0 448 200.6 448 448S759.4 960 512 960 64 759.4 64 512 264.6 64 512 64zm127.98 274.82h-.04l-.08.06L512 466.75 384.14 338.88c-.04-.05-.06-.06-.08-.06a.12.12 0 00-.07 0c-.03 0-.05.01-.09.05l-45.02 45.02a.2.2 0 00-.05.09.12.12 0 000 .07v.02a.27.27 0 00.06.06L466.75 512 338.88 639.86c-.05.04-.06.06-.06.08a.12.12 0 000 .07c0 .03.01.05.05.09l45.02 45.02a.2.2 0 00.09.05.12.12 0 00.07 0c.02 0 .04-.01.08-.05L512 557.25l127.86 127.87c.04.04.06.05.08.05a.12.12 0 00.07 0c.03 0 .05-.01.09-.05l45.02-45.02a.2.2 0 00.05-.09.12.12 0 000-.07v-.02a.27.27 0 00-.05-.06L557.25 512l127.87-127.86c.04-.04.05-.06.05-.08a.12.12 0 000-.07c0-.03-.01-.05-.05-.09l-45.02-45.02a.2.2 0 00-.09-.05.12.12 0 00-.07 0z"
+                        />
+                      </svg>
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div
+              style="display: flex; flex-wrap: nowrap;"
+            >
+              <div
+                class="ant-form-item-explain ant-form-item-explain-connected"
+                id="ADD_EDIT_PROJECT_SUMMARY_status_code_help"
+                role="alert"
+              >
+                <div
+                  class=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-alert ant-alert-warning margin-large--bottom"
+        data-show="true"
+        role="alert"
+      >
+        <span
+          aria-label="exclamation-circle"
+          class="anticon anticon-exclamation-circle ant-alert-icon"
+          role="img"
+        >
+          <svg
+            aria-hidden="true"
+            data-icon="exclamation-circle"
+            fill="currentColor"
+            focusable="false"
+            height="1em"
+            viewBox="64 64 896 896"
+            width="1em"
+          >
+            <path
+              d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm-32 232c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v272c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V296zm32 440a48.01 48.01 0 010-96 48.01 48.01 0 010 96z"
+            />
+          </svg>
+        </span>
+        <div
+          class="ant-alert-content"
+        >
+          <div
+            class="ant-alert-message"
+          >
+            Assigned
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-row ant-row-start ant-row-middle"
+        style="margin-left: -4px; margin-right: -4px;"
+      >
+        <div
+          class="ant-col"
+          style="padding-left: 4px; padding-right: 4px;"
+        >
+          <h4
+            class="ant-typography"
+          >
+            Assigned Project Lead
+          </h4>
+        </div>
+        <div
+          class="ant-col"
+          style="padding-left: 4px; padding-right: 4px;"
+        >
+          <div
+            class="ant-typography margin-medium--bottom"
+          >
+            (Optional)
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-form-item ant-form-item-with-help"
+      >
+        <div
+          class="ant-row ant-form-item-row"
+        >
+          <div
+            class="ant-col ant-form-item-label"
+          >
+            <label
+              class=""
+              for="ADD_EDIT_PROJECT_SUMMARY_project_lead_party_guid"
+              title=""
+            >
+              <div>
+                Select the Project Lead responsible for this project. This person will serve as the main
+        contact for mine proponents and the Ministry of Environment.
+                 
+              </div>
+            </label>
+          </div>
+          <div
+            class="ant-col ant-form-item-control"
+          >
+            <div
+              class="ant-form-item-control-input"
+            >
+              <div
+                class="ant-form-item-control-input-content"
+              >
+                <div
+                  class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                  data-cy="project_lead_party_guid"
+                >
+                  <div
+                    class="ant-select-selector"
+                  >
+                    <span
+                      class="ant-select-selection-search"
+                    >
+                      <input
+                        aria-activedescendant="project_lead_party_guid_list_0"
+                        aria-autocomplete="list"
+                        aria-controls="project_lead_party_guid_list"
+                        aria-haspopup="listbox"
+                        aria-owns="project_lead_party_guid_list"
+                        autocomplete="off"
+                        class="ant-select-selection-search-input"
+                        id="project_lead_party_guid"
+                        role="combobox"
+                        type="search"
+                        value=""
+                      />
+                    </span>
+                    <span
+                      class="ant-select-selection-placeholder"
+                    >
+                      Please select
+                    </span>
+                  </div>
+                  <span
+                    aria-hidden="true"
+                    class="ant-select-arrow"
+                    style="user-select: none;"
+                    unselectable="on"
+                  >
+                    <span
+                      aria-label="down"
+                      class="anticon anticon-down ant-select-suffix"
+                      role="img"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        data-icon="down"
+                        fill="currentColor"
+                        focusable="false"
+                        height="1em"
+                        viewBox="64 64 896 896"
+                        width="1em"
+                      >
+                        <path
+                          d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                        />
+                      </svg>
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div
+              style="display: flex; flex-wrap: nowrap;"
+            >
+              <div
+                class="ant-form-item-explain ant-form-item-explain-connected"
+                id="ADD_EDIT_PROJECT_SUMMARY_project_lead_party_guid_help"
+                role="alert"
+              >
+                <div
+                  class=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-alert ant-alert-warning ant-alert-with-description"
+        data-show="true"
+        role="alert"
+      >
+        <span
+          aria-label="exclamation-circle"
+          class="anticon anticon-exclamation-circle ant-alert-icon"
+          role="img"
+        >
+          <svg
+            aria-hidden="true"
+            data-icon="exclamation-circle"
+            fill="currentColor"
+            focusable="false"
+            height="1em"
+            viewBox="64 64 896 896"
+            width="1em"
+          >
+            <path
+              d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+            />
+            <path
+              d="M464 688a48 48 0 1096 0 48 48 0 10-96 0zm24-112h48c4.4 0 8-3.6 8-8V296c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8z"
+            />
+          </svg>
+        </span>
+        <div
+          class="ant-alert-content"
+        >
+          <div
+            class="ant-alert-message"
+          >
+            This project does not have a Project Lead
+          </div>
+          <div
+            class="ant-alert-description"
+          >
+            <p>
+              Please assign a Project Lead to this project.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="margin-large--top"
+      >
+        <div
+          class="ant-row ant-row-middle margin-medium--bottom"
+          style="margin-left: -6.25px; margin-right: -6.25px;"
+        >
+          <div
+            class="ant-col"
+            style="padding-left: 6.25px; padding-right: 6.25px;"
+          >
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-lock fa-lg color-primary"
+              data-icon="lock"
+              data-prefix="far"
+              focusable="false"
+              role="img"
+              viewBox="0 0 448 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M144 128v64H304V128c0-44.2-35.8-80-80-80s-80 35.8-80 80zM96 192V128C96 57.3 153.3 0 224 0s128 57.3 128 128v64h32c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V256c0-35.3 28.7-64 64-64H96zM48 256V448c0 8.8 7.2 16 16 16H384c8.8 0 16-7.2 16-16V256c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16z"
+                fill="currentColor"
+              />
+            </svg>
+          </div>
+          <div
+            class="ant-col"
+            style="padding-left: 6.25px; padding-right: 6.25px;"
+          >
+            <h3
+              class="ant-typography color-primary margin-none"
+            >
+              Internal Ministry Comments
+            </h3>
+          </div>
+        </div>
+        <h4
+          class="ant-typography margin-small--bottom"
+        >
+          Internal Ministry Comment
+        </h4>
+        <div
+          class="ant-typography"
+        >
+          Add comments to this project description for future reference. Anything written in these comments may be requested under FOIPPA. Keep it professional and concise.
+        </div>
+        <div
+          class="project-summary-ministry-comments"
+          data-testid="ministry-comments-section"
+        >
+          <div
+            class="ant-list ant-list-split comment-list"
+          >
+            <div
+              class="ant-spin-nested-loading"
+            >
+              <div
+                class="ant-spin-container"
+              >
+                <ul
+                  class="ant-list-items"
+                >
+                  <li>
+                    <div
+                      class="inline-flex"
+                    >
+                      <div
+                        class="flex-4"
+                      >
+                        <div
+                          class="ant-row"
+                        >
+                          <div
+                            class="ant-col ant-col-2"
+                          >
+                            <span
+                              class="ant-avatar ant-avatar-sm ant-avatar-circle ant-avatar-icon"
+                            >
+                              <span
+                                aria-label="user"
+                                class="anticon anticon-user"
+                                role="img"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class=""
+                                  data-icon="user"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="64 64 896 896"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M858.5 763.6a374 374 0 00-80.6-119.5 375.63 375.63 0 00-119.5-80.6c-.4-.2-.8-.3-1.2-.5C719.5 518 760 444.7 760 362c0-137-111-248-248-248S264 225 264 362c0 82.7 40.5 156 102.8 201.1-.4.2-.8.3-1.2.5-44.8 18.9-85 46-119.5 80.6a375.63 375.63 0 00-80.6 119.5A371.7 371.7 0 00136 901.8a8 8 0 008 8.2h60c4.4 0 7.9-3.5 8-7.8 2-77.2 33-149.5 87.8-204.3 56.7-56.7 132-87.9 212.2-87.9s155.5 31.2 212.2 87.9C779 752.7 810 825 812 902.2c.1 4.4 3.6 7.8 8 7.8h60a8 8 0 008-8.2c-1-47.8-10.9-94.3-29.5-138.2zM512 534c-45.9 0-89.1-17.9-121.6-50.4S340 407.9 340 362c0-45.9 17.9-89.1 50.4-121.6S466.1 190 512 190s89.1 17.9 121.6 50.4S684 316.1 684 362c0 45.9-17.9 89.1-50.4 121.6S557.9 534 512 534z"
+                                  />
+                                </svg>
+                              </span>
+                            </span>
+                          </div>
+                          <div
+                            class="ant-col ant-col-21"
+                          >
+                            <div
+                              class="ant-comment-content-author"
+                            >
+                              <span
+                                class="ant-comment-content-author-name comment-author"
+                              >
+                                idr\\test
+                              </span>
+                              <span
+                                class="ant-comment-content-author-time comment-time"
+                              >
+                                9
+                                 days ago
+                              </span>
+                            </div>
+                            <div
+                              class="comment"
+                            >
+                              this is a comment
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div
+                      class="inline-flex"
+                    >
+                      <div
+                        class="flex-4"
+                      >
+                        <div
+                          class="ant-row"
+                        >
+                          <div
+                            class="ant-col ant-col-2"
+                          >
+                            <span
+                              class="ant-avatar ant-avatar-sm ant-avatar-circle ant-avatar-icon"
+                            >
+                              <span
+                                aria-label="user"
+                                class="anticon anticon-user"
+                                role="img"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class=""
+                                  data-icon="user"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="64 64 896 896"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M858.5 763.6a374 374 0 00-80.6-119.5 375.63 375.63 0 00-119.5-80.6c-.4-.2-.8-.3-1.2-.5C719.5 518 760 444.7 760 362c0-137-111-248-248-248S264 225 264 362c0 82.7 40.5 156 102.8 201.1-.4.2-.8.3-1.2.5-44.8 18.9-85 46-119.5 80.6a375.63 375.63 0 00-80.6 119.5A371.7 371.7 0 00136 901.8a8 8 0 008 8.2h60c4.4 0 7.9-3.5 8-7.8 2-77.2 33-149.5 87.8-204.3 56.7-56.7 132-87.9 212.2-87.9s155.5 31.2 212.2 87.9C779 752.7 810 825 812 902.2c.1 4.4 3.6 7.8 8 7.8h60a8 8 0 008-8.2c-1-47.8-10.9-94.3-29.5-138.2zM512 534c-45.9 0-89.1-17.9-121.6-50.4S340 407.9 340 362c0-45.9 17.9-89.1 50.4-121.6S466.1 190 512 190s89.1 17.9 121.6 50.4S684 316.1 684 362c0 45.9-17.9 89.1-50.4 121.6S557.9 534 512 534z"
+                                  />
+                                </svg>
+                              </span>
+                            </span>
+                          </div>
+                          <div
+                            class="ant-col ant-col-21"
+                          >
+                            <div
+                              class="ant-comment-content-author"
+                            >
+                              <span
+                                class="ant-comment-content-author-name comment-author"
+                              >
+                                idr\\test
+                              </span>
+                              <span
+                                class="ant-comment-content-author-time comment-time"
+                              >
+                                9
+                                 days ago
+                              </span>
+                            </div>
+                            <div
+                              class="comment"
+                            >
+                              this is a comment number 2
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div
+                      class="inline-flex"
+                    >
+                      <div
+                        class="flex-4"
+                      >
+                        <div
+                          class="ant-row"
+                        >
+                          <div
+                            class="ant-col ant-col-2"
+                          >
+                            <span
+                              class="ant-avatar ant-avatar-sm ant-avatar-circle ant-avatar-icon"
+                            >
+                              <span
+                                aria-label="user"
+                                class="anticon anticon-user"
+                                role="img"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class=""
+                                  data-icon="user"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="64 64 896 896"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M858.5 763.6a374 374 0 00-80.6-119.5 375.63 375.63 0 00-119.5-80.6c-.4-.2-.8-.3-1.2-.5C719.5 518 760 444.7 760 362c0-137-111-248-248-248S264 225 264 362c0 82.7 40.5 156 102.8 201.1-.4.2-.8.3-1.2.5-44.8 18.9-85 46-119.5 80.6a375.63 375.63 0 00-80.6 119.5A371.7 371.7 0 00136 901.8a8 8 0 008 8.2h60c4.4 0 7.9-3.5 8-7.8 2-77.2 33-149.5 87.8-204.3 56.7-56.7 132-87.9 212.2-87.9s155.5 31.2 212.2 87.9C779 752.7 810 825 812 902.2c.1 4.4 3.6 7.8 8 7.8h60a8 8 0 008-8.2c-1-47.8-10.9-94.3-29.5-138.2zM512 534c-45.9 0-89.1-17.9-121.6-50.4S340 407.9 340 362c0-45.9 17.9-89.1 50.4-121.6S466.1 190 512 190s89.1 17.9 121.6 50.4S684 316.1 684 362c0 45.9-17.9 89.1-50.4 121.6S557.9 534 512 534z"
+                                  />
+                                </svg>
+                              </span>
+                            </span>
+                          </div>
+                          <div
+                            class="ant-col ant-col-21"
+                          >
+                            <div
+                              class="ant-comment-content-author"
+                            >
+                              <span
+                                class="ant-comment-content-author-name comment-author"
+                              >
+                                idr\\test
+                              </span>
+                              <span
+                                class="ant-comment-content-author-time comment-time"
+                              >
+                                9
+                                 days ago
+                              </span>
+                            </div>
+                            <div
+                              class="comment"
+                            >
+                              this is a comment number 2
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+`;

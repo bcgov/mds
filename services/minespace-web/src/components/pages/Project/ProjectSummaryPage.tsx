@@ -112,6 +112,7 @@ export const ProjectSummaryPage = () => {
         {
           mrc_review_required: payload.mrc_review_required,
           contacts: payload.contacts,
+          project_lead_party_guid: payload.project_lead_party_guid,
         },
         "Successfully updated project.",
         false

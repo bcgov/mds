@@ -5,7 +5,7 @@ import {
   createMineIncidentNote,
   fetchMineIncidentNotes,
 } from "@mds/common/redux/actionCreators/incidentActionCreator";
-import MinistryCommentPanel from "@/components/common/comments/MinistryCommentPanel";
+import MinistryCommentPanel from "@mds/common/components/comments/MinistryCommentPanel";
 import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 

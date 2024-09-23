@@ -1,0 +1,41 @@
+// Colours
+.color {
+  // Theme Colours
+  &-primary {
+    color: $primary-color !important;
+  }
+  &-error {
+    color: $error-color !important;
+  }
+  &-warning {
+    color: $warning-color !important;
+  }
+  &-white {
+    color: $white !important;
+  }
+
+  // Brand Colours
+  &-gov-grey {
+    color: $gov-grey !important;
+  }
+}
+
+// Background Colours
+.bg-color {
+  // Theme Colours
+  &-primary {
+    background-color: $primary-color !important;
+  }
+  &-error {
+    background-color: $error-color !important;
+  }
+  &-warning {
+    background-color: $warning-color !important;
+  }
+  &-white {
+    background-color: $white !important;
+  }
+  &-black {
+    background-color: $black !important;
+  }
+}

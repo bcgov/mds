@@ -15,11 +15,14 @@ import {
   createMajorMineApplication,
   updateMajorMineApplication,
   removeDocumentFromMajorMineApplication,
+  fetchProjectSummaryMinistryComments,
+  createProjectSummaryMinistryComment,
 } from "@mds/common/redux/actionCreators/projectActionCreator";
 import * as genericActions from "@mds/common/redux/actions/genericActions";
 import { ENVIRONMENT } from "@mds/common";
 import * as API from "@mds/common/constants/API";
 import * as MOCK from "@/tests/mocks/dataMocks";
+import { clearProjectSummaryMinistryComments } from "@mds/common/redux/actions/projectActions";
 
 const dispatch = jest.fn();
 const requestSpy = jest.spyOn(genericActions, "request");
@@ -482,6 +485,63 @@ describe("`removeDocumentFromMajorMineApplication` action creator", () => {
       majorMineApplicationGuid,
       mineDocumentGuid
     )(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`createProjectSummaryMinistryComment` action creator", () => {
+  const projectSummaryGuid = "12345-6789";
+  const url = ENVIRONMENT.apiUrl + API.PROJECT_SUMMARY_MINISTRY_COMMENTS(projectSummaryGuid);
+  const mockPayload = { content: "This is a test comment" };
+
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onPost(url, mockPayload).reply(200, mockResponse);
+    return createProjectSummaryMinistryComment(
+      projectSummaryGuid,
+      mockPayload
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(5);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPost(url).reply(418, MOCK.ERROR);
+    return createProjectSummaryMinistryComment(
+      projectSummaryGuid,
+      null
+    )(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`fetchProjectSummaryMinistryComments` action creator", () => {
+  const projectSummaryGuid = "12345-6789";
+  const url = ENVIRONMENT.apiUrl + API.PROJECT_SUMMARY_MINISTRY_COMMENTS(projectSummaryGuid);
+
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { records: [{ comment: "Existing comment" }] } };
+    mockAxios.onGet(url).reply(200, mockResponse);
+
+    return fetchProjectSummaryMinistryComments(projectSummaryGuid)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(5);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onGet(url).reply(418, MOCK.ERROR);
+
+    return fetchProjectSummaryMinistryComments(projectSummaryGuid)(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

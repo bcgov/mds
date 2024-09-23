@@ -1,9 +1,9 @@
 import React from "react";
-import { shallow } from "enzyme";
 import { Comment } from "@/components/common/comments/Comment";
+import { render } from "@testing-library/react";
 
-const dispatchProps = {};
-const props = {};
+const dispatchProps: any = {};
+const props: any = {};
 
 const setupDispatchProps = () => {};
 
@@ -21,7 +21,7 @@ beforeEach(() => {
 
 describe("Comment", () => {
   it("renders properly", () => {
-    const wrapper = shallow(<Comment {...dispatchProps} {...props} />);
-    expect(wrapper).toMatchSnapshot();
+    const { container } = render(<Comment {...dispatchProps} {...props} />);
+    expect(container).toMatchSnapshot();
   });
 });

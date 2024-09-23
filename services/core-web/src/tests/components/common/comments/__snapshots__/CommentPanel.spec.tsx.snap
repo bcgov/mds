@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Comment renders properly 1`] = `
+<div>
+  <div
+    class="ant-list ant-list-split comment-list"
+  >
+    <div
+      class="ant-spin-nested-loading"
+    >
+      <div
+        class="ant-spin-container"
+      >
+        <ul
+          class="ant-list-items"
+        >
+          <li>
+            <div
+              class="inline-flex"
+            >
+              <div
+                class="flex-4"
+              >
+                <div
+                  class="speech-bubble"
+                >
+                  new content
+                  <div
+                    class="speech-bubble-arrow"
+                  />
+                </div>
+                <div
+                  class="ant-comment-content padding-md--bottom inline-flex between"
+                >
+                  <div
+                    class="ant-comment-content-author inline-flex flex-flow-column"
+                  />
+                  <div
+                    class="ant-comment-content-author"
+                  >
+                    <span
+                      class="ant-comment-content-author-name"
+                    >
+                      idir/test
+                    </span>
+                    <span
+                      class="ant-comment-content-author-time"
+                    >
+                      Sep 17, 2024 12:00 AM
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div
+              class="inline-flex"
+            >
+              <div
+                class="flex-4"
+              >
+                <div
+                  class="speech-bubble"
+                >
+                  new content again
+                  <div
+                    class="speech-bubble-arrow"
+                  />
+                </div>
+                <div
+                  class="ant-comment-content padding-md--bottom inline-flex between"
+                >
+                  <div
+                    class="ant-comment-content-author inline-flex flex-flow-column"
+                  />
+                  <div
+                    class="ant-comment-content-author"
+                  >
+                    <span
+                      class="ant-comment-content-author-name"
+                    >
+                      idir/test
+                    </span>
+                    <span
+                      class="ant-comment-content-author-time"
+                    >
+                      Sep 17, 2024 12:00 AM
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -1,10 +1,11 @@
 import React from "react";
-import { shallow } from "enzyme";
 import { CommentPanel } from "@/components/common/comments/CommentPanel";
-import { MINE_COMMENTS } from "@/tests/mocks/dataMocks";
+import { render } from "@testing-library/react";
+import { MINE_COMMENTS } from "@mds/common/tests/mocks/dataMocks";
+import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 
-const dispatchProps = {};
-const props = {};
+const dispatchProps: any = {};
+const props: any = {};
 
 const setupDispatchProps = () => {
   dispatchProps.onSubmit = jest.fn();
@@ -18,7 +19,7 @@ const setupProps = () => {
 
   props.loading = false;
   props.renderEditor = false;
-  props.comments = MINE_COMMENTS;
+  props.comments = MINE_COMMENTS.records;
   props.userRoles = [];
 };
 
@@ -29,7 +30,11 @@ beforeEach(() => {
 
 describe("Comment", () => {
   it("renders properly", () => {
-    const wrapper = shallow(<CommentPanel {...dispatchProps} {...props} />);
-    expect(wrapper).toMatchSnapshot();
+    const { container } = render(
+      <ReduxWrapper>
+        <CommentPanel {...dispatchProps} {...props} />
+      </ReduxWrapper>
+    );
+    expect(container).toMatchSnapshot();
   });
 });

@@ -1,10 +1,13 @@
+/* eslint-disable */
 import React from "react";
-import PropTypes from "prop-types";
+import ReactDOMServer from "react-dom/server";
+import { connect } from "react-redux";
 import { startCase, camelCase } from "lodash";
-import { USER_ROLES, detectDevelopmentEnvironment, detectProdEnvironment } from "@mds/common";
+import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import { Tooltip } from "antd";
-import { useSelector } from "react-redux";
-import { userHasRole } from "@mds/common/redux/reducers/authenticationReducer";
+import * as Permission from "@/constants/permissions";
+import { detectDevelopmentEnvironment, detectProdEnvironment, USER_ROLES } from "@mds/common";
+import PropTypes from "prop-types";
 
 /**
  * @constant AuthorizationWrapper conditionally renders react children depending
@@ -43,7 +46,10 @@ const propTypes = {
   isMajorMine: PropTypes.bool,
   inDevelopment: PropTypes.bool,
   inTesting: PropTypes.bool,
-  children: PropTypes.any,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.element.isRequired),
+    PropTypes.element.isRequired,
+  ]),
   userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
   showToolTip: PropTypes.bool,
 };
@@ -54,7 +60,6 @@ const defaultProps = {
   inTesting: undefined,
   permission: undefined,
   showToolTip: true,
-  userRoles: [],
 };
 
 export const AuthorizationWrapper = (props) => {
@@ -62,14 +67,15 @@ export const AuthorizationWrapper = (props) => {
     props.inDevelopment === undefined || (props.inDevelopment && detectDevelopmentEnvironment());
   const inTestCheck =
     props.inTesting === undefined || (props.inTesting && !detectProdEnvironment());
-  const permissionCheck = useSelector((state) => userHasRole(state, props.permission));
+  const permissionCheck =
+    props.permission === undefined || props.userRoles.includes(USER_ROLES[props.permission]);
   const isMajorMine = props.isMajorMine === undefined || props.isMajorMine;
-  const isAdmin = useSelector((state) => userHasRole(state, USER_ROLES.role_admin));
+  const isAdmin = props.userRoles.includes(USER_ROLES[Permission.ADMIN]);
 
   const title = () => {
     const permission = props.permission ? `${USER_ROLES[props.permission]}` : "";
     const inTest = props.inTesting ? "Not Visible in Production" : "";
-    const majorMine = props.isMajorMine !== undefined ? "Only Visible to Major Mines" : "";
+    const majorMine = props?.isMajorMine !== undefined ? "Only Visible to Major Mines" : "";
     return (
       <ul style={{ listStyle: "none", marginBottom: "0" }}>
         {permission && <li>{startCase(camelCase(permission))}</li>}
@@ -102,4 +108,8 @@ export const AuthorizationWrapper = (props) => {
 AuthorizationWrapper.propTypes = propTypes;
 AuthorizationWrapper.defaultProps = defaultProps;
 
-export default AuthorizationWrapper;
+const mapStateToProps = (state) => ({
+  userRoles: getUserAccessData(state),
+});
+
+export default connect(mapStateToProps)(AuthorizationWrapper);
