@@ -167,7 +167,7 @@ def test_get_permit_extraction_tasks(test_client, auth_headers, pc_test_data, db
     task1 = PermitExtractionTask(
         permit_extraction_task_id=uuid.uuid4(),
         permit_amendment_guid=permit_amendment.permit_amendment_guid,
-        task_id='123',
+        task_id=uuid.uuid4(),
         task_status='PENDING',
         task_result=None,
         core_status_task_id='456',
@@ -177,7 +177,7 @@ def test_get_permit_extraction_tasks(test_client, auth_headers, pc_test_data, db
     task2 = PermitExtractionTask(
         permit_extraction_task_id=uuid.uuid4(),
         permit_amendment_guid=permit_amendment.permit_amendment_guid,
-        task_id='123',
+        task_id=uuid.uuid4(),
         task_status='PENDING',
         task_result=None,
         core_status_task_id='456',
@@ -188,14 +188,14 @@ def test_get_permit_extraction_tasks(test_client, auth_headers, pc_test_data, db
     db.session.add(task2)
     db.session.commit()
 
-    response = test_client.get(f'/mines/permits/condition-extraction/{task1.permit_extraction_task_id}', headers=auth_headers['full_auth_header'])
+    response = test_client.get(f'/mines/permits/condition-extraction/{task1.task_id}', headers=auth_headers['full_auth_header'])
     assert response.status_code == 200
 
     # Check the response data
     response_data = json.loads(response.data)
     assert response_data['permit_extraction_task_id'] == str(task1.permit_extraction_task_id)
 
-    response = test_client.get(f'/mines/permits/condition-extraction/{task2.permit_extraction_task_id}', headers=auth_headers['full_auth_header'])
+    response = test_client.get(f'/mines/permits/condition-extraction/{task2.task_id}', headers=auth_headers['full_auth_header'])
     assert response.status_code == 200
 
     # Check the response data
