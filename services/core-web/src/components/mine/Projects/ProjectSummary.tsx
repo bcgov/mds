@@ -19,7 +19,6 @@ import {
   AMS_STATUS_CODES_SUCCESS,
   AMS_STATUS_CODE_FAIL,
   AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES,
-  isFieldDisabled,
 } from "@mds/common";
 import { getMineById } from "@mds/common/redux/reducers/mineReducer";
 import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
@@ -60,7 +59,11 @@ export const ProjectSummary: FC = () => {
 
   const { isFeatureEnabled } = useFeatureFlag();
   const amsFeatureEnabled = isFeatureEnabled(Feature.AMS_AGENT);
-  const projectFormTabs = getProjectFormTabs(amsFeatureEnabled, true);
+  const projectFormTabs = getProjectFormTabs(
+    amsFeatureEnabled,
+    true,
+    isFeatureEnabled(Feature.MAJOR_PROJECT_REFACTOR)
+  );
 
   const isExistingProject = Boolean(projectGuid && projectSummaryGuid);
   const isDefaultLoaded = isExistingProject
