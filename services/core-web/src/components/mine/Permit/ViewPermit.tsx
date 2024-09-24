@@ -52,12 +52,6 @@ const ViewPermit: FC = () => {
   const [activeTab, setActiveTab] = useState(tab ?? tabs[0]);
   const history = useHistory();
 
-  const defaultIsNewImport = [
-    PermitExtractionStatus.in_progress,
-    PermitExtractionStatus.complete,
-  ].includes(permitExtraction?.task_status);
-  const [isNewImport, setIsNewImport] = useState(defaultIsNewImport);
-
   const statusTimerRef = useRef(null);
   const [pollForStatus, setPollForStatus] = useState(false);
 
@@ -92,7 +86,7 @@ const ViewPermit: FC = () => {
     } else {
       setPollForStatus(false);
     }
-  }, [permitExtraction?.task_status, isNewImport]);
+  }, [permitExtraction?.task_status]);
 
   useEffect(() => {
     if (enablePermitConditionsTab && latestAmendment) {
@@ -169,11 +163,9 @@ const ViewPermit: FC = () => {
         permit_amendment_document_guid: documents[0].permit_amendment_document_guid,
       })
     );
-    setIsNewImport(true);
   };
 
   const handleDeleteConditions = async () => {
-    setIsNewImport(false);
     await dispatch(
       deletePermitConditions({ permit_amendment_id: latestAmendment?.permit_amendment_id })
     );
