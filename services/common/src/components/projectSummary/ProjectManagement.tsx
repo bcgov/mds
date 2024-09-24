@@ -192,6 +192,6 @@ export const ProjectManagement: FC = () => {
       )}
     </>
   ) : (
-    <div />
+    undefined
   );
 };
