@@ -21,6 +21,7 @@ export const {
   getMajorMinesApplication,
   getProjectDecisionPackage,
   getProjectLinks,
+  getProjectSummaryMinistryComments,
 } = projectReducer;
 
 const formatProjectSummaryParty = (party): IParty => {

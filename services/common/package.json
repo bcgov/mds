@@ -14,6 +14,7 @@
     "test:updateAll": "jest --env=jsdom -u --"
   },
   "dependencies": {
+    "@date-fns/utc": "^2.1.0",
     "@reduxjs/toolkit": "2.0.1",
     "@syncfusion/ej2-base": "26.1.37",
     "@syncfusion/ej2-buttons": "26.1.35",

@@ -138,10 +138,14 @@ export class ProjectOverviewTab extends Component {
         link: (
           <Link
             data-cy="project-description-view-link"
-            to={routes.EDIT_PROJECT_SUMMARY.dynamicRoute(project_guid, project_summary_guid)}
+            to={
+              this.props?.project?.project_summary?.submission_date
+                ? routes.EDIT_PROJECT.dynamicRoute(project_guid, "project-description")
+                : routes.EDIT_PROJECT_SUMMARY.dynamicRoute(project_guid, project_summary_guid)
+            }
           >
             <Button className="full-mobile margin-small" type="secondary">
-              View
+              {this.props?.project?.project_summary?.submission_date ? "View" : "Resume"}
             </Button>
           </Link>
         ),

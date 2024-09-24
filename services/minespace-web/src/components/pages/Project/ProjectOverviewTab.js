@@ -86,6 +86,7 @@ export class ProjectOverviewTab extends Component {
         payload: this.props.projectSummary,
         statusHash: this.props.projectSummaryStatusCodesHash,
         required: true,
+        navigateForward: () => this.props.navigateForward("DES"),
       },
       {
         title: "IRT",

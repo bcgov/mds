@@ -15,6 +15,7 @@ interface SelectProps extends BaseInputProps {
   onSelect?: (value, option) => void;
   usedOptions: string[];
   allowClear?: boolean;
+  showOptional?: boolean;
 }
 
 export const RenderSelect: FC<SelectProps> = ({
@@ -29,6 +30,7 @@ export const RenderSelect: FC<SelectProps> = ({
   allowClear = true,
   disabled = false,
   required = false,
+  showOptional = true,
 }) => {
   const [isDirty, setIsDirty] = useState(meta.touched);
   return (
@@ -46,7 +48,7 @@ export const RenderSelect: FC<SelectProps> = ({
         return (
           <Form.Item
             name={input.name}
-            label={getFormItemLabel(label, required, labelSubtitle)}
+            label={getFormItemLabel(label, required, labelSubtitle, showOptional)}
             required={required}
             validateStatus={
               isDirty || meta.touched ? (meta.error && "error") || (meta.warning && "warning") : ""

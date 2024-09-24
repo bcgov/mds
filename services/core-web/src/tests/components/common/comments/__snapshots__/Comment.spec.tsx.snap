@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Comment renders properly 1`] = `
+<div>
+  <div
+    class="speech-bubble"
+  >
+    
+    <div
+      class="speech-bubble-arrow"
+    />
+  </div>
+  <div
+    class="ant-comment-content padding-md--bottom inline-flex between"
+  >
+    <div
+      class="ant-comment-content-author inline-flex flex-flow-column"
+    />
+    <div
+      class="ant-comment-content-author"
+    >
+      <span
+        class="ant-comment-content-author-name"
+      >
+        mock name
+      </span>
+      <span
+        class="ant-comment-content-author-time"
+      >
+        Aug 7, 2021 12:00 AM
+      </span>
+    </div>
+  </div>
+</div>
+`;

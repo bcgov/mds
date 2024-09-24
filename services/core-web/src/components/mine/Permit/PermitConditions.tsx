@@ -49,8 +49,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
   );
 
   const fetchingPermits = useSelector((state) => state.GET_PERMITS?.isFetching);
-  const fetchingConditions = useSelector((state) => state.GET_PERMIT_CONDITIONS?.isFetching);
-  const isLoading = fetchingPermits || fetchingConditions;
+  const isLoading = fetchingPermits;
 
   const isExtractionInProgress =
     permitExtraction?.task_status === PermitExtractionStatus.in_progress;

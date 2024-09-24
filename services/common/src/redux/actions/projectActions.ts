@@ -90,3 +90,17 @@ export const removeProjectLink = (projectLinkGuid) => ({
   type: actionTypes.REMOVE_PROJECT_LINK,
   payload: projectLinkGuid,
 });
+
+export const storeProjectSummaryMinistryComments = (payload) => ({
+  type: actionTypes.STORE_PROJECT_SUMMARY_MINISTRY_COMMENTS,
+  payload,
+});
+
+export const addProjectSummaryMinistryComment = (payload) => ({
+  type: actionTypes.ADD_PROJECT_SUMMARY_MINISTRY_COMMENT,
+  payload,
+});
+
+export const clearProjectSummaryMinistryComments = () => ({
+  type: actionTypes.CLEAR_PROJECT_SUMMARY_MINISTRY_COMMENTS,
+});

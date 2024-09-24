@@ -5931,16 +5931,43 @@ export const MINE_COMMENTS = {
       mine_comment_guid: "245234634153",
       comment_user: "mockUser",
       mine_comment: "new comment",
+      content: "new comment",
+      author: "idir/test",
+      datetime: "2018-10-16",
       comment_datetime: "2018-10-16",
     },
     {
       mine_comment_guid: "356135",
       comment_user: "mockUser",
       mine_comment: "new comment again",
+      content: "new comment 2",
+      author: "idir/test",
+      datetime: new Date(),
       comment_datetime: "2018-10-16",
     },
   ],
 };
+
+export const MINISTRY_COMMENTS = [
+  {
+    project_summary_ministry_comment_guid: "245234634153",
+    comment_user: "mockUser",
+    mine_comment: "new comment",
+    content: "new comment",
+    author: "idir/test",
+    datetime: "2018-10-16",
+    comment_datetime: "2018-10-16",
+  },
+  {
+    mine_comment_guid: "356135",
+    comment_user: "mockUser",
+    mine_comment: "new comment again",
+    content: "new comment 2",
+    author: "idir/test",
+    datetime: new Date(),
+    comment_datetime: "2018-10-16",
+  },
+];
 
 export const MINE_ALERTS = {
   records: [

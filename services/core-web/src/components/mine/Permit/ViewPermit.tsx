@@ -95,7 +95,7 @@ const ViewPermit: FC = () => {
   }, [permitExtraction?.task_status, isNewImport]);
 
   useEffect(() => {
-    if (latestAmendment) {
+    if (enablePermitConditionsTab && latestAmendment) {
       dispatch(
         fetchPermitExtractionTasks({ permit_amendment_id: latestAmendment.permit_amendment_id })
       );
