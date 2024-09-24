@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 DEBUG_MODE = os.environ.get("DEBUG_MODE", "False").lower() == "true"
 AZURE_DEPLOYMENT_NAME = os.environ.get("AZURE_DEPLOYMENT_NAME")
 ca_cert = os.environ.get("ELASTICSEARCH_CA_CERT", None)
-host = os.environ.get("ELASTICSEARCH_HOST", "https://elasticsearch:9200")
+host = os.environ.get("ELASTICSEARCH_HOST", None) or "https://elasticsearch:9200"
 username = os.environ.get("ELASTICSEARCH_USERNAME", "")
 password = os.environ.get("ELASTICSEARCH_PASSWORD", "")
 
@@ -74,7 +74,7 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
         existing_reply_found = False
         cache_key = hash_messages(messages)
 
-        document_store = ElasticsearchDocumentStore(hosts=[host],
+        document_store = ElasticsearchDocumentStore(hosts=host,
                                                     basic_auth=(username, password),
                                                     index="permits",
                                                     embedding_similarity_function="cosine",
