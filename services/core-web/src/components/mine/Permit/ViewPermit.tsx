@@ -52,10 +52,23 @@ const ViewPermit: FC = () => {
   const [activeTab, setActiveTab] = useState(tab ?? tabs[0]);
   const history = useHistory();
 
-  const [isNewImport, setIsNewImport] = useState(false);
+  const defaultIsNewImport = [
+    PermitExtractionStatus.in_progress,
+    PermitExtractionStatus.complete,
+  ].includes(permitExtraction?.task_status);
+  const [isNewImport, setIsNewImport] = useState(defaultIsNewImport);
 
   const statusTimerRef = useRef(null);
   const [pollForStatus, setPollForStatus] = useState(false);
+
+  const hasConditions = latestAmendment?.conditions?.length > 0;
+
+  const canStartExtraction =
+    ((documents.length > 0 && !permitExtraction?.status) ||
+      [PermitExtractionStatus.error, PermitExtractionStatus.not_started].includes(
+        permitExtraction?.status
+      )) &&
+    !hasConditions;
 
   useEffect(() => {
     if (!permit?.permit_id) {
@@ -70,12 +83,11 @@ const ViewPermit: FC = () => {
   }, [mine]);
 
   useEffect(() => {
-    if (permitExtraction?.task_status === PermitExtractionStatus.complete && isNewImport) {
+    if (permitExtraction?.task_status === PermitExtractionStatus.complete && !hasConditions) {
       dispatch(fetchPermits(id));
     }
 
     if (permitExtraction?.task_status === PermitExtractionStatus.in_progress) {
-      setIsNewImport(false);
       setPollForStatus(true);
     } else {
       setPollForStatus(false);
@@ -119,15 +131,6 @@ const ViewPermit: FC = () => {
     };
   }, [pollForStatus, permitExtraction?.task_id]);
 
-  const hasConditions = latestAmendment?.conditions?.length > 0;
-
-  const canStartExtraction =
-    ((documents.length > 0 && !permitExtraction?.status) ||
-      [PermitExtractionStatus.error, PermitExtractionStatus.not_started].includes(
-        permitExtraction?.status
-      )) &&
-    !hasConditions;
-
   const getConditionBadge = () => {
     const conditionStatus: PresetStatusColorType = hasConditions ? "success" : "error";
     return <Badge status={conditionStatus} />;
@@ -142,7 +145,13 @@ const ViewPermit: FC = () => {
     enablePermitConditionsTab && {
       key: tabs[1],
       label: <>{getConditionBadge()} Permit Conditions</>,
-      children: <PermitConditions latestAmendment={latestAmendment} />,
+      children: (
+        <PermitConditions
+          latestAmendment={latestAmendment}
+          canStartExtraction={canStartExtraction}
+          userCanEdit={userCanEditConditions}
+        />
+      ),
     },
   ].filter(Boolean);
 
