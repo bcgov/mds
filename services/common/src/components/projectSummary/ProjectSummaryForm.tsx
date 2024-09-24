@@ -34,9 +34,11 @@ interface ProjectSummaryFormProps {
 
 // converted to a function to make feature flag easier to work with
 // when removing feature flag, convert back to array
-export const getProjectFormTabs = (amsFeatureEnabled: boolean, isCore = false) => {
-  const { isFeatureEnabled } = useFeatureFlag();
-
+export const getProjectFormTabs = (
+  amsFeatureEnabled: boolean,
+  isCore = false,
+  projectRefactorEnabled: boolean
+) => {
   const projectFormTabs = [
     "basic-information",
     "related-projects",
@@ -55,7 +57,7 @@ export const getProjectFormTabs = (amsFeatureEnabled: boolean, isCore = false) =
     projectFormTabs.splice(
       1,
       0,
-      isFeatureEnabled(Feature.MAJOR_PROJECT_REFACTOR) ? "project-management" : "ministry-contact"
+      projectRefactorEnabled ? "project-management" : "ministry-contact"
     );
   }
 
@@ -82,7 +84,11 @@ export const ProjectSummaryForm: FC<ProjectSummaryFormProps> = ({
   const { isFeatureEnabled } = useFeatureFlag();
   const majorProjectsFeatureEnabled = isFeatureEnabled(Feature.MAJOR_PROJECT_LINK_PROJECTS);
   const amsFeatureEnabled = isFeatureEnabled(Feature.AMS_AGENT);
-  const projectFormTabs = getProjectFormTabs(amsFeatureEnabled, isCore);
+  const projectFormTabs = getProjectFormTabs(
+    amsFeatureEnabled,
+    isCore,
+    isFeatureEnabled(Feature.MAJOR_PROJECT_REFACTOR)
+  );
   const projectSummaryAuthorizationTypesArray = useSelector(
     getProjectSummaryAuthorizationTypesArray
   );
