@@ -62,11 +62,7 @@ export const ProjectManagement: FC = () => {
     await dispatch(createProjectSummaryMinistryComment(project_summary_guid, { content: comment }));
   };
 
-  if (!isCore) {
-    return null;
-  }
-
-  return (
+  return isCore ? (
     <>
       {isFeatureEnabled(Feature.MAJOR_PROJECT_REFACTOR) ? (
         <div>
@@ -195,5 +191,7 @@ export const ProjectManagement: FC = () => {
         </>
       )}
     </>
+  ) : (
+    <div />
   );
 };
