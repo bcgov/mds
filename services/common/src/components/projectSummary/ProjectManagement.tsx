@@ -44,7 +44,7 @@ export const ProjectManagement: FC = () => {
 
   const isNewProject = !project_summary_guid;
   const isProjectLeadAssigned = Boolean(project_lead_party_guid);
-  const projectLeadData = [unassignedProjectLeadEntry, ...projectLeads[0]?.opt];
+  const projectLeadData = [unassignedProjectLeadEntry, ...projectLeads?.[0]?.opt];
 
   const { isFeatureEnabled } = useFeatureFlag();
 
