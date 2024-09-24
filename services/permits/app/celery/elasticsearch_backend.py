@@ -27,7 +27,7 @@ class MDSElasticSearchBackend(ElasticsearchBackend):
             http_auth = (self.username, self.password)
 
         return elasticsearch.Elasticsearch(
-            hosts="https://elasticsearch:9200",
+            hosts=host,
             retry_on_timeout=self.es_retry_on_timeout,
             max_retries=self.es_max_retries,
             timeout=self.es_timeout,
