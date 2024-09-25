@@ -1,15 +1,19 @@
-import React, { Component } from "react";
+import React, { FC } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
-import { Table, Button } from "antd";
+import { Button, Table } from "antd";
 import * as routes from "@/constants/routes";
+import { ColumnsType } from "antd/es/table";
+import { getProjectSummary } from "@mds/common/redux/reducers/projectReducer";
+import { IProjectStage } from "@mds/common";
 
-const propTypes = {
-  projectStages: PropTypes.arrayOf(PropTypes.any).isRequired,
-};
+interface ProjectStagesTableProps {
+  projectStages: IProjectStage[];
+}
 
-export class ProjectStagesTable extends Component {
-  transformRowData = (projectStages) =>
+export const ProjectStagesTable: FC<ProjectStagesTableProps> = ({ projectStages }) => {
+  const projectSummary = useSelector(getProjectSummary);
+  const transformRowData = (projectStages) =>
     projectStages &&
     projectStages.map((stage) => ({
       key: stage.key,
@@ -21,7 +25,7 @@ export class ProjectStagesTable extends Component {
       stage,
     }));
 
-  columns = () => [
+  const columns: ColumnsType<any> = [
     {
       title: "",
       dataIndex: "project_stage",
@@ -63,12 +67,11 @@ export class ProjectStagesTable extends Component {
       render: (text, record) => {
         let link;
         if (record.project_stage === "Project description") {
-          let payload = record.stage?.payload;
+          const payload = record.stage?.payload;
           if (payload?.submission_date) {
             link = (
               <Button
                 className="full-mobile margin-small"
-                type="secondary"
                 onClick={() => record?.navigate_forward()}
               >
                 View
@@ -82,15 +85,13 @@ export class ProjectStagesTable extends Component {
                   payload?.project_summary_guid
                 )}
               >
-                <Button className="full-mobile margin-small" type="secondary">
-                  Resume
-                </Button>
+                <Button className="full-mobile margin-small">Resume</Button>
               </Link>
             );
           }
         }
         if (record.project_stage === "IRT") {
-          let buttonLabel;
+          let buttonLabel: string;
           if (!record.stage_status) {
             buttonLabel = "Start";
           } else if (record.stage_status === "APV") {
@@ -100,11 +101,7 @@ export class ProjectStagesTable extends Component {
           }
 
           link = (
-            <Button
-              className="full-mobile margin-small"
-              type="secondary"
-              onClick={() => record?.navigate_forward()}
-            >
+            <Button className="full-mobile margin-small" onClick={() => record?.navigate_forward()}>
               {buttonLabel}
             </Button>
           );
@@ -120,11 +117,7 @@ export class ProjectStagesTable extends Component {
           }
 
           link = (
-            <Button
-              className="full-mobile margin-small"
-              type="secondary"
-              onClick={() => record?.navigate_forward()}
-            >
+            <Button className="full-mobile margin-small" onClick={() => record?.navigate_forward()}>
               {buttonLabel}
             </Button>
           );
@@ -134,21 +127,18 @@ export class ProjectStagesTable extends Component {
     },
   ];
 
-  render() {
-    return (
-      <Table
-        size="small"
-        showHeader={false}
-        pagination={false}
-        columns={this.columns()}
-        rowKey="title"
-        dataSource={this.transformRowData(this.props.projectStages)}
-        locale={{ emptyText: "This project has no stage data." }}
-      />
-    );
-  }
-}
-
-ProjectStagesTable.propTypes = propTypes;
+  return (
+    <Table
+      loading={!projectSummary.project_summary_guid}
+      size="small"
+      showHeader={false}
+      pagination={false}
+      columns={columns}
+      rowKey="title"
+      dataSource={transformRowData(projectStages)}
+      locale={{ emptyText: "This project has no stage data." }}
+    />
+  );
+};
 
 export default ProjectStagesTable;

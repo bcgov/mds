@@ -35,13 +35,18 @@ export const ProjectManagement: FC = () => {
   const systemFlag = useSelector(getSystemFlag);
   const isCore = systemFlag === SystemFlagEnum.core;
 
-  const { isFeatureEnabled } = useFeatureFlag();
-
+  const projectSummaryStatusCodes = useSelector(getDropdownProjectSummaryStatusCodes);
+  const ministryComments = useSelector(getProjectSummaryMinistryComments);
+  const projectLeads: IGroupedDropdownList = useSelector(getDropdownProjectLeads);
   const { status_code, project_summary_guid, project_lead_party_guid } = useSelector((state) =>
     getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)(state)
   );
 
-  const ministryComments = useSelector(getProjectSummaryMinistryComments);
+  const isNewProject = !project_summary_guid;
+  const isProjectLeadAssigned = Boolean(project_lead_party_guid);
+  const projectLeadData = [unassignedProjectLeadEntry, ...(projectLeads?.[0]?.opt || [])];
+
+  const { isFeatureEnabled } = useFeatureFlag();
 
   useEffect(() => {
     if (project_summary_guid) {
@@ -53,22 +58,11 @@ export const ProjectManagement: FC = () => {
     };
   }, [project_summary_guid]);
 
-  if (!isCore) {
-    return null;
-  }
-
-  const isNewProject = !project_summary_guid;
-  const isProjectLeadAssigned = Boolean(project_lead_party_guid);
-  const projectSummaryStatusCodes = useSelector(getDropdownProjectSummaryStatusCodes);
-
-  const projectLeads: IGroupedDropdownList = useSelector(getDropdownProjectLeads);
-  const projectLeadData = [unassignedProjectLeadEntry, ...projectLeads[0]?.opt];
-
   const submitComment = async ({ comment }) => {
     await dispatch(createProjectSummaryMinistryComment(project_summary_guid, { content: comment }));
   };
 
-  return (
+  return isCore ? (
     <>
       {isFeatureEnabled(Feature.MAJOR_PROJECT_REFACTOR) ? (
         <div>
@@ -197,5 +191,7 @@ export const ProjectManagement: FC = () => {
         </>
       )}
     </>
+  ) : (
+    undefined
   );
 };

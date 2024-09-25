@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory, useParams } from "react-router-dom";
-import { Row, Col, Typography, Tabs } from "antd";
+import { Col, Row, Tabs, Typography } from "antd";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import { IProject } from "@mds/common/interfaces/projects/project.interface";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
@@ -23,6 +23,7 @@ import ProjectDocumentsTab from "@mds/common/components/projects/ProjectDocument
 import ProjectDescriptionTab from "@mds/common/components/project/ProjectDescriptionTab";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common";
+import { getProjectSummary } from "@mds/common/redux/reducers/projectReducer";
 
 const tabs = [
   "overview",
@@ -47,6 +48,7 @@ const ProjectPage: FC = () => {
   const [activeTab, setActiveTab] = useState(tab ?? tabs[0]);
   const dispatch = useDispatch();
   const project: IProject = useSelector(getProject) ?? {};
+  const projectSummary = useSelector(getProjectSummary) ?? {};
   const {
     mine_guid,
     project_title,
@@ -132,7 +134,10 @@ const ProjectPage: FC = () => {
   };
 
   const handleFetchData = async (includeArchivedDocuments = false) => {
-    if (projectGuid && project?.project_guid !== projectGuid) {
+    if (
+      (projectGuid && project?.project_guid !== projectGuid) ||
+      !projectSummary?.project_summary_guid
+    ) {
       await dispatch(fetchProjectById(projectGuid));
     }
     if (project?.mine_guid && project?.mine_guid !== mine?.mine_guid) {
@@ -180,7 +185,7 @@ const ProjectPage: FC = () => {
 
   useEffect(() => {
     handleFetchData();
-  }, [project, mine]);
+  }, [project, mine, projectSummary]);
 
   useEffect(() => {
     setActiveTab(tab);

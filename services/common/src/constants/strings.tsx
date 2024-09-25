@@ -39,6 +39,7 @@ export const CONTACT_ADMIN = [
 ];
 export const MMO_EMAIL = "permrecl@gov.bc.ca";
 export const EMPTY_FIELD = "N/A";
+export const UNKNOWN = "Unknown";
 export const EMPTY = "";
 export const ZERO = "0.00";
 export const UNASSIGNED = "Unassigned";

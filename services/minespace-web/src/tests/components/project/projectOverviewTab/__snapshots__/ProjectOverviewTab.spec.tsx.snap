@@ -1,0 +1,502 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProjectOverviewTab renders properly 1`] = `
+<div>
+  <div
+    class="ant-row"
+    style="margin-top: -8px; margin-bottom: -8px;"
+  >
+    <div
+      class="ant-col ant-col-lg-14 ant-col-xl-16"
+      style="padding-top: 8px; padding-bottom: 8px;"
+    >
+      <h4
+        class="ant-typography"
+      >
+        Overview
+      </h4>
+      <span
+        class="ant-typography"
+      >
+        <strong>
+          PROJECT DESCRIPTION
+        </strong>
+      </span>
+      <div
+        class="ant-typography"
+      >
+        Sample description
+      </div>
+      <span
+        class="ant-typography"
+      >
+        <strong>
+          KEY DATES
+        </strong>
+      </span>
+      <div
+        class="ant-row"
+      >
+        <div
+          class="ant-col ant-col-lg-12"
+        >
+          <div
+            class="ant-descriptions"
+          >
+            <div
+              class="ant-descriptions-view"
+            >
+              <table>
+                <tbody>
+                  <tr
+                    class="ant-descriptions-row"
+                  >
+                    <th
+                      class="ant-descriptions-item vertical-description"
+                      colspan="2"
+                    >
+                      <div
+                        class="ant-descriptions-item-container"
+                      >
+                        <span
+                          class="ant-descriptions-item-label"
+                        >
+                          Estimated IRT Submission
+                        </span>
+                      </div>
+                    </th>
+                  </tr>
+                  <tr
+                    class="ant-descriptions-row"
+                  >
+                    <td
+                      class="ant-descriptions-item vertical-description"
+                      colspan="2"
+                    >
+                      <div
+                        class="ant-descriptions-item-container"
+                      >
+                        <span
+                          class="ant-descriptions-item-content"
+                        >
+                          Nov 10 2020
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr
+                    class="ant-descriptions-row"
+                  >
+                    <th
+                      class="ant-descriptions-item vertical-description"
+                      colspan="2"
+                    >
+                      <div
+                        class="ant-descriptions-item-container"
+                      >
+                        <span
+                          class="ant-descriptions-item-label"
+                        >
+                          Desired date to receive permit/amendment(s)
+                        </span>
+                      </div>
+                    </th>
+                  </tr>
+                  <tr
+                    class="ant-descriptions-row"
+                  >
+                    <td
+                      class="ant-descriptions-item vertical-description"
+                      colspan="2"
+                    >
+                      <div
+                        class="ant-descriptions-item-container"
+                      >
+                        <span
+                          class="ant-descriptions-item-content"
+                        >
+                          Nov 20 2020
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-lg-12"
+        >
+          <div
+            class="ant-descriptions"
+          >
+            <div
+              class="ant-descriptions-view"
+            >
+              <table>
+                <tbody>
+                  <tr
+                    class="ant-descriptions-row"
+                  >
+                    <th
+                      class="ant-descriptions-item vertical-description"
+                      colspan="2"
+                    >
+                      <div
+                        class="ant-descriptions-item-container"
+                      >
+                        <span
+                          class="ant-descriptions-item-label"
+                        >
+                          Estimated Permit Application Submission
+                        </span>
+                      </div>
+                    </th>
+                  </tr>
+                  <tr
+                    class="ant-descriptions-row"
+                  >
+                    <td
+                      class="ant-descriptions-item vertical-description"
+                      colspan="2"
+                    >
+                      <div
+                        class="ant-descriptions-item-container"
+                      >
+                        <span
+                          class="ant-descriptions-item-content"
+                        >
+                          Nov 12 2020
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr
+                    class="ant-descriptions-row"
+                  >
+                    <th
+                      class="ant-descriptions-item vertical-description"
+                      colspan="2"
+                    >
+                      <div
+                        class="ant-descriptions-item-container"
+                      >
+                        <span
+                          class="ant-descriptions-item-label"
+                        >
+                          Anticipated work start
+                        </span>
+                      </div>
+                    </th>
+                  </tr>
+                  <tr
+                    class="ant-descriptions-row"
+                  >
+                    <td
+                      class="ant-descriptions-item vertical-description"
+                      colspan="2"
+                    >
+                      <div
+                        class="ant-descriptions-item-container"
+                      >
+                        <span
+                          class="ant-descriptions-item-content"
+                        >
+                          Nov 22 2020
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h4
+        class="ant-typography"
+      >
+        Project Stages
+      </h4>
+      <div
+        class="ant-table-wrapper"
+      >
+        <div
+          class="ant-spin-nested-loading"
+        >
+          <div
+            class="ant-spin-container"
+          >
+            <div
+              class="ant-table ant-table-small"
+            >
+              <div
+                class="ant-table-container"
+              >
+                <div
+                  class="ant-table-content"
+                >
+                  <table
+                    style="table-layout: auto;"
+                  >
+                    <colgroup />
+                    <tbody
+                      class="ant-table-tbody"
+                    >
+                      <tr
+                        class="ant-table-row ant-table-row-level-0"
+                      >
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            title="Project Stage"
+                          >
+                            <b>
+                              Project description
+                            </b>
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            title="Stage Status"
+                          >
+                            <b>
+                              N/A
+                            </b>
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            title="Stage Required"
+                          >
+                            <b>
+                              Required
+                            </b>
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                          style="text-align: right;"
+                        >
+                          <button
+                            class="ant-btn ant-btn-default full-mobile margin-small"
+                            type="button"
+                          >
+                            <span>
+                              View
+                            </span>
+                          </button>
+                        </td>
+                      </tr>
+                      <tr
+                        class="ant-table-row ant-table-row-level-0"
+                      >
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            title="Project Stage"
+                          >
+                            <b>
+                              IRT
+                            </b>
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            title="Stage Status"
+                          >
+                            <b>
+                              N/A
+                            </b>
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            title="Stage Required"
+                          >
+                            <b>
+                              Optional
+                            </b>
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                          style="text-align: right;"
+                        >
+                          <button
+                            class="ant-btn ant-btn-default full-mobile margin-small"
+                            type="button"
+                          >
+                            <span>
+                              Resume
+                            </span>
+                          </button>
+                        </td>
+                      </tr>
+                      <tr
+                        class="ant-table-row ant-table-row-level-0"
+                      >
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            title="Project Stage"
+                          >
+                            <b>
+                              Application
+                            </b>
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            title="Stage Status"
+                          >
+                            <b>
+                              Not Started
+                            </b>
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            title="Stage Required"
+                          >
+                            <b>
+                              Required
+                            </b>
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                          style="text-align: right;"
+                        >
+                          <button
+                            class="ant-btn ant-btn-default full-mobile margin-small"
+                            type="button"
+                          >
+                            <span>
+                              Start
+                            </span>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-col ant-col-lg-9 ant-col-lg-offset-1 ant-col-xl-7 ant-col-xl-offset-1"
+      style="padding-top: 8px; padding-bottom: 8px;"
+    >
+      <div
+        class="ant-row"
+        style="margin-top: -8px; margin-bottom: -8px;"
+      >
+        <div
+          class="ant-col ant-col-24"
+          style="padding-top: 8px; padding-bottom: 8px;"
+        >
+          <div
+            class="ant-card ant-card-bordered"
+          >
+            <div
+              class="ant-card-head"
+            >
+              <div
+                class="ant-card-head-wrapper"
+              >
+                <div
+                  class="ant-card-head-title"
+                >
+                  Project Contacts
+                </div>
+              </div>
+            </div>
+            <div
+              class="ant-card-body"
+            >
+              <div
+                class="ant-typography ministry-contact-item"
+              >
+                <span
+                  class="ant-typography ministry-contact-title"
+                >
+                  <strong>
+                    Primary Contact
+                  </strong>
+                </span>
+                <br />
+                <span
+                  class="ant-typography"
+                >
+                  Test Testerson
+                </span>
+                <br />
+                <span
+                  class="ant-typography"
+                >
+                  999-999-9999
+                </span>
+                <br />
+                <span
+                  class="ant-typography"
+                >
+                  <a
+                    href="mailto:test@test.com"
+                  >
+                    test@test.com
+                  </a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-24"
+          style="padding-top: 8px; padding-bottom: 8px;"
+        >
+          <div
+            class="ant-card ant-card-bordered"
+          >
+            <div
+              class="ant-card-head"
+            >
+              <div
+                class="ant-card-head-wrapper"
+              >
+                <div
+                  class="ant-card-head-title"
+                >
+                  Ministry Contacts
+                </div>
+              </div>
+            </div>
+            <div
+              class="ant-card-body"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
