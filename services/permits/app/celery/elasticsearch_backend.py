@@ -1,5 +1,4 @@
 import os
-
 import elasticsearch
 from celery.backends.elasticsearch import ElasticsearchBackend
 
@@ -8,7 +7,8 @@ host = os.environ.get("ELASTICSEARCH_HOST", None) or "https://elasticsearch:9200
 username = os.environ.get("ELASTICSEARCH_USERNAME", "")
 password = os.environ.get("ELASTICSEARCH_PASSWORD", "")
 
-scheme, hostname = host.split('://')
+scheme, full_host = host.split('://')
+hostname, port = full_host.split(":")
 
 backend_url = f'{scheme}://{username}:{password}@{hostname}/celery'
 
@@ -27,7 +27,7 @@ class MDSElasticSearchBackend(ElasticsearchBackend):
             http_auth = (self.username, self.password)
 
         return elasticsearch.Elasticsearch(
-            f'{self.scheme}://{self.host}:{self.port}',
+            hosts=host,
             retry_on_timeout=self.es_retry_on_timeout,
             max_retries=self.es_max_retries,
             timeout=self.es_timeout,

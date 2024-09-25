@@ -11,7 +11,7 @@ const initialState = {
   [PERMITS]: { permits: MOCK.PERMITS },
   [MINES]: { mines: MOCK.MINES.mines },
   [AUTHENTICATION]: {
-    userAccessData: [USER_ROLES.role_admin],
+    userAccessData: [USER_ROLES.role_admin, USER_ROLES.role_edit_template_conditions],
   },
   [STATIC_CONTENT]: {
     ...MOCK.BULK_STATIC_CONTENT_RESPONSE,

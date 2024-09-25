@@ -28,12 +28,17 @@ const { Title } = Typography;
 
 interface PermitConditionProps {
   latestAmendment: IPermitAmendment;
+  canStartExtraction: boolean;
+  userCanEdit: boolean;
 }
 
-const PermitConditions: FC<PermitConditionProps> = ({ latestAmendment }) => {
+const PermitConditions: FC<PermitConditionProps> = ({
+  latestAmendment,
+  canStartExtraction,
+  userCanEdit,
+}) => {
   const { isFeatureEnabled } = useFeatureFlag();
-  // NOTE: probably also an associated permission
-  const canEditPermitConditions = isFeatureEnabled(Feature.MODIFY_PERMIT_CONDITIONS);
+  const canEditPermitConditions = isFeatureEnabled(Feature.MODIFY_PERMIT_CONDITIONS) && userCanEdit;
   const { id, permitGuid } = useParams<{ id: string; permitGuid: string }>();
   const [isExpanded, setIsExpanded] = useState(false);
   const permitConditionCategoryOptions = useSelector(getPermitConditionCategoryOptions);
@@ -44,6 +49,11 @@ const PermitConditions: FC<PermitConditionProps> = ({ latestAmendment }) => {
   );
 
   const fetchingPermits = useSelector((state) => state.GET_PERMITS?.isFetching);
+  const isLoading = fetchingPermits;
+
+  const isExtractionInProgress =
+    permitExtraction?.task_status === PermitExtractionStatus.in_progress;
+  const isExtractionComplete = permitExtraction?.task_status === PermitExtractionStatus.complete;
 
   const permitConditionCategories = permitConditionCategoryOptions
     .map((cat) => {
@@ -76,16 +86,15 @@ const PermitConditions: FC<PermitConditionProps> = ({ latestAmendment }) => {
     return Promise.resolve();
   };
 
-  if (fetchingPermits) {
+  if (isLoading) {
     return <LoadingOutlined style={{ fontSize: 120 }} />;
   }
 
-  const isExtractionInProgress =
-    permitExtraction?.task_status === PermitExtractionStatus.in_progress;
-  const canStartExtraction = !permitExtraction && !permitConditions?.length;
-
   if (isExtractionInProgress) {
     return <RenderExtractionProgress />;
+  }
+  if (!isExtractionComplete && permitExtraction?.task_status) {
+    return <div>Permit extraction status: {permitExtraction?.task_status}</div>;
   }
   if (canStartExtraction) {
     return <RenderExtractionStart />;

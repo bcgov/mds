@@ -52,10 +52,17 @@ const ViewPermit: FC = () => {
   const [activeTab, setActiveTab] = useState(tab ?? tabs[0]);
   const history = useHistory();
 
-  const [isNewImport, setIsNewImport] = useState(false);
-
   const statusTimerRef = useRef(null);
   const [pollForStatus, setPollForStatus] = useState(false);
+
+  const hasConditions = latestAmendment?.conditions?.length > 0;
+
+  const canStartExtraction =
+    ((documents.length > 0 && !permitExtraction?.status) ||
+      [PermitExtractionStatus.error, PermitExtractionStatus.not_started].includes(
+        permitExtraction?.status
+      )) &&
+    !hasConditions;
 
   useEffect(() => {
     if (!permit?.permit_id) {
@@ -70,17 +77,16 @@ const ViewPermit: FC = () => {
   }, [mine]);
 
   useEffect(() => {
-    if (permitExtraction?.task_status === PermitExtractionStatus.complete && isNewImport) {
+    if (permitExtraction?.task_status === PermitExtractionStatus.complete && !hasConditions) {
       dispatch(fetchPermits(id));
     }
 
     if (permitExtraction?.task_status === PermitExtractionStatus.in_progress) {
-      setIsNewImport(false);
       setPollForStatus(true);
     } else {
       setPollForStatus(false);
     }
-  }, [permitExtraction?.task_status, isNewImport]);
+  }, [permitExtraction?.task_status]);
 
   useEffect(() => {
     if (enablePermitConditionsTab && latestAmendment) {
@@ -119,15 +125,6 @@ const ViewPermit: FC = () => {
     };
   }, [pollForStatus, permitExtraction?.task_id]);
 
-  const hasConditions = latestAmendment?.conditions?.length > 0;
-
-  const canStartExtraction =
-    ((documents.length > 0 && !permitExtraction?.status) ||
-      [PermitExtractionStatus.error, PermitExtractionStatus.not_started].includes(
-        permitExtraction?.status
-      )) &&
-    !hasConditions;
-
   const getConditionBadge = () => {
     const conditionStatus: PresetStatusColorType = hasConditions ? "success" : "error";
     return <Badge status={conditionStatus} />;
@@ -142,7 +139,13 @@ const ViewPermit: FC = () => {
     enablePermitConditionsTab && {
       key: tabs[1],
       label: <>{getConditionBadge()} Permit Conditions</>,
-      children: <PermitConditions latestAmendment={latestAmendment} />,
+      children: (
+        <PermitConditions
+          latestAmendment={latestAmendment}
+          canStartExtraction={canStartExtraction}
+          userCanEdit={userCanEditConditions}
+        />
+      ),
     },
   ].filter(Boolean);
 
@@ -160,11 +163,9 @@ const ViewPermit: FC = () => {
         permit_amendment_document_guid: documents[0].permit_amendment_document_guid,
       })
     );
-    setIsNewImport(true);
   };
 
   const handleDeleteConditions = async () => {
-    setIsNewImport(false);
     await dispatch(
       deletePermitConditions({ permit_amendment_id: latestAmendment?.permit_amendment_id })
     );

@@ -129,7 +129,7 @@ class PermitConditionExtractionProgressResource(Resource, UserMixin):
         if not task_id:
             raise BadRequest('No task id provided')
         
-        task = PermitExtractionTask.get_by_permit_extraction_task_id(task_id).first()
+        task = PermitExtractionTask.get_by_task_id(task_id).first()
 
         if not task:
             raise BadRequest('Task not found')
