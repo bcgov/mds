@@ -52,7 +52,7 @@ export const Reports: FC = () => {
       if (!permitGuid) {
         setCodeRequiredReports(mineReports);
         setCRRPageData(pageData);
-      } else if (permitGuid) {
+      } else {
         setPermitRequiredReports(mineReports);
         setPRRPageData(pageData);
       }
