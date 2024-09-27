@@ -6,6 +6,7 @@ import HeaderDropdown from "@/components/layout/HeaderDropdown";
 import * as routes from "@/constants/routes";
 import { BC_GOV } from "@/constants/assets";
 import NotificationDrawer from "@/components/layout/NotificationDrawer";
+import { AppHelp } from "@/HOC/AppHelp";
 
 const propTypes = {
   xs: PropTypes.number.isRequired,
@@ -36,6 +37,7 @@ export const Header = (props) => {
             <div className="inline-flex items-center">
               <HeaderDropdown />
               {props.isAuthenticated && <NotificationDrawer />}
+              <AppHelp />
             </div>
           </div>
         </Col>

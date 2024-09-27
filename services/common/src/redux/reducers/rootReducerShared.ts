@@ -37,6 +37,7 @@ import regionsReducer from "@mds/common/redux/slices/regionsSlice";
 import complianceCodeReducer, { complianceCodeReducerType } from "../slices/complianceCodesSlice";
 import spatialDataReducer, { spatialDataReducerType } from "../slices/spatialDataSlice";
 import permitServiceReducer, { permitServiceReducerType } from "../slices/permitServiceSlice";
+import appHelpReducer, { appHelpReducerType } from "../slices/appHelpSlice";
 export const sharedReducer = {
   ...activityReducer,
   ...authenticationReducer,
@@ -84,4 +85,5 @@ export const sharedReducer = {
   [spatialDataReducerType]: spatialDataReducer,
   [complianceCodeReducerType]: complianceCodeReducer,
   [permitServiceReducerType]: permitServiceReducer,
+  [appHelpReducerType]: appHelpReducer,
 };

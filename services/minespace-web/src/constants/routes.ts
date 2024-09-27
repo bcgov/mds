@@ -41,21 +41,25 @@ const ProjectSubmissionStatusPage = React.lazy(() =>
 export const HOME = {
   route: "/",
   component: LandingPage,
+  helpKey: "home"
 };
 
 export const RETURN_PAGE = {
   route: "/return-page",
   component: ReturnPage,
+  helpKey: "return"
 };
 
 export const MINES = {
   route: "/mines",
   component: MinesPage,
+  helpKey: "mines"
 };
 
 export const USERS = {
   route: "/users",
   component: UsersPage,
+  helpKey: "users"
 };
 
 export const ADD_PROJECT_SUMMARY = {
@@ -63,6 +67,7 @@ export const ADD_PROJECT_SUMMARY = {
   dynamicRoute: (mineGuid, tab = "basic-information") =>
     `/mines/${mineGuid}/project-description/new/${tab}`,
   component: ProjectSummaryPage,
+  helpKey: "add-project-summary"
 };
 
 export const EDIT_PROJECT_SUMMARY = {
@@ -70,6 +75,7 @@ export const EDIT_PROJECT_SUMMARY = {
   dynamicRoute: (projectGuid, projectSummaryGuid, activeTab = "basic-information") =>
     `/projects/${projectGuid}/project-description/${projectSummaryGuid}/${activeTab}`,
   component: ProjectSummaryPage,
+  helpKey: "edit-project-summary"
 };
 
 export const VIEW_PROJECT_SUBMISSION_STATUS_PAGE = {
@@ -77,6 +83,7 @@ export const VIEW_PROJECT_SUBMISSION_STATUS_PAGE = {
   dynamicRoute: (projectGuid, status) =>
     `/projects/${projectGuid}/project-submission-status/${status}`,
   component: ProjectSubmissionStatusPage,
+  helpKey: "view-project-submission-status-page"
 };
 
 export const EDIT_PROJECT = {
@@ -85,12 +92,14 @@ export const EDIT_PROJECT = {
   hashRoute: (projectGuid, activeTab = "overview", link) =>
     `/projects/${projectGuid}/${activeTab}/${link}`,
   component: ProjectPage,
+  helpKey: "edit-project"
 };
 
 export const ADD_INFORMATION_REQUIREMENTS_TABLE = {
   route: "/projects/:projectGuid/information-requirements-table/new",
   dynamicRoute: (projectGuid) => `/projects/${projectGuid}/information-requirements-table/new`,
   component: InformationRequirementsTablePage,
+  helpKey: "add-irt"
 };
 
 export const RESUBMIT_INFORMATION_REQUIREMENTS_TABLE = {
@@ -98,6 +107,7 @@ export const RESUBMIT_INFORMATION_REQUIREMENTS_TABLE = {
   dynamicRoute: (projectGuid, irtGuid) =>
     `/projects/${projectGuid}/information-requirements-table/${irtGuid}/resubmit`,
   component: InformationRequirementsTablePage,
+  helpKey: "resubmit-irt"
 };
 
 export const REVIEW_INFORMATION_REQUIREMENTS_TABLE = {
@@ -105,6 +115,7 @@ export const REVIEW_INFORMATION_REQUIREMENTS_TABLE = {
   dynamicRoute: (projectGuid, irtGuid, tab = "introduction-and-project-overview") =>
     `/projects/${projectGuid}/information-requirements-table/${irtGuid}/review/${tab}`,
   component: InformationRequirementsTablePage,
+  helpKey: "review-irt"
 };
 
 export const INFORMATION_REQUIREMENTS_TABLE_SUCCESS = {
@@ -112,6 +123,7 @@ export const INFORMATION_REQUIREMENTS_TABLE_SUCCESS = {
   dynamicRoute: (projectGuid, irtGuid) =>
     `/projects/${projectGuid}/information-requirements-table/${irtGuid}/success`,
   component: InformationRequirementsTableSuccessPage,
+  helpKey: "irt-success"
 };
 
 export const EDIT_MAJOR_MINE_APPLICATION = {
@@ -119,6 +131,7 @@ export const EDIT_MAJOR_MINE_APPLICATION = {
   dynamicRoute: (projectGuid, mmaGuid) =>
     `/projects/${projectGuid}/major-mine-application/${mmaGuid}/edit`,
   component: MajorMineApplicationPage,
+  helpKey: "edit-major-mine-app"
 };
 
 export const REVIEW_MAJOR_MINE_APPLICATION = {
@@ -126,6 +139,7 @@ export const REVIEW_MAJOR_MINE_APPLICATION = {
   dynamicRoute: (projectGuid, mmaGuid) =>
     `/projects/${projectGuid}/major-mine-application/${mmaGuid}/review`,
   component: MajorMineApplicationPage,
+  helpKey: "review-major-mine-app"
 };
 
 export const MAJOR_MINE_APPLICATION_SUCCESS = {
@@ -133,24 +147,28 @@ export const MAJOR_MINE_APPLICATION_SUCCESS = {
   dynamicRoute: (projectGuid, mmaGuid) =>
     `/projects/${projectGuid}/major-mine-application/${mmaGuid}/success`,
   component: MajorMineApplicationSuccessPage,
+  helpKey: "major-mine-app-success"
 };
 
 export const ADD_MAJOR_MINE_APPLICATION = {
   route: "/projects/:projectGuid/major-mine-application/new",
   dynamicRoute: (projectGuid) => `/projects/${projectGuid}/major-mine-application/new`,
   component: MajorMineApplicationPage,
+  helpKey: "add-major-mine-app"
 };
 
 export const ADD_MINE_INCIDENT = {
   route: "/mines/:mineGuid/incidents/new",
   dynamicRoute: (mineGuid) => `/mines/${mineGuid}/incidents/new`,
   component: IncidentPage,
+  helpKey: "add-mine-incident"
 };
 
 export const EDIT_MINE_INCIDENT = {
   route: "/mines/:mineGuid/incidents/:mineIncidentGuid",
   dynamicRoute: (mineGuid, mineIncidentGuid) => `/mines/${mineGuid}/incidents/${mineIncidentGuid}`,
   component: IncidentPage,
+  helpKey: "edit-mine-incident"
 };
 
 export const REVIEW_MINE_INCIDENT = {
@@ -160,6 +178,7 @@ export const REVIEW_MINE_INCIDENT = {
   hashRoute: (mineGuid, mineIncidentGuid, link) =>
     `/mines/${mineGuid}/incidents/${mineIncidentGuid}/review/${link}`,
   component: IncidentPage,
+  helpKey: "review-mine-incident"
 };
 
 export const MINE_INCIDENT_SUCCESS = {
@@ -167,6 +186,7 @@ export const MINE_INCIDENT_SUCCESS = {
   dynamicRoute: (mineGuid, mineIncidentGuid) =>
     `/mines/${mineGuid}/incidents/${mineIncidentGuid}/success`,
   component: IncidentSuccessPage,
+  helpKey: "mine-incident-success"
 };
 
 const getQueryString = (filterParams?) => {
@@ -179,6 +199,7 @@ export const MINE_DASHBOARD = {
   dynamicRoute: (id, activeTab = "overview", filterParams?: any) =>
     `/mines/${id}/${activeTab}${getQueryString(filterParams)}`,
   component: MineDashboard,
+  helpKey: "mine-dashboard"
 };
 
 export const ADD_TAILINGS_STORAGE_FACILITY = {
@@ -186,6 +207,7 @@ export const ADD_TAILINGS_STORAGE_FACILITY = {
   dynamicRoute: (mineGuid, tab = "basic-information") =>
     `/mines/${mineGuid}/tailings-storage-facility/new/${tab}`,
   component: TailingsSummaryPageWrapper,
+  helpKey: "add-tsf"
 };
 
 export const EDIT_TAILINGS_STORAGE_FACILITY = {
@@ -196,10 +218,10 @@ export const EDIT_TAILINGS_STORAGE_FACILITY = {
     activeTab = "basic-information",
     isEditMode = false
   ) =>
-    `/mines/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/${activeTab}/${
-      isEditMode ? "edit" : "view"
+    `/mines/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/${activeTab}/${isEditMode ? "edit" : "view"
     }`,
   component: TailingsSummaryPageWrapper,
+  helpKey: "edit-tsf"
 };
 
 export const ADD_DAM = {
@@ -208,6 +230,7 @@ export const ADD_DAM = {
   dynamicRoute: (mineGuid, tailingsStorageFacilityGuid, editMode = "edit", userAction = "newDam") =>
     `/mine/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/${editMode}/${userAction}`,
   component: DamsPage,
+  helpKey: "add-dam"
 };
 
 export const EDIT_DAM = {
@@ -220,10 +243,10 @@ export const EDIT_DAM = {
     isEditMode = false,
     canEditDam = false
   ) =>
-    `/mine/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/${
-      isEditMode ? "edit" : "view"
+    `/mine/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/${isEditMode ? "edit" : "view"
     }/${canEditDam ? "editDam" : "viewDam"}/dam/${damGuid}`,
   component: DamsPage,
+  helpKey: "edit-dam"
 };
 
 export const VIEW_ESUP = {
@@ -231,12 +254,14 @@ export const VIEW_ESUP = {
   dynamicRoute: (mineGuid, explosivesPermitGuid) =>
     `/mine/${mineGuid}/explosives-permits/${explosivesPermitGuid}`,
   component: ExplosivesPermit,
+  helpKey: "view-esup"
 };
 
 export const REPORTS_CREATE_NEW = {
   route: "/mines/:mineGuid/reports/new",
   dynamicRoute: (mineGuid) => `/mines/${mineGuid}/reports/new`,
   component: ReportSteps,
+  helpKey: "reports-create-new"
 };
 
 export const REPORT_VIEW_EDIT = {
@@ -244,4 +269,5 @@ export const REPORT_VIEW_EDIT = {
   dynamicRoute: (mineGuid: string, reportGuid: string) =>
     `/mines/${mineGuid}/reports/${reportGuid}`,
   component: ReportPage,
+  helpKey: "report-view-edit"
 };
