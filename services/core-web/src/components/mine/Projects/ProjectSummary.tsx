@@ -6,7 +6,6 @@ import * as routes from "@/constants/routes";
 import { Button, Col, Row, Tag } from "antd";
 import EnvironmentOutlined from "@ant-design/icons/EnvironmentOutlined";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
-import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 
 import {
   getFormattedProjectSummary,
@@ -80,7 +79,6 @@ export const ProjectSummary: FC = () => {
   const activeTab = tab ?? projectFormTabs[0];
   const mineName = mine?.mine_name ?? formattedProjectSummary?.mine_name ?? "";
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
-  const systemFlag = useSelector(getSystemFlag);
 
   const handleFetchData = async () => {
     setIsLoaded(false);
