@@ -102,7 +102,7 @@ exports[`Reports renders properly 1`] = `
                 class="ant-spin-container ant-spin-blur"
               >
                 <div
-                  class="ant-table ant-table-small ant-table-empty ant-table-has-fix-right"
+                  class="ant-table ant-table-small ant-table-has-fix-right"
                 >
                   <div
                     class="ant-table-container"
@@ -396,13 +396,354 @@ exports[`Reports renders properly 1`] = `
                           class="ant-table-tbody"
                         >
                           <tr
-                            class="ant-table-placeholder"
+                            class="ant-table-row ant-table-row-level-0 fade-in"
+                            data-row-key="9f98a719-720a-40a5-ac5b-e91e8a526fad"
                           >
                             <td
                               class="ant-table-cell"
-                              colspan="8"
                             >
-                              This mine has no report data.
+                              <div
+                                class="report_name-column"
+                                title="Report Name"
+                              >
+                                Underground Oil and Grease Storage Area Report
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                title="Code Section"
+                              >
+                                4.3.4
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                class="submission_year-column"
+                                title="Compliance Year"
+                              >
+                                2020
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                class="due_date-column"
+                                title="Due"
+                              >
+                                2020-01-02
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                class="latest_submission,received_date-column"
+                                title="Submitted On"
+                              >
+                                2020-01-10
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                class="created_by_idir-column"
+                                title="Requested By"
+                              >
+                                idir\\TEST
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <span
+                                class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                              >
+                                <span
+                                  class="ant-badge-status-dot ant-badge-status-success"
+                                />
+                                <span
+                                  class="ant-badge-status-text"
+                                >
+                                  Not Requested
+                                </span>
+                              </span>
+                            </td>
+                            <td
+                              class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                              style="position: sticky; right: 0px;"
+                            >
+                              <div>
+                                <button
+                                  class="ant-btn ant-btn-text ant-dropdown-trigger actions-dropdown-button"
+                                  data-cy="menu-actions-button"
+                                  type="button"
+                                >
+                                  <span>
+                                    Actions
+                                  </span>
+                                  <span
+                                    alt="Menu"
+                                    aria-label="caret-down"
+                                    class="anticon anticon-caret-down"
+                                    role="img"
+                                  >
+                                    <svg
+                                      aria-hidden="true"
+                                      class=""
+                                      data-icon="caret-down"
+                                      fill="currentColor"
+                                      focusable="false"
+                                      height="1em"
+                                      viewBox="0 0 1024 1024"
+                                      width="1em"
+                                    >
+                                      <path
+                                        d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                      />
+                                    </svg>
+                                  </span>
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr
+                            class="ant-table-row ant-table-row-level-0 fade-in"
+                            data-row-key="b59a166e-749e-4e6c-a232-d4c55f1f227c"
+                          >
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                class="report_name-column"
+                                title="Report Name"
+                              >
+                                TSF, WSF or Dam As-built Report
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                title="Code Section"
+                              >
+                                10.5.1.1
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                class="submission_year-column"
+                                title="Compliance Year"
+                              >
+                                2020
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                class="due_date-column"
+                                title="Due"
+                              >
+                                2020-03-31
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                class="latest_submission,received_date-column"
+                                title="Submitted On"
+                              >
+                                2020-01-02
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                class="created_by_idir-column"
+                                title="Requested By"
+                              >
+                                idir\\TEST
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <span
+                                class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                              >
+                                <span
+                                  class="ant-badge-status-dot ant-badge-status-success"
+                                />
+                                <span
+                                  class="ant-badge-status-text"
+                                >
+                                  Not Requested
+                                </span>
+                              </span>
+                            </td>
+                            <td
+                              class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                              style="position: sticky; right: 0px;"
+                            >
+                              <div>
+                                <button
+                                  class="ant-btn ant-btn-text ant-dropdown-trigger actions-dropdown-button"
+                                  data-cy="menu-actions-button"
+                                  type="button"
+                                >
+                                  <span>
+                                    Actions
+                                  </span>
+                                  <span
+                                    alt="Menu"
+                                    aria-label="caret-down"
+                                    class="anticon anticon-caret-down"
+                                    role="img"
+                                  >
+                                    <svg
+                                      aria-hidden="true"
+                                      class=""
+                                      data-icon="caret-down"
+                                      fill="currentColor"
+                                      focusable="false"
+                                      height="1em"
+                                      viewBox="0 0 1024 1024"
+                                      width="1em"
+                                    >
+                                      <path
+                                        d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                      />
+                                    </svg>
+                                  </span>
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr
+                            class="ant-table-row ant-table-row-level-0 fade-in"
+                            data-row-key="92327cd3-eec0-4e18-b898-25539ac408e9"
+                          >
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                class="report_name-column"
+                                title="Report Name"
+                              >
+                                Annual DSI
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                title="Code Section"
+                              >
+                                10.4.4
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                class="submission_year-column"
+                                title="Compliance Year"
+                              >
+                                2020
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                class="due_date-column"
+                                title="Due"
+                              >
+                                2020-03-31
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                class="latest_submission,received_date-column"
+                                title="Submitted On"
+                              >
+                                N/A
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <div
+                                class="created_by_idir-column"
+                                title="Requested By"
+                              >
+                                idir\\TEST
+                              </div>
+                            </td>
+                            <td
+                              class="ant-table-cell"
+                            >
+                              <span
+                                class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                              >
+                                <span
+                                  class="ant-badge-status-dot ant-badge-status-warning"
+                                />
+                                <span
+                                  class="ant-badge-status-text"
+                                >
+                                  Report Requested
+                                </span>
+                              </span>
+                            </td>
+                            <td
+                              class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                              style="position: sticky; right: 0px;"
+                            >
+                              <div>
+                                <button
+                                  class="ant-btn ant-btn-text ant-dropdown-trigger actions-dropdown-button"
+                                  data-cy="menu-actions-button"
+                                  type="button"
+                                >
+                                  <span>
+                                    Actions
+                                  </span>
+                                  <span
+                                    alt="Menu"
+                                    aria-label="caret-down"
+                                    class="anticon anticon-caret-down"
+                                    role="img"
+                                  >
+                                    <svg
+                                      aria-hidden="true"
+                                      class=""
+                                      data-icon="caret-down"
+                                      fill="currentColor"
+                                      focusable="false"
+                                      height="1em"
+                                      viewBox="0 0 1024 1024"
+                                      width="1em"
+                                    >
+                                      <path
+                                        d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                      />
+                                    </svg>
+                                  </span>
+                                </button>
+                              </div>
                             </td>
                           </tr>
                         </tbody>
@@ -888,6 +1229,11 @@ exports[`Reports renders properly 1`] = `
                 </div>
               </div>
             </div>
+          </div>
+          <div
+            class="ant-row ant-row-center margin-large--bottom"
+          >
+            <div />
           </div>
         </div>
       </div>
