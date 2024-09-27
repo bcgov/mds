@@ -13,7 +13,7 @@ import { getMineReports, getReportsPageData } from "@mds/common/redux/selectors/
 import ReportsTable from "@/components/dashboard/mine/reports/ReportsTable";
 import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import { IMine, IMineReport, IMineReportPageData, Feature } from "@mds/common";
+import { IMine, IMineReport, IPageData, Feature } from "@mds/common";
 import { Link, useHistory } from "react-router-dom";
 import * as routes from "@/constants/routes";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
@@ -43,8 +43,8 @@ export const Reports: FC = () => {
     total: 0,
     total_pages: 1,
   };
-  const [crrPageData, setCRRPageData] = useState<IMineReportPageData>(defaultPageData);
-  const [prrPageData, setPRRPageData] = useState<IMineReportPageData>(defaultPageData);
+  const [crrPageData, setCRRPageData] = useState<IPageData<IMineReport>>(defaultPageData);
+  const [prrPageData, setPRRPageData] = useState<IPageData<IMineReport>>(defaultPageData);
 
   useEffect(() => {
     if (mineReports[0]) {
