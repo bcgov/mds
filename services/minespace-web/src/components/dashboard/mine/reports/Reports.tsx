@@ -26,9 +26,12 @@ export const Reports: FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { isFeatureEnabled } = useFeatureFlag();
+
   const { mine } = useContext<{ mine: IMine }>(SidebarContext);
   const pageData = useSelector(getReportsPageData);
+
   const mineReports: IMineReport[] = useSelector(getMineReports);
+
   const [isLoaded, setIsLoaded] = useState(false);
   const [report, setReport] = useState(null);
   const [permitRequiredReports, setPermitRequiredReports] = useState<IMineReport[]>([]);
