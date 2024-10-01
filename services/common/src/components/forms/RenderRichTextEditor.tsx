@@ -22,6 +22,8 @@ const RenderRichTextEditor: FC<BaseInputProps> = ({
   const { isEditMode } = useContext(FormContext);
 
   const handleAddImage = (data) => {
+    // just a click handler for the image button,
+    // everything else will have to be implemented
     console.log("image data", data);
   };
   const toolbarOptions = isEditMode
@@ -37,8 +39,8 @@ const RenderRichTextEditor: FC<BaseInputProps> = ({
     () => ({
       toolbar: {
         container: toolbarOptions,
+        handlers: { image: handleAddImage },
       },
-      // handlers: { image: handleAddImage }
     }),
     []
   );
