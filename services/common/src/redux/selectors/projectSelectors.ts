@@ -10,8 +10,6 @@ import {
   SystemFlagEnum,
 } from "../..";
 import { getTransformedProjectSummaryAuthorizationTypes } from "./staticContentSelectors";
-import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
-import { getFormValues } from "redux-form";
 
 export const {
   getProjectSummary,
@@ -143,25 +141,16 @@ export const getFormattedProjectApplication = createSelector(
 );
 
 export const getFormattedProjectSummary = createSelector(
-  [
-    getProjectSummary,
-    getProject,
-    getAmsAuthorizationTypes,
-    getSystemFlag,
-    getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY),
-  ],
-  (summary, project, amsAuthTypes, systemFlag, formValues) => {
+  [getProjectSummary, getProject, getAmsAuthorizationTypes],
+  (summary, project, amsAuthTypes) => {
     const documents = formatProjectSummaryDocuments(summary.documents);
     const contacts = formatProjectContact(project.contacts);
     const agent = formatProjectSummaryParty(summary.agent);
     const facility_operator = formatProjectSummaryParty(summary.facility_operator);
     const confirmation_of_submission = summary.status_code === "SUB";
 
-    const updatedSummary =
-      systemFlag === SystemFlagEnum.core ? { ...summary, ...formValues } : summary;
-
     const formattedSummary = {
-      ...updatedSummary,
+      ...summary,
       contacts,
       agent,
       facility_operator,

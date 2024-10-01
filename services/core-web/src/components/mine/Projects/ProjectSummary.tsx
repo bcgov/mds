@@ -18,6 +18,7 @@ import {
   AMS_STATUS_CODES_SUCCESS,
   AMS_STATUS_CODE_FAIL,
   AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES,
+  SystemFlagEnum,
 } from "@mds/common";
 import { getMineById } from "@mds/common/redux/reducers/mineReducer";
 import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
@@ -36,6 +37,7 @@ import ProjectSummaryForm, {
 } from "@mds/common/components/projectSummary/ProjectSummaryForm";
 import { fetchRegions } from "@mds/common/redux/slices/regionsSlice";
 import { clearProjectSummary } from "@mds/common/redux/actions/projectActions";
+import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 
 export const ProjectSummary: FC = () => {
   const dispatch = useDispatch();
@@ -48,6 +50,9 @@ export const ProjectSummary: FC = () => {
     tab: string;
     mode: string;
   }>();
+
+  const systemFlag = useSelector(getSystemFlag);
+  const isCore = systemFlag === SystemFlagEnum.core;
 
   const mine = useSelector((state) => getMineById(state, mineGuid));
   const formattedProjectSummary = useSelector(getFormattedProjectSummary);
@@ -212,7 +217,7 @@ export const ProjectSummary: FC = () => {
         message = null;
       }
     }
-    const values = { ...formValues, status_code: status_code };
+    const values = { ...formValues, status_code: isCore ? formValues.status_code : status_code };
 
     try {
       if (isNewProject) {
