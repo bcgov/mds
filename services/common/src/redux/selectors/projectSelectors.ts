@@ -2,12 +2,10 @@ import { createSelector } from "reselect";
 import { uniq } from "lodash";
 import * as projectReducer from "../reducers/projectReducer";
 import {
-  FORM,
   IParty,
   IProjectContact,
   IProjectSummaryDocument,
   MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE,
-  SystemFlagEnum,
 } from "../..";
 import { getTransformedProjectSummaryAuthorizationTypes } from "./staticContentSelectors";
 
