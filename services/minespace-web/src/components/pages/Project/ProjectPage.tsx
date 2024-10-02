@@ -216,16 +216,15 @@ const ProjectPage: FC = () => {
         </div>
       ),
     },
-    isFeatureEnabled(Feature.AMS_AGENT) &&
-      project_summary?.submission_date && {
-        label: "Project Description",
-        key: "project-description",
-        children: (
-          <div className={pageClass}>
-            <ProjectDescriptionTab />
-          </div>
-        ),
-      },
+    isFeatureEnabled(Feature.AMS_AGENT) && {
+      label: "Project Description",
+      key: "project-description",
+      children: (
+        <div className={pageClass}>
+          <ProjectDescriptionTab />
+        </div>
+      ),
+    },
     {
       label: "IRT",
       key: "irt-entry",

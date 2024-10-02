@@ -119,16 +119,15 @@ const Project: FC = () => {
         </div>
       ),
     },
-    isFeatureEnabled(Feature.AMS_AGENT) &&
-      project_summary?.submission_date && {
-        key: "project-description",
-        label: "Project Description",
-        children: (
-          <div className="padding-lg">
-            <ProjectDescriptionTab />
-          </div>
-        ),
-      },
+    isFeatureEnabled(Feature.AMS_AGENT) && {
+      key: "project-description",
+      label: "Project Description",
+      children: (
+        <div className="padding-lg">
+          <ProjectDescriptionTab />
+        </div>
+      ),
+    },
     {
       key: "information-requirements-table",
       label: "IRT",
