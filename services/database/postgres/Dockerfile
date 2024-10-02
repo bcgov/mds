@@ -1,4 +1,4 @@
-FROM postgis/postgis:13-3.0
+FROM postgis/postgis:13-3.4
 
 RUN export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install -y --no-install-recommends \ 
     make \
