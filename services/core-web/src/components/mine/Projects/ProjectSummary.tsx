@@ -6,7 +6,6 @@ import * as routes from "@/constants/routes";
 import { Button, Col, Row, Tag } from "antd";
 import EnvironmentOutlined from "@ant-design/icons/EnvironmentOutlined";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
-import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 
 import {
   getFormattedProjectSummary,
@@ -19,6 +18,7 @@ import {
   AMS_STATUS_CODES_SUCCESS,
   AMS_STATUS_CODE_FAIL,
   AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES,
+  SystemFlagEnum,
 } from "@mds/common";
 import { getMineById } from "@mds/common/redux/reducers/mineReducer";
 import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
@@ -37,6 +37,7 @@ import ProjectSummaryForm, {
 } from "@mds/common/components/projectSummary/ProjectSummaryForm";
 import { fetchRegions } from "@mds/common/redux/slices/regionsSlice";
 import { clearProjectSummary } from "@mds/common/redux/actions/projectActions";
+import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 
 export const ProjectSummary: FC = () => {
   const dispatch = useDispatch();
@@ -49,6 +50,9 @@ export const ProjectSummary: FC = () => {
     tab: string;
     mode: string;
   }>();
+
+  const systemFlag = useSelector(getSystemFlag);
+  const isCore = systemFlag === SystemFlagEnum.core;
 
   const mine = useSelector((state) => getMineById(state, mineGuid));
   const formattedProjectSummary = useSelector(getFormattedProjectSummary);
@@ -80,7 +84,6 @@ export const ProjectSummary: FC = () => {
   const activeTab = tab ?? projectFormTabs[0];
   const mineName = mine?.mine_name ?? formattedProjectSummary?.mine_name ?? "";
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
-  const systemFlag = useSelector(getSystemFlag);
 
   const handleFetchData = async () => {
     setIsLoaded(false);
@@ -208,13 +211,17 @@ export const ProjectSummary: FC = () => {
     if (!status_code || isNewProject) {
       status_code = "DFT";
     } else if (!newActiveTab) {
-      status_code = "SUB";
+      if (isCore) {
+        status_code = formValues.status_code;
+      } else {
+        status_code = "SUB";
+      }
       is_historic = false;
       if (amsFeatureEnabled) {
         message = null;
       }
     }
-    const values = { ...formValues, status_code: status_code };
+    const values = { ...formValues, status_code };
 
     try {
       if (isNewProject) {
