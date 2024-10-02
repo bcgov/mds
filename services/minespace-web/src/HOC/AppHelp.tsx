@@ -34,7 +34,7 @@ const AppHelpContent: FC<AppHelpContentProps> = ({ helpKey }) => {
     setEditMode(false);
   };
 
-  if (hasPermission && (!appHelp || editMode)) {
+  if (hasPermission && editMode) {
     return (
       <FormWrapper
         name={`EDIT_APP_HELP-${keyToUse}`}
@@ -62,7 +62,16 @@ const AppHelpContent: FC<AppHelpContentProps> = ({ helpKey }) => {
       </>
     );
   }
-  return <div>this is a placeholder- there seems to be no help on this page</div>;
+  return (
+    <>
+      <div>For help with using MineSpace, contact us at email@email.com</div>
+      {hasPermission && (
+        <div>
+          <Button onClick={() => setEditMode(true)}>Edit</Button>
+        </div>
+      )}
+    </>
+  );
 };
 
 export const AppHelp: FC = () => {

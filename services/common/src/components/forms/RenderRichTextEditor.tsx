@@ -26,11 +26,14 @@ const RenderRichTextEditor: FC<BaseInputProps> = ({
     // everything else will have to be implemented
     console.log("image data", data);
   };
+  const msColors = ["#003366", "white", "#fcba19", "#d8292f", "#2e8540", "#313132", "black"];
   const toolbarOptions = isEditMode
     ? [
+        [{ header: [1, 2, 3, 4, 5, 6, false] }],
         ["bold", "italic", "underline", "strike"],
         ["blockquote"],
-        ["color", "background", "font", "align"],
+        [{ list: "ordered" }, { list: "bullet" }],
+        [{ color: msColors }, { background: msColors }, "font", "align"],
         ["link", "image", "video", "formula"],
       ]
     : [];
