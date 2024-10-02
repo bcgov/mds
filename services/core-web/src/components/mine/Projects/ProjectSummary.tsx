@@ -221,6 +221,11 @@ export const ProjectSummary: FC = () => {
         message = null;
       }
     }
+
+    if (isCore && !isNewProject) {
+      status_code = formValues.status_code;
+    }
+
     const values = { ...formValues, status_code };
 
     try {
