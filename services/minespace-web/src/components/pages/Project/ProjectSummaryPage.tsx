@@ -71,7 +71,7 @@ export const ProjectSummaryPage = () => {
     : mine?.mine_guid === mineGuid;
   const [isLoaded, setIsLoaded] = useState(isDefaultLoaded);
   const [isEditMode, setIsEditMode] = useState(isDefaultEditMode);
-  const projectFormTabs = getProjectFormTabs(amsFeatureEnabled);
+  const projectFormTabs = null;
   const activeTab = tab ?? projectFormTabs[0];
 
   const handleFetchData = async () => {
