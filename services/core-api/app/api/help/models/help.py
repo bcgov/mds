@@ -16,6 +16,10 @@ class Help(AuditMixin, Base):
         super(Help, self).delete(commit)
 
     @staticmethod
+    def get_all():
+        return Help.query.all()
+    
+    @staticmethod
     def find_by_help_key(help_key):
         return Help.query.filter_by(help_key=help_key).order_by(Help.update_timestamp.desc())
     

@@ -8,6 +8,16 @@ from app.api.utils.resources_mixins import UserMixin
 from app.api.help.models.help import Help
 from app.api.help.response_models import HELP_MODEL
 
+class HelpListResource(Resource, UserMixin):
+    @api.doc(
+        description="List all help guides",
+    )
+    @api.marshal_with(HELP_MODEL, code=200, as_list=True)
+    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
+    def get(self):
+        help_guides = Help.get_all()
+        return help_guides
+
 class HelpResource(Resource, UserMixin):
 
     parser = reqparse.RequestParser()
