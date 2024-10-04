@@ -7,7 +7,7 @@ exports[`Home renders properly 1`] = `
   <div
     className="header"
   >
-    <Connect(NavBar)
+    <NavBar
       activeButton=" "
       isMenuOpen={false}
       toggleHamburgerMenu={[Function]}
