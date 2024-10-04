@@ -51,5 +51,9 @@
     "tasks": {
       "*.js": []
     }
+  },
+  "dependencies": {
+    "html-react-parser": "^5.1.17",
+    "react-quill": "^2.0.0"
   }
 }
