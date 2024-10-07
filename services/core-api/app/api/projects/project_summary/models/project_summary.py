@@ -1174,7 +1174,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                     zoning,
                     zoning_reason,
                     regional_district_name,
-                    project.project_guid)
+                    project.project_guid,
+                    payment_contact)
 
                 amendment_ams_results = AMSApiService.create_amendment_ams_authorization(
                     ams_authorizations,
@@ -1202,7 +1203,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                     regional_district_name,
                     is_legal_land_owner,
                     is_crown_land_federal_or_provincial,
-                    project.project_guid
+                    project.project_guid,
+                    payment_contact
                 )
 
             for authorization in ams_authorizations.get('amendments', []):

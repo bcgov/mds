@@ -174,6 +174,19 @@ class AMSApiService():
         return ams_failure
 
     @classmethod
+    def __format_mailing_address(cls, payment_contact):
+        address = payment_contact['address'][0]
+        if address is None:
+            return ''
+        address_components = [
+            address.get('suite_no', ''),
+            address.get('address_line_1', ''),
+            address.get('city', ''),
+            address.get('sub_division_code', '')
+        ]
+        return ', '.join(filter(bool, address_components)).strip(', ')
+
+    @classmethod
     def create_new_ams_authorization(cls,
                                      ams_authorizations,
                                      applicant,
@@ -200,7 +213,8 @@ class AMSApiService():
                                      zoning,
                                      zoning_reason,
                                      regional_district_name,
-                                     project_guid
+                                     project_guid,
+                                     payment_contact
                                      ):
         """Creates a new AMS authorization application"""
 
@@ -272,7 +286,14 @@ class AMSApiService():
                             'regionaldistrict': {
                                 'name': regional_district_name
                             },
-                            'documents': cls.__get_ams_document_url(project_guid)
+                            'documents': cls.__get_ams_document_url(project_guid),
+                            'contactforpayment': {
+                                'firstname': payment_contact.get('first_name', ''),
+                                'lastname': payment_contact.get('party_name', ''),
+                                'phonenumber': payment_contact.get('phone_no', ''),
+                                'email': payment_contact.get('email', ''),
+                                'mailingaddress': cls.__format_mailing_address(payment_contact)
+                            }
                         }
                         payload = json.dumps(ams_authorization_data)
                         response = requests.post(Config.AMS_URL, data=payload, headers=headers)
@@ -338,7 +359,8 @@ class AMSApiService():
                                            regional_district_name,
                                            is_legal_land_owner,
                                            is_crown_land_federal_or_provincial,
-                                           project_guid
+                                           project_guid,
+                                           payment_contact
                                            ):
         """Creates an AMS authorization application amendment"""
 
