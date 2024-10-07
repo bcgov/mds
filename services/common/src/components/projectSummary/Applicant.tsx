@@ -323,6 +323,7 @@ const Applicant = () => {
                 name="company_alias"
                 label="Doing Business As"
                 component={RenderField}
+                validate={[maxLength(100)]}
                 disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
               />
             </Col>

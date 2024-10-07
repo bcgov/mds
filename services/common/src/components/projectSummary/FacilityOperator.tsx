@@ -131,7 +131,7 @@ export const FacilityOperator: FC = () => {
           name="zoning_reason"
           label="If no, state the reason"
           required
-          validate={[required, maxLength(100)]}
+          validate={[required, maxLength(4000)]}
           component={RenderField}
         />
       )}

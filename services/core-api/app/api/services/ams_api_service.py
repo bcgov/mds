@@ -239,8 +239,7 @@ class AMSApiService():
                             'agent': cls.__set_agent_details(agent),
                             'purposeofapplication': authorization.get('authorization_description', ''),
                             'preappexemptionrequest': cls.__boolean_to_yes_no(authorization.get('exemption_requested')),
-                            'preappexemptionrequestreason': authorization.get('authorization_description',
-                                                                              'Not Applicable'),
+                            'preappexemptionrequestreason': authorization.get('exemption_reason', ''),
                             'iscontaminatedsite': cls.__boolean_to_yes_no(authorization.get('is_contaminated')),
                             'contact': cls.__set_contact_details(contacts[0]),
                             'facilitytype': facility_type,
@@ -387,13 +386,13 @@ class AMSApiService():
                             'name': nearest_municipality_name
                         },
                         'preappexemptionrequest': cls.__boolean_to_yes_no(authorization.get('exemption_requested')),
-                        'preappexemptionrequestreason': authorization.get('authorization_description',
-                                                                          'Not Applicable'),
+                        'preappexemptionrequestreason': authorization.get('exemption_reason', ''),
+                        'newiscontaminatedsite': cls.__boolean_to_yes_no(authorization.get('is_contaminated')),
                         'newapplicant': cls.__set_applicant_details(applicant, company_alias),
                         'newcontact': cls.__set_contact_details(contacts[0]),
                         'newagent': cls.__set_agent_details(agent),
                         'newfacilitytype': facility_type,
-                        'newfacilitydescrption': facility_desc,
+                        'newfacilitydescription': facility_desc,
                         'newregionaldistrict': {
                             'name': regional_district_name
                         },
