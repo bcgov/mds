@@ -118,5 +118,4 @@ class PermitSearchService:
 
             task.task_result = data
 
-        task.save()
         return task

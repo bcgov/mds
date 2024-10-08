@@ -6,7 +6,7 @@ from app.api.utils.list_lettering_helpers import num_to_letter, num_to_roman
 from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
 from app.extensions import db
 from marshmallow import fields, validate
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.postgresql import JSON, UUID
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import backref, validates
 from sqlalchemy.schema import FetchedValue
@@ -53,14 +53,23 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
 
     @hybrid_property
     def step(self):
-        if self._step:
-            return self._step
-
         depth = 0
         condition = self
         while condition.parent_permit_condition_id is not None:
             condition = condition.parent
             depth += 1
+
+        # The _step property is set for auto-extracted conditions
+        # and is used to determine the display format of the step.
+        # If not set (for manually added condtitions), we auto-generate the step
+        if self._step:
+            # Format the first level with a trailing dot - A. B. C. and the rest with () - (a), (i), (ii)
+            if depth == 0:
+                return f'{self._step}.'
+            return f'({self._step})'
+        if self._step == '':
+            return ''
+
         step_format = depth % 3
         if step_format == 0:
             return str(self.display_order) + '.'
