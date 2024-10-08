@@ -6,7 +6,7 @@ from app.api.utils.list_lettering_helpers import num_to_letter, num_to_roman
 from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
 from app.extensions import db
 from marshmallow import fields, validate
-from sqlalchemy.dialects.postgresql import JSON, UUID
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import backref, validates
 from sqlalchemy.schema import FetchedValue
