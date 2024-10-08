@@ -2,7 +2,7 @@
 import json
 
 from sqlalchemy.exc import IntegrityError
-from typing import List, Union, Tuple
+from typing import List, Union, Tuple, Optional
 from pydantic import BaseModel, Field, ConfigDict
 from openlocationcode.openlocationcode import encode as plus_code_encode
 from hashlib import md5
@@ -31,17 +31,29 @@ from untp_models import codes, base, conformity_credential as cc
 task_logger = get_task_logger(__name__)
 
 
+class UNTPCCMinesActPermit(cc.ConformityAttestation):
+    pass
+
+
 #this should probably be imported from somewhere.
 class W3CCred(BaseModel):
     model_config = ConfigDict(
         populate_by_name=True, json_encoders={datetime: lambda v: v.isoformat()})
 
-    context: List[Union[str, dict]] = Field(alias="@context")
+    context: List[Union[str, dict]] = Field(
+        alias="@context",
+        default=[
+            "https://www.w3.org/2018/credentials/v1",
+            Config.UNTP_DIGITAL_CONFORMITY_CREDENTIAL_CONTEXT,
+            Config.UNTP_BC_MINES_ACT_PERMIT_CONTEXT, {
+                "name": "https://schema.org/name"
+            }
+        ])
     type: List[str]
     issuer: Union[str, dict[str, str]]
     # TODO: update to `validFrom` for vcdm 2.0 once available in aca-py/traction, which is an optional property
     issuanceDate: str
-    credentialSubject: cc.ConformityAttestation
+    credentialSubject: UNTPCCMinesActPermit
 
 
 @celery.task()
@@ -322,6 +334,19 @@ class VerifiableCredentialManager():
     @classmethod
     def produce_untp_cc_map_payload(cls, did: str, permit_amendment: PermitAmendment):
         """Produce payload for Mines Act Permit UNTP Conformity Credential from permit amendment and did."""
+
+        #attributes in anoncreds but not in untp
+        # "latitude": permit_amendment.mine.latitude, but in pluscode
+        # "longitude": permit_amendment.mine.longitude, but in pluscode
+
+        # "bond_total"
+        # "mine_disturbance"
+        # "mine_operation_status"
+        # "mine_operation_status_reason"
+        # "mine_operation_status_sub_reason"
+        # "tsf_operating_count"
+        # "tsf_care_and_maintenance_count"
+
         ANONCRED_SCHEME = "https://hyperledger.github.io/anoncreds-spec/"
 
         curr_appt = permit_amendment.permittee_appointments[0]
@@ -398,7 +423,7 @@ class VerifiableCredentialManager():
             issue_date.year, issue_date.month, issue_date.day, 0, 0, 0,
             tzinfo=ZoneInfo("UTC")).isoformat()
 
-        cred = cc.ConformityAttestation(
+        cred = UNTPCCMinesActPermit(
             id="http://example.com/govdomain/minesactpermit/123",
             type="ConformityAttestation",
             assessmentLevel=codes.AssessmentLevelCode.GovtApproval,
@@ -417,13 +442,10 @@ class VerifiableCredentialManager():
             assessments=untp_assessments)
 
         w3c_cred = W3CCred(
-            context=[
-                "https://www.w3.org/2018/credentials/v1",
-                "https://test.uncefact.org/vocabulary/untp/dcc/0/untp-dcc-context-0.3.10.jsonld", {
-                    "name": "https://schema.org/name"
-                }
+            type=[
+                "VerifiableCredential", "DigitalConformityCredential", "BCMinesActPermitCredential",
+                "NonProductionCredential"
             ],
-            type=["VerifiableCredential", "DigitalConformityCredential", "NonProductionCredential"],
             issuer={"id": did},
             issuanceDate=issuance_date_str,
             credentialSubject=cred)
