@@ -104,7 +104,7 @@ export const LegalLandOwnerInformation: FC = () => {
                 label="Legal Land Owner Name"
                 component={RenderField}
                 required={!is_legal_land_owner}
-                validate={!is_legal_land_owner ? [required, maxLength(100)] : []}
+                validate={!is_legal_land_owner ? [required, maxLength(100)] : [maxLength(100)]}
                 help="If it is provincial or federal, write in that"
                 disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
               />
@@ -130,7 +130,9 @@ export const LegalLandOwnerInformation: FC = () => {
                 label="Legal Land Owner Contact Number"
                 component={RenderField}
                 required={!is_legal_land_owner}
-                validate={!is_legal_land_owner ? [phoneNumber, maxLength(12), required] : []}
+                validate={
+                  !is_legal_land_owner ? [phoneNumber, maxLength(12), required] : [maxLength(12)]
+                }
                 normalize={normalizePhone}
                 disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
               />
@@ -142,7 +144,9 @@ export const LegalLandOwnerInformation: FC = () => {
                 label="Legal Land Owner Email Address"
                 component={RenderField}
                 required={!is_legal_land_owner}
-                validate={!is_legal_land_owner ? [required, email, maxLength(4000)] : []}
+                validate={
+                  !is_legal_land_owner ? [required, email, maxLength(100)] : [maxLength(100)]
+                }
                 disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
               />
             </Col>

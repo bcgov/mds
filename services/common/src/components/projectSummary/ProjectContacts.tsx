@@ -96,7 +96,7 @@ const RenderContacts = ({ fields, isDisabled }) => {
                   label="First Name"
                   component={RenderField}
                   required
-                  validate={[required, maxLength(100)]}
+                  validate={[required, maxLength(60)]}
                 />
               </Col>
               <Col md={12} sm={24}>
@@ -106,7 +106,7 @@ const RenderContacts = ({ fields, isDisabled }) => {
                   label="Last Name"
                   component={RenderField}
                   required
-                  validate={[required, maxLength(100)]}
+                  validate={[required, maxLength(60)]}
                 />
               </Col>
             </Row>
@@ -119,6 +119,7 @@ const RenderContacts = ({ fields, isDisabled }) => {
                   id={`${field}.job_title`}
                   label="Job Title"
                   component={RenderField}
+                  validate={[maxLength(100)]}
                 />
               </Col>
               <Col md={12} sm={24}>
@@ -163,7 +164,7 @@ const RenderContacts = ({ fields, isDisabled }) => {
                   label="Email"
                   required
                   component={RenderField}
-                  validate={[required, email]}
+                  validate={[required, email, maxLength(60)]}
                 />
               </Col>
             </Row>
