@@ -102,8 +102,8 @@ services:
         echo "Setting kibana_system password";
         until curl -s -X POST --cacert /certs/ca/ca.crt -u "${ELASTICSEARCH_USERNAME}:${ELASTICSEARCH_PASSWORD}" -H "Content-Type: application/json" https://elasticsearch:9200/_security/user/kibana_system/_password -d "{\"password\":\"${ELASTICSEARCH_PASSWORD}\"}" | grep -q "^{}"; do sleep 10; done;
         sleep 3;
-        echo "All done!";
-      '
+        echo "All done!"; tail -f /dev/null
+      ' 
     user: "0"
     working_dir: /usr/share/elasticsearch
     volumes: ['certs:/certs']
