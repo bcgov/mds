@@ -17,7 +17,8 @@ def poll_update_permit_extraction_status(permit_extraction_task_id):
     if task.task_status == 'SUCCESS' or task.task_status == 'FAILURE':
         if task.task_status == 'SUCCESS':
             create_permit_conditions_from_task(task)
-
+        task.save()
         return task
     else:
+        task.save()
         poll_update_permit_extraction_status.retry(countdown=10)
