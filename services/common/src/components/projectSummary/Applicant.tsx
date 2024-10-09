@@ -391,7 +391,7 @@ const Applicant = () => {
             name="applicant.phone_ext"
             label="Ext."
             component={RenderField}
-            validate={[phoneNumber, maxLength(4), required]}
+            validate={[maxLength(4)]}
             disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
           />
         </Col>
