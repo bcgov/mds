@@ -174,6 +174,19 @@ class AMSApiService():
         return ams_failure
 
     @classmethod
+    def __format_mailing_address(cls, payment_contact):
+        address = payment_contact['address'][0]
+        if address is None:
+            return ''
+        address_components = [
+            address.get('suite_no', ''),
+            address.get('address_line_1', ''),
+            address.get('city', ''),
+            address.get('sub_division_code', '')
+        ]
+        return ', '.join(filter(bool, address_components)).strip(', ')
+
+    @classmethod
     def create_new_ams_authorization(cls,
                                      ams_authorizations,
                                      applicant,
@@ -200,7 +213,8 @@ class AMSApiService():
                                      zoning,
                                      zoning_reason,
                                      regional_district_name,
-                                     project_guid
+                                     project_guid,
+                                     payment_contact
                                      ):
         """Creates a new AMS authorization application"""
 
@@ -239,8 +253,7 @@ class AMSApiService():
                             'agent': cls.__set_agent_details(agent),
                             'purposeofapplication': authorization.get('authorization_description', ''),
                             'preappexemptionrequest': cls.__boolean_to_yes_no(authorization.get('exemption_requested')),
-                            'preappexemptionrequestreason': authorization.get('authorization_description',
-                                                                              'Not Applicable'),
+                            'preappexemptionrequestreason': authorization.get('exemption_reason', ''),
                             'iscontaminatedsite': cls.__boolean_to_yes_no(authorization.get('is_contaminated')),
                             'contact': cls.__set_contact_details(contacts[0]),
                             'facilitytype': facility_type,
@@ -273,7 +286,14 @@ class AMSApiService():
                             'regionaldistrict': {
                                 'name': regional_district_name
                             },
-                            'documents': cls.__get_ams_document_url(project_guid)
+                            'documents': cls.__get_ams_document_url(project_guid),
+                            'contactforpayment': {
+                                'firstname': payment_contact.get('first_name', ''),
+                                'lastname': payment_contact.get('party_name', ''),
+                                'phonenumber': payment_contact.get('phone_no', ''),
+                                'email': payment_contact.get('email', ''),
+                                'mailingaddress': cls.__format_mailing_address(payment_contact)
+                            }
                         }
                         payload = json.dumps(ams_authorization_data)
                         response = requests.post(Config.AMS_URL, data=payload, headers=headers)
@@ -339,7 +359,8 @@ class AMSApiService():
                                            regional_district_name,
                                            is_legal_land_owner,
                                            is_crown_land_federal_or_provincial,
-                                           project_guid
+                                           project_guid,
+                                           payment_contact
                                            ):
         """Creates an AMS authorization application amendment"""
 
@@ -387,13 +408,13 @@ class AMSApiService():
                             'name': nearest_municipality_name
                         },
                         'preappexemptionrequest': cls.__boolean_to_yes_no(authorization.get('exemption_requested')),
-                        'preappexemptionrequestreason': authorization.get('authorization_description',
-                                                                          'Not Applicable'),
+                        'preappexemptionrequestreason': authorization.get('exemption_reason', ''),
+                        'newiscontaminatedsite': cls.__boolean_to_yes_no(authorization.get('is_contaminated')),
                         'newapplicant': cls.__set_applicant_details(applicant, company_alias),
                         'newcontact': cls.__set_contact_details(contacts[0]),
                         'newagent': cls.__set_agent_details(agent),
                         'newfacilitytype': facility_type,
-                        'newfacilitydescrption': facility_desc,
+                        'newfacilitydescription': facility_desc,
                         'newregionaldistrict': {
                             'name': regional_district_name
                         },

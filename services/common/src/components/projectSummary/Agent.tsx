@@ -234,7 +234,7 @@ export const Agent: FC = () => {
                     name="agent.party_orgbook_entity.registration_id"
                     label="Incorporation Number"
                     required
-                    validate={[required]}
+                    validate={[required, maxLength(25)]}
                     component={RenderField}
                     disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
                   />
@@ -250,7 +250,7 @@ export const Agent: FC = () => {
                   label="First Name"
                   component={RenderField}
                   required
-                  validate={[required, maxLength(100)]}
+                  validate={[required, maxLength(60)]}
                   disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
                 />
               </Col>
@@ -260,7 +260,7 @@ export const Agent: FC = () => {
                   label="Last Name"
                   component={RenderField}
                   required
-                  validate={[required, maxLength(100)]}
+                  validate={[required, maxLength(60)]}
                   disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
                 />
               </Col>
@@ -273,6 +273,7 @@ export const Agent: FC = () => {
                 name="agent.job_title"
                 label="Agent's Title"
                 component={RenderField}
+                validate={[maxLength(100)]}
                 disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
               />
             </Col>
@@ -284,21 +285,30 @@ export const Agent: FC = () => {
                 name="agent.phone_no"
                 label="Contact Number"
                 required
-                validate={isInternational ? [required] : [required, phoneNumber]}
+                validate={
+                  isInternational
+                    ? [required, maxLength(12)]
+                    : [required, phoneNumber, maxLength(12)]
+                }
                 component={RenderField}
                 normalize={normalizePhone}
                 disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
               />
             </Col>
             <Col md={4} sm={5}>
-              <Field name="agent.phone_ext" label="Ext." component={RenderField} />
+              <Field
+                name="agent.phone_ext"
+                validate={[maxLength(4)]}
+                label="Ext."
+                component={RenderField}
+              />
             </Col>
             <Col md={12} sm={24}>
               <Field
                 name="agent.email"
                 label="Email Address"
                 required
-                validate={[required, email]}
+                validate={[required, email, maxLength(60)]}
                 component={RenderField}
                 disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
               />
@@ -312,7 +322,7 @@ export const Agent: FC = () => {
                 name="agent.address.address_line_1"
                 label="Street"
                 required
-                validate={[required]}
+                validate={[required, maxLength(100)]}
                 component={RenderField}
                 disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
               />
@@ -322,6 +332,7 @@ export const Agent: FC = () => {
                 name="agent.address.suite_no"
                 label="Unit #"
                 component={RenderField}
+                validate={[required, maxLength(5)]}
                 disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
               />
             </Col>
