@@ -123,6 +123,10 @@ def start_zip_job(job_type, docs, task, zip_file_name=None):
     """
         Starts a new job to zip the given documents asynchronously.
     """
+
+    current_app.logger.info("inside start_zip_job")
+
+
     job_id = str(uuid.uuid4())
     doc_ids = [doc.document_id for doc in docs]    
     
@@ -164,13 +168,19 @@ def create_import_now_submission_documents(import_now_submission_documents_job_i
 
 
 def apply_task_async(task_name, data):
+    current_app.logger.info("inside apply_task_async")
+    current_app.logger.info(task_name)
+    current_app.logger.info(data)
+
     current_app.logger.info(f'apply_task_async: {task_name}')
     response = requests.post(
         url=f'{Config.CELERY_REST_API_URL}/api/task/async-apply/{task_name}',
         auth=HTTPBasicAuth(Config.FLOWER_USER, Config.FLOWER_USER_PASSWORD),
         headers={'Content-Type': 'application/json'},
         data=json.dumps(data))
-
+    
+    current_app.logger.info("apply_task_async response")
+    current_app.logger.info(response)
     return json.loads(response.content)
 
 def abort_task(task_id):
@@ -183,7 +193,15 @@ def abort_task(task_id):
 
 def create_zip_task(zip_file_name, document_manager_guids):
     """Creates a task that zips documents."""
+
+    current_app.logger.info("inside create_zip_task")
+    current_app.logger.info(zip_file_name)
+    current_app.logger.info(document_manager_guids)
+
     docs = Document.query.filter(Document.document_guid.in_(document_manager_guids)).all()
+
+    current_app.logger.info(docs)
+    current_app.logger.info("got doc")
     if (len(docs) == 0):
         return 'No documents matching the passed ids are stored on the object store'
     return start_zip_job('create_zip', docs, zip_docs, zip_file_name)

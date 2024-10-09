@@ -315,6 +315,9 @@ class DocumentResource(Resource):
         @requires_any_of(DOCUMENT_UPLOAD_ROLES)
         def post(self):
             from app.services.commands_helper import create_zip_task
+
+            current_app.logger.info("inside docman document.py documents/zip post request")
+
             document_manager_guids = request.json.get('document_manager_guids', [])
             zip_file_name = request.json.get('zip_file_name', None)
             

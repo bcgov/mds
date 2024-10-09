@@ -1,7 +1,7 @@
 import decimal
 import uuid
 
-from flask import request
+from flask import request, current_app
 from app.api.projects.major_mine_application.models.major_mine_application import MajorMineApplication
 from app.api.projects.project_summary.models.project_summary import ProjectSummary
 from app.api.projects.project_decision_package.models.project_decision_package import ProjectDecisionPackage
@@ -182,7 +182,9 @@ class ZipResource(Resource, UserMixin):
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     @api.expect(DOCUMENT_MANAGER_ZIP)
     @api.response(200, 'Successfully initialized zipping of documents')
-    def post(self, mine_guid):        
+    def post(self, mine_guid):
+        current_app.logger.info("inside post zip")
+        
         mine = Mine.find_by_mine_guid(mine_guid)
 
         if not mine:

@@ -214,11 +214,18 @@ class DocumentManagerService():
             - "message": A message indicating that a create_zip job has been added to the task queue.
             - "task_id": The ID of the create_zip job that was added to the task queue.
         """
+
+        current_app.logger.info("inside initialize_document_zip")
+        current_app.logger.info(request.headers)
+
         resp = requests.post(
             url=f'{Config.DOCUMENT_MANAGER_URL}/documents/zip',
             headers={key: value
                     for (key, value) in request.headers if key != 'Host'},
             data=json.dumps({'document_manager_guids': document_manager_guids, 'zip_file_name': zip_file_name}))
+        
+        current_app.logger.info("RESP")
+        current_app.logger.info(resp)
 
         current_app.logger.info(f'initialize_document_zip: {resp.content}')
 
