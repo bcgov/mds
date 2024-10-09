@@ -202,8 +202,7 @@ def process_all_untp_map_for_orgbook():
         except IntegrityError:
             task_logger.warning(f"ignoring duplicate={str(record.unsigned_payload_hash)}")
             continue
-        task_logger.info("bcreg_uri=" +
-                         str(cred_payload.credentialSubject.issuedTo.identifiers[0].identifierURI) +
+        task_logger.info("bcreg_uri=" + str(cred_payload.credentialSubject.issuedToParty.id) +
                          ", for permit_amendment_guid=" + str(row[0]))
         task_logger.warning("unsigned_hash=" + str(record.unsigned_payload_hash))
 
@@ -438,7 +437,6 @@ class VerifiableCredentialManager():
                 name="BC Chief Permitting Officer of Mines",
                 issuingAuthority=untp_party_cpo),
             issuedToParty=untp_party_business,
-            validFrom=issuance_date_str,                                                                                     #shouldn't this just be in the w3c wrapper
             assessments=untp_assessments)
 
         w3c_cred = W3CCred(
@@ -447,7 +445,7 @@ class VerifiableCredentialManager():
                 "NonProductionCredential"
             ],
             issuer={"id": did},
-            issuanceDate=issuance_date_str,
+            issuanceDate=issuance_date_str,                                                          #vcdm1.1, will change to 'validFrom' in vcdm2.0
             credentialSubject=cred)
 
         return w3c_cred
