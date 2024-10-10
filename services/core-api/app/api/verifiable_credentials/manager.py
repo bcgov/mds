@@ -441,11 +441,10 @@ class VerifiableCredentialManager():
 
         w3c_cred = W3CCred(
             type=[
-                "VerifiableCredential", "DigitalConformityCredential", "BCMinesActPermitCredential",
-                "NonProductionCredential"
+                "VerifiableCredential", "DigitalConformityCredential", "BCMinesActPermitCredential"
             ],
             issuer={"id": did},
-            issuanceDate=issuance_date_str,                                                          #vcdm1.1, will change to 'validFrom' in vcdm2.0
+            issuanceDate=issuance_date_str,                                                         #vcdm1.1, will change to 'validFrom' in vcdm2.0
             credentialSubject=cred)
 
         return w3c_cred
