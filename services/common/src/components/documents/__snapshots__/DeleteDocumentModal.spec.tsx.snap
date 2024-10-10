@@ -105,7 +105,7 @@ exports[`DeleteDocumentModal renders correctly and matches the snapshot 1`] = `
                   >
                     <tr
                       class="ant-table-row ant-table-row-level-0 ant-table-row-minimal"
-                      data-row-key="11d15c31-5f0a-4a18-94de-e04e3ca7936f"
+                      data-row-key="4c7d88d6-e78d-48cf-a860-89b6a1e8903b"
                     >
                       <td
                         class="ant-table-cell"

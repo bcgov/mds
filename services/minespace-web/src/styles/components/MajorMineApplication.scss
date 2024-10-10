@@ -22,6 +22,12 @@
   margin-bottom: 2.5em;
 }
 
+.status-page-content {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
 .success-page {
   @extend .status-icon;
   color: $gov-green;
@@ -30,4 +36,12 @@
 .fail-page {
   @extend .status-icon;
   color: $gov-red;
+}
+
+.declaration-page-content {
+  list-style-position: outside;
+
+  ol {
+    padding-left: 40px;
+  }
 }

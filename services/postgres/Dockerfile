@@ -1,4 +1,4 @@
-FROM postgis/postgis:13-3.0
+FROM postgis/postgis:13-3.4
 
 # The Git ref (branch/tag) specifying the version of oracle-fdw to use
 # This is referencing a specific revision (master as of 2021.06.01)

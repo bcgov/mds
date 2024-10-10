@@ -188,7 +188,12 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
                         'required': True,
                         'type': 'list',
                         'empty': False,
-                    }
+                    },
+                    'support_documents': {
+                        'required': True,
+                        'type': 'list',
+                        'empty': False,
+                    },
                 }
             
             if not permit_type or not isinstance(permit_type, list) or not permit_type[0]:

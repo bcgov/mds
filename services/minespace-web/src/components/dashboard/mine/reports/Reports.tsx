@@ -9,16 +9,18 @@ import {
   updateMineReport,
 } from "@mds/common/redux/actionCreators/reportActionCreator";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
-import { getMineReports } from "@mds/common/redux/selectors/reportSelectors";
+import { getMineReports, getReportsPageData } from "@mds/common/redux/selectors/reportSelectors";
 import ReportsTable from "@/components/dashboard/mine/reports/ReportsTable";
 import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import { IMine, IMineReport, Feature } from "@mds/common";
+import { IMine, IMineReport, IPageData, Feature } from "@mds/common";
 import { Link, useHistory } from "react-router-dom";
 import * as routes from "@/constants/routes";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Link as ScrollLink, Element } from "react-scroll";
 import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
+import ResponsivePagination from "@mds/common/components/common/ResponsivePagination";
+import * as Strings from "@mds/common/constants/strings";
 
 export const Reports: FC = () => {
   const dispatch = useDispatch();
@@ -26,6 +28,7 @@ export const Reports: FC = () => {
   const { isFeatureEnabled } = useFeatureFlag();
 
   const { mine } = useContext<{ mine: IMine }>(SidebarContext);
+  const pageData = useSelector(getReportsPageData);
 
   const mineReports: IMineReport[] = useSelector(getMineReports);
 
@@ -33,21 +36,36 @@ export const Reports: FC = () => {
   const [report, setReport] = useState(null);
   const [permitRequiredReports, setPermitRequiredReports] = useState<IMineReport[]>([]);
   const [codeRequiredReports, setCodeRequiredReports] = useState<IMineReport[]>([]);
+  const defaultPageData = {
+    current_page: 1,
+    items_per_page: 10,
+    records: [],
+    total: 0,
+    total_pages: 1,
+  };
+  const [crrPageData, setCRRPageData] = useState<IPageData<IMineReport>>(defaultPageData);
+  const [prrPageData, setPRRPageData] = useState<IPageData<IMineReport>>(defaultPageData);
 
   useEffect(() => {
-    const pRRs = mineReports.filter((report) => !!report.permit_guid);
-    const cRRs = mineReports.filter((report) => !report.permit_guid);
-
-    setPermitRequiredReports(pRRs);
-    setCodeRequiredReports(cRRs);
+    if (mineReports[0]) {
+      const permitGuid = mineReports[0].permit_guid;
+      if (!permitGuid) {
+        setCodeRequiredReports(mineReports);
+        setCRRPageData(pageData);
+      } else {
+        setPermitRequiredReports(mineReports);
+        setPRRPageData(pageData);
+      }
+    }
   }, [mineReports]);
 
   useEffect(() => {
     let isMounted = true;
-
     setIsLoaded(false);
-
-    dispatch(fetchMineReports(mine.mine_guid, null)).then(() => {
+    Promise.all([
+      dispatch(fetchMineReports(mine.mine_guid, Strings.MINE_REPORTS_TYPE.codeRequiredReports)),
+      dispatch(fetchMineReports(mine.mine_guid, Strings.MINE_REPORTS_TYPE.permitRequiredReports)),
+    ]).then(() => {
       if (isMounted) {
         setIsLoaded(true);
       }
@@ -139,6 +157,24 @@ export const Reports: FC = () => {
     );
   };
 
+  const onCRRPageChange = (page, per_page) => {
+    dispatch(
+      fetchMineReports(mine.mine_guid, Strings.MINE_REPORTS_TYPE.codeRequiredReports, {
+        page,
+        per_page,
+      })
+    );
+  };
+
+  const onPRRPageChange = (page, per_page) => {
+    dispatch(
+      fetchMineReports(mine.mine_guid, Strings.MINE_REPORTS_TYPE.permitRequiredReports, {
+        page,
+        per_page,
+      })
+    );
+  };
+
   return (
     <Row>
       <Col span={24}>
@@ -201,7 +237,16 @@ export const Reports: FC = () => {
               openEditReportModal={openEditReportModal}
               mineReports={codeRequiredReports}
               isLoaded={isLoaded}
+              backendPaginated
             />
+            <Row justify="center" className="margin-large--bottom">
+              <ResponsivePagination
+                onPageChange={onCRRPageChange}
+                currentPage={Number(crrPageData.current_page)}
+                pageTotal={Number(crrPageData.total)}
+                itemsPerPage={Number(crrPageData.items_per_page)}
+              />
+            </Row>
             <Element name="permitRequiredReports">
               <Typography.Title level={4}>Permit Required Reports</Typography.Title>
             </Element>
@@ -218,6 +263,14 @@ export const Reports: FC = () => {
               mineReports={permitRequiredReports}
               isLoaded={isLoaded}
             />
+            <Row justify="center" className="margin-large--bottom">
+              <ResponsivePagination
+                onPageChange={onPRRPageChange}
+                currentPage={Number(prrPageData.current_page)}
+                pageTotal={Number(prrPageData.total)}
+                itemsPerPage={Number(prrPageData.items_per_page)}
+              />
+            </Row>
           </Col>
         </Row>
       </Col>

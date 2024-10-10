@@ -250,6 +250,7 @@ const ViewPermitOverview: FC<ViewPermitOverviewProps> = ({ latestAmendment }) =>
             <Paragraph>Documents displayed here are viewable by Minespace users.</Paragraph>
             <Table
               className="margin-large--top"
+              rowKey="document_manager_guid"
               dataSource={latestAmendment.related_documents}
               columns={documentColumns}
               pagination={false}

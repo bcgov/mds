@@ -39,7 +39,7 @@ describe("PaymentContact Component", () => {
           initialValues={MOCK.PERMITS}
           onSubmit={() => {}}
         >
-          <PaymentContact />
+          <PaymentContact isDisabled={false} />
         </FormWrapper>
       </ReduxWrapper>
     );

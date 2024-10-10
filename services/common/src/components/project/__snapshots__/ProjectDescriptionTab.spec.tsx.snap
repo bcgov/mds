@@ -16,11 +16,11 @@ exports[`ProjectDescriptionTab renders properly 1`] = `
         <div
           class="ant-col"
         >
-          <h4
+          <h2
             class="ant-typography"
           >
             Project Description Overview
-          </h4>
+          </h2>
         </div>
         <div
           class="ant-col"
@@ -46,20 +46,20 @@ exports[`ProjectDescriptionTab renders properly 1`] = `
         Below are the authorization submissions and their status in the project description. Both the Major Mines Office and Ministry of Environments reviews must be completed for this stage to be considered complete.
       </div>
       <h3
-        class="ant-typography"
+        class="ant-typography font-colour"
       >
         Submission Progress
       </h3>
-      <h4
-        class="ant-typography"
+      <h5
+        class="ant-typography primary-colour"
       >
         Major Mines Office
-      </h4>
-      <h5
-        class="ant-typography"
+      </h5>
+      <span
+        class="ant-typography desktop-bold"
       >
         Mines Act
-      </h5>
+      </span>
       <div
         class="ant-table-wrapper  core-table"
       >
@@ -70,7 +70,7 @@ exports[`ProjectDescriptionTab renders properly 1`] = `
             class="ant-spin-container"
           >
             <div
-              class="ant-table ant-table-empty"
+              class="ant-table"
             >
               <div
                 class="ant-table-container"
@@ -112,13 +112,54 @@ exports[`ProjectDescriptionTab renders properly 1`] = `
                       class="ant-table-tbody"
                     >
                       <tr
-                        class="ant-table-placeholder"
+                        class="ant-table-row ant-table-row-level-0 fade-in"
+                        data-row-key="4d04995c-f90d-42fd-a951-60d9891f242c"
                       >
                         <td
                           class="ant-table-cell"
-                          colspan="4"
                         >
-                          No Data Yet
+                          <div
+                            class="project_type-column"
+                            title="Type"
+                          >
+                            <div />
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="permit_no-column"
+                            title="Permit"
+                          >
+                            N/A
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="date_submitted-column"
+                            title="Date"
+                          >
+                            May 24 2024, 12:17 (PDT)
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <span
+                            class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                          >
+                            <span
+                              class="ant-badge-status-dot ant-badge-status-success"
+                            />
+                            <span
+                              class="ant-badge-status-text"
+                            >
+                              Submitted
+                            </span>
+                          </span>
                         </td>
                       </tr>
                     </tbody>
@@ -130,86 +171,11 @@ exports[`ProjectDescriptionTab renders properly 1`] = `
         </div>
       </div>
       <br />
-      <h5
-        class="ant-typography"
-      >
-        Water Sustainability Act
-      </h5>
-      <div
-        class="ant-table-wrapper  core-table"
-      >
-        <div
-          class="ant-spin-nested-loading"
-        >
-          <div
-            class="ant-spin-container"
-          >
-            <div
-              class="ant-table ant-table-empty"
-            >
-              <div
-                class="ant-table-container"
-              >
-                <div
-                  class="ant-table-content"
-                >
-                  <table
-                    style="table-layout: auto;"
-                  >
-                    <colgroup />
-                    <thead
-                      class="ant-table-thead"
-                    >
-                      <tr>
-                        <th
-                          class="ant-table-cell"
-                        >
-                          Type
-                        </th>
-                        <th
-                          class="ant-table-cell"
-                        >
-                          Permit
-                        </th>
-                        <th
-                          class="ant-table-cell"
-                        >
-                          Date
-                        </th>
-                        <th
-                          class="ant-table-cell"
-                        >
-                          Status
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody
-                      class="ant-table-tbody"
-                    >
-                      <tr
-                        class="ant-table-placeholder"
-                      >
-                        <td
-                          class="ant-table-cell"
-                          colspan="4"
-                        >
-                          No Data Yet
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <br />
-      <h5
-        class="ant-typography"
+      <span
+        class="ant-typography desktop-bold"
       >
         Forestry Act
-      </h5>
+      </span>
       <div
         class="ant-table-wrapper  core-table"
       >
@@ -220,7 +186,7 @@ exports[`ProjectDescriptionTab renders properly 1`] = `
             class="ant-spin-container"
           >
             <div
-              class="ant-table ant-table-empty"
+              class="ant-table"
             >
               <div
                 class="ant-table-container"
@@ -262,13 +228,54 @@ exports[`ProjectDescriptionTab renders properly 1`] = `
                       class="ant-table-tbody"
                     >
                       <tr
-                        class="ant-table-placeholder"
+                        class="ant-table-row ant-table-row-level-0 fade-in"
+                        data-row-key="80fa60e3-0c8b-48e1-aede-ed2830e8ca42"
                       >
                         <td
                           class="ant-table-cell"
-                          colspan="4"
                         >
-                          No Data Yet
+                          <div
+                            class="project_type-column"
+                            title="Type"
+                          >
+                            <div />
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="permit_no-column"
+                            title="Permit"
+                          >
+                            N/A
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            class="date_submitted-column"
+                            title="Date"
+                          >
+                            May 24 2024, 12:17 (PDT)
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <span
+                            class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                          >
+                            <span
+                              class="ant-badge-status-dot ant-badge-status-success"
+                            />
+                            <span
+                              class="ant-badge-status-text"
+                            >
+                              Submitted
+                            </span>
+                          </span>
                         </td>
                       </tr>
                     </tbody>
@@ -280,90 +287,6 @@ exports[`ProjectDescriptionTab renders properly 1`] = `
         </div>
       </div>
       <br />
-      <h4
-        class="ant-typography"
-      >
-        Ministry of Environment
-      </h4>
-      <h5
-        class="ant-typography"
-      >
-        Environmental Management Act
-      </h5>
-      <div
-        class="ant-table-wrapper  core-table"
-      >
-        <div
-          class="ant-spin-nested-loading"
-        >
-          <div
-            class="ant-spin-container"
-          >
-            <div
-              class="ant-table ant-table-empty"
-            >
-              <div
-                class="ant-table-container"
-              >
-                <div
-                  class="ant-table-content"
-                >
-                  <table
-                    style="table-layout: auto;"
-                  >
-                    <colgroup />
-                    <thead
-                      class="ant-table-thead"
-                    >
-                      <tr>
-                        <th
-                          class="ant-table-cell"
-                        >
-                          Type
-                        </th>
-                        <th
-                          class="ant-table-cell"
-                        >
-                          Authorization
-                        </th>
-                        <th
-                          class="ant-table-cell"
-                        >
-                          Tracking #
-                        </th>
-                        <th
-                          class="ant-table-cell"
-                        >
-                          Date
-                        </th>
-                        <th
-                          class="ant-table-cell"
-                        >
-                          Status
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody
-                      class="ant-table-tbody"
-                    >
-                      <tr
-                        class="ant-table-placeholder"
-                      >
-                        <td
-                          class="ant-table-cell"
-                          colspan="5"
-                        >
-                          No Data Yet
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </div>

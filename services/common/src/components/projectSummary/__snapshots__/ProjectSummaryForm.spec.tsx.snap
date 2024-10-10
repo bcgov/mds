@@ -1,0 +1,279 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Project Management renders properly 1`] = `
+<div>
+  <div
+    class="ant-row"
+  >
+    <div
+      class="ant-col ant-col-6 stepped-form-menu-container"
+    >
+      <ul
+        class="ant-menu ant-menu-root ant-menu-inline ant-menu-light stepped-form"
+        data-menu-list="true"
+        role="menu"
+        tabindex="0"
+      >
+        <li
+          aria-disabled="false"
+          class="ant-menu-item ant-menu-item-selected ant-menu-item-only-child stepped-menu-item"
+          data-menu-id="rc-menu-uuid-test-basic-information"
+          role="menuitem"
+          style="padding-left: 24px;"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            Basic Information
+          </span>
+        </li>
+        <li
+          aria-disabled="false"
+          class="ant-menu-item ant-menu-item-only-child stepped-menu-item"
+          data-menu-id="rc-menu-uuid-test-project-management"
+          role="menuitem"
+          style="padding-left: 24px;"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            Project Management
+          </span>
+        </li>
+        <li
+          aria-disabled="false"
+          class="ant-menu-item ant-menu-item-only-child stepped-menu-item"
+          data-menu-id="rc-menu-uuid-test-related-projects"
+          role="menuitem"
+          style="padding-left: 24px;"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            Related Projects
+          </span>
+        </li>
+        <li
+          aria-disabled="false"
+          class="ant-menu-item ant-menu-item-only-child stepped-menu-item"
+          data-menu-id="rc-menu-uuid-test-purpose-and-authorization"
+          role="menuitem"
+          style="padding-left: 24px;"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            Purpose and Authorization
+          </span>
+        </li>
+        <li
+          aria-disabled="false"
+          class="ant-menu-item ant-menu-item-only-child stepped-menu-item"
+          data-menu-id="rc-menu-uuid-test-project-contacts"
+          role="menuitem"
+          style="padding-left: 24px;"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            Project Contacts
+          </span>
+        </li>
+        <li
+          aria-disabled="false"
+          class="ant-menu-item ant-menu-item-only-child stepped-menu-item"
+          data-menu-id="rc-menu-uuid-test-applicant-information"
+          role="menuitem"
+          style="padding-left: 24px;"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            Applicant Information
+          </span>
+        </li>
+        <li
+          aria-disabled="false"
+          class="ant-menu-item ant-menu-item-only-child stepped-menu-item"
+          data-menu-id="rc-menu-uuid-test-representing-agent"
+          role="menuitem"
+          style="padding-left: 24px;"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            Representing Agent
+          </span>
+        </li>
+        <li
+          aria-disabled="false"
+          class="ant-menu-item ant-menu-item-only-child stepped-menu-item"
+          data-menu-id="rc-menu-uuid-test-location-access-and-land-use"
+          role="menuitem"
+          style="padding-left: 24px;"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            Location Access and Land Use
+          </span>
+        </li>
+        <li
+          aria-disabled="false"
+          class="ant-menu-item ant-menu-item-only-child stepped-menu-item"
+          data-menu-id="rc-menu-uuid-test-mine-components-and-offsite-infrastructure"
+          role="menuitem"
+          style="padding-left: 24px;"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            Mine Components and Offsite Infrastructure
+          </span>
+        </li>
+        <li
+          aria-disabled="false"
+          class="ant-menu-item ant-menu-item-only-child stepped-menu-item"
+          data-menu-id="rc-menu-uuid-test-project-dates"
+          role="menuitem"
+          style="padding-left: 24px;"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            Project Dates
+          </span>
+        </li>
+        <li
+          aria-disabled="false"
+          class="ant-menu-item ant-menu-item-only-child stepped-menu-item"
+          data-menu-id="rc-menu-uuid-test-document-upload"
+          role="menuitem"
+          style="padding-left: 24px;"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            Document Upload
+          </span>
+        </li>
+        <li
+          aria-disabled="false"
+          class="ant-menu-item ant-menu-item-only-child stepped-menu-item"
+          data-menu-id="rc-menu-uuid-test-application-summary"
+          role="menuitem"
+          style="padding-left: 24px;"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            Application Summary
+          </span>
+        </li>
+        <li
+          aria-disabled="false"
+          class="ant-menu-item ant-menu-item-only-child stepped-menu-item"
+          data-menu-id="rc-menu-uuid-test-declaration"
+          role="menuitem"
+          style="padding-left: 24px;"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            Declaration
+          </span>
+        </li>
+      </ul>
+      <div
+        aria-hidden="true"
+        style="display: none;"
+      />
+    </div>
+    <div
+      class="ant-col ant-col-18"
+    >
+      <div
+        class="stepped-form-form-container"
+      >
+        <form
+          class="ant-form ant-form-vertical common-form common-form-ADD_EDIT_PROJECT_SUMMARY form-view"
+          id="ADD_EDIT_PROJECT_SUMMARY"
+        >
+          <h3
+            class="ant-typography"
+          >
+            Basic Information
+          </h3>
+          <div
+            class="view-item ant-form-item"
+          >
+            <div
+              class="ant-typography view-item-label"
+            >
+              Project title
+            </div>
+            <div
+              class="ant-typography view-item-value"
+            >
+              Sample title
+            </div>
+          </div>
+          <div
+            class="view-item ant-form-item"
+          >
+            <div
+              class="ant-typography view-item-label"
+            >
+              Proponent project tracking ID
+            </div>
+            <div
+              class="ant-typography view-item-value"
+            >
+              25789-x
+            </div>
+          </div>
+          <div
+            class="view-item ant-form-item"
+          >
+            <div
+              class="ant-typography view-item-label"
+            >
+              Project overview
+            </div>
+            <div
+              class="ant-typography view-item-value"
+            >
+              Sample description
+            </div>
+          </div>
+        </form>
+        <div
+          class="ant-row ant-row-end stepped-form-button-row"
+        >
+          <button
+            class="ant-btn ant-btn-primary"
+            type="button"
+          >
+            <span>
+              Next
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

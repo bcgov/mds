@@ -666,6 +666,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@date-fns/utc@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@date-fns/utc@npm:2.1.0"
+  checksum: 924ca45afa948a6f618ade184e490deb6d0cfdaab40ac833afd409cf5fc0b09cfab14e37c4503a790711178a5e27e2a68172f15208cd9e0542d635aa24ab4113
+  languageName: node
+  linkType: hard
+
 "@discoveryjs/json-ext@npm:0.5.7, @discoveryjs/json-ext@npm:^0.5.0":
   version: 0.5.7
   resolution: "@discoveryjs/json-ext@npm:0.5.7"
@@ -937,6 +944,15 @@ __metadata:
   dependencies:
     "@fortawesome/fontawesome-common-types": 6.5.1
   checksum: 4de0e09c443434a4041fcde52dcbe64d661c5e74e660488d0ef1f55070f9f0f0012ccd50e6b0bffb73775d01133b3b18f96dafdea8b39f6d661f213e76126c91
+  languageName: node
+  linkType: hard
+
+"@fortawesome/pro-regular-svg-icons@npm:6.5.1":
+  version: 6.5.1
+  resolution: "@fortawesome/pro-regular-svg-icons@npm:6.5.1::__archiveUrl=https%3A%2F%2Fartifacts.developer.gov.bc.ca%3A443%2Fartifactory%2Fapi%2Fnpm%2Fm4c2-mds%2Ffortawesome-pro-regular-svg-icons-6.5.1.tgz"
+  dependencies:
+    "@fortawesome/fontawesome-common-types": 6.5.1
+  checksum: 79c068123ee4e4205e68f0faaada049b2e108320e941651724305bc524657446ef96a9a33785c1342d054701acefd9476b94908d3c163f2031b5da190ec30c43
   languageName: node
   linkType: hard
 
@@ -1545,6 +1561,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@mds/common@workspace:services/common"
   dependencies:
+    "@date-fns/utc": ^2.1.0
     "@reduxjs/toolkit": 2.0.1
     "@syncfusion/ej2-base": 26.1.37
     "@syncfusion/ej2-buttons": 26.1.35
@@ -1627,6 +1644,7 @@ __metadata:
     "@fortawesome/fontawesome-pro": 6.4.2
     "@fortawesome/fontawesome-svg-core": 6.5.1
     "@fortawesome/pro-light-svg-icons": 6.5.1
+    "@fortawesome/pro-regular-svg-icons": 6.5.1
     "@fortawesome/react-fontawesome": 0.2.0
     "@hot-loader/react-dom": 16.13.0
     "@mds/common": 0.1.0

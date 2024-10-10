@@ -1,121 +1,75 @@
 system_prompt: |
   You are a helpful AI assistant that can extract information from text files. You extract what is exactly as it is from the text and return it in a json format.
 
-  Permit conditions are found in sections named "Conditions" or "Permit Conditions". Do not include conditions from preamble, headers or table of contents section. Permit conditions are generally categorized in four sections but not always:
-  - General
-  - Health and Safety
-  - Geotechnical
-  - Protection of Land and Watercourses or Environmental Land and Watercourses
+permit_document_prompt_meta_questions: |
+  -----------
+  {{documents[0].content}}
 
-  You will be given a text representation of a mining permit and you will output the information extracted into the following JSON format.
-      [{
-        "section_title": "General",
-        "section_paragraph": "A", # Always uppercase letter starting from A. All condtions have a section paragraph. If you can't find one, it is not a permit condition.
-        "paragraph_title": "Compliance with Mines Act and Code", # The title of the paragraph
-        "subparagraph": "1", # Always number, starting from 1
-        "clause": "a", # Always lowercase letter starting from a
-        "subclause": "ii", # Always lowercase roman numeral starting from i
-        "page_number": 4, # The page number the condition was found. Denoted by <--- REAL PAGE: --->
-        "condition_text": "The permittee must complete reclamation activities within one year of the cessation of mining activities."
+user_prompt_meta_questions: |
+  Your task is to answer questions for each of the paragraphs in the input text and return the answers in a JSON format.
+
+  You will be given a mining permit and should answer the questions for each condition of the text in the text. The questions are as follows:
+
+  "require_report": Does this paragraph require a report to be submitted? (type: boolean)
+  "due_date": When is the report due date? (type: date)
+  "recurring": Is this a recurring report requirement? (type: boolean)
+  "frequency": Frequency of the report - "Yearly", "Monthly", "Daily", "Weekly", "Bi-weekly", "Quarterly", "Semi-annually", "Annually", "Bi-annually", "As needed", "Other" (type: string)
+  "mention_chief_inspector": Does this paragraph mention the Chief Inspector? (type: boolean)
+  "mention_chief_permitting_officer": Does this paragraph mention the Chief Permitting Officer? (type: boolean)
+
+  Output should be a json structured as follows:
+  {
+    "paragraphs": [
+      {
+        "id": "the id of the paragraph",
+        "meta": [
+          {
+            "question": "the question",
+            "question_key": "the key of the question",
+            "answer": "the answer"
+          }
+        ]
       },
-      // the rest of the conditions]
+      ...
+    ]
+  }
 
-  Here's an example of what a condition might look like:
+  The input is a csv file with the following columns. The values in each column are quoted with ""
+  - id: id of the paragraph
+  - text: The text of the paragraph
 
-  ---
-  A. General  
+  Each line in the input should have a corresponding output if an answer to any of the questions is found.
 
-  1. Compliance with Mines Act and Code 
+  Very Important: Output the full json structure without code blocks or other text. Do not output any other explanation or questions that is not in the json format.
 
-  The permittee must comply with the Mines Act and the Health, Safety and Reclamation Code for Mines in British Columbia.
+  Here's the CSV input (delimited by ---------)
 
-  2. Permit  Approval 
-
-  (a) The Permittee is authorized under this permit ( M-179) for the following:  
-
-  (i) Development, including surface disturbance and works.
-  (ii) A mill throughput that does not exceed 2,500 tonnes per day, on an annual average basis.  
-
-  (b) The Permittee is not authorized under this permit (M- 179) for the following:  
-
-  (i) The conducting of any
-  ---
-
-  This should return
-
-  [
-    {
-        "section_title": "General",
-        "section_paragraph": "A",
-        "paragraph_title": "Compliance with Mines Act and Code"
-        "subparagraph": "1",
-        "clause": "",
-        "subclause": "",
-        "page_number": 1,
-        "condition_text": "The permittee must comply with the Mines Act and the Health, Safety and Reclamation Code for Mines in British Columbia."
-    },
-    {
-        "section_title": "General",
-        "section_paragraph": "A",
-        "paragraph_title": "Permit Approval",
-        "subparagraph": "3",
-        "clause": "a",
-        "subclause": "",
-        "page_number": 1,
-        "condition_text": "The Permittee is authorized under this permit ( M-179) for the following:"
-    },
-    {
-        "section_title": "General",
-        "section_paragraph": "A",
-        "paragraph_title": "Permit Approval",
-        "subparagraph": "3",
-        "clause": "a",
-        "subclause": "i",
-        "page_number": 1,
-        "condition_text": "Development, including surface disturbance and works."
-    },
-    {
-        "section_title": "General",
-        "section_paragraph": "A",
-        "paragraph_title": "Permit Approval",
-        "subparagraph": "3",
-        "clause": "a",
-        "subclause": "ii",
-        "page_number": 1,
-        "condition_text": "A mill throughput that does not exceed 2,500 tonnes per day, on an annual average basis."
-    },
-    {
-        "section_title": "General",
-        "section_paragraph": "A",
-        "paragraph_title": "Permit Approval",
-        "subparagraph": "3",
-        "clause": "b",
-        "subclause": "",
-        "page_number": "",
-        "condition_text": "The Permittee is not authorized under this permit (M- 179) for the following:"
-    },
-    {
-        "section_title": "General",
-        "section_paragraph": "A",
-        "paragraph_title": "Permit Approval",
-        "subparagraph": "2",
-        "clause": "b",
-        "subclause": "i",
-        "page_number": "",
-        "condition_text": "The conducting of any"
-    }
-  ]
-
-  The response should only include results that have a section_paragraph and a page number.
-
+# The following prompts are currently not in use. They are kept here for future reference.
 user_prompt: |
-  Use the text below (delimited by -----------) as the source for creating a JSON representation of the permit output the result without a code block. Start at the first page and continue until you have extracted all the conditions.
-  It is important that you do not skip any conditions.
-
-  {% if last_condition_text %}
-    The last condition that was extracted was the following - continue with any remaining conditions.
-    {{ last_condition_text }}
-  {% endif %}
+  You will be given a csv file of textual paragraphs that represent a tree of conditions.
+  Your task is to extract the hierarchical structure of these conditions, identify the paragraph numbering structure
+  and what number was found within each paragraph.
+  Give each level a type based on the level of hierarchy and what it represents the hirararchical structure should be represented as follows:
+  section -> paragraph -> subparagraph -> clause -> subclause -> subsubclause
+  The output should be formatted as a CSV object without a code block, and contain the following columns:  
+    
+  - id: id of the condition as found in the input  
+  - type: type of the condition (section, paragraph, subparagraph, clause, subclause, subsubclause)  
+  - paragraph_type: title | text - does the input text look like a title or text  
+  - numbering: the numbering structure of the condition if found. (e.g A or a or 1 or ii or (a) etc)
+  The input is a csv file with the following columns. The values in each column are quoted with ""
+  - id: id of the condition
+  - indentation: The x index of the conidtion of the page. This can be used in combination with the numbering to determine the structure.
+  - text: The text of the condition. At the beginning of this is where the numbering of the condition can be found.
+    
+  Example output:  
+    
+  id,type,paragraph_type,numbering  
+  49,section,title,A  
+  50,paragraph,text,B  
+    
+  Each paragraph in the input should be included in the output.  
+  Here's the CSV input (delimited by ---------)
 
 permit_document_prompt: |
   -----------
@@ -132,16 +86,3 @@ permit_document_prompt: |
       {{ document.content}}
     {% endfor %}
   {% endif %}
-
-extra_props: |
-  "due_date": "April 9, 2024",
-  "recurring": "Yes", 
-  "frequency": "Yearly",
-  "mention_chief_inspector": "Yes",
-  "mention_chief_permitting_officer": "Yes",
-  "require_approval": "Yes",
-  "reference_first_nation": "Yes",
-  "required_by_date": "Specific Date",
-  "requirement_before_activity": "Yes",
-  "timeframe_before_activity": "Yes",
-  "professional_designation_involved": "Yes"

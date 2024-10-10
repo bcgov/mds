@@ -2,6 +2,10 @@
   color: $gov-blue !important;
 }
 
+.font-colour {
+  color: $font-colour !important;
+}
+
 a {
   &[disabled] {
     pointer-events: all;

@@ -54,11 +54,15 @@ export const MajorMineApplicationEntryTab = (props) => {
           <Typography.Paragraph>
             <Typography.Title level={5}>Resume Major Mine Application</Typography.Title>
             <div style={{ width: "60%", margin: "0 auto" }}>
-              <Steps size="small" current={2}>
-                <Steps.Step title="Get Started" />
-                <Steps.Step title="Create Submission" />
-                <Steps.Step title="Review & Submit" />
-              </Steps>
+              <Steps
+                size="small"
+                current={2}
+                items={[
+                  { title: "Get Started" },
+                  { title: "Create Submission" },
+                  { title: "Review & Submit" },
+                ]}
+              />
             </div>
             <br />
             The next stage in your project is the submission of a Major Mine Application.

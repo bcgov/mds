@@ -48,11 +48,17 @@ import {
 import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import { MineDocument } from "@mds/common/models/documents/document";
 import { Link } from "react-router-dom";
-import { PROJECT_SUMMARY_DOCUMENT_TYPE_CODE_STATE } from "../..";
+import {
+  PROJECT_SUMMARY_DOCUMENT_TYPE_CODE_STATE,
+  ENVIRONMENTAL_MANAGMENT_ACT,
+  WASTE_DISCHARGE_NEW_AUTHORIZATIONS_URL,
+  WASTE_DISCHARGE_AMENDMENT_AUTHORIZATIONS_URL,
+  isFieldDisabled,
+} from "../..";
 import { SystemFlagEnum } from "@mds/common/constants/enums";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 
-const RenderEMAPermitCommonSections = ({ code, isAmendment, index }) => {
+const RenderEMAPermitCommonSections = ({ code, isAmendment, index, isDisabled }) => {
   const dispatch = useDispatch();
   const purposeLabel = isAmendment
     ? "Additional Amendment Request Information"
@@ -147,6 +153,7 @@ const RenderEMAPermitCommonSections = ({ code, isAmendment, index }) => {
   return (
     <>
       <Field
+        disabled={isDisabled}
         label={purposeLabel}
         name="authorization_description"
         required
@@ -157,6 +164,7 @@ const RenderEMAPermitCommonSections = ({ code, isAmendment, index }) => {
         placeholder="e.g. To Discharge air emissions from x number of stacks at a sawmill."
       />
       <Field
+        disabled={isDisabled}
         component={RenderRadioButtons}
         name="exemption_requested"
         required
@@ -174,6 +182,7 @@ const RenderEMAPermitCommonSections = ({ code, isAmendment, index }) => {
       {showExemptionSection && (
         <div>
           <Field
+            disabled={isDisabled}
             label="State the reason of exemption"
             name="exemption_reason"
             required
@@ -185,10 +194,10 @@ const RenderEMAPermitCommonSections = ({ code, isAmendment, index }) => {
           <Alert
             description={
               <>
-                If yes, please attach a <b>letter with rationale</b> to support this exemption at{" "}
-                <b>Document Upload</b> section. Please note that requests may not always be granted.
-                Incomplete applications may be returned if they don&apos;t meet Ministry
-                requirements and the application fee may not be refunded.
+                <b>If yes, a final application form is required in the supporting document below</b>
+                . Note that exemptions aren&apos;t guaranteed. Incomplete applications may be
+                returned without refund if they don&apos;t meet Ministry requirements. Ministry
+                staff will contact you to discuss your exemption request.
               </>
             }
             showIcon
@@ -215,6 +224,7 @@ const RenderEMAPermitCommonSections = ({ code, isAmendment, index }) => {
         showExemptionSection={showExemptionSection}
         isAmendment={isAmendment}
         amendmentChanges={sectionValues?.amendment_changes}
+        isDisabled={isDisabled}
       />
       <DocumentTable
         documents={tableDocuments}
@@ -225,11 +235,12 @@ const RenderEMAPermitCommonSections = ({ code, isAmendment, index }) => {
   );
 };
 
-const RenderEMANewPermitSection = ({ code }) => {
+const RenderEMANewPermitSection = ({ code, isDisabled }) => {
   return (
-    <div className="grey-box">
+    <div className="grey-box margin-medium--left margin-large--bottom">
       <FormSection name={`${code}.NEW[0]`}>
         <Field
+          disabled={isDisabled}
           name="new_type"
           isVertical
           label="Authorization Type"
@@ -264,13 +275,26 @@ const RenderEMANewPermitSection = ({ code }) => {
           required
           validate={[requiredRadioButton]}
         />
-        <RenderEMAPermitCommonSections isAmendment={false} code={code} index={0} />
+        <Field
+          disabled={isDisabled}
+          label="Is this Authorization required for remediation of a contaminated site?"
+          name="is_contaminated"
+          required
+          validate={[requiredRadioButton]}
+          component={RenderRadioButtons}
+        />
+        <RenderEMAPermitCommonSections
+          isDisabled={isDisabled}
+          isAmendment={false}
+          code={code}
+          index={0}
+        />
       </FormSection>
     </div>
   );
 };
 
-const RenderEMAAmendFieldArray = ({ fields, code }) => {
+const RenderEMAAmendFieldArray = ({ fields, code, isDisabled }) => {
   const handleRemoveAmendment = (index: number) => {
     fields.remove(index);
   };
@@ -278,7 +302,7 @@ const RenderEMAAmendFieldArray = ({ fields, code }) => {
   return (
     <>
       {fields.map((amendment: string, index) => (
-        <Col className="grey-box" key={amendment}>
+        <Col className="grey-box margin-large--top" key={amendment}>
           <FormSection name={amendment}>
             <Field
               label={
@@ -305,6 +329,7 @@ const RenderEMAAmendFieldArray = ({ fields, code }) => {
               validate={[required, minLength(2), maxLength(6), digitCharactersOnly]}
               help="Number only (e.g. PC12345 should be entered as 12345)"
               component={RenderField}
+              isDisabled={isDisabled}
             />
             <Field
               label="Amendment Type"
@@ -317,6 +342,7 @@ const RenderEMAAmendFieldArray = ({ fields, code }) => {
                 { label: "Significant", value: "SIG" },
                 { label: "Minor", value: "MIN" },
               ]}
+              isDisabled={isDisabled}
             />
             <Field
               label="Amendment Changes Requested that relate to the British Columbia Environmental Act (Select all that apply)"
@@ -335,6 +361,7 @@ const RenderEMAAmendFieldArray = ({ fields, code }) => {
                 { label: "Regulatory Change", value: "RCH" },
                 { label: "Other", value: "OTH" },
               ]}
+              isDisabled={isDisabled}
             />
             <Field
               label="Is this Authorization required for remediation of a contaminated site?"
@@ -342,8 +369,14 @@ const RenderEMAAmendFieldArray = ({ fields, code }) => {
               required
               validate={[requiredRadioButton]}
               component={RenderRadioButtons}
+              isDisabled={isDisabled}
             />
-            <RenderEMAPermitCommonSections isAmendment={true} code={code} index={index} />
+            <RenderEMAPermitCommonSections
+              isDisabled={isDisabled}
+              isAmendment={true}
+              code={code}
+              index={index}
+            />
           </FormSection>
         </Col>
       ))}
@@ -351,7 +384,7 @@ const RenderEMAAmendFieldArray = ({ fields, code }) => {
   );
 };
 
-const RenderEMAAuthCodeFormSection = ({ code }) => {
+const RenderEMAAuthCodeFormSection = ({ code, isDisabled }) => {
   const { authorizations } = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
   const codeAuthorizations = authorizations[code] ?? [];
   const hasAmendments = codeAuthorizations.AMENDMENT?.length > 0;
@@ -374,8 +407,9 @@ const RenderEMAAuthCodeFormSection = ({ code }) => {
   };
 
   return (
-    <>
+    <div className="margin-large--left">
       <Field
+        disabled={isDisabled}
         name={`${code}.types`}
         component={RenderGroupCheckbox}
         required
@@ -386,7 +420,11 @@ const RenderEMAAuthCodeFormSection = ({ code }) => {
         }}
         onChange={handleChangeAuthType}
         props={{
-          label: "What type of authorization is involved in your application?",
+          label: (
+            <span className="margin-large--top">
+              What type of authorization is involved in your application?
+            </span>
+          ),
           options: [
             {
               disabled: hasAmendments,
@@ -401,12 +439,13 @@ const RenderEMAAuthCodeFormSection = ({ code }) => {
                       <FieldArray
                         name={`${code}.AMENDMENT`}
                         component={RenderEMAAmendFieldArray}
-                        props={{ code }}
+                        props={{ code, isDisabled }}
                       />
                       <Button
+                        disabled={isDisabled}
                         onClick={addAmendment}
                         icon={<PlusCircleFilled />}
-                        className="btn-sm-padding"
+                        className="btn-sm-padding margin-large--bottom"
                       >
                         Add another amendment
                       </Button>
@@ -423,12 +462,12 @@ const RenderEMAAuthCodeFormSection = ({ code }) => {
           ],
         }}
       />
-      {hasNew && <RenderEMANewPermitSection code={code} />}
-    </>
+      {hasNew && <RenderEMANewPermitSection isDisabled={isDisabled} code={code} />}
+    </div>
   );
 };
 
-const RenderMinesActPermitSelect = () => {
+const RenderMinesActPermitSelect = ({ isDisabled }) => {
   const dispatch = useDispatch();
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
   const { mine_guid } = formValues;
@@ -448,6 +487,7 @@ const RenderMinesActPermitSelect = () => {
 
   return (
     <Field
+      disabled={isDisabled}
       name="existing_permits_authorizations"
       component={RenderMultiSelect}
       data={permitDropdown}
@@ -457,17 +497,18 @@ const RenderMinesActPermitSelect = () => {
   );
 };
 
-const RenderAuthCodeFormSection = ({ authorizationType, code }) => {
+const RenderAuthCodeFormSection = ({ authorizationType, code, isDisabled }) => {
   const dropdownProjectSummaryPermitTypes = useSelector(getDropdownProjectSummaryPermitTypes);
   if (authorizationType === "ENVIRONMENTAL_MANAGMENT_ACT") {
     // AMS authorizations, have options of amend/new with more details
-    return <RenderEMAAuthCodeFormSection code={code} />;
+    return <RenderEMAAuthCodeFormSection isDisabled={isDisabled} code={code} />;
   }
   if (authorizationType === "OTHER_LEGISLATION") {
     return (
       <FormSection name={`${code}[0]`}>
         <Row>
           <Field
+            disabled={isDisabled}
             name="authorization_description"
             label="If the legislation you're seeking isn't listed, please provide the details here"
             maximumCharacters={100}
@@ -484,8 +525,9 @@ const RenderAuthCodeFormSection = ({ authorizationType, code }) => {
   // other authorizations, have single record so index with [0]
   return (
     <FormSection name={`${code}[0]`}>
-      <Row>
+      <Row className="grey-box margin-large--top margin-medium--bottom">
         <Field
+          disabled={isDisabled}
           name="project_summary_permit_type"
           props={{
             options: dropdownProjectSummaryPermitTypes,
@@ -497,9 +539,10 @@ const RenderAuthCodeFormSection = ({ authorizationType, code }) => {
           normalize={normalizeGroupCheckBox}
         />
         {isMinesAct ? (
-          <RenderMinesActPermitSelect />
+          <RenderMinesActPermitSelect isDisabled={isDisabled} />
         ) : (
           <Field
+            disabled={isDisabled}
             name="existing_permits_authorizations"
             normalize={(val) => val.split(",").map((v) => v.trim())}
             component={RenderField}
@@ -564,8 +607,29 @@ export const AuthorizationsInvolved = () => {
           <FormSection name="authorizations">
             {transformedProjectSummaryAuthorizationTypes.map((authorization) => {
               return (
-                <div key={authorization.code}>
+                <div key={authorization.code} className="margin-large--bottom">
                   <Typography.Title level={5}>{authorization.description}</Typography.Title>
+                  {authorization.code === ENVIRONMENTAL_MANAGMENT_ACT && (
+                    <Typography.Paragraph>
+                      For registration under the Municipal Wastewater Regulation and Hazardous Waste
+                      Regulation, please refer to the{" "}
+                      <Link
+                        to={{ pathname: WASTE_DISCHARGE_NEW_AUTHORIZATIONS_URL }}
+                        target="_blank"
+                      >
+                        new authorization
+                      </Link>{" "}
+                      or{" "}
+                      <Link
+                        to={{ pathname: WASTE_DISCHARGE_AMENDMENT_AUTHORIZATIONS_URL }}
+                        target="_blank"
+                      >
+                        authorization amendment
+                      </Link>{" "}
+                      guideline.
+                    </Typography.Paragraph>
+                  )}
+
                   {authorization.children.map((child) => {
                     const checked = formValues.authorizationTypes?.includes(child.code);
                     return (
@@ -573,6 +637,7 @@ export const AuthorizationsInvolved = () => {
                         <Row gutter={[0, 16]}>
                           <Col>
                             <Checkbox
+                              disabled={isFieldDisabled(systemFlag, formValues?.status_code, true)}
                               data-cy={`checkbox-authorization-${child.code}`}
                               value={child.code}
                               checked={checked}
@@ -584,45 +649,53 @@ export const AuthorizationsInvolved = () => {
                               <>
                                 {child.code === "MINES_ACT_PERMIT" && (
                                   <Alert
+                                    className="margin-large--y"
                                     message="You are submitting a Major Mine Application to the Chief Permitting Officer"
                                     description={
-                                      <ul>
-                                        <li>
-                                          For intent to depart from a Mines Act authorized mine plan
-                                          and reclamation program, as per HSRC code 10.1.18, submit
-                                          a{" "}
-                                          {isCore ? (
-                                            "Notice of Departure"
-                                          ) : (
-                                            <Link
-                                              to={GLOBAL_ROUTES?.MINE_DASHBOARD.dynamicRoute(
-                                                formValues?.mine_guid,
-                                                "nods"
-                                              )}
-                                            >
-                                              Notice of Departure
-                                            </Link>
-                                          )}{" "}
-                                          through MineSpace
-                                        </li>
-                                        <li>
-                                          For exploration work outside the permit mine area without
-                                          expanding the production area, submit a Notice of Work
-                                          application via FrontCounter BC to amend your MX or CX
-                                          permit.
-                                        </li>
-                                        <li>
-                                          For induced polarization surveys or exploration drilling
-                                          within the permit mine area, submit a Notification of
-                                          Deemed Authorization application via FrontCounter BC.
-                                        </li>
-                                      </ul>
+                                      <div className="list-position-outside">
+                                        <ul>
+                                          <li>
+                                            For intent to depart from a Mines Act authorized mine
+                                            plan and reclamation program, as per HSRC code 10.2.9,
+                                            submit a{" "}
+                                            {isCore ? (
+                                              "Notice of Departure"
+                                            ) : (
+                                              <Link
+                                                to={GLOBAL_ROUTES?.MINE_DASHBOARD.dynamicRoute(
+                                                  formValues?.mine_guid,
+                                                  "nods"
+                                                )}
+                                              >
+                                                Notice of Departure
+                                              </Link>
+                                            )}{" "}
+                                            through MineSpace
+                                          </li>
+                                          <li>
+                                            For exploration work outside the permit mine area
+                                            without expanding the production area, submit a Notice
+                                            of Work application via FrontCounter BC to amend your MX
+                                            or CX permit.
+                                          </li>
+                                          <li>
+                                            For induced polarization surveys or exploration drilling
+                                            within the permit mine area, submit a Notification of
+                                            Deemed Authorization application via FrontCounter BC.
+                                          </li>
+                                        </ul>
+                                      </div>
                                     }
                                     type="info"
                                     showIcon
                                   />
                                 )}
                                 <RenderAuthCodeFormSection
+                                  isDisabled={isFieldDisabled(
+                                    systemFlag,
+                                    formValues?.status_code,
+                                    true
+                                  )}
                                   code={child?.code}
                                   authorizationType={authorization?.code}
                                 />

@@ -17,22 +17,43 @@ import ScrollSidePageWrapper from "@mds/common/components/common/ScrollSidePageW
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils/featureFlag";
 import CoreButton from "@mds/common/components/common/CoreButton";
+import { LoadingOutlined } from "@ant-design/icons";
+import {
+  getPermitExtractionByGuid,
+  PermitExtractionStatus,
+} from "@mds/common/redux/slices/permitServiceSlice";
+import { RenderExtractionProgress, RenderExtractionStart } from "./PermitConditionExtraction";
 
 const { Title } = Typography;
 
 interface PermitConditionProps {
   latestAmendment: IPermitAmendment;
+  canStartExtraction: boolean;
+  userCanEdit: boolean;
 }
 
-const PermitConditions: FC<PermitConditionProps> = ({ latestAmendment }) => {
+const PermitConditions: FC<PermitConditionProps> = ({
+  latestAmendment,
+  canStartExtraction,
+  userCanEdit,
+}) => {
   const { isFeatureEnabled } = useFeatureFlag();
-  // NOTE: probably also an associated permission
-  const canEditPermitConditions = isFeatureEnabled(Feature.MODIFY_PERMIT_CONDITIONS);
+  const canEditPermitConditions = isFeatureEnabled(Feature.MODIFY_PERMIT_CONDITIONS) && userCanEdit;
   const { id, permitGuid } = useParams<{ id: string; permitGuid: string }>();
   const [isExpanded, setIsExpanded] = useState(false);
   const permitConditionCategoryOptions = useSelector(getPermitConditionCategoryOptions);
 
   const permitConditions = latestAmendment?.conditions;
+  const permitExtraction = useSelector(
+    getPermitExtractionByGuid(latestAmendment?.permit_amendment_id)
+  );
+
+  const fetchingPermits = useSelector((state) => state.GET_PERMITS?.isFetching);
+  const isLoading = fetchingPermits;
+
+  const isExtractionInProgress =
+    permitExtraction?.task_status === PermitExtractionStatus.in_progress;
+  const isExtractionComplete = permitExtraction?.task_status === PermitExtractionStatus.complete;
 
   const permitConditionCategories = permitConditionCategoryOptions
     .map((cat) => {
@@ -64,6 +85,20 @@ const PermitConditions: FC<PermitConditionProps> = ({ latestAmendment }) => {
     console.log("not implemented", newCondition);
     return Promise.resolve();
   };
+
+  if (isLoading) {
+    return <LoadingOutlined style={{ fontSize: 120 }} />;
+  }
+
+  if (isExtractionInProgress) {
+    return <RenderExtractionProgress />;
+  }
+  if (!isExtractionComplete && permitExtraction?.task_status) {
+    return <div>Permit extraction status: {permitExtraction?.task_status}</div>;
+  }
+  if (canStartExtraction) {
+    return <RenderExtractionStart />;
+  }
 
   return (
     <ScrollSidePageWrapper

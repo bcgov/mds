@@ -502,3 +502,21 @@
     }
   }
 }
+
+.list-position-outside {
+  padding-inline-start: 15px;
+
+  li {
+    list-style-position: outside;
+  }
+}
+
+.desktop-bold {
+  font-size: $default-p;
+  font-style: normal;
+  font-weight: $bold;
+  line-height: 24px;
+  color: $font-colour;
+}
+
+.project-summary-ministry-comments {}

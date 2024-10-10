@@ -7,7 +7,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 
 import { USER_ROLES } from "@mds/common";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
-import CommentEditor from "@/components/common/comments/CommentEditor";
+import CommentEditor from "@mds/common/components/comments/CommentEditor";
 import Comment from "@/components/common/comments/Comment";
 import * as Style from "@/constants/styles";
 import { TRASHCAN } from "@/constants/assets";

@@ -36,6 +36,7 @@ import verifiableCredentialsReducer from "@mds/common/redux/slices/verifiableCre
 import regionsReducer from "@mds/common/redux/slices/regionsSlice";
 import complianceCodeReducer, { complianceCodeReducerType } from "../slices/complianceCodesSlice";
 import spatialDataReducer, { spatialDataReducerType } from "../slices/spatialDataSlice";
+import permitServiceReducer, { permitServiceReducerType } from "../slices/permitServiceSlice";
 export const sharedReducer = {
   ...activityReducer,
   ...authenticationReducer,
@@ -82,4 +83,5 @@ export const sharedReducer = {
   regions: regionsReducer,
   [spatialDataReducerType]: spatialDataReducer,
   [complianceCodeReducerType]: complianceCodeReducer,
+  [permitServiceReducerType]: permitServiceReducer,
 };

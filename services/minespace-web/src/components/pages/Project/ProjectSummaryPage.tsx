@@ -71,7 +71,7 @@ export const ProjectSummaryPage = () => {
     : mine?.mine_guid === mineGuid;
   const [isLoaded, setIsLoaded] = useState(isDefaultLoaded);
   const [isEditMode, setIsEditMode] = useState(isDefaultEditMode);
-  const projectFormTabs = getProjectFormTabs(amsFeatureEnabled);
+  const projectFormTabs = null;
   const activeTab = tab ?? projectFormTabs[0];
 
   const handleFetchData = async () => {
@@ -112,6 +112,7 @@ export const ProjectSummaryPage = () => {
         {
           mrc_review_required: payload.mrc_review_required,
           contacts: payload.contacts,
+          project_lead_party_guid: payload.project_lead_party_guid,
         },
         "Successfully updated project.",
         false

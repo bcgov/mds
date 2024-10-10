@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import { withRouter, Link, Prompt, useParams, useHistory, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { reset } from "redux-form";
+import { reset, getFormValues } from "redux-form";
 import * as routes from "@/constants/routes";
 import { Button, Col, Row, Tag } from "antd";
 import EnvironmentOutlined from "@ant-design/icons/EnvironmentOutlined";
@@ -18,6 +18,7 @@ import {
   AMS_STATUS_CODES_SUCCESS,
   AMS_STATUS_CODE_FAIL,
   AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES,
+  SystemFlagEnum,
 } from "@mds/common";
 import { getMineById } from "@mds/common/redux/reducers/mineReducer";
 import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
@@ -36,6 +37,7 @@ import ProjectSummaryForm, {
 } from "@mds/common/components/projectSummary/ProjectSummaryForm";
 import { fetchRegions } from "@mds/common/redux/slices/regionsSlice";
 import { clearProjectSummary } from "@mds/common/redux/actions/projectActions";
+import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 
 export const ProjectSummary: FC = () => {
   const dispatch = useDispatch();
@@ -49,6 +51,9 @@ export const ProjectSummary: FC = () => {
     mode: string;
   }>();
 
+  const systemFlag = useSelector(getSystemFlag);
+  const isCore = systemFlag === SystemFlagEnum.core;
+
   const mine = useSelector((state) => getMineById(state, mineGuid));
   const formattedProjectSummary = useSelector(getFormattedProjectSummary);
   const project = useSelector(getProject);
@@ -58,7 +63,11 @@ export const ProjectSummary: FC = () => {
 
   const { isFeatureEnabled } = useFeatureFlag();
   const amsFeatureEnabled = isFeatureEnabled(Feature.AMS_AGENT);
-  const projectFormTabs = getProjectFormTabs(amsFeatureEnabled, true);
+  const projectFormTabs = getProjectFormTabs(
+    amsFeatureEnabled,
+    true,
+    isFeatureEnabled(Feature.MAJOR_PROJECT_REFACTOR)
+  );
 
   const isExistingProject = Boolean(projectGuid && projectSummaryGuid);
   const isDefaultLoaded = isExistingProject
@@ -74,6 +83,7 @@ export const ProjectSummary: FC = () => {
   const [isEditMode, setIsEditMode] = useState(isDefaultEditMode);
   const activeTab = tab ?? projectFormTabs[0];
   const mineName = mine?.mine_name ?? formattedProjectSummary?.mine_name ?? "";
+  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
 
   const handleFetchData = async () => {
     setIsLoaded(false);
@@ -143,6 +153,7 @@ export const ProjectSummary: FC = () => {
         {
           mrc_review_required: payload.mrc_review_required,
           contacts: payload.contacts,
+          project_lead_party_guid: payload.project_lead_party_guid,
         },
         "Successfully updated project.",
         false
@@ -200,13 +211,22 @@ export const ProjectSummary: FC = () => {
     if (!status_code || isNewProject) {
       status_code = "DFT";
     } else if (!newActiveTab) {
-      status_code = "SUB";
+      if (isCore) {
+        status_code = formValues.status_code;
+      } else {
+        status_code = "SUB";
+      }
       is_historic = false;
       if (amsFeatureEnabled) {
         message = null;
       }
     }
-    const values = { ...formValues, status_code: status_code };
+
+    if (isCore && !isNewProject) {
+      status_code = formValues.status_code;
+    }
+
+    const values = { ...formValues, status_code };
 
     try {
       if (isNewProject) {
@@ -282,7 +302,11 @@ export const ProjectSummary: FC = () => {
             </Link>
           </Col>
           <Col>
-            <Button type="primary" onClick={() => setIsEditMode(!isEditMode)}>
+            <Button
+              disabled={formValues?.status_code === "WDN" || formValues?.status_code === "COM"}
+              type="primary"
+              onClick={() => setIsEditMode(!isEditMode)}
+            >
               {isEditMode ? "Cancel" : "Edit Project Description"}
             </Button>
           </Col>

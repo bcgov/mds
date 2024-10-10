@@ -1,11 +1,16 @@
+import io
+import json
 import logging
+import os
 
+import pandas as pd
 from app.permit_conditions.pipelines.chat_data import ChatData
 from haystack import component
 from json_repair import repair_json
 
 logger = logging.getLogger(__name__)
 
+DEBUG_MODE = os.environ.get("DEBUG_MODE", "False").lower() == "true"
 
 @component
 class JSONRepair:
@@ -22,7 +27,13 @@ class JSONRepair:
         Returns:
             dict: A dictionary containing the repaired ChatData object.
         """
+
         for msg in data.messages:
-            msg.content = repair_json(msg.content)
+            msg.content = json.dumps(json.loads(repair_json(msg.content)))
+
+        
+        if DEBUG_MODE:
+            with open("debug/json_repair_output.txt", "a") as f:
+                f.write(json.dumps([json.loads(msg.content) for msg in data.messages], indent=4))
 
         return {"data": data}

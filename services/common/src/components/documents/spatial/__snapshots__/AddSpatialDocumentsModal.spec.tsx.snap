@@ -159,7 +159,7 @@ exports[`AddSpatialDocumentsModal renders properly 1`] = `
                 title=""
               >
                 <span>
-                  Upload shapefiles
+                  Upload Spatial File
                    
                   <span>
                     <span

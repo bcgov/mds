@@ -286,7 +286,8 @@ exports[`ProjectSummaryPage renders properly 1`] = `
                     class="ant-form-item-control-input-content"
                   >
                     <input
-                      class="ant-input"
+                      class="ant-input ant-input-disabled"
+                      disabled=""
                       id="project_summary_title"
                       name="project_summary_title"
                       type="text"
@@ -351,7 +352,8 @@ exports[`ProjectSummaryPage renders properly 1`] = `
                     class="ant-form-item-control-input-content"
                   >
                     <input
-                      class="ant-input"
+                      class="ant-input ant-input-disabled"
+                      disabled=""
                       id="proponent_project_id"
                       name="proponent_project_id"
                       type="text"
@@ -412,7 +414,8 @@ exports[`ProjectSummaryPage renders properly 1`] = `
                     class="ant-form-item-control-input-content"
                   >
                     <textarea
-                      class="ant-input"
+                      class="ant-input ant-input-disabled"
+                      disabled=""
                       id="project_summary_description"
                       name="project_summary_description"
                       style="height: 0px; resize: none; min-height: -40px;"

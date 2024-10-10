@@ -8,6 +8,12 @@
     margin-bottom: 2.5em;
 }
 
+.status-page-content {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
 .success-page {
     @extend .status-icon;
     color: $ok-green;

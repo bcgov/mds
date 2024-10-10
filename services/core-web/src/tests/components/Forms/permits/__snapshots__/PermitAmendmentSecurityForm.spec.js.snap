@@ -98,6 +98,11 @@ exports[`PermitAmendmentSecurityForm renders properly 1`] = `
             [Function],
           ]
         }
+        warn={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
     <Col

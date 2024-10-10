@@ -30,7 +30,8 @@
 
 .nod-callout>h4 {
   color: $medium-grey;
-  font-weight: 700;
+  font-weight: $bold;
+  font-size: $default-p;
 }
 
 .nod-callout>p {

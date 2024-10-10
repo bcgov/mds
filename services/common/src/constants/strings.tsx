@@ -39,6 +39,7 @@ export const CONTACT_ADMIN = [
 ];
 export const MMO_EMAIL = "permrecl@gov.bc.ca";
 export const EMPTY_FIELD = "N/A";
+export const UNKNOWN = "Unknown";
 export const EMPTY = "";
 export const ZERO = "0.00";
 export const UNASSIGNED = "Unassigned";
@@ -220,7 +221,7 @@ export const PROJECT_SUMMARY_DOCUMENT_TYPE = {
 export const PROJECT_SUMMARY_DOCUMENT_TYPE_CODE = {
   GENERAL: "GEN",
   LOCATION_MAP: "MAP",
-  DISCHARGE_FACTOR_AMENDMENT: "DFA",
+  DISCHARGE_FACTOR: "DFA",
   SUPPORTING: "SPR",
   SPATIAL: "SPT",
   CONSENT_LETTER: "CSL",
@@ -244,7 +245,7 @@ export const PROJECT_SUMMARY_DOCUMENT_TYPE_CODE_STATE = {
 export const PROJECT_SUMMARY_DOCUMENT_TYPE_CODE_LOCATION = {
   GEN: "General",
   MAP: "Location Map",
-  DFA: "Discharge Factor Amendment",
+  DFA: "Discharge Factor",
   SPR: "Supporting Documents",
 };
 
@@ -456,3 +457,15 @@ export const AMS_STATUS_CODE_FAIL = "fail";
 export const AMS_STATUS_CODE_ERROR = "error";
 
 export const ENVIRONMENTAL_MANAGMENT_ACT = "ENVIRONMENTAL_MANAGMENT_ACT";
+
+export const DISCHARGE_FACTOR_FORM_NEW =
+  "https://www2.gov.bc.ca/assets/gov/environment/waste-management/waste-discharge-authorization/guides/forms/epd-ema-03_new_auth_discharge_factors_application_form.pdf";
+export const DISCHARGE_FACTOR_FORM_AMENDMENT =
+  "https://www2.gov.bc.ca/assets/gov/environment/waste-management/waste-discharge-authorization/guides/forms/epd-ema-06_amend_discharge_factor_amendment_form.pdf";
+
+export const WASTE_DISCHARGE_NEW_AUTHORIZATIONS_URL =
+  "https://www2.gov.bc.ca/gov/content/environment/waste-management/waste-discharge-authorization/apply";
+export const WASTE_DISCHARGE_AMENDMENT_AUTHORIZATIONS_URL =
+  "https://www2.gov.bc.ca/gov/content/environment/waste-management/waste-discharge-authorization/change";
+export const WASTE_DISCHARGE_AUTHORIZATION_PROCESS =
+  "https://www2.gov.bc.ca/gov/content/environment/waste-management/waste-discharge-authorization/process";

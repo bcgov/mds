@@ -123,6 +123,11 @@ label .ant-btn {
   background: transparent;
   box-shadow: none;
 
+  &:disabled {
+    color: $medium-grey;
+    cursor: not-allowed;
+  }
+
   &.ant-btn-text {
     border: 0;
     padding-left: 5px;

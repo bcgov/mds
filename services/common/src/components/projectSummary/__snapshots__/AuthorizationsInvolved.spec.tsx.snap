@@ -100,7 +100,9 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                     />
                   </div>
                   <div>
-                    <div>
+                    <div
+                      class="margin-large--bottom"
+                    >
                       <h5
                         class="ant-typography"
                       >
@@ -141,12 +143,37 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                         </div>
                       </div>
                     </div>
-                    <div>
+                    <div
+                      class="margin-large--bottom"
+                    >
                       <h5
                         class="ant-typography"
                       >
                         Environmental Management Act
                       </h5>
+                      <div
+                        class="ant-typography"
+                      >
+                        For registration under the Municipal Wastewater Regulation and Hazardous Waste Regulation, please refer to the
+                         
+                        <a
+                          href="https://www2.gov.bc.ca/gov/content/environment/waste-management/waste-discharge-authorization/apply"
+                          target="_blank"
+                        >
+                          new authorization
+                        </a>
+                         
+                        or
+                         
+                        <a
+                          href="https://www2.gov.bc.ca/gov/content/environment/waste-management/waste-discharge-authorization/change"
+                          target="_blank"
+                        >
+                          authorization amendment
+                        </a>
+                         
+                        guideline.
+                      </div>
                       <div>
                         <div
                           class="ant-row"
@@ -249,42 +276,10 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                           </div>
                         </div>
                       </div>
-                      <div>
-                        <div
-                          class="ant-row"
-                          style="margin-top: -8px; margin-bottom: -8px;"
-                        >
-                          <div
-                            class="ant-col"
-                            style="padding-top: 8px; padding-bottom: 8px;"
-                          >
-                            <label
-                              class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item"
-                            >
-                              <span
-                                class="ant-checkbox"
-                              >
-                                <input
-                                  class="ant-checkbox-input"
-                                  data-cy="checkbox-authorization-MUNICIPAL_WASTEWATER_REGULATION"
-                                  type="checkbox"
-                                  value="MUNICIPAL_WASTEWATER_REGULATION"
-                                />
-                                <span
-                                  class="ant-checkbox-inner"
-                                />
-                              </span>
-                              <span>
-                                <b>
-                                  Municipal Wastewater Regulation
-                                </b>
-                              </span>
-                            </label>
-                          </div>
-                        </div>
-                      </div>
                     </div>
-                    <div>
+                    <div
+                      class="margin-large--bottom"
+                    >
                       <h5
                         class="ant-typography"
                       >
@@ -393,7 +388,9 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                         </div>
                       </div>
                     </div>
-                    <div>
+                    <div
+                      class="margin-large--bottom"
+                    >
                       <h5
                         class="ant-typography"
                       >
@@ -434,7 +431,9 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                         </div>
                       </div>
                     </div>
-                    <div>
+                    <div
+                      class="margin-large--bottom"
+                    >
                       <h5
                         class="ant-typography"
                       >
