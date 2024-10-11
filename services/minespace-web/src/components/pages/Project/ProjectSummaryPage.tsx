@@ -177,7 +177,9 @@ export const ProjectSummaryPage = () => {
 
     let status_code = projectSummary.status_code;
     let is_historic = projectSummary.is_historic;
-    if (!status_code || !isEditMode) {
+    if (status_code === "CHR") {
+      status_code = "UNR";
+    } else if (!status_code || !isEditMode) {
       status_code = "DFT";
     } else if (!newActiveTab) {
       status_code = "SUB";
