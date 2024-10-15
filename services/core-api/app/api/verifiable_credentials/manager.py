@@ -386,6 +386,7 @@ class VerifiableCredentialManager():
 
         products = [
             cc.Product(
+                id=None,
                 name=c,
                                                                                   #TODO, can CORE identify commodities by their UNCEFACT code?
                                                                                   # id=c.uncefact_code?
