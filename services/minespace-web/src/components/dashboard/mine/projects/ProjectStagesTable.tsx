@@ -18,7 +18,7 @@ export const ProjectStagesTable: FC<ProjectStagesTableProps> = ({ projectStages 
     projectStages.map((stage) => ({
       key: stage.key,
       project_stage: stage.title,
-      stage_status: stage.status,
+      stage_status: stage.status === "ASG" ? "SUB" : stage.status,
       stage_status_hash: stage.statusHash,
       stage_required: stage.required,
       navigate_forward: stage.navigateForward,
