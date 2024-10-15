@@ -368,7 +368,7 @@ class VerifiableCredentialManager():
             idScheme=base.IdentifierScheme(
                 id="https://w3c-ccg.github.io/did-method-web/", name="DID Web"))
 
-        orgbook_cred_url = f"https://orgbook.gov.bc.ca/entity/{orgbook_entity.registration_id}"
+        orgbook_cred_url = f"https://orgbook.gov.bc.ca/entity/{orgbook_entity.registration_id}/credential/{orgbook_entity.credential_id}"
 
         untp_party_business = base.Party(
             id=orgbook_cred_url,
