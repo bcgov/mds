@@ -402,6 +402,7 @@ class VerifiableCredentialManager():
             tzinfo=ZoneInfo("UTC")).isoformat()
 
         untp_assessment = cc.ConformityAssessment(
+            id=None,
             assessmentDate=issue_date,
             referenceRegulation=cc.Regulation(
                 id="https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/96293_01",
