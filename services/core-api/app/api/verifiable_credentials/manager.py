@@ -376,6 +376,7 @@ class VerifiableCredentialManager():
             registeredId=str(orgbook_entity.registration_id))
 
         facility = cc.Facility(
+            id=None,
             name=permit_amendment.mine.mine_name,
             registeredId="mine_no",
             locationInformation=
