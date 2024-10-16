@@ -19,13 +19,13 @@ export const RenderExtractionStart: FC = () => (
         <div className="null-screen fade-in" style={{ maxWidth: "1024px" }}>
           <div>
             <img alt="mine_img" src={PERMIT} />
-            <h3>Start extracting permit conditions</h3>
-            <p>
+            <Typography.Title level={3}>Start extracting permit conditions</Typography.Title>
+            <Typography.Text>
               Start extracting the latest permit conditions. This process supports the ministry in
               permit drafting and compliance by building a comprehensive condition repository,
               adding report requirements, and making it easier to track, update, and share permit
               conditions accross your team.
-            </p>
+            </Typography.Text>
           </div>
         </div>
       </Row>
@@ -45,11 +45,11 @@ export const RenderExtractionProgress: FC = () => (
         <div className="null-screen fade-in" style={{ maxWidth: "1024px" }}>
           <div>
             <LoadingOutlined style={{ fontSize: 120 }} />
-            <h3>Extracting permit conditions</h3>
-            <p>
+            <Typography.Title level={3}>Extracting permit conditions</Typography.Title>
+            <Typography.Text>
               We are extracing the permit conditions. This process may take anywhere from a few
               minutes to an hour. Feel free to leave and return later to continue your work.
-            </p>
+            </Typography.Text>
           </div>
         </div>
       </Row>
@@ -68,14 +68,14 @@ export const RenderExtractionError: FC = () => (
       <Row gutter={10} style={{ background: "#fff" }} justify={"center"}>
         <div className="null-screen fade-in" style={{ maxWidth: "728px" }}>
           <div>
-            <p className="margin-medium--bottom">
+            <Typography.Text className="margin-medium--bottom">
               <FontAwesomeIcon icon={faCircleX} size="5x" color="red" />
-            </p>
-            <h3>Failed to extract permit conditions</h3>
-            <p>
+            </Typography.Text>
+            <Typography.Title level={3}>Failed to extract permit conditions</Typography.Title>
+            <Typography.Text>
               We encountered an issue while extracting the permit conditions. Please try again. if
               the problem persists, check the file and ensure it meets the required format.
-            </p>
+            </Typography.Text>
           </div>
         </div>
       </Row>
