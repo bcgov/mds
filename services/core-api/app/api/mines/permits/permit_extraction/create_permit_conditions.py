@@ -27,6 +27,9 @@ indentation_type_code_mapping = {
     5: 'LIS',
 }
 
+# For conditions that don't match any category, put them in the "General" category
+DEFAULT_CATEGORY = 'GEC'
+
 def create_permit_conditions_from_task(task: PermitExtractionTask):
     """
     Create permit conditions from the task result.
@@ -38,7 +41,19 @@ def create_permit_conditions_from_task(task: PermitExtractionTask):
 
     result = CreatePermitConditionsResult.model_validate(result)
 
-    for idx, condition in enumerate(result.conditions):
+    has_category = any([condition.is_top_level_section and bool(_map_condition_to_category(condition_categories, condition)) for condition in result.conditions])
+
+    conditions = result.conditions
+    if not has_category:
+        top_level_section = PermitConditionResult(
+            section='A',
+            condition_text='General'
+        )
+        for c in conditions:
+            c.set_section(top_level_section)
+        conditions = [top_level_section] + conditions
+
+    for idx, condition in enumerate(conditions):
         
         if condition.is_top_level_section:        
             section_category = _map_condition_to_category(condition_categories, condition)
@@ -50,11 +65,13 @@ def create_permit_conditions_from_task(task: PermitExtractionTask):
             type_code = _map_condition_to_type_code(condition)
 
             title_cond = None
+
+            category_code = current_category or DEFAULT_CATEGORY
             if condition.condition_title:
-                title_cond = _create_title_condition(task, current_category, condition, parent, idx, type_code)
+                title_cond = _create_title_condition(task, category_code, condition, parent, idx, type_code)
 
             parent_condition_id = _get_parent_condition_id(title_cond, parent)
-            cond = _create_permit_condition(task, current_category, condition, parent_condition_id, idx, type_code)
+            cond = _create_permit_condition(task, category_code, condition, parent_condition_id, idx, type_code)
 
             hierarchy_key = ".".join(condition.numbering_structure)
             last_condition_id_by_hierarchy[hierarchy_key] = cond

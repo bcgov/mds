@@ -147,6 +147,11 @@ def build_hierarchy(paragraphs):
     level = 0
 
     for idx, paragraph in enumerate(paragraphs):
+
+        if paragraph['text'].startswith('The Permittee must store all waste rock mined after November'):
+            logger.info(f"Paragraph: {paragraph['text']}")
+            logger.info(hierarchy_state)
+
         regx = paragraph["regex"]
 
         if regx:
@@ -199,6 +204,8 @@ def _update_level(paragraphs, structure, last_paragraph, level, idx, p, regx):
         paragraphs[idx - 1], p
     ):
         return level, False
+    elif level_of_last_matching_numbering < level and _has_indent_increased(paragraphs[idx - 1], p):
+        return level + 1, True
     else:
         return level_of_last_matching_numbering, False
 

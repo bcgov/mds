@@ -12,6 +12,10 @@ div.condition-layer {
             font-weight: 600;
         }
 
+        p.condition-layer {
+            white-space: pre-wrap;
+        }
+
         >.condition-collapsed {
             display: -webkit-box;
             -webkit-box-orient: vertical;

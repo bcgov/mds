@@ -2,6 +2,8 @@ import React, { FC } from "react";
 import { Col, Row, Typography } from "antd";
 import { PERMIT } from "@/constants/assets";
 import LoadingOutlined from "@ant-design/icons/LoadingOutlined";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleX } from "@fortawesome/pro-light-svg-icons";
 
 const { Title } = Typography;
 
@@ -47,6 +49,32 @@ export const RenderExtractionProgress: FC = () => (
             <p>
               We are extracing the permit conditions. This process may take anywhere from a few
               minutes to an hour. Feel free to leave and return later to continue your work.
+            </p>
+          </div>
+        </div>
+      </Row>
+    </Col>
+  </Row>
+);
+
+export const RenderExtractionError: FC = () => (
+  <Row align="middle" justify="space-between" gutter={[10, 16]}>
+    <Col span={24}>
+      <Title className="margin-none" level={2}>
+        Permit Conditions
+      </Title>
+    </Col>
+    <Col span={24}>
+      <Row gutter={10} style={{ background: "#fff" }} justify={"center"}>
+        <div className="null-screen fade-in" style={{ maxWidth: "728px" }}>
+          <div>
+            <p className="margin-medium--bottom">
+              <FontAwesomeIcon icon={faCircleX} size="5x" color="red" />
+            </p>
+            <h3>Failed to extract permit conditions</h3>
+            <p>
+              We encountered an issue while extracting the permit conditions. Please try again. if
+              the problem persists, check the file and ensure it meets the required format.
             </p>
           </div>
         </div>
