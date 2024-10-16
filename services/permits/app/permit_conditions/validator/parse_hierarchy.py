@@ -147,11 +147,6 @@ def build_hierarchy(paragraphs):
     level = 0
 
     for idx, paragraph in enumerate(paragraphs):
-
-        if paragraph['text'].startswith('The Permittee must store all waste rock mined after November'):
-            logger.info(f"Paragraph: {paragraph['text']}")
-            logger.info(hierarchy_state)
-
         regx = paragraph["regex"]
 
         if regx:
