@@ -24,6 +24,12 @@ def test_permit_condition_section_combiner_run(combiner):
         Document(
             content='{"text": "This is another.", "id": "3"}',
             meta={"bounding_box": {"left": 1, "bottom": 5, "right": 4, "top": 3}},
+            
+        ),
+        Document(
+            content='{"text": "This is a combined section.", "id": "31"}',
+            meta={"bounding_box": {"left": 1, "bottom": 5, "right": 4, "top": 3}},
+            
         ),
         Document(
             content='{"text": "(a) This is yet another test.", "id": "4"}',
@@ -64,7 +70,7 @@ def test_permit_condition_section_combiner_run(combiner):
     assert condition2.subclause is None
     assert condition2.subsubclause is None
     assert condition2.condition_title == "This is a title."
-    assert condition2.condition_text == "This is another."
+    assert condition2.condition_text == "This is another.\nThis is a combined section."
     assert condition2.page_number == 1
     assert condition2.id == "3"
     assert condition2.meta == {
