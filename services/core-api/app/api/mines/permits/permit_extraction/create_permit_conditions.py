@@ -12,6 +12,7 @@ from app.api.mines.permits.permit_extraction.models.permit_extraction_task impor
     PermitExtractionTask,
 )
 from app.extensions import db
+from flask import current_app
 
 from .models.permit_condition_result import (
     CreatePermitConditionsResult,
@@ -88,7 +89,11 @@ def _map_condition_to_type_code(condition: PermitConditionResult):
     """
     indentation = next((i-1 for i, x in enumerate(condition.numbering_structure) if x == ''), 0)
     type_code = indentation_type_code_mapping[indentation]
-    return type_code
+    
+    if not type_code:
+        current_app.logger.error(f"Could not determine type code for condition {condition}")
+
+    return type_code or 'LIS'
 
 def _create_title_condition(task, current_category, condition, parent, idx, type_code) -> PermitConditionResult:
     condition = PermitConditions(
