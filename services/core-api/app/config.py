@@ -294,6 +294,12 @@ class Config(object):
     #The key pair in this did web MUST match the keypair of the did:indy:candy in Traction.
     CHIEF_PERMITTING_OFFICER_DID_WEB = os.environ.get("CHIEF_PERMITTING_OFFICER_DID_WEB",
                                                       "CHIEF_PERMITTING_OFFICER_DID_WEB")
+    UNTP_DIGITAL_CONFORMITY_CREDENTIAL_CONTEXT = os.environ.get(
+        "UNTP_DIGITAL_CONFORMITY_CREDENTIAL_CONTEXT", "UNTP_DIGITAL_CONFORMITY_CREDENTIAL_CONTEXT")
+    UNTP_DIGITAL_CONFORMITY_CREDENTIAL_SCHEMA = os.environ.get(
+        "UNTP_DIGITAL_CONFORMITY_CREDENTIAL_SCHEMA", "UNTP_DIGITAL_CONFORMITY_CREDENTIAL_SCHEMA")
+    UNTP_BC_MINES_ACT_PERMIT_CONTEXT = os.environ.get("UNTP_BC_MINES_ACT_PERMIT_CONTEXT",
+                                                      "UNTP_BC_MINES_ACT_PERMIT_CONTEXT")
 
 
 class TestConfig(Config):
