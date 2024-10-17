@@ -35,6 +35,10 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
   const systemFlag = useSelector(getSystemFlag);
   const isCore = systemFlag === SystemFlagEnum.core;
   const [isLoaded, setIsLoaded] = useState(true);
+  const statusesToDisableReplaceFor = ["UNR", "WDN", "OHD"];
+  const canReplace = isCore
+    ? true
+    : !statusesToDisableReplaceFor.includes(project?.project_summary?.status_code);
 
   const refreshData = async () => {
     setIsLoaded(false);
@@ -158,6 +162,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
             title={titleText}
             key={auth.project_summary_authorization_guid}
             canArchive={false}
+            canReplace={canReplace}
             onArchivedDocuments={refreshData}
             documents={auth.amendment_documents.map(
               (d) =>
@@ -189,6 +194,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
           title="Supporting Documents"
           documents={pdSupportingDocuments}
           onArchivedDocuments={refreshData}
+          canReplace={canReplace}
         />
       ),
     },
@@ -201,6 +207,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
           titleLevel={3}
           onArchivedDocuments={refreshData}
           documents={irtDocuments}
+          canReplace={canReplace}
         />
       ),
     },
@@ -214,6 +221,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
           key="primary-document"
           onArchivedDocuments={refreshData}
           documents={primaryDocuments}
+          canReplace={canReplace}
         />
       ),
     },
@@ -239,6 +247,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
           key="supporting-documents"
           onArchivedDocuments={refreshData}
           documents={mmaSupportingDocuments}
+          canReplace={canReplace}
         />
       ),
     },
@@ -250,12 +259,19 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
           key="ministry-decision-documentation"
           onArchivedDocuments={refreshData}
           documents={ministryDecisionDocuments}
+          canReplace={canReplace}
         />
       ),
     },
     isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE) && {
       href: "archived-documents",
-      content: <ArchivedDocumentsSection documents={mineDocuments} showCategory={false} />,
+      content: (
+        <ArchivedDocumentsSection
+          documents={mineDocuments}
+          showCategory={false}
+          canReplace={canReplace}
+        />
+      ),
     },
   ].filter(Boolean);
 
