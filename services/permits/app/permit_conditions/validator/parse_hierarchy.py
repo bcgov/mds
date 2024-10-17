@@ -199,6 +199,8 @@ def _update_level(paragraphs, structure, last_paragraph, level, idx, p, regx):
         paragraphs[idx - 1], p
     ):
         return level, False
+    elif level_of_last_matching_numbering < level and _has_indent_increased(paragraphs[idx - 1], p):
+        return level + 1, True
     else:
         return level_of_last_matching_numbering, False
 

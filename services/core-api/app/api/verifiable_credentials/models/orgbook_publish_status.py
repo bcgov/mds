@@ -19,7 +19,7 @@ class PermitAmendmentOrgBookPublish(AuditMixin, Base):
     publish_state = db.Column(
         db.Boolean, nullable=True)                                 # null = not published, true = published, false = failed
     orgbook_credential_id = db.Column(
-        db.String, nullable=True)                                  # not sure this will be able to be populated
+        db.String, nullable=False)                                 # not sure this will be able to be populated
 
     def __repr__(self):
         return f'<PermitAmendmentOrgBookPublishStatus unsigned_payload_hash={self.unsigned_payload_hash}, permit_amendment_guid={self.permit_amendment_guid}, sign_date={self.sign_date}, publish_state={self.publish_state}>'

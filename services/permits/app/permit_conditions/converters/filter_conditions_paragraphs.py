@@ -7,6 +7,7 @@ from typing import Any, Dict, List, Optional
 
 import pandas as pd
 from app.permit_conditions.context import context
+from app.permit_conditions.validator.parse_hierarchy import split_numbering
 from haystack import Document, component, logging
 
 logger = logging.getLogger(__name__)
@@ -112,6 +113,11 @@ def _exclude_paragraphs_overlapping_page_header(paragraphs):
     return paragraphs, max_page_header_y
 
 
+def _has_numbering(p):
+    p = split_numbering([{'text': p.content['text']}])[0]
+
+    return bool(p['regex'])
+
 def _exclude_paragraphs_not_in_conditions_section(paragraphs):
     # Find the first section header / title that contains the word "conditions" in it - this is likely the start of the conditions section
     idx_of_conditions_header = next(
@@ -127,12 +133,12 @@ def _exclude_paragraphs_not_in_conditions_section(paragraphs):
     first_condition_index = 0
 
     if idx_of_conditions_header is not None:
-        # The first condition is likely in the next section after the conditions header, try to find it
+        # The first condition is likely in the next section after the conditions header, try to find it, either by it being a title, a section header or if it has numbering.
         first_condition_index = next(
             (
                 idx_of_conditions_header + i + 1
                 for i, p in enumerate(paragraphs[idx_of_conditions_header + 1 :])
-                if p.content["role"] in ("title", "sectionHeading")
+                if p.content["role"] in ("title", "sectionHeading") or _has_numbering(p)
             ),
             None,
         )

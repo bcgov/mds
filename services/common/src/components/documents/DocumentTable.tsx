@@ -50,6 +50,7 @@ export const DocumentTable: FC<DocumentTableProps> = ({
   defaultSortKeys = ["upload_date", "dated", "update_timestamp"],
   view = "standard",
   canArchiveDocuments = false,
+  canReplaceDocuments = true,
   removeDocument,
   replaceAlertMessage = "The replaced file will not reviewed as part of the submission.  The new file should be in the same format as the original file.",
   ...props
@@ -72,7 +73,7 @@ export const DocumentTable: FC<DocumentTableProps> = ({
     [FileOperations.View]: true,
     [FileOperations.Download]: true,
     // don't allow changes to version history where history is not shown
-    [FileOperations.Replace]: !isViewOnly && showVersionHistory,
+    [FileOperations.Replace]: !isViewOnly && showVersionHistory && canReplaceDocuments,
     [FileOperations.Archive]:
       !isViewOnly && canArchiveDocuments && isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE),
     [FileOperations.Delete]: !isViewOnly && removeDocument !== undefined,

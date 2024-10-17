@@ -34,6 +34,15 @@ class PermitConditionResult(BaseModel):
         # Numbering is the last non-empty value in the numbering structure.
         # E.g. if the numbering structure is ['A', '1', 'a', 'i', ''], the numbering is 'i'
         return next(cond for cond in reversed(self.numbering_structure) if cond and cond != '')
+    
+    def set_section(self, section):
+        self.subsubclause = self.subclause
+        self.subclause = self.clause
+        self.clause = self.subparagraph
+        self.subparagraph = self.paragraph
+        self.paragraph = self.section
+        self.section = section.section
+
 
 class CreatePermitConditionsResult(BaseModel):
     conditions: List[PermitConditionResult]
