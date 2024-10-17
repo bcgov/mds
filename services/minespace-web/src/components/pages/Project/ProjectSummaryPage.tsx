@@ -36,11 +36,9 @@ import {
   AMS_STATUS_CODES_SUCCESS,
   AMS_STATUS_CODE_FAIL,
   AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES,
-  SystemFlagEnum,
 } from "@mds/common";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { fetchRegions } from "@mds/common/redux/slices/regionsSlice";
-import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 
 interface IParams {
   mineGuid?: string;
@@ -53,8 +51,6 @@ export const ProjectSummaryPage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
-  const systemFlag = useSelector(getSystemFlag);
-  const isCore = systemFlag === SystemFlagEnum.core;
 
   const { mineGuid, projectGuid, projectSummaryGuid, tab } = useParams<IParams>();
   const anyTouched = useSelector(
@@ -75,11 +71,7 @@ export const ProjectSummaryPage = () => {
     : mine?.mine_guid === mineGuid;
   const [isLoaded, setIsLoaded] = useState(isDefaultLoaded);
   const [isEditMode, setIsEditMode] = useState(isDefaultEditMode);
-  const projectFormTabs = getProjectFormTabs(
-    amsFeatureEnabled,
-    isCore,
-    isFeatureEnabled(Feature.MAJOR_PROJECT_REFACTOR)
-  );
+  const projectFormTabs = null;
   const activeTab = tab ?? projectFormTabs[0];
 
   const handleFetchData = async () => {
