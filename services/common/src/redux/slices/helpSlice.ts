@@ -4,6 +4,7 @@ import CustomAxios from "@mds/common/redux/customAxios";
 import { ItemMap } from "@mds/common/interfaces";
 import { createSelector } from "@reduxjs/toolkit";
 import { APP_HELP, ENVIRONMENT } from "@mds/common/constants";
+import { HelpGuide } from "@mds/common/interfaces/helpGuide.interface";
 
 const createRequestHeader = REQUEST_HEADER.createRequestHeader;
 export const helpReducerType = "help";
@@ -11,16 +12,8 @@ export const helpReducerType = "help";
 export const HELP_GUIDE_ALL_TABS = "all_tabs";
 export const EMPTY_HELP_KEY = "default";
 
-interface HelpContent {
-  help_guid?: string;
-  content: string;
-  system: string;
-  page_tab?: string;
-  help_key: string;
-}
-
 interface HelpState {
-  helpGuides: ItemMap<HelpContent[]>;
+  helpGuides: ItemMap<HelpGuide[]>;
 }
 
 const initialState: HelpState = {
@@ -55,7 +48,7 @@ const helpSlice = createAppSlice({
       }
     ),
     createHelp: create.asyncThunk(
-      async (payload: { helpKey: string; data: HelpContent }, thunkApi) => {
+      async (payload: { helpKey: string; data: HelpGuide }, thunkApi) => {
         const headers = createRequestHeader();
         thunkApi.dispatch(showLoading());
 
@@ -78,7 +71,7 @@ const helpSlice = createAppSlice({
       }
     ),
     updateHelp: create.asyncThunk(
-      async (payload: { helpKey: string; data: HelpContent }, thunkApi) => {
+      async (payload: { helpKey: string; data: HelpGuide }, thunkApi) => {
         const headers = createRequestHeader();
         thunkApi.dispatch(showLoading());
 

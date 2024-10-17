@@ -6,9 +6,10 @@ import FormWrapper from "../forms/FormWrapper";
 import { formatSnakeCaseToSentenceCase } from "@mds/common/redux/utils/helpers";
 import RenderRadioButtons from "../forms/RenderRadioButtons";
 import { HELP_GUIDE_ALL_TABS } from "@mds/common/redux/slices/helpSlice";
+import { HelpGuide } from "@mds/common/interfaces/helpGuide.interface";
 
 interface HelpGuideFormProps {
-  initialValues?: any;
+  initialValues?: HelpGuide;
   handleSaveGuide: (values) => void;
   pageTab?: string;
 }
