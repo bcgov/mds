@@ -8,6 +8,7 @@ import { AUTHENTICATION, MINES } from "@mds/common/constants/reducerTypes";
 const initialState = {
   [AUTHENTICATION]: {
     userInfo: {},
+    isAuthenticated: true,
   },
   [MINES]: {
     currentUserVerifiedMines: [],

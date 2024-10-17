@@ -5,7 +5,8 @@ HELP_MODEL = api.model(
     'Help', {
         'help_guid': fields.String,
         'help_key': fields.String,
-        'help_key_params': fields.Raw,
+        'system': fields.String,
+        'page_tab': fields.String,
         'content': fields.String,
         'is_draft': fields.Boolean,
         'create_timestamp': fields.DateTime,

@@ -174,6 +174,7 @@ export const VIEW_MINE_PERMIT = {
     `/mine-dashboard/${id}/permits-and-approvals/permits/${permitGuid}/${tab}/${link}`,
   component: ViewPermit,
   helpKey: "View-Permit",
+  priority: 1,
 };
 
 export const MINE_PERMIT_DIGITAL_CREDENTIALS = {

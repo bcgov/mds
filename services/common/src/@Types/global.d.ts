@@ -1,3 +1,6 @@
+import { CoreRoute } from "../interfaces/common/route.interface";
+import { ItemMap } from "../interfaces/common/itemMap.interface";
+
 declare global {
   const REQUEST_HEADER: {
     createRequestHeader: (
@@ -10,7 +13,7 @@ declare global {
       };
     };
   };
-  const GLOBAL_ROUTES: any;
+  const GLOBAL_ROUTES: ItemMap<CoreRoute>;
 }
 
 export {};

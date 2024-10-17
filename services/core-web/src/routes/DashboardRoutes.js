@@ -4,7 +4,9 @@ import * as routes from "@/constants/routes";
 import PageNotFound from "@/components/common/PageNotFound";
 
 const DashboardRoutes = () => {
-  const exportedRoutes = Object.values(routes).filter((r) => r.route && r.component);
+  const exportedRoutes = Object.values(routes)
+    .filter((r) => r.route && r.component)
+    .sort((a, b) => (b.priority || 0) - (a.priority || 0));
 
   return (
     <Switch>

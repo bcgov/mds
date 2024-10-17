@@ -23,9 +23,11 @@ const RenderRadioButtons: FC<RenderRadioButtonsProps> = ({
   id,
   help,
   customOptions,
+  labelSubtitle,
   required = false,
   optionType = "default",
   isVertical = false,
+  showOptional = true,
 }) => {
   const { isEditMode } = useContext(FormContext);
 
@@ -49,7 +51,7 @@ const RenderRadioButtons: FC<RenderRadioButtonsProps> = ({
         meta.touched &&
         ((meta.error && <span>{meta.error}</span>) || (meta.warning && <span>{meta.warning}</span>))
       }
-      label={getFormItemLabel(label, required)}
+      label={getFormItemLabel(label, required, labelSubtitle, showOptional)}
     >
       <>
         <Radio.Group

@@ -15,7 +15,6 @@ interface SelectProps extends BaseInputProps {
   onSelect?: (value, option) => void;
   usedOptions: string[];
   allowClear?: boolean;
-  showOptional?: boolean;
 }
 
 export const RenderSelect: FC<SelectProps> = ({

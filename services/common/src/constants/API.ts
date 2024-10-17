@@ -377,4 +377,5 @@ export const POLL_DOCUMENTS_COMPRESSION_PROGRESS = (taskId) => `/mines/documents
 export const REGIONS_LIST = "/regions";
 
 // App Help
-export const APP_HELP = (params: { helpKey: string }) => `/help/${params.helpKey}`;
+export const APP_HELP = (helpKey: string, params?: { system?: string; help_guid?: string }) =>
+  `/help/${helpKey}?${queryString.stringify(params)}`;
