@@ -140,6 +140,10 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         'Party', lazy='joined', foreign_keys=payment_contact_party_guid
     )
 
+    regions = db.relationship(
+        'Regions', lazy='joined', foreign_keys=regional_district_id
+    )
+
     @classmethod
     def __get_address_type_code(cls, address_data):
         if isinstance(address_data, list):
