@@ -77,7 +77,6 @@ export const ProjectSummaryPage = () => {
   const handleFetchData = async () => {
     if (projectGuid && projectSummaryGuid) {
       setIsEditMode(true);
-      await dispatch(fetchRegions(undefined));
       await dispatch(fetchProjectById(projectGuid));
     } else {
       await dispatch(fetchMineRecordById(mineGuid));
@@ -85,9 +84,15 @@ export const ProjectSummaryPage = () => {
   };
 
   useEffect(() => {
-    if (!isLoaded) {
-      handleFetchData().then(() => setIsLoaded(true));
-    }
+    const fetchData = async () => {
+      await dispatch(fetchRegions(undefined));
+      if (!isLoaded) {
+        await handleFetchData();
+        setIsLoaded(true);
+      }
+    };
+
+    fetchData();
     return () => {
       dispatch(clearProjectSummary());
     };
