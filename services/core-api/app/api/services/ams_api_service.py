@@ -37,8 +37,8 @@ class AMSApiService():
         return amendment_type_mapping[data]
 
     @classmethod
-    def __create_full_address(cls, address_line1, city, sub_division_code, post_code):
-        return f"{address_line1}, {city}, {sub_division_code}, {post_code}"
+    def __create_full_address(cls, address_line1, city, sub_division_code, post_code, suite_no):
+        return f"{suite_no} {address_line1}, {city}, {sub_division_code}, {post_code}"
 
     @classmethod
     def __get_authorization_details(cls, ams_authorizations, detail_type):
@@ -91,7 +91,8 @@ class AMSApiService():
                 contact['address'].get('address_line_1', ''),
                 contact['address'].get('city', ''),
                 contact['address'].get('sub_division_code', ''),
-                contact['address'].get('post_code', '')
+                contact['address'].get('post_code', ''),
+                contact['address'].get('suite_no', '')
             ) if contact.get('address') else ''
         }
         return contact_details
@@ -138,7 +139,8 @@ class AMSApiService():
                 agent.get('address').get('address_line_1', ''),
                 agent.get('address').get('city', ''),
                 agent.get('address').get('sub_division_code', ''),
-                agent.get('address').get('post_code')) if agent else '',
+                agent.get('address').get('post_code'),
+                agent.get('address').get('suit_no')) if agent else '',
             'em_businessphone': cls.__format_phone_number(agent.get('phone_no')) if agent else '',
             'em_title': agent.get('job_title', '') if agent else '',
         }
