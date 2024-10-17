@@ -176,6 +176,7 @@ class ProjectSummaryResource(Resource, UserMixin):
     )
 
     parser.add_argument('is_historic', type=bool, store_missing=False, required=True)
+    parser.add_argument('incorporation_number', type=str, store_missing=False, required=False)
 
     @api.doc(
         description='Get a Project Description.',
@@ -253,6 +254,7 @@ class ProjectSummaryResource(Resource, UserMixin):
                                data.get('company_alias'),
                                data.get('regional_district_id'),
                                data.get('payment_contact'),
+                               data.get('incorporation_number'),
                                is_historic)
 
         project_summary.save()
