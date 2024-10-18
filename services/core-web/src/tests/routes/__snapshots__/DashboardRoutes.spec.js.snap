@@ -42,6 +42,12 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/admin/dashboard"
   />
   <Route
+    component={[Function]}
+    exact={true}
+    key="/mine-dashboard/:id/permits-and-approvals/permits/:permitGuid/:tab"
+    path="/mine-dashboard/:id/permits-and-approvals/permits/:permitGuid/:tab"
+  />
+  <Route
     component={
       Object {
         "$$typeof": Symbol(react.memo),
@@ -186,12 +192,6 @@ exports[`DashboardRoutes  renders properly 1`] = `
     exact={true}
     key="/mine-dashboard/:id/permits-and-approvals/permits"
     path="/mine-dashboard/:id/permits-and-approvals/permits"
-  />
-  <Route
-    component={[Function]}
-    exact={true}
-    key="/mine-dashboard/:id/permits-and-approvals/permits/:permitGuid/:tab"
-    path="/mine-dashboard/:id/permits-and-approvals/permits/:permitGuid/:tab"
   />
   <Route
     component={[Function]}

@@ -15,6 +15,7 @@ import {
   NodStatusSaveEnum,
   NoDTypeSaveEnum,
   PROJECT_SUMMARY_STATUS_CODES,
+  SystemFlagEnum,
   VC_CONNECTION_STATES,
   VC_CRED_ISSUE_STATES,
 } from "@mds/common/constants";
@@ -1497,6 +1498,12 @@ export const USER_ACCESS_DATA = [
   "core_admin",
   "core_edit_reports",
   "role_edit_project_summaries",
+];
+
+export const MS_USER_ACCESS_DATA = [
+  "mds_minespace_proponents",
+  "c_mds_users",
+  "c_mds_minespace_proponent",
 ];
 
 export const DISTURBANCE_OPTIONS = {
@@ -8799,4 +8806,61 @@ export const GEOMARK_DATA = {
   name: "gm-68784BEB127941D5AA703E3E7CE6E728.prj",
   geomark_id: "gm-57A8E3675DE04A889E418E846C53C394",
   docman_bundle_guid: "3249a079-10dd-44ec-8db6-bff7177e3151",
+};
+
+export const HELP_GUIDE_CORE = {
+  default: [
+    {
+      help_guid: "111",
+      content: "<p>CORE default content</p>",
+      tab: "all_tabs",
+      help_key: "default",
+      system: SystemFlagEnum.core,
+    },
+  ],
+  "Mine-Dashboard": [
+    {
+      help_guid: "222",
+      content: "<p>CORE overview content</p>",
+      tab: "overview",
+      help_key: "Mine-Dashboard",
+      system: SystemFlagEnum.core,
+    },
+    {
+      help_guid: "333",
+      content: "<p>CORE Mine dashboard content</p>",
+      tab: "all_tabs",
+      help_key: "Mine-Dashboard",
+      system: SystemFlagEnum.core,
+    },
+  ],
+};
+
+export const HELP_GUIDE_MS = {
+  default: [
+    {
+      help_guid: "123",
+      content:
+        "<script>console.log('hack');</script><p onClick={() => console.log('should not render as inline function');}>MS default content</p>",
+      tab: "all_tabs",
+      help_key: "default",
+      system: SystemFlagEnum.ms,
+    },
+  ],
+  "Mine-Dashboard": [
+    {
+      help_guid: "234",
+      content: "<p>MS overview content</p>",
+      tab: "overview",
+      help_key: "Mine-Dashboard",
+      system: SystemFlagEnum.ms,
+    },
+    {
+      help_guid: "345",
+      content: "<p>MS Mine dashboard content</p>",
+      tab: "all_tabs",
+      help_key: "Mine-Dashboard",
+      system: SystemFlagEnum.ms,
+    },
+  ],
 };

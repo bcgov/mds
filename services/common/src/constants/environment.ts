@@ -187,4 +187,5 @@ export const USER_ROLES = {
   role_edit_tsf: "core_edit_tsf",
   role_abandoned_mines: "core_abandoned_mines",
   role_edit_compliance_codes: "core_edit_code",
+  role_edit_helpdesk: "core_helpdesk",
 };

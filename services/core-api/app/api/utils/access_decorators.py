@@ -31,6 +31,7 @@ EDIT_MAJOR_MINE_APPLICATIONS = "core_edit_major_mine_applications"
 EDIT_INCIDENTS = "core_edit_incidents"
 EDIT_TSF = "core_edit_tsf"
 EDIT_PROJECT_DECISION_PACKAGES = "core_edit_project_decision_packages"
+EDIT_HELPDESK = "core_helpdesk"
 
 def require_auth():
     return getJwtManager()._require_auth_validation()

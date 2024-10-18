@@ -72,6 +72,7 @@ export interface BaseInputProps extends WrappedFieldProps {
   loading?: boolean;
   allowClear?: boolean;
   help?: string;
+  showOptional?: boolean;
 }
 
 interface BaseViewInputProps {

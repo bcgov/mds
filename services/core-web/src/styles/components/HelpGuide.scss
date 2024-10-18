@@ -1,0 +1,11 @@
+.help-guide-drawer {
+    z-index: 1005;
+
+    .ant-drawer-body {
+        overflow: auto;
+    }
+
+    .ant-form-item-label {
+        text-align: left;
+    }
+}

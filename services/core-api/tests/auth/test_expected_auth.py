@@ -3,7 +3,7 @@ import pytest
 from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, \
  EDIT_PERMIT, EDIT_STANDARD_PERMIT_CONDITIONS, EDIT_DO, EDIT_VARIANCE, EDIT_REPORT, EDIT_SUBMISSIONS, EDIT_SECURITIES, \
  GIS, EDIT_PROJECT_SUMMARIES, EDIT_INCIDENTS, EDIT_TSF, EDIT_INFORMATION_REQUIREMENTS_TABLE, EDIT_REQUIREMENTS, \
- EDIT_MAJOR_MINE_APPLICATIONS, EDIT_PROJECT_DECISION_PACKAGES, EDIT_CODE
+ EDIT_MAJOR_MINE_APPLICATIONS, EDIT_PROJECT_DECISION_PACKAGES, EDIT_CODE, EDIT_HELPDESK
 
 from app.api.mines.documents.resources.mine_document_bundle import MineDocumentBundleResource
 from app.api.download_token.resources.download_token import DownloadTokenResource
@@ -60,7 +60,7 @@ from app.api.projects.major_mine_application.resources.major_mine_application im
 from app.api.projects.project_decision_package.resources.project_decision_package import ProjectDecisionPackageResource, ProjectDecisionPackageListResource
 from app.api.now_applications.resources.now_application_document_resource import NOWApplicationDocumentIdentityResource
 from app.api.mines.alerts.resources.mine_alert import GlobalMineAlertListResource
-
+from app.api.help.resources.help_resource import HelpResource, HelpListResource
 
 @pytest.mark.parametrize(
     "resource,method,expected_roles",
@@ -167,7 +167,14 @@ from app.api.mines.alerts.resources.mine_alert import GlobalMineAlertListResourc
      (ProjectDecisionPackageResource, 'put', [MINE_ADMIN, EDIT_PROJECT_DECISION_PACKAGES]),
      (ProjectDecisionPackageListResource, 'post', [MINE_ADMIN, EDIT_PROJECT_DECISION_PACKAGES]),
      (MineDocumentBundleResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
-     (GlobalMineAlertListResource, 'get', [VIEW_ALL])])
+     (GlobalMineAlertListResource, 'get', [VIEW_ALL]),
+     (HelpListResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
+     (HelpResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
+     (HelpResource, 'post', [EDIT_HELPDESK]),
+     (HelpResource, 'put', [EDIT_HELPDESK]),
+     (HelpResource, 'delete', [EDIT_HELPDESK]),
+     ])
+        
 def test_endpoint_auth(resource, method, expected_roles):
     endpoint = getattr(resource, method, None)
     assert endpoint != None, '{0} does not have a {1} method.'.format(resource, method.upper())
