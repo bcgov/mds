@@ -194,7 +194,8 @@ def process_all_untp_map_for_orgbook():
     # send to traction to be signed
     for cred_payload, record in records:
         signed_cred = traction_service.sign_jsonld_credential_deprecated(
-            public_did, public_verkey, cred_payload)
+            Config.CHIEF_PERMITTING_OFFICER_DID_WEB_VERIFICATION_METHOD, public_verkey,
+            cred_payload)
         if signed_cred:
             record.signed_credential = json.dumps(signed_cred["signed_doc"])
             record.sign_date = datetime.now()

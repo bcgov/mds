@@ -33,7 +33,6 @@ class W3CCredentialResource(Resource, UserMixin):
             PermitAmendmentOrgBookPublish.find_by_unsigned_payload_hash(
                 vc_unsigned_hash, unsafe=True).signed_credential)
 
-    
 
 class W3CCredentialListResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
@@ -94,14 +93,15 @@ class W3CCredentialDeprecatedResource(Resource, UserMixin):
             data["permit_amendment_guid"])
         traction_service = TractionService()
         public_did_dict = traction_service.fetch_current_public_did()
-        public_did = "did:indy:bcovrin:test:" + public_did_dict["did"]
+        public_did = Config.CHIEF_PERMITTING_OFFICER_DID_WEB
         public_verkey = public_did_dict["verkey"]
 
         credential_dict = VerifiableCredentialManager.produce_map_01_credential_payload(
             public_did, permit_amendment)
 
         signed_credential = traction_service.sign_jsonld_credential_deprecated(
-            public_did, public_verkey, credential_dict)
+            Config.CHIEF_PERMITTING_OFFICER_DID_WEB_VERIFICATION_METHOD, public_verkey,
+            credential_dict)
         current_app.logger.warning(
             "credential signed by did:indy, not by did:web and using deprecated acapy endpoints" +
             dumps(signed_credential))
@@ -140,5 +140,5 @@ class W3CCredentialUNTPResource(Resource, UserMixin):
         credential = VerifiableCredentialManager.produce_untp_cc_map_payload(
             public_did, permit_amendment)
         signed_credential = traction_service.sign_jsonld_credential_deprecated(
-            public_did, public_verkey, credential)
+            Config.CHIEF_PERMITTING_OFFICER_DID_WEB_VERIFICATION_METHOD, public_verkey, credential)
         return signed_credential["signed_doc"]
