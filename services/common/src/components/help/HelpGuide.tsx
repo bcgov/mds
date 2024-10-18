@@ -109,7 +109,7 @@ export const HelpGuideContent: FC<HelpGuideProps> = ({ helpKey }) => {
       </Button>
     );
     const deleteButton = (
-      <Button disabled={!hasHelpGuide} onClick={handleDeleteGuide}>
+      <Button disabled={!hasHelpGuide || defaultGuide} onClick={handleDeleteGuide}>
         Delete this Guide
       </Button>
     );
