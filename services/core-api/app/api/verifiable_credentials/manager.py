@@ -32,7 +32,7 @@ task_logger = get_task_logger(__name__)
 
 
 class UNTPCCMinesActPermit(cc.ConformityAttestation):
-    pass
+    permitNumber: str
 
 
 #this should probably be imported from somewhere.
@@ -426,7 +426,7 @@ class VerifiableCredentialManager():
 
         cred = UNTPCCMinesActPermit(
             id="https://orgbook.gov.bc.ca/entity/FM0362955/credential/PLACEHOLDER",
-            name="This attests the existence and good standing of a BC Mines Act Permit Credential",
+            permitNumber=permit_amendment.permit_no,
             assessmentLevel=codes.AssessmentLevelCode.GovtApproval,
             attestationType=codes.AttestationType.Certification,
             scope=cc.ConformityAssessmentScheme(
