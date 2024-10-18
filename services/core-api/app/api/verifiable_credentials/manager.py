@@ -426,7 +426,9 @@ class VerifiableCredentialManager():
             tzinfo=ZoneInfo("UTC")).isoformat()
 
         cred = UNTPCCMinesActPermit(
-            id="https://orgbook.gov.bc.ca/entity/FM0362955/credential/PLACEHOLDER",
+            id=
+            f"https://orgbook.gov.bc.ca/entity/{orgbook_entity.registration_id}/credential/PLACEHOLDER",
+            name="Credential for permitNumber=" + permit_amendment.permit_no,
             permitNumber=permit_amendment.permit_no,
             assessmentLevel=codes.AssessmentLevelCode.GovtApproval,
             attestationType=codes.AttestationType.Certification,
