@@ -32,7 +32,8 @@ task_logger = get_task_logger(__name__)
 
 
 class UNTPCCMinesActPermit(cc.ConformityAttestation):
-    pass
+    type: List[str] = ["ConformityAttestation, MinesActPermit"]
+    permitNumber: str
 
 
 #this should probably be imported from somewhere.
@@ -194,7 +195,8 @@ def process_all_untp_map_for_orgbook():
     # send to traction to be signed
     for cred_payload, record in records:
         signed_cred = traction_service.sign_jsonld_credential_deprecated(
-            public_did, public_verkey, cred_payload)
+            Config.CHIEF_PERMITTING_OFFICER_DID_WEB_VERIFICATION_METHOD, public_verkey,
+            cred_payload)
         if signed_cred:
             record.signed_credential = json.dumps(signed_cred["signed_doc"])
             record.sign_date = datetime.now()
@@ -424,8 +426,10 @@ class VerifiableCredentialManager():
             tzinfo=ZoneInfo("UTC")).isoformat()
 
         cred = UNTPCCMinesActPermit(
-            id="https://orgbook.gov.bc.ca/entity/FM0362955/credential/PLACEHOLDER",
-            name="This attests the existence and good standing of a BC Mines Act Permit Credential",
+            id=
+            f"https://orgbook.gov.bc.ca/entity/{orgbook_entity.registration_id}/credential/PLACEHOLDER",
+            name="Credential for permitNumber=" + permit_amendment.permit_no,
+            permitNumber=permit_amendment.permit_no,
             assessmentLevel=codes.AssessmentLevelCode.GovtApproval,
             attestationType=codes.AttestationType.Certification,
             scope=cc.ConformityAssessmentScheme(
