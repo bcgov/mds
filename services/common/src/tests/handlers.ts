@@ -1,9 +1,12 @@
 import { http, HttpResponse } from "msw";
 import {
   GEOMARK_DATA,
+  HELP_GUIDE_CORE,
+  HELP_GUIDE_MS,
   PROJECT,
   PROJECT_SUMMARY_MINISTRY_COMMENTS,
 } from "@mds/common/tests/mocks/dataMocks";
+import { SystemFlagEnum } from "../constants";
 
 const geoSpatialHandlers = [
   http.get("/%3CAPI_URL%3E/mines/document-bundle/shape", async () => {
@@ -23,6 +26,16 @@ const projectHandlers = [
   ),
 ];
 
-const commonHandlers = [...geoSpatialHandlers, ...projectHandlers];
+const helpHandler = http.get("/%3CAPI_URL%3E/help/:helpKey", async ({ request, params }) => {
+  const { helpKey } = params;
+  const url = new URL(request.url);
+  const system = url.searchParams.get("system");
+
+  const guideData = system === SystemFlagEnum.core ? HELP_GUIDE_CORE : HELP_GUIDE_MS;
+
+  return HttpResponse.json(guideData[helpKey as string]);
+});
+
+const commonHandlers = [...geoSpatialHandlers, ...projectHandlers, helpHandler];
 
 export default commonHandlers;

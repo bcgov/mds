@@ -105,7 +105,6 @@ const helpSlice = createAppSlice({
             [EMPTY_HELP_KEY]: state.helpGuides[EMPTY_HELP_KEY],
             [preserveKey]: state.helpGuides[preserveKey],
           };
-          console.log("newState", newState);
           state.helpGuides = newState;
         },
       }
@@ -148,20 +147,22 @@ const helpReducer = helpSlice.reducer;
 export const getHelpByKey = (helpKey: string, pageTab?: string) =>
   createSelector([getHelp], (help) => {
     const pageHelp = help[helpKey];
+    const defaultHelpGuides = help[EMPTY_HELP_KEY];
+    let defaultHelp = defaultHelpGuides?.length > 0 ? defaultHelpGuides[0] : null;
 
     if (!pageHelp || pageHelp.length === 0) {
-      const defaultHelp = help[EMPTY_HELP_KEY];
-      return defaultHelp?.length > 0 ? defaultHelp[0] : null;
+      return defaultHelp;
     }
 
     const includeTabs = pageTab ? [HELP_GUIDE_ALL_TABS, pageTab] : [HELP_GUIDE_ALL_TABS];
-
     const guides = pageHelp.filter((guide) => includeTabs.includes(guide.page_tab));
+    defaultHelp = guides[0] ?? defaultHelp;
+
     if (pageTab) {
       const tabGuides = guides.filter((guide) => guide.page_tab === pageTab);
-      return tabGuides[0] ?? guides[0];
+      return tabGuides[0] ?? defaultHelp;
     }
 
-    return guides[0];
+    return defaultHelp;
   });
 export default helpReducer;

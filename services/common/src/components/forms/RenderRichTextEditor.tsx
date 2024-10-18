@@ -1,7 +1,7 @@
 import React, { FC, useContext, useMemo } from "react";
-import { Input, Form } from "antd";
+import { Form } from "antd";
 import { BaseInputProps, BaseViewInput, getFormItemLabel } from "./BaseInput";
-import { FormConsumer, FormContext } from "./FormWrapper";
+import { FormContext } from "./FormWrapper";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import parse from "html-react-parser";
@@ -17,7 +17,6 @@ const RenderRichTextEditor: FC<BaseInputProps> = ({
   defaultValue,
   id,
   placeholder,
-  allowClear,
 }) => {
   const { isEditMode } = useContext(FormContext);
 
@@ -26,35 +25,32 @@ const RenderRichTextEditor: FC<BaseInputProps> = ({
     // everything else will have to be implemented
     console.log("image data", data);
   };
-  const msColors = ["#003366", "white", "#fcba19", "#d8292f", "#2e8540", "#313132", "black"];
-  const toolbarOptions = isEditMode
-    ? [
-        [{ header: [1, 2, 3, 4, 5, 6, false] }],
-        ["bold", "italic", "underline", "strike"],
-        ["blockquote"],
-        [{ list: "ordered" }, { list: "bullet" }],
-        [{ color: msColors }, { background: msColors }, "font", "align"],
-        ["link", "image", "video", "formula"],
-      ]
-    : [];
+  const colorOptions = ["#003366", "white", "#fcba19", "#d8292f", "#2e8540", "#313132", "black"];
+  const toolbarOptions = [
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    ["bold", "italic", "underline", "strike"],
+    ["blockquote"],
+    [{ list: "ordered" }, { list: "bullet" }],
+    [{ color: colorOptions }, { background: colorOptions }, "font", "align"],
+    ["link", "video"],
+  ];
 
   const modules = useMemo(
     () => ({
       toolbar: {
         container: toolbarOptions,
-        handlers: { image: handleAddImage },
+        // handlers: { image: handleAddImage },// TODO: add image to toolBarOptions and implement handler
       },
     }),
     []
   );
 
   const handleChange = (newValue) => {
-    console.log(newValue);
     input.onChange(newValue);
   };
 
   if (!isEditMode) {
-    return parse(input.value);
+    return <BaseViewInput value={parse(input.value)} label={label} />;
   }
 
   return (
@@ -71,7 +67,15 @@ const RenderRichTextEditor: FC<BaseInputProps> = ({
       label={getFormItemLabel(label, required, labelSubtitle)}
     >
       <>
-        <ReactQuill theme="snow" value={input.value} onChange={handleChange} modules={modules} />
+        <ReactQuill
+          readOnly={disabled}
+          defaultValue={defaultValue}
+          placeholder={placeholder}
+          theme="snow"
+          value={input.value}
+          onChange={handleChange}
+          modules={modules}
+        />
         {help && <div className={`form-item-help ${input.name}-form-help`}>{help}</div>}
       </>
     </Form.Item>

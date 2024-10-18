@@ -43,14 +43,13 @@ export const HelpGuideContent: FC<HelpGuideProps> = ({ helpKey }) => {
   // it needs to wait for authentication before it can make this check
   const canEditHelp = useSelector((state) => userHasRole(state, USER_ROLES.role_edit_helpdesk));
   const helpGuide = useSelector(getHelpByKey(helpKey, pageTab)) ?? {};
-  const { help_guid } = helpGuide;
+  const { help_guid, help_key } = helpGuide;
   const hasHelpGuide = Boolean(help_guid);
-  const defaultGuide = helpKey === EMPTY_HELP_KEY;
+  const defaultGuide = help_key === EMPTY_HELP_KEY;
   const { content = "" } = helpGuide ?? {};
   const [isLoaded, setIsLoaded] = useState(hasHelpGuide);
   const unformattedTitle = pageTab ?? helpKey;
   const title = formatSnakeCaseToSentenceCase(unformattedTitle);
-  console.log(helpGuide);
 
   const showDrawer = () => setOpen(true);
   const hideDrawer = () => {
@@ -81,10 +80,11 @@ export const HelpGuideContent: FC<HelpGuideProps> = ({ helpKey }) => {
 
   const handleSaveGuide = (values) => {
     const page_tab = values.page_tab ?? HELP_GUIDE_ALL_TABS;
-    const data = { ...values, page_tab, system };
+    const data = { ...values, page_tab, system, help_key: helpKey };
 
     const payload = { helpKey, data };
-    const forNewTab = helpGuide.page_tab === "all" && values.page_tab !== "all";
+    const forNewTab =
+      helpGuide.page_tab === HELP_GUIDE_ALL_TABS && values.page_tab !== HELP_GUIDE_ALL_TABS;
     const saveFunction =
       defaultGuide || forNewTab
         ? () => dispatch(createHelp(payload))
@@ -138,7 +138,9 @@ export const HelpGuideContent: FC<HelpGuideProps> = ({ helpKey }) => {
 
   return (
     <>
-      <Button onClick={showDrawer}>?</Button>
+      <Button data-testid="help-open" onClick={showDrawer}>
+        ?
+      </Button>
       <Drawer
         placement="right"
         className="help-guide-drawer"
@@ -148,16 +150,20 @@ export const HelpGuideContent: FC<HelpGuideProps> = ({ helpKey }) => {
         footer={canEditHelp && getFooterButtons()}
         destroyOnClose
       >
-        {isEditMode && (
-          <Alert
-            message="Publish Help Guide"
-            showIcon
-            type="warning"
-            description="Content published here will be visible to MineSpace users. Ensure the language is appropriate and avoid sharing confidential information."
-          />
-        )}
-        <Typography.Title level={2}>{title} Help Guide</Typography.Title>
-        {isLoaded ? mainContent : <Loading />}
+        <div data-testid="help-content">
+          {isEditMode && (
+            <Alert
+              message="Publish Help Guide"
+              showIcon
+              type="warning"
+              description="Content published here will be visible to MineSpace users. Ensure the language is appropriate and avoid sharing confidential information."
+            />
+          )}
+          <Typography.Title level={2} data-testid="help-title">
+            {title} Help Guide
+          </Typography.Title>
+          {isLoaded ? mainContent : <Loading />}
+        </div>
       </Drawer>
     </>
   );
