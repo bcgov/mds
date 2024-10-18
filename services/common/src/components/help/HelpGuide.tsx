@@ -40,7 +40,6 @@ export const HelpGuideContent: FC<HelpGuideProps> = ({ helpKey }) => {
 
   const [open, setOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
-  // it needs to wait for authentication before it can make this check
   const canEditHelp = useSelector((state) => userHasRole(state, USER_ROLES.role_edit_helpdesk));
   const helpGuide = useSelector(getHelpByKey(helpKey, pageTab)) ?? {};
   const { help_guid, help_key } = helpGuide;
