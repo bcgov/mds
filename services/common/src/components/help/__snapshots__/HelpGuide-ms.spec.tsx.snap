@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HelpGuide renders MS properly with default content 1`] = `
+<div
+  data-testid="help-content"
+>
+  <h2
+    class="ant-typography"
+    data-testid="help-title"
+  >
+    Overview
+     Help Guide
+  </h2>
+  <p>
+     console.log('should not render as inline function');}&gt;MS default content
+  </p>
+</div>
+`;

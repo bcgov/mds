@@ -1500,6 +1500,12 @@ export const USER_ACCESS_DATA = [
   "role_edit_project_summaries",
 ];
 
+export const MS_USER_ACCESS_DATA = [
+  "mds_minespace_proponents",
+  "c_mds_users",
+  "c_mds_minespace_proponent",
+];
+
 export const DISTURBANCE_OPTIONS = {
   records: [
     {
@@ -8834,7 +8840,8 @@ export const HELP_GUIDE_MS = {
   default: [
     {
       help_guid: "123",
-      content: "<p>MS default content</p>",
+      content:
+        "<script>console.log('hack');</script><p onClick={() => console.log('should not render as inline function');}>MS default content</p>",
       tab: "all_tabs",
       help_key: "default",
       system: SystemFlagEnum.ms,

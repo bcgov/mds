@@ -34,7 +34,7 @@ jest.mock("react-router-dom", () => mockFunction());
 
 describe("HelpGuide", () => {
   it("renders CORE properly", async () => {
-    const helpKey = "Not-exists";
+    const helpKey = "Not-Exists";
 
     const { findByTestId, findByText } = render(
       <ReduxWrapper initialState={coreState}>
@@ -44,6 +44,9 @@ describe("HelpGuide", () => {
 
     const helpButton = await findByTestId("help-open");
     fireEvent.click(helpButton);
+
+    const defaultContent = await findByText("CORE default content");
+    expect(defaultContent).toBeInTheDocument();
 
     const editButton = await findByText("Edit Help Guide");
     fireEvent.click(editButton);

@@ -33,7 +33,8 @@ const helpHandler = http.get("/%3CAPI_URL%3E/help/:helpKey", async ({ request, p
 
   const guideData = system === SystemFlagEnum.core ? HELP_GUIDE_CORE : HELP_GUIDE_MS;
 
-  return HttpResponse.json(guideData[helpKey as string]);
+  const response = { records: [...guideData[helpKey as string]] };
+  return HttpResponse.json(response);
 });
 
 const commonHandlers = [...geoSpatialHandlers, ...projectHandlers, helpHandler];

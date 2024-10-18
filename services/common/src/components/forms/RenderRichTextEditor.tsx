@@ -5,6 +5,7 @@ import { FormContext } from "./FormWrapper";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import parse from "html-react-parser";
+import DOMPurify from "dompurify";
 
 const RenderRichTextEditor: FC<BaseInputProps> = ({
   label,
@@ -50,7 +51,7 @@ const RenderRichTextEditor: FC<BaseInputProps> = ({
   };
 
   if (!isEditMode) {
-    return <BaseViewInput value={parse(input.value)} label={label} />;
+    return <BaseViewInput value={parse(DOMPurify.sanitize(input.value))} label={label} />;
   }
 
   return (

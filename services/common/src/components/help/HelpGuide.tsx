@@ -23,6 +23,7 @@ import HelpGuideForm from "./HelpGuideForm";
 import { deleteConfirmWrapper } from "../common/ActionMenu";
 import { formatSnakeCaseToSentenceCase } from "@mds/common/redux/utils/helpers";
 import parse from "html-react-parser";
+import DOMPurify from "dompurify";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils";
 import Loading from "../common/Loading";
@@ -132,7 +133,7 @@ export const HelpGuideContent: FC<HelpGuideProps> = ({ helpKey }) => {
       pageTab={pageTab}
     />
   ) : (
-    parse(content)
+    parse(DOMPurify.sanitize(content))
   );
 
   return (

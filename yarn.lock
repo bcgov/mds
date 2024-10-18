@@ -6885,6 +6885,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dompurify@npm:^3.1.7":
+  version: 3.1.7
+  resolution: "dompurify@npm:3.1.7"
+  checksum: 0a9b811bbc94f3dba60cf6486962362b0f1a5b4ab789f5e1cbd4749b6ba1a1fad190a677a962dc8850ce28764424765fe425e9d6508e4e93ba648ef15d54bc24
+  languageName: node
+  linkType: hard
+
 "domutils@npm:^2.5.2, domutils@npm:^2.8.0":
   version: 2.8.0
   resolution: "domutils@npm:2.8.0"
@@ -12879,6 +12886,7 @@ __metadata:
   dependencies:
     "@typescript-eslint/eslint-plugin": ^5.59.1
     "@typescript-eslint/parser": ^5.59.1
+    dompurify: ^3.1.7
     eslint: 7.27.0
     eslint-config-airbnb: 18.2.1
     eslint-config-airbnb-typescript: ^17.0.0

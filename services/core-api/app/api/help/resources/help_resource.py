@@ -34,7 +34,7 @@ class HelpListResource(Resource, UserMixin):
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def get(self):
         data = self.parser.parse_args()
-        system = data.get("system", None) if not is_minespace_user() else SystemFlag.ms
+        system = data.get("system", None) if not is_minespace_user() else str(SystemFlag.ms)
 
         help_guides = Help.get_all(system)
         return help_guides    
@@ -82,7 +82,7 @@ class HelpResource(Resource, UserMixin):
     @api.marshal_with(HELP_MODEL, code=200, envelope='records', as_list=True)
     def get(self, help_key):
         system = request.args['system']
-        if is_minespace_user() and system != SystemFlag.ms:
+        if is_minespace_user() and system != str(SystemFlag.ms):
             raise BadRequest("Only MineSpace help guides may be requested.")
         help_guides = Help.find_by_help_key(help_key, system)
         return help_guides
