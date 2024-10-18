@@ -32,6 +32,7 @@ task_logger = get_task_logger(__name__)
 
 
 class UNTPCCMinesActPermit(cc.ConformityAttestation):
+    type: List[str] = ["ConformityAttestation, BCMinesActPermit"]
     permitNumber: str
 
 
