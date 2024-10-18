@@ -268,9 +268,24 @@ class ProjectSummaryResource(Resource, UserMixin):
         if project_summary.status_code == 'CHR':
             project_summary.send_project_summary_email(mine)
             # Trigger notification for changes requested Project Summary
-            message = f'Changes have been requested for ({project.project_title}) by the ministry for ({project.mine_name})'
+            message = f'Changes have been requested by the ministry for {project.project_title} at {project.mine_name}'
             extra_data = {'project': {'project_guid': str(project.project_guid)}}
-            trigger_notification(message, ActivityType.major_mine_desc_submitted, project.mine, 'ProjectSummary', project_summary.project_summary_guid, extra_data)
+            trigger_notification(message, ActivityType.major_mine_desc_submitted, project.mine, 'ProjectSummary',
+                                 project_summary.project_summary_guid, extra_data)
+
+        if project_summary.status_code == 'UNR':
+            project_summary.send_project_summary_email(mine)
+            message = f'{project.project_title} for {project.mine_name} is now under review'
+            extra_data = {'project': {'project_guid': str(project.project_guid)}}
+            trigger_notification(message, ActivityType.major_mine_desc_submitted, project.mine, 'ProjectSummary',
+                                 project_summary.project_summary_guid, extra_data)
+
+        if project_summary.status_code == 'OHD' or project_summary.status_code == 'WDN' or project_summary.status_code == 'COM':
+            project_summary.send_project_summary_email(mine)
+            message = f'The status of the project description {project.project_title} has been updated for {project.mine_name}'
+            extra_data = {'project': {'project_guid': str(project.project_guid)}}
+            trigger_notification(message, ActivityType.major_mine_desc_submitted, project.mine, 'ProjectSummary',
+                                 project_summary.project_summary_guid, extra_data)
 
         # Update project.
         project.update(
