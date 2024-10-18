@@ -22,7 +22,11 @@ import {
   getPermitExtractionByGuid,
   PermitExtractionStatus,
 } from "@mds/common/redux/slices/permitServiceSlice";
-import { RenderExtractionProgress, RenderExtractionStart } from "./PermitConditionExtraction";
+import {
+  RenderExtractionError,
+  RenderExtractionProgress,
+  RenderExtractionStart,
+} from "./PermitConditionExtraction";
 
 const { Title } = Typography;
 
@@ -93,8 +97,8 @@ const PermitConditions: FC<PermitConditionProps> = ({
   if (isExtractionInProgress) {
     return <RenderExtractionProgress />;
   }
-  if (!isExtractionComplete && permitExtraction?.task_status) {
-    return <div>Permit extraction status: {permitExtraction?.task_status}</div>;
+  if (!isExtractionComplete && permitExtraction?.task_status === "Error Extracting") {
+    return <RenderExtractionError />;
   }
   if (canStartExtraction) {
     return <RenderExtractionStart />;

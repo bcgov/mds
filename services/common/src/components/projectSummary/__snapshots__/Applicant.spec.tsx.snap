@@ -305,7 +305,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                 >
                   <label
                     class="ant-form-item-required"
-                    for="ADD_EDIT_PROJECT_SUMMARY_applicant.party_orgbook_entity.registration_id"
+                    for="ADD_EDIT_PROJECT_SUMMARY_incorporation_number"
                     title=""
                   >
                     <div
@@ -326,8 +326,8 @@ exports[`Applicant Component should render the component with expected fields 1`
                     >
                       <input
                         class="ant-input"
-                        id="applicant.party_orgbook_entity.registration_id"
-                        name="applicant.party_orgbook_entity.registration_id"
+                        id="incorporation_number"
+                        name="incorporation_number"
                         type="text"
                         value=""
                       />
@@ -338,7 +338,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                   >
                     <div
                       class="ant-form-item-explain ant-form-item-explain-connected"
-                      id="ADD_EDIT_PROJECT_SUMMARY_applicant.party_orgbook_entity.registration_id_help"
+                      id="ADD_EDIT_PROJECT_SUMMARY_incorporation_number_help"
                       role="alert"
                     >
                       <div

@@ -171,6 +171,12 @@ MUNICIPALITY_MODEL = api.model(
         'municipality_name': fields.String
     })
 
+REGION_MODEL = api.model(
+    'Regions', {
+        'name': fields.String,
+        'regional_district_id': fields.Integer
+    })
+
 PROJECT_SUMMARY_MODEL = api.model(
     'ProjectSummary', {
         'project_guid': fields.String,
@@ -226,6 +232,7 @@ PROJECT_SUMMARY_MODEL = api.model(
         'regional_district_id': fields.Integer,
         'payment_contact': fields.Nested(PARTY),
         'is_historic': fields.Boolean,
+        'regions': fields.Nested(REGION_MODEL)
     })
 
 REQUIREMENTS_MODEL = api.model(

@@ -5,6 +5,7 @@ export interface GenericDocTableProps<T> {
   additionalColumnProps?: { key: string; colProps: any }[];
   additionalColumns?: ColumnType<T>[];
   canArchiveDocuments?: boolean;
+  canReplaceDocuments?: boolean;
   defaultSortKeys?: string[];
   documentColumns?: ColumnType<unknown>[];
   documentParent?: string;

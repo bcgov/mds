@@ -123,6 +123,9 @@ const Applicant = () => {
       dispatch(
         change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.party_orgbook_entity", orgBookEntity)
       );
+      dispatch(
+        change(FORM.ADD_EDIT_PROJECT_SUMMARY, "incorporation_number", credential.topic.source_id)
+      );
     }
   }, [credential]);
 
@@ -330,8 +333,8 @@ const Applicant = () => {
 
             <Col md={12} sm={24}>
               <Field
-                id="applicant.party_orgbook_entity.registration_id"
-                name="applicant.party_orgbook_entity.registration_id"
+                id="incorporation_number"
+                name="incorporation_number"
                 label="Incorporation Number"
                 required
                 validate={[required, maxLength(25)]}

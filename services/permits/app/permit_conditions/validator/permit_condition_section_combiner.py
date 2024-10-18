@@ -116,10 +116,14 @@ class PermitConditionSectionCombiner:
                     matching_cond.condition_text = p["text"]
                     matching_cond.id = p["id"]
 
-                    if matching_cond.meta["bounding_box"] and p["meta"]["bounding_box"]:
-                        self._combine_bounding_boxes(p, matching_cond)
+                else:
+                    matching_cond.condition_text = f"{matching_cond.condition_text}\n{p['text']}"
 
-                    matching_cond.meta = {**p["meta"], **matching_cond.meta}
+                if matching_cond.meta["bounding_box"] and p["meta"]["bounding_box"]:
+                    self._combine_bounding_boxes(p, matching_cond)
+
+                matching_cond.meta = {**p["meta"], **matching_cond.meta}
+
             else:
                 conditions.append(
                     PermitCondition(

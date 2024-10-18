@@ -613,3 +613,105 @@ def test_parse_text():
     result = parse_hierarchy(paragraphs)
 
     assert [x["text"] for x in result] == expected_result
+
+def test_parse_subsubclause_same():
+    paragraphs = [
+        {"text": "A. Section 1", "meta": {"bounding_box": {"left": 1.232}}},
+        {"text": "1). Paragraph 1", "meta": {"bounding_box": {"left": 1.2506}}},
+        {"text": "a) Subparagraph a", "meta": {"bounding_box": {"left": 1.6284}}},
+        {"text": "i. Subclause i", "meta": {"bounding_box": {"left": 2.0293}}},
+        {"text": "a. Subsubclause a", "meta": {"bounding_box": {"left": 2.4115}}},
+        {"text": "ii. Subclause ii", "meta": {"bounding_box": {"left": 2.0293}}},
+        {"text": "a. Anothersubclause", "meta": {"bounding_box": {"left": 2.4105}}},
+    ]
+
+    expected_result = [
+        {
+            "text": "Section 1",
+            "section": "A",
+            "paragraph": None,
+            "subparagraph": None,
+            "clause": None,
+            "subclause": None,
+            "subsubclause": None,
+            "numbering": "A",
+            "regex": "uppercase_letter",
+            "meta": {"bounding_box": {"left": 1.232}},
+        },
+        {
+            "text": "Paragraph 1",
+            "section": "A",
+            "paragraph": "1",
+            "subparagraph": None,
+            "clause": None,
+            "subclause": None,
+            "subsubclause": None,
+            "numbering": "1",
+            "regex": "number",
+            "meta": {"bounding_box": {"left": 1.2506}},
+        },
+        {
+            "text": "Subparagraph a",
+            "section": "A",
+            "paragraph": "1",
+            "subparagraph": "a",
+            "clause": None,
+            "subclause": None,
+            "subsubclause": None,
+            "numbering": "a",
+            "regex": "lowercase_letter",
+            "meta": {"bounding_box": {"left": 1.6284}},
+        },
+        {
+            "text": "Subclause i",
+            "section": "A",
+            "paragraph": "1",
+            "subparagraph": "a",
+            "clause": "i",
+            "subclause": None,
+            "subsubclause": None,
+            "numbering": "i",
+            "regex": "roman_numeral",
+            "meta": {"bounding_box": {"left": 2.0293}},
+        },
+        {
+            "text": "Subsubclause a",
+            "section": "A",
+            "paragraph": "1",
+            "subparagraph": "a",
+            "clause": "i",
+            "subclause": "a",
+            "subsubclause": None,
+            "numbering": "a",
+            "regex": "lowercase_letter",
+            "meta": {"bounding_box": {"left": 2.4115}},
+        },
+        {
+            "text": "Subclause ii",
+            "section": "A",
+            "paragraph": "1",
+            "subparagraph": "a",
+            "clause": "ii",
+            "subclause": None,
+            "subsubclause": None,
+            "numbering": "ii",
+            "regex": "roman_numeral",
+            "meta": {"bounding_box": {"left": 2.0293}},
+        },
+        {
+            "text": "Anothersubclause",
+            "section": "A",
+            "paragraph": "1",
+            "subparagraph": "a",
+            "clause": "ii",
+            "subclause": "a",
+            "subsubclause": None,
+            "numbering": "a",
+            "regex": "lowercase_letter",
+            "meta": {"bounding_box": {"left": 2.4105}},
+        },
+    ]
+
+    result = parse_hierarchy(paragraphs)
+
+    assert result == expected_result

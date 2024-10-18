@@ -13,6 +13,7 @@ interface ArchivedDocumentsSectionProps {
   titleLevel?: 1 | 2 | 3 | 4 | 5;
   href?: string;
   showCategory?: boolean;
+  canReplace?: boolean;
 }
 
 const ArchivedDocumentsSection: FC<ArchivedDocumentsSectionProps> = ({
@@ -20,6 +21,7 @@ const ArchivedDocumentsSection: FC<ArchivedDocumentsSectionProps> = ({
   href = "archived-documents",
   documents,
   showCategory = true,
+  canReplace = true,
 }) => {
   const { isFeatureEnabled } = useFeatureFlag();
 
@@ -43,6 +45,7 @@ const ArchivedDocumentsSection: FC<ArchivedDocumentsSectionProps> = ({
       <DocumentTable
         documents={documents}
         showVersionHistory={true}
+        canReplaceDocuments={canReplace}
         additionalColumns={additionalColumns}
       />
     </div>
