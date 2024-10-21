@@ -1,5 +1,10 @@
+@use "sass:color";
+@use "../settings/variables.scss";
+@use "../settings/theme.scss";
+@use "../tools/mixins.scss";
+
 body {
-  font-family: $default-font;
+  font-family: variables.$default-font;
 }
 
 html {
@@ -11,7 +16,7 @@ html {
 }
 
 .header {
-  height: $header-height;
+  height: variables.$header-height;
 }
 
 .line-height-none {
@@ -21,29 +26,29 @@ html {
 .content {
   overflow: initial;
   min-height: 100vh;
-  background-color: $pure-white;
+  background-color: variables.$pure-white;
   padding-bottom: 80px;
 
   &--light-grey {
-    background-color: $lightest-grey;
+    background-color: variables.$lightest-grey;
     border-radius: 2px;
   }
 }
 
 .grey-background {
-  background-color: $lightest-grey;
+  background-color: variables.$lightest-grey;
   padding: 20px;
   margin: 20px;
 }
 
 .grey-filled-box {
-  background: $background;
+  background: variables.$background;
   padding: 16px 24px;
 }
 
 .footer {
   height: 45px;
-  background-color: $nav-color;
+  background-color: variables.$nav-color;
   z-index: 100;
 }
 
@@ -60,23 +65,23 @@ html {
 }
 
 .violet {
-  color: $violet;
+  color: variables.$violet;
 
   &-border {
-    border-color: $violet;
+    border-color: variables.$violet;
   }
 }
 
 .grey {
-  color: $medium-grey;
+  color: variables.$medium-grey;
 }
 
 .red {
-  color: $alert-red;
+  color: variables.$alert-red;
 }
 
 .green {
-  color: $ok-green;
+  color: variables.$ok-green;
 }
 
 .right {
@@ -123,7 +128,7 @@ html {
 }
 
 .inline-flex {
-  @include flex;
+  @include mixins.flex;
 
   &--img {
     margin-top: 5px;
@@ -161,30 +166,30 @@ html {
 
 .block {
   &-mobile {
-    @include mobile {
+    @include mixins.mobile {
       display: block;
     }
   }
 
   &-tablet {
-    @include tablet {
+    @include mixins.tablet {
       display: block;
     }
   }
 }
 
 .flex {
-  @include flex;
+  @include mixins.flex;
 
   &-mobile {
-    @include mobile {
-      @include flex;
+    @include mixins.mobile {
+      @include mixins.flex;
     }
   }
 
   &-tablet {
-    @include tablet {
-      @include flex;
+    @include mixins.tablet {
+      @include mixins.flex;
     }
   }
 }
@@ -214,7 +219,7 @@ html {
 }
 
 .center-mobile {
-  @include mobile {
+  @include mixins.mobile {
     display: block;
     text-align: center !important;
     margin: 0 !important;
@@ -222,7 +227,7 @@ html {
 }
 
 .full-mobile {
-  @include mobile {
+  @include mixins.mobile {
     width: 100% !important;
     margin: 5px 0;
   }
@@ -230,21 +235,21 @@ html {
 
 .page__content,
 .tab__content {
-  padding: $default-padding-lg 40px;
+  padding: variables.$default-padding-lg 40px;
   margin-bottom: 100px;
 
-  @include mobile {
-    padding: 0 $default-padding-lg;
+  @include mixins.mobile {
+    padding: 0 variables.$default-padding-lg;
   }
 
   &--nested {
-    padding: 0 $default-padding-lg;
+    padding: 0 variables.$default-padding-lg;
 
-    @include large {
-      padding: 0 $default-padding-sm;
+    @include mixins.large {
+      padding: 0 variables.$default-padding-sm;
     }
 
-    @include mobile {
+    @include mixins.mobile {
       padding: 0;
     }
   }
@@ -272,7 +277,7 @@ html {
 
 .btn--expand {
   background: none;
-  color: $hover-blue;
+  color: variables.$hover-blue;
   align-self: flex-end;
   margin: 0;
   height: 100%;
@@ -284,7 +289,7 @@ html {
   &:hover,
   &:active,
   &:focus {
-    color: $hover-blue;
+    color: variables.$hover-blue;
     background: none;
     border: none;
     padding: 0;
@@ -306,116 +311,118 @@ html {
 }
 
 .padding-sm {
+  padding: variables.$default-padding-sm;
+
   &--left {
-    padding-left: $default-padding-sm;
+    padding-left: variables.$default-padding-sm;
   }
 
   &--right {
-    padding-right: $default-padding-sm;
+    padding-right: variables.$default-padding-sm;
   }
 
   &--top {
-    padding-top: $default-padding-sm;
+    padding-top: variables.$default-padding-sm;
   }
 
   &--bottom {
-    padding-bottom: $default-padding-sm;
+    padding-bottom: variables.$default-padding-sm;
   }
 
   &--y {
-    padding-top: $default-padding-sm;
-    padding-bottom: $default-padding-sm;
+    padding-top: variables.$default-padding-sm;
+    padding-bottom: variables.$default-padding-sm;
   }
 
-  padding: $default-padding-sm;
+
 }
 
 .padding-md {
+  padding: variables.$default-padding-md;
+
   &--top {
-    padding-top: $default-padding-md;
+    padding-top: variables.$default-padding-md;
   }
 
   &--bottom {
-    padding-bottom: $default-padding-md;
+    padding-bottom: variables.$default-padding-md;
   }
 
   &--right {
-    padding-right: $default-padding-md;
+    padding-right: variables.$default-padding-md;
   }
 
   &--left {
-    padding-left: $default-padding-md;
+    padding-left: variables.$default-padding-md;
   }
 
-  padding: $default-padding-md;
-
   &--sides {
-    padding-left: $default-padding-md;
-    padding-right: $default-padding-md;
+    padding-left: variables.$default-padding-md;
+    padding-right: variables.$default-padding-md;
 
     &--y {
-      padding-top: $default-padding-md;
-      padding-bottom: $default-padding-md;
+      padding-top: variables.$default-padding-md;
+      padding-bottom: variables.$default-padding-md;
     }
 
-    @include tablet {
+    @include mixins.tablet {
       padding: 0;
     }
   }
 }
 
 .padding-lg {
+  padding: variables.$default-padding-lg;
+
   &--top {
-    padding-top: $default-padding-lg;
+    padding-top: variables.$default-padding-lg;
   }
 
   &--bottom {
-    padding-bottom: $default-padding-lg;
+    padding-bottom: variables.$default-padding-lg;
   }
 
   &--right {
-    padding-right: $default-padding-lg;
+    padding-right: variables.$default-padding-lg;
   }
 
   &--left {
-    padding-left: $default-padding-lg;
+    padding-left: variables.$default-padding-lg;
   }
 
-  padding: $default-padding-lg;
-
   &--sides {
-    padding-left: $default-padding-lg;
-    padding-right: $default-padding-lg;
+    padding-left: variables.$default-padding-lg;
+    padding-right: variables.$default-padding-lg;
 
-    @include tablet {
+    @include mixins.tablet {
       padding: 0;
     }
   }
 
   &--y {
-    margin-top: $default-margin-lg;
-    margin-bottom: $default-margin-lg;
+    margin-top: variables.$default-margin-lg;
+    margin-bottom: variables.$default-margin-lg;
   }
 }
 
 .padding-xxl {
+  padding: variables.$default-padding-xxl;
+
   &--top {
-    padding-top: $default-padding-xxl;
+    padding-top: variables.$default-padding-xxl;
   }
 
   &--bottom {
-    padding-bottom: $default-padding-xxl;
+    padding-bottom: variables.$default-padding-xxl;
   }
 
   &--right {
-    padding-right: $default-padding-xxl;
+    padding-right: variables.$default-padding-xxl;
   }
 
   &--left {
-    padding-left: $default-padding-xxl;
+    padding-left: variables.$default-padding-xxl;
   }
-
-  padding: $default-padding-xxl;
 }
 
 .margin-none {
@@ -423,70 +430,70 @@ html {
 }
 
 .margin-small {
+  margin: variables.$default-margin-sm;
+
   &--left {
-    margin-left: $default-margin-sm !important;
+    margin-left: variables.$default-margin-sm !important;
   }
 
   &--right {
-    margin-right: $default-margin-sm !important;
+    margin-right: variables.$default-margin-sm !important;
   }
 
   &--top {
-    margin-top: $default-margin-sm !important;
+    margin-top: variables.$default-margin-sm !important;
   }
 
   &--bottom {
-    margin-bottom: $default-margin-sm !important;
+    margin-bottom: variables.$default-margin-sm !important;
   }
-
-  margin: $default-margin-sm;
 }
 
 .margin-medium {
   &--left {
-    margin-left: $default-margin-md !important;
+    margin-left: variables.$default-margin-md !important;
   }
 
   &--right {
-    margin-right: $default-margin-md !important;
+    margin-right: variables.$default-margin-md !important;
   }
 
   &--top {
-    margin-top: $default-margin-md !important;
+    margin-top: variables.$default-margin-md !important;
   }
 
   &--bottom {
-    margin-bottom: $default-margin-md !important;
+    margin-bottom: variables.$default-margin-md !important;
   }
 
   &--y {
-    margin-top: $default-margin-md !important;
-    margin-bottom: $default-margin-md !important;
+    margin-top: variables.$default-margin-md !important;
+    margin-bottom: variables.$default-margin-md !important;
   }
 }
 
 .margin-large {
+  margin: variables.$default-margin-lg !important;
+
   &--left {
-    margin-left: $default-margin-lg !important;
+    margin-left: variables.$default-margin-lg !important;
   }
 
   &--right {
-    margin-right: $default-margin-lg !important;
+    margin-right: variables.$default-margin-lg !important;
   }
 
   &--top {
-    margin-top: $default-margin-lg !important;
+    margin-top: variables.$default-margin-lg !important;
   }
 
   &--bottom {
-    margin-bottom: $default-margin-lg !important;
+    margin-bottom: variables.$default-margin-lg !important;
   }
 
-  margin: $default-margin-lg !important;
-
   &--y {
-    margin-top: $default-margin-lg !important;
-    margin-bottom: $default-margin-lg !important;
+    margin-top: variables.$default-margin-lg !important;
+    margin-bottom: variables.$default-margin-lg !important;
   }
 }
 
@@ -495,13 +502,13 @@ html {
 }
 
 .lightest-grey-bg {
-  background: $secondary-background-colour;
+  background: variables.$secondary-background-colour;
 }
 
 .nested-table-header {
-  font-size: $default-h2;
-  font-weight: $semi-bold;
-  color: $h4-color;
+  font-size: variables.$default-h2;
+  font-weight: variables.$semi-bold;
+  color: variables.$h4-color;
 }
 
 // reusable icon classes
@@ -524,22 +531,22 @@ html {
 
   &--lightgrey {
     @extend .icon-lg;
-    color: $light-grey;
+    color: variables.$light-grey;
   }
 
   &--green {
     @extend .icon-lg;
-    color: $ok-green;
+    color: variables.$ok-green;
   }
 
   &--warning {
     @extend .icon-lg;
-    color: $warning-color;
+    color: theme.$warning-color;
   }
 
   &--danger {
     @extend .icon-lg;
-    color: $error-color;
+    color: theme.$error-color;
   }
 }
 
@@ -548,12 +555,12 @@ html {
 
   &--lightgrey {
     @extend .icon-xxl;
-    color: $light-grey;
+    color: variables.$light-grey;
   }
 
   &--violet {
     @extend .icon-xxl;
-    color: $violet;
+    color: variables.$violet;
   }
 }
 
@@ -562,12 +569,12 @@ html {
 
   &--lightgrey {
     @extend .icon-xxxl;
-    color: $light-grey;
+    color: variables.$light-grey;
   }
 
   &--violet {
     @extend .icon-xxxl;
-    color: $violet;
+    color: variables.$violet;
   }
 }
 
@@ -590,9 +597,9 @@ html {
 .border {
   &--right {
     &--layout {
-      border-right: 1px solid $layout-grey;
+      border-right: 1px solid theme.$layout-grey;
 
-      @include tablet {
+      @include mixins.tablet {
         border-right: 0;
       }
     }
@@ -600,9 +607,9 @@ html {
 
   &--left {
     &--layout {
-      border-left: 1px solid $layout-grey;
+      border-left: 1px solid theme.$layout-grey;
 
-      @include tablet {
+      @include mixins.tablet {
         border-left: 0;
       }
     }
@@ -624,7 +631,7 @@ html {
 
 .underline {
   text-decoration: underline;
-  color: $hover-blue;
+  color: variables.$hover-blue;
   cursor: pointer;
 }
 
@@ -638,7 +645,7 @@ html {
   cursor: pointer;
 
   &:hover {
-    background-color: darken(white, 2%);
+    background-color: color.adjust(white, $lightness: -2%);
   }
 }
 
@@ -703,7 +710,7 @@ img.lessOpacity {
 }
 
 .faded-text {
-  color: $non-textual-grey;
+  color: variables.$non-textual-grey;
   text-decoration: none;
 }
 
@@ -726,9 +733,9 @@ img.lessOpacity {
 }
 
 .desktop-bold {
-  font-size: $default-p;
+  font-size: variables.$default-p;
   font-style: normal;
-  font-weight: $bold;
+  font-weight: variables.$bold;
   line-height: 24px;
   color: #606060;
 }

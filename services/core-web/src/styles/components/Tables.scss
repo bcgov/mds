@@ -1,3 +1,7 @@
+@use "sass:list";
+@use "sass:string";
+@use "../base.scss" as *;
+
 .cap-col-height {
   max-height: 25px * 6;
   overflow-y: auto;
@@ -134,11 +138,11 @@ $pagination-widths: $pagination-width-1, $pagination-width-2, $pagination-width-
   $pagination-width-8, $pagination-width-9, $pagination-width-full;
 
 .center-pagination {
-  @for $i from 1 through length($pagination-widths) {
+  @for $i from 1 through list.length($pagination-widths) {
     &.page-count-#{$i} {
       .ant-table-pagination.ant-pagination {
-        $pagination-width: nth($pagination-widths, $i);
-        margin-right: unquote("calc( 50% - #{$pagination-width} / 2 )");
+        $pagination-width: list.nth($pagination-widths, $i);
+        margin-right: string.unquote("calc( 50% - #{$pagination-width} / 2 )");
       }
     }
   }

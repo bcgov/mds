@@ -1,3 +1,5 @@
+@use "../base.scss" as *;
+
 .dashboard {
   background-color: $secondary-background-colour;
   padding-top: $default-padding-xl;
@@ -39,6 +41,7 @@
           position: relative;
           height: 80px;
           opacity: 0.9;
+
           @include large {
             padding: $default-padding-lg;
           }
@@ -61,6 +64,7 @@
 
 // MINE SUMMARY NAVIGATION
 .sub-menu {
+
   a,
   link {
     color: $darkest-grey;
@@ -134,7 +138,7 @@
   justify-content: space-between;
 }
 
-.default-contact > * {
+.default-contact>* {
   margin-bottom: 20px;
 }
 
@@ -148,11 +152,12 @@
   height: 88px;
 }
 
-.abandoned-mine > div>span {
+.abandoned-mine>div>span {
   font-size: 36px;
 }
 
-.abandoned-mine > div > div > p, .abandoned-mine > div > div > h4 {
+.abandoned-mine>div>div>p,
+.abandoned-mine>div>div>h4 {
   color: $white;
 }
 

@@ -14,21 +14,21 @@
     ]
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.59.1",
-    "@typescript-eslint/parser": "^5.59.1",
-    "eslint": "7.27.0",
-    "eslint-config-airbnb": "18.2.1",
-    "eslint-config-airbnb-typescript": "^17.0.0",
-    "eslint-config-prettier": "6.9.0",
+    "@typescript-eslint/eslint-plugin": "^8.10.0",
+    "@typescript-eslint/parser": "^8.10.0",
+    "eslint": "7.32.0",
+    "eslint-config-airbnb": "19.0.4",
+    "eslint-config-airbnb-typescript": "^18.0.0",
+    "eslint-config-prettier": "9.1.0",
     "eslint-import-resolver-alias": "1.1.2",
-    "eslint-plugin-import": "2.26.0",
-    "eslint-plugin-jest": "27.1.6",
-    "eslint-plugin-jsx-a11y": "6.2.3",
-    "eslint-plugin-react": "7.18.0",
-    "husky": "8.0.2",
-    "lint-prepush": "2.2.1",
-    "lint-staged": "10.0.0",
-    "prettier": "1.19.1"
+    "eslint-plugin-import": "2.31.0",
+    "eslint-plugin-jest": "28.8.3",
+    "eslint-plugin-jsx-a11y": "6.10.1",
+    "eslint-plugin-react": "7.37.1",
+    "husky": "9.1.6",
+    "lint-prepush": "3.0.2",
+    "lint-staged": "15.2.10",
+    "prettier": "3.3.3"
   },
   "resolutions": {
     "@types/react": "16.9.49",
@@ -54,7 +54,7 @@
   },
   "dependencies": {
     "dompurify": "^3.1.7",
-    "html-react-parser": "^5.1.17",
+    "html-react-parser": "^5.1.18",
     "react-quill": "^2.0.0"
   }
 }

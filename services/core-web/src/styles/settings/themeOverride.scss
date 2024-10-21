@@ -1,9 +1,13 @@
+@use "sass:color";
+
+@use "./theme.scss";
+@use "./variables.scss";
 // stylying overrides for Ant components
 
 // TABS
 .ant-tabs-nav {
   .ant-tabs-tab {
-    font-family: $default-font;
+    font-family: variables.$default-font;
   }
 }
 
@@ -48,7 +52,7 @@
     color: #3D6DE7 !important;
     font-weight: bold !important;
     background-color: white !important;
-    border-left: 7px solid $violet;
+    border-left: 7px solid variables.$violet;
     border-right: none !important;
 
     &.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
@@ -59,7 +63,7 @@
 
   & .ant-tabs-tab:hover,
   .ant-tabs-tab-btn:hover {
-    background-color: $violet !important;
+    background-color: variables.$violet !important;
     color: white !important;
 
     &.ant-tabs-tab-active.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
@@ -95,24 +99,24 @@
   .ant-divider-horizontal {
     margin: 5px;
     height: 1px;
-    background-color: $h-divider-color;
+    background-color: variables.$h-divider-color;
   }
 
   &.ant-divider-vertical {
     margin: 0 15px;
     height: 30px;
     width: 2px;
-    background-color: $v-divider-color;
+    background-color: variables.$v-divider-color;
   }
 
   &.ant-divider-plain {
     height: 100%;
-    background-color: $light-grey;
+    background-color: variables.$light-grey;
   }
 }
 
 .custom-large-divider {
-  border: 2px solid $h-divider-color;
+  border: 2px solid variables.$h-divider-color;
 }
 
 .margin-10 {
@@ -143,8 +147,8 @@
   }
 
   &:hover {
-    color: $pagination-item-hover;
-    border: 1px solid $pagination-item-border-hover;
+    color: variables.$pagination-item-hover;
+    border: 1px solid variables.$pagination-item-border-hover;
   }
 }
 
@@ -203,12 +207,12 @@
 
 .ant-btn.block-button {
   margin-left: 0;
-  margin-bottom: $default-margin-lg;
+  margin-bottom: variables.$default-margin-lg;
 }
 
 // POPUP CONFIRM
 .ant-popover-inner-content {
-  background-color: $pure-white;
+  background-color: variables.$pure-white;
 }
 
 .ant-popover-message-title {
@@ -268,22 +272,21 @@
 
 .ant-card-head {
   min-height: 90px;
-  background: $card-body-background-color;
+  background: variables.$card-body-background-color;
 }
 
 // ROW
 .ant-row-flex {
-  padding: $default-padding-md;
+  padding: variables.$default-padding-md;
 }
 
 // PAGINATION
 .ant-pagination {
-  margin: $default-margin-lg;
+  margin: variables.$default-margin-lg;
 }
 
 // TAGS
 .ant-tag {
-  @extend p;
   padding: 0 7px !important;
   margin-right: 8px !important;
   line-height: 1.5 !important;
@@ -291,11 +294,11 @@
 
 // RESULTS
 .ant-result-info .ant-result-icon>.anticon {
-  color: $primary-color;
+  color: theme.$primary-color;
 }
 
 .ant-result-success .ant-result-icon>.anticon {
-  color: $ok-green;
+  color: variables.$ok-green;
 }
 
 // ALERTS
@@ -359,13 +362,13 @@
   &.ant-alert-info-custom-core-color-icon {
     .ant-alert-icon {
       background-color: #FFFFFF !important;
-      color: $primary-color !important;
+      color: theme.$primary-color !important;
     }
   }
 }
 
 .ant-alert-close-icon .anticon-close:hover {
-  color: darken($pure-white, 20%);
+  color: color.adjust(variables.$pure-white, $lightness: -20%);
 }
 
 .ant-alert+.ant-alert {
@@ -373,8 +376,8 @@
 }
 
 .ant-alert-grey {
-  background-color: $lightest-grey;
-  border: 1px solid $medium-grey;
+  background-color: variables.$lightest-grey;
+  border: 1px solid variables.$medium-grey;
 
   span>svg {
     fill: #6b6363;
@@ -403,11 +406,11 @@
 // COLLAPSE
 .ant-collapse {
   border: none;
-  background-color: $pure-white;
+  background-color: variables.$pure-white;
 }
 
 .ant-collapse-borderless>.ant-collapse-item>.ant-collapse-content {
-  background-color: $white;
+  background-color: theme.$white;
 }
 
 .page-scroll-wrapper .ant-collapse-content>.ant-collapse-content-box {
@@ -458,7 +461,7 @@
   text-align: left;
 
   &:hover {
-    background-color: $light-grey;
+    background-color: variables.$light-grey;
   }
 
   a {
@@ -493,8 +496,8 @@
 
 // HORIZONTAL MENU
 .ant-menu-horizontal {
-  color: $darkest-grey;
-  background-color: $light-grey;
+  color: variables.$darkest-grey;
+  background-color: variables.$light-grey;
 }
 
 // disabling a rule that creates a horizontal bar across the bottom of the body/html
@@ -511,11 +514,11 @@
 
 // -- SEE NavBar.css for .sub-menu - that interacts with this override
 .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
-  background-color: $violet;
+  background-color: variables.$violet;
 
   a,
   a:hover {
-    color: $pure-white;
+    color: variables.$pure-white;
   }
 }
 
@@ -562,28 +565,28 @@
 
 .ant-anchor-wrapper {
   margin-bottom: 20px;
-  border: 1px solid $light-grey;
+  border: 1px solid variables.$light-grey;
   border-radius: 5px;
   padding: 8px 0;
 }
 
 .ant-anchor-link-active {
-  border-left: 4px solid $violet;
-  background-color: $transparent-violet;
+  border-left: 4px solid variables.$violet;
+  background-color: variables.$transparent-violet;
 }
 
 .ant-anchor-link-active>.ant-anchor-link-title {
-  font-weight: $bold;
+  font-weight: variables.$bold;
   text-decoration: none;
 }
 
 .ant-anchor-link-title {
   text-decoration: none;
-  margin-left: $default-margin-md;
+  margin-left: variables.$default-margin-md;
 }
 
 .ant-anchor-link {
-  border-bottom: 1px solid $light-grey;
+  border-bottom: 1px solid variables.$light-grey;
   padding: 7px;
 }
 
@@ -697,11 +700,11 @@ select {
 // tooltip - specific to the admin tooltip
 .tooltip__admin {
   .ant-tooltip-inner {
-    background-color: $violet;
+    background-color: variables.$violet;
   }
 
   .ant-tooltip-arrow-content {
-    background-color: $violet !important;
+    background-color: variables.$violet !important;
   }
 }
 
@@ -757,7 +760,7 @@ select {
 }
 
 .ant-typography-expand {
-  color: $violet !important;
+  color: variables.$violet !important;
 }
 
 .ant-descriptions-item-label {
@@ -765,9 +768,9 @@ select {
 }
 
 .ant-table-row-expand-icon {
-  background-color: $primary-color;
-  color: $white;
-  border: 2px solid $primary-color;
+  background-color: theme.$primary-color;
+  color: theme.$white;
+  border: 2px solid theme.$primary-color;
   border-radius: 9px;
   height: 18px;
   width: 18px;
@@ -775,8 +778,8 @@ select {
 
   &:focus,
   &:hover {
-    color: $white;
-    border: 2px solid $primary-color;
+    color: theme.$white;
+    border: 2px solid theme.$primary-color;
   }
 
   &:before {

@@ -1,3 +1,7 @@
+@use "../settings/theme.scss" as *;
+@use "../settings/variables.scss" as *;
+@use "../tools/mixins.scss" as *;
+
 h1,
 h2,
 h3,
