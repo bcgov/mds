@@ -1,50 +1,34 @@
 // ITCSS file structure, layers include: (Settings, Tools, Generic, Elements, Objects, Components, Utilities)
 // most styling will be found in the Components and Objects folder.
 
-// SETTINGS - Used with pre-processors. Global settings that contain font, colors definitions, etc.
-@import "./settings/fonts.scss";
-@import "./settings/theme.scss";
-@import "./settings/variables.scss";
-
-// TOOLS - globally used mixins and functions. (ie gradient mixins, font-sizing mixins)
-@import "./tools/mixins.scss";
-@import "./tools/syncfusion.scss";
-
-// GENERIC - Very high level, far-reaching styles. Contains Normalize.css, Box-sizing rules, CSS resets etc.
-@import "./overrides/filepond-overrides.scss";
-@import "./overrides/antd-overrides.scss";
-@import "./generic/layout.scss";
-
-// ELEMENTS - Bare, un-classed HTML elements (like H1, A, etc.). This layer is rarely touched after initial setup.
-@import "./elements/elements.scss";
 
 // OBJECTS - layouts (CSS Grid or flexbox)
 
 // COMPONENTS - specific UI components.
-@import "./components/Header.scss";
-@import "./components/Footer.scss";
-@import "./components/Loading.scss";
-@import "./components/Tables.scss";
-@import "./components/TableSummaryCard.scss";
-@import "./components/ContactCard.scss";
-@import "./components/Overview.scss";
-@import "./components/LandingPage.scss";
-@import "./components/Callout.scss";
-@import "./components/NoticeOfDeparture.scss";
-@import "./components/MajorMineApplication.scss";
-@import "./components/SteppedForm.scss";
-@import "./components/Tailings.scss";
-@import "./components/Incidents.scss";
-@import "./components/FileReplace.scss";
-@import "./components/DocumentTableWithExpandedRows.scss";
-@import "./components/PermitsTable.scss";
-@import "./components/Reports.scss";
-@import "./components/FontAwesomeIcon.scss";
-@import "./components/Forms.scss";
-@import "./components/SideNavigation.scss";
-@import "./components/ScrollSideMenuWrapper.scss";
-@import "./components/RichTextEditor.scss";
-@import "./components/HelpGuide.scss";
+@use "./components/Header.scss";
+@use "./components/Footer.scss";
+@use "./components/Loading.scss";
+@use "./components/Tables.scss";
+@use "./components/TableSummaryCard.scss";
+@use "./components/ContactCard.scss";
+@use "./components/Overview.scss";
+@use "./components/LandingPage.scss";
+@use "./components/Callout.scss";
+@use "./components/NoticeOfDeparture.scss";
+@use "./components/MajorMineApplication.scss";
+@use "./components/SteppedForm.scss";
+@use "./components/Tailings.scss";
+@use "./components/Incidents.scss";
+@use "./components/FileReplace.scss";
+@use "./components/DocumentTableWithExpandedRows.scss";
+@use "./components/PermitsTable.scss";
+@use "./components/Reports.scss";
+@use "./components/FontAwesomeIcon.scss";
+@use "./components/Forms.scss";
+@use "./components/SideNavigation.scss";
+@use "./components/ScrollSideMenuWrapper.scss";
+@use "./components/RichTextEditor.scss";
+@use "./components/HelpGuide.scss";
 
 // UTILITIES - utilities and helper classes. This layer has the highest specificity.
-@import "./generic/helpers.scss";
+@use "./generic/helpers.scss";
