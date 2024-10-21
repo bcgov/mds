@@ -33,7 +33,7 @@ $error-font: theme.$error-color; //#f44336;
 // Syncfusion requires an undocumented $theme variable to be set in order to import the correct theme.
 // This is a workaround to allow us to use the Material theme while still being able to use a different
 // $theme variable elsewhere in the application.
-// @use 'syncfusion_imports' with ($theme: 'Material');
+@use 'syncfusion_imports';
 
 
 .e-empty-inner-content {
