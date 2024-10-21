@@ -187,14 +187,14 @@ export const ProjectSummaryPage = () => {
     let message = newActiveTab
       ? "Successfully updated the project description."
       : "Successfully submitted a project description to the Province of British Columbia.";
-
     let status_code = projectSummary.status_code;
     let is_historic = projectSummary.is_historic;
+
     if (status_code === "CHR") {
       status_code = "UNR";
-    } else if (!status_code || !isEditMode) {
+    } else if ((!status_code || !isEditMode) && status_code !== "UNR") {
       status_code = "DFT";
-    } else if (!newActiveTab) {
+    } else if (!newActiveTab && status_code !== "UNR") {
       status_code = "SUB";
       is_historic = false;
       if (amsFeatureEnabled) {
