@@ -188,12 +188,14 @@ class TractionService():
 
     def sign_jsonld_credential_deprecated(
         self,
-        did: str,
+        verificationMethod: str,
         verkey: str,
         credential: BaseModel,
     ) -> dict:
-        # #verkey suffix is indy's default, but could be aparameter later.
-        options = {"verificationMethod": did + "#verkey", "proofPurpose": "assertionMethod"}
+
+        #TODO update to resolve the verkey from the verification method and use that. Acapy only knows the verkey as a local did/keypair
+
+        options = {"verificationMethod": verificationMethod, "proofPurpose": "assertionMethod"}
 
         class Payload(BaseModel):
             doc: dict
