@@ -126,6 +126,13 @@ export const INFORMATION_REQUIREMENTS_TABLE_SUCCESS = {
   helpKey: "IRT-Submitted",
 };
 
+export const PROJECT_STAGE_ENTRY = {
+  route: "/projects/:projectGuid/:tab/entry",
+  dynamicRoute: (projectGuid: string, tab: string) => `/projects/${projectGuid}/${tab}/entry`,
+  component: ProjectPage,
+  helpKey: "Create-Project-Stage",
+};
+
 export const EDIT_MAJOR_MINE_APPLICATION = {
   route: "/projects/:projectGuid/major-mine-application/:mmaGuid/edit",
   dynamicRoute: (projectGuid, mmaGuid) =>
@@ -218,8 +225,7 @@ export const EDIT_TAILINGS_STORAGE_FACILITY = {
     activeTab = "basic-information",
     isEditMode = false
   ) =>
-    `/mines/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/${activeTab}/${
-      isEditMode ? "edit" : "view"
+    `/mines/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/${activeTab}/${isEditMode ? "edit" : "view"
     }`,
   component: TailingsSummaryPageWrapper,
   helpKey: "Edit-Tailings-Storage-Facility",
@@ -244,8 +250,7 @@ export const EDIT_DAM = {
     isEditMode = false,
     canEditDam = false
   ) =>
-    `/mine/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/${
-      isEditMode ? "edit" : "view"
+    `/mine/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/${isEditMode ? "edit" : "view"
     }/${canEditDam ? "editDam" : "viewDam"}/dam/${damGuid}`,
   component: DamsPage,
   helpKey: "Edit-Dam",
