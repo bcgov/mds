@@ -1,0 +1,599 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProjectOverviewTab renders properly 1`] = `
+<div>
+  <div
+    class="ant-row"
+    style="margin-top: -8px; margin-bottom: -8px;"
+  >
+    <div
+      class="ant-col ant-col-lg-14 ant-col-xl-16"
+      style="padding-top: 8px; padding-bottom: 8px;"
+    >
+      <h4
+        class="ant-typography"
+      >
+        Overview
+      </h4>
+      <span
+        class="ant-typography"
+      >
+        <strong>
+          PROJECT DESCRIPTION
+        </strong>
+      </span>
+      <div
+        class="ant-typography"
+      />
+      <span
+        class="ant-typography"
+      >
+        <strong>
+          KEY DATES
+        </strong>
+      </span>
+      <div
+        class="ant-row"
+      >
+        <div
+          class="ant-col ant-col-lg-12"
+        >
+          <div
+            class="ant-descriptions"
+          >
+            <div
+              class="ant-descriptions-view"
+            >
+              <table>
+                <tbody>
+                  <tr
+                    class="ant-descriptions-row"
+                  >
+                    <th
+                      class="ant-descriptions-item vertical-description"
+                      colspan="2"
+                    >
+                      <div
+                        class="ant-descriptions-item-container"
+                      >
+                        <span
+                          class="ant-descriptions-item-label"
+                        >
+                          Estimated IRT Submission
+                        </span>
+                      </div>
+                    </th>
+                  </tr>
+                  <tr
+                    class="ant-descriptions-row"
+                  >
+                    <td
+                      class="ant-descriptions-item vertical-description"
+                      colspan="2"
+                    >
+                      <div
+                        class="ant-descriptions-item-container"
+                      >
+                        <span
+                          class="ant-descriptions-item-content"
+                        >
+                          N/A
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr
+                    class="ant-descriptions-row"
+                  >
+                    <th
+                      class="ant-descriptions-item vertical-description"
+                      colspan="2"
+                    >
+                      <div
+                        class="ant-descriptions-item-container"
+                      >
+                        <span
+                          class="ant-descriptions-item-label"
+                        >
+                          Desired date to receive permit/amendment(s)
+                        </span>
+                      </div>
+                    </th>
+                  </tr>
+                  <tr
+                    class="ant-descriptions-row"
+                  >
+                    <td
+                      class="ant-descriptions-item vertical-description"
+                      colspan="2"
+                    >
+                      <div
+                        class="ant-descriptions-item-container"
+                      >
+                        <span
+                          class="ant-descriptions-item-content"
+                        >
+                          N/A
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-lg-12"
+        >
+          <div
+            class="ant-descriptions"
+          >
+            <div
+              class="ant-descriptions-view"
+            >
+              <table>
+                <tbody>
+                  <tr
+                    class="ant-descriptions-row"
+                  >
+                    <th
+                      class="ant-descriptions-item vertical-description"
+                      colspan="2"
+                    >
+                      <div
+                        class="ant-descriptions-item-container"
+                      >
+                        <span
+                          class="ant-descriptions-item-label"
+                        >
+                          Estimated Permit Application Submission
+                        </span>
+                      </div>
+                    </th>
+                  </tr>
+                  <tr
+                    class="ant-descriptions-row"
+                  >
+                    <td
+                      class="ant-descriptions-item vertical-description"
+                      colspan="2"
+                    >
+                      <div
+                        class="ant-descriptions-item-container"
+                      >
+                        <span
+                          class="ant-descriptions-item-content"
+                        >
+                          N/A
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr
+                    class="ant-descriptions-row"
+                  >
+                    <th
+                      class="ant-descriptions-item vertical-description"
+                      colspan="2"
+                    >
+                      <div
+                        class="ant-descriptions-item-container"
+                      >
+                        <span
+                          class="ant-descriptions-item-label"
+                        >
+                          Anticipated work start
+                        </span>
+                      </div>
+                    </th>
+                  </tr>
+                  <tr
+                    class="ant-descriptions-row"
+                  >
+                    <td
+                      class="ant-descriptions-item vertical-description"
+                      colspan="2"
+                    >
+                      <div
+                        class="ant-descriptions-item-container"
+                      >
+                        <span
+                          class="ant-descriptions-item-content"
+                        >
+                          N/A
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h4
+        class="ant-typography"
+      >
+        Project Stages
+      </h4>
+      <div
+        class="ant-table-wrapper"
+      >
+        <div
+          class="ant-spin-nested-loading"
+        >
+          <div
+            class="ant-spin-container"
+          >
+            <div
+              class="ant-table ant-table-small"
+            >
+              <div
+                class="ant-table-container"
+              >
+                <div
+                  class="ant-table-content"
+                >
+                  <table
+                    style="table-layout: auto;"
+                  >
+                    <colgroup />
+                    <tbody
+                      class="ant-table-tbody"
+                    >
+                      <tr
+                        class="ant-table-row ant-table-row-level-0"
+                        data-row-key="req-stages-id"
+                      >
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            title="Project Stage"
+                          >
+                            <div
+                              class=""
+                            >
+                              REQUIRED STAGES
+                            </div>
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            title="Stage Status"
+                          >
+                            <div
+                              class=""
+                            >
+                              STATUS
+                            </div>
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                          style="text-align: right;"
+                        />
+                      </tr>
+                      <tr
+                        class="ant-table-row ant-table-row-level-0"
+                        data-row-key="ps-undefined"
+                      >
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            title="Project Stage"
+                          >
+                            <b>
+                              Project description
+                            </b>
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            title="Stage Status"
+                          >
+                            <b
+                              class="uppercase"
+                            >
+                              [Not submitted]
+                            </b>
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                          style="text-align: right;"
+                        >
+                          <a
+                            data-cy="project-description-view-link"
+                            href="/pre-applications/undefined/project-description/undefined/view/basic-information"
+                          >
+                            <button
+                              class="ant-btn ant-btn-default full-mobile margin-small"
+                              type="button"
+                            >
+                              <span>
+                                Resume
+                              </span>
+                            </button>
+                          </a>
+                        </td>
+                      </tr>
+                      <tr
+                        class="ant-table-row ant-table-row-level-0"
+                        data-row-key="ps-undefined"
+                      >
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            title="Project Stage"
+                          >
+                            <b>
+                              Final Application
+                            </b>
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            title="Stage Status"
+                          >
+                            <b
+                              class="uppercase"
+                            >
+                              [Not submitted]
+                            </b>
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                          style="text-align: right;"
+                        >
+                          <a
+                            data-cy="final-application-view-link"
+                            href="/pre-applications/undefined/final-app"
+                          >
+                            <button
+                              class="ant-btn ant-btn-default full-mobile margin-small"
+                              type="button"
+                            >
+                              <span>
+                                View
+                              </span>
+                            </button>
+                          </a>
+                        </td>
+                      </tr>
+                      <tr
+                        class="ant-table-row ant-table-row-level-0"
+                        data-row-key="opt-stages-id"
+                      >
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            title="Project Stage"
+                          >
+                            <div
+                              class=""
+                            >
+                              OPTIONAL STAGES
+                            </div>
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            title="Stage Status"
+                          >
+                            <div
+                              class=""
+                            >
+                              STATUS
+                            </div>
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                          style="text-align: right;"
+                        />
+                      </tr>
+                      <tr
+                        class="ant-table-row ant-table-row-level-0"
+                        data-row-key="irt-0"
+                      >
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            title="Project Stage"
+                          >
+                            <div
+                              class="grey"
+                            >
+                              Final IRT
+                            </div>
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            title="Stage Status"
+                          >
+                            <div
+                              class="grey"
+                            >
+                              [Not submitted]
+                            </div>
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                          style="text-align: right;"
+                        >
+                          <a
+                            data-cy="final-irt-view-link"
+                            href="/pre-applications/undefined/information-requirements-table"
+                          >
+                            <button
+                              class="ant-btn ant-btn-default full-mobile margin-small"
+                              disabled=""
+                              type="button"
+                            >
+                              <span>
+                                View
+                              </span>
+                            </button>
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <h3
+        class="ant-typography"
+      >
+        Related Project Applications
+      </h3>
+      <div
+        class="ant-typography"
+      >
+        Description of related major project applications for this mine are listed below.
+      </div>
+      <div
+        class="ant-table-wrapper"
+      >
+        <div
+          class="ant-spin-nested-loading"
+        >
+          <div
+            class="ant-spin-container"
+          >
+            <div
+              class="ant-table"
+            >
+              <div
+                class="ant-table-container"
+              >
+                <div
+                  class="ant-table-content"
+                >
+                  <table
+                    style="table-layout: auto;"
+                  >
+                    <colgroup />
+                    <thead
+                      class="ant-table-thead"
+                    >
+                      <tr>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Project Title
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Project #
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Status
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Contact
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Last Updated
+                        </th>
+                        <th
+                          class="ant-table-cell actions-column"
+                        />
+                      </tr>
+                    </thead>
+                    <tbody
+                      class="ant-table-tbody"
+                    />
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-col ant-col-lg-9 ant-col-lg-offset-1 ant-col-xl-7 ant-col-xl-offset-1"
+      style="padding-top: 8px; padding-bottom: 8px;"
+    >
+      <div
+        class="ant-row"
+      >
+        <div
+          class="ant-col ant-col-24"
+        >
+          <div
+            class="ant-card ant-card-bordered"
+          >
+            <div
+              class="ant-card-head"
+              style="min-height: unset;"
+            >
+              <div
+                class="ant-card-head-wrapper"
+              >
+                <div
+                  class="ant-card-head-title"
+                >
+                  Project Contacts
+                </div>
+              </div>
+            </div>
+            <div
+              class="ant-card-body"
+            >
+              <div
+                class="ant-typography ministry-contact-item"
+              >
+                <span
+                  class="ant-typography ministry-contact-title"
+                >
+                  <strong>
+                    EMLI Project Lead
+                  </strong>
+                </span>
+                <br />
+                <span
+                  class="ant-typography"
+                >
+                  Project Lead has not been assigned
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

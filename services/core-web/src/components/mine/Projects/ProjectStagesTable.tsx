@@ -1,10 +1,10 @@
-import React, { FC } from "react";
+import React, { FC, ReactNode } from "react";
 import { Table } from "antd";
 import { IProjectStage } from "@mds/common/interfaces/projects/projectStage.interface";
 import { ColumnsType } from "antd/es/table";
 
 interface TableProjectStage extends IProjectStage {
-  link: string;
+  link?: Element | ReactNode;
 }
 interface ProjectStagesTableProps {
   projectStages: TableProjectStage[];
@@ -45,10 +45,10 @@ export const ProjectStagesTable: FC<ProjectStagesTableProps> = ({ projectStages 
         if (text === "STATUS") {
           label = text;
         } else {
-          label =
-            record.key && record.stage_status
-              ? `[${record.stage_status_hash[text]}]` || "N/A"
-              : "[Not submitted]";
+          label = "[Not submitted]";
+          if (record.key && record.stage_status) {
+            label = record.stage_status_hash[text] ? `[${record.stage_status_hash[text]}]` : "N/A";
+          }
         }
         return (
           <div title="Stage Status">
