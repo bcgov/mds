@@ -23,7 +23,7 @@ export const ProjectStagesTable: FC<ProjectStagesTableProps> = ({ projectStages 
       navigate_forward: stage.navigateForward,
       stage,
     }));
-  console.log(transformRowData(projectStages));
+
   const columns: ColumnsType<any> = [
     {
       title: "",
