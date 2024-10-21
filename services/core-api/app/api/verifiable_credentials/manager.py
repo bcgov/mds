@@ -38,22 +38,21 @@ class UNTPCCMinesActPermit(cc.ConformityAttestation):
 
 #this should probably be imported from somewhere.
 class W3CCred(BaseModel):
+    #based on VCDM 2.0. https://www.w3.org/TR/vc-data-model-2.0/
     model_config = ConfigDict(
         populate_by_name=True, json_encoders={datetime: lambda v: v.isoformat()})
 
     context: List[Union[str, dict]] = Field(
         alias="@context",
         default=[
-            "https://www.w3.org/2018/credentials/v1",
+            "https://www.w3.org/ns/credentials/v2",
             Config.UNTP_DIGITAL_CONFORMITY_CREDENTIAL_CONTEXT,
-            Config.UNTP_BC_MINES_ACT_PERMIT_CONTEXT, {
-                "name": "https://schema.org/name"
-            }
+            Config.UNTP_BC_MINES_ACT_PERMIT_CONTEXT,
         ])
     type: List[str]
     issuer: Union[str, dict[str, str]]
     # TODO: update to `validFrom` for vcdm 2.0 once available in aca-py/traction, which is an optional property
-    issuanceDate: str
+    validFrom: str
     credentialSubject: UNTPCCMinesActPermit
     credentialSchema: List[dict]
 
