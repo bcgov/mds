@@ -246,6 +246,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                     >
                       <tr
                         class="ant-table-row ant-table-row-level-0"
+                        data-row-key="Project description"
                       >
                         <td
                           class="ant-table-cell"
@@ -296,6 +297,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                       </tr>
                       <tr
                         class="ant-table-row ant-table-row-level-0"
+                        data-row-key="IRT"
                       >
                         <td
                           class="ant-table-cell"
@@ -346,6 +348,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                       </tr>
                       <tr
                         class="ant-table-row ant-table-row-level-0"
+                        data-row-key="Application"
                       >
                         <td
                           class="ant-table-cell"

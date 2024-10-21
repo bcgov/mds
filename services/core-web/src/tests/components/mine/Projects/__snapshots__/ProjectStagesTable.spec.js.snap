@@ -16,7 +16,7 @@ exports[`ProjectStagesTable renders properly 1`] = `
       },
       Object {
         "align": "right",
-        "dataIndex": "stage",
+        "dataIndex": "link",
         "render": [Function],
         "title": "",
       },

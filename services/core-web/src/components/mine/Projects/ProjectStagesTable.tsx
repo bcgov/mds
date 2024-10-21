@@ -3,8 +3,11 @@ import { Table } from "antd";
 import { IProjectStage } from "@mds/common/interfaces/projects/projectStage.interface";
 import { ColumnsType } from "antd/es/table";
 
+interface TableProjectStage extends IProjectStage {
+  link: string;
+}
 interface ProjectStagesTableProps {
-  projectStages: IProjectStage[];
+  projectStages: TableProjectStage[];
 }
 
 export const ProjectStagesTable: FC<ProjectStagesTableProps> = ({ projectStages }) => {
@@ -17,7 +20,7 @@ export const ProjectStagesTable: FC<ProjectStagesTableProps> = ({ projectStages 
       link: stage.link,
       stage,
     }));
-  console.log(transformRowData(projectStages));
+
   const columns: ColumnsType<any> = [
     {
       title: "",
@@ -62,9 +65,9 @@ export const ProjectStagesTable: FC<ProjectStagesTableProps> = ({ projectStages 
     },
     {
       title: "",
-      dataIndex: "stage",
+      dataIndex: "link",
       align: "right",
-      render: (text, record) => record?.link,
+      render: (text) => text,
     },
   ];
 
