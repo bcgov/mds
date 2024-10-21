@@ -1,8 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import { ProjectStagesTable } from "@/components/mine/Projects/ProjectStagesTable";
-import * as MOCK from "@/tests/mocks/dataMocks";
-import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const projectStages = [
   {

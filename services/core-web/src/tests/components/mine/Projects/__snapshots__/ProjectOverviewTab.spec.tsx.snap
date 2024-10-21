@@ -24,7 +24,9 @@ exports[`ProjectOverviewTab renders properly 1`] = `
       </span>
       <div
         class="ant-typography"
-      />
+      >
+        Sample description
+      </div>
       <span
         class="ant-typography"
       >
@@ -77,7 +79,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                         <span
                           class="ant-descriptions-item-content"
                         >
-                          N/A
+                          Nov 10 2020
                         </span>
                       </div>
                     </td>
@@ -113,7 +115,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                         <span
                           class="ant-descriptions-item-content"
                         >
-                          N/A
+                          Nov 20 2020
                         </span>
                       </div>
                     </td>
@@ -165,7 +167,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                         <span
                           class="ant-descriptions-item-content"
                         >
-                          N/A
+                          Nov 12 2020
                         </span>
                       </div>
                     </td>
@@ -201,7 +203,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                         <span
                           class="ant-descriptions-item-content"
                         >
-                          N/A
+                          Nov 22 2020
                         </span>
                       </div>
                     </td>
@@ -279,7 +281,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                       </tr>
                       <tr
                         class="ant-table-row ant-table-row-level-0"
-                        data-row-key="ps-undefined"
+                        data-row-key="ps-1304"
                       >
                         <td
                           class="ant-table-cell"
@@ -301,7 +303,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                             <b
                               class="uppercase"
                             >
-                              [Not submitted]
+                              N/A
                             </b>
                           </div>
                         </td>
@@ -311,14 +313,14 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                         >
                           <a
                             data-cy="project-description-view-link"
-                            href="/pre-applications/undefined/project-description/undefined/view/basic-information"
+                            href="/pre-applications/35633148-57f8-4967-be35-7f89abfbd02e/project-description"
                           >
                             <button
                               class="ant-btn ant-btn-default full-mobile margin-small"
                               type="button"
                             >
                               <span>
-                                Resume
+                                View
                               </span>
                             </button>
                           </a>
@@ -326,7 +328,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                       </tr>
                       <tr
                         class="ant-table-row ant-table-row-level-0"
-                        data-row-key="ps-undefined"
+                        data-row-key="ps-2"
                       >
                         <td
                           class="ant-table-cell"
@@ -348,7 +350,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                             <b
                               class="uppercase"
                             >
-                              [Not submitted]
+                              N/A
                             </b>
                           </div>
                         </td>
@@ -358,7 +360,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                         >
                           <a
                             data-cy="final-application-view-link"
-                            href="/pre-applications/undefined/final-app"
+                            href="/pre-applications/35633148-57f8-4967-be35-7f89abfbd02e/final-app"
                           >
                             <button
                               class="ant-btn ant-btn-default full-mobile margin-small"
@@ -408,7 +410,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                       </tr>
                       <tr
                         class="ant-table-row ant-table-row-level-0"
-                        data-row-key="irt-0"
+                        data-row-key="irt-1"
                       >
                         <td
                           class="ant-table-cell"
@@ -432,7 +434,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                             <div
                               class="grey"
                             >
-                              [Not submitted]
+                              N/A
                             </div>
                           </div>
                         </td>
@@ -442,11 +444,10 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                         >
                           <a
                             data-cy="final-irt-view-link"
-                            href="/pre-applications/undefined/information-requirements-table"
+                            href="/pre-applications/35633148-57f8-4967-be35-7f89abfbd02e/information-requirements-table"
                           >
                             <button
                               class="ant-btn ant-btn-default full-mobile margin-small"
-                              disabled=""
                               type="button"
                             >
                               <span>
@@ -572,6 +573,39 @@ exports[`ProjectOverviewTab renders properly 1`] = `
             <div
               class="ant-card-body"
             >
+              <div
+                class="ant-typography ministry-contact-item"
+              >
+                <span
+                  class="ant-typography ministry-contact-title"
+                >
+                  <strong>
+                    Primary Contact
+                  </strong>
+                </span>
+                <br />
+                <span
+                  class="ant-typography"
+                >
+                  Test Testerson
+                </span>
+                <br />
+                <span
+                  class="ant-typography"
+                >
+                  999-999-9999
+                </span>
+                <br />
+                <span
+                  class="ant-typography"
+                >
+                  <a
+                    href="mailto:test@test.com"
+                  >
+                    test@test.com
+                  </a>
+                </span>
+              </div>
               <div
                 class="ant-typography ministry-contact-item"
               >

@@ -495,7 +495,138 @@ exports[`ProjectOverviewTab renders properly 1`] = `
             </div>
             <div
               class="ant-card-body"
-            />
+            >
+              <div
+                class="ant-typography ministry-contact-item"
+              >
+                <span
+                  class="ant-typography ministry-contact-title"
+                >
+                  <strong>
+                    Unknown
+                    <br />
+                  </strong>
+                </span>
+                <span
+                  class="ant-typography"
+                >
+                  <a
+                    href="mailto:TestPermRecl@gov.bc.ca"
+                  >
+                    TestPermRecl@gov.bc.ca
+                  </a>
+                  <br />
+                </span>
+              </div>
+              <div
+                class="ant-typography ministry-contact-item"
+              >
+                <span
+                  class="ant-typography ministry-contact-title"
+                >
+                  <strong>
+                    Unknown
+                    <br />
+                  </strong>
+                </span>
+                <span
+                  class="ant-typography"
+                >
+                  Anna
+                   
+                  Albright
+                  <br />
+                </span>
+                <span
+                  class="ant-typography"
+                >
+                  123-234-3456
+                  <br />
+                </span>
+                <span
+                  class="ant-typography"
+                >
+                  <a
+                    href="mailto:anna.albright@gov.bc.ca"
+                  >
+                    anna.albright@gov.bc.ca
+                  </a>
+                  <br />
+                </span>
+              </div>
+              <div
+                class="ant-typography ministry-contact-item"
+              >
+                <span
+                  class="ant-typography ministry-contact-title"
+                >
+                  <strong>
+                    Unknown
+                    <br />
+                  </strong>
+                </span>
+                <span
+                  class="ant-typography"
+                >
+                  Blaine
+                   
+                  Blainesworth
+                  <br />
+                </span>
+                <span
+                  class="ant-typography"
+                >
+                  111-222-3333
+                  <br />
+                </span>
+                <span
+                  class="ant-typography"
+                >
+                  <a
+                    href="mailto:blaine.blainesworth@gov.bc.ca"
+                  >
+                    blaine.blainesworth@gov.bc.ca
+                  </a>
+                  <br />
+                </span>
+              </div>
+              <div
+                class="ant-typography ministry-contact-item"
+              >
+                <span
+                  class="ant-typography ministry-contact-title"
+                >
+                  <strong>
+                    Health and Safety Inspector
+                    <br />
+                  </strong>
+                </span>
+                <span
+                  class="ant-typography"
+                >
+                  Carla
+                   
+                  Carlsdottir
+                  <br />
+                </span>
+                <span
+                  class="ant-typography"
+                >
+                  000-111-2222
+                  <br />
+                </span>
+                <span
+                  class="ant-typography"
+                >
+                  <a
+                    href="mailto:Carla.Carlsdottir@gov.bc.ca"
+                  >
+                    Carla.Carlsdottir@gov.bc.ca
+                  </a>
+                  <br />
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
