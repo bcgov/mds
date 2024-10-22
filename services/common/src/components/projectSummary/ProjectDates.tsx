@@ -2,7 +2,11 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Field, getFormValues } from "redux-form";
 import { Typography } from "antd";
-import { dateNotBeforeOther, dateNotAfterOther } from "@mds/common/redux/utils/Validate";
+import {
+  dateNotBeforeOther,
+  dateNotAfterOther,
+  dateInFuture,
+} from "@mds/common/redux/utils/Validate";
 import Callout from "@mds/common/components/common/Callout";
 import { FORM, isFieldDisabled } from "@mds/common/constants";
 import RenderDate from "@mds/common/components/forms/RenderDate";
@@ -43,7 +47,7 @@ export const ProjectDates = () => {
         label="When do you anticipate submitting a draft Information Requirements Table?"
         placeholder="Please select date"
         component={RenderDate}
-        validate={[dateNotAfterOther(expected_permit_application_date)]}
+        validate={[dateInFuture, dateNotAfterOther(expected_permit_application_date)]}
         disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
       />
       <Field
@@ -52,7 +56,7 @@ export const ProjectDates = () => {
         label="When do you anticipate submitting a permit application?"
         placeholder="Please select date"
         component={RenderDate}
-        validate={[dateNotBeforeOther(expected_draft_irt_submission_date)]}
+        validate={[dateInFuture, dateNotBeforeOther(expected_draft_irt_submission_date)]}
         disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
       />
       <Field
@@ -61,7 +65,7 @@ export const ProjectDates = () => {
         label="When do you hope to receive your permit/amendment(s)?"
         placeholder="Please select date"
         component={RenderDate}
-        validate={[dateNotBeforeOther(expected_permit_application_date)]}
+        validate={[dateInFuture, dateNotBeforeOther(expected_permit_application_date)]}
         disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
       />
       <Field
@@ -70,7 +74,7 @@ export const ProjectDates = () => {
         label="When do you anticipate starting work on this project?"
         placeholder="Please select date"
         component={RenderDate}
-        validate={[dateNotBeforeOther(expected_permit_receipt_date)]}
+        validate={[dateInFuture, dateNotBeforeOther(expected_permit_receipt_date)]}
         disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
       />
     </>
