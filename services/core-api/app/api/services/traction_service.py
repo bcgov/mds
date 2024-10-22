@@ -10,16 +10,21 @@ from app.api.verifiable_credentials.models.connection import PartyVerifiableCred
 from app.api.utils.feature_flag import Feature, is_feature_enabled
 
 traction_token_url = Config.TRACTION_HOST + "/multitenancy/tenant/" + Config.TRACTION_TENANT_ID + "/token"
+
 traction_oob_create_invitation = Config.TRACTION_HOST + "/out-of-band/create-invitation"
 traction_connections = Config.TRACTION_HOST + "/connections"
+
 traction_offer_credential_V1 = Config.TRACTION_HOST + "/issue-credential/send-offer"
 traction_offer_credential_V2 = Config.TRACTION_HOST + "/issue-credential-2.0/send-offer"
 revoke_credential_url = Config.TRACTION_HOST + "/revocation/revoke"
 fetch_credential_exchanges = Config.TRACTION_HOST + "/issue-credential/records"
-traction_deprecated_jsonld_sign = Config.TRACTION_HOST + "/jsonld/sign"
-traction_sign_jsonld_credential = Config.TRACTION_HOST + "/vc/credentials/issue"
+
 traction_get_current_indy_did = Config.TRACTION_HOST + "/wallet/did/public"
 traction_get_did = Config.TRACTION_HOST + "/wallet/did"
+
+traction_deprecated_jsonld_sign = Config.TRACTION_HOST + "/jsonld/sign"
+traction_sign_jsonld_credential = Config.TRACTION_HOST + "/vc/credentials/issue"
+traction_vc_di_add_proof = Config.TRACTION_HOST + "/vc/di/add-proof"
 
 
 def traction_issue_credential_problem_report(cred_ex_id: str):
@@ -186,28 +191,21 @@ class TractionService():
         assert get_resp.status_code == 200, f"fetch_resp={get_resp.json()}"
         return get_resp.json()["result"]
 
-    def sign_jsonld_credential_deprecated(
-        self,
-        verificationMethod: str,
-        verkey: str,
-        credential: BaseModel,
-    ) -> dict:
+    def sign_add_data_integrity_proof(self, verificationMethod: str, credential: BaseModel):
+        options = {
+            "cryptosuite": "eddsa-jcs-2022",
+            "proofPurpose": "assertionMethod",
+            "type": "DataIntegrityProof",
+            "verificationMethod": verificationMethod
+        }
 
-        #TODO update to resolve the verkey from the verification method and use that. Acapy only knows the verkey as a local did/keypair
-
-        options = {"verificationMethod": verificationMethod, "proofPurpose": "assertionMethod"}
-
-        class Payload(BaseModel):
-            doc: dict
-            verkey: str
-
-        payload = Payload(doc={"options": options, "credential": credential}, verkey=verkey)
+        payload = {
+            "document": credential.model_dump(by_alias=True, exclude_none=True, mode="json"),
+            "options": options
+        }
 
         post_resp = requests.post(
-            traction_deprecated_jsonld_sign,
-            json=payload.model_dump(by_alias=True, exclude_none=True, mode="json"),
-            headers=self.get_headers())
-        assert post_resp.status_code == 200, f"post_resp={post_resp.__dict__}"
+            traction_vc_di_add_proof, json=payload, headers=self.get_headers())
         return post_resp.json()
 
     def fetch_a_random_did_key(self):
@@ -215,13 +213,3 @@ class TractionService():
             traction_get_did, params={"method": "key"}, headers=self.get_headers())
         assert get_resp.status_code == 200, f"fetch_resp={get_resp.json()}"
         return get_resp.json()["results"][0]
-
-    def sign_jsonld_credential(self, credential: dict, options: dict = {}):
-        payload = {
-            "options": options,
-            "credential": credential,
-        }
-        post_resp = requests.post(
-            traction_sign_jsonld_credential, json=payload, headers=self.get_headers())
-        assert post_resp
-        return post_resp.json()

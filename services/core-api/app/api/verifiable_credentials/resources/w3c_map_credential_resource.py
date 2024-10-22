@@ -34,42 +34,7 @@ class W3CCredentialResource(Resource, UserMixin):
                 vc_unsigned_hash, unsafe=True).signed_credential)
 
 
-class W3CCredentialListResource(Resource, UserMixin):
-    parser = reqparse.RequestParser(trim=True)
-    parser.add_argument(
-        'permit_amendment_guid',
-        type=str,
-        help='GUID of the permit amendment.',
-        location='json',
-        store_missing=False)
-
-    @api.expect(parser)
-    @api.doc(
-        description=
-        "returns a signed w3c credential for a specific permit_amendment, using new aca-py endpoints, but cannot use public did."
-    )
-    @requires_any_of([EDIT_PARTY, MINESPACE_PROPONENT])
-    def post(self):
-        if not is_feature_enabled(Feature.VC_W3C):
-            raise ServiceUnavailable("This feature is not enabled.")
-
-        data = self.parser.parse_args()
-        permit_amendment = PermitAmendment.find_by_permit_amendment_guid(
-            data["permit_amendment_guid"])
-        traction_service = TractionService()
-        did_dict = traction_service.fetch_a_random_did_key()
-        private_did_key = did_dict["did"]
-        #private did:key: isn't that helpful, not available to third parties
-        credential_dict = VerifiableCredentialManager.produce_map_01_credential_payload(
-            private_did_key, permit_amendment)
-
-        signed_credential = traction_service.sign_jsonld_credential(credential_dict)
-        current_app.logger.warning("credential signed by did:key, not publicly verifiable" +
-                                   dumps(signed_credential))
-        return signed_credential["verifiableCredential"]
-
-
-class W3CCredentialDeprecatedResource(Resource, UserMixin):
+class W3CCredentialIssueResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument(
         'permit_amendment_guid',
@@ -99,46 +64,8 @@ class W3CCredentialDeprecatedResource(Resource, UserMixin):
         credential_dict = VerifiableCredentialManager.produce_map_01_credential_payload(
             public_did, permit_amendment)
 
-        signed_credential = traction_service.sign_jsonld_credential_deprecated(
+        signed_credential = traction_service.sign_add_data_integrity_proof(
             Config.CHIEF_PERMITTING_OFFICER_DID_WEB_VERIFICATION_METHOD, public_verkey,
             credential_dict)
-        current_app.logger.warning(
-            "credential signed by did:indy, not by did:web and using deprecated acapy endpoints" +
-            dumps(signed_credential))
-        return signed_credential["signed_doc"]
 
-
-class W3CCredentialUNTPResource(Resource, UserMixin):
-    parser = reqparse.RequestParser(trim=True)
-    parser.add_argument(
-        'permit_amendment_guid',
-        type=str,
-        help='GUID of the permit amendment.',
-        location='json',
-        store_missing=False)
-
-    @api.expect(parser)
-    @api.doc(
-        description=
-        "returns a UNTP Conformity Credential for specific permit_amendment using deprecated aca-py endpoint, but with DEV ONLY did:web"
-    )
-    @requires_any_of([EDIT_PARTY, MINESPACE_PROPONENT])
-    def post(self):
-        if not is_feature_enabled(Feature.VC_W3C):
-            raise ServiceUnavailable("This feature is not enabled.")
-
-        data = self.parser.parse_args()
-        permit_amendment = PermitAmendment.find_by_permit_amendment_guid(
-            data["permit_amendment_guid"])
-        if not permit_amendment:
-            raise BadRequest("Permit amendment not found")
-        traction_service = TractionService()
-        public_did_dict = traction_service.fetch_current_public_did()
-        public_did = Config.CHIEF_PERMITTING_OFFICER_DID_WEB
-        public_verkey = public_did_dict["verkey"]
-
-        credential = VerifiableCredentialManager.produce_untp_cc_map_payload(
-            public_did, permit_amendment)
-        signed_credential = traction_service.sign_jsonld_credential_deprecated(
-            Config.CHIEF_PERMITTING_OFFICER_DID_WEB_VERIFICATION_METHOD, public_verkey, credential)
-        return signed_credential["signed_doc"]
+        return signed_credential["securedDocument"]

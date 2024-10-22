@@ -32,7 +32,7 @@ task_logger = get_task_logger(__name__)
 
 
 class UNTPCCMinesActPermit(cc.ConformityAttestation):
-    type: List[str] = ["ConformityAttestation, MinesActPermit"]
+    type: List[str] = ["ConformityAttestation", "MinesActPermit"]
     permitNumber: str
 
 
@@ -193,11 +193,10 @@ def process_all_untp_map_for_orgbook():
     task_logger.info(f"public_verkey={public_verkey}")
     # send to traction to be signed
     for cred_payload, record in records:
-        signed_cred = traction_service.sign_jsonld_credential_deprecated(
-            Config.CHIEF_PERMITTING_OFFICER_DID_WEB_VERIFICATION_METHOD, public_verkey,
-            cred_payload)
+        signed_cred = traction_service.sign_add_data_integrity_proof(
+            Config.CHIEF_PERMITTING_OFFICER_DID_WEB_VERIFICATION_METHOD, cred_payload)
         if signed_cred:
-            record.signed_credential = json.dumps(signed_cred["signed_doc"])
+            record.signed_credential = json.dumps(signed_cred["securedDocument"])
             record.sign_date = datetime.now()
         try:
             record.save()
@@ -448,7 +447,7 @@ class VerifiableCredentialManager():
                 "VerifiableCredential", "DigitalConformityCredential", "BCMinesActPermitCredential"
             ],
             issuer={"id": did},
-            issuanceDate=issuance_date_str,                                                         #vcdm1.1, will change to 'validFrom' in vcdm2.0
+            validFrom=issuance_date_str,                                                            #vcdm1.1, will change to 'validFrom' in vcdm2.0
             credentialSubject=cred,
             credentialSchema=[{
                 "id": Config.UNTP_DIGITAL_CONFORMITY_CREDENTIAL_CONTEXT,
