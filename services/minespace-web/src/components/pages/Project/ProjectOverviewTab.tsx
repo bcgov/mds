@@ -164,7 +164,7 @@ export const ProjectOverviewTab: FC<ProjectOverviewTabProps> = ({ navigateForwar
           <Col span={24}>
             <Card title="Ministry Contacts">
               {EMLIcontactInfo.map((contact) => (
-                <MinistryContactItem contact={contact} key={contact.id} />
+                <MinistryContactItem contact={contact} key={contact.contact_id} />
               ))}
             </Card>
           </Col>

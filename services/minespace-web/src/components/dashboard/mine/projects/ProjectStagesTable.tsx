@@ -13,9 +13,8 @@ interface ProjectStagesTableProps {
 
 export const ProjectStagesTable: FC<ProjectStagesTableProps> = ({ projectStages }) => {
   const projectSummary = useSelector(getProjectSummary);
-  const transformRowData = (projectStages) =>
-    projectStages &&
-    projectStages.map((stage) => ({
+  const transformRowData = (stages: IProjectStage[]) =>
+    stages?.map((stage) => ({
       key: stage.key,
       project_stage: stage.title,
       stage_status: stage.status === "ASG" ? "SUB" : stage.status,
@@ -134,7 +133,7 @@ export const ProjectStagesTable: FC<ProjectStagesTableProps> = ({ projectStages 
       showHeader={false}
       pagination={false}
       columns={columns}
-      rowKey="title"
+      rowKey="project_stage"
       dataSource={transformRowData(projectStages)}
       locale={{ emptyText: "This project has no stage data." }}
     />

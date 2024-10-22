@@ -1,0 +1,1309 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HelpGuide renders CORE properly 1`] = `
+<div
+  data-testid="help-content"
+>
+  <div
+    class="ant-alert ant-alert-warning ant-alert-with-description"
+    data-show="true"
+    role="alert"
+  >
+    <span
+      aria-label="exclamation-circle"
+      class="anticon anticon-exclamation-circle ant-alert-icon"
+      role="img"
+    >
+      <svg
+        aria-hidden="true"
+        data-icon="exclamation-circle"
+        fill="currentColor"
+        focusable="false"
+        height="1em"
+        viewBox="64 64 896 896"
+        width="1em"
+      >
+        <path
+          d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+        />
+        <path
+          d="M464 688a48 48 0 1096 0 48 48 0 10-96 0zm24-112h48c4.4 0 8-3.6 8-8V296c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8z"
+        />
+      </svg>
+    </span>
+    <div
+      class="ant-alert-content"
+    >
+      <div
+        class="ant-alert-message"
+      >
+        Publish Help Guide
+      </div>
+      <div
+        class="ant-alert-description"
+      >
+        Content published here will be visible to MineSpace users. Ensure the language is appropriate and avoid sharing confidential information.
+      </div>
+    </div>
+  </div>
+  <h2
+    class="ant-typography"
+    data-testid="help-title"
+  >
+    Overview
+     Help Guide
+  </h2>
+  <form
+    class="ant-form ant-form-vertical common-form common-form-EDIT_HELP_GUIDE form-edit"
+    id="EDIT_HELP_GUIDE"
+  >
+    <div
+      class="ant-form-item ant-form-item-with-help"
+    >
+      <div
+        class="ant-row ant-form-item-row"
+      >
+        <div
+          class="ant-col ant-form-item-label"
+        >
+          <label
+            class=""
+            for="EDIT_HELP_GUIDE_page_tab"
+            title=""
+          >
+            <div>
+              This help guide is for:
+               
+            </div>
+          </label>
+        </div>
+        <div
+          class="ant-col ant-form-item-control"
+        >
+          <div
+            class="ant-form-item-control-input"
+          >
+            <div
+              class="ant-form-item-control-input-content"
+            >
+              <div
+                class="ant-radio-group ant-radio-group-solid"
+              >
+                <label
+                  class="ant-radio-wrapper ant-radio-wrapper-checked ant-radio-wrapper-in-form-item"
+                >
+                  <span
+                    class="ant-radio ant-radio-checked"
+                  >
+                    <input
+                      checked=""
+                      class="ant-radio-input"
+                      name="page_tab"
+                      type="radio"
+                      value="overview"
+                    />
+                    <span
+                      class="ant-radio-inner"
+                    />
+                  </span>
+                  <span>
+                    Only this tab - Overview
+                  </span>
+                </label>
+                <label
+                  class="ant-radio-wrapper ant-radio-wrapper-in-form-item"
+                >
+                  <span
+                    class="ant-radio"
+                  >
+                    <input
+                      class="ant-radio-input"
+                      name="page_tab"
+                      type="radio"
+                      value="all_tabs"
+                    />
+                    <span
+                      class="ant-radio-inner"
+                    />
+                  </span>
+                  <span>
+                    All tabs
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            style="display: flex; flex-wrap: nowrap;"
+          >
+            <div
+              class="ant-form-item-explain ant-form-item-explain-connected"
+              id="EDIT_HELP_GUIDE_page_tab_help"
+              role="alert"
+            >
+              <div
+                class=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-form-item ant-form-item-with-help"
+    >
+      <div
+        class="ant-row ant-form-item-row"
+      >
+        <div
+          class="ant-col ant-form-item-control"
+        >
+          <div
+            class="ant-form-item-control-input"
+          >
+            <div
+              class="ant-form-item-control-input-content"
+            >
+              <div
+                class="quill "
+              >
+                <div
+                  class="ql-toolbar ql-snow"
+                >
+                  <span
+                    class="ql-formats"
+                  >
+                    <span
+                      class="ql-header ql-picker"
+                    >
+                      <span
+                        aria-controls="ql-picker-options-0"
+                        aria-expanded="false"
+                        class="ql-picker-label"
+                        role="button"
+                        tabindex="0"
+                      >
+                        <svg
+                          viewBox="0 0 18 18"
+                        >
+                           
+                          <polygon
+                            class="ql-stroke"
+                            points="7 11 9 13 11 11 7 11"
+                          />
+                           
+                          <polygon
+                            class="ql-stroke"
+                            points="7 7 9 5 11 7 7 7"
+                          />
+                           
+                        </svg>
+                      </span>
+                      <span
+                        aria-hidden="true"
+                        class="ql-picker-options"
+                        id="ql-picker-options-0"
+                        tabindex="-1"
+                      >
+                        <span
+                          class="ql-picker-item"
+                          data-value="1"
+                          role="button"
+                          tabindex="0"
+                        />
+                        <span
+                          class="ql-picker-item"
+                          data-value="2"
+                          role="button"
+                          tabindex="0"
+                        />
+                        <span
+                          class="ql-picker-item"
+                          data-value="3"
+                          role="button"
+                          tabindex="0"
+                        />
+                        <span
+                          class="ql-picker-item"
+                          data-value="4"
+                          role="button"
+                          tabindex="0"
+                        />
+                        <span
+                          class="ql-picker-item"
+                          data-value="5"
+                          role="button"
+                          tabindex="0"
+                        />
+                        <span
+                          class="ql-picker-item"
+                          data-value="6"
+                          role="button"
+                          tabindex="0"
+                        />
+                        <span
+                          class="ql-picker-item ql-selected"
+                          role="button"
+                          tabindex="0"
+                        />
+                      </span>
+                    </span>
+                    <select
+                      class="ql-header"
+                      style="display: none;"
+                    >
+                      <option
+                        value="1"
+                      />
+                      <option
+                        value="2"
+                      />
+                      <option
+                        value="3"
+                      />
+                      <option
+                        value="4"
+                      />
+                      <option
+                        value="5"
+                      />
+                      <option
+                        value="6"
+                      />
+                      <option
+                        selected="selected"
+                      />
+                    </select>
+                  </span>
+                  <span
+                    class="ql-formats"
+                  >
+                    <button
+                      class="ql-bold"
+                      type="button"
+                    >
+                      <svg
+                        viewBox="0 0 18 18"
+                      >
+                         
+                        <path
+                          class="ql-stroke"
+                          d="M5,4H9.5A2.5,2.5,0,0,1,12,6.5v0A2.5,2.5,0,0,1,9.5,9H5A0,0,0,0,1,5,9V4A0,0,0,0,1,5,4Z"
+                        />
+                         
+                        <path
+                          class="ql-stroke"
+                          d="M5,9h5.5A2.5,2.5,0,0,1,13,11.5v0A2.5,2.5,0,0,1,10.5,14H5a0,0,0,0,1,0,0V9A0,0,0,0,1,5,9Z"
+                        />
+                         
+                      </svg>
+                    </button>
+                    <button
+                      class="ql-italic"
+                      type="button"
+                    >
+                      <svg
+                        viewBox="0 0 18 18"
+                      >
+                         
+                        <line
+                          class="ql-stroke"
+                          x1="7"
+                          x2="13"
+                          y1="4"
+                          y2="4"
+                        />
+                         
+                        <line
+                          class="ql-stroke"
+                          x1="5"
+                          x2="11"
+                          y1="14"
+                          y2="14"
+                        />
+                         
+                        <line
+                          class="ql-stroke"
+                          x1="8"
+                          x2="10"
+                          y1="14"
+                          y2="4"
+                        />
+                         
+                      </svg>
+                    </button>
+                    <button
+                      class="ql-underline"
+                      type="button"
+                    >
+                      <svg
+                        viewBox="0 0 18 18"
+                      >
+                         
+                        <path
+                          class="ql-stroke"
+                          d="M5,3V9a4.012,4.012,0,0,0,4,4H9a4.012,4.012,0,0,0,4-4V3"
+                        />
+                         
+                        <rect
+                          class="ql-fill"
+                          height="1"
+                          rx="0.5"
+                          ry="0.5"
+                          width="12"
+                          x="3"
+                          y="15"
+                        />
+                         
+                      </svg>
+                    </button>
+                    <button
+                      class="ql-strike"
+                      type="button"
+                    >
+                      <svg
+                        viewBox="0 0 18 18"
+                      >
+                         
+                        <line
+                          class="ql-stroke ql-thin"
+                          x1="15.5"
+                          x2="2.5"
+                          y1="8.5"
+                          y2="9.5"
+                        />
+                         
+                        <path
+                          class="ql-fill"
+                          d="M9.007,8C6.542,7.791,6,7.519,6,6.5,6,5.792,7.283,5,9,5c1.571,0,2.765.679,2.969,1.309a1,1,0,0,0,1.9-.617C13.356,4.106,11.354,3,9,3,6.2,3,4,4.538,4,6.5a3.2,3.2,0,0,0,.5,1.843Z"
+                        />
+                         
+                        <path
+                          class="ql-fill"
+                          d="M8.984,10C11.457,10.208,12,10.479,12,11.5c0,0.708-1.283,1.5-3,1.5-1.571,0-2.765-.679-2.969-1.309a1,1,0,1,0-1.9.617C4.644,13.894,6.646,15,9,15c2.8,0,5-1.538,5-3.5a3.2,3.2,0,0,0-.5-1.843Z"
+                        />
+                         
+                      </svg>
+                    </button>
+                  </span>
+                  <span
+                    class="ql-formats"
+                  >
+                    <button
+                      class="ql-blockquote"
+                      type="button"
+                    >
+                      <svg
+                        viewBox="0 0 18 18"
+                      >
+                         
+                        <rect
+                          class="ql-fill ql-stroke"
+                          height="3"
+                          width="3"
+                          x="4"
+                          y="5"
+                        />
+                         
+                        <rect
+                          class="ql-fill ql-stroke"
+                          height="3"
+                          width="3"
+                          x="11"
+                          y="5"
+                        />
+                         
+                        <path
+                          class="ql-even ql-fill ql-stroke"
+                          d="M7,8c0,4.031-3,5-3,5"
+                        />
+                         
+                        <path
+                          class="ql-even ql-fill ql-stroke"
+                          d="M14,8c0,4.031-3,5-3,5"
+                        />
+                         
+                      </svg>
+                    </button>
+                  </span>
+                  <span
+                    class="ql-formats"
+                  >
+                    <button
+                      class="ql-list"
+                      type="button"
+                      value="ordered"
+                    >
+                      <svg
+                        viewBox="0 0 18 18"
+                      >
+                         
+                        <line
+                          class="ql-stroke"
+                          x1="7"
+                          x2="15"
+                          y1="4"
+                          y2="4"
+                        />
+                         
+                        <line
+                          class="ql-stroke"
+                          x1="7"
+                          x2="15"
+                          y1="9"
+                          y2="9"
+                        />
+                         
+                        <line
+                          class="ql-stroke"
+                          x1="7"
+                          x2="15"
+                          y1="14"
+                          y2="14"
+                        />
+                         
+                        <line
+                          class="ql-stroke ql-thin"
+                          x1="2.5"
+                          x2="4.5"
+                          y1="5.5"
+                          y2="5.5"
+                        />
+                         
+                        <path
+                          class="ql-fill"
+                          d="M3.5,6A0.5,0.5,0,0,1,3,5.5V3.085l-0.276.138A0.5,0.5,0,0,1,2.053,3c-0.124-.247-0.023-0.324.224-0.447l1-.5A0.5,0.5,0,0,1,4,2.5v3A0.5,0.5,0,0,1,3.5,6Z"
+                        />
+                         
+                        <path
+                          class="ql-stroke ql-thin"
+                          d="M4.5,10.5h-2c0-.234,1.85-1.076,1.85-2.234A0.959,0.959,0,0,0,2.5,8.156"
+                        />
+                         
+                        <path
+                          class="ql-stroke ql-thin"
+                          d="M2.5,14.846a0.959,0.959,0,0,0,1.85-.109A0.7,0.7,0,0,0,3.75,14a0.688,0.688,0,0,0,.6-0.736,0.959,0.959,0,0,0-1.85-.109"
+                        />
+                         
+                      </svg>
+                    </button>
+                    <button
+                      class="ql-list"
+                      type="button"
+                      value="bullet"
+                    >
+                      <svg
+                        viewBox="0 0 18 18"
+                      >
+                         
+                        <line
+                          class="ql-stroke"
+                          x1="6"
+                          x2="15"
+                          y1="4"
+                          y2="4"
+                        />
+                         
+                        <line
+                          class="ql-stroke"
+                          x1="6"
+                          x2="15"
+                          y1="9"
+                          y2="9"
+                        />
+                         
+                        <line
+                          class="ql-stroke"
+                          x1="6"
+                          x2="15"
+                          y1="14"
+                          y2="14"
+                        />
+                         
+                        <line
+                          class="ql-stroke"
+                          x1="3"
+                          x2="3"
+                          y1="4"
+                          y2="4"
+                        />
+                         
+                        <line
+                          class="ql-stroke"
+                          x1="3"
+                          x2="3"
+                          y1="9"
+                          y2="9"
+                        />
+                         
+                        <line
+                          class="ql-stroke"
+                          x1="3"
+                          x2="3"
+                          y1="14"
+                          y2="14"
+                        />
+                         
+                      </svg>
+                    </button>
+                  </span>
+                  <span
+                    class="ql-formats"
+                  >
+                    <span
+                      class="ql-color ql-picker ql-color-picker"
+                    >
+                      <span
+                        aria-controls="ql-picker-options-1"
+                        aria-expanded="false"
+                        class="ql-picker-label"
+                        data-value="#003366"
+                        role="button"
+                        tabindex="0"
+                      >
+                        <svg
+                          viewBox="0 0 18 18"
+                        >
+                           
+                          <line
+                            class="ql-color-label ql-stroke ql-transparent"
+                            x1="3"
+                            x2="15"
+                            y1="15"
+                            y2="15"
+                          />
+                           
+                          <polyline
+                            class="ql-stroke"
+                            points="5.5 11 9 3 12.5 11"
+                          />
+                           
+                          <line
+                            class="ql-stroke"
+                            x1="11.63"
+                            x2="6.38"
+                            y1="9"
+                            y2="9"
+                          />
+                           
+                        </svg>
+                      </span>
+                      <span
+                        aria-hidden="true"
+                        class="ql-picker-options"
+                        id="ql-picker-options-1"
+                        tabindex="-1"
+                      >
+                        <span
+                          class="ql-picker-item ql-selected ql-primary"
+                          data-value="#003366"
+                          role="button"
+                          style="background-color: rgb(0, 51, 102);"
+                          tabindex="0"
+                        />
+                        <span
+                          class="ql-picker-item ql-primary"
+                          data-value="white"
+                          role="button"
+                          style="background-color: white;"
+                          tabindex="0"
+                        />
+                        <span
+                          class="ql-picker-item ql-primary"
+                          data-value="#fcba19"
+                          role="button"
+                          style="background-color: rgb(252, 186, 25);"
+                          tabindex="0"
+                        />
+                        <span
+                          class="ql-picker-item ql-primary"
+                          data-value="#d8292f"
+                          role="button"
+                          style="background-color: rgb(216, 41, 47);"
+                          tabindex="0"
+                        />
+                        <span
+                          class="ql-picker-item ql-primary"
+                          data-value="#2e8540"
+                          role="button"
+                          style="background-color: rgb(46, 133, 64);"
+                          tabindex="0"
+                        />
+                        <span
+                          class="ql-picker-item ql-primary"
+                          data-value="#313132"
+                          role="button"
+                          style="background-color: rgb(49, 49, 50);"
+                          tabindex="0"
+                        />
+                        <span
+                          class="ql-picker-item ql-primary"
+                          data-value="black"
+                          role="button"
+                          style="background-color: black;"
+                          tabindex="0"
+                        />
+                      </span>
+                    </span>
+                    <select
+                      class="ql-color"
+                      style="display: none;"
+                    >
+                      <option
+                        value="#003366"
+                      />
+                      <option
+                        value="white"
+                      />
+                      <option
+                        value="#fcba19"
+                      />
+                      <option
+                        value="#d8292f"
+                      />
+                      <option
+                        value="#2e8540"
+                      />
+                      <option
+                        value="#313132"
+                      />
+                      <option
+                        value="black"
+                      />
+                    </select>
+                    <span
+                      class="ql-background ql-picker ql-color-picker"
+                    >
+                      <span
+                        aria-controls="ql-picker-options-2"
+                        aria-expanded="false"
+                        class="ql-picker-label"
+                        data-value="#003366"
+                        role="button"
+                        tabindex="0"
+                      >
+                        <svg
+                          viewBox="0 0 18 18"
+                        >
+                           
+                          <g
+                            class="ql-fill ql-color-label"
+                          >
+                             
+                            <polygon
+                              points="6 6.868 6 6 5 6 5 7 5.942 7 6 6.868"
+                            />
+                             
+                            <rect
+                              height="1"
+                              width="1"
+                              x="4"
+                              y="4"
+                            />
+                             
+                            <polygon
+                              points="6.817 5 6 5 6 6 6.38 6 6.817 5"
+                            />
+                             
+                            <rect
+                              height="1"
+                              width="1"
+                              x="2"
+                              y="6"
+                            />
+                             
+                            <rect
+                              height="1"
+                              width="1"
+                              x="3"
+                              y="5"
+                            />
+                             
+                            <rect
+                              height="1"
+                              width="1"
+                              x="4"
+                              y="7"
+                            />
+                             
+                            <polygon
+                              points="4 11.439 4 11 3 11 3 12 3.755 12 4 11.439"
+                            />
+                             
+                            <rect
+                              height="1"
+                              width="1"
+                              x="2"
+                              y="12"
+                            />
+                             
+                            <rect
+                              height="1"
+                              width="1"
+                              x="2"
+                              y="9"
+                            />
+                             
+                            <rect
+                              height="1"
+                              width="1"
+                              x="2"
+                              y="15"
+                            />
+                             
+                            <polygon
+                              points="4.63 10 4 10 4 11 4.192 11 4.63 10"
+                            />
+                             
+                            <rect
+                              height="1"
+                              width="1"
+                              x="3"
+                              y="8"
+                            />
+                             
+                            <path
+                              d="M10.832,4.2L11,4.582V4H10.708A1.948,1.948,0,0,1,10.832,4.2Z"
+                            />
+                             
+                            <path
+                              d="M7,4.582L7.168,4.2A1.929,1.929,0,0,1,7.292,4H7V4.582Z"
+                            />
+                             
+                            <path
+                              d="M8,13H7.683l-0.351.8a1.933,1.933,0,0,1-.124.2H8V13Z"
+                            />
+                             
+                            <rect
+                              height="1"
+                              width="1"
+                              x="12"
+                              y="2"
+                            />
+                             
+                            <rect
+                              height="1"
+                              width="1"
+                              x="11"
+                              y="3"
+                            />
+                             
+                            <path
+                              d="M9,3H8V3.282A1.985,1.985,0,0,1,9,3Z"
+                            />
+                             
+                            <rect
+                              height="1"
+                              width="1"
+                              x="2"
+                              y="3"
+                            />
+                             
+                            <rect
+                              height="1"
+                              width="1"
+                              x="6"
+                              y="2"
+                            />
+                             
+                            <rect
+                              height="1"
+                              width="1"
+                              x="3"
+                              y="2"
+                            />
+                             
+                            <rect
+                              height="1"
+                              width="1"
+                              x="5"
+                              y="3"
+                            />
+                             
+                            <rect
+                              height="1"
+                              width="1"
+                              x="9"
+                              y="2"
+                            />
+                             
+                            <rect
+                              height="1"
+                              width="1"
+                              x="15"
+                              y="14"
+                            />
+                             
+                            <polygon
+                              points="13.447 10.174 13.469 10.225 13.472 10.232 13.808 11 14 11 14 10 13.37 10 13.447 10.174"
+                            />
+                             
+                            <rect
+                              height="1"
+                              width="1"
+                              x="13"
+                              y="7"
+                            />
+                             
+                            <rect
+                              height="1"
+                              width="1"
+                              x="15"
+                              y="5"
+                            />
+                             
+                            <rect
+                              height="1"
+                              width="1"
+                              x="14"
+                              y="6"
+                            />
+                             
+                            <rect
+                              height="1"
+                              width="1"
+                              x="15"
+                              y="8"
+                            />
+                             
+                            <rect
+                              height="1"
+                              width="1"
+                              x="14"
+                              y="9"
+                            />
+                             
+                            <path
+                              d="M3.775,14H3v1H4V14.314A1.97,1.97,0,0,1,3.775,14Z"
+                            />
+                             
+                            <rect
+                              height="1"
+                              width="1"
+                              x="14"
+                              y="3"
+                            />
+                             
+                            <polygon
+                              points="12 6.868 12 6 11.62 6 12 6.868"
+                            />
+                             
+                            <rect
+                              height="1"
+                              width="1"
+                              x="15"
+                              y="2"
+                            />
+                             
+                            <rect
+                              height="1"
+                              width="1"
+                              x="12"
+                              y="5"
+                            />
+                             
+                            <rect
+                              height="1"
+                              width="1"
+                              x="13"
+                              y="4"
+                            />
+                             
+                            <polygon
+                              points="12.933 9 13 9 13 8 12.495 8 12.933 9"
+                            />
+                             
+                            <rect
+                              height="1"
+                              width="1"
+                              x="9"
+                              y="14"
+                            />
+                             
+                            <rect
+                              height="1"
+                              width="1"
+                              x="8"
+                              y="15"
+                            />
+                             
+                            <path
+                              d="M6,14.926V15H7V14.316A1.993,1.993,0,0,1,6,14.926Z"
+                            />
+                             
+                            <rect
+                              height="1"
+                              width="1"
+                              x="5"
+                              y="15"
+                            />
+                             
+                            <path
+                              d="M10.668,13.8L10.317,13H10v1h0.792A1.947,1.947,0,0,1,10.668,13.8Z"
+                            />
+                             
+                            <rect
+                              height="1"
+                              width="1"
+                              x="11"
+                              y="15"
+                            />
+                             
+                            <path
+                              d="M14.332,12.2a1.99,1.99,0,0,1,.166.8H15V12H14.245Z"
+                            />
+                             
+                            <rect
+                              height="1"
+                              width="1"
+                              x="14"
+                              y="15"
+                            />
+                             
+                            <rect
+                              height="1"
+                              width="1"
+                              x="15"
+                              y="11"
+                            />
+                             
+                          </g>
+                           
+                          <polyline
+                            class="ql-stroke"
+                            points="5.5 13 9 5 12.5 13"
+                          />
+                           
+                          <line
+                            class="ql-stroke"
+                            x1="11.63"
+                            x2="6.38"
+                            y1="11"
+                            y2="11"
+                          />
+                           
+                        </svg>
+                      </span>
+                      <span
+                        aria-hidden="true"
+                        class="ql-picker-options"
+                        id="ql-picker-options-2"
+                        tabindex="-1"
+                      >
+                        <span
+                          class="ql-picker-item ql-selected ql-primary"
+                          data-value="#003366"
+                          role="button"
+                          style="background-color: rgb(0, 51, 102);"
+                          tabindex="0"
+                        />
+                        <span
+                          class="ql-picker-item ql-primary"
+                          data-value="white"
+                          role="button"
+                          style="background-color: white;"
+                          tabindex="0"
+                        />
+                        <span
+                          class="ql-picker-item ql-primary"
+                          data-value="#fcba19"
+                          role="button"
+                          style="background-color: rgb(252, 186, 25);"
+                          tabindex="0"
+                        />
+                        <span
+                          class="ql-picker-item ql-primary"
+                          data-value="#d8292f"
+                          role="button"
+                          style="background-color: rgb(216, 41, 47);"
+                          tabindex="0"
+                        />
+                        <span
+                          class="ql-picker-item ql-primary"
+                          data-value="#2e8540"
+                          role="button"
+                          style="background-color: rgb(46, 133, 64);"
+                          tabindex="0"
+                        />
+                        <span
+                          class="ql-picker-item ql-primary"
+                          data-value="#313132"
+                          role="button"
+                          style="background-color: rgb(49, 49, 50);"
+                          tabindex="0"
+                        />
+                        <span
+                          class="ql-picker-item ql-primary"
+                          data-value="black"
+                          role="button"
+                          style="background-color: black;"
+                          tabindex="0"
+                        />
+                      </span>
+                    </span>
+                    <select
+                      class="ql-background"
+                      style="display: none;"
+                    >
+                      <option
+                        value="#003366"
+                      />
+                      <option
+                        value="white"
+                      />
+                      <option
+                        value="#fcba19"
+                      />
+                      <option
+                        value="#d8292f"
+                      />
+                      <option
+                        value="#2e8540"
+                      />
+                      <option
+                        value="#313132"
+                      />
+                      <option
+                        value="black"
+                      />
+                    </select>
+                    <button
+                      class="ql-font"
+                      type="button"
+                    />
+                    <button
+                      class="ql-align"
+                      type="button"
+                    >
+                      <svg
+                        viewBox="0 0 18 18"
+                      >
+                         
+                        <line
+                          class="ql-stroke"
+                          x1="3"
+                          x2="15"
+                          y1="9"
+                          y2="9"
+                        />
+                         
+                        <line
+                          class="ql-stroke"
+                          x1="3"
+                          x2="13"
+                          y1="14"
+                          y2="14"
+                        />
+                         
+                        <line
+                          class="ql-stroke"
+                          x1="3"
+                          x2="9"
+                          y1="4"
+                          y2="4"
+                        />
+                         
+                      </svg>
+                    </button>
+                  </span>
+                  <span
+                    class="ql-formats"
+                  >
+                    <button
+                      class="ql-link"
+                      type="button"
+                    >
+                      <svg
+                        viewBox="0 0 18 18"
+                      >
+                         
+                        <line
+                          class="ql-stroke"
+                          x1="7"
+                          x2="11"
+                          y1="7"
+                          y2="11"
+                        />
+                         
+                        <path
+                          class="ql-even ql-stroke"
+                          d="M8.9,4.577a3.476,3.476,0,0,1,.36,4.679A3.476,3.476,0,0,1,4.577,8.9C3.185,7.5,2.035,6.4,4.217,4.217S7.5,3.185,8.9,4.577Z"
+                        />
+                         
+                        <path
+                          class="ql-even ql-stroke"
+                          d="M13.423,9.1a3.476,3.476,0,0,0-4.679-.36,3.476,3.476,0,0,0,.36,4.679c1.392,1.392,2.5,2.542,4.679.36S14.815,10.5,13.423,9.1Z"
+                        />
+                         
+                      </svg>
+                    </button>
+                    <button
+                      class="ql-video"
+                      type="button"
+                    >
+                      <svg
+                        viewBox="0 0 18 18"
+                      >
+                         
+                        <rect
+                          class="ql-stroke"
+                          height="12"
+                          width="12"
+                          x="3"
+                          y="3"
+                        />
+                         
+                        <rect
+                          class="ql-fill"
+                          height="12"
+                          width="1"
+                          x="5"
+                          y="3"
+                        />
+                         
+                        <rect
+                          class="ql-fill"
+                          height="12"
+                          width="1"
+                          x="12"
+                          y="3"
+                        />
+                         
+                        <rect
+                          class="ql-fill"
+                          height="2"
+                          width="8"
+                          x="5"
+                          y="8"
+                        />
+                         
+                        <rect
+                          class="ql-fill"
+                          height="1"
+                          width="3"
+                          x="3"
+                          y="5"
+                        />
+                         
+                        <rect
+                          class="ql-fill"
+                          height="1"
+                          width="3"
+                          x="3"
+                          y="7"
+                        />
+                         
+                        <rect
+                          class="ql-fill"
+                          height="1"
+                          width="3"
+                          x="3"
+                          y="10"
+                        />
+                         
+                        <rect
+                          class="ql-fill"
+                          height="1"
+                          width="3"
+                          x="3"
+                          y="12"
+                        />
+                         
+                        <rect
+                          class="ql-fill"
+                          height="1"
+                          width="3"
+                          x="12"
+                          y="5"
+                        />
+                         
+                        <rect
+                          class="ql-fill"
+                          height="1"
+                          width="3"
+                          x="12"
+                          y="7"
+                        />
+                         
+                        <rect
+                          class="ql-fill"
+                          height="1"
+                          width="3"
+                          x="12"
+                          y="10"
+                        />
+                         
+                        <rect
+                          class="ql-fill"
+                          height="1"
+                          width="3"
+                          x="12"
+                          y="12"
+                        />
+                         
+                      </svg>
+                    </button>
+                  </span>
+                </div>
+                <div
+                  class="ql-container ql-snow"
+                >
+                  <div
+                    class="ql-editor ql-blank"
+                    contenteditable="true"
+                    data-gramm="false"
+                  >
+                    <p>
+                      <br />
+                    </p>
+                  </div>
+                  <div
+                    class="ql-clipboard"
+                    contenteditable="true"
+                    tabindex="-1"
+                  />
+                  <div
+                    class="ql-tooltip ql-hidden"
+                  >
+                    <a
+                      class="ql-preview"
+                      href="about:blank"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    />
+                    <input
+                      data-formula="e=mc^2"
+                      data-link="https://quilljs.com"
+                      data-video="Embed URL"
+                      type="text"
+                    />
+                    <a
+                      class="ql-action"
+                    />
+                    <a
+                      class="ql-remove"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            style="display: flex; flex-wrap: nowrap;"
+          >
+            <div
+              class="ant-form-item-explain ant-form-item-explain-connected"
+              id="EDIT_HELP_GUIDE_content_help"
+              role="alert"
+            >
+              <div
+                class=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+`;

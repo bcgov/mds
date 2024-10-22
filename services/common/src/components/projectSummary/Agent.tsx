@@ -332,7 +332,7 @@ export const Agent: FC = () => {
                 name="agent.address.suite_no"
                 label="Unit #"
                 component={RenderField}
-                validate={[required, maxLength(5)]}
+                validate={[maxLength(5)]}
                 disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
               />
             </Col>

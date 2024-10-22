@@ -8,7 +8,6 @@ import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { USER_ACCESS_DATA } from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { subDays } from "date-fns";
-import { UTCDate } from "@date-fns/utc";
 
 const initialState = {
   form: {
@@ -25,8 +24,8 @@ const initialState = {
     projectSummaryMinistryComments: MOCK.PROJECT_SUMMARY_MINISTRY_COMMENTS.map((comment) => {
       return {
         ...comment,
-        update_timestamp: subDays(new UTCDate(), 10).toISOString(),
-        create_timestamp: subDays(new UTCDate(), 10).toISOString(),
+        update_timestamp: subDays(new Date(), 10).toISOString(),
+        create_timestamp: subDays(new Date(), 10).toISOString(),
       };
     }),
   },

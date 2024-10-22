@@ -15,6 +15,7 @@ import {
   NodStatusSaveEnum,
   NoDTypeSaveEnum,
   PROJECT_SUMMARY_STATUS_CODES,
+  SystemFlagEnum,
   VC_CONNECTION_STATES,
   VC_CRED_ISSUE_STATES,
 } from "@mds/common/constants";
@@ -1497,6 +1498,12 @@ export const USER_ACCESS_DATA = [
   "core_admin",
   "core_edit_reports",
   "role_edit_project_summaries",
+];
+
+export const MS_USER_ACCESS_DATA = [
+  "mds_minespace_proponents",
+  "c_mds_users",
+  "c_mds_minespace_proponent",
 ];
 
 export const DISTURBANCE_OPTIONS = {
@@ -7343,6 +7350,73 @@ export const EXPLOSIVES_PERMITS = {
   },
 };
 
+export const EMLI_CONTACTS_BY_REGION = [
+  {
+    contact_guid: "7f107cdd-974c-4505-b076-9a88438a2fce",
+    contact_id: 1,
+    emli_contact_type_code: "MMO",
+    mine_region_code: null,
+    is_major_mine: true,
+    is_general_contact: false,
+    email: "TestPermRecl@gov.bc.ca",
+    phone_number: null,
+    first_name: null,
+    last_name: null,
+    fax_number: null,
+    mailing_address_line_1: null,
+    mailing_address_line_2: null,
+    deleted_ind: false,
+  },
+  {
+    contact_guid: "f9c42bc7-6d02-4830-b1e0-51a64e8b28cb",
+    contact_id: 2,
+    emli_contact_type_code: "CHI",
+    mine_region_code: null,
+    is_major_mine: true,
+    is_general_contact: true,
+    email: "anna.albright@gov.bc.ca",
+    phone_number: "123-234-3456",
+    first_name: "Anna",
+    last_name: "Albright",
+    fax_number: null,
+    mailing_address_line_1: null,
+    mailing_address_line_2: null,
+    deleted_ind: false,
+  },
+  {
+    contact_guid: "eee5bb02-e92d-43b9-baf0-b7ee07dedbaf",
+    contact_id: 3,
+    emli_contact_type_code: "CHP",
+    mine_region_code: null,
+    is_major_mine: true,
+    is_general_contact: true,
+    email: "blaine.blainesworth@gov.bc.ca",
+    phone_number: "111-222-3333",
+    first_name: "Blaine",
+    last_name: "Blainesworth",
+    fax_number: null,
+    mailing_address_line_1: null,
+    mailing_address_line_2: null,
+    deleted_ind: false,
+  },
+  {
+    contact_guid: "402fd5a0-de84-4ff4-adec-d69f73f6f106",
+    contact_id: 18,
+    emli_contact_type_code: "HSI",
+    mine_region_code: "SC",
+    is_major_mine: true,
+    is_general_contact: false,
+    email: "Carla.Carlsdottir@gov.bc.ca",
+    phone_number: "000-111-2222",
+    first_name: "Carla",
+    last_name: "Carlsdottir",
+    fax_number: null,
+    mailing_address_line_1: null,
+    mailing_address_line_2: null,
+    deleted_ind: false,
+  },
+];
+
 export const PROJECTS = {
   records: [
     {
@@ -8799,4 +8873,61 @@ export const GEOMARK_DATA = {
   name: "gm-68784BEB127941D5AA703E3E7CE6E728.prj",
   geomark_id: "gm-57A8E3675DE04A889E418E846C53C394",
   docman_bundle_guid: "3249a079-10dd-44ec-8db6-bff7177e3151",
+};
+
+export const HELP_GUIDE_CORE = {
+  default: [
+    {
+      help_guid: "111",
+      content: "<p>CORE default content</p>",
+      tab: "all_tabs",
+      help_key: "default",
+      system: SystemFlagEnum.core,
+    },
+  ],
+  "Mine-Dashboard": [
+    {
+      help_guid: "222",
+      content: "<p>CORE overview content</p>",
+      tab: "overview",
+      help_key: "Mine-Dashboard",
+      system: SystemFlagEnum.core,
+    },
+    {
+      help_guid: "333",
+      content: "<p>CORE Mine dashboard content</p>",
+      tab: "all_tabs",
+      help_key: "Mine-Dashboard",
+      system: SystemFlagEnum.core,
+    },
+  ],
+};
+
+export const HELP_GUIDE_MS = {
+  default: [
+    {
+      help_guid: "123",
+      content:
+        "<script>console.log('hack');</script><p onClick={() => console.log('should not render as inline function');}>MS default content</p>",
+      tab: "all_tabs",
+      help_key: "default",
+      system: SystemFlagEnum.ms,
+    },
+  ],
+  "Mine-Dashboard": [
+    {
+      help_guid: "234",
+      content: "<p>MS overview content</p>",
+      tab: "overview",
+      help_key: "Mine-Dashboard",
+      system: SystemFlagEnum.ms,
+    },
+    {
+      help_guid: "345",
+      content: "<p>MS Mine dashboard content</p>",
+      tab: "all_tabs",
+      help_key: "Mine-Dashboard",
+      system: SystemFlagEnum.ms,
+    },
+  ],
 };

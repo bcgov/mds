@@ -428,6 +428,10 @@ class VerifiableCredentialManager():
             f"https://orgbook.gov.bc.ca/entity/{orgbook_entity.registration_id}/credential/PLACEHOLDER",
             name="Credential for permitNumber=" + permit_amendment.permit_no,
             permitNumber=permit_amendment.permit_no,
+            id=
+            f"https://orgbook.gov.bc.ca/entity/{orgbook_entity.registration_id}/credential/PLACEHOLDER",
+            name="Credential for permitNumber=" + permit_amendment.permit_no,
+            permitNumber=permit_amendment.permit_no,
             assessmentLevel=codes.AssessmentLevelCode.GovtApproval,
             attestationType=codes.AttestationType.Certification,
             scope=cc.ConformityAssessmentScheme(

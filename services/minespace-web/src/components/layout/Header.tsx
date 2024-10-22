@@ -1,29 +1,25 @@
-import React from "react";
+import React, { FC } from "react";
 import { Col, Layout, Row } from "antd";
 import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
 import HeaderDropdown from "@/components/layout/HeaderDropdown";
 import * as routes from "@/constants/routes";
 import { BC_GOV } from "@/constants/assets";
 import NotificationDrawer from "@/components/layout/NotificationDrawer";
+import HelpGuide from "@mds/common/components/help/HelpGuide";
 
-const propTypes = {
-  xs: PropTypes.number.isRequired,
-  lg: PropTypes.number.isRequired,
-  xl: PropTypes.number.isRequired,
-  xxl: PropTypes.number.isRequired,
-  isAuthenticated: PropTypes.bool,
-};
+interface HeaderProps {
+  xs: number;
+  lg: number;
+  xl: number;
+  xxl: number;
+  isAuthenticated: boolean;
+}
 
-const defaultProps = {
-  isAuthenticated: false,
-};
-
-export const Header = (props) => {
+export const Header: FC<HeaderProps> = ({ xs, lg, xl, xxl, isAuthenticated = false }) => {
   return (
     <Layout.Header>
-      <Row type="flex" justify="center" align="top">
-        <Col xs={props.xs} lg={props.lg} xl={props.xl} xxl={props.xxl}>
+      <Row justify="center" align="top">
+        <Col xs={xs} lg={lg} xl={xl} xxl={xxl}>
           <div className="header-content">
             <div>
               <a className="header-logo" href="https://gov.bc.ca/">
@@ -35,7 +31,8 @@ export const Header = (props) => {
             </div>
             <div className="inline-flex items-center">
               <HeaderDropdown />
-              {props.isAuthenticated && <NotificationDrawer />}
+              {isAuthenticated && <NotificationDrawer />}
+              <HelpGuide />
             </div>
           </div>
         </Col>
@@ -43,8 +40,5 @@ export const Header = (props) => {
     </Layout.Header>
   );
 };
-
-Header.propTypes = propTypes;
-Header.defaultProps = defaultProps;
 
 export default Header;

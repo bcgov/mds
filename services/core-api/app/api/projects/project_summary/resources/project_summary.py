@@ -280,9 +280,23 @@ class ProjectSummaryResource(Resource, UserMixin):
             trigger_notification(message, ActivityType.major_mine_desc_submitted, project.mine, 'ProjectSummary',
                                  project_summary.project_summary_guid, extra_data)
 
-        if project_summary.status_code == 'OHD' or project_summary.status_code == 'WDN' or project_summary.status_code == 'COM':
+        if project_summary.status_code == 'OHD':
             project_summary.send_project_summary_email(mine)
-            message = f'The status of the project description {project.project_title} has been updated for {project.mine_name}'
+            message = f'The project description {project.project_title} for {project.mine_name} has been updated to On Hold'
+            extra_data = {'project': {'project_guid': str(project.project_guid)}}
+            trigger_notification(message, ActivityType.major_mine_desc_submitted, project.mine, 'ProjectSummary',
+                                 project_summary.project_summary_guid, extra_data)
+
+        if project_summary.status_code == 'WDN':
+            project_summary.send_project_summary_email(mine)
+            message = f'The project description {project.project_title} for {project.mine_name} has been withdrawn'
+            extra_data = {'project': {'project_guid': str(project.project_guid)}}
+            trigger_notification(message, ActivityType.major_mine_desc_submitted, project.mine, 'ProjectSummary',
+                                 project_summary.project_summary_guid, extra_data)
+
+        if project_summary.status_code == 'COM':
+            project_summary.send_project_summary_email(mine)
+            message = f'The status of the project description {project.project_title} for {project.mine_name} has been completed'
             extra_data = {'project': {'project_guid': str(project.project_guid)}}
             trigger_notification(message, ActivityType.major_mine_desc_submitted, project.mine, 'ProjectSummary',
                                  project_summary.project_summary_guid, extra_data)

@@ -62,7 +62,7 @@ const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));
   Object.keys(defaults)
     .filter((param) => param in newParams && newParams[param] === defaults[param])
-    .map((param) => delete newParams[param]);
+    .forEach((param) => delete newParams[param]);
   return newParams;
 };
 
@@ -70,28 +70,32 @@ const withoutNullParams = (params) => {
   const newParams = JSON.parse(JSON.stringify(params));
   Object.keys(params)
     .filter((param) => params[param] === null)
-    .map((param) => delete newParams[param]);
+    .forEach((param) => delete newParams[param]);
   return newParams;
 };
 
 export const DASHBOARD = {
   route: "/",
   component: Home,
+  helpKey: "Home", // defunct
 };
 
 export const HOME_PAGE = {
   route: "/home/",
   component: HomePage,
+  helpKey: "Home",
 };
 
 export const CUSTOM_HOME_PAGE = {
   route: "/my-dashboard/",
   component: CustomHomePage,
+  helpKey: "My-Dashboard",
 };
 
 export const LOGOUT = {
   route: "/logout-confirmed/",
   component: Logout,
+  helpKey: "Logout",
 };
 
 const MINE_HOME_PAGE_MAP_DEFAULT_PARAMS = {
@@ -115,6 +119,7 @@ export const MINE_HOME_PAGE = {
     }`;
   },
   component: Dashboard,
+  helpKey: "Mines",
 };
 
 export const CONTACT_HOME_PAGE = {
@@ -122,6 +127,7 @@ export const CONTACT_HOME_PAGE = {
   dynamicRoute: ({ page, per_page, ...params }) =>
     `/dashboard/contacts/?${queryString.stringify({ page, per_page, ...params }, { sort: false })}`,
   component: ContactHomePage,
+  helpKey: "Contacts",
 };
 
 // Mine Dashboard Routes
@@ -129,30 +135,35 @@ export const MINE_DASHBOARD = {
   route: "/mine-dashboard/:id/",
   dynamicRoute: (id) => `/mine-dashboard/${id}/`,
   component: MineDashboard,
+  helpKey: "Mine-Dashboard",
 };
 
 export const MINE_CONTACTS = {
   route: "/mine-dashboard/:id/mine-information/contacts",
   dynamicRoute: (id) => `/mine-dashboard/${id}/mine-information/contacts`,
   component: MineContactInfo,
+  helpKey: "Mine-Contacts",
 };
 
 export const MINE_GENERAL = {
   route: "/mine-dashboard/:id/mine-information/general",
   dynamicRoute: (id) => `/mine-dashboard/${id}/mine-information/general`,
   component: MineSummary,
+  helpKey: "Mine-Summary",
 };
 
 export const MINE_DOCUMENTS = {
   route: "/mine-dashboard/:id/mine-information/mms-archive",
   dynamicRoute: (id) => `/mine-dashboard/${id}/mine-information/mms-archive`,
   component: MineDocuments,
+  helpKey: "Mine-Documents",
 };
 
 export const MINE_PERMITS = {
   route: "/mine-dashboard/:id/permits-and-approvals/permits",
   dynamicRoute: (id) => `/mine-dashboard/${id}/permits-and-approvals/permits`,
   component: MinePermitInfo,
+  helpKey: "Mine-Permits",
 };
 
 export const VIEW_MINE_PERMIT = {
@@ -162,6 +173,8 @@ export const VIEW_MINE_PERMIT = {
   hashRoute: (id, permitGuid, tab = "overview", link = "") =>
     `/mine-dashboard/${id}/permits-and-approvals/permits/${permitGuid}/${tab}/${link}`,
   component: ViewPermit,
+  helpKey: "View-Permit",
+  priority: 1,
 };
 
 export const MINE_PERMIT_DIGITAL_CREDENTIALS = {
@@ -169,24 +182,28 @@ export const MINE_PERMIT_DIGITAL_CREDENTIALS = {
   dynamicRoute: (id, permitGuid) =>
     `/mine-dashboard/${id}/permits-and-approvals/digital-credentials/${permitGuid}`,
   component: ViewDigitalPermitCredential,
+  helpKey: "Permit-Digital-Credential",
 };
 
 export const MINE_SECURITIES = {
   route: "/mine-dashboard/:id/permits-and-approvals/securities",
   dynamicRoute: (id) => `/mine-dashboard/${id}/permits-and-approvals/securities`,
   component: MineSecurityInfo,
+  helpKey: "Mine-Securities",
 };
 
 export const MINE_VARIANCES = {
   route: "/mine-dashboard/:id/permits-and-approvals/variances",
   dynamicRoute: (id) => `/mine-dashboard/${id}/permits-and-approvals/variances`,
   component: MineVariance,
+  helpKey: "Mine-Variances",
 };
 
 export const MINE_NOTICES_OF_DEPARTURE = {
   route: "/mine-dashboard/:id/permits-and-approvals/notices-of-departure",
   dynamicRoute: (id) => `/mine-dashboard/${id}/permits-and-approvals/notices-of-departure`,
   component: MineNoticeOfDeparture,
+  helpKey: "Mine-Notices-Of-Departure",
 };
 
 export const NOTICE_OF_DEPARTURE = {
@@ -194,6 +211,7 @@ export const NOTICE_OF_DEPARTURE = {
   dynamicRoute: (id, nodGuid) =>
     `/mine-dashboard/${id}/permits-and-approvals/notices-of-departure?nod=${nodGuid}`,
   component: MineNoticeOfDeparture,
+  helpKey: "Mine-Notices-Of-Departure",
 };
 
 // Projects
@@ -201,6 +219,7 @@ export const MINE_PRE_APPLICATIONS = {
   route: "/mine-dashboard/:id/permits-and-approvals/pre-applications",
   dynamicRoute: (id) => `/mine-dashboard/${id}/permits-and-approvals/pre-applications`,
   component: MineProject,
+  helpKey: "Mine-Pre-Applications",
 };
 
 export const ADD_PROJECT_SUMMARY = {
@@ -208,6 +227,7 @@ export const ADD_PROJECT_SUMMARY = {
   dynamicRoute: (mineGuid, tab = "basic-information") =>
     `/mines/${mineGuid}/project-description/new/${tab}`,
   component: ProjectSummary,
+  helpKey: "Add-Project-Summary",
 };
 
 export const EDIT_PROJECT_SUMMARY = {
@@ -222,6 +242,7 @@ export const EDIT_PROJECT_SUMMARY = {
       viewMode ? "view" : "edit"
     }/${activeTab}`,
   component: ProjectSummary,
+  helpKey: "Edit-Project-Summary",
 };
 
 export const VIEW_PROJECT_SUBMISSION_STATUS_PAGE = {
@@ -229,6 +250,7 @@ export const VIEW_PROJECT_SUBMISSION_STATUS_PAGE = {
   dynamicRoute: (projectGuid, status) =>
     `/projects/${projectGuid}/project-submission-status/${status}`,
   component: ProjectSubmissionStatusPage,
+  helpKey: "Project-Submission-Status",
 };
 
 export const EDIT_PROJECT = {
@@ -237,6 +259,7 @@ export const EDIT_PROJECT = {
   hashRoute: (projectGuid, tab = "overview", link) =>
     `/pre-applications/${projectGuid}/${tab}/${link}`,
   component: Project,
+  helpKey: "Edit-Project",
 };
 
 export const MAJOR_MINE_APPLICATION = {
@@ -244,6 +267,7 @@ export const MAJOR_MINE_APPLICATION = {
   dynamicRoute: (projectGuid, mmaGuid, tab = "final-app") =>
     `/pre-applications/${projectGuid}/major-mine-application/${mmaGuid}/${tab}`,
   component: MajorMineApplicationTab,
+  helpKey: "Major-Mine-Application",
 };
 
 export const PROJECT_FINAL_APPLICATION = {
@@ -251,6 +275,7 @@ export const PROJECT_FINAL_APPLICATION = {
   dynamicRoute: (projectGuid) => `/pre-applications/${projectGuid}/final-app`,
   hashRoute: (projectGuid, link) => `/pre-applications/${projectGuid}/final-app/${link}`,
   component: MajorMineApplicationTab,
+  helpKey: "Major-Mine-Application",
 };
 
 export const PROJECT_DECISION_PACKAGE = {
@@ -259,6 +284,7 @@ export const PROJECT_DECISION_PACKAGE = {
   hashRoute: (projectGuid, link) =>
     `/pre-applications/${projectGuid}/project-decision-package/${link}`,
   component: DecisionPackageTab,
+  helpKey: "Project-Decision-Package",
 };
 
 export const MINE_NOW_APPLICATIONS = {
@@ -266,12 +292,14 @@ export const MINE_NOW_APPLICATIONS = {
   dynamicRoute: (id, params?) =>
     `/mine-dashboard/${id}/permits-and-approvals/applications?${queryString.stringify(params)}`,
   component: MineApplications,
+  helpKey: "Mine-Notice-Of-Work-Applications",
 };
 
 export const MINE_TAILINGS = {
   route: "/mine-dashboard/:id/permits-and-approvals/tailings",
   dynamicRoute: (id) => `/mine-dashboard/${id}/permits-and-approvals/tailings`,
   component: MineTailingsInfo,
+  helpKey: "Mine-Tailings",
 };
 
 export const MINE_TAILINGS_DETAILS = {
@@ -282,9 +310,11 @@ export const MINE_TAILINGS_DETAILS = {
       isEditMode ? "edit" : "view"
     }`,
   component: MineTailingsDetailsPage,
+  helpKey: "Mine-Tailings-Details",
 };
 
 export const EDIT_TAILINGS_STORAGE_FACILITY = {
+  // identical to above route: MERGE
   route:
     "/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab/:userAction",
   dynamicRoute: (tsfGuid, mineGuid, tab = "basic-information", isEditMode = false) =>
@@ -292,18 +322,21 @@ export const EDIT_TAILINGS_STORAGE_FACILITY = {
       isEditMode ? "edit" : "view"
     }`,
   component: MineTailingsDetailsPage,
+  helpKey: "Mine-Tailings-Details",
 };
 
 export const MINE_EXTERNAL_AUTHORIZATIONS = {
   route: "/mine-dashboard/:id/external-authorizations",
   dynamicRoute: (id) => `/mine-dashboard/${id}/external-authorizations`,
   component: ExternalAuthorizations,
+  helpKey: "Mine-External-Authorizations",
 };
 
 export const MINE_INCIDENTS = {
   route: "/mine-dashboard/:id/oversight/incidents-and-investigations",
   dynamicRoute: (id) => `/mine-dashboard/${id}/oversight/incidents-and-investigations`,
   component: MineIncidents,
+  helpKey: "Mine-Incidents",
 };
 
 export const EDIT_MINE_INCIDENT = {
@@ -313,6 +346,7 @@ export const EDIT_MINE_INCIDENT = {
   hashRoute: (mineGuid, mineIncidentGuid, link) =>
     `/mines/${mineGuid}/incidents/${mineIncidentGuid}/edit${link}`,
   component: MineIncident,
+  helpKey: "Edit-Mine-Incident",
 };
 
 export const VIEW_MINE_INCIDENT = {
@@ -321,6 +355,7 @@ export const VIEW_MINE_INCIDENT = {
   hashRoute: (mineGuid, mineIncidentGuid, link) =>
     `/mines/${mineGuid}/incidents/${mineIncidentGuid}${link}`,
   component: MineIncident,
+  helpKey: "View-Mine-Incident",
 };
 
 export const CREATE_MINE_INCIDENT = {
@@ -329,6 +364,7 @@ export const CREATE_MINE_INCIDENT = {
   hashRoute: (mineGuid, mine_name, link) =>
     `/mines/${mineGuid}/new-incident?mine_name=${mine_name}${link}`,
   component: MineIncident,
+  helpKey: "New-Mine-Incident",
 };
 
 export const MINE_INSPECTIONS = {
@@ -336,12 +372,14 @@ export const MINE_INSPECTIONS = {
   dynamicRoute: (id, filterParams?) =>
     `/mine-dashboard/${id}/oversight/inspections-and-audits?${queryString.stringify(filterParams)}`,
   component: MineComplianceInfo,
+  helpKey: "Mine-Inspections",
 };
 
 export const MINE_TAILINGS_REPORTS = {
   route: "/mine-dashboard/:id/reports/tailings-reports",
   dynamicRoute: (id) => `/mine-dashboard/${id}/reports/tailings-reports`,
   component: MineReportTailingsInfo,
+  helpKey: "Mine-Tailings-Reports",
 };
 
 export const MINE_REPORTS = {
@@ -349,6 +387,7 @@ export const MINE_REPORTS = {
   dynamicRoute: (id, reportType, filterParams) =>
     `/mine-dashboard/${id}/required-reports/${reportType}?${queryString.stringify(filterParams)}`,
   component: MineReportInfo,
+  helpKey: "Mine-Reports",
 };
 
 export const REPORT_VIEW_EDIT = {
@@ -358,29 +397,34 @@ export const REPORT_VIEW_EDIT = {
   hashRoute: (mineGuid: string, reportGuid: string, link) =>
     `/dashboard/reporting/mine/${mineGuid}/report/${reportGuid}/${link}`,
   component: ReportPage,
+  helpKey: "Report",
 };
 
 export const REPORTS_CREATE_NEW = {
   route: "/mines/:mineGuid/reports/new/:reportType",
   dynamicRoute: (mineGuid, reportType) => `/mines/${mineGuid}/reports/new/${reportType}`,
   component: ReportSteps,
+  helpKey: "New-Report",
 };
 
 export const PARTY_PROFILE = {
   route: "/dashboard/:id/profile",
   dynamicRoute: (id) => `/dashboard/${id}/profile`,
   component: PartyProfile,
+  helpKey: "Party-Profile",
 };
 
 export const RELATIONSHIP_PROFILE = {
   route: "/dashboard/:id/history/:typeCode",
   dynamicRoute: (id, typeCode) => `/dashboard/${id}/history/${typeCode}`,
   component: RelationshipProfile,
+  helpKey: "Relationship-Profile",
 };
 
 export const REPORTING_DASHBOARD = {
   route: "/dashboard/reporting/general",
   component: ReportingDashboard,
+  helpKey: "Reporting-Dashboard",
 };
 
 export const VARIANCE_DASHBOARD = {
@@ -391,6 +435,7 @@ export const VARIANCE_DASHBOARD = {
       { sort: false }
     )}`,
   component: VarianceHomePage,
+  helpKey: "Variances",
 };
 
 export const INCIDENTS_DASHBOARD = {
@@ -401,6 +446,7 @@ export const INCIDENTS_DASHBOARD = {
       { sort: false }
     )}`,
   component: IncidentsHomePage,
+  helpKey: "Incidents",
 };
 
 export const REPORTS_DASHBOARD = {
@@ -411,62 +457,73 @@ export const REPORTS_DASHBOARD = {
       { sort: false }
     )}`,
   component: ReportsHomePage,
+  helpKey: "Reports",
 };
 
 export const EXECUTIVE_REPORTING_DASHBOARD = {
   route: "/dashboard/reporting/executive-reporting",
   component: ExecutiveReportingDashboard,
+  helpKey: "Executive-Reporting-Dashboard",
 };
 
 // Admin Dashboard Routes
 export const ADMIN_DASHBOARD = {
   route: "/admin/dashboard",
   component: AdminDashboard,
+  helpKey: "Admin-Dashbaord",
 };
 
 export const ADMIN_PERMIT_CONDITION_MANAGEMENT = {
   route: "/admin/permit-condition-management/:type",
   dynamicRoute: (type) => `/admin/permit-condition-management/${type}`,
   component: AdminPermitConditionManagement,
+  helpKey: "Permit-Condition-Management",
 };
 
 export const ADMIN_EMLI_CONTACT_MANAGEMENT = {
   route: "/admin/minespace-emli-contact-management",
   component: MineSpaceEMLIContactManagement,
+  helpKey: "MineSpace-EMLI-Contact-Management",
 };
 
 export const ADMIN_VERIFIED_MINES = {
   route: "/admin/dashboard/mine-verification/:type",
   dynamicRoute: (type) => `/admin/dashboard/mine-verification/${type}`,
   component: AdminVerifiedMinesList,
+  helpKey: "Verified-Mines",
 };
 
 export const ADMIN_MANAGE_MINESPACE_USERS = {
   route: "/admin/dashboard/manage-minespace/users",
   component: MinespaceUserManagement,
+  helpKey: "MineSpace-User-Management",
 };
 
 export const ADMIN_CONTACT_MANAGEMENT = {
   route: "/admin/contact-management/:tab",
   dynamicRoute: (tab) => `/admin/contact-management/${tab}`,
   component: MergeContactsDashboard,
+  helpKey: "Contact-Management",
 };
 
 export const ADMIN_HSRC_COMPLIANCE_CODE_MANAGEMENT = {
   route: "/admin/hsrc-management",
   component: ComplianceCodeManagement,
+  helpKey: "HSRC-Code-Management",
 };
 
 export const SEARCH_RESULTS = {
   route: "/search",
   dynamicRoute: ({ q, t = null }) => (t ? `/search?q=${q}&t=${t}` : `/search?q=${q}`),
   component: SearchResults,
+  helpKey: "Search-Results",
 };
 
 export const NOTICE_OF_WORK_APPLICATIONS = {
   route: "/dashboard/reporting/notice-of-work",
   dynamicRoute: (params) => `/dashboard/reporting/notice-of-work?${queryString.stringify(params)}`,
   component: NoticeOfWorkHomePage,
+  helpKey: "Notices-Of-Work",
 };
 
 export const NOTICE_OF_WORK_APPLICATION = {
@@ -477,6 +534,7 @@ export const NOTICE_OF_WORK_APPLICATION = {
       : `/dashboard/notice-of-work/app/${guid}/verification`,
   hashRoute: (guid, tab, link) => `/dashboard/notice-of-work/app/${guid}/${tab}/${link}`,
   component: NoticeOfWorkApplication,
+  helpKey: "Notice-Of-Work-Application",
 };
 
 export const MAJOR_PROJECTS_DASHBOARD = {
@@ -484,6 +542,7 @@ export const MAJOR_PROJECTS_DASHBOARD = {
   dynamicRoute: (params = null) =>
     `/dashboard/reporting/major-project/?${queryString.stringify({ ...params }, { sort: false })}`,
   component: MajorProjectHomePage,
+  helpKey: "Major-Projects",
 };
 
 export const ADMIN_AMENDMENT_APPLICATION = {
@@ -494,6 +553,7 @@ export const ADMIN_AMENDMENT_APPLICATION = {
       : `/dashboard/administrative-amendment/app/${guid}/application`,
   hashRoute: (guid, tab, link) => `/dashboard/administrative-amendment/app/${guid}/${tab}/${link}`,
   component: AdminAmendmentApplication,
+  helpKey: "Administrative-Amendment",
 };
 
 export const VIEW_NOTICE_OF_WORK_APPLICATION = {
@@ -504,12 +564,15 @@ export const VIEW_NOTICE_OF_WORK_APPLICATION = {
       : `/dashboard/view-notice-of-work/app/${guid}/application`,
   hashRoute: (guid, tab, link) => `/dashboard/view-notice-of-work/app/${guid}/${tab}/${link}`,
   component: ViewNoticeOfWorkApplication,
+  helpKey: "View-Notice-Of-Work",
 };
 
 export const EDIT_PERMIT_CONDITIONS = {
+  // this is the old page
   route: "/:mine_guid/permit-amendment/:id/edit-permit-conditions",
   dynamicRoute: (mine_guid, id) => `/${mine_guid}/permit-amendment/${id}/edit-permit-conditions`,
   component: PermitConditionManagement,
+  helpKey: "Edit-Permit-Conditions",
 };
 
 const MINESPACE_URLS = {
@@ -533,6 +596,7 @@ export const ADD_DAM = {
   dynamicRoute: (mineGuid, tailingsStorageFacilityGuid, editMode = "edit", userAction = "newDam") =>
     `/mine/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/dam/${editMode}/${userAction}`,
   component: DamsDetailsPage,
+  helpKey: "Dam-Details",
 };
 
 export const EDIT_DAM = {
@@ -549,4 +613,5 @@ export const EDIT_DAM = {
       isEditMode ? "edit" : "view"
     }/${canEditDam ? "editDam" : "viewDam"}/dam/${damGuid}`,
   component: DamsDetailsPage,
+  helpKey: "Edit-Dam",
 };

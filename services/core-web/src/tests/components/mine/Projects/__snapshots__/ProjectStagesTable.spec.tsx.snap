@@ -1,0 +1,222 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProjectStagesTable renders properly 1`] = `
+<div>
+  <div
+    class="ant-table-wrapper"
+  >
+    <div
+      class="ant-spin-nested-loading"
+    >
+      <div
+        class="ant-spin-container"
+      >
+        <div
+          class="ant-table ant-table-small"
+        >
+          <div
+            class="ant-table-container"
+          >
+            <div
+              class="ant-table-content"
+            >
+              <table
+                style="table-layout: auto;"
+              >
+                <colgroup />
+                <tbody
+                  class="ant-table-tbody"
+                >
+                  <tr
+                    class="ant-table-row ant-table-row-level-0"
+                    data-row-key="req-stages-id"
+                  >
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        title="Project Stage"
+                      >
+                        <div
+                          class=""
+                        >
+                          REQUIRED STAGES
+                        </div>
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        title="Stage Status"
+                      >
+                        <div
+                          class=""
+                        >
+                          STATUS
+                        </div>
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                      style="text-align: right;"
+                    />
+                  </tr>
+                  <tr
+                    class="ant-table-row ant-table-row-level-0"
+                    data-row-key="ps-519"
+                  >
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        title="Project Stage"
+                      >
+                        <b>
+                          Project description
+                        </b>
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        title="Stage Status"
+                      >
+                        <b
+                          class="uppercase"
+                        >
+                          [Draft]
+                        </b>
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                      style="text-align: right;"
+                    >
+                      <div>
+                        link 1
+                      </div>
+                    </td>
+                  </tr>
+                  <tr
+                    class="ant-table-row ant-table-row-level-0"
+                    data-row-key="ps-null"
+                  >
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        title="Project Stage"
+                      >
+                        <b>
+                          Final Application
+                        </b>
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        title="Stage Status"
+                      >
+                        <b
+                          class="uppercase"
+                        >
+                          [Not submitted]
+                        </b>
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                      style="text-align: right;"
+                    >
+                      <div>
+                        link 2
+                      </div>
+                    </td>
+                  </tr>
+                  <tr
+                    class="ant-table-row ant-table-row-level-0"
+                    data-row-key="opt-stages-id"
+                  >
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        title="Project Stage"
+                      >
+                        <div
+                          class=""
+                        >
+                          OPTIONAL STAGES
+                        </div>
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        title="Stage Status"
+                      >
+                        <div
+                          class=""
+                        >
+                          STATUS
+                        </div>
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                      style="text-align: right;"
+                    />
+                  </tr>
+                  <tr
+                    class="ant-table-row ant-table-row-level-0"
+                    data-row-key="irt-0"
+                  >
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        title="Project Stage"
+                      >
+                        <div
+                          class="grey"
+                        >
+                          Final IRT
+                        </div>
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        title="Stage Status"
+                      >
+                        <div
+                          class="grey"
+                        >
+                          [Not submitted]
+                        </div>
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                      style="text-align: right;"
+                    >
+                      <div>
+                        link 3
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

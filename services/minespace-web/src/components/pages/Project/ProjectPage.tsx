@@ -110,8 +110,13 @@ const ProjectPage: FC = () => {
             ),
             state: { current: 2, applicationSubmitted: true },
           });
+        } else {
+          const mmaTab = document.querySelector('[id*="major-mine-application"]') as HTMLElement;
+          if (!mmaTab) {
+            return null;
+          }
+          return mmaTab.click();
         }
-        break;
       case "DFT":
       case "CHR":
         return history.push({
@@ -170,12 +175,15 @@ const ProjectPage: FC = () => {
                 projectGuid,
                 project?.information_requirements_table?.irt_guid
               )
-            : `/projects/${projectGuid}/information-requirements-table/entry`;
+            : router.PROJECT_STAGE_ENTRY.dynamicRoute(
+                projectGuid,
+                "information-requirements-table"
+              );
         const urlState = irtStatus == "APV" ? { state: { current: 2 } } : {};
         return history.push({ pathname: url, ...urlState });
       }
       case "major-mine-application":
-        url = `/projects/${projectGuid}/major-mine-application/entry`;
+        url = router.PROJECT_STAGE_ENTRY.dynamicRoute(projectGuid, newActiveTab);
         return history.push(url);
 
       default:

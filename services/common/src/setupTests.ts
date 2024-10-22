@@ -19,10 +19,12 @@ Enzyme.configure({ adapter: new Adapter() });
   EDIT_PROJECT: {
     route: "test",
     dynamicRoute: () => "test",
+    helpKey: "Edit-Project",
   },
   MINE_DASHBOARD: {
     route: "test",
     dynamicRoute: () => "test",
+    helpKey: "Mine-Dashboard",
   },
 };
 
