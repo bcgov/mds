@@ -384,16 +384,10 @@ class VerifiableCredentialManager():
             address=None,
             IDverifiedByCAB=True)
 
+        #TODO, can CORE identify commodities by their UNCEFACT code?
         products = [
-            cc.Product(
-                id=None,
-                name=c,
-                                                                                  #TODO, can CORE identify commodities by their UNCEFACT code?
-                                                                                  # id=c.uncefact_code?
-                                                                                  # idScheme=base.IdentifierScheme(
-                                                                                  # id="https://unstats.un.org/unsd/classifications/Econ/cpc",
-                                                                                  # name="Central Product Classification (UNCEFACT)"),
-                IDverifiedByCAB=False) for c in permit_amendment.mine.commodities
+            cc.Product(id=None, name=c, IDverifiedByCAB=False)
+            for c in permit_amendment.mine.commodities
         ]
 
         issue_date = permit_amendment.issue_date
