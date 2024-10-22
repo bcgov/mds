@@ -59,7 +59,6 @@ class W3CCredentialIssueResource(Resource, UserMixin):
         traction_service = TractionService()
         public_did_dict = traction_service.fetch_current_public_did()
         public_did = Config.CHIEF_PERMITTING_OFFICER_DID_WEB
-        public_did = Config.CHIEF_PERMITTING_OFFICER_DID_WEB
         public_verkey = public_did_dict["verkey"]
 
         credential_dict = VerifiableCredentialManager.produce_map_01_credential_payload(
