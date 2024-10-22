@@ -98,6 +98,24 @@ class AMSApiService():
         return contact_details
 
     @classmethod
+    def __set_additional_contact_details(cls, contact):
+        contact_details = {
+            'lastname': contact.get('last_name', ''),
+            'firstname': contact.get('first_name', ''),
+            'title': contact.get('job_title', ''),
+            'phonenumber': cls.__format_phone_number(contact.get('phone_number')),
+            'email': contact.get('email', ''),
+            'mailingaddress': cls.__create_full_address(
+                contact['address'].get('address_line_1', ''),
+                contact['address'].get('city', ''),
+                contact['address'].get('sub_division_code', ''),
+                contact['address'].get('post_code', ''),
+                contact['address'].get('suite_no', '')
+            ) if contact.get('address') else ''
+        }
+        return contact_details
+
+    @classmethod
     def __set_applicant_details(cls, applicant, company_alias, incorporation_number):
         applicant_details = {
             'applicanttype': cls.__get_mapped_party_type(applicant.get('party_type_code')),
@@ -257,12 +275,12 @@ class AMSApiService():
                                 'name': nearest_municipality_name
                             },
                             'applicant': cls.__set_applicant_details(applicant, company_alias, incorporation_number),
+                            'contact': cls.__set_contact_details(contacts[0]),
                             'agent': cls.__set_agent_details(agent),
                             'purposeofapplication': authorization.get('authorization_description', ''),
                             'preappexemptionrequest': cls.__boolean_to_yes_no(authorization.get('exemption_requested')),
                             'preappexemptionrequestreason': authorization.get('exemption_reason', ''),
                             'iscontaminatedsite': cls.__boolean_to_yes_no(authorization.get('is_contaminated')),
-                            'contact': cls.__set_contact_details(contacts[0]),
                             'facilitytype': facility_type,
                             'facilitydescription': facility_desc,
                             'latitude': str(facility_latitude),
@@ -302,6 +320,12 @@ class AMSApiService():
                                 'mailingaddress': cls.__format_mailing_address(payment_contact)
                             }
                         }
+                        # Dynamically add additional contacts as contact1, contact2, etc.
+                        if(len(contacts)) > 1:
+                            for i, contact in enumerate(contacts[1:], start=1):
+                                contact_key = f'contact{i + 1}'
+                                ams_authorization_data[contact_key] = cls.__set_additional_contact_details(contact)
+
                         payload = json.dumps(ams_authorization_data)
                         response = requests.post(Config.AMS_URL, data=payload, headers=headers)
                         ams_result = response.json()
@@ -450,8 +474,22 @@ class AMSApiService():
                         'newlandowneremail': legal_land_owner_email_address,
                         'newistheapplicantthelandowner': cls.__boolean_to_yes_no(is_legal_land_owner),
                         'newlandfedorprov': cls.__boolean_to_yes_no(is_crown_land_federal_or_provincial),
-                        'documents': cls.__get_ams_document_url(project_guid)
+                        'documents': cls.__get_ams_document_url(project_guid),
+                        'contactforpayment': {
+                            'firstname': payment_contact.get('first_name', ''),
+                            'lastname': payment_contact.get('party_name', ''),
+                            'phonenumber': payment_contact.get('phone_no', ''),
+                            'email': payment_contact.get('email', ''),
+                            'mailingaddress': cls.__format_mailing_address(payment_contact)
+                        }
                     }
+
+                    # Dynamically add additional contacts as contact1, contact2, etc.
+                    if (len(contacts)) > 1:
+                        for i, contact in enumerate(contacts[1:], start=1):
+                            contact_key = f'contact{i + 1}'
+                            ams_authorization_data[contact_key] = cls.__set_additional_contact_details(contact)
+
                     payload = json.dumps(ams_authorization_data)
                     response = requests.post(Config.AMS_URL, data=payload, headers=headers)
                     ams_result = response.json()
