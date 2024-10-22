@@ -267,8 +267,8 @@ const ProjectDescriptionTab = () => {
     const url = GLOBAL_ROUTES?.EDIT_PROJECT_SUMMARY.dynamicRoute(
       project.project_summary.project_guid,
       project.project_summary.project_summary_guid,
-      "purpose-and-authorization",
-      false
+      "basic-information",
+      true
     );
     history.push(url);
   };
