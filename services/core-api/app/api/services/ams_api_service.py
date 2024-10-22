@@ -323,7 +323,7 @@ class AMSApiService():
                         # Dynamically add additional contacts as contact1, contact2, etc.
                         if(len(contacts)) > 1:
                             for i, contact in enumerate(contacts[1:], start=1):
-                                contact_key = f'contact{i + 1}'
+                                contact_key = f'contact{i}'
                                 ams_authorization_data[contact_key] = cls.__set_additional_contact_details(contact)
 
                         payload = json.dumps(ams_authorization_data)
@@ -487,7 +487,7 @@ class AMSApiService():
                     # Dynamically add additional contacts as contact1, contact2, etc.
                     if (len(contacts)) > 1:
                         for i, contact in enumerate(contacts[1:], start=1):
-                            contact_key = f'contact{i + 1}'
+                            contact_key = f'contact{i}'
                             ams_authorization_data[contact_key] = cls.__set_additional_contact_details(contact)
 
                     payload = json.dumps(ams_authorization_data)
