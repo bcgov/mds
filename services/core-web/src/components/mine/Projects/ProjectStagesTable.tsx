@@ -1,15 +1,18 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { FC, ReactNode } from "react";
 import { Table } from "antd";
+import { IProjectStage } from "@mds/common/interfaces/projects/projectStage.interface";
+import { ColumnsType } from "antd/es/table";
 
-const propTypes = {
-  projectStages: PropTypes.arrayOf(PropTypes.any).isRequired,
-};
+interface TableProjectStage extends IProjectStage {
+  link?: Element | ReactNode;
+}
+interface ProjectStagesTableProps {
+  projectStages: TableProjectStage[];
+}
 
-export class ProjectStagesTable extends Component {
-  transformRowData = (projectStages) =>
-    projectStages &&
-    projectStages.map((stage) => ({
+export const ProjectStagesTable: FC<ProjectStagesTableProps> = ({ projectStages }) => {
+  const transformRowData = (stages) =>
+    stages?.map((stage) => ({
       key: stage.key,
       project_stage: stage.title,
       stage_status: stage.status,
@@ -18,7 +21,7 @@ export class ProjectStagesTable extends Component {
       stage,
     }));
 
-  columns = () => [
+  const columns: ColumnsType<any> = [
     {
       title: "",
       dataIndex: "project_stage",
@@ -42,10 +45,10 @@ export class ProjectStagesTable extends Component {
         if (text === "STATUS") {
           label = text;
         } else {
-          label =
-            record.key && record.stage_status
-              ? `[${record.stage_status_hash[text]}]` || "N/A"
-              : "[Not submitted]";
+          label = "[Not submitted]";
+          if (record.key && record.stage_status) {
+            label = record.stage_status_hash[text] ? `[${record.stage_status_hash[text]}]` : "N/A";
+          }
         }
         return (
           <div title="Stage Status">
@@ -62,26 +65,22 @@ export class ProjectStagesTable extends Component {
     },
     {
       title: "",
-      dataIndex: "stage",
+      dataIndex: "link",
       align: "right",
-      render: (text, record) => record?.link,
+      render: (text) => text,
     },
   ];
 
-  render() {
-    return (
-      <Table
-        size="small"
-        showHeader={false}
-        pagination={false}
-        columns={this.columns()}
-        dataSource={this.transformRowData(this.props.projectStages)}
-        locale={{ emptyText: "This project has no stage data." }}
-      />
-    );
-  }
-}
-
-ProjectStagesTable.propTypes = propTypes;
+  return (
+    <Table
+      size="small"
+      showHeader={false}
+      pagination={false}
+      columns={columns}
+      dataSource={transformRowData(projectStages)}
+      locale={{ emptyText: "This project has no stage data." }}
+    />
+  );
+};
 
 export default ProjectStagesTable;

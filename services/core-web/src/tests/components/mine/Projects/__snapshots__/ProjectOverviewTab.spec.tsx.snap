@@ -246,7 +246,42 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                     >
                       <tr
                         class="ant-table-row ant-table-row-level-0"
-                        data-row-key="Project description"
+                        data-row-key="req-stages-id"
+                      >
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            title="Project Stage"
+                          >
+                            <div
+                              class=""
+                            >
+                              REQUIRED STAGES
+                            </div>
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            title="Stage Status"
+                          >
+                            <div
+                              class=""
+                            >
+                              STATUS
+                            </div>
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                          style="text-align: right;"
+                        />
+                      </tr>
+                      <tr
+                        class="ant-table-row ant-table-row-level-0"
+                        data-row-key="ps-1304"
                       >
                         <td
                           class="ant-table-cell"
@@ -265,19 +300,10 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                           <div
                             title="Stage Status"
                           >
-                            <b>
+                            <b
+                              class="uppercase"
+                            >
                               N/A
-                            </b>
-                          </div>
-                        </td>
-                        <td
-                          class="ant-table-cell"
-                        >
-                          <div
-                            title="Stage Required"
-                          >
-                            <b>
-                              Required
                             </b>
                           </div>
                         </td>
@@ -285,19 +311,24 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                           class="ant-table-cell"
                           style="text-align: right;"
                         >
-                          <button
-                            class="ant-btn ant-btn-default full-mobile margin-small"
-                            type="button"
+                          <a
+                            data-cy="project-description-view-link"
+                            href="/pre-applications/35633148-57f8-4967-be35-7f89abfbd02e/project-description"
                           >
-                            <span>
-                              View
-                            </span>
-                          </button>
+                            <button
+                              class="ant-btn ant-btn-default full-mobile margin-small"
+                              type="button"
+                            >
+                              <span>
+                                View
+                              </span>
+                            </button>
+                          </a>
                         </td>
                       </tr>
                       <tr
                         class="ant-table-row ant-table-row-level-0"
-                        data-row-key="IRT"
+                        data-row-key="ps-2"
                       >
                         <td
                           class="ant-table-cell"
@@ -306,7 +337,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                             title="Project Stage"
                           >
                             <b>
-                              IRT
+                              Final Application
                             </b>
                           </div>
                         </td>
@@ -316,19 +347,10 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                           <div
                             title="Stage Status"
                           >
-                            <b>
+                            <b
+                              class="uppercase"
+                            >
                               N/A
-                            </b>
-                          </div>
-                        </td>
-                        <td
-                          class="ant-table-cell"
-                        >
-                          <div
-                            title="Stage Required"
-                          >
-                            <b>
-                              Optional
                             </b>
                           </div>
                         </td>
@@ -336,19 +358,24 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                           class="ant-table-cell"
                           style="text-align: right;"
                         >
-                          <button
-                            class="ant-btn ant-btn-default full-mobile margin-small"
-                            type="button"
+                          <a
+                            data-cy="final-application-view-link"
+                            href="/pre-applications/35633148-57f8-4967-be35-7f89abfbd02e/final-app"
                           >
-                            <span>
-                              Resume
-                            </span>
-                          </button>
+                            <button
+                              class="ant-btn ant-btn-default full-mobile margin-small"
+                              type="button"
+                            >
+                              <span>
+                                View
+                              </span>
+                            </button>
+                          </a>
                         </td>
                       </tr>
                       <tr
                         class="ant-table-row ant-table-row-level-0"
-                        data-row-key="Application"
+                        data-row-key="opt-stages-id"
                       >
                         <td
                           class="ant-table-cell"
@@ -356,9 +383,11 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                           <div
                             title="Project Stage"
                           >
-                            <b>
-                              Application
-                            </b>
+                            <div
+                              class=""
+                            >
+                              OPTIONAL STAGES
+                            </div>
                           </div>
                         </td>
                         <td
@@ -367,37 +396,145 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                           <div
                             title="Stage Status"
                           >
-                            <b>
-                              Not Started
-                            </b>
+                            <div
+                              class=""
+                            >
+                              STATUS
+                            </div>
+                          </div>
+                        </td>
+                        <td
+                          class="ant-table-cell"
+                          style="text-align: right;"
+                        />
+                      </tr>
+                      <tr
+                        class="ant-table-row ant-table-row-level-0"
+                        data-row-key="irt-1"
+                      >
+                        <td
+                          class="ant-table-cell"
+                        >
+                          <div
+                            title="Project Stage"
+                          >
+                            <div
+                              class="grey"
+                            >
+                              Final IRT
+                            </div>
                           </div>
                         </td>
                         <td
                           class="ant-table-cell"
                         >
                           <div
-                            title="Stage Required"
+                            title="Stage Status"
                           >
-                            <b>
-                              Required
-                            </b>
+                            <div
+                              class="grey"
+                            >
+                              N/A
+                            </div>
                           </div>
                         </td>
                         <td
                           class="ant-table-cell"
                           style="text-align: right;"
                         >
-                          <button
-                            class="ant-btn ant-btn-default full-mobile margin-small"
-                            type="button"
+                          <a
+                            data-cy="final-irt-view-link"
+                            href="/pre-applications/35633148-57f8-4967-be35-7f89abfbd02e/information-requirements-table"
                           >
-                            <span>
-                              Start
-                            </span>
-                          </button>
+                            <button
+                              class="ant-btn ant-btn-default full-mobile margin-small"
+                              type="button"
+                            >
+                              <span>
+                                View
+                              </span>
+                            </button>
+                          </a>
                         </td>
                       </tr>
                     </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <h3
+        class="ant-typography"
+      >
+        Related Project Applications
+      </h3>
+      <div
+        class="ant-typography"
+      >
+        Description of related major project applications for this mine are listed below.
+      </div>
+      <div
+        class="ant-table-wrapper"
+      >
+        <div
+          class="ant-spin-nested-loading"
+        >
+          <div
+            class="ant-spin-container"
+          >
+            <div
+              class="ant-table"
+            >
+              <div
+                class="ant-table-container"
+              >
+                <div
+                  class="ant-table-content"
+                >
+                  <table
+                    style="table-layout: auto;"
+                  >
+                    <colgroup />
+                    <thead
+                      class="ant-table-thead"
+                    >
+                      <tr>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Project Title
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Project #
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Status
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Contact
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Last Updated
+                        </th>
+                        <th
+                          class="ant-table-cell actions-column"
+                        />
+                      </tr>
+                    </thead>
+                    <tbody
+                      class="ant-table-tbody"
+                    />
                   </table>
                 </div>
               </div>
@@ -412,17 +549,16 @@ exports[`ProjectOverviewTab renders properly 1`] = `
     >
       <div
         class="ant-row"
-        style="margin-top: -8px; margin-bottom: -8px;"
       >
         <div
           class="ant-col ant-col-24"
-          style="padding-top: 8px; padding-bottom: 8px;"
         >
           <div
             class="ant-card ant-card-bordered"
           >
             <div
               class="ant-card-head"
+              style="min-height: unset;"
             >
               <div
                 class="ant-card-head-wrapper"
@@ -470,32 +606,6 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                   </a>
                 </span>
               </div>
-            </div>
-          </div>
-        </div>
-        <div
-          class="ant-col ant-col-24"
-          style="padding-top: 8px; padding-bottom: 8px;"
-        >
-          <div
-            class="ant-card ant-card-bordered"
-          >
-            <div
-              class="ant-card-head"
-            >
-              <div
-                class="ant-card-head-wrapper"
-              >
-                <div
-                  class="ant-card-head-title"
-                >
-                  Ministry Contacts
-                </div>
-              </div>
-            </div>
-            <div
-              class="ant-card-body"
-            >
               <div
                 class="ant-typography ministry-contact-item"
               >
@@ -503,127 +613,14 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                   class="ant-typography ministry-contact-title"
                 >
                   <strong>
-                    Unknown
-                    <br />
+                    EMLI Project Lead
                   </strong>
                 </span>
+                <br />
                 <span
                   class="ant-typography"
                 >
-                  <a
-                    href="mailto:TestPermRecl@gov.bc.ca"
-                  >
-                    TestPermRecl@gov.bc.ca
-                  </a>
-                  <br />
-                </span>
-              </div>
-              <div
-                class="ant-typography ministry-contact-item"
-              >
-                <span
-                  class="ant-typography ministry-contact-title"
-                >
-                  <strong>
-                    Unknown
-                    <br />
-                  </strong>
-                </span>
-                <span
-                  class="ant-typography"
-                >
-                  Anna
-                   
-                  Albright
-                  <br />
-                </span>
-                <span
-                  class="ant-typography"
-                >
-                  123-234-3456
-                  <br />
-                </span>
-                <span
-                  class="ant-typography"
-                >
-                  <a
-                    href="mailto:anna.albright@gov.bc.ca"
-                  >
-                    anna.albright@gov.bc.ca
-                  </a>
-                  <br />
-                </span>
-              </div>
-              <div
-                class="ant-typography ministry-contact-item"
-              >
-                <span
-                  class="ant-typography ministry-contact-title"
-                >
-                  <strong>
-                    Unknown
-                    <br />
-                  </strong>
-                </span>
-                <span
-                  class="ant-typography"
-                >
-                  Blaine
-                   
-                  Blainesworth
-                  <br />
-                </span>
-                <span
-                  class="ant-typography"
-                >
-                  111-222-3333
-                  <br />
-                </span>
-                <span
-                  class="ant-typography"
-                >
-                  <a
-                    href="mailto:blaine.blainesworth@gov.bc.ca"
-                  >
-                    blaine.blainesworth@gov.bc.ca
-                  </a>
-                  <br />
-                </span>
-              </div>
-              <div
-                class="ant-typography ministry-contact-item"
-              >
-                <span
-                  class="ant-typography ministry-contact-title"
-                >
-                  <strong>
-                    Health and Safety Inspector
-                    <br />
-                  </strong>
-                </span>
-                <span
-                  class="ant-typography"
-                >
-                  Carla
-                   
-                  Carlsdottir
-                  <br />
-                </span>
-                <span
-                  class="ant-typography"
-                >
-                  000-111-2222
-                  <br />
-                </span>
-                <span
-                  class="ant-typography"
-                >
-                  <a
-                    href="mailto:Carla.Carlsdottir@gov.bc.ca"
-                  >
-                    Carla.Carlsdottir@gov.bc.ca
-                  </a>
-                  <br />
+                  Project Lead has not been assigned
                 </span>
               </div>
             </div>

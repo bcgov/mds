@@ -1,6 +1,6 @@
 import React from "react";
 import ProjectPage from "@/components/pages/Project/ProjectPage";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { render } from "@testing-library/react";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { PROJECTS, MINES } from "@mds/common/constants/reducerTypes";
@@ -9,6 +9,7 @@ const initialState = {
   [PROJECTS]: {
     projects: MOCK.PROJECTS.records,
     project: MOCK.PROJECT,
+    projectSummary: MOCK.PROJECT_SUMMARY,
   },
   [MINES]: MOCK.MINES,
 };
