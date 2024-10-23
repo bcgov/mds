@@ -22,8 +22,6 @@ fetch_credential_exchanges = Config.TRACTION_HOST + "/issue-credential/records"
 traction_get_current_indy_did = Config.TRACTION_HOST + "/wallet/did/public"
 traction_get_did = Config.TRACTION_HOST + "/wallet/did"
 
-traction_deprecated_jsonld_sign = Config.TRACTION_HOST + "/jsonld/sign"
-traction_sign_jsonld_credential = Config.TRACTION_HOST + "/vc/credentials/issue"
 traction_vc_di_add_proof = Config.TRACTION_HOST + "/vc/di/add-proof"
 
 
