@@ -10,6 +10,7 @@ import moment from "moment-timezone";
 import { reset } from "redux-form";
 import { ItemMap } from "@mds/common";
 
+
 /**
  * Helper function to clear redux form after submission
  *
@@ -105,6 +106,8 @@ export const timeAgo = (dateTime, unit = "day") => {
     return endDate.diff(moment(startDate), "seconds");
   }
 };
+
+
 
 export const formatPostalCode = (code) => code && code.replace(/.{3}$/, " $&");
 
@@ -590,7 +593,7 @@ export const getHighestConsequence = (tsf) => {
 
   const highestRankedDam = tsf.dams.reduce((prev, current) =>
     CONSEQUENCE_CLASSIFICATION_RANK_HASH[prev.consequence_classification] >
-    CONSEQUENCE_CLASSIFICATION_RANK_HASH[current.consequence_classification]
+      CONSEQUENCE_CLASSIFICATION_RANK_HASH[current.consequence_classification]
       ? prev
       : current
   );
