@@ -12,7 +12,7 @@ import { ItemMap } from "@mds/common";
 
 
 /**
- * Helper function to clear redux form after submission
+ * Helper function to clear redux form after submissions
  *
  * Usage:
  *  export default (reduxForm({
