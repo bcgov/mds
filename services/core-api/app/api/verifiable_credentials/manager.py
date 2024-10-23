@@ -378,7 +378,7 @@ class VerifiableCredentialManager():
         facility = cc.Facility(
             id=None,
             name=permit_amendment.mine.mine_name,
-            registeredId="mine_no",
+            registeredId=permit_amendment.mine.mine_no,
             locationInformation=
             f'https://plus.codes/{plus_code_encode(permit_amendment.mine.latitude, permit_amendment.mine.longitude)}',
             address=None,
