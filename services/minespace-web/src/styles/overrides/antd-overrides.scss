@@ -4,6 +4,10 @@
 
 // Layout
 
+@use "../settings/variables.scss" as *;
+@use "../settings/theme.scss" as *;
+@use "../tools/mixins.scss" as *;
+
 .ant-layout-header {
   position: fixed;
   z-index: 8;

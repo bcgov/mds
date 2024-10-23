@@ -1,9 +1,13 @@
+@use "../settings/variables.scss";
+@use "../settings/theme.scss";
+
+
 .primary-colour {
-  color: $gov-blue !important;
+  color: variables.$gov-blue !important;
 }
 
 .font-colour {
-  color: $font-colour !important;
+  color: theme.$font-colour !important;
 }
 
 a {
@@ -18,14 +22,14 @@ ul {
 }
 
 .field-title {
-  font-size: $field-label;
-  font-weight: $semi-bold;
-  font-family: $default-font;
-  color: $ant-label-title-color;
+  font-size: variables.$field-label;
+  font-weight: variables.$semi-bold;
+  font-family: variables.$default-font;
+  color: variables.$ant-label-title-color;
   margin-right: 5px;
   margin-bottom: 9px;
 
   &--light {
-    color: $p-light-color;
+    color: variables.$p-light-color;
   }
 }

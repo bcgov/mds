@@ -6,7 +6,6 @@ const path = require("path");
 
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
-const TerserPlugin = require("terser-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
@@ -99,7 +98,7 @@ exports.loadCSS = ({ include, exclude } = {}) => ({
         include,
         exclude,
         use: [
-          "thread-loader",
+          // "thread-loader",
           "style-loader",
           "css-loader",
           postCSSLoader,
@@ -119,7 +118,7 @@ exports.loadCSS = ({ include, exclude } = {}) => ({
         include,
         exclude,
         use: [
-          "thread-loader",
+          // "thread-loader",
           "style-loader",
           "css-loader",
           postCSSLoader,
@@ -221,7 +220,7 @@ exports.extractCSS = ({ include, exclude, filename, theme, chunkFilename } = {})
         include,
         exclude,
         use: [
-          "thread-loader",
+          // "thread-loader",
           "style-loader",
           MiniCssExtractPlugin.loader,
           "css-loader",
@@ -242,7 +241,7 @@ exports.extractCSS = ({ include, exclude, filename, theme, chunkFilename } = {})
         include,
         exclude,
         use: [
-          "thread-loader",
+          // "thread-loader",
           "style-loader",
           MiniCssExtractPlugin.loader,
           "css-loader",

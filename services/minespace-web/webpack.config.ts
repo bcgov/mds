@@ -68,14 +68,6 @@ if (dotenv.parsed) {
   });
 }
 
-threadLoader.warmup({}, [
-  "style-loader",
-  "css-loader",
-  "sass-loader",
-  "less-loader",
-  "postcss-loader",
-]);
-
 const commonConfig = merge([
   {
     entry: {

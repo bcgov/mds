@@ -1,3 +1,6 @@
+@use "../settings/variables.scss" as *;
+@use "../settings/theme.scss" as *;
+
 /* use a hand cursor intead of arrow for the action buttons */
 .filepond--file-action-button {
   cursor: pointer;

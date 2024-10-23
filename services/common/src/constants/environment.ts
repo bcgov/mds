@@ -88,9 +88,9 @@ export function setupEnvironment(
   if (!flagsmithUrl) {
     throw new Error("flagsmithUrl Is Mandatory");
   }
-  if (!geoMarkUrl) {
-    throw new Error("geoMarkUrl Is Mandatory");
-  }
+  // if (!geoMarkUrl) {
+  //   throw new Error("geoMarkUrl Is Mandatory");
+  // }
 
   ENVIRONMENT.apiUrl = apiUrl;
   ENVIRONMENT.docManUrl = docManUrl;

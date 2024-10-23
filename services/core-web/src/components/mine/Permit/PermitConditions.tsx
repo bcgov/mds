@@ -68,11 +68,11 @@ const PermitConditions: FC<PermitConditionProps> = ({
       const title = cat.description.replace("Conditions", "").trim();
       return conditions.length > 0
         ? {
-            href: cat.condition_category_code.toLowerCase(),
-            title,
-            conditions,
-            condition_category_code: cat.condition_category_code,
-          }
+          href: cat.condition_category_code.toLowerCase(),
+          title,
+          conditions,
+          condition_category_code: cat.condition_category_code,
+        }
         : false;
     })
     .filter(Boolean);
@@ -90,6 +90,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
     return Promise.resolve();
   };
 
+  console.log(permitExtraction)
   if (isLoading) {
     return <LoadingOutlined style={{ fontSize: 120 }} />;
   }

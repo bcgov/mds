@@ -1,3 +1,5 @@
+@use "../settings/theme.scss" as *;
+
 $mobile-width: 500px;
 $tablet-width: 768px;
 $large-width: 1024px;
@@ -60,14 +62,19 @@ $x-large-width: 90em;
 
 @mixin center($horizontal: true, $vertical: true) {
   position: absolute;
+
   @if ($horizontal and $vertical) {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-  } @else if ($horizontal) {
+  }
+
+  @else if ($horizontal) {
     left: 50%;
     transform: translate(-50%, 0);
-  } @else if ($vertical) {
+  }
+
+  @else if ($vertical) {
     top: 50%;
     transform: translate(0, -50%);
   }

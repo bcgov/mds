@@ -4,8 +4,9 @@
 // https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less
 // https://github.com/ant-design/ant-design/blob/master/components/style/color/colors.less
 
+@use "./variables.scss";
+
 // -------- Brand Colours -----------
-$gov-blue: #003366;
 $gov-yellow: #fcba19;
 $gov-red: #d8292f;
 $gov-green: #2e8540;
@@ -32,18 +33,14 @@ $ant-prefix: ant;
 $html-selector: html;
 
 // -------- Colors -----------
-$primary-color: $gov-blue; //$blue-6
-$info-color: $gov-blue; //$blue-6
+$primary-color: variables.$gov-blue; //$blue-6
+$info-color: variables.$gov-blue; //$blue-6
 $success-color: $gov-green; //$green-6
-$processing-color: $gov-blue; //$blue-6
+$processing-color: variables.$gov-blue; //$blue-6
 $error-color: $gov-red; //$red-5
 $highlight-color: $gov-red; //$red-5
 $warning-color: $gov-yellow; //$gold-6
 $normal-color: #d9d9d9;
-$darkest-grey: #3c3636;
-$white: #fff;
-$pure-white: $white;
-$black: #000;
 
 // Color used by default to control hover and active backgrounds and for
 // alert info backgrounds.
@@ -66,10 +63,10 @@ $primary-7: shade($primary-color,
 // ---
 
 // Background color for `<body>`
-$body-background: $white; //#fff;
+$body-background: variables.$white; //#fff;
 
 // Base background color for most components
-$component-background: $white; //#fff;
+$component-background: variables.$white; //#fff;
 
 // Popover background color
 $popover-background: $component-background;
@@ -80,15 +77,15 @@ $filepond-drop-bg: #E6EBF0;
 // font, headings, etc
 $font-family: "BCSans", "Noto Sans", Verdana, Arial, sans-serif; //"Myriad Pro", sans-serif; //-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',   'Noto Color Emoji';
 $code-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
-$text-color: $font-colour; //fade($black, 65%);
-$text-color-secondary: fade($text-color, 20%); //fade($black, 45%);
+$text-color: $font-colour; //fade(variables.$black, 65%);
+$text-color-secondary: fade($text-color, 20%); //fade(variables.$black, 45%);
 $text-color-inverse: invert($text-color);
 $icon-color: inherit;
-$icon-color-hover: fade($black, 75%);
+$icon-color-hover: fade(variables.$black, 75%);
 $heading-color: $primary-color; //fade(#000, 85%);
-$heading-color-dark: fade($white, 100%);
-$text-color-dark: fade($white, 85%);
-$text-color-secondary-dark: fade($white, 65%);
+$heading-color-dark: fade(variables.$white, 100%);
+$text-color-dark: fade(variables.$white, 85%);
+$text-color-secondary-dark: fade(variables.$white, 65%);
 $text-selection-bg: $nav-blue;
 $font-variant-base: tabular-nums;
 $font-feature-settings-base: "tnum";
@@ -152,7 +149,7 @@ $ease-in-out-quint: cubic-bezier(0.86, 0, 0.07, 1);
 // Border color
 $border-color-base: $primary-color; //#D9D9D9; //hsv(0, 0, 85%); // base border outline a component
 $border-color-split: $table-seperator; //#F0F0F0; //hsv(0, 0, 94%); // split border inside a component
-$border-color-inverse: $white;
+$border-color-inverse: variables.$white;
 $border-width-base: 2px; //1px; // width of the border for a component
 $border-style-base: solid; // style of a components border
 
@@ -194,7 +191,7 @@ $btn-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
 $btn-primary-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
 $btn-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
 
-$btn-primary-color: $white; //#fff;
+$btn-primary-color: variables.$white; //#fff;
 $btn-primary-bg: $primary-color;
 
 $btn-default-color: $btn-primary-bg; //$text-color;
@@ -239,7 +236,7 @@ $btn-link-ghost-color: $component-background;
 // Checkbox
 $checkbox-size: $font-size-base; //16px;
 $checkbox-color: $primary-color;
-$checkbox-check-color: $white; //#fff;
+$checkbox-check-color: variables.$white; //#fff;
 $checkbox-check-bg: $checkbox-check-color;
 $checkbox-border-width: $border-width-base;
 
@@ -256,7 +253,7 @@ $empty-font-size: $font-size-base;
 // Radio
 $radio-size: $font-size-base; //16px;
 $radio-dot-color: $primary-color;
-$radio-dot-disabled-color: $disabled-bg; //fade($black, 20%);
+$radio-dot-disabled-color: $disabled-bg; //fade(variables.$black, 20%);
 // solid text-color
 // Typo is valid
 $radtio-solid-checked-color: $component-background;
@@ -267,7 +264,7 @@ $radio-button-checked-bg: $btn-default-bg;
 $radio-button-color: $btn-default-color;
 $radio-button-hover-color: $primary-5;
 $radio-button-active-color: $primary-7;
-$radio-disabled-button-checked-bg: tint($black, 90%);
+$radio-disabled-button-checked-bg: tint(variables.$black, 90%);
 $radio-disabled-button-checked-color: $text-color-inverse;
 
 // Media queries breakpoints
@@ -317,21 +314,21 @@ $grid-columns: 24;
 $grid-gutter-width: 0;
 
 // Layout
-$layout-body-background: $white; //#f0f2f5;
-$layout-header-background: $gov-blue; //#001529;
-$layout-footer-background: $gov-blue; //$layout-body-background;
+$layout-body-background: variables.$white; //#f0f2f5;
+$layout-header-background: variables.$gov-blue; //#001529;
+$layout-footer-background: variables.$gov-blue; //$layout-body-background;
 $layout-header-height: 80px; //64px;
 $layout-footer-height: 80px;
 $layout-header-padding: 0 50px;
 $layout-sider-background: $layout-header-background;
 $layout-trigger-height: 48px;
-$layout-trigger-background: $black; //#002140;
-$layout-trigger-color: $white; //#fff;
+$layout-trigger-background: variables.$black; //#002140;
+$layout-trigger-color: variables.$white; //#fff;
 $layout-zero-trigger-width: 36px;
 $layout-zero-trigger-height: 42px;
 // Layout light theme
-$layout-sider-background-light: $white; //#fff;
-$layout-trigger-background-light: $white; //#fff;
+$layout-sider-background-light: variables.$white; //#fff;
+$layout-trigger-background-light: variables.$white; //#fff;
 $layout-trigger-color-light: $text-color;
 
 // z-index list, order by `z-index`
@@ -386,7 +383,7 @@ $input-addon-bg: $background-color-light;
 $input-hover-border-color: $primary-5;
 $input-disabled-bg: $input-bg; //$disabled-bg;
 $input-outline-offset: 0 0;
-$input-icon-hover-color: fade($black, 85%);
+$input-icon-hover-color: fade(variables.$black, 85%);
 $input-number-hover-border-color: $input-hover-border-color;
 $input-number-handler-active-bg: #f4f4f4;
 $input-number-handler-hover-bg: $primary-5;
@@ -450,7 +447,7 @@ $anchor-border-color: $border-color-split;
 // Tooltip max width
 $tooltip-max-width: 250px;
 // Tooltip text color
-$tooltip-color: $white; //#fff;
+$tooltip-color: variables.$white; //#fff;
 // Tooltip background color
 $tooltip-bg: $primary-color; // rgba(0, 0, 0, 0.75);
 // Tooltip arrow width
@@ -490,7 +487,7 @@ $modal-footer-bg: transparent;
 $modal-footer-border-color-split: transparent !important; //$border-color-split;
 $modal-footer-padding-vertical: 10px;
 $modal-footer-padding-horizontal: 16px;
-$modal-mask-bg: fade($black, 45%);
+$modal-mask-bg: fade(variables.$black, 45%);
 
 // Progress
 // --
@@ -522,12 +519,12 @@ $menu-item-boundary-margin: 8px;
 // dark theme
 $menu-dark-color: $text-color-secondary-dark;
 $menu-dark-bg: $layout-header-background;
-$menu-dark-arrow-color: $white; //#fff;
-$menu-dark-submenu-bg: $black; //#000c17;
-$menu-dark-highlight-color: $white; //#fff;
+$menu-dark-arrow-color: variables.$white; //#fff;
+$menu-dark-submenu-bg: variables.$black; //#000c17;
+$menu-dark-highlight-color: variables.$white; //#fff;
 $menu-dark-item-active-bg: $primary-color;
-$menu-dark-selected-item-icon-color: $white;
-$menu-dark-selected-item-text-color: $white;
+$menu-dark-selected-item-icon-color: variables.$white;
+$menu-dark-selected-item-text-color: variables.$white;
 $menu-dark-item-hover-bg: transparent;
 
 // Spin
@@ -548,7 +545,7 @@ $table-selected-row-color: inherit;
 $table-selected-row-bg: $primary-1;
 $table-body-selected-sort-bg: $table-selected-row-bg;
 $table-selected-row-hover-bg: $table-selected-row-bg;
-$table-expanded-row-bg: $white; //#fbfbfb;
+$table-expanded-row-bg: variables.$white; //#fbfbfb;
 $table-padding-vertical: 16px;
 $table-padding-horizontal: 16px;
 $table-border-radius-base: $border-radius-base;
@@ -611,7 +608,7 @@ $rate-star-bg: $border-color-split;
 
 // Card
 // ---
-$card-head-color: $white; //$heading-color;
+$card-head-color: variables.$white; //$heading-color;
 $card-head-background: $nav-blue; //transparent;
 $card-head-padding: 16px;
 $card-inner-head-padding: 12px;
@@ -639,7 +636,7 @@ $comment-action-hover-color: #595959;
 // ---
 $tabs-card-head-background: $gov-grey; //$background-color-light;
 $tabs-card-height: 40px;
-$tabs-card-active-color: $white; //$primary-color;
+$tabs-card-active-color: variables.$white; //$primary-color;
 $tabs-title-font-size: $font-size-base;
 $tabs-title-font-size-lg: $font-size-lg;
 $tabs-title-font-size-sm: $font-size-base;
@@ -661,7 +658,7 @@ $tabs-card-tab-active-border-top: none; //2px solid transparent;
 
 // BackTop
 // ---
-$back-top-color: $white; //#fff;
+$back-top-color: variables.$white; //#fff;
 $back-top-bg: $primary-color; //$text-color-secondary;
 $back-top-hover-bg: $primary-5; //$text-color;
 
@@ -698,7 +695,7 @@ $pagination-font-family: $font-family; //Arial;
 $pagination-font-weight-active: 500;
 $pagination-item-bg-active: $component-background;
 $pagination-item-link-bg: $component-background;
-$pagination-item-disabled-color-active: $white;
+$pagination-item-disabled-color-active: variables.$white;
 $pagination-item-disabled-bg-active: darken($disabled-bg, 10%);
 
 // PageHeader
@@ -706,7 +703,7 @@ $pagination-item-disabled-bg-active: darken($disabled-bg, 10%);
 $page-header-padding: 24px;
 $page-header-padding-vertical: 16px;
 $page-header-padding-breadcrumb: 12px;
-$page-header-back-color: $black; //#000;
+$page-header-back-color: variables.$black; //#000;
 $page-header-ghost-bg: inherit;
 
 // Breadcrumb
@@ -843,7 +840,7 @@ $upload-actions-color: $text-color-secondary;
 // Steps
 // ---
 $process-tail-color: $border-color-split;
-$steps-nav-arrow-color: fade($black, 25%);
+$steps-nav-arrow-color: fade(variables.$black, 25%);
 
 // Notification
 // ---
@@ -855,43 +852,13 @@ $notification-bg: $component-background;
 
 // Font sizes
 $title-h1: 36px;
-$default-h1: 24px;
-$mobile-h1: 20px;
-$default-h2: 22px;
-$mobile-h2: 18px;
-$default-h3: 20px;
-$mobile-h3: 16px;
-$default-h4: 18px;
-$mobile-h4: 12px;
-$default-p: 16px;
 
 // Font
-$light: 300;
-$regular: 400;
-$bold-regular: 500;
-$semi-bold: 600;
-$bold: 700;
-$h1-color: $gov-blue;
-$title-color: $white;
+$h1-color: variables.$gov-blue;
+$title-color: variables.$white;
 $h2-color: $font-colour;
 $h3-color: $font-colour;
-$h4-color: $white;
+$h4-color: variables.$white;
 $p-color: $font-colour;
 $a-color: $link-normal;
 $a-color-hover: $link-normal;
-
-// Margins
-$default-margin-sm: 5px;
-$default-margin-md: 10px;
-$default-margin-lg: 20px;
-$default-margin-xl: 30px;
-$default-margin-xxl: 50px;
-
-// Padding
-$default-padding-sm: 5px;
-$default-padding-md: 10px;
-$default-padding-lg: 20px;
-$default-padding-xl: 30px;
-$default-padding-xxl: 50px;
-
-$default-box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);

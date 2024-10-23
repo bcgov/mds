@@ -1,3 +1,5 @@
+@use "../base.scss" as *;
+
 .sidebar-wrapper {
     .ant-layout-sider {
         background-color: $card-bg;

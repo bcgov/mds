@@ -1,3 +1,7 @@
+@use "../settings/variables.scss" as *;
+@use "../settings/theme.scss" as *;
+@use "../tools/mixins.scss" as *;
+
 .icon-xs {
   font-size: 18px !important;
 
