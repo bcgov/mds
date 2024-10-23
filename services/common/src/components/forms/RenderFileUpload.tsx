@@ -55,7 +55,7 @@ interface FileUploadProps extends BaseInputProps {
   allowMultiple?: boolean;
   allowReorder?: boolean;
   maxFileSize?: string;
-  maxFileNameLength?: number;
+  maxFileNameLength?: string;
   itemInsertLocation?: ItemInsertLocationType;
   // for a completely customized drop label
   labelIdle?: string;
