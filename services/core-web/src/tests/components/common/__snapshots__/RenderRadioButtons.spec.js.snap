@@ -6,7 +6,7 @@ exports[`RenderRadioButtons renders properly 1`] = `
   label=""
   validateStatus=""
 >
-  <Memo([object Object])
+  <Memo(ForwardRef)
     disabled={false}
     id="1"
     onChange={[Function]}

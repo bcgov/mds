@@ -82,29 +82,3 @@ export const RenderExtractionError: FC = () => (
     </Col>
   </Row>
 );
-
-
-export const RenderExtractionError: FC = () => (
-  <Row align="middle" justify="space-between" gutter={[10, 16]}>
-    <Col span={24}>
-      <Title className="margin-none" level={2}>
-        Permit Conditions
-      </Title>
-    </Col>
-    <Col span={24}>
-      <Row gutter={10} style={{ background: "#fff" }} justify={"center"}>
-        <div className="null-screen fade-in" style={{ maxWidth: "728px" }}>
-          <div>
-            <p className="margin-medium--bottom">
-              <FontAwesomeIcon icon={faCircleX} size="5x" color="red" />
-            </p>
-            <h3>Failed to extract permit conditions</h3>
-            <p>
-              We encountered an issue while extracting the permit conditions. Please try again. if the problem persists, check the file and ensure it meets the required format.
-            </p>
-          </div>
-        </div>
-      </Row>
-    </Col>
-  </Row>
-);
