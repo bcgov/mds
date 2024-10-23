@@ -65,33 +65,18 @@ class FilterConditionsParagraphsConverter:
 
 
 def filter_paragraphs(paragraphs):
-
-    with open("debug/filter_conditions_before.json", "w") as f:
-        cnt = [{"meta": d.meta, "content": d.content} for d in paragraphs]
-        f.write(json.dumps(cnt, indent=4))
-
     # Filter out paragraphs that are part of the page header
     paragraphs, max_page_header_y = _exclude_paragraphs_overlapping_page_header(
         paragraphs
     )
 
-    with open("debug/filter_conditions_after_header.json", "w") as f:
-        cnt = [{"meta": d.meta, "content": d.content} for d in paragraphs]
-        f.write(json.dumps(cnt, indent=4))
     # Filter out paragraphs that are not part of the conditions section
     paragraphs = _exclude_paragraphs_not_in_conditions_section(paragraphs)
 
-    with open("debug/filter_conditions_after_conditions_section.json", "w") as f:
-        cnt = [{"meta": d.meta, "content": d.content} for d in paragraphs]
-        f.write(json.dumps(cnt, indent=4))
     # Filter out paragraphs that are not paragraphs
     paragraphs = _exclude_paragraphs_with_non_paragraph_roles(
         paragraphs, max_page_header_y
     )
-
-    with open("debug/filter_conditions_after_non_paragraph_roles.json", "w") as f:
-        cnt = [{"meta": d.meta, "content": d.content} for d in paragraphs]
-        f.write(json.dumps(cnt, indent=4))
 
     logger.info(
         f"Found {len(paragraphs)} paragraphs after filtering, {max_page_header_y}"

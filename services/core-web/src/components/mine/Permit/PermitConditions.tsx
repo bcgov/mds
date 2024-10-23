@@ -90,7 +90,6 @@ const PermitConditions: FC<PermitConditionProps> = ({
     return Promise.resolve();
   };
 
-  console.log(permitExtraction)
   if (isLoading) {
     return <LoadingOutlined style={{ fontSize: 120 }} />;
   }

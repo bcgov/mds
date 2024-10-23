@@ -66,25 +66,16 @@ class AzureDocumentIntelligenceConverter:
             result = self.run_document_intelligence(file_path)
 
         if DEBUG_MODE:
+
             self.write_to_cache(cache_key, result)
 
         docs = []
 
-        paragraphs = result.paragraphs
-
-        # for table in result.tables:
-        #     paragraphs = self.replace_paragraphs_with_table(paragraphs, table)
-
-        result.paragraphs = paragraphs
-
-        for idx, p in enumerate(paragraphs):
+        for idx, p in enumerate(result.paragraphs):
             doc = self.add_metadata_to_document(idx, p)
 
             docs.append(doc)
 
-        with open("debug/azure_document_intelligence_repl.json", "w") as f:
-            dp = [d.to_dict() for d in result.paragraphs]
-            json.dump(dp, f, indent=4)
         permit_condition_csv = _create_csv_representation(docs)
 
         return {
@@ -149,15 +140,6 @@ class AzureDocumentIntelligenceConverter:
             dp = [d.to_dict() for d in result.paragraphs]
             json.dump(dp, f, indent=4)
 
-        with open("debug/azure_document_intelligence_result.txt", "w") as f:
-            dp = [d.content for d in result.paragraphs]
-            f.write("\n".join(dp))
-
-        with open("debug/azure_document_intelligence_result_tables.json", "w") as f:
-            dp = [d.to_dict() for d in result.tables]
-            json.dump(dp, f, indent=4)
-
-
     def retrieve_cached_result(self, cache_key):
         try:
             with open(f"app/cache/{cache_key}.pickle", "rb") as f:
@@ -168,101 +150,6 @@ class AzureDocumentIntelligenceConverter:
             result = None
         return result
 
-
-    def replace_paragraphs_with_table(self, paragraphs, table):
-        # A paragraph has the following structure (accessed as class properties):
-        # {
-        #    "content": "abc 123",
-        #    "bounding_regions": [
-        #        {
-        #            "page_number": 48,
-        #            "polygon": [
-        #                {
-        #                    "x": 1.6239,
-        #                    "y": 8.0825
-        #                },
-        #                {
-        #                    "x": 7.2495,
-        #                    "y": 8.0924
-        #                },
-        #                {
-        #                    "x": 7.2485,
-        #                    "y": 8.6889
-        #                },
-        #                {
-        #                    "x": 1.6229,
-        #                    "y": 8.679
-        #                }
-        #            ]
-        #        }
-        #    ],
-        # }
-
-        # A table has the following structure (accessed as class properties):
-            # {"cells": [
-            # {
-            # "kind": "content", - or columnHeader
-            # "row_index": 0,
-            # "column_index": 0,
-            # "row_span": 1,
-            # "column_span": 1,
-            # "content": "6.",
-            # "bounding_regions": [
-                # {
-                    # "page_number": 11,
-                    # "polygon": [
-                        # {
-                            # "x": 1.1908,
-                            # "y": 1.1164
-                        # },
-                        # {
-                            # "x": 1.6108,
-                            # "y": 1.1164
-                        # },
-                        # {
-                            # "x": 1.6045,
-                            # "y": 1.3546
-                        # },
-                        # {
-                            # "x": 1.1908,
-                            # "y": 1.3546
-                        # }
-                    # ]
-                # }
-            # ],
-            #]}
-        table_paragraphs = []
-        for cell in table.cells:
-            for paragraph in paragraphs:
-                if cell.bounding_regions[0].polygon == paragraph.bounding_regions[0].polygon:
-                    table_paragraphs.append(paragraph)
-        
-        logger.info(f"Found {len(table_paragraphs)} paragraphs that are part of a table")
-
-        if table_paragraphs:
-            table_data = [["" for _ in range(table.column_count)] for _ in range(table.row_count)]
-            for cell in table.cells:
-                row_index = cell.row_index
-                column_index = cell.column_index
-                if row_index < table.row_count and column_index < table.column_count:
-                    table_data[row_index][column_index] = cell.content
-
-            table_df = pd.DataFrame(table_data)
-            table_text = table_df.to_csv(index=False, header=False, sep='\t')
-
-            new_idx = paragraphs.index(table_paragraphs[0])
-
-            # Create a new paragraph with the table text
-            new_paragraph = table_paragraphs[0]
-            new_paragraph.content = table_text
-            new_paragraph.bounding_regions = table.bounding_regions
-
-            # paragraphs[new_idx] = new_paragraph
-            # Replace the original paragraphs with the new paragraph
-            paragraphs = [p for idx, p in enumerate(paragraphs) if p not in table_paragraphs or idx == new_idx]
-
-        return paragraphs
-        
 
 def _create_csv_representation(docs):
     content = json.dumps([json.loads(doc.content) for doc in docs])
