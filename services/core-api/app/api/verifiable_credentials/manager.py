@@ -32,28 +32,27 @@ task_logger = get_task_logger(__name__)
 
 
 class UNTPCCMinesActPermit(cc.ConformityAttestation):
-    type: List[str] = ["ConformityAttestation, MinesActPermit"]
+    type: List[str] = ["ConformityAttestation", "MinesActPermit"]
     permitNumber: str
 
 
 #this should probably be imported from somewhere.
 class W3CCred(BaseModel):
+    #based on VCDM 2.0. https://www.w3.org/TR/vc-data-model-2.0/
     model_config = ConfigDict(
         populate_by_name=True, json_encoders={datetime: lambda v: v.isoformat()})
 
     context: List[Union[str, dict]] = Field(
         alias="@context",
         default=[
-            "https://www.w3.org/2018/credentials/v1",
+            "https://www.w3.org/ns/credentials/v2",
             Config.UNTP_DIGITAL_CONFORMITY_CREDENTIAL_CONTEXT,
-            Config.UNTP_BC_MINES_ACT_PERMIT_CONTEXT, {
-                "name": "https://schema.org/name"
-            }
+            Config.UNTP_BC_MINES_ACT_PERMIT_CONTEXT,
         ])
     type: List[str]
     issuer: Union[str, dict[str, str]]
     # TODO: update to `validFrom` for vcdm 2.0 once available in aca-py/traction, which is an optional property
-    issuanceDate: str
+    validFrom: str
     credentialSubject: UNTPCCMinesActPermit
     credentialSchema: List[dict]
 
@@ -194,11 +193,10 @@ def process_all_untp_map_for_orgbook():
     task_logger.info(f"public_verkey={public_verkey}")
     # send to traction to be signed
     for cred_payload, record in records:
-        signed_cred = traction_service.sign_jsonld_credential_deprecated(
-            Config.CHIEF_PERMITTING_OFFICER_DID_WEB_VERIFICATION_METHOD, public_verkey,
-            cred_payload)
+        signed_cred = traction_service.sign_add_data_integrity_proof(
+            Config.CHIEF_PERMITTING_OFFICER_DID_WEB_VERIFICATION_METHOD, cred_payload)
         if signed_cred:
-            record.signed_credential = json.dumps(signed_cred["signed_doc"])
+            record.signed_credential = json.dumps(signed_cred["securedDocument"])
             record.sign_date = datetime.now()
         try:
             record.save()
@@ -380,22 +378,16 @@ class VerifiableCredentialManager():
         facility = cc.Facility(
             id=None,
             name=permit_amendment.mine.mine_name,
-            registeredId="mine_no",
+            registeredId=permit_amendment.mine.mine_no,
             locationInformation=
             f'https://plus.codes/{plus_code_encode(permit_amendment.mine.latitude, permit_amendment.mine.longitude)}',
             address=None,
             IDverifiedByCAB=True)
 
+        #TODO, can CORE identify commodities by their UNCEFACT code?
         products = [
-            cc.Product(
-                id=None,
-                name=c,
-                                                                                  #TODO, can CORE identify commodities by their UNCEFACT code?
-                                                                                  # id=c.uncefact_code?
-                                                                                  # idScheme=base.IdentifierScheme(
-                                                                                  # id="https://unstats.un.org/unsd/classifications/Econ/cpc",
-                                                                                  # name="Central Product Classification (UNCEFACT)"),
-                IDverifiedByCAB=False) for c in permit_amendment.mine.commodities
+            cc.Product(id=None, name=c, IDverifiedByCAB=False)
+            for c in permit_amendment.mine.commodities
         ]
 
         issue_date = permit_amendment.issue_date
@@ -449,7 +441,7 @@ class VerifiableCredentialManager():
                 "VerifiableCredential", "DigitalConformityCredential", "BCMinesActPermitCredential"
             ],
             issuer={"id": did},
-            issuanceDate=issuance_date_str,                                                         #vcdm1.1, will change to 'validFrom' in vcdm2.0
+            validFrom=issuance_date_str,                                                            #vcdm1.1, will change to 'validFrom' in vcdm2.0
             credentialSubject=cred,
             credentialSchema=[{
                 "id": Config.UNTP_DIGITAL_CONFORMITY_CREDENTIAL_CONTEXT,
