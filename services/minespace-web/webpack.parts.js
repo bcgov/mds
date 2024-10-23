@@ -98,7 +98,6 @@ exports.loadCSS = ({ include, exclude } = {}) => ({
         include,
         exclude,
         use: [
-          // "thread-loader",
           "style-loader",
           "css-loader",
           postCSSLoader,
@@ -118,7 +117,6 @@ exports.loadCSS = ({ include, exclude } = {}) => ({
         include,
         exclude,
         use: [
-          // "thread-loader",
           "style-loader",
           "css-loader",
           postCSSLoader,

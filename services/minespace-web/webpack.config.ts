@@ -7,7 +7,6 @@ const { merge } = require("webpack-merge");
 const path = require("path");
 const dotenv = require("dotenv").config({ path: `${__dirname}/.env` });
 const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
-const threadLoader = require("thread-loader");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const parts = require("./webpack.parts");
