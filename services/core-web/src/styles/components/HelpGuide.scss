@@ -9,3 +9,15 @@
         text-align: left;
     }
 }
+
+.help-open {
+    font-size: 18px;
+    margin-bottom: 0;
+    border: none;
+    color: white;
+    padding: 0 5px;
+
+    &:hover {
+        color: white;
+    }
+}

@@ -276,11 +276,12 @@ export const dateTimezoneRequired = memoize((timezoneField) => (_value, allValue
 export const dateInFuture = (value) =>
   value && !moment(value).isAfter() ? "Date must be in the future" : undefined;
 
-export const dateNotBeforeOther = memoize((other) => (value) =>
-  value && other && new Date(value) <= new Date(other)
-    ? `Date cannot be on or before ${new Date(other).toDateString()}`
-    : undefined
-);
+// NOTE: modified from version in CORE- change from <= to <
+export const dateNotBeforeOther = memoize((other: string) => (value: string) => {
+  return value && other && value < other
+    ? `Date cannot be before ${moment(other).format("ddd MMM D YYYY")}`
+    : undefined;
+});
 
 export const dateNotBeforeStrictOther = memoize((other) => (value) =>
   value && other && moment(value).isBefore(other) ? `Date cannot be before ${other}` : undefined
@@ -298,11 +299,12 @@ export const timeNotBeforeOther = memoize(
       : undefined
 );
 
-export const dateNotAfterOther = memoize((other) => (value) =>
-  value && other && new Date(value) >= new Date(other)
-    ? `Date cannot be on or after ${new Date(other).toDateString()}`
-    : undefined
-);
+// NOTE: modified from version in CORE- change from >= to >
+export const dateNotAfterOther = memoize((other: string) => (value: string) => {
+  return value && other && value > other
+    ? `Date cannot be after ${moment(other).format("ddd MMM D YYYY")}`
+    : undefined;
+});
 
 export const yearNotInFuture = (value) =>
   value && value > new Date().getFullYear() ? "Year cannot be in the future" : undefined;

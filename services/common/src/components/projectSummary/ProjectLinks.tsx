@@ -77,7 +77,9 @@ const ProjectLinkInput = ({ unrelatedProjects = [], mineGuid, projectGuid }) => 
           onChange={(...args) => handleChange(args)}
         />
         <Button
-          disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+          disabled={
+            currentSelection.length === 0 || isFieldDisabled(systemFlag, formValues?.status_code)
+          }
           type="primary"
           onClick={addRelatedProjects}
           className="block-button"

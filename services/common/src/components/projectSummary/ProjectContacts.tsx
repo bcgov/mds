@@ -15,10 +15,9 @@ import {
 } from "@mds/common/redux/utils/Validate";
 import { normalizePhone } from "@mds/common/redux/utils/helpers";
 import LinkButton from "@mds/common/components/common/LinkButton";
-import { FORM, isFieldDisabled } from "@mds/common/constants";
+import { FORM, isFieldDisabled, CONTACTS_COUNTRY_OPTIONS } from "@mds/common/constants";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
-import { CONTACTS_COUNTRY_OPTIONS } from "@mds/common/constants";
 import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 
@@ -46,9 +45,9 @@ const RenderContacts = ({ fields, isDisabled }) => {
         const { address_type_code, sub_division_code } = address ?? {};
         const isInternational = address_type_code === "INT";
         const isPrimary = contact.is_primary;
+
         return (
-          // eslint-disable-next-line react/no-array-index-key
-          <div key={index}>
+          <div key={field}>
             {index === 0 ? (
               <>
                 <Typography.Title level={5}>Primary project contact</Typography.Title>
@@ -58,35 +57,33 @@ const RenderContacts = ({ fields, isDisabled }) => {
                 </Typography.Paragraph>
               </>
             ) : (
-              <>
-                <Col span={24}>
-                  <Row gutter={16}>
-                    <Col>
-                      <Typography.Title level={5}>
-                        Additional project contact #{index}
-                      </Typography.Title>
-                    </Col>
-                    <Col>
-                      <Popconfirm
-                        placement="topLeft"
-                        title="Are you sure you want to remove this contact?"
-                        onConfirm={() => fields.remove(index)}
-                        okText="Remove"
-                        cancelText="Cancel"
+              <Col span={24}>
+                <Row gutter={16}>
+                  <Col>
+                    <Typography.Title level={5}>
+                      Additional project contact #{index}
+                    </Typography.Title>
+                  </Col>
+                  <Col>
+                    <Popconfirm
+                      placement="topLeft"
+                      title="Are you sure you want to remove this contact?"
+                      onConfirm={() => fields.remove(index)}
+                      okText="Remove"
+                      cancelText="Cancel"
+                    >
+                      <Button
+                        style={{ marginTop: 0 }}
+                        className="fa-icon-container btn-sm-padding"
+                        icon={<FontAwesomeIcon icon={faTrashAlt} />}
+                        type="default"
                       >
-                        <Button
-                          style={{ marginTop: 0 }}
-                          className="fa-icon-container btn-sm-padding"
-                          icon={<FontAwesomeIcon icon={faTrashAlt} />}
-                          type="default"
-                        >
-                          Delete
-                        </Button>
-                      </Popconfirm>
-                    </Col>
-                  </Row>
-                </Col>
-              </>
+                        Delete
+                      </Button>
+                    </Popconfirm>
+                  </Col>
+                </Row>
+              </Col>
             )}
             <Row gutter={16}>
               <Col md={12} sm={24}>
@@ -208,7 +205,7 @@ const RenderContacts = ({ fields, isDisabled }) => {
               </Col>
               <Col md={12} sm={24}>
                 <Field
-                  disabled={isDisabled}
+                  disabled={isDisabled || isInternational}
                   name={`${field}.address.sub_division_code`}
                   label="Province"
                   required={isPrimary && !isInternational}
