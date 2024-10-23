@@ -211,7 +211,7 @@ const prodConfig = merge([
       // maxSize: 3000000,
       cacheGroups: {
         defaultVendors: {
-          test: /[\\/]node_modules[\\/](?!\@syncfusion*)/,
+          test: /[\\/]node_modules[\\/](?!(\@syncfusion*|leaflet*))/,
           name: "vendor",
           chunks: "all",
           priority: -5,

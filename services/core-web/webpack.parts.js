@@ -171,7 +171,6 @@ exports.extractCSS = ({ include, exclude, filename, theme, chunkFilename } = {})
         include,
         exclude,
         use: [
-          "style-loader",
           MiniCssExtractPlugin.loader,
           "css-loader",
           postCSSLoader,
@@ -191,7 +190,6 @@ exports.extractCSS = ({ include, exclude, filename, theme, chunkFilename } = {})
         include,
         exclude,
         use: [
-          "style-loader",
           MiniCssExtractPlugin.loader,
           "css-loader",
           postCSSLoader,
