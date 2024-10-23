@@ -6,6 +6,7 @@ export interface FileUploadHelperProps {
   metadata: {
     filename: string;
     filetype: string;
+    maxfilenamelength: string;
   };
   uploadResults?: UploadResult[];
   uploadData?: MultipartDocumentUpload;

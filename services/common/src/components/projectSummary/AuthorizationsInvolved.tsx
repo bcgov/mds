@@ -87,10 +87,9 @@ const RenderEMAPermitCommonSections = ({ code, isAmendment, index, isDisabled })
   ) => {
     const categorySpecificDocumentType = PROJECT_SUMMARY_DOCUMENT_TYPE_CODE_STATE[category];
     const categorySpecificDocuments = sectionValues[categorySpecificDocumentType];
-    const categorySpecificDocumentIndex = categorySpecificDocuments.findIndex(
+    const categorySpecificDocumentIndex = categorySpecificDocuments?.findIndex(
       (doc) => document_manager_guid === doc.document_manager_guid
     );
-
     dispatch(
       arrayRemove(
         FORM.ADD_EDIT_PROJECT_SUMMARY,
@@ -98,7 +97,6 @@ const RenderEMAPermitCommonSections = ({ code, isAmendment, index, isDisabled })
         categorySpecificDocumentIndex
       )
     );
-
     dispatch(
       arrayRemove(
         FORM.ADD_EDIT_PROJECT_SUMMARY,

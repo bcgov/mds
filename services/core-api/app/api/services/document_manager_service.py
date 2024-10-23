@@ -20,6 +20,7 @@ from flask import Response, current_app
 from flask import request as flask_request
 from flask_restx import fields, marshal
 from tusclient import client
+from werkzeug.exceptions import BadRequest
 
 logger = logging.getLogger(__name__)
 
@@ -44,7 +45,6 @@ class DocumentManagerService():
 
         if not mine_document: # No existing file found in this application hence continuing the file uploading
           resp = DocumentManagerService.initializeFileUploadWithDocumentManager(request, mine, document_category)
-
         elif mine_document.is_archived: # An archived file with the same name in this application found, hence responing with 409
             content = {
                 "description" : f"Archived file already exist with the given name: {file_name}",
@@ -80,7 +80,12 @@ class DocumentManagerService():
         metadata = cls._parse_request_metadata(request)
         if not metadata or not metadata.get('filename'):
             raise Exception('Request metadata missing filename')
-
+        
+        max_file_name_length = metadata.get('maxfilenamelength', None)
+        file_name = ((metadata.get('filename')).rsplit('.', 1))[0]
+        if max_file_name_length and max_file_name_length.isdigit() and len(file_name) > int(max_file_name_length):
+            raise BadRequest(f'File name exceeds the {max_file_name_length} character limit')
+        
         folder, pretty_folder = cls._parse_upload_folders(mine, document_category)
         data = {
             'folder': folder,

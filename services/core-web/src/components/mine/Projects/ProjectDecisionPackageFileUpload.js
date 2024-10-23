@@ -6,6 +6,7 @@ import "@ant-design/compatible/assets/index.css";
 import { PROJECT_DECISION_PACKAGE_DOCUMENTS } from "@mds/common/constants/API";
 import FileUpload from "@/components/common/FileUpload";
 import { DOCUMENT, EXCEL, IMAGE, SPATIAL } from "@/constants/fileTypes";
+import { MAX_DOCUMENT_NAME_LENGTHS } from "@mds/common";
 
 const propTypes = {
   onFileLoad: PropTypes.func.isRequired,
@@ -26,6 +27,9 @@ export const ProjectDecisionPackageFileUpload = (props) => (
       onRemoveFile={props.onRemoveFile}
       allowRevert
       allowMultiple={props.allowMultiple}
+      maxFileNameLength={MAX_DOCUMENT_NAME_LENGTHS.MAJOR_PROJECTS}
+      abbrevLabel={true}
+      label="Upload Files"
     />
   </Form.Item>
 );

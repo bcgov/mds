@@ -30,8 +30,8 @@ exports[`UploadProjectDecisionPackageDocumentForm renders properly 1`] = `
       span={24}
     >
       <FormItem
+        className="decision-package-uploads"
         hasFeedback={false}
-        label="Upload Files"
       >
         <Field
           component={[Function]}

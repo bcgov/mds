@@ -38,9 +38,15 @@ export const UploadProjectDecisionPackageDocumentForm = (props) => {
   };
 
   const onRemoveFile = (err, fileItem) => {
-    setUploadedFiles(
-      uploadedFiles.filter((file) => file.document_manager_guid !== fileItem.serverId)
-    );
+    if (err) {
+      console.log(err);
+    }
+
+    if (fileItem.serverId) {
+      setUploadedFiles(
+        uploadedFiles.filter((file) => file.document_manager_guid !== fileItem.serverId)
+      );
+    }
   };
 
   useEffect(() => {
@@ -59,7 +65,7 @@ export const UploadProjectDecisionPackageDocumentForm = (props) => {
       </Row>
       <Row gutter={16}>
         <Col span={24}>
-          <Form.Item label="Upload Files">
+          <Form.Item className="decision-package-uploads">
             <Field
               id="uploadedFiles"
               name="uploadedFiles"

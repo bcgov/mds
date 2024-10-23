@@ -55,6 +55,7 @@ interface FileUploadProps extends BaseInputProps {
   allowMultiple?: boolean;
   allowReorder?: boolean;
   maxFileSize?: string;
+  maxFileNameLength?: number;
   itemInsertLocation?: ItemInsertLocationType;
   // for a completely customized drop label
   labelIdle?: string;
@@ -75,6 +76,7 @@ interface FileUploadProps extends BaseInputProps {
 
 export const FileUpload: FC<FileUploadProps> = ({
   maxFileSize = "750MB",
+  maxFileNameLength = null,
   acceptedFileTypesMap = {},
   onFileLoad = () => {},
   onRemoveFile = () => {},
@@ -152,11 +154,15 @@ export const FileUpload: FC<FileUploadProps> = ({
       fileTypeDisplayString = fileTypeList[0];
     }
 
-    const fileSize = maxFileSize ? ` with max individual file size of ${maxFileSize}` : "";
+    const fileSize = maxFileSize ? ` with max file size of ${maxFileSize}` : "";
+    const secondLineWithNamingConvention = `<div>Use the naming convention: "YYYY MM DD Short Descriptive Title" 
+    (max ${maxFileNameLength} characters) ${fileSize}.</div>`;
     const secondLine = abbrevLabel
       ? `<div>We accept most common ${fileTypeDisplayString} files${fileSize}.</div>`
       : `<div>Accepted filetypes: ${fileTypeDisplayString}</div>`;
-    return `${labelInstruction}<br>${secondLine}`;
+    return `${labelInstruction}<br>${
+      maxFileNameLength ? secondLineWithNamingConvention : secondLine
+    }`;
   };
 
   // Stores metadata and process function for each file, so we can manually
@@ -183,7 +189,7 @@ export const FileUpload: FC<FileUploadProps> = ({
       const response = err.originalRequest
         ? JSON.parse(err.originalRequest.getUnderlyingObject().response)
         : err || {};
-
+      const errorMessage = err?.response?.data?.message;
       if (
         !(
           notificationDisabledStatusCodes?.length &&
@@ -191,7 +197,9 @@ export const FileUpload: FC<FileUploadProps> = ({
         )
       ) {
         notification.error({
-          message: `Failed to upload ${file && file.name ? file.name : ""}: ${err}`,
+          message: `Failed to upload ${file && file.name ? file.name : ""}: ${
+            errorMessage ? errorMessage : err
+          }`,
           duration: 10,
         });
       }
@@ -289,6 +297,7 @@ export const FileUpload: FC<FileUploadProps> = ({
       metadata: {
         filename: file.name,
         filetype: file.type || APPLICATION_OCTET_STREAM,
+        maxfilenamelength: metadata.maxfilenamelength,
       },
       onError: (err, uploadResult) => {
         setUploadResultsFor(fileId, uploadResult);
@@ -317,6 +326,7 @@ export const FileUpload: FC<FileUploadProps> = ({
       metadata: {
         filename: file.name,
         filetype: file.type || APPLICATION_OCTET_STREAM,
+        maxfilenamelength: metadata.maxfilenamelength,
       },
       onBeforeRequest: (req) => {
         // Set authorization header on each request to make use
@@ -455,8 +465,9 @@ export const FileUpload: FC<FileUploadProps> = ({
   }, []);
 
   const handleFileAdd = (err, file) => {
-    // Add ID to file metadata so we can reference it later
+    // Add properties to file metadata so we can reference it later
     file.setMetadata("filepondid", file.id);
+    file.setMetadata("maxfilenamelength", maxFileNameLength);
   };
 
   const getLabel = () => {

@@ -3,10 +3,11 @@ import { Field, WrappedFieldProps } from "redux-form";
 import { useSelector } from "react-redux";
 import { NEW_VERSION_DOCUMENTS, PROJECT_SUMMARY_DOCUMENTS } from "@mds/common/constants/API";
 import RenderFileUpload from "@mds/common/components/forms/RenderFileUpload";
-import { Alert, Divider, Modal, Popconfirm, Table, Typography } from "antd";
+import { Alert, Divider, Modal, Popconfirm, Table, Typography, notification } from "antd";
 import { getUserInfo } from "@mds/common/redux/selectors/authenticationSelectors";
 import { FilePondFile } from "filepond";
 import { IDocument } from "@mds/common/interfaces/document";
+import { MAX_DOCUMENT_NAME_LENGTHS } from "@mds/common/constants";
 
 const notificationDisabledStatusCodes = [409]; // Define the notification disabled status codes
 
@@ -202,6 +203,7 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
         {...(props.label ? { label: props.label } : {})}
         {...(props.listedFileTypes ? { listedFileTypes: props.listedFileTypes } : {})}
         abbrevLabel={true}
+        maxFileNameLength={MAX_DOCUMENT_NAME_LENGTHS.MAJOR_PROJECTS}
         id="fileUpload"
         name="fileUpload"
         component={RenderFileUpload}

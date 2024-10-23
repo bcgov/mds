@@ -14,10 +14,8 @@ class InformationRequirementsTableDocumentUploadResource(Resource, UserMixin):
         params={'project_guid': 'The GUID of the project the IRT belongs to.'})
     def post(self, project_guid):
         project = Project.find_by_project_guid(project_guid)
-
         if not project:
             raise NotFound('Project not found.')
-
         mine = Mine.find_by_mine_guid(str(project.mine_guid))
 
         if not mine:
