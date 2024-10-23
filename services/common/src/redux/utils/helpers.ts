@@ -109,16 +109,15 @@ export const formatDateTimeUserTz = (dateTime: Date | string): string => {
 
 export const timeAgo = (dateTime, unit = "day") => {
   const startDate = dateTime;
-  const endDate = new Date().toUTCString();
-
+  const endDate = moment();
   if (unit === "day") {
-    return moment(endDate).diff(moment(startDate), "days");
+    return endDate.diff(moment(startDate), "days");
   } else if (unit === "hours") {
-    return moment(endDate).diff(moment(startDate), "hours");
+    return endDate.diff(moment(startDate), "hours");
   } else if (unit === "minutes") {
-    return moment(endDate).diff(moment(startDate), "minutes");
+    return endDate.diff(moment(startDate), "minutes");
   } else {
-    return moment(endDate).diff(moment(startDate), "seconds");
+    return endDate.diff(moment(startDate), "seconds");
   }
 };
 
@@ -653,7 +652,7 @@ export const getHighestConsequence = (tsf) => {
 
   const highestRankedDam = tsf.dams.reduce((prev, current) =>
     CONSEQUENCE_CLASSIFICATION_RANK_HASH[prev.consequence_classification] >
-    CONSEQUENCE_CLASSIFICATION_RANK_HASH[current.consequence_classification]
+      CONSEQUENCE_CLASSIFICATION_RANK_HASH[current.consequence_classification]
       ? prev
       : current
   );
@@ -670,20 +669,17 @@ export const getMineReportStatusDescription = (
   const update_timestamp = latestSubmission?.update_timestamp;
   const updatedDate = moment(update_timestamp).format("YYYY-MM-DD");
   const MINE_REPORT_STATUS_DESCRIPTION_HASH = {
-    [MINE_REPORT_SUBMISSION_CODES.NON]: `The ministry has requested for the report from the proponent through MineSpace. Requested by ${
-      latestSubmission?.update_user
-    } on ${formatDate(updatedDate)}`,
+    [MINE_REPORT_SUBMISSION_CODES.NON]: `The ministry has requested for the report from the proponent through MineSpace. Requested by ${latestSubmission?.update_user
+      } on ${formatDate(updatedDate)}`,
     [MINE_REPORT_SUBMISSION_CODES.ACC]:
       "The Ministry has reviewed the report, no more revision is required",
     [MINE_REPORT_SUBMISSION_CODES.REC]:
       "Ministry has received changes after requesting for more information. The revised information has not been reviewed.",
-    [MINE_REPORT_SUBMISSION_CODES.REQ]: `Requesting more information from the proponent through MineSpace. Requested by ${
-      latestSubmission?.update_user
-    } on ${formatDate(updatedDate)}`,
+    [MINE_REPORT_SUBMISSION_CODES.REQ]: `Requesting more information from the proponent through MineSpace. Requested by ${latestSubmission?.update_user
+      } on ${formatDate(updatedDate)}`,
     [MINE_REPORT_SUBMISSION_CODES.INI]: "The report has been submitted successfully",
-    [MINE_REPORT_SUBMISSION_CODES.WTD]: `The report has been withdrawn. Withdrew by ${
-      latestSubmission?.update_user
-    } on ${formatDate(updatedDate)}`,
+    [MINE_REPORT_SUBMISSION_CODES.WTD]: `The report has been withdrawn. Withdrew by ${latestSubmission?.update_user
+      } on ${formatDate(updatedDate)}`,
     [MINE_REPORT_SUBMISSION_CODES.NRQ]: "This report is not requested",
   };
   return MINE_REPORT_STATUS_DESCRIPTION_HASH[statusCode] || "";
