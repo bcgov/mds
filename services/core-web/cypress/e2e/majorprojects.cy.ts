@@ -77,7 +77,7 @@ describe("Major Projects", () => {
         expect(interception.request.headers["upload-length"]).to.equal("16368");
         expect(interception.request.headers["upload-protocol"]).to.equal("s3-multipart");
         expect(interception.request.headers["upload-metadata"]).to.equal(
-          "filename ZHVtbXkucGRm,filetype YXBwbGljYXRpb24vcGRm"
+          "filename ZHVtbXkucGRm,filetype YXBwbGljYXRpb24vcGRm,maxfilenamelength NTA="
         );
       });
 
