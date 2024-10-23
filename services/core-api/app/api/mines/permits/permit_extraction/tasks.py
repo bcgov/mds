@@ -10,7 +10,6 @@ from app.api.mines.permits.permit_extraction.models.permit_extraction_task impor
 from app.api.search.search.permit_search_service import PermitSearchService
 from app.tasks.celery import celery
 from celery import Task
-from flask import current_app
 from werkzeug.exceptions import InternalServerError
 
 

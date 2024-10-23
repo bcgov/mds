@@ -124,7 +124,7 @@ export const ProjectManagement: FC = () => {
             <div className="margin-large--top">
               <Row gutter={12.5} align="middle" className="margin-medium--bottom">
                 <Col>
-                  <FontAwesomeIcon size="lg" icon={faLock} className="color-error" />
+                  <FontAwesomeIcon size="lg" icon={faLock} className="color-primary" />
                 </Col>
                 <Col>
                   <Title level={3} className="color-primary margin-none">
