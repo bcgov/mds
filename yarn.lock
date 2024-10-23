@@ -1777,7 +1777,7 @@ __metadata:
     date-fns: 2.28.0
     dotenv: 16.4.5
     enzyme: 3.11.0
-    enzyme-adapter-react-16: 1.14.0
+    enzyme-adapter-react-16: 1.15.8
     enzyme-to-json: 3.3.5
     esbuild-loader: 4.2.2
     eslint: 9.13.0
@@ -1920,7 +1920,7 @@ __metadata:
     cypress: 13.15.0
     dotenv: 16.4.5
     enzyme: 3.11.0
-    enzyme-adapter-react-16: 1.14.0
+    enzyme-adapter-react-16: 1.15.8
     enzyme-to-json: 3.4.3
     esbuild-loader: 4.2.2
     eslint: 9.13.0
@@ -7490,27 +7490,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"enzyme-adapter-react-16@npm:1.14.0":
-  version: 1.14.0
-  resolution: "enzyme-adapter-react-16@npm:1.14.0"
+"enzyme-adapter-react-16@npm:1.15.8":
+  version: 1.15.8
+  resolution: "enzyme-adapter-react-16@npm:1.15.8"
   dependencies:
-    enzyme-adapter-utils: ^1.12.0
-    has: ^1.0.3
-    object.assign: ^4.1.0
-    object.values: ^1.1.0
-    prop-types: ^15.7.2
-    react-is: ^16.8.6
+    enzyme-adapter-utils: ^1.14.2
+    enzyme-shallow-equal: ^1.0.7
+    hasown: ^2.0.0
+    object.assign: ^4.1.5
+    object.values: ^1.1.7
+    prop-types: ^15.8.1
+    react-is: ^16.13.1
     react-test-renderer: ^16.0.0-0
-    semver: ^5.7.0
+    semver: ^5.7.2
   peerDependencies:
     enzyme: ^3.0.0
     react: ^16.0.0-0
     react-dom: ^16.0.0-0
-  checksum: e58d488d2a23a321e8afe8cc6dae14beaef52c1346ad209e53d217a495bb1e46e70166f211e60bec0f030ae25d67a37781735000c487e06c3839b1db4004318f
+  checksum: 650de38b8d8e2ceab69b81c1c65900186d7ca9b19de347afda2b7e7afdf36b5b8f69898072a57a5ddfeb612c30e531a082fd89c805edf9ccf3c8bd4483848f62
   languageName: node
   linkType: hard
 
-"enzyme-adapter-utils@npm:^1.12.0":
+"enzyme-adapter-utils@npm:^1.14.2":
   version: 1.14.2
   resolution: "enzyme-adapter-utils@npm:1.14.2"
   dependencies:
@@ -7527,7 +7528,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"enzyme-shallow-equal@npm:^1.0.1":
+"enzyme-shallow-equal@npm:^1.0.1, enzyme-shallow-equal@npm:^1.0.7":
   version: 1.0.7
   resolution: "enzyme-shallow-equal@npm:1.0.7"
   dependencies:
@@ -14105,7 +14106,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"object.values@npm:^1.1.0, object.values@npm:^1.1.1, object.values@npm:^1.1.6, object.values@npm:^1.2.0":
+"object.values@npm:^1.1.1, object.values@npm:^1.1.6, object.values@npm:^1.1.7, object.values@npm:^1.2.0":
   version: 1.2.0
   resolution: "object.values@npm:1.2.0"
   dependencies:
@@ -17794,7 +17795,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:^5.3.0, semver@npm:^5.5.0, semver@npm:^5.6.0, semver@npm:^5.7.0":
+"semver@npm:^5.3.0, semver@npm:^5.5.0, semver@npm:^5.6.0, semver@npm:^5.7.2":
   version: 5.7.2
   resolution: "semver@npm:5.7.2"
   bin:
