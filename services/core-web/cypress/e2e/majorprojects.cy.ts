@@ -90,28 +90,37 @@ describe("Major Projects", () => {
       });
     });
 
-    // Intercept the GET request and stub the response
-    cy.intercept("GET", "**/documents**", (req) => {
-      // Set the desired response properties
-      req.reply({
-        statusCode: 301,
-        body: "Mocked response data",
-      });
-    }).as("downloadRequest");
+
     cy.wait(2500);
     cy.get("[data-cy=menu-actions-button]")
       .last()
       .click({ force: true });
 
-    // Click the Download file button in the dropdown
-    cy.contains("button", "Download file", { timeout: 3000 })
-      .find("div")
-      .click({ force: true });
 
-    // Wait for the network request to complete
-    cy.wait("@downloadRequest").then((interception) => {
-      // Check that the download request was made successfully
-      expect(interception.response.statusCode).to.equal(301);
+    cy.intercept(
+      "GET",
+      /.*\/download-token\/332d6f13-cd09-4b55-93d7-52bd7e557fa4$/,
+      {
+        statusCode: 200,
+        body: {
+          token_guid: "ec851412-9c91-48cd-8917-dd58f0934b16"
+        },
+      }
+    );
+
+
+    cy.window().then((win) => {
+      cy.stub(win, 'open').as('windowOpen');
+      // Click the Download file button in the dropdown
+      cy.contains("button", "Download file", { timeout: 3000 })
+        .find("div")
+        .click({ force: true });
+
+      cy.get('@windowOpen').should('be.called'); // Make sure PDF is opened in new window.
     });
+
+
+
+
   });
 });
