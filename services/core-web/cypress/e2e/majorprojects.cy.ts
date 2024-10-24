@@ -99,27 +99,28 @@ describe("Major Projects", () => {
 
     cy.intercept(
       "GET",
-      /.*\/download-token\/332d6f13-cd09-4b55-93d7-52bd7e557fa4$/,
+      /.*download-token\/.*$/,
       {
         statusCode: 200,
         body: {
           token_guid: "ec851412-9c91-48cd-8917-dd58f0934b16"
         },
       }
-    );
-
+    ).as('dlReq');
 
     cy.window().then((win) => {
       cy.stub(win, 'open').as('windowOpen');
-      // Click the Download file button in the dropdown
-      cy.contains("button", "Download file", { timeout: 3000 })
-        .find("div")
-        .click({ force: true });
-
-      cy.url().should('include', 'documents?token=ec851412-9c91-48cd-8917-dd58f0934b16')
     });
 
 
+    // Click the Download file button in the dropdown
+    cy.contains("button", "Download file", { timeout: 3000 })
+      .find("div")
+      .click({ force: true });
+
+    cy.wait('@dlReq');
+
+    cy.get('@windowOpen').should('have.been.calledWith', `${Cypress.env("CYPRESS_DOC_MAN_URL")}/documents?token=ec851412-9c91-48cd-8917-dd58f0934b16`, '_blank')
 
   });
 });
