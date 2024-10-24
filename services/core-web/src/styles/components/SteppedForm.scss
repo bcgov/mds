@@ -20,10 +20,13 @@
     border-right: unset !important;
 }
 
-.stepped-menu-item {
+.ant-menu-item.stepped-menu-item {
     transition: all .1s ease-in-out;
     color: $violet;
-    // text-decoration: underline;
+    text-wrap: wrap;
+    height: auto;
+    min-height: 40px;
+    line-height: 25px;
 }
 
 .stepped-menu-item:hover {

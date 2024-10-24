@@ -27,6 +27,8 @@ import DOMPurify from "dompurify";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils";
 import Loading from "../common/Loading";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faQuestionCircle } from "@fortawesome/pro-regular-svg-icons";
 
 interface HelpGuideProps {
   helpKey: string;
@@ -138,8 +140,14 @@ export const HelpGuideContent: FC<HelpGuideProps> = ({ helpKey }) => {
 
   return (
     <>
-      <Button data-testid="help-open" onClick={showDrawer}>
-        ?
+      <Button
+        data-testid="help-open"
+        className="help-open"
+        onClick={showDrawer}
+        title="Open Help Guide"
+        type="text"
+      >
+        <FontAwesomeIcon icon={faQuestionCircle} />
       </Button>
       <Drawer
         placement="right"
