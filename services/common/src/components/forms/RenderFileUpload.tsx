@@ -297,7 +297,6 @@ export const FileUpload: FC<FileUploadProps> = ({
       metadata: {
         filename: file.name,
         filetype: file.type || APPLICATION_OCTET_STREAM,
-        maxfilenamelength: metadata.maxfilenamelength,
       },
       onError: (err, uploadResult) => {
         setUploadResultsFor(fileId, uploadResult);
@@ -326,7 +325,6 @@ export const FileUpload: FC<FileUploadProps> = ({
       metadata: {
         filename: file.name,
         filetype: file.type || APPLICATION_OCTET_STREAM,
-        maxfilenamelength: metadata.maxfilenamelength,
       },
       onBeforeRequest: (req) => {
         // Set authorization header on each request to make use
@@ -465,9 +463,8 @@ export const FileUpload: FC<FileUploadProps> = ({
   }, []);
 
   const handleFileAdd = (err, file) => {
-    // Add properties to file metadata so we can reference it later
+    // Add ID to file metadata so we can reference it later
     file.setMetadata("filepondid", file.id);
-    file.setMetadata("maxfilenamelength", maxFileNameLength);
   };
 
   const getLabel = () => {

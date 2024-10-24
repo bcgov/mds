@@ -1,8 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
 import { PROJECT_DECISION_PACKAGE_DOCUMENTS } from "@mds/common/constants/API";
 import FileUpload from "@/components/common/FileUpload";
 import { DOCUMENT, EXCEL, IMAGE, SPATIAL } from "@/constants/fileTypes";
@@ -16,22 +14,20 @@ const propTypes = {
 };
 
 export const ProjectDecisionPackageFileUpload = (props) => (
-  <Form.Item>
-    <Field
-      id="fileUpload"
-      name="fileUpload"
-      component={FileUpload}
-      uploadUrl={PROJECT_DECISION_PACKAGE_DOCUMENTS(props.projectGuid)}
-      acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL, ...IMAGE, ...SPATIAL }}
-      onFileLoad={props.onFileLoad}
-      onRemoveFile={props.onRemoveFile}
-      allowRevert
-      allowMultiple={props.allowMultiple}
-      maxFileNameLength={MAX_DOCUMENT_NAME_LENGTHS.MAJOR_PROJECTS}
-      abbrevLabel={true}
-      label="Upload Files"
-    />
-  </Form.Item>
+  <Field
+    id="fileUpload"
+    name="fileUpload"
+    component={FileUpload}
+    uploadUrl={PROJECT_DECISION_PACKAGE_DOCUMENTS(props.projectGuid)}
+    acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL, ...IMAGE, ...SPATIAL }}
+    onFileLoad={props.onFileLoad}
+    onRemoveFile={props.onRemoveFile}
+    allowRevert
+    allowMultiple={props.allowMultiple}
+    maxFileNameLength={MAX_DOCUMENT_NAME_LENGTHS.MAJOR_PROJECTS}
+    abbrevLabel={true}
+    label="Upload Files"
+  />
 );
 
 ProjectDecisionPackageFileUpload.propTypes = propTypes;

@@ -3,9 +3,7 @@ import PropTypes from "prop-types";
 import { compose } from "redux";
 import { Field, reduxForm, getFormValues } from "redux-form";
 import { connect } from "react-redux";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm, Typography, Divider, Checkbox } from "antd";
+import { Button, Col, Row, Popconfirm, Typography, Divider, Checkbox, Form } from "antd";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import ProjectDecisionPackageFileUpload from "@/components/mine/Projects/ProjectDecisionPackageFileUpload";
@@ -65,16 +63,14 @@ export const UploadProjectDecisionPackageDocumentForm = (props) => {
       </Row>
       <Row gutter={16}>
         <Col span={24}>
-          <Form.Item className="decision-package-uploads">
-            <Field
-              id="uploadedFiles"
-              name="uploadedFiles"
-              onFileLoad={onFileLoad}
-              onRemoveFile={onRemoveFile}
-              projectGuid={props.projectGuid}
-              component={ProjectDecisionPackageFileUpload}
-            />
-          </Form.Item>
+          <Field
+            id="uploadedFiles"
+            name="uploadedFiles"
+            onFileLoad={onFileLoad}
+            onRemoveFile={onRemoveFile}
+            projectGuid={props.projectGuid}
+            component={ProjectDecisionPackageFileUpload}
+          />
         </Col>
       </Row>
       {isDecisionPackageEligible && (
