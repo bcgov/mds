@@ -8,6 +8,7 @@ from app.api.utils.resources_mixins import UserMixin
 from app.api.projects.project.models.project import Project
 from app.api.mines.mine.models.mine import Mine
 from app.api.services.document_manager_service import DocumentManagerService
+from app.api.constants import MAX_DOCUMENT_NAME_LENGTHS
 
 
 class ProjectDecisionPackageDocumentUploadResource(Resource, UserMixin):
@@ -30,4 +31,4 @@ class ProjectDecisionPackageDocumentUploadResource(Resource, UserMixin):
             raise NotFound('Mine not found.')
 
         return DocumentManagerService.initializeFileUploadWithDocumentManager(
-            request, mine, 'project_decision_package')
+            request, mine, 'project_decision_package', MAX_DOCUMENT_NAME_LENGTHS['MAJOR_PROJECTS'])

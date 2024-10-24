@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Field } from "redux-form";
 import { MAJOR_MINE_APPLICATION_DOCUMENTS } from "@mds/common/constants/API";
 import FileUpload from "@/components/common/FileUpload";
+import { MAX_DOCUMENT_NAME_LENGTHS } from "@mds/common";
 
 const propTypes = {
   onFileLoad: PropTypes.func.isRequired,
@@ -38,6 +39,8 @@ export const MajorMineApplicationFileUpload = (props) => (
     allowMultiple={props.allowMultiple}
     required={props.required}
     validate={props.validate}
+    abbrevLabel={true}
+    maxFileNameLength={MAX_DOCUMENT_NAME_LENGTHS.MAJOR_PROJECTS}
   />
 );
 

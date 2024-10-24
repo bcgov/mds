@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Field } from "redux-form";
 import { INFORMATION_REQUIREMENTS_TABLE_DOCUMENTS } from "@mds/common/constants/API";
 import FileUpload from "@/components/common/FileUpload";
+import { MAX_DOCUMENT_NAME_LENGTHS } from "@mds/common";
 
 const propTypes = {
   onFileLoad: PropTypes.func.isRequired,
@@ -20,6 +21,9 @@ export const IRTFileUpload = (props) => (
     id="fileUpload"
     name="fileUpload"
     component={FileUpload}
+    abbrevLabel={true}
+    maxFileNameLength={MAX_DOCUMENT_NAME_LENGTHS.MAJOR_PROJECTS}
+    label="Upload Files"
     uploadUrl={INFORMATION_REQUIREMENTS_TABLE_DOCUMENTS(props.projectGuid)}
     acceptedFileTypesMap={props.acceptedFileTypesMap}
     onFileLoad={props.onFileLoad}

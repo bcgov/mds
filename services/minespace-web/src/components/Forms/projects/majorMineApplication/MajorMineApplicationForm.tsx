@@ -90,17 +90,20 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
     documentTypeFieldForm: string,
     documentsForm: any[]
   ) => {
-    const newFiles = uploadedFiles?.filter(
-      (file) => file.document_manager_guid !== fileItem.serverId
-    );
+    if (err) {
+      console.log(err);
+    }
 
-    setUploadedFiles(newFiles);
-
-    const newDocumentsForm = documentsForm?.filter(
-      (doc) => doc.document_manager_guid !== fileItem.serverId
-    );
-
-    dispatch(change(FORM.ADD_MINE_MAJOR_APPLICATION, documentTypeFieldForm, newDocumentsForm));
+    if (fileItem.serverId) {
+      const newFiles = uploadedFiles?.filter(
+        (file) => file.document_manager_guid !== fileItem.serverId
+      );
+      setUploadedFiles(newFiles);
+      const newDocumentsForm = documentsForm?.filter(
+        (doc) => doc.document_manager_guid !== fileItem.serverId
+      );
+      dispatch(change(FORM.ADD_MINE_MAJOR_APPLICATION, documentTypeFieldForm, newDocumentsForm));
+    }
   };
 
   const uniqueDocs = (formDocuments: any[], mmaDocuments: any[], type_code: string) => {
