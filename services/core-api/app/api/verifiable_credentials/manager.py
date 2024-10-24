@@ -441,7 +441,7 @@ class VerifiableCredentialManager():
 
         new_credential_id = uuid4()
         w3c_cred = W3CCred(
-            id=f"{Config.ORGBOOK_CREDENTIAL_BASE_URL}{new_credential_id}",
+            id=f"{Config.ORGBOOK_CREDENTIAL_BASE_URL}/{new_credential_id}",
             type=[
                 "VerifiableCredential", "DigitalConformityCredential", "BCMinesActPermitCredential"
             ],
