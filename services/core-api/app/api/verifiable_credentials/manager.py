@@ -362,7 +362,7 @@ class VerifiableCredentialManager():
         orgbook_entity = curr_appt.party.party_orgbook_entity
         if not orgbook_entity:
             current_app.logger.warning("No Orgbook Entity, do not produce Mines Act Permit UNTP CC")
-            return None
+            return None, None
 
         untp_party_cpo = base.Identifier(
             id="did:web:untp.traceability.site:parties:regulators:CHIEF-PERMITTING-OFFICER",
