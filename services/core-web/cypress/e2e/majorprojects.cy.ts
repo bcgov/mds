@@ -93,7 +93,7 @@ describe("Major Projects", () => {
 
     cy.wait(2500);
     cy.get("[data-cy=menu-actions-button]")
-      .last()
+      .first()
       .click({ force: true });
 
 
