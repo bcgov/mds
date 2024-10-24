@@ -206,6 +206,7 @@ class ProjectSummaryResource(Resource, UserMixin):
         project = Project.find_by_project_guid(project_guid)
         data = self.parser.parse_args()
         is_historic = data.get('is_historic')
+        ams_terms_agreed = data.get('ams_terms_agreed')
         
         project_summary_validation = project_summary.validate_project_summary(data, is_historic)
         if any(project_summary_validation[i] != [] for i in project_summary_validation):
@@ -308,7 +309,7 @@ class ProjectSummaryResource(Resource, UserMixin):
             data.get('contacts', []))
         project.save()
 
-        if len(data.get('documents')) > 0:
+        if ams_terms_agreed and len(data.get('documents')) > 0:
             project = Project.find_by_project_guid(project_guid)
             ProjectUtil.notifiy_file_updates(project, mine)
 
