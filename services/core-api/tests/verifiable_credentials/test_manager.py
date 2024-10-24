@@ -74,7 +74,7 @@ class TestVerifiableCredentialManager:
         poe = PartyOrgBookEntityFactory(party_guid=permittee_appt.party_guid)
         permittee_appt.party.party_orgbook_entity = poe
 
-        pa_cred = VerifiableCredentialManager.produce_untp_cc_map_payload(
+        pa_cred, new_id = VerifiableCredentialManager.produce_untp_cc_map_payload(
             "did:test:10230123", permit.permit_amendments[0])
 
         pa = permit.permit_amendments[0]
@@ -86,7 +86,7 @@ class TestVerifiableCredentialManager:
         mine, permit = create_mine_and_permit()
         permittee_appt = MinePartyAppointmentFactory(permittee=True, permit_id=permit.permit_id)
 
-        pa_cred = VerifiableCredentialManager.produce_untp_cc_map_payload(
+        pa_cred, new_id = VerifiableCredentialManager.produce_untp_cc_map_payload(
             "did:test:10230123", permit.permit_amendments[0])
 
         assert not pa_cred
