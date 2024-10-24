@@ -116,9 +116,8 @@ describe("Major Projects", () => {
         .find("div")
         .click({ force: true });
 
-      cy.get('@windowOpen').should('be.called'); // Make sure PDF is opened in new window.
+      cy.url().should('include', 'documents?token=ec851412-9c91-48cd-8917-dd58f0934b16')
     });
-
 
 
 
