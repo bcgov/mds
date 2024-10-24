@@ -338,6 +338,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                         >
                           <button
                             class="ant-btn ant-btn-default full-mobile margin-small"
+                            disabled=""
                             type="button"
                           >
                             <span>

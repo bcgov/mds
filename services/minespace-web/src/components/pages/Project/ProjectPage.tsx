@@ -55,8 +55,10 @@ const ProjectPage: FC = () => {
     information_requirements_table,
     major_mine_application,
     mrc_review_required,
-    project_summary,
   } = project;
+
+  const hasInformationRequirementsTable = Boolean(information_requirements_table?.irt_guid);
+  const hasFinalAplication = Boolean(major_mine_application?.major_mine_application_guid);
 
   const mine = useSelector((state) => getMineById(state, mine_guid)) ?? {};
   const { mine_name } = mine;
@@ -236,6 +238,7 @@ const ProjectPage: FC = () => {
     {
       label: "IRT",
       key: "irt-entry",
+      disabled: !hasInformationRequirementsTable,
       children: (
         <div className={pageClass}>
           <InformationRequirementsTableEntryTab
@@ -248,6 +251,7 @@ const ProjectPage: FC = () => {
     {
       label: "Application",
       key: "major-mine-application",
+      disabled: !hasFinalAplication,
       children: <div className={pageClass}>{majorMineApplicationTabContent}</div>,
     },
     {

@@ -42,6 +42,7 @@ export const ProjectOverviewTab: FC = () => {
   } = project.project_summary;
 
   const hasInformationRequirementsTable = Boolean(project.information_requirements_table?.irt_guid);
+  const hasFinalAplication = Boolean(project.major_mine_application?.major_mine_application_guid);
 
   const project_lead_contact =
     projectLeads?.filter((lead) => lead.party_guid.includes(project.project_lead_party_guid)) ?? [];
@@ -105,7 +106,9 @@ export const ProjectOverviewTab: FC = () => {
           data-cy="final-application-view-link"
           to={routes.PROJECT_FINAL_APPLICATION.dynamicRoute(project_guid)}
         >
-          <Button className="full-mobile margin-small">View</Button>
+          <Button className="full-mobile margin-small" disabled={!hasFinalAplication}>
+            View
+          </Button>
         </Link>
       ),
     }

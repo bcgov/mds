@@ -223,12 +223,16 @@ h5.ant-typography,
       background-color: transparent !important;
       font-weight: normal;
 
-      &:not(.ant-tabs-tab-active) {
+      &:not(.ant-tabs-tab-active):not(.ant-tabs-tab-disabled) {
 
         &:hover,
         .ant-tabs-tab-btn:active {
           color: $font-colour !important;
         }
+      }
+
+      &.ant-tabs-tab-disabled {
+        color: rgba(0, 0, 0, 0.25) !important;
       }
 
       &.ant-tabs-tab-active {
@@ -473,7 +477,7 @@ th.ant-descriptions-item.vertical-description {
 
   &-footer {
     border: none;
-    padding: 0;
+    padding: 0 24px 24px 0;
   }
 }
 
@@ -629,11 +633,6 @@ th.ant-descriptions-item.vertical-description {
   background-color: #f2f2f2;
   align-items: center !important;
   border-bottom: none !important;
-}
-
-.ant-modal-footer {
-  padding-right: 24px;
-  padding-bottom: 24px;
 }
 
 // Collapse Component
