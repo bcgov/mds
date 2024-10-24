@@ -1,6 +1,7 @@
 # for midware/business level actions between requests and data access
 import json
 
+from uuid import uuid4, UUID
 from sqlalchemy.exc import IntegrityError
 from typing import List, Union, Tuple, Optional
 from pydantic import BaseModel, Field, ConfigDict
@@ -49,6 +50,7 @@ class W3CCred(BaseModel):
             Config.UNTP_DIGITAL_CONFORMITY_CREDENTIAL_CONTEXT,
             Config.UNTP_BC_MINES_ACT_PERMIT_CONTEXT,
         ])
+    id: str
     type: List[str]
     issuer: Union[str, dict[str, str]]
     # TODO: update to `validFrom` for vcdm 2.0 once available in aca-py/traction, which is an optional property
@@ -169,7 +171,7 @@ def process_all_untp_map_for_orgbook():
             task_logger.warning(f"Permit Amendment not found for permit_amendment_guid={row[0]}")
             continue
 
-        pa_cred = VerifiableCredentialManager.produce_untp_cc_map_payload(public_did, pa)
+        pa_cred, new_id = VerifiableCredentialManager.produce_untp_cc_map_payload(public_did, pa)
         if not pa_cred:
             task_logger.warning(f"pa_cred could not be created")
             continue
@@ -187,6 +189,7 @@ def process_all_untp_map_for_orgbook():
             permit_amendment_guid=row[0],
             party_guid=row[1],
             unsigned_payload_hash=payload_hash,
+            orgbook_credential_id=new_id,
         )
         records.append((pa_cred, paob))
 
@@ -332,7 +335,8 @@ class VerifiableCredentialManager():
         return credential
 
     @classmethod
-    def produce_untp_cc_map_payload(cls, did: str, permit_amendment: PermitAmendment):
+    def produce_untp_cc_map_payload(cls, did: str,
+                                    permit_amendment: PermitAmendment) -> Tuple[W3CCred, UUID]:
         """Produce payload for Mines Act Permit UNTP Conformity Credential from permit amendment and did."""
 
         #attributes in anoncreds but not in untp
@@ -418,8 +422,7 @@ class VerifiableCredentialManager():
             tzinfo=ZoneInfo("UTC")).isoformat()
 
         cred = UNTPCCMinesActPermit(
-            id=
-            f"https://orgbook.gov.bc.ca/entity/{orgbook_entity.registration_id}/credential/PLACEHOLDER",
+            id=None,
             name="Credential for permitNumber=" + permit_amendment.permit_no,
             permitNumber=permit_amendment.permit_no,
             assessmentLevel=codes.AssessmentLevelCode.GovtApproval,
@@ -436,7 +439,9 @@ class VerifiableCredentialManager():
             issuedToParty=untp_party_business,
             assessment=[untp_assessment])
 
+        new_credential_id = uuid4()
         w3c_cred = W3CCred(
+            id=f"{Config.ORGBOOK_CREDENTIAL_BASE_URL}{new_credential_id}",
             type=[
                 "VerifiableCredential", "DigitalConformityCredential", "BCMinesActPermitCredential"
             ],
@@ -448,4 +453,4 @@ class VerifiableCredentialManager():
                 "type": "JsonSchema"
             }])
 
-        return w3c_cred
+        return w3c_cred, new_credential_id
