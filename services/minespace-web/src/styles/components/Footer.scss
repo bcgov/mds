@@ -1,3 +1,5 @@
+@use "../base.scss" as *;
+
 .footer-link {
   color: $white;
 
@@ -6,9 +8,11 @@
   &:hover {
     color: $white;
   }
+
   text-decoration: none;
   display: flex;
   justify-content: center;
+
   @include screen-md {
     padding-bottom: $padding-sm;
     padding-top: $padding-sm;

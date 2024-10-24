@@ -5,7 +5,6 @@ const cssnano = require("cssnano");
 const path = require("path");
 
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const TerserPlugin = require("terser-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
@@ -37,9 +36,7 @@ exports.devServer = ({ host, port } = {}) => ({
     // Persist cache to filesystem to speed up consecutive builds.
     type: "filesystem",
   },
-  stats: {
-    warningsFilter: [/Serializing big strings/],
-  },
+  ignoreWarnings: [/Serializing big strings/],
   devServer: {
     historyApiFallback: true,
     host,
@@ -174,7 +171,6 @@ exports.extractCSS = ({ include, exclude, filename, theme, chunkFilename } = {})
         include,
         exclude,
         use: [
-          "style-loader",
           MiniCssExtractPlugin.loader,
           "css-loader",
           postCSSLoader,
@@ -194,7 +190,6 @@ exports.extractCSS = ({ include, exclude, filename, theme, chunkFilename } = {})
         include,
         exclude,
         use: [
-          "style-loader",
           MiniCssExtractPlugin.loader,
           "css-loader",
           postCSSLoader,

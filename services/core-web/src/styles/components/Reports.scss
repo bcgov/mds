@@ -1,3 +1,5 @@
+@use "../base.scss" as *;
+
 /* Minespace is wrapped with antD Row/Col components to control max width, since Core
    isn't, this needed to be added to keep display in line with the design on Core.
  */

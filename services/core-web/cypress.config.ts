@@ -4,7 +4,7 @@ export default defineConfig({
   chromeWebSecurity: false,
   viewportWidth: 1960,
   viewportHeight: 1080,
-  videoUploadOnPasses: false,
+  video: true,
   supportFolder: "cypress/support",
   defaultCommandTimeout: 15000,
   e2e: {

@@ -1,3 +1,5 @@
+@use "../base.scss" as *;
+
 // overriding styles that weren't quite working, confining changes to where wrapper is used
 .scroll-side-menu-wrapper {
     .view--header.fixed-scroll {

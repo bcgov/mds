@@ -68,7 +68,7 @@ exports[`MineRecordForm renders properly 1`] = `
         hasFeedback={false}
         label="Is this a historic mine status?"
       >
-        <Memo([object Object])
+        <Memo(ForwardRef)
           defaultValue={false}
           onChange={[Function]}
           value={false}
@@ -83,7 +83,7 @@ exports[`MineRecordForm renders properly 1`] = `
           >
             No
           </Radio>
-        </Memo([object Object])>
+        </Memo(ForwardRef)>
       </FormItem>
     </Col>
   </Row>
@@ -196,7 +196,7 @@ exports[`MineRecordForm renders properly 1`] = `
         hasFeedback={false}
         label="Does this mine site belong to a government agency?"
       >
-        <Memo([object Object])
+        <Memo(ForwardRef)
           defaultValue={false}
           onChange={[Function]}
           value={false}
@@ -211,7 +211,7 @@ exports[`MineRecordForm renders properly 1`] = `
           >
             No
           </Radio>
-        </Memo([object Object])>
+        </Memo(ForwardRef)>
       </FormItem>
     </Col>
   </Row>

@@ -24,8 +24,8 @@ const initialState = {
     projectSummaryMinistryComments: MOCK.PROJECT_SUMMARY_MINISTRY_COMMENTS.map((comment) => {
       return {
         ...comment,
-        update_timestamp: subDays(new Date(), 10).toISOString(),
-        create_timestamp: subDays(new Date(), 10).toISOString(),
+        update_timestamp: subDays(new Date(), 10).toUTCString(),
+        create_timestamp: subDays(new Date(), 10).toUTCString(),
       };
     }),
   },
@@ -46,7 +46,7 @@ describe("Project Management", () => {
         <FormWrapper
           name={FORM.ADD_EDIT_PROJECT_SUMMARY}
           initialValues={initialState.form[FORM.ADD_EDIT_PROJECT_SUMMARY].values}
-          onSubmit={() => {}}
+          onSubmit={() => { }}
         >
           <ProjectManagement />
         </FormWrapper>

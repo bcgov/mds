@@ -1,3 +1,5 @@
+@use "../base.scss" as *;
+
 .information-requirements-table-callout>h4 {
   color: $font-colour;
   font-weight: 700;

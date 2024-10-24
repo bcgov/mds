@@ -1,0 +1,17 @@
+// SETTINGS - Used with pre-processors. Global settings that contain font, colors definitions, etc.
+@forward "./settings/variables.scss";
+@forward "./settings/theme.scss";
+@forward "./settings/themeOverride.scss";
+@forward "./settings/filepond-overrides.scss";
+
+// TOOLS - globally used mixins and functions. (ie gradient mixins, font-sizing mixins)
+@forward "./tools/mixins.scss";
+@forward "./tools/syncfusion.scss";
+
+// GENERIC - Very high level, far-reaching styles. Contains Normalize.css, Box-sizing rules, CSS resets etc.
+@forward "./generic/Normalize.scss";
+@forward "./generic/layout.scss";
+@forward "./generic/helpers.scss";
+
+// ELEMENTS - Bare, un-classed HTML elements (like H1, A, etc.). This layer is rarely touched after initial setup.
+@forward "./elements/elements.scss";

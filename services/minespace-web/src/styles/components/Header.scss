@@ -1,3 +1,5 @@
+@use "../base.scss" as *;
+
 .header-content {
   display: flex;
   align-items: center;
@@ -19,7 +21,7 @@
 .header-title {
   font-size: $heading-4-size;
   font-weight: bold;
-  color: $white  !important;
+  color: $white !important;
   text-decoration: none !important;
 }
 
@@ -31,8 +33,8 @@
 }
 
 .login-btn {
-  color: $white  !important;
-  border-color: $white  !important;
+  color: $white !important;
+  border-color: $white !important;
   background-color: transparent !important;
 
   & a {
@@ -47,7 +49,7 @@
   &:hover,
   &.active {
     color: $white;
-    background-color: $primary-5  !important;
+    background-color: $primary-5 !important;
     text-decoration: none;
   }
 
@@ -90,9 +92,21 @@
 }
 
 @keyframes fadeIn {
-  0% { opacity: 0; top: 70px; transform: translateX(10000px);}
-  1% { transform: translateX(0);}
-  100% { opacity: 1; top: 80px; transform: translateX(0); }
+  0% {
+    opacity: 0;
+    top: 70px;
+    transform: translateX(10000px);
+  }
+
+  1% {
+    transform: translateX(0);
+  }
+
+  100% {
+    opacity: 1;
+    top: 80px;
+    transform: translateX(0);
+  }
 }
 
 .notification-drawer {
@@ -131,7 +145,7 @@
   padding-left: 24px;
   padding-right: 20px;
   padding-bottom: 0;
-  background-color: $white  !important;
+  background-color: $white !important;
 }
 
 .notification-drawer .ant-tabs>.ant-tabs-nav .ant-tabs-nav-wrap {
@@ -153,7 +167,7 @@
 }
 
 .notification-list-item:hover {
-  background-color: $table-highlight  !important;
+  background-color: $table-highlight !important;
   cursor: pointer;
   text-decoration: none;
 }
@@ -195,6 +209,7 @@
   justify-content: center;
   transform: translate(60%, -60%);
 }
+
 .ant-scroll-number-only {
   height: 16px;
 }
@@ -206,7 +221,8 @@
   background-color: #FFFFFF;
 }
 
-.notification-button-all, .notification-button-all:active {
+.notification-button-all,
+.notification-button-all:active {
   border: none;
   background-color: #FFFFFF;
   display: flex;
@@ -214,7 +230,7 @@
   transition: 0.3s ease-in-out;
 }
 
-.notification-button-all > span {
+.notification-button-all>span {
   font-size: 12px;
 }
 
@@ -223,6 +239,6 @@
   border: none;
 }
 
-.notification-button-all:hover > span {
+.notification-button-all:hover>span {
   text-decoration: underline;
 }

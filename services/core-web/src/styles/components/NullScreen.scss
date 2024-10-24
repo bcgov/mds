@@ -1,6 +1,9 @@
+@use "../base.scss" as *;
+
 .null-screen {
   text-align: center;
   margin-top: $default-margin-lg;
+
   div {
     img {
       max-width: 150px;
@@ -19,6 +22,7 @@
     h3 {
       margin-top: 15px;
     }
+
     @include mobile {
       display: block;
     }

@@ -10,8 +10,9 @@ import moment from "moment-timezone";
 import { reset } from "redux-form";
 import { ItemMap } from "@mds/common";
 
+
 /**
- * Helper function to clear redux form after submission
+ * Helper function to clear redux form after submissions
  *
  * Usage:
  *  export default (reduxForm({
@@ -94,18 +95,19 @@ export const formatDateTimeUserTz = (dateTime: Date | string): string => {
 
 export const timeAgo = (dateTime, unit = "day") => {
   const startDate = dateTime;
-  const endDate = new Date().toUTCString();
-
+  const endDate = moment();
   if (unit === "day") {
-    return moment(endDate).diff(moment(startDate), "days");
+    return endDate.diff(moment(startDate), "days");
   } else if (unit === "hours") {
-    return moment(endDate).diff(moment(startDate), "hours");
+    return endDate.diff(moment(startDate), "hours");
   } else if (unit === "minutes") {
-    return moment(endDate).diff(moment(startDate), "minutes");
+    return endDate.diff(moment(startDate), "minutes");
   } else {
-    return moment(endDate).diff(moment(startDate), "seconds");
+    return endDate.diff(moment(startDate), "seconds");
   }
 };
+
+
 
 export const formatPostalCode = (code) => code && code.replace(/.{3}$/, " $&");
 
@@ -591,7 +593,7 @@ export const getHighestConsequence = (tsf) => {
 
   const highestRankedDam = tsf.dams.reduce((prev, current) =>
     CONSEQUENCE_CLASSIFICATION_RANK_HASH[prev.consequence_classification] >
-    CONSEQUENCE_CLASSIFICATION_RANK_HASH[current.consequence_classification]
+      CONSEQUENCE_CLASSIFICATION_RANK_HASH[current.consequence_classification]
       ? prev
       : current
   );

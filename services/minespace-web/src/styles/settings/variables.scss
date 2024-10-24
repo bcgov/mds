@@ -1,3 +1,4 @@
+@use "sass:color";
 /*
  * Brand Colour Palette
  */
@@ -24,6 +25,7 @@ $lightest-grey: #f4f0f0;
 $lightest-grey-alt: #f8f7f7;
 $light-grey-cool: #F7F8FA;
 $med-grey: #bcbec5;
+$white: #fff;
 $off-white: #fcf8f8;
 $pure-white: #ffffff;
 
@@ -43,18 +45,18 @@ $map-lavender: #b7a6fc;
 
 // Buttons
 $primary-btn-color: $violet;
-$primary-btn-color-hover: darken($primary-btn-color, 20%);
+$primary-btn-color-hover: color.adjust($primary-btn-color, $lightness: -20%);
 $primary-btn-border-color-hover: $primary-btn-color-hover;
 
 $secondary-btn-color: $darkest-grey;
-$secondary-btn-color-hover: darken($secondary-btn-color, 20%);
+$secondary-btn-color-hover: color.adjust($secondary-btn-color, $lightness: -20%);
 $secondary-btn-border-color-hover: $secondary-btn-color-hover;
 
 $tertiary-btn-color: $medium-grey;
-$tertiary-btn-color-hover: darken($tertiary-btn-color, 20%);
+$tertiary-btn-color-hover: color.adjust($tertiary-btn-color, $lightness: -20%);
 
 $danger-btn-color: $btn-red;
-$danger-btn-color-hover: darken($danger-btn-color, 20%);
+$danger-btn-color-hover: color.adjust($danger-btn-color, $lightness: -20%);
 
 // Nav
 $nav-color: $darkest-grey;
@@ -63,7 +65,7 @@ $nav-border-color: $medium-grey;
 // Ant Component Overrides
 $h-divider-color: $darkest-grey;
 $v-divider-color: $darkest-grey;
-$pagination-item-hover: darken($violet, 20%);
+$pagination-item-hover: color.adjust($violet, $lightness: -20%);
 $pagination-item-border-hover: $pagination-item-hover;
 $card-body-background-color: $lightest-grey;
 $card-body-border-color: #cccccc;
@@ -99,18 +101,12 @@ $field-label: $default-p;
 $default-font: "Open Sans", sans-serif;
 $light: 300;
 $regular: 400;
+$bold-regular: 500;
 $semi-bold: 600;
 $bold: 700;
-$h1-color: $darkest-grey;
-$h2-color: $darkest-grey;
-$h3-color: $medium-grey;
-$h4-color: $medium-grey;
 $h5-color: $darkest-grey;
 $h6-color: $medium-grey;
-$p-color: $darkest-grey;
 $p-light-color: $non-textual-grey;
-$a-color: $hover-blue;
-$a-color-hover: darken($a-color, 20%);
 $ant-header-color: $darkest-grey;
 $ant-nested-header-color: $medium-grey;
 $ant-label-color: $medium-grey;

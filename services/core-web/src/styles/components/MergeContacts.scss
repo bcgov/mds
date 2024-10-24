@@ -1,3 +1,5 @@
+@use "../base.scss" as *;
+
 .merge-dashboard {
   padding: $default-padding-md;
   border: 1px solid $lightest-grey;
