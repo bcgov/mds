@@ -13,6 +13,8 @@ interface ProjectStagesTableProps {
 
 export const ProjectStagesTable: FC<ProjectStagesTableProps> = ({ projectStages }) => {
   const projectSummary = useSelector(getProjectSummary);
+  const isProjectSummarySubmitted = Boolean(projectSummary?.submission_date);
+
   const transformRowData = (stages: IProjectStage[]) =>
     stages?.map((stage) => ({
       key: stage.key,
@@ -91,8 +93,10 @@ export const ProjectStagesTable: FC<ProjectStagesTableProps> = ({ projectStages 
         }
         if (record.project_stage === "IRT") {
           let buttonLabel: string;
+          let disableButton = Boolean(record.stage_status);
           if (!record.stage_status) {
             buttonLabel = "Start";
+            disableButton = !isProjectSummarySubmitted;
           } else if (record.stage_status === "APV") {
             buttonLabel = "View";
           } else {
@@ -100,15 +104,21 @@ export const ProjectStagesTable: FC<ProjectStagesTableProps> = ({ projectStages 
           }
 
           link = (
-            <Button className="full-mobile margin-small" onClick={() => record?.navigate_forward()}>
+            <Button
+              className="full-mobile margin-small"
+              onClick={() => record?.navigate_forward()}
+              disabled={disableButton}
+            >
               {buttonLabel}
             </Button>
           );
         }
         if (record.project_stage === "Application") {
-          let buttonLabel;
+          let buttonLabel: string;
+          let disableButton = Boolean(record.stage_status);
           if (!record.stage_status) {
             buttonLabel = "Start";
+            disableButton = !isProjectSummarySubmitted;
           } else if (["SUB", "UNR", "APV"].includes(record.stage_status)) {
             buttonLabel = "View";
           } else {
@@ -116,7 +126,11 @@ export const ProjectStagesTable: FC<ProjectStagesTableProps> = ({ projectStages 
           }
 
           link = (
-            <Button className="full-mobile margin-small" onClick={() => record?.navigate_forward()}>
+            <Button
+              className="full-mobile margin-small"
+              onClick={() => record?.navigate_forward()}
+              disabled={disableButton}
+            >
               {buttonLabel}
             </Button>
           );

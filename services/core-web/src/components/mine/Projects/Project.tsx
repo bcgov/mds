@@ -29,7 +29,7 @@ const Project: FC = () => {
   const [isValid, setIsValid] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
 
-  const { information_requirements_table, major_mine_application, project_summary } = project;
+  const { information_requirements_table, major_mine_application } = project;
 
   const hasInformationRequirementsTable = Boolean(information_requirements_table?.irt_guid);
   const hasFinalAplication = Boolean(major_mine_application?.major_mine_application_guid);
