@@ -2,10 +2,13 @@ import React, { FC, useContext, useMemo } from "react";
 import { Form } from "antd";
 import { BaseInputProps, BaseViewInput, getFormItemLabel } from "./BaseInput";
 import { FormContext } from "./FormWrapper";
+import { useSelector } from "react-redux";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import parse from "html-react-parser";
 import DOMPurify from "dompurify";
+import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
+import { SystemFlagEnum } from "@mds/common/constants";
 
 const RenderRichTextEditor: FC<BaseInputProps> = ({
   label,
@@ -20,20 +23,29 @@ const RenderRichTextEditor: FC<BaseInputProps> = ({
   placeholder,
 }) => {
   const { isEditMode } = useContext(FormContext);
+  const system = useSelector(getSystemFlag);
+
+  const msTextColors = ["#003366", "#313132", "#ffffff", "#606060", "#BBBBBB", "#1A5A96"];
+  const msBgColors = ["transparent", "#D9EAF7", "#EAF3EC", "#FEF9E8", "#FBEAEA", "#2E8540", "#FCBA19", "#D8292F"];
+
+  const coreTextColors = ["#5E46A1", "#313132", "#ffffff", "#6B6363", "#BBBBBB", "#3D6DE7"];
+  const coreBgColors = ["transparent", "#F4F0F0", "#EAF3EC", "#FEF9E8", "#FBEAEA", "#2E8540", "#FCBA19", "#D8292F"];
 
   const handleAddImage = (data) => {
     // just a click handler for the image button,
     // everything else will have to be implemented
     console.log("image data", data);
   };
-  const colorOptions = ["#003366", "white", "#fcba19", "#d8292f", "#2e8540", "#313132", "black"];
+
+  const textColorOptions = system === SystemFlagEnum.core ? coreTextColors : msTextColors;
+  const bgColorOptions = system === SystemFlagEnum.core ? coreBgColors : msBgColors;
   const toolbarOptions = [
     [{ header: [1, 2, 3, 4, 5, 6, false] }],
     ["bold", "italic", "underline", "strike"],
     ["blockquote"],
     [{ list: "ordered" }, { list: "bullet" }],
-    [{ color: colorOptions }, { background: colorOptions }, "font", "align"],
-    ["link", "video"],
+    ["link"],
+    [{ color: textColorOptions }, { background: bgColorOptions }, "font"],
   ];
 
   const modules = useMemo(

@@ -3,6 +3,9 @@
         width: 520px !important;
     }
 
+    .ant-btn {
+        padding: 0 10px;
+    }
 }
 
 .help-open {
@@ -12,8 +15,19 @@
     color: white;
     margin-right: 20px;
 
-    &:hover {
+    &:hover,
+    &:focus,
+    &:active {
         background-color: transparent;
         color: white;
+    }
+}
+
+.help-content {
+    blockquote {
+        border-left: 4px solid #ccc;
+        margin-bottom: 5px;
+        margin-top: 5px;
+        padding-left: 16px;
     }
 }
