@@ -38,6 +38,10 @@
 
         li {
             list-style-position: inside;
+
+            &:before {
+                content: none !important;
+            }
         }
 
         li.ql-indent-1 {
@@ -67,7 +71,7 @@
             counter-increment: list-0;
             counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
 
-            &:before {
+            &::marker {
                 content: counter(list-0, decimal) '. ';
             }
         }
@@ -76,7 +80,7 @@
             counter-increment: list-1;
             counter-reset: list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
 
-            &:before {
+            &::marker {
                 content: counter(list-1, lower-alpha) '. ';
             }
         }
@@ -85,10 +89,9 @@
             counter-increment: list-2;
             counter-reset: list-3 list-4 list-5 list-6 list-7 list-8 list-9;
 
-            &:before {
+            &::marker {
                 content: counter(list-2, lower-roman) '. ';
             }
         }
     }
-
 }
