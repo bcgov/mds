@@ -93,7 +93,7 @@ export const ProjectStagesTable: FC<ProjectStagesTableProps> = ({ projectStages 
         }
         if (record.project_stage === "IRT") {
           let buttonLabel: string;
-          let enableButton = Boolean(record.stage_status);
+          let enableButton = true;
           if (!record.stage_status) {
             buttonLabel = "Start";
             enableButton = isProjectSummarySubmitted;
@@ -115,7 +115,7 @@ export const ProjectStagesTable: FC<ProjectStagesTableProps> = ({ projectStages 
         }
         if (record.project_stage === "Application") {
           let buttonLabel: string;
-          let enableButton = Boolean(record.stage_status);
+          let enableButton = true;
           if (!record.stage_status) {
             buttonLabel = "Start";
             enableButton = isProjectSummarySubmitted;
