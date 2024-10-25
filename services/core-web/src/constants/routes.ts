@@ -114,9 +114,8 @@ export const MINE_HOME_PAGE = {
     if (newParams) {
       newParams = withoutDefaultParams(params, MINE_HOME_PAGE_MAP_DEFAULT_PARAMS);
     }
-    return `/dashboard/mines?map=true${
-      !isEmpty(newParams) ? `&${queryString.stringify({ ...newParams }, { sort: false })}` : ""
-    }`;
+    return `/dashboard/mines?map=true${!isEmpty(newParams) ? `&${queryString.stringify({ ...newParams }, { sort: false })}` : ""
+      }`;
   },
   component: Dashboard,
   helpKey: "Mines",
@@ -238,8 +237,7 @@ export const EDIT_PROJECT_SUMMARY = {
     activeTab = "basic-information",
     viewMode = true
   ) =>
-    `/pre-applications/${projectGuid}/project-description/${projectSummaryGuid}/${
-      viewMode ? "view" : "edit"
+    `/pre-applications/${projectGuid}/project-description/${projectSummaryGuid}/${viewMode ? "view" : "edit"
     }/${activeTab}`,
   component: ProjectSummary,
   helpKey: "Edit-Project-Summary",
@@ -306,8 +304,7 @@ export const MINE_TAILINGS_DETAILS = {
   route:
     "/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab/:userAction",
   dynamicRoute: (tsfGuid, mineGuid, tab = "basic-information", isEditMode = false) =>
-    `/mine-dashboard/${mineGuid}/permits-and-approvals/tailings/${tsfGuid}/${tab}/${
-      isEditMode ? "edit" : "view"
+    `/mine-dashboard/${mineGuid}/permits-and-approvals/tailings/${tsfGuid}/${tab}/${isEditMode ? "edit" : "view"
     }`,
   component: MineTailingsDetailsPage,
   helpKey: "Mine-Tailings-Details",
@@ -318,8 +315,7 @@ export const EDIT_TAILINGS_STORAGE_FACILITY = {
   route:
     "/mine-dashboard/:id/permits-and-approvals/tailings/:tailingsStorageFacilityGuid/:tab/:userAction",
   dynamicRoute: (tsfGuid, mineGuid, tab = "basic-information", isEditMode = false) =>
-    `/mine-dashboard/${mineGuid}/permits-and-approvals/tailings/${tsfGuid}/${tab}/${
-      isEditMode ? "edit" : "view"
+    `/mine-dashboard/${mineGuid}/permits-and-approvals/tailings/${tsfGuid}/${tab}/${isEditMode ? "edit" : "view"
     }`,
   component: MineTailingsDetailsPage,
   helpKey: "Mine-Tailings-Details",
@@ -398,6 +394,7 @@ export const REPORT_VIEW_EDIT = {
     `/dashboard/reporting/mine/${mineGuid}/report/${reportGuid}/${link}`,
   component: ReportPage,
   helpKey: "Report",
+  priority: 1,
 };
 
 export const REPORTS_CREATE_NEW = {
@@ -405,6 +402,7 @@ export const REPORTS_CREATE_NEW = {
   dynamicRoute: (mineGuid, reportType) => `/mines/${mineGuid}/reports/new/${reportType}`,
   component: ReportSteps,
   helpKey: "New-Report",
+  priority: 1,
 };
 
 export const PARTY_PROFILE = {
@@ -425,6 +423,7 @@ export const REPORTING_DASHBOARD = {
   route: "/dashboard/reporting/general",
   component: ReportingDashboard,
   helpKey: "Reporting-Dashboard",
+  priority: 1
 };
 
 export const VARIANCE_DASHBOARD = {
@@ -436,6 +435,7 @@ export const VARIANCE_DASHBOARD = {
     )}`,
   component: VarianceHomePage,
   helpKey: "Variances",
+  priority: 1,
 };
 
 export const INCIDENTS_DASHBOARD = {
@@ -458,6 +458,7 @@ export const REPORTS_DASHBOARD = {
     )}`,
   component: ReportsHomePage,
   helpKey: "Reports",
+  priority: 1
 };
 
 export const EXECUTIVE_REPORTING_DASHBOARD = {
@@ -609,8 +610,7 @@ export const EDIT_DAM = {
     isEditMode = false,
     canEditDam = false
   ) =>
-    `/mine-dashboard/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/${
-      isEditMode ? "edit" : "view"
+    `/mine-dashboard/${mineGuid}/tailings-storage-facility/${tailingsStorageFacilityGuid}/${isEditMode ? "edit" : "view"
     }/${canEditDam ? "editDam" : "viewDam"}/dam/${damGuid}`,
   component: DamsDetailsPage,
   helpKey: "Edit-Dam",

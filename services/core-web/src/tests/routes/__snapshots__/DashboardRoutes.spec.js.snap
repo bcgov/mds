@@ -48,6 +48,44 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/mine-dashboard/:id/permits-and-approvals/permits/:permitGuid/:tab"
   />
   <Route
+    component={[Function]}
+    exact={true}
+    key="/dashboard/reporting/mine/:mineGuid/report/:reportGuid"
+    path="/dashboard/reporting/mine/:mineGuid/report/:reportGuid"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
+    key="/mines/:mineGuid/reports/new/:reportType"
+    path="/mines/:mineGuid/reports/new/:reportType"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
+    key="/dashboard/reporting/general"
+    path="/dashboard/reporting/general"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(VarianceHomePage)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    key="/dashboard/reporting/variance"
+    path="/dashboard/reporting/variance"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
+    key="/dashboard/reporting/reports"
+    path="/dashboard/reporting/reports"
+  />
+  <Route
     component={
       Object {
         "$$typeof": Symbol(react.memo),
@@ -408,18 +446,6 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/mine-dashboard/:id/required-reports/:reportType"
   />
   <Route
-    component={[Function]}
-    exact={true}
-    key="/dashboard/reporting/mine/:mineGuid/report/:reportGuid"
-    path="/dashboard/reporting/mine/:mineGuid/report/:reportGuid"
-  />
-  <Route
-    component={[Function]}
-    exact={true}
-    key="/mines/:mineGuid/reports/new/:reportType"
-    path="/mines/:mineGuid/reports/new/:reportType"
-  />
-  <Route
     component={
       Object {
         "$$typeof": Symbol(react.memo),
@@ -448,26 +474,6 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/dashboard/:id/history/:typeCode"
   />
   <Route
-    component={[Function]}
-    exact={true}
-    key="/dashboard/reporting/general"
-    path="/dashboard/reporting/general"
-  />
-  <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(VarianceHomePage)",
-        "type": [Function],
-      }
-    }
-    exact={true}
-    key="/dashboard/reporting/variance"
-    path="/dashboard/reporting/variance"
-  />
-  <Route
     component={
       Object {
         "$$typeof": Symbol(react.memo),
@@ -480,12 +486,6 @@ exports[`DashboardRoutes  renders properly 1`] = `
     exact={true}
     key="/dashboard/reporting/incidents"
     path="/dashboard/reporting/incidents"
-  />
-  <Route
-    component={[Function]}
-    exact={true}
-    key="/dashboard/reporting/reports"
-    path="/dashboard/reporting/reports"
   />
   <Route
     component={
