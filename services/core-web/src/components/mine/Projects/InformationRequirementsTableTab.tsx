@@ -93,7 +93,7 @@ const InformationRequirementsTableTab = () => {
     r1.map(({ requirement_guid, sub_requirements, ...rest }) => ({
       requirement_guid,
       ...rest,
-      ...r2.find((i) => i.requirement_guid === requirement_guid),
+      ...r2?.find((i) => i.requirement_guid === requirement_guid),
       sub_requirements: deepMergeById(sub_requirements, r2),
     }));
 

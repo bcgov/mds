@@ -29,8 +29,9 @@ const Project: FC = () => {
   const [isValid, setIsValid] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
 
-  const { information_requirements_table, major_mine_application } = project;
+  const { information_requirements_table, major_mine_application, project_summary } = project;
 
+  const isProjectSummarySubmitted = Boolean(project_summary?.submission_date);
   const hasInformationRequirementsTable = Boolean(information_requirements_table?.irt_guid);
   const hasFinalAplication = Boolean(major_mine_application?.major_mine_application_guid);
 
@@ -131,7 +132,7 @@ const Project: FC = () => {
     {
       key: "information-requirements-table",
       label: "IRT",
-      disabled: !hasInformationRequirementsTable,
+      disabled: !hasInformationRequirementsTable && !isProjectSummarySubmitted,
       children: (
         <div className="padding-lg">
           <InformationRequirementsTableTab />
@@ -141,7 +142,7 @@ const Project: FC = () => {
     {
       key: "final-app",
       label: "Final Application",
-      disabled: !hasFinalAplication,
+      disabled: !hasFinalAplication && !isProjectSummarySubmitted,
       children: (
         <div className="padding-lg">
           <MajorMineApplicationTab />
