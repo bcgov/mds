@@ -2,6 +2,7 @@
 
 exports[`HelpGuide renders CORE properly 1`] = `
 <div
+  class="help-content"
   data-testid="help-content"
 >
   <div
@@ -550,6 +551,38 @@ exports[`HelpGuide renders CORE properly 1`] = `
                   <span
                     class="ql-formats"
                   >
+                    <button
+                      class="ql-link"
+                      type="button"
+                    >
+                      <svg
+                        viewBox="0 0 18 18"
+                      >
+                         
+                        <line
+                          class="ql-stroke"
+                          x1="7"
+                          x2="11"
+                          y1="7"
+                          y2="11"
+                        />
+                         
+                        <path
+                          class="ql-even ql-stroke"
+                          d="M8.9,4.577a3.476,3.476,0,0,1,.36,4.679A3.476,3.476,0,0,1,4.577,8.9C3.185,7.5,2.035,6.4,4.217,4.217S7.5,3.185,8.9,4.577Z"
+                        />
+                         
+                        <path
+                          class="ql-even ql-stroke"
+                          d="M13.423,9.1a3.476,3.476,0,0,0-4.679-.36,3.476,3.476,0,0,0,.36,4.679c1.392,1.392,2.5,2.542,4.679.36S14.815,10.5,13.423,9.1Z"
+                        />
+                         
+                      </svg>
+                    </button>
+                  </span>
+                  <span
+                    class="ql-formats"
+                  >
                     <span
                       class="ql-color ql-picker ql-color-picker"
                     >
@@ -557,7 +590,7 @@ exports[`HelpGuide renders CORE properly 1`] = `
                         aria-controls="ql-picker-options-1"
                         aria-expanded="false"
                         class="ql-picker-label"
-                        data-value="#003366"
+                        data-value="#5E46A1"
                         role="button"
                         tabindex="0"
                       >
@@ -596,37 +629,9 @@ exports[`HelpGuide renders CORE properly 1`] = `
                       >
                         <span
                           class="ql-picker-item ql-selected ql-primary"
-                          data-value="#003366"
+                          data-value="#5E46A1"
                           role="button"
-                          style="background-color: rgb(0, 51, 102);"
-                          tabindex="0"
-                        />
-                        <span
-                          class="ql-picker-item ql-primary"
-                          data-value="white"
-                          role="button"
-                          style="background-color: white;"
-                          tabindex="0"
-                        />
-                        <span
-                          class="ql-picker-item ql-primary"
-                          data-value="#fcba19"
-                          role="button"
-                          style="background-color: rgb(252, 186, 25);"
-                          tabindex="0"
-                        />
-                        <span
-                          class="ql-picker-item ql-primary"
-                          data-value="#d8292f"
-                          role="button"
-                          style="background-color: rgb(216, 41, 47);"
-                          tabindex="0"
-                        />
-                        <span
-                          class="ql-picker-item ql-primary"
-                          data-value="#2e8540"
-                          role="button"
-                          style="background-color: rgb(46, 133, 64);"
+                          style="background-color: rgb(94, 70, 161);"
                           tabindex="0"
                         />
                         <span
@@ -638,9 +643,30 @@ exports[`HelpGuide renders CORE properly 1`] = `
                         />
                         <span
                           class="ql-picker-item ql-primary"
-                          data-value="black"
+                          data-value="#ffffff"
                           role="button"
-                          style="background-color: black;"
+                          style="background-color: rgb(255, 255, 255);"
+                          tabindex="0"
+                        />
+                        <span
+                          class="ql-picker-item ql-primary"
+                          data-value="#6B6363"
+                          role="button"
+                          style="background-color: rgb(107, 99, 99);"
+                          tabindex="0"
+                        />
+                        <span
+                          class="ql-picker-item ql-primary"
+                          data-value="#BBBBBB"
+                          role="button"
+                          style="background-color: rgb(187, 187, 187);"
+                          tabindex="0"
+                        />
+                        <span
+                          class="ql-picker-item ql-primary"
+                          data-value="#3D6DE7"
+                          role="button"
+                          style="background-color: rgb(61, 109, 231);"
                           tabindex="0"
                         />
                       </span>
@@ -650,25 +676,22 @@ exports[`HelpGuide renders CORE properly 1`] = `
                       style="display: none;"
                     >
                       <option
-                        value="#003366"
-                      />
-                      <option
-                        value="white"
-                      />
-                      <option
-                        value="#fcba19"
-                      />
-                      <option
-                        value="#d8292f"
-                      />
-                      <option
-                        value="#2e8540"
+                        value="#5E46A1"
                       />
                       <option
                         value="#313132"
                       />
                       <option
-                        value="black"
+                        value="#ffffff"
+                      />
+                      <option
+                        value="#6B6363"
+                      />
+                      <option
+                        value="#BBBBBB"
+                      />
+                      <option
+                        value="#3D6DE7"
                       />
                     </select>
                     <span
@@ -678,7 +701,7 @@ exports[`HelpGuide renders CORE properly 1`] = `
                         aria-controls="ql-picker-options-2"
                         aria-expanded="false"
                         class="ql-picker-label"
-                        data-value="#003366"
+                        data-value="transparent"
                         role="button"
                         tabindex="0"
                       >
@@ -992,51 +1015,58 @@ exports[`HelpGuide renders CORE properly 1`] = `
                       >
                         <span
                           class="ql-picker-item ql-selected ql-primary"
-                          data-value="#003366"
+                          data-value="transparent"
                           role="button"
-                          style="background-color: rgb(0, 51, 102);"
+                          style="background-color: transparent;"
                           tabindex="0"
                         />
                         <span
                           class="ql-picker-item ql-primary"
-                          data-value="white"
+                          data-value="#F4F0F0"
                           role="button"
-                          style="background-color: white;"
+                          style="background-color: rgb(244, 240, 240);"
                           tabindex="0"
                         />
                         <span
                           class="ql-picker-item ql-primary"
-                          data-value="#fcba19"
+                          data-value="#EAF3EC"
                           role="button"
-                          style="background-color: rgb(252, 186, 25);"
+                          style="background-color: rgb(234, 243, 236);"
                           tabindex="0"
                         />
                         <span
                           class="ql-picker-item ql-primary"
-                          data-value="#d8292f"
+                          data-value="#FEF9E8"
                           role="button"
-                          style="background-color: rgb(216, 41, 47);"
+                          style="background-color: rgb(254, 249, 232);"
                           tabindex="0"
                         />
                         <span
                           class="ql-picker-item ql-primary"
-                          data-value="#2e8540"
+                          data-value="#FBEAEA"
+                          role="button"
+                          style="background-color: rgb(251, 234, 234);"
+                          tabindex="0"
+                        />
+                        <span
+                          class="ql-picker-item ql-primary"
+                          data-value="#2E8540"
                           role="button"
                           style="background-color: rgb(46, 133, 64);"
                           tabindex="0"
                         />
                         <span
                           class="ql-picker-item ql-primary"
-                          data-value="#313132"
+                          data-value="#FCBA19"
                           role="button"
-                          style="background-color: rgb(49, 49, 50);"
+                          style="background-color: rgb(252, 186, 25);"
                           tabindex="0"
                         />
                         <span
-                          class="ql-picker-item ql-primary"
-                          data-value="black"
+                          class="ql-picker-item"
+                          data-value="#D8292F"
                           role="button"
-                          style="background-color: black;"
+                          style="background-color: rgb(216, 41, 47);"
                           tabindex="0"
                         />
                       </span>
@@ -1046,203 +1076,34 @@ exports[`HelpGuide renders CORE properly 1`] = `
                       style="display: none;"
                     >
                       <option
-                        value="#003366"
+                        value="transparent"
                       />
                       <option
-                        value="white"
+                        value="#F4F0F0"
                       />
                       <option
-                        value="#fcba19"
+                        value="#EAF3EC"
                       />
                       <option
-                        value="#d8292f"
+                        value="#FEF9E8"
                       />
                       <option
-                        value="#2e8540"
+                        value="#FBEAEA"
                       />
                       <option
-                        value="#313132"
+                        value="#2E8540"
                       />
                       <option
-                        value="black"
+                        value="#FCBA19"
+                      />
+                      <option
+                        value="#D8292F"
                       />
                     </select>
                     <button
                       class="ql-font"
                       type="button"
                     />
-                    <button
-                      class="ql-align"
-                      type="button"
-                    >
-                      <svg
-                        viewBox="0 0 18 18"
-                      >
-                         
-                        <line
-                          class="ql-stroke"
-                          x1="3"
-                          x2="15"
-                          y1="9"
-                          y2="9"
-                        />
-                         
-                        <line
-                          class="ql-stroke"
-                          x1="3"
-                          x2="13"
-                          y1="14"
-                          y2="14"
-                        />
-                         
-                        <line
-                          class="ql-stroke"
-                          x1="3"
-                          x2="9"
-                          y1="4"
-                          y2="4"
-                        />
-                         
-                      </svg>
-                    </button>
-                  </span>
-                  <span
-                    class="ql-formats"
-                  >
-                    <button
-                      class="ql-link"
-                      type="button"
-                    >
-                      <svg
-                        viewBox="0 0 18 18"
-                      >
-                         
-                        <line
-                          class="ql-stroke"
-                          x1="7"
-                          x2="11"
-                          y1="7"
-                          y2="11"
-                        />
-                         
-                        <path
-                          class="ql-even ql-stroke"
-                          d="M8.9,4.577a3.476,3.476,0,0,1,.36,4.679A3.476,3.476,0,0,1,4.577,8.9C3.185,7.5,2.035,6.4,4.217,4.217S7.5,3.185,8.9,4.577Z"
-                        />
-                         
-                        <path
-                          class="ql-even ql-stroke"
-                          d="M13.423,9.1a3.476,3.476,0,0,0-4.679-.36,3.476,3.476,0,0,0,.36,4.679c1.392,1.392,2.5,2.542,4.679.36S14.815,10.5,13.423,9.1Z"
-                        />
-                         
-                      </svg>
-                    </button>
-                    <button
-                      class="ql-video"
-                      type="button"
-                    >
-                      <svg
-                        viewBox="0 0 18 18"
-                      >
-                         
-                        <rect
-                          class="ql-stroke"
-                          height="12"
-                          width="12"
-                          x="3"
-                          y="3"
-                        />
-                         
-                        <rect
-                          class="ql-fill"
-                          height="12"
-                          width="1"
-                          x="5"
-                          y="3"
-                        />
-                         
-                        <rect
-                          class="ql-fill"
-                          height="12"
-                          width="1"
-                          x="12"
-                          y="3"
-                        />
-                         
-                        <rect
-                          class="ql-fill"
-                          height="2"
-                          width="8"
-                          x="5"
-                          y="8"
-                        />
-                         
-                        <rect
-                          class="ql-fill"
-                          height="1"
-                          width="3"
-                          x="3"
-                          y="5"
-                        />
-                         
-                        <rect
-                          class="ql-fill"
-                          height="1"
-                          width="3"
-                          x="3"
-                          y="7"
-                        />
-                         
-                        <rect
-                          class="ql-fill"
-                          height="1"
-                          width="3"
-                          x="3"
-                          y="10"
-                        />
-                         
-                        <rect
-                          class="ql-fill"
-                          height="1"
-                          width="3"
-                          x="3"
-                          y="12"
-                        />
-                         
-                        <rect
-                          class="ql-fill"
-                          height="1"
-                          width="3"
-                          x="12"
-                          y="5"
-                        />
-                         
-                        <rect
-                          class="ql-fill"
-                          height="1"
-                          width="3"
-                          x="12"
-                          y="7"
-                        />
-                         
-                        <rect
-                          class="ql-fill"
-                          height="1"
-                          width="3"
-                          x="12"
-                          y="10"
-                        />
-                         
-                        <rect
-                          class="ql-fill"
-                          height="1"
-                          width="3"
-                          x="12"
-                          y="12"
-                        />
-                         
-                      </svg>
-                    </button>
                   </span>
                 </div>
                 <div
