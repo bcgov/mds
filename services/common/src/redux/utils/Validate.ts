@@ -277,7 +277,6 @@ export const dateInFuture = (value) =>
   value && !moment(value).isAfter() ? "Date must be in the future" : undefined;
 
 // NOTE: modified from version in CORE- change from <= to <
-// removed memoization because it was interfering with passing 2nd arg
 export const dateNotBeforeOther = memoize((other: string, otherLabel?: string) => (value: string) => {
   const invalid = value && other && value < other;
   if (!invalid) {
