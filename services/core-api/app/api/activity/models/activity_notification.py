@@ -171,11 +171,8 @@ class ActivityNotification(AuditMixin, Base):
         unread_notifications_user_list = []
         expired_unread_notification_user_list = []
         if renotify_period_minutes > 0:
-          # Get the current timestamp in the local timezone
-          now = datetime.now().astimezone()  # Automatically uses the local timezone
-
-          # Calculate the renotify timestamp
-          renotify_timestamp = now + timedelta(minutes=renotify_period_minutes)
+          # Calculate the datetime that was renotify_period_minutes minutes ago
+          renotify_timestamp = datetime.now(timezone.utc) + timedelta(minutes=renotify_period_minutes)
 
           # Filter to retrived unread records for renotifying and notify for read user if the same activity type
           expired_unread_notification_query = cls.query.with_entities(cls.notification_recipient)\
@@ -196,6 +193,7 @@ class ActivityNotification(AuditMixin, Base):
                 .filter(
                       and_(
                         cls.activity_type == activity_type,
+                        cls.create_timestamp < renotify_timestamp,
                         cls.notification_read == False
                       )
                 )\
