@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import { withRouter, Link, Prompt, useParams, useHistory, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { reset, getFormValues } from "redux-form";
+import { reset, getFormValues, isDirty } from "redux-form";
 import * as routes from "@/constants/routes";
 import { Button, Col, Row, Tag } from "antd";
 import EnvironmentOutlined from "@ant-design/icons/EnvironmentOutlined";
@@ -38,6 +38,7 @@ import ProjectSummaryForm, {
 import { fetchRegions } from "@mds/common/redux/slices/regionsSlice";
 import { clearProjectSummary } from "@mds/common/redux/actions/projectActions";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
+import { cancelConfirmWrapper } from "@mds/common/components/forms/RenderCancelButton";
 
 export const ProjectSummary: FC = () => {
   const dispatch = useDispatch();
@@ -60,6 +61,7 @@ export const ProjectSummary: FC = () => {
   const anyTouched = useSelector(
     (state) => state.form[FORM.ADD_EDIT_PROJECT_SUMMARY]?.anyTouched || false
   );
+  const isFormDirty = useSelector(isDirty(FORM.ADD_EDIT_PROJECT_SUMMARY));
 
   const { isFeatureEnabled } = useFeatureFlag();
   const amsFeatureEnabled = isFeatureEnabled(Feature.AMS_AGENT);
@@ -72,7 +74,7 @@ export const ProjectSummary: FC = () => {
   const isExistingProject = Boolean(projectGuid && projectSummaryGuid);
   const isDefaultLoaded = isExistingProject
     ? formattedProjectSummary?.project_summary_guid === projectSummaryGuid &&
-      formattedProjectSummary?.project_guid === projectGuid
+    formattedProjectSummary?.project_guid === projectGuid
     : mine?.mine_guid === mineGuid;
   const isDefaultEditMode = !isExistingProject || mode === "edit";
 
@@ -191,11 +193,11 @@ export const ProjectSummary: FC = () => {
     }
     const url = !isNewProject
       ? routes.EDIT_PROJECT_SUMMARY.dynamicRoute(
-          projectGuid,
-          projectSummaryGuid,
-          newTab,
-          !isEditMode
-        )
+        projectGuid,
+        projectSummaryGuid,
+        newTab,
+        !isEditMode
+      )
       : routes.ADD_PROJECT_SUMMARY.dynamicRoute(mineGuid, newTab);
     history.push(url);
   };
@@ -251,6 +253,13 @@ export const ProjectSummary: FC = () => {
     ? {}
     : { ...formattedProjectSummary, mrc_review_required: project.mrc_review_required };
 
+  const handleCancel = () => {
+    cancelConfirmWrapper(async () => {
+      await dispatch(reset(FORM.ADD_EDIT_PROJECT_SUMMARY))
+      setIsEditMode(false);
+    }, isFormDirty);
+  }
+
   return (
     <>
       <Prompt
@@ -305,7 +314,7 @@ export const ProjectSummary: FC = () => {
             <Button
               disabled={formValues?.status_code === "WDN" || formValues?.status_code === "COM"}
               type="primary"
-              onClick={() => setIsEditMode(!isEditMode)}
+              onClick={isEditMode ? handleCancel : () => setIsEditMode(true)}
             >
               {isEditMode ? "Cancel" : "Edit Project Description"}
             </Button>

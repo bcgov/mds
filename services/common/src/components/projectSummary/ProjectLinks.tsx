@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import { getProject, getProjects } from "@mds/common/redux/selectors/projectSelectors";
 import { useSelector, useDispatch } from "react-redux";
 import { Field, change, getFormValues } from "redux-form";
@@ -21,6 +21,7 @@ import { dateSorter } from "@mds/common/redux/utils/helpers";
 import RenderMultiSelect from "../forms/RenderMultiSelect";
 import * as Strings from "@mds/common/constants/strings";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
+import { FormContext } from "../forms/FormWrapper";
 
 interface ProjectLinksProps {
   viewProject: (record: ILinkedProject) => string;
@@ -53,6 +54,7 @@ const ProjectLinkInput = ({ unrelatedProjects = [], mineGuid, projectGuid }) => 
 
   const addRelatedProjects = () => {
     dispatch(createProjectLinks(mineGuid, projectGuid, currentSelection)).then(() => {
+      setCurrentSelection([]);
       dispatch(change(formName, fieldName, []));
     });
   };
@@ -102,6 +104,7 @@ const ProjectLinks: FC<ProjectLinksProps> = ({ viewProject, tableOnly = false })
   const canEditProjects = useSelector((state) =>
     userHasRole(state, USER_ROLES.role_edit_project_summaries)
   );
+  const { isEditMode } = useContext(FormContext);
   const hasModifyPermission = isUserProponent || canEditProjects;
 
   const separateProjectLists = (projects: IProject[]): [ILinkedProject[], IProject[]] => {
@@ -160,7 +163,7 @@ const ProjectLinks: FC<ProjectLinksProps> = ({ viewProject, tableOnly = false })
       <Typography.Paragraph>
         Description of related major project applications for this mine are listed below.
       </Typography.Paragraph>
-      {!tableOnly && (
+      {!tableOnly && isEditMode && (
         <ProjectLinkInput
           unrelatedProjects={unrelatedProjects}
           mineGuid={project.mine_guid}
