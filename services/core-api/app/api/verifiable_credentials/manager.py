@@ -1,5 +1,6 @@
 # for midware/business level actions between requests and data access
 import json
+import requests
 
 from uuid import uuid4, UUID
 from sqlalchemy.exc import IntegrityError
@@ -189,6 +190,8 @@ def process_all_untp_map_for_orgbook():
             permit_amendment_guid=row[0],
             party_guid=row[1],
             unsigned_payload_hash=payload_hash,
+            permit_number=pa_cred.credentialSubject.permitNumber,
+            orgbook_entity_id=pa_cred.credentialSubject.issuedToParty.registeredId,
             orgbook_credential_id=new_id,
         )
         records.append((pa_cred, paob))
@@ -219,12 +222,25 @@ def publish_all_pending_vc_to_orgbook():
     """STUB for celery job to publis all pending vc to orgbook."""
     ## Orgbook doesn't have this functionality yet.
     records_to_publish = PermitAmendmentOrgBookPublish.find_all_unpublished(unsafe=True)
+    ORGBOOK_W3C_CRED_FORWARD = "https://dev.orgbook.traceability.site/credentials/forward"
+    current_app.logger.warning(f"going to publish {len(records_to_publish)} records to orgbook")
 
     for record in records_to_publish:
-        current_app.logger.warning("NOT sending cred to orgbook")
-        current_app.logger.warning(record.signed_credential)
-        # resp = requests.post(ORGBOOK_W3C_CRED_POST, record.signed_credential)
-        # assert resp.status_code == 200, f"resp={resp.json()}"
+        current_app.logger.warning(f"publishing record={json.loads(record.signed_credential)}")
+        payload = {
+            "verifiableCredential": json.loads(record.signed_credential),
+            "options": {
+                "entityId": record.orgbook_entity_id,
+                "resourceId": record.permit_number,
+                "credentialId": record.orgbook_credential_id,
+                "credentialType": "BCMinesActPermitCredential"
+            }
+        }
+        resp = requests.post(ORGBOOK_W3C_CRED_FORWARD, json=payload)
+        assert resp.status_code == 201, f"resp={resp.json()}"
+
+        record.publish_state = True
+        record.save()
 
 
 class VerifiableCredentialManager():

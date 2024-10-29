@@ -1,5 +1,6 @@
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
+from sqlalchemy.sql import true
 from app.extensions import db
 from typing import List
 from app.api.utils.models_mixins import AuditMixin, Base
@@ -18,6 +19,8 @@ class PermitAmendmentOrgBookPublish(AuditMixin, Base):
     signed_credential = db.Column(db.String, nullable=True)
     publish_state = db.Column(
         db.Boolean, nullable=True)                                 # null = not published, true = published, false = failed
+    permit_number = db.Column(db.String, nullable=False)
+    orgbook_entity_id = db.Column(db.String, nullable=False)
     orgbook_credential_id = db.Column(
         db.String, nullable=False)                                 # not sure this will be able to be populated
 
@@ -35,4 +38,4 @@ class PermitAmendmentOrgBookPublish(AuditMixin, Base):
     @classmethod
     def find_all_unpublished(cls, *, unsafe: bool = False) -> List["PermitAmendmentOrgBookPublish"]:
         query = cls.query.unbound_unsafe() if unsafe else cls.query
-        return query.filter(PermitAmendmentOrgBookPublish.publish_state != True).all()
+        return query.filter(PermitAmendmentOrgBookPublish.publish_state is not true).all()

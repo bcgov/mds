@@ -134,8 +134,7 @@ def register_commands(app):
     def notify_and_update_expired_party_appointments():
         from app import auth
         from app.api.parties.party_appt import (
-            notify_and_update_expired_party_appointments,
-        )
+            notify_and_update_expired_party_appointments, )
         auth.apply_security = False
 
         with current_app.app_context():
@@ -147,8 +146,7 @@ def register_commands(app):
     def revoke_mines_act_permits_for_permit(credential_exchange_id, permit_guid):
         from app import auth
         from app.api.verifiable_credentials.manager import (
-            revoke_all_credentials_for_permit,
-        )
+            revoke_all_credentials_for_permit, )
         auth.apply_security = False
         with current_app.app_context():
             permit = Permit.query.unbound_unsafe().filter_by(permit_guid=permit_guid).first()
@@ -160,18 +158,16 @@ def register_commands(app):
     def process_all_untp_map_for_orgbook():
         from app import auth
         from app.api.verifiable_credentials.manager import (
-            process_all_untp_map_for_orgbook,
-        )
+            process_all_untp_map_for_orgbook, )
         auth.apply_security = False
         with current_app.app_context() as app:
-            result = process_all_untp_map_for_orgbook.apply_async()
+            result = process_all_untp_map_for_orgbook()
 
     @app.cli.command('publish_all_pending_vc_to_orgbook')
     def publish_all_pending_vc_to_orgbook():
         from app import auth
         from app.api.verifiable_credentials.manager import (
-            publish_all_pending_vc_to_orgbook,
-        )
+            publish_all_pending_vc_to_orgbook, )
         auth.apply_security = False
         with current_app.app_context():
             result = publish_all_pending_vc_to_orgbook()
