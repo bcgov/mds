@@ -237,9 +237,10 @@ def publish_all_pending_vc_to_orgbook():
             }
         }
         resp = requests.post(ORGBOOK_W3C_CRED_FORWARD, json=payload)
-        assert resp.status_code == 201, f"resp={resp.json()}"
-
-        record.publish_state = True
+        if resp.status_code == 201:
+            record.publish_state = True
+        else:
+            record.error_msg = resp.text
         record.save()
 
 
