@@ -263,7 +263,7 @@ export const ProjectSummary: FC = () => {
   return (
     <>
       <Prompt
-        when={anyTouched}
+        when={anyTouched && isEditMode}
         message={(location, action) => {
           if (action === "REPLACE") {
             dispatch(reset(FORM.ADD_EDIT_PROJECT_SUMMARY));
