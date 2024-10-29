@@ -1,8 +1,9 @@
+import enum
 import uuid
 
 from datetime import date
 from flask import current_app
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.postgresql import UUID, ENUM
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -26,6 +27,12 @@ from app.api.utils.helpers import get_current_core_or_ms_env_url
 from app.api.utils.helpers import format_email_datetime_to_string
 from app.api.mines.exceptions.mine_exceptions import MineException
 
+class OfficeDestinationType(enum.Enum):
+    MMO = "MMO"
+    HS = "HS"
+    RO = "RO"
+    MOE = "MOE"
+
 
 class MineReport(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = "mine_report"
@@ -43,6 +50,11 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
 
     submitter_name = db.Column(db.String, nullable=False)
     submitter_email = db.Column(db.String, nullable=False)
+
+    # Nullable columns used by permit condition specific reports
+    cim_or_cpo = db.Column(db.String, nullable=True)
+    frequency = db.Column(db.String, nullable=True)
+    office_destination = db.Column(db.ARRAY(ENUM(OfficeDestinationType, name="office_destination_type")), nullable=True)
 
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
     mine = db.relationship('Mine', lazy='joined', back_populates='mine_reports')
@@ -341,7 +353,12 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
                permit_id=None,
                permit_condition_category_code=None,
                submitter_email=None,
-               add_to_session=True):
+               add_to_session=True,
+               cim_or_cpo=None,
+               frequency=None,
+               office_destination=None,
+               permit_condition_id=None
+               ):
         mine_report = cls(
             mine_report_definition_id=mine_report_definition_id,
             mine_guid=mine_guid,
@@ -352,7 +369,12 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
             permit_id=permit_id,
             permit_condition_category_code=permit_condition_category_code,
             submitter_name=submitter_name,
-            submitter_email=submitter_email)
+            submitter_email=submitter_email,
+            cim_or_cpo=cim_or_cpo,
+            frequency=frequency,
+            office_destination=office_destination,
+            permit_condition_id=permit_condition_id
+        )
         if add_to_session:
             mine_report.save(commit=False)
         return mine_report

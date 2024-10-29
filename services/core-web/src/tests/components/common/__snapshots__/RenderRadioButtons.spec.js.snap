@@ -10,7 +10,10 @@ exports[`RenderRadioButtons renders properly 1`] = `
     disabled={false}
     id="1"
     onChange={[Function]}
-    options={Array []}
-  />
+  >
+    <Space
+      direction="horizontal"
+    />
+  </Memo(ForwardRef)>
 </InternalFormItem>
 `;

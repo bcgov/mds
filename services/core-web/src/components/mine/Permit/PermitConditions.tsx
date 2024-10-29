@@ -1,12 +1,12 @@
 import React, { FC, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Col, Row, Typography } from "antd";
+import { Col, Collapse, Row, Typography } from "antd";
 import FileOutlined from "@ant-design/icons/FileOutlined";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faArrowsToLine,
   faArrowsFromLine,
+  faArrowsToLine,
   faBarsStaggered,
 } from "@fortawesome/pro-light-svg-icons";
 import { getPermitConditionCategoryOptions } from "@mds/common/redux/selectors/staticContentSelectors";
@@ -27,6 +27,9 @@ import {
   RenderExtractionProgress,
   RenderExtractionStart,
 } from "./PermitConditionExtraction";
+import { getPermitReports } from "@mds/common/redux/selectors/permitSelectors";
+import { IMineReport } from "@mds/common";
+import AddReportToPermitConditionForm from "@/components/Forms/reports/AddReporttoPermitConditionForm";
 
 const { Title } = Typography;
 
@@ -46,14 +49,14 @@ const PermitConditions: FC<PermitConditionProps> = ({
   const { id, permitGuid } = useParams<{ id: string; permitGuid: string }>();
   const [isExpanded, setIsExpanded] = useState(false);
   const permitConditionCategoryOptions = useSelector(getPermitConditionCategoryOptions);
+  const permitReports: IMineReport[] = useSelector(getPermitReports(permitGuid));
 
   const permitConditions = latestAmendment?.conditions;
   const permitExtraction = useSelector(
     getPermitExtractionByGuid(latestAmendment?.permit_amendment_id)
   );
 
-  const fetchingPermits = useSelector((state) => state.GET_PERMITS?.isFetching);
-  const isLoading = fetchingPermits;
+  const isLoading = useSelector((state) => state.GET_PERMITS?.isFetching);
 
   const isExtractionInProgress =
     permitExtraction?.task_status === PermitExtractionStatus.in_progress;
@@ -65,14 +68,42 @@ const PermitConditions: FC<PermitConditionProps> = ({
         permitConditions?.filter(
           (c) => c.condition_category_code === cat.condition_category_code
         ) ?? [];
+
+      // Recursive function to get the full path of steps
+      const getStepPath = (condition, parentPath = ""): IPermitCondition => {
+        const currentPath = parentPath
+          ? `${parentPath}${condition.step}`
+          : `${cat.description} - ${condition.step}`;
+        const stepPath = currentPath.replace(/\.+$/, "");
+
+        const report = permitReports.find(
+          (report) => report.permit_condition_id === condition.permit_condition_id.toString()
+        );
+
+        // If condition has sub-conditions, recursively add step paths
+        const sub_conditions =
+          condition.sub_conditions?.map((subCondition) => getStepPath(subCondition, currentPath)) ??
+          [];
+
+        return {
+          ...condition,
+          stepPath,
+          report,
+          sub_conditions,
+        };
+      };
+
+      // Initialize the step paths for all top-level conditions
+      const updatedConditions = conditions.map((condition) => getStepPath(condition));
+
       const title = cat.description.replace("Conditions", "").trim();
-      return conditions.length > 0
+      return updatedConditions.length > 0
         ? {
-          href: cat.condition_category_code.toLowerCase(),
-          title,
-          conditions,
-          condition_category_code: cat.condition_category_code,
-        }
+            href: cat.condition_category_code.toLowerCase(),
+            title,
+            conditions: updatedConditions,
+            condition_category_code: cat.condition_category_code,
+          }
         : false;
     })
     .filter(Boolean);
@@ -103,6 +134,22 @@ const PermitConditions: FC<PermitConditionProps> = ({
   if (canStartExtraction) {
     return <RenderExtractionStart />;
   }
+
+  const getConditionsWithReports = (conditions) => {
+    let result = [];
+
+    conditions.forEach((condition) => {
+      if (condition.report) {
+        result.push(condition);
+      }
+
+      if (condition.sub_conditions && condition.sub_conditions.length > 0) {
+        result = result.concat(getConditionsWithReports(condition.sub_conditions));
+      }
+    });
+
+    return result;
+  };
 
   return (
     <ScrollSidePageWrapper
@@ -150,6 +197,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
             <div className="core-page-content">
               <Row gutter={[16, 16]}>
                 {permitConditionCategories.map((category) => {
+                  const conditionsWithReports = getConditionsWithReports(category.conditions);
                   return (
                     <React.Fragment key={category.href}>
                       <Col span={24}>
@@ -176,6 +224,32 @@ const PermitConditions: FC<PermitConditionProps> = ({
                           <PermitConditionLayer condition={sc} isExpanded={isExpanded} />
                         </Col>
                       ))}
+                      {conditionsWithReports?.length > 0 && (
+                        <div className="report-collapse-container">
+                          <Title level={4} className="primary-colour">
+                            Reports
+                          </Title>
+                          <Collapse expandIconPosition="end">
+                            {conditionsWithReports.map((cond: IPermitCondition, index) => (
+                              <Collapse.Panel
+                                key={cond.permit_condition_id}
+                                header={
+                                  <Typography.Text strong>Report #{index + 1}</Typography.Text>
+                                }
+                                className="report-collapse"
+                              >
+                                <AddReportToPermitConditionForm
+                                  modalView={false}
+                                  onSubmit={() => {}}
+                                  condition={cond}
+                                  permitGuid={permitGuid}
+                                  report={cond.report}
+                                />
+                              </Collapse.Panel>
+                            ))}
+                          </Collapse>
+                        </div>
+                      )}
                     </React.Fragment>
                   );
                 })}
@@ -184,7 +258,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
           </Col>
         </Row>
       }
-    />
+    ></ScrollSidePageWrapper>
   );
 };
 
