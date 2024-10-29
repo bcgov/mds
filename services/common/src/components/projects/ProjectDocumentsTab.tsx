@@ -142,7 +142,8 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
           <Typography.Title level={3}>Project Description</Typography.Title>
           <Alert
             className={isCore ? "ant-alert-grey" : ""}
-            description="Refer back to Project Description Purpose and Authorization to see required document list."
+            description="Below are the required and supporting documents for each authorization submitted in the Project Description. 
+            Refer to the Project Description Purpose and Authorization sections for the complete list of required documents."
             showIcon
           />
         </>
@@ -207,11 +208,22 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
           titleLevel={3}
           onArchivedDocuments={refreshData}
           documents={irtDocuments}
-          canReplace={canReplace}
+          canReplace={false}
+          canArchive={false}
+          infoText="Here is the IRT file you submitted under the Information Requirements Table.
+          To make changes to the submission, return to the IRT tab."
         />
       ),
     },
-    { href: "major-mine-application" },
+    {
+      href: "major-mine-application",
+      content: (
+        <>
+          <Typography.Title level={3}>Major Mine Application</Typography.Title>
+          <Typography.Paragraph>Below are the documents submitted as part of the Major Mine Application.</Typography.Paragraph>
+        </>
+      )
+    },
     {
       href: "mma-primary-document",
       title: <div className="sub-tab-1">Primary Document</div>,

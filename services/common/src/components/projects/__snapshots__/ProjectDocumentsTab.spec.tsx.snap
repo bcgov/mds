@@ -235,7 +235,8 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
               <div
                 class="ant-alert-description"
               >
-                Refer back to Project Description Purpose and Authorization to see required document list.
+                Below are the required and supporting documents for each authorization submitted in the Project Description. 
+            Refer to the Project Description Purpose and Authorization sections for the complete list of required documents.
               </div>
             </div>
           </div>
@@ -1837,6 +1838,12 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
               >
                 Information Requirements Table
               </h3>
+              <div
+                class="ant-typography"
+              >
+                Here is the IRT file you submitted under the Information Requirements Table.
+          To make changes to the submission, return to the IRT tab.
+              </div>
             </div>
             <div
               class="ant-col ant-col-24"
@@ -2217,14 +2224,19 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
         </div>
         <div
           class="ant-col ant-col-24"
+          id="major-mine-application"
           style="padding: 8px 8px 8px 8px;"
         >
           <h3
             class="ant-typography"
-            id="major-mine-application"
           >
             Major Mine Application
           </h3>
+          <div
+            class="ant-typography"
+          >
+            Below are the documents submitted as part of the Major Mine Application.
+          </div>
         </div>
         <div
           class="ant-col ant-col-24"
