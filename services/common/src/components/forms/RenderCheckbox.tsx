@@ -1,6 +1,7 @@
-import React, { FC } from "react";
+import React, { FC, useContext } from "react";
 import { Checkbox, Form } from "antd";
 import { BaseInputProps } from "./BaseInput";
+import { FormContext } from "./FormWrapper";
 /**
  * @constant RenderCheckbox - Ant Design `Checkbox` component for redux-form.
  */
@@ -20,6 +21,20 @@ const RenderCheckbox: FC<CheckboxProps> = ({
   const onChange = (e) => {
     input.onChange(e.target.checked);
   };
+  const { isEditMode } = useContext(FormContext);
+
+  if (!isEditMode) {
+    return (
+      <Form.Item
+        name={input.name}
+        className="view-item"
+      >
+        <Checkbox id={id} checked={input.value} disabled={true}>
+          <div className="view-item-label ungroup-checkbox">{label}</div>
+        </Checkbox>
+      </Form.Item>
+    );
+  }
   return (
     <Form.Item
       name={input.name}
