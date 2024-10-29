@@ -285,7 +285,7 @@ exports[`ReportPage renders view mode properly 1`] = `
               Regulatory Authority
             </h3>
             <div
-              class="ant-form-item ant-form-item-with-help"
+              class="ant-form-item view-item"
             >
               <div
                 class="ant-row ant-form-item-row"
@@ -294,14 +294,17 @@ exports[`ReportPage renders view mode properly 1`] = `
                   class="ant-col ant-form-item-label"
                 >
                   <label
-                    class="ant-form-item-required"
+                    class=""
                     for="VIEW_EDIT_REPORT_report_for"
                     title=""
                   >
                     <div
-                      style="width: 100%;"
+                      class="view-item-label"
                     >
-                      Who is the report for?
+                      <div>
+                        Who is the report for?
+                         
+                      </div>
                     </div>
                   </label>
                 </div>
@@ -315,7 +318,7 @@ exports[`ReportPage renders view mode properly 1`] = `
                       class="ant-form-item-control-input-content"
                     >
                       <div
-                        class="ant-radio-group ant-radio-group-solid vertical-radio-group"
+                        class="ant-radio-group ant-radio-group-solid vertical-radio-group view-item"
                       >
                         <label
                           class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
@@ -404,19 +407,6 @@ exports[`ReportPage renders view mode properly 1`] = `
                       </div>
                     </div>
                   </div>
-                  <div
-                    style="display: flex; flex-wrap: nowrap;"
-                  >
-                    <div
-                      class="ant-form-item-explain ant-form-item-explain-connected"
-                      id="VIEW_EDIT_REPORT_report_for_help"
-                      role="alert"
-                    >
-                      <div
-                        class=""
-                      />
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -437,7 +427,7 @@ exports[`ReportPage renders view mode properly 1`] = `
             style="padding: 4px 8px 4px 8px;"
           >
             <div
-              class="ant-form-item ant-form-item-with-help"
+              class="ant-form-item view-item"
             >
               <div
                 class="ant-row ant-form-item-row"
@@ -446,14 +436,17 @@ exports[`ReportPage renders view mode properly 1`] = `
                   class="ant-col ant-form-item-label"
                 >
                   <label
-                    class="ant-form-item-required"
+                    class=""
                     for="VIEW_EDIT_REPORT_report_type"
                     title=""
                   >
                     <div
-                      style="width: 100%;"
+                      class="view-item-label"
                     >
-                      What is the type of the report?
+                      <div>
+                        What is the type of the report?
+                         
+                      </div>
                     </div>
                   </label>
                 </div>
@@ -467,7 +460,7 @@ exports[`ReportPage renders view mode properly 1`] = `
                       class="ant-form-item-control-input-content"
                     >
                       <div
-                        class="ant-radio-group ant-radio-group-solid vertical-radio-group"
+                        class="ant-radio-group ant-radio-group-solid vertical-radio-group view-item"
                       >
                         <label
                           class="ant-radio-wrapper ant-radio-wrapper-checked ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
@@ -513,19 +506,6 @@ exports[`ReportPage renders view mode properly 1`] = `
                           </span>
                         </label>
                       </div>
-                    </div>
-                  </div>
-                  <div
-                    style="display: flex; flex-wrap: nowrap;"
-                  >
-                    <div
-                      class="ant-form-item-explain ant-form-item-explain-connected"
-                      id="VIEW_EDIT_REPORT_report_type_help"
-                      role="alert"
-                    >
-                      <div
-                        class=""
-                      />
                     </div>
                   </div>
                 </div>
