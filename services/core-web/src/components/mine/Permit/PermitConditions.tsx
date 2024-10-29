@@ -29,7 +29,7 @@ import {
 } from "./PermitConditionExtraction";
 import { getPermitReports } from "@mds/common/redux/selectors/permitSelectors";
 import { IMineReport } from "@mds/common";
-import { AddRequestToPermitConditionForm } from "@/components/Forms/reports/AddReporttoPermitConditionForm";
+import AddReportToPermitConditionForm from "@/components/Forms/reports/AddReporttoPermitConditionForm";
 
 const { Title } = Typography;
 
@@ -236,7 +236,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
                                 }
                                 className="report-collapse"
                               >
-                                <AddRequestToPermitConditionForm
+                                <AddReportToPermitConditionForm
                                   modalView={false}
                                   onSubmit={() => {}}
                                   condition={cond}

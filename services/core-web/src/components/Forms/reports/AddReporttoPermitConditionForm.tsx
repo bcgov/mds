@@ -23,14 +23,14 @@ import RenderGroupCheckbox, {
   normalizeGroupCheckBox,
 } from "@mds/common/components/forms/RenderGroupCheckbox";
 
-interface RequestReportFormProps {
+interface AddReportToPermitConditionFormProps {
   onSubmit: (values: Partial<IMineReport>) => void | Promise<void>;
   permitGuid: string;
   condition: IPermitCondition;
   modalView?: boolean;
 }
 
-export const AddRequestToPermitConditionForm: FC<RequestReportFormProps> = ({
+export const AddReportToPermitConditionForm: FC<AddReportToPermitConditionFormProps> = ({
   onSubmit,
   condition,
   permitGuid,
@@ -192,3 +192,5 @@ export const AddRequestToPermitConditionForm: FC<RequestReportFormProps> = ({
     </div>
   );
 };
+
+export default AddReportToPermitConditionForm;

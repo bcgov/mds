@@ -15,7 +15,7 @@ import {
 } from "@fortawesome/pro-regular-svg-icons";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import { useParams } from "react-router-dom";
-import { AddRequestToPermitConditionForm } from "../../Forms/reports/AddReporttoPermitConditionForm";
+import { AddReportToPermitConditionForm } from "../../Forms/reports/AddReporttoPermitConditionForm";
 import { createMineReport } from "@mds/common/redux/actionCreators/reportActionCreator";
 
 interface PermitConditionLayerProps {
@@ -74,7 +74,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
           condition: reportCondition,
           permitGuid,
         },
-        content: AddRequestToPermitConditionForm,
+        content: AddReportToPermitConditionForm,
       })
     );
   };
