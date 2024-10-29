@@ -174,7 +174,7 @@ const ProjectLinks: FC<ProjectLinksProps> = ({ viewProject, tableOnly = false })
         <ProjectLinksTable
           projectGuid={project.project_guid}
           projectLinks={projectLinks}
-          hasModifyPermission={hasModifyPermission && !tableOnly}
+          hasModifyPermission={hasModifyPermission && !tableOnly && isEditMode}
           viewProject={viewProject}
           isLoaded={isLoaded}
         />

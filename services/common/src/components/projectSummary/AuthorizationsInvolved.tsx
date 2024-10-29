@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   arrayPush,
@@ -57,6 +57,7 @@ import {
 } from "../..";
 import { SystemFlagEnum } from "@mds/common/constants/enums";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
+import { FormContext } from "../forms/FormWrapper";
 
 const RenderEMAPermitCommonSections = ({ code, isAmendment, index, isDisabled }) => {
   const dispatch = useDispatch();
@@ -292,7 +293,7 @@ const RenderEMANewPermitSection = ({ code, isDisabled }) => {
   );
 };
 
-const RenderEMAAmendFieldArray = ({ fields, code, isDisabled }) => {
+const RenderEMAAmendFieldArray = ({ fields, code, isDisabled, isEditMode }) => {
   const handleRemoveAmendment = (index: number) => {
     fields.remove(index);
   };
@@ -317,9 +318,9 @@ const RenderEMAAmendFieldArray = ({ fields, code, isDisabled }) => {
                       </a>
                     </Typography.Text>
                   </Col>
-                  <Col>
+                  {isEditMode && <Col>
                     <Button onClick={() => handleRemoveAmendment(index)}>Cancel</Button>
-                  </Col>
+                  </Col>}
                 </Row>
               }
               name="existing_permits_authorizations[0]"
@@ -389,6 +390,7 @@ const RenderEMAAuthCodeFormSection = ({ code, isDisabled }) => {
   const hasNew = codeAuthorizations.NEW?.length > 0;
   const permitTypes = ["AMENDMENT", "NEW"];
   const dispatch = useDispatch();
+  const { isEditMode } = useContext(FormContext);
 
   const addAmendment = () => {
     dispatch(arrayPush(FORM.ADD_EDIT_PROJECT_SUMMARY, `authorizations.${code}.AMENDMENT`, {}));
@@ -437,16 +439,16 @@ const RenderEMAAuthCodeFormSection = ({ code, isDisabled }) => {
                       <FieldArray
                         name={`${code}.AMENDMENT`}
                         component={RenderEMAAmendFieldArray}
-                        props={{ code, isDisabled }}
+                        props={{ code, isDisabled, isEditMode }}
                       />
-                      <Button
+                      {isEditMode && <Button
                         disabled={isDisabled}
                         onClick={addAmendment}
                         icon={<PlusCircleFilled />}
                         className="btn-sm-padding margin-large--bottom"
                       >
                         Add another amendment
-                      </Button>
+                      </Button>}
                     </Row>
                   )}
                 </>
@@ -558,7 +560,7 @@ export const AuthorizationsInvolved = () => {
   const transformedProjectSummaryAuthorizationTypes = useSelector(
     getTransformedProjectSummaryAuthorizationTypes
   );
-
+  const { isEditMode } = useContext(FormContext);
   const amsAuthTypes = useSelector(getAmsAuthorizationTypes);
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
 
@@ -635,13 +637,13 @@ export const AuthorizationsInvolved = () => {
                         <Row gutter={[0, 16]}>
                           <Col>
                             <Checkbox
-                              disabled={isFieldDisabled(systemFlag, formValues?.status_code, true)}
+                              disabled={!isEditMode || isFieldDisabled(systemFlag, formValues?.status_code, true)}
                               data-cy={`checkbox-authorization-${child.code}`}
                               value={child.code}
                               checked={checked}
                               onChange={(e) => handleChange(e, child.code)}
                             >
-                              <b>{child.description}</b>
+                              <b className={!isEditMode && "view-item-label"}>{child.description}</b>
                             </Checkbox>
                             {checked && (
                               <>
