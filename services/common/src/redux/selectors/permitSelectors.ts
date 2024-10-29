@@ -1,6 +1,7 @@
 import { createSelector } from "reselect";
 import { getNoticeOfWork } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import * as permitReducer from "../reducers/permitReducer";
+import { IMineReport } from "@mds/common/interfaces";
 
 const draft = "DFT";
 
@@ -84,3 +85,9 @@ export const getPermits = createSelector([getUnformattedPermits], (permits) => {
   const formattedPermits = permits.map((permit) => formatPermit(permit));
   return formattedPermits;
 });
+
+export const getPermitReports = (permitGuid) =>
+  createSelector([getUnformattedPermits], (permits): IMineReport[] => {
+    const permit = permits.find((p) => p.permit_guid === permitGuid);
+    return (permit && permit.reports) ?? [];
+  });
