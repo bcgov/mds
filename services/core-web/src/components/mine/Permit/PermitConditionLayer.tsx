@@ -15,7 +15,7 @@ import {
 } from "@fortawesome/pro-regular-svg-icons";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import { useParams } from "react-router-dom";
-import { AddRequestToPermitConditionForm } from "@/components/Forms/reports/AddReporttoPermitConditionForm";
+import { AddRequestToPermitConditionForm } from "../../Forms/reports/AddReporttoPermitConditionForm";
 import { createMineReport } from "@mds/common/redux/actionCreators/reportActionCreator";
 
 interface PermitConditionLayerProps {
