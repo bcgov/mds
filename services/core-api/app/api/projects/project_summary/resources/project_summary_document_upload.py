@@ -9,6 +9,7 @@ from app.api.mines.mine.models.mine import Mine
 from app.api.services.document_manager_service import DocumentManagerService
 from app.config import Config
 from app.api.utils.feature_flag import is_feature_enabled, Feature
+from app.api.constants import MAX_DOCUMENT_NAME_LENGTHS
 
 class ProjectSummaryDocumentUploadResource(Resource, UserMixin):
     @api.doc(
@@ -29,7 +30,8 @@ class ProjectSummaryDocumentUploadResource(Resource, UserMixin):
 
         if is_feature_enabled(Feature.MAJOR_PROJECT_REPLACE_FILE):
             return DocumentManagerService.validateFileNameAndInitializeFileUploadWithDocumentManager(
-                request, mine, project_guid, 'project_summaries')
+                request, mine, project_guid, 'project_summaries', MAX_DOCUMENT_NAME_LENGTHS['MAJOR_PROJECTS'])
         else:
-            return DocumentManagerService.initializeFileUploadWithDocumentManager(request, mine, 'project_summaries')
+            return DocumentManagerService.initializeFileUploadWithDocumentManager(
+                request, mine, 'project_summaries', MAX_DOCUMENT_NAME_LENGTHS['MAJOR_PROJECTS'])
     

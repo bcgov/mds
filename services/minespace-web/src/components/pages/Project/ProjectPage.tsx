@@ -57,6 +57,7 @@ const ProjectPage: FC = () => {
     mrc_review_required,
   } = project;
 
+  const isProjectSummarySubmitted = Boolean(projectSummary?.submission_date);
   const hasInformationRequirementsTable = Boolean(information_requirements_table?.irt_guid);
   const hasFinalAplication = Boolean(major_mine_application?.major_mine_application_guid);
 
@@ -238,7 +239,7 @@ const ProjectPage: FC = () => {
     {
       label: "IRT",
       key: "irt-entry",
-      disabled: !hasInformationRequirementsTable,
+      disabled: !hasInformationRequirementsTable && !isProjectSummarySubmitted,
       children: (
         <div className={pageClass}>
           <InformationRequirementsTableEntryTab
@@ -251,7 +252,7 @@ const ProjectPage: FC = () => {
     {
       label: "Application",
       key: "major-mine-application",
-      disabled: !hasFinalAplication,
+      disabled: !hasFinalAplication && !isProjectSummarySubmitted,
       children: <div className={pageClass}>{majorMineApplicationTabContent}</div>,
     },
     {

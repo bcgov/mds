@@ -1,3 +1,7 @@
+@use "../settings/variables.scss" as *;
+@use "../settings/theme.scss" as *;
+@use "../tools/mixins.scss" as *;
+
 .icon-xs {
   font-size: 18px !important;
 
@@ -94,6 +98,8 @@
 }
 
 .padding-sm {
+  padding: $default-padding-sm;
+
   &--left {
     padding-left: $default-padding-sm;
   }
@@ -115,10 +121,11 @@
     padding-bottom: $default-padding-sm;
   }
 
-  padding: $default-padding-sm;
 }
 
 .padding-md {
+  padding: $default-padding-md;
+
   &--top {
     padding-top: $default-padding-md;
   }
@@ -135,8 +142,6 @@
     padding-left: $default-padding-md;
   }
 
-  padding: $default-padding-md;
-
   &--sides {
     padding-left: $default-padding-md;
     padding-right: $default-padding-md;
@@ -148,6 +153,8 @@
 }
 
 .padding-lg {
+  padding: $default-padding-lg;
+
   &--top {
     padding-top: $default-padding-lg;
   }
@@ -169,8 +176,6 @@
     padding-bottom: $default-padding-lg;
   }
 
-  padding: $default-padding-lg;
-
   &--sides {
     padding-left: $default-padding-lg;
     padding-right: $default-padding-lg;
@@ -182,6 +187,8 @@
 }
 
 .padding-xxl {
+  padding: $default-padding-xxl;
+
   &--top {
     padding-top: $default-padding-xxl;
   }
@@ -197,8 +204,6 @@
   &--left {
     padding-left: $default-padding-xxl;
   }
-
-  padding: $default-padding-xxl;
 }
 
 .margin-none {

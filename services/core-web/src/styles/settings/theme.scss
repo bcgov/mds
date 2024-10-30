@@ -1,30 +1,25 @@
 // theme.scss holds overrides for ant-design
 // refer to (https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less) for ant design variable names;
+@use "./variables.scss";
 $blue: #003366;
 $white: #f1f1f2;
-$violet: #5e46a1;
 $yellow: #f3cd65;
 $red: #d40d0d;
-$light-grey: #ded9d9;
-$lightest-grey: #f4f0f0;
-$medium-grey: #6b6363;
 
 // Below matches ant design divider colour
 $layout-grey: #e8e8e8;
 
-$alert-red: #d40d0d;
-$ok-green: #45a766;
-$primary-color: $violet;
+$primary-color: variables.$violet;
 $warning-color: $yellow;
 $error-color: $red;
 $menu-item-color: $white;
-$item-hover-bg: $light-grey;
+$item-hover-bg: variables.$light-grey;
 
 // table colours
-$table-header-bg: $lightest-grey;
-$table-row-hover-bg: $light-grey;
-$table-row-hover-bg: $light-grey;
-$table-selected-row-bg: $light-grey;
+$table-header-bg: variables.$lightest-grey;
+$table-row-hover-bg: variables.$light-grey;
+$table-row-hover-bg: variables.$light-grey;
+$table-selected-row-bg: variables.$light-grey;
 
 
 $font-family: "Open Sans", sans-serif;

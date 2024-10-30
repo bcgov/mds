@@ -1,6 +1,7 @@
-import React, { FC } from "react";
+import React, { FC, useContext } from "react";
 import { Checkbox, Form } from "antd";
 import { BaseInputProps } from "./BaseInput";
+import { FormContext } from "./FormWrapper";
 
 /**
  * @constant RenderGroupCheckbox - Ant Design `Checkbox` component for redux-form.
@@ -33,6 +34,24 @@ const RenderGroupCheckbox: FC<CheckboxProps> = ({
   required,
   ...props
 }) => {
+  const { isEditMode } = useContext(FormContext);
+  if (!isEditMode) {
+    return (
+      <Form.Item
+        name={input.name}
+        label={<div className="view-item-label">{label}</div>}
+        getValueProps={() => ({ value: input.value })}
+        className="view-item"
+      >
+        <Checkbox.Group
+          name={input.name}
+          options={options}
+          className="view-group-checkbox"
+          disabled={true}
+        />
+      </Form.Item>
+    );
+  }
   return (
     <Form.Item
       name={input.name}

@@ -146,19 +146,25 @@ export const DocumentUpload: FC = () => {
   };
 
   const onRemoveFile = (err, fileItem) => {
-    const document_type_code = documents.find(
-      (file) => fileItem.serverId === file.document_manager_guid
-    )?.project_summary_document_type_code;
-    if (document_type_code === PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.SPATIAL) {
-      const newSpatialDocuments = [...spatial_documents].filter(
-        (file) => fileItem.serverId !== file.document_manager_guid
-      );
-      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "spatial_documents", newSpatialDocuments));
-    } else if (document_type_code === PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.SUPPORTING) {
-      const newSupportDocuments = [...support_documents].filter(
-        (file) => fileItem.serverId !== file.document_manager_guid
-      );
-      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "support_documents", newSupportDocuments));
+    if (err) {
+      console.log(err);
+    }
+
+    if (fileItem.serverId) {
+      const document_type_code = documents.find(
+        (file) => fileItem.serverId === file.document_manager_guid
+      )?.project_summary_document_type_code;
+      if (document_type_code === PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.SPATIAL) {
+        const newSpatialDocuments = [...spatial_documents].filter(
+          (file) => fileItem.serverId !== file.document_manager_guid
+        );
+        dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "spatial_documents", newSpatialDocuments));
+      } else if (document_type_code === PROJECT_SUMMARY_DOCUMENT_TYPE_CODE.SUPPORTING) {
+        const newSupportDocuments = [...support_documents].filter(
+          (file) => fileItem.serverId !== file.document_manager_guid
+        );
+        dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "support_documents", newSupportDocuments));
+      }
     }
   };
 

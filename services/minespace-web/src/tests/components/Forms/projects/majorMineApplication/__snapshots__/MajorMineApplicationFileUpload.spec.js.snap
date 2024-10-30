@@ -2,6 +2,7 @@
 
 exports[`MajorMineApplicationFileUpload renders properly 1`] = `
 <Field
+  abbrevLabel={true}
   acceptedFileTypesMap={
     Object {
       "key": "value",
@@ -13,6 +14,7 @@ exports[`MajorMineApplicationFileUpload renders properly 1`] = `
   id="primary_document"
   label="Upload primary application document"
   labelIdle="<strong>Drag & Drop your files or <span class=\\"filepond--label-action\\">Browse</span></strong><div>(Accepted filetypes: .kmx .doc .docx .xlsx .pdf)</div>"
+  maxFileNameLength="50"
   maxFiles={null}
   name="primary_document"
   onFileLoad={[MockFunction]}

@@ -1,7 +1,8 @@
-// Theme override variables taken from https://ej2.syncfusion.com/react/documentation/appearance/theme/#googles-material
-$accent: $primary-color; //#e3165b;
+@use "../settings/theme.scss";
+@use "../settings/variables.scss"; // Theme override variables taken from https://ej2.syncfusion.com/react/documentation/appearance/theme/#googles-material
+$accent: theme.$primary-color; //#e3165b;
 $accent-font: #ffffff;
-$primary: $primary-color; //#3f51b5;
+$primary: theme.$primary-color; //#3f51b5;
 $primary-50: #e8eaf6;
 $primary-100: #c5cae9;
 $primary-200: #9fa8da;
@@ -27,12 +28,12 @@ $grey-dark: #303030;
 $grey-light-font: #000000;
 $grey-dark-font: #ffffff;
 $base-font: #000000;
-$error-font: $error-color; //#f44336;
+$error-font: theme.$error-color; //#f44336;
 
 // Syncfusion requires an undocumented $theme variable to be set in order to import the correct theme.
 // This is a workaround to allow us to use the Material theme while still being able to use a different
 // $theme variable elsewhere in the application.
-@use 'syncfusion_imports' with ($theme: 'Material');
+@use 'syncfusion_imports';
 
 
 .e-empty-inner-content {

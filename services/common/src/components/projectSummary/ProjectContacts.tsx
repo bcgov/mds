@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react";
+import React, { FC, useContext, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { isNil } from "lodash";
 import { Typography, Button, Row, Col, Popconfirm } from "antd";
@@ -20,10 +20,12 @@ import RenderField from "@mds/common/components/forms/RenderField";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
+import { FormContext } from "../forms/FormWrapper";
 
 const RenderContacts = ({ fields, isDisabled }) => {
   const dispatch = useDispatch();
   const provinceOptions = useSelector(getDropdownProvinceOptions);
+  const { isEditMode } = useContext(FormContext);
   const handleClearProvince = (currentCountry, addressTypeCode, subDivisionCode, field) => {
     // clear out the province if country has changed and it no longer matches
     if (addressTypeCode !== currentCountry) {
@@ -64,7 +66,7 @@ const RenderContacts = ({ fields, isDisabled }) => {
                       Additional project contact #{index}
                     </Typography.Title>
                   </Col>
-                  <Col>
+                  {isEditMode && <Col>
                     <Popconfirm
                       placement="topLeft"
                       title="Are you sure you want to remove this contact?"
@@ -81,7 +83,7 @@ const RenderContacts = ({ fields, isDisabled }) => {
                         Delete
                       </Button>
                     </Popconfirm>
-                  </Col>
+                  </Col>}
                 </Row>
               </Col>
             )}
@@ -253,13 +255,13 @@ const RenderContacts = ({ fields, isDisabled }) => {
           </div>
         );
       })}
-      <LinkButton
+      {isEditMode && <LinkButton
         disabled={isDisabled}
         onClick={() => fields.push({ is_primary: false })}
         title="Add additional project contacts"
       >
         <PlusOutlined /> Add additional project contacts
-      </LinkButton>
+      </LinkButton>}
     </>
   );
 };

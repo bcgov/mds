@@ -1,41 +1,53 @@
+@use "../settings/theme.scss";
+@use "../settings/variables.scss";
+
 // Colours
 .color {
+
   // Theme Colours
   &-primary {
-    color: $primary-color !important;
+    color: theme.$primary-color !important;
   }
+
   &-error {
-    color: $error-color !important;
+    color: theme.$error-color !important;
   }
+
   &-warning {
-    color: $warning-color !important;
+    color: theme.$warning-color !important;
   }
+
   &-white {
-    color: $white !important;
+    color: theme.$white !important;
   }
 
   // Brand Colours
   &-gov-grey {
-    color: $gov-grey !important;
+    color: variables.$gov-grey !important;
   }
 }
 
 // Background Colours
 .bg-color {
+
   // Theme Colours
   &-primary {
-    background-color: $primary-color !important;
+    background-color: theme.$primary-color !important;
   }
+
   &-error {
-    background-color: $error-color !important;
+    background-color: theme.$error-color !important;
   }
+
   &-warning {
-    background-color: $warning-color !important;
+    background-color: theme.$warning-color !important;
   }
+
   &-white {
-    background-color: $white !important;
+    background-color: theme.$white !important;
   }
+
   &-black {
-    background-color: $black !important;
+    background-color: variables.$black !important;
   }
 }

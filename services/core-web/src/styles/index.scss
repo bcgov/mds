@@ -1,70 +1,53 @@
-@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700");
-@import url("https://js.arcgis.com/4.8/esri/themes/light/main.css");
 // ITCSS file structure, layers include: (Settings, Tools, Generic, Elements, Objects, Components, Utilities)
 // most styling will be found in the Components and Objects folder.
-
-// SETTINGS - Used with pre-processors. Global settings that contain font, colors definitions, etc.
-@import "./settings/variables.scss";
-@import "./settings/theme.scss";
-@import "./settings/themeOverride.scss";
-@import "./settings/filepond-overrides.scss";
-
-// TOOLS - globally used mixins and functions. (ie gradient mixins, font-sizing mixins)
-@import "./tools/mixins.scss";
-@import "./tools/syncfusion.scss";
-
-// GENERIC - Very high level, far-reaching styles. Contains Normalize.css, Box-sizing rules, CSS resets etc.
-@import "./generic/Normalize.scss";
-@import "./generic/layout.scss";
-@import "./generic/helpers.scss";
-
-// ELEMENTS - Bare, un-classed HTML elements (like H1, A, etc.). This layer is rarely touched after initial setup.
-@import "./elements/elements.scss";
 
 // OBJECTS - layouts (CSS Grid or flexbox)
 
 // COMPONENTS - specific UI components.
-@import "./components/Loading.scss";
-@import "./components/Button.scss";
-@import "./components/MineDashboard.scss";
-@import "./components/Comments.scss";
-@import "./components/CustomDashboard.scss";
-@import "./components/NavBar.scss";
-@import "./components/NullScreen.scss";
-@import "./components/Logout.scss";
-@import "./components/Dashboard.scss";
-@import "./components/Forms.scss";
-@import "./components/Maps.scss";
-@import "./components/MineList.scss";
-@import "./components/Tables.scss";
-@import "./components/MineCompliance.scss";
-@import "./components/Modal.scss";
-@import "./components/MinePermitTable.scss";
-@import "./components/HomePage.scss";
-@import "./components/NoticeOfWork.scss";
-@import "./components/SearchBar.scss";
-@import "./components/CoreTooltip.scss";
-@import "./components/MergeContacts.scss";
-@import "./components/NoticeOfDeparture.scss";
-@import "./components/NotificationDrawer.scss";
-@import "./components/SteppedForm.scss";
-@import "./components/DocumentTableWithExpandedRows.scss";
-@import "./components/DocumentCompressionProgressBar.scss";
-@import "./components/Menu.scss";
-@import "./components/Permit.scss";
-@import "./components/ExplosivesPermits.scss";
-@import "./components/MineExplosivesPermitTable.scss";
-@import "./components/ScrollSideMenuWrapper.scss";
-@import "./components/Tags.scss";
-@import "./components/Reports.scss";
-@import "./components/FontAwesomeIcon.scss";
-@import "./components/ProjectSubmissionStatusPage.scss";
-@import "./components/Tag.scss";
-@import "./components/ViewPermit.scss";
-@import "./components/Callout.scss";
-@import "./components/CorePageHeader.scss";
-@import "./components/PermitConditions.scss";
-@import "./components/HelpGuide.scss";
-@import "./components/RichTextEditor.scss";
+@forward "./components/Loading.scss";
+@forward "./components/Button.scss";
+@forward "./components/MineDashboard.scss";
+@forward "./components/Comments.scss";
+@forward "./components/CustomDashboard.scss";
+@forward "./components/NavBar.scss";
+@forward "./components/NullScreen.scss";
+@forward "./components/Logout.scss";
+@forward "./components/Dashboard.scss";
+@forward "./components/Forms.scss";
+@forward "./components/Maps.scss";
+@forward "./components/MineList.scss";
+@forward "./components/Tables.scss";
+@forward "./components/MineCompliance.scss";
+@forward "./components/Modal.scss";
+@forward "./components/MinePermitTable.scss";
+@forward "./components/HomePage.scss";
+@forward "./components/NoticeOfWork.scss";
+@forward "./components/SearchBar.scss";
+@forward "./components/CoreTooltip.scss";
+@forward "./components/MergeContacts.scss";
+@forward "./components/NoticeOfDeparture.scss";
+@forward "./components/NotificationDrawer.scss";
+@forward "./components/SteppedForm.scss";
+@forward "./components/DocumentTableWithExpandedRows.scss";
+@forward "./components/DocumentCompressionProgressBar.scss";
+@forward "./components/Menu.scss";
+@forward "./components/Permit.scss";
+@forward "./components/ExplosivesPermits.scss";
+@forward "./components/MineExplosivesPermitTable.scss";
+@forward "./components/ScrollSideMenuWrapper.scss";
+@forward "./components/Tags.scss";
+@forward "./components/Reports.scss";
+@forward "./components/FontAwesomeIcon.scss";
+@forward "./components/ProjectSubmissionStatusPage.scss";
+@forward "./components/Tag.scss";
+@forward "./components/ViewPermit.scss";
+@forward "./components/Callout.scss";
+@forward "./components/CorePageHeader.scss";
+@forward "./components/PermitConditions.scss";
+@forward "./components/HelpGuide.scss";
+@forward "./components/RichTextEditor.scss";
 
 // UTILITIES - utilities and helper classes. This layer has the highest specificity.
+
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700");
+@import url("https://js.arcgis.com/4.8/esri/themes/light/main.css");

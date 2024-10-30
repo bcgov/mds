@@ -2,6 +2,7 @@
 
 exports[`HelpGuide renders MS properly with default content 1`] = `
 <div
+  class="help-content"
   data-testid="help-content"
 >
   <h2

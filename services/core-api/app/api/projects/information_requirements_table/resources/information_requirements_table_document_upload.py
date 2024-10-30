@@ -6,7 +6,7 @@ from app.api.utils.resources_mixins import UserMixin
 from app.api.projects.project.models.project import Project
 from app.api.mines.mine.models.mine import Mine
 from app.api.services.document_manager_service import DocumentManagerService
-
+from app.api.constants import MAX_DOCUMENT_NAME_LENGTHS
 
 class InformationRequirementsTableDocumentUploadResource(Resource, UserMixin):
     @api.doc(
@@ -17,11 +17,11 @@ class InformationRequirementsTableDocumentUploadResource(Resource, UserMixin):
 
         if not project:
             raise NotFound('Project not found.')
-
+        
         mine = Mine.find_by_mine_guid(str(project.mine_guid))
 
         if not mine:
             raise NotFound('Mine not found.')
 
         return DocumentManagerService.initializeFileUploadWithDocumentManager(
-            request, mine, 'information_requirements_table')
+            request, mine, 'information_requirements_table', MAX_DOCUMENT_NAME_LENGTHS['MAJOR_PROJECTS'])

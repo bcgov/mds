@@ -5,7 +5,12 @@ import FormWrapper from "../../forms/FormWrapper";
 import { change, Field, getFormValues, reset, touch } from "redux-form";
 import RenderFileUpload from "../../forms/RenderFileUpload";
 import { spatialDocumentBundle } from "@mds/common/redux/utils/Validate";
-import { OTHER_SPATIAL, SPATIAL_DATA_STANDARDS_URL, XML } from "../../..";
+import {
+  OTHER_SPATIAL,
+  SPATIAL_DATA_STANDARDS_URL,
+  XML,
+  MAX_DOCUMENT_NAME_LENGTHS,
+} from "../../..";
 import { Alert, Button, Row, Steps, Typography } from "antd";
 import RenderCancelButton from "../../forms/RenderCancelButton";
 import RenderSubmitButton from "../../forms/RenderSubmitButton";
@@ -165,6 +170,7 @@ const AddSpatialDocumentsModal: FC<AddSpatialDocumentsModalProps> = ({
             onRemoveFile={handleRemoveFile}
             component={RenderFileUpload}
             maxFileSize="400MB"
+            maxFileNameLength={MAX_DOCUMENT_NAME_LENGTHS.MAJOR_PROJECTS}
             label="Upload Spatial File"
             abbrevLabel
             listedFileTypes={["spatial"]}

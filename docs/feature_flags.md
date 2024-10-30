@@ -28,7 +28,7 @@ Preferred method if using feature flag in a functional React component.
 
 ```typescript
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
-import { Feature } from "@mds/common";
+import { Feature } from "@mds/common/utils/featureFlag";;
 
 const ThisIsAReactComponent = () => {
   const { isFeatureEnabled } = useFeatureFlag();
@@ -45,7 +45,7 @@ Alternative method if using feature flag in a React component and you cannot use
 
 ```typescript
 import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
-import { Feature } from "@mds/common";
+import { Feature } from "@mds/common/utils/featureFlag";;
 
 class ThisIsAReactComponent {
   render() {
@@ -66,7 +66,7 @@ You can use the `FeatureFlagGuard` and pass along the feature you want to check 
 If it's not enabled, you get a nice little "you don't have access" notice.
 
 ```typescript
-import { Feature } from "@mds/common";
+import { Feature } from "@mds/common/utils/featureFlag";
 import FeatureFlagGuard from "@/components/common/featureFlag.guard";
 
 const DamsPage: React.FC<DamsPageProps> = (props) => {
@@ -96,7 +96,7 @@ Please use the other methods above as far as you can.
 
 ```typescript
 import { isFeatureEnabled } from @mds/common;
-import { Feature } from "@mds/common";
+import { Feature } from "@mds/common/utils/featureFlag";;
 
 console.log(isFeatureEnabled(Feature.TSF_V2));
 

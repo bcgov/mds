@@ -277,11 +277,15 @@ export const dateInFuture = (value) =>
   value && !moment(value).isAfter() ? "Date must be in the future" : undefined;
 
 // NOTE: modified from version in CORE- change from <= to <
-export const dateNotBeforeOther = memoize((other: string) => (value: string) => {
-  return value && other && value < other
-    ? `Date cannot be before ${moment(other).format("ddd MMM D YYYY")}`
-    : undefined;
-});
+export const dateNotBeforeOther = memoize((other: string, otherLabel?: string) => (value: string) => {
+  const invalid = value && other && value < other;
+  if (!invalid) {
+    return undefined;
+  }
+  const otherFormattedDate = moment(other).format("ddd MMM D YYYY");
+  const otherDateText = otherLabel ? `${otherLabel} (${otherFormattedDate})` : otherFormattedDate;
+  return `Date cannot be before ${otherDateText}`
+}, (other, otherLabel) => `${other}_${otherLabel}`);
 
 export const dateNotBeforeStrictOther = memoize((other) => (value) =>
   value && other && moment(value).isBefore(other) ? `Date cannot be before ${other}` : undefined
@@ -290,21 +294,26 @@ export const dateNotBeforeStrictOther = memoize((other) => (value) =>
 export const timeNotBeforeOther = memoize(
   (comparableDate, baseDate, baseTime) => (comparableTime) =>
     baseTime &&
-    baseDate &&
-    comparableDate &&
-    comparableTime &&
-    baseDate === comparableDate &&
-    comparableTime < baseTime
+      baseDate &&
+      comparableDate &&
+      comparableTime &&
+      baseDate === comparableDate &&
+      comparableTime < baseTime
       ? `Time cannot be before ${baseTime.format("H:mm")} hrs.`
       : undefined
 );
 
 // NOTE: modified from version in CORE- change from >= to >
-export const dateNotAfterOther = memoize((other: string) => (value: string) => {
-  return value && other && value > other
-    ? `Date cannot be after ${moment(other).format("ddd MMM D YYYY")}`
-    : undefined;
-});
+export const dateNotAfterOther = memoize((other: string, otherLabel?: string) => (value: string) => {
+  const invalid = value && other && value > other;
+  if (!invalid) {
+    return undefined;
+  }
+  const otherFormattedDate = moment(other).format("ddd MMM D YYYY");
+  const otherDateText = otherLabel ? `${otherLabel} (${otherFormattedDate})` : otherFormattedDate;
+
+  return `Date cannot be after ${otherDateText}`
+}, (other, otherLabel) => `${other}_${otherLabel}`);
 
 export const yearNotInFuture = (value) =>
   value && value > new Date().getFullYear() ? "Year cannot be in the future" : undefined;
@@ -417,9 +426,8 @@ export const validateIfApplicationTypeCorrespondsToPermitNumber = (
     return permit?.permit_prefix &&
       Strings.APPLICATION_TYPES_BY_PERMIT_PREFIX[permit.permit_prefix].includes(applicationType)
       ? undefined
-      : `The ${
-          isAdminAmendment ? "Type of Administrative Amendment" : "Type of Notice of Work"
-        } does not match to the selected permit.`;
+      : `The ${isAdminAmendment ? "Type of Administrative Amendment" : "Type of Notice of Work"
+      } does not match to the selected permit.`;
   }
   return undefined;
 };

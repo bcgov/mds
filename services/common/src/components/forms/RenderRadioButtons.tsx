@@ -1,6 +1,6 @@
 import React, { FC, useContext } from "react";
 import { Form, Radio } from "antd";
-import { BaseInputProps, getFormItemLabel } from "@mds/common/components/forms/BaseInput";
+import { BaseInputProps, BaseViewInput, getFormItemLabel } from "@mds/common/components/forms/BaseInput";
 import { IOption } from "@mds/common/interfaces";
 import { FormContext } from "./FormWrapper";
 
@@ -40,6 +40,36 @@ const RenderRadioButtons: FC<RenderRadioButtonsProps> = ({
     input.onChange(e.target.value);
   };
 
+  if (!isEditMode) {
+    if (optionType !== "default") {
+      const matching = options.find((opt) => opt.value === input.value);
+      return <BaseViewInput label={label} value={matching?.label} />
+    }
+    const radioGroupClass = isVertical ? "vertical-radio-group view-item" : "view-item"
+    return (
+      <Form.Item
+        id={id}
+        getValueProps={() => ({ value: input.value })}
+        name={input.name}
+        label={<div className="view-item-label">{getFormItemLabel(label, false, labelSubtitle, false)}</div>}
+        className="view-item"
+      >
+        <>
+          <Radio.Group
+            disabled={true}
+            name={input.name}
+            value={input.value}
+            options={options}
+            optionType={optionType}
+            className={radioGroupClass}
+            buttonStyle="solid"
+          />
+          {help && <div className={`form-item-help ${input.name}-form-help`}>{help}</div>}
+        </>
+      </Form.Item>
+    );
+  }
+
   return (
     <Form.Item
       id={id}
@@ -55,7 +85,7 @@ const RenderRadioButtons: FC<RenderRadioButtonsProps> = ({
     >
       <>
         <Radio.Group
-          disabled={disabled || !isEditMode}
+          disabled={disabled}
           name={input.name}
           value={input.value}
           onChange={handleRadioChange}

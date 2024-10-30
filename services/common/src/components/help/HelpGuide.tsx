@@ -2,7 +2,7 @@ import { Alert, Button, Col, Drawer, Row, Typography } from "antd";
 import React, { FC, useEffect, useState } from "react";
 import { Route, Switch, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { submit } from "redux-form";
+import { isDirty, submit } from "redux-form";
 import {
   getSystemFlag,
   isAuthenticated,
@@ -29,6 +29,7 @@ import { Feature } from "@mds/common/utils";
 import Loading from "../common/Loading";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQuestionCircle } from "@fortawesome/pro-regular-svg-icons";
+import { cancelConfirmWrapper } from "../forms/RenderCancelButton";
 
 interface HelpGuideProps {
   helpKey: string;
@@ -52,11 +53,15 @@ export const HelpGuideContent: FC<HelpGuideProps> = ({ helpKey }) => {
   const [isLoaded, setIsLoaded] = useState(hasHelpGuide);
   const unformattedTitle = pageTab ?? helpKey;
   const title = formatSnakeCaseToSentenceCase(unformattedTitle);
+  const isFormDirty = useSelector(isDirty(FORM.EDIT_HELP_GUIDE));
+
+  const cancelEdit = () => {
+    cancelConfirmWrapper(() => setIsEditMode(false), isFormDirty);
+  }
 
   const showDrawer = () => setOpen(true);
   const hideDrawer = () => {
-    setOpen(false);
-    setIsEditMode(false);
+    cancelConfirmWrapper(() => { setIsEditMode(false); setOpen(false) }, isFormDirty);
   };
 
   const handleFetchData = () => {
@@ -105,6 +110,11 @@ export const HelpGuideContent: FC<HelpGuideProps> = ({ helpKey }) => {
         {hasHelpGuide ? "Edit Help Guide" : "Create Help Guide"}
       </Button>
     );
+    const cancelEditButton = (
+      <Button onClick={cancelEdit}>
+        Cancel Edit
+      </Button>
+    );
     const submitButton = (
       <Button type="primary" onClick={triggerSubmit}>
         Publish Help Guide
@@ -118,6 +128,7 @@ export const HelpGuideContent: FC<HelpGuideProps> = ({ helpKey }) => {
     const buttons = isEditMode ? (
       <>
         <Col>{deleteButton}</Col>
+        <Col>{cancelEditButton}</Col>
         <Col>{submitButton}</Col>
       </>
     ) : (
@@ -158,7 +169,7 @@ export const HelpGuideContent: FC<HelpGuideProps> = ({ helpKey }) => {
         footer={canEditHelp && getFooterButtons()}
         destroyOnClose
       >
-        <div data-testid="help-content">
+        <div data-testid="help-content" className="help-content">
           {isEditMode && (
             <Alert
               message="Publish Help Guide"

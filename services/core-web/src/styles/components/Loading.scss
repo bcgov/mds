@@ -1,3 +1,5 @@
+@use "../base.scss" as *;
+
 #loading-screen {
   z-index: 99999;
   position: fixed;

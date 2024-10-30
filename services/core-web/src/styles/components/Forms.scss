@@ -1,3 +1,5 @@
+@use "../base.scss" as *;
+
 .form {
   &__parties {
     border: 1px solid $violet;
@@ -84,8 +86,22 @@
   margin-bottom: 10px;
 }
 
-.common-form.form-view .ant-row.form-row-margin {
-  margin-bottom: 1em;
+.common-form.form-view {
+  .ant-form-item-required::before {
+    display: none !important;
+  }
+
+  .view-item-label {
+    color: $input-text;
+  }
+
+  .ant-radio-group.view-item label span {
+    color: $input-text;
+  }
+
+  .ant-row.form-row-margin {
+    margin-bottom: 1em;
+  }
 }
 
 .vertical-radio-group {
@@ -107,9 +123,26 @@
 .view-item {
   line-height: 22px;
 
-  .ant-typography.view-item-label {
+  .view-item-label {
     margin-bottom: 4px;
     font-weight: 600;
+  }
+
+  .ant-form-item-label {
+    padding-bottom: 0;
+  }
+
+  .view-group-checkbox label>span {
+    color: $input-text;
+  }
+
+  .ant-checkbox-wrapper .view-item-label {
+    margin-bottom: 4px;
+    color: $input-text;
+
+    &.ungroup-checkbox {
+      font-weight: normal;
+    }
   }
 
   .ant-typography.view-item-value {

@@ -8,7 +8,7 @@ exports[`FilePicker renders properly 1`] = `
     <FormItem
       hasFeedback={false}
     >
-      <Memo([object Object])
+      <Memo(ForwardRef)
         defaultValue={true}
         onChange={[Function]}
         size="large"
@@ -23,7 +23,7 @@ exports[`FilePicker renders properly 1`] = `
         >
           Attach existing file(s)
         </ForwardRef(RadioButton)>
-      </Memo([object Object])>
+      </Memo(ForwardRef)>
     </FormItem>
   </div>
   <FormItem

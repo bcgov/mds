@@ -1,3 +1,5 @@
+@use "../base.scss" as *;
+
 // TOP LEVEL MENU
 .menu {
   @include flex;

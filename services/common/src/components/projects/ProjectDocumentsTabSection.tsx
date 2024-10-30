@@ -13,6 +13,7 @@ interface ProjectDocumentsTabSectionProps {
   onArchivedDocuments: () => Promise<void>;
   canArchive?: boolean;
   canReplace?: boolean;
+  infoText?: string;
 }
 const ProjectDocumentsTabSection: FC<ProjectDocumentsTabSectionProps> = ({
   documents,
@@ -22,6 +23,7 @@ const ProjectDocumentsTabSection: FC<ProjectDocumentsTabSectionProps> = ({
   titleLevel = 4,
   canArchive = true,
   canReplace = true,
+  infoText = null,
 }) => {
   const sectionTitle = title ?? formatUrlToUpperCaseString(id);
 
@@ -29,6 +31,7 @@ const ProjectDocumentsTabSection: FC<ProjectDocumentsTabSectionProps> = ({
     <Row id={id}>
       <Col span={24}>
         <Typography.Title level={titleLevel}>{sectionTitle}</Typography.Title>
+        {infoText && <Typography.Paragraph>{infoText}</Typography.Paragraph>}
       </Col>
       <Col span={24}>
         <DocumentTable

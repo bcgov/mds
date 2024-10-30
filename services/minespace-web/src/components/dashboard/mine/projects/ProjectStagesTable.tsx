@@ -93,10 +93,10 @@ export const ProjectStagesTable: FC<ProjectStagesTableProps> = ({ projectStages 
         }
         if (record.project_stage === "IRT") {
           let buttonLabel: string;
-          let disableButton = Boolean(record.stage_status);
+          let enableButton = true;
           if (!record.stage_status) {
             buttonLabel = "Start";
-            disableButton = !isProjectSummarySubmitted;
+            enableButton = isProjectSummarySubmitted;
           } else if (record.stage_status === "APV") {
             buttonLabel = "View";
           } else {
@@ -107,7 +107,7 @@ export const ProjectStagesTable: FC<ProjectStagesTableProps> = ({ projectStages 
             <Button
               className="full-mobile margin-small"
               onClick={() => record?.navigate_forward()}
-              disabled={disableButton}
+              disabled={!enableButton}
             >
               {buttonLabel}
             </Button>
@@ -115,10 +115,10 @@ export const ProjectStagesTable: FC<ProjectStagesTableProps> = ({ projectStages 
         }
         if (record.project_stage === "Application") {
           let buttonLabel: string;
-          let disableButton = Boolean(record.stage_status);
+          let enableButton = true;
           if (!record.stage_status) {
             buttonLabel = "Start";
-            disableButton = !isProjectSummarySubmitted;
+            enableButton = isProjectSummarySubmitted;
           } else if (["SUB", "UNR", "APV"].includes(record.stage_status)) {
             buttonLabel = "View";
           } else {
@@ -129,7 +129,7 @@ export const ProjectStagesTable: FC<ProjectStagesTableProps> = ({ projectStages 
             <Button
               className="full-mobile margin-small"
               onClick={() => record?.navigate_forward()}
-              disabled={disableButton}
+              disabled={!enableButton}
             >
               {buttonLabel}
             </Button>

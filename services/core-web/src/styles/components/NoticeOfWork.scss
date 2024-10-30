@@ -1,3 +1,6 @@
+@use "../base.scss" as *;
+
+
 // mineHeader on NoW verification step of NoticeOfWorkApplication
 .mine-content__card {
   @include flex;

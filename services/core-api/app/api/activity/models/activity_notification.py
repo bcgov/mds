@@ -170,9 +170,9 @@ class ActivityNotification(AuditMixin, Base):
         validated_notification_document = validate_document(document)
         unread_notifications_user_list = []
         expired_unread_notification_user_list = []
-        if(renotify_period_minutes > 0):
+        if renotify_period_minutes > 0:
           # Calculate the datetime that was renotify_period_minutes minutes ago
-          renotify_timestamp = datetime.now(timezone.utc) - timedelta(minutes=renotify_period_minutes)
+          renotify_timestamp = datetime.now(timezone.utc) + timedelta(minutes=renotify_period_minutes)
 
           # Filter to retrived unread records for renotifying and notify for read user if the same activity type
           expired_unread_notification_query = cls.query.with_entities(cls.notification_recipient)\
@@ -180,7 +180,7 @@ class ActivityNotification(AuditMixin, Base):
                 .filter(
                   and_(
                       cls.activity_type == activity_type,
-                      cls.create_timestamp < renotify_timestamp,
+                      cls.create_timestamp > renotify_timestamp,
                       cls.notification_read == False
                   )
                 )\
@@ -193,21 +193,20 @@ class ActivityNotification(AuditMixin, Base):
                 .filter(
                       and_(
                         cls.activity_type == activity_type,
-                        cls.create_timestamp >= renotify_timestamp,
+                        cls.create_timestamp < renotify_timestamp,
                         cls.notification_read == False
                       )
                 )\
                 .order_by(cls.notification_recipient)
 
           unread_notifications_user_list = [res[0] for res in unread_notifications_query.all()]
-
         notifications = []
 
         for user in users:
 
             formatted_user_name = user.replace('idir\\', '')
 
-            if(renotify_period_minutes < 0):
+            if renotify_period_minutes < 0:
               # If renotify period is not set or mines value idempotency_key usecase is considered
               if formatted_user_name not in already_sent_notification_recipients:
                   notification = cls(notification_recipient=formatted_user_name, notification_document=validated_notification_document, idempotency_key=idempotency_key, activity_type=activity_type)

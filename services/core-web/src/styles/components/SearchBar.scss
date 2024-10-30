@@ -1,9 +1,12 @@
+@use "../base.scss" as *;
+
 .search-bar {
   .ant-dropdown-menu-body {
     margin-right: 0;
   }
 
   .ant-menu-item {
+
     img,
     i {
       padding-right: $default-padding-md;

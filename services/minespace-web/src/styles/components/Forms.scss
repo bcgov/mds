@@ -1,3 +1,5 @@
+@use "../base.scss" as *;
+
 // Forms
 .ant-input,
 .ant-select-selector,
@@ -128,4 +130,44 @@ form .ant-row>button+button {
 
 .form-item-hidden {
     max-width: 100%;
+}
+
+.common-form.form-view {
+    .ant-form-item-required::before {
+        display: none !important;
+    }
+
+    .view-item-label {
+        color: $input-text;
+    }
+
+    .ant-radio-group.view-item label span {
+        color: $input-text;
+    }
+
+    .ant-row.form-row-margin {
+        margin-bottom: 1em;
+    }
+}
+
+.view-item-label {
+    margin-bottom: 4px;
+    font-weight: 600;
+}
+
+.ant-form-item-label {
+    padding-bottom: 0;
+}
+
+.view-group-checkbox label>span {
+    color: $input-text;
+}
+
+.ant-checkbox-wrapper .view-item-label {
+    margin-bottom: 4px;
+    color: $input-text;
+
+    &.ungroup-checkbox {
+        font-weight: normal;
+    }
 }

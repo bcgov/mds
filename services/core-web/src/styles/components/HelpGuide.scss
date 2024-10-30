@@ -17,7 +17,81 @@
     color: white;
     padding: 0 5px;
 
-    &:hover {
+    &:hover,
+    &:focus,
+    &:active {
         color: white;
+    }
+}
+
+.help-content {
+    blockquote {
+        border-left: 4px solid #ccc;
+        margin-bottom: 5px;
+        margin-top: 5px;
+        padding-left: 16px;
+    }
+
+    ol,
+    ul {
+        margin: 0;
+
+        li {
+            list-style-position: inside;
+
+            &:before {
+                content: none !important;
+            }
+        }
+
+        li.ql-indent-1 {
+            padding-left: 16px;
+        }
+
+        li.ql-indent-2 {
+            padding-left: 32px;
+        }
+    }
+
+    ul {
+        li.ql-indent-1 {
+            list-style-type: circle;
+        }
+
+        li.ql-indent-2 {
+            list-style-type: square;
+        }
+    }
+
+    ol {
+        counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
+        list-style-type: none;
+
+        li {
+            counter-increment: list-0;
+            counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
+
+            &::marker {
+                content: counter(list-0, decimal) '. ';
+            }
+        }
+
+        li.ql-indent-1 {
+            counter-increment: list-1;
+            counter-reset: list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
+
+            &::marker {
+                content: counter(list-1, lower-alpha) '. ';
+            }
+        }
+
+        li.ql-indent-2 {
+            counter-increment: list-2;
+            counter-reset: list-3 list-4 list-5 list-6 list-7 list-8 list-9;
+
+            &::marker {
+                content: counter(list-2, lower-roman) '. ';
+            }
+        }
     }
 }

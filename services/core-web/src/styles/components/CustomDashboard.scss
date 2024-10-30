@@ -1,13 +1,17 @@
+@use "../base.scss" as *;
+
 .custom-dashboard {
   position: relative;
   top: -25px;
   background-color: $secondary-background-colour;
   height: 100vh;
+
   &__container {
     &--white {
       h5 {
         padding-bottom: 20px;
       }
+
       position: relative;
       top: 40px;
       background-color: $pure-white;

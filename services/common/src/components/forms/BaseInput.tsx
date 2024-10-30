@@ -1,3 +1,4 @@
+import { EMPTY_FIELD } from "@mds/common/constants";
 import { Typography } from "antd";
 import React, { FC, ReactNode } from "react";
 import { WrappedFieldProps, WrappedFieldMetaProps, WrappedFieldInputProps } from "redux-form";
@@ -80,12 +81,13 @@ interface BaseViewInputProps {
   value: string | number;
 }
 export const BaseViewInput: FC<BaseViewInputProps> = ({ label = "", value = "" }) => {
+  const displayValue = value ? value.toString() : EMPTY_FIELD;
   return (
     <div className="view-item ant-form-item">
       {label && label !== "" && (
         <Typography.Paragraph className="view-item-label">{label}</Typography.Paragraph>
       )}
-      <Typography.Paragraph className="view-item-value">{value.toString()}</Typography.Paragraph>
+      <Typography.Paragraph className="view-item-value">{displayValue}</Typography.Paragraph>
     </div>
   );
 };

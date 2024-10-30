@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import { getFormValues } from "redux-form";
 import { useSelector } from "react-redux";
 import {
@@ -15,6 +15,7 @@ import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { FORM, isFieldDisabled } from "@mds/common/constants";
 import { IAuthorizationSummary } from "@mds/common/interfaces";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
+import { FormContext } from "../forms/FormWrapper";
 
 export const ApplicationSummary: FC = () => {
   const permits = useSelector(getPermits);
@@ -35,6 +36,7 @@ export const ApplicationSummary: FC = () => {
   const processedEnvironmentActPermitResult: any[] = [];
   let processedOtherActPermitResult: any[] = [];
   const systemFlag = useSelector(getSystemFlag);
+  const { isEditMode } = useContext(FormContext);
 
   const minesActColumns: ColumnsType<IAuthorizationSummary> = [
     renderTextColumn("project_type", "Type", false),
@@ -227,6 +229,16 @@ export const ApplicationSummary: FC = () => {
     history.push(url);
   };
 
+  const editButton = <Col md={12} sm={24} style={{ textAlign: "right" }}>
+    <Button
+      disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+      type="default"
+      onClick={handleEditClicked}
+    >
+      {isEditMode ? "Edit" : "View"}
+    </Button>
+  </Col>;
+
   return (
     <div className="ant-form-vertical">
       <Typography.Title level={3}>Application Summary</Typography.Title>
@@ -246,15 +258,7 @@ export const ApplicationSummary: FC = () => {
         <Col md={12} sm={24}>
           <Typography.Title level={5}>Mines Act</Typography.Title>
         </Col>
-        <Col md={12} sm={24} style={{ textAlign: "right" }}>
-          <Button
-            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
-            type="default"
-            onClick={handleEditClicked}
-          >
-            Edit
-          </Button>
-        </Col>
+        {editButton}
       </Row>
       <CoreTable dataSource={minesActData} columns={minesActColumns} />
       <br />
@@ -263,15 +267,7 @@ export const ApplicationSummary: FC = () => {
         <Col md={12} sm={24}>
           <Typography.Title level={5}>Environmental Management Act</Typography.Title>
         </Col>
-        <Col md={12} sm={24} style={{ textAlign: "right" }}>
-          <Button
-            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
-            type="default"
-            onClick={handleEditClicked}
-          >
-            Edit
-          </Button>
-        </Col>
+        {editButton}
       </Row>
       <CoreTable dataSource={environmentalManagementActData} columns={otherActColumns} />
       <br />
@@ -279,15 +275,7 @@ export const ApplicationSummary: FC = () => {
         <Col md={12} sm={24}>
           <Typography.Title level={5}>Water Sustainability Act</Typography.Title>
         </Col>
-        <Col md={12} sm={24} style={{ textAlign: "right" }}>
-          <Button
-            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
-            type="default"
-            onClick={handleEditClicked}
-          >
-            Edit
-          </Button>
-        </Col>
+        {editButton}
       </Row>
       <CoreTable dataSource={waterSustainabilityActData} columns={otherActColumns} />
       <br />
@@ -295,15 +283,7 @@ export const ApplicationSummary: FC = () => {
         <Col md={12} sm={24}>
           <Typography.Title level={5}>Forestry Act</Typography.Title>
         </Col>
-        <Col md={12} sm={24} style={{ textAlign: "right" }}>
-          <Button
-            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
-            type="default"
-            onClick={handleEditClicked}
-          >
-            Edit
-          </Button>
-        </Col>
+        {editButton}
       </Row>
       <CoreTable dataSource={forestryActData} columns={otherActColumns} />
       <br />
@@ -311,15 +291,7 @@ export const ApplicationSummary: FC = () => {
         <Col md={12} sm={24}>
           <Typography.Title level={5}>Other Legislation</Typography.Title>
         </Col>
-        <Col md={12} sm={24} style={{ textAlign: "right" }}>
-          <Button
-            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
-            type="default"
-            onClick={handleEditClicked}
-          >
-            Edit
-          </Button>
-        </Col>
+        {editButton}
       </Row>
       <CoreTable dataSource={otherLegislationActData} columns={otherActColumns} />
     </div>

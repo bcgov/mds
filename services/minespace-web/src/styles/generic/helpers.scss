@@ -1,88 +1,114 @@
+@use "../settings/variables.scss";
+@use "../settings/theme.scss";
+
 // Colours
 .color {
+
   // Theme Colours
   &-primary {
-    color: $primary-color !important;
+    color: theme.$primary-color !important;
   }
+
   &-info {
-    color: $info-color !important;
+    color: theme.$info-color !important;
   }
+
   &-success {
-    color: $success-color !important;
+    color: theme.$success-color !important;
   }
+
   &-processing {
-    color: $processing-color !important;
+    color: theme.$processing-color !important;
   }
+
   &-error {
-    color: $error-color !important;
+    color: theme.$error-color !important;
   }
+
   &-warning {
-    color: $warning-color !important;
+    color: theme.$warning-color !important;
   }
+
   &-highlight {
-    color: $highlight-color !important;
+    color: theme.$highlight-color !important;
   }
+
   &-normal {
-    color: $normal-color !important;
+    color: theme.$normal-color !important;
   }
+
   &-white {
-    color: $white !important;
+    color: variables.$white !important;
   }
+
   &-black {
-    color: $black !important;
+    color: variables.$black !important;
   }
+
   &-text {
-    color: $text-color !important;
+    color: theme.$text-color !important;
   }
 
   // Brand Colours
   &-gov-grey {
-    color: $gov-grey !important;
+    color: theme.$gov-grey !important;
   }
 }
 
 // Background Colours
 .bg-color {
+
   // Theme Colours
   &-primary {
-    background-color: $primary-color !important;
+    background-color: theme.$primary-color !important;
   }
+
   &-info {
-    background-color: $info-color !important;
+    background-color: theme.$info-color !important;
   }
+
   &-success {
-    background-color: $success-color !important;
+    background-color: theme.$success-color !important;
   }
+
   &-processing {
-    background-color: $processing-color !important;
+    background-color: theme.$processing-color !important;
   }
+
   &-error {
-    background-color: $error-color !important;
+    background-color: theme.$error-color !important;
   }
+
   &-warning {
-    background-color: $warning-color !important;
+    background-color: theme.$warning-color !important;
   }
+
   &-highlight {
-    background-color: $highlight-color !important;
+    background-color: theme.$highlight-color !important;
   }
+
   &-normal {
-    background-color: $normal-color !important;
+    background-color: theme.$normal-color !important;
   }
+
   &-white {
-    background-color: $white !important;
+    background-color: variables.$white !important;
   }
+
   &-black {
-    background-color: $black !important;
+    background-color: variables.$black !important;
   }
+
   &-text {
-    background-color: $text-color !important;
+    background-color: theme.$text-color !important;
   }
 
   // Brand Colours
   &-gov-grey {
-    background-color: $gov-grey !important;
+    background-color: theme.$gov-grey !important;
   }
+
   &-table-seperator {
-    background-color: $table-seperator !important;
+    background-color: theme.$table-seperator !important;
   }
 }

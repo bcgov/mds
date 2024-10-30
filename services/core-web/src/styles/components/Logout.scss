@@ -1,3 +1,5 @@
+@use "../base.scss" as *;
+
 .logout-screen {
   text-align: center;
   margin-top: $default-margin-lg;
@@ -8,6 +10,7 @@
   }
 
   @include center(true, true);
+
   @include mobile {
     margin: 0;
   }

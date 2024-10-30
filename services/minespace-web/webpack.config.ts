@@ -7,7 +7,6 @@ const { merge } = require("webpack-merge");
 const path = require("path");
 const dotenv = require("dotenv").config({ path: `${__dirname}/.env` });
 const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
-const threadLoader = require("thread-loader");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const parts = require("./webpack.parts");
@@ -67,14 +66,6 @@ if (dotenv.parsed) {
     envFile[key] = JSON.stringify(dotenv.parsed[key]);
   });
 }
-
-threadLoader.warmup({}, [
-  "style-loader",
-  "css-loader",
-  "sass-loader",
-  "less-loader",
-  "postcss-loader",
-]);
 
 const commonConfig = merge([
   {
@@ -219,7 +210,7 @@ const prodConfig = merge([
       // maxSize: 3000000,
       cacheGroups: {
         defaultVendors: {
-          test: /[\\/]node_modules[\\/](?!\@syncfusion*)/,
+          test: /[\\/]node_modules[\\/](?!(\@syncfusion*|leaflet*))/,
           name: "vendor",
           chunks: "all",
           priority: -5,

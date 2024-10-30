@@ -122,7 +122,7 @@ const SteppedForm: FC<SteppedFormProps> = ({
     return {
       label: formatUrlToUpperCaseString(tab),
       key: tab,
-      disabled: child?.props?.disabled || (disableTabsOnError && errors.length > 0),
+      disabled: child?.props?.disabled || (isEditMode && disableTabsOnError && errors.length > 0),
       className: "stepped-menu-item",
       onClick: () => handleTabClick(tabs[indexOf(tabs, tab)]),
     };
@@ -143,7 +143,7 @@ const SteppedForm: FC<SteppedFormProps> = ({
           <div className="stepped-form-form-container">
             <FormWrapper
               name={name}
-              onSubmit={() => {}}
+              onSubmit={() => { }}
               initialValues={initialValues}
               isEditMode={isEditMode}
               reduxFormConfig={

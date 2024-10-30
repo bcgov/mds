@@ -3,11 +3,12 @@ import { Field } from "redux-form";
 import { DOCUMENT, EXCEL, IMAGE, SPATIAL } from "@mds/common/constants/fileTypes";
 import { PROJECT_SUMMARY_DOCUMENTS } from "@mds/common/constants/API";
 import RenderFileUpload from "@mds/common/components/forms/RenderFileUpload";
-import { IProjectSummaryDocument } from "../..";
 import {
   PROJECT_SUMMARY_DOCUMENT_TYPE_CODE,
   DISCHARGE_FACTOR_FORM_AMENDMENT,
   DISCHARGE_FACTOR_FORM_NEW,
+  IProjectSummaryDocument,
+  MAX_DOCUMENT_NAME_LENGTHS,
 } from "../..";
 import { requiredList } from "@mds/common/redux/utils/Validate";
 
@@ -46,16 +47,17 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
       console.log(error);
     }
 
-    const amendmentDocumentsIndex = documents.findIndex(
-      (doc) => fileToRemove.serverId === doc.document_manager_guid
-    );
-    const amendmentDocument = documents.find(
-      (doc) => fileToRemove.serverId === doc.document_manager_guid
-    );
-    const category =
-      amendmentDocument.category || amendmentDocument.project_summary_document_type_code;
-
-    removeAmendmentDocument(amendmentDocumentsIndex, category, fileToRemove.serverId);
+    if (fileToRemove.serverId) {
+      const amendmentDocumentsIndex = documents.findIndex(
+        (doc) => fileToRemove.serverId === doc.document_manager_guid
+      );
+      const amendmentDocument = documents.find(
+        (doc) => fileToRemove.serverId === doc.document_manager_guid
+      );
+      const category =
+        amendmentDocument?.category || amendmentDocument?.project_summary_document_type_code;
+      removeAmendmentDocument(amendmentDocumentsIndex, category, fileToRemove.serverId);
+    }
   };
 
   const handleFileLoad = (
@@ -105,6 +107,7 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
           acceptedFileTypesMap={acceptedFileTypesMap}
           listedFileTypes={["document", "image", "spreadsheet", "spatial"]}
           abbrevLabel={true}
+          maxFileNameLength={MAX_DOCUMENT_NAME_LENGTHS.MAJOR_PROJECTS}
           uploadUrl={PROJECT_SUMMARY_DOCUMENTS({ projectGuid, projectSummaryGuid, mineGuid })}
           onFileLoad={(document_name, document_manager_guid) =>
             handleFileLoad(
@@ -133,6 +136,7 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
             acceptedFileTypesMap={acceptedFileTypesMap}
             listedFileTypes={["document", "image", "spreadsheet", "spatial"]}
             abbrevLabel={true}
+            maxFileNameLength={MAX_DOCUMENT_NAME_LENGTHS.MAJOR_PROJECTS}
             uploadUrl={PROJECT_SUMMARY_DOCUMENTS({ projectGuid, projectSummaryGuid, mineGuid })}
             onFileLoad={(document_name, document_manager_guid) =>
               handleFileLoad(
@@ -159,6 +163,7 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
               acceptedFileTypesMap={acceptedFileTypesMap}
               listedFileTypes={["document", "image", "spreadsheet", "spatial"]}
               abbrevLabel={true}
+              maxFileNameLength={MAX_DOCUMENT_NAME_LENGTHS.MAJOR_PROJECTS}
               uploadUrl={PROJECT_SUMMARY_DOCUMENTS({ projectGuid, projectSummaryGuid, mineGuid })}
               onFileLoad={(document_name, document_manager_guid) =>
                 handleFileLoad(
@@ -185,6 +190,7 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
                 acceptedFileTypesMap={acceptedFileTypesMap}
                 listedFileTypes={["document", "image", "spreadsheet", "spatial"]}
                 abbrevLabel={true}
+                maxFileNameLength={MAX_DOCUMENT_NAME_LENGTHS.MAJOR_PROJECTS}
                 uploadUrl={PROJECT_SUMMARY_DOCUMENTS({ projectGuid, projectSummaryGuid, mineGuid })}
                 onFileLoad={(document_name, document_manager_guid) =>
                   handleFileLoad(
@@ -213,6 +219,7 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
                 acceptedFileTypesMap={acceptedFileTypesMap}
                 listedFileTypes={["document", "image", "spreadsheet", "spatial"]}
                 abbrevLabel={true}
+                maxFileNameLength={MAX_DOCUMENT_NAME_LENGTHS.MAJOR_PROJECTS}
                 uploadUrl={PROJECT_SUMMARY_DOCUMENTS({ projectGuid, projectSummaryGuid, mineGuid })}
                 onFileLoad={(document_name, document_manager_guid) =>
                   handleFileLoad(
@@ -239,6 +246,7 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
           acceptedFileTypesMap={acceptedFileTypesMap}
           listedFileTypes={["document", "image", "spreadsheet", "spatial"]}
           abbrevLabel={true}
+          maxFileNameLength={MAX_DOCUMENT_NAME_LENGTHS.MAJOR_PROJECTS}
           uploadUrl={PROJECT_SUMMARY_DOCUMENTS({ projectGuid, projectSummaryGuid, mineGuid })}
           onFileLoad={(document_name, document_manager_guid) =>
             handleFileLoad(
@@ -263,6 +271,7 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
           acceptedFileTypesMap={acceptedFileTypesMap}
           listedFileTypes={["document", "image", "spreadsheet", "spatial"]}
           abbrevLabel={true}
+          maxFileNameLength={MAX_DOCUMENT_NAME_LENGTHS.MAJOR_PROJECTS}
           uploadUrl={PROJECT_SUMMARY_DOCUMENTS({ projectGuid, projectSummaryGuid, mineGuid })}
           onFileLoad={(document_name, document_manager_guid) =>
             handleFileLoad(

@@ -1,5 +1,8 @@
+@use "./variables.scss";
+@use "./theme.scss";
+
 .filepond--root {
-    font-family: $default-font;
+    font-family: variables.$default-font;
     font-size: 0.7rem;
     margin-bottom: 0 !important;
 
@@ -28,7 +31,7 @@
         background-repeat: no-repeat;
         background-size: cover;
         border-radius: 10px;
-        background-color: $blue;
+        background-color: theme.$blue;
         opacity: 0.9;
     }
 
