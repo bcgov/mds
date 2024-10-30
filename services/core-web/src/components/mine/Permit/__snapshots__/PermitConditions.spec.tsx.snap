@@ -614,14 +614,12 @@ exports[`PermitConditions renders properly 1`] = `
                             style="padding: 8px 8px 8px 8px;"
                           >
                             <div
-                              class="condition-layer condition-layer--0 condition-SEC fade-in"
+                              class="condition-layer condition-layer--0 condition-SEC fade-in "
                             >
                               <div
                                 class="condition-collapsed"
                               >
-                                <p
-                                  class="condition-layer condition-layer--0 condition-SEC fade-in"
-                                >
+                                <p>
                                   1.
                                    
                                   Section decade check including.
@@ -660,130 +658,128 @@ exports[`PermitConditions renders properly 1`] = `
                             style="padding: 8px 8px 8px 8px;"
                           >
                             <div
-                              class="condition-layer condition-layer--0 condition-SEC fade-in"
+                              class="condition-layer condition-layer--0 condition-SEC fade-in "
                             >
                               <div
                                 class="condition-collapsed"
                               >
-                                <p
-                                  class="condition-layer condition-layer--0 condition-SEC fade-in"
-                                >
+                                <p>
                                   1.
                                    
                                   International clear those TV individual look.
                                 </p>
-                                <div
-                                  class="condition-layer condition-layer--1 condition-CON fade-in"
-                                >
+                                <div>
                                   <div
-                                    class="condition-collapsed"
+                                    class="condition-layer condition-layer--1 condition-CON fade-in "
                                   >
-                                    <p
-                                      class="condition-layer condition-layer--1 condition-CON fade-in"
-                                    >
-                                      a.
-                                       
-                                      See store understand company interview value factor.
-                                    </p>
                                     <div
-                                      class="condition-layer condition-layer--2 condition-LIS fade-in"
+                                      class="condition-collapsed"
                                     >
-                                      <div
-                                        class="condition-collapsed"
-                                      >
-                                        <p
-                                          class="condition-layer condition-layer--2 condition-LIS fade-in"
+                                      <p>
+                                        a.
+                                         
+                                        See store understand company interview value factor.
+                                      </p>
+                                      <div>
+                                        <div
+                                          class="condition-layer condition-layer--2 condition-LIS fade-in "
                                         >
-                                          i.
-                                           
-                                          Mr item fall study although.
-                                        </p>
+                                          <div
+                                            class="condition-collapsed"
+                                          >
+                                            <p>
+                                              i.
+                                               
+                                              Mr item fall study although.
+                                            </p>
+                                          </div>
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
                                 </div>
-                                <div
-                                  class="condition-layer condition-layer--1 condition-SEC fade-in"
-                                >
+                                <div>
                                   <div
-                                    class="condition-collapsed"
+                                    class="condition-layer condition-layer--1 condition-SEC fade-in "
                                   >
-                                    <p
-                                      class="condition-layer condition-layer--1 condition-SEC fade-in"
-                                    >
-                                      b.
-                                       
-                                      words words words sub-section
-                                    </p>
                                     <div
-                                      class="condition-layer condition-layer--2 condition-CON fade-in"
+                                      class="condition-collapsed"
                                     >
-                                      <div
-                                        class="condition-collapsed"
-                                      >
-                                        <p
-                                          class="condition-layer condition-layer--2 condition-CON fade-in"
-                                        >
-                                          i.
-                                           
-                                          a condition added underneath the section, with a lot of detail added to it, which is probably important for documents like permits
-                                        </p>
+                                      <p>
+                                        b.
+                                         
+                                        words words words sub-section
+                                      </p>
+                                      <div>
                                         <div
-                                          class="condition-layer condition-layer--3 condition-LIS fade-in"
+                                          class="condition-layer condition-layer--2 condition-CON fade-in "
                                         >
                                           <div
                                             class="condition-collapsed"
                                           >
-                                            <p
-                                              class="condition-layer condition-layer--3 condition-LIS fade-in"
-                                            >
-                                              1.
+                                            <p>
+                                              i.
                                                
-                                              a detailed list item desribing exactly what must be done to accomplish the parent condition
+                                              a condition added underneath the section, with a lot of detail added to it, which is probably important for documents like permits
                                             </p>
-                                          </div>
-                                        </div>
-                                        <div
-                                          class="condition-layer condition-layer--3 condition-LIS fade-in"
-                                        >
-                                          <div
-                                            class="condition-collapsed"
-                                          >
-                                            <p
-                                              class="condition-layer condition-layer--3 condition-LIS fade-in"
-                                            >
-                                              2.
-                                               
-                                              but, that wasn't quite enough information, another list item will expand on other responsibilities associated with this permit
-                                            </p>
-                                          </div>
-                                        </div>
-                                        <div
-                                          class="condition-layer condition-layer--3 condition-LIS fade-in"
-                                        >
-                                          <div
-                                            class="condition-collapsed"
-                                          >
-                                            <p
-                                              class="condition-layer condition-layer--3 condition-LIS fade-in"
-                                            >
-                                              3.
-                                               
-                                              good things come in 3s, so another list item is added to the condition
-                                            </p>
-                                            <div
-                                              class="condition-layer condition-layer--4 condition-LIS fade-in"
-                                            >
+                                            <div>
                                               <div
-                                                class="condition-collapsed"
+                                                class="condition-layer condition-layer--3 condition-LIS fade-in "
                                               >
-                                                <p
-                                                  class="condition-layer condition-layer--4 condition-LIS fade-in"
+                                                <div
+                                                  class="condition-collapsed"
                                                 >
-                                                  a.
-                                                   
-                                                  we want to show nesting to 5 levels, so one list item gets a child
-                                                </p>
+                                                  <p>
+                                                    1.
+                                                     
+                                                    a detailed list item desribing exactly what must be done to accomplish the parent condition
+                                                  </p>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div>
+                                              <div
+                                                class="condition-layer condition-layer--3 condition-LIS fade-in "
+                                              >
+                                                <div
+                                                  class="condition-collapsed"
+                                                >
+                                                  <p>
+                                                    2.
+                                                     
+                                                    but, that wasn't quite enough information, another list item will expand on other responsibilities associated with this permit
+                                                  </p>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div>
+                                              <div
+                                                class="condition-layer condition-layer--3 condition-LIS fade-in "
+                                              >
+                                                <div
+                                                  class="condition-collapsed"
+                                                >
+                                                  <p>
+                                                    3.
+                                                     
+                                                    good things come in 3s, so another list item is added to the condition
+                                                  </p>
+                                                  <div>
+                                                    <div
+                                                      class="condition-layer condition-layer--4 condition-LIS fade-in "
+                                                    >
+                                                      <div
+                                                        class="condition-collapsed"
+                                                      >
+                                                        <p>
+                                                          a.
+                                                           
+                                                          we want to show nesting to 5 levels, so one list item gets a child
+                                                        </p>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
                                               </div>
                                             </div>
                                           </div>
@@ -800,31 +796,29 @@ exports[`PermitConditions renders properly 1`] = `
                             style="padding: 8px 8px 8px 8px;"
                           >
                             <div
-                              class="condition-layer condition-layer--0 condition-SEC fade-in"
+                              class="condition-layer condition-layer--0 condition-SEC fade-in "
                             >
                               <div
                                 class="condition-collapsed"
                               >
-                                <p
-                                  class="condition-layer condition-layer--0 condition-SEC fade-in"
-                                >
+                                <p>
                                   2.
                                    
                                   Another condition under the ELC condition category code, and it may even be long enough to take up 2 lines
                                 </p>
-                                <div
-                                  class="condition-layer condition-layer--1 condition-CON fade-in"
-                                >
+                                <div>
                                   <div
-                                    class="condition-collapsed"
+                                    class="condition-layer condition-layer--1 condition-CON fade-in "
                                   >
-                                    <p
-                                      class="condition-layer condition-layer--1 condition-CON fade-in"
+                                    <div
+                                      class="condition-collapsed"
                                     >
-                                      a.
-                                       
-                                      It should probably have a sub-item because that's pretty fun and normal for permit conditions. Really it should be long enough to have it cut off at some point if we just add more words, but the question is how many will be necessary?
-                                    </p>
+                                      <p>
+                                        a.
+                                         
+                                        It should probably have a sub-item because that's pretty fun and normal for permit conditions. Really it should be long enough to have it cut off at some point if we just add more words, but the question is how many will be necessary?
+                                      </p>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
@@ -861,14 +855,12 @@ exports[`PermitConditions renders properly 1`] = `
                             style="padding: 8px 8px 8px 8px;"
                           >
                             <div
-                              class="condition-layer condition-layer--0 condition-SEC fade-in"
+                              class="condition-layer condition-layer--0 condition-SEC fade-in "
                             >
                               <div
                                 class="condition-collapsed"
                               >
-                                <p
-                                  class="condition-layer condition-layer--0 condition-SEC fade-in"
-                                >
+                                <p>
                                   1.
                                    
                                   Reflect miss police tough such single force.
