@@ -5,8 +5,8 @@ exports[`RequestReportForm renders form properly 1`] = `
   style="min-height: 380px;"
 >
   <form
-    class="ant-form ant-form-vertical common-form common-form-ADD_REPORT_TO_PERMIT_CONDITION form-edit"
-    id="ADD_REPORT_TO_PERMIT_CONDITION"
+    class="ant-form ant-form-vertical common-form common-form-ADD_REPORT_TO_PERMIT_CONDITION-1639 form-edit"
+    id="ADD_REPORT_TO_PERMIT_CONDITION-1639"
   >
     <div
       class="ant-row"
@@ -27,7 +27,7 @@ exports[`RequestReportForm renders form properly 1`] = `
             >
               <label
                 class="ant-form-item-required"
-                for="ADD_REPORT_TO_PERMIT_CONDITION_stepPath"
+                for="ADD_REPORT_TO_PERMIT_CONDITION-1639_stepPath"
                 title=""
               >
                 <div
@@ -60,7 +60,7 @@ exports[`RequestReportForm renders form properly 1`] = `
               >
                 <div
                   class="ant-form-item-explain ant-form-item-explain-connected"
-                  id="ADD_REPORT_TO_PERMIT_CONDITION_stepPath_help"
+                  id="ADD_REPORT_TO_PERMIT_CONDITION-1639_stepPath_help"
                   role="alert"
                 >
                   <div
@@ -87,7 +87,7 @@ exports[`RequestReportForm renders form properly 1`] = `
             >
               <label
                 class="ant-form-item-required"
-                for="ADD_REPORT_TO_PERMIT_CONDITION_frequency"
+                for="ADD_REPORT_TO_PERMIT_CONDITION-1639_frequency"
                 title=""
               >
                 <div
@@ -118,15 +118,15 @@ exports[`RequestReportForm renders form properly 1`] = `
                         class="ant-select-selection-search"
                       >
                         <input
-                          aria-activedescendant="ADD_REPORT_TO_PERMIT_CONDITION_frequency_list_0"
+                          aria-activedescendant="ADD_REPORT_TO_PERMIT_CONDITION-1639_frequency_list_0"
                           aria-autocomplete="list"
-                          aria-controls="ADD_REPORT_TO_PERMIT_CONDITION_frequency_list"
+                          aria-controls="ADD_REPORT_TO_PERMIT_CONDITION-1639_frequency_list"
                           aria-haspopup="listbox"
-                          aria-owns="ADD_REPORT_TO_PERMIT_CONDITION_frequency_list"
+                          aria-owns="ADD_REPORT_TO_PERMIT_CONDITION-1639_frequency_list"
                           aria-required="true"
                           autocomplete="off"
                           class="ant-select-selection-search-input"
-                          id="ADD_REPORT_TO_PERMIT_CONDITION_frequency"
+                          id="ADD_REPORT_TO_PERMIT_CONDITION-1639_frequency"
                           role="combobox"
                           type="search"
                           value=""
@@ -172,7 +172,7 @@ exports[`RequestReportForm renders form properly 1`] = `
               >
                 <div
                   class="ant-form-item-explain ant-form-item-explain-connected"
-                  id="ADD_REPORT_TO_PERMIT_CONDITION_frequency_help"
+                  id="ADD_REPORT_TO_PERMIT_CONDITION-1639_frequency_help"
                   role="alert"
                 >
                   <div
@@ -199,7 +199,7 @@ exports[`RequestReportForm renders form properly 1`] = `
             >
               <label
                 class="ant-form-item-required"
-                for="ADD_REPORT_TO_PERMIT_CONDITION_submission_year"
+                for="ADD_REPORT_TO_PERMIT_CONDITION-1639_submission_year"
                 title=""
               >
                 <div
@@ -227,7 +227,7 @@ exports[`RequestReportForm renders form properly 1`] = `
                       <input
                         aria-required="true"
                         autocomplete="off"
-                        id="ADD_REPORT_TO_PERMIT_CONDITION_submission_year"
+                        id="ADD_REPORT_TO_PERMIT_CONDITION-1639_submission_year"
                         name="submission_year"
                         placeholder="Select year"
                         readonly=""
@@ -267,7 +267,7 @@ exports[`RequestReportForm renders form properly 1`] = `
               >
                 <div
                   class="ant-form-item-explain ant-form-item-explain-connected"
-                  id="ADD_REPORT_TO_PERMIT_CONDITION_submission_year_help"
+                  id="ADD_REPORT_TO_PERMIT_CONDITION-1639_submission_year_help"
                   role="alert"
                 >
                   <div
@@ -294,7 +294,7 @@ exports[`RequestReportForm renders form properly 1`] = `
             >
               <label
                 class="ant-form-item-required"
-                for="ADD_REPORT_TO_PERMIT_CONDITION_due_date"
+                for="ADD_REPORT_TO_PERMIT_CONDITION-1639_due_date"
                 title=""
               >
                 <div
@@ -322,7 +322,7 @@ exports[`RequestReportForm renders form properly 1`] = `
                       <input
                         aria-required="true"
                         autocomplete="off"
-                        id="ADD_REPORT_TO_PERMIT_CONDITION_due_date"
+                        id="ADD_REPORT_TO_PERMIT_CONDITION-1639_due_date"
                         name="due_date"
                         placeholder="Select date"
                         readonly=""
@@ -362,7 +362,7 @@ exports[`RequestReportForm renders form properly 1`] = `
               >
                 <div
                   class="ant-form-item-explain ant-form-item-explain-connected"
-                  id="ADD_REPORT_TO_PERMIT_CONDITION_due_date_help"
+                  id="ADD_REPORT_TO_PERMIT_CONDITION-1639_due_date_help"
                   role="alert"
                 >
                   <div
@@ -543,7 +543,7 @@ exports[`RequestReportForm renders form properly 1`] = `
             >
               <label
                 class=""
-                for="ADD_REPORT_TO_PERMIT_CONDITION_office_destination"
+                for="ADD_REPORT_TO_PERMIT_CONDITION-1639_office_destination"
                 title="What office is the report for?"
               >
                 What office is the report for?
@@ -560,7 +560,7 @@ exports[`RequestReportForm renders form properly 1`] = `
                 >
                   <div
                     class="ant-checkbox-group"
-                    id="ADD_REPORT_TO_PERMIT_CONDITION_office_destination"
+                    id="ADD_REPORT_TO_PERMIT_CONDITION-1639_office_destination"
                     name="office_destination"
                   >
                     <label
@@ -651,7 +651,7 @@ exports[`RequestReportForm renders form properly 1`] = `
               >
                 <div
                   class="ant-form-item-explain ant-form-item-explain-connected"
-                  id="ADD_REPORT_TO_PERMIT_CONDITION_office_destination_help"
+                  id="ADD_REPORT_TO_PERMIT_CONDITION-1639_office_destination_help"
                   role="alert"
                 >
                   <div

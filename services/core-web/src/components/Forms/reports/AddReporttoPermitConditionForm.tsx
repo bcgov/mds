@@ -43,7 +43,7 @@ export const AddReportToPermitConditionForm: FC<AddReportToPermitConditionFormPr
   return (
     <div style={{ minHeight: modalView ? "380px" : "" }}>
       <FormWrapper
-        name={FORM.ADD_REPORT_TO_PERMIT_CONDITION}
+        name={`${FORM.ADD_REPORT_TO_PERMIT_CONDITION}-${condition.permit_condition_id}`}
         onSubmit={onSubmit}
         isModal={modalView}
         isEditMode={isEditMode}

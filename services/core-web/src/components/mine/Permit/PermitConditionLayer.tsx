@@ -23,41 +23,46 @@ interface PermitConditionLayerProps {
   condition: IPermitCondition;
   level?: number;
   isExpanded?: boolean;
+  setParentExpand?: () => void;
 }
 
 const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   condition,
   isExpanded,
   level = 0,
+  setParentExpand = () => {},
 }) => {
   const dispatch = useDispatch();
   const { id: mineGuid, permitGuid } = useParams<{ id: string; permitGuid: string }>();
 
-  const [isEditMode, setIsEditMode] = useState<{
-    [conditionId: string]: boolean;
-  }>({});
+  const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const [expandClass, setExpandClass] = useState(
     isExpanded ? "condition-expanded" : "condition-collapsed"
   );
   const className = `condition-layer condition-layer--${level} condition-${condition.condition_type_code} fade-in`;
-  const editingCondition = isEditMode[condition.permit_condition_id];
 
-  useEffect(() => {
-    setExpandClass(isExpanded || editingCondition ? "condition-expanded" : "condition-collapsed");
-  }, [isExpanded, isEditMode]);
-
-  const handleSectionClick = (conditionId: number) => {
-    setIsEditMode((prev) => ({
-      ...prev,
-      [conditionId]: true,
-    }));
+  const handleSetParentExpand = () => {
+    if ((level = 0)) {
+      return;
+    } else {
+      setExpandClass("condition-expanded");
+      setParentExpand();
+    }
   };
 
-  const closeEdit = (conditionId: number) => {
-    setIsEditMode((prev) => ({
-      ...prev,
-      [conditionId]: false,
-    }));
+  useEffect(() => {
+    setExpandClass(isExpanded || isEditMode ? "condition-expanded" : "condition-collapsed");
+  }, [isExpanded]);
+
+  const handleSectionClick = (event) => {
+    event.stopPropagation();
+    setParentExpand();
+    setIsEditMode(true);
+  };
+
+  const closeEdit = (event) => {
+    event.stopPropagation();
+    setIsEditMode(false);
   };
 
   const addNewReport = async (values) => {
@@ -81,101 +86,98 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
     );
   };
 
+  const sectionEdit = isEditMode || false;
+
   return (
     <div
-      className={`${className} ${editingCondition ? "condition-layer--editing" : ""}`}
-      onClick={() => {
-        handleSectionClick(condition.permit_condition_id);
-      }}
+      className={`${className} ${isEditMode ? "condition-layer--editing" : ""}`}
+      onClick={handleSectionClick}
     >
       <div className={expandClass}>
         <p>
           {condition.step} {condition.condition}
         </p>
+        {sectionEdit && (
+          <Row justify="space-between">
+            <Row gutter={8} className="condition-edit-buttons" align="middle">
+              <Button
+                onClick={(event) => {
+                  event.stopPropagation();
+                  console.log("Not yet implemented");
+                }}
+                type="default"
+                icon={<FontAwesomeIcon icon={faPlus} className="margin-medium--right" />}
+              >
+                List Item
+              </Button>
+              <Button
+                onClick={(event) => {
+                  event.stopPropagation();
+                  console.log("Not yet implemented");
+                }}
+                icon={<FontAwesomeIcon icon={faLink} className="margin-medium--right" />}
+                type="default"
+              >
+                Link Document
+              </Button>
+              <Button
+                onClick={(event) => {
+                  handleOpenAddReportModal(event, condition);
+                }}
+                icon={<FontAwesomeIcon icon={faClipboard} className="margin-medium--right" />}
+                type="default"
+                disabled={!!condition.report}
+              >
+                Add Report
+              </Button>
+              <Button
+                onClick={closeEdit}
+                type="primary"
+                icon={<FontAwesomeIcon icon={faXmark} />}
+              />
+              <Button
+                onClick={(event) => {
+                  event.stopPropagation();
+                  console.log("Not yet implemented");
+                }}
+                type="primary"
+                icon={<FontAwesomeIcon icon={faCheck} />}
+              />
+            </Row>
+            <Row gutter={8} className="" align="middle">
+              <Button
+                onClick={(event) => {
+                  event.stopPropagation();
+                }}
+                type="default"
+                icon={<FontAwesomeIcon icon={faTrashCan} />}
+              />
+              <Button
+                onClick={(event) => {
+                  event.stopPropagation();
+                }}
+                type="default"
+                icon={<FontAwesomeIcon icon={faArrowUp} />}
+              />
+              <Button
+                onClick={(event) => {
+                  event.stopPropagation();
+                  console.log("Not yet implemented");
+                }}
+                type="default"
+                icon={<FontAwesomeIcon icon={faArrowDown} />}
+              />
+            </Row>
+          </Row>
+        )}
         {condition?.sub_conditions?.map((subCondition) => {
-          const sectionEdit = isEditMode[subCondition.permit_condition_id] || false;
           return (
-            <div
-              key={subCondition.permit_condition_id}
-              onClick={() => handleSectionClick(subCondition.permit_condition_id)}
-            >
-              <PermitConditionLayer condition={subCondition} level={level + 1} />
-              {sectionEdit && (
-                <Row justify="space-between">
-                  <Row gutter={8} className="condition-edit-buttons" align="middle">
-                    <Button
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        console.log("Not yet implemented");
-                      }}
-                      type="default"
-                      icon={<FontAwesomeIcon icon={faPlus} className="margin-medium--right" />}
-                    >
-                      List Item
-                    </Button>
-                    <Button
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        console.log("Not yet implemented");
-                      }}
-                      icon={<FontAwesomeIcon icon={faLink} className="margin-medium--right" />}
-                      type="default"
-                    >
-                      Link Document
-                    </Button>
-                    <Button
-                      onClick={(event) => {
-                        handleOpenAddReportModal(event, subCondition);
-                      }}
-                      icon={<FontAwesomeIcon icon={faClipboard} className="margin-medium--right" />}
-                      type="default"
-                      disabled={!!subCondition.report}
-                    >
-                      Add Report
-                    </Button>
-                    <Button
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        closeEdit(subCondition.permit_condition_id);
-                      }}
-                      type="primary"
-                      icon={<FontAwesomeIcon icon={faXmark} />}
-                    />
-                    <Button
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        console.log("Not yet implemented");
-                      }}
-                      type="primary"
-                      icon={<FontAwesomeIcon icon={faCheck} />}
-                    />
-                  </Row>
-                  <Row gutter={8} className="" align="middle">
-                    <Button
-                      onClick={(event) => {
-                        event.stopPropagation();
-                      }}
-                      type="default"
-                      icon={<FontAwesomeIcon icon={faTrashCan} />}
-                    />
-                    <Button
-                      onClick={(event) => {
-                        event.stopPropagation();
-                      }}
-                      type="default"
-                      icon={<FontAwesomeIcon icon={faArrowUp} />}
-                    />
-                    <Button
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        console.log("Not yet implemented");
-                      }}
-                      type="default"
-                      icon={<FontAwesomeIcon icon={faArrowDown} />}
-                    />
-                  </Row>
-                </Row>
-              )}
+            <div key={subCondition.permit_condition_id}>
+              <PermitConditionLayer
+                condition={subCondition}
+                level={level + 1}
+                setParentExpand={handleSetParentExpand}
+              />
             </div>
           );
         })}

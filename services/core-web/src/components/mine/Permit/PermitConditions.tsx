@@ -70,38 +70,40 @@ const PermitConditions: FC<PermitConditionProps> = ({
         ) ?? [];
 
       // Recursive function to get the full path of steps
-      const getStepPath = (condition, parentPath = "") => {
+      const getStepPath = (condition, parentPath = ""): IPermitCondition => {
         const currentPath = parentPath
           ? `${parentPath}${condition.step}`
           : `${cat.description} - ${condition.step}`;
-        // Add the path property to the condition
-        condition.stepPath = currentPath.replace(/\.+$/, "");
+        const stepPath = currentPath.replace(/\.+$/, "");
 
-        for (const report of permitReports) {
-          if (report.permit_condition_id === condition.permit_condition_id.toString()) {
-            condition.report = report;
-          }
-        }
+        const report = permitReports.find(
+          (report) => report.permit_condition_id === condition.permit_condition_id.toString()
+        );
 
         // If condition has sub-conditions, recursively add step paths
-        if (condition.sub_conditions && condition.sub_conditions.length > 0) {
-          condition.sub_conditions.forEach((subCondition) =>
-            getStepPath(subCondition, currentPath)
-          );
-        }
+        const sub_conditions =
+          condition.sub_conditions?.map((subCondition) => getStepPath(subCondition, currentPath)) ??
+          [];
+
+        return {
+          ...condition,
+          stepPath,
+          report,
+          sub_conditions,
+        };
       };
 
       // Initialize the step paths for all top-level conditions
-      conditions.forEach((condition) => getStepPath(condition));
+      const updatedConditions = conditions.map((condition) => getStepPath(condition));
 
       const title = cat.description.replace("Conditions", "").trim();
-      return conditions.length > 0
+      return updatedConditions.length > 0
         ? {
-          href: cat.condition_category_code.toLowerCase(),
-          title,
-          conditions,
-          condition_category_code: cat.condition_category_code,
-        }
+            href: cat.condition_category_code.toLowerCase(),
+            title,
+            conditions: updatedConditions,
+            condition_category_code: cat.condition_category_code,
+          }
         : false;
     })
     .filter(Boolean);
