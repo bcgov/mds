@@ -241,6 +241,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
                                   onSubmit={() => {}}
                                   condition={cond}
                                   permitGuid={permitGuid}
+                                  report={cond.report}
                                 />
                               </Collapse.Panel>
                             ))}

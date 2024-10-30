@@ -28,6 +28,7 @@ interface AddReportToPermitConditionFormProps {
   permitGuid: string;
   condition: IPermitCondition;
   modalView?: boolean;
+  report?: IMineReport;
 }
 
 export const AddReportToPermitConditionForm: FC<AddReportToPermitConditionFormProps> = ({
@@ -35,8 +36,8 @@ export const AddReportToPermitConditionForm: FC<AddReportToPermitConditionFormPr
   condition,
   permitGuid,
   modalView = true,
+  report,
 }) => {
-  const report = condition?.report;
   const [isEditMode, setIsEditMode] = React.useState(modalView);
 
   return (
@@ -52,7 +53,7 @@ export const AddReportToPermitConditionForm: FC<AddReportToPermitConditionFormPr
             ? { ...report, stepPath: condition.stepPath }
             : {
                 mine_report_status_code: MINE_REPORT_SUBMISSION_CODES.NON,
-                condition: condition.stepPath,
+                stepPath: condition.stepPath,
                 permit_condition_category_code: condition.condition_category_code,
                 permit_condition_type_code: REPORT_TYPE_CODES.PRR,
                 permit_condition_id: condition.permit_condition_id,
