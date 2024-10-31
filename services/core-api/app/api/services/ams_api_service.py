@@ -161,7 +161,7 @@ class AMSApiService():
                 agent.get('address').get('city', ''),
                 agent.get('address').get('sub_division_code', ''),
                 agent.get('address').get('post_code'),
-                agent.get('address').get('suit_no', '')) if agent else '',
+                agent.get('address').get('suite_no', '')) if agent else '',
             'em_businessphone': cls.__format_phone_number(agent.get('phone_no')) if agent else '',
             'em_title': agent.get('job_title', '') if agent else '',
         }
@@ -206,7 +206,8 @@ class AMSApiService():
             address.get('suite_no', ''),
             address.get('address_line_1', ''),
             address.get('city', ''),
-            address.get('sub_division_code', '')
+            address.get('sub_division_code', ''),
+            address.get('post_code', '')
         ]
         return ', '.join(filter(bool, address_components)).strip(', ')
 
