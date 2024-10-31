@@ -163,14 +163,14 @@ def register_commands(app):
         with current_app.app_context() as app:
             result = process_all_untp_map_for_orgbook()
 
-    @app.cli.command('publish_all_pending_vc_to_orgbook')
-    def publish_all_pending_vc_to_orgbook():
+    @app.cli.command('forward_all_pending_untp_vc_to_orgbook')
+    def forward_all_pending_untp_vc_to_orgbook():
         from app import auth
         from app.api.verifiable_credentials.manager import (
-            publish_all_pending_vc_to_orgbook, )
+            forward_all_pending_untp_vc_to_orgbook, )
         auth.apply_security = False
         with current_app.app_context():
-            result = publish_all_pending_vc_to_orgbook()
+            result = forward_all_pending_untp_vc_to_orgbook()
 
     @app.cli.command('generate_history_table_migration')
     @click.argument('table')

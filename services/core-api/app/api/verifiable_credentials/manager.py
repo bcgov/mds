@@ -218,14 +218,14 @@ def process_all_untp_map_for_orgbook():
     return [record for payload, record in records]
 
 
-def publish_all_pending_vc_to_orgbook():
+def forward_all_pending_untp_vc_to_orgbook():
     """STUB for celery job to publis all pending vc to orgbook."""
-    ## Orgbook doesn't have this functionality yet.
-    records_to_publish = PermitAmendmentOrgBookPublish.find_all_unpublished(unsafe=True)
+    ## CORE signs and structures the credential, the publisher just validates and forwards it.
+    records_to_forward = PermitAmendmentOrgBookPublish.find_all_unpublished(unsafe=True)
     ORGBOOK_W3C_CRED_FORWARD = "https://dev.orgbook.traceability.site/credentials/forward"
-    current_app.logger.warning(f"going to publish {len(records_to_publish)} records to orgbook")
+    current_app.logger.warning(f"going to publish {len(records_to_forward)} records to orgbook")
 
-    for record in records_to_publish:
+    for record in records_to_forward:
         current_app.logger.warning(f"publishing record={json.loads(record.signed_credential)}")
         payload = {
             "verifiableCredential": json.loads(record.signed_credential),
@@ -242,6 +242,13 @@ def publish_all_pending_vc_to_orgbook():
         else:
             record.error_msg = resp.text
         record.save()
+
+
+def push_untp_map_data_to_publisher():
+    ## This is a different process that passes the data to the publisher.
+    ## the publisher structures the data and sends it to the orgbook.
+    ## the publisher also manages the BitStringStatusLists.
+    pass
 
 
 class VerifiableCredentialManager():
