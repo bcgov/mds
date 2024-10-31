@@ -10,7 +10,6 @@ import moment from "moment-timezone";
 import { reset } from "redux-form";
 import { ItemMap } from "@mds/common";
 
-
 /**
  * Helper function to clear redux form after submissions
  *
@@ -106,8 +105,6 @@ export const timeAgo = (dateTime, unit = "day") => {
     return endDate.diff(moment(startDate), "seconds");
   }
 };
-
-
 
 export const formatPostalCode = (code) => code && code.replace(/.{3}$/, " $&");
 
