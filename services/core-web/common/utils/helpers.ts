@@ -590,7 +590,7 @@ export const getHighestConsequence = (tsf) => {
 
   const highestRankedDam = tsf.dams.reduce((prev, current) =>
     CONSEQUENCE_CLASSIFICATION_RANK_HASH[prev.consequence_classification] >
-      CONSEQUENCE_CLASSIFICATION_RANK_HASH[current.consequence_classification]
+    CONSEQUENCE_CLASSIFICATION_RANK_HASH[current.consequence_classification]
       ? prev
       : current
   );
