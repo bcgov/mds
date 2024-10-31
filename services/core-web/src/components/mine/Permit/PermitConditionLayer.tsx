@@ -92,6 +92,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
     <div
       className={`${className} ${isEditMode ? "condition-layer--editing" : ""}`}
       onClick={handleSectionClick}
+      onKeyPress={handleSectionClick}
     >
       <div className={expandClass}>
         <p>
