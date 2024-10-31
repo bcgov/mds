@@ -43,7 +43,7 @@ exports[`HelpGuide renders CORE properly 1`] = `
       <div
         class="ant-alert-description"
       >
-        Content published here will be visible to MineSpace users. Ensure the language is appropriate and avoid sharing confidential information.
+        Content published here will be visible to Core users. Ensure the language is appropriate and avoid sharing confidential information.
       </div>
     </div>
   </div>
