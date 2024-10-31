@@ -172,6 +172,15 @@ def register_commands(app):
         with current_app.app_context():
             result = forward_all_pending_untp_vc_to_orgbook()
 
+    @app.cli.command('push_untp_map_data_to_publisher')
+    def push_untp_map_data_to_publisher():
+        from app import auth
+        from app.api.verifiable_credentials.manager import (
+            push_untp_map_data_to_publisher, )
+        auth.apply_security = False
+        with current_app.app_context():
+            result = push_untp_map_data_to_publisher()
+
     @app.cli.command('generate_history_table_migration')
     @click.argument('table')
     def do_generate_history_table_command(table):
