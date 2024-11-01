@@ -5,13 +5,13 @@ from app.api.exports.mines.resources.mine_summary_resource import PAGE_DEFAULT, 
 
 def test_mine_summary_export_success(test_client, db_session, auth_headers):
     get_resp = test_client.get(
-        f'/exports/mine-summary-csv', headers=auth_headers['full_auth_header'])
+        '/exports/mine-summary-csv', headers=auth_headers['full_auth_header'])
 
     assert get_resp.status_code == 200
 
 def test_mine_summary_export_paginated(test_client, db_session, auth_headers):
     get_resp = test_client.get(
-        f'/exports/mine-summary', headers=auth_headers['full_auth_header'])
+        '/exports/mine-summary', headers=auth_headers['full_auth_header'])
 
     assert get_resp.status_code == 200
 
@@ -24,6 +24,21 @@ def test_mine_summary_export_paginated(test_client, db_session, auth_headers):
 
 def test_core_static_content_success(test_client, db_session, auth_headers):
     get_resp = test_client.get(
-        f'/exports/core-static-content', headers=auth_headers['full_auth_header'])
+        '/exports/core-static-content', headers=auth_headers['full_auth_header'])
 
     assert get_resp.status_code == 200
+
+def test_now_application_gis_export_success_no_filter(test_client, db_session, auth_headers):
+    get_resp = test_client.get('/exports/now-application-gis-export', headers=auth_headers['full_auth_header'])
+
+    assert get_resp.status_code == 200
+
+def test_now_application_gis_export_success_ada_filter(test_client, db_session, auth_headers):
+    get_resp = test_client.get('/exports/now-application-gis-export?application_type_code=ADA', headers=auth_headers['full_auth_header'])
+
+    assert get_resp.status_code == 200
+
+def test_now_application_gis_export_failure_bad_filter(test_client, db_session, auth_headers):
+    get_resp = test_client.get('/exports/now-application-gis-export?application_type_code=ZZZ', headers=auth_headers['full_auth_header'])
+
+    assert get_resp.status_code == 400

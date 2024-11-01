@@ -61,6 +61,7 @@ from app.api.projects.project_decision_package.resources.project_decision_packag
 from app.api.now_applications.resources.now_application_document_resource import NOWApplicationDocumentIdentityResource
 from app.api.mines.alerts.resources.mine_alert import GlobalMineAlertListResource
 from app.api.help.resources.help_resource import HelpResource, HelpListResource
+from app.api.exports.now_application.resources.now_application_gis_export_resource import NowApplicationGisExportResource
 
 @pytest.mark.parametrize(
     "resource,method,expected_roles",
@@ -173,6 +174,7 @@ from app.api.help.resources.help_resource import HelpResource, HelpListResource
      (HelpResource, 'post', [EDIT_HELPDESK]),
      (HelpResource, 'put', [EDIT_HELPDESK]),
      (HelpResource, 'delete', [EDIT_HELPDESK]),
+     (NowApplicationGisExportResource, 'get', [VIEW_ALL, GIS])
      ])
         
 def test_endpoint_auth(resource, method, expected_roles):
