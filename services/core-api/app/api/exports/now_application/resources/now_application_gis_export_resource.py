@@ -45,6 +45,5 @@ class NowApplicationGisExportResource(Resource):
                 yield data.getvalue()
                 data.seek(0)
                 data.truncate(0)
-                current_app.logger.info(r)
 
         return Response(stream_with_context(generate()), mimetype='text/csv')
