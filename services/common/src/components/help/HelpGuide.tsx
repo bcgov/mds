@@ -42,6 +42,8 @@ export const HelpGuideContent: FC<HelpGuideProps> = ({ helpKey }) => {
   const { tab, activeTab } = params;
   const pageTab = tab ?? activeTab;
 
+  const systemLabel = system === SystemFlagEnum.core ? "Core" : "MineSpace";
+
   const [open, setOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const canEditHelp = useSelector((state) => userHasRole(state, USER_ROLES.role_edit_helpdesk));
@@ -175,7 +177,7 @@ export const HelpGuideContent: FC<HelpGuideProps> = ({ helpKey }) => {
               message="Publish Help Guide"
               showIcon
               type="warning"
-              description="Content published here will be visible to MineSpace users. Ensure the language is appropriate and avoid sharing confidential information."
+              description={`Content published here will be visible to ${systemLabel} users. Ensure the language is appropriate and avoid sharing confidential information.`}
             />
           )}
           <Typography.Title level={2} data-testid="help-title">
