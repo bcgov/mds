@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { Collapse, Row, Typography } from "antd";
 import { useSelector } from "react-redux";
 import { Field, getFormValues } from "redux-form";
-import { FORM } from "../..";
+import { FORM, IProjectSummaryForm } from "../..";
 import { getAmsAuthorizationTypes } from "@mds/common/redux/selectors/projectSelectors";
 import { required } from "@mds/common/redux/utils/Validate";
 import RenderCheckbox from "../forms/RenderCheckbox";
@@ -86,7 +86,7 @@ const terms = (
 );
 
 const Declaration: FC = () => {
-  const { authorizationTypes = [] } = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
+  const { authorizationTypes = [] } = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;
   const amsAuthTypes = useSelector(getAmsAuthorizationTypes);
 
   const hasAmsAuths = amsAuthTypes.some((type: string) => authorizationTypes?.includes(type));

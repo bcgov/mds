@@ -8,12 +8,14 @@ import {
   dateInFuture,
 } from "@mds/common/redux/utils/Validate";
 import Callout from "@mds/common/components/common/Callout";
-import { FORM, isFieldDisabled } from "@mds/common/constants";
+import { FORM } from "@mds/common/constants";
+import { isFieldDisabled } from "../projects/projectUtils";
 import RenderDate from "@mds/common/components/forms/RenderDate";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
+import { IProjectSummaryForm } from "@mds/common/interfaces";
 
 export const ProjectDates = () => {
-  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
+  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;
   const {
     expected_permit_application_date,
     expected_draft_irt_submission_date,

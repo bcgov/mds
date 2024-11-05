@@ -1,25 +1,27 @@
 import React, { FC, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Field, getFormValues } from "redux-form";
+import { Alert, Col, Row, Typography } from "antd";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLock } from "@fortawesome/pro-regular-svg-icons";
 import { SystemFlagEnum } from "@mds/common/constants/enums";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import RenderSelect from "../forms/RenderSelect";
 import { FORM } from "@mds/common/constants/forms";
 import { getDropdownProjectSummaryStatusCodes } from "@mds/common/redux/selectors/staticContentSelectors";
-import { Alert, Col, Row, Typography } from "antd";
+
 import { getDropdownProjectLeads } from "@mds/common/redux/selectors/partiesSelectors";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   clearProjectSummaryMinistryComments,
   createProjectSummaryMinistryComment,
   fetchProjectSummaryMinistryComments,
 } from "@mds/common/redux/actionCreators/projectActionCreator";
 import { getProjectSummaryMinistryComments } from "@mds/common/redux/selectors/projectSelectors";
-import { faLock } from "@fortawesome/pro-regular-svg-icons";
+
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import MinistryCommentPanel from "@mds/common/components/comments/MinistryCommentPanel";
 import { requiredList } from "@mds/common/redux/utils/Validate";
-import { IGroupedDropdownList, IProjectSummaryMinistryComment } from "@mds/common/interfaces";
+import { IGroupedDropdownList, IProjectSummaryForm, IProjectSummaryMinistryComment } from "@mds/common/interfaces";
 import { Feature } from "@mds/common/utils";
 import { USER_ROLES } from "@mds/common/constants";
 
@@ -37,10 +39,11 @@ export const ProjectManagement: FC = () => {
 
   const projectSummaryStatusCodes = useSelector(getDropdownProjectSummaryStatusCodes);
   const ministryComments = useSelector(getProjectSummaryMinistryComments);
+  // @ts-ignore
   const projectLeads: IGroupedDropdownList = useSelector(getDropdownProjectLeads);
   const { status_code, project_summary_guid, project_lead_party_guid } = useSelector((state) =>
     getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)(state)
-  );
+  ) as IProjectSummaryForm;
 
   const isNewProject = !project_summary_guid;
   const isProjectLeadAssigned = Boolean(project_lead_party_guid);
@@ -67,10 +70,6 @@ export const ProjectManagement: FC = () => {
       {isFeatureEnabled(Feature.MAJOR_PROJECT_REFACTOR) ? (
         <div>
           <Typography.Title level={3}>Project Management</Typography.Title>
-          <Paragraph>
-            Need help with this feature? Here&apos;s the <a>guide</a> to help you learn more or get
-            step-by-step instructions.
-          </Paragraph>
           <Title level={3} className="color-primary">
             EMLI Status
           </Title>

@@ -11,7 +11,8 @@ import {
   requiredRadioButton,
 } from "@mds/common/redux/utils/Validate";
 import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
-import { FORM, isFieldDisabled } from "@mds/common/constants";
+import { FORM } from "@mds/common/constants";
+import { isFieldDisabled } from "../projects/projectUtils";
 import { CONTACTS_COUNTRY_OPTIONS } from "@mds/common/constants/strings";
 import { IOrgbookCredential } from "@mds/common/interfaces/party";
 import RenderOrgBookSearch from "@mds/common/components/forms/RenderOrgBookSearch";
@@ -29,6 +30,7 @@ import { normalizePhone } from "@mds/common/redux/utils/helpers";
 import { getOrgBookCredential } from "@mds/common/redux/selectors/orgbookSelectors";
 import { PaymentContact } from "@mds/common/components/projectSummary/PaymentContact";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
+import { IProjectSummaryForm } from "@mds/common/interfaces";
 
 const { Title, Paragraph } = Typography;
 interface IVerifiedCredential {
@@ -47,7 +49,7 @@ const Applicant = () => {
   const [verifiedCredential, setVerifiedCredential] = useState<IVerifiedCredential>(null);
 
   const orgBookCredential = useSelector(getOrgBookCredential);
-  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
+  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;
   const systemFlag = useSelector(getSystemFlag);
   const {
     applicant = {},
@@ -96,6 +98,7 @@ const Applicant = () => {
     setVerified(false);
     setCheckingStatus(true);
     if (credential) {
+      // @ts-ignore
       dispatch(verifyOrgBookCredential(credential.id)).then((response) => {
         setVerified(response.success);
         setCheckingStatus(false);

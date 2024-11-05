@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import { Col, Row, Typography } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { Field, getFormValues, change } from "redux-form";
@@ -13,16 +14,15 @@ import {
   required,
   postalCodeWithCountry,
 } from "@mds/common/redux/utils/Validate";
-import React, { FC, useEffect } from "react";
 import { normalizePhone } from "@mds/common/redux/utils/helpers";
-import { FORM, CONTACTS_COUNTRY_OPTIONS } from "../..";
+import { FORM, CONTACTS_COUNTRY_OPTIONS, IProjectSummaryForm } from "../..";
 
 const { Title, Paragraph } = Typography;
 
 export const PaymentContact = ({ isDisabled }) => {
   const dispatch = useDispatch();
-  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
-  const { payment_contact = {} } = formValues;
+  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;
+  const { payment_contact } = formValues;
   const provinceOptions = useSelector(getDropdownProvinceOptions);
 
   useEffect(() => {

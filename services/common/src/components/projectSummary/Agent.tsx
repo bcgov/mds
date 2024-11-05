@@ -2,7 +2,8 @@ import React, { FC, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Field, change, getFormValues } from "redux-form";
 import { Col, Row, Typography, Alert } from "antd";
-import { FORM, isFieldDisabled } from "@mds/common/constants";
+import { FORM } from "@mds/common/constants";
+import { isFieldDisabled } from "../projects/projectUtils";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
@@ -27,12 +28,13 @@ import { normalizePhone } from "@mds/common/redux/utils/helpers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck, faCircleX, faSpinner } from "@fortawesome/pro-light-svg-icons";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
+import { IProjectSummaryForm } from "@mds/common/interfaces";
 
 export const Agent: FC = () => {
   const dispatch = useDispatch();
-  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
-  const { agent = {}, is_agent = false } = formValues;
-  const { party_type_code, address = {}, credential_id } = agent ?? {};
+  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;
+  const { agent, is_agent = false } = formValues;
+  const { party_type_code, address, credential_id } = agent ?? {};
   const { address_type_code, sub_division_code } = address ?? {};
   const isInternational = address_type_code === "INT";
   // currently no endpoints, etc, for address_type_code
@@ -93,6 +95,7 @@ export const Agent: FC = () => {
     setVerified(false);
     setCheckingStatus(true);
     if (credential) {
+      // @ts-ignore
       dispatch(verifyOrgBookCredential(credential.id)).then((response) => {
         setVerified(response.success);
         setCheckingStatus(false);

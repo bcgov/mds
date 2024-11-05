@@ -1,22 +1,20 @@
 import React, { FC, useContext, useEffect, useState } from "react";
-import { getProject, getProjects } from "@mds/common/redux/selectors/projectSelectors";
 import { useSelector, useDispatch } from "react-redux";
 import { Field, change, getFormValues } from "redux-form";
-import ProjectLinksTable from "@mds/common/components/projectSummary/ProjectLinksTable";
-import { ILinkedProject, IProject } from "@mds/common/interfaces";
-
 import { Button, Col, Row, Typography } from "antd";
+import ProjectLinksTable from "@mds/common/components/projectSummary/ProjectLinksTable";
+import { ILinkedProject, IProject, IProjectSummaryForm } from "@mds/common/interfaces";
 import {
   FORM,
   USER_ROLES,
-  getProjectStatusDescription,
-  isFieldDisabled,
 } from "@mds/common/constants";
+import { isFieldDisabled, getProjectStatusDescription } from "../projects/projectUtils";
 import { isProponent, userHasRole } from "@mds/common/redux/reducers/authenticationReducer";
 import {
   createProjectLinks,
   fetchProjectsByMine,
 } from "@mds/common/redux/actionCreators/projectActionCreator";
+import { getProject, getProjects } from "@mds/common/redux/selectors/projectSelectors";
 import { dateSorter } from "@mds/common/redux/utils/helpers";
 import RenderMultiSelect from "../forms/RenderMultiSelect";
 import * as Strings from "@mds/common/constants/strings";
@@ -33,7 +31,7 @@ const ProjectLinkInput = ({ unrelatedProjects = [], mineGuid, projectGuid }) => 
   const [currentSelection, setCurrentSelection] = useState([]);
   const formName = FORM.ADD_EDIT_PROJECT_SUMMARY;
   const fieldName = "linked-projects";
-  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
+  const formValues = useSelector(getFormValues(formName)) as IProjectSummaryForm;
   const systemFlag = useSelector(getSystemFlag);
 
   if (!projectGuid) {
@@ -53,6 +51,7 @@ const ProjectLinkInput = ({ unrelatedProjects = [], mineGuid, projectGuid }) => 
   };
 
   const addRelatedProjects = () => {
+    // @ts-ignore
     dispatch(createProjectLinks(mineGuid, projectGuid, currentSelection)).then(() => {
       setCurrentSelection([]);
       dispatch(change(formName, fieldName, []));
@@ -102,6 +101,7 @@ const ProjectLinks: FC<ProjectLinksProps> = ({ viewProject, tableOnly = false })
   const mineProjects = useSelector(getProjects);
   const isUserProponent = useSelector(isProponent);
   const canEditProjects = useSelector((state) =>
+    // @ts-ignore
     userHasRole(state, USER_ROLES.role_edit_project_summaries)
   );
   const { isEditMode } = useContext(FormContext);
@@ -142,6 +142,7 @@ const ProjectLinks: FC<ProjectLinksProps> = ({ viewProject, tableOnly = false })
     let isMounted = true;
 
     if (project?.mine_guid) {
+      // @ts-ignore
       dispatch(fetchProjectsByMine({ mineGuid: project.mine_guid })).then(() => {
         if (isMounted) {
           setIsLoaded(true);

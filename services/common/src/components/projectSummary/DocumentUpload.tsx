@@ -13,9 +13,9 @@ import ProjectSummaryFileUpload from "./ProjectSummaryFileUpload";
 import {
   ENVIRONMENT,
   FORM,
-  isDocumentFieldDisabled,
   PROJECT_SUMMARY_DOCUMENT_TYPE_CODE,
 } from "@mds/common/constants";
+import { isDocumentFieldDisabled } from "../projects/projectUtils";
 import { postNewDocumentVersion } from "@mds/common/redux/actionCreators/documentActionCreator";
 import LinkButton from "../common/LinkButton";
 import * as API from "@mds/common/constants/API";
@@ -24,7 +24,7 @@ import AddSpatialDocumentsModal from "../documents/spatial/AddSpatialDocumentsMo
 import SpatialDocumentTable from "../documents/spatial/SpatialDocumentTable";
 import { FormContext } from "../forms/FormWrapper";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
-import { Feature } from "../..";
+import { Feature, IProjectSummaryForm } from "../..";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 
 const RenderOldDocuments = ({
@@ -78,7 +78,7 @@ export const DocumentUpload: FC = () => {
     project_summary_guid,
     documents,
     status_code,
-  } = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
+  } = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;
 
   const { isEditMode } = useContext(FormContext);
   const { isFeatureEnabled } = useFeatureFlag();

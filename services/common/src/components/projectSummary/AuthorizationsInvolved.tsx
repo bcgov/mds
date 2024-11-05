@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import {
   arrayPush,
   arrayRemove,
@@ -39,7 +40,7 @@ import { createDropDownList } from "@mds/common/redux/utils/helpers";
 import { FORM } from "@mds/common/constants/forms";
 import RenderHiddenField from "../forms/RenderHiddenField";
 import AuthorizationSupportDocumentUpload from "./AuthorizationSupportDocumentUpload";
-import { IProjectSummaryDocument } from "@mds/common/interfaces";
+import { IProjectSummaryDocument, IProjectSummaryForm } from "@mds/common/interfaces";
 import {
   renderTextColumn,
   renderDateColumn,
@@ -47,14 +48,13 @@ import {
 } from "@mds/common/components/common/CoreTableCommonColumns";
 import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import { MineDocument } from "@mds/common/models/documents/document";
-import { Link } from "react-router-dom";
 import {
   PROJECT_SUMMARY_DOCUMENT_TYPE_CODE_STATE,
   ENVIRONMENTAL_MANAGMENT_ACT,
   WASTE_DISCHARGE_NEW_AUTHORIZATIONS_URL,
   WASTE_DISCHARGE_AMENDMENT_AUTHORIZATIONS_URL,
-  isFieldDisabled,
 } from "../..";
+import { isFieldDisabled } from "../projects/projectUtils";
 import { SystemFlagEnum } from "@mds/common/constants/enums";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import { FormContext } from "../forms/FormWrapper";
@@ -67,18 +67,18 @@ const RenderEMAPermitCommonSections = ({ code, isAmendment, index, isDisabled })
   const authType = isAmendment ? "AMENDMENT" : "NEW";
   const { authorizations, mine_guid, project_guid, project_summary_guid } = useSelector(
     getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)
-  );
+  ) as IProjectSummaryForm;
   const codeAuthorizations = authorizations[code];
   const { AMENDMENT, NEW } = codeAuthorizations;
   const sectionValues = isAmendment ? AMENDMENT[index] : NEW[index];
-  const [showExemptionSection, setshowExemptionSection] = useState(
+  const [showExemptionSection, setShowExemptionSection] = useState(
     sectionValues?.exemption_requested || false
   );
 
   const projectSummaryDocumentTypesHash = useSelector(getProjectSummaryDocumentTypesHash);
 
   const onChange = (value, _newVal, _prevVal, _fieldName) => {
-    setshowExemptionSection(value);
+    setShowExemptionSection(value);
   };
 
   const removeAmendmentDocument = (
@@ -213,7 +213,6 @@ const RenderEMAPermitCommonSections = ({ code, isAmendment, index, isDisabled })
         </Typography.Text>
       </div>
       <AuthorizationSupportDocumentUpload
-        code={code}
         mineGuid={mine_guid}
         documents={tableDocuments}
         updateAmendmentDocument={updateAmendmentDocument}
@@ -384,7 +383,7 @@ const RenderEMAAmendFieldArray = ({ fields, code, isDisabled, isEditMode }) => {
 };
 
 const RenderEMAAuthCodeFormSection = ({ code, isDisabled }) => {
-  const { authorizations } = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
+  const { authorizations } = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;
   const codeAuthorizations = authorizations[code] ?? [];
   const hasAmendments = codeAuthorizations.AMENDMENT?.length > 0;
   const hasNew = codeAuthorizations.NEW?.length > 0;
@@ -469,7 +468,7 @@ const RenderEMAAuthCodeFormSection = ({ code, isDisabled }) => {
 
 const RenderMinesActPermitSelect = ({ isDisabled }) => {
   const dispatch = useDispatch();
-  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
+  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;
   const { mine_guid } = formValues;
   const permits = useSelector(getPermits);
   const permitDropdown = createDropDownList(permits, "permit_no", "permit_guid");
@@ -479,6 +478,7 @@ const RenderMinesActPermitSelect = ({ isDisabled }) => {
   useEffect(() => {
     if (mine_guid && (!loaded || permitMineGuid !== mine_guid)) {
       setLoaded(false);
+      // @ts-ignore
       dispatch(fetchPermits(mine_guid)).then(() => {
         setLoaded(true);
       });
@@ -562,7 +562,7 @@ export const AuthorizationsInvolved = () => {
   );
   const { isEditMode } = useContext(FormContext);
   const amsAuthTypes = useSelector(getAmsAuthorizationTypes);
-  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
+  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;
 
   const systemFlag = useSelector(getSystemFlag);
   const isCore = systemFlag === SystemFlagEnum.core;

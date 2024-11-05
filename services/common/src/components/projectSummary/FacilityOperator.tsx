@@ -12,7 +12,8 @@ import {
 } from "@mds/common/redux/utils/Validate";
 import RenderField from "../forms/RenderField";
 import RenderSelect from "../forms/RenderSelect";
-import { FORM, isFieldDisabled } from "../..";
+import { FORM, IProjectSummaryForm } from "../..";
+import { isFieldDisabled } from "../projects/projectUtils";
 import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import RenderRadioButtons from "../forms/RenderRadioButtons";
 import RenderAutoSizeField from "../forms/RenderAutoSizeField";
@@ -21,7 +22,7 @@ import { getRegionOptions } from "@mds/common/redux/slices/regionsSlice";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 
 export const FacilityOperator: FC = () => {
-  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
+  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;
   const systemFlag = useSelector(getSystemFlag);
 
   const { zoning } = formValues;
