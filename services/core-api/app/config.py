@@ -235,12 +235,6 @@ class Config(object):
     EPIC_API_URL = os.environ.get('EPIC_API_URL', 'https://projects.eao.gov.bc.ca/api/v2/')
     EPIC_LINK_URL = os.environ.get('EPIC_LINK_URL', 'https://projects.eao.gov.bc.ca/p/')
 
-    # MDT-Issuer-Controller
-    VCR_ISSUER_URL = os.environ.get(
-        'VCR_ISSUER_URL',
-        'https://mines-permitting-issuer-a3e512-dev.apps.silver.devops.gov.bc.ca/')
-    VCR_ISSUER_SECRET_KEY = os.environ.get('VCR_ISSUER_SECRET_KEY', 'super-secret-key')
-
     # Common Services
     COMMON_SERVICES_CLIENT_ID = os.environ.get('COMMON_SERVICES_CLIENT_ID')
     COMMON_SERVICES_CLIENT_SECRET = os.environ.get('COMMON_SERVICES_CLIENT_SECRET')
