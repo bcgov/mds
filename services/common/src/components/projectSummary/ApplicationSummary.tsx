@@ -20,7 +20,6 @@ import { FormContext } from "../forms/FormWrapper";
 
 export const ApplicationSummary: FC = () => {
   const permits = useSelector(getPermits);
-  // @ts-ignore
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;
   const dropdownProjectSummaryPermitTypes = useSelector(getDropdownProjectSummaryPermitTypes);
   const transformedProjectSummaryAuthorizationTypes = useSelector(

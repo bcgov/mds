@@ -40,9 +40,9 @@ export interface IProjectSummary {
 }
 
 interface IProjectSummaryFormAuthorizations extends IProjectSummaryAuthorization {
-  AMENDMENT: any[];
+  AMENDMENT: IProjectSummaryAuthorization[];
   NEW: IProjectSummaryAuthorization[];
-  types: any[];
+  types: string[];
 }
 
 // properties that exist on the form but otherwise do not exist
