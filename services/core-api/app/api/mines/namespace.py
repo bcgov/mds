@@ -9,8 +9,7 @@ from app.api.mines.comments.resources.mine_comment import (
 )
 from app.api.mines.compliance.resources.compliance import MineComplianceSummaryResource
 from app.api.mines.documents.resources.mine_document_bundle import (
-    MineDocumentBundleResource,
-)
+    MineDocumentBundleResource, )
 from app.api.mines.documents.resources.mine_document_resource import (
     DocumentUploadStatusResource,
     MineDocumentArchiveResource,
@@ -23,25 +22,20 @@ from app.api.mines.documents.resources.mine_document_version_resource import (
     MineDocumentVersionUploadResource,
 )
 from app.api.mines.explosives_permit.resources.explosives_permit import (
-    ExplosivesPermitResource,
-)
+    ExplosivesPermitResource, )
 from app.api.mines.explosives_permit.resources.explosives_permit_document_type import (
     ExplosivesPermitDocumentGenerateResource,
     ExplosivesPermitDocumentTypeListResource,
     ExplosivesPermitDocumentTypeResource,
 )
 from app.api.mines.explosives_permit.resources.explosives_permit_document_upload import (
-    ExplosivesPermitDocumentUploadResource,
-)
+    ExplosivesPermitDocumentUploadResource, )
 from app.api.mines.explosives_permit.resources.explosives_permit_list import (
-    ExplosivesPermitListResource,
-)
+    ExplosivesPermitListResource, )
 from app.api.mines.explosives_permit_amendment.resources.explosives_permit_amendment import (
-    ExplosivesPermitAmendmentResource,
-)
+    ExplosivesPermitAmendmentResource, )
 from app.api.mines.explosives_permit_amendment.resources.explosives_permit_amendment_list import (
-    ExplosivesPermitAmendmentListResource,
-)
+    ExplosivesPermitAmendmentListResource, )
 from app.api.mines.external_authorizations.resources.epic_resource import EPICResource
 from app.api.mines.incidents.resources.mine_incident_document import (
     MineIncidentDocumentListResource,
@@ -59,12 +53,10 @@ from app.api.mines.mine.resources.mine import (
 from app.api.mines.mine.resources.mine_basicinfo import MineBasicInfoResource
 from app.api.mines.mine.resources.mine_commodity_code import MineCommodityCodeResource
 from app.api.mines.mine.resources.mine_disturbance_code import (
-    MineDisturbanceCodeResource,
-)
+    MineDisturbanceCodeResource, )
 from app.api.mines.mine.resources.mine_map import MineMapResource
 from app.api.mines.mine.resources.mine_tenure_type_code import (
-    MineTenureTypeCodeResource,
-)
+    MineTenureTypeCodeResource, )
 from app.api.mines.mine.resources.mine_type import (
     MineTypeListResource,
     MineTypeResource,
@@ -78,11 +70,9 @@ from app.api.mines.permits.permit.resources.permit import (
     PermitResource,
 )
 from app.api.mines.permits.permit.resources.permit_document_upload import (
-    PermitDocumentUploadInitializationResource,
-)
+    PermitDocumentUploadInitializationResource, )
 from app.api.mines.permits.permit.resources.permit_status_code import (
-    PermitStatusCodeResource,
-)
+    PermitStatusCodeResource, )
 from app.api.mines.permits.permit_amendment.resources.permit_amendment import (
     PermitAmendmentListResource,
     PermitAmendmentResource,
@@ -91,53 +81,41 @@ from app.api.mines.permits.permit_amendment.resources.permit_amendment_document 
     PermitAmendmentDocumentListResource,
     PermitAmendmentDocumentResource,
 )
-from app.api.mines.permits.permit_amendment.resources.permit_amendment_vc import (
-    PermitAmendmentVCResource,
-)
 from app.api.mines.permits.permit_conditions.resources.permit_condition_category_resource import (
-    PermitConditionCategoryResource,
-)
+    PermitConditionCategoryResource, )
 from app.api.mines.permits.permit_conditions.resources.permit_condition_type_resource import (
-    PermitConditionTypeResource,
-)
+    PermitConditionTypeResource, )
 from app.api.mines.permits.permit_conditions.resources.permit_conditions_resource import (
     PermitConditionsListResource,
     PermitConditionsResource,
 )
 from app.api.mines.permits.permit_conditions.resources.standard_permit_conditions_list_resource import (
-    StandardPermitConditionsListResource,
-)
+    StandardPermitConditionsListResource, )
 from app.api.mines.permits.permit_conditions.resources.standard_permit_conditions_resource import (
-    StandardPermitConditionsResource,
-)
+    StandardPermitConditionsResource, )
 from app.api.mines.permits.permit_extraction.resources.permit_condition_extraction_resource import (
     PermitConditionExtractionProgressResource,
     PermitConditionExtractionResource,
 )
 from app.api.mines.region.resources.region import MineRegionResource
 from app.api.mines.reports.resources.mine_report_category import (
-    MineReportCategoryListResource,
-)
+    MineReportCategoryListResource, )
 from app.api.mines.reports.resources.mine_report_comment import (
     MineReportCommentListResource,
     MineReportCommentResource,
 )
 from app.api.mines.reports.resources.mine_report_definition import (
-    MineReportDefinitionListResource,
-)
+    MineReportDefinitionListResource, )
 from app.api.mines.reports.resources.mine_report_definition_compliance_article_xref_resource import (
     MineReportDefinitionComplianceArticleCreateResource,
     MineReportDefinitionComplianceArticleUpdateResource,
 )
 from app.api.mines.reports.resources.mine_report_document import (
-    MineReportDocumentListResource,
-)
+    MineReportDocumentListResource, )
 from app.api.mines.reports.resources.mine_report_submission_resource import (
-    ReportSubmissionResource,
-)
+    ReportSubmissionResource, )
 from app.api.mines.reports.resources.mine_report_submission_status import (
-    MineReportSubmissionStatusResource,
-)
+    MineReportSubmissionStatusResource, )
 from app.api.mines.reports.resources.mine_reports import (
     MineReportListResource,
     MineReportResource,
@@ -149,31 +127,23 @@ from app.api.mines.subscription.resources.subscription import (
     MineSubscriptionResource,
 )
 from app.api.mines.tailings.resources.tailings import (
-    MineTailingsStorageFacilityResource,
-)
+    MineTailingsStorageFacilityResource, )
 from app.api.mines.tailings.resources.tailings_list import (
-    MineTailingsStorageFacilityListResource,
-)
+    MineTailingsStorageFacilityListResource, )
 from app.api.mines.variances.resources.variance import MineVarianceResource
 from app.api.mines.variances.resources.variance_document_upload import (
-    MineVarianceDocumentUploadResource,
-)
+    MineVarianceDocumentUploadResource, )
 from app.api.mines.variances.resources.variance_list import MineVarianceListResource
 from app.api.mines.variances.resources.variance_uploaded_documents import (
-    MineVarianceUploadedDocumentsResource,
-)
+    MineVarianceUploadedDocumentsResource, )
 from app.api.mines.work_information.resources.work_information import (
-    MineWorkInformationResource,
-)
+    MineWorkInformationResource, )
 from app.api.mines.work_information.resources.work_information_list import (
-    MineWorkInformationListResource,
-)
+    MineWorkInformationListResource, )
 from app.api.notice_of_departure.resources.notice_of_departure_document import (
-    MineNoticeOfDepartureNewDocumentUploadResource,
-)
+    MineNoticeOfDepartureNewDocumentUploadResource, )
 from app.api.parties.party_appt.resources.mine_party_appt_document_upload_resource import (
-    MinePartyApptDocumentUploadResource,
-)
+    MinePartyApptDocumentUploadResource, )
 from flask_restx import Namespace
 
 api = Namespace('mines', description='Mine related operations')
@@ -194,8 +164,10 @@ api.add_resource(MineTailingsStorageFacilityResource,
                  '/<string:mine_guid>/tailings/<string:mine_tailings_storage_facility_guid>')
 api.add_resource(MineDocumentListResource, '/<string:mine_guid>/documents')
 api.add_resource(MineDocumentArchiveResource, '/<string:mine_guid>/documents/archive')
-api.add_resource(MineDocumentVersionUploadResource, '/<string:mine_guid>/documents/<string:mine_document_guid>/versions/upload')
-api.add_resource(MineDocumentVersionListResource, '/<string:mine_guid>/documents/<string:mine_document_guid>/versions')
+api.add_resource(MineDocumentVersionUploadResource,
+                 '/<string:mine_guid>/documents/<string:mine_document_guid>/versions/upload')
+api.add_resource(MineDocumentVersionListResource,
+                 '/<string:mine_guid>/documents/<string:mine_document_guid>/versions')
 api.add_resource(MineDocumentBundleResource, '/document-bundle/<string:mine_document_bundle_id>')
 
 api.add_resource(ZipResource, '/<string:mine_guid>/documents/zip')
@@ -271,11 +243,8 @@ api.add_resource(
     '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>')
 
 api.add_resource(PermitConditionExtractionResource, '/permits/condition-extraction')
-api.add_resource(PermitConditionExtractionProgressResource, '/permits/condition-extraction/<string:task_id>')
-api.add_resource(
-    PermitAmendmentVCResource,
-    '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>/verifiable-credential'
-)
+api.add_resource(PermitConditionExtractionProgressResource,
+                 '/permits/condition-extraction/<string:task_id>')
 
 api.add_resource(
     PermitAmendmentDocumentListResource,
@@ -300,8 +269,9 @@ api.add_resource(
     '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>/conditions/<string:permit_condition_guid>',
 )
 
-api.add_resource(ExplosivesPermitAmendmentResource,
-                 '/<string:mine_guid>/explosives-permits-amendment/<string:explosives_permit_amendment_guid>')
+api.add_resource(
+    ExplosivesPermitAmendmentResource,
+    '/<string:mine_guid>/explosives-permits-amendment/<string:explosives_permit_amendment_guid>')
 api.add_resource(ExplosivesPermitAmendmentListResource,
                  '/<string:mine_guid>/explosives-permits-amendment')
 api.add_resource(ExplosivesPermitResource,
@@ -324,12 +294,16 @@ api.add_resource(MineCommentResource, '/<string:mine_guid>/comments/<string:mine
 
 api.add_resource(EPICResource, '/<string:mine_guid>/epic')
 
-api.add_resource(MineNoticeOfDepartureNewDocumentUploadResource, '/<string:mine_guid>/notices-of-departure/documents')
+api.add_resource(MineNoticeOfDepartureNewDocumentUploadResource,
+                 '/<string:mine_guid>/notices-of-departure/documents')
 
 api.add_resource(MineAlertListResource, '/<string:mine_guid>/alerts')
 api.add_resource(MineAlertResource, '/<string:mine_guid>/alerts/<string:mine_alert_guid>')
 api.add_resource(GlobalMineAlertListResource, '/global-alerts')
 
-api.add_resource(MineReportDefinitionComplianceArticleCreateResource, '/reports/definitions/compliance-article')
-api.add_resource(MineReportDefinitionComplianceArticleUpdateResource,
-                 '/reports/definitions/compliance-article/<string:mine_report_definition_compliance_article_xref_guid>')
+api.add_resource(MineReportDefinitionComplianceArticleCreateResource,
+                 '/reports/definitions/compliance-article')
+api.add_resource(
+    MineReportDefinitionComplianceArticleUpdateResource,
+    '/reports/definitions/compliance-article/<string:mine_report_definition_compliance_article_xref_guid>'
+)

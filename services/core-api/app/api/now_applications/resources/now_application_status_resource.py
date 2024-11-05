@@ -16,12 +16,12 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment import Permi
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.constants import PERMIT_LINKED_CONTACT_TYPES
-from app.api.services.issue_to_orgbook_service import OrgBookIssuerService
 from app.api.mines.mine.models.mine_type import MineType
 from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
 
 
 class NOWApplicationStatusCodeResource(Resource, UserMixin):
+
     @api.doc(description='Get a list of all Notice of Work status codes.', params={})
     @requires_role_view_all
     @api.marshal_with(NOW_APPLICATION_STATUS_CODES, code=200, envelope='records')
@@ -304,21 +304,11 @@ class NOWApplicationStatusResource(Resource, UserMixin):
 
             db.session.commit()
 
-            # Issue verifiable credential to OrgBook (currently, a non-blocking operation)
-            try:
-                OrgBookIssuerService().issue_permit_amendment_vc(permit_amendment)
-            except AssertionError as e:
-                current_app.logger.info('VC not issued due to unsuccessful status code')
-                current_app.logger.debug(str(e))
-            except Exception as ex:
-                current_app.logger.warning('VC not issued due to unknown error')
-                current_app.logger.info(str(ex))
-
         # Handle rejected and withdrawn statuses
         elif now_application_status_code in ['REJ', 'WDN', 'NPR']:
             for progress in now_application_identity.now_application.application_progress:
-                if progress.end_date is None or (progress.end_date is not None and
-                                                 progress.end_date > datetime.now(tz=timezone.utc)):
+                if progress.end_date is None or (progress.end_date is not None and progress.end_date
+                                                 > datetime.now(tz=timezone.utc)):
                     progress.end_date = datetime.now(tz=timezone.utc)
             for delay in now_application_identity.application_delays:
                 if delay.end_date is None or (delay.end_date is not None
