@@ -34,7 +34,7 @@ describe("Applicant Component", () => {
           initialValues={initialValues}
           onSubmit={() => { }}
         >
-          <Applicant />
+          <Applicant fieldsDisabled={false} />
         </FormWrapper>
       </ReduxWrapper>
     );

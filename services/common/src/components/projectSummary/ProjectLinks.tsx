@@ -1,14 +1,14 @@
 import React, { FC, useContext, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Field, change, getFormValues } from "redux-form";
+import { Field, change } from "redux-form";
 import { Button, Col, Row, Typography } from "antd";
 import ProjectLinksTable from "@mds/common/components/projectSummary/ProjectLinksTable";
-import { ILinkedProject, IProject, IProjectSummaryForm } from "@mds/common/interfaces";
+import { ILinkedProject, IProject } from "@mds/common/interfaces";
 import {
   FORM,
   USER_ROLES,
 } from "@mds/common/constants";
-import { isFieldDisabled, getProjectStatusDescription } from "../projects/projectUtils";
+import { getProjectStatusDescription } from "../projects/projectUtils";
 import { isProponent, userHasRole } from "@mds/common/redux/reducers/authenticationReducer";
 import {
   createProjectLinks,
@@ -18,10 +18,10 @@ import { getProject, getProjects } from "@mds/common/redux/selectors/projectSele
 import { dateSorter } from "@mds/common/redux/utils/helpers";
 import RenderMultiSelect from "../forms/RenderMultiSelect";
 import * as Strings from "@mds/common/constants/strings";
-import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import { FormContext } from "../forms/FormWrapper";
+import { ProjectSummaryFormComponentProps } from "./ProjectSummaryForm";
 
-interface ProjectLinksProps {
+interface ProjectLinksProps extends ProjectSummaryFormComponentProps {
   viewProject: (record: ILinkedProject) => string;
   tableOnly?: boolean; // only show the table, no inputs
 }
@@ -31,8 +31,6 @@ const ProjectLinkInput = ({ unrelatedProjects = [], mineGuid, projectGuid }) => 
   const [currentSelection, setCurrentSelection] = useState([]);
   const formName = FORM.ADD_EDIT_PROJECT_SUMMARY;
   const fieldName = "linked-projects";
-  const formValues = useSelector(getFormValues(formName)) as IProjectSummaryForm;
-  const systemFlag = useSelector(getSystemFlag);
 
   if (!projectGuid) {
     return (
@@ -67,7 +65,6 @@ const ProjectLinkInput = ({ unrelatedProjects = [], mineGuid, projectGuid }) => 
     <Row align="bottom" justify="start">
       <Col>
         <Field
-          disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
           id="linked-projects"
           name="linked-projects"
           props={{
@@ -79,7 +76,7 @@ const ProjectLinkInput = ({ unrelatedProjects = [], mineGuid, projectGuid }) => 
         />
         <Button
           disabled={
-            currentSelection.length === 0 || isFieldDisabled(systemFlag, formValues?.status_code)
+            currentSelection.length === 0
           }
           type="primary"
           onClick={addRelatedProjects}
@@ -92,7 +89,7 @@ const ProjectLinkInput = ({ unrelatedProjects = [], mineGuid, projectGuid }) => 
   );
 };
 
-const ProjectLinks: FC<ProjectLinksProps> = ({ viewProject, tableOnly = false }) => {
+const ProjectLinks: FC<ProjectLinksProps> = ({ viewProject, fieldsDisabled, tableOnly = false }) => {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
   const [unrelatedProjects, setUnrelatedProjects] = useState([]);
@@ -106,6 +103,7 @@ const ProjectLinks: FC<ProjectLinksProps> = ({ viewProject, tableOnly = false })
   );
   const { isEditMode } = useContext(FormContext);
   const hasModifyPermission = isUserProponent || canEditProjects;
+  const allowModifications = isEditMode && hasModifyPermission && !fieldsDisabled && !tableOnly;
 
   const separateProjectLists = (projects: IProject[]): [ILinkedProject[], IProject[]] => {
     // guids to filter out from the input as options
@@ -164,7 +162,7 @@ const ProjectLinks: FC<ProjectLinksProps> = ({ viewProject, tableOnly = false })
       <Typography.Paragraph>
         Description of related major project applications for this mine are listed below.
       </Typography.Paragraph>
-      {!tableOnly && isEditMode && (
+      {allowModifications && (
         <ProjectLinkInput
           unrelatedProjects={unrelatedProjects}
           mineGuid={project.mine_guid}
@@ -175,7 +173,7 @@ const ProjectLinks: FC<ProjectLinksProps> = ({ viewProject, tableOnly = false })
         <ProjectLinksTable
           projectGuid={project.project_guid}
           projectLinks={projectLinks}
-          hasModifyPermission={hasModifyPermission && !tableOnly && isEditMode}
+          hasModifyPermission={allowModifications}
           viewProject={viewProject}
           isLoaded={isLoaded}
         />

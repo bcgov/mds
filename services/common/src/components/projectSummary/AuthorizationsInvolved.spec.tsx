@@ -29,10 +29,10 @@ describe("AuthorizationsInvolved", () => {
         <FormWrapper
           name={FORM.ADD_EDIT_PROJECT_SUMMARY}
           initialValues={MOCK.PERMITS}
-          onSubmit={() => {}}
+          onSubmit={() => { }}
         >
           <BrowserRouter>
-            <AuthorizationsInvolved />
+            <AuthorizationsInvolved fieldsDisabled={false} />
           </BrowserRouter>
         </FormWrapper>
       </ReduxWrapper>

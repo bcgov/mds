@@ -26,9 +26,9 @@ describe("DocumentUpload", () => {
         <FormWrapper
           name={FORM.ADD_EDIT_PROJECT_SUMMARY}
           initialValues={MOCK.PERMITS}
-          onSubmit={() => {}}
+          onSubmit={() => { }}
         >
-          <DocumentUpload />
+          <DocumentUpload docFieldsDisabled={false} />
         </FormWrapper>
       </ReduxWrapper>
     );

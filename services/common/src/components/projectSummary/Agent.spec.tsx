@@ -39,9 +39,9 @@ describe("Agent Component", () => {
         <FormWrapper
           name={FORM.ADD_EDIT_PROJECT_SUMMARY}
           initialValues={initialState}
-          onSubmit={() => {}}
+          onSubmit={() => { }}
         >
-          <Agent />
+          <Agent fieldsDisabled={false} />
         </FormWrapper>
       </ReduxWrapper>
     );

@@ -28,9 +28,9 @@ describe("ProjectDates", () => {
         <FormWrapper
           name={FORM.ADD_EDIT_PROJECT_SUMMARY}
           initialValues={MOCK.PERMITS}
-          onSubmit={() => {}}
+          onSubmit={() => { }}
         >
-          <ProjectDates />
+          <ProjectDates fieldsDisabled={false} />
         </FormWrapper>
       </ReduxWrapper>
     );

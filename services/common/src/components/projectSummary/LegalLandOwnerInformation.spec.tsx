@@ -2,7 +2,7 @@ import React from "react";
 import { render, fireEvent } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
-import { reduxForm, reducer as formReducer } from "redux-form";
+import { reducer as formReducer } from "redux-form";
 import { LegalLandOwnerInformation } from "@mds/common/components/projectSummary/LegalLandOwnerInformation";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import FormWrapper from "../forms/FormWrapper";
@@ -17,8 +17,8 @@ const STATIC_CONTENT = {
 };
 const formName = "ADD_EDIT_PROJECT_SUMMARY";
 const WrappedLegalLandOwnerInformation = (
-  <FormWrapper name={formName} onSubmit={() => {}}>
-    <LegalLandOwnerInformation />
+  <FormWrapper name={formName} onSubmit={() => { }}>
+    <LegalLandOwnerInformation fieldsDisabled={false} />
   </FormWrapper>
 );
 

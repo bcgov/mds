@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
@@ -54,10 +54,10 @@ import {
   WASTE_DISCHARGE_NEW_AUTHORIZATIONS_URL,
   WASTE_DISCHARGE_AMENDMENT_AUTHORIZATIONS_URL,
 } from "../..";
-import { isFieldDisabled } from "../projects/projectUtils";
 import { SystemFlagEnum } from "@mds/common/constants/enums";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import { FormContext } from "../forms/FormWrapper";
+import { ProjectSummaryFormComponentProps } from "./ProjectSummaryForm";
 
 const RenderEMAPermitCommonSections = ({ code, isAmendment, index, isDisabled }) => {
   const dispatch = useDispatch();
@@ -77,7 +77,7 @@ const RenderEMAPermitCommonSections = ({ code, isAmendment, index, isDisabled })
 
   const projectSummaryDocumentTypesHash = useSelector(getProjectSummaryDocumentTypesHash);
 
-  const onChange = (value, _newVal, _prevVal, _fieldName) => {
+  const onChange = (value) => {
     setShowExemptionSection(value);
   };
 
@@ -317,7 +317,7 @@ const RenderEMAAmendFieldArray = ({ fields, code, isDisabled, isEditMode }) => {
                       </a>
                     </Typography.Text>
                   </Col>
-                  {isEditMode && <Col>
+                  {isEditMode && !isDisabled && <Col>
                     <Button onClick={() => handleRemoveAmendment(index)}>Cancel</Button>
                   </Col>}
                 </Row>
@@ -327,7 +327,7 @@ const RenderEMAAmendFieldArray = ({ fields, code, isDisabled, isEditMode }) => {
               validate={[required, minLength(2), maxLength(6), digitCharactersOnly]}
               help="Number only (e.g. PC12345 should be entered as 12345)"
               component={RenderField}
-              isDisabled={isDisabled}
+              disabled={isDisabled}
             />
             <Field
               label="Amendment Type"
@@ -340,7 +340,7 @@ const RenderEMAAmendFieldArray = ({ fields, code, isDisabled, isEditMode }) => {
                 { label: "Significant", value: "SIG" },
                 { label: "Minor", value: "MIN" },
               ]}
-              isDisabled={isDisabled}
+              disabled={isDisabled}
             />
             <Field
               label="Amendment Changes Requested that relate to the British Columbia Environmental Act (Select all that apply)"
@@ -359,7 +359,7 @@ const RenderEMAAmendFieldArray = ({ fields, code, isDisabled, isEditMode }) => {
                 { label: "Regulatory Change", value: "RCH" },
                 { label: "Other", value: "OTH" },
               ]}
-              isDisabled={isDisabled}
+              disabled={isDisabled}
             />
             <Field
               label="Is this Authorization required for remediation of a contaminated site?"
@@ -367,7 +367,7 @@ const RenderEMAAmendFieldArray = ({ fields, code, isDisabled, isEditMode }) => {
               required
               validate={[requiredRadioButton]}
               component={RenderRadioButtons}
-              isDisabled={isDisabled}
+              disabled={isDisabled}
             />
             <RenderEMAPermitCommonSections
               isDisabled={isDisabled}
@@ -555,7 +555,7 @@ const RenderAuthCodeFormSection = ({ authorizationType, code, isDisabled }) => {
   );
 };
 
-export const AuthorizationsInvolved = () => {
+export const AuthorizationsInvolved: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => {
   const dispatch = useDispatch();
   const transformedProjectSummaryAuthorizationTypes = useSelector(
     getTransformedProjectSummaryAuthorizationTypes
@@ -637,7 +637,7 @@ export const AuthorizationsInvolved = () => {
                         <Row gutter={[0, 16]}>
                           <Col>
                             <Checkbox
-                              disabled={!isEditMode || isFieldDisabled(systemFlag, formValues?.status_code, true)}
+                              disabled={!isEditMode || fieldsDisabled}
                               data-cy={`checkbox-authorization-${child.code}`}
                               value={child.code}
                               checked={checked}
@@ -691,11 +691,7 @@ export const AuthorizationsInvolved = () => {
                                   />
                                 )}
                                 <RenderAuthCodeFormSection
-                                  isDisabled={isFieldDisabled(
-                                    systemFlag,
-                                    formValues?.status_code,
-                                    true
-                                  )}
+                                  isDisabled={fieldsDisabled}
                                   code={child?.code}
                                   authorizationType={authorization?.code}
                                 />

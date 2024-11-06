@@ -19,8 +19,8 @@ describe("BasicInformation", () => {
   test("renders properly", () => {
     const { container } = render(
       <ReduxWrapper initialState={initialState}>
-        <FormWrapper name={FORM.ADD_EDIT_PROJECT_SUMMARY} onSubmit={() => {}}>
-          <BasicInformation />
+        <FormWrapper name={FORM.ADD_EDIT_PROJECT_SUMMARY} onSubmit={() => { }}>
+          <BasicInformation fieldsDisabled={false} />
         </FormWrapper>
       </ReduxWrapper>
     );

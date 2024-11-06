@@ -15,7 +15,6 @@ import {
   FORM,
   PROJECT_SUMMARY_DOCUMENT_TYPE_CODE,
 } from "@mds/common/constants";
-import { isDocumentFieldDisabled } from "../projects/projectUtils";
 import { postNewDocumentVersion } from "@mds/common/redux/actionCreators/documentActionCreator";
 import LinkButton from "../common/LinkButton";
 import * as API from "@mds/common/constants/API";
@@ -25,7 +24,6 @@ import SpatialDocumentTable from "../documents/spatial/SpatialDocumentTable";
 import { FormContext } from "../forms/FormWrapper";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature, IProjectSummaryForm } from "../..";
-import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 
 const RenderOldDocuments = ({
   documents,
@@ -67,9 +65,12 @@ const RenderOldDocuments = ({
   );
 };
 
-export const DocumentUpload: FC = () => {
+interface DocumentUploadProps {
+  docFieldsDisabled: boolean;
+}
+
+export const DocumentUpload: FC<DocumentUploadProps> = ({ docFieldsDisabled }) => {
   const dispatch = useDispatch();
-  const systemFlag = useSelector(getSystemFlag);
   const {
     spatial_documents = [],
     support_documents = [],
@@ -77,7 +78,6 @@ export const DocumentUpload: FC = () => {
     project_guid,
     project_summary_guid,
     documents,
-    status_code,
   } = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;
 
   const { isEditMode } = useContext(FormContext);
@@ -220,9 +220,8 @@ export const DocumentUpload: FC = () => {
       </Typography.Paragraph>
       {spatialFeatureEnabled ? (
         <>
-          {isEditMode && (
+          {isEditMode && !docFieldsDisabled && (
             <Button
-              disabled={isDocumentFieldDisabled(systemFlag, status_code)}
               onClick={openSpatialDocumentModal}
               type="primary"
               className="block-button"
@@ -246,7 +245,6 @@ export const DocumentUpload: FC = () => {
       <Typography.Paragraph>
         Please upload any supporting documents such as a draft of the{" "}
         <LinkButton
-          disabled={isDocumentFieldDisabled(systemFlag, status_code)}
           onClick={() =>
             downloadIRTTemplate(
               ENVIRONMENT.apiUrl + API.INFORMATION_REQUIREMENTS_TABLE_TEMPLATE_DOWNLOAD
@@ -258,7 +256,7 @@ export const DocumentUpload: FC = () => {
         . To proceed to the final application, you must upload your final Joint Application IRT
         using the form provided in the next phase.
       </Typography.Paragraph>
-      {!isDocumentFieldDisabled(systemFlag, status_code) && (
+      {!docFieldsDisabled && (
         <Field
           id="support_documents"
           name="support_documents"

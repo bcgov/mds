@@ -31,14 +31,13 @@ describe("AuthorizationSupportDocumentUpload Component", () => {
         <FormWrapper
           name={FORM.ADD_EDIT_PROJECT_SUMMARY}
           initialValues={initialState}
-          onSubmit={() => {}}
+          onSubmit={() => { }}
         >
           <AuthorizationSupportDocumentUpload
-            code={"code"}
             mineGuid={"mine_guid"}
             documents={[]}
-            updateAmendmentDocument={() => {}}
-            removeAmendmentDocument={() => {}}
+            updateAmendmentDocument={() => { }}
+            removeAmendmentDocument={() => { }}
             projectGuid={"project_guid"}
             projectSummaryGuid={"project_summary_guid"}
             showExemptionSection={false}

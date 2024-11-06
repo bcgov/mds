@@ -15,17 +15,16 @@ import {
   min,
 } from "@mds/common/redux/utils/Validate";
 import { FORM } from "@mds/common/constants";
-import { isFieldDisabled } from "../projects/projectUtils";
 import RenderField from "../forms/RenderField";
 import { getDropdownMunicipalities } from "@mds/common/redux/selectors/staticContentSelectors";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import { normalizePhone } from "@mds/common/redux/utils/helpers";
 import CoreMap from "../common/Map";
 import RenderAutoSizeField from "../forms/RenderAutoSizeField";
-import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import { IProjectSummaryForm } from "@mds/common/interfaces";
+import { ProjectSummaryFormComponentProps } from "./ProjectSummaryForm";
 
-export const LegalLandOwnerInformation: FC = () => {
+export const LegalLandOwnerInformation: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => {
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;
   const formErrors = useSelector(getFormSyncErrors(FORM.ADD_EDIT_PROJECT_SUMMARY)) as any;
 
@@ -40,7 +39,6 @@ export const LegalLandOwnerInformation: FC = () => {
 
   const [pin, setPin] = useState<Array<string>>([]);
   const municipalityOptions = useSelector(getDropdownMunicipalities);
-  const systemFlag = useSelector(getSystemFlag);
 
   const dataSourceOptions = [
     { value: "GPS", label: "GPS" },
@@ -69,7 +67,7 @@ export const LegalLandOwnerInformation: FC = () => {
         validate={[requiredRadioButton]}
         label="Is the Applicant the Legal Land Owner?"
         component={RenderRadioButtons}
-        disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+        disabled={fieldsDisabled}
       />
       {!is_legal_land_owner && (
         <>
@@ -82,7 +80,7 @@ export const LegalLandOwnerInformation: FC = () => {
                 validate={!is_legal_land_owner ? [requiredRadioButton] : []}
                 label="Is this federal or provincial Crown land?"
                 component={RenderRadioButtons}
-                disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+                disabled={fieldsDisabled}
               />
             </Col>
             <Col md={12} sm={24}>
@@ -93,7 +91,7 @@ export const LegalLandOwnerInformation: FC = () => {
                 validate={!is_legal_land_owner ? [requiredRadioButton] : []}
                 label="Is the Legal Land Owner aware of the proposed application to discharge waste?"
                 component={RenderRadioButtons}
-                disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+                disabled={fieldsDisabled}
               />
             </Col>
           </Row>
@@ -108,7 +106,7 @@ export const LegalLandOwnerInformation: FC = () => {
                 required={!is_legal_land_owner}
                 validate={!is_legal_land_owner ? [required, maxLength(100)] : [maxLength(100)]}
                 help="If it is provincial or federal, write in that"
-                disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+                disabled={fieldsDisabled}
               />
             </Col>
 
@@ -120,7 +118,7 @@ export const LegalLandOwnerInformation: FC = () => {
                 validate={!is_legal_land_owner ? [requiredRadioButton] : []}
                 label="Has the Legal Land Owner received a copy of this application?"
                 component={RenderRadioButtons}
-                disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+                disabled={fieldsDisabled}
               />
             </Col>
           </Row>
@@ -136,7 +134,7 @@ export const LegalLandOwnerInformation: FC = () => {
                   !is_legal_land_owner ? [phoneNumber, maxLength(12), required] : [maxLength(12)]
                 }
                 normalize={normalizePhone}
-                disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+                disabled={fieldsDisabled}
               />
             </Col>
             <Col md={12} sm={24}>
@@ -149,7 +147,7 @@ export const LegalLandOwnerInformation: FC = () => {
                 validate={
                   !is_legal_land_owner ? [required, email, maxLength(100)] : [maxLength(100)]
                 }
-                disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+                disabled={fieldsDisabled}
               />
             </Col>
           </Row>
@@ -165,7 +163,7 @@ export const LegalLandOwnerInformation: FC = () => {
             label="Latitude"
             component={RenderField}
             help="Must be between 47 and 60 with no more than 7 decimal places"
-            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+            disabled={fieldsDisabled}
           />
           <Field
             name="facility_longitude"
@@ -174,7 +172,7 @@ export const LegalLandOwnerInformation: FC = () => {
             label="Longitude"
             component={RenderField}
             help="Must be between -113 and -140 with no more than 7 decimal places"
-            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+            disabled={fieldsDisabled}
           />
           <Field
             name="facility_coords_source"
@@ -183,7 +181,7 @@ export const LegalLandOwnerInformation: FC = () => {
             label="Source of Data"
             data={dataSourceOptions}
             component={RenderSelect}
-            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+            disabled={fieldsDisabled}
           />
         </Col>
         <Col md={12} sm={24}>
@@ -199,7 +197,7 @@ export const LegalLandOwnerInformation: FC = () => {
           maximumCharacters={4000}
           rows={3}
           component={RenderAutoSizeField}
-          disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+          disabled={fieldsDisabled}
         />
       )}
       <Row>
@@ -212,7 +210,7 @@ export const LegalLandOwnerInformation: FC = () => {
             component={RenderSelect}
             data={municipalityOptions}
             validate={[required]}
-            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+            disabled={fieldsDisabled}
           />
         </Col>
       </Row>
@@ -223,7 +221,7 @@ export const LegalLandOwnerInformation: FC = () => {
         validate={!legal_land_desc ? [required, maxLength(100)] : [maxLength(100)]}
         maximumCharacters={100}
         required={!legal_land_desc}
-        disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+        disabled={fieldsDisabled}
       />
       <Field
         name="legal_land_desc"
@@ -233,7 +231,7 @@ export const LegalLandOwnerInformation: FC = () => {
         rows={3}
         component={RenderAutoSizeField}
         required={!facility_pid_pin_crown_file_no}
-        disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+        disabled={fieldsDisabled}
       />
       <Field
         name="facility_lease_no"
@@ -241,7 +239,7 @@ export const LegalLandOwnerInformation: FC = () => {
         required
         component={RenderField}
         validate={[required, maxLength(100)]}
-        disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+        disabled={fieldsDisabled}
       />
     </div>
   );

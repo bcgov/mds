@@ -144,6 +144,17 @@ export enum VC_CRED_ISSUE_STATES {
   issued = "credential-issued",
 }
 
+export enum PROJECT_STATUS_CODES {
+  DFT = "DFT",
+  WDN = "WDN",
+  ASG = "ASG",
+  COM = "COM",
+  OHD = "OHD",
+  SUB = "SUB",
+  UNR = "UNR",
+  CHR = "CHR",
+}
+
 export enum PROJECT_SUMMARY_STATUS_CODES {
   DFT = "Draft",
   WDN = "Withdrawn",

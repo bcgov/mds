@@ -22,9 +22,9 @@ describe("ProjectLinks Component", () => {
         <FormWrapper
           name={FORM.ADD_EDIT_PROJECT_SUMMARY}
           initialValues={MOCK.PERMITS}
-          onSubmit={() => {}}
+          onSubmit={() => { }}
         >
-          <ProjectLinks viewProject={(record) => ""} />
+          <ProjectLinks fieldsDisabled={false} viewProject={(record) => ""} />
         </FormWrapper>
       </ReduxWrapper>
     );

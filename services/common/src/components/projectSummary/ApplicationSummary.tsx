@@ -13,12 +13,11 @@ import { renderTextColumn } from "@mds/common/components/common/CoreTableCommonC
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { FORM } from "@mds/common/constants";
-import { isFieldDisabled } from "../projects/projectUtils";
 import { IAuthorizationSummary, IProjectSummaryForm } from "@mds/common/interfaces";
-import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import { FormContext } from "../forms/FormWrapper";
+import { ProjectSummaryFormComponentProps } from "./ProjectSummaryForm";
 
-export const ApplicationSummary: FC = () => {
+export const ApplicationSummary: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => {
   const permits = useSelector(getPermits);
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;
   const dropdownProjectSummaryPermitTypes = useSelector(getDropdownProjectSummaryPermitTypes);
@@ -36,7 +35,6 @@ export const ApplicationSummary: FC = () => {
 
   const processedEnvironmentActPermitResult: any[] = [];
   let processedOtherActPermitResult: any[] = [];
-  const systemFlag = useSelector(getSystemFlag);
   const { isEditMode } = useContext(FormContext);
 
   const minesActColumns: ColumnsType<IAuthorizationSummary> = [
@@ -231,11 +229,10 @@ export const ApplicationSummary: FC = () => {
 
   const editButton = <Col md={12} sm={24} style={{ textAlign: "right" }}>
     <Button
-      disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
       type="default"
       onClick={handleEditClicked}
     >
-      {isEditMode ? "Edit" : "View"}
+      {isEditMode && !fieldsDisabled ? "Edit" : "View"}
     </Button>
   </Col>;
 
