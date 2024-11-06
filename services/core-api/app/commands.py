@@ -161,7 +161,7 @@ def register_commands(app):
             process_all_untp_map_for_orgbook, )
         auth.apply_security = False
         with current_app.app_context() as app:
-            result = process_all_untp_map_for_orgbook()
+            result = process_all_untp_map_for_orgbook().apply_async()
 
     @app.cli.command('forward_all_pending_untp_vc_to_orgbook')
     def forward_all_pending_untp_vc_to_orgbook():
@@ -170,7 +170,7 @@ def register_commands(app):
             forward_all_pending_untp_vc_to_orgbook, )
         auth.apply_security = False
         with current_app.app_context():
-            result = forward_all_pending_untp_vc_to_orgbook()
+            result = forward_all_pending_untp_vc_to_orgbook().apply_async()
 
     @app.cli.command('push_untp_map_data_to_publisher')
     def push_untp_map_data_to_publisher():
@@ -179,7 +179,7 @@ def register_commands(app):
             push_untp_map_data_to_publisher, )
         auth.apply_security = False
         with current_app.app_context():
-            result = push_untp_map_data_to_publisher()
+            result = push_untp_map_data_to_publisher().apply_async()
 
     @app.cli.command('generate_history_table_migration')
     @click.argument('table')

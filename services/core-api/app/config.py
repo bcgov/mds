@@ -305,8 +305,10 @@ class Config(object):
     UNTP_BC_MINES_ACT_PERMIT_CONTEXT = os.environ.get("UNTP_BC_MINES_ACT_PERMIT_CONTEXT",
                                                       "UNTP_BC_MINES_ACT_PERMIT_CONTEXT")
 
-    ORGBOOK_CREDENTIAL_BASE_URL = os.environ.get(
-        "ORGBOOK_CREDENTIAL_BASE_URL", "https://dev.orgbook.traceability.site/credentials")
+    ORGBOOK_PUBLISHER_BASE_URL = os.environ.get("ORGBOOK_PUBLISHER_BASE_URL",
+                                                "https://dev.orgbook.traceability.site")
+    ORGBOOK_PUBLISHER_API_KEY = os.environ.get("ORGBOOK_PUBLISHER_API_KEY",
+                                               "ORGBOOK_PUBLISHER_API_KEY")
 
 
 class TestConfig(Config):

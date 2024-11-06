@@ -1,15 +1,15 @@
 # for midware/business level actions between requests and data access
 import json
 import requests
-from datetime import date, datetime, timedelta
 
+from datetime import date, datetime
+from dateutil.relativedelta import relativedelta
 from uuid import uuid4, UUID
 from sqlalchemy.exc import IntegrityError
 from typing import List, Union, Tuple, Optional
 from pydantic import BaseModel, Field, ConfigDict
 from openlocationcode.openlocationcode import encode as plus_code_encode
 from hashlib import md5
-from datetime import datetime
 from zoneinfo import ZoneInfo
 from time import sleep
 from typing import List
@@ -79,6 +79,10 @@ class W3CCred(BaseModel):
     validFrom: str
     credentialSubject: UNTPCCMinesActPermit
     credentialSchema: List[dict]
+
+
+def convert_date_to_iso_datetime(date: date) -> str:
+    return datetime(date.year, date.month, date.day, 0, 0, 0, tzinfo=ZoneInfo("UTC")).isoformat()
 
 
 @celery.task()
@@ -254,7 +258,7 @@ def push_untp_map_data_to_publisher():
     ## This is a different process that passes the data to the publisher.
     ## the publisher structures the data and sends it to the orgbook.
     ## the publisher also manages the BitStringStatusLists.
-    ORGBOOK_W3C_CRED_PUBLISH = f"{Config.ORGBOOK_CREDENTIAL_BASE_URL}/publish"
+    ORGBOOK_W3C_CRED_PUBLISH = f"{Config.ORGBOOK_PUBLISHER_BASE_URL}/credentials/publish"
 
     records_to_publish = PermitAmendmentOrgBookPublish.find_all_unpublished(unsafe=True)
     permit_amendment_query_results = db.session.execute(
@@ -270,29 +274,38 @@ def push_untp_map_data_to_publisher():
             "coreData": {
                 "entityId": pa_cred.credentialSubject.issuedToParty.registeredId,
                 "resourceId": pa_cred.credentialSubject.permitNumber,
-                "validFrom": pa_cred.validFrom,
-                "validUntil": date.fromisoformat(pa_cred.validFrom) + timedelta(years=5)
+                "validFrom": convert_date_to_iso_datetime(pa.issue_date),
+                "validUntil": convert_date_to_iso_datetime(pa.issue_date + relativedelta(years=5)),
             },
             "subjectData": {
                 "permitNumber": pa_cred.credentialSubject.permitNumber
             },
             "untpData": {
-                "assessedFacility": pa_cred.credentialSubject.assessment[0].model_dump(),
-                "assessedProduct": pa_cred.credentialSubject.assessment[0].model_dump(),
+                "assessedFacility": [
+                    f.model_dump(exclude_none=True)
+                    for f in pa_cred.credentialSubject.assessment[0].assessedFacility
+                ],
+                "assessedProduct": [
+                    p.model_dump(exclude_none=True)
+                    for p in pa_cred.credentialSubject.assessment[0].assessedProduct
+                ],
             }
         }
+        current_app.logger.warning(f"publishing record={publish_payload}")
         payload_hash = md5(json.dumps(publish_payload).encode('utf-8')).hexdigest()
 
-        current_app.logger.warning(f"publishing record={publish_payload}")
-        post_resp = requests.post(Config.ORGBOOK_W3C_CRED_PUBLISH, json=publish_payload)
+        post_resp = requests.post(
+            ORGBOOK_W3C_CRED_PUBLISH,
+            json=publish_payload,
+            headers={"X-API-KEY": Config.ORGBOOK_PUBLISHER_API_KEY})
 
         publish_record = PermitAmendmentOrgBookPublish(
-            payload_hash=payload_hash,
+            unsigned_payload_hash=payload_hash,
             permit_amendment_guid=row[0],
             party_guid=row[1],
             signed_credential="Produced by publisher",
             publish_state=post_resp.ok,
-            permitNumber=pa_cred.credentialSubject.permitNumber,
+            permit_number=pa_cred.credentialSubject.permitNumber,
             orgbook_entity_id=pa_cred.credentialSubject.issuedToParty.registeredId,
             orgbook_credential_id=new_id,
             error_msg=post_resp.text if not post_resp.ok else None)
@@ -427,7 +440,7 @@ class VerifiableCredentialManager():
         curr_appt = permit_amendment.permittee_appointments[0]
         for pmt_appt in permit_amendment.permittee_appointments:
             #find the last permittee appointment relevant to the amendment issue date.
-            if pmt_appt.start_date <= permit_amendment.issue_date:
+            if (pmt_appt.start_date or date(year=1900)) <= permit_amendment.issue_date:
                 curr_appt = pmt_appt
             else:
                 break
@@ -468,9 +481,6 @@ class VerifiableCredentialManager():
         ]
 
         issue_date = permit_amendment.issue_date
-        issuance_date_str = datetime(
-            issue_date.year, issue_date.month, issue_date.day, 0, 0, 0,
-            tzinfo=ZoneInfo("UTC")).isoformat()
 
         untp_assessment = cc.ConformityAssessment(
             id=None,
@@ -489,10 +499,6 @@ class VerifiableCredentialManager():
             conformityTopic=codes.ConformityTopicCode.Governance_Compliance,
             assessedFacility=[facility],
             assessedProduct=products)
-
-        issuance_date_str = datetime(
-            issue_date.year, issue_date.month, issue_date.day, 0, 0, 0,
-            tzinfo=ZoneInfo("UTC")).isoformat()
 
         cred = UNTPCCMinesActPermit(
             id=None,
@@ -514,12 +520,13 @@ class VerifiableCredentialManager():
 
         new_credential_id = uuid4()
         w3c_cred = W3CCred(
-            id=f"{Config.ORGBOOK_CREDENTIAL_BASE_URL}/{new_credential_id}",
+            id=f"{Config.ORGBOOK_PUBLISHER_BASE_URL}/credentials/{new_credential_id}",
             type=[
                 "VerifiableCredential", "DigitalConformityCredential", "BCMinesActPermitCredential"
             ],
             issuer={"id": did},
-            validFrom=issuance_date_str,                                                            #vcdm1.1, will change to 'validFrom' in vcdm2.0
+            validFrom=convert_date_to_iso_datetime(
+                permit_amendment.issue_date),                                                       #vcdm1.1, will change to 'validFrom' in vcdm2.0
             credentialSubject=cred,
             credentialSchema=[{
                 "id": Config.UNTP_DIGITAL_CONFORMITY_CREDENTIAL_CONTEXT,
