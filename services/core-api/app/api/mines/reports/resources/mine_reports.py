@@ -54,10 +54,6 @@ class MineReportListResource(Resource, UserMixin):
     parser.add_argument('submitter_name', type=str, location='json')
     parser.add_argument('submitter_email', type=str, location='json')
     parser.add_argument('mine_report_contacts', type=list, location='json')
-    parser.add_argument('permit_condition_id', type=str, location='json')
-    parser.add_argument('cim_or_cpo', type=str, location='json')
-    parser.add_argument('frequency', type=str, location='json')
-    parser.add_argument('office_destination', type=list, location='json')
 
     @api.marshal_with(PAGINATED_REPORT_LIST, code=200)
     @api.doc(description='returns the reports for a given mine.',
@@ -161,7 +157,6 @@ class MineReportListResource(Resource, UserMixin):
             if mine_report_definition is None:
                 raise BadRequest('A code required report type must be selected from the list.')
         else:
-            current_app.logger.debug(f'permit_condition_type_code, {permit_condition_type_code}', )
             # Permit Required Reports check
             permit_condition_category = PermitConditionCategory.find_by_permit_condition_category_code(
                 permit_condition_type_code)
@@ -179,8 +174,6 @@ class MineReportListResource(Resource, UserMixin):
             if permit.mine.mine_guid != mine.mine_guid:
                 raise BadRequest('The permit must be associated with the selected mine.')
 
-        current_app.logger.debug(f'data', data)
-
         mine_report = MineReport.create(
             mine_report_definition_id=mine_report_definition.mine_report_definition_id
             if is_code_required_report else None,
@@ -192,12 +185,7 @@ class MineReportListResource(Resource, UserMixin):
             permit_id=permit.permit_id if permit else None,
             permit_condition_category_code=permit_condition_category_code,
             submitter_name=data['submitter_name'],
-            submitter_email=data['submitter_email'],
-            cim_or_cpo=data['cim_or_cpo'],
-            frequency=data['frequency'],
-            office_destination=data['office_destination'],
-            permit_condition_id=data['permit_condition_id']
-        )
+            submitter_email=data['submitter_email'])
 
         contacts = data.get('mine_report_contacts')
         if contacts:

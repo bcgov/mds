@@ -302,6 +302,32 @@ PERMIT_AMENDMENT_MODEL = api.model(
 
 BOND_MODEL = api.model('Bond_guid', {'bond_guid': fields.String})
 
+PERMIT_MODEL = api.model(
+    'Permit', {
+        'permit_id': fields.Integer,
+        'permit_guid': fields.String,
+        'permit_no': fields.String,
+        'permit_status_code': fields.String,
+        'current_permittee': fields.String,
+        'current_permittee_guid': fields.String,
+        'current_permittee_digital_wallet_connection_state': fields.String,
+        'mines_act_permit_vc_locked': fields.Boolean,
+        'project_id': fields.String,
+        'permit_amendments': fields.List(fields.Nested(PERMIT_AMENDMENT_MODEL)),
+        'remaining_static_liability': fields.Float,
+        'assessed_liability_total': fields.Float,
+        'confiscated_bond_total': fields.Float,
+        'active_bond_total': fields.Float,
+        'bonds': fields.List(fields.Nested(BOND_MODEL)),
+        'exemption_fee_status_code': fields.String,
+        'exemption_fee_status_note': fields.String,
+        'site_properties': fields.List(fields.Nested(MINE_TYPE_MODEL)),
+        'permit_prefix': fields.String,
+        'status_changed_timestamp': fields.DateTime,
+        'update_user': fields.String,
+        'update_timestamp': fields.String
+    })
+
 PERMIT_STATUS_CODE_MODEL = api.model('PermitStatusCode', {
     'permit_status_code': fields.String,
     'description': fields.String,
@@ -744,10 +770,6 @@ MINE_REPORT_MODEL = api.model(
         'mine_report_contacts':
             fields.List(fields.Nested(MINE_REPORT_CONTACT_MODEL)),
         'mine_report_status_code': fields.String,
-        'cim_or_cpo': fields.String,
-        'frequency': fields.String,
-        'office_destination': fields.List(fields.String, attribute='office_destination_values'),
-        'permit_condition_id': fields.String
     })
 
 MINE_REPORT_DEFINITION_CATEGORIES = api.model('MineReportDefinitionCategoriesModel', {
@@ -773,33 +795,6 @@ MINE_REPORT_DEFINITION_BASE_MODEL = api.model(
 MINE_REPORT_DEFINITION_MODEL = api.inherit('MineReportDefinition', MINE_REPORT_DEFINITION_BASE_MODEL, {
     'compliance_articles': fields.List(fields.Nested(COMPLIANCE_ARTICLE_MODEL)),
 })
-
-PERMIT_MODEL = api.model(
-    'Permit', {
-        'permit_id': fields.Integer,
-        'permit_guid': fields.String,
-        'permit_no': fields.String,
-        'permit_status_code': fields.String,
-        'current_permittee': fields.String,
-        'current_permittee_guid': fields.String,
-        'current_permittee_digital_wallet_connection_state': fields.String,
-        'mines_act_permit_vc_locked': fields.Boolean,
-        'project_id': fields.String,
-        'permit_amendments': fields.List(fields.Nested(PERMIT_AMENDMENT_MODEL)),
-        'remaining_static_liability': fields.Float,
-        'assessed_liability_total': fields.Float,
-        'confiscated_bond_total': fields.Float,
-        'active_bond_total': fields.Float,
-        'bonds': fields.List(fields.Nested(BOND_MODEL)),
-        'exemption_fee_status_code': fields.String,
-        'exemption_fee_status_note': fields.String,
-        'site_properties': fields.List(fields.Nested(MINE_TYPE_MODEL)),
-        'permit_prefix': fields.String,
-        'status_changed_timestamp': fields.DateTime,
-        'update_user': fields.String,
-        'update_timestamp': fields.String,
-        'reports': fields.List(fields.Nested(MINE_REPORT_MODEL))
-    })
 
 PAGINATED_LIST = api.model(
     'List', {
