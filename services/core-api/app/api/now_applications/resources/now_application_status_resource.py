@@ -9,11 +9,9 @@ from app.api.utils.access_decorators import requires_role_view_all, requires_rol
 from app.api.utils.resources_mixins import UserMixin
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.now_applications.models.now_application_status import NOWApplicationStatus
-from app.api.now_applications.models.now_application_progress import NOWApplicationProgress
 from app.api.now_applications.response_models import NOW_APPLICATION_STATUS_CODES
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
-from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.constants import PERMIT_LINKED_CONTACT_TYPES
 from app.api.mines.mine.models.mine_type import MineType
