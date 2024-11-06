@@ -10,14 +10,15 @@ import { PROJECTS, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
 import FormWrapper from "../forms/FormWrapper";
 import { PaymentContact } from "./PaymentContact";
 
+const initialValues = {
+  payment_contact: {
+    address: [{}]
+  }
+};
 const initialState = {
   form: {
     [FORM.ADD_EDIT_PROJECT_SUMMARY]: {
-      values: {
-        payment_contact: {
-          address: [{}],
-        },
-      },
+      values: initialValues
     },
   },
   [PROJECTS]: {
@@ -36,8 +37,8 @@ describe("PaymentContact Component", () => {
       <ReduxWrapper initialState={initialState}>
         <FormWrapper
           name={FORM.ADD_EDIT_PROJECT_SUMMARY}
-          initialValues={MOCK.PERMITS}
-          onSubmit={() => {}}
+          initialValues={initialValues}
+          onSubmit={() => { }}
         >
           <PaymentContact isDisabled={false} />
         </FormWrapper>

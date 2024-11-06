@@ -31,18 +31,18 @@ export const PaymentContact = ({ isDisabled }) => {
     }
     if (!payment_contact?.address) {
       dispatch(
-        change(FORM.ADD_EDIT_PROJECT_SUMMARY, "payment_contact.address[0].address_line_1", null)
+        change(FORM.ADD_EDIT_PROJECT_SUMMARY, "payment_contact.address[0].address_line_1", undefined)
       );
       dispatch(
-        change(FORM.ADD_EDIT_PROJECT_SUMMARY, "payment_contact.address[0].address_type_code", null)
+        change(FORM.ADD_EDIT_PROJECT_SUMMARY, "payment_contact.address[0].address_type_code", undefined)
       );
       dispatch(
-        change(FORM.ADD_EDIT_PROJECT_SUMMARY, "payment_contact.address[0].sub_division_code", null)
+        change(FORM.ADD_EDIT_PROJECT_SUMMARY, "payment_contact.address[0].sub_division_code", undefined)
       );
-      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "payment_contact.address[0].city", null));
-      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "payment_contact.address[0].post_code", null));
+      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "payment_contact.address[0].city", undefined));
+      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "payment_contact.address[0].post_code", undefined));
     }
-  }, [payment_contact.party_type_code, payment_contact.address]);
+  }, [payment_contact?.party_type_code, payment_contact?.address]);
 
   return (
     <div style={{ paddingTop: 12 }}>
