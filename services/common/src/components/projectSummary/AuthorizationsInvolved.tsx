@@ -608,6 +608,7 @@ export const AuthorizationsInvolved: FC<ProjectSummaryFormComponentProps> = ({ f
           component={RenderHiddenField}
           required
           validate={[requiredList]}
+          disabled={fieldsDisabled}
           label={<Typography.Title level={4}>Regulatory Approval Type</Typography.Title>}
         >
           <FormSection name="authorizations">

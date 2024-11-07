@@ -16,7 +16,6 @@ import { BaseInputProps, getFormItemLabel } from "./BaseInput";
 
 interface OrgBookSearchProps extends BaseInputProps {
   data?: any;
-  isDisabled?: boolean;
   setCredential: (credential: IOrgbookCredential) => void;
 }
 
@@ -29,7 +28,7 @@ const RenderOrgBookSearch: FC<OrgBookSearchProps> = ({
   input,
   meta,
   required,
-  isDisabled = false,
+  disabled = false,
   setCredential,
 }) => {
   const dispatch = useDispatch();
@@ -133,7 +132,7 @@ const RenderOrgBookSearch: FC<OrgBookSearchProps> = ({
         onChange={handleChange}
         onSelect={handleSelect}
         style={{ width: "100%" }}
-        disabled={isDisabled}
+        disabled={disabled}
         value={options.length === 1 ? { key: options[0].text } : null}
       >
         {options.map((option) => (

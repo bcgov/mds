@@ -138,27 +138,31 @@ export const getFormattedProjectApplication = createSelector(
   }
 );
 
+export const formatProjectSummary = (summary, project, amsAuthTypes) => {
+  const documents = formatProjectSummaryDocuments(summary.documents);
+  const contacts = formatProjectContact(project.contacts);
+  const agent = formatProjectSummaryParty(summary.agent);
+  const facility_operator = formatProjectSummaryParty(summary.facility_operator);
+  const confirmation_of_submission = Boolean(summary.submission_date);
+
+  const formattedSummary = {
+    ...summary,
+    contacts,
+    agent,
+    facility_operator,
+    confirmation_of_submission,
+    ...formatAuthorizations(amsAuthTypes, confirmation_of_submission, summary.authorizations),
+    ...documents,
+  };
+
+  formattedSummary.project_lead_party_guid = project.project_lead_party_guid;
+  return formattedSummary;
+}
+
 export const getFormattedProjectSummary = createSelector(
   [getProjectSummary, getProject, getAmsAuthorizationTypes],
   (summary, project, amsAuthTypes) => {
-    const documents = formatProjectSummaryDocuments(summary.documents);
-    const contacts = formatProjectContact(project.contacts);
-    const agent = formatProjectSummaryParty(summary.agent);
-    const facility_operator = formatProjectSummaryParty(summary.facility_operator);
-    const confirmation_of_submission = Boolean(summary.submission_date);
-
-    const formattedSummary = {
-      ...summary,
-      contacts,
-      agent,
-      facility_operator,
-      confirmation_of_submission,
-      ...formatAuthorizations(amsAuthTypes, confirmation_of_submission, summary.authorizations),
-      ...documents,
-    };
-
-    formattedSummary.project_lead_party_guid = project.project_lead_party_guid;
-
-    return formattedSummary;
+    console.log(amsAuthTypes);
+    return formatProjectSummary(summary, project, amsAuthTypes);
   }
 );
