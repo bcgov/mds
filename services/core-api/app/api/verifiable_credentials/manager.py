@@ -15,6 +15,7 @@ from time import sleep
 from typing import List
 from flask import current_app
 from celery.utils.log import get_task_logger
+from psycopg2.errors import UniqueViolation
 
 from app.tasks.celery import celery
 
@@ -299,23 +300,33 @@ def push_untp_map_data_to_publisher():
         current_app.logger.warning(f"publishing record={publish_payload}")
         payload_hash = md5(json.dumps(publish_payload).encode('utf-8')).hexdigest()
 
-        post_resp = requests.post(
-            ORGBOOK_W3C_CRED_PUBLISH,
-            json=publish_payload,
-            headers={"X-API-KEY": Config.ORGBOOK_PUBLISHER_API_KEY})
-
         publish_record = PermitAmendmentOrgBookPublish(
             unsigned_payload_hash=payload_hash,
             permit_amendment_guid=row[0],
             party_guid=row[1],
             signed_credential="Produced by publisher",
-            publish_state=post_resp.ok,
+            publish_state=None,
             permit_number=pa_cred.credentialSubject.permitNumber,
             orgbook_entity_id=pa_cred.credentialSubject.issuedToParty.registeredId,
             orgbook_credential_id=new_id,
-            error_msg=post_resp.text if not post_resp.ok else None)
+            error_msg=None)
 
-        publish_record.save()
+        try:
+            publish_record.save()
+
+            post_resp = requests.post(
+                ORGBOOK_W3C_CRED_PUBLISH,
+                json=publish_payload,
+                headers={"X-API-KEY": Config.ORGBOOK_PUBLISHER_API_KEY})
+
+            publish_record.publish_state = post_resp.ok
+            publish_record.error_msg = post_resp.text if not post_resp.ok else None
+            publish_record.save()
+
+        except UniqueViolation:
+            task_logger.info(
+                f"credential hash collision, skipping cred for permit_amendment={row[0]}")
+
         if publish_record.error_msg:
             task_logger.warning(
                 f"failed to publish unsigned_payload_id={publish_record.unsigned_payload_hash} error={publish_record.error_msg}"
