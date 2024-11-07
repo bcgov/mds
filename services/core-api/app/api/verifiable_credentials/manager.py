@@ -15,7 +15,6 @@ from time import sleep
 from typing import List
 from flask import current_app
 from celery.utils.log import get_task_logger
-from psycopg2.errors import UniqueViolation
 
 from app.tasks.celery import celery
 
@@ -323,7 +322,7 @@ def push_untp_map_data_to_publisher():
             publish_record.error_msg = post_resp.text if not post_resp.ok else None
             publish_record.save()
 
-        except UniqueViolation:
+        except IntegrityError:
             task_logger.info(
                 f"credential hash collision, skipping cred for permit_amendment={row[0]}")
 
