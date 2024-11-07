@@ -39,6 +39,11 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
     mine_report_definition_guid = association_proxy('mine_report_definition',
                                                     'mine_report_definition_guid')
     mine_report_definition_report_name = association_proxy('mine_report_definition', 'report_name')
+    mine_report_permit_requirement_id = db.Column(
+        db.Integer,
+        db.ForeignKey('mine_report_permit_requirement.mine_report_permit_requirement_id'),
+    )
+    mine_report_permit_requirement = db.relationship('MineReportPermitRequirement', lazy='joined')
 
     submitter_name = db.Column(db.String, nullable=False)
     submitter_email = db.Column(db.String, nullable=False)
