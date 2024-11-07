@@ -23,7 +23,6 @@ interface AuthorizationSupportDocumentUploadProps {
   ) => void;
   projectGuid: string;
   projectSummaryGuid: string;
-  code: string;
   showExemptionSection: boolean;
   isAmendment: boolean;
   amendmentChanges: string[];

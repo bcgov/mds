@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import { Col, Row, Typography } from "antd";
+import { useSelector } from "react-redux";
 import { Field, getFormValues, getFormSyncErrors } from "redux-form";
 import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
 import {
@@ -13,8 +14,8 @@ import {
   max,
   min,
 } from "@mds/common/redux/utils/Validate";
-import { useSelector } from "react-redux";
-import { FORM, isFieldDisabled } from "@mds/common/constants";
+import { FORM } from "@mds/common/constants";
+import { isFieldDisabled } from "../projects/projectUtils";
 import RenderField from "../forms/RenderField";
 import { getDropdownMunicipalities } from "@mds/common/redux/selectors/staticContentSelectors";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
@@ -22,10 +23,11 @@ import { normalizePhone } from "@mds/common/redux/utils/helpers";
 import CoreMap from "../common/Map";
 import RenderAutoSizeField from "../forms/RenderAutoSizeField";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
+import { IProjectSummaryForm } from "@mds/common/interfaces";
 
 export const LegalLandOwnerInformation: FC = () => {
-  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
-  const formErrors = useSelector(getFormSyncErrors(FORM.ADD_EDIT_PROJECT_SUMMARY));
+  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;
+  const formErrors = useSelector(getFormSyncErrors(FORM.ADD_EDIT_PROJECT_SUMMARY)) as any;
 
   const {
     is_legal_land_owner = false,

@@ -12,15 +12,6 @@ exports[`Project Management renders properly 1`] = `
       >
         Project Management
       </h3>
-      <div
-        class="ant-typography"
-      >
-        Need help with this feature? Here's the 
-        <a>
-          guide
-        </a>
-         to help you learn more or get step-by-step instructions.
-      </div>
       <h3
         class="ant-typography color-primary"
       >

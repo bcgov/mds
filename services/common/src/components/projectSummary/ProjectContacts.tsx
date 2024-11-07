@@ -15,12 +15,14 @@ import {
 } from "@mds/common/redux/utils/Validate";
 import { normalizePhone } from "@mds/common/redux/utils/helpers";
 import LinkButton from "@mds/common/components/common/LinkButton";
-import { FORM, isFieldDisabled, CONTACTS_COUNTRY_OPTIONS } from "@mds/common/constants";
+import { FORM, CONTACTS_COUNTRY_OPTIONS } from "@mds/common/constants";
+import { isFieldDisabled } from "../projects/projectUtils";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import { FormContext } from "../forms/FormWrapper";
+import { IProjectSummaryForm } from "@mds/common/interfaces";
 
 const RenderContacts = ({ fields, isDisabled }) => {
   const dispatch = useDispatch();
@@ -268,7 +270,7 @@ const RenderContacts = ({ fields, isDisabled }) => {
 
 export const ProjectContacts: FC = () => {
   const dispatch = useDispatch();
-  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY));
+  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;
   const { contacts } = formValues;
   const systemFlag = useSelector(getSystemFlag);
 
