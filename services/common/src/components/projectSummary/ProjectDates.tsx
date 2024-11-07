@@ -52,7 +52,7 @@ export const ProjectDates: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisab
             placeholder="Please select date"
             component={RenderDate}
             allowClear
-            validate={!fieldsDisabled && [dateInFuture, dateNotAfterOther(expected_permit_application_date, "the expected permit application date")]}
+            validate={!fieldsDisabled ? [dateInFuture, dateNotAfterOther(expected_permit_application_date, "the expected permit application date")] : []}
             disabled={fieldsDisabled}
           />
         </Col>
@@ -64,7 +64,7 @@ export const ProjectDates: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisab
             placeholder="Please select date"
             component={RenderDate}
             allowClear
-            validate={!fieldsDisabled && [dateInFuture, dateNotBeforeOther(expected_draft_irt_submission_date, "the expected draft IRT submission date")]}
+            validate={!fieldsDisabled ? [dateInFuture, dateNotBeforeOther(expected_draft_irt_submission_date, "the expected draft IRT submission date")] : []}
             disabled={fieldsDisabled}
           />
         </Col>
@@ -76,7 +76,7 @@ export const ProjectDates: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisab
             placeholder="Please select date"
             component={RenderDate}
             allowClear
-            validate={!fieldsDisabled && [dateInFuture, dateNotBeforeOther(expected_permit_application_date, "the expected permit application date")]}
+            validate={!fieldsDisabled ? [dateInFuture, dateNotBeforeOther(expected_permit_application_date, "the expected permit application date")] : []}
             disabled={fieldsDisabled}
           />
         </Col>
@@ -88,7 +88,7 @@ export const ProjectDates: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisab
             placeholder="Please select date"
             component={RenderDate}
             allowClear
-            validate={!fieldsDisabled && [dateInFuture, dateNotBeforeOther(expected_permit_receipt_date, "the expected permit receipt date")]}
+            validate={!fieldsDisabled ? [dateInFuture, dateNotBeforeOther(expected_permit_receipt_date, "the expected permit receipt date")] : []}
             disabled={fieldsDisabled}
           />
         </Col>
