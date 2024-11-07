@@ -226,6 +226,7 @@ def process_all_untp_map_for_orgbook():
     return [record for payload, record in records]
 
 
+@celery.task()
 def forward_all_pending_untp_vc_to_orgbook():
     """STUB for celery job to publis all pending vc to orgbook."""
     ## CORE signs and structures the credential, the publisher just validates and forwards it.
