@@ -321,7 +321,7 @@ def push_untp_map_data_to_publisher():
             )
         else:
             success_count += success_count + 1
-        failed_credentials.append(publish_record.unsigned_payload_hash, publish_record.error_msg)
+        failed_credentials.append((publish_record.unsigned_payload_hash, publish_record.error_msg))
 
     return f"num published={success_count}, num failed = {len(failed_credentials)}"
 
