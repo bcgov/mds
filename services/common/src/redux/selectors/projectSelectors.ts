@@ -76,7 +76,7 @@ const formatProjectContact = (contacts): IProjectContact[] => {
 
   return formattedContacts;
 };
-const formatAuthorizations = (amsAuthTypes, statusCode, authorizations = []) => {
+const formatAuthorizations = (amsAuthTypes, confirmation_of_submission, authorizations = []) => {
   const authorizationTypes = uniq(authorizations?.map((a) => a.project_summary_authorization_type));
   const formattedAuthorizations = {};
   let ams_terms_agreed = false;
@@ -99,7 +99,7 @@ const formatAuthorizations = (amsAuthTypes, statusCode, authorizations = []) => 
     }
   });
   // ams terms will be true on load if record is submitted with ams auths
-  ams_terms_agreed = ams_terms_agreed && statusCode === "SUB";
+  ams_terms_agreed = ams_terms_agreed && confirmation_of_submission;
   return { authorizations: formattedAuthorizations, authorizationTypes, ams_terms_agreed };
 };
 
@@ -145,7 +145,7 @@ export const getFormattedProjectSummary = createSelector(
     const contacts = formatProjectContact(project.contacts);
     const agent = formatProjectSummaryParty(summary.agent);
     const facility_operator = formatProjectSummaryParty(summary.facility_operator);
-    const confirmation_of_submission = summary.status_code === "SUB";
+    const confirmation_of_submission = Boolean(summary.submission_date);
 
     const formattedSummary = {
       ...summary,
@@ -153,7 +153,7 @@ export const getFormattedProjectSummary = createSelector(
       agent,
       facility_operator,
       confirmation_of_submission,
-      ...formatAuthorizations(amsAuthTypes, summary.status_code, summary.authorizations),
+      ...formatAuthorizations(amsAuthTypes, confirmation_of_submission, summary.authorizations),
       ...documents,
     };
 

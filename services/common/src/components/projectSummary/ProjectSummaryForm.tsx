@@ -24,7 +24,7 @@ import { ProjectManagement } from "./ProjectManagement";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import { SystemFlagEnum } from "../..";
 import { formatProjectPayload } from "@mds/common/utils/helpers";
-import { areDocumentFieldsDisabled, areFieldsDisabled } from "../projects/projectUtils";
+import { areAuthFieldsDisabled, areDocumentFieldsDisabled, areFieldsDisabled } from "../projects/projectUtils";
 
 interface ProjectSummaryFormProps {
   initialValues: IProjectSummary;
@@ -103,6 +103,7 @@ export const ProjectSummaryForm: FC<ProjectSummaryFormProps> = ({
 
   const fieldsDisabled = areFieldsDisabled(systemFlag, status_code);
   const docFieldsDisabled = areDocumentFieldsDisabled(systemFlag, status_code);
+  const authFieldsDisabled = areAuthFieldsDisabled(systemFlag, status_code);
 
   const handleTransformPayload = (valuesFromForm: any) => {
     return formatProjectPayload(valuesFromForm, { projectSummaryAuthorizationTypesArray });
@@ -126,7 +127,7 @@ export const ProjectSummaryForm: FC<ProjectSummaryFormProps> = ({
     "applicant-information": <Applicant fieldsDisabled={fieldsDisabled} />,
     "representing-agent": <Agent fieldsDisabled={fieldsDisabled} />,
     "mine-components-and-offsite-infrastructure": <FacilityOperator fieldsDisabled={fieldsDisabled} />,
-    "purpose-and-authorization": <AuthorizationsInvolved fieldsDisabled={fieldsDisabled} />,
+    "purpose-and-authorization": <AuthorizationsInvolved fieldsDisabled={authFieldsDisabled} />,
     "document-upload": <DocumentUpload docFieldsDisabled={docFieldsDisabled} />,
     "application-summary": <ApplicationSummary fieldsDisabled={fieldsDisabled} />,
     declaration: <Declaration />,
