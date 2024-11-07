@@ -232,10 +232,10 @@ def forward_all_pending_untp_vc_to_orgbook():
     records_to_forward = PermitAmendmentOrgBookPublish.find_all_unpublished(unsafe=True)
     ORGBOOK_W3C_CRED_FORWARD = f"{Config.ORGBOOK_CREDENTIAL_BASE_URL}/forward"
 
-    current_app.logger.warning(f"going to publish {len(records_to_forward)} records to orgbook")
+    task_logger.warning(f"going to publish {len(records_to_forward)} records to orgbook")
 
     for record in records_to_forward:
-        current_app.logger.warning(f"publishing record={json.loads(record.signed_credential)}")
+        task_logger.warning(f"publishing record={json.loads(record.signed_credential)}")
         payload = {
             "verifiableCredential": json.loads(record.signed_credential),
             "options": {
@@ -263,6 +263,10 @@ def push_untp_map_data_to_publisher():
     records_to_publish = PermitAmendmentOrgBookPublish.find_all_unpublished(unsafe=True)
     permit_amendment_query_results = db.session.execute(
         permit_amendments_for_orgbook_query).fetchall()
+
+    failed_credentials: List[Tuple[str, bool]] = []
+    success_count = 0
+
     for row in permit_amendment_query_results:
         pa = PermitAmendment.find_by_permit_amendment_guid(row[0], unsafe=True)
         pa_cred, new_id = VerifiableCredentialManager.produce_untp_cc_map_payload(
@@ -311,6 +315,15 @@ def push_untp_map_data_to_publisher():
             error_msg=post_resp.text if not post_resp.ok else None)
 
         publish_record.save()
+        if publish_record.error_msg:
+            task_logger.warning(
+                f"failed to publish unsigned_payload_id={publish_record.unsigned_payload_hash} error={publish_record.error_msg}"
+            )
+        else:
+            success_count += success_count + 1
+        failed_credentials.append(publish_record.unsigned_payload_hash, publish_record.error_msg)
+
+    return f"num published={success_count}, num failed = {len(failed_credentials)}"
 
 
 class VerifiableCredentialManager():
