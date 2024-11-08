@@ -2,7 +2,7 @@
 import json
 import requests
 
-from datetime import date, datetime
+from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from uuid import uuid4, UUID
 from sqlalchemy.exc import IntegrityError
@@ -83,9 +83,8 @@ class W3CCred(BaseModel):
     credentialSchema: List[dict]
 
 
-def convert_date_to_iso_datetime(datetime: datetime) -> str:
-    return datetime(
-        datetime.year, datetime.month, datetime.day, 0, 0, 0, tzinfo=ZoneInfo("UTC")).isoformat()
+def convert_date_to_iso_datetime(dt: datetime) -> str:
+    return datetime(dt.year, dt.month, dt.day, 0, 0, 0, tzinfo=ZoneInfo("UTC")).isoformat()
 
 
 @celery.task()
