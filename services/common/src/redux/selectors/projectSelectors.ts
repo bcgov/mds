@@ -143,7 +143,7 @@ const formatProjectSummary = (summary, project, amsAuthTypes) => {
   const contacts = formatProjectContact(project.contacts);
   const agent = formatProjectSummaryParty(summary.agent);
   const facility_operator = formatProjectSummaryParty(summary.facility_operator);
-  const confirmation_of_submission = Boolean(summary.submission_date);
+  const confirmation_of_submission = summary.submission_date ? true : undefined;
 
   const formattedSummary = {
     ...summary,
