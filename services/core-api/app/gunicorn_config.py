@@ -10,12 +10,13 @@ def opt_env(var_name):
 
 # Print stack trace if a worker is killed (e.g. from a timeout)
 def worker_abort(worker):
+    print(dir(worker))
     pid = worker.pid
     print("worker is being killed - {}".format(pid))
     traceback.print_stack()
 
 bind = "0.0.0.0:5000"
-timeout = opt_env("GUNICORN_TIMEOUT") or 200
+timeout = opt_env("GUNICORN_TIMEOUT") or 125
 workers = opt_env("GUNICORN_WORKERS") or 3
 errorlog = opt_env("GUNICORN_ERROR_LOG") or "-"
 loglevel = opt_env("GUNICORN_LOG_LEVEL") or "debug"
