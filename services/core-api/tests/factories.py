@@ -69,7 +69,7 @@ from app.api.projects.project_decision_package.models.project_decision_package i
 from app.api.mines.alerts.models.mine_alert import MineAlert
 
 GUID = factory.LazyFunction(uuid.uuid4)
-TODAY = factory.LazyFunction(datetime.utcnow)
+TODAY = factory.LazyFunction(datetime.now)
 
 FACTORY_LIST = []
 
@@ -1064,7 +1064,7 @@ class PermitAmendmentFactory(BaseFactory):
     permit_id = factory.SelfAttribute('permit.permit_id')
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     received_date = TODAY
-    issue_date = factory.LazyFunction(datetime.now())
+    issue_date = factory.LazyFunction(datetime.now)
 
     authorization_end_date = factory.Faker('date_between', start_date='+31d', end_date='+89d')
     permit_amendment_status_code = 'ACT'
