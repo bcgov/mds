@@ -28,7 +28,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     permit_amendment_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
     permit_id = db.Column(db.Integer, db.ForeignKey('permit.permit_id'), nullable=False)
     received_date = db.Column(db.DateTime, nullable=False)
-    issue_date: date = db.Column(db.DateTime, nullable=False)
+    issue_date = db.Column(db.DateTime, nullable=False)
     authorization_end_date = db.Column(db.DateTime, nullable=False)
     permit_amendment_status_code = db.Column(
         db.String(3), db.ForeignKey('permit_amendment_status_code.permit_amendment_status_code'))
@@ -303,7 +303,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
             if issue_date.isoformat() == '9999-12-31':
                 raise AssertionError(
                     'Permit amendment issue date should be set to null if not known.')
-            if self.permit_amendment_status_code != 'DFT' and issue_date > date.today():
+            if self.permit_amendment_status_code != 'DFT' and issue_date > datetime.today():
                 raise AssertionError('Permit amendment issue date cannot be set to the future.')
         return issue_date
 

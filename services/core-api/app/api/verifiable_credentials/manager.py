@@ -24,6 +24,7 @@ from app.api.utils.feature_flag import Feature, is_feature_enabled
 
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
+from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.verifiable_credentials.models.credentials import PartyVerifiableCredentialMinesActPermit
 from app.api.verifiable_credentials.models.connection import PartyVerifiableCredentialConnection
 from app.api.verifiable_credentials.models.orgbook_publish_status import PermitAmendmentOrgBookPublish
@@ -82,8 +83,9 @@ class W3CCred(BaseModel):
     credentialSchema: List[dict]
 
 
-def convert_date_to_iso_datetime(date: date) -> str:
-    return datetime(date.year, date.month, date.day, 0, 0, 0, tzinfo=ZoneInfo("UTC")).isoformat()
+def convert_date_to_iso_datetime(datetime: datetime) -> str:
+    return datetime(
+        datetime.year, datetime.month, datetime.day, 0, 0, 0, tzinfo=ZoneInfo("UTC")).isoformat()
 
 
 @celery.task()
@@ -395,9 +397,7 @@ class VerifiableCredentialManager():
         credential_attrs["mine_commodity"] = ", ".join(
             mine_commodity_list) if mine_commodity_list else None
         credential_attrs["mine_no"] = permit_amendment.mine.mine_no
-        credential_attrs["issue_date"] = int(
-            permit_amendment.issue_date.strftime("%Y%m%d")) if is_feature_enabled(
-                Feature.VC_ANONCREDS_20) else permit_amendment.issue_date
+        credential_attrs["issue_date"] = int(permit_amendment.issue_date.strftime("%Y%m%d"))
         # https://github.com/hyperledger/aries-rfcs/tree/main/concepts/0441-present-proof-best-practices#dates-and-predicates
         credential_attrs["latitude"] = permit_amendment.mine.latitude
         credential_attrs["longitude"] = permit_amendment.mine.longitude
@@ -464,10 +464,10 @@ class VerifiableCredentialManager():
         # "tsf_operating_count"
         # "tsf_care_and_maintenance_count"
 
-        curr_appt = permit_amendment.permittee_appointments[0]
+        curr_appt: MinePartyAppointment = permit_amendment.permittee_appointments[0]
         for pmt_appt in permit_amendment.permittee_appointments:
             #find the last permittee appointment relevant to the amendment issue date.
-            if (pmt_appt.start_date or date(year=1900)) <= permit_amendment.issue_date:
+            if (pmt_appt.start_date or datetime(year=1900)) <= permit_amendment.issue_date:
                 curr_appt = pmt_appt
             else:
                 break
