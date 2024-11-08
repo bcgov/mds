@@ -20,8 +20,5 @@ export interface IMineReport {
   submitter_name: string;
   submitter_email: string;
   mine_report_status_code: MINE_REPORT_SUBMISSION_CODES;
-  permit_condition_id?: string;
-  frequency?: string;
-  cim_or_cpo?: string;
-  office_destination?: string[];
+  mine_report_permit_requirement_id?: number;
 }

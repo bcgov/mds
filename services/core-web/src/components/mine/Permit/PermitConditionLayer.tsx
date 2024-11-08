@@ -15,9 +15,9 @@ import {
 } from "@fortawesome/pro-regular-svg-icons";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import { useParams } from "react-router-dom";
-import { AddReportToPermitConditionForm } from "../../Forms/reports/AddReporttoPermitConditionForm";
-import { createMineReport } from "@mds/common/redux/actionCreators/reportActionCreator";
+import { ReportPermitRequirementForm } from "../../Forms/reports/ReportPermitRequirementForm";
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
+import { createMineReportPermitRequirement } from "@mds/common/redux/slices/mineReportPermitRequirementSlice";
 
 interface PermitConditionLayerProps {
   condition: IPermitCondition;
@@ -66,7 +66,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   };
 
   const addNewReport = async (values) => {
-    await dispatch(createMineReport(mineGuid, values));
+    await dispatch(createMineReportPermitRequirement({ mineGuid, values }));
     dispatch(fetchPermits(mineGuid));
     dispatch(closeModal());
   };
@@ -81,7 +81,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
           condition: reportCondition,
           permitGuid,
         },
-        content: AddReportToPermitConditionForm,
+        content: ReportPermitRequirementForm,
       })
     );
   };
@@ -127,7 +127,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
                 }}
                 icon={<FontAwesomeIcon icon={faClipboard} className="margin-medium--right" />}
                 type="default"
-                disabled={!!condition.report}
+                disabled={!!condition.mineReportPermitRequirement}
               >
                 Add Report
               </Button>

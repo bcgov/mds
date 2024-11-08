@@ -1,8 +1,8 @@
 -- Create the cim_or_cpo_type ENUM type
 CREATE TYPE cim_or_cpo_type AS ENUM ('CIM', 'CPO', 'BOTH');
 
--- Create the office_destination_type ENUM type
-CREATE TYPE office_destination_type AS ENUM ('MMO', 'HS', 'RO', 'MOE');
+-- Create the ministry_recipient_type ENUM type
+CREATE TYPE ministry_recipient_type AS ENUM ('MMO', 'HS', 'RO', 'MOE');
 
 -- Create the new permit_report_requirement table
 CREATE TABLE mine_report_permit_requirement
@@ -10,12 +10,14 @@ CREATE TABLE mine_report_permit_requirement
     mine_report_permit_requirement_id SERIAL PRIMARY KEY,
     update_user                       VARCHAR(255)                           NOT NULL,
     update_timestamp                  timestamp with time zone DEFAULT now() NOT NULL,
+    initial_due_date                  timestamp with time zone,
     due_date_period_months            INTEGER                                NOT NULL,
     create_user                       VARCHAR(255)                           NOT NULL,
     create_timestamp                  timestamp with time zone DEFAULT now() NOT NULL,
     active_ind                        BOOLEAN                  DEFAULT true  NOT NULL,
+    deleted_ind                       BOOLEAN                  DEFAULT false NOT NULL,
     cim_or_cpo                        cim_or_cpo_type,
-    office_destination                office_destination_type[],
+    ministry_recipient                ministry_recipient_type[],
     permit_condition_id               INTEGER                                NOT NULL,
     permit_id                         INTEGER                                NOT NULL,
     CONSTRAINT fk_permit

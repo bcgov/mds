@@ -1,17 +1,19 @@
 import React, { FC } from "react";
 import { Field } from "redux-form";
 import { Button, Col, Row, Typography } from "antd";
+import { useSelector } from "react-redux";
 import {
   FORM,
   IMineReport,
+  IMineReportPermitRequirement,
   IPermitCondition,
   MINE_REPORT_SUBMISSION_CODES,
   REPORT_FREQUENCY_HASH,
-  REPORT_OFFICE_DESTINATION_HASH,
+  REPORT_MINISTRY_RECIPIENT_HASH,
   REPORT_REGULATORY_AUTHORITY_CODES_HASH,
   REPORT_TYPE_CODES,
 } from "@mds/common";
-import { required, requiredList, yearNotInFuture } from "@mds/common/redux/utils/Validate";
+import { required } from "@mds/common/redux/utils/Validate";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import RenderDate from "@mds/common/components/forms/RenderDate";
@@ -22,23 +24,25 @@ import { requiredRadioButton } from "@common/utils/Validate";
 import RenderGroupCheckbox, {
   normalizeGroupCheckBox,
 } from "@mds/common/components/forms/RenderGroupCheckbox";
+import { getPermitByGuid } from "@mds/common/redux/selectors/permitSelectors";
 
-interface AddReportToPermitConditionFormProps {
+interface ReportPermitRequirementProps {
   onSubmit: (values: Partial<IMineReport>) => void | Promise<void>;
   permitGuid: string;
   condition: IPermitCondition;
   modalView?: boolean;
-  report?: IMineReport;
+  mineReportPermitRequirement?: IMineReportPermitRequirement;
 }
 
-export const AddReportToPermitConditionForm: FC<AddReportToPermitConditionFormProps> = ({
+export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
   onSubmit,
   condition,
   permitGuid,
   modalView = true,
-  report,
+  mineReportPermitRequirement,
 }) => {
   const [isEditMode, setIsEditMode] = React.useState(modalView);
+  const permit = useSelector(getPermitByGuid(permitGuid));
 
   return (
     <div style={{ minHeight: modalView ? "380px" : "" }}>
@@ -49,8 +53,12 @@ export const AddReportToPermitConditionForm: FC<AddReportToPermitConditionFormPr
         isEditMode={isEditMode}
         scrollOnToggleEdit={false}
         initialValues={
-          report
-            ? { ...report, stepPath: condition.stepPath }
+          mineReportPermitRequirement
+            ? {
+                ...mineReportPermitRequirement,
+                stepPath: condition.stepPath,
+                permit_id: permit.permit_id,
+              }
             : {
                 mine_report_status_code: MINE_REPORT_SUBMISSION_CODES.NON,
                 stepPath: condition.stepPath,
@@ -58,11 +66,12 @@ export const AddReportToPermitConditionForm: FC<AddReportToPermitConditionFormPr
                 permit_condition_type_code: REPORT_TYPE_CODES.PRR,
                 permit_condition_id: condition.permit_condition_id,
                 permit_guid: permitGuid,
+                permit_id: permit.permit_id,
               }
         }
       >
         <Row gutter={[16, 16]}>
-          <Col span={12}>
+          <Col span={24}>
             <Field
               name="stepPath"
               label="Condition"
@@ -74,37 +83,23 @@ export const AddReportToPermitConditionForm: FC<AddReportToPermitConditionFormPr
           </Col>
           <Col span={12}>
             <Field
-              name="frequency"
+              name="due_date_period_months"
               label="Report Frequency"
               required
               validate={[required]}
               component={RenderSelect}
               data={Object.keys(REPORT_FREQUENCY_HASH).map((key) => {
                 return {
-                  value: key,
-                  label: REPORT_FREQUENCY_HASH[key],
+                  value: REPORT_FREQUENCY_HASH[key],
+                  label: key,
                 };
               })}
             />
           </Col>
           <Col md={12} sm={24}>
             <Field
-              name="submission_year"
-              label="Report Compliance Year/Period"
-              placeholder="Select year"
-              required
-              validate={[required, yearNotInFuture]}
-              component={RenderDate}
-              props={{
-                yearMode: true,
-                disabledDate: (currentDate) => currentDate.isAfter(),
-              }}
-            />
-          </Col>
-          <Col md={12} sm={24}>
-            <Field
-              name="due_date"
-              label="Due Date"
+              name="initial_due_date"
+              label="Initial Due Date"
               placeholder="Select date"
               required
               validate={[required]}
@@ -118,7 +113,9 @@ export const AddReportToPermitConditionForm: FC<AddReportToPermitConditionFormPr
                   Regulatory Authority
                 </Typography.Paragraph>
                 <Typography.Paragraph>
-                  {REPORT_REGULATORY_AUTHORITY_CODES_HASH[report.cim_or_cpo]}
+                  {mineReportPermitRequirement.cim_or_cpo
+                    ? REPORT_REGULATORY_AUTHORITY_CODES_HASH[mineReportPermitRequirement.cim_or_cpo]
+                    : "Not Specified"}
                 </Typography.Paragraph>
               </div>
             ) : (
@@ -145,22 +142,22 @@ export const AddReportToPermitConditionForm: FC<AddReportToPermitConditionFormPr
                   Ministry Recipient
                 </Typography.Paragraph>
                 <Typography.Paragraph>
-                  {report.office_destination.map(
-                    (dest) => `${REPORT_OFFICE_DESTINATION_HASH[dest]}, `
-                  )}
+                  {mineReportPermitRequirement.ministry_recipient?.map(
+                    (dest, index) =>
+                      `${REPORT_MINISTRY_RECIPIENT_HASH[dest]}${index < mineReportPermitRequirement.ministry_recipient.length - 1 ? ", " : ""} `
+                  ) ?? "None Specified"}
                 </Typography.Paragraph>
               </div>
             ) : (
               <Field
-                name="office_destination"
+                name="ministry_recipient"
                 label="What office is the report for?"
-                validate={[requiredList]}
                 normalize={normalizeGroupCheckBox}
                 component={RenderGroupCheckbox}
-                options={Object.keys(REPORT_OFFICE_DESTINATION_HASH).map((key) => {
+                options={Object.keys(REPORT_MINISTRY_RECIPIENT_HASH).map((key) => {
                   return {
                     value: key,
-                    label: REPORT_OFFICE_DESTINATION_HASH[key],
+                    label: REPORT_MINISTRY_RECIPIENT_HASH[key],
                   };
                 })}
               />
@@ -174,7 +171,7 @@ export const AddReportToPermitConditionForm: FC<AddReportToPermitConditionFormPr
                 cancelFunction={!modalView ? () => setIsEditMode(false) : undefined}
               />
               <Button type="primary" htmlType="submit">
-                {report ? "Update" : "Add"} Report
+                {mineReportPermitRequirement ? "Update" : "Add"} Report
               </Button>
             </div>
           ) : (
@@ -194,4 +191,4 @@ export const AddReportToPermitConditionForm: FC<AddReportToPermitConditionFormPr
   );
 };
 
-export default AddReportToPermitConditionForm;
+export default ReportPermitRequirementForm;

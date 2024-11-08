@@ -2,9 +2,10 @@ from flask_restx import fields, marshal
 
 from app.api.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
 from app.api.dams.dto import DAM_MODEL
-from app.api.mines.reports.models.mine_report_permit_requirement import CimOrCpo, OfficeDestination
+from app.api.mines.reports.models.mine_report_permit_requirement import CimOrCpo
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointmentStatus, MinePartyAcknowledgedStatus
 from app.api.parties.response_models import PARTY
+from app.api.utils.helpers import EnumListField
 from app.extensions import api
 
 from app.api.utils.feature_flag import is_feature_enabled, Feature
@@ -307,8 +308,9 @@ MINE_REPORT_PERMIT_REQUIREMENT = api.model(
     'MineReportPermitRequirement', {
         'mine_report_permit_requirement_id': fields.Integer,
         'due_date_period_months': fields.Integer,
+        'initial_due_date': fields.DateTime,
         'cim_or_cpo': fields.String(enum=CimOrCpo, attribute='cim_or_cpo.name'),
-        'office_destination': fields.String(enum=OfficeDestination, attribute='office_destination.name'),
+        'ministry_recipient': EnumListField(),
         'permit_condition_id': fields.Integer
     }
 )

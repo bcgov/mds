@@ -11,7 +11,11 @@ import {
 } from "@fortawesome/pro-light-svg-icons";
 import { getPermitConditionCategoryOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import PermitConditionLayer from "./PermitConditionLayer";
-import { IPermitAmendment, IPermitCondition } from "@mds/common/interfaces/permits";
+import {
+  IMineReportPermitRequirement,
+  IPermitAmendment,
+  IPermitCondition,
+} from "@mds/common/interfaces/permits";
 import { VIEW_MINE_PERMIT } from "@/constants/routes";
 import ScrollSidePageWrapper from "@mds/common/components/common/ScrollSidePageWrapper";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
@@ -27,9 +31,8 @@ import {
   RenderExtractionProgress,
   RenderExtractionStart,
 } from "./PermitConditionExtraction";
-import { getPermitReports } from "@mds/common/redux/selectors/permitSelectors";
-import { IMineReport } from "@mds/common";
-import AddReportToPermitConditionForm from "@/components/Forms/reports/AddReporttoPermitConditionForm";
+import { getMineReportPermitRequirements } from "@mds/common/redux/selectors/permitSelectors";
+import ReportPermitRequirementForm from "@/components/Forms/reports/ReportPermitRequirementForm";
 
 const { Title } = Typography;
 
@@ -49,7 +52,9 @@ const PermitConditions: FC<PermitConditionProps> = ({
   const { id, permitGuid } = useParams<{ id: string; permitGuid: string }>();
   const [isExpanded, setIsExpanded] = useState(false);
   const permitConditionCategoryOptions = useSelector(getPermitConditionCategoryOptions);
-  const permitReports: IMineReport[] = useSelector(getPermitReports(permitGuid));
+  const mineReportPermitRequirements: IMineReportPermitRequirement[] = useSelector(
+    getMineReportPermitRequirements(permitGuid)
+  );
 
   const permitConditions = latestAmendment?.conditions;
   const permitExtraction = useSelector(
@@ -76,8 +81,9 @@ const PermitConditions: FC<PermitConditionProps> = ({
           : `${cat.description} - ${condition.step}`;
         const stepPath = currentPath.replace(/\.+$/, "");
 
-        const report = permitReports.find(
-          (report) => report.permit_condition_id === condition.permit_condition_id.toString()
+        const mineReportPermitRequirement = mineReportPermitRequirements.find(
+          (requirement) =>
+            requirement.permit_condition_id === condition.permit_condition_id
         );
 
         // If condition has sub-conditions, recursively add step paths
@@ -88,7 +94,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
         return {
           ...condition,
           stepPath,
-          report,
+          mineReportPermitRequirement,
           sub_conditions,
         };
       };
@@ -121,6 +127,10 @@ const PermitConditions: FC<PermitConditionProps> = ({
     return Promise.resolve();
   };
 
+  const handleEditReportRequirement = (values) => {
+    console.log("not implemented", values);
+  }
+
   if (isLoading) {
     return <LoadingOutlined style={{ fontSize: 120 }} />;
   }
@@ -135,16 +145,16 @@ const PermitConditions: FC<PermitConditionProps> = ({
     return <RenderExtractionStart />;
   }
 
-  const getConditionsWithReports = (conditions) => {
+  const getConditionsWithRequirements = (conditions: IPermitCondition[]) => {
     let result = [];
 
     conditions.forEach((condition) => {
-      if (condition.report) {
+      if (condition.mineReportPermitRequirement) {
         result.push(condition);
       }
 
       if (condition.sub_conditions && condition.sub_conditions.length > 0) {
-        result = result.concat(getConditionsWithReports(condition.sub_conditions));
+        result = result.concat(getConditionsWithRequirements(condition.sub_conditions));
       }
     });
 
@@ -197,7 +207,8 @@ const PermitConditions: FC<PermitConditionProps> = ({
             <div className="core-page-content">
               <Row gutter={[16, 16]}>
                 {permitConditionCategories.map((category) => {
-                  const conditionsWithReports = getConditionsWithReports(category.conditions);
+                  const conditionsWithRequirements: IPermitCondition[] =
+                    getConditionsWithRequirements(category.conditions);
                   return (
                     <React.Fragment key={category.href}>
                       <Col span={24}>
@@ -224,13 +235,13 @@ const PermitConditions: FC<PermitConditionProps> = ({
                           <PermitConditionLayer condition={sc} isExpanded={isExpanded} />
                         </Col>
                       ))}
-                      {conditionsWithReports?.length > 0 && (
+                      {conditionsWithRequirements?.length > 0 && (
                         <div className="report-collapse-container">
                           <Title level={4} className="primary-colour">
-                            Reports
+                            Report Requirements
                           </Title>
                           <Collapse expandIconPosition="end">
-                            {conditionsWithReports.map((cond: IPermitCondition, index) => (
+                            {conditionsWithRequirements.map((cond: IPermitCondition, index) => (
                               <Collapse.Panel
                                 key={cond.permit_condition_id}
                                 header={
@@ -238,12 +249,12 @@ const PermitConditions: FC<PermitConditionProps> = ({
                                 }
                                 className="report-collapse"
                               >
-                                <AddReportToPermitConditionForm
+                                <ReportPermitRequirementForm
                                   modalView={false}
-                                  onSubmit={() => {}}
+                                  onSubmit={handleEditReportRequirement}
                                   condition={cond}
                                   permitGuid={permitGuid}
-                                  report={cond.report}
+                                  mineReportPermitRequirement={cond.mineReportPermitRequirement}
                                 />
                               </Collapse.Panel>
                             ))}

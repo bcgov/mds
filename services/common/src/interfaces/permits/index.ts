@@ -19,3 +19,4 @@ export * from "./patchPermitVCLocked.interface";
 export * from "./exemptionFeeStatusOption.interface";
 export * from "./permitStatusOption.interface";
 export * from "./permitTypeOption.interface";
+export * from "./mineReportPermitRequirements.interface";

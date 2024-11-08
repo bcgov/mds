@@ -477,23 +477,18 @@ export const REPORT_REGULATORY_AUTHORITY_CODES_HASH = {
   NONE: "Not Specified",
 };
 
-export const REPORT_OFFICE_DESTINATION_HASH = {
+export const REPORT_MINISTRY_RECIPIENT_HASH = {
   MMO: "Major Mines Office",
-  HS: "Health and Safetey",
+  HS: "Health and Safety",
   RO: "Regional Office",
   MOE: "Ministry of Environment",
 };
 
 export const REPORT_FREQUENCY_HASH = {
-  Yearly: "Yearly",
-  Monthly: "Monthly",
-  Daily: "Daily",
-  Weekly: "Weekly",
-  Biweekly: "Bi-weekly",
-  Quarterly: "Quarterly",
-  SemiAnnually: "Semi-annually",
-  Annually: "Annually",
-  BiAnnually: "Bi-annually",
-  AsNeeded: "As needed",
-  Other: "Other",
+  "Monthly": 1,
+  "Quarterly": 4,
+  "Semi-Annually": 6,
+  "Annually": 12,
+  "Bi-Annually": 24,
+  "Not Specified": 0,
 };

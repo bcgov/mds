@@ -133,6 +133,7 @@ from app.api.mines.reports.resources.mine_report_definition_compliance_article_x
 from app.api.mines.reports.resources.mine_report_document import (
     MineReportDocumentListResource,
 )
+from app.api.mines.reports.resources.mine_report_permit_requirement import MineReportPermitRequirementResource
 from app.api.mines.reports.resources.mine_report_submission_resource import (
     ReportSubmissionResource,
 )
@@ -253,6 +254,7 @@ api.add_resource(
     MineReportDocumentListResource,
     '/<string:mine_guid>/reports/documents',
 )
+api.add_resource(MineReportPermitRequirementResource, '/<string:mine_guid>/reports/permit-requirements')
 
 api.add_resource(PermitResource, '/<string:mine_guid>/permits/<string:permit_guid>')
 api.add_resource(PermitListResource, '/<string:mine_guid>/permits')
