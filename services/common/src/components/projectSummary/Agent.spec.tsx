@@ -7,19 +7,20 @@ import FormWrapper from "../forms/FormWrapper";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { Agent } from "./Agent";
 
+const formValues = {
+  values: {
+    status_code: "DFT",
+    agent: {
+      credential_id: 1000,
+      party_type_code: null,
+      address: { address_type_code: "CAN", sub_division_code: "BC" },
+    },
+    is_agent: true,
+  },
+};
 const initialState = {
   form: {
-    [FORM.ADD_EDIT_PROJECT_SUMMARY]: {
-      values: {
-        status_code: "DFT",
-        agent: {
-          credential_id: 1000,
-          party_type_code: null,
-          address: { address_type_code: "CAN", sub_division_code: "BC" },
-        },
-        is_agent: true,
-      },
-    },
+    [FORM.ADD_EDIT_PROJECT_SUMMARY]: { values: formValues },
   },
   [PROJECTS]: {
     projectSummary: MOCK.PROJECT_SUMMARY,
@@ -38,7 +39,7 @@ describe("Agent Component", () => {
       <ReduxWrapper initialState={initialState}>
         <FormWrapper
           name={FORM.ADD_EDIT_PROJECT_SUMMARY}
-          initialValues={initialState}
+          initialValues={formValues}
           onSubmit={() => { }}
         >
           <Agent fieldsDisabled={false} />

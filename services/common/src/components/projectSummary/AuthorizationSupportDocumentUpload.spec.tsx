@@ -7,10 +7,11 @@ import FormWrapper from "../forms/FormWrapper";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import AuthorizationSupportDocumentUpload from "./AuthorizationSupportDocumentUpload";
 
+const formValues = {}
 const initialState = {
   form: {
     [FORM.ADD_EDIT_PROJECT_SUMMARY]: {
-      values: {},
+      values: formValues,
     },
   },
   [PROJECTS]: {
@@ -30,7 +31,7 @@ describe("AuthorizationSupportDocumentUpload Component", () => {
       <ReduxWrapper initialState={initialState}>
         <FormWrapper
           name={FORM.ADD_EDIT_PROJECT_SUMMARY}
-          initialValues={initialState}
+          initialValues={formValues}
           onSubmit={() => { }}
         >
           <AuthorizationSupportDocumentUpload

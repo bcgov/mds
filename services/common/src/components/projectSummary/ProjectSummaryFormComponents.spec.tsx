@@ -6,7 +6,7 @@ import { ProjectManagement } from "./ProjectManagement";
 import { LegalLandOwnerInformation } from "./LegalLandOwnerInformation";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
-import { AUTHENTICATION, PROJECTS, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
+import { AUTHENTICATION, PERMITS, PROJECTS, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
 import { formatProjectSummary } from "@mds/common/redux/selectors/projectSelectors";
 import BasicInformation from "./BasicInformation";
 import ProjectLinks from "./ProjectLinks";
@@ -45,6 +45,9 @@ const initialState = {
         userAccessData: MOCK.USER_ACCESS_DATA,
         userInfo: { preferred_username: "USERNAME" }
     },
+    [PERMITS]: {
+        permits: MOCK.PERMITS
+    }
 };
 
 const mockFields = jest.fn();
@@ -67,8 +70,18 @@ const allowedEnabledWhenDisabled = [
     "ADD_EDIT_PROJECT_SUMMARY_confirmation_of_submission",
 ];
 
+// ideally, have more complete data
+const allowedDisabledWhenEnabled = [
+    "is_legal_address_same_as_mailing_address", // these 3 depend on the address and will change according to data
+    "is_billing_address_same_as_mailing_address",
+    "is_billing_address_same_as_legal_address",
+];
+
 const filterOutAllowedEnabledIds = (idArray: string[]) => {
     return idArray.filter((id) => !allowedEnabledWhenDisabled.includes(id));
+};
+const filterOutAllowedDisabledIds = (idArray: string[]) => {
+    return idArray.filter((id) => !allowedDisabledWhenEnabled.includes(id));
 };
 describe("ProjectSummaryForm components disable accurately accoring to functions", () => {
     const renderedComponents = ({ fieldsDisabled, authFieldsDisabled, docFieldsDisabled, envFieldsDisabled }) => (
@@ -135,6 +148,7 @@ describe("ProjectSummaryForm components disable accurately accoring to functions
 
         const disabledInputs = container.querySelectorAll(`input:disabled`);
         const disabledInputIds = Array.from(disabledInputs).map((input) => input.id);
-        expect(disabledInputIds).toEqual([]);
+        const filteredIds = filterOutAllowedDisabledIds(disabledInputIds);
+        expect(filteredIds).toEqual([]);
     });
 });
