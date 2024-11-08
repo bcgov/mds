@@ -577,11 +577,10 @@ class MineReportFactory(BaseFactory):
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     mine_report_definition_id = factory.LazyFunction(
         RandomMineReportDefinition
-    )                                                                        # None if not factory.SelfAttribute('set_permit_condition_category_code') else factory.LazyFunction(RandomMineReportDefinition)
-    received_date = factory.Faker('date_between', start_date='-15d', end_date='+15d')
+    )                                                 # None if not factory.SelfAttribute('set_permit_condition_category_code') else factory.LazyFunction(RandomMineReportDefinition)
+    received_date = factory.Faker('date_time_between', start_date='-15d', end_date='+15d')
     due_date = factory.Faker('future_datetime', end_date='+30d')
-    submission_year = factory.fuzzy.FuzzyInteger(datetime.utcnow().year - 2,
-                                                 datetime.utcnow().year + 11)
+    submission_year = factory.fuzzy.FuzzyInteger(datetime.now().year - 2, datetime.now().year + 11)
     mine_report_submissions = []
     permit_condition_category_code = None
     submitter_name = factory.Faker('name')
@@ -626,11 +625,10 @@ class MineReportSubmissionFactory(BaseFactory):
     mine_guid = factory.SelfAttribute('report.mine_guid')
     mine_report_definition_id = factory.LazyFunction(
         RandomMineReportDefinition
-    )                                                                        # None if not factory.SelfAttribute('set_permit_condition_category_code') else factory.LazyFunction(RandomMineReportDefinition)
-    received_date = factory.Faker('date_between', start_date='-15d', end_date='+15d')
+    )                                                 # None if not factory.SelfAttribute('set_permit_condition_category_code') else factory.LazyFunction(RandomMineReportDefinition)
+    received_date = factory.Faker('date_time_between', start_date='-15d', end_date='+15d')
     due_date = factory.Faker('future_date', end_date='+30d')
-    submission_year = factory.fuzzy.FuzzyInteger(datetime.utcnow().year - 2,
-                                                 datetime.utcnow().year + 11)
+    submission_year = factory.fuzzy.FuzzyInteger(datetime.now().year - 2, datetime.now().year + 11)
 
     permit_condition_category_code = None
     submitter_name = factory.Faker('name')
@@ -722,7 +720,7 @@ class PartyBusinessRoleFactory(BaseFactory):
 
     party_business_role_code = factory.LazyFunction(RandomPartyBusinessRole)
     party = factory.SubFactory(PartyFactory, person=True)
-    start_date = datetime.utcnow()
+    start_date = datetime.now()
     end_date = None
 
 
@@ -743,7 +741,7 @@ class MinePartyAppointmentFactory(BaseFactory):
                                       not in PERMIT_LINKED_CONTACT_TYPES else None)
 
     party = factory.SubFactory(PartyFactory, person=True, address=1)
-    start_date = factory.LazyFunction(datetime.now)
+    start_date = factory.LazyFunction(date.today)
     end_date = None
     status = None
     processed_by = factory.Faker('first_name')
@@ -764,12 +762,12 @@ class PartyOrgBookEntityFactory(BaseFactory):
     party = factory.SubFactory(PartyFactory, company=True)
     registration_id = factory.Faker('pyint')
     registration_status = factory.Faker('boolean', chance_of_getting_true=50)
-    registration_date = factory.Faker('date_between', start_date='-100d', end_date='-25d')
+    registration_date = factory.Faker('date_time_between', start_date='-100d', end_date='-25d')
     name_id = factory.Faker('pyint')
     name_text = factory.Faker('company')
     credential_id = factory.Faker('pyint')
     association_user = factory.Faker('first_name')
-    association_timestamp = datetime.utcnow().date()
+    association_timestamp = date.today()
 
 
 class CoreUserFactory(BaseFactory):
@@ -1064,9 +1062,9 @@ class PermitAmendmentFactory(BaseFactory):
     permit_id = factory.SelfAttribute('permit.permit_id')
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     received_date = TODAY
-    issue_date = factory.LazyFunction(datetime.now)
+    issue_date = factory.LazyFunction(date.today)
 
-    authorization_end_date = factory.Faker('date_between', start_date='+31d', end_date='+89d')
+    authorization_end_date = factory.Faker('date_time_between', start_date='+31d', end_date='+89d')
     permit_amendment_status_code = 'ACT'
     permit_amendment_type_code = 'AMD'
     description = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
