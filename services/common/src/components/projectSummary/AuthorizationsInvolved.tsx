@@ -649,6 +649,7 @@ export const AuthorizationsInvolved: FC<ProjectSummaryFormComponentProps> = ({ f
                             <Checkbox
                               disabled={!isEditMode || isDisabled}
                               data-cy={`checkbox-authorization-${child.code}`}
+                              id={`authorizations-${child.code}`}
                               value={child.code}
                               checked={checked}
                               onChange={(e) => handleChange(e, child.code)}

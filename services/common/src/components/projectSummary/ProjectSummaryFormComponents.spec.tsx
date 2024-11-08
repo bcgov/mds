@@ -25,6 +25,11 @@ const amsAuthTypes = ['AIR_EMISSIONS_DISCHARGE_PERMIT', 'EFFLUENT_DISCHARGE_PERM
 const project = { project_lead_party_guid: "project_lead_party_guid" };
 const formattedProjectSummary = formatProjectSummary(MOCK.PROJECT_SUMMARY, project, amsAuthTypes);
 
+const mine_guid = formattedProjectSummary.mine_guid;
+// this prevents console spam of "not wrapped in act()"
+// by making the permits belong to the mine and therefore have it be loaded
+const permits = MOCK.PERMITS.map((permit) => ({ ...permit, mine_guid }));
+
 const initialState = {
     form: {
         [FORM.ADD_EDIT_PROJECT_SUMMARY]: {
@@ -46,7 +51,7 @@ const initialState = {
         userInfo: { preferred_username: "USERNAME" }
     },
     [PERMITS]: {
-        permits: MOCK.PERMITS
+        permits: permits
     }
 };
 
@@ -70,22 +75,42 @@ const allowedEnabledWhenDisabled = [
     "ADD_EDIT_PROJECT_SUMMARY_confirmation_of_submission",
 ];
 
-// ideally, have more complete data
 const allowedDisabledWhenEnabled = [
     "is_legal_address_same_as_mailing_address", // these 3 depend on the address and will change according to data
     "is_billing_address_same_as_mailing_address",
     "is_billing_address_same_as_legal_address",
 ];
 
-const filterOutAllowedEnabledIds = (idArray: string[]) => {
-    return idArray.filter((id) => !allowedEnabledWhenDisabled.includes(id));
+const filterInputsByIds = (inputArray: NodeListOf<Element>, idArray: string[]): Element[] => {
+    return Array.from(inputArray).filter((input) => !idArray.includes(input.id));
 };
-const filterOutAllowedDisabledIds = (idArray: string[]) => {
-    return idArray.filter((id) => !allowedDisabledWhenEnabled.includes(id));
+
+// checkboxes and radio is more reliable to use name
+const getId = (input) => {
+    const { id, name } = input;
+    if (id && id !== "") { return id; }
+    return name;
 };
+
+const isDocField = (id: string) => {
+    return id.endsWith("documents");
+}
+
+// test if a field is an ENV field (and not a document field)
+const isEnvMatch = (id: string) => {
+    const match = amsAuthTypes.some((type) => id.includes(type));
+    const isDoc = isDocField(id);
+    return match && !isDoc;
+};
+
 describe("ProjectSummaryForm components disable accurately accoring to functions", () => {
-    const renderedComponents = ({ fieldsDisabled, authFieldsDisabled, docFieldsDisabled, envFieldsDisabled }) => (
-        <BrowserRouter>
+    const renderedComponents = ({ fieldsDisabled, authFieldsDisabled, docFieldsDisabled, envFieldsDisabled }) => {
+        mockFields.mockReturnValue(fieldsDisabled);
+        mockDocFields.mockReturnValue(docFieldsDisabled);
+        mockAuthFields.mockReturnValue(authFieldsDisabled);
+        mockEnvFields.mockReturnValue(envFieldsDisabled);
+
+        return <BrowserRouter>
             <FormWrapper name={FORM.ADD_EDIT_PROJECT_SUMMARY} onSubmit={jest.fn()}>
                 <ProjectManagement />
                 <BasicInformation fieldsDisabled={fieldsDisabled} />
@@ -102,7 +127,7 @@ describe("ProjectSummaryForm components disable accurately accoring to functions
                 <Declaration />
             </FormWrapper>
         </BrowserRouter>
-    );
+    };
 
     test("shows all disabled", () => {
         const params = {
@@ -111,10 +136,6 @@ describe("ProjectSummaryForm components disable accurately accoring to functions
             docFieldsDisabled: true,
             envFieldsDisabled: true
         };
-        mockFields.mockReturnValue(params.fieldsDisabled);
-        mockDocFields.mockReturnValue(params.docFieldsDisabled);
-        mockAuthFields.mockReturnValue(params.authFieldsDisabled);
-        mockEnvFields.mockReturnValue(params.envFieldsDisabled);
 
         const { container } = render(
             <ReduxWrapper initialState={initialState}>
@@ -123,9 +144,12 @@ describe("ProjectSummaryForm components disable accurately accoring to functions
         );
 
         const enabledInputs = container.querySelectorAll(`input:not(:disabled)`);
-        const enabledInputIds = Array.from(enabledInputs).map((input) => input.id);
-        const filteredIds = filterOutAllowedEnabledIds(enabledInputIds);
+        const filteredInputs = filterInputsByIds(enabledInputs, allowedEnabledWhenDisabled);
+        const filteredIds = filteredInputs.map(getId);
         expect(filteredIds).toEqual([]);
+
+        const enabledAuthDocuments = container.querySelectorAll(".authorization-documents-enabled");
+        expect(enabledAuthDocuments.length).toBe(0);
     });
 
     test("shows all enabled", () => {
@@ -135,10 +159,6 @@ describe("ProjectSummaryForm components disable accurately accoring to functions
             docFieldsDisabled: false,
             envFieldsDisabled: false
         };
-        mockFields.mockReturnValue(params.fieldsDisabled);
-        mockDocFields.mockReturnValue(params.docFieldsDisabled);
-        mockAuthFields.mockReturnValue(params.authFieldsDisabled);
-        mockEnvFields.mockReturnValue(params.envFieldsDisabled);
 
         const { container } = render(
             <ReduxWrapper initialState={initialState}>
@@ -147,8 +167,102 @@ describe("ProjectSummaryForm components disable accurately accoring to functions
         );
 
         const disabledInputs = container.querySelectorAll(`input:disabled`);
-        const disabledInputIds = Array.from(disabledInputs).map((input) => input.id);
-        const filteredIds = filterOutAllowedDisabledIds(disabledInputIds);
+        const filteredInputs = filterInputsByIds(disabledInputs, allowedDisabledWhenEnabled);
+        const filteredIds = filteredInputs.map(getId);
         expect(filteredIds).toEqual([]);
+    });
+
+    test("can enable only document fields", async () => {
+        const params = {
+            fieldsDisabled: true,
+            authFieldsDisabled: true,
+            docFieldsDisabled: false,
+            envFieldsDisabled: true
+        };
+
+        const { container, findAllByText } = render(
+            <ReduxWrapper initialState={initialState}>
+                {renderedComponents(params)}
+            </ReduxWrapper>
+        );
+
+        const enabledInputs = container.querySelectorAll(`input:not(:disabled)`);
+        const filteredEnabledInputs = filterInputsByIds(enabledInputs, allowedEnabledWhenDisabled);
+        const filteredEnabledIds = filteredEnabledInputs.map(getId);
+
+        filteredEnabledIds.forEach((id) => {
+            expect(isDocField(id)).toBeTruthy();
+        });
+
+        const spatialUploadButtons = await findAllByText("Upload Spatial Data");
+        expect(spatialUploadButtons.length).toBeGreaterThan(0);
+        const disabledAuthDocuments = container.querySelectorAll(".authorization-documents-disabled");
+        expect(disabledAuthDocuments.length).toBe(0);
+    });
+
+    test("can disable only env fields", () => {
+        const params = {
+            fieldsDisabled: false,
+            authFieldsDisabled: false,
+            docFieldsDisabled: false,
+            envFieldsDisabled: true
+        };
+
+        const { container } = render(
+            <ReduxWrapper initialState={initialState}>
+                {renderedComponents(params)}
+            </ReduxWrapper>
+        );
+
+        // expect only ENV fields to be disabled
+        const disabledInputs = container.querySelectorAll(`input:disabled`);
+        const filteredDisabledInputs = filterInputsByIds(disabledInputs, allowedDisabledWhenEnabled);
+        const filteredDisabledIds = filteredDisabledInputs.map(getId);
+
+        const disabledNotEnv = filteredDisabledIds.filter((id) => !isEnvMatch(id));
+
+        expect(disabledNotEnv).toEqual([]);
+
+        // expect no ENV fields to be enabled, except documents
+        const enabledInputs = container.querySelectorAll(`input:not(:disabled)`);
+        const filteredEnabledInputs = filterInputsByIds(enabledInputs, allowedEnabledWhenDisabled);
+        const filteredEnabledIds = filteredEnabledInputs.map(getId);
+
+        const enabledEnv = filteredEnabledIds.filter(isEnvMatch);
+
+        expect(enabledEnv).toEqual([]);
+    });
+
+    test("can disable all auth fields", () => {
+        const params = {
+            fieldsDisabled: false,
+            authFieldsDisabled: true,
+            docFieldsDisabled: false,
+            envFieldsDisabled: true
+        };
+
+        const { container } = render(
+            <ReduxWrapper initialState={initialState}>
+                {renderedComponents(params)}
+            </ReduxWrapper>
+        );
+
+        // expect all the disabled fields to start with "authorization"
+        const disabledInputs = container.querySelectorAll(`input:disabled`);
+        const filteredDisabledInputs = filterInputsByIds(disabledInputs, allowedDisabledWhenEnabled);
+        const filteredDisabledIds = filteredDisabledInputs.map(getId);
+
+        const disabledNonAuthIds = filteredDisabledIds.filter((id) => !id.startsWith("authorization"));
+
+        expect(disabledNonAuthIds).toEqual([]);
+
+        // expect none of the enabled fields to start with "authorization"- except documents
+        const enabledInputs = container.querySelectorAll(`input:not(:disabled)`);
+        const filteredEnabledInputs = filterInputsByIds(enabledInputs, allowedEnabledWhenDisabled);
+        const filteredEnabledIds = filteredEnabledInputs.map(getId);
+
+        const enabledAuthIds = filteredEnabledIds.filter((id) => id.startsWith("authorization") && !isDocField(id));
+
+        expect(enabledAuthIds).toEqual([]);
     });
 });

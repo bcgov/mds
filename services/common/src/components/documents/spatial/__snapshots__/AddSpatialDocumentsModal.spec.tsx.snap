@@ -202,6 +202,7 @@ exports[`AddSpatialDocumentsModal renders properly 1`] = `
                   >
                     <input
                       accept="application/dbf,application/x-dbf,application/x-dbase,application/vnd.google-earth.kml+xml,application/vnd.google-earth.kmz,application/octet-stream,application/xml"
+                      id="fieldName"
                       multiple=""
                       name="file"
                       type="file"

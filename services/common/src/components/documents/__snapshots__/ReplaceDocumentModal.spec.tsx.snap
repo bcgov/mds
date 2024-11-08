@@ -121,6 +121,7 @@ exports[`ReplaceDocumentModal renders correctly and matches the snapshot 1`] = `
               >
                 <input
                   accept="application/pdf"
+                  id="fileUpload"
                   multiple=""
                   name="file"
                   type="file"

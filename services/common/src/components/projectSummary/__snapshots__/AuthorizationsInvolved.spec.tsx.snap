@@ -127,6 +127,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                                   checked=""
                                   class="ant-checkbox-input"
                                   data-cy="checkbox-authorization-MINES_ACT_PERMIT"
+                                  id="authorizations-MINES_ACT_PERMIT"
                                   type="checkbox"
                                   value="MINES_ACT_PERMIT"
                                 />
@@ -548,6 +549,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                                   checked=""
                                   class="ant-checkbox-input"
                                   data-cy="checkbox-authorization-AIR_EMISSIONS_DISCHARGE_PERMIT"
+                                  id="authorizations-AIR_EMISSIONS_DISCHARGE_PERMIT"
                                   type="checkbox"
                                   value="AIR_EMISSIONS_DISCHARGE_PERMIT"
                                 />
@@ -681,6 +683,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                                 <input
                                   class="ant-checkbox-input"
                                   data-cy="checkbox-authorization-EFFLUENT_DISCHARGE_PERMIT"
+                                  id="authorizations-EFFLUENT_DISCHARGE_PERMIT"
                                   type="checkbox"
                                   value="EFFLUENT_DISCHARGE_PERMIT"
                                 />
@@ -715,6 +718,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                                 <input
                                   class="ant-checkbox-input"
                                   data-cy="checkbox-authorization-REFUSE_DISCHARGE_PERMIT"
+                                  id="authorizations-REFUSE_DISCHARGE_PERMIT"
                                   type="checkbox"
                                   value="REFUSE_DISCHARGE_PERMIT"
                                 />
@@ -758,6 +762,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                                 <input
                                   class="ant-checkbox-input"
                                   data-cy="checkbox-authorization-CHANGE_APPROVAL"
+                                  id="authorizations-CHANGE_APPROVAL"
                                   type="checkbox"
                                   value="CHANGE_APPROVAL"
                                 />
@@ -792,6 +797,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                                 <input
                                   class="ant-checkbox-input"
                                   data-cy="checkbox-authorization-USE_APPROVAL"
+                                  id="authorizations-USE_APPROVAL"
                                   type="checkbox"
                                   value="USE_APPROVAL"
                                 />
@@ -827,6 +833,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                                   checked=""
                                   class="ant-checkbox-input"
                                   data-cy="checkbox-authorization-WATER_LICENCE"
+                                  id="authorizations-WATER_LICENCE"
                                   type="checkbox"
                                   value="WATER_LICENCE"
                                 />
@@ -1093,6 +1100,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                                   checked=""
                                   class="ant-checkbox-input"
                                   data-cy="checkbox-authorization-OCCUPANT_CUT_LICENCE"
+                                  id="authorizations-OCCUPANT_CUT_LICENCE"
                                   type="checkbox"
                                   value="OCCUPANT_CUT_LICENCE"
                                 />
@@ -1359,6 +1367,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                                   checked=""
                                   class="ant-checkbox-input"
                                   data-cy="checkbox-authorization-OTHER"
+                                  id="authorizations-OTHER"
                                   type="checkbox"
                                   value="OTHER"
                                 />
