@@ -46,8 +46,8 @@ TEST_PARAMETERS.forEach(
 
             enumValues.forEach((status) => {
                 it(`Enum value ${status} should be included in testing`, () => {
-                    expect(coreStatuses.includes(status));
-                    expect(msStatuses.includes(status));
+                    expect(coreStatuses.includes(status)).toBe(true);
+                    expect(msStatuses.includes(status)).toBe(true);
                 });
             });
 
