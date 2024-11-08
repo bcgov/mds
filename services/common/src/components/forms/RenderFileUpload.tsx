@@ -196,7 +196,7 @@ export const FileUpload: FC<FileUploadProps> = ({
         )
       ) {
         notification.error({
-          message: `Failed to upload ${file && file.name ? file.name : ""}: ${errorMessage ? errorMessage : err
+          message: `Failed to upload ${file?.name ?? ""}: ${errorMessage ?? err
             }`,
           duration: 10,
         });
@@ -252,7 +252,7 @@ export const FileUpload: FC<FileUploadProps> = ({
           }
 
           notification.error({
-            message: `Failed to upload ${file && file.name ? file.name : ""}: ${response.data.status
+            message: `Failed to upload ${file?.name ?? ""}: ${response.data.status
               }`,
             duration: 10,
           });
