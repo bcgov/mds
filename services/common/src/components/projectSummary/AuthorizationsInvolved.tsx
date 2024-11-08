@@ -654,7 +654,7 @@ export const AuthorizationsInvolved: FC<ProjectSummaryFormComponentProps> = ({ f
                               checked={checked}
                               onChange={(e) => handleChange(e, child.code)}
                             >
-                              <b className={!isEditMode && "view-item-label"}>{child.description}</b>
+                              <b className={!isEditMode ? "view-item-label" : ""}>{child.description}</b>
                             </Checkbox>
                             {checked && (
                               <>

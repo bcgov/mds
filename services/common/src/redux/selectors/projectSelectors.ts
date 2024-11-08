@@ -138,7 +138,7 @@ export const getFormattedProjectApplication = createSelector(
   }
 );
 
-export const formatProjectSummary = (summary, project, amsAuthTypes) => {
+const formatProjectSummary = (summary, project, amsAuthTypes) => {
   const documents = formatProjectSummaryDocuments(summary.documents);
   const contacts = formatProjectContact(project.contacts);
   const agent = formatProjectSummaryParty(summary.agent);
@@ -165,3 +165,7 @@ export const getFormattedProjectSummary = createSelector(
     return formatProjectSummary(summary, project, amsAuthTypes);
   }
 );
+
+export const exportForTesting = {
+  formatProjectSummary
+}

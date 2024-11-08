@@ -7,7 +7,7 @@ import { LegalLandOwnerInformation } from "./LegalLandOwnerInformation";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { AUTHENTICATION, PERMITS, PROJECTS, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
-import { formatProjectSummary } from "@mds/common/redux/selectors/projectSelectors";
+import { exportForTesting } from "@mds/common/redux/selectors/projectSelectors";
 import BasicInformation from "./BasicInformation";
 import ProjectLinks from "./ProjectLinks";
 import ProjectContacts from "./ProjectContacts";
@@ -20,6 +20,9 @@ import Declaration from "./Declaration";
 import DocumentUpload from "./DocumentUpload";
 import { FacilityOperator } from "./FacilityOperator";
 import { BrowserRouter } from "react-router-dom";
+
+const { formatProjectSummary } = exportForTesting;
+
 
 const amsAuthTypes = ['AIR_EMISSIONS_DISCHARGE_PERMIT', 'EFFLUENT_DISCHARGE_PERMIT', 'REFUSE_DISCHARGE_PERMIT'];
 const project = { project_lead_party_guid: "project_lead_party_guid" };

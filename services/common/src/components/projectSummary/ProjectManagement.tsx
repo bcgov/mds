@@ -29,7 +29,7 @@ const { Paragraph, Title } = Typography;
 
 const unassignedProjectLeadEntry = {
   label: "Unassigned",
-  value: null,
+  value: undefined,
 };
 
 export const ProjectManagement: FC = () => {

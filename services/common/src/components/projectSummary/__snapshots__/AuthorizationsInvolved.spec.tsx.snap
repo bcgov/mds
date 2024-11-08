@@ -136,7 +136,9 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                                 />
                               </span>
                               <span>
-                                <b>
+                                <b
+                                  class=""
+                                >
                                   Mines Act permit
                                 </b>
                               </span>
@@ -558,7 +560,9 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                                 />
                               </span>
                               <span>
-                                <b>
+                                <b
+                                  class=""
+                                >
                                   Air emissions discharge permit
                                 </b>
                               </span>
@@ -692,7 +696,9 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                                 />
                               </span>
                               <span>
-                                <b>
+                                <b
+                                  class=""
+                                >
                                   Effluent discharge permit
                                 </b>
                               </span>
@@ -727,7 +733,9 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                                 />
                               </span>
                               <span>
-                                <b>
+                                <b
+                                  class=""
+                                >
                                   Refuse discharge permit
                                 </b>
                               </span>
@@ -771,7 +779,9 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                                 />
                               </span>
                               <span>
-                                <b>
+                                <b
+                                  class=""
+                                >
                                   Change approval
                                 </b>
                               </span>
@@ -806,7 +816,9 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                                 />
                               </span>
                               <span>
-                                <b>
+                                <b
+                                  class=""
+                                >
                                   Use approval
                                 </b>
                               </span>
@@ -842,7 +854,9 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                                 />
                               </span>
                               <span>
-                                <b>
+                                <b
+                                  class=""
+                                >
                                   Water licence
                                 </b>
                               </span>
@@ -1109,7 +1123,9 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                                 />
                               </span>
                               <span>
-                                <b>
+                                <b
+                                  class=""
+                                >
                                   Occupant licence to cut
                                 </b>
                               </span>
@@ -1376,7 +1392,9 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                                 />
                               </span>
                               <span>
-                                <b>
+                                <b
+                                  class=""
+                                >
                                   Other legislation
                                 </b>
                               </span>
