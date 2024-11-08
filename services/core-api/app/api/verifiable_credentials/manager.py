@@ -469,7 +469,7 @@ class VerifiableCredentialManager():
         for pmt_appt in pmt_appts:
             #find the last permittee appointment relevant to the amendment issue date.
             if (pmt_appt.start_date
-                    or datetime(year=1900)) <= datetime(permit_amendment.issue_date):
+                    or datetime(year=1900, second=1)) <= datetime(permit_amendment.issue_date):
                 curr_appt = pmt_appt
             else:
                 break
