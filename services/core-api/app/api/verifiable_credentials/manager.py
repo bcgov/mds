@@ -273,7 +273,9 @@ def push_untp_map_data_to_publisher():
         pa = PermitAmendment.find_by_permit_amendment_guid(row[0], unsafe=True)
         pa_cred, new_id = VerifiableCredentialManager.produce_untp_cc_map_payload(
             Config.CHIEF_PERMITTING_OFFICER_DID_WEB, pa)
-
+        if not pa_cred:
+            task_logger.warning(f"pa_cred could not be created for permit_amendment_guid={row[0]}")
+            continue
         #only one assessment per credential
         publish_payload = {
             "type": "BCMinesActPermitCredential",
