@@ -3,11 +3,9 @@ from datetime import date, datetime
 
 from app.api.constants import *
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import (
-    PermitAmendmentDocument,
-)
+    PermitAmendmentDocument, )
 from app.api.mines.permits.permit_conditions.models.permit_conditions import (
-    PermitConditions,
-)
+    PermitConditions, )
 from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
 from app.api.verifiable_credentials.aries_constants import IssueCredentialIssuerState
 from app.extensions import db
@@ -305,7 +303,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
             if issue_date.isoformat() == '9999-12-31':
                 raise AssertionError(
                     'Permit amendment issue date should be set to null if not known.')
-            if self.permit_amendment_status_code != 'DFT' and issue_date > datetime.today():
+            if self.permit_amendment_status_code != 'DFT' and issue_date > date.today():
                 raise AssertionError('Permit amendment issue date cannot be set to the future.')
         return issue_date
 

@@ -1064,7 +1064,7 @@ class PermitAmendmentFactory(BaseFactory):
     permit_amendment_guid = GUID
     permit_id = factory.SelfAttribute('permit.permit_id')
     mine_guid = factory.SelfAttribute('mine.mine_guid')
-    received_date = TODAY_D
+    received_date = TODAY
     issue_date = TODAY_D
     authorization_end_date = factory.Faker('date_between', start_date='+31d', end_date='+89d')
     permit_amendment_status_code = 'ACT'
