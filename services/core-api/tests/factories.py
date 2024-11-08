@@ -722,7 +722,7 @@ class PartyBusinessRoleFactory(BaseFactory):
 
     party_business_role_code = factory.LazyFunction(RandomPartyBusinessRole)
     party = factory.SubFactory(PartyFactory, person=True)
-    start_date = datetime.utcnow().date()
+    start_date = datetime.utcnow()
     end_date = None
 
 
@@ -743,7 +743,7 @@ class MinePartyAppointmentFactory(BaseFactory):
                                       not in PERMIT_LINKED_CONTACT_TYPES else None)
 
     party = factory.SubFactory(PartyFactory, person=True, address=1)
-    start_date = factory.LazyFunction(datetime.utcnow().date)
+    start_date = factory.LazyFunction(datetime.utcnow)
     end_date = None
     status = None
     processed_by = factory.Faker('first_name')
