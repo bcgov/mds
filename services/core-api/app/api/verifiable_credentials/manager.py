@@ -463,7 +463,7 @@ class VerifiableCredentialManager():
         # "tsf_operating_count"
         # "tsf_care_and_maintenance_count"
 
-        pmt_appts: List[MinePartyAppointment] = permit_amendment.permittee_appointments[0]
+        pmt_appts: List[MinePartyAppointment] = permit_amendment.permittee_appointments
         curr_appt = pmt_appts[0]
 
         for pmt_appt in pmt_appts:
