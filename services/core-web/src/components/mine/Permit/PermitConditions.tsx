@@ -61,6 +61,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
     getPermitExtractionByGuid(latestAmendment?.permit_amendment_id)
   );
 
+  // @ts-ignore
   const isLoading = useSelector((state) => state.GET_PERMITS?.isFetching);
 
   const isExtractionInProgress =
