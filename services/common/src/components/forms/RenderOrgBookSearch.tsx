@@ -134,7 +134,7 @@ const RenderOrgBookSearch: FC<OrgBookSearchProps> = ({
           onSelect={handleSelect}
           style={{ width: "100%" }}
           disabled={disabled}
-          value={options.length === 1 ? { key: options[0].text } : null}
+          value={options.length === 1 ? { key: options[0].text } : undefined}
         >
           {options.map((option) => (
             <Select.Option key={option.value}>{option.text}</Select.Option>
