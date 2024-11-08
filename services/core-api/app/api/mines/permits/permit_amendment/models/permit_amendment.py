@@ -303,7 +303,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
             if issue_date.isoformat() == '9999-12-31':
                 raise AssertionError(
                     'Permit amendment issue date should be set to null if not known.')
-            if self.permit_amendment_status_code != 'DFT' and issue_date > datetime.today():
+            if self.permit_amendment_status_code != 'DFT' and issue_date > date.today():
                 raise AssertionError('Permit amendment issue date cannot be set to the future.')
         return issue_date
 
