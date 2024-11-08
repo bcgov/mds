@@ -71,6 +71,10 @@ class TestVerifiableCredentialManager:
     def test_produce_untp_cc_map_payload_happy(self, db_session):
         mine, permit = create_mine_and_permit()
         permittee_appt = MinePartyAppointmentFactory(permittee=True, permit_id=permit.permit_id)
+
+        print(permit._all_permit_amendments[0].issue_date)
+        print(permittee_appt.start_date)
+
         poe = PartyOrgBookEntityFactory(party_guid=permittee_appt.party_guid)
         permittee_appt.party.party_orgbook_entity = poe
 

@@ -2,7 +2,7 @@
 import json
 import requests
 
-from datetime import datetime
+from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
 from uuid import uuid4, UUID
 from sqlalchemy.exc import IntegrityError
@@ -465,12 +465,25 @@ class VerifiableCredentialManager():
 
         pmt_appts: List[MinePartyAppointment] = permit_amendment.permittee_appointments
         curr_appt = pmt_appts[0]
+        permit_amendment_start_date = permit_amendment.issue_date if type(
+            permit_amendment.issue_date) == date else permit_amendment.issue_date.date()
 
         for pmt_appt in pmt_appts:
+            pmt_app_start_date = None
+            if not pmt_appt.start_date:
+                pmt_appt_start_date = datetime(1900)
+            elif isinstance(pmt_appt.start_date, date):
+                pmt_appt_start_date = pmt_appt.start_date
+            elif isinstance(pmt_appt.start_date, datetime):
+                pmt_appt_start_date = pmt_appt.start_date.date()
+            else:
+                print(type(pmt_appt.start_date))
+                print("WHAT?")
+
             print(pmt_appt.start_date)
             print(permit_amendment.issue_date)
-            print(type(permit_amendment.issue_date))
             print(type(pmt_appt.start_date))
+            print(type(permit_amendment.issue_date))
             #find the last permittee appointment relevant to the amendment issue date.
             if ((pmt_appt.start_date or datetime(year=1900, second=1))
                     <= datetime(permit_amendment.issue_date)):

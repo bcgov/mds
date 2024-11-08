@@ -743,7 +743,7 @@ class MinePartyAppointmentFactory(BaseFactory):
                                       not in PERMIT_LINKED_CONTACT_TYPES else None)
 
     party = factory.SubFactory(PartyFactory, person=True, address=1)
-    start_date = factory.LazyFunction(datetime.utcnow)
+    start_date = factory.LazyFunction(datetime.now)
     end_date = None
     status = None
     processed_by = factory.Faker('first_name')
