@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta, date, time
 from pytz import timezone, utc
 from random import randrange
 import factory
@@ -69,7 +69,7 @@ from app.api.projects.project_decision_package.models.project_decision_package i
 from app.api.mines.alerts.models.mine_alert import MineAlert
 
 GUID = factory.LazyFunction(uuid.uuid4)
-TODAY = factory.LazyFunction(datetime.utcnow)
+TODAY = factory.LazyFunction(lambda: datetime.combine(date.today(), time=datetime.min.time()))
 
 FACTORY_LIST = []
 
