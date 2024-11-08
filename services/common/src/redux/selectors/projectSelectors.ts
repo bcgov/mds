@@ -162,7 +162,6 @@ export const formatProjectSummary = (summary, project, amsAuthTypes) => {
 export const getFormattedProjectSummary = createSelector(
   [getProjectSummary, getProject, getAmsAuthorizationTypes],
   (summary, project, amsAuthTypes) => {
-    console.log(amsAuthTypes);
     return formatProjectSummary(summary, project, amsAuthTypes);
   }
 );
