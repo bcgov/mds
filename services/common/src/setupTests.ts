@@ -3,7 +3,6 @@ import Adapter from "enzyme-adapter-react-16";
 import path from "path";
 import "@testing-library/jest-dom";
 import server from "@mds/common/tests/server";
-import { rejectHandler } from "./redux/createAppSlice";
 
 require("jest-localstorage-mock");
 
