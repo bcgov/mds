@@ -466,6 +466,9 @@ class VerifiableCredentialManager():
         pmt_appts: List[MinePartyAppointment] = permit_amendment.permittee_appointments
         curr_appt = pmt_appts[0]
 
+        print(pmt_appt.start_date)
+        print(permit_amendment.issue_date)
+
         for pmt_appt in pmt_appts:
             #find the last permittee appointment relevant to the amendment issue date.
             if ((pmt_appt.start_date or datetime(year=1900, second=1))
