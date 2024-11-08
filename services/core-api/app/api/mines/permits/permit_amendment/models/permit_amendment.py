@@ -1,5 +1,6 @@
 import uuid
 from datetime import date, datetime
+from typing import Union
 
 from app.api.constants import *
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import (
@@ -292,12 +293,15 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         return received_date
 
     @validates('issue_date')
-    def validate_issue_date(self, key, issue_date):
+    def validate_issue_date(self, key, issue_date: Union[date, datetime]):
         # TODO DO NOT REMOVE NEXT LINE. If this validation removed then exception will be thrown on permit creation/editing:
         # "permit_amendment" violates foreign key constraint "permit_amendment_mine_permit_xref_mine_guid_permit_no_fk"
         # DETAIL:  Key (mine_guid, permit_id)=(28966bf7-8e65-4cc4-b077-b248b6a136ef, 212) is not present in table "mine_permit_xref".
         original_permit_amendment = self.query.filter_by(permit_id=self.permit_id).filter_by(
             permit_amendment_type_code='OGP').first()
+
+        if isinstance(issue_date, datetime):
+            issue_date = issue_date.date()
 
         if issue_date:
             if issue_date.isoformat() == '9999-12-31':
