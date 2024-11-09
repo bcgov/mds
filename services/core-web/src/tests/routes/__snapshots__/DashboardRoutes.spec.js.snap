@@ -642,15 +642,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/dashboard/notice-of-work/app/:id/:tab"
   />
   <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(MajorProjectHomePage)",
-        "type": [Function],
-      }
-    }
+    component={[Function]}
     exact={true}
     key="/dashboard/reporting/major-project"
     path="/dashboard/reporting/major-project"

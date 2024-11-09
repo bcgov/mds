@@ -386,21 +386,19 @@ PROJECT_MODEL = api.model(
 
 PROJECT_MINE_LIST_MODEL = api.model(
     'ProjectMineList', {
-        'stage': fields.String,
-        'id': fields.Integer,
-        'guid': fields.String,
         'project_title': fields.String,
         'project_id': fields.String,
         'project_guid': fields.String,
-        'mrc_review_required': fields.Boolean,
-        'status_code': fields.String,
         'contacts': fields.List(fields.Nested(PROJECT_CONTACT_MODEL)),
         'project_lead_party_name': fields.String,
         'project_lead_name': fields.String,
         'update_timestamp': fields.DateTime,
         'mine': fields.Nested(MINES_MODEL),
+        'project_summary': fields.Nested(PROJECT_SUMMARY_MODEL),
+        'major_mine_application': fields.Nested(MAJOR_MINE_APPLICATION_MODEL),
+        'information_requirements': fields.Nested(IRT_MODEL),
+        'project_decision_package': fields.Nested(PROJECT_DECISION_PACKAGE_MODEL),
     })
-
 
 PAGINATED_LIST = api.model(
     'List', {

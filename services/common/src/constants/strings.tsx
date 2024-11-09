@@ -56,6 +56,7 @@ export const DEFAULT_PAGE = "1";
 export const DEFAULT_PER_PAGE = "10";
 export const MAX_PER_PAGE = 1000000000;
 export const DEFAULT_DASHBOARD_PARAMS = "?page=1&per_page=10";
+export const DEFAULT_MAJOR_PROJECTS_DASHBOARD_PARAMS = "&sort_field=update_timestamp&sort_dir=desc";
 
 // mine types
 export const MAJOR_MINE = "Major mine";
