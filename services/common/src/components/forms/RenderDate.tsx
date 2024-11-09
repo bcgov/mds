@@ -13,6 +13,7 @@ interface DateInputProps extends BaseInputProps {
   showTime?: boolean;
   yearMode?: boolean;
   disabledDate?: (currentDate) => boolean;
+  formatViewDate?: boolean;
 }
 
 const RenderDate: FC<DateInputProps> = ({
@@ -27,6 +28,7 @@ const RenderDate: FC<DateInputProps> = ({
   showTime = false,
   yearMode = false,
   disabledDate,
+  formatViewDate = false,
 }) => {
   return (
     <FormConsumer>
@@ -35,7 +37,7 @@ const RenderDate: FC<DateInputProps> = ({
           return (
             <BaseViewInput
               label={label}
-              value={input?.value ? formatDate(input.value) : ""}
+              value={formatViewDate ? formatDate(input?.value) : input?.value}
             />
           );
         }

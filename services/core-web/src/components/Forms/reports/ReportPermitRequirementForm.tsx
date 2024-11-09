@@ -103,6 +103,7 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
               placeholder="Select date"
               required
               validate={[required]}
+              formatViewDate
               component={RenderDate}
             />
           </Col>
