@@ -129,7 +129,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
                 type="default"
                 disabled={!!condition.mineReportPermitRequirement}
               >
-                Add Report
+                Add Report Requirement
               </Button>
               <Button
                 onClick={closeEdit}
