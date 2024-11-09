@@ -1,5 +1,4 @@
 import React from "react";
-import { shallow } from "enzyme";
 import MajorProjectSearch from "@/components/dashboard/majorProjectHomePage/MajorProjectSearch";
 import * as MOCK from "@/tests/mocks/dataMocks";
 import { render } from "@testing-library/react";
@@ -30,7 +29,5 @@ describe("Major Project Search Component", () => {
       </ReduxWrapper>
     );
     expect(container).toMatchSnapshot();
-    // const component = shallow(<MajorProjectSearch {...props} />);
-    // expect(component).toMatchSnapshot();
   });
 });
