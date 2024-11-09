@@ -240,7 +240,6 @@ export const fetchProjects = (params: IProjectPageData): AppThunk => (dispatch) 
   return CustomAxios({ errorToastMessage: Strings.ERROR })
     .get(ENVIRONMENT.apiUrl + API.MAJOR_PROJECT_DASHBOARD(defaultParams), createRequestHeader())
     .then((response) => {
-      console.log(response);
       dispatch(success(reducerTypes.GET_PROJECTS));
       dispatch(projectActions.storeProjectViewAllTable(response.data));
     })
