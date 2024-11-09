@@ -1,3 +1,5 @@
+from typing import List
+
 from flask.globals import current_app
 from sqlalchemy import and_
 from sqlalchemy.dialects.postgresql import UUID
@@ -32,8 +34,8 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
     status_changed_timestamp = db.Column(db.DateTime)
     project_id = db.Column(db.String)
 
-    #if true, this permit is locked from any vc'ed issued for it. 
-    mines_act_permit_vc_locked = db.Column(db.Boolean, default=False) 
+    #if true, this permit is locked from any vc'ed issued for it.
+    mines_act_permit_vc_locked = db.Column(db.Boolean, default=False)
 
     _all_permit_amendments = db.relationship(
         'PermitAmendment',
@@ -43,7 +45,12 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
         order_by='desc(PermitAmendment.issue_date), desc(PermitAmendment.permit_amendment_id)',
         lazy='select')
 
-    _all_mines = db.relationship('Mine', lazy='select', secondary='mine_permit_xref', back_populates='_permit_identities', overlaps='mine,mine_permit_xref,all_mine_permit_xref')
+    _all_mines = db.relationship(
+        'Mine',
+        lazy='select',
+        secondary='mine_permit_xref',
+        back_populates='_permit_identities',
+        overlaps='mine,mine_permit_xref,all_mine_permit_xref')
 
     permittee_appointments = db.relationship(
         'MinePartyAppointment',
@@ -66,8 +73,13 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
     is_exploration = db.Column(db.Boolean)
 
     bonds = db.relationship(
-        'Bond', lazy='select', secondary='bond_permit_xref', order_by='desc(Bond.issue_date)', back_populates='permit')
-    reclamation_invoices = db.relationship('ReclamationInvoice', lazy='select', back_populates='permit')
+        'Bond',
+        lazy='select',
+        secondary='bond_permit_xref',
+        order_by='desc(Bond.issue_date)',
+        back_populates='permit')
+    reclamation_invoices = db.relationship(
+        'ReclamationInvoice', lazy='select', back_populates='permit')
     exemption_fee_status_code = db.Column(
         db.String, db.ForeignKey('exemption_fee_status.exemption_fee_status_code'))
     exemption_fee_status_note = db.Column(db.String)
@@ -77,7 +89,8 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
         lazy='select',
         primaryjoin='and_(Permit.permit_guid == MineType.permit_guid, MineType.active_ind==True)')
 
-    _mine_associations = db.relationship('MinePermitXref', overlaps='_all_mines,all_mine_permit_xref,mine_permit_xref')
+    _mine_associations = db.relationship(
+        'MinePermitXref', overlaps='_all_mines,all_mine_permit_xref,mine_permit_xref')
 
     # Liability on permit after permit is closed
     remaining_static_liability = db.Column(db.Numeric(16, 2))
@@ -113,7 +126,7 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
             return ""
 
     @hybrid_property
-    def permit_amendments(self):
+    def permit_amendments(self) -> List[PermitAmendment]:
         if not self._context_mine:
             raise Exception('this getter is only available if _context_mine has been set')
         return [
@@ -199,7 +212,7 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
                 cls.permit_status_code == 'D')).order_by(cls.permit_id.desc()).first()
 
     @classmethod
-    def find_by_permit_no_all(cls, _permit_no):
+    def find_by_permit_no_all(cls, _permit_no) -> List["Permit"]:
         return cls.query.filter_by(
             permit_no=_permit_no, deleted_ind=False).filter(cls.permit_status_code != 'D').all()
 

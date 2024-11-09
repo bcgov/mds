@@ -28,9 +28,9 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
     permit_amendment_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
     permit_id = db.Column(db.Integer, db.ForeignKey('permit.permit_id'), nullable=False)
-    received_date: date = db.Column(db.Date, nullable=False) # db column is date
-    issue_date: date = db.Column(db.Date, nullable=False)    # db column is date
-    authorization_end_date = db.Column(db.DateTime, nullable=False)
+    received_date: date = db.Column(db.Date, nullable=False)          # db column is date
+    issue_date: date = db.Column(db.Date, nullable=False)             # db column is date
+    authorization_end_date: date = db.Column(db.Date, nullable=False) # db column is date
     permit_amendment_status_code = db.Column(
         db.String(3), db.ForeignKey('permit_amendment_status_code.permit_amendment_status_code'))
     permit_amendment_type_code = db.Column(
