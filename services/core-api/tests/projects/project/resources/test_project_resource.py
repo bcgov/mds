@@ -45,6 +45,6 @@ def test_get_filtered_projects(test_client, db_session, auth_headers):
     assert len(get_data['records']) == batch_size
     assert all(project.mine_guid == mine_guid for project in projects)
     for i in range(len(get_data['records']) - 1):
-        assert datetime.strptime(get_data['records'][i]['update_timestamp'], '%Y-%m-%d') >= datetime.strptime(
-            get_data['records'][i + 1]['update_timestamp'], '%Y-%m-%d')
+        assert datetime.strptime(get_data['records'][i]['update_timestamp'], '%Y-%m-%d-%H-%M') >= datetime.strptime(
+            get_data['records'][i + 1]['update_timestamp'], '%Y-%m-%d-%H-%M')
     
