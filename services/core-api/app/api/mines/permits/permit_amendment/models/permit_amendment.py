@@ -293,7 +293,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         return received_date
 
     @validates('issue_date')
-    def validate_issue_date(self, key, issue_date: Union[date, datetime]):
+    def validate_issue_date(self, key, issue_date: Union[date, datetime]) -> date:
         # TODO DO NOT REMOVE NEXT LINE. If this validation removed then exception will be thrown on permit creation/editing:
         # "permit_amendment" violates foreign key constraint "permit_amendment_mine_permit_xref_mine_guid_permit_no_fk"
         # DETAIL:  Key (mine_guid, permit_id)=(28966bf7-8e65-4cc4-b077-b248b6a136ef, 212) is not present in table "mine_permit_xref".

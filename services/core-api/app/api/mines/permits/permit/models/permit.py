@@ -1,5 +1,3 @@
-from typing import List
-
 from flask.globals import current_app
 from sqlalchemy import and_
 from sqlalchemy.dialects.postgresql import UUID
@@ -126,7 +124,7 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
             return ""
 
     @hybrid_property
-    def permit_amendments(self) -> List[PermitAmendment]:
+    def permit_amendments(self) -> list[PermitAmendment]:
         if not self._context_mine:
             raise Exception('this getter is only available if _context_mine has been set')
         return [
@@ -184,47 +182,47 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
         super(Permit, self).delete()
 
     @classmethod
-    def find_by_permit_guid(cls, _id, mine_guid=None):
+    def find_by_permit_guid(cls, _id, mine_guid=None) -> "Permit":
         pmt = cls.query.filter_by(permit_guid=_id, deleted_ind=False).first()
         if pmt and mine_guid:
             pmt._context_mine = [m for m in pmt._all_mines if str(m.mine_guid) == str(mine_guid)][0]
         return pmt
 
     @classmethod
-    def find_by_permit_id(cls, _id):
+    def find_by_permit_id(cls, _id) -> "Permit":
         return cls.query.filter_by(permit_id=_id, deleted_ind=False).first()
 
     @classmethod
-    def find_by_mine_guid(cls, _id):
+    def find_by_mine_guid(cls, _id) -> list["Permit"]:
         return cls.query.filter_by(
             mine_guid=_id, deleted_ind=False).filter(cls.permit_status_code != 'D').all()
 
     @classmethod
-    def find_by_permit_no(cls, _permit_no):
+    def find_by_permit_no(cls, _permit_no) -> "Permit":
         return cls.query.filter_by(
             permit_no=_permit_no, deleted_ind=False).filter(cls.permit_status_code != 'D').first()
 
     @classmethod
-    def find_by_permit_no_deleted_in_draft(cls, _permit_no):
+    def find_by_permit_no_deleted_in_draft(cls, _permit_no) -> "Permit":
         return cls.query.filter(
             and_(
                 cls.permit_no.like(_permit_no + '%'), cls.deleted_ind == True,
                 cls.permit_status_code == 'D')).order_by(cls.permit_id.desc()).first()
 
     @classmethod
-    def find_by_permit_no_all(cls, _permit_no) -> List["Permit"]:
+    def find_by_permit_no_all(cls, _permit_no) -> list["Permit"]:
         return cls.query.filter_by(
             permit_no=_permit_no, deleted_ind=False).filter(cls.permit_status_code != 'D').all()
 
     @classmethod
-    def find_by_permit_guid_or_no(cls, _permit_guid_or_no):
+    def find_by_permit_guid_or_no(cls, _permit_guid_or_no) -> "Permit":
         result = cls.find_by_permit_guid(_permit_guid_or_no)
         if not result:
             result = cls.find_by_permit_no(_permit_guid_or_no)
         return result
 
     @classmethod
-    def find_by_now_application_guid(cls, _now_application_guid):
+    def find_by_now_application_guid(cls, _now_application_guid) -> "Permit":
         permit_amendment = PermitAmendment.find_by_now_application_guid(_now_application_guid)
         if permit_amendment is not None:
             permit = Permit.find_by_permit_id(permit_amendment.permit_id)
@@ -232,7 +230,7 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
             return permit
         return None
 
-    def assign_permit_no(self, notice_of_work_type_code):
+    def assign_permit_no(self, notice_of_work_type_code) -> None:
         permit_prefix = notice_of_work_type_code if notice_of_work_type_code != 'S' else 'G'
         if permit_prefix in ['M', 'C'] and self.is_exploration:
             permit_prefix = permit_prefix + 'X'
