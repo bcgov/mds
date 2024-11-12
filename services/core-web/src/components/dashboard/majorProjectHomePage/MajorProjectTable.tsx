@@ -8,7 +8,7 @@ import {
   MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODES,
   PROJECT_DECISION_PACKAGE_STATUS_CODES
 } from "@mds/common/constants/enums";
-import { formatDate, dateSorter } from "@common/utils/helpers";
+import { formatDate, dateSorter } from "@mds/common/redux/utils/helpers";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import * as router from "@/constants/routes";
 import {
@@ -18,7 +18,7 @@ import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFla
 import { Feature } from "@mds/common";
 import { IProject } from "@mds/common/interfaces";
 
-interface MajorProjectsSearchFormProps {
+interface MajorProjectTableProps {
   projects: IProject[];
   mineCommodityOptionsHash: any;
   handleSearch: (params: any) => void;
@@ -92,7 +92,7 @@ const handleTableChange = (handleSearch, tableFilters) => (pagination, filters, 
   handleSearch(params);
 };
 
-export const MajorProjectTable: FC<MajorProjectsSearchFormProps> = ({
+export const MajorProjectTable: FC<MajorProjectTableProps> = ({
   projects,
   mineCommodityOptionsHash,
   handleSearch,
@@ -147,8 +147,7 @@ export const MajorProjectTable: FC<MajorProjectsSearchFormProps> = ({
       key: "project",
       dataIndex: "project",
       render: (text, record) => (
-        // @ts-ignore
-        <div title="" align="right" data-cy="major-projects-table-open-button">
+        <div title="" data-cy="major-projects-table-open-button">
           <Row gutter={1}>
             <Col span={12}>
               <Link to={router.EDIT_PROJECT.dynamicRoute(record.key)}>
@@ -169,8 +168,7 @@ export const MajorProjectTable: FC<MajorProjectsSearchFormProps> = ({
     {
       title: "",
       key: "project_section",
-      dataIndex: "project_section",
-      render: (text, record) => {
+      render: (record) => {
         return (
           // @ts-ignore
           <div title="" align="right">

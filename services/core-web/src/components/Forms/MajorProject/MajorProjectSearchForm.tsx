@@ -1,9 +1,7 @@
 import React, { FC } from "react";
 import { UpOutlined, DownOutlined } from "@ant-design/icons";
 import { Field, reduxForm } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row } from "antd";
+import { Button, Col, Row, Form } from "antd";
 
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
@@ -29,7 +27,7 @@ export const MajorProjectsSearchForm: FC<MajorProjectsSearchFormProps> = ({
   };
 
   return (
-    <Form layout="vertical" onSubmit={handleSubmit} onReset={handleSearchFormReset}>
+    <Form layout="vertical" onReset={handleSearchFormReset}>
       <Row gutter={6}>
         <Col md={24} xs={24}>
           <Field
@@ -72,7 +70,7 @@ export const MajorProjectsSearchForm: FC<MajorProjectsSearchFormProps> = ({
         <Button className="full-mobile" type="secondary" htmlType="reset">
           Clear Filters
         </Button>
-        <Button className="full-mobile" type="primary" htmlType="submit">
+        <Button className="full-mobile" type="primary" htmlType="submit" onClick={handleSubmit}>
           Apply Filters
         </Button>
       </div>

@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import { MajorProjectHomePage } from "@/components/dashboard/majorProjectHomePage/MajorProjectHomePage";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
 const dispatchProps = {};

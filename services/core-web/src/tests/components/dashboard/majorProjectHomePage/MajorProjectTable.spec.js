@@ -1,6 +1,6 @@
 import React from "react";
 import MajorProjectTable from "@/components/dashboard/majorProjectHomePage/MajorProjectTable";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { render } from "@testing-library/react";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { BrowserRouter } from "react-router-dom";

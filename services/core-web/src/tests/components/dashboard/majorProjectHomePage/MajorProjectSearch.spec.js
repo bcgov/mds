@@ -1,6 +1,6 @@
 import React from "react";
 import MajorProjectSearch from "@/components/dashboard/majorProjectHomePage/MajorProjectSearch";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { render } from "@testing-library/react";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 

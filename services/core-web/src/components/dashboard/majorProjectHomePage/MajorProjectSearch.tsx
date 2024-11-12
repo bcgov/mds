@@ -40,7 +40,6 @@ export const MajorProjectSearch: FC<MajorProjectSearchProps> = ({
         <Col md={{ span: 12, offset: 6 }} xs={{ span: 20, offset: 2 }}>
           <span className="advanced-search__container">
             <MajorProjectSearchForm
-              // @ts-ignore
               handleReset={handleReset}
               onSubmit={handleSearch}
               toggleAdvancedSearch={toggleIsAdvancedSearch}

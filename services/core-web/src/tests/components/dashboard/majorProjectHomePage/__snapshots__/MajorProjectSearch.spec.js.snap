@@ -13,7 +13,7 @@ exports[`Major Project Search Component renders properly 1`] = `
           class="advanced-search__container"
         >
           <form
-            class="ant-legacy-form ant-legacy-form-vertical"
+            class="ant-form ant-form-vertical"
           >
             <div
               class="ant-row"

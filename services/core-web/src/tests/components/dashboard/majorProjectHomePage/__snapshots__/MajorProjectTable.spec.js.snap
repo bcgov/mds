@@ -454,7 +454,6 @@ exports[`MajorProjectTable renders properly 1`] = `
                       class="ant-table-cell"
                     >
                       <div
-                        align="right"
                         data-cy="major-projects-table-open-button"
                         title=""
                       >
