@@ -578,8 +578,8 @@ class MineReportFactory(BaseFactory):
     mine_report_definition_id = factory.LazyFunction(
         RandomMineReportDefinition
     )                                                 # None if not factory.SelfAttribute('set_permit_condition_category_code') else factory.LazyFunction(RandomMineReportDefinition)
-    received_date = factory.Faker('date_time_between', start_date='-15d', end_date='+15d')
-    due_date = factory.Faker('future_datetime', end_date='+30d')
+    received_date = factory.Faker('date_between', start_date='-15d', end_date='+15d')
+    due_date = factory.Faker('future_date', end_date='+30d')
     submission_year = factory.fuzzy.FuzzyInteger(datetime.now().year - 2, datetime.now().year + 11)
     mine_report_submissions = []
     permit_condition_category_code = None
