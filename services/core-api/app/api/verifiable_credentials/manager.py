@@ -472,7 +472,7 @@ class VerifiableCredentialManager():
         for pmt_appt in pmt_appts:
             pmt_appt_start_date = None
             if not pmt_appt.start_date:
-                pmt_appt_start_date = datetime(1900)
+                pmt_appt_start_date = date(1900)
             elif isinstance(pmt_appt.start_date, date):
                 pmt_appt_start_date = pmt_appt.start_date
             elif isinstance(pmt_appt.start_date, datetime):

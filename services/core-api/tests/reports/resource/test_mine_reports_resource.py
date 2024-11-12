@@ -1,7 +1,6 @@
 import json
 import uuid
 from datetime import datetime, timedelta, date
-
 from flask import current_app
 
 from app.api.mines.mine.models.mine import Mine
@@ -67,8 +66,8 @@ def test_get_code_required_reports_for_mine(test_client, db_session, auth_header
     for report in get_data['records']:
         received_date = datetime.strptime(report['received_date'], '%Y-%m-%d')
 
-        assert (start_date <= received_date)
-        assert (received_date <= end_date)
+        assert (start_date <= received_date.date())
+        assert (received_date.date() <= end_date)
 
 
 def test_get_permit_required_reports_for_mine(test_client, db_session, auth_headers):
