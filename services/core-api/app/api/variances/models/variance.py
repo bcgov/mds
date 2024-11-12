@@ -44,7 +44,7 @@ class Variance(SoftDeleteMixin, AuditMixin, Base):
     note = db.Column(db.String, nullable=False, server_default=FetchedValue())
     parties_notified_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     issue_date: date = db.Column(db.Date)
-    received_date: date = db.Column(db.Date, nullable=False, default=date.today())
+    received_date: date = db.Column(db.Date, nullable=False, default=date.today)
     expiry_date = db.Column(db.DateTime)
 
     created_by = db.Column(db.String, default=User().get_user_username)
