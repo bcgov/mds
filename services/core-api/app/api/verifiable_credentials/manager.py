@@ -478,13 +478,10 @@ class VerifiableCredentialManager():
             elif isinstance(pmt_appt.start_date, datetime):
                 pmt_appt_start_date = pmt_appt.start_date.date()
             else:
-                print(type(pmt_appt.start_date))
-                print("WHAT?")
+                raise TypeError(
+                    f"mine_party_appointment.start_date is neither `date` or `datetime` object, it's {type(pmt_appt.start_date)}"
+                )
 
-            print(pmt_appt_start_date)
-            print(permit_amendment_issue_date)
-            print(type(pmt_appt_start_date))
-            print(type(permit_amendment_issue_date))
             #find the last permittee appointment relevant to the amendment issue date.
             if (pmt_appt_start_date <= permit_amendment_issue_date):
                 curr_appt = pmt_appt
