@@ -1,5 +1,5 @@
 import { Col, Row, Typography } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Field, getFormValues, change } from "redux-form";
 import {
@@ -12,7 +12,6 @@ import {
 } from "@mds/common/redux/utils/Validate";
 import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
 import { FORM } from "@mds/common/constants";
-import { isFieldDisabled } from "../projects/projectUtils";
 import { CONTACTS_COUNTRY_OPTIONS } from "@mds/common/constants/strings";
 import { IOrgbookCredential } from "@mds/common/interfaces/party";
 import RenderOrgBookSearch from "@mds/common/components/forms/RenderOrgBookSearch";
@@ -29,8 +28,8 @@ import RenderCheckbox from "@mds/common/components/forms/RenderCheckbox";
 import { normalizePhone } from "@mds/common/redux/utils/helpers";
 import { getOrgBookCredential } from "@mds/common/redux/selectors/orgbookSelectors";
 import { PaymentContact } from "@mds/common/components/projectSummary/PaymentContact";
-import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import { IProjectSummaryForm } from "@mds/common/interfaces";
+import { ProjectSummaryFormComponentProps } from "./ProjectSummaryForm";
 
 const { Title, Paragraph } = Typography;
 interface IVerifiedCredential {
@@ -39,7 +38,7 @@ interface IVerifiedCredential {
   registriesId: number;
 }
 
-const Applicant = () => {
+const Applicant: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => {
   const dispatch = useDispatch();
   const provinceOptions = useSelector(getDropdownProvinceOptions);
   const [credential, setCredential] = useState<IOrgbookCredential>(null);
@@ -50,7 +49,6 @@ const Applicant = () => {
 
   const orgBookCredential = useSelector(getOrgBookCredential);
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;
-  const systemFlag = useSelector(getSystemFlag);
   const {
     applicant = {},
     is_legal_address_same_as_mailing_address = false,
@@ -290,7 +288,7 @@ const Applicant = () => {
         ]}
         optionType="button"
         onChange={handleResetParty}
-        disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+        disabled={fieldsDisabled}
       />
       {party_type_code === "ORG" && (
         <div>
@@ -304,7 +302,7 @@ const Applicant = () => {
             data={orgBookOptions}
             help={"as registered with the BC Registrar of Companies"}
             component={RenderOrgBookSearch}
-            isDisabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+            disabled={fieldsDisabled}
           />
           {verifiedCredential && (
             <div className="table-summary-card">
@@ -330,7 +328,7 @@ const Applicant = () => {
                 label="Doing Business As"
                 component={RenderField}
                 validate={[maxLength(100)]}
-                disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+                disabled={fieldsDisabled}
               />
             </Col>
 
@@ -342,7 +340,7 @@ const Applicant = () => {
                 required
                 validate={[required, maxLength(25)]}
                 component={RenderField}
-                disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+                disabled={fieldsDisabled}
               />
             </Col>
           </Row>
@@ -357,7 +355,7 @@ const Applicant = () => {
               required
               validate={[required, maxLength(60)]}
               component={RenderField}
-              disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+              disabled={fieldsDisabled}
             />
           </Col>
           <Col md={8} sm={24}>
@@ -366,6 +364,7 @@ const Applicant = () => {
               validate={[maxLength(60)]}
               label="Middle Name"
               component={RenderField}
+              disabled={fieldsDisabled}
             />
           </Col>
           <Col md={8} sm={24}>
@@ -375,7 +374,7 @@ const Applicant = () => {
               required
               validate={[required, maxLength(60)]}
               component={RenderField}
-              disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+              disabled={fieldsDisabled}
             />
           </Col>
         </Row>
@@ -389,7 +388,7 @@ const Applicant = () => {
             component={RenderField}
             validate={[phoneNumber, maxLength(12), required]}
             normalize={normalizePhone}
-            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+            disabled={fieldsDisabled}
           />
         </Col>
         <Col md={4} sm={5}>
@@ -398,7 +397,7 @@ const Applicant = () => {
             label="Ext."
             component={RenderField}
             validate={[maxLength(4)]}
-            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+            disabled={fieldsDisabled}
           />
         </Col>
         <Col md={12} sm={24}>
@@ -408,7 +407,7 @@ const Applicant = () => {
             required
             validate={[required, email, maxLength(60)]}
             component={RenderField}
-            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+            disabled={fieldsDisabled}
           />
         </Col>
       </Row>
@@ -421,7 +420,7 @@ const Applicant = () => {
             required
             validate={[required, maxLength(100)]}
             component={RenderField}
-            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+            disabled={fieldsDisabled}
           />
         </Col>
         <Col md={5} sm={24}>
@@ -430,7 +429,7 @@ const Applicant = () => {
             name="applicant.address[0].suite_no"
             label="Unit #"
             component={RenderField}
-            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+            disabled={fieldsDisabled}
           />
         </Col>
       </Row>
@@ -443,12 +442,12 @@ const Applicant = () => {
             validate={[required]}
             data={CONTACTS_COUNTRY_OPTIONS}
             component={RenderSelect}
-            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+            disabled={fieldsDisabled}
           />
         </Col>
         <Col md={12} sm={24}>
           <Field
-            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+            disabled={fieldsDisabled}
             name="applicant.address[0].sub_division_code"
             label="Province"
             required={!isMailingInternational}
@@ -466,7 +465,7 @@ const Applicant = () => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <Field
-            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+            disabled={fieldsDisabled}
             name="applicant.address[0].city"
             label="City"
             required
@@ -476,7 +475,7 @@ const Applicant = () => {
         </Col>
         <Col md={12} sm={24}>
           <Field
-            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+            disabled={fieldsDisabled}
             name="applicant.address[0].post_code"
             label="Postal Code"
             component={RenderField}
@@ -500,7 +499,7 @@ const Applicant = () => {
         }}
         type="checkbox"
         disabled={
-          isFieldDisabled(systemFlag, formValues?.status_code) ||
+          fieldsDisabled ||
           !areAllAddressFieldsValid(isMailingInternational, applicantAddress.mailingAddress)
         }
         onChange={(e) =>
@@ -517,12 +516,12 @@ const Applicant = () => {
                 required
                 validate={[required]}
                 component={RenderField}
-                disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+                disabled={fieldsDisabled}
               />
             </Col>
             <Col md={5} sm={24}>
               <Field
-                disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+                disabled={fieldsDisabled}
                 name="applicant.address[1].suite_no"
                 label="Unit #"
                 component={RenderField}
@@ -533,7 +532,7 @@ const Applicant = () => {
           <Row gutter={16}>
             <Col md={12} sm={24}>
               <Field
-                disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+                disabled={fieldsDisabled}
                 name="applicant.address[1].address_type_code"
                 label="Country"
                 required
@@ -544,7 +543,7 @@ const Applicant = () => {
             </Col>
             <Col md={12} sm={24}>
               <Field
-                disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+                disabled={fieldsDisabled}
                 name="applicant.address[1].sub_division_code"
                 label="Province"
                 required={!isLegalInternational}
@@ -562,7 +561,7 @@ const Applicant = () => {
           <Row gutter={16}>
             <Col md={12} sm={24}>
               <Field
-                disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+                disabled={fieldsDisabled}
                 name="applicant.address[1].city"
                 label="City"
                 required
@@ -572,7 +571,7 @@ const Applicant = () => {
             </Col>
             <Col md={12} sm={24}>
               <Field
-                disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+                disabled={fieldsDisabled}
                 name="applicant.address[1].post_code"
                 label="Postal Code"
                 component={RenderField}
@@ -598,7 +597,7 @@ const Applicant = () => {
               label: "Same as mailing address",
             }}
             disabled={
-              isFieldDisabled(systemFlag, formValues?.status_code) ||
+              fieldsDisabled ||
               !areAllAddressFieldsValid(isMailingInternational, applicantAddress.mailingAddress) ||
               is_billing_address_same_as_legal_address
             }
@@ -621,7 +620,7 @@ const Applicant = () => {
               label: "Same as legal address",
             }}
             disabled={
-              isFieldDisabled(systemFlag, formValues?.status_code) ||
+              fieldsDisabled ||
               is_billing_address_same_as_mailing_address ||
               (!areAllAddressFieldsValid(isLegalInternational, applicantAddress.legalAddress) &&
                 !is_legal_address_same_as_mailing_address)
@@ -639,7 +638,7 @@ const Applicant = () => {
           <Row gutter={16}>
             <Col md={19} sm={24}>
               <Field
-                disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+                disabled={fieldsDisabled}
                 name="applicant.address[2].address_line_1"
                 label="Street"
                 required
@@ -649,7 +648,7 @@ const Applicant = () => {
             </Col>
             <Col md={5} sm={24}>
               <Field
-                disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+                disabled={fieldsDisabled}
                 name="applicant.address[2].suite_no"
                 label="Unit #"
                 component={RenderField}
@@ -659,7 +658,7 @@ const Applicant = () => {
           <Row gutter={16}>
             <Col md={12} sm={24}>
               <Field
-                disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+                disabled={fieldsDisabled}
                 name="applicant.address[2].address_type_code"
                 label="Country"
                 required
@@ -670,7 +669,7 @@ const Applicant = () => {
             </Col>
             <Col md={12} sm={24}>
               <Field
-                disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+                disabled={fieldsDisabled}
                 name="applicant.address[2].sub_division_code"
                 label="Province"
                 required={!isBusinessInternational}
@@ -688,7 +687,7 @@ const Applicant = () => {
           <Row gutter={16}>
             <Col md={12} sm={24}>
               <Field
-                disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+                disabled={fieldsDisabled}
                 name="applicant.address[2].city"
                 label="City"
                 required
@@ -698,7 +697,7 @@ const Applicant = () => {
             </Col>
             <Col md={12} sm={24}>
               <Field
-                disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+                disabled={fieldsDisabled}
                 name="applicant.address[2].post_code"
                 label="Postal Code"
                 component={RenderField}
@@ -714,7 +713,7 @@ const Applicant = () => {
           </Row>
         </>
       )}
-      <PaymentContact isDisabled={isFieldDisabled(systemFlag, formValues?.status_code)} />
+      <PaymentContact isDisabled={fieldsDisabled} />
     </div>
   );
 };

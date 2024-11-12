@@ -38,6 +38,7 @@ const RenderGroupCheckbox: FC<CheckboxProps> = ({
   if (!isEditMode) {
     return (
       <Form.Item
+        id={input.name}
         name={input.name}
         label={<div className="view-item-label">{label}</div>}
         getValueProps={() => ({ value: input.value })}

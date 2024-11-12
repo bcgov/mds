@@ -20,6 +20,7 @@ interface ProjectSummaryFileUploadProps {
   documents: IDocument[];
   label?: string | ReactNode;
   labelIdle?: string;
+  input?: any;
 }
 
 export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFileUploadProps> = (
@@ -204,8 +205,8 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
         {...(props.listedFileTypes ? { listedFileTypes: props.listedFileTypes } : {})}
         abbrevLabel={true}
         maxFileNameLength={MAX_DOCUMENT_NAME_LENGTHS.MAJOR_PROJECTS}
-        id="fileUpload"
-        name="fileUpload"
+        id={props.input?.name}
+        name={props.input?.name}
         component={RenderFileUpload}
         shouldReplaceFile={shouldReplaceFile}
         uploadUrl={uploadUrl}

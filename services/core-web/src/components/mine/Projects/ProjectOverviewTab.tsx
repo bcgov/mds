@@ -239,6 +239,7 @@ export const ProjectOverviewTab: FC = () => {
         {shouldDisplayLinkedProjects && (
           <ProjectLinks
             tableOnly
+            fieldsDisabled={true}
             viewProject={(p) =>
               routes.EDIT_PROJECT_SUMMARY.dynamicRoute(p.project_guid, p.project_summary_guid)
             }

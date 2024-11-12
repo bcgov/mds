@@ -13,7 +13,6 @@ import { FormConsumer, IFormContext } from "./FormWrapper";
 interface SelectProps extends BaseInputProps {
   data: IOption[];
   onSelect?: (value, option) => void;
-  usedOptions: string[];
   allowClear?: boolean;
 }
 
@@ -25,7 +24,7 @@ export const RenderSelect: FC<SelectProps> = ({
   input,
   placeholder = "Please select",
   data = [],
-  onSelect = () => {},
+  onSelect = () => { },
   allowClear = true,
   disabled = false,
   required = false,

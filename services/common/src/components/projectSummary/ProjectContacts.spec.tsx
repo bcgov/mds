@@ -20,8 +20,8 @@ describe("ProjectContacts Component", () => {
   it("should render the component with expected fields", () => {
     const { container } = render(
       <ReduxWrapper initialState={initialState}>
-        <FormWrapper name={FORM.ADD_EDIT_PROJECT_SUMMARY} initialValues={{}} onSubmit={() => {}}>
-          <ProjectContacts />
+        <FormWrapper name={FORM.ADD_EDIT_PROJECT_SUMMARY} initialValues={{}} onSubmit={() => { }}>
+          <ProjectContacts fieldsDisabled={false} />
         </FormWrapper>
       </ReduxWrapper>
     );

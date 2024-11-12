@@ -1,44 +1,64 @@
-import { SystemFlagEnum } from "@mds/common/constants/enums";
+import { PROJECT_STATUS_CODES, SystemFlagEnum } from "@mds/common/constants/enums";
+import { memoize } from "lodash";
 
-export const isFieldDisabled = (
-    systemFlag,
-    projectSummaryStatusCode = "",
-    isAuthorizationPage = false
-) => {
-    // Return false if status = "" => "Not Started"
-    if (!projectSummaryStatusCode) return false;
+export const areFieldsDisabled = memoize((systemFlag: SystemFlagEnum, projectSummaryStatusCode: string) => {
+    // Return false (enabled) if status = "" => "Not Started"
+    const isStatusInEnum = (<any>Object).values(PROJECT_STATUS_CODES).includes(projectSummaryStatusCode);
 
-    const disabledStatuses = new Set(["WDN", "COM"]);
-    const enabledStatusMapping = {
-        [SystemFlagEnum.ms]: new Set(["DFT", "CHR"]),
-        [SystemFlagEnum.core]: new Set(["DFT", "ASG", "UNR", "CHR", "OHD"]),
-    };
+    if (!isStatusInEnum) return false;
+    const projectSummaryStatus = projectSummaryStatusCode as PROJECT_STATUS_CODES;
 
-    if (disabledStatuses.has(projectSummaryStatusCode)) return true;
+    const disabledStatuses = [PROJECT_STATUS_CODES.WDN, PROJECT_STATUS_CODES.COM];
 
-    const enabledStatuses = enabledStatusMapping[systemFlag];
-    const isFieldEnabled = enabledStatuses?.has(projectSummaryStatusCode) ?? false;
+    const enabledStatuses = systemFlag === SystemFlagEnum.core
+        ? [PROJECT_STATUS_CODES.DFT, PROJECT_STATUS_CODES.ASG, PROJECT_STATUS_CODES.UNR, PROJECT_STATUS_CODES.CHR, PROJECT_STATUS_CODES.OHD, PROJECT_STATUS_CODES.SUB]
+        : [PROJECT_STATUS_CODES.DFT, PROJECT_STATUS_CODES.CHR];
 
-    if (!isFieldEnabled) return true;
+    if (disabledStatuses.includes(projectSummaryStatus)) return true;
+    return !enabledStatuses.includes(projectSummaryStatus);
 
-    return isAuthorizationPage ? projectSummaryStatusCode !== "DFT" : false;
-};
+},
+    (systemFlag: SystemFlagEnum, projectSummaryStatusCode: string) => `${systemFlag}_${projectSummaryStatusCode}`);
 
-export const isDocumentFieldDisabled = (systemFlag, projectSummaryStatusCode = "") => {
-    // Return false if status = "" => "Not Started"
-    if (!projectSummaryStatusCode) return false;
+export const areAuthFieldsDisabled = memoize((systemFlag: SystemFlagEnum, projectSummaryStatusCode: string) => {
+    const fieldsDisabled = areFieldsDisabled(systemFlag, projectSummaryStatusCode);
+    if (fieldsDisabled) return true;
 
-    const disabledStatuses = new Set(["WDN", "COM"]);
-    const enabledStatusMapping = {
-        [SystemFlagEnum.ms]: new Set(["DFT", "SUB", "ASG", "CHR"]),
-        [SystemFlagEnum.core]: new Set(["DFT", "SUB", "ASG", "UNR", "CHR", "OHD"]),
-    };
+    const extraDisabledStatuses = [PROJECT_STATUS_CODES.CHR, PROJECT_STATUS_CODES.UNR];
+    const authDisabled = extraDisabledStatuses.includes(projectSummaryStatusCode as PROJECT_STATUS_CODES)
+    return authDisabled;
+}, (systemFlag: SystemFlagEnum, projectSummaryStatusCode: string) => `${systemFlag}_${projectSummaryStatusCode}`);
 
-    if (disabledStatuses.has(projectSummaryStatusCode)) return true;
+export const areAuthEnvFieldsDisabled = memoize((systemFlag, projectSummaryStatusCode) => {
+    const authFieldsDisabled = areAuthFieldsDisabled(systemFlag, projectSummaryStatusCode);
+    if (authFieldsDisabled) return true;
 
-    const enabledStatuses = enabledStatusMapping[systemFlag];
-    return !enabledStatuses?.has(projectSummaryStatusCode);
-};
+    const extraDisabledStatuses = systemFlag === SystemFlagEnum.core
+        ? [PROJECT_STATUS_CODES.ASG, PROJECT_STATUS_CODES.OHD, PROJECT_STATUS_CODES.SUB]
+        : [PROJECT_STATUS_CODES.CHR];
+
+    const envDisabled = extraDisabledStatuses.includes(projectSummaryStatusCode as PROJECT_STATUS_CODES);
+
+    return envDisabled;
+}, (systemFlag: SystemFlagEnum, projectSummaryStatusCode: string) => `${systemFlag}_${projectSummaryStatusCode}`);
+
+export const areDocumentFieldsDisabled = memoize((systemFlag: SystemFlagEnum, projectSummaryStatusCode: string) => {
+    // Return false (enabled) if status = "" => "Not Started"
+    const isStatusInEnum = (<any>Object).values(PROJECT_STATUS_CODES).includes(projectSummaryStatusCode)
+    if (!isStatusInEnum) return false;
+
+    const projectSummaryStatus = projectSummaryStatusCode as PROJECT_STATUS_CODES;
+    const disabledStatuses = [PROJECT_STATUS_CODES.WDN, PROJECT_STATUS_CODES.COM];
+
+    const enabledStatuses = systemFlag === SystemFlagEnum.core
+        ? [PROJECT_STATUS_CODES.DFT, PROJECT_STATUS_CODES.SUB, PROJECT_STATUS_CODES.ASG, PROJECT_STATUS_CODES.UNR, PROJECT_STATUS_CODES.CHR, PROJECT_STATUS_CODES.OHD]
+        : [PROJECT_STATUS_CODES.DFT, PROJECT_STATUS_CODES.SUB, PROJECT_STATUS_CODES.ASG, PROJECT_STATUS_CODES.CHR];
+
+    if (disabledStatuses.includes(projectSummaryStatus)) return true;
+    return !enabledStatuses.includes(projectSummaryStatus);
+
+},
+    (systemFlag: SystemFlagEnum, projectSummaryStatusCode: string) => `${systemFlag}_${projectSummaryStatusCode}`);
 
 export const getProjectStatusDescription = (
     projectSummaryStatusCode,

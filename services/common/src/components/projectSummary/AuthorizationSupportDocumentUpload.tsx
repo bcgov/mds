@@ -91,7 +91,7 @@ export const AuthorizationSupportDocumentUpload: FC<AuthorizationSupportDocument
   const acceptedFileTypesMap = { ...DOCUMENT, ...EXCEL, ...IMAGE, ...SPATIAL };
 
   return (
-    <div>
+    <div className={isDisabled ? "authorization-documents-disabled" : "authorization-documents-enabled"}>
       {!isDisabled && (
         <Field
           id="LocationMapDocumentUpload"

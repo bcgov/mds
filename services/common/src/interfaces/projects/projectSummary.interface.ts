@@ -4,6 +4,7 @@ import {
   IProjectSummaryAuthorization,
   IParty,
   IMineDocument,
+  PROJECT_STATUS_CODES,
 } from "@mds/common/index";
 
 export interface ICredentialedParty extends IParty {
@@ -18,7 +19,7 @@ export interface IProjectSummary {
   project_summary_description: string;
   mine_guid: string;
   mine_name: string;
-  status_code: string;
+  status_code: PROJECT_STATUS_CODES;
   proponent_project_id?: string;
   expected_draft_irt_submission_date?: string;
   submission_date: string;

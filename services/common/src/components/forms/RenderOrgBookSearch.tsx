@@ -16,7 +16,6 @@ import { BaseInputProps, getFormItemLabel } from "./BaseInput";
 
 interface OrgBookSearchProps extends BaseInputProps {
   data?: any;
-  isDisabled?: boolean;
   setCredential: (credential: IOrgbookCredential) => void;
 }
 
@@ -29,7 +28,7 @@ const RenderOrgBookSearch: FC<OrgBookSearchProps> = ({
   input,
   meta,
   required,
-  isDisabled = false,
+  disabled = false,
   setCredential,
 }) => {
   const dispatch = useDispatch();
@@ -121,26 +120,28 @@ const RenderOrgBookSearch: FC<OrgBookSearchProps> = ({
       required={required}
       getValueProps={() => input?.value !== "" && { value: input?.value }}
     >
-      <Select
-        virtual={false}
-        showSearch
-        showArrow
-        labelInValue
-        placeholder="Start typing to search OrgBook..."
-        notFoundContent={isSearching ? <Spin size="small" indicator={<LoadingOutlined />} /> : null}
-        filterOption={false}
-        onSearch={handleSearchDebounced}
-        onChange={handleChange}
-        onSelect={handleSelect}
-        style={{ width: "100%" }}
-        disabled={isDisabled}
-        value={options.length === 1 ? { key: options[0].text } : null}
-      >
-        {options.map((option) => (
-          <Select.Option key={option.value}>{option.text}</Select.Option>
-        ))}
-      </Select>
-      {help && <div className={`form-item-help ${input?.name}-form-help`}>{help}</div>}
+      <>
+        <Select
+          virtual={false}
+          showSearch
+          showArrow
+          labelInValue
+          placeholder="Start typing to search OrgBook..."
+          notFoundContent={isSearching ? <Spin size="small" indicator={<LoadingOutlined />} /> : null}
+          filterOption={false}
+          onSearch={handleSearchDebounced}
+          onChange={handleChange}
+          onSelect={handleSelect}
+          style={{ width: "100%" }}
+          disabled={disabled}
+          value={options.length === 1 ? { key: options[0].text } : undefined}
+        >
+          {options.map((option) => (
+            <Select.Option key={option.value}>{option.text}</Select.Option>
+          ))}
+        </Select>
+        {help && <div className={`form-item-help ${input?.name}-form-help`}>{help}</div>}
+      </>
     </Form.Item>
   );
 };

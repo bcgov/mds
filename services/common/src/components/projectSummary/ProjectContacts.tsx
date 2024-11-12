@@ -16,13 +16,12 @@ import {
 import { normalizePhone } from "@mds/common/redux/utils/helpers";
 import LinkButton from "@mds/common/components/common/LinkButton";
 import { FORM, CONTACTS_COUNTRY_OPTIONS } from "@mds/common/constants";
-import { isFieldDisabled } from "../projects/projectUtils";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
-import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import { FormContext } from "../forms/FormWrapper";
 import { IProjectSummaryForm } from "@mds/common/interfaces";
+import { ProjectSummaryFormComponentProps } from "./ProjectSummaryForm";
 
 const RenderContacts = ({ fields, isDisabled }) => {
   const dispatch = useDispatch();
@@ -68,7 +67,7 @@ const RenderContacts = ({ fields, isDisabled }) => {
                       Additional project contact #{index}
                     </Typography.Title>
                   </Col>
-                  {isEditMode && <Col>
+                  {isEditMode && !isDisabled && <Col>
                     <Popconfirm
                       placement="topLeft"
                       title="Are you sure you want to remove this contact?"
@@ -257,8 +256,7 @@ const RenderContacts = ({ fields, isDisabled }) => {
           </div>
         );
       })}
-      {isEditMode && <LinkButton
-        disabled={isDisabled}
+      {isEditMode && !isDisabled && <LinkButton
         onClick={() => fields.push({ is_primary: false })}
         title="Add additional project contacts"
       >
@@ -268,11 +266,10 @@ const RenderContacts = ({ fields, isDisabled }) => {
   );
 };
 
-export const ProjectContacts: FC = () => {
+export const ProjectContacts: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => {
   const dispatch = useDispatch();
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;
   const { contacts } = formValues;
-  const systemFlag = useSelector(getSystemFlag);
 
   useEffect(() => {
     if (isNil(contacts) || contacts.length === 0) {
@@ -285,7 +282,7 @@ export const ProjectContacts: FC = () => {
       <Typography.Title level={3}>Project Contacts</Typography.Title>
       <FieldArray
         name="contacts"
-        props={{ isDisabled: isFieldDisabled(systemFlag, formValues?.status_code) }}
+        props={{ isDisabled: fieldsDisabled }}
         component={RenderContacts}
       />
     </>
