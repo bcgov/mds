@@ -1281,7 +1281,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             doc.mine_document.delete(False)
         return super(ProjectSummary, self).delete(commit)
 
-    def send_project_summary_document_email(self, mine):
+    def send_project_summary_document_email(self, mine) -> None:
         if is_feature_enabled(Feature.MINE_APPLICATION_FILE_UDPATE_ALERTS):
             message = f'File(s) in project {self.project.project_title} has been updated for mine {mine.mine_name}'
             project_lead_email = self.project_lead_email
