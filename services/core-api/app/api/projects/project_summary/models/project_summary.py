@@ -168,8 +168,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         return None
     
     @hybrid_property
-    def project_lead_email(self):
-        project_lead: Party = Party.find_by_party_guid(self.project_summary_lead_party_guid)
+    def project_lead_email(self) -> str | None:
+        project_lead = Party.find_by_party_guid(self.project_summary_lead_party_guid)
         return project_lead.email if project_lead else None
 
     @hybrid_property
