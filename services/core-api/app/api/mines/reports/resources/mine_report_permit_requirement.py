@@ -1,9 +1,11 @@
 from datetime import datetime
 
+from flask import current_app
 from werkzeug.exceptions import NotFound, BadRequest
 
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.permits.permit.models.permit import Permit
+from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.mines.permits.permit_conditions.models import PermitConditions
 from app.api.mines.response_models import MINE_REPORT_PERMIT_REQUIREMENT
 from app.api.utils.access_decorators import requires_any_of, EDIT_REPORT
@@ -24,26 +26,27 @@ class MineReportPermitRequirementResource(Resource, UserMixin):
     parser.add_argument('cim_or_cpo', type=str, location='json')
     parser.add_argument('ministry_recipient', type=list, location='json')
     parser.add_argument('permit_condition_id', type=int, location='json')
-    parser.add_argument('permit_id', type=int, location='json')
+    parser.add_argument('permit_amendment_id', type=int, location='json')
 
     @api.doc(description='creates a new mine report permit requirement')
     @api.marshal_with(MINE_REPORT_PERMIT_REQUIREMENT, code=201)
     @requires_any_of([EDIT_REPORT])
     def post(self, mine_guid):
+        current_app.logger.debug('CREATING REQUIREMENT')
         data = self.parser.parse_args()
 
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:
             raise NotFound('Mine not found')
 
-        permit_id = data.get('permit_id')
-        permit = Permit.find_by_permit_id(permit_id)
-        if permit is None:
+        permit_amendment_id = data.get('permit_amendment_id')
+        permit_amendment = PermitAmendment.find_by_permit_amendment_id(permit_amendment_id)
+        if permit_amendment is None:
             raise NotFound('Permit not found')
 
-        if permit:
-            permit._context_mine = mine
-            if permit.mine.mine_guid != mine.mine_guid:
+        if permit_amendment:
+            permit_amendment._context_mine = mine
+            if permit_amendment.mine_guid != mine.mine_guid:
                 raise BadRequest('The permit must be associated with the selected mine.')
 
         permit_condition_id = data.get('permit_condition_id')
@@ -63,8 +66,8 @@ class MineReportPermitRequirementResource(Resource, UserMixin):
             cim_or_cpo=cim_or_cpo,
             ministry_recipient=data.get('ministry_recipient'),
             permit_condition_id=permit_condition_id,
-            permit_id=permit_id,
+            permit_amendment_id=permit_amendment_id,
         )
 
-        return mine_report_permit_requirement
+        return mine_report_permit_requirement, 201
 

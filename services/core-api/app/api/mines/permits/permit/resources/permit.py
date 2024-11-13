@@ -116,7 +116,8 @@ class PermitListResource(Resource, UserMixin):
             results = Mine.find_by_mine_guid(mine_guid).mine_permit
 
             for permit in results:
-                permit.mine_report_permit_requirements = MineReportPermitRequirement.query.filter_by(permit_id=permit.permit_id).all()
+                for permit_amendment in permit.permit_amendments:
+                    permit_amendment.mine_report_permit_requirements = MineReportPermitRequirement.query.filter_by(permit_amendment_id=permit_amendment.permit_amendment_id).all()
         return results
 
     @api.doc(params={'permit_guid': 'Permit guid.'})

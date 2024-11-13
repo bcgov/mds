@@ -16,12 +16,12 @@ interface RenderRadioButtonsProps {
   meta: any;
   disabled: boolean;
   input: any;
-  vertical?: boolean;
+  isVertical?: boolean;
   customOptions: { label: string; value: any }[];
 }
 
 const RenderRadioButtons: FC<RenderRadioButtonsProps> = (props) => {
-  const { meta, label, disabled, input, id, customOptions, vertical } = props;
+  const { meta, label, disabled, input, id, customOptions, isVertical } = props;
 
   const options = customOptions ?? [
     { label: "Yes", value: true },
@@ -48,7 +48,7 @@ const RenderRadioButtons: FC<RenderRadioButtonsProps> = (props) => {
         onChange={handleRadioChange}
         id={id as string}
       >
-        <Space direction={vertical ? "vertical" : "horizontal"}>
+        <Space direction={isVertical ? "vertical" : "horizontal"}>
           {options.map((option) => {
             return (
               <Radio key={option.value} value={option.value}>

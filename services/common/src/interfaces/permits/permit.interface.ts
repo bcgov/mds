@@ -1,7 +1,7 @@
 import { IPermitBond } from "@mds/common/interfaces/permits/permitBond.interface";
 import { IMineType } from "@mds/common/interfaces/mineType.interface";
 import { IPermitAmendment } from "@mds/common/interfaces/permits/permitAmendment.interface";
-import { IMineReportPermitRequirement, VC_CONNECTION_STATES } from "../..";
+import { VC_CONNECTION_STATES } from "../..";
 
 export interface IPermit {
   permit_id: string;
@@ -27,5 +27,4 @@ export interface IPermit {
   status_changed_timestamp?: string;
   update_user: string;
   update_timestamp: string;
-  mine_report_permit_requirements?: IMineReportPermitRequirement[];
 }

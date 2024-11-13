@@ -101,14 +101,14 @@ const PermitConditions: FC<PermitConditionProps> = ({
       };
 
       // Initialize the step paths for all top-level conditions
-      const updatedConditions = conditions.map((condition) => getStepPath(condition));
+      const formattedConditions = conditions.map((condition) => getStepPath(condition));
 
       const title = cat.description.replace("Conditions", "").trim();
-      return updatedConditions.length > 0
+      return formattedConditions.length > 0
         ? {
             href: cat.condition_category_code.toLowerCase(),
             title,
-            conditions: updatedConditions,
+            conditions: formattedConditions,
             condition_category_code: cat.condition_category_code,
           }
         : false;

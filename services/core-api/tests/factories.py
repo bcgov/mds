@@ -11,6 +11,7 @@ from app.api.mines.documents.models.mine_document_bundle import MineDocumentBund
 from app.api.mines.explosives_permit_amendment.models.explosives_permit_amendment import ExplosivesPermitAmendment
 from app.api.mines.reports.models.mine_report_definition_compliance_article_xref import \
     MineReportDefinitionComplianceArticleXref
+from app.api.mines.reports.models.mine_report_permit_requirement import MineReportPermitRequirement, OfficeDestination
 from app.api.projects.project_link.models.project_link import ProjectLink
 from app.api.projects.project_summary.models.project_summary_ministry_comment import ProjectSummaryMinistryComment
 from app.extensions import db
@@ -77,7 +78,7 @@ FACTORY_LIST = []
 def create_mine_and_permit(mine_kwargs={},
                            permit_kwargs={},
                            num_permits=1,
-                           num_permit_amendments=1):
+                           num_permit_amendments=1) -> tuple[Mine, Permit]:
     mine = MineFactory(mine_permit_amendments=0, **mine_kwargs)
     for x in range(num_permits):
         permit = PermitFactory(_context_mine=mine, **permit_kwargs)
@@ -584,6 +585,7 @@ class MineReportFactory(BaseFactory):
     mine_report_submissions = []
     permit_condition_category_code = None
     submitter_name = factory.Faker('name')
+    mine_report_permit_requirement_id = None
 
     @factory.post_generation
     def mine_report_submissions(obj, create, extracted, **kwargs):
@@ -1634,3 +1636,18 @@ class MineReportDefinitionComplianceArticleXrefFactory(BaseFactory):
 
     mine_report_definition_id = factory.LazyFunction(RandomMineReportDefinition)
     compliance_article_id = factory.LazyFunction(RandomComplianceArticleId)
+
+
+class MineReportPermitRequirementFactory(BaseFactory):
+    class Meta:
+        model = MineReportPermitRequirement
+
+    due_date_period_months = factory.LazyFunction(lambda: randint(1, 12))
+    initial_due_date = factory.LazyFunction(lambda: date.today())
+    active_ind = factory.LazyFunction(lambda: choice([True, False]))
+    cim_or_cpo = factory.LazyFunction(lambda: choice(list(CimOrCpo)))
+    ministry_recipient = factory.LazyFunction(
+        lambda: [choice(list(OfficeDestination))]
+    )
+    permit_condition_id = factory.SubFactory(PermitConditionsFactory)
+    permit_id = factory.SubFactory(PermitFactory)

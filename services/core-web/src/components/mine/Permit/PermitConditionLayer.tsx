@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { IPermitCondition } from "@mds/common/interfaces/permits/permitCondition.interface";
-import { Button, Row } from "antd";
+import { Button, Col, Row } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowDown,
@@ -99,76 +99,92 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
           {condition.step} {condition.condition}
         </p>
         {sectionEdit && (
-          <Row justify="space-between">
-            <Row gutter={8} className="condition-edit-buttons" align="middle">
-              <Button
-                onClick={(event) => {
-                  event.stopPropagation();
-                  console.log("Not yet implemented");
-                }}
-                type="default"
-                icon={<FontAwesomeIcon icon={faPlus} className="margin-medium--right" />}
-              >
-                List Item
-              </Button>
-              <Button
-                onClick={(event) => {
-                  event.stopPropagation();
-                  console.log("Not yet implemented");
-                }}
-                icon={<FontAwesomeIcon icon={faLink} className="margin-medium--right" />}
-                type="default"
-              >
-                Link Document
-              </Button>
-              <Button
-                onClick={(event) => {
-                  handleOpenAddReportModal(event, condition);
-                }}
-                icon={<FontAwesomeIcon icon={faClipboard} className="margin-medium--right" />}
-                type="default"
-                disabled={!!condition.mineReportPermitRequirement}
-              >
-                Add Report Requirement
-              </Button>
-              <Button
-                onClick={closeEdit}
-                type="primary"
-                icon={<FontAwesomeIcon icon={faXmark} />}
-              />
-              <Button
-                onClick={(event) => {
-                  event.stopPropagation();
-                  console.log("Not yet implemented");
-                }}
-                type="primary"
-                icon={<FontAwesomeIcon icon={faCheck} />}
-              />
-            </Row>
-            <Row gutter={8} className="" align="middle">
-              <Button
-                onClick={(event) => {
-                  event.stopPropagation();
-                }}
-                type="default"
-                icon={<FontAwesomeIcon icon={faTrashCan} />}
-              />
-              <Button
-                onClick={(event) => {
-                  event.stopPropagation();
-                }}
-                type="default"
-                icon={<FontAwesomeIcon icon={faArrowUp} />}
-              />
-              <Button
-                onClick={(event) => {
-                  event.stopPropagation();
-                  console.log("Not yet implemented");
-                }}
-                type="default"
-                icon={<FontAwesomeIcon icon={faArrowDown} />}
-              />
-            </Row>
+          <Row justify="space-between" align="middle">
+            <Col>
+              <Row gutter={8} className="condition-edit-buttons" align="middle">
+                <Col>
+                  <Button
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      console.log("Not yet implemented");
+                    }}
+                    type="default"
+                    icon={<FontAwesomeIcon icon={faPlus} className="margin-medium--right" />}
+                  >
+                    List Item
+                  </Button>
+                </Col>
+                <Col>
+                  <Button
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      console.log("Not yet implemented");
+                    }}
+                    icon={<FontAwesomeIcon icon={faLink} className="margin-medium--right" />}
+                    type="default"
+                  >
+                    Link Document
+                  </Button>
+                </Col>
+                <Col>
+                  <Button
+                    onClick={(event) => {
+                      handleOpenAddReportModal(event, condition);
+                    }}
+                    icon={<FontAwesomeIcon icon={faClipboard} className="margin-medium--right" />}
+                    type="default"
+                    disabled={!!condition.mineReportPermitRequirement}
+                  >
+                    Add Report Requirement
+                  </Button>
+                </Col>
+                <Col>
+                  <Button
+                    className="margin-none"
+                    onClick={closeEdit}
+                    type="primary"
+                    icon={<FontAwesomeIcon icon={faXmark} />}
+                  />
+                </Col>
+                <Col>
+                  <Button
+                    className="margin-none"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      console.log("Not yet implemented");
+                    }}
+                    type="primary"
+                    icon={<FontAwesomeIcon icon={faCheck} />}
+                  />
+                </Col>
+              </Row>
+            </Col>
+            <Col>
+              <Row gutter={8} className="" align="middle">
+                <Button
+                  onClick={(event) => {
+                    event.stopPropagation();
+                  }}
+                  type="default"
+                  icon={<FontAwesomeIcon icon={faTrashCan} />}
+                />
+                <Button
+                  onClick={(event) => {
+                    event.stopPropagation();
+                  }}
+                  type="default"
+                  icon={<FontAwesomeIcon icon={faArrowUp} />}
+                />
+                <Button
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    console.log("Not yet implemented");
+                  }}
+                  type="default"
+                  icon={<FontAwesomeIcon icon={faArrowDown} />}
+                />
+              </Row>
+            </Col>
           </Row>
         )}
         {condition?.sub_conditions?.map((subCondition) => {

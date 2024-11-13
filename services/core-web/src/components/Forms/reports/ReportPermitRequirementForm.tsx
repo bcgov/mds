@@ -13,18 +13,17 @@ import {
   REPORT_REGULATORY_AUTHORITY_CODES_HASH,
   REPORT_TYPE_CODES,
 } from "@mds/common";
-import { required } from "@mds/common/redux/utils/Validate";
+import { required, requiredRadioButton } from "@mds/common/redux/utils/Validate";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import RenderDate from "@mds/common/components/forms/RenderDate";
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 import RenderField from "@mds/common/components/forms/RenderField";
-import RenderRadioButtons from "@/components/common/RenderRadioButtons";
-import { requiredRadioButton } from "@common/utils/Validate";
 import RenderGroupCheckbox, {
   normalizeGroupCheckBox,
 } from "@mds/common/components/forms/RenderGroupCheckbox";
-import { getPermitByGuid } from "@mds/common/redux/selectors/permitSelectors";
+import { getLatestAmendmentByPermitGuid } from "@mds/common/redux/selectors/permitSelectors";
+import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
 
 interface ReportPermitRequirementProps {
   onSubmit: (values: Partial<IMineReport>) => void | Promise<void>;
@@ -42,7 +41,7 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
   mineReportPermitRequirement,
 }) => {
   const [isEditMode, setIsEditMode] = React.useState(modalView);
-  const permit = useSelector(getPermitByGuid(permitGuid));
+  const latestPermitAmendment = useSelector(getLatestAmendmentByPermitGuid(permitGuid));
 
   return (
     <div style={{ minHeight: modalView ? "380px" : "" }}>
@@ -57,7 +56,7 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
             ? {
                 ...mineReportPermitRequirement,
                 stepPath: condition.stepPath,
-                permit_id: permit.permit_id,
+                permit_amendment_id: latestPermitAmendment.permit_amendment_id,
               }
             : {
                 mine_report_status_code: MINE_REPORT_SUBMISSION_CODES.NON,
@@ -66,7 +65,7 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
                 permit_condition_type_code: REPORT_TYPE_CODES.PRR,
                 permit_condition_id: condition.permit_condition_id,
                 permit_guid: permitGuid,
-                permit_id: permit.permit_id,
+                permit_amendment_id: latestPermitAmendment.permit_amendment_id,
               }
         }
       >
@@ -130,7 +129,7 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
                     label: REPORT_REGULATORY_AUTHORITY_CODES_HASH[key],
                   };
                 })}
-                vertical
+                isVertical
                 validate={[requiredRadioButton]}
                 component={RenderRadioButtons}
               />

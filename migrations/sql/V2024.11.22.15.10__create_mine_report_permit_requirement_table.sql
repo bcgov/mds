@@ -10,7 +10,7 @@ CREATE TABLE mine_report_permit_requirement
     mine_report_permit_requirement_id SERIAL PRIMARY KEY,
     update_user                       VARCHAR(255)                           NOT NULL,
     update_timestamp                  timestamp with time zone DEFAULT now() NOT NULL,
-    initial_due_date                  timestamp with time zone,
+    initial_due_date                  DATE,
     due_date_period_months            INTEGER                                NOT NULL,
     create_user                       VARCHAR(255)                           NOT NULL,
     create_timestamp                  timestamp with time zone DEFAULT now() NOT NULL,
@@ -19,10 +19,10 @@ CREATE TABLE mine_report_permit_requirement
     cim_or_cpo                        cim_or_cpo_type,
     ministry_recipient                ministry_recipient_type[],
     permit_condition_id               INTEGER                                NOT NULL,
-    permit_id                         INTEGER                                NOT NULL,
-    CONSTRAINT fk_permit
-        FOREIGN KEY (permit_id)
-            REFERENCES permit (permit_id),
+    permit_amendment_id               INTEGER                                NOT NULL,
+    CONSTRAINT fk_permit_amendment
+        FOREIGN KEY (permit_amendment_id)
+            REFERENCES permit_amendment (permit_amendment_id),
     CONSTRAINT fk_permit_condition
         FOREIGN KEY (permit_condition_id)
             REFERENCES permit_conditions (permit_condition_id)
