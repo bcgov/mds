@@ -2,7 +2,7 @@
 import json
 import requests
 
-from datetime import date, datetime
+from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
 from uuid import uuid4, UUID
 from sqlalchemy.exc import IntegrityError
@@ -24,6 +24,7 @@ from app.api.utils.feature_flag import Feature, is_feature_enabled
 
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
+from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.verifiable_credentials.models.credentials import PartyVerifiableCredentialMinesActPermit
 from app.api.verifiable_credentials.models.connection import PartyVerifiableCredentialConnection
 from app.api.verifiable_credentials.models.orgbook_publish_status import PermitAmendmentOrgBookPublish
@@ -53,6 +54,7 @@ permit_amendments_for_orgbook_query = """
     and mpa.mine_party_appt_type_code = 'PMT'
     and mpa.deleted_ind = false
     and m.major_mine_ind = true
+    and pa.deleted_ind = false
     
     group by pa.permit_amendment_guid, pa.description, pa.issue_date, pa.permit_amendment_status_code, mpa.deleted_ind, pmt.permit_no, mpa.permit_id, poe.party_guid, p.party_name, poe.name_text, poe.registration_id
     order by pmt.permit_no, pa.issue_date;
@@ -81,8 +83,8 @@ class W3CCred(BaseModel):
     credentialSchema: List[dict]
 
 
-def convert_date_to_iso_datetime(date: date) -> str:
-    return datetime(date.year, date.month, date.day, 0, 0, 0, tzinfo=ZoneInfo("UTC")).isoformat()
+def convert_date_to_iso_datetime(dt: datetime) -> str:
+    return datetime(dt.year, dt.month, dt.day, 0, 0, 0, tzinfo=ZoneInfo("UTC")).isoformat()
 
 
 @celery.task()
@@ -272,7 +274,9 @@ def push_untp_map_data_to_publisher():
         pa = PermitAmendment.find_by_permit_amendment_guid(row[0], unsafe=True)
         pa_cred, new_id = VerifiableCredentialManager.produce_untp_cc_map_payload(
             Config.CHIEF_PERMITTING_OFFICER_DID_WEB, pa)
-
+        if not pa_cred:
+            task_logger.warning(f"pa_cred could not be created for permit_amendment_guid={row[0]}")
+            continue
         #only one assessment per credential
         publish_payload = {
             "type": "BCMinesActPermitCredential",
@@ -392,9 +396,7 @@ class VerifiableCredentialManager():
         credential_attrs["mine_commodity"] = ", ".join(
             mine_commodity_list) if mine_commodity_list else None
         credential_attrs["mine_no"] = permit_amendment.mine.mine_no
-        credential_attrs["issue_date"] = int(
-            permit_amendment.issue_date.strftime("%Y%m%d")) if is_feature_enabled(
-                Feature.VC_ANONCREDS_20) else permit_amendment.issue_date
+        credential_attrs["issue_date"] = int(permit_amendment.issue_date.strftime("%Y%m%d"))
         # https://github.com/hyperledger/aries-rfcs/tree/main/concepts/0441-present-proof-best-practices#dates-and-predicates
         credential_attrs["latitude"] = permit_amendment.mine.latitude
         credential_attrs["longitude"] = permit_amendment.mine.longitude
@@ -461,17 +463,41 @@ class VerifiableCredentialManager():
         # "tsf_operating_count"
         # "tsf_care_and_maintenance_count"
 
-        curr_appt = permit_amendment.permittee_appointments[0]
-        for pmt_appt in permit_amendment.permittee_appointments:
+        pmt_appts: List[MinePartyAppointment] = permit_amendment.permittee_appointments
+        curr_appt = pmt_appts[0]
+
+        permit_amendment_issue_date = permit_amendment.issue_date if isinstance(
+            permit_amendment.issue_date, date) else permit_amendment.issue_date.date()
+
+        for pmt_appt in pmt_appts:
+            pmt_appt_start_date = None
+            if not pmt_appt.start_date:
+                pmt_appt_start_date = date(1900)
+            elif isinstance(pmt_appt.start_date, date):
+                pmt_appt_start_date = pmt_appt.start_date
+            elif isinstance(pmt_appt.start_date, datetime):
+                pmt_appt_start_date = pmt_appt.start_date.date()
+            else:
+                raise TypeError(
+                    f"mine_party_appointment.start_date is neither `date` or `datetime` object, it's {type(pmt_appt.start_date)}"
+                )
+
             #find the last permittee appointment relevant to the amendment issue date.
-            if (pmt_appt.start_date or date(year=1900)) <= permit_amendment.issue_date:
+            if (pmt_appt_start_date <= permit_amendment_issue_date):
                 curr_appt = pmt_appt
             else:
                 break
 
         orgbook_entity = curr_appt.party.party_orgbook_entity
         if not orgbook_entity:
-            current_app.logger.warning("No Orgbook Entity, do not produce Mines Act Permit UNTP CC")
+            if curr_appt.party:
+                current_app.logger.warning(
+                    f"No Orgbook Entity for party_guid={curr_appt.party.party_guid}, could not produce Mines Act Permit UNTP CC"
+                )
+            else:
+                current_app.logger.error(
+                    f"No party for mine_party_appointment_id={curr_appt.mine_party_appt_id}, that shouldn't be possible"
+                )
             return None, None
 
         untp_party_cpo = base.Identifier(
