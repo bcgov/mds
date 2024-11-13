@@ -28,6 +28,7 @@ def test_get_projects_by_mine_guid(test_client, db_session, auth_headers):
     assert get_resp.status_code == 200
     assert len(get_data['records']) == batch_size
 
+
 def test_get_filtered_projects(test_client, db_session, auth_headers):
     batch_size = 3
     mine = MineFactory(minimal=True, project=0)
@@ -45,8 +46,6 @@ def test_get_filtered_projects(test_client, db_session, auth_headers):
     assert len(get_data['records']) == batch_size
     assert all(project.mine_guid == mine_guid for project in projects)
     for i in range(len(get_data['records']) - 1):
-        current_date = (get_data['records'][i]['update_timestamp']).split(" ", 1)
-        next_date = (get_data['records'][i + 1]['update_timestamp']).split(" ", 1)
-        assert datetime.strptime(current_date[0], '%Y-%m-%d') >= datetime.strptime(
-            next_date[0], '%Y-%m-%d')
+        assert datetime.strptime(get_data['records'][i]['update_timestamp'], '%Y-%m-%d %H:%M:%S.%f%z') >= datetime.strptime(
+            get_data['records'][i + 1]['update_timestamp'], '%Y-%m-%d %H:%M:%S.%f%z')
     
