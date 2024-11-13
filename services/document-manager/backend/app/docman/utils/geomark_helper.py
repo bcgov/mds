@@ -62,7 +62,8 @@ class GeomarkHelper:
         resp = response.json()
 
         if resp.get('status') != 'Added':
-            raise InternalServerError('Error adding geomark to group. Geomark service returned status: ' + resp.get('status'))
+            current_app.logger.info(resp)
+            raise InternalServerError('Error adding geomark to group. Geomark service returned status: ' + resp.get('status', "No status"))
 
         current_app.logger.info(f"Geomark {geomark_id} successfully added to group {group_id}")
 

@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, date
 
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.associationproxy import association_proxy
@@ -43,8 +43,8 @@ class Variance(SoftDeleteMixin, AuditMixin, Base):
     inspector_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
     note = db.Column(db.String, nullable=False, server_default=FetchedValue())
     parties_notified_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
-    issue_date = db.Column(db.DateTime)
-    received_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    issue_date: date = db.Column(db.Date)
+    received_date: date = db.Column(db.Date, nullable=False, default=date.today)
     expiry_date = db.Column(db.DateTime)
 
     created_by = db.Column(db.String, default=User().get_user_username)
@@ -60,8 +60,7 @@ class Variance(SoftDeleteMixin, AuditMixin, Base):
         secondary='variance_document_xref',
         secondaryjoin=
         'and_(foreign(VarianceDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid),MineDocument.deleted_ind == False)',
-        overlaps="mine_document,documents"
-    )
+        overlaps="mine_document,documents")
     inspector = db.relationship('Party', lazy='joined', foreign_keys=[inspector_party_guid])
     mine = db.relationship('Mine', lazy='joined')
 

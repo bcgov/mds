@@ -36,7 +36,9 @@ class UserBoundQuery(db.Query):
 
     def paginate(self, page, per_page, error_out=True, max_per_page=None):
         # flask-sqlalchemy 3.0+ changed page and per_page to be optional. This is in place to support current use of pagination
-        return super(UserBoundQuery, self).paginate(page=page, per_page=per_page, error_out=error_out, max_per_page=max_per_page)
+        return super(UserBoundQuery, self).paginate(
+            page=page, per_page=per_page, error_out=error_out, max_per_page=max_per_page)
+
 
 # add listener for the before_compile event on UserBoundQuery
 @db.event.listens_for(UserBoundQuery, 'before_compile', retval=True)
@@ -45,7 +47,7 @@ def ensure_constrained(query):
 
     if not query._user_bound or not auth.apply_security:
         return query
-    
+
     mzero = query._entity_from_pre_ent_zero()
     if mzero is not None:
         if has_request_context():
@@ -295,6 +297,7 @@ class Base(db.Model):
                 raise (e)
         return
 
+
 class PermitMixin(object):
     ORIGINATING_SYSTEMS = ['Core', 'MineSpace', 'MMS']
 
@@ -308,13 +311,15 @@ class PermitMixin(object):
 
     @declared_attr
     def now_application_guid(cls):
-        return db.Column(UUID(as_uuid=True), db.ForeignKey('now_application_identity.now_application_guid'))
+        return db.Column(
+            UUID(as_uuid=True), db.ForeignKey('now_application_identity.now_application_guid'))
 
     @declared_attr
     def application_status(cls):
-        return db.Column(db.String, db.ForeignKey('explosives_permit_status.explosives_permit_status_code'))
+        return db.Column(db.String,
+                         db.ForeignKey('explosives_permit_status.explosives_permit_status_code'))
 
-    issue_date = db.Column(db.Date)
+    issue_date: date = db.Column(db.Date)
     expiry_date = db.Column(db.Date)
 
     application_number = db.Column(db.String)
@@ -344,14 +349,16 @@ class PermitMixin(object):
         return db.relationship(
             'MinePartyAppointment',
             lazy='select',
-            primaryjoin='MinePartyAppointment.mine_party_appt_id == cls.mine_manager_mine_party_appt_id')
+            primaryjoin=
+            'MinePartyAppointment.mine_party_appt_id == cls.mine_manager_mine_party_appt_id')
 
     @declared_attr
     def permittee(cls):
         return db.relationship(
             'MinePartyAppointment',
             lazy='select',
-            primaryjoin='MinePartyAppointment.mine_party_appt_id == cls.permittee_mine_party_appt_id')
+            primaryjoin='MinePartyAppointment.mine_party_appt_id == cls.permittee_mine_party_appt_id'
+        )
 
     @declared_attr
     def issuing_inspector_party_guid(cls):
@@ -370,15 +377,15 @@ class PermitMixin(object):
         return db.relationship(
             'Party',
             lazy='select',
-            primaryjoin=f'Party.party_guid == {cls.__name__}.issuing_inspector_party_guid'
-        )
+            primaryjoin=f'Party.party_guid == {cls.__name__}.issuing_inspector_party_guid')
 
     @declared_attr
     def mine_manager(cls):
         return db.relationship(
             'MinePartyAppointment',
             lazy='select',
-            primaryjoin=f'MinePartyAppointment.mine_party_appt_id == {cls.__name__}.mine_manager_mine_party_appt_id'
+            primaryjoin=
+            f'MinePartyAppointment.mine_party_appt_id == {cls.__name__}.mine_manager_mine_party_appt_id'
         )
 
     @declared_attr
@@ -386,7 +393,8 @@ class PermitMixin(object):
         return db.relationship(
             'MinePartyAppointment',
             lazy='select',
-            primaryjoin=f'MinePartyAppointment.mine_party_appt_id == {cls.__name__}.permittee_mine_party_appt_id'
+            primaryjoin=
+            f'MinePartyAppointment.mine_party_appt_id == {cls.__name__}.permittee_mine_party_appt_id'
         )
 
     @hybrid_property
@@ -422,7 +430,9 @@ class PermitMixin(object):
                 f'Originating system must be one of: {"".join(self.ORIGINATING_SYSTEMS, ", ")}')
         return val
 
+
 class PermitDocumentMixin(object):
+
     @declared_attr
     def mine_document_guid(cls):
         return db.Column(
@@ -434,11 +444,13 @@ class PermitDocumentMixin(object):
     @declared_attr
     def mine_document(cls):
         return db.relationship('MineDocument', lazy='select')
+
     mine_guid = association_proxy('mine_document', 'mine_guid')
     document_manager_guid = association_proxy('mine_document', 'document_manager_guid')
     document_name = association_proxy('mine_document', 'document_name')
     upload_date = association_proxy('mine_document', 'upload_date')
     create_user = association_proxy('mine_document', 'create_user')
+
 
 class PermitMagazineMixin(object):
     type_no = db.Column(db.String, nullable=False)
@@ -453,6 +465,7 @@ class PermitMagazineMixin(object):
     distance_road = db.Column(db.Numeric)
     distance_dwelling = db.Column(db.Numeric)
     detonator_type = db.Column(db.String)
+
 
 class AuditMixin(object):
     create_user = db.Column(db.String(60), nullable=False, default=User().get_user_username)

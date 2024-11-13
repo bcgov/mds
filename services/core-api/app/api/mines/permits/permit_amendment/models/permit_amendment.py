@@ -1,13 +1,12 @@
 import uuid
 from datetime import date, datetime
+from typing import Union
 
 from app.api.constants import *
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import (
-    PermitAmendmentDocument,
-)
+    PermitAmendmentDocument, )
 from app.api.mines.permits.permit_conditions.models.permit_conditions import (
-    PermitConditions,
-)
+    PermitConditions, )
 from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
 from app.api.verifiable_credentials.aries_constants import IssueCredentialIssuerState
 from app.extensions import db
@@ -29,9 +28,9 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
     permit_amendment_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
     permit_id = db.Column(db.Integer, db.ForeignKey('permit.permit_id'), nullable=False)
-    received_date = db.Column(db.DateTime, nullable=False)
-    issue_date: date = db.Column(db.DateTime, nullable=False)
-    authorization_end_date = db.Column(db.DateTime, nullable=False)
+    received_date: date = db.Column(db.Date, nullable=False)          # db column is date
+    issue_date: date = db.Column(db.Date, nullable=False)             # db column is date
+    authorization_end_date: date = db.Column(db.Date, nullable=False) # db column is date
     permit_amendment_status_code = db.Column(
         db.String(3), db.ForeignKey('permit_amendment_status_code.permit_amendment_status_code'))
     permit_amendment_type_code = db.Column(
@@ -294,18 +293,21 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         return received_date
 
     @validates('issue_date')
-    def validate_issue_date(self, key, issue_date):
+    def validate_issue_date(self, key, issue_date: Union[date, datetime]) -> date:
         # TODO DO NOT REMOVE NEXT LINE. If this validation removed then exception will be thrown on permit creation/editing:
         # "permit_amendment" violates foreign key constraint "permit_amendment_mine_permit_xref_mine_guid_permit_no_fk"
         # DETAIL:  Key (mine_guid, permit_id)=(28966bf7-8e65-4cc4-b077-b248b6a136ef, 212) is not present in table "mine_permit_xref".
         original_permit_amendment = self.query.filter_by(permit_id=self.permit_id).filter_by(
             permit_amendment_type_code='OGP').first()
 
+        if isinstance(issue_date, datetime):
+            issue_date = issue_date.date()
+
         if issue_date:
             if issue_date.isoformat() == '9999-12-31':
                 raise AssertionError(
                     'Permit amendment issue date should be set to null if not known.')
-            if self.permit_amendment_status_code != 'DFT' and issue_date > datetime.today():
+            if self.permit_amendment_status_code != 'DFT' and issue_date > date.today():
                 raise AssertionError('Permit amendment issue date cannot be set to the future.')
         return issue_date
 

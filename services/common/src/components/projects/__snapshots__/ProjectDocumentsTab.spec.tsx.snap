@@ -1691,7 +1691,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                                 </tr>
                                 <tr
                                   class="ant-table-row ant-table-row-level-0 table-row-align-middle no-sub-table-expandable-rows fade-in"
-                                  data-row-key="1c77f818-3d7a-461c-902d-7546755f4661"
+                                  data-row-key="1c77f818-3d7a-461c-902d-7546755f4662"
                                 >
                                   <td
                                     class="ant-table-cell ant-table-selection-column"

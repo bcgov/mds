@@ -23,8 +23,8 @@ describe("FacilityOperator Component", () => {
   it("should render the component with expected fields", () => {
     const { container } = render(
       <ReduxWrapper initialState={initialState}>
-        <FormWrapper name={FORM.ADD_EDIT_PROJECT_SUMMARY} initialValues={{}} onSubmit={() => {}}>
-          <FacilityOperator />
+        <FormWrapper name={FORM.ADD_EDIT_PROJECT_SUMMARY} initialValues={{}} onSubmit={() => { }}>
+          <FacilityOperator fieldsDisabled={false} />
         </FormWrapper>
       </ReduxWrapper>
     );

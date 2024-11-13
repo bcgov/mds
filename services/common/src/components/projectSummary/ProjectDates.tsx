@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import { useSelector } from "react-redux";
 import { Field, getFormValues } from "redux-form";
 import { Col, Row, Typography } from "antd";
@@ -9,19 +9,17 @@ import {
 } from "@mds/common/redux/utils/Validate";
 import Callout from "@mds/common/components/common/Callout";
 import { FORM } from "@mds/common/constants";
-import { isFieldDisabled } from "../projects/projectUtils";
 import RenderDate from "@mds/common/components/forms/RenderDate";
-import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import { IProjectSummaryForm } from "@mds/common/interfaces";
+import { ProjectSummaryFormComponentProps } from "./ProjectSummaryForm";
 
-export const ProjectDates = () => {
+export const ProjectDates: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => {
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;
   const {
     expected_permit_application_date,
     expected_draft_irt_submission_date,
     expected_permit_receipt_date,
   } = formValues;
-  const systemFlag = useSelector(getSystemFlag);
 
   return (
     <>
@@ -54,8 +52,8 @@ export const ProjectDates = () => {
             placeholder="Please select date"
             component={RenderDate}
             allowClear
-            validate={[dateInFuture, dateNotAfterOther(expected_permit_application_date, "the expected permit application date")]}
-            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+            validate={!fieldsDisabled ? [dateInFuture, dateNotAfterOther(expected_permit_application_date, "the expected permit application date")] : []}
+            disabled={fieldsDisabled}
           />
         </Col>
         <Col span={24}>
@@ -66,8 +64,8 @@ export const ProjectDates = () => {
             placeholder="Please select date"
             component={RenderDate}
             allowClear
-            validate={[dateInFuture, dateNotBeforeOther(expected_draft_irt_submission_date, "the expected draft IRT submission date")]}
-            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+            validate={!fieldsDisabled ? [dateInFuture, dateNotBeforeOther(expected_draft_irt_submission_date, "the expected draft IRT submission date")] : []}
+            disabled={fieldsDisabled}
           />
         </Col>
         <Col span={24}>
@@ -78,8 +76,8 @@ export const ProjectDates = () => {
             placeholder="Please select date"
             component={RenderDate}
             allowClear
-            validate={[dateInFuture, dateNotBeforeOther(expected_permit_application_date, "the expected permit application date")]}
-            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+            validate={!fieldsDisabled ? [dateInFuture, dateNotBeforeOther(expected_permit_application_date, "the expected permit application date")] : []}
+            disabled={fieldsDisabled}
           />
         </Col>
         <Col span={24}>
@@ -90,8 +88,8 @@ export const ProjectDates = () => {
             placeholder="Please select date"
             component={RenderDate}
             allowClear
-            validate={[dateInFuture, dateNotBeforeOther(expected_permit_receipt_date, "the expected permit receipt date")]}
-            disabled={isFieldDisabled(systemFlag, formValues?.status_code)}
+            validate={!fieldsDisabled ? [dateInFuture, dateNotBeforeOther(expected_permit_receipt_date, "the expected permit receipt date")] : []}
+            disabled={fieldsDisabled}
           />
         </Col>
       </Row>

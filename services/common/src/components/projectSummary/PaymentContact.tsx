@@ -85,7 +85,7 @@ export const PaymentContact = ({ isDisabled }) => {
           />
         </Col>
         <Col md={4} sm={5}>
-          <Field name="payment_contact.phone_ext" label="Ext." component={RenderField} />
+          <Field name="payment_contact.phone_ext" label="Ext." component={RenderField} disabled={isDisabled} />
         </Col>
         <Col md={12} sm={24}>
           <Field

@@ -303,7 +303,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                             <b
                               class="uppercase"
                             >
-                              N/A
+                              [Draft]
                             </b>
                           </div>
                         </td>

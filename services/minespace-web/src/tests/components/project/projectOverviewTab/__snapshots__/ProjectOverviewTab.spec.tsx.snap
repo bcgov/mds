@@ -266,7 +266,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                             title="Stage Status"
                           >
                             <b>
-                              N/A
+                              Draft
                             </b>
                           </div>
                         </td>

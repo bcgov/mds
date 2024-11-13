@@ -30,8 +30,8 @@ describe("ApplicationSummary Component", () => {
   it("should render the component with expected fields", () => {
     const { container } = render(
       <ReduxWrapper initialState={initialState}>
-        <FormWrapper name={FORM.ADD_EDIT_PROJECT_SUMMARY} initialValues={{}} onSubmit={() => {}}>
-          <ApplicationSummary />
+        <FormWrapper name={FORM.ADD_EDIT_PROJECT_SUMMARY} initialValues={{}} onSubmit={() => { }}>
+          <ApplicationSummary fieldsDisabled={false} />
         </FormWrapper>
       </ReduxWrapper>
     );

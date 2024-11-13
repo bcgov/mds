@@ -76,7 +76,7 @@ const formatProjectContact = (contacts): IProjectContact[] => {
 
   return formattedContacts;
 };
-const formatAuthorizations = (amsAuthTypes, statusCode, authorizations = []) => {
+const formatAuthorizations = (amsAuthTypes, confirmation_of_submission, authorizations = []) => {
   const authorizationTypes = uniq(authorizations?.map((a) => a.project_summary_authorization_type));
   const formattedAuthorizations = {};
   let ams_terms_agreed = false;
@@ -99,7 +99,7 @@ const formatAuthorizations = (amsAuthTypes, statusCode, authorizations = []) => 
     }
   });
   // ams terms will be true on load if record is submitted with ams auths
-  ams_terms_agreed = ams_terms_agreed && statusCode === "SUB";
+  ams_terms_agreed = ams_terms_agreed && confirmation_of_submission;
   return { authorizations: formattedAuthorizations, authorizationTypes, ams_terms_agreed };
 };
 
@@ -138,27 +138,34 @@ export const getFormattedProjectApplication = createSelector(
   }
 );
 
+const formatProjectSummary = (summary, project, amsAuthTypes) => {
+  const documents = formatProjectSummaryDocuments(summary.documents);
+  const contacts = formatProjectContact(project.contacts);
+  const agent = formatProjectSummaryParty(summary.agent);
+  const facility_operator = formatProjectSummaryParty(summary.facility_operator);
+  const confirmation_of_submission = summary.submission_date ? true : undefined;
+
+  const formattedSummary = {
+    ...summary,
+    contacts,
+    agent,
+    facility_operator,
+    confirmation_of_submission,
+    ...formatAuthorizations(amsAuthTypes, confirmation_of_submission, summary.authorizations),
+    ...documents,
+  };
+
+  formattedSummary.project_lead_party_guid = project.project_lead_party_guid;
+  return formattedSummary;
+}
+
 export const getFormattedProjectSummary = createSelector(
   [getProjectSummary, getProject, getAmsAuthorizationTypes],
   (summary, project, amsAuthTypes) => {
-    const documents = formatProjectSummaryDocuments(summary.documents);
-    const contacts = formatProjectContact(project.contacts);
-    const agent = formatProjectSummaryParty(summary.agent);
-    const facility_operator = formatProjectSummaryParty(summary.facility_operator);
-    const confirmation_of_submission = summary.status_code === "SUB";
-
-    const formattedSummary = {
-      ...summary,
-      contacts,
-      agent,
-      facility_operator,
-      confirmation_of_submission,
-      ...formatAuthorizations(amsAuthTypes, summary.status_code, summary.authorizations),
-      ...documents,
-    };
-
-    formattedSummary.project_lead_party_guid = project.project_lead_party_guid;
-
-    return formattedSummary;
+    return formatProjectSummary(summary, project, amsAuthTypes);
   }
 );
+
+export const exportForTesting = {
+  formatProjectSummary
+}
