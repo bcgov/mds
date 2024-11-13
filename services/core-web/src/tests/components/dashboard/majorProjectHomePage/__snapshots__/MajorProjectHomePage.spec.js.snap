@@ -45,22 +45,20 @@ exports[`MajorProjectHomePage renders properly 1`] = `
                     style="padding-left: 3px; padding-right: 3px;"
                   >
                     <div
-                      class="ant-row ant-legacy-form-item"
+                      class="ant-form-item ant-form-item-with-help"
                     >
                       <div
-                        class="ant-col ant-legacy-form-item-control-wrapper"
+                        class="ant-row ant-form-item-row"
                       >
                         <div
-                          class="ant-legacy-form-item-control"
+                          class="ant-col ant-form-item-control"
                         >
-                          <span
-                            class="ant-legacy-form-item-children"
+                          <div
+                            class="ant-form-item-control-input"
                           >
                             <div
-                              class="inline-flex"
-                              style="flex-direction: column;"
+                              class="ant-form-item-control-input-content"
                             >
-                              
                               <input
                                 class="ant-input"
                                 id="search"
@@ -69,9 +67,21 @@ exports[`MajorProjectHomePage renders properly 1`] = `
                                 type="text"
                                 value=""
                               />
-                              
                             </div>
-                          </span>
+                          </div>
+                          <div
+                            style="display: flex; flex-wrap: nowrap;"
+                          >
+                            <div
+                              class="ant-form-item-explain ant-form-item-explain-connected"
+                              id="search_help"
+                              role="alert"
+                            >
+                              <div
+                                class=""
+                              />
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>

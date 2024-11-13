@@ -170,8 +170,7 @@ export const MajorProjectTable: FC<MajorProjectTableProps> = ({
       key: "project_section",
       render: (record) => {
         return (
-          // @ts-ignore
-          <div title="" align="right">
+          <div title="" style={{ width: "50%", margin: "0 auto" }}>
             <Row gutter={1}>
               <Col span={12}>
                 <Link to={router.EDIT_PROJECT.dynamicRoute(record.projectGuid, record.tab)}>

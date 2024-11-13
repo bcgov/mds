@@ -4,7 +4,8 @@ import { Field, reduxForm } from "redux-form";
 import { Button, Col, Row, Form } from "antd";
 
 import * as FORM from "@/constants/forms";
-import { renderConfig } from "@/components/common/config";
+import RenderField from "@mds/common/components/forms/RenderField";
+import RenderDate from "@mds/common/components/forms/RenderDate";
 
 interface MajorProjectsSearchFormProps {
   handleSubmit: (params: any) => void;
@@ -33,7 +34,7 @@ export const MajorProjectsSearchForm: FC<MajorProjectsSearchFormProps> = ({
           <Field
             id="search"
             name="search"
-            component={renderConfig.FIELD}
+            component={RenderField}
             placeholder="Search by mine name or number"
           />
         </Col>
@@ -46,13 +47,13 @@ export const MajorProjectsSearchForm: FC<MajorProjectsSearchFormProps> = ({
                 id="updated_date"
                 name="updated_date"
                 placeholder="Select Latest Updated Date"
-                component={renderConfig.DATE}
+                component={RenderDate}
               />
               <Field
                 id="project_lead_name"
                 name="project_lead_name"
                 placeholder="Search by EMLI project lead"
-                component={renderConfig.FIELD}
+                component={RenderField}
               />
             </Col>
           </Row>
