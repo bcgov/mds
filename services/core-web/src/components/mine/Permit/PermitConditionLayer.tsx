@@ -138,17 +138,16 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
                     Add Report Requirement
                   </Button>
                 </Col>
-                <Col>
+                <Col className="margin-medium--left">
                   <Button
-                    className="margin-none"
+                    className="icon-button-container"
                     onClick={closeEdit}
                     type="primary"
                     icon={<FontAwesomeIcon icon={faXmark} />}
                   />
                 </Col>
-                <Col>
+                <Col className="icon-button-container">
                   <Button
-                    className="margin-none"
                     onClick={(event) => {
                       event.stopPropagation();
                       console.log("Not yet implemented");
@@ -160,29 +159,35 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
               </Row>
             </Col>
             <Col>
-              <Row gutter={8} className="" align="middle">
-                <Button
-                  onClick={(event) => {
-                    event.stopPropagation();
-                  }}
-                  type="default"
-                  icon={<FontAwesomeIcon icon={faTrashCan} />}
-                />
-                <Button
-                  onClick={(event) => {
-                    event.stopPropagation();
-                  }}
-                  type="default"
-                  icon={<FontAwesomeIcon icon={faArrowUp} />}
-                />
-                <Button
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    console.log("Not yet implemented");
-                  }}
-                  type="default"
-                  icon={<FontAwesomeIcon icon={faArrowDown} />}
-                />
+              <Row gutter={8} align="middle" className="condition-edit-buttons">
+                <Col className="icon-button-container">
+                  <Button
+                    onClick={(event) => {
+                      event.stopPropagation();
+                    }}
+                    type="default"
+                    icon={<FontAwesomeIcon icon={faTrashCan} />}
+                  />
+                </Col>
+                <Col className="icon-button-container">
+                  <Button
+                    onClick={(event) => {
+                      event.stopPropagation();
+                    }}
+                    type="default"
+                    icon={<FontAwesomeIcon icon={faArrowUp} />}
+                  />
+                </Col>
+                <Col className="icon-button-container">
+                  <Button
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      console.log("Not yet implemented");
+                    }}
+                    type="default"
+                    icon={<FontAwesomeIcon icon={faArrowDown} />}
+                  />
+                </Col>
               </Row>
             </Col>
           </Row>
