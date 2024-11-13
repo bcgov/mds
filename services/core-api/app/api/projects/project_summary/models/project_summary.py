@@ -26,7 +26,7 @@ from app.api.projects.project_summary.models.project_summary_authorization_docum
 from app.api.projects.project_summary.models.project_summary_permit_type import ProjectSummaryPermitType
 from app.api.parties.party.models.party import Party
 from app.api.parties.party.models.address import Address
-from app.api.constants import PROJECT_SUMMARY_EMAILS, MDS_EMAIL
+from app.api.constants import PROJECT_SUMMARY_EMAILS, MDS_EMAIL, PERM_RECL_EMAIL
 from app.api.services.email_service import EmailService
 from app.config import Config
 from cerberus import Validator
@@ -166,6 +166,11 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         if self.project.project_lead_party_guid:
             return self.project.project_lead_party_guid
         return None
+    
+    @hybrid_property
+    def project_lead_email(self):
+        project_lead: Party = Party.find_by_party_guid(self.project_summary_lead_party_guid)
+        return project_lead.email if project_lead else None
 
     @hybrid_property
     def mine_guid(self):
@@ -226,6 +231,29 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
         except ValueError:
             return None
+        
+    @staticmethod
+    def has_new_documents(documents, ams_authorizations) -> bool:
+        new_documents = list(filter(lambda doc: doc.get("mine_document_guid") is None, documents))
+        has_new_docs = len(new_documents) > 0
+        
+        amendments = ams_authorizations.get('amendments', [])
+        new = ams_authorizations.get('new', [])
+        all_ams_auths = amendments + new
+        has_new_ams_docs = False
+
+        for auth in all_ams_auths:
+            docs = auth.get('amendment_documents', [])
+            for doc in docs:
+                if doc.get('mine_document_guid') is None:
+                    has_new_ams_docs = True
+                    break
+            else:
+                continue
+            break
+
+        return has_new_docs or has_new_ams_docs
+
 
     # will update the existing party and address data if it exists, else create a new one
     @classmethod
@@ -1253,8 +1281,53 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             doc.mine_document.delete(False)
         return super(ProjectSummary, self).delete(commit)
 
-    def send_project_summary_email(self, mine):
-        emli_recipients = PROJECT_SUMMARY_EMAILS
+    def send_project_summary_document_email(self, mine):
+        if is_feature_enabled(Feature.MINE_APPLICATION_FILE_UDPATE_ALERTS):
+            message = f'File(s) in project {self.project.project_title} has been updated for mine {mine.mine_name}'
+            project_lead_email = self.project_lead_email
+
+            emails = {
+                'SUB': [PERM_RECL_EMAIL],
+                'ASG': [PERM_RECL_EMAIL, project_lead_email],
+                'CHR': [PERM_RECL_EMAIL, project_lead_email] 
+            }
+            email_recipients = emails.get(self.status_code)
+
+            if email_recipients is not None:
+                emli_body = open("app/templates/email/projects/emli_project_summary_email.html", "r").read()
+                subject = f'Project Description Documents Notification for {mine.mine_name}'
+                cc = [MDS_EMAIL]
+
+                emli_context = {
+                    "project_summary": {
+                        "project_summary_description": self.project_summary_description,
+                    },
+                    "mine": {
+                        "mine_name": mine.mine_name,
+                        "mine_no": mine.mine_no,
+                    },
+                    "message": message,
+                    "core_project_summary_link": f'{Config.CORE_WEB_URL}/pre-applications/{self.project.project_guid}/overview'
+                }
+                EmailService.send_template_email(subject, email_recipients, emli_body, emli_context, cc=cc)
+
+
+    def send_project_summary_email(self, mine, message):
+        current_app.logger.info(f'HI TARA Sending email with message {message}')
+
+        project_lead_email = self.project_lead_email
+
+        emli_emails = {
+            'SUB': [PERM_RECL_EMAIL] + PROJECT_SUMMARY_EMAILS,
+            'ASG': [project_lead_email],
+            'OHD': [PERM_RECL_EMAIL, project_lead_email],
+            'WDN': [PERM_RECL_EMAIL, project_lead_email],
+            'COM': [PERM_RECL_EMAIL, project_lead_email]
+        }
+
+        send_ms_email = self.status_code != "DFT"
+        
+        emli_recipients = emli_emails.get(self.status_code)
         cc = [MDS_EMAIL]
         minespace_recipients = [contact.email for contact in self.contacts if contact.is_primary]
 
@@ -1270,6 +1343,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 "mine_name": mine.mine_name,
                 "mine_no": mine.mine_no,
             },
+            "message": message,
             "core_project_summary_link": f'{Config.CORE_WEB_URL}/pre-applications/{self.project.project_guid}/overview'
         }
 
@@ -1278,9 +1352,11 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 "mine_name": mine.mine_name,
                 "mine_no": mine.mine_no,
             },
+            "message": message,
             "minespace_project_summary_link": f'{Config.MINESPACE_PROD_URL}/projects/{self.project.project_guid}/overview',
             "ema_auth_link": f'{Config.EMA_AUTH_LINK}',
         }
 
         EmailService.send_template_email(subject, emli_recipients, emli_body, emli_context, cc=cc)
-        EmailService.send_template_email(subject, minespace_recipients, minespace_body, minespace_context, cc=cc)
+        if send_ms_email:
+            EmailService.send_template_email(subject, minespace_recipients, minespace_body, minespace_context, cc=cc)

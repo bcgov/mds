@@ -159,7 +159,7 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
 
         if mine_doc and project:
             mine = Mine.find_by_mine_guid(mine_doc.mine_guid)
-            ProjectUtil.notifiy_file_updates(project, mine)
+            ProjectUtil.notify_file_updates(project, mine, self.status_code)
 
         return self
 

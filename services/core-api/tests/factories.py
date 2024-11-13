@@ -1244,10 +1244,11 @@ class ProjectSummaryFactory(BaseFactory):
 
     class Params:
         project = factory.SubFactory(ProjectFactory)
+        set_status_code = "SUB"
 
     project_guid = factory.SelfAttribute('project.project_guid')
     project_summary_guid = GUID
-    status_code = 'SUB'
+    status_code = factory.SelfAttribute('set_status_code')
     project_summary_description = factory.Faker('paragraph', nb_sentences=5, variable_nb_sentences=True, ext_word_list=None)
     documents = []
     authorizations = []

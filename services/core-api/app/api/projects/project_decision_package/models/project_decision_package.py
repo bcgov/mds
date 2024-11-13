@@ -146,7 +146,7 @@ class ProjectDecisionPackage(SoftDeleteMixin, AuditMixin, Base):
             mine_document_guid = documents[0].mine_document_guid
             project = ProjectDecisionPackage.find_by_mine_document_guid(mine_document_guid).project
             mine = Mine.find_by_mine_guid(project.mine_guid)
-            ProjectUtil.notifiy_file_updates(project, mine)
+            ProjectUtil.notify_file_updates(project, mine, status_code)
 
         return self
 

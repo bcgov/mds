@@ -136,24 +136,26 @@ class MineDocumentArchiveResource(Resource, UserMixin):
             project = None
             doc = documents[0]
             mine_document_guid = doc.mine_document_guid
-            isNotifiableDoc = False
+            is_notifiable_doc = False
+            status_code = None
 
             if doc.major_mine_application_document_xref:
                 project = MajorMineApplication.find_by_mine_document_guid(mine_document_guid).project
-                isNotifiableDoc = True
+                is_notifiable_doc = True
             elif doc.project_summary_document_xref:
                 project = ProjectSummary.find_by_mine_document_guid(mine_document_guid).project
-                isNotifiableDoc = True
+                is_notifiable_doc = True
+                status_code = project.project_summary.status_code
             elif doc.project_decision_package_document_xref:
                 project = ProjectDecisionPackage.find_by_mine_document_guid(mine_document_guid).project
-                isNotifiableDoc = True
+                is_notifiable_doc = True
             elif doc.information_requirements_table_document_xref:
                 project = InformationRequirementsTable.find_by_mine_document_guid(mine_document_guid).project
-                isNotifiableDoc = True
+                is_notifiable_doc = True
 
             # If one of the *xref value is not None that means the notification should be sent.
-            if isNotifiableDoc:
-                ProjectUtil.notifiy_file_updates(project, mine)
+            if is_notifiable_doc:
+                ProjectUtil.notify_file_updates(project, mine, status_code)
 
         return None, 204
 

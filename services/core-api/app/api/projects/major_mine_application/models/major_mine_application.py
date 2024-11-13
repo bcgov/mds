@@ -187,7 +187,7 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
             if not mine:
                 raise NotFound('Mine not found.')
 
-            ProjectUtil.notifiy_file_updates(project, mine)
+            ProjectUtil.notify_file_updates(project, mine, status_code)
 
         return self
 
