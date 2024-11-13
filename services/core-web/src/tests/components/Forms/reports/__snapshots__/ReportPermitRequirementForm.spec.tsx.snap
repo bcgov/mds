@@ -293,10 +293,15 @@ exports[`RequestReportForm renders form properly 1`] = `
               class="ant-col ant-form-item-label"
             >
               <label
-                class=""
-                title="Who is the report for?"
+                class="ant-form-item-required"
+                for="ADD_REPORT_TO_PERMIT_CONDITION-1639_cim_or_cpo"
+                title=""
               >
-                Who is the report for?
+                <div
+                  style="width: 100%;"
+                >
+                  Who is the report for?
+                </div>
               </label>
             </div>
             <div
@@ -309,111 +314,88 @@ exports[`RequestReportForm renders form properly 1`] = `
                   class="ant-form-item-control-input-content"
                 >
                   <div
-                    class="ant-radio-group ant-radio-group-outline"
+                    class="ant-radio-group ant-radio-group-solid vertical-radio-group"
                   >
-                    <div
-                      class="ant-space ant-space-vertical"
+                    <label
+                      class="ant-radio-wrapper ant-radio-wrapper-in-form-item"
                     >
-                      <div
-                        class="ant-space-item"
-                        style="margin-bottom: 8px;"
+                      <span
+                        class="ant-radio"
                       >
-                        <label
-                          class="ant-radio-wrapper ant-radio-wrapper-in-form-item"
-                        >
-                          <span
-                            class="ant-radio"
-                          >
-                            <input
-                              class="ant-radio-input"
-                              name="cim_or_cpo"
-                              type="radio"
-                              value="CPO"
-                            />
-                            <span
-                              class="ant-radio-inner"
-                            />
-                          </span>
-                          <span>
-                            Chief Permitting Officer
-                          </span>
-                        </label>
-                      </div>
-                      <div
-                        class="ant-space-item"
-                        style="margin-bottom: 8px;"
+                        <input
+                          class="ant-radio-input"
+                          name="cim_or_cpo"
+                          type="radio"
+                          value="CPO"
+                        />
+                        <span
+                          class="ant-radio-inner"
+                        />
+                      </span>
+                      <span>
+                        Chief Permitting Officer
+                      </span>
+                    </label>
+                    <label
+                      class="ant-radio-wrapper ant-radio-wrapper-in-form-item"
+                    >
+                      <span
+                        class="ant-radio"
                       >
-                        <label
-                          class="ant-radio-wrapper ant-radio-wrapper-in-form-item"
-                        >
-                          <span
-                            class="ant-radio"
-                          >
-                            <input
-                              class="ant-radio-input"
-                              name="cim_or_cpo"
-                              type="radio"
-                              value="CIM"
-                            />
-                            <span
-                              class="ant-radio-inner"
-                            />
-                          </span>
-                          <span>
-                            Chief Inspector of Mines
-                          </span>
-                        </label>
-                      </div>
-                      <div
-                        class="ant-space-item"
-                        style="margin-bottom: 8px;"
+                        <input
+                          class="ant-radio-input"
+                          name="cim_or_cpo"
+                          type="radio"
+                          value="CIM"
+                        />
+                        <span
+                          class="ant-radio-inner"
+                        />
+                      </span>
+                      <span>
+                        Chief Inspector of Mines
+                      </span>
+                    </label>
+                    <label
+                      class="ant-radio-wrapper ant-radio-wrapper-in-form-item"
+                    >
+                      <span
+                        class="ant-radio"
                       >
-                        <label
-                          class="ant-radio-wrapper ant-radio-wrapper-in-form-item"
-                        >
-                          <span
-                            class="ant-radio"
-                          >
-                            <input
-                              class="ant-radio-input"
-                              name="cim_or_cpo"
-                              type="radio"
-                              value="Both"
-                            />
-                            <span
-                              class="ant-radio-inner"
-                            />
-                          </span>
-                          <span>
-                            Both
-                          </span>
-                        </label>
-                      </div>
-                      <div
-                        class="ant-space-item"
+                        <input
+                          class="ant-radio-input"
+                          name="cim_or_cpo"
+                          type="radio"
+                          value="Both"
+                        />
+                        <span
+                          class="ant-radio-inner"
+                        />
+                      </span>
+                      <span>
+                        Both
+                      </span>
+                    </label>
+                    <label
+                      class="ant-radio-wrapper ant-radio-wrapper-in-form-item"
+                    >
+                      <span
+                        class="ant-radio"
                       >
-                        <label
-                          class="ant-radio-wrapper ant-radio-wrapper-in-form-item"
-                        >
-                          <span
-                            class="ant-radio"
-                          >
-                            <input
-                              class="ant-radio-input"
-                              name="cim_or_cpo"
-                              type="radio"
-                              value="NONE"
-                            />
-                            <span
-                              class="ant-radio-inner"
-                            />
-                          </span>
-                          <span>
-                            Not Specified
-                          </span>
-                        </label>
-                      </div>
-                    </div>
+                        <input
+                          class="ant-radio-input"
+                          name="cim_or_cpo"
+                          type="radio"
+                          value="NONE"
+                        />
+                        <span
+                          class="ant-radio-inner"
+                        />
+                      </span>
+                      <span>
+                        Not Specified
+                      </span>
+                    </label>
                   </div>
                 </div>
               </div>
@@ -422,6 +404,7 @@ exports[`RequestReportForm renders form properly 1`] = `
               >
                 <div
                   class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="ADD_REPORT_TO_PERMIT_CONDITION-1639_cim_or_cpo_help"
                   role="alert"
                 >
                   <div
