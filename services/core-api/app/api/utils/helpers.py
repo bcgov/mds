@@ -3,8 +3,6 @@ from io import BytesIO
 import re
 from datetime import datetime
 
-from flask_restx import ValidationError
-from flask_restx.fields import Raw
 from pytz import timezone, utc
 from PIL import Image
 from flask import current_app
