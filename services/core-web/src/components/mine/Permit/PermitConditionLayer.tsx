@@ -18,12 +18,15 @@ import { useParams } from "react-router-dom";
 import { ReportPermitRequirementForm } from "../../Forms/reports/ReportPermitRequirementForm";
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { createMineReportPermitRequirement } from "@mds/common/redux/slices/mineReportPermitRequirementSlice";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { Feature } from "@mds/common";
 
 interface PermitConditionLayerProps {
   condition: IPermitCondition;
   level?: number;
   isExpanded?: boolean;
   setParentExpand?: () => void;
+  userCanEdit?: boolean;
 }
 
 const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
@@ -31,7 +34,10 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   isExpanded,
   level = 0,
   setParentExpand = () => {},
+  userCanEdit = false,
 }) => {
+  const { isFeatureEnabled } = useFeatureFlag();
+  const canEditPermitConditions = isFeatureEnabled(Feature.MODIFY_PERMIT_CONDITIONS) && userCanEdit;
   const dispatch = useDispatch();
   const { id: mineGuid, permitGuid } = useParams<{ id: string; permitGuid: string }>();
 
@@ -55,9 +61,11 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   }, [isExpanded]);
 
   const handleSectionClick = (event) => {
-    event.stopPropagation();
-    setParentExpand();
-    setIsEditMode(true);
+    if (canEditPermitConditions) {
+      event.stopPropagation();
+      setParentExpand();
+      setIsEditMode(true);
+    }
   };
 
   const closeEdit = (event) => {
@@ -98,7 +106,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
         <p>
           {condition.step} {condition.condition}
         </p>
-        {sectionEdit && (
+        {sectionEdit && canEditPermitConditions && (
           <Row justify="space-between" align="middle">
             <Col>
               <Row gutter={8} className="condition-edit-buttons" align="middle">
@@ -199,6 +207,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
                 condition={subCondition}
                 level={level + 1}
                 setParentExpand={handleSetParentExpand}
+                userCanEdit={userCanEdit}
               />
             </div>
           );

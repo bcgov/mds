@@ -83,8 +83,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
         const stepPath = currentPath.replace(/\.+$/, "");
 
         const mineReportPermitRequirement = mineReportPermitRequirements.find(
-          (requirement) =>
-            requirement.permit_condition_id === condition.permit_condition_id
+          (requirement) => requirement.permit_condition_id === condition.permit_condition_id
         );
 
         // If condition has sub-conditions, recursively add step paths
@@ -130,7 +129,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
 
   const handleEditReportRequirement = (values) => {
     console.log("not implemented", values);
-  }
+  };
 
   if (isLoading) {
     return <LoadingOutlined style={{ fontSize: 120 }} />;
@@ -233,7 +232,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
                       </Col>
                       {category.conditions.map((sc) => (
                         <Col span={24} key={sc.permit_condition_id}>
-                          <PermitConditionLayer condition={sc} isExpanded={isExpanded} />
+                          <PermitConditionLayer condition={sc} isExpanded={isExpanded} userCanEdit={userCanEdit}/>
                         </Col>
                       ))}
                       {conditionsWithRequirements?.length > 0 && (
@@ -270,7 +269,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
           </Col>
         </Row>
       }
-    ></ScrollSidePageWrapper>
+    />
   );
 };
 

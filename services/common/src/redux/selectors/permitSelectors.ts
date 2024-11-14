@@ -1,7 +1,7 @@
 import { createSelector } from "reselect";
 import { getNoticeOfWork } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import * as permitReducer from "../reducers/permitReducer";
-import { IMineReportPermitRequirement, IPermit } from "@mds/common/interfaces";
+import { IMineReportPermitRequirement } from "@mds/common/interfaces";
 
 const draft = "DFT";
 
@@ -88,15 +88,8 @@ export const getPermits = createSelector([getUnformattedPermits], (permits) => {
 
 export const getMineReportPermitRequirements = (permitGuid) =>
   createSelector(
-    [getPermitByGuid(permitGuid)],
-    (permit: IPermit): IMineReportPermitRequirement[] => {
-      if (!permit?.permit_amendments) {
-        return [];
-      }
-      const latestAmendment = permit.permit_amendments.filter(
-        (a) => a.permit_amendment_status_code !== draft
-      )[0];
-
+    [getLatestAmendmentByPermitGuid(permitGuid)],
+    (latestAmendment): IMineReportPermitRequirement[] => {
       return (latestAmendment && latestAmendment.mine_report_permit_requirements) ?? [];
     }
   );
