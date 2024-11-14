@@ -4,7 +4,6 @@ from sqlalchemy.dialects.postgresql import UUID
 
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy import case
-from werkzeug.exceptions import BadRequest
 
 from app.api.mines.documents.models.mine_document_bundle import MineDocumentBundle
 from app.api.parties.party import PartyOrgBookEntity
@@ -13,17 +12,13 @@ from app.api.services.ams_api_service import AMSApiService
 from app.extensions import db
 
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
-from app.api.utils.access_decorators import is_minespace_user
 from app.api.projects.project_summary.models.project_summary_document_xref import ProjectSummaryDocumentXref
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.projects.project.models.project import Project
-from app.api.projects.project_contact.models.project_contact import ProjectContact
-from app.api.projects.project_summary.models.project_summary_contact import ProjectSummaryContact
 from app.api.projects.project_summary.models.project_summary_authorization import ProjectSummaryAuthorization
 from app.api.projects.project_summary.models.project_summary_authorization_document_xref import \
     ProjectSummaryAuthorizationDocumentXref
-from app.api.projects.project_summary.models.project_summary_permit_type import ProjectSummaryPermitType
 from app.api.parties.party.models.party import Party
 from app.api.parties.party.models.address import Address
 from app.api.constants import PROJECT_SUMMARY_EMAILS, MDS_EMAIL, PERM_RECL_EMAIL
@@ -1313,7 +1308,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
 
     def send_project_summary_email(self, mine, message):
-        current_app.logger.info(f'HI TARA Sending email with message {message}')
 
         project_lead_email = self.project_lead_email
 

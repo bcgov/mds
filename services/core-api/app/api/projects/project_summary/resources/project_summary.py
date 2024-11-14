@@ -5,7 +5,7 @@ from werkzeug.exceptions import BadRequest, NotFound
 
 from app.extensions import api
 from app.api.activity.utils import trigger_notification
-from app.api.utils.access_decorators import MINESPACE_PROPONENT, requires_any_of, VIEW_ALL, MINE_ADMIN, is_minespace_user, EDIT_PROJECT_SUMMARIES
+from app.api.utils.access_decorators import MINESPACE_PROPONENT, requires_any_of, VIEW_ALL, MINE_ADMIN, EDIT_PROJECT_SUMMARIES
 from app.api.mines.mine.models.mine import Mine
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
@@ -16,7 +16,7 @@ from app.api.projects.project.models.project import Project
 from app.api.activity.models.activity_notification import ActivityType
 
 from app.api.activity.utils import trigger_notification
-from app.api.projects.project.project_util import ProjectUtil
+from app.api.projects.project.project_util import notify_file_updates
 from decimal import Decimal
 
 PAGE_DEFAULT = 1
@@ -302,7 +302,7 @@ class ProjectSummaryResource(Resource, UserMixin):
 
         # notify on document updates
         if has_new_documents:
-            ProjectUtil.notify_file_updates(project, mine, project_summary.status_code)
+            notify_file_updates(project, mine, project_summary.status_code)
 
         return project_summary
 
