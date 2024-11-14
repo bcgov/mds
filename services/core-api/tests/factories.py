@@ -1066,7 +1066,7 @@ class PermitAmendmentFactory(BaseFactory):
     received_date = TODAY
     issue_date = factory.LazyFunction(date.today)
 
-    authorization_end_date = factory.Faker('date_time_between', start_date='+31d', end_date='+89d')
+    authorization_end_date = factory.Faker('date_between', start_date='+31d', end_date='+89d')
     permit_amendment_status_code = 'ACT'
     permit_amendment_type_code = 'AMD'
     description = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
