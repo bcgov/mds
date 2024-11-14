@@ -101,12 +101,3 @@ def get_current_core_or_ms_env_url(app):
     elif app == 'ms':
         ms_config_property = f'MINESPACE_{(Config.ENVIRONMENT_NAME).upper()}_URL'
         return getattr(Config, ms_config_property)
-
-class EnumListField(Raw):
-    def format(self, value):
-        if value is None:
-            return None
-        try:
-            return [enum.value for enum in value]
-        except AttributeError:
-            raise ValidationError("Invalid enum value")

@@ -28,6 +28,7 @@ class MineReportPermitRequirementResource(Resource, UserMixin):
     parser.add_argument('permit_condition_id', type=int, location='json')
     parser.add_argument('permit_amendment_id', type=int, location='json')
 
+    @api.expect(parser)
     @api.doc(description='creates a new mine report permit requirement')
     @api.marshal_with(MINE_REPORT_PERMIT_REQUIREMENT, code=201)
     @requires_any_of([EDIT_REPORT])
