@@ -40,6 +40,8 @@ class UNTPCCMinesActPermit(cc.ConformityAttestation):
     permitNumber: str
 
 
+W3C_CRED_ID_PREFIX = f"{Config.ORGBOOK_PUBLISHER_BASE_URL}/credentials/"
+
 permit_amendments_for_orgbook_query = """
     select pa.permit_amendment_guid, poe.party_guid
 
@@ -74,7 +76,7 @@ class W3CCred(BaseModel):
             Config.UNTP_DIGITAL_CONFORMITY_CREDENTIAL_CONTEXT,
             Config.UNTP_BC_MINES_ACT_PERMIT_CONTEXT,
         ])
-    id: str
+    id: str | None
     type: List[str]
     issuer: Union[str, dict[str, str]]
     # TODO: update to `validFrom` for vcdm 2.0 once available in aca-py/traction, which is an optional property
@@ -182,12 +184,12 @@ def process_all_untp_map_for_orgbook():
             task_logger.warning(f"Permit Amendment not found for permit_amendment_guid={row[0]}")
             continue
 
-        pa_cred, new_id = VerifiableCredentialManager.produce_untp_cc_map_payload(public_did, pa)
+        pa_cred = VerifiableCredentialManager.produce_untp_cc_map_payload_without_id(public_did, pa)
         if not pa_cred:
             task_logger.warning(f"pa_cred could not be created")
             continue
 
-        payload_hash = md5(pa_cred.json(by_alias=True).encode('utf-8')).hexdigest()
+        payload_hash = md5(pa_cred.model_dump_json(by_alias=True).encode('utf-8')).hexdigest()
         existing_paob = PermitAmendmentOrgBookPublish.find_by_unsigned_payload_hash(
             payload_hash, unsafe=True)
 
@@ -196,13 +198,16 @@ def process_all_untp_map_for_orgbook():
             #this assumes acapy is not changing the result if the payload is unchanged
             continue
 
+        new_credential_id = f"{Config.ORGBOOK_PUBLISHER_BASE_URL}/credentials/{new_credential_id}"
+        pa_cred.id = new_credential_id
+
         paob = PermitAmendmentOrgBookPublish(
             permit_amendment_guid=row[0],
             party_guid=row[1],
             unsigned_payload_hash=payload_hash,
             permit_number=pa_cred.credentialSubject.permitNumber,
             orgbook_entity_id=pa_cred.credentialSubject.issuedToParty.registeredId,
-            orgbook_credential_id=new_id,
+            orgbook_credential_id=new_credential_id,
         )
         records.append((pa_cred, paob))
 
@@ -272,7 +277,7 @@ def push_untp_map_data_to_publisher():
 
     for row in permit_amendment_query_results:
         pa = PermitAmendment.find_by_permit_amendment_guid(row[0], unsafe=True)
-        pa_cred, new_id = VerifiableCredentialManager.produce_untp_cc_map_payload(
+        pa_cred = VerifiableCredentialManager.produce_untp_cc_map_payload_without_id(
             Config.CHIEF_PERMITTING_OFFICER_DID_WEB, pa)
         if not pa_cred:
             task_logger.warning(f"pa_cred could not be created for permit_amendment_guid={row[0]}")
@@ -300,8 +305,10 @@ def push_untp_map_data_to_publisher():
                 ],
             }
         }
+
         current_app.logger.warning(f"publishing record={publish_payload}")
         payload_hash = md5(json.dumps(publish_payload).encode('utf-8')).hexdigest()
+        current_app.logger.warning(f"payload hash={payload_hash}")
 
         publish_record = PermitAmendmentOrgBookPublish(
             unsigned_payload_hash=payload_hash,
@@ -311,7 +318,7 @@ def push_untp_map_data_to_publisher():
             publish_state=None,
             permit_number=pa_cred.credentialSubject.permitNumber,
             orgbook_entity_id=pa_cred.credentialSubject.issuedToParty.registeredId,
-            orgbook_credential_id=new_id,
+            orgbook_credential_id=None,
             error_msg=None)
 
         try:
@@ -324,14 +331,16 @@ def push_untp_map_data_to_publisher():
 
             publish_record.publish_state = post_resp.ok
             publish_record.error_msg = post_resp.text if not post_resp.ok else None
+            publish_record.orgbook_credential_id = post_resp.json()["credentialId"]
+
             publish_record.save()
 
         except IntegrityError:
-            task_logger.info(
+            current_app.logger.info(
                 f"credential hash collision, skipping cred for permit_amendment={row[0]}")
 
         if publish_record.error_msg:
-            task_logger.warning(
+            current_app.logger.warning(
                 f"failed to publish unsigned_payload_id={publish_record.unsigned_payload_hash} error={publish_record.error_msg}"
             )
         else:
@@ -447,8 +456,8 @@ class VerifiableCredentialManager():
         return credential
 
     @classmethod
-    def produce_untp_cc_map_payload(cls, did: str,
-                                    permit_amendment: PermitAmendment) -> Tuple[W3CCred, UUID]:
+    def produce_untp_cc_map_payload_without_id(cls, did: str,
+                                               permit_amendment: PermitAmendment) -> W3CCred:
         """Produce payload for Mines Act Permit UNTP Conformity Credential from permit amendment and did."""
 
         #attributes in anoncreds but not in untp
@@ -568,9 +577,8 @@ class VerifiableCredentialManager():
             issuedToParty=untp_party_business,
             assessment=[untp_assessment])
 
-        new_credential_id = uuid4()
         w3c_cred = W3CCred(
-            id=f"{Config.ORGBOOK_PUBLISHER_BASE_URL}/credentials/{new_credential_id}",
+            id=None,                                                                                # to be populated after hashing.
             type=[
                 "VerifiableCredential", "DigitalConformityCredential", "BCMinesActPermitCredential"
             ],
@@ -583,4 +591,4 @@ class VerifiableCredentialManager():
                 "type": "JsonSchema"
             }])
 
-        return w3c_cred, new_credential_id
+        return w3c_cred
