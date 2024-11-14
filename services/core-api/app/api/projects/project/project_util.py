@@ -4,7 +4,7 @@ from app.api.activity.utils import trigger_notification
 from app.api.activity.models.activity_notification import ActivityType
 
 
-def notify_file_updates(project, mine, status_code = None):
+def notify_file_updates(project, mine, status_code = None) -> None:
     status_codes = ["SUB", "ASG", "CHR"]
 
     if is_feature_enabled(Feature.MINE_APPLICATION_FILE_UDPATE_ALERTS) and status_code in status_codes:

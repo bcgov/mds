@@ -267,7 +267,7 @@ class EmailService():
             'encoding': encoding,
             'priority': priority,
         }
-        
+
         resp = requests.post(url, json.dumps(data), headers=headers)
         try:
             resp_data = resp.json()

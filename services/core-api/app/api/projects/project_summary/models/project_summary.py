@@ -1307,7 +1307,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 EmailService.send_template_email(subject, email_recipients, emli_body, emli_context, cc=cc)
 
 
-    def send_project_summary_email(self, mine, message):
+    def send_project_summary_email(self, mine, message) -> None:
 
         project_lead_email = self.project_lead_email
 
