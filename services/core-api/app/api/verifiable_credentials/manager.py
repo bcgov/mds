@@ -85,7 +85,7 @@ class W3CCred(BaseModel):
     credentialSchema: List[dict]
 
 
-def convert_date_to_iso_datetime(dt: datetime) -> str:
+def convert_date_to_iso_datetime(dt: datetime | date) -> str:
     return datetime(dt.year, dt.month, dt.day, 0, 0, 0, tzinfo=ZoneInfo("UTC")).isoformat()
 
 
@@ -272,7 +272,7 @@ def push_untp_map_data_to_publisher():
     permit_amendment_query_results = db.session.execute(
         permit_amendments_for_orgbook_query).fetchall()
 
-    failed_credentials: List[Tuple[str, bool]] = []
+    failed_credentials: List[Tuple[str, str | None]] = []
     success_count = 0
 
     for row in permit_amendment_query_results:
@@ -344,7 +344,7 @@ def push_untp_map_data_to_publisher():
                 f"failed to publish unsigned_payload_id={publish_record.unsigned_payload_hash} error={publish_record.error_msg}"
             )
         else:
-            success_count += success_count + 1
+            success_count = success_count + 1
         failed_credentials.append((publish_record.unsigned_payload_hash, publish_record.error_msg))
 
     return f"num published={success_count}, num failed = {len(failed_credentials)}"
@@ -457,7 +457,7 @@ class VerifiableCredentialManager():
 
     @classmethod
     def produce_untp_cc_map_payload_without_id(cls, did: str,
-                                               permit_amendment: PermitAmendment) -> W3CCred:
+                                               permit_amendment: PermitAmendment) -> W3CCred | None:
         """Produce payload for Mines Act Permit UNTP Conformity Credential from permit amendment and did."""
 
         #attributes in anoncreds but not in untp
@@ -481,7 +481,7 @@ class VerifiableCredentialManager():
         for pmt_appt in pmt_appts:
             pmt_appt_start_date = None
             if not pmt_appt.start_date:
-                pmt_appt_start_date = date(1900)
+                pmt_appt_start_date = date(1900, 0, 0)
             elif isinstance(pmt_appt.start_date, date):
                 pmt_appt_start_date = pmt_appt.start_date
             elif isinstance(pmt_appt.start_date, datetime):
@@ -569,11 +569,13 @@ class VerifiableCredentialManager():
                 id=
                 "https://bcgov.github.io/digital-trust-toolkit/docs/governance/mining/bc-mines-act-permit/1.1.1/governance",
                 name="BC Mines Act Permit Credential (1.1.1) Governance Documentation"),
-            authorisations=base.Endorsement(
-                id=
-                "https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/mines-contact-info",
-                name="BC Chief Permitting Officer of Mines",
-                issuingAuthority=untp_party_cpo),
+            authorisation=[
+                base.Endorsement(
+                    id=
+                    "https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/mines-contact-info",
+                    name="BC Chief Permitting Officer of Mines",
+                    issuingAuthority=untp_party_cpo)
+            ],
             issuedToParty=untp_party_business,
             assessment=[untp_assessment])
 
