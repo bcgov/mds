@@ -174,6 +174,12 @@ export enum MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODES {
   UNR = "Under review",
 }
 
+export enum PROJECT_DECISION_PACKAGE_STATUS_CODES {
+  CMP = "Completed",
+  INP = "In Progress",
+  NTS = "Not Started",
+}
+
 export enum MINE_REPORT_SUBMISSION_CODES {
   NRQ = "NRQ",
   REQ = "REQ",

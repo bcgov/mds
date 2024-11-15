@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Form, Radio } from "antd";
+import { Form, Radio, Space } from "antd";
 
 /**
  * @class RenderRadioButtons - Ant Design `Radio` component used for boolean values in redux-form.
@@ -16,11 +16,12 @@ interface RenderRadioButtonsProps {
   meta: any;
   disabled: boolean;
   input: any;
+  isVertical?: boolean;
   customOptions: { label: string; value: any }[];
 }
 
 const RenderRadioButtons: FC<RenderRadioButtonsProps> = (props) => {
-  const { meta, label, disabled, input, id, customOptions } = props;
+  const { meta, label, disabled, input, id, customOptions, isVertical } = props;
 
   const options = customOptions ?? [
     { label: "Yes", value: true },
@@ -46,8 +47,17 @@ const RenderRadioButtons: FC<RenderRadioButtonsProps> = (props) => {
         value={input.value}
         onChange={handleRadioChange}
         id={id as string}
-        options={options}
-      />
+      >
+        <Space direction={isVertical ? "vertical" : "horizontal"}>
+          {options.map((option) => {
+            return (
+              <Radio key={option.value} value={option.value}>
+                {option.label}
+              </Radio>
+            );
+          })}
+        </Space>
+      </Radio.Group>
     </Form.Item>
   );
 };

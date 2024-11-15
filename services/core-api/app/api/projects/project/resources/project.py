@@ -100,15 +100,12 @@ class ProjectListDashboardResource(Resource, UserMixin):
         params={
             'page_number': f'The page number of paginated records to return. Default: {PAGE_DEFAULT}',
             'per_page': f'The number of records to return per page. Default: {PER_PAGE_DEFAULT}',
-            'mrc_review_required': 'Filter by Mine Review Committee required (MRC)',
-            'status_code': 'Filter by status code.',
             'project_lead_name': 'EMLI project lead for the project',
             'mine_commodity_code': 'A specific commodity to filter the project list on.',
             'sort_field': 'The field the returned results will be ordered by',
             'sort_dir': 'The direction by which the sort field is ordered',
             'search': 'Search by mine name or number',
             'updated_date': 'Last updated date',
-            'application_stage': 'Application stage (InformationRequirementsTable, MajorMineApplication, ProjectSummary) to filter the project list on',
         })
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     @api.marshal_with(PAGINATED_PROJECT_LIST, code=200)
@@ -119,51 +116,59 @@ class ProjectListDashboardResource(Resource, UserMixin):
             "sort_dir": request.args.get('sort_dir', 'asc', type=str),
             "page_size": request.args.get('per_page', PER_PAGE_DEFAULT, type=int),
             "search_terms": request.args.get('search', type=str),
-            "mrc_review_required": request.args.get('mrc_review_required', type=str),
             "project_lead_name": request.args.get('project_lead_name', type=str),
-            "status_code": request.args.get('status_code', type=str),
-            "application_stage": request.args.get('application_stage', type=str),
             "mine_commodity_code": request.args.get('mine_commodity_code', type=str),
             "update_timestamp": request.args.get('updated_date', type=str)
         }
         update_timestamp_args = args['update_timestamp']
         paginated_project_query, pagination_details = self._apply_filters_and_pagination(args)
-
         projects = paginated_project_query.all()
-
         most_recent_projects = list()
         for project in projects:
             all_stages = list()
+            project_summary = information_requirements = major_mine_application = project_decision_package = None
             if project.project_summary and project.project_summary.project_summary_id:
-                all_stages.append({'key': 'Project Summary', 'update_timestamp': project.project_summary.update_timestamp})
+                project_summary = {
+                    'status_code': project.project_summary.status_code,
+                    'update_timestamp': project.project_summary.update_timestamp,
+                    'update_user': project.project_summary.update_user,
+                    }
+                
+                all_stages.append(project_summary)
             if project.information_requirements_table and project.information_requirements_table.irt_id:
-                all_stages.append({'key': 'IRT', 'update_timestamp': project.information_requirements_table.update_timestamp})
+                information_requirements = {
+                    'status_code': project.information_requirements_table.status_code,
+                    'update_timestamp': project.information_requirements_table.update_timestamp,
+                    'update_user': project.information_requirements_table.update_user,
+                    }
+                
+                all_stages.append(information_requirements)
             if project.major_mine_application and project.major_mine_application.major_mine_application_id:
-                all_stages.append({'key': 'Final Application', 'update_timestamp': project.major_mine_application.update_timestamp})
+                major_mine_application = {
+                    'status_code': project.major_mine_application.status_code,
+                    'update_timestamp': project.major_mine_application.update_timestamp,
+                    'update_user': project.major_mine_application.update_user,
+                    }
+                
+                all_stages.append(major_mine_application)
+                
+            if project.project_decision_package and project.project_decision_package.project_decision_package_id:
+                project_decision_package = {
+                    'status_code': project.project_decision_package.status_code,
+                    'update_timestamp': project.project_decision_package.update_timestamp,
+                    'update_user': project.project_decision_package.update_user,
+                }
+
+                all_stages.append(project_decision_package)
 
             all_stages.sort(key=lambda x: x['update_timestamp'], reverse=True)
-
-            id = guid = status_code = stage = record = None
+            status_code = record = None
             if all_stages:
-                stage = all_stages[0]['key']
                 update_timestamp = all_stages[0]['update_timestamp']
-
-                if stage == 'Project Summary':
-                    id = project.project_summary.project_summary_id
-                    guid = project.project_summary.project_summary_guid
-                    status_code = project.project_summary.status_code
-                elif stage == 'IRT':
-                    id = project.information_requirements_table.irt_id
-                    guid = project.information_requirements_table.irt_guid
-                    status_code = project.information_requirements_table.status_code
-                else:
-                    id = project.major_mine_application.major_mine_application_id
-                    guid = project.major_mine_application.major_mine_application_guid
-                    status_code = project.major_mine_application.status_code
-
+                status_code = all_stages[0]['status_code']
                 status_code_filter_pass = update_timestamp_filter_pass = False
 
-                if args['status_code'] and status_code in args['status_code'] or args['status_code'] is None:
+                if status_code:
                     status_code_filter_pass = True
 
                 update_timestamp_args = args['update_timestamp']
@@ -176,14 +181,9 @@ class ProjectListDashboardResource(Resource, UserMixin):
                     update_timestamp_filter_pass = True
                 if status_code_filter_pass and update_timestamp_filter_pass:
                     record = {
-                        'stage': stage,
-                        'id': id,
-                        'guid': guid,
                         'project_title': project.project_title,
                         'project_id': project.project_id,
                         'project_guid': project.project_guid,
-                        'mrc_review_required': project.mrc_review_required,
-                        'status_code': status_code,
                         'contacts': project.contacts,
                         'project_lead_party_guid': project.project_lead_party_guid,
                         'project_lead_name': project.project_lead_name,
@@ -191,12 +191,15 @@ class ProjectListDashboardResource(Resource, UserMixin):
                         'mine': {
                             'mine_name': project.mine.mine_name,
                             'mine_type': project.mine.mine_type
-                        }
+                        },
+                        'project_summary': project_summary,
+                        'major_mine_application': major_mine_application,
+                        'information_requirements': information_requirements,
+                        'project_decision_package': project_decision_package,
                     }
 
             if record:
                 most_recent_projects.append(record)
-
         return {
             'records': most_recent_projects,
             'current_page': pagination_details.page_number,
@@ -219,8 +222,8 @@ class ProjectListDashboardResource(Resource, UserMixin):
             'project_id': 'Project',
             'first_name': 'Party',
             'party_name': 'Party',
-            'mrc_review_required': 'Project',
             'mine_name': 'Mine',
+            'update_timestamp': 'Project',
         }
 
         if args['sort_field'] == 'project_lead_name':
@@ -238,57 +241,19 @@ class ProjectListDashboardResource(Resource, UserMixin):
             ]
             conditions.append({'or': search_conditions})
 
-        if args["mrc_review_required"]:
-            mrc_review_required = True if args["mrc_review_required"] == "true" else False
-            conditions.append(self._build_filter('Project', 'mrc_review_required', '==', mrc_review_required))
-
-        application_stage = args.get("application_stage", None)
-
-        if application_stage:
-            if application_stage == 'InformationRequirementsTable':
-                query = query.join(InformationRequirementsTable)
-            if application_stage == 'MajorMineApplication':
-                query = query.join(MajorMineApplication)
-            if application_stage == 'ProjectSummary':
-                query = query.join(ProjectSummary)
-        else:
-            query = query.join(ProjectSummary, isouter=True).join(InformationRequirementsTable, isouter=True). join(MajorMineApplication, isouter=True).join(Party, Project.project_lead_party_guid == Party.party_guid, isouter=True)
+        query = query.join(ProjectSummary, isouter=True).join(InformationRequirementsTable, isouter=True). join(MajorMineApplication, isouter=True).join(Party, Project.project_lead_party_guid == Party.party_guid, isouter=True)
 
         if args["mine_commodity_code"]:
             conditions.append(self._build_filter('MineType', 'active_ind', '==', True))
             conditions.append(self._build_filter('MineTypeDetail', 'mine_commodity_code', '==', args["mine_commodity_code"]))
 
-        if args['status_code']:
-            if application_stage:
-                if application_stage == 'ProjectSummary':
-                    conditions.append(self._build_filter('ProjectSummary', 'status_code', '==', args["status_code"]))
-                if application_stage == 'InformationRequirementsTable':
-                    conditions.append(self._build_filter('InformationRequirementsTable', 'status_code', '==', args["status_code"]))
-                if application_stage == 'MajorMineApplication':
-                    conditions.append(self._build_filter('MajorMineApplication', 'status_code', '==', args["status_code"]))
-            else:
-                code_status = [
-                    self._build_filter('ProjectSummary', 'status_code', '==', args["status_code"]),
-                    self._build_filter('InformationRequirementsTable', 'status_code', '==', args["status_code"]),
-                    self._build_filter('MajorMineApplication', 'status_code', '==', args["status_code"])
-                ]
-                conditions.append({'or': code_status})
-
         if args["update_timestamp"]:
-            if application_stage:
-                if application_stage == 'ProjectSummary':
-                    conditions.append(self._build_filter('ProjectSummary', 'update_timestamp', '>=', args["update_timestamp"]))
-                if application_stage == 'InformationRequirementsTable':
-                    conditions.append(self._build_filter('InformationRequirementsTable', 'update_timestamp', '>=', args["update_timestamp"]))
-                if application_stage == 'MajorMineApplication':
-                    conditions.append(self._build_filter('MajorMineApplication', 'update_timestamp', '>=', args["update_timestamp"]))
-            else:
-                update_timestamp = [
-                    self._build_filter('ProjectSummary', 'update_timestamp', '>=', args['update_timestamp']),
-                    self._build_filter('InformationRequirementsTable', 'update_timestamp', '>=', args['update_timestamp']),
-                    self._build_filter('MajorMineApplication', 'update_timestamp', '>=', args['update_timestamp'])
-                ]
-                conditions.append({'or': update_timestamp})
+            update_timestamp = [
+                self._build_filter('ProjectSummary', 'update_timestamp', '>=', args['update_timestamp']),
+                self._build_filter('InformationRequirementsTable', 'update_timestamp', '>=', args['update_timestamp']),
+                self._build_filter('MajorMineApplication', 'update_timestamp', '>=', args['update_timestamp'])
+            ]
+            conditions.append({'or': update_timestamp})
 
         if args['project_lead_name'] is not None:
             lead_items = args['project_lead_name'].split()

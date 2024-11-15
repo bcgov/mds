@@ -7467,14 +7467,9 @@ export const PROJECTS = {
 export const MAJOR_PROJECTS_DASHBOARD = {
   records: [
     {
-      stage: "Project Summary",
-      id: 1,
-      guid: "3a8087ac-1046-43cb-b152-613db59fff32",
       project_title: "Test Project Title",
       project_id: "1",
       project_guid: "cb33beb3-4c35-4695-b89b-7bab53a5f94a",
-      mrc_review_required: false,
-      status_code: "SUB",
       contacts: [
         {
           name: "Devin Lucas",
@@ -7497,6 +7492,26 @@ export const MAJOR_PROJECTS_DASHBOARD = {
             ],
           },
         ],
+      },
+      information_requirements: {
+        status_code: "SUB",
+        update_timestamp: "2022-08-01T00:00:00+00:00",
+        update_user: "Joe Average",
+      },
+      major_mine_application: {
+        status_code: "SUB",
+        update_timestamp: "2022-08-01T00:00:00+00:00",
+        update_user: "Joe Average",
+      },
+      project_decision_package: {
+        status_code: "SUB",
+        update_timestamp: "2022-08-01T00:00:00+00:00",
+        update_user: "Joe Average",
+      },
+      project_summary: {
+        status_code: "SUB",
+        update_timestamp: "2022-08-01T00:00:00+00:00",
+        update_user: "Joe Average",
       },
     },
   ],

@@ -11,7 +11,7 @@ from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 
 from app.api.mines.mine.models.mine import Mine
-from app.api.projects.project.project_util import ProjectUtil
+from app.api.projects.project.project_util import notify_file_updates
 
 class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = "information_requirements_table"
@@ -159,7 +159,7 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
 
         if mine_doc and project:
             mine = Mine.find_by_mine_guid(mine_doc.mine_guid)
-            ProjectUtil.notifiy_file_updates(project, mine)
+            notify_file_updates(project, mine, self.status_code)
 
         return self
 

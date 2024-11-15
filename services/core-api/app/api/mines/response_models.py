@@ -2,6 +2,7 @@ from flask_restx import fields, marshal
 
 from app.api.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
 from app.api.dams.dto import DAM_MODEL
+from app.api.mines.reports.models.mine_report_permit_requirement import CimOrCpo, OfficeDestination
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointmentStatus, MinePartyAcknowledgedStatus
 from app.api.parties.response_models import PARTY
 from app.extensions import api
@@ -244,6 +245,17 @@ MINE_TYPE_MODEL = api.model(
         'mine_type_detail': fields.List(fields.Nested(MINE_TYPE_DETAIL_MODEL)),
     })
 
+MINE_REPORT_PERMIT_REQUIREMENT = api.model(
+    'MineReportPermitRequirement', {
+        'mine_report_permit_requirement_id': fields.Integer,
+        'due_date_period_months': fields.Integer,
+        'initial_due_date': fields.Date,
+        'cim_or_cpo': fields.String(enum=[e.value for e in CimOrCpo], attribute='cim_or_cpo.name'),
+        'ministry_recipient': fields.List(fields.String(enum=[e.value for e in OfficeDestination])),
+        'permit_condition_id': fields.Integer
+    }
+)
+
 PERMIT_AMENDMENT_MODEL = api.model(
     'PermitAmendment', {
         'permit_amendment_id':
@@ -297,7 +309,8 @@ PERMIT_AMENDMENT_MODEL = api.model(
         'is_generated_in_core':
             fields.Boolean,
         'preamble_text':
-            fields.String
+            fields.String,
+        'mine_report_permit_requirements': fields.List(fields.Nested(MINE_REPORT_PERMIT_REQUIREMENT))
     })
 
 BOND_MODEL = api.model('Bond_guid', {'bond_guid': fields.String})
@@ -325,7 +338,7 @@ PERMIT_MODEL = api.model(
         'permit_prefix': fields.String,
         'status_changed_timestamp': fields.DateTime,
         'update_user': fields.String,
-        'update_timestamp': fields.String
+        'update_timestamp': fields.String,
     })
 
 PERMIT_STATUS_CODE_MODEL = api.model('PermitStatusCode', {

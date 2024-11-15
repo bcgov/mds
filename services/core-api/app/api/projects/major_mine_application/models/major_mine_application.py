@@ -1,9 +1,8 @@
 from multiprocessing.sharedctypes import Value
-from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.dialects.postgresql import UUID
 
 from sqlalchemy.schema import FetchedValue
-from werkzeug.exceptions import BadRequest, NotFound
+from werkzeug.exceptions import NotFound
 
 from app.api.mines.documents.models.mine_document_bundle import MineDocumentBundle
 from app.extensions import db
@@ -14,7 +13,7 @@ from app.api.services.email_service import EmailService
 from app.api.projects.major_mine_application.models.major_mine_application_document_xref import MajorMineApplicationDocumentXref
 from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.mines.mine.models.mine import Mine
-from app.api.projects.project.project_util import ProjectUtil
+from app.api.projects.project.project_util import notify_file_updates
 
 class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'major_mine_application'
@@ -187,7 +186,7 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
             if not mine:
                 raise NotFound('Mine not found.')
 
-            ProjectUtil.notifiy_file_updates(project, mine)
+            notify_file_updates(project, mine, status_code)
 
         return self
 

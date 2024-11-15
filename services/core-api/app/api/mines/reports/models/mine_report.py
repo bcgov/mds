@@ -26,7 +26,6 @@ from app.api.utils.helpers import get_current_core_or_ms_env_url
 from app.api.utils.helpers import format_email_datetime_to_string
 from app.api.mines.exceptions.mine_exceptions import MineException
 
-
 class MineReport(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = "mine_report"
     mine_report_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
@@ -40,6 +39,11 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
     mine_report_definition_guid = association_proxy('mine_report_definition',
                                                     'mine_report_definition_guid')
     mine_report_definition_report_name = association_proxy('mine_report_definition', 'report_name')
+    mine_report_permit_requirement_id = db.Column(
+        db.Integer,
+        db.ForeignKey('mine_report_permit_requirement.mine_report_permit_requirement_id'),
+    )
+    mine_report_permit_requirement = db.relationship('MineReportPermitRequirement', lazy='joined')
 
     submitter_name = db.Column(db.String, nullable=False)
     submitter_email = db.Column(db.String, nullable=False)

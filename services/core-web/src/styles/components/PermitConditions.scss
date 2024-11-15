@@ -1,30 +1,68 @@
 @use "../base.scss" as *;
 
 div.condition-layer {
-    padding: 12px 8px 0 8px;
-    font-weight: normal;
+  padding: 12px 8px 0 8px;
+  font-weight: normal;
+  cursor: pointer;
 
-    &--0 {
-        border: 1px solid $transparent-dark-grey;
-        border-radius: 4px;
-        padding-bottom: 12px;
-        font-weight: 700;
+  &--editing {
+    cursor: initial;
+  }
 
-        p.condition-layer--0 {
-            font-weight: 600;
-        }
+  &--0 {
+    border: 1px solid $transparent-dark-grey;
+    border-radius: 4px;
+    padding-bottom: 12px;
+    font-weight: 700;
 
-        p.condition-layer {
-            white-space: pre-wrap;
-        }
-
-        >.condition-collapsed {
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 3;
-            line-clamp: 3;
-            text-overflow: ellipsis;
-            overflow: hidden;
-        }
+    p.condition-layer--0 {
+      font-weight: 600;
     }
+
+    p.condition-layer {
+      white-space: pre-wrap;
+    }
+
+    > .condition-collapsed {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      line-clamp: 3;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  }
+}
+
+.condition-edit-buttons {
+  padding: 12px 8px 0 8px;
+}
+
+.condition-edit-buttons > button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.condition-edit-buttons > button > svg {
+  margin-right: 4px;
+}
+
+.report-collapse-container {
+  width: 100%;
+}
+
+.report-collapse-container > div {
+  border: 1px solid #d9d9d9;
+}
+
+.report-collapse {
+  width: 100%;
+  background-color: #f9f9f9;
+}
+
+.icon-button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

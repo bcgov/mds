@@ -56,6 +56,8 @@ class CustomFormatter(logging.Formatter):
 
         # Call the parent formatter to format the log message
         formatted_message = super().format(record)
+        if Config.ENVIRONMENT_NAME == 'local':
+            return f'{formatted_message}: {record.message}'
 
         # Add the traceid, keycloak client id and message to the formatted log message
         formatted_message = f'{formatted_message} [trace_id={traceid} client={KEY_CLOAK_CLIENT_ID}]: {record.message}'

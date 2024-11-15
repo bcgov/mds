@@ -2,75 +2,126 @@
 
 exports[`Major Project Search Component renders properly 1`] = `
 <div>
-  <Row>
-    <Col
-      md={
-        Object {
-          "offset": 6,
-          "span": 12,
-        }
-      }
-      xs={
-        Object {
-          "offset": 2,
-          "span": 20,
-        }
-      }
+  <div>
+    <div
+      class="ant-row"
     >
-      <span
-        className="advanced-search__container"
+      <div
+        class="ant-col ant-col-xs-20 ant-col-xs-offset-2 ant-col-md-12 ant-col-md-offset-6"
       >
-        <ReduxForm
-          destroyOnUnmount={true}
-          enableReinitialize={true}
-          forceUnregisterOnUnmount={false}
-          form="MAJOR_MINE_APPLICATION_ADVANCED_SEARCH"
-          getFormState={[Function]}
-          initialValues={Object {}}
-          isAdvanceSearch={false}
-          keepDirtyOnReinitialize={false}
-          persistentSubmitErrors={false}
-          pure={true}
-          shouldAsyncValidate={[Function]}
-          shouldError={[Function]}
-          shouldValidate={[Function]}
-          shouldWarn={[Function]}
-          statusCodes={
-            Array [
-              Object {
-                "isActive": true,
-                "label": "Submitted",
-                "subType": null,
-                "value": "SUB",
-              },
-              Object {
-                "isActive": true,
-                "label": "In Review",
-                "subType": null,
-                "value": "UNR",
-              },
-              Object {
-                "isActive": true,
-                "label": "Review Complete",
-                "subType": null,
-                "value": "APV",
-              },
-              Object {
-                "isActive": true,
-                "label": "Change Requested",
-                "subType": null,
-                "value": "CHR",
-              },
-            ]
-          }
-          submitAsSideEffect={false}
-          toggleAdvancedSearch={[Function]}
-          touchOnBlur={false}
-          touchOnChange={false}
-          updateUnregisteredFields={false}
-        />
-      </span>
-    </Col>
-  </Row>
+        <span
+          class="advanced-search__container"
+        >
+          <form
+            class="ant-form ant-form-vertical"
+          >
+            <div
+              class="ant-row"
+              style="margin-left: -3px; margin-right: -3px;"
+            >
+              <div
+                class="ant-col ant-col-xs-24 ant-col-md-24"
+                style="padding-left: 3px; padding-right: 3px;"
+              >
+                <div
+                  class="ant-form-item ant-form-item-with-help"
+                >
+                  <div
+                    class="ant-row ant-form-item-row"
+                  >
+                    <div
+                      class="ant-col ant-form-item-control"
+                    >
+                      <div
+                        class="ant-form-item-control-input"
+                      >
+                        <div
+                          class="ant-form-item-control-input-content"
+                        >
+                          <input
+                            class="ant-input"
+                            id="search"
+                            name="search"
+                            placeholder="Search by mine name or number"
+                            type="text"
+                            value=""
+                          />
+                        </div>
+                      </div>
+                      <div
+                        style="display: flex; flex-wrap: nowrap;"
+                      >
+                        <div
+                          class="ant-form-item-explain ant-form-item-explain-connected"
+                          id="search_help"
+                          role="alert"
+                        >
+                          <div
+                            class=""
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="left center-mobile"
+            >
+              <button
+                class="ant-btn ant-btn-default btn--dropdown"
+                type="button"
+              >
+                <span>
+                  Expand Filters
+                </span>
+                <span
+                  aria-label="down"
+                  class="anticon anticon-down"
+                  role="img"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class=""
+                    data-icon="down"
+                    fill="currentColor"
+                    focusable="false"
+                    height="1em"
+                    viewBox="64 64 896 896"
+                    width="1em"
+                  >
+                    <path
+                      d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                    />
+                  </svg>
+                </span>
+              </button>
+            </div>
+            <div
+              class="right center-mobile"
+            >
+              <button
+                class="ant-btn ant-btn-secondary full-mobile"
+                type="reset"
+              >
+                <span>
+                  Clear Filters
+                </span>
+              </button>
+              <button
+                class="ant-btn ant-btn-primary full-mobile"
+                type="submit"
+              >
+                <span>
+                  Apply Filters
+                </span>
+              </button>
+            </div>
+          </form>
+        </span>
+      </div>
+    </div>
+  </div>
 </div>
 `;

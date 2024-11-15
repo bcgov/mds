@@ -3,6 +3,7 @@ import moment from "moment-timezone";
 import { DatePicker, Form } from "antd";
 import { BaseInputProps, BaseViewInput, getFormItemLabel } from "./BaseInput";
 import { FormConsumer } from "./FormWrapper";
+import { formatDate } from "@mds/common/redux/utils/helpers";
 
 /**
  * @constant RenderDate  - Ant Design `DatePicker` component for redux-form.
@@ -12,6 +13,7 @@ interface DateInputProps extends BaseInputProps {
   showTime?: boolean;
   yearMode?: boolean;
   disabledDate?: (currentDate) => boolean;
+  formatViewDate?: boolean;
 }
 
 const RenderDate: FC<DateInputProps> = ({
@@ -26,12 +28,18 @@ const RenderDate: FC<DateInputProps> = ({
   showTime = false,
   yearMode = false,
   disabledDate,
+  formatViewDate = false,
 }) => {
   return (
     <FormConsumer>
       {(value) => {
         if (!value.isEditMode) {
-          return <BaseViewInput label={label} value={input?.value} />;
+          return (
+            <BaseViewInput
+              label={label}
+              value={formatViewDate ? formatDate(input?.value) : input?.value}
+            />
+          );
         }
         // TS is very angry when showTime & picker are both passed as props
         let extraProps: any = {};

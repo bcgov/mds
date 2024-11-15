@@ -1,112 +1,494 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MajorProjectTable renders properly 1`] = `
-<CoreTable
-  columns={
-    Array [
-      Object {
-        "dataIndex": "project_title",
-        "key": "project_title",
-        "render": [Function],
-        "sortField": "project_title",
-        "sortOrder": false,
-        "sorter": true,
-        "title": "Project Title",
-      },
-      Object {
-        "dataIndex": "project_id",
-        "key": "project_id",
-        "render": [Function],
-        "sortOrder": false,
-        "sorter": [Function],
-        "title": "Project ID",
-      },
-      Object {
-        "dataIndex": "mine_name",
-        "key": "mine_name",
-        "render": [Function],
-        "sortOrder": false,
-        "sorter": [Function],
-        "title": "Mine Name",
-      },
-      Object {
-        "dataIndex": "mrc_review_required",
-        "key": "mrc_review_required",
-        "render": [Function],
-        "sortOrder": false,
-        "sorter": [Function],
-        "title": "MRC",
-      },
-      Object {
-        "dataIndex": "project_stage",
-        "key": "project_stage",
-        "render": [Function],
-        "sortOrder": false,
-        "title": "Stage",
-      },
-      Object {
-        "className": undefined,
-        "dataIndex": "status_code",
-        "key": "status_code",
-        "render": [Function],
-        "sortOrder": false,
-        "title": "Review Status",
-      },
-      Object {
-        "dataIndex": "project_lead_name",
-        "key": "project_lead_name",
-        "render": [Function],
-        "sortOrder": false,
-        "sorter": [Function],
-        "title": "EMLI Project Lead",
-      },
-      Object {
-        "dataIndex": "commodity",
-        "key": "commodity",
-        "render": [Function],
-        "sortField": "commodity",
-        "sortOrder": false,
-        "sorter": false,
-        "title": "Commodity",
-      },
-      Object {
-        "dataIndex": "update_timestamp",
-        "key": "update_timestamp",
-        "render": [Function],
-        "sortOrder": false,
-        "sorter": false,
-        "title": "Updated Date",
-      },
-      Object {
-        "dataIndex": "project",
-        "key": "project",
-        "render": [Function],
-        "sortOrder": false,
-        "title": "",
-      },
-    ]
-  }
-  condition={false}
-  dataSource={
-    Array [
-      Object {
-        "commodity": Array [
-          "",
-        ],
-        "guid": "3a8087ac-1046-43cb-b152-613db59fff32",
-        "key": "cb33beb3-4c35-4695-b89b-7bab53a5f94a",
-        "mine_name": undefined,
-        "mrc_review_required": "No",
-        "name": "Devin Lucas",
-        "project_id": "1",
-        "project_lead_name": undefined,
-        "project_stage": "Project Summary",
-        "project_title": "Test Project Title",
-        "status_code": "SUB",
-        "update_timestamp": "Aug 01 2022",
-      },
-    ]
-  }
-  onChange={[Function]}
-/>
+<div>
+  <div
+    class="ant-table-wrapper  core-table"
+  >
+    <div
+      class="ant-spin-nested-loading"
+    >
+      <div
+        class="ant-spin-container"
+      >
+        <div
+          class="ant-table"
+        >
+          <div
+            class="ant-table-container"
+          >
+            <div
+              class="ant-table-content"
+            >
+              <table
+                style="table-layout: auto;"
+              >
+                <colgroup>
+                  <col
+                    class="ant-table-expand-icon-col"
+                  />
+                </colgroup>
+                <thead
+                  class="ant-table-thead"
+                >
+                  <tr>
+                    <th
+                      class="ant-table-cell ant-table-row-expand-icon-cell"
+                    />
+                    <th
+                      aria-label="Project Title"
+                      class="ant-table-cell ant-table-column-has-sorters"
+                      tabindex="0"
+                    >
+                      <div
+                        class="ant-table-column-sorters"
+                      >
+                        <span
+                          class="ant-table-column-title"
+                        >
+                          Project Title
+                        </span>
+                        <span
+                          class="ant-table-column-sorter ant-table-column-sorter-full"
+                        >
+                          <span
+                            class="ant-table-column-sorter-inner"
+                          >
+                            <span
+                              aria-label="caret-up"
+                              class="anticon anticon-caret-up ant-table-column-sorter-up"
+                              role="presentation"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="caret-up"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="0 0 1024 1024"
+                                width="1em"
+                              >
+                                <path
+                                  d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                />
+                              </svg>
+                            </span>
+                            <span
+                              aria-label="caret-down"
+                              class="anticon anticon-caret-down ant-table-column-sorter-down"
+                              role="presentation"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="caret-down"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="0 0 1024 1024"
+                                width="1em"
+                              >
+                                <path
+                                  d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                />
+                              </svg>
+                            </span>
+                          </span>
+                        </span>
+                      </div>
+                    </th>
+                    <th
+                      aria-label="Client ID"
+                      class="ant-table-cell ant-table-column-has-sorters"
+                      tabindex="0"
+                    >
+                      <div
+                        class="ant-table-column-sorters"
+                      >
+                        <span
+                          class="ant-table-column-title"
+                        >
+                          Client ID
+                        </span>
+                        <span
+                          class="ant-table-column-sorter ant-table-column-sorter-full"
+                        >
+                          <span
+                            class="ant-table-column-sorter-inner"
+                          >
+                            <span
+                              aria-label="caret-up"
+                              class="anticon anticon-caret-up ant-table-column-sorter-up"
+                              role="presentation"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="caret-up"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="0 0 1024 1024"
+                                width="1em"
+                              >
+                                <path
+                                  d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                />
+                              </svg>
+                            </span>
+                            <span
+                              aria-label="caret-down"
+                              class="anticon anticon-caret-down ant-table-column-sorter-down"
+                              role="presentation"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="caret-down"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="0 0 1024 1024"
+                                width="1em"
+                              >
+                                <path
+                                  d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                />
+                              </svg>
+                            </span>
+                          </span>
+                        </span>
+                      </div>
+                    </th>
+                    <th
+                      aria-label="Mine Name"
+                      class="ant-table-cell ant-table-column-has-sorters"
+                      tabindex="0"
+                    >
+                      <div
+                        class="ant-table-column-sorters"
+                      >
+                        <span
+                          class="ant-table-column-title"
+                        >
+                          Mine Name
+                        </span>
+                        <span
+                          class="ant-table-column-sorter ant-table-column-sorter-full"
+                        >
+                          <span
+                            class="ant-table-column-sorter-inner"
+                          >
+                            <span
+                              aria-label="caret-up"
+                              class="anticon anticon-caret-up ant-table-column-sorter-up"
+                              role="presentation"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="caret-up"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="0 0 1024 1024"
+                                width="1em"
+                              >
+                                <path
+                                  d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                />
+                              </svg>
+                            </span>
+                            <span
+                              aria-label="caret-down"
+                              class="anticon anticon-caret-down ant-table-column-sorter-down"
+                              role="presentation"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="caret-down"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="0 0 1024 1024"
+                                width="1em"
+                              >
+                                <path
+                                  d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                />
+                              </svg>
+                            </span>
+                          </span>
+                        </span>
+                      </div>
+                    </th>
+                    <th
+                      aria-label="EMLI Project Lead"
+                      class="ant-table-cell ant-table-column-has-sorters"
+                      tabindex="0"
+                    >
+                      <div
+                        class="ant-table-column-sorters"
+                      >
+                        <span
+                          class="ant-table-column-title"
+                        >
+                          EMLI Project Lead
+                        </span>
+                        <span
+                          class="ant-table-column-sorter ant-table-column-sorter-full"
+                        >
+                          <span
+                            class="ant-table-column-sorter-inner"
+                          >
+                            <span
+                              aria-label="caret-up"
+                              class="anticon anticon-caret-up ant-table-column-sorter-up"
+                              role="presentation"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="caret-up"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="0 0 1024 1024"
+                                width="1em"
+                              >
+                                <path
+                                  d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                />
+                              </svg>
+                            </span>
+                            <span
+                              aria-label="caret-down"
+                              class="anticon anticon-caret-down ant-table-column-sorter-down"
+                              role="presentation"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="caret-down"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="0 0 1024 1024"
+                                width="1em"
+                              >
+                                <path
+                                  d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                />
+                              </svg>
+                            </span>
+                          </span>
+                        </span>
+                      </div>
+                    </th>
+                    <th
+                      class="ant-table-cell"
+                    >
+                      Commodity
+                    </th>
+                    <th
+                      aria-label="Updated Date"
+                      class="ant-table-cell ant-table-column-has-sorters"
+                      tabindex="0"
+                    >
+                      <div
+                        class="ant-table-column-sorters"
+                      >
+                        <span
+                          class="ant-table-column-title"
+                        >
+                          Updated Date
+                        </span>
+                        <span
+                          class="ant-table-column-sorter ant-table-column-sorter-full"
+                        >
+                          <span
+                            class="ant-table-column-sorter-inner"
+                          >
+                            <span
+                              aria-label="caret-up"
+                              class="anticon anticon-caret-up ant-table-column-sorter-up"
+                              role="presentation"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="caret-up"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="0 0 1024 1024"
+                                width="1em"
+                              >
+                                <path
+                                  d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                />
+                              </svg>
+                            </span>
+                            <span
+                              aria-label="caret-down"
+                              class="anticon anticon-caret-down ant-table-column-sorter-down"
+                              role="presentation"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="caret-down"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="0 0 1024 1024"
+                                width="1em"
+                              >
+                                <path
+                                  d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                />
+                              </svg>
+                            </span>
+                          </span>
+                        </span>
+                      </div>
+                    </th>
+                    <th
+                      class="ant-table-cell"
+                    >
+                      
+                    </th>
+                  </tr>
+                </thead>
+                <tbody
+                  class="ant-table-tbody"
+                >
+                  <tr
+                    class="ant-table-row ant-table-row-level-0 fade-in"
+                    data-row-key="cb33beb3-4c35-4695-b89b-7bab53a5f94a"
+                  >
+                    <td
+                      class="ant-table-cell ant-table-row-expand-icon-cell"
+                    >
+                      <span>
+                        <a
+                          class="expand-row-icon"
+                          role="link"
+                          style="cursor: pointer;"
+                          tabindex="0"
+                        >
+                          <span
+                            aria-label="plus-square"
+                            class="anticon anticon-plus-square icon-lg--lightgrey"
+                            role="img"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class=""
+                              data-icon="plus-square"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              viewBox="64 64 896 896"
+                              width="1em"
+                            >
+                              <path
+                                d="M880 112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V144c0-17.7-14.3-32-32-32zM704 536c0 4.4-3.6 8-8 8H544v152c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V544H328c-4.4 0-8-3.6-8-8v-48c0-4.4 3.6-8 8-8h152V328c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v152h152c4.4 0 8 3.6 8 8v48z"
+                              />
+                            </svg>
+                          </span>
+                        </a>
+                      </span>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <a
+                        href="/pre-applications/cb33beb3-4c35-4695-b89b-7bab53a5f94a/overview"
+                        title="Name"
+                      >
+                        Test Project Title
+                      </a>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        class="project_id-column"
+                        title="Client ID"
+                      >
+                        1
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        class="mine_name-column"
+                        title="Mine Name"
+                      >
+                        N/A
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        class="project_lead_name-column"
+                        title="EMLI Project Lead"
+                      >
+                        N/A
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        title="Commodity"
+                      >
+                        N/A
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        title="Updated Date"
+                      >
+                        Aug 01 2022
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        data-cy="major-projects-table-open-button"
+                        title=""
+                      >
+                        <div
+                          class="ant-row"
+                          style="margin-left: -0.5px; margin-right: -0.5px;"
+                        >
+                          <div
+                            class="ant-col ant-col-12"
+                            style="padding-left: 0.5px; padding-right: 0.5px;"
+                          >
+                            <a
+                              href="/pre-applications/cb33beb3-4c35-4695-b89b-7bab53a5f94a/overview"
+                            >
+                              <button
+                                class="ant-btn ant-btn-primary"
+                                type="button"
+                              >
+                                <span>
+                                  Open
+                                </span>
+                              </button>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 `;

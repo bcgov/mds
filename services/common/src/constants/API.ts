@@ -276,6 +276,9 @@ export const MINE_REPORT_COMMENT = (mineGuid, reportGuid, commentGuid) =>
 export const MINE_REPORT_STATUS = "/mines/reports/status-codes";
 export const MINE_REPORT_CATEGORY = "/mines/reports/category-codes";
 
+export const MINE_REPORT_PERMIT_REQUIREMENT = (mineGuid) =>
+  `/mines/${mineGuid}/reports/permit-requirements`;
+
 // Compliance Codes
 export const COMPLIANCE_CODE_LIST = (params = {}) =>
   `/compliance/codes?${queryString.stringify(params)}`;

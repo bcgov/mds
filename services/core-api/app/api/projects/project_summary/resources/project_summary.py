@@ -5,7 +5,7 @@ from werkzeug.exceptions import BadRequest, NotFound
 
 from app.extensions import api
 from app.api.activity.utils import trigger_notification
-from app.api.utils.access_decorators import MINESPACE_PROPONENT, requires_any_of, VIEW_ALL, MINE_ADMIN, is_minespace_user, EDIT_PROJECT_SUMMARIES
+from app.api.utils.access_decorators import MINESPACE_PROPONENT, requires_any_of, VIEW_ALL, MINE_ADMIN, EDIT_PROJECT_SUMMARIES
 from app.api.mines.mine.models.mine import Mine
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
@@ -16,7 +16,7 @@ from app.api.projects.project.models.project import Project
 from app.api.activity.models.activity_notification import ActivityType
 
 from app.api.activity.utils import trigger_notification
-from app.api.projects.project.project_util import ProjectUtil
+from app.api.projects.project.project_util import notify_file_updates
 from decimal import Decimal
 
 PAGE_DEFAULT = 1
@@ -225,6 +225,10 @@ class ProjectSummaryResource(Resource, UserMixin):
         if data.get('status_code') == 'SUB' and prev_status == 'DFT':
             submission_date = datetime.now(tz=timezone.utc)
 
+        documents = data.get('documents', [])
+        ams_authorizations = data.get('ams_authorizations', None)
+        has_new_documents = ProjectSummary.has_new_documents(documents, ams_authorizations)
+
         # Update project summary.
         project_summary.update(project, data.get('project_summary_description'),
                                data.get('expected_draft_irt_submission_date'),
@@ -232,8 +236,8 @@ class ProjectSummaryResource(Resource, UserMixin):
                                data.get('expected_permit_receipt_date'),
                                data.get('expected_project_start_date'), data.get('status_code'),
                                data.get('project_lead_party_guid'),
-                               data.get('documents', []), data.get('authorizations',[]),
-                               data.get('ams_authorizations', None),
+                               documents, data.get('authorizations',[]),
+                               ams_authorizations,
                                submission_date, data.get('agent'), data.get('is_agent'),
                                data.get('is_legal_land_owner'), data.get('is_crown_land_federal_or_provincial'),
                                data.get('is_landowner_aware_of_discharge_application'), data.get('has_landowner_received_copy_of_application'),
@@ -258,48 +262,6 @@ class ProjectSummaryResource(Resource, UserMixin):
                                is_historic)
 
         project_summary.save()
-        if prev_status == 'DFT' and project_summary.status_code == 'SUB':
-            project_summary.send_project_summary_email(mine)
-            # Trigger notification for newly submitted Project Summary
-            message = f'A new major project description for ({project.project_title}) has been submitted for ({project.mine_name})'
-            extra_data = {'project': {'project_guid': str(project.project_guid)}}
-            trigger_notification(message, ActivityType.major_mine_desc_submitted, project.mine, 'ProjectSummary', project_summary.project_summary_guid, extra_data)
-
-        if project_summary.status_code == 'CHR':
-            project_summary.send_project_summary_email(mine)
-            # Trigger notification for changes requested Project Summary
-            message = f'Changes have been requested by the ministry for {project.project_title} at {project.mine_name}'
-            extra_data = {'project': {'project_guid': str(project.project_guid)}}
-            trigger_notification(message, ActivityType.major_mine_desc_submitted, project.mine, 'ProjectSummary',
-                                 project_summary.project_summary_guid, extra_data)
-
-        if project_summary.status_code == 'UNR':
-            project_summary.send_project_summary_email(mine)
-            message = f'{project.project_title} for {project.mine_name} is now under review'
-            extra_data = {'project': {'project_guid': str(project.project_guid)}}
-            trigger_notification(message, ActivityType.major_mine_desc_submitted, project.mine, 'ProjectSummary',
-                                 project_summary.project_summary_guid, extra_data)
-
-        if project_summary.status_code == 'OHD':
-            project_summary.send_project_summary_email(mine)
-            message = f'The project description {project.project_title} for {project.mine_name} has been updated to On Hold'
-            extra_data = {'project': {'project_guid': str(project.project_guid)}}
-            trigger_notification(message, ActivityType.major_mine_desc_submitted, project.mine, 'ProjectSummary',
-                                 project_summary.project_summary_guid, extra_data)
-
-        if project_summary.status_code == 'WDN':
-            project_summary.send_project_summary_email(mine)
-            message = f'The project description {project.project_title} for {project.mine_name} has been withdrawn'
-            extra_data = {'project': {'project_guid': str(project.project_guid)}}
-            trigger_notification(message, ActivityType.major_mine_desc_submitted, project.mine, 'ProjectSummary',
-                                 project_summary.project_summary_guid, extra_data)
-
-        if project_summary.status_code == 'COM':
-            project_summary.send_project_summary_email(mine)
-            message = f'The status of the project description {project.project_title} for {project.mine_name} has been completed'
-            extra_data = {'project': {'project_guid': str(project.project_guid)}}
-            trigger_notification(message, ActivityType.major_mine_desc_submitted, project.mine, 'ProjectSummary',
-                                 project_summary.project_summary_guid, extra_data)
 
         # Update project.
         project.update(
@@ -308,9 +270,39 @@ class ProjectSummaryResource(Resource, UserMixin):
             data.get('contacts', []))
         project.save()
 
-        if len(data.get('documents')) > 0:
-            project = Project.find_by_project_guid(project_guid)
-            ProjectUtil.notifiy_file_updates(project, mine)
+        # notify of status changes
+        if prev_status != project_summary.status_code:
+            message = ''
+            extra_data = {'project': {'project_guid': str(project.project_guid)}}
+            if prev_status == 'DFT' and project_summary.status_code == 'SUB':
+                message = f'A new major project description for ({project.project_title}) has been submitted for ({project.mine_name})'
+
+            if project_summary.status_code == 'ASG':
+                message = f'{project.project_title} for {project.mine_name} has been assigned'
+
+            if project_summary.status_code == 'CHR':
+                message = f'Changes have been requested by the ministry for {project.project_title} at {project.mine_name}'
+
+            if project_summary.status_code == 'UNR':
+                message = f'{project.project_title} for {project.mine_name} is now under review'
+
+            if project_summary.status_code == 'OHD':
+                message = f'The project description {project.project_title} for {project.mine_name} has been updated to On Hold'
+
+            if project_summary.status_code == 'WDN':
+                message = f'The project description {project.project_title} for {project.mine_name} has been withdrawn'
+
+            if project_summary.status_code == 'COM':
+                message = f'The status of the project description {project.project_title} for {project.mine_name} has been completed'
+                
+            project_summary.send_project_summary_email(mine, message)
+            trigger_notification(message, ActivityType.major_mine_desc_submitted, project.mine, 'ProjectSummary',
+                                    project_summary.project_summary_guid, extra_data)
+        
+
+        # notify on document updates
+        if has_new_documents:
+            notify_file_updates(project, mine, project_summary.status_code)
 
         return project_summary
 

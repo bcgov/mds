@@ -10,6 +10,8 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment import Permi
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from app.api.mines.permits.permit_conditions.models.standard_permit_conditions import StandardPermitConditions
 from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
+from app.api.mines.reports.models.mine_report import MineReport
+from app.api.mines.reports.models.mine_report_permit_requirement import MineReportPermitRequirement
 from app.api.now_applications.models.now_application import NOWApplication
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.now_applications.models.application_type_code import ApplicationTypeCode
@@ -112,6 +114,10 @@ class PermitListResource(Resource, UserMixin):
             results = [permit] if permit else []
         else:
             results = Mine.find_by_mine_guid(mine_guid).mine_permit
+
+            for permit in results:
+                for permit_amendment in permit.permit_amendments:
+                    permit_amendment.mine_report_permit_requirements = MineReportPermitRequirement.query.filter_by(permit_amendment_id=permit_amendment.permit_amendment_id).all()
         return results
 
     @api.doc(params={'permit_guid': 'Permit guid.'})

@@ -4,12 +4,11 @@ from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
-from app.api.projects.project.models.project import Project
 from app.api.projects.project_decision_package.models.project_decision_package_document_xref import ProjectDecisionPackageDocumentXref
 from app.api.mines.documents.models.mine_document import MineDocument
 
 from app.api.mines.mine.models.mine import Mine
-from app.api.projects.project.project_util import ProjectUtil
+from app.api.projects.project.project_util import notify_file_updates
 
 class ProjectDecisionPackage(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'project_decision_package'
@@ -146,7 +145,7 @@ class ProjectDecisionPackage(SoftDeleteMixin, AuditMixin, Base):
             mine_document_guid = documents[0].mine_document_guid
             project = ProjectDecisionPackage.find_by_mine_document_guid(mine_document_guid).project
             mine = Mine.find_by_mine_guid(project.mine_guid)
-            ProjectUtil.notifiy_file_updates(project, mine)
+            notify_file_updates(project, mine, status_code)
 
         return self
 

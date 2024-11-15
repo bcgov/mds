@@ -2,13 +2,13 @@
 
 exports[`MajorProjectHomePage renders properly 1`] = `
 <div
-  className="landing-page"
+  class="landing-page"
 >
   <div
-    className="landing-page__header"
+    class="landing-page__header"
   >
     <div
-      className="inline-flex between center-mobile center-mobile"
+      class="inline-flex between center-mobile center-mobile"
     >
       <div>
         <h1>
@@ -18,188 +18,209 @@ exports[`MajorProjectHomePage renders properly 1`] = `
     </div>
   </div>
   <div
-    className="landing-page__content"
+    class="landing-page__content"
   >
     <div
-      className="page__content"
+      class="page__content"
     >
-      <MajorProjectSearch
-        handleReset={[Function]}
-        handleSearch={[Function]}
-        initialValues={
-          Object {
-            "application_stage": Array [],
-            "application_status": Array [],
-            "page": "1",
-            "per_page": "10",
-            "search": undefined,
-            "sort_dir": undefined,
-            "sort_field": undefined,
-            "update_timestamp": undefined,
-          }
-        }
-        statusCodes={
-          Array [
-            Object {
-              "isActive": true,
-              "label": "Assigned",
-              "subType": null,
-              "value": "ASG",
-            },
-            Object {
-              "isActive": true,
-              "label": "Complete",
-              "subType": null,
-              "value": "COM",
-            },
-            Object {
-              "isActive": true,
-              "label": "Draft",
-              "subType": null,
-              "value": "DFT",
-            },
-            Object {
-              "isActive": true,
-              "label": "Inactive",
-              "subType": null,
-              "value": "IAT",
-            },
-            Object {
-              "isActive": true,
-              "label": "On Hold",
-              "subType": null,
-              "value": "OHD",
-            },
-            Object {
-              "isActive": true,
-              "label": "Submitted",
-              "subType": null,
-              "value": "SUB",
-            },
-            Object {
-              "isActive": true,
-              "label": "Under review - with proponent",
-              "subType": null,
-              "value": "UNP",
-            },
-            Object {
-              "isActive": true,
-              "label": "Under review - with reviewers",
-              "subType": null,
-              "value": "UNR",
-            },
-            Object {
-              "isActive": true,
-              "label": "Withdrawn",
-              "subType": null,
-              "value": "WDN",
-            },
-            [MockFunction],
-            Object {
-              "isActive": true,
-              "label": "Review Complete",
-              "subType": null,
-              "value": "APV",
-            },
-            Object {
-              "isActive": true,
-              "label": "Change Requested",
-              "subType": null,
-              "value": "CHR",
-            },
-          ]
-        }
-      />
-      <MajorProjectTable
-        defaultParams={
-          Object {
-            "application_stage": Array [],
-            "application_status": Array [],
-            "page": "1",
-            "per_page": "10",
-            "search": undefined,
-            "sort_dir": undefined,
-            "sort_field": undefined,
-            "update_timestamp": undefined,
-          }
-        }
-        filters={
-          Object {
-            "application_stage": Array [],
-            "application_status": Array [],
-            "page": "1",
-            "per_page": "10",
-            "search": undefined,
-            "sort_dir": undefined,
-            "sort_field": undefined,
-            "update_timestamp": undefined,
-          }
-        }
-        handleSearch={[Function]}
-        isLoaded={false}
-        projects={
-          Object {
-            "records": Array [
-              Object {
-                "contacts": Array [
-                  Object {
-                    "company_name": null,
-                    "email": "fyang@example.org",
-                    "is_primary": true,
-                    "job_title": null,
-                    "name": "Devin Lucas",
-                    "phone_extension": null,
-                    "phone_number": "337-588-3109",
-                  },
-                ],
-                "guid": "3a8087ac-1046-43cb-b152-613db59fff32",
-                "id": 1,
-                "mine": Object {
-                  "mine_type": Array [
-                    Object {
-                      "mine_type_detail": Array [
-                        Object {
-                          "mine_commodity_code": "CG",
-                        },
-                      ],
-                    },
-                  ],
-                },
-                "mrc_review_required": false,
-                "project_guid": "cb33beb3-4c35-4695-b89b-7bab53a5f94a",
-                "project_id": "1",
-                "project_title": "Test Project Title",
-                "stage": "Project Summary",
-                "status_code": "SUB",
-                "update_timestamp": "2022-08-01T00:00:00+00:00",
-              },
-            ],
-          }
-        }
-        statusCodeHash={
-          Object {
-            "APV": "Approved",
-            "ASG": "Assigned",
-            "CHR": "Change Requested",
-            "COM": "Complete",
-            "DFT": "Draft",
-            "IAT": "Inactive",
-            "OHD": "On Hold",
-            "SUB": "Submitted",
-            "UNP": "Under review - with proponent",
-            "UNR": "In review - with reviewers",
-            "WDN": "Withdrawn",
-          }
-        }
-      />
+      <div>
+        <div
+          class="ant-row"
+        >
+          <div
+            class="ant-col ant-col-xs-20 ant-col-xs-offset-2 ant-col-md-12 ant-col-md-offset-6"
+          >
+            <span
+              class="advanced-search__container"
+            >
+              <form
+                class="ant-form ant-form-vertical"
+              >
+                <div
+                  class="ant-row"
+                  style="margin-left: -3px; margin-right: -3px;"
+                >
+                  <div
+                    class="ant-col ant-col-xs-24 ant-col-md-24"
+                    style="padding-left: 3px; padding-right: 3px;"
+                  >
+                    <div
+                      class="ant-form-item ant-form-item-with-help"
+                    >
+                      <div
+                        class="ant-row ant-form-item-row"
+                      >
+                        <div
+                          class="ant-col ant-form-item-control"
+                        >
+                          <div
+                            class="ant-form-item-control-input"
+                          >
+                            <div
+                              class="ant-form-item-control-input-content"
+                            >
+                              <input
+                                class="ant-input"
+                                id="search"
+                                name="search"
+                                placeholder="Search by mine name or number"
+                                type="text"
+                                value=""
+                              />
+                            </div>
+                          </div>
+                          <div
+                            style="display: flex; flex-wrap: nowrap;"
+                          >
+                            <div
+                              class="ant-form-item-explain ant-form-item-explain-connected"
+                              id="search_help"
+                              role="alert"
+                            >
+                              <div
+                                class=""
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="left center-mobile"
+                >
+                  <button
+                    class="ant-btn ant-btn-default btn--dropdown"
+                    type="button"
+                  >
+                    <span>
+                      Expand Filters
+                    </span>
+                    <span
+                      aria-label="down"
+                      class="anticon anticon-down"
+                      role="img"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class=""
+                        data-icon="down"
+                        fill="currentColor"
+                        focusable="false"
+                        height="1em"
+                        viewBox="64 64 896 896"
+                        width="1em"
+                      >
+                        <path
+                          d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                        />
+                      </svg>
+                    </span>
+                  </button>
+                </div>
+                <div
+                  class="right center-mobile"
+                >
+                  <button
+                    class="ant-btn ant-btn-secondary full-mobile"
+                    type="reset"
+                  >
+                    <span>
+                      Clear Filters
+                    </span>
+                  </button>
+                  <button
+                    class="ant-btn ant-btn-primary full-mobile"
+                    type="submit"
+                  >
+                    <span>
+                      Apply Filters
+                    </span>
+                  </button>
+                </div>
+              </form>
+            </span>
+          </div>
+        </div>
+      </div>
       <div
-        className="center"
+        class="ant-table-wrapper"
       >
-        <ResponsivePagination
-          currentPage={1}
-          itemsPerPage={10}
-          onPageChange={[Function]}
-        />
+        <div
+          class="ant-spin-nested-loading"
+        >
+          <div
+            class="ant-spin-container"
+          >
+            <div
+              class="ant-table"
+            >
+              <div
+                class="ant-table-container"
+              >
+                <div
+                  class="ant-table-content"
+                >
+                  <table
+                    style="table-layout: auto;"
+                  >
+                    <colgroup />
+                    <thead
+                      class="ant-table-thead"
+                    >
+                      <tr>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Project Title
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Client ID
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Mine Name
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          EMLI Project Lead
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Commodity
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Updated Date
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody
+                      class="ant-table-tbody"
+                    />
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="center"
+      >
+        <div />
       </div>
     </div>
   </div>

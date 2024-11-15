@@ -139,10 +139,11 @@ class EmailService():
             raise Exception('Email priority is invalid')
 
         # NOTE: Be careful when enabling emails in local/dev/test. You could possibly be sending spam emails!
+        is_not_prod = Config.ENVIRONMENT_NAME != 'prod'
         if not Config.EMAIL_ENABLED:
             current_app.logger.info('Not sending email: Emails are disabled.')
             return
-        elif Config.ENVIRONMENT_NAME != 'prod' and not Config.EMAIL_RECIPIENT_OVERRIDE:
+        elif is_not_prod and not Config.EMAIL_RECIPIENT_OVERRIDE:
             current_app.logger.info(
                 'Not sending email: Recipient override must be set when not in prod environment!')
             return
@@ -165,7 +166,7 @@ class EmailService():
         auth_token = EmailService.get_auth_token()
         headers = {'Authorization': f'Bearer {auth_token}', 'Content-Type': 'application/json'}
         data = {
-            'subject': subject,
+            'subject': f'{subject} [recipients: {original_recipients}]' if is_not_prod else subject,
             'from': sender,
             'to': recipients,
             'body': body,
@@ -223,10 +224,11 @@ class EmailService():
             raise Exception('Email priority is invalid')
 
         # NOTE: Be careful when enabling emails in local/dev/test. You could possibly be sending spam emails!
+        is_not_prod = Config.ENVIRONMENT_NAME != 'prod'
         if not Config.EMAIL_ENABLED:
             current_app.logger.info('Not sending email: Emails are disabled.')
             return
-        elif Config.ENVIRONMENT_NAME != 'prod' and not Config.EMAIL_RECIPIENT_OVERRIDE:
+        elif is_not_prod and not Config.EMAIL_RECIPIENT_OVERRIDE:
             current_app.logger.info(
                 'Not sending email: Recipient override must be set when not in prod environment!')
             return
@@ -256,7 +258,7 @@ class EmailService():
         ]
 
         data = {
-            'subject': subject,
+            'subject': f'{subject} [recipients: {original_recipients}]' if is_not_prod else subject,
             'from': sender,
             'body': body,
             'contexts': contexts,
