@@ -2,19 +2,22 @@ import uuid
 from datetime import date, datetime
 from typing import Union
 
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.orm import validates
+from sqlalchemy.schema import FetchedValue
+
+from app.extensions import db
 from app.api.constants import *
+from app.api.mines.mine.models.mine import Mine
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import (
     PermitAmendmentDocument, )
 from app.api.mines.permits.permit_conditions.models.permit_conditions import (
     PermitConditions, )
 from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
 from app.api.verifiable_credentials.aries_constants import IssueCredentialIssuerState
-from app.extensions import db
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.ext.associationproxy import association_proxy
-from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.orm import validates
-from sqlalchemy.schema import FetchedValue
+from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 
 from . import permit_amendment_status_code, permit_amendment_type_code
 
@@ -44,11 +47,11 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     permit_amendment_status_description = association_proxy('permit_amendment_status',
                                                             'description')
     permit_guid = association_proxy('permit', 'permit_guid')
-    permit_no = association_proxy('permit', 'permit_no')
+    permit_no: str = association_proxy('permit', 'permit_no')                                                                                                                              #type: ignore[reportAssignmentType]
     permit_amendment_type = db.relationship('PermitAmendmentTypeCode')
     permit_amendment_type_description = association_proxy('permit_amendment_type', 'description')
-    #liability_adjustment is the change of work assessed for the new amendment,
-    # This value is added to previous amendments to create the new total assessment for the permit
+                                                                                                                                                                                           #liability_adjustment is the change of work assessed for the new amendment,
+                                                                                                                                                                                           # This value is added to previous amendments to create the new total assessment for the permit
     liability_adjustment = db.Column(db.Numeric(16, 2))
     security_received_date = db.Column(db.DateTime)
     security_not_required = db.Column(db.Boolean)
@@ -57,7 +60,9 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         UUID(as_uuid=True), db.ForeignKey('now_application_identity.now_application_guid'))
     now_identity = db.relationship(
         'NOWApplicationIdentity', lazy='select', foreign_keys=[now_application_guid])
-    mine = db.relationship('Mine', lazy='select', back_populates='_mine_permit_amendments')
+    mine: Mine = db.relationship(
+        'Mine', lazy='select',
+        back_populates='_mine_permit_amendments')                                                                                                                                          #type: ignore[reportAssignmentType]
     conditions = db.relationship(
         'PermitConditions',
         lazy='select',
@@ -97,12 +102,12 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
 
     # Note: This relationship is lazy loaded on purpose to avoid being loaded unless absolutely necessary
     # a selectin or joined query here causes performance issues due to the nested structure of NoW and Major Projects.
-    permittee_appointments = db.relationship(
+    permittee_appointments: list[MinePartyAppointment] = db.relationship(
         "MinePartyAppointment",
         lazy="select",
         secondary='permit',
         secondaryjoin='and_(foreign(Permit.permit_id) == remote(MinePartyAppointment.permit_id))',
-        order_by='desc(MinePartyAppointment.start_date)')
+        order_by='desc(MinePartyAppointment.start_date)')                                          #type: ignore[reportAssignmentType]
 
     @hybrid_property
     def issuing_inspector_name(self):
