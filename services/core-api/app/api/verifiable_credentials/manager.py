@@ -507,7 +507,7 @@ class VerifiableCredentialManager():
                 current_app.logger.error(
                     f"No party for mine_party_appointment_id={curr_appt.mine_party_appt_id}, that shouldn't be possible"
                 )
-            return None, None
+            return None
 
         untp_party_cpo = base.Identifier(
             id="did:web:untp.traceability.site:parties:regulators:CHIEF-PERMITTING-OFFICER",
