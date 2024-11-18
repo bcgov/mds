@@ -1,21 +1,22 @@
+from app.api.constants import *
+from app.api.mines.documents.models.mine_document import MineDocument
+from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
+
+#for schema creation
+from app.api.mines.permits.permit.models.permit_status_code import PermitStatusCode
+from app.api.mines.permits.permit_amendment.models.permit_amendment import (
+    PermitAmendment,
+)
+from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
+from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
+from app.extensions import db
 from flask.globals import current_app
 from sqlalchemy import and_
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
 from sqlalchemy.schema import FetchedValue
-from app.extensions import db
-
-from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
-from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
-#for schema creation
-from app.api.mines.permits.permit.models.permit_status_code import PermitStatusCode
-from app.api.mines.documents.models.mine_document import MineDocument
-from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
-
-from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
-from app.api.constants import *
 
 
 class Permit(SoftDeleteMixin, AuditMixin, Base):
@@ -41,7 +42,9 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
         primaryjoin=
         'and_(PermitAmendment.permit_id == Permit.permit_id, PermitAmendment.deleted_ind==False)',
         order_by='desc(PermitAmendment.issue_date), desc(PermitAmendment.permit_amendment_id)',
-        lazy='select')
+        lazy='select',
+        overlaps='permittee_appointments'
+    )
 
     _all_mines = db.relationship(
         'Mine',
