@@ -10,7 +10,6 @@ from sqlalchemy.schema import FetchedValue
 
 from app.extensions import db
 from app.api.constants import *
-from app.api.mines.mine.models.mine import Mine
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import (
     PermitAmendmentDocument, )
 from app.api.mines.permits.permit_conditions.models.permit_conditions import (
@@ -60,7 +59,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         UUID(as_uuid=True), db.ForeignKey('now_application_identity.now_application_guid'))
     now_identity = db.relationship(
         'NOWApplicationIdentity', lazy='select', foreign_keys=[now_application_guid])
-    mine: Mine = db.relationship(
+    mine: 'Mine' = db.relationship(
         'Mine', lazy='select',
         back_populates='_mine_permit_amendments')                                                                                                                                          #type: ignore[reportAssignmentType]
     conditions = db.relationship(
