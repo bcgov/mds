@@ -155,6 +155,15 @@ export enum PROJECT_STATUS_CODES {
   CHR = "CHR",
 }
 
+export enum MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES {
+  DFT = "DFT",
+  WDN = "WDN",
+  COM = "COM",
+  OHD = "OHD",
+  SUB = "SUB",
+  UNR = "UNR",
+  CHR = "CHR",
+}
 export enum PROJECT_SUMMARY_STATUS_CODES {
   DFT = "Draft",
   WDN = "Withdrawn",
@@ -168,12 +177,13 @@ export enum PROJECT_SUMMARY_STATUS_CODES {
 
 export enum MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODES {
   DFT = "Draft",
-  APV = "Approved",
-  CHR = "Change Requested",
+  WDN = "Withdrawn",
+  COM = "Complete",
+  OHD = "On Hold",
   SUB = "Submitted",
   UNR = "Under review",
+  CHR = "Change Requested",
 }
-
 export enum PROJECT_DECISION_PACKAGE_STATUS_CODES {
   CMP = "Completed",
   INP = "In Progress",

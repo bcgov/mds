@@ -11,7 +11,7 @@ import {
   IPermitAmendment,
 } from "@mds/common/interfaces";
 import {
-  MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODES,
+  MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES,
   MINE_INCIDENT_DOCUMENT_TYPE_CODE,
   NodStatusSaveEnum,
   NoDTypeSaveEnum,
@@ -7560,7 +7560,7 @@ export const INFORMATION_REQUIREMENTS_TABLE: IInformationRequirementsTable = {
   irt_id: 1,
   irt_guid: "9a5a10ce-ead2-4346-8a85-b3320c5b454b",
   project_guid: "fba9b698-6d40-4df1-9914-84008c3c586f",
-  status_code: "SUB",
+  status_code: MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES.SUB,
   update_timestamp: "2020-11-18T22:18:18+00:00",
   create_timestamp: "2020-11-18T22:17:19+00:00",
   update_user: "user@bceid",
@@ -7857,7 +7857,7 @@ export const PROJECT: IProject = {
     major_mine_application_id: 2,
     major_mine_application_guid: "305ea694-e601-44a4-8994-fc2604c8c19e",
     project_guid: "35633148-57f8-4967-be35-7f89abfbd02e",
-    status_code: "CHR",
+    status_code: MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES.CHR,
     documents: [
       {
         major_mine_application_id: 2,
@@ -8018,11 +8018,11 @@ export const PROJECT: IProject = {
         },
         major_mine_application: {
           major_mine_application_guid: "abcde12345",
-          status_code: "DFT" as MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODES,
+          status_code: "DFT" as MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES,
         },
         information_requirements_table: {
           irt_guid: "awxyz12345",
-          status_code: "APV" as MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODES,
+          status_code: "COM" as MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES,
         },
         update_timestamp: "2023-08-04T09:21:06.028471-06:00",
       },
@@ -8042,11 +8042,11 @@ export const PROJECT: IProject = {
         },
         major_mine_application: {
           major_mine_application_guid: "abcde12345",
-          status_code: "WDN" as MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODES,
+          status_code: MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES.WDN,
         },
         information_requirements_table: {
           irt_guid: "awxyz12345",
-          status_code: "APV" as MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODES,
+          status_code: MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES.COM,
         },
         update_timestamp: "2023-08-24T15:49:16.702250-06:00",
       },
@@ -8514,14 +8514,40 @@ export const REQUIREMENTS = {
 
 export const INFORMATION_REQUIREMENTS_TABLE_STATUS_CODES_HASH = {
   DFT: "Draft",
+  WDN: "Withdrawn",
+  COM: "Complete",
+  OHD: "On Hold",
   SUB: "Submitted",
-  UNR: "In Review",
-  APV: "Review Complete",
+  UNR: "Under review",
   CHR: "Change Requested",
 };
 
 export const INFORMATION_REQUIREMENTS_TABLE_STATUS_CODES_DROPDOWN = [
   {
+    value: "DFT",
+    label: "Draft",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "WDN",
+    label: "Withdrawn",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "COM",
+    label: "Complete",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "OHD",
+    label: "On Hold",
+    subType: null,
+    isActive: true,
+  },
+  {
     value: "SUB",
     label: "Submitted",
     subType: null,
@@ -8530,12 +8556,6 @@ export const INFORMATION_REQUIREMENTS_TABLE_STATUS_CODES_DROPDOWN = [
   {
     value: "UNR",
     label: "In Review",
-    subType: null,
-    isActive: true,
-  },
-  {
-    value: "APV",
-    label: "Review Complete",
     subType: null,
     isActive: true,
   },
@@ -8547,32 +8567,7 @@ export const INFORMATION_REQUIREMENTS_TABLE_STATUS_CODES_DROPDOWN = [
   },
 ];
 
-export const MAJOR_MINES_APPLICATION_STATUS_CODES_DROPDOWN = [
-  {
-    value: "SUB",
-    label: "Submitted",
-    subType: null,
-    isActive: true,
-  },
-  {
-    value: "UNR",
-    label: "In Review",
-    subType: null,
-    isActive: true,
-  },
-  {
-    value: "APV",
-    label: "Review Complete",
-    subType: null,
-    isActive: true,
-  },
-  {
-    value: "CHR",
-    label: "Change Requested",
-    subType: null,
-    isActive: true,
-  },
-];
+export const MAJOR_MINES_APPLICATION_STATUS_CODES_DROPDOWN = INFORMATION_REQUIREMENTS_TABLE_STATUS_CODES_DROPDOWN;
 
 export const MAJOR_MINES_APPLICATION = {
   major_mine_application_id: 1,
@@ -8623,13 +8618,7 @@ export const MAJOR_MINES_APPLICATION_DOCUMENT_TYPES_HASH = {
   SPR: "Supporting",
 };
 
-export const MAJOR_MINES_APPLICATION_STATUS_CODES_HASH = {
-  DFT: "Draft",
-  SUB: "Submitted",
-  UNR: "In review - with reviewers",
-  APV: "Approved",
-  CHR: "Change Requested",
-};
+export const MAJOR_MINES_APPLICATION_STATUS_CODES_HASH = INFORMATION_REQUIREMENTS_TABLE_STATUS_CODES_HASH
 
 export const EMLI_TYPE_CODES_DROPDOWN = [
   {

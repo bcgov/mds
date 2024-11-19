@@ -8,14 +8,15 @@ import {
   fetchProjectById,
   updateInformationRequirementsTable,
 } from "@mds/common/redux/actionCreators/projectActionCreator";
-import { getInformationRequirementsTableStatusCodesHash } from "@mds/common/redux/selectors/staticContentSelectors";
+import { getDropdownInformationRequirementsTableStatusCodes } from "@mds/common/redux/selectors/staticContentSelectors";
 import {
   getProject,
   getInformationRequirementsTable,
   getRequirements,
 } from "@mds/common/redux/selectors/projectSelectors";
 import ReviewInformationRequirementsTable from "@/components/mine/Projects/ReviewInformationRequirementsTable";
-import UpdateInformationRequirementsTableForm from "@/components/Forms/informationRequirementsTable/UpdateInformationRequirementsTableForm";
+import UpdateStatusForm from "@/components/Forms/majorMineApplication/UpdateStatusForm";
+import { FORM } from "@mds/common";
 
 const sideMenuOptions = [
   {
@@ -63,14 +64,12 @@ const InformationRequirementsTableTab = () => {
   const project = useSelector(getProject);
   const requirements = useSelector(getRequirements);
   const informationRequirementsTable = useSelector(getInformationRequirementsTable);
-  const informationRequirementsTableStatusCodesHash = useSelector(
-    getInformationRequirementsTableStatusCodesHash
-  );
-
+  const dropdownIRTStatusCodes = useSelector(getDropdownInformationRequirementsTableStatusCodes);
   const [isLoaded, setIsLoaded] = useState(false);
 
   const handleFetchData = () => {
     dispatch(fetchProjectById(projectGuid))
+      // @ts-ignore
       .then(() => dispatch(fetchRequirements()))
       .catch(setIsLoaded(false));
   };
@@ -97,14 +96,14 @@ const InformationRequirementsTableTab = () => {
       sub_requirements: deepMergeById(sub_requirements, r2),
     }));
 
-  const handleUpdateIRT = (event, values) => {
-    event.preventDefault();
-    dispatch(
+  const handleUpdateIRT = async (values) => {
+    await dispatch(
       updateInformationRequirementsTable(
         { projectGuid, informationRequirementsTableGuid: informationRequirementsTable.irt_guid },
         values
       )
-    ).then(() => handleFetchData());
+    );
+    return handleFetchData();
   };
 
   const { information_requirements_table } = project;
@@ -130,17 +129,15 @@ const InformationRequirementsTableTab = () => {
           label: tab.title,
           children: (
             <div>
-              <UpdateInformationRequirementsTableForm
-                initialValues={{
-                  status_code: statusCode,
-                }}
+              <UpdateStatusForm
                 displayValues={{
-                  statusCode,
-                  updateUser,
+                  status_code: statusCode,
+                  update_user: updateUser,
                   updateDate,
-                  informationRequirementsTableStatusCodesHash: informationRequirementsTableStatusCodesHash,
                 }}
                 handleSubmit={handleUpdateIRT}
+                formName={FORM.UPDATE_IRT}
+                dropdownOptions={dropdownIRTStatusCodes}
               />
               <ReviewInformationRequirementsTable
                 requirements={mergedRequirements[idx]}

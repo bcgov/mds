@@ -24,6 +24,7 @@ import { requiredList } from "@mds/common/redux/utils/Validate";
 import { IGroupedDropdownList, IProjectSummaryForm, IProjectSummaryMinistryComment } from "@mds/common/interfaces";
 import { Feature } from "@mds/common/utils";
 import { USER_ROLES } from "@mds/common/constants";
+import ProjectCallout from "../projects/ProjectCallout";
 
 const { Paragraph, Title } = Typography;
 
@@ -88,12 +89,7 @@ export const ProjectManagement: FC = () => {
               data={projectSummaryStatusCodes}
             />
           )}
-          <Alert
-            message={projectSummaryStatusCodes.find((code) => code.value === status_code)?.label}
-            type="warning"
-            showIcon
-            className="margin-large--bottom"
-          />
+          <ProjectCallout status_code={status_code} />
           <Row gutter={8} justify="start" align="middle">
             <Col>
               <Title level={4}>Assigned Project Lead</Title>

@@ -1,6 +1,6 @@
 import {
   PROJECT_SUMMARY_STATUS_CODES,
-  MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODES,
+  MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES,
 } from "@mds/common/constants/enums";
 
 interface IProjectLinkContact {
@@ -16,12 +16,12 @@ interface IProjectLinkSummary {
 
 interface IMajorMineApplication {
   major_mine_application_guid: string;
-  status_code: MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODES;
+  status_code: MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES;
 }
 
 interface IInformationRequirementsTable {
   irt_guid: string;
-  status_code: MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODES;
+  status_code: MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES;
 }
 
 interface IProjectLinkProject {

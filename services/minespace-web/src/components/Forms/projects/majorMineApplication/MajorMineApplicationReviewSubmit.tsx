@@ -4,7 +4,6 @@ import { Row, Col, Typography, Descriptions, Card, Input, Checkbox, Form } from 
 import * as Strings from "@mds/common/constants/strings";
 import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import { documentNameColumn, uploadDateColumn } from "@/components/common/DocumentColumns";
-import MajorMineApplicationCallout from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationCallout";
 import { MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES } from "@/components/pages/Project/MajorMineApplicationPage";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 import { getMineDocuments } from "@mds/common/redux/selectors/mineSelectors";
@@ -13,6 +12,7 @@ import { renderCategoryColumn } from "@mds/common/components/common/CoreTableCom
 import { IProject } from "@mds/common/interfaces/projects/project.interface";
 import { useLocation } from "react-router-dom";
 import { getFormattedProjectApplication } from "@mds/common/redux/selectors/projectSelectors";
+import ProjectCallout from "@mds/common/components/projects/ProjectCallout";
 
 const inputStyle = { width: "100%" };
 
@@ -40,12 +40,8 @@ export const MajorMineApplicationReviewSubmit: FC<MajorMineApplicationReviewSubm
   const routeApplicationSubmitted = routeState?.applicationSubmitted;
   const major_mine_application = useSelector(getFormattedProjectApplication);
 
-  const {
-    primary_contact,
-    primary_documents,
-    spatial_documents,
-    supporting_documents,
-  } = major_mine_application;
+  const { primary_contact, primary_documents, spatial_documents, supporting_documents } =
+    major_mine_application;
 
   const isApplicationSubmitted =
     applicationSubmitted ||
@@ -64,9 +60,7 @@ export const MajorMineApplicationReviewSubmit: FC<MajorMineApplicationReviewSubm
             <Typography.Title level={2}>Major Mines Application</Typography.Title>
           </Col>
           <Col span={24} {...columnStyleConfig}>
-            <MajorMineApplicationCallout
-              majorMineApplicationStatus={major_mine_application?.status_code}
-            />
+            <ProjectCallout status_code={major_mine_application?.status_code} />
           </Col>
         </Row>
       )}

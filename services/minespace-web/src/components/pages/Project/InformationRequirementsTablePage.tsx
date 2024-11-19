@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useHistory, useLocation, useParams, withRouter } from "react-router-dom";
+import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import { Col, Row, Steps, Typography } from "antd";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import CheckCircleOutlined from "@ant-design/icons/CheckCircleOutlined";
@@ -12,15 +12,14 @@ import {
   fetchProjectById,
   fetchRequirements,
   updateInformationRequirementsTable,
-  updateInformationRequirementsTableStatus,
 } from "@mds/common/redux/actionCreators/projectActionCreator";
 import { openModal } from "@mds/common/redux/actions/modalActions";
 import { getInformationRequirementsTableDocumentTypesHash } from "@mds/common/redux/selectors/staticContentSelectors";
 import { modalConfig } from "@/components/modalContent/config";
 import * as routes from "@/constants/routes";
-import InformationRequirementsTableCallout from "@/components/Forms/projects/informationRequirementsTable/InformationRequirementsTableCallout";
 import StepForms from "@/components/pages/Project/InformationRequirementsTableStepForm";
 import { IProject, IRequirement } from "@mds/common";
+import ProjectCallout from "@mds/common/components/projects/ProjectCallout";
 
 export const InformationRequirementsTablePage = () => {
   const requirements: IRequirement[] = useSelector(getRequirements);
@@ -254,7 +253,7 @@ export const InformationRequirementsTablePage = () => {
     setSubmitting(true);
 
     await dispatch(
-      updateInformationRequirementsTableStatus(
+      updateInformationRequirementsTable(
         {
           projectGuid,
           informationRequirementsTableGuid,
@@ -352,18 +351,14 @@ export const InformationRequirementsTablePage = () => {
           </Col>
         </Row>
         <Row>
-          {project?.information_requirements_table?.status_code !== "APV" && (
+          {project?.information_requirements_table?.status_code !== "COM" && (
             <Steps current={current} items={Forms} />
           )}
           <br />
           <br />
           <Col span={24}>
             {current !== 0 && (
-              <InformationRequirementsTableCallout
-                informationRequirementsTableStatus={
-                  project?.information_requirements_table?.status_code || "DFT"
-                }
-              />
+              <ProjectCallout status_code={project?.information_requirements_table?.status_code} />
             )}
             <div>{Forms[current].content}</div>
           </Col>
@@ -373,4 +368,4 @@ export const InformationRequirementsTablePage = () => {
   );
 };
 
-export default withRouter(InformationRequirementsTablePage);
+export default InformationRequirementsTablePage;

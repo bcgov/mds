@@ -15,13 +15,14 @@ import { FORM } from "@mds/common/constants/forms";
 import MajorMineApplicationForm from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationForm";
 import { MajorMineApplicationGetStarted } from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationGetStarted";
 import MajorMineApplicationReviewSubmit from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationReviewSubmit";
-import MajorMineApplicationCallout from "@/components/Forms/projects/majorMineApplication/MajorMineApplicationCallout";
 import * as routes from "@/constants/routes";
 import { fetchMineDocuments } from "@mds/common/redux/actionCreators/mineActionCreator";
 import Loading from "@mds/common/components/common/Loading";
 
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import { getFormattedProjectApplication } from "@mds/common/redux/selectors/projectSelectors";
+import ProjectCallout from "@mds/common/components/projects/ProjectCallout";
+import { IMajorMinesApplication, IProject } from "@mds/common";
 
 export const MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES = ["SUB", "UNR", "APV"];
 
@@ -31,7 +32,9 @@ export const MajorMineApplicationPage: FC = () => {
   const { projectGuid } = useParams<{ projectGuid: string }>();
   const project = useSelector(getProject);
   const majorMineApplication = useSelector(getFormattedProjectApplication);
-  const formValues = useSelector(getFormValues(FORM.ADD_MINE_MAJOR_APPLICATION));
+  const formValues = useSelector(
+    getFormValues(FORM.ADD_MINE_MAJOR_APPLICATION)
+  ) as IMajorMinesApplication;
   const isFormDirty = useSelector(isDirty(FORM.ADD_MINE_MAJOR_APPLICATION));
 
   const { state: routeState } = useLocation<{ current: number }>();
@@ -47,15 +50,15 @@ export const MajorMineApplicationPage: FC = () => {
   const title = `Major Mine Application - ${mineName}`;
 
   const applicationStatus = majorMineApplication?.status_code;
-  const applicationSubmitted = MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES.includes(
-    applicationStatus
-  );
+  const applicationSubmitted =
+    MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES.includes(applicationStatus);
 
   const toggleConfirmedSubmission = () => setConfirmedSubmission(!confirmedSubmission);
 
   const handleFetchData = async () => {
     setLoaded(false);
-    const proj = await dispatch(fetchProjectById(projectGuid));
+    // @ts-ignore
+    const proj: IProject = await dispatch(fetchProjectById(projectGuid));
     const mmaGuid = proj?.major_mine_application?.major_mine_application_guid;
 
     if (mmaGuid) {
@@ -79,6 +82,7 @@ export const MajorMineApplicationPage: FC = () => {
 
   const handleCreateMajorMineApplication = (values, isDraft) => {
     const message = isDraft ? "Successfully create a draft major mine application." : null;
+    // @ts-ignore
     return dispatch(createMajorMineApplication({ projectGuid }, values, message)).then(
       (response) => {
         return response?.data;
@@ -86,7 +90,7 @@ export const MajorMineApplicationPage: FC = () => {
     );
   };
 
-  const handleUpdateMajorMineApplication = (values, isDraft) => {
+  const handleUpdateMajorMineApplication = async (values, isDraft) => {
     const { project_guid, major_mine_application_guid } = values;
 
     let message = null;
@@ -95,13 +99,14 @@ export const MajorMineApplicationPage: FC = () => {
     } else if (current === 2) {
       message = "Successfully submitted a new major mine application";
     }
-    return dispatch(
+    await dispatch(
       updateMajorMineApplication(
         { projectGuid: project_guid, majorMineApplicationGuid: major_mine_application_guid },
         values,
         message
       )
-    ).then(() => handleFetchData());
+    );
+    handleFetchData();
   };
 
   const handleSaveData = async (values, isDraft) => {
@@ -127,7 +132,7 @@ export const MajorMineApplicationPage: FC = () => {
 
   const handleSubmit = async (values) => {
     const isReviewPage = current === 2;
-    const status_code = isReviewPage ? "SUB" : values?.status_code ?? "DFT";
+    const status_code = isReviewPage ? "SUB" : (values?.status_code ?? "DFT");
     const payload = transformPayload(values, status_code);
     const response = await handleSaveData(payload, false);
     const mmaGuid =
@@ -309,9 +314,7 @@ export const MajorMineApplicationPage: FC = () => {
       <Row>
         <Col span={24}>
           {current !== 0 && (
-            <MajorMineApplicationCallout
-              majorMineApplicationStatus={project?.major_mine_application?.status_code}
-            />
+            <ProjectCallout status_code={project?.major_mine_application?.status_code} />
           )}
           <div>{stepItems[current].content}</div>
         </Col>

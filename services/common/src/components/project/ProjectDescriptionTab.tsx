@@ -42,6 +42,7 @@ import {
 } from "@mds/common/redux/actionCreators/projectActionCreator";
 import Loading from "@mds/common/components/common/Loading";
 import { formatProjectPayload } from "@mds/common/utils/helpers";
+import ProjectCallout from "../projects/ProjectCallout";
 
 const ProjectDescriptionTab = () => {
   const [shouldDisplayRetryButton, setShouldDisplayRetryButton] = useState(false);
@@ -136,7 +137,7 @@ const ProjectDescriptionTab = () => {
         ));
         const permitNo =
           authorization?.project_summary_permit_type[0] === AMS_AUTHORIZATION_TYPES.AMENDMENT &&
-          authorization?.existing_permits_authorizations
+            authorization?.existing_permits_authorizations
             ? getPermitNumber(authorization?.existing_permits_authorizations[0])
             : NOT_APPLICABLE;
         const projectSummaryAuthorizationGuid = authorization?.project_summary_authorization_guid;
@@ -171,7 +172,7 @@ const ProjectDescriptionTab = () => {
       )} - ${permitTypeLabel}`;
       const permitNo =
         authorization?.project_summary_permit_type[0] === AMS_AUTHORIZATION_TYPES.AMENDMENT &&
-        authorization?.existing_permits_authorizations
+          authorization?.existing_permits_authorizations
           ? authorization?.existing_permits_authorizations[0]
           : NOT_APPLICABLE;
       const projectSummaryAuthorizationGuid = authorization?.project_summary_authorization_guid;
@@ -406,18 +407,14 @@ const ProjectDescriptionTab = () => {
               Both the Major Mines Office and Ministry of Environments reviews must be completed for
               this stage to be considered complete.
             </Typography.Paragraph>
-
+            <ProjectCallout
+              status_code={project?.project_summary?.status_code}
+            />
             {hasFailedAMSSubmission && (
               <Callout
-                message={
-                  <div className="nod-callout">
-                    <h4>Submission Unsuccessful</h4>
-                    <p>
-                      One or more of your environment authorization applications has not been
-                      submitted successfully. Please retry the submission.
-                    </p>
-                  </div>
-                }
+                title="Environmental Management Act Submission Unsuccessful"
+                message="One or more of your environment authorization applications has not been
+                      submitted successfully."
                 severity={CALLOUT_SEVERITY.danger}
               />
             )}
@@ -489,7 +486,7 @@ const ProjectDescriptionTab = () => {
                     message="Submission Unsuccessful"
                     showIcon
                     type="error"
-                    description={`Your environment authorization application was not submitted successfully. Please retry the submission or start a new application for the rejected authorization(s). You can link the submission to the new application on the Related Projects page. One or more of your environment authorization application has not been submitted successfully. Please retry the submission.`}
+                    description={`Your environment authorization application was not submitted successfully. Please start a new application for the rejected authorization(s). You can link the submission to the new application on the Related Projects page. One or more of your environment authorization application has not been submitted successfully.`}
                     action={
                       shouldDisplayRetryButton ? (
                         <Button onClick={handleRetryAMSSubmissionClicked}>

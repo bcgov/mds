@@ -36,6 +36,7 @@ const Project: FC = () => {
 
   const handleFetchData = () => {
     if (projectGuid) {
+      // @ts-ignore
       dispatch(fetchProjectById(projectGuid)).catch(() => setIsValid(false));
     }
   };
@@ -142,11 +143,7 @@ const Project: FC = () => {
       key: "app",
       label: "Application",
       disabled: !hasFinalAplication,
-      children: (
-        <div className="padding-lg">
-          <MajorMineApplicationTab />
-        </div>
-      ),
+      children: <MajorMineApplicationTab />
     },
     isFeatureEnabled(Feature.MAJOR_PROJECT_DECISION_PACKAGE) && {
       key: "decision-package",
