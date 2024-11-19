@@ -268,10 +268,10 @@ export const MAJOR_MINE_APPLICATION = {
   helpKey: "Major-Mine-Application",
 };
 
-export const PROJECT_FINAL_APPLICATION = {
-  route: "/pre-applications/:projectGuid/final-app",
-  dynamicRoute: (projectGuid) => `/pre-applications/${projectGuid}/final-app`,
-  hashRoute: (projectGuid, link) => `/pre-applications/${projectGuid}/final-app/${link}`,
+export const PROJECT_APPLICATION = {
+  route: "/pre-applications/:projectGuid/app",
+  dynamicRoute: (projectGuid) => `/pre-applications/${projectGuid}/app`,
+  hashRoute: (projectGuid, link) => `/pre-applications/${projectGuid}/app/${link}`,
   component: MajorMineApplicationTab,
   helpKey: "Major-Mine-Application",
 };

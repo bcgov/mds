@@ -65,7 +65,7 @@ const Project: FC = () => {
 
     switch (newActiveTab) {
       case "final-app":
-        url = routes.PROJECT_FINAL_APPLICATION.dynamicRoute(projectGuid);
+        url = routes.PROJECT_APPLICATION.dynamicRoute(projectGuid);
         break;
       case "decision-package":
         url = routes.PROJECT_DECISION_PACKAGE.dynamicRoute(projectGuid);
@@ -139,8 +139,8 @@ const Project: FC = () => {
       ),
     },
     {
-      key: "final-app",
-      label: "Final Application",
+      key: "app",
+      label: "Application",
       disabled: !hasFinalAplication,
       children: (
         <div className="padding-lg">

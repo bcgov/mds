@@ -97,14 +97,14 @@ export const ProjectOverviewTab: FC = () => {
       ),
     },
     {
-      title: "Final Application",
+      title: "Application",
       key: `ps-${project.major_mine_application.major_mine_application_id}`,
       status: project.major_mine_application.status_code,
       statusHash: majorMineApplicationStatusCodeHash,
       link: (
         <Link
           data-cy="final-application-view-link"
-          to={routes.PROJECT_FINAL_APPLICATION.dynamicRoute(project_guid)}
+          to={routes.PROJECT_APPLICATION.dynamicRoute(project_guid)}
         >
           <Button className="full-mobile margin-small" disabled={!hasFinalAplication}>
             View
