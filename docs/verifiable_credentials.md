@@ -186,26 +186,26 @@ The top level of the credential produced is currently typed with all three becau
 
 ![https://lucid.app/lucidspark/a72aa903-a3b6-48fa-a531-d00072f3e32f/edit?view_items=CIknlZqzm_3b&invitationId=inv_588317cd-af32-46ec-9297-bb2ce5c57502](untp_arch_diagram.png)
 
-#### Mines Digital Services
+### Mines Digital Services
 
 General Purpose: To manage the mining data in BC
 
-#### Digital Trust Toolkit
+### Digital Trust Toolkit
 
-General Purpose: To host critical artifacts for reference by BC Government Issuers, as well as instructional material to on board interested issuers.
+General Purpose: To host critical artifacts for reference by BC Government VC Issuers, as well as instructional material for business experts of interested government issuers.
 
-#### Orgbook Publisher
+### Orgbook Publisher
 
 General Purpose: To support publishing of Government data as JSON-LD Credentials to Orgbook for BC Businesses (including did's)
 
-#### DID:TDW Server
+### DID:TDW Server
 
 General Purpose: To host did's for BC government entities, specifically did:web and did:tdw
 
-#### Orgbook VC API
+### Orgbook VC API
 
 General Purpose: New REST API to add support for JSON-LD verifiable credentials to Orgbook
 
-#### Orgbook
+### Orgbook
 
 General Purpose: To hold verifiable data about BC Businesses.
