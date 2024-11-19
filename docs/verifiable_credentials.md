@@ -150,7 +150,9 @@ You can configure your local MDS to use the CPO Wallet on Traction dev as well (
 
 Active development includes signing W3C credentials complaint with the [UN Transparency Protocol](https://uncefact.github.io/spec-untp/) that prove the mines act permit. This would allow a company to produce a **Digital Product Passport** for their goods that make claims about the ESG preformance of the goods and the Mines Act Permit could be used as evidence for those claims.
 
-No features exist in production at the moment. This is blocked by the difference between AnonCreds being issued to the holder through minespace, to publishing W3C credentials that need to relate to BC Business Registrations. Another way to think is that W3C credentials are no held, but simply relate to other verifiable data. Holder binding (how to know the credential on the web is related to the company/person I am connecting with), for BC Business Registration Numbers is still being designed.
+Mine Permitting Data is being publish into Orgbook. Orgbook holds root credentials issued by BC Registries about BC Businesses. Therefore publishing mining data requires a link to be built between the permittee that exists in CORE, and the business record that BC Registries is attesting to in Orgbook. W3C credentials are not bound to a holder, but simply signed documents that relate to other data (verifiable or not).
+
+**Holder Binding**, how to know the credential on the web is related to the company/person I am connecting with, for BC Business Registration Numbers is still being designed to comply with the [Digital Identity Anchor](https://uncefact.github.io/spec-untp/docs/specification/DigitalIdentityAnchor) specification.
 
 ### UNTP Resources
 
@@ -160,21 +162,21 @@ Should the Digital Conformity Credentials need to be updated to a new version, p
 
 ### JSON-LD Crash Course
 
-JSON-LD (JSON w/ Linked Data), allow the json documents to reference their defined shapes and purposes for readers to understand the datatyping, correct structure, and technical and real world meanings. Think of the context file as a glossary, that defines types and the attributes of those typed objects, and the schema a specific structure on how the typed objects should be structured together to produce the document.
+JSON-LD (JSON w/ Linked Data), allow the json documents to reference their defined shapes and purposes for readers to understand the datatyping, correct structure, and technical and real world meanings. Think of the **Context** file as a glossary, that defines types and the attributes of those typed objects; and the **Schema** file a specific structure on how the typed objects should be structured together to produce the document.
 
-The order that context files are important, as a later file can override a type definition than a previous file in the list, but only where the context files allow (`@protected: false`)
+The order that context files are important, as a later file can override a type definition than a previous file in the list, but only where the context files allow (`@protected: false`). Most context vocabularies seen in this context are `protected`.
 
 #### Relevant Context Files (IN ORDER)
 
 1. [W3C VCDM 2.0](https://www.w3.org/TR/vc-data-model-2.0/) is another specificiation for Veriifable Credentials, is an alternative to AnonCreds. Avoiding a very long section, here is an incredibly brief comparison that compares the two
 
-   | Feature                    | [AnonCreds]()                | VCDM2.0                    |
-   | -------------------------- | ---------------------------- | -------------------------- |
-   | Data Structure             | Flat                         | JSON                       |
-   | Issued                     | Directly to Holder and bound | Published to be Discovered |
-   | Selective Disclosure (ZPK) | Supported                    | Not Supported              |
-   | DID Methods                | did:indy                     | did:web, did:tdw           |
-   | Artifact hosting           | Hyperledger Indy             | Hosted by each participant |
+   | Feature                    | [AnonCreds](https://hyperledger.github.io/anoncreds-spec/) | VCDM2.0                    |
+   | -------------------------- | ---------------------------------------------------------- | -------------------------- |
+   | Data Structure             | Flat                                                       | JSON                       |
+   | Issued                     | Directly to Holder and bound                               | Published to be Discovered |
+   | Selective Disclosure (ZPK) | Supported                                                  | Not Supported              |
+   | DID Methods                | did:indy                                                   | did:web, did:tdw           |
+   | Artifact hosting           | Hyperledger Indy                                           | Hosted by each participant |
 
 1. [UNTP DCC Specification](https://uncefact.github.io/spec-untp/docs/specification/ConformityCredential) is a context file that describes all the types described in the UNTP specification.
 
@@ -209,3 +211,7 @@ General Purpose: New REST API to add support for JSON-LD verifiable credentials 
 ### Orgbook
 
 General Purpose: To hold verifiable data about BC Businesses.
+
+### UNTP Digital Product Passports
+
+Business will produce
