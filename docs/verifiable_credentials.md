@@ -6,13 +6,15 @@ The core-api is enabled to create out-of-band messages([spec](https://github.com
 
 The core-api is enabled to send credential-offer messages to connected wallets as way of initiating the [issue-credential](https://github.com/hyperledger/aries-rfcs/tree/main/features/0036-issue-credential) protocol.
 
-## Governance Documentation
+## AnonCreds
+
+### Governance Documentation
 
 The Mines Act Permit Verifiable Credentials has public [governance documentation](https://github.com/bcgov/bc-vcpedia/blob/main/credentials/bc-mines-act-permit/1.1.1/governance.md) that should be kept up-to-date with any technical or process changes.
 
-## User Flows
+### User Flows
 
-### Connection Establishment
+#### Connection Establishment
 
 This is abbreviated from the governance documentation above which will supercede this if unclear or out-of-date.
 
@@ -30,7 +32,7 @@ Current Limitations:
 - If an active connection exists, do not allow the processing of any further connection requests
 - Deleting a connection is not accessible in the UI, It could be done manually by deleting the row in `party_verifiable_credential_connection`, and using the TenantUI (see links below) to delete the connection record in Traction. (This may be needed for POC testing purposes, or if a company made a new corporate wallet.)
 
-### Credential Issuance
+#### Credential Issuance
 
 This is abbreviated from the governance documentation above which will supercede this if unclear or out-of-date.
 
@@ -48,7 +50,7 @@ Current Limitations:
 - The existence of this problem report should show in the Minespace and Core UI, as well as the text description contained in the problem-report
 - Controls and endpoints should be built to allow for a new credential-offer when a problem report has been received on a previous offer
 
-### Credential Revocation
+#### Credential Revocation
 
 Happy Path UX flow
 
@@ -58,7 +60,7 @@ Happy Path UX flow
 1. The corporate wallet of the holder will receive a `revocation-notification` message, CORE will lock the permit such that it shows in the state `revoked` on minespace.
 1. If the verifiable credential should become valid again, the ministry user can release the lock, which means the permit record will show as `available` in minespace, so the the proponent can get their veriifable credential again.
 
-### Permit Amendments and Revocation
+#### Permit Amendments and Revocation
 
 When a permit is amended, the previous authorization is no longer valid and the new authorization should be the only valid credential that exists.
 
@@ -66,13 +68,13 @@ After a new permit amendment is created for a permit:
 
 MDS will automatically revoke all verifiable credentials for that permit and offer a new credential with the newest values to the connection on the permitee (if it has one).
 
-## OCA Bundle
+### OCA Bundle
 
 The Overlay Capture Architechture (OCA) bundle for this credential is hosted [here](https://github.com/bcgov/aries-oca-bundles/tree/main/OCABundles/schema). The OCA bundle provides infomation on how the credential should be presented, including backgroun colors, labels, data-typing, and localization. If the credential is updated, the OCA bundle may need to be updated to match.
 
 OCA bundles hosted here can be previewed on the [OCA Explorer](https://bcgov.github.io/aries-oca-explorer/)
 
-## Key identifiers and links
+### Key identifiers and links
 
 As of: Nov 3, 2023, Published by Jason Syrotuck, (JSyro on Github, or jason.syrotuck@nttdata.com)
 
@@ -120,7 +122,7 @@ Traction Tenant API:
 - [Test Traction API](https://traction-tenant-proxy-test.apps.silver.devops.gov.bc.ca/api/doc)
 - [Test Traction API](https://traction-tenant-proxy-prod.apps.silver.devops.gov.bc.ca/api/doc)
 
-## Webhook URL
+### Webhook URL
 
 Traction is configured to call the core-api with HTTP requests when protocol events happen. Should these need to be reviewed or changed, navigate to the Tenant UI of the environment you want to view/change and navigate to `/tenant/settings` through the upper-right wallet avatar.
 
@@ -138,14 +140,72 @@ TRACTION_WEBHOOK_X_API_KEY=1263835957285d576a09466f2d5f6142
 
 These values could be used for local development, however you will not receive webhooks back from Traction unless you create a public tunnel (like NRGROK) and set tractions with that webhook url.
 
-## Local development testing
+### Local development testing
 
 Traction DEV is configured to send webhooks to MDS DEV, and to this website for inspection https://webhook.site, after 100 requests, you must create a new testing webhook url and add that to the CPO Dev wallet on traction dev.
 
 You can configure your local MDS to use the CPO Wallet on Traction dev as well (with env variables), but there is no way for the webhooks to get back to your local machine, so to manually test, we need to manually pass the webhook payload from traction, which will send it to webhook.site, then can be copied into Postman (or similar http client) and passed to your localhost api at `http://localhost:5000/verifiable-credentials/webhook/topic/<TOPIC>` as a json body, the topic is parameterized.
 
-# W3C Credentials
+## UNTP W3C Credentials
 
 Active development includes signing W3C credentials complaint with the [UN Transparency Protocol](https://uncefact.github.io/spec-untp/) that prove the mines act permit. This would allow a company to produce a **Digital Product Passport** for their goods that make claims about the ESG preformance of the goods and the Mines Act Permit could be used as evidence for those claims.
 
 No features exist in production at the moment. This is blocked by the difference between AnonCreds being issued to the holder through minespace, to publishing W3C credentials that need to relate to BC Business Registrations. Another way to think is that W3C credentials are no held, but simply relate to other verifiable data. Holder binding (how to know the credential on the web is related to the company/person I am connecting with), for BC Business Registration Numbers is still being designed.
+
+### UNTP Resources
+
+Should the Digital Conformity Credentials need to be updated to a new version, please review the specification found at https://uncefact.github.io/spec-untp/.
+
+- The Chief Permitting is attesting to the existence and good standing of a permit for a registered business in BC. Within the UNTP this is represented as a [Digital Conformity Credential](https://uncefact.github.io/spec-untp/docs/specification/ConformityCredential). Links can be found there for the official JSON-LD schema and context files.
+
+### JSON-LD Crash Course
+
+JSON-LD (JSON w/ Linked Data), allow the json documents to reference their defined shapes and purposes for readers to understand the datatyping, correct structure, and technical and real world meanings. Think of the context file as a glossary, that defines types and the attributes of those typed objects, and the schema a specific structure on how the typed objects should be structured together to produce the document.
+
+The order that context files are important, as a later file can override a type definition than a previous file in the list, but only where the context files allow (`@protected: false`)
+
+#### Relevant Context Files (IN ORDER)
+
+1. [W3C VCDM 2.0](https://www.w3.org/TR/vc-data-model-2.0/) is another specificiation for Veriifable Credentials, is an alternative to AnonCreds. Avoiding a very long section, here is an incredibly brief comparison that compares the two
+
+   | Feature                    | [AnonCreds]()                | VCDM2.0                    |
+   | -------------------------- | ---------------------------- | -------------------------- |
+   | Data Structure             | Flat                         | JSON                       |
+   | Issued                     | Directly to Holder and bound | Published to be Discovered |
+   | Selective Disclosure (ZPK) | Supported                    | Not Supported              |
+   | DID Methods                | did:indy                     | did:web, did:tdw           |
+   | Artifact hosting           | Hyperledger Indy             | Hosted by each participant |
+
+1. [UNTP DCC Specification](https://uncefact.github.io/spec-untp/docs/specification/ConformityCredential) is a context file that describes all the types described in the UNTP specification.
+
+1. [BC Mines Permit Credential]() is a context file that extends the UNTP DCC specification, allowing BC to add key attributes that are valuable to the subjects (the mines/permits)
+
+The top level of the credential produced is currently typed with all three because, and because all the attributes in all the context files are `protected` no attributes can conflict. AKA. Context files can add attributes to protected types, but cannot redefine an existing term.
+
+### Data Architechture
+
+![https://lucid.app/lucidspark/a72aa903-a3b6-48fa-a531-d00072f3e32f/edit?view_items=CIknlZqzm_3b&invitationId=inv_588317cd-af32-46ec-9297-bb2ce5c57502](untp_arch_diagram.png)
+
+#### Mines Digital Services
+
+General Purpose: To manage the mining data in BC
+
+#### Digital Trust Toolkit
+
+General Purpose: To host critical artifacts for reference by BC Government Issuers, as well as instructional material to on board interested issuers.
+
+#### Orgbook Publisher
+
+General Purpose: To support publishing of Government data as JSON-LD Credentials to Orgbook for BC Businesses (including did's)
+
+#### DID:TDW Server
+
+General Purpose: To host did's for BC government entities, specifically did:web and did:tdw
+
+#### Orgbook VC API
+
+General Purpose: New REST API to add support for JSON-LD verifiable credentials to Orgbook
+
+#### Orgbook
+
+General Purpose: To hold verifiable data about BC Businesses.
