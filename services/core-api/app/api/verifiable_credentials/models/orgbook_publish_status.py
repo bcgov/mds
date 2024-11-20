@@ -11,18 +11,17 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment import Permi
 class PermitAmendmentOrgBookPublish(AuditMixin, Base):
     """Track mines act permit credentials being issued to orgbook"""
     __tablename__ = "permit_amendment_orgbook_publish_status"
-    unsigned_payload_hash = db.Column(db.String, primary_key=True) #string on hex characters
+    unsigned_payload_hash = db.Column(db.String, primary_key=True)
     permit_amendment_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('permit_amendment.permit_amendment_guid'), nullable=False)
     party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=False)
     sign_date = db.Column(db.DateTime, nullable=True)
     signed_credential = db.Column(db.String, nullable=True)
     publish_state = db.Column(
-        db.Boolean, nullable=True)                                 # null = not published, true = published, false = failed
+        db.Boolean, nullable=True)               # null = not published, true = published, false = failed
     permit_number = db.Column(db.String, nullable=False)
     orgbook_entity_id = db.Column(db.String, nullable=False)
-    orgbook_credential_id = db.Column(
-        db.String, nullable=False)                                 # not sure this will be able to be populated
+    orgbook_credential_id = db.Column(db.String, nullable=False)
     error_msg = db.Column(db.String, nullable=True)
 
     def __repr__(self):
