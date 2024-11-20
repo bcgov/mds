@@ -287,10 +287,15 @@ def push_untp_map_data_to_publisher():
         publish_payload = {
             "type": "BCMinesActPermitCredential",
             "coreData": {
-                "entityId": pa_cred.credentialSubject.issuedToParty.registeredId,
-                "resourceId": pa_cred.credentialSubject.permitNumber,
-                "validFrom": convert_date_to_iso_datetime(pa.issue_date),
-                "validUntil": convert_date_to_iso_datetime(pa.issue_date + relativedelta(years=5)),
+                "entityId":
+                pa_cred.credentialSubject.issuedToParty.registeredId,
+                "resourceId":
+                pa_cred.credentialSubject.permitNumber,
+                "validFrom":
+                convert_date_to_iso_datetime(pa.issue_date),
+                "validUntil":
+                convert_date_to_iso_datetime(pa.authorization_end_date) if pa.authorization_end_date
+                else convert_date_to_iso_datetime(pa.issue_date + relativedelta(years=5)),
             },
             "subjectData": {
                 "permitNumber": pa_cred.credentialSubject.permitNumber
