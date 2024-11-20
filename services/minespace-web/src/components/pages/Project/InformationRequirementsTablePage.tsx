@@ -34,10 +34,10 @@ export const InformationRequirementsTablePage = () => {
 
   const dispatch = useDispatch();
 
-  const [current, setCurrent] = useState(0);
+  const [current, setCurrent] = useState(location?.state?.current ?? 0);
   const [submitting, setSubmitting] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isEditMode, setEditMode] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
   const [activeTab, setActiveTab] = useState();
   const [uploadedSuccessfully, setUploadedSuccessfully] = useState(false);
   const [importFailed, setImportFailed] = useState(false);
@@ -109,17 +109,10 @@ export const InformationRequirementsTablePage = () => {
   };
 
   useEffect(() => {
-    if (!location.state?.current) {
-      history.replace(location.pathname, { current: 0 });
-    }
-    handleFetchData();
-  }, []);
-
-  useEffect(() => {
     if (project) {
       setCurrent(location.state?.current ?? 0);
       if (project?.information_requirements_table?.status_code !== "DFT") {
-        setEditMode(true);
+        setIsEditMode(true);
       }
     }
   }, [project]);
@@ -137,6 +130,7 @@ export const InformationRequirementsTablePage = () => {
   }, [uploadedSuccessfully]);
 
   useEffect(() => {
+    handleFetchData();
     return () => {
       dispatch(clearInformationRequirementsTable({}));
     };
@@ -192,14 +186,14 @@ export const InformationRequirementsTablePage = () => {
     if (location?.state?.current) {
       history.replace(location.pathname, null);
     }
-    setCurrent((location.state.current += 1));
+    setCurrent(location.state.current + 1);
   };
 
   const prev = () => {
     if (location?.state?.current) {
       history.replace(location.pathname, null);
     }
-    setCurrent((location.state.current -= 1));
+    setCurrent(location.state.current - 1);
   };
 
   const importIsSuccessful = async (success, err) => {
@@ -216,7 +210,7 @@ export const InformationRequirementsTablePage = () => {
 
     await handleFetchData();
     setUploadedSuccessfully(true);
-    setEditMode(!isEditMode);
+    setIsEditMode(!isEditMode);
     return cleanFilePondFile();
   };
 

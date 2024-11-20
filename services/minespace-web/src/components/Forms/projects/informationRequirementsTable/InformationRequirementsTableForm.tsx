@@ -1,8 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { formatUrlToUpperCaseString } from "@common/utils/helpers";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
-import { Col, Row, Tabs } from "antd";
+import { Col, Row, Tabs, Form } from "antd";
 import ReviewSubmitInformationRequirementsTable from "@/components/Forms/projects/informationRequirementsTable/ReviewSubmitInformationRequirementsTable";
 import { IInformationRequirementsTable, IRequirement } from "@mds/common";
 
@@ -21,8 +18,7 @@ export const InformationRequirementsTableForm: FC<InformationRequirementsTableFo
   handleTabChange,
   sideMenuOptions,
 }) => {
-  const [tabIndex, setTabIndex] = useState(0);
-  const [activeTab, setActiveTab] = useState("0");
+  const activeTab = tab ?? sideMenuOptions[0];
   const [mergedRequirements, setMergedRequirements] = useState([]);
 
   const deepMergeById = (r1, r2) =>
@@ -42,23 +38,21 @@ export const InformationRequirementsTableForm: FC<InformationRequirementsTableFo
         )
       )
     );
-    setTabIndex(sideMenuOptions.indexOf(tab));
   }, []);
-
-  useEffect(() => {
-    if (tab) {
-      setTabIndex(sideMenuOptions.indexOf(tab));
-    }
-  }, [tab]);
 
   const renderTabComponent = (requirements, tabIndex) => (
     <ReviewSubmitInformationRequirementsTable requirements={requirements[tabIndex]} />
   );
 
   const onTabChange = (tab) => {
-    setActiveTab(tab);
     handleTabChange(tab);
   };
+
+  const tabItems = sideMenuOptions.map((tab, index) => ({
+    label: tab,
+    key: tab,
+    children: renderTabComponent(mergedRequirements, index),
+  }));
 
   return (
     <Form layout="vertical">
@@ -70,19 +64,8 @@ export const InformationRequirementsTableForm: FC<InformationRequirementsTableFo
             defaultActiveKey={sideMenuOptions[0]}
             onChange={onTabChange}
             className="vertical-tabs"
-          >
-            {sideMenuOptions.map((tab) => {
-              return (
-                <Tabs.TabPane
-                  tab={formatUrlToUpperCaseString(tab)}
-                  key={tab}
-                  className="vertical-tabs--tabpane"
-                >
-                  {renderTabComponent(mergedRequirements, tabIndex)}
-                </Tabs.TabPane>
-              );
-            })}
-          </Tabs>
+            items={tabItems}
+          />
         </Col>
       </Row>
     </Form>
