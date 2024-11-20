@@ -275,8 +275,14 @@ def push_untp_map_data_to_publisher():
     failed_credentials: List[Tuple[str, str | None]] = []
     success_count = 0
 
-    for row in permit_amendment_query_results:
+    for row_num, row in enumerate(permit_amendment_query_results):
         pa = PermitAmendment.find_by_permit_amendment_guid(row[0], unsafe=True)
+
+        if pa.permit_no[1] in ("X", "x"):
+            current_app.logger.warning(
+                f"exclude exploration permit={pa.permit_no}, they cannot produce goods for sale")
+            continue
+
         pa_cred = VerifiableCredentialManager.produce_untp_cc_map_payload_without_id(
             Config.CHIEF_PERMITTING_OFFICER_DID_WEB, pa)
         if not pa_cred:
@@ -287,15 +293,9 @@ def push_untp_map_data_to_publisher():
         publish_payload = {
             "type": "BCMinesActPermitCredential",
             "coreData": {
-                "entityId":
-                pa_cred.credentialSubject.issuedToParty.registeredId,
-                "resourceId":
-                pa_cred.credentialSubject.permitNumber,
-                "validFrom":
-                convert_date_to_iso_datetime(pa.issue_date),
-                "validUntil":
-                convert_date_to_iso_datetime(pa.authorization_end_date) if pa.authorization_end_date
-                else convert_date_to_iso_datetime(pa.issue_date + relativedelta(years=5)),
+                "entityId": pa_cred.credentialSubject.issuedToParty.registeredId,
+                "resourceId": pa_cred.credentialSubject.permitNumber,
+                "validFrom": convert_date_to_iso_datetime(pa.issue_date),
             },
             "subjectData": {
                 "permitNumber": pa_cred.credentialSubject.permitNumber
