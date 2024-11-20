@@ -40,8 +40,8 @@ class UNTPCCMinesActPermit(cc.ConformityAttestation):
 W3C_CRED_ID_PREFIX = f"{Config.ORGBOOK_PUBLISHER_BASE_URL}/credentials/"
 
 permit_amendments_for_orgbook_query = """
-    select pa.permit_amendment_guid, poe.party_guid
-
+    select pa.permit_amendment_guid, p.party_guid
+ 
     from party_orgbook_entity poe
     inner join party p on poe.party_guid = p.party_guid
     inner join mine_party_appt mpa on p.party_guid = mpa.party_guid
@@ -53,12 +53,12 @@ permit_amendments_for_orgbook_query = """
     and mpa.mine_party_appt_type_code = 'PMT'
     and mpa.deleted_ind = false
     and mpa.start_date <= pa.issue_date
-    and mpa.end_date >= pa.issue_date
+    and mpa.end_date > pa.issue_date
     and m.major_mine_ind = true
     and pa.deleted_ind = false
     and pmt.permit_status_code = 'O'
 
-    group by pa.permit_amendment_guid, pa.description, pa.issue_date, pa.permit_amendment_status_code, mpa.deleted_ind, pmt.permit_no, mpa.permit_id, poe.party_guid, p.party_name, poe.name_text, poe.registration_id, m.mine_name, mine_party_appt_type_code, mpa.mine_party_appt_guid, mpa.start_date, mpa.end_date
+    group by pa.permit_amendment_guid, p.party_guid, pa.description, pa.issue_date, pa.permit_amendment_status_code, pmt.permit_no, mpa.permit_id, poe.party_guid, p.party_name, poe.name_text, poe.registration_id, m.mine_name, mine_party_appt_type_code
     order by pmt.permit_no, pa.issue_date;
 """
 
