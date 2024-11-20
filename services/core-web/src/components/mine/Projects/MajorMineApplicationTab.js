@@ -76,7 +76,7 @@ export class MajorMineApplicationTab extends Component {
   componentDidUpdate(nextProps) {
     if (
       nextProps.match.params.tab !== this.props.match.params.tab &&
-      this.props.match.params.tab === "final-app"
+      this.props.match.params.tab === "app"
     ) {
       this.fetchData();
     }
@@ -204,7 +204,7 @@ export class MajorMineApplicationTab extends Component {
         <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
           <ScrollSideMenu
             menuOptions={menuOptions}
-            featureUrlRoute={routes.PROJECT_FINAL_APPLICATION.hashRoute}
+            featureUrlRoute={routes.PROJECT_APPLICATION.hashRoute}
             featureUrlRouteArguments={[project_guid]}
           />
         </div>

@@ -144,7 +144,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     def __get_address_type_code(cls, address_data):
         if isinstance(address_data, list):
             return address_data[0].get('address_type_code')
-        return address_data.get('address_type_code')
+        return address_data.get('address_type_code', None) if address_data else None
 
     def __repr__(self):
         return f'{self.__class__.__name__} {self.project_summary_id}'
@@ -297,7 +297,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                         address_type_code=addr.get('address_type_code'),
                     )
                     new_party.address.append(new_address)
-            else:
+            elif address_data is not None:
                 new_address = Address.create(
                     suite_no=address_data.get('suite_no'),
                     address_line_1=address_data.get('address_line_1'),
