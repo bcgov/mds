@@ -275,7 +275,7 @@ def push_untp_map_data_to_publisher():
     failed_credentials: List[Tuple[str, str | None]] = []
     success_count = 0
 
-    for row_num, row in enumerate(permit_amendment_query_results):
+    for row in permit_amendment_query_results:
         pa = PermitAmendment.find_by_permit_amendment_guid(row[0], unsafe=True)
 
         if pa.permit_no[1] in ("X", "x"):
