@@ -128,7 +128,8 @@ const PermitConditions: FC<PermitConditionProps> = ({
       return {
         href: cat.condition_category_code.toLowerCase().replace('-', ''),
         icon: <FontAwesomeIcon icon={faBan} style={{ color: '#bbb', fontSize: '20px' }} />,
-        title,
+        title: <Typography.Text style={{ fontSize: '16px', fontWeight: '600' }}>{title}</Typography.Text>,
+        titleText: title,
         description: 'Not Started',
         conditions: formattedConditions || [],
         condition_category_code: cat.condition_category_code,
@@ -282,8 +283,6 @@ const PermitConditions: FC<PermitConditionProps> = ({
                       <Col span={24}>
                         <Row justify="space-between">
                           <Title level={3} className="margin-none" id={category.href}>
-                            {category.title} ({category.conditions.length})
-
                             <PermitConditionCategory
                               onDelete={handleDeleteConditionCategory}
                               onChange={handleUpdateConditionCategory}

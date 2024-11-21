@@ -2,6 +2,9 @@ import uuid
 from difflib import SequenceMatcher
 from typing import List, Optional
 
+from app.api.mines.permits.permit_amendment.models.permit_amendment import (
+    PermitAmendment,
+)
 from app.api.mines.permits.permit_conditions.models.permit_condition_category import (
     PermitConditionCategory,
 )
@@ -37,12 +40,11 @@ def create_permit_conditions_from_task(task: PermitExtractionTask):
     """
     result = task.task_result
     last_condition_id_by_hierarchy = {}
-    condition_categories = PermitConditionCategory.get_all()
     current_category = None
 
     result = CreatePermitConditionsResult.model_validate(result)
 
-    has_category = any([condition.is_top_level_section and bool(_map_condition_to_category(condition_categories, condition)) for condition in result.conditions])
+    has_category = any([condition.is_top_level_section for condition in result.conditions])
 
     conditions = result.conditions
     if not has_category:
@@ -54,13 +56,19 @@ def create_permit_conditions_from_task(task: PermitExtractionTask):
             c.set_section(top_level_section)
         conditions = [top_level_section] + conditions
 
-    for idx, condition in enumerate(conditions):
-        
-        if condition.is_top_level_section:        
-            section_category = _map_condition_to_category(condition_categories, condition)
+    num_categories = 0
 
-            if section_category:
-                current_category = section_category
+
+    for idx, condition in enumerate(conditions):
+        if condition.is_top_level_section:        
+            section_category = _create_permit_condition_category(
+                condition=condition,
+                permit_amendment=task.permit_amendment,
+                display_order=num_categories,
+                step=condition.step
+            )
+            current_category = section_category
+            num_categories += 1
         else:            
             parent = _determine_parent(condition, last_condition_id_by_hierarchy)
             type_code = _map_condition_to_type_code(condition)
@@ -155,7 +163,7 @@ def _determine_parent(condition: PermitConditionResult, last_condition_id_by_num
     parent = last_condition_id_by_number_structure.get(parent_key)
     return parent
 
-def _map_condition_to_category(condition_categories: List[PermitConditionCategory], condition: PermitConditionResult) -> Optional[str]:
+def _create_permit_condition_category(condition: PermitConditionResult, permit_amendment: PermitAmendment, display_order: int, step: str) -> Optional[str]:
     """
     Finds the matching PermitConditionCategory code for the given condition based on the title or text it contains.
 
@@ -172,13 +180,17 @@ def _map_condition_to_category(condition_categories: List[PermitConditionCategor
         condition: Condition object
         
     """
-    for cat in condition_categories:
-        desc = cat.description.lower().replace('conditions', '')
-        text = condition.condition_title if condition.condition_title else condition.condition_text
-        text = text.lower().replace('conditions', '')
 
-        if SequenceMatcher(None, desc, text).ratio() > 0.6:
-            return cat.condition_category_code
-    return None
+    text = condition.condition_title if condition.condition_title else condition.condition_text
+
+    cat = PermitConditionCategory.create(
+        condition_category_code=str(uuid.uuid4()),
+        description=text,
+        display_order=display_order,
+        permit_amendment_id=permit_amendment.permit_amendment_id,
+        step=step
+    )
+
+    return cat.condition_category_code
 
     
