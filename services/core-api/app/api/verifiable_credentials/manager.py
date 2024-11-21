@@ -291,24 +291,27 @@ def push_untp_map_data_to_publisher():
             continue
         #only one assessment per credential
         publish_payload = {
-            "type": "BCMinesActPermitCredential",
-            "coreData": {
-                "entityId": pa_cred.credentialSubject.issuedToParty.registeredId,
-                "resourceId": pa_cred.credentialSubject.permitNumber,
+            "credential": {
+                "type": "BCMinesActPermitCredential",
                 "validFrom": convert_date_to_iso_datetime(pa.issue_date),
+                "credentialSubject": {
+                    "permitNumber": pa_cred.credentialSubject.permitNumber
+                },
             },
-            "subjectData": {
-                "permitNumber": pa_cred.credentialSubject.permitNumber
-            },
-            "untpData": {
-                "assessedFacility": [
-                    f.model_dump(exclude_none=True)
-                    for f in pa_cred.credentialSubject.assessment[0].assessedFacility
-                ],
-                "assessedProduct": [
-                    p.model_dump(exclude_none=True)
-                    for p in pa_cred.credentialSubject.assessment[0].assessedProduct
-                ],
+            "options": {
+                "entityId": pa_cred.credentialSubject.issuedToParty.registeredId,
+                "credentialId": pa.permit_amendment_guid,
+                "cardinalityId": pa_cred.credentialSubject.permitNumber,
+                "additionalData": {
+                    "assessedFacility": [
+                        f.model_dump(exclude_none=True)
+                        for f in pa_cred.credentialSubject.assessment[0].assessedFacility
+                    ],
+                    "assessedProduct": [
+                        p.model_dump(exclude_none=True)
+                        for p in pa_cred.credentialSubject.assessment[0].assessedProduct
+                    ],
+                }
             }
         }
 
