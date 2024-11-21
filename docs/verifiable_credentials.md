@@ -140,6 +140,27 @@ TRACTION_WEBHOOK_X_API_KEY=1263835957285d576a09466f2d5f6142
 
 These values could be used for local development, however you will not receive webhooks back from Traction unless you create a public tunnel (like NRGROK) and set tractions with that webhook url.
 
+### KNOWN EDGE CASES
+
+Proponent Delets connection after exchange.
+
+- How to detect
+- What to do?
+
+- How to manually check/fix
+
+Proponent establishes
+
+### AnonCred Schema updates
+
+If we change the schema what do we do with old records?
+
+Options:
+
+-
+-
+-
+
 ### Local development testing
 
 Traction DEV is configured to send webhooks to MDS DEV, and to this website for inspection https://webhook.site, after 100 requests, you must create a new testing webhook url and add that to the CPO Dev wallet on traction dev.
