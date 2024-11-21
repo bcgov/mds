@@ -309,8 +309,8 @@ class Config(object):
 
     ORGBOOK_PUBLISHER_BASE_URL = os.environ.get("ORGBOOK_PUBLISHER_BASE_URL",
                                                 "https://dev.orgbook.traceability.site")
-    ORGBOOK_PUBLISHER_API_KEY = os.environ.get("ORGBOOK_PUBLISHER_API_KEY",
-                                               "ORGBOOK_PUBLISHER_API_KEY")
+    ORGBOOK_PUBLISHER_CLIENT_SECRET = os.environ.get("ORGBOOK_PUBLISHER_CLIENT_SECRET",
+                                                     "ORGBOOK_PUBLISHER_CLIENT_SECRET")
 
 
 class TestConfig(Config):

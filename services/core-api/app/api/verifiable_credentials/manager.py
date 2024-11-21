@@ -28,6 +28,7 @@ from app.api.verifiable_credentials.models.credentials import PartyVerifiableCre
 from app.api.verifiable_credentials.models.connection import PartyVerifiableCredentialConnection
 from app.api.verifiable_credentials.models.orgbook_publish_status import PermitAmendmentOrgBookPublish
 from app.api.services.traction_service import TractionService
+from app.api.services.orgbook_publisher import OrgbookPublisherService
 
 from untp_models import codes, base, conformity_credential as cc
 
@@ -267,8 +268,6 @@ def push_untp_map_data_to_publisher():
     ## This is a different process that passes the data to the publisher.
     ## the publisher structures the data and sends it to the orgbook.
     ## the publisher also manages the BitStringStatusLists.
-    ORGBOOK_W3C_CRED_PUBLISH = f"{Config.ORGBOOK_PUBLISHER_BASE_URL}/credentials/publish"
-
     permit_amendment_query_results = db.session.execute(
         permit_amendments_for_orgbook_query).fetchall()
 
@@ -300,7 +299,7 @@ def push_untp_map_data_to_publisher():
             },
             "options": {
                 "entityId": pa_cred.credentialSubject.issuedToParty.registeredId,
-                "credentialId": pa.permit_amendment_guid,
+                "credentialId": str(pa.permit_amendment_guid),
                 "cardinalityId": pa_cred.credentialSubject.permitNumber,
                 "additionalData": {
                     "assessedFacility": [
@@ -314,7 +313,7 @@ def push_untp_map_data_to_publisher():
                 }
             }
         }
-
+        publisher_service = OrgbookPublisherService()
         current_app.logger.warning(f"publishing record={publish_payload}")
         payload_hash = md5(json.dumps(publish_payload).encode('utf-8')).hexdigest()
         current_app.logger.warning(f"payload hash={payload_hash}")
@@ -331,17 +330,15 @@ def push_untp_map_data_to_publisher():
             error_msg=None)
 
         try:
+            current_app.logger.info(f"saved publish record locally")
             publish_record.save()
-            current_app.logger.warning(f"saved publish record locally")
 
-            post_resp = requests.post(
-                ORGBOOK_W3C_CRED_PUBLISH,
-                json=publish_payload,
-                headers={"X-API-KEY": Config.ORGBOOK_PUBLISHER_API_KEY})
+            post_resp = publisher_service.publish_cred(publish_payload)
 
             publish_record.publish_state = post_resp.ok
             publish_record.error_msg = post_resp.text if not post_resp.ok else None
-            publish_record.orgbook_credential_id = post_resp.json()["credentialId"]
+            if post_resp.ok:
+                publish_record.orgbook_credential_id = post_resp.json()["credentialId"]
 
             publish_record.save()
 
