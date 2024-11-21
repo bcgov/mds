@@ -3,6 +3,7 @@ from datetime import datetime
 
 from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
 from app.extensions import db
+from flask.globals import current_app
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import validates
 from sqlalchemy.schema import FetchedValue
@@ -49,7 +50,38 @@ class PermitConditionCategory(SoftDeleteMixin, AuditMixin, Base):
 
     @classmethod
     def get_all(cls):
-        return cls.query.filter_by(permit_amendment_id=None, deleted_ind=False).order_by(cls.display_order).all()
+        return cls.query \
+            .filter_by(permit_amendment_id=None, deleted_ind=False) \
+            .order_by(cls.display_order) \
+            .all()
+
+    @classmethod
+    def search(cls, query=None, exclude=None, limit=None):
+        quer = cls.query \
+            .filter_by(deleted_ind=False)
+        if query:
+            quer = quer.filter(db.func.lower(cls.description).ilike(f'%{query.lower()}%'))
+        else:
+            # Return general categories if you're not searching for anything specific
+            quer = quer.filter_by(permit_amendment_id=None)
+
+        if exclude:
+            quer = quer.filter(~db.func.lower(cls.condition_category_code).in_([e.lower() for e in exclude]))
+
+        # Make sure we only return distinct descriptions
+        # and order by display order
+        quer = quer.distinct(cls.description) \
+            .from_self() \
+            .order_by(cls.display_order)
+
+        if limit:
+            quer = quer.limit(limit)
+        elif query:
+            quer = quer.limit(5)
+            
+
+
+        return  quer.all()
 
     @classmethod
     def find_by_permit_condition_category_code(cls, code):
@@ -61,4 +93,7 @@ class PermitConditionCategory(SoftDeleteMixin, AuditMixin, Base):
     
     @classmethod
     def find_by_permit_amendment_id(cls, permit_amendment_id):
-        return cls.query.filter_by(permit_amendment_id=permit_amendment_id, deleted_ind=False).all()
+        return cls.query \
+                .filter_by(permit_amendment_id=permit_amendment_id, deleted_ind=False) \
+                .order_by(cls.display_order) \
+                .all()

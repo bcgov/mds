@@ -96,9 +96,8 @@ const FormWrapper: FC<FormWrapperProps & InjectedFormProps<any>> = ({
     }
   };
 
-  const formClassName = `common-form common-form-${props.name} form-${
-    isEditMode ? "edit" : "view"
-  }`;
+  const formClassName = `common-form common-form-${props.name} form-${isEditMode ? "edit" : "view"
+    }`;
 
   return (
     <FormProvider value={providerValues}>

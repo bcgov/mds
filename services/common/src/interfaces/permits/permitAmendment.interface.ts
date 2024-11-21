@@ -4,6 +4,7 @@ import {
   INoWImportedApplicationDocument,
   IPermitCondition,
   VC_CRED_ISSUE_STATES, IMineReportPermitRequirement,
+  IPermitConditionCategory,
 } from "@mds/common/index";
 
 export interface IPermitAmendment {
@@ -33,5 +34,6 @@ export interface IPermitAmendment {
   is_generated_in_core: boolean;
   preamble_text: string;
   vc_credential_exch_state: VC_CRED_ISSUE_STATES;
-  mine_report_permit_requirements?: IMineReportPermitRequirement[]
+  mine_report_permit_requirements?: IMineReportPermitRequirement[];
+  condition_categories: IPermitConditionCategory[];
 }

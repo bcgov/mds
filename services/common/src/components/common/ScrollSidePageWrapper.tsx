@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useEffect, useState } from "react";
+import React, { FC, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import ScrollSideMenu, { ScrollSideMenuProps } from "./ScrollSideMenu";
 import { SystemFlagEnum } from "@mds/common/constants/enums";
@@ -9,15 +9,38 @@ interface ScrollSidePageWrapperProps {
   menuProps?: ScrollSideMenuProps;
   header: ReactNode;
   headerHeight?: number;
+  view?: "default" | "steps" | "anchor";
 }
 
 export const coreHeaderHeight = 62; // match scss variable $header-height
 const msHeaderHeight = 80;
 
-const ScrollSidePageWrapper: FC<ScrollSidePageWrapperProps> = ({
+interface ExtraMenuItemProps {
+  children: ReactNode;
+}
+
+interface ScrollSidePageWrapperSubcomponents {
+  ExtraMenuItem: React.FC<ExtraMenuItemProps>;
+}
+
+/**
+ * A wrapper component that provides a side menu and a content area. The side menu can be fixed to the top of the page.
+ * The menu links will act as an achor to sections in the content area scroll to the section when clicked, and highlight the active section.
+ * 
+ * If you need to add extra items to the side menu, you can use the ExtraMenuItem component as a child of ScrollSidePageWrapper:
+ * 
+ * <ScrollSidePageWrapper ...>
+ *  <ScrollSidePageWrapper.ExtraMenuItem>
+ *    <Typography.Paragraph>This is extra content that will be rendered under the side menu</Typography.Paragraph>
+ *  </ScrollSidePageWrapper.ExtraMenuItem>
+ * </ScrollSidePageWrapper>
+ */
+const ScrollSidePageWrapper: FC<ScrollSidePageWrapperProps> & ScrollSidePageWrapperSubcomponents = ({
   menuProps,
   content,
   header,
+  view = "anchor",
+  children,
   headerHeight = 170,
 }) => {
   const [isFixedTop, setIsFixedTop] = useState(false);
@@ -58,8 +81,10 @@ const ScrollSidePageWrapper: FC<ScrollSidePageWrapperProps> = ({
   const menuTopOffset = hasHeader || isFixedTop ? topOffset : 0;
   const contentTopOffset = hasHeader && isFixedTop ? headerHeight : 0;
 
+  const extraItems = React.Children.map(children, child => (child as ReactElement).type?.displayName === 'ExtraMenuItem' ? child : null);
+
   return (
-    <div className="scroll-side-menu-wrapper">
+    <div className={`scroll-side-menu-wrapper scroll-side-menu-view--${view}`}>
       {hasHeader && (
         <div
           className={isFixedTop ? "view--header fixed-scroll" : "view--header"}
@@ -74,7 +99,9 @@ const ScrollSidePageWrapper: FC<ScrollSidePageWrapperProps> = ({
           style={{ top: menuTopOffset }}
         >
           {/* the 24 matches the margin/padding on the menu/content. Looks nicer */}
-          <ScrollSideMenu offsetTop={topOffset + contentPaddingY} {...menuProps} />
+          <ScrollSideMenu offsetTop={topOffset + contentPaddingY} {...menuProps} view={view} />
+
+          {extraItems}
         </div>
       )}
       <div className={contentClass} style={{ top: contentTopOffset }}>
@@ -83,5 +110,12 @@ const ScrollSidePageWrapper: FC<ScrollSidePageWrapperProps> = ({
     </div>
   );
 };
+
+const ExtraMenuItem: FC<ExtraMenuItemProps> = ({ children }) => (
+  <div className="side-menu--extra-item">{children}</div>
+);
+
+ExtraMenuItem.displayName = 'ExtraMenuItem';
+ScrollSidePageWrapper.ExtraMenuItem = ExtraMenuItem;
 
 export default ScrollSidePageWrapper;

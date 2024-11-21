@@ -26,6 +26,10 @@
                 line-height: 2.2;
                 border-bottom: none;
                 padding: 11px 16px;
+
+                &:not(.ant-anchor-link-active) {
+                    border-left: 4px solid transparent;
+                }
             }
 
             .ant-anchor-link-title {
@@ -41,6 +45,8 @@
                     margin: -2px 0 -2px 16px;
                 }
             }
+
+
 
             .ant-anchor-link-active {
                 border-left: 4px solid $gov-blue;
@@ -75,6 +81,18 @@
         text-wrap: wrap;
         line-height: 21px;
         font-size: 14px;
+        display: flex;
+    }
+
+    .ant-anchor-link.now-menu-link::before {
+        content: '';
+        position: absolute;
+        left: 33px;
+        top: 20px;
+        bottom: 0;
+        border-left: 1px solid pink;
+        top: 33px;
+        bottom: -9px;
     }
 }
 

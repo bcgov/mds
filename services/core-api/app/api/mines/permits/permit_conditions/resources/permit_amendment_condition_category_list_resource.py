@@ -30,6 +30,15 @@ class PermitAmendmentConditionCategoryListResource(Resource, UserMixin):
 
 
     @requires_role_view_all
+    @api.doc(description='Get a list of permit condition categories for the given permit amendment')
+    @api.marshal_with(PERMIT_CONDITION_CATEGORY_MODEL, code=200, envelope='records')
+    def get(self, mine_guid, permit_guid, permit_amendment_guid):
+        mine, permit, permit_amendment, category = validate_permit_amendment_category(mine_guid, permit_guid, permit_amendment_guid)
+        
+        categories = PermitConditionCategory.find_by_permit_amendment_id(permit_amendment.permit_amendment_id)
+        return categories
+
+    @requires_role_view_all
     @api.doc(description='Creates a new permit condition category for the given permit amendment')
     @api.marshal_with(PERMIT_CONDITION_CATEGORY_MODEL, code=201)
     @requires_role_view_all
