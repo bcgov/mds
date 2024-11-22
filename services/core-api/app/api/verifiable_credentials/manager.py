@@ -274,6 +274,7 @@ def push_untp_map_data_to_publisher():
 
     failed_credentials: List[Tuple[str, str | None]] = []
     success_count = 0
+    skipped_count = 0
 
     for row in permit_amendment_query_results:
         pa = PermitAmendment.find_by_permit_amendment_guid(row[0], unsafe=True)
@@ -331,7 +332,7 @@ def push_untp_map_data_to_publisher():
             error_msg=None)
 
         try:
-            current_app.logger.info(f"saved publish record locally")
+            current_app.logger.info(f"saving publish record locally...")
             publish_record.save()
 
             post_resp = publisher_service.publish_cred(publish_payload)
@@ -353,10 +354,17 @@ def push_untp_map_data_to_publisher():
             )
             failed_credentials.append(
                 (publish_record.unsigned_payload_hash, publish_record.error_msg))
-        else:
-            success_count = success_count + 1
 
-    return f"num published={success_count}, num failed = {len(failed_credentials)}"
+        elif publish_record.orgbook_credential_id:
+            current_app.logger.info(
+                f"successful publish of unsigned_payload_id={publish_record.unsigned_payload_hash} url={publish_record.orgbook_credential_id}"
+            )
+            success_count += 1
+
+        else:
+            skipped_count += 1
+
+    return f"num published={success_count}, num_skipped={skipped_count} num failed = {len(failed_credentials)}"
 
 
 class VerifiableCredentialManager():
