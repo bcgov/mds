@@ -32,7 +32,7 @@
     "@syncfusion/ej2-react-filemanager": "27.1.55",
     "@syncfusion/ej2-react-pdfviewer": "27.1.58",
     "@syncfusion/ej2-splitbuttons": "27.1.56",
-    "flagsmith": "3.19.1",
+    "flagsmith": "7.0.2",
     "p-limit": "3.1.0",
     "query-string": "5.1.1",
     "ts-loader": "9.5.1"

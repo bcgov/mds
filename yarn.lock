@@ -1683,7 +1683,7 @@ __metadata:
     "@testing-library/jest-dom": 6.4.8
     clean-webpack-plugin: 4.0.0
     copy-webpack-plugin: 12.0.2
-    flagsmith: 3.19.1
+    flagsmith: 7.0.2
     hard-source-webpack-plugin: 0.13.1
     html-webpack-plugin: 5.6.2
     image-minimizer-webpack-plugin: 4.1.0
@@ -9125,10 +9125,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"flagsmith@npm:3.19.1":
-  version: 3.19.1
-  resolution: "flagsmith@npm:3.19.1"
-  checksum: df96b650a73354eb1fcba44ff94fe28c69dbb5b58061fa8782b69b8e959817a9f821070c211bbcb807bda7c9317fc954811ba055718845fb2da7cbd0028da07b
+"flagsmith@npm:7.0.2":
+  version: 7.0.2
+  resolution: "flagsmith@npm:7.0.2"
+  checksum: c58b1340fbcac3bf2d95ae9ebd38240d196ecbee1afcacfb8919b53ad6f9041162b62361cb4f5a7cde232b062ea16a697f51de25eb12cd9b3df6154a178bff9b
   languageName: node
   linkType: hard
 

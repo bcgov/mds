@@ -23,14 +23,17 @@ class Feature(Enum):
 
 
 flagsmith = Flagsmith(
-    environment_id=Config.FLAGSMITH_KEY,
-    api=Config.FLAGSMITH_URL,
+    environment_key=Config.FLAGSMITH_KEY,
+    api_url=Config.FLAGSMITH_URL,
 )
 
 
 def is_feature_enabled(feature):
     try:
-        return flagsmith.has_feature(feature) and flagsmith.feature_enabled(feature)
+        feature = str(feature).strip()
+        flags = flagsmith.get_environment_flags()
+
+        return feature in flags.flags and flags.is_feature_enabled(feature)
     except Exception as e:
         current_app.logger.error(f'Failed to look up feature flag for: {feature}. ' + str(e))
         return False
