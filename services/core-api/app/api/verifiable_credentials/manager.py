@@ -59,6 +59,7 @@ permit_amendments_for_orgbook_query = """
     and pa.deleted_ind = false
     and pmt.permit_status_code = 'O'
 
+
     group by pa.permit_amendment_guid, p.party_guid, pa.description, pa.issue_date, pa.permit_amendment_status_code, pmt.permit_no, mpa.permit_id, poe.party_guid, p.party_name, poe.name_text, poe.registration_id, m.mine_name, mine_party_appt_type_code
     order by pmt.permit_no, pa.issue_date;
 """
