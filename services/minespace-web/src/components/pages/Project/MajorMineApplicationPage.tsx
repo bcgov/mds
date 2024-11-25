@@ -22,9 +22,8 @@ import Loading from "@mds/common/components/common/Loading";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import { getFormattedProjectApplication } from "@mds/common/redux/selectors/projectSelectors";
 import ProjectCallout from "@mds/common/components/projects/ProjectCallout";
-import { IMajorMinesApplication, IProject } from "@mds/common";
-
-export const MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES = ["SUB", "UNR", "APV"];
+import { IMajorMinesApplication, IProject, SystemFlagEnum } from "@mds/common";
+import { areDocumentFieldsDisabled } from "@mds/common/components/projects/projectUtils";
 
 export const MajorMineApplicationPage: FC = () => {
   const history = useHistory();
@@ -50,9 +49,7 @@ export const MajorMineApplicationPage: FC = () => {
   const title = `Major Mine Application - ${mineName}`;
 
   const applicationStatus = majorMineApplication?.status_code;
-  const applicationSubmitted =
-    MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES.includes(applicationStatus);
-
+  const docsDisabled = areDocumentFieldsDisabled(SystemFlagEnum.ms, applicationStatus);
   const toggleConfirmedSubmission = () => setConfirmedSubmission(!confirmedSubmission);
 
   const handleFetchData = async () => {
@@ -296,7 +293,7 @@ export const MajorMineApplicationPage: FC = () => {
           <Typography.Title level={2}>Create New Major Mine Application</Typography.Title>
         </Col>
         <Col span={9}>
-          {!applicationSubmitted && (
+          {!docsDisabled && (
             <div style={{ display: "inline", float: "right" }}>
               <p>{stepItems[current].buttons}</p>
             </div>
@@ -319,7 +316,7 @@ export const MajorMineApplicationPage: FC = () => {
           <div>{stepItems[current].content}</div>
         </Col>
       </Row>
-      {!applicationSubmitted && (
+      {!docsDisabled && (
         <Row>
           <Col span={24}>
             <div style={{ display: "inline", float: "right" }}>

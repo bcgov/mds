@@ -18,7 +18,6 @@ import MajorMineApplicationReviewSubmit from "@/components/Forms/projects/majorM
 import ProjectOverviewTab from "./ProjectOverviewTab";
 import InformationRequirementsTableEntryTab from "./InformationRequirementsTableEntryTab";
 import MajorMineApplicationEntryTab from "./MajorMineApplicationEntryTab";
-import { MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES } from "./MajorMineApplicationPage";
 import ProjectDocumentsTab from "@mds/common/components/projects/ProjectDocumentsTab";
 import ProjectDescriptionTab from "@mds/common/components/project/ProjectDescriptionTab";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
@@ -183,9 +182,7 @@ const ProjectPage: FC = () => {
     setActiveTab(tab);
   }, [tab]);
 
-  const majorMineApplicationTabContent = MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES.includes(
-    mmaStatus
-  ) ? (
+  const majorMineApplicationTabContent = mmaDocsDisabled ? (
     <MajorMineApplicationReviewSubmit
       project={project}
       applicationSubmitted

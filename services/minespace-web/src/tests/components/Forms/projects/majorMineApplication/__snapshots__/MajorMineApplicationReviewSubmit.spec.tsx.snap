@@ -2528,18 +2528,16 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on ProjectPage 1`]
       style="max-width: 67%; margin: 0px auto;"
     >
       <div
-        class="bcgov-callout--danger nod-callout-text"
+        class="bcgov-callout--warning bcgov-callout"
       >
-        <div
-          class="information-requirements-table-callout"
+        <p
+          class="bcgov-callout-title"
         >
-          <h4>
-            Further information is required
-          </h4>
-          <p>
-            Your submission has been reviewed and some changes are required for completing the review process. Please check your inbox for more information.
-          </p>
-        </div>
+          Change Requested
+        </p>
+        <p>
+          This project requires changes by the mine. mineSpace users can update text fields and update documents. Note: when the MineSpace user resubmits at this step the project status will be changed to under review.
+        </p>
       </div>
     </div>
   </div>

@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MajorMineApplicationTab renders properly 1`] = `
-<MajorMineApplicationTab
+<Component
   fetchProjectById={[MockFunction]}
   majorMineAppStatusCodesHash={
     Object {

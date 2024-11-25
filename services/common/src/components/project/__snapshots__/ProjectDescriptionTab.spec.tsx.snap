@@ -54,7 +54,7 @@ exports[`ProjectDescriptionTab renders properly 1`] = `
           Draft
         </p>
         <p>
-          This project step hhas not been formally submitted by the proponent through MineSpace. MineSpace users can update text fields and add documents.
+          This project step has not been formally submitted by the proponent through MineSpace. MineSpace users can update text fields and add documents.
         </p>
       </div>
       <h3

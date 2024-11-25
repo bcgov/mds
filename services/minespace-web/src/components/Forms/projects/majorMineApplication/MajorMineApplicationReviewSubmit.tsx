@@ -4,7 +4,6 @@ import { Row, Col, Typography, Descriptions, Card, Input, Checkbox, Form } from 
 import * as Strings from "@mds/common/constants/strings";
 import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import { documentNameColumn, uploadDateColumn } from "@/components/common/DocumentColumns";
-import { MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES } from "@/components/pages/Project/MajorMineApplicationPage";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 import { getMineDocuments } from "@mds/common/redux/selectors/mineSelectors";
 import { MajorMineApplicationDocument } from "@mds/common/models/documents/document";
@@ -13,6 +12,8 @@ import { IProject } from "@mds/common/interfaces/projects/project.interface";
 import { useLocation } from "react-router-dom";
 import { getFormattedProjectApplication } from "@mds/common/redux/selectors/projectSelectors";
 import ProjectCallout from "@mds/common/components/projects/ProjectCallout";
+import { areDocumentFieldsDisabled } from "@mds/common/components/projects/projectUtils";
+import { SystemFlagEnum } from "@mds/common";
 
 const inputStyle = { width: "100%" };
 
@@ -43,11 +44,12 @@ export const MajorMineApplicationReviewSubmit: FC<MajorMineApplicationReviewSubm
   const { primary_contact, primary_documents, spatial_documents, supporting_documents } =
     major_mine_application;
 
-  const isApplicationSubmitted =
-    applicationSubmitted ||
-    routeApplicationSubmitted ||
-    MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES.includes(major_mine_application?.status_code);
+  const docsDisabled = areDocumentFieldsDisabled(
+    SystemFlagEnum.ms,
+    major_mine_application?.status_code
+  );
 
+  const isApplicationSubmitted = applicationSubmitted || routeApplicationSubmitted || docsDisabled;
   const documentColumns = [documentNameColumn(), uploadDateColumn()];
 
   const columnStyleConfig = tabbedView ? { style: { maxWidth: "67%", margin: "0 auto" } } : {};

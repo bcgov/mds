@@ -6,13 +6,13 @@ import { useSelector } from "react-redux";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 
 export const statusTextHash = {
-    "DFT": { severity: CALLOUT_SEVERITY.warning, message: "This project step hhas not been formally submitted by the proponent through MineSpace. MineSpace users can update text fields and add documents." },
+    "DFT": { severity: CALLOUT_SEVERITY.warning, message: "This project step has not been formally submitted by the proponent through MineSpace. MineSpace users can update text fields and add documents." },
     "WDN": { severity: CALLOUT_SEVERITY.danger, message: "MineSpace users cannot update text fields or update documents. Contact the Ministry to change this status." },
     "COM": { severity: CALLOUT_SEVERITY.success, message: "The review of this project is completed. MineSpace users cannot update text fields or update documents." },
     "OHD": { severity: CALLOUT_SEVERITY.danger, message: "This project is on hold. MineSpace users cannot update text fields or update documents. Contact the Ministry to change this status." },
     "SUB": { severity: CALLOUT_SEVERITY.success, message: "This project has been formally submitted by the proponent through MineSpace. MineSpace users can update documents only." },
     "UNR": { severity: CALLOUT_SEVERITY.warning, message: "This project is being actively reviewed. MineSpace users cannot update text fields or update documents." },
-    "CHR": { severity: CALLOUT_SEVERITY.warning, message: "This project requires changes by the mine. mineSpace users can update text fields and update documents. Note: when the MineSpace user resubmits at this step the project status will be changed to under review." },
+    "CHR": { severity: CALLOUT_SEVERITY.warning, message: "This project requires changes by the mine. MineSpace users can update text fields and update documents. Note: when the MineSpace user resubmits at this step the project status will be changed to under review." },
     "ASG": { severity: CALLOUT_SEVERITY.success, message: "This project has been formally submitted by the proponent through MineSpace. MineSpace users can update documents only." }
 }
 
