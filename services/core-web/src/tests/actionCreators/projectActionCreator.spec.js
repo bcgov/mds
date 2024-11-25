@@ -8,7 +8,6 @@ import {
   deleteProjectSummary,
   removeDocumentFromProjectSummary,
   createInformationRequirementsTable,
-  updateInformationRequirementsTableByFile,
   updateInformationRequirementsTable,
   removeDocumentFromInformationRequirementsTable,
   fetchRequirements,
@@ -22,7 +21,6 @@ import * as genericActions from "@mds/common/redux/actions/genericActions";
 import { ENVIRONMENT } from "@mds/common";
 import * as API from "@mds/common/constants/API";
 import * as MOCK from "@/tests/mocks/dataMocks";
-import { clearProjectSummaryMinistryComments } from "@mds/common/redux/actions/projectActions";
 
 const dispatch = jest.fn();
 const requestSpy = jest.spyOn(genericActions, "request");
@@ -261,7 +259,7 @@ describe("`createInformationRequirementsTable` action creator", () => {
   });
 });
 
-describe("`updateInformationRequirementsTableByFile` action creator", () => {
+describe("`updateInformationRequirementsTable` action creator: file actions", () => {
   const projectGuid = "12345-6789";
   const informationRequirementsTableGuid = "12345-6789";
   const documentGuid = "98745-2351";
@@ -272,11 +270,14 @@ describe("`updateInformationRequirementsTableByFile` action creator", () => {
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPut(url).reply(200, mockResponse);
-    return updateInformationRequirementsTableByFile(
+    return updateInformationRequirementsTable({
       projectGuid,
       informationRequirementsTableGuid,
-      file,
-      documentGuid
+      fileData: {
+        file,
+        documentGuid
+      }
+    }
     )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
@@ -286,11 +287,11 @@ describe("`updateInformationRequirementsTableByFile` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPut(url).reply(418, MOCK.ERROR);
-    return updateInformationRequirementsTableByFile(
+    return updateInformationRequirementsTable({
       projectGuid,
       informationRequirementsTableGuid,
-      null,
-      null
+      fileData: { file: null, documentGuid: null }
+    }
     )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
@@ -303,18 +304,16 @@ describe("`updateInformationRequirementsTable` action creator", () => {
   const projectGuid = "12345-6789";
   const informationRequirementsTableGuid = "12345-6789";
   const mockPayload = {
-    status_code: "REC",
-    documents: [],
+    status_code: "SUB",
   };
   const url =
     ENVIRONMENT.apiUrl +
     API.INFORMATION_REQUIREMENTS_TABLE(projectGuid, informationRequirementsTableGuid);
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
-    mockAxios.onPut(url, mockPayload).reply(200, mockResponse);
+    mockAxios.onPut(url).reply(200, mockResponse);
     return updateInformationRequirementsTable(
-      { projectGuid, informationRequirementsTableGuid },
-      mockPayload
+      { projectGuid, informationRequirementsTableGuid, ...mockPayload },
     )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);

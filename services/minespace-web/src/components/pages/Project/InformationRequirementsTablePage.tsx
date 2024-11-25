@@ -5,7 +5,6 @@ import { Col, Row, Steps, Typography } from "antd";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
 import CheckCircleOutlined from "@ant-design/icons/CheckCircleOutlined";
 import CloseCircleOutlined from "@ant-design/icons/CloseCircleOutlined";
-import { cleanFilePondFile } from "@common/utils/helpers";
 import { getProject, getRequirements } from "@mds/common/redux/selectors/projectSelectors";
 import { clearInformationRequirementsTable } from "@mds/common/redux/actions/projectActions";
 import {
@@ -18,8 +17,9 @@ import { getInformationRequirementsTableDocumentTypesHash } from "@mds/common/re
 import { modalConfig } from "@/components/modalContent/config";
 import * as routes from "@/constants/routes";
 import StepForms from "@/components/pages/Project/InformationRequirementsTableStepForm";
-import { IProject, IRequirement } from "@mds/common";
+import { IProject, IRequirement, SystemFlagEnum } from "@mds/common";
 import ProjectCallout from "@mds/common/components/projects/ProjectCallout";
+import { areDocumentFieldsDisabled } from "@mds/common/components/projects/projectUtils";
 
 export const InformationRequirementsTablePage = () => {
   const requirements: IRequirement[] = useSelector(getRequirements);
@@ -45,6 +45,10 @@ export const InformationRequirementsTablePage = () => {
   const [hasBadRequestError, setHasBadRequestError] = useState(false);
   const [tabs, setTabs] = useState<string[]>([]);
   const [projectRequirementsVersion, setProjectRequirementsVersion] = useState<number>();
+  const docsDisabled = areDocumentFieldsDisabled(
+    SystemFlagEnum.ms,
+    project?.information_requirements_table?.status_code
+  );
 
   const handleFetchData = async () => {
     await dispatch(fetchProjectById(projectGuid));
@@ -186,14 +190,14 @@ export const InformationRequirementsTablePage = () => {
     if (location?.state?.current) {
       history.replace(location.pathname, null);
     }
-    setCurrent(location.state.current + 1);
+    setCurrent(current + 1);
   };
 
   const prev = () => {
     if (location?.state?.current) {
       history.replace(location.pathname, null);
     }
-    setCurrent(location.state.current - 1);
+    setCurrent(current - 1);
   };
 
   const importIsSuccessful = async (success, err) => {
@@ -211,7 +215,6 @@ export const InformationRequirementsTablePage = () => {
     await handleFetchData();
     setUploadedSuccessfully(true);
     setIsEditMode(!isEditMode);
-    return cleanFilePondFile();
   };
 
   const handleIRTUpdate = async (values: any, message: string) => {
@@ -220,14 +223,11 @@ export const InformationRequirementsTablePage = () => {
     setSubmitting(true);
 
     await dispatch(
-      updateInformationRequirementsTable(
-        {
-          projectGuid,
-          informationRequirementsTableGuid,
-        },
-        values,
-        message
-      )
+      updateInformationRequirementsTable({
+        projectGuid,
+        informationRequirementsTableGuid,
+        ...values,
+      })
     );
     setSubmitting(false);
     handleFetchData();
@@ -247,14 +247,11 @@ export const InformationRequirementsTablePage = () => {
     setSubmitting(true);
 
     await dispatch(
-      updateInformationRequirementsTable(
-        {
-          projectGuid,
-          informationRequirementsTableGuid,
-        },
-        values,
-        message
-      )
+      updateInformationRequirementsTable({
+        projectGuid,
+        informationRequirementsTableGuid,
+        ...values,
+      })
     );
     setSubmitting(false);
     handleFetchData();
@@ -340,14 +337,12 @@ export const InformationRequirementsTablePage = () => {
           </Col>
           <Col span={12}>
             <div style={{ display: "inline", float: "right" }}>
-              <p>{Forms[current].buttons}</p>
+              <div>{Forms[current].buttons}</div>
             </div>
           </Col>
         </Row>
         <Row>
-          {project?.information_requirements_table?.status_code !== "COM" && (
-            <Steps current={current} items={Forms} />
-          )}
+          {!docsDisabled && <Steps current={current} items={Forms} />}
           <br />
           <br />
           <Col span={24}>

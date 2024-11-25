@@ -9,7 +9,7 @@ export const statusTextHash = {
     "DFT": { severity: CALLOUT_SEVERITY.warning, message: "This project step hhas not been formally submitted by the proponent through MineSpace. MineSpace users can update text fields and add documents." },
     "WDN": { severity: CALLOUT_SEVERITY.danger, message: "MineSpace users cannot update text fields or update documents. Contact the Ministry to change this status." },
     "COM": { severity: CALLOUT_SEVERITY.success, message: "The review of this project is completed. MineSpace users cannot update text fields or update documents." },
-    "OHD": { severity: CALLOUT_SEVERITY.danger, message: "This project is on hold. MineSpace users cannot update text fields or update documents. COntact the Ministry to change this status." },
+    "OHD": { severity: CALLOUT_SEVERITY.danger, message: "This project is on hold. MineSpace users cannot update text fields or update documents. Contact the Ministry to change this status." },
     "SUB": { severity: CALLOUT_SEVERITY.success, message: "This project has been formally submitted by the proponent through MineSpace. MineSpace users can update documents only." },
     "UNR": { severity: CALLOUT_SEVERITY.warning, message: "This project is being actively reviewed. MineSpace users cannot update text fields or update documents." },
     "CHR": { severity: CALLOUT_SEVERITY.warning, message: "This project requires changes by the mine. mineSpace users can update text fields and update documents. Note: when the MineSpace user resubmits at this step the project status will be changed to under review." },
@@ -22,12 +22,13 @@ interface ProjectCalloutProps {
 }
 
 const ProjectCallout: FC<ProjectCalloutProps> = ({
-    status_code = "DFT",
+    status_code,
     formField }) => {
+
     const systemFlag = useSelector(getSystemFlag);
     const isCore = systemFlag === SystemFlagEnum.core;
-    const calloutParams = statusTextHash[status_code];
-    let title = PROJECT_SUMMARY_STATUS_CODES[status_code];
+    const calloutParams = statusTextHash[status_code ?? "DFT"];
+    let title = PROJECT_SUMMARY_STATUS_CODES[status_code ?? "DFT"];
     const hasFormField = Boolean(formField);
     const colProps = hasFormField ? { xs: 24, md: 18 } : { span: 24 };
 

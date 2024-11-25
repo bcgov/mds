@@ -250,6 +250,18 @@ h5.ant-typography,
 
 // vertical-tabs
 .vertical-tabs {
+
+  // squashes ResizeObserver loop error + jumping UI as it tries to show/hide 
+  // tabs hidden by vertical scroll repeatedly
+  .ant-tabs-nav-wrap {
+    min-height: fit-content;
+  }
+
+  .ant-tabs-nav-operations,
+  .ant-tabs-nav-more {
+    display: none !important;
+  }
+
   &.ant-tabs .ant-tabs-ink-bar {
     background: transparent;
     height: 0px;
@@ -309,7 +321,6 @@ h5.ant-typography,
 
   &.ant-tabs-left>.ant-tabs-content-holder>.ant-tabs-content>.ant-tabs-tabpane,
   .ant-tabs-left>div>.ant-tabs-content-holder>.ant-tabs-content>.ant-tabs-tabpane {
-    overflow: scroll;
     margin-bottom: 50px;
   }
 }

@@ -8,7 +8,6 @@ import {
   getProjectSummaryStatusCodesHash,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import {
-  getInformationRequirementsTable,
   getMajorMinesApplication,
   getProject,
   getProjectSummary,
@@ -27,7 +26,7 @@ export const ProjectOverviewTab: FC<ProjectOverviewTabProps> = ({ navigateForwar
   const EMLIcontactInfo = useSelector(getEMLIContactsByRegion);
   const project = useSelector(getProject);
   const projectSummaryStatusCodesHash = useSelector(getProjectSummaryStatusCodesHash);
-  const informationRequirementsTable = useSelector(getInformationRequirementsTable);
+  const informationRequirementsTable = project?.information_requirements_table;
   const informationRequirementsTableStatusCodesHash = useSelector(
     getInformationRequirementsTableStatusCodesHash
   );

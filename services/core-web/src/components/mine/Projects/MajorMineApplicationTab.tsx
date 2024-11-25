@@ -12,7 +12,7 @@ import { formatDate, formatUrlToUpperCaseString } from "@mds/common/redux/utils/
 import * as Strings from "@mds/common/constants/strings";
 import { getFormattedProjectApplication, getProject } from "@mds/common/redux/selectors/projectSelectors";
 import * as routes from "@/constants/routes";
-import UpdateStatusForm from "@/components/Forms/majorMineApplication/UpdateStatusForm";
+import UpdateStatusForm from "@/components/Forms/MajorProject/UpdateStatusForm";
 import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import { ScrollSideMenuProps } from "@mds/common/components/common/ScrollSideMenu";
 import { fetchMineDocuments } from "@mds/common/redux/actionCreators/mineActionCreator";
@@ -80,7 +80,7 @@ const MajorMineApplicationTab: FC = () => {
   const headerHeight = 121;
   const tabNavHeight = 60;
   const topOffset = headerHeight + tabNavHeight;
-  console.log('project', project)
+
   const documentSections = [
     { href: "primary-documents", documents: majorMineApplicationDocs.filter((doc) => doc.major_mine_application_document_type_code === "PRM") },
     { href: "spatial-components", documents: majorMineApplicationDocs.filter((doc) => doc.major_mine_application_document_type_code === "SPT") },

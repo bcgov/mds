@@ -22,8 +22,9 @@ import { MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES } from "./MajorMineApplicati
 import ProjectDocumentsTab from "@mds/common/components/projects/ProjectDocumentsTab";
 import ProjectDescriptionTab from "@mds/common/components/project/ProjectDescriptionTab";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
-import { Feature } from "@mds/common";
+import { Feature, SystemFlagEnum } from "@mds/common";
 import { getProjectSummary } from "@mds/common/redux/reducers/projectReducer";
+import { areDocumentFieldsDisabled } from "@mds/common/components/projects/projectUtils";
 
 const tabs = [
   "overview",
@@ -61,10 +62,12 @@ const ProjectPage: FC = () => {
   const hasInformationRequirementsTable = Boolean(information_requirements_table?.irt_guid);
   const hasFinalAplication = Boolean(major_mine_application?.major_mine_application_guid);
 
-  const mine = useSelector((state) => getMineById(state, mine_guid)) ?? {};
-  const { mine_name } = mine;
+  const mine = useSelector((state) => getMineById(state, mine_guid));
+  const { mine_name } = mine ?? {};
   const { status_code: irtStatus, irt_guid } = information_requirements_table ?? {};
   const { status_code: mmaStatus, major_mine_application_guid } = major_mine_application ?? {};
+  const irtDocsDisabled = areDocumentFieldsDisabled(SystemFlagEnum.ms, irtStatus);
+  const mmaDocsDisabled = areDocumentFieldsDisabled(SystemFlagEnum.ms, mmaStatus);
 
   const fetchArchivedDocuments = (currentTab = activeTab) => {
     let filters: any = { project_guid: projectGuid, is_archived: true };
@@ -88,7 +91,7 @@ const ProjectPage: FC = () => {
         return projectDescriptionTab.click();
       }
       case "IRT": {
-        if (status === "APV") {
+        if (irtDocsDisabled) {
           return history.push({
             pathname: router.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
               projectGuid,
@@ -105,7 +108,7 @@ const ProjectPage: FC = () => {
         return irtTab.click();
       }
       case "MMA":
-        if (MAJOR_MINE_APPLICATION_SUBMISSION_STATUSES.includes(status)) {
+        if (mmaDocsDisabled) {
           return history.push({
             pathname: router.REVIEW_MAJOR_MINE_APPLICATION.dynamicRoute(
               projectGuid,
@@ -120,24 +123,6 @@ const ProjectPage: FC = () => {
           }
           return mmaTab.click();
         }
-      case "DFT":
-      case "CHR":
-        return history.push({
-          pathname: router.EDIT_MAJOR_MINE_APPLICATION.dynamicRoute(
-            projectGuid,
-            major_mine_application_guid
-          ),
-          state: { current: 1 },
-        });
-      default: {
-        // equiv of !status?
-        const mmaTab = document.querySelector('[id*="major-mine-application"]');
-        if (!mmaTab) {
-          return null;
-        }
-        // @ts-ignore
-        return mmaTab.click();
-      }
     }
   };
 
@@ -172,17 +157,13 @@ const ProjectPage: FC = () => {
         url = router.EDIT_PROJECT.dynamicRoute(projectGuid, newActiveTab);
         return history.push(url);
       case "irt-entry": {
-        url =
-          irtStatus === "APV"
-            ? router.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
-                projectGuid,
-                project?.information_requirements_table?.irt_guid
-              )
-            : router.PROJECT_STAGE_ENTRY.dynamicRoute(
-                projectGuid,
-                "information-requirements-table"
-              );
-        const urlState = irtStatus == "APV" ? { state: { current: 2 } } : {};
+        url = irtDocsDisabled
+          ? router.REVIEW_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+              projectGuid,
+              project?.information_requirements_table?.irt_guid
+            )
+          : router.PROJECT_STAGE_ENTRY.dynamicRoute(projectGuid, "information-requirements-table");
+        const urlState = irtDocsDisabled ? { state: { current: 2 } } : {};
         return history.push({ pathname: url, ...urlState });
       }
       case "major-mine-application":

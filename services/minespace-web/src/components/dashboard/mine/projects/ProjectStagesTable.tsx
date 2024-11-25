@@ -5,7 +5,8 @@ import { Button, Table } from "antd";
 import * as routes from "@/constants/routes";
 import { ColumnsType } from "antd/es/table";
 import { getProjectSummary } from "@mds/common/redux/reducers/projectReducer";
-import { IProjectStage } from "@mds/common";
+import { IProjectStage, SystemFlagEnum } from "@mds/common";
+import { areDocumentFieldsDisabled } from "@mds/common/components/projects/projectUtils";
 
 interface ProjectStagesTableProps {
   projectStages: IProjectStage[];
@@ -23,7 +24,7 @@ export const ProjectStagesTable: FC<ProjectStagesTableProps> = ({ projectStages 
       stage_status_hash: stage.statusHash,
       stage_required: stage.required,
       navigate_forward: stage.navigateForward,
-      stage,
+      payload: stage.payload,
     }));
 
   const columns: ColumnsType<any> = [
@@ -40,8 +41,7 @@ export const ProjectStagesTable: FC<ProjectStagesTableProps> = ({ projectStages 
       title: "",
       dataIndex: "stage_status",
       render: (text, record) => {
-        const status =
-          record.stage_status === undefined ? "Not Started" : record.stage_status_hash[text];
+        const status = text === undefined ? "Not Started" : record.stage_status_hash[text];
         return (
           <div title="Stage Status">
             <b>{status || "N/A"}</b>
@@ -52,9 +52,9 @@ export const ProjectStagesTable: FC<ProjectStagesTableProps> = ({ projectStages 
     {
       title: "",
       dataIndex: "stage_required",
-      render: (text, record) => {
-        const label = record.stage_required ? "Required" : "Optional";
-        return record.stage_required !== null ? (
+      render: (text) => {
+        const label = text ? "Required" : "Optional";
+        return text !== null ? (
           <div title="Stage Required">
             <b>{label || "N/A"}</b>
           </div>
@@ -63,77 +63,59 @@ export const ProjectStagesTable: FC<ProjectStagesTableProps> = ({ projectStages 
     },
     {
       title: "",
-      dataIndex: "stage",
+      dataIndex: "payload",
       align: "right",
-      render: (text, record) => {
+      render: (payload, record) => {
         let link;
-        if (record.project_stage === "Project description") {
-          const payload = record.stage?.payload;
-          if (payload?.submission_date) {
+        switch (record.project_stage) {
+          case "Project description": {
+            if (payload?.submission_date) {
+              link = (
+                <Button
+                  className="full-mobile margin-small"
+                  onClick={() => record?.navigate_forward()}
+                >
+                  View
+                </Button>
+              );
+            } else {
+              link = (
+                <Link
+                  to={routes.EDIT_PROJECT_SUMMARY.dynamicRoute(
+                    payload?.project_guid,
+                    payload?.project_summary_guid
+                  )}
+                >
+                  <Button className="full-mobile margin-small">Resume</Button>
+                </Link>
+              );
+            }
+            break;
+          }
+          case "IRT":
+          case "Application": {
+            let buttonLabel: string;
+            let enableButton = true;
+            const docsDisabled = areDocumentFieldsDisabled(SystemFlagEnum.ms, record.stage_status);
+            if (!record.stage_status) {
+              buttonLabel = "Start";
+              enableButton = isProjectSummarySubmitted;
+            } else if (docsDisabled) {
+              buttonLabel = "View";
+            } else {
+              buttonLabel = "Resume";
+            }
+
             link = (
               <Button
                 className="full-mobile margin-small"
                 onClick={() => record?.navigate_forward()}
+                disabled={!enableButton}
               >
-                View
+                {buttonLabel}
               </Button>
             );
-          } else {
-            link = (
-              <Link
-                to={routes.EDIT_PROJECT_SUMMARY.dynamicRoute(
-                  payload?.project_guid,
-                  payload?.project_summary_guid
-                )}
-              >
-                <Button className="full-mobile margin-small">Resume</Button>
-              </Link>
-            );
           }
-        }
-        if (record.project_stage === "IRT") {
-          let buttonLabel: string;
-          let enableButton = true;
-          if (!record.stage_status) {
-            buttonLabel = "Start";
-            enableButton = isProjectSummarySubmitted;
-          } else if (record.stage_status === "APV") {
-            buttonLabel = "View";
-          } else {
-            buttonLabel = "Resume";
-          }
-
-          link = (
-            <Button
-              className="full-mobile margin-small"
-              onClick={() => record?.navigate_forward()}
-              disabled={!enableButton}
-            >
-              {buttonLabel}
-            </Button>
-          );
-        }
-        if (record.project_stage === "Application") {
-          let buttonLabel: string;
-          let enableButton = true;
-          if (!record.stage_status) {
-            buttonLabel = "Start";
-            enableButton = isProjectSummarySubmitted;
-          } else if (["SUB", "UNR", "APV"].includes(record.stage_status)) {
-            buttonLabel = "View";
-          } else {
-            buttonLabel = "Resume";
-          }
-
-          link = (
-            <Button
-              className="full-mobile margin-small"
-              onClick={() => record?.navigate_forward()}
-              disabled={!enableButton}
-            >
-              {buttonLabel}
-            </Button>
-          );
         }
         return link;
       },

@@ -7,7 +7,7 @@ import * as projectActions from "../actions/projectActions";
 import * as API from "@mds/common/constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
-import { ENVIRONMENT } from "@mds/common/constants";
+import { ENVIRONMENT, MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES } from "@mds/common/constants";
 import {
   ICreateProjectSummary,
   IProjectSummary,
@@ -302,18 +302,25 @@ export const createInformationRequirementsTable = (
       .finally(() => dispatch(hideLoading()));
   };
 
-export const updateInformationRequirementsTableByFile = (
+export const updateInformationRequirementsTable = (info: {
   projectGuid: string,
   informationRequirementsTableGuid: string,
-  file: IFileInfo,
-  documentGuid: string
-): AppThunk<Promise<AxiosResponse<IInformationRequirementsTable[]>>> => (
+  fileData?: {
+    file: IFileInfo,
+    documentGuid: string,
+  },
+  status_code?: MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES
+}): AppThunk<Promise<AxiosResponse<IInformationRequirementsTable[]>>> => (
   dispatch
 ): Promise<AxiosResponse<IInformationRequirementsTable[]>> => {
+    const { projectGuid, informationRequirementsTableGuid, fileData, status_code } = info;
     const formData: any = new FormData();
-    formData.append("file", file);
-    if (documentGuid) {
-      formData.append("document_guid", documentGuid);
+    if (fileData) {
+      formData.append("file", fileData.file);
+      formData.append("document_guid", fileData.documentGuid);
+    }
+    if (status_code) {
+      formData.append("status_code", status_code);
     }
     const customContentType = { "Content-Type": "multipart/form-data" };
     dispatch(request(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
@@ -332,36 +339,6 @@ export const updateInformationRequirementsTableByFile = (
       .catch((err) => {
         dispatch(error(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
         throw err;
-      })
-      .finally(() => dispatch(hideLoading()));
-  };
-
-export const updateInformationRequirementsTable = (
-  { projectGuid, informationRequirementsTableGuid },
-  payload: Partial<IInformationRequirementsTable>,
-  message = "Successfully updated information requirements table"
-): AppThunk<Promise<AxiosResponse<IInformationRequirementsTable>>> => (
-  dispatch
-): Promise<AxiosResponse<IInformationRequirementsTable>> => {
-    dispatch(request(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
-    dispatch(showLoading());
-    return CustomAxios()
-      .put(
-        ENVIRONMENT.apiUrl +
-        API.INFORMATION_REQUIREMENTS_TABLE(projectGuid, informationRequirementsTableGuid),
-        payload,
-        createRequestHeader()
-      )
-      .then((response: AxiosResponse<IInformationRequirementsTable>) => {
-        notification.success({
-          message,
-          duration: 10,
-        });
-        dispatch(success(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
-        return response;
-      })
-      .catch(() => {
-        dispatch(error(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
       })
       .finally(() => dispatch(hideLoading()));
   };

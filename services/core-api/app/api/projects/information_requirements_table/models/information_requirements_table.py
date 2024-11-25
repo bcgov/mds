@@ -106,7 +106,7 @@ class InformationRequirementsTable(SoftDeleteMixin, AuditMixin, Base):
         mine_doc = None
         project = None
         if import_file and document_guid:
-            self.status_code = 'DFT'
+            self.status_code = 'DFT' if self.status_code != 'CHR' else self.status_code
             for requirement in self.requirements:
                 requirement_to_update = list(
                     filter(

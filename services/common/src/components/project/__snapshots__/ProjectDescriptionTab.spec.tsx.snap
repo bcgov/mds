@@ -45,6 +45,18 @@ exports[`ProjectDescriptionTab renders properly 1`] = `
       >
         Below are the authorization submissions and their status in the project description. Both the Major Mines Office and Ministry of Environments reviews must be completed for this stage to be considered complete.
       </div>
+      <div
+        class="bcgov-callout--warning bcgov-callout"
+      >
+        <p
+          class="bcgov-callout-title"
+        >
+          Draft
+        </p>
+        <p>
+          This project step hhas not been formally submitted by the proponent through MineSpace. MineSpace users can update text fields and add documents.
+        </p>
+      </div>
       <h3
         class="ant-typography font-colour"
       >

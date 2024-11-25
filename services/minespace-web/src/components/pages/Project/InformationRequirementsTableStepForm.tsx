@@ -1,7 +1,13 @@
 import React from "react";
 import { Link, useHistory } from "react-router-dom";
 import IRTDownloadTemplate from "@/components/Forms/projects/informationRequirementsTable/IRTDownloadTemplate";
-import { ENVIRONMENT, IProject, IRequirement } from "@mds/common";
+import {
+  ENVIRONMENT,
+  IProject,
+  IRequirement,
+  MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES,
+  SystemFlagEnum,
+} from "@mds/common";
 import * as API from "@mds/common/constants/API";
 import { Button, Popconfirm, Typography } from "antd";
 import * as routes from "@/constants/routes";
@@ -9,6 +15,7 @@ import DownloadOutlined from "@ant-design/icons/DownloadOutlined";
 import HourglassOutlined from "@ant-design/icons/HourglassOutlined";
 import { IRTFileImport } from "@/components/Forms/projects/informationRequirementsTable/IRTFileImport";
 import InformationRequirementsTableForm from "@/components/Forms/projects/informationRequirementsTable/InformationRequirementsTableForm";
+import { areDocumentFieldsDisabled } from "@mds/common/components/projects/projectUtils";
 
 interface StepFormsProps {
   submitting: boolean;
@@ -46,6 +53,10 @@ const StepForms = ({
   activeTab,
 }: StepFormsProps) => {
   const history = useHistory();
+  const docsDisabled = areDocumentFieldsDisabled(
+    SystemFlagEnum.ms,
+    project.information_requirements_table?.status_code
+  );
 
   return [
     {
@@ -103,7 +114,7 @@ const StepForms = ({
                 state: { current: 2 },
               });
             }}
-            disabled={!uploadedSuccessfully && !project?.information_requirements_table?.irt_guid}
+            disabled={!uploadedSuccessfully}
           >
             Continue to Review
           </Button>
@@ -136,7 +147,10 @@ const StepForms = ({
       ),
       buttons: [
         <div key="review-buttons">
-          {project.information_requirements_table?.status_code === "DFT" ? (
+          {[
+            MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES.CHR,
+            MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES.DFT,
+          ].includes(project.information_requirements_table?.status_code) ? (
             <>
               <Button
                 id="step-back"
@@ -165,7 +179,11 @@ const StepForms = ({
                   onConfirm={() =>
                     handleIRTStatusUpdate(
                       {
-                        status_code: "SUB",
+                        status_code:
+                          project.information_requirements_table?.status_code ===
+                          MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES.CHR
+                            ? MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES.UNR
+                            : MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODE_CODES.SUB,
                       },
                       "Successfully submitted final IRT."
                     )
@@ -181,25 +199,24 @@ const StepForms = ({
             </>
           ) : (
             <>
-              {project.information_requirements_table?.status_code !== "APV" &&
-                project.information_requirements_table?.status_code !== "UNR" && (
-                  <Button
-                    htmlType="submit"
-                    style={{ marginRight: "24px" }}
-                    onClick={() => {
-                      history.push({
-                        pathname: `${routes.RESUBMIT_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
-                          project?.project_guid,
-                          project?.information_requirements_table?.irt_guid
-                        )}`,
-                        state: { current: 1 },
-                      });
-                    }}
-                    disabled={submitting}
-                  >
-                    Resubmit IRT
-                  </Button>
-                )}
+              {!docsDisabled && (
+                <Button
+                  htmlType="submit"
+                  style={{ marginRight: "24px" }}
+                  onClick={() => {
+                    history.push({
+                      pathname: `${routes.RESUBMIT_INFORMATION_REQUIREMENTS_TABLE.dynamicRoute(
+                        project?.project_guid,
+                        project?.information_requirements_table?.irt_guid
+                      )}`,
+                      state: { current: 1 },
+                    });
+                  }}
+                  disabled={submitting}
+                >
+                  Resubmit IRT
+                </Button>
+              )}
               <Button
                 type="ghost"
                 style={{ border: "none", marginRight: "12px" }}

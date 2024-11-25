@@ -15,7 +15,7 @@ import {
   getRequirements,
 } from "@mds/common/redux/selectors/projectSelectors";
 import ReviewInformationRequirementsTable from "@/components/mine/Projects/ReviewInformationRequirementsTable";
-import UpdateStatusForm from "@/components/Forms/majorMineApplication/UpdateStatusForm";
+import UpdateStatusForm from "@/components/Forms/MajorProject/UpdateStatusForm";
 import { FORM } from "@mds/common";
 
 const sideMenuOptions = [
@@ -98,10 +98,11 @@ const InformationRequirementsTableTab = () => {
 
   const handleUpdateIRT = async (values) => {
     await dispatch(
-      updateInformationRequirementsTable(
-        { projectGuid, informationRequirementsTableGuid: informationRequirementsTable.irt_guid },
-        values
-      )
+      updateInformationRequirementsTable({
+        projectGuid,
+        informationRequirementsTableGuid: informationRequirementsTable.irt_guid,
+        status_code: values.status_code
+      })
     );
     return handleFetchData();
   };
