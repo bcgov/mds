@@ -58,7 +58,7 @@ permit_amendments_for_orgbook_query = """
     and m.major_mine_ind = true
     and pa.deleted_ind = false
     and pmt.permit_status_code = 'O'
-
+    and substring(pmt.permit_no,2,1) != 'X'
 
     group by pa.permit_amendment_guid, p.party_guid, pa.description, pa.issue_date, pa.permit_amendment_status_code, pmt.permit_no, mpa.permit_id, poe.party_guid, p.party_name, poe.name_text, poe.registration_id, m.mine_name, mine_party_appt_type_code
     order by pmt.permit_no, pa.issue_date;
@@ -275,6 +275,8 @@ def push_untp_map_data_to_publisher():
     failed_credentials: List[Tuple[str, str | None]] = []
     success_count = 0
     skipped_count = 0
+    current_app.logger.warning(f"num_records_to_process={len(permit_amendment_query_results)}")
+    publisher_service = OrgbookPublisherService()
 
     for row in permit_amendment_query_results:
         pa = PermitAmendment.find_by_permit_amendment_guid(row[0], unsafe=True)
@@ -315,7 +317,6 @@ def push_untp_map_data_to_publisher():
                 }
             }
         }
-        publisher_service = OrgbookPublisherService()
         current_app.logger.warning(f"publishing record={publish_payload}")
         payload_hash = md5(json.dumps(publish_payload).encode('utf-8')).hexdigest()
         current_app.logger.warning(f"payload hash={payload_hash}")
