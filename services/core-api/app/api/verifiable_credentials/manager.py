@@ -490,29 +490,27 @@ class VerifiableCredentialManager():
         # "tsf_care_and_maintenance_count"
 
         pmt_appts: List[MinePartyAppointment] = permit_amendment.permittee_appointments
-        curr_appt = pmt_appts[0]
 
         permit_amendment_issue_date = permit_amendment.issue_date if isinstance(
             permit_amendment.issue_date, date) else permit_amendment.issue_date.date()
 
-        for pmt_appt in pmt_appts:
-            pmt_appt_start_date = None
-            if not pmt_appt.start_date:
-                pmt_appt_start_date = date(1900, 0, 0)
-            elif isinstance(pmt_appt.start_date, date):
-                pmt_appt_start_date = pmt_appt.start_date
-            elif isinstance(pmt_appt.start_date, datetime):
-                pmt_appt_start_date = pmt_appt.start_date.date()
+        def ensure_start_date_type(d) -> date:
+            if not d:
+                return date(1900, 0, 0)
+            elif isinstance(d, date):
+                return d
+            elif isinstance(d, datetime):
+                return d.date()
             else:
                 raise TypeError(
-                    f"mine_party_appointment.start_date is neither `date` or `datetime` object, it's {type(pmt_appt.start_date)}"
+                    f"mine_party_appointment.start_date is neither `date` or `datetime` object, it's {type(d)}"
                 )
 
-            #find the last permittee appointment relevant to the amendment issue date.
-            if (pmt_appt_start_date <= permit_amendment_issue_date):
-                curr_appt = pmt_appt
-            else:
-                break
+        #remove all appointments after the issue_date then take the top one, there are overlapping entries that may not be handled here.
+        curr_appt = [
+            pa for pa in pmt_appts
+            if ensure_start_date_type(pa.start_date) <= permit_amendment_issue_date
+        ][0]
 
         orgbook_entity = curr_appt.party.party_orgbook_entity
         if not orgbook_entity:
