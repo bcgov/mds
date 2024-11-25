@@ -53,12 +53,10 @@ export const IRTFileImport: FC<IRTFileImportProps> = ({
 
   const onFileLoad = (fileName, document_manager_guid) => {
     setUploadedFiles([...uploadedFiles, { document_name: fileName, document_manager_guid }]);
-    // return dispatch(change(FORM.INFORMATION_REQUIREMENTS_TABLE, "final_irt", uploadedFiles));
   };
 
   const onRemoveFile = (err, fileItem) => {
     remove(documents, { document_manager_guid: fileItem.serverId });
-    // return dispatch(change(FORM.INFORMATION_REQUIREMENTS_TABLE, "final_irt", documents));
   };
 
   const acceptFileTypeArray = Object.keys(acceptedFileTypesMap);
