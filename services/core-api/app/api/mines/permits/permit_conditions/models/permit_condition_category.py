@@ -59,6 +59,7 @@ class PermitConditionCategory(SoftDeleteMixin, AuditMixin, Base):
     def search(cls, query=None, exclude=None, limit=None):
         quer = cls.query \
             .filter_by(deleted_ind=False)
+        
         if query:
             quer = quer.filter(db.func.lower(cls.description).ilike(f'%{query.lower()}%'))
         else:
@@ -77,9 +78,7 @@ class PermitConditionCategory(SoftDeleteMixin, AuditMixin, Base):
         if limit:
             quer = quer.limit(limit)
         elif query:
-            quer = quer.limit(5)
-            
-
+            quer = quer.limit(7)
 
         return  quer.all()
 
@@ -97,3 +96,15 @@ class PermitConditionCategory(SoftDeleteMixin, AuditMixin, Base):
                 .filter_by(permit_amendment_id=permit_amendment_id, deleted_ind=False) \
                 .order_by(cls.display_order) \
                 .all()
+    @classmethod
+    def delete_all_by_permit_amendment_id(cls, permit_amendment_id):
+        to_delete = cls.query \
+            .filter_by(
+                permit_amendment_id=permit_amendment_id,
+                deleted_ind=False
+            ).all()
+
+        for cat in to_delete:
+            cat.delete(commit=False)
+
+        db.session.commit()

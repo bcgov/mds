@@ -118,18 +118,20 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
             parent_permit_condition_id=None,
             deleted_ind=False).order_by(cls.display_order).all()
         for condition in parent_conditions:
-            condition.delete_condition()
+            condition.delete_condition(commit=commit)
             if commit:
                 condition.save()
 
 
-    def delete_condition(self):
+    def delete_condition(self, commit=False):
         if self.all_sub_conditions is not None:
             subconditions = [c for c in self.all_sub_conditions if c.deleted_ind == False]
             if len(subconditions) > 0:
                 for item in subconditions:
                     item.deleted_ind = True
-                    item.delete_condition()
+                    item.delete_condition(commit=commit)
+                    if commit:
+                        item.save()
         self.deleted_ind = True
 
 

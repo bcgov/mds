@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useRef, useState } from "react";
 import { Form } from "antd";
 import { Field } from "redux-form";
-import { required } from "@mds/common/redux/utils/Validate";
+import { maxLength, required } from "@mds/common/redux/utils/Validate";
 import { IPermitConditionCategory } from "@mds/common/interfaces";
 import RenderAutoComplete from "@mds/common/components/forms/RenderAutoComplete";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,7 +9,11 @@ import { searchConditionCategories, getConditionCategories } from "@mds/common/r
 import { debounce, DebouncedFunc } from "lodash";
 
 
-const PermitConditionCategorySelector: FC = () => {
+export interface IPermitConditionCategorySelectorProps {
+  showLabel?: boolean;
+}
+
+const PermitConditionCategorySelector: FC<IPermitConditionCategorySelectorProps> = (props: IPermitConditionCategorySelectorProps) => {
   const dispatch = useDispatch();
   const categories = useSelector(getConditionCategories);
   const [loading, setLoading] = useState(false);
@@ -30,18 +34,20 @@ const PermitConditionCategorySelector: FC = () => {
 
   const debouncedSearch: DebouncedFunc<typeof searchCategories> = debounce(searchCategories, 1000);
   const handleSearchDebounced = useRef(debouncedSearch).current;
+  const showLabel = props.showLabel !== undefined ? props.showLabel : true;
 
   return (
     <Form.Item>
       <Field
         id="description"
         name="description"
-        label="Category Name"
-        validate={[required]}
+        label={showLabel ? "Category Name" : null}
+        validate={[required, maxLength(255)]}
         required
         data={categoryOptions}
         loading={loading}
         handleChange={handleSearchDebounced}
+        handleSelect={() => { }}
         component={RenderAutoComplete}
         addMissing={true}
       />

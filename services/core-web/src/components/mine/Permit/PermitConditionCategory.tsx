@@ -6,12 +6,10 @@ import { IPermitConditionCategory } from "@mds/common/interfaces";
 import { Button, Popconfirm, Row, Tooltip, Typography } from "antd";
 import React, { useState } from "react";
 import { Field } from "redux-form";
-import { useDispatch, useSelector } from "react-redux";
-import { TRASHCAN } from "@/constants/assets";
-import CoreButton from "@mds/common/components/common/CoreButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown, faArrowUp, faTrash } from "@fortawesome/pro-light-svg-icons";
 import PermitConditionCategorySelector from "./PermitConditionCategorySelector";
+import { required } from "@mds/common/redux/utils/Validate";
 
 export interface IPermitConditionCategoryProps {
   onChange: (category: IPermitConditionCategory) => void | Promise<void>;
@@ -24,10 +22,12 @@ export interface IPermitConditionCategoryProps {
   categoryCount: number;
 }
 
-export const PermitConditionCategory = (props: IPermitConditionCategoryProps) => {
+export const EditPermitConditionCategoryInline = (props: IPermitConditionCategoryProps) => {
   const [isEditMode, setIsEditMode] = useState(false);
 
-  const enableEditMode = () => {
+  const enableEditMode = (evt) => {
+    evt.stopPropagation();
+    evt.preventDefault();
     setIsEditMode(true);
   };
 
@@ -40,61 +40,63 @@ export const PermitConditionCategory = (props: IPermitConditionCategoryProps) =>
     props.onDelete(cat);
   }
 
+  if (!isEditMode) {
+    return (
+      <Tooltip title="Click to edit">
+        <div onClick={enableEditMode}>
+          <Typography.Title style={{ marginBottom: 0 }} level={3}>{props.category.step ? `${props.category.step}. ` : ''}{props.category.description} ({props.conditionCount})</Typography.Title>
+        </div>
+      </Tooltip>
+    );
+  }
+
   return (
-    <div onClick={enableEditMode}>
-      <FormWrapper name={`${FORM.INLINE_EDIT_PERMIT_CONDITION_CATEGORY}}-${props.category.condition_category_code}`} onSubmit={handleSubmit} initialValues={props.category} isEditMode={isEditMode}>
-        <Row className="flex" style={{ gap: '0.5em' }}>
-          {!isEditMode && (
-            <Tooltip title="Click to edit">
-              <Typography.Title style={{ marginBottom: 0 }} level={3}>{props.category.step} {props.category.description} ({props.conditionCount})</Typography.Title>
-            </Tooltip>
-          )}
+    <FormWrapper scrollOnToggleEdit={false} name={`${FORM.INLINE_EDIT_PERMIT_CONDITION_CATEGORY}}-${props.category.condition_category_code}`} onSubmit={handleSubmit} initialValues={props.category} isEditMode={isEditMode}>
+      <Row className="flex ant-form-inline" style={{ gap: '0.5em' }}>
+        <Field name="step" component={RenderField} required={true} validate={[required]} />
+        <PermitConditionCategorySelector showLabel={false} />
+        <RenderSubmitButton buttonText="Confirm" aria-label="Confirm" />
 
-          {isEditMode && (
+        <Popconfirm
+          disabled={props.conditionCount > 0}
+          placement="topRight"
+          title={
             <>
-              <Field name="step" component={RenderField} required={true} />
-              <PermitConditionCategorySelector />
-              <RenderSubmitButton buttonText="Confirm" />
-
-              <Popconfirm
-                disabled={props.conditionCount > 0}
-                placement="topRight"
-                title={
-                  <>
-                    <Typography.Paragraph>Are you sure you want to delete {props.category.description}?</Typography.Paragraph>
-                    <Typography.Paragraph>This action cannot be undone.</Typography.Paragraph>
-                  </>
-                }
-                onConfirm={() => handleDelete(props.category)}
-                okText="Yes, Delete Category"
-                cancelText="No"
-              >
-                <Button disabled={props.conditionCount > 0} danger={true} icon={<FontAwesomeIcon icon={faTrash} />} />
-              </Popconfirm>
-
-              <Button
-                disabled={props.currentPosition <= 0}
-                onClick={(event) => {
-                  event.stopPropagation();
-                  props.moveUp(props.category);
-                }}
-                type="default"
-                icon={<FontAwesomeIcon icon={faArrowUp} />}
-              />
-              <Typography.Text>
-                <Button
-                  disabled={props.currentPosition >= props.categoryCount - 1}
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    props.moveDown(props.category);
-                  }}
-                  icon={<FontAwesomeIcon icon={faArrowDown} />}
-                />
-              </Typography.Text>
+              <Typography.Paragraph>Are you sure you want to delete {props.category.description}?</Typography.Paragraph>
+              <Typography.Paragraph>This action cannot be undone.</Typography.Paragraph>
             </>
-          )}
-        </Row>
-      </FormWrapper>
-    </div>
+          }
+          onConfirm={() => handleDelete(props.category)}
+          okText="Yes, Delete Category"
+          cancelText="No"
+        >
+          <Button
+            disabled={props.conditionCount > 0}
+            danger={true}
+            icon={<FontAwesomeIcon icon={faTrash} />}
+            aria-label="Delete Category" />
+        </Popconfirm>
+
+        <Button
+          disabled={props.currentPosition <= 0}
+          onClick={(event) => {
+            event.stopPropagation();
+            props.moveUp(props.category);
+          }}
+          type="default"
+          aria-label="Move Category Up"
+          icon={<FontAwesomeIcon icon={faArrowUp} />}
+        />
+        <Button
+          disabled={props.currentPosition >= props.categoryCount - 1}
+          aria-label="Move Category Down"
+          onClick={(event) => {
+            event.stopPropagation();
+            props.moveDown(props.category);
+          }}
+          icon={<FontAwesomeIcon icon={faArrowDown} />}
+        />
+      </Row>
+    </FormWrapper >
   )
 };

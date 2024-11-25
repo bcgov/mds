@@ -8,20 +8,13 @@ interface ScrollSidePageWrapperProps {
   content: ReactNode;
   menuProps?: ScrollSideMenuProps;
   header: ReactNode;
+  extraItems?: ReactNode;
   headerHeight?: number;
   view?: "default" | "steps" | "anchor";
 }
 
 export const coreHeaderHeight = 62; // match scss variable $header-height
 const msHeaderHeight = 80;
-
-interface ExtraMenuItemProps {
-  children: ReactNode;
-}
-
-interface ScrollSidePageWrapperSubcomponents {
-  ExtraMenuItem: React.FC<ExtraMenuItemProps>;
-}
 
 /**
  * A wrapper component that provides a side menu and a content area. The side menu can be fixed to the top of the page.
@@ -35,12 +28,12 @@ interface ScrollSidePageWrapperSubcomponents {
  *  </ScrollSidePageWrapper.ExtraMenuItem>
  * </ScrollSidePageWrapper>
  */
-const ScrollSidePageWrapper: FC<ScrollSidePageWrapperProps> & ScrollSidePageWrapperSubcomponents = ({
+const ScrollSidePageWrapper: FC<ScrollSidePageWrapperProps> = ({
   menuProps,
   content,
   header,
+  extraItems,
   view = "anchor",
-  children,
   headerHeight = 170,
 }) => {
   const [isFixedTop, setIsFixedTop] = useState(false);
@@ -81,8 +74,6 @@ const ScrollSidePageWrapper: FC<ScrollSidePageWrapperProps> & ScrollSidePageWrap
   const menuTopOffset = hasHeader || isFixedTop ? topOffset : 0;
   const contentTopOffset = hasHeader && isFixedTop ? headerHeight : 0;
 
-  const extraItems = React.Children.map(children, child => (child as ReactElement).type?.displayName === 'ExtraMenuItem' ? child : null);
-
   return (
     <div className={`scroll-side-menu-wrapper scroll-side-menu-view--${view}`}>
       {hasHeader && (
@@ -101,7 +92,7 @@ const ScrollSidePageWrapper: FC<ScrollSidePageWrapperProps> & ScrollSidePageWrap
           {/* the 24 matches the margin/padding on the menu/content. Looks nicer */}
           <ScrollSideMenu offsetTop={topOffset + contentPaddingY} {...menuProps} view={view} />
 
-          {extraItems}
+          {extraItems ? extraItems : ''}
         </div>
       )}
       <div className={contentClass} style={{ top: contentTopOffset }}>
@@ -110,12 +101,5 @@ const ScrollSidePageWrapper: FC<ScrollSidePageWrapperProps> & ScrollSidePageWrap
     </div>
   );
 };
-
-const ExtraMenuItem: FC<ExtraMenuItemProps> = ({ children }) => (
-  <div className="side-menu--extra-item">{children}</div>
-);
-
-ExtraMenuItem.displayName = 'ExtraMenuItem';
-ScrollSidePageWrapper.ExtraMenuItem = ExtraMenuItem;
 
 export default ScrollSidePageWrapper;

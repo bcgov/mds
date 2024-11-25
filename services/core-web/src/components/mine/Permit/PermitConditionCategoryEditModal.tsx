@@ -5,7 +5,7 @@ import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 import { Field } from "redux-form";
-import { required } from "@mds/common/redux/utils/Validate";
+import { maxLength, required } from "@mds/common/redux/utils/Validate";
 import RenderField from "@mds/common/components/forms/RenderField";
 import { IPermitConditionCategory } from "@mds/common/interfaces";
 import PermitConditionCategorySelector from "./PermitConditionCategorySelector";
@@ -24,7 +24,7 @@ const PermitConditionCategoryEditModal: FC<PermitConditionCategoryEditModalProps
               id="step"
               name="step"
               label="Category Reference Number"
-              validate={[required]}
+              validate={[required, maxLength(2)]}
               required
               component={RenderField}
             />

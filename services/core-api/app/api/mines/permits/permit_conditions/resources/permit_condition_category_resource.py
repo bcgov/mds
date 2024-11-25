@@ -24,5 +24,5 @@ class PermitConditionCategoryResource(Resource, UserMixin):
         return PermitConditionCategory.search(
             query = data['query'],
             exclude = data.get('exclude'),
-            limit = data.get('limit') or 5,
+            limit = data.get('limit') or 7,
         )

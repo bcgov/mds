@@ -39,6 +39,7 @@ exports[`Major Project Search Component renders properly 1`] = `
                           class="ant-form-item-control-input-content"
                         >
                           <input
+                            aria-label="search"
                             class="ant-input"
                             id="search"
                             name="search"

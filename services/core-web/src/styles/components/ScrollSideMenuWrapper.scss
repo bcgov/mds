@@ -65,7 +65,7 @@
         text-overflow: ellipsis;
     }
 
-    &.scroll-side-menu-view--steps .side-nav-title .side-nav-title-icon::before {
+    &.scroll-side-menu-view--steps .ant-anchor-link:not(:last-child) .side-nav-title .side-nav-title-icon::before {
         content: '';
         position: absolute;
         left: calc(50% - 1px);

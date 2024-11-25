@@ -13,7 +13,6 @@ export interface IPermitCondition {
   condition: string;
   condition_type_code: string;
   condition_category_code: string;
-  condition_category: IPermitConditionCategory;
   parent_permit_condition_id: number;
   sub_conditions: IPermitCondition[];
   step: string;

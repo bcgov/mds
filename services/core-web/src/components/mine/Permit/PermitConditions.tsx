@@ -38,7 +38,7 @@ import PermitConditionCategoryEditModal from "./PermitConditionCategoryEditModal
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import { uniqBy } from "lodash";
 import { createPermitAmendmentConditionCategory, deletePermitAmendmentConditionCategory, updatePermitAmendmentConditionCategory } from "@mds/common/redux/actionCreators/permitActionCreator";
-import { PermitConditionCategory } from "./PermitConditionCategory";
+import { EditPermitConditionCategoryInline } from "./PermitConditionCategory";
 import { searchConditionCategories } from "@mds/common/redux/slices/permitConditionCategorySlice";
 
 const { Title } = Typography;
@@ -128,7 +128,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
       return {
         href: cat.condition_category_code.toLowerCase().replace('-', ''),
         icon: <FontAwesomeIcon icon={faBan} style={{ color: '#bbb', fontSize: '20px' }} />,
-        title: <Typography.Text style={{ fontSize: '16px', fontWeight: '600' }}>{title}</Typography.Text>,
+        title: <Typography.Text style={{ fontSize: '16px', fontWeight: '600' }}>{cat.step ? `${cat.step}. ` : ''}{title}</Typography.Text>,
         titleText: title,
         description: 'Not Started',
         conditions: formattedConditions || [],
@@ -221,11 +221,22 @@ const PermitConditions: FC<PermitConditionProps> = ({
     return result;
   };
 
+  const AddConditionModalContent = (
+    <Typography.Paragraph className="no_link_styling grey" style={{ fontSize: '14px', textAlign: 'center' }}>
+      {showLoading ? <Skeleton active paragraph={{ rows: 1 }} /> : (
+        <Typography.Link onClick={openCreateCategoryModal} className="fade-in">
+          + Add Condition Category
+        </Typography.Link>
+      )}
+    </Typography.Paragraph>
+  );
+
   return (
     <ScrollSidePageWrapper
       header={null}
       headerHeight={topOffset}
       menuProps={scrollSideMenuProps}
+      extraItems={AddConditionModalContent}
       view={"steps"}
       content={
         <Row align="middle" justify="space-between" gutter={[10, 16]}>
@@ -283,7 +294,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
                       <Col span={24}>
                         <Row justify="space-between">
                           <Title level={3} className="margin-none" id={category.href}>
-                            <PermitConditionCategory
+                            <EditPermitConditionCategoryInline
                               onDelete={handleDeleteConditionCategory}
                               onChange={handleUpdateConditionCategory}
                               moveUp={(cat) => handleMove(cat, idx - 1)}
@@ -347,16 +358,6 @@ const PermitConditions: FC<PermitConditionProps> = ({
           </Col>
         </Row>
       }>
-      <ScrollSidePageWrapper.ExtraMenuItem>
-        <Typography.Paragraph className="no_link_styling grey" style={{ fontSize: '14px', textAlign: 'center' }}>
-          {showLoading ? <Skeleton active paragraph={{ rows: 1 }} /> : (
-            <Typography.Link onClick={openCreateCategoryModal} className="fade-in">
-              + Add Condition Category
-            </Typography.Link>
-          )}
-        </Typography.Paragraph>
-      </ScrollSidePageWrapper.ExtraMenuItem>
-
     </ScrollSidePageWrapper>
   );
 };

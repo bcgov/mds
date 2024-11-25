@@ -48,9 +48,12 @@ const RenderAutoComplete = (props) => {
         if (!value.isEditMode) {
           return <BaseViewInput value={props.input.value} label={props.input.label} />;
         }
+
+        const ariaLabel = props.label || props.input.name;
+
         return (
           <Form.Item
-            label={JSON.stringify(props.selected)}
+            label={props.label}
             validateStatus={
               props.meta.touched ? (props.meta.error && "error") || (props.meta.warning && "warning") : ""
             }
@@ -61,9 +64,11 @@ const RenderAutoComplete = (props) => {
             }
           >
             <Select
+              aria-label={ariaLabel}
               showSearch
               virtual={false}
               defaultActiveFirstOption={false}
+              aria-busy={props.loading}
               notFoundContent={props.loading ? <Spin size="small" /> : "Not found"}
               allowClear
               dropdownMatchSelectWidth

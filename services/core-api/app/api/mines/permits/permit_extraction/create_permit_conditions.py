@@ -31,8 +31,8 @@ indentation_type_code_mapping = {
     5: 'LIS',
 }
 
-# For conditions that don't match any category, put them in the "General" category
-DEFAULT_CATEGORY = 'GEC'
+# For conditions that don't match any category, put them in a "Terms and conditions" category
+DEFAULT_CATEGORY_TEXT = 'Terms and Conditions'
 
 def create_permit_conditions_from_task(task: PermitExtractionTask):
     """
@@ -50,7 +50,7 @@ def create_permit_conditions_from_task(task: PermitExtractionTask):
     if not has_category:
         top_level_section = PermitConditionResult(
             section='A',
-            condition_text='General'
+            condition_text=DEFAULT_CATEGORY_TEXT
         )
         for c in conditions:
             c.set_section(top_level_section)
@@ -58,6 +58,7 @@ def create_permit_conditions_from_task(task: PermitExtractionTask):
 
     num_categories = 0
 
+    default_section = None
 
     for idx, condition in enumerate(conditions):
         if condition.is_top_level_section:        
@@ -67,6 +68,8 @@ def create_permit_conditions_from_task(task: PermitExtractionTask):
                 display_order=num_categories,
                 step=condition.step
             )
+            if condition.condition_text == DEFAULT_CATEGORY_TEXT:
+                default_section = section_category
             current_category = section_category
             num_categories += 1
         else:            
@@ -75,7 +78,18 @@ def create_permit_conditions_from_task(task: PermitExtractionTask):
 
             title_cond = None
 
-            category_code = current_category or DEFAULT_CATEGORY
+            if not current_category and not default_section:
+                default_section = _create_permit_condition_category(
+                    condition=PermitConditionResult(
+                        section='A',
+                        condition_text=DEFAULT_CATEGORY_TEXT
+                    ),
+                    permit_amendment=task.permit_amendment,
+                    display_order=num_categories,
+                    step='A'
+                )
+
+            category_code = current_category or default_section
             if condition.condition_title:
                 title_cond = _create_title_condition(task, category_code, condition, parent, idx, type_code)
 
