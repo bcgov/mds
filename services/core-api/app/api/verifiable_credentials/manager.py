@@ -275,7 +275,7 @@ def push_untp_map_data_to_publisher():
     failed_credentials: List[Tuple[str, str | None]] = []
     success_count = 0
     skipped_count = 0
-    current_app.logger.warning(f"num_records_to_process={len(permit_amendment_query_results)}")
+    current_app.logger.info(f"num_records_to_process={len(permit_amendment_query_results)}")
     publisher_service = OrgbookPublisherService()
 
     for row in permit_amendment_query_results:
