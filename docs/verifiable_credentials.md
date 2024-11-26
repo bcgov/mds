@@ -142,14 +142,22 @@ These values could be used for local development, however you will not receive w
 
 ### KNOWN EDGE CASES
 
-Proponent Delets connection after exchange.
+What is proponent Delete connection after exchange.
+Steps to reproduce:
 
-- How to detect
-- What to do?
+1. Establish a connection using minespace to a traction agent on a business
+1. Issue a credential in minespace on that connection
+1. In the business's traction agent, delete the connection
 
-- How to manually check/fix
+Any future use of that connection will fail. examples of addiitonal actions.
 
-Proponent establishes
+1. Issuing a second permit on that connection
+1. Revoking which causes a 'revocation notification' (this is not blocking to the revocation process)
+
+After the connection is gone, what if they want to make a new one.
+
+1. Revoke any credentials issued to the previous connection on that record. Without this step, there may be multiple wallets that can prove they are the holder of the permit.
+1. Any records associated with the previous connection should be marked accordingly, unclear if this should be soft-deletion or a new flag.
 
 ### AnonCred Schema updates
 
@@ -157,9 +165,9 @@ If we change the schema what do we do with old records?
 
 Options:
 
--
--
--
+- Revoke all old credentials and re-issue new ones, this is likely unnessessary as the old credentials are still valid and there is no guarantee that the company needs to the new attributes of the new credential.
+
+- Enhance Minespace to allow for the permit holder to be issued specific versions of permit, this does not require revocation of the older schema as both are still valid. The holder can choose to delete any credential they don't want.
 
 ### Local development testing
 
