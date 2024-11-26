@@ -55,7 +55,6 @@ from app.api.mines.mine.resources.mine import (
     MineListResource,
     MineListSearch,
     MineResource,
-    MineTimeout,
 )
 from app.api.mines.mine.resources.mine_basicinfo import MineBasicInfoResource
 from app.api.mines.mine.resources.mine_commodity_code import MineCommodityCodeResource
@@ -336,6 +335,3 @@ api.add_resource(GlobalMineAlertListResource, '/global-alerts')
 api.add_resource(MineReportDefinitionComplianceArticleCreateResource, '/reports/definitions/compliance-article')
 api.add_resource(MineReportDefinitionComplianceArticleUpdateResource,
                  '/reports/definitions/compliance-article/<string:mine_report_definition_compliance_article_xref_guid>')
-
-
-api.add_resource(MineTimeout, '/timeout')

@@ -1,39 +1,34 @@
 #library imports
 import uuid
-from datetime import datetime
 from decimal import Decimal
+from datetime import datetime
+from flask import request
+from sqlalchemy.sql.sqltypes import Integer
+from sqlalchemy import select, func, and_
+from sqlalchemy.orm import aliased
+from app.extensions import db, api
+from flask_restx import Resource, reqparse, inputs
+from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
+from werkzeug.exceptions import BadRequest, NotFound
 
+#app imports
+from app.extensions import api, cache
+from app.api.utils.access_decorators import requires_role_mine_edit, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT, is_minespace_user, MINE_EDIT
+from app.api.utils.resources_mixins import UserMixin
 from app.api.constants import MINE_MAP_CACHE
+
+#namespace imports
+from app.api.mines.response_models import MINE_LIST_MODEL, MINE_MODEL, MINE_SEARCH_MODEL
+from app.api.mines.permits.permit.models.permit import Permit
+from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
+
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.mine.models.mine_type import MineType
 from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
 from app.api.mines.mine.models.mine_verified_status import MineVerifiedStatus
-from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
-from app.api.mines.permits.permit.models.permit import Permit
 
-#namespace imports
-from app.api.mines.response_models import MINE_LIST_MODEL, MINE_MODEL, MINE_SEARCH_MODEL
 from app.api.mines.status.models.mine_status import MineStatus
 from app.api.mines.status.models.mine_status_xref import MineStatusXref
-from app.api.utils.access_decorators import (
-    MINE_EDIT,
-    MINESPACE_PROPONENT,
-    VIEW_ALL,
-    is_minespace_user,
-    requires_any_of,
-    requires_role_mine_edit,
-)
-from app.api.utils.resources_mixins import UserMixin
-
-#app imports
-from app.extensions import api, cache, db
-from flask import request
-from flask_restx import Resource, inputs, reqparse
-from sqlalchemy import and_, func, select
-from sqlalchemy.orm import aliased
-from sqlalchemy.sql.sqltypes import Integer
-from sqlalchemy_filters import apply_filters, apply_pagination, apply_sort
-from werkzeug.exceptions import BadRequest, NotFound
 
 from .mine_map import MineMapResource
 
@@ -482,28 +477,6 @@ class MineListSearch(Resource):
             result = Mine.find_by_mine_name(name_search, major=major)
 
         return result
-    
-
-class MineTimeout(Resource):
-    @api.doc(
-        params={
-            'name': 'Trigger API timeout',
-            'term': 'Trigger an API timeout to test out API logging'
-        })
-    @requires_any_of([VIEW_ALL])
-    @api.marshal_with(MINE_SEARCH_MODEL, code=200, envelope='mines')
-    def get(self):
-        tmt = request.args.get('timeout')
-
-        timeout = 140
-        if tmt:
-            timeout = int(tmt)
-
-        import time
-        time.sleep(timeout)
-
-        return {'result': 'ok'}
-
 
 
 # Functions shared by the MineListResource and the MineResource
