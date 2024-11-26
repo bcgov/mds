@@ -8,6 +8,7 @@ import {
   IInformationRequirementsTable,
   IPermit,
   IMineDocument,
+  IPermitAmendment,
 } from "@mds/common/interfaces";
 import {
   MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODES,
@@ -1140,6 +1141,7 @@ export const PERMIT_CONDITION_EXTRACTION = [
   }
 ]
 
+
 export const PERMITS: IPermit[] = [
   {
     permit_id: "283",
@@ -1512,6 +1514,11 @@ export const PERMITS: IPermit[] = [
     update_timestamp: "2019-04-05 21:05:40.123456+00:00",
   },
 ];
+
+export const PERMIT_AMENDMENT_STATE: { [permitGuid: string]: IPermitAmendment } = PERMITS.reduce((acc, permit) => {
+  acc[permit.permit_guid] = permit.permit_amendments[0];
+  return acc;
+}, {});
 
 export const USER_ACCESS_DATA = [
   "core_view_all",
