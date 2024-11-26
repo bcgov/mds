@@ -37,7 +37,7 @@ const PermitConditionCategorySelector: FC<IPermitConditionCategorySelectorProps>
   const showLabel = props.showLabel !== undefined ? props.showLabel : true;
 
   return (
-    <Form.Item>
+    <Form.Item style={{ marginRight: 0 }}>
       <Field
         id="description"
         name="description"
@@ -50,6 +50,7 @@ const PermitConditionCategorySelector: FC<IPermitConditionCategorySelectorProps>
         handleSelect={() => { }}
         component={RenderAutoComplete}
         addMissing={true}
+        style={{ marginRight: 0 }}
       />
     </Form.Item>
   );

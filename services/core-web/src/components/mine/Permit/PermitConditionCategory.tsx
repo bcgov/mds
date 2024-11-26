@@ -52,10 +52,10 @@ export const EditPermitConditionCategoryInline = (props: IPermitConditionCategor
 
   return (
     <FormWrapper scrollOnToggleEdit={false} name={`${FORM.INLINE_EDIT_PERMIT_CONDITION_CATEGORY}}-${props.category.condition_category_code}`} onSubmit={handleSubmit} initialValues={props.category} isEditMode={isEditMode}>
-      <Row className="flex ant-form-inline" style={{ gap: '0.5em' }}>
+      <Row className="flex" style={{ gap: '0.5em' }}>
         <Field name="step" component={RenderField} required={true} validate={[required]} />
         <PermitConditionCategorySelector showLabel={false} />
-        <RenderSubmitButton buttonText="Confirm" aria-label="Confirm" />
+        <RenderSubmitButton buttonText="Confirm" aria-label="Confirm" buttonProps={{ style: { marginRight: 0 } }} />
 
         <Popconfirm
           disabled={props.conditionCount > 0}
@@ -88,6 +88,7 @@ export const EditPermitConditionCategoryInline = (props: IPermitConditionCategor
           icon={<FontAwesomeIcon icon={faArrowUp} />}
         />
         <Button
+          style={{ marginLeft: 0 }}
           disabled={props.currentPosition >= props.categoryCount - 1}
           aria-label="Move Category Down"
           onClick={(event) => {

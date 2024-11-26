@@ -19,6 +19,7 @@ const propTypes = {
   selected: PropTypes.objectOf(PropTypes.any),
   loading: PropTypes.bool,
   addMissing: PropTypes.bool, // Allow selection of the current text typed into the search box
+  style: PropTypes.objectOf(PropTypes.any),
 };
 
 const defaultProps = {
@@ -27,6 +28,7 @@ const defaultProps = {
   meta: {},
   input: null,
   selected: undefined,
+  style: {},
 };
 
 const RenderAutoComplete = (props) => {
@@ -74,7 +76,7 @@ const RenderAutoComplete = (props) => {
               dropdownMatchSelectWidth
               defaultValue={props.input ? props.input.value : undefined}
               value={props.input ? props.input.value : undefined}
-              style={{ width: "100%" }}
+              style={{ width: "100%", ...(props.style || {}) }}
               options={items}
               placeholder={props.placeholder}
               filterOption={(input, option) =>
