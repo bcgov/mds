@@ -84,16 +84,6 @@
         display: flex;
     }
 
-    .ant-anchor-link.now-menu-link::before {
-        content: '';
-        position: absolute;
-        left: 33px;
-        top: 20px;
-        bottom: 0;
-        border-left: 1px solid pink;
-        top: 33px;
-        bottom: -9px;
-    }
 }
 
 // there is an issue where content (fade-in class?) renders in front of the menu, making it unclickable
