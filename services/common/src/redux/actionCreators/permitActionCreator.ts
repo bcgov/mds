@@ -22,7 +22,6 @@ import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
 import { AxiosResponse } from "axios";
 import { AppThunk } from "@mds/common/interfaces/appThunk.type";
-import { createPermitConditionCategory } from "../actions/permitActions";
 
 export const createPermit = (
   mineGuid: string,
@@ -199,6 +198,7 @@ export const updatePermitAmendment = (
       })
       .finally(() => dispatch(hideLoading()));
   };
+
 
 export const fetchPermitAmendmentConditionCategories = (
   mineGuid: string,
