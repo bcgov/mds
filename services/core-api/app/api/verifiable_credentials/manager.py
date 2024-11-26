@@ -551,10 +551,9 @@ class VerifiableCredentialManager():
             IDverifiedByCAB=True)
 
         #TODO, can CORE identify commodities by their UNCEFACT code?
-        products = [
-            cc.Product(id=None, name=c, IDverifiedByCAB=False)
-            for c in permit_amendment.mine.commodities
-        ]
+        #remove duplicates
+        product_names = list(set([c for c in permit_amendment.mine.commodities]))
+        products = [cc.Product(id=None, name=c, IDverifiedByCAB=False) for c in product_names]
 
         issue_date = permit_amendment.issue_date
 
