@@ -276,6 +276,7 @@ def push_untp_map_data_to_publisher():
     success_count = 0
     skipped_count = 0
     current_app.logger.info(f"num_records_to_process={len(permit_amendment_query_results)}")
+    #token is valid for an hour currently.
     publisher_service = OrgbookPublisherService()
 
     for row in permit_amendment_query_results:
