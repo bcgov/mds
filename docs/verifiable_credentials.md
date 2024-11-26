@@ -187,17 +187,19 @@ JSON-LD (JSON w/ Linked Data), allow the json documents to reference their defin
 
 The order that context files are important, as a later file can override a type definition than a previous file in the list, but only where the context files allow (`@protected: false`). Most context vocabularies seen in this context are `protected`.
 
+### VCDM vs AnonCreds
+
+| Feature                    | [AnonCreds](https://hyperledger.github.io/anoncreds-spec/) | VCDM2.0                    |
+| -------------------------- | ---------------------------------------------------------- | -------------------------- |
+| Data Structure             | Flat                                                       | JSON                       |
+| Issued                     | Directly to Holder and bound                               | Published to be Discovered |
+| Selective Disclosure (ZPK) | Supported                                                  | Not Supported              |
+| DID Methods                | did:indy                                                   | did:web, did:tdw           |
+| Artifact hosting           | Hyperledger Indy                                           | Hosted by each participant |
+
 #### Relevant Context Files (IN ORDER)
 
 1. [W3C VCDM 2.0](https://www.w3.org/TR/vc-data-model-2.0/) is another specificiation for Veriifable Credentials, is an alternative to AnonCreds. Avoiding a very long section, here is an incredibly brief comparison that compares the two
-
-   | Feature                    | [AnonCreds](https://hyperledger.github.io/anoncreds-spec/) | VCDM2.0                    |
-   | -------------------------- | ---------------------------------------------------------- | -------------------------- |
-   | Data Structure             | Flat                                                       | JSON                       |
-   | Issued                     | Directly to Holder and bound                               | Published to be Discovered |
-   | Selective Disclosure (ZPK) | Supported                                                  | Not Supported              |
-   | DID Methods                | did:indy                                                   | did:web, did:tdw           |
-   | Artifact hosting           | Hyperledger Indy                                           | Hosted by each participant |
 
 1. [UNTP DCC Specification](https://uncefact.github.io/spec-untp/docs/specification/ConformityCredential) is a context file that describes all the types described in the UNTP specification.
 
@@ -216,6 +218,8 @@ General Purpose: To manage the mining data in BC
 ### Digital Trust Toolkit
 
 General Purpose: To host critical artifacts for reference by BC Government VC Issuers, as well as instructional material for business experts of interested government issuers.
+
+NOTE: This service is also responsible for maintaining the whitelist [files](https://github.com/bcgov/digital-trust-toolkit/tree/main/related_resources/registrations/issuers) that Orgbook leverages to control what did's are allowed to issue.
 
 ### Orgbook Publisher
 
