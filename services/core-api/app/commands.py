@@ -162,6 +162,7 @@ def register_commands(app):
         auth.apply_security = False
         with current_app.app_context() as app:
             result = process_all_untp_map_for_orgbook.apply_async()
+            print("celery job started: forward_all_pending_untp_vc_to_orgbook")
 
     @app.cli.command('forward_all_pending_untp_vc_to_orgbook')
     def forward_all_pending_untp_vc_to_orgbook():
@@ -171,6 +172,7 @@ def register_commands(app):
         auth.apply_security = False
         with current_app.app_context():
             result = forward_all_pending_untp_vc_to_orgbook.apply_async()
+            print("celery job started: forward_all_pending_untp_vc_to_orgbook")
 
     @app.cli.command('push_untp_map_data_to_publisher')
     def push_untp_map_data_to_publisher():
@@ -180,6 +182,21 @@ def register_commands(app):
         auth.apply_security = False
         with current_app.app_context():
             result = push_untp_map_data_to_publisher.apply_async()
+            print("celery job started: push_untp_map_data_to_publisher")
+
+    @app.cli.command('cleanup_untp_map_data_failures')
+    @click.argument('dry', required=False)
+    def cleanup_untp_map_data_failures(dry: bool = True):
+        from app import auth
+        from app.api.verifiable_credentials.manager import (
+            VerifiableCredentialManager, )
+        auth.apply_security = False
+        with current_app.app_context():
+            if dry:
+                print(f"dry running delete, add `true` as first argument to actually delete")
+            result = VerifiableCredentialManager.delete_any_unsuccessful_untp_push(dry)
+
+            print(f"delete_any_unsuccessful_untp_push complete: delete_count={result}")
 
     @app.cli.command('generate_history_table_migration')
     @click.argument('table')

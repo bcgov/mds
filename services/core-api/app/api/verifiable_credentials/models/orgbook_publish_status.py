@@ -25,7 +25,7 @@ class PermitAmendmentOrgBookPublish(AuditMixin, Base):
     error_msg = db.Column(db.String, nullable=True)
 
     def __repr__(self):
-        return f'<PermitAmendmentOrgBookPublishStatus unsigned_payload_hash={self.unsigned_payload_hash}, permit_amendment_guid={self.permit_amendment_guid}, sign_date={self.sign_date}, publish_state={self.publish_state}>'
+        return f'<PermitAmendmentOrgBookPublishStatus unsigned_payload_hash={self.unsigned_payload_hash}, permit_amendment_guid={self.permit_amendment_guid}, error_msg={self.error_msg}, publish_state={self.publish_state}, orgbook_entity_id={self.orgbook_entity_id}>'
 
     @classmethod
     def find_by_unsigned_payload_hash(cls,
