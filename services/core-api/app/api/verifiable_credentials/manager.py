@@ -283,7 +283,7 @@ def push_untp_map_data_to_publisher():
         pa = PermitAmendment.find_by_permit_amendment_guid(row[0], unsafe=True)
 
         if pa.permit_no[1] in ("X", "x"):
-            current_app.logger.warning(
+            current_app.logger.info(
                 f"exclude exploration permit={pa.permit_no}, they cannot produce goods for sale")
             continue
 
@@ -318,9 +318,9 @@ def push_untp_map_data_to_publisher():
                 }
             }
         }
-        current_app.logger.warning(f"publishing record={publish_payload}")
+        current_app.logger.debug(f"publishing record={publish_payload}")
         payload_hash = md5(json.dumps(publish_payload).encode('utf-8')).hexdigest()
-        current_app.logger.warning(f"payload hash={payload_hash}")
+        current_app.logger.debug(f"payload hash={payload_hash}")
 
         publish_record = PermitAmendmentOrgBookPublish(
             unsigned_payload_hash=payload_hash,
