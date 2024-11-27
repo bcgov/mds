@@ -237,7 +237,7 @@ General Purpose: To support publishing of Government data as JSON-LD Credentials
 
 General Purpose: To host did's for BC government entities, specifically did:web and did:tdw
 
-### Orgbook VC API
+### Aries VCR VC API
 
 General Purpose: New REST API to add support for JSON-LD verifiable credentials to Orgbook
 
@@ -248,3 +248,38 @@ General Purpose: To hold verifiable data about BC Businesses.
 ### UNTP Digital Product Passports
 
 Business will produce
+
+## Who to call
+
+### Energy and Mines Digital Trust
+
+Key Contacts:
+
+- Nancy Norris, nancy.norris@gov.bc.ca, Senior Director
+- Bree Blazicevic, bree-ana.blazicevic@gov.bc.ca, Senior Policy Analyst
+- Patrick St-louis, patrick.st-louis@opsecid.ca, Developer
+
+Oversees Repository:
+
+- [Digital Trust Toolkit](https://github.com/bcgov/mds/pull/3320/files)
+
+### Cybersecurity and Digital Trust Enterprise Apps Team
+
+Key Contact:
+
+- Emiliano Sune, emiliano.sune@quartech.com
+- Stephen Curran, swcurran@cloudcompass.ca
+
+Oversees Deployments of:
+
+- [Traction](https://github.com/bcgov/traction)
+  - Deployed [here](https://traction-tenant-ui-prod.apps.silver.devops.gov.bc.ca/) with [API](https://traction-tenant-proxy-prod.apps.silver.devops.gov.bc.ca/api/doc)
+- [Orgbook Publisher](https://github.com/OpSecId/orgbook-publisher/)
+  - Deployed [here](https://dev.orgbook.traceability.site/)
+  - This is about to move to an openshift domain
+- [Aries-VCR-VC-Service](https://github.com/bcgov/aries-vcr-vc-service/pull/17)
+  - Deployed [here] , trying to find
+- [Aries-VCR](https://github.com/bcgov/aries-vcr)
+  - Deployed as Orgbook [here](https://orgbook.gov.bc.ca/search) and [API](https://orgbook.gov.bc.ca/api/v2)
+- [TDW Server](https://github.com/decentralized-identity/trustdidweb-server-py)
+  - Deployed [here](https://registry-dev.apps.silver.devops.gov.bc.ca/)
