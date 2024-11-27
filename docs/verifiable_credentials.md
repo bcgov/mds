@@ -215,39 +215,35 @@ The order that context files are important, as a later file can override a type 
 
 The top level of the credential produced is currently typed with all three because, and because all the attributes in all the context files are `protected` no attributes can conflict. AKA. Context files can add attributes to protected types, but cannot redefine an existing term.
 
-### Data Architechture
+## Orgbook Publication Architecture Architechture
 
 ![https://lucid.app/lucidspark/a72aa903-a3b6-48fa-a531-d00072f3e32f/edit?view_items=CIknlZqzm_3b&invitationId=inv_588317cd-af32-46ec-9297-bb2ce5c57502](untp_arch_diagram.png)
 
 ### Mines Digital Services
 
-General Purpose: To manage the mining data in BC
+**General Purpose:** To manage the mining data in BC
 
 ### Digital Trust Toolkit
 
-General Purpose: To host critical artifacts for reference by BC Government VC Issuers, as well as instructional material for business experts of interested government issuers.
+**General Purpose:** To host critical artifacts for reference by BC Government VC Issuers, as well as instructional material for business experts of interested government issuers.
 
 NOTE: This service is also responsible for maintaining the whitelist [files](https://github.com/bcgov/digital-trust-toolkit/tree/main/related_resources/registrations/issuers) that Orgbook leverages to control what did's are allowed to issue.
 
 ### Orgbook Publisher
 
-General Purpose: To support publishing of Government data as JSON-LD Credentials to Orgbook for BC Businesses (including did's)
+**General Purpose:** To support publishing of Government data as JSON-LD Credentials to Orgbook for BC Businesses (including did's)
 
 ### DID:TDW Server
 
-General Purpose: To host did's for BC government entities, specifically did:web and did:tdw
+**General Purpose:** To host did's for BC government entities, specifically did:web and did:tdw
 
 ### Aries VCR VC API
 
-General Purpose: New REST API to add support for JSON-LD verifiable credentials to Orgbook
+**General Purpose:** New REST API to add support for JSON-LD verifiable credentials to Orgbook
 
 ### Orgbook
 
-General Purpose: To hold verifiable data about BC Businesses.
-
-### UNTP Digital Product Passports
-
-Business will produce
+**General Purpose:** To hold verifiable data about BC Businesses.
 
 ## Who to call
 
@@ -255,6 +251,7 @@ Business will produce
 
 Key Contacts:
 
+- Jason Syrotuck, jason.syrotuck@nttdata.com, Developer
 - Nancy Norris, nancy.norris@gov.bc.ca, Senior Director
 - Bree Blazicevic, bree-ana.blazicevic@gov.bc.ca, Senior Policy Analyst
 - Patrick St-louis, patrick.st-louis@opsecid.ca, Developer
@@ -267,8 +264,9 @@ Oversees Repository:
 
 Key Contact:
 
-- Emiliano Sune, emiliano.sune@quartech.com
-- Stephen Curran, swcurran@cloudcompass.ca
+- Emiliano Sune, emiliano.sune@quartech.com, PO, BC Digital Trust
+- Stephen Curran, swcurran@cloudcompass.ca, VC Expert
+- John Jordan, john.jordan@gov.bc.ca, ED, BC Digital Trust
 
 Oversees Deployments of:
 
