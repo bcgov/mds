@@ -51,8 +51,8 @@ def test_get_reports(test_client, db_session, auth_headers):
     assert all(report['report_name'] == specific_report_name for report in get_data['records'])
 
     # Test filter by received date range
-    start_date = mine.mine_reports[0].received_date - timedelta(days=16) # ReportFactory randomly generates a date between -15 and 15 days ago
-    end_date = mine.mine_reports[0].received_date + timedelta(days=16)
+    start_date = mine.mine_reports[0].received_date - timedelta(days=1)
+    end_date = mine.mine_reports[0].received_date + timedelta(days=1)
 
     get_resp = test_client.get(
         f'/mines/reports?mine_reports_type=CRR&due_date_after={start_date.strftime("%Y-%m-%d")}&due_date_before={end_date.strftime("%Y-%m-%d")}',
