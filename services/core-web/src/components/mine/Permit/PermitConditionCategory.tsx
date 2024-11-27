@@ -56,7 +56,7 @@ export const EditPermitConditionCategoryInline = (props: IPermitConditionCategor
   if (!isEditMode) {
     return (
       <Tooltip title="Click to edit">
-        <div onClick={enableEditMode} onMouseDown={enableEditMode}>
+        <div onClick={enableEditMode} onKeyDown={enableEditMode}>
           <Typography.Title style={{ marginBottom: 0 }} level={3}>{props.category.step ? `${props.category.step}. ` : ''}{props.category.description} ({props.conditionCount})</Typography.Title>
         </div>
       </Tooltip>
