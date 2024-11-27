@@ -41,7 +41,7 @@ class UNTPCCMinesActPermit(cc.ConformityAttestation):
 W3C_CRED_ID_PREFIX = f"{Config.ORGBOOK_PUBLISHER_BASE_URL}/credentials/"
 
 permit_amendments_for_orgbook_query = """
-    select pa.permit_amendment_guid, p.party_guid
+    select pa.permit_amendment_guid, p.party_guid, pmt.permit_no
  
     from party_orgbook_entity poe
     inner join party p on poe.party_guid = p.party_guid
@@ -286,7 +286,8 @@ def push_untp_map_data_to_publisher():
         valid_until_date: date | None = None
         # only valid until the next permit_amendment was issued
         try:
-            next_pa_guid = permit_amendment_query_results[index + 1][0]
+            if permit_amendment_query_results[index + 1][2] == row[2]: #ensure same permit_no
+                next_pa_guid = permit_amendment_query_results[index + 1][0]
         except IndexError:
             pass
 
