@@ -74,6 +74,12 @@ const PermitConditions: FC<PermitConditionProps> = ({
   }, []);
 
   const defaultPermitConditionCategories = useSelector(getPermitConditionCategoryOptions);
+  const condWithoutConditionsText = defaultPermitConditionCategories?.map((cat) => {
+    return {
+      ...cat,
+      description: cat.description.replace('Conditions', '').trim(),
+    }
+  });
 
   // @ts-ignore
   const isLoading = useSelector((state) => state.GET_PERMITS?.isFetching);
@@ -82,7 +88,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
     permitExtraction?.task_status === PermitExtractionStatus.in_progress;
   const isExtractionComplete = permitExtraction?.task_status === PermitExtractionStatus.complete;
 
-  const permitConditionCategoryOptions: IPermitConditionCategory[] = uniqBy(latestAmendment?.condition_categories.concat(defaultPermitConditionCategories) ?? [], 'condition_category_code');
+  const permitConditionCategoryOptions: IPermitConditionCategory[] = uniqBy(latestAmendment?.condition_categories.concat(condWithoutConditionsText) ?? [], 'condition_category_code');
 
   const permitConditionCategories = permitConditionCategoryOptions
     .map((cat) => {
@@ -91,7 +97,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
           (c) => c.condition_category_code === cat.condition_category_code
         ) ?? [];
 
-      const isDefaultConditionCategory = !!defaultPermitConditionCategories?.find(x => x.condition_category_code === cat.condition_category_code);
+      const isDefaultConditionCategory = !!condWithoutConditionsText?.find(x => x.condition_category_code === cat.condition_category_code);
 
       if (!conditions.length && isDefaultConditionCategory) {
         return null;
@@ -124,12 +130,11 @@ const PermitConditions: FC<PermitConditionProps> = ({
       // Initialize the step paths for all top-level conditions
       const formattedConditions = conditions.map((condition) => getStepPath(condition));
 
-      const title = cat.description?.replace("Conditions", "").trim();
       return {
         href: cat.condition_category_code.toLowerCase().replace('-', ''),
         icon: <FontAwesomeIcon icon={faBan} style={{ color: '#bbb', fontSize: '20px' }} />,
-        title: <Typography.Text style={{ fontSize: '16px', fontWeight: '600' }}>{cat.step ? `${cat.step}. ` : ''}{title}</Typography.Text>,
-        titleText: title,
+        title: <Typography.Text style={{ fontSize: '16px', fontWeight: '600' }}>{cat.step ? `${cat.step}. ` : ''}{cat.description}</Typography.Text>,
+        titleText: cat.description,
         description: 'Not Started',
         conditions: formattedConditions || [],
         condition_category_code: cat.condition_category_code,

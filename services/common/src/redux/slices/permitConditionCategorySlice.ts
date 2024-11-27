@@ -33,14 +33,19 @@ const searchConditionCategoriesSlice = createAppSlice({
         if (payload.exclude) payload.exclude.forEach((item) => params.append("exclude", item));
         if (payload.limit) params.append("limit", payload.limit.toString());
 
-        console.log('abc123')
-
         const response = await CustomAxios({
           errorToastMessage: "default",
         }).get(`${ENVIRONMENT.apiUrl}/mines/permits/condition-category-codes?${params.toString()}`, headers);
+
         console.log('Got response', response)
         thunkApi.dispatch(hideLoading());
-        return response.data;
+        return {
+          ...response.data,
+          records: response.data.records.map((item) => ({
+            ...item,
+            description: ['GEC', 'HSC', 'GOC', 'ELC', 'RCC'].includes(item.condition_category_code) ? item.description.replace('Conditions', '').trim() : item.description
+          }))
+        };
       },
       {
         fulfilled: (state: ConditionCategoryState, action) => {
