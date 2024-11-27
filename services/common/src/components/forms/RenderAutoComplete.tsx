@@ -5,7 +5,7 @@ import { BaseInputProps, BaseViewInput, getFormItemLabel } from "./BaseInput";
 
 interface IRenderAutoCompleteProps {
   data: Array<{ label: string; value: any }>;
-  addMissing: boolean;
+  addMissing: boolean; // Add the input value to the list of selectable values if it doesn't exist
   style?: React.CSSProperties;
   handleChange: (value: string) => void;
   handleSelect: (value: any) => void;
@@ -39,6 +39,7 @@ const RenderAutoComplete = (props: BaseInputProps & IRenderAutoCompleteProps) =>
             validateStatus={
               props.meta.touched ? (props.meta.error && "error") || (props.meta.warning && "warning") : ""
             }
+            required={props.required}
             help={
               props.meta.touched &&
               ((props.meta.error && <span>{props.meta.error}</span>) ||
