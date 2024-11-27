@@ -37,7 +37,6 @@ const searchConditionCategoriesSlice = createAppSlice({
           errorToastMessage: "default",
         }).get(`${ENVIRONMENT.apiUrl}/mines/permits/condition-category-codes?${params.toString()}`, headers);
 
-        console.log('Got response', response)
         thunkApi.dispatch(hideLoading());
         return {
           ...response.data,

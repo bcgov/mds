@@ -20,12 +20,10 @@ const msHeaderHeight = 80;
  * A wrapper component that provides a side menu and a content area. The side menu can be fixed to the top of the page.
  * The menu links will act as an achor to sections in the content area scroll to the section when clicked, and highlight the active section.
  * 
- * If you need to add extra items to the side menu, you can use the ExtraMenuItem component as a child of ScrollSidePageWrapper:
+ * If you need to add extra items to the side menu, you can pass them along as `extraItems`:
  * 
- * <ScrollSidePageWrapper ...>
- *  <ScrollSidePageWrapper.ExtraMenuItem>
- *    <Typography.Paragraph>This is extra content that will be rendered under the side menu</Typography.Paragraph>
- *  </ScrollSidePageWrapper.ExtraMenuItem>
+ * const extraMenuItems = <Typography.Paragraph>This is extra content that will be rendered under the side menu</Typography.Paragraph>
+ * <ScrollSidePageWrapper extraItems={extraMenuItems}>
  * </ScrollSidePageWrapper>
  */
 const ScrollSidePageWrapper: FC<ScrollSidePageWrapperProps> = ({

@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from "react";
 import { useParams, useHistory, useLocation } from "react-router-dom";
-import { Anchor, Steps } from "antd";
+import { Anchor } from "antd";
 import { ISideMenuOption } from "../../interfaces/common/sideMenuOption.interface";
 
 /**

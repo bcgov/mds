@@ -40,7 +40,6 @@ class PermitAmendmentConditionCategoryResource(Resource, UserMixin):
 
         return {'message': 'Permit condition category deleted successfully'}, 204
 
-    @requires_role_view_all
     @api.doc(description='Creates a new permit condition category for the given permit amendment. Reorders existing categories if display_order has changed.')
     @api.marshal_with(PERMIT_CONDITION_CATEGORY_MODEL, code=201)
     @requires_role_view_all
