@@ -76,7 +76,7 @@ export const EditPermitConditionCategoryInline = (props: IPermitConditionCategor
           icon={<FontAwesomeIcon icon={faXmark} />}
         />
 
-        <RenderSubmitButton buttonText="" aria-label="Confirm" buttonProps={{ className: "icon-button-container", style: { marginRight: 0, marginLeft: 0 }, icon: <FontAwesomeIcon icon={faCheck} /> }} />
+        <RenderSubmitButton buttonText="" buttonProps={{ "aria-label": "Confirm", className: "icon-button-container", style: { marginRight: 0, marginLeft: 0 }, icon: <FontAwesomeIcon icon={faCheck} /> }} />
 
         <Popconfirm
           disabled={props.conditionCount > 0}

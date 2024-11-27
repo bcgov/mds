@@ -38,7 +38,7 @@ describe("PermitConditionCategorySelector", () => {
         </FormWrapper>
       </ReduxWrapper>
     );
-    const input = screen.getByRole("combobox", { name: "Category Name" })
+    const input = screen.getByRole("combobox", { name: "description" })
     expect(input).toBeInTheDocument();
   });
 

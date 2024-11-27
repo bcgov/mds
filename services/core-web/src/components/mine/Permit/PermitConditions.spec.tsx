@@ -76,7 +76,7 @@ describe("PermitConditions", () => {
 
     let descriptionInput;
     await waitFor(() => {
-      descriptionInput = screen.getByRole("combobox", { "name": "Category Name" });
+      descriptionInput = screen.getByRole("combobox", { "name": "description" });
       expect(descriptionInput).toBeInTheDocument();
     })
 
