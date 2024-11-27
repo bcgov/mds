@@ -341,13 +341,13 @@ def push_untp_map_data_to_publisher():
         current_app.logger.debug(f"payload hash={payload_hash}")
 
         #produce a uuid for logging/tracing.
-        publish_payload["options"]["credentialId"] = uuid4()
+        publish_payload["options"]["credentialId"] = str(uuid4())
 
         publish_record = PermitAmendmentOrgBookPublish(
             unsigned_payload_hash=payload_hash,
             permit_amendment_guid=row[0],
             party_guid=row[1],
-            signed_credential=f'Produced by publisher',
+            signed_credential='Produced by publisher',
             publish_state=None,
             permit_number=pa_cred.credentialSubject.permitNumber,
             orgbook_entity_id=pa_cred.credentialSubject.issuedToParty.registeredId,
