@@ -185,16 +185,16 @@ def register_commands(app):
             print("celery job started: push_untp_map_data_to_publisher")
 
     @app.cli.command('cleanup_untp_map_data_failures')
-    @click.argument('dry', required=False)
-    def cleanup_untp_map_data_failures(dry: bool = True):
+    @click.argument('live', required=False, default=False)
+    def cleanup_untp_map_data_failures(live: bool = False):
         from app import auth
         from app.api.verifiable_credentials.manager import (
             VerifiableCredentialManager, )
         auth.apply_security = False
         with current_app.app_context():
-            if dry:
-                print(f"dry running delete, add `true` as first argument to actually delete")
-            result = VerifiableCredentialManager.delete_any_unsuccessful_untp_push(dry)
+            if not live:
+                print(f"dry running delete, add `false` as first argument to actually delete")
+            result = VerifiableCredentialManager.delete_any_unsuccessful_untp_push(live)
 
             print(f"delete_any_unsuccessful_untp_push complete: delete_count={result}")
 

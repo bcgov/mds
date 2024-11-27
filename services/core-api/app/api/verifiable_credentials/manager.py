@@ -394,16 +394,18 @@ class VerifiableCredentialManager():
         pass
 
     @classmethod
-    def delete_any_unsuccessful_untp_push(cls, dry: bool = False) -> int:
-        records = PermitAmendmentOrgBookPublish.find_all_unpublished()
-        delete_count = 0
-
-        for record in records:
-            if dry:
+    def delete_any_unsuccessful_untp_push(cls, live: bool = False) -> int:
+        if not live:
+            records = PermitAmendmentOrgBookPublish.find_all_unpublished()
+            delete_count = 0
+            for record in records:
                 current_app.logger.info(f"would delete {record}")
-            else:
-                record.delete()
-            delete_count += 1
+                delete_count += 1
+        else:
+            current_app.logger.info(f"LIVE DELETE")
+            records = PermitAmendmentOrgBookPublish.delete_all_unpublished()
+            delete_count = records
+            db.session.commit()
 
         return delete_count
 
