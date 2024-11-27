@@ -286,7 +286,7 @@ def push_untp_map_data_to_publisher():
         valid_until_date: date | None = None
         # only valid until the next permit_amendment was issued
         try:
-            if permit_amendment_query_results[index + 1][2] == row[2]: #ensure same permit_no
+            if permit_amendment_query_results[index + 1][2] == row[2]: # ensure same permit_no
                 next_pa_guid = permit_amendment_query_results[index + 1][0]
         except IndexError:
             pass
