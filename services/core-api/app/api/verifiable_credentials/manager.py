@@ -333,7 +333,8 @@ def push_untp_map_data_to_publisher():
         }
         #TODO: Combine continous permit_amendments where the contents of the credential and permittee did not change into one credential.
         if valid_until_date:
-            publish_payload["validUntil"] = convert_date_to_iso_datetime(valid_until_date)
+            publish_payload["credential"]["validUntil"] = convert_date_to_iso_datetime(
+                valid_until_date)
 
         current_app.logger.debug(f"publishing record={publish_payload}")
         payload_hash = md5(json.dumps(publish_payload).encode('utf-8')).hexdigest()
@@ -351,7 +352,7 @@ def push_untp_map_data_to_publisher():
             error_msg=None)
 
         try:
-            current_app.logger.info(f"saving publish record locally...")
+            current_app.logger.debug('saving publish record locally...')
             publish_record.save()
 
             post_resp = publisher_service.publish_cred(publish_payload)
