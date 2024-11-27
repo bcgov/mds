@@ -371,6 +371,7 @@ def push_untp_map_data_to_publisher():
             current_app.logger.warning(
                 f"failed to publish unsigned_payload_id={publish_record.unsigned_payload_hash} error={publish_record.error_msg}"
             )
+            current_app.logger.warning(f"..failed payload={publish_payload}")
             failed_credentials.append(
                 (publish_record.unsigned_payload_hash, publish_record.error_msg))
 
