@@ -28,13 +28,14 @@ The order that context files are important, as a later file can override a type 
 
 ### AnonCreds vs VCDM
 
-| Feature                    | [AnonCreds](https://hyperledger.github.io/anoncreds-spec/) | VCDM2.0                    |
-| -------------------------- | ---------------------------------------------------------- | -------------------------- |
-| Data Structure             | Flat                                                       | JSON                       |
-| Issued                     | Directly to Holder and bound                               | Published to be Discovered |
-| Selective Disclosure (ZPK) | Supported                                                  | Not Supported              |
-| DID Methods                | did:indy                                                   | did:web, did:tdw           |
-| Artifact hosting           | Hyperledger Indy                                           | Hosted by each participant |
+| Feature              | [AnonCreds](https://hyperledger.github.io/anoncreds-spec/) | VCDM2.0 w/ Data Intergrity Proof |
+| -------------------- | ---------------------------------------------------------- | -------------------------------- |
+| Data Structure       | Flat                                                       | JSON                             |
+| Issued               | Directly to Holder and bound                               | Published to be Discovered       |
+| Selective Disclosure | Supported                                                  | Not Supported                    |
+| Zero Knowledge Proof | Supported                                                  | Not Supported                    |
+| DID Methods          | did:indy                                                   | did:web, did:tdw                 |
+| Artifact hosting     | Hyperledger Indy                                           | Hosted by each participant       |
 
 #### Relevant Context Files (IN ORDER)
 
