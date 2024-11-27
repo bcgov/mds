@@ -26,7 +26,7 @@ JSON-LD (JSON w/ Linked Data), allow the json documents to reference their defin
 
 The order that context files are important, as a later file can override a type definition than a previous file in the list, but only where the context files allow (`@protected: false`). Most context vocabularies seen in this context are `protected`.
 
-### VCDM vs AnonCreds
+### AnonCreds vs VCDM
 
 | Feature                    | [AnonCreds](https://hyperledger.github.io/anoncreds-spec/) | VCDM2.0                    |
 | -------------------------- | ---------------------------------------------------------- | -------------------------- |
