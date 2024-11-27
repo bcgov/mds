@@ -33,10 +33,12 @@ const searchConditionCategoriesSlice = createAppSlice({
         if (payload.exclude) payload.exclude.forEach((item) => params.append("exclude", item));
         if (payload.limit) params.append("limit", payload.limit.toString());
 
+        console.log('abc123')
+
         const response = await CustomAxios({
           errorToastMessage: "default",
         }).get(`${ENVIRONMENT.apiUrl}/mines/permits/condition-category-codes?${params.toString()}`, headers);
-
+        console.log('Got response', response)
         thunkApi.dispatch(hideLoading());
         return response.data;
       },
