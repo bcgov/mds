@@ -43,7 +43,7 @@ const PermitConditionCategorySelector: FC<IPermitConditionCategorySelectorProps>
         name="description"
         label={showLabel ? "Category Name" : null}
         validate={[required, maxLength(255)]}
-        required
+        required={true}
         data={categoryOptions}
         loading={loading}
         handleChange={handleSearchDebounced}

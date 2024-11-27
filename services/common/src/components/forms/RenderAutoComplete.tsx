@@ -1,37 +1,17 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { Select, Form, Spin, Button } from "antd";
+import { Select, Form, Spin } from "antd";
 import { FormConsumer, IFormContext } from "./FormWrapper";
-import { BaseViewInput } from "./BaseInput";
+import { BaseInputProps, BaseViewInput, getFormItemLabel } from "./BaseInput";
 
-/**
- * @constant RenderAutoComplete - Ant Design `AutoComplete` component for redux-form.
- *
- */
-const propTypes = {
-  handleChange: PropTypes.func.isRequired,
-  handleSelect: PropTypes.func.isRequired,
-  data: PropTypes.arrayOf(PropTypes.any).isRequired,
-  placeholder: PropTypes.string,
-  disabled: PropTypes.bool,
-  meta: PropTypes.objectOf(PropTypes.any),
-  input: PropTypes.objectOf(PropTypes.any),
-  selected: PropTypes.objectOf(PropTypes.any),
-  loading: PropTypes.bool,
-  addMissing: PropTypes.bool, // Allow selection of the current text typed into the search box
-  style: PropTypes.objectOf(PropTypes.any),
-};
+interface IRenderAutoCompleteProps {
+  data: Array<{ label: string; value: any }>;
+  addMissing: boolean;
+  style?: React.CSSProperties;
+  handleChange: (value: string) => void;
+  handleSelect: (value: any) => void;
+}
 
-const defaultProps = {
-  placeholder: "",
-  disabled: false,
-  meta: {},
-  input: null,
-  selected: undefined,
-  style: {},
-};
-
-const RenderAutoComplete = (props) => {
+const RenderAutoComplete = (props: BaseInputProps & IRenderAutoCompleteProps) => {
   const items = [...props.data];
 
   if (props.addMissing && props.input?.value?.trim().length > 0) {
@@ -48,14 +28,14 @@ const RenderAutoComplete = (props) => {
     <FormConsumer>
       {(value: IFormContext) => {
         if (!value.isEditMode) {
-          return <BaseViewInput value={props.input.value} label={props.input.label} />;
+          return <BaseViewInput value={props.input.value} label={props.label} />;
         }
 
-        const ariaLabel = props.label || props.input.name;
+        const ariaLabel = props.label && props.label instanceof String ? props.label + "" : props.input.name;
 
         return (
           <Form.Item
-            label={props.label}
+            label={getFormItemLabel(props.label, props.required, props.labelSubtitle)}
             validateStatus={
               props.meta.touched ? (props.meta.error && "error") || (props.meta.warning && "warning") : ""
             }
@@ -99,8 +79,5 @@ const RenderAutoComplete = (props) => {
       }}</FormConsumer>
   );
 };
-
-RenderAutoComplete.propTypes = propTypes;
-RenderAutoComplete.defaultProps = defaultProps;
 
 export default RenderAutoComplete;

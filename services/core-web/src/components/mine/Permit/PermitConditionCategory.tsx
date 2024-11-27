@@ -7,9 +7,11 @@ import { Button, Popconfirm, Row, Tooltip, Typography } from "antd";
 import React, { useState } from "react";
 import { Field } from "redux-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowDown, faArrowUp, faTrash } from "@fortawesome/pro-light-svg-icons";
+import { faArrowDown, faArrowUp, faCheck, faTrash, faXmark } from "@fortawesome/pro-light-svg-icons";
 import PermitConditionCategorySelector from "./PermitConditionCategorySelector";
 import { required } from "@mds/common/redux/utils/Validate";
+import { reset } from 'redux-form';
+import { useDispatch } from "react-redux";
 
 export interface IPermitConditionCategoryProps {
   onChange: (category: IPermitConditionCategory) => void | Promise<void>;
@@ -25,6 +27,8 @@ export interface IPermitConditionCategoryProps {
 export const EditPermitConditionCategoryInline = (props: IPermitConditionCategoryProps) => {
   const [isEditMode, setIsEditMode] = useState(false);
 
+  const dispatch = useDispatch();
+  const formName = `${FORM.INLINE_EDIT_PERMIT_CONDITION_CATEGORY}}-${props.category.condition_category_code}`;
   const enableEditMode = (evt) => {
     evt.stopPropagation();
     evt.preventDefault();
@@ -40,10 +44,19 @@ export const EditPermitConditionCategoryInline = (props: IPermitConditionCategor
     props.onDelete(cat);
   }
 
+  const cancel = (evt) => {
+    evt.stopPropagation();
+
+
+    dispatch(reset(formName));
+    setIsEditMode(false);
+  }
+
+
   if (!isEditMode) {
     return (
       <Tooltip title="Click to edit">
-        <div onClick={enableEditMode}>
+        <div onClick={enableEditMode} onMouseDown={enableEditMode}>
           <Typography.Title style={{ marginBottom: 0 }} level={3}>{props.category.step ? `${props.category.step}. ` : ''}{props.category.description} ({props.conditionCount})</Typography.Title>
         </div>
       </Tooltip>
@@ -51,11 +64,19 @@ export const EditPermitConditionCategoryInline = (props: IPermitConditionCategor
   }
 
   return (
-    <FormWrapper scrollOnToggleEdit={false} name={`${FORM.INLINE_EDIT_PERMIT_CONDITION_CATEGORY}}-${props.category.condition_category_code}`} onSubmit={handleSubmit} initialValues={props.category} isEditMode={isEditMode}>
+    <FormWrapper scrollOnToggleEdit={false} name={formName} onSubmit={handleSubmit} initialValues={props.category} isEditMode={isEditMode}>
       <Row className="flex" style={{ gap: '0.5em' }}>
         <Field name="step" component={RenderField} required={true} validate={[required]} />
         <PermitConditionCategorySelector showLabel={false} />
-        <RenderSubmitButton buttonText="Confirm" aria-label="Confirm" buttonProps={{ style: { marginRight: 0 } }} />
+        <Button
+          className="icon-button-container"
+          style={{ marginRight: 0 }}
+          onClick={cancel}
+          type="primary"
+          icon={<FontAwesomeIcon icon={faXmark} />}
+        />
+
+        <RenderSubmitButton buttonText="" aria-label="Confirm" buttonProps={{ className: "icon-button-container", style: { marginRight: 0, marginLeft: 0 }, icon: <FontAwesomeIcon icon={faCheck} /> }} />
 
         <Popconfirm
           disabled={props.conditionCount > 0}
