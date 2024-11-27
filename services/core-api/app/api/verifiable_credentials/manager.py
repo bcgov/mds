@@ -177,7 +177,7 @@ def process_all_untp_map_for_orgbook():
     current_app.logger.info("public did: " + public_did)
 
     records: List[Tuple[W3CCred,
-                        PermitAmendmentOrgBookPublish]] = [] # list of tuples [payload, record]
+                        PermitAmendmentOrgBookPublish]] = [] # list of tuples[payload, record]
 
     for row in permit_amendment_query_results:
         pa = PermitAmendment.find_by_permit_amendment_guid(row[0], unsafe=True)
