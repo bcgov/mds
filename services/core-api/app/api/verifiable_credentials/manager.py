@@ -6,7 +6,7 @@ from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
 from uuid import uuid4, UUID
 from sqlalchemy.exc import IntegrityError
-from typing import List, Union, Tuple, Optional
+from typing import List, Union, Tuple, Optional, Any
 from pydantic import BaseModel, Field, ConfigDict
 from openlocationcode.openlocationcode import encode as plus_code_encode
 from hashlib import md5
@@ -308,7 +308,7 @@ def push_untp_map_data_to_publisher():
             continue
 
         #only one assessment per credential
-        publish_payload: dict[str, object] = {
+        publish_payload: dict[str, Any] = {
             "credential": {
                 "type": "BCMinesActPermitCredential",
                 "validFrom": convert_date_to_iso_datetime(pa.issue_date),
@@ -318,7 +318,6 @@ def push_untp_map_data_to_publisher():
             },
             "options": {
                 "entityId": pa_cred.credentialSubject.issuedToParty.registeredId,
-                "credentialId": str(pa.permit_amendment_guid),
                 "cardinalityId": pa_cred.credentialSubject.permitNumber,
                 "additionalData": {
                     "assessedFacility": [
@@ -341,11 +340,13 @@ def push_untp_map_data_to_publisher():
         payload_hash = md5(json.dumps(publish_payload).encode('utf-8')).hexdigest()
         current_app.logger.debug(f"payload hash={payload_hash}")
 
+        publish_payload["options"]["credentialId"] = uuid4()
+
         publish_record = PermitAmendmentOrgBookPublish(
             unsigned_payload_hash=payload_hash,
             permit_amendment_guid=row[0],
             party_guid=row[1],
-            signed_credential="Produced by publisher",
+            signed_credential=f'Produced by publisher: {publish_payload["options"]["credentialId"]}',
             publish_state=None,
             permit_number=pa_cred.credentialSubject.permitNumber,
             orgbook_entity_id=pa_cred.credentialSubject.issuedToParty.registeredId,
