@@ -62,11 +62,11 @@ exports[`Notification Drawer renders properly 1`] = `
                   role="tab"
                   tabindex="0"
                 >
-                  <article
+                  <h5
                     class="ant-typography notification-tab-header"
                   >
                     Mine Activity
-                  </article>
+                  </h5>
                 </div>
               </div>
               <div

@@ -1,5 +1,5 @@
 import React from "react";
-import NotificationDrawer from "@/components/navigation/NotificationDrawer";
+import NotificationDrawer from "@/components/layout/NotificationDrawer";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { AUTHENTICATION, ACTIVITIES } from "@mds/common/constants/reducerTypes";
