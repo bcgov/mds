@@ -42,6 +42,7 @@ exports[`BasicInformation renders properly 1`] = `
               class="ant-form-item-control-input-content"
             >
               <input
+                aria-label="project_summary_title"
                 class="ant-input"
                 id="project_summary_title"
                 name="project_summary_title"
@@ -107,6 +108,7 @@ exports[`BasicInformation renders properly 1`] = `
               class="ant-form-item-control-input-content"
             >
               <input
+                aria-label="proponent_project_id"
                 class="ant-input"
                 id="proponent_project_id"
                 name="proponent_project_id"

@@ -31,7 +31,7 @@ const permitExtractionStatusMap = {
   SUCCESS: PermitExtractionStatus.complete,
 };
 
-interface PermitExtraction {
+export interface PermitExtraction {
   task_status: PermitExtractionStatus;
   task_id: string;
 }

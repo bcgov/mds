@@ -8,6 +8,7 @@ import {
   IInformationRequirementsTable,
   IPermit,
   IMineDocument,
+  IPermitAmendment,
 } from "@mds/common/interfaces";
 import {
   MAJOR_MINE_APPLICATION_AND_IRT_STATUS_CODES,
@@ -20,6 +21,7 @@ import {
   VC_CONNECTION_STATES,
   VC_CRED_ISSUE_STATES,
 } from "@mds/common/constants";
+import { PermitExtraction } from "@mds/common/redux/slices/permitServiceSlice";
 
 export const createMockHeader = () => ({
   headers: {
@@ -1132,6 +1134,14 @@ export const MINE_TSF_REQUIRED_REPORTS_HASH = {
   "faa99067-3639-4d9c-a3e5-5401df15ad4b": "5 year DSR",
 };
 
+export const PERMIT_CONDITION_EXTRACTION = [
+  {
+    "task_id": "abc123",
+    "task_status": "SUCCESS",
+  }
+]
+
+
 export const PERMITS: IPermit[] = [
   {
     permit_id: "283",
@@ -1157,6 +1167,20 @@ export const PERMITS: IPermit[] = [
         permit_conditions_last_updated_by: "Condition Updater",
         permit_conditions_last_updated_date: "2019-04-04",
         has_permit_conditions: false,
+        condition_categories: [
+          {
+            condition_category_code: "HSC",
+            description: "Health and Safety",
+            display_order: 0,
+            step: 'A.'
+          },
+          {
+            condition_category_code: "RCC",
+            description: "Reclamation",
+            display_order: 1,
+            step: 'B.'
+          }
+        ],
         conditions: [
           {
             permit_condition_id: 1639,
@@ -1379,6 +1403,7 @@ export const PERMITS: IPermit[] = [
         authorization_end_date: null,
         liability_adjustment: 1000000,
         description: "Initial permit issued.",
+        condition_categories: [],
         related_documents: [
           {
             permit_id: 283,
@@ -1464,6 +1489,7 @@ export const PERMITS: IPermit[] = [
         conditions: [],
         is_generated_in_core: false,
         preamble_text: null,
+        condition_categories: [],
       },
     ],
     remaining_static_liability: null,
@@ -1488,6 +1514,11 @@ export const PERMITS: IPermit[] = [
     update_timestamp: "2019-04-05 21:05:40.123456+00:00",
   },
 ];
+
+export const PERMIT_AMENDMENT_STATE: { [permitGuid: string]: IPermitAmendment } = PERMITS.reduce((acc, permit) => {
+  acc[permit.permit_guid] = permit.permit_amendments[0];
+  return acc;
+}, {});
 
 export const USER_ACCESS_DATA = [
   "core_view_all",

@@ -6,7 +6,7 @@ from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
 from uuid import uuid4, UUID
 from sqlalchemy.exc import IntegrityError
-from typing import List, Union, Tuple, Optional
+from typing import List, Union, Tuple, Optional, Any
 from pydantic import BaseModel, Field, ConfigDict
 from openlocationcode.openlocationcode import encode as plus_code_encode
 from hashlib import md5
@@ -41,7 +41,7 @@ class UNTPCCMinesActPermit(cc.ConformityAttestation):
 W3C_CRED_ID_PREFIX = f"{Config.ORGBOOK_PUBLISHER_BASE_URL}/credentials/"
 
 permit_amendments_for_orgbook_query = """
-    select pa.permit_amendment_guid, p.party_guid
+    select pa.permit_amendment_guid, p.party_guid, pmt.permit_no
  
     from party_orgbook_entity poe
     inner join party p on poe.party_guid = p.party_guid
@@ -177,7 +177,7 @@ def process_all_untp_map_for_orgbook():
     current_app.logger.info("public did: " + public_did)
 
     records: List[Tuple[W3CCred,
-                        PermitAmendmentOrgBookPublish]] = [] # list of tuples [payload, record]
+                        PermitAmendmentOrgBookPublish]] = [] # list of tuples[payload, record]
 
     for row in permit_amendment_query_results:
         pa = PermitAmendment.find_by_permit_amendment_guid(row[0], unsafe=True)
@@ -286,7 +286,8 @@ def push_untp_map_data_to_publisher():
         valid_until_date: date | None = None
         # only valid until the next permit_amendment was issued
         try:
-            next_pa_guid = permit_amendment_query_results[index + 1][0]
+            if permit_amendment_query_results[index + 1][2] == row[2]: # ensure same permit_no
+                next_pa_guid = permit_amendment_query_results[index + 1][0]
         except IndexError:
             pass
 
@@ -307,7 +308,7 @@ def push_untp_map_data_to_publisher():
             continue
 
         #only one assessment per credential
-        publish_payload: dict[str, object] = {
+        publish_payload: dict[str, Any] = {
             "credential": {
                 "type": "BCMinesActPermitCredential",
                 "validFrom": convert_date_to_iso_datetime(pa.issue_date),
@@ -317,7 +318,6 @@ def push_untp_map_data_to_publisher():
             },
             "options": {
                 "entityId": pa_cred.credentialSubject.issuedToParty.registeredId,
-                "credentialId": str(pa.permit_amendment_guid),
                 "cardinalityId": pa_cred.credentialSubject.permitNumber,
                 "additionalData": {
                     "assessedFacility": [
@@ -340,11 +340,14 @@ def push_untp_map_data_to_publisher():
         payload_hash = md5(json.dumps(publish_payload).encode('utf-8')).hexdigest()
         current_app.logger.debug(f"payload hash={payload_hash}")
 
+        #produce a uuid for logging/tracing.
+        publish_payload["options"]["credentialId"] = str(uuid4())
+
         publish_record = PermitAmendmentOrgBookPublish(
             unsigned_payload_hash=payload_hash,
             permit_amendment_guid=row[0],
             party_guid=row[1],
-            signed_credential="Produced by publisher",
+            signed_credential='Produced by publisher',
             publish_state=None,
             permit_number=pa_cred.credentialSubject.permitNumber,
             orgbook_entity_id=pa_cred.credentialSubject.issuedToParty.registeredId,
@@ -394,16 +397,18 @@ class VerifiableCredentialManager():
         pass
 
     @classmethod
-    def delete_any_unsuccessful_untp_push(cls, dry: bool = False) -> int:
-        records = PermitAmendmentOrgBookPublish.find_all_unpublished()
-        delete_count = 0
-
-        for record in records:
-            if dry:
+    def delete_any_unsuccessful_untp_push(cls, live: bool = False) -> int:
+        if not live:
+            records = PermitAmendmentOrgBookPublish.find_all_unpublished()
+            delete_count = 0
+            for record in records:
                 current_app.logger.info(f"would delete {record}")
-            else:
-                record.delete()
-            delete_count += 1
+                delete_count += 1
+        else:
+            current_app.logger.info(f"LIVE DELETE")
+            records = PermitAmendmentOrgBookPublish.delete_all_unpublished()
+            delete_count = records
+            db.session.commit()
 
         return delete_count
 

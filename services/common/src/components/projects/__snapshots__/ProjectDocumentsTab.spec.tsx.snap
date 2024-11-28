@@ -3,7 +3,7 @@
 exports[`ProjectDocumentsTab renders properly 1`] = `
 <div>
   <div
-    class="scroll-side-menu-wrapper"
+    class="scroll-side-menu-wrapper scroll-side-menu-view--anchor"
   >
     <div
       class="side-menu"
@@ -26,7 +26,7 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
               />
             </div>
             <div
-              class="ant-anchor-link now-menu-link ant-anchor-link-active"
+              class="ant-anchor-link now-menu-link fade-in ant-anchor-link-active"
             >
               <a
                 class="ant-anchor-link-title ant-anchor-link-title-active"
@@ -36,12 +36,16 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                 <div
                   class="side-nav-title"
                 >
-                  Project Description
+                  <div
+                    class="side-nav-title-content"
+                  >
+                    Project Description
+                  </div>
                 </div>
               </a>
             </div>
             <div
-              class="ant-anchor-link now-menu-link"
+              class="ant-anchor-link now-menu-link fade-in"
             >
               <a
                 class="ant-anchor-link-title"
@@ -52,15 +56,19 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                   class="side-nav-title"
                 >
                   <div
-                    class="sub-tab-1"
+                    class="side-nav-title-content"
                   >
-                    Spatial Components
+                    <div
+                      class="sub-tab-1"
+                    >
+                      Spatial Components
+                    </div>
                   </div>
                 </div>
               </a>
             </div>
             <div
-              class="ant-anchor-link now-menu-link"
+              class="ant-anchor-link now-menu-link fade-in"
             >
               <a
                 class="ant-anchor-link-title"
@@ -71,15 +79,19 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                   class="side-nav-title"
                 >
                   <div
-                    class="sub-tab-1"
+                    class="side-nav-title-content"
                   >
-                    Supporting Documents
+                    <div
+                      class="sub-tab-1"
+                    >
+                      Supporting Documents
+                    </div>
                   </div>
                 </div>
               </a>
             </div>
             <div
-              class="ant-anchor-link now-menu-link"
+              class="ant-anchor-link now-menu-link fade-in"
             >
               <a
                 class="ant-anchor-link-title"
@@ -89,12 +101,16 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                 <div
                   class="side-nav-title"
                 >
-                  Information Requirements Table
+                  <div
+                    class="side-nav-title-content"
+                  >
+                    Information Requirements Table
+                  </div>
                 </div>
               </a>
             </div>
             <div
-              class="ant-anchor-link now-menu-link"
+              class="ant-anchor-link now-menu-link fade-in"
             >
               <a
                 class="ant-anchor-link-title"
@@ -104,12 +120,16 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                 <div
                   class="side-nav-title"
                 >
-                  Major Mine Application
+                  <div
+                    class="side-nav-title-content"
+                  >
+                    Major Mine Application
+                  </div>
                 </div>
               </a>
             </div>
             <div
-              class="ant-anchor-link now-menu-link"
+              class="ant-anchor-link now-menu-link fade-in"
             >
               <a
                 class="ant-anchor-link-title"
@@ -120,15 +140,19 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                   class="side-nav-title"
                 >
                   <div
-                    class="sub-tab-1"
+                    class="side-nav-title-content"
                   >
-                    Primary Document
+                    <div
+                      class="sub-tab-1"
+                    >
+                      Primary Document
+                    </div>
                   </div>
                 </div>
               </a>
             </div>
             <div
-              class="ant-anchor-link now-menu-link"
+              class="ant-anchor-link now-menu-link fade-in"
             >
               <a
                 class="ant-anchor-link-title"
@@ -139,15 +163,19 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                   class="side-nav-title"
                 >
                   <div
-                    class="sub-tab-1"
+                    class="side-nav-title-content"
                   >
-                    Spatial Components
+                    <div
+                      class="sub-tab-1"
+                    >
+                      Spatial Components
+                    </div>
                   </div>
                 </div>
               </a>
             </div>
             <div
-              class="ant-anchor-link now-menu-link"
+              class="ant-anchor-link now-menu-link fade-in"
             >
               <a
                 class="ant-anchor-link-title"
@@ -158,15 +186,19 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                   class="side-nav-title"
                 >
                   <div
-                    class="sub-tab-1"
+                    class="side-nav-title-content"
                   >
-                    Supporting Documents
+                    <div
+                      class="sub-tab-1"
+                    >
+                      Supporting Documents
+                    </div>
                   </div>
                 </div>
               </a>
             </div>
             <div
-              class="ant-anchor-link now-menu-link"
+              class="ant-anchor-link now-menu-link fade-in"
             >
               <a
                 class="ant-anchor-link-title"
@@ -176,13 +208,18 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
                 <div
                   class="side-nav-title"
                 >
-                  Archived Documents
+                  <div
+                    class="side-nav-title-content"
+                  >
+                    Archived Documents
+                  </div>
                 </div>
               </a>
             </div>
           </div>
         </div>
       </div>
+      
     </div>
     <div
       class="side-menu--content"

@@ -32,6 +32,9 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
         db.String,
         db.ForeignKey('permit_condition_category.condition_category_code'),
         nullable=False)
+    
+    condition_category = db.relationship('PermitConditionCategory', lazy='select')
+
     condition_type_code = db.Column(
         db.String, db.ForeignKey('permit_condition_type.condition_type_code'), nullable=False)
     parent_permit_condition_id = db.Column(db.Integer,
@@ -115,18 +118,20 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
             parent_permit_condition_id=None,
             deleted_ind=False).order_by(cls.display_order).all()
         for condition in parent_conditions:
-            condition.delete_condition()
+            condition.delete_condition(commit=commit)
             if commit:
                 condition.save()
 
 
-    def delete_condition(self):
+    def delete_condition(self, commit=False):
         if self.all_sub_conditions is not None:
             subconditions = [c for c in self.all_sub_conditions if c.deleted_ind == False]
             if len(subconditions) > 0:
                 for item in subconditions:
                     item.deleted_ind = True
-                    item.delete_condition()
+                    item.delete_condition(commit=commit)
+                    if commit:
+                        item.save()
         self.deleted_ind = True
 
 
@@ -146,3 +151,8 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
     def find_by_permit_condition_id(cls, permit_condition_id):
         return cls.query.filter_by(
             permit_condition_id=permit_condition_id, deleted_ind=False).first()
+
+    @classmethod
+    def find_by_condition_category_code(cls, condition_category_code):
+        return cls.query.filter_by(
+            condition_category_code=condition_category_code, deleted_ind=False).all()

@@ -1,36 +1,43 @@
-from flask import current_app
-from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.dialects.postgresql import UUID
-
-from sqlalchemy.schema import FetchedValue
-from sqlalchemy import case
-
-from app.api.mines.documents.models.mine_document_bundle import MineDocumentBundle
-from app.api.parties.party import PartyOrgBookEntity
-from app.api.regions.models.regions import Regions
-from app.api.services.ams_api_service import AMSApiService
-from app.extensions import db
-
-from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
-from app.api.projects.project_summary.models.project_summary_document_xref import ProjectSummaryDocumentXref
-from app.api.mines.mine.models.mine import Mine
-from app.api.mines.documents.models.mine_document import MineDocument
-from app.api.projects.project.models.project import Project
-from app.api.projects.project_summary.models.project_summary_authorization import ProjectSummaryAuthorization
-from app.api.projects.project_summary.models.project_summary_authorization_document_xref import \
-    ProjectSummaryAuthorizationDocumentXref
-from app.api.parties.party.models.party import Party
-from app.api.parties.party.models.address import Address
-from app.api.constants import PROJECT_SUMMARY_EMAILS, MDS_EMAIL, PERM_RECL_EMAIL
-from app.api.services.email_service import EmailService
-from app.config import Config
-from cerberus import Validator
 import json
 
-from app.api.utils.feature_flag import is_feature_enabled, Feature
-
-from app.api.utils.common_validation_schemas import primary_address_schema, base_address_schema, address_na_schema, \
-    address_int_schema, party_base_schema, project_summary_base_schema
+from app.api.constants import MDS_EMAIL, PERM_RECL_EMAIL, PROJECT_SUMMARY_EMAILS
+from app.api.mines.documents.models.mine_document import MineDocument
+from app.api.mines.documents.models.mine_document_bundle import MineDocumentBundle
+from app.api.mines.mine.models.mine import Mine
+from app.api.parties.party import PartyOrgBookEntity
+from app.api.parties.party.models.address import Address
+from app.api.parties.party.models.party import Party
+from app.api.projects.project.models.project import Project
+from app.api.projects.project_summary.models.project_summary_authorization import (
+    ProjectSummaryAuthorization,
+)
+from app.api.projects.project_summary.models.project_summary_authorization_document_xref import (
+    ProjectSummaryAuthorizationDocumentXref,
+)
+from app.api.projects.project_summary.models.project_summary_document_xref import (
+    ProjectSummaryDocumentXref,
+)
+from app.api.regions.models.regions import Regions
+from app.api.services.ams_api_service import AMSApiService
+from app.api.services.email_service import EmailService
+from app.api.utils.common_validation_schemas import (
+    address_int_schema,
+    address_na_schema,
+    base_address_schema,
+    party_base_schema,
+    primary_address_schema,
+    project_summary_base_schema,
+)
+from app.api.utils.feature_flag import Feature, is_feature_enabled
+from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
+from app.config import Config
+from app.extensions import db
+from cerberus import Validator
+from flask import current_app
+from sqlalchemy import case
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.schema import FetchedValue
 
 
 class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
@@ -129,7 +136,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     )
 
     municipality = db.relationship(
-        'Municipality', lazy='joined', foreign_keys=nearest_municipality_guid
+        'Municipality', lazy='joined', foreign_keys=nearest_municipality_guid,
+        overlaps="nearest_municipality"
     )
 
     payment_contact = db.relationship(

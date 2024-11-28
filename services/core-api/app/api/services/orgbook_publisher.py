@@ -27,4 +27,9 @@ class OrgbookPublisherService():
         return token_resp.json()["access_token"]
 
     def publish_cred(self, payload: dict) -> requests.Response:
-        return requests.post(cred_publish_url, json=payload, headers=self.get_headers())
+        resp = requests.post(cred_publish_url, json=payload, headers=self.get_headers())
+        if resp.status_code == 403:
+            # if 403, get new token and try a second time.
+            self.get_new_token()
+            resp = requests.post(cred_publish_url, json=payload, headers=self.get_headers())
+        return resp

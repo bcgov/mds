@@ -13,11 +13,13 @@ export interface ScrollSideMenuProps {
   featureUrlRouteArguments: (string | number)[];
   tabSection?: string;
   offsetTop?: number;
+  view?: "default" | "steps" | "anchor";
 }
 
 export const ScrollSideMenu: FC<ScrollSideMenuProps> = ({
   tabSection = "",
   offsetTop = 180,
+  view = "anchor",
   ...props
 }) => {
   const history = useHistory();
@@ -53,7 +55,7 @@ export const ScrollSideMenu: FC<ScrollSideMenuProps> = ({
     }
 
     updateUrlRoute(link);
-    document.querySelector(link)?.scrollIntoView();
+    document.querySelector(`[id="${link}"]`)?.scrollIntoView();
   }, []);
 
   const handleAnchorOnClick = (e, link) => {
@@ -80,11 +82,14 @@ export const ScrollSideMenu: FC<ScrollSideMenuProps> = ({
         onChange={handleAnchorOnChange}
         onClick={handleAnchorOnClick}
       >
-        {props.menuOptions.map(({ href, title, icon }) => {
+        {props.menuOptions.map(({ href, title, icon, description }) => {
           const titleElement = (
             <div className="side-nav-title">
-              {icon && <span className="margin-medium--right">{icon}</span>}
-              {title}
+              {icon && <span className="margin-medium--right side-nav-title-icon">{icon}</span>}
+              <div className="side-nav-title-content">
+                {title}
+                {description && <span className="side-nav-description"><br />{description}</span>}
+              </div>
             </div>
           );
           return (
@@ -92,7 +97,7 @@ export const ScrollSideMenu: FC<ScrollSideMenuProps> = ({
               key={href}
               href={`#${href}`}
               title={titleElement}
-              className="now-menu-link"
+              className="now-menu-link fade-in"
             />
           );
         })}

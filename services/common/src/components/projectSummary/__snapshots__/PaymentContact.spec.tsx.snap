@@ -58,6 +58,7 @@ exports[`PaymentContact Component should render the component with expected fiel
                     class="ant-form-item-control-input-content"
                   >
                     <input
+                      aria-label="payment_contact.first_name"
                       class="ant-input"
                       name="payment_contact.first_name"
                       type="text"
@@ -117,6 +118,7 @@ exports[`PaymentContact Component should render the component with expected fiel
                     class="ant-form-item-control-input-content"
                   >
                     <input
+                      aria-label="payment_contact.party_name"
                       class="ant-input"
                       name="payment_contact.party_name"
                       type="text"
@@ -181,6 +183,7 @@ exports[`PaymentContact Component should render the component with expected fiel
                     class="ant-form-item-control-input-content"
                   >
                     <input
+                      aria-label="payment_contact.phone_no"
                       class="ant-input"
                       name="payment_contact.phone_no"
                       type="text"
@@ -244,6 +247,7 @@ exports[`PaymentContact Component should render the component with expected fiel
                     class="ant-form-item-control-input-content"
                   >
                     <input
+                      aria-label="payment_contact.phone_ext"
                       class="ant-input"
                       name="payment_contact.phone_ext"
                       type="text"
@@ -303,6 +307,7 @@ exports[`PaymentContact Component should render the component with expected fiel
                     class="ant-form-item-control-input-content"
                   >
                     <input
+                      aria-label="payment_contact.email"
                       class="ant-input"
                       name="payment_contact.email"
                       type="text"
@@ -376,6 +381,7 @@ exports[`PaymentContact Component should render the component with expected fiel
                     class="ant-form-item-control-input-content"
                   >
                     <input
+                      aria-label="payment_contact.address[0].address_line_1"
                       class="ant-input"
                       name="payment_contact.address[0].address_line_1"
                       type="text"
@@ -439,6 +445,7 @@ exports[`PaymentContact Component should render the component with expected fiel
                     class="ant-form-item-control-input-content"
                   >
                     <input
+                      aria-label="payment_contact.address[0].suite_no"
                       class="ant-input"
                       name="payment_contact.address[0].suite_no"
                       type="text"
@@ -740,6 +747,7 @@ exports[`PaymentContact Component should render the component with expected fiel
                     class="ant-form-item-control-input-content"
                   >
                     <input
+                      aria-label="payment_contact.address[0].city"
                       class="ant-input"
                       name="payment_contact.address[0].city"
                       type="text"
@@ -803,6 +811,7 @@ exports[`PaymentContact Component should render the component with expected fiel
                     class="ant-form-item-control-input-content"
                   >
                     <input
+                      aria-label="payment_contact.address[0].post_code"
                       class="ant-input"
                       name="payment_contact.address[0].post_code"
                       type="text"
