@@ -39,6 +39,8 @@ import { fetchRegions } from "@mds/common/redux/slices/regionsSlice";
 import { clearProjectSummary } from "@mds/common/redux/actions/projectActions";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import { cancelConfirmWrapper } from "@mds/common/components/forms/RenderCancelButton";
+import { fetchActivities } from "@mds/common/redux/actionCreators/activityActionCreator";
+import { getUserInfo } from "@mds/common/redux/selectors/authenticationSelectors";
 
 export const ProjectSummary: FC = () => {
   const dispatch = useDispatch();
@@ -51,6 +53,7 @@ export const ProjectSummary: FC = () => {
     tab: string;
     mode: string;
   }>();
+  const userInfo = useSelector(getUserInfo);
 
   const systemFlag = useSelector(getSystemFlag);
   const isCore = systemFlag === SystemFlagEnum.core;
@@ -239,6 +242,8 @@ export const ProjectSummary: FC = () => {
         handleTabChange(newActiveTab);
         setIsLoaded(true);
       }
+
+      dispatch(fetchActivities(userInfo?.preferred_username));
     } catch (err) {
       console.log(err);
       setIsLoaded(true);

@@ -30,7 +30,7 @@ exports[`Notification Drawer renders properly 1`] = `
     }
   }
 >
-  <Connect(NotificationDrawer)
+  <NotificationDrawer
     activities={Array []}
     fetchActivities={[MockFunction]}
     userInfo={Object {}}

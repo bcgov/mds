@@ -30,7 +30,7 @@ describe("`fetchActivities` action creator", () => {
     return fetchActivities(user)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(6);
+      expect(dispatch).toHaveBeenCalledTimes(5);
     });
   });
 

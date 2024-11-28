@@ -1,8 +1,7 @@
-import React, { FC, RefObject, useEffect, useRef, useState } from "react";
+import React, { RefObject, useEffect, useRef, useState } from "react";
 import { Badge, Button, Col, Row, Tabs, Typography } from "antd";
 import { BellOutlined } from "@ant-design/icons";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   fetchActivities,
   markActivitiesAsRead,
@@ -20,27 +19,21 @@ import {
   VIEW_MINE_INCIDENT,
   REPORT_VIEW_EDIT,
 } from "@/constants/routes";
-import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 import { IActivity } from "@mds/common";
 
-interface INotificationDrawerProps {
-  fetchActivities: ActionCreator<typeof fetchActivities>;
-  markActivitiesAsRead: ActionCreator<typeof markActivitiesAsRead>;
-  userInfo: any;
-  activities: IActivity[];
-  storeActivities: typeof storeActivities;
-}
-
-const NotificationDrawer: FC<INotificationDrawerProps> = (props) => {
+const NotificationDrawer = () => {
   const [open, setOpen] = useState(false);
   const history = useHistory();
+  const dispatch = useDispatch();
+  const userInfo = useSelector(getUserInfo);
+  const activities = useSelector(getActivities)
 
   const handleMarkAsRead = async (guid = null) => {
     if (guid) {
-      await props.markActivitiesAsRead([guid]);
+      await dispatch(markActivitiesAsRead([guid]));
     }
 
-    const readActivities = props.activities.map((activity) => {
+    const readActivities = activities.map((activity) => {
       if (guid) {
         if (activity.notification_guid === guid) {
           return {
@@ -55,10 +48,10 @@ const NotificationDrawer: FC<INotificationDrawerProps> = (props) => {
         notification_read: true,
       };
     });
-    await props.storeActivities({
+    await dispatch(storeActivities({
       records: readActivities,
       totalActivities: readActivities.length,
-    });
+    }));
   };
 
   const outsideClickHandler = (ref: RefObject<HTMLDivElement>) => {
@@ -82,7 +75,7 @@ const NotificationDrawer: FC<INotificationDrawerProps> = (props) => {
   };
 
   const handleMarkAllAsRead = async () => {
-    const activitiesToMarkAsRead = props.activities.reduce((acc, activity) => {
+    const activitiesToMarkAsRead = activities.reduce((acc, activity) => {
       if (activity.notification_read === false) {
         acc.push(activity.notification_guid);
       }
@@ -90,7 +83,7 @@ const NotificationDrawer: FC<INotificationDrawerProps> = (props) => {
     }, []);
 
     if (activitiesToMarkAsRead.length > 0) {
-      props.markActivitiesAsRead(activitiesToMarkAsRead);
+      dispatch(markActivitiesAsRead(activitiesToMarkAsRead));
     }
     await handleMarkAsRead();
     handleCollapse();
@@ -163,10 +156,14 @@ const NotificationDrawer: FC<INotificationDrawerProps> = (props) => {
   outsideClickHandler(modalRef);
 
   useEffect(() => {
-    if (props.userInfo?.preferred_username) {
-      props.fetchActivities(props.userInfo?.preferred_username);
+    const fetchData = async () => {
+      await dispatch(fetchActivities(userInfo?.preferred_username));
+    };
+
+    if (userInfo?.preferred_username) {
+      fetchData();
     }
-  }, [props.userInfo.preferred_username]);
+  }, [userInfo?.preferred_username]);
 
   return (
     <div ref={modalRef}>
@@ -177,7 +174,7 @@ const NotificationDrawer: FC<INotificationDrawerProps> = (props) => {
         icon={
           <Badge
             className="notification-badge"
-            count={props.activities?.filter((act) => !act?.notification_read).length || 0}
+            count={activities?.filter((act) => !act?.notification_read).length || 0}
           >
             <BellOutlined className="notification-icon" />
           </Badge>
@@ -204,7 +201,7 @@ const NotificationDrawer: FC<INotificationDrawerProps> = (props) => {
                 Mark all as read
               </Button>
             </div>
-            {(props.activities || [])?.map((activity) => (
+            {(activities || [])?.map((activity) => (
               <div className="notification-list-item" key={activity.notification_guid}>
                 <div className={!activity.notification_read ? "notification-dot" : ""} />
                 <div tabIndex={0} role="button" onClick={() => activityClickHandler(activity)}>
@@ -246,19 +243,4 @@ const NotificationDrawer: FC<INotificationDrawerProps> = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  userInfo: getUserInfo(state),
-  activities: getActivities(state),
-});
-
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      fetchActivities,
-      markActivitiesAsRead,
-      storeActivities,
-    },
-    dispatch
-  );
-
-export default connect(mapStateToProps, mapDispatchToProps)(NotificationDrawer);
+export default NotificationDrawer;

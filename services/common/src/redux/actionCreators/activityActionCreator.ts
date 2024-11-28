@@ -19,7 +19,6 @@ export const fetchActivities = (
   page = 1,
   per_page = 20
 ): AppThunk<Promise<AxiosResponse<IActivity>>> => (dispatch) => {
-  dispatch(storeActivities({}));
   dispatch(request(GET_ACTIVITIES));
   dispatch(showLoading());
   const headers = {

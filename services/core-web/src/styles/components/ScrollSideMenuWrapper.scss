@@ -68,7 +68,7 @@
     .view--header {
         position: fixed;
         width: 100%;
-        z-index: 1001;
+        z-index: 999;
         background-color: $pure-white;
         top: $header-height;
     }
@@ -81,7 +81,7 @@
             top: 183px;
             width: 100%;
             background-color: $pure-white;
-            z-index: 1001;
+            z-index: 999;
         }
 
         &>.ant-tabs-content-holder {
