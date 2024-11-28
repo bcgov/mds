@@ -53,7 +53,6 @@ class JwtManager:  # pylint: disable=too-many-instance-attributes
         self.jwt_oidc_test_private_key_pem = jwt_oidc_test_private_key_pem
         self.jwt_role_callback = jwt_role_callback
 
-        print("Running constructor")
         if app is not None:
             self.init_app(app)
 

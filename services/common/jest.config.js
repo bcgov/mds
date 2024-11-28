@@ -8,7 +8,7 @@ module.exports = {
       },
     ],
   },
-  maxWorkers: 4,
+  maxWorkers: '50%',
   verbose: true,
   testEnvironmentOptions: {
     customExportConditions: [""],

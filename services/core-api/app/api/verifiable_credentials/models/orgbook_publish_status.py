@@ -1,6 +1,7 @@
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
-from sqlalchemy.sql import true
+from sqlalchemy.sql import true as sqltrue
+from sqlalchemy.sql.expression import ColumnOperators
 from app.extensions import db
 from typing import List
 from app.api.utils.models_mixins import AuditMixin, Base
@@ -25,7 +26,7 @@ class PermitAmendmentOrgBookPublish(AuditMixin, Base):
     error_msg = db.Column(db.String, nullable=True)
 
     def __repr__(self):
-        return f'<PermitAmendmentOrgBookPublishStatus unsigned_payload_hash={self.unsigned_payload_hash}, permit_amendment_guid={self.permit_amendment_guid}, sign_date={self.sign_date}, publish_state={self.publish_state}>'
+        return f'<PermitAmendmentOrgBookPublishStatus unsigned_payload_hash={self.unsigned_payload_hash}, permit_amendment_guid={self.permit_amendment_guid}, error_msg={self.error_msg}, publish_state={self.publish_state}, orgbook_entity_id={self.orgbook_entity_id}>'
 
     @classmethod
     def find_by_unsigned_payload_hash(cls,
@@ -38,5 +39,11 @@ class PermitAmendmentOrgBookPublish(AuditMixin, Base):
     @classmethod
     def find_all_unpublished(cls, *, unsafe: bool = False) -> List["PermitAmendmentOrgBookPublish"]:
         query = cls.query.unbound_unsafe() if unsafe else cls.query
-        results: List["PermitAmendmentOrgBookPublish"] = query.filter().all()
-        return [r for r in results if r.publish_state is not True]
+        results = query.filter(cls.publish_state != True).all()
+        return results
+
+    @classmethod
+    def delete_all_unpublished(cls, *, unsafe: bool = False) -> int:
+        query = cls.query.unbound_unsafe() if unsafe else cls.query
+        results = query.filter(cls.publish_state != True).delete()
+        return results

@@ -1,12 +1,13 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { Col, Collapse, Row, Typography } from "antd";
+import { useSelector, useDispatch } from "react-redux";
+import { Col, Collapse, Row, Skeleton, Typography } from "antd";
 import FileOutlined from "@ant-design/icons/FileOutlined";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowsFromLine,
   faArrowsToLine,
+  faBan,
   faBarsStaggered,
 } from "@fortawesome/pro-light-svg-icons";
 import { getPermitConditionCategoryOptions } from "@mds/common/redux/selectors/staticContentSelectors";
@@ -15,13 +16,13 @@ import {
   IMineReportPermitRequirement,
   IPermitAmendment,
   IPermitCondition,
+  IPermitConditionCategory,
 } from "@mds/common/interfaces/permits";
 import { VIEW_MINE_PERMIT } from "@/constants/routes";
 import ScrollSidePageWrapper from "@mds/common/components/common/ScrollSidePageWrapper";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils/featureFlag";
 import CoreButton from "@mds/common/components/common/CoreButton";
-import { LoadingOutlined } from "@ant-design/icons";
 import {
   getPermitExtractionByGuid,
   PermitExtractionStatus,
@@ -33,6 +34,12 @@ import {
 } from "./PermitConditionExtraction";
 import { getMineReportPermitRequirements } from "@mds/common/redux/selectors/permitSelectors";
 import ReportPermitRequirementForm from "@/components/Forms/reports/ReportPermitRequirementForm";
+import PermitConditionCategoryEditModal from "./PermitConditionCategoryEditModal";
+import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
+import { uniqBy } from "lodash";
+import { createPermitAmendmentConditionCategory, deletePermitAmendmentConditionCategory, updatePermitAmendmentConditionCategory } from "@mds/common/redux/actionCreators/permitActionCreator";
+import { EditPermitConditionCategoryInline } from "./PermitConditionCategory";
+import { searchConditionCategories } from "@mds/common/redux/slices/permitConditionCategorySlice";
 
 const { Title } = Typography;
 
@@ -48,10 +55,11 @@ const PermitConditions: FC<PermitConditionProps> = ({
   userCanEdit,
 }) => {
   const { isFeatureEnabled } = useFeatureFlag();
+  const dispatch = useDispatch();
   const canEditPermitConditions = isFeatureEnabled(Feature.MODIFY_PERMIT_CONDITIONS) && userCanEdit;
-  const { id, permitGuid } = useParams<{ id: string; permitGuid: string }>();
+  const { id: mineGuid, permitGuid } = useParams<{ id: string; permitGuid: string, mineGuid: string }>();
   const [isExpanded, setIsExpanded] = useState(false);
-  const permitConditionCategoryOptions = useSelector(getPermitConditionCategoryOptions);
+
   const mineReportPermitRequirements: IMineReportPermitRequirement[] = useSelector(
     getMineReportPermitRequirements(permitGuid)
   );
@@ -61,6 +69,18 @@ const PermitConditions: FC<PermitConditionProps> = ({
     getPermitExtractionByGuid(latestAmendment?.permit_amendment_id)
   );
 
+  useEffect(() => {
+    dispatch(searchConditionCategories({}));
+  }, []);
+
+  const defaultPermitConditionCategories = useSelector(getPermitConditionCategoryOptions);
+  const condWithoutConditionsText = defaultPermitConditionCategories?.map((cat) => {
+    return {
+      ...cat,
+      description: cat.description.replace('Conditions', '').trim(),
+    }
+  });
+
   // @ts-ignore
   const isLoading = useSelector((state) => state.GET_PERMITS?.isFetching);
 
@@ -68,12 +88,20 @@ const PermitConditions: FC<PermitConditionProps> = ({
     permitExtraction?.task_status === PermitExtractionStatus.in_progress;
   const isExtractionComplete = permitExtraction?.task_status === PermitExtractionStatus.complete;
 
+  const permitConditionCategoryOptions: IPermitConditionCategory[] = uniqBy(latestAmendment?.condition_categories.concat(condWithoutConditionsText) ?? [], 'condition_category_code');
+
   const permitConditionCategories = permitConditionCategoryOptions
     .map((cat) => {
       const conditions =
         permitConditions?.filter(
           (c) => c.condition_category_code === cat.condition_category_code
         ) ?? [];
+
+      const isDefaultConditionCategory = !!condWithoutConditionsText?.find(x => x.condition_category_code === cat.condition_category_code);
+
+      if (!conditions.length && isDefaultConditionCategory) {
+        return null;
+      }
 
       // Recursive function to get the full path of steps
       const getStepPath = (condition, parentPath = ""): IPermitCondition => {
@@ -97,27 +125,28 @@ const PermitConditions: FC<PermitConditionProps> = ({
           mineReportPermitRequirement,
           sub_conditions,
         };
-      };
+      }
 
       // Initialize the step paths for all top-level conditions
       const formattedConditions = conditions.map((condition) => getStepPath(condition));
 
-      const title = cat.description.replace("Conditions", "").trim();
-      return formattedConditions.length > 0
-        ? {
-            href: cat.condition_category_code.toLowerCase(),
-            title,
-            conditions: formattedConditions,
-            condition_category_code: cat.condition_category_code,
-          }
-        : false;
+      return {
+        href: cat.condition_category_code.toLowerCase().replace('-', ''),
+        icon: <FontAwesomeIcon icon={faBan} style={{ color: '#bbb', fontSize: '20px' }} />,
+        title: <Typography.Text style={{ fontSize: '16px', fontWeight: '600' }}>{cat.step ? `${cat.step}. ` : ''}{cat.description}</Typography.Text>,
+        titleText: cat.description,
+        description: 'Not Started',
+        conditions: formattedConditions || [],
+        condition_category_code: cat.condition_category_code,
+        condition_category: cat
+      }
     })
-    .filter(Boolean);
-
+    .filter(Boolean)
+    .sort((a, b) => a.condition_category.display_order - b.condition_category.display_order);
   const scrollSideMenuProps = {
     menuOptions: permitConditionCategories,
     featureUrlRoute: VIEW_MINE_PERMIT.hashRoute,
-    featureUrlRouteArguments: [id, permitGuid, "conditions"],
+    featureUrlRouteArguments: [mineGuid, permitGuid, "conditions"],
   };
 
   const topOffset = 99 + 49; // header + tab nav
@@ -131,8 +160,42 @@ const PermitConditions: FC<PermitConditionProps> = ({
     console.log("not implemented", values);
   };
 
-  if (isLoading) {
-    return <LoadingOutlined style={{ fontSize: 120 }} />;
+
+  const openCreateCategoryModal = (event) => {
+    event.preventDefault();
+    dispatch(
+      openModal({
+        props: {
+          title: `Add Condition Category`,
+          handleSubmit: async (category) => {
+            await dispatch(createPermitAmendmentConditionCategory(mineGuid, permitGuid, latestAmendment.permit_amendment_guid, {
+              ...category,
+              display_order: permitConditionCategories.length,
+            }));
+
+            dispatch(closeModal());
+          },
+        },
+        content: PermitConditionCategoryEditModal,
+      })
+    );
+  };
+
+  const handleUpdateConditionCategory = (category: IPermitConditionCategory) => {
+    dispatch(updatePermitAmendmentConditionCategory(mineGuid, permitGuid, latestAmendment.permit_amendment_guid, category));
+  };
+
+  const handleDeleteConditionCategory = (category: IPermitConditionCategory) => {
+    dispatch(deletePermitAmendmentConditionCategory(mineGuid, permitGuid, latestAmendment.permit_amendment_guid, category.condition_category_code));
+  };
+
+  const handleMove = (category: IPermitConditionCategory, newOrder: number) => {
+    const updatedCat = {
+      ...category,
+      display_order: newOrder
+    }
+
+    dispatch(updatePermitAmendmentConditionCategory(mineGuid, permitGuid, latestAmendment.permit_amendment_guid, updatedCat));
   }
 
   if (isExtractionInProgress) {
@@ -144,6 +207,8 @@ const PermitConditions: FC<PermitConditionProps> = ({
   if (canStartExtraction) {
     return <RenderExtractionStart />;
   }
+
+  const showLoading = !latestAmendment;
 
   const getConditionsWithRequirements = (conditions: IPermitCondition[]) => {
     let result = [];
@@ -161,11 +226,23 @@ const PermitConditions: FC<PermitConditionProps> = ({
     return result;
   };
 
+  const AddConditionModalContent = (
+    <Typography.Paragraph className="no_link_styling grey" style={{ fontSize: '14px', textAlign: 'center' }}>
+      {showLoading ? <Skeleton active paragraph={{ rows: 1 }} /> : (
+        <Typography.Link onClick={openCreateCategoryModal} className="fade-in">
+          + Add Condition Category
+        </Typography.Link>
+      )}
+    </Typography.Paragraph>
+  );
+
   return (
     <ScrollSidePageWrapper
       header={null}
       headerHeight={topOffset}
       menuProps={scrollSideMenuProps}
+      extraItems={AddConditionModalContent}
+      view={"steps"}
       content={
         <Row align="middle" justify="space-between" gutter={[10, 16]}>
           <Col span={24}>
@@ -178,6 +255,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
             <Row gutter={10}>
               <Col>
                 <CoreButton
+                  disabled={showLoading}
                   type="tertiary"
                   className="fa-icon-container"
                   icon={<FontAwesomeIcon icon={isExpanded ? faArrowsToLine : faArrowsFromLine} />}
@@ -187,7 +265,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
                 </CoreButton>
               </Col>
               <Col>
-                <CoreButton type="tertiary" icon={<FileOutlined />}>
+                <CoreButton type="tertiary" icon={<FileOutlined />} disabled={showLoading}>
                   Open Permit in Document Viewer
                 </CoreButton>
               </Col>
@@ -198,6 +276,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
             <CoreButton
               type="tertiary"
               className="fa-icon-container"
+              disabled={showLoading}
               icon={<FontAwesomeIcon icon={faBarsStaggered} />}
             >
               Reorder
@@ -206,7 +285,13 @@ const PermitConditions: FC<PermitConditionProps> = ({
           <Col span={24}>
             <div className="core-page-content">
               <Row gutter={[16, 16]}>
-                {permitConditionCategories.map((category) => {
+                {
+                  showLoading && (
+                    <Skeleton active paragraph={{ rows: 10 }} />
+                  )
+                }
+
+                {permitConditionCategories.map((category, idx) => {
                   const conditionsWithRequirements: IPermitCondition[] =
                     getConditionsWithRequirements(category.conditions);
                   return (
@@ -214,7 +299,16 @@ const PermitConditions: FC<PermitConditionProps> = ({
                       <Col span={24}>
                         <Row justify="space-between">
                           <Title level={3} className="margin-none" id={category.href}>
-                            {category.title} ({category.conditions.length})
+                            <EditPermitConditionCategoryInline
+                              onDelete={handleDeleteConditionCategory}
+                              onChange={handleUpdateConditionCategory}
+                              moveUp={(cat) => handleMove(cat, idx - 1)}
+                              moveDown={(cat) => handleMove(cat, idx + 1)}
+                              currentPosition={idx}
+                              categoryCount={permitConditionCategories.length}
+                              category={category.condition_category}
+                              conditionCount={category?.conditions.length || 0}
+                            />
                           </Title>
                           {canEditPermitConditions && (
                             <CoreButton
@@ -231,12 +325,12 @@ const PermitConditions: FC<PermitConditionProps> = ({
                         </Row>
                       </Col>
                       {category.conditions.map((sc) => (
-                        <Col span={24} key={sc.permit_condition_id}>
-                          <PermitConditionLayer condition={sc} isExpanded={isExpanded} userCanEdit={userCanEdit}/>
+                        <Col span={24} key={sc.permit_condition_id} className="fade-in">
+                          <PermitConditionLayer condition={sc} isExpanded={isExpanded} userCanEdit={userCanEdit} />
                         </Col>
                       ))}
                       {conditionsWithRequirements?.length > 0 && (
-                        <div className="report-collapse-container">
+                        <div className="report-collapse-container ">
                           <Title level={4} className="primary-colour">
                             Report Requirements
                           </Title>
@@ -268,8 +362,8 @@ const PermitConditions: FC<PermitConditionProps> = ({
             </div>
           </Col>
         </Row>
-      }
-    />
+      }>
+    </ScrollSidePageWrapper>
   );
 };
 

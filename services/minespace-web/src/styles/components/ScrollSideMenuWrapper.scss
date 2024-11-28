@@ -26,6 +26,10 @@
                 line-height: 2.2;
                 border-bottom: none;
                 padding: 11px 16px;
+
+                &:not(.ant-anchor-link-active) {
+                    border-left: 4px solid transparent;
+                }
             }
 
             .ant-anchor-link-title {
@@ -41,6 +45,8 @@
                     margin: -2px 0 -2px 16px;
                 }
             }
+
+
 
             .ant-anchor-link-active {
                 border-left: 4px solid $gov-blue;
@@ -75,7 +81,9 @@
         text-wrap: wrap;
         line-height: 21px;
         font-size: 14px;
+        display: flex;
     }
+
 }
 
 // there is an issue where content (fade-in class?) renders in front of the menu, making it unclickable

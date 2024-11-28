@@ -11,6 +11,7 @@ from flask_restx import fields, marshal
 
 PERMIT_CONDITION_EXTRACTION_TASK = api.model(
     'PermitExtractionTask', {
+        'create_timestamp': fields.DateTime,
         'permit_extraction_task_id': fields.String,
         'task_id': fields.String,
         'task_status': fields.String,

@@ -66,7 +66,7 @@ jobs:
           CYPRESS_FLAGSMITH_URL: https://mds-flags-dev.apps.silver.devops.gov.bc.ca/api/v1/
           CYPRESS_FLAGSMITH_KEY: 4Eu9eEMDmWVEHKDaKoeWY7
       - name: Upload cypress video
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: cypress-recording
@@ -81,7 +81,7 @@ jobs:
         run: tar cvzf ./logs.tgz ./logs
       - name: Upload logs to GitHub
         if: failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: logs.tgz
           path: ./logs.tgz

@@ -8,7 +8,7 @@ import { BrowserRouter } from "react-router-dom";
 import ViewPermit from "@/components/mine/Permit/ViewPermit";
 
 const initialState = {
-  [PERMITS]: { permits: MOCK.PERMITS },
+  [PERMITS]: { permits: MOCK.PERMITS, permitAmendments: MOCK.PERMIT_AMENDMENT_STATE },
   [MINES]: { mines: MOCK.MINES.mines },
   [AUTHENTICATION]: {
     userAccessData: [USER_ROLES.role_admin, USER_ROLES.role_edit_template_conditions],

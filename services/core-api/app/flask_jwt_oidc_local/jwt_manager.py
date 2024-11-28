@@ -21,9 +21,9 @@ import json
 import ssl  # pylint: disable=unused-import # noqa: F401; for local hacks
 from functools import wraps
 
+import jwt
 from cachelib import SimpleCache
 from flask import current_app, g, jsonify, request
-import jwt
 from six.moves.urllib.request import urlopen
 
 from .exceptions import AuthError
@@ -53,7 +53,6 @@ class JwtManager:  # pylint: disable=too-many-instance-attributes
         self.jwt_oidc_test_private_key_pem = jwt_oidc_test_private_key_pem
         self.jwt_role_callback = jwt_role_callback
 
-        print("Running constructor")
         if app is not None:
             self.init_app(app)
 

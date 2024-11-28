@@ -56,7 +56,7 @@ jobs:
           ./../../cc-test-reporter format-coverage -t coverage.py --add-prefix services/core-api/ -o ../../coverage/backend-codeclimate.json coverage.xml
 
       - name: Create backend coverage file artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: backend-codeclimate.json
           path: ./coverage/backend-codeclimate.json
@@ -112,7 +112,7 @@ jobs:
           ./../../cc-test-reporter format-coverage -t clover --add-prefix services/core-web/ -o ../../coverage/frontend-codeclimate.json clover.xml
 
       - name: Create frontend coverage file artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: frontend-codeclimate.json
           path: ./coverage/frontend-codeclimate.json
@@ -171,7 +171,7 @@ jobs:
           ./../../cc-test-reporter format-coverage -t clover --add-prefix services/minespace-web/ -o ../../coverage/minespace-codeclimate.json clover.xml
 
       - name: Create minespace coverage file artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: minespace-codeclimate.json
           path: ./coverage/minespace-codeclimate.json
@@ -211,17 +211,17 @@ jobs:
 
       # Fetch artifacts from other jobs
       - name: Download backend artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: backend-codeclimate.json
           path: ./coverage
       - name: Download frontend artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: frontend-codeclimate.json
           path: ./coverage
       - name: Download minespace artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: minespace-codeclimate.json
           path: ./coverage

@@ -27,7 +27,16 @@ class PermitConditionResult(BaseModel):
     @computed_field
     def is_top_level_section(self) -> bool:
         # A condition is a top level section if it has a section but no other numbering
-        return self.section and not self.paragraph and not self.subparagraph and not self.clause and not self.subclause and not self.subsubclause
+        # and the section is an uppercase letter
+        return bool(
+            self.section
+            and self.section.isupper() 
+            and not self.paragraph 
+            and not self.subparagraph 
+            and not self.clause 
+            and not self.subclause 
+            and not self.subsubclause
+        )
     
     @computed_field
     def step(self) -> str:

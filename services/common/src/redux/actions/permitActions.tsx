@@ -5,6 +5,11 @@ export const storePermits = (payload) => ({
   payload,
 });
 
+export const storeUpdatePermitConditionCategory = (payload) => ({
+  type: actionTypes.STORE_PERMIT_CONDITION_CATEGORY,
+  payload,
+});
+
 export const storeDraftPermits = (payload) => ({
   type: actionTypes.STORE_DRAFT_PERMITS,
   payload,

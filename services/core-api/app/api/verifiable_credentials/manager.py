@@ -6,7 +6,7 @@ from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
 from uuid import uuid4, UUID
 from sqlalchemy.exc import IntegrityError
-from typing import List, Union, Tuple, Optional
+from typing import List, Union, Tuple, Optional, Any
 from pydantic import BaseModel, Field, ConfigDict
 from openlocationcode.openlocationcode import encode as plus_code_encode
 from hashlib import md5
@@ -41,7 +41,7 @@ class UNTPCCMinesActPermit(cc.ConformityAttestation):
 W3C_CRED_ID_PREFIX = f"{Config.ORGBOOK_PUBLISHER_BASE_URL}/credentials/"
 
 permit_amendments_for_orgbook_query = """
-    select pa.permit_amendment_guid, p.party_guid
+    select pa.permit_amendment_guid, p.party_guid, pmt.permit_no
  
     from party_orgbook_entity poe
     inner join party p on poe.party_guid = p.party_guid
@@ -54,11 +54,11 @@ permit_amendments_for_orgbook_query = """
     and mpa.mine_party_appt_type_code = 'PMT'
     and mpa.deleted_ind = false
     and mpa.start_date <= pa.issue_date
-    and (mpa.end_date < pa.issue_date OR mpa.end_date is null or mpa.end_date = '9999-12-31')
+    and (mpa.end_date > pa.issue_date OR mpa.end_date is null or mpa.end_date = '9999-12-31')
     and m.major_mine_ind = true
     and pa.deleted_ind = false
     and pmt.permit_status_code = 'O'
-
+    and substring(pmt.permit_no,2,1) != 'X'
 
     group by pa.permit_amendment_guid, p.party_guid, pa.description, pa.issue_date, pa.permit_amendment_status_code, pmt.permit_no, mpa.permit_id, poe.party_guid, p.party_name, poe.name_text, poe.registration_id, m.mine_name, mine_party_appt_type_code
     order by pmt.permit_no, pa.issue_date;
@@ -177,7 +177,7 @@ def process_all_untp_map_for_orgbook():
     current_app.logger.info("public did: " + public_did)
 
     records: List[Tuple[W3CCred,
-                        PermitAmendmentOrgBookPublish]] = [] # list of tuples [payload, record]
+                        PermitAmendmentOrgBookPublish]] = [] # list of tuples[payload, record]
 
     for row in permit_amendment_query_results:
         pa = PermitAmendment.find_by_permit_amendment_guid(row[0], unsafe=True)
@@ -275,12 +275,28 @@ def push_untp_map_data_to_publisher():
     failed_credentials: List[Tuple[str, str | None]] = []
     success_count = 0
     skipped_count = 0
+    current_app.logger.info(f"num_records_to_process={len(permit_amendment_query_results)}")
+    #token is valid for an hour currently.
+    publisher_service = OrgbookPublisherService()
 
-    for row in permit_amendment_query_results:
+    for index, row in enumerate(permit_amendment_query_results):
         pa = PermitAmendment.find_by_permit_amendment_guid(row[0], unsafe=True)
 
+        next_pa_guid: str | None = None
+        valid_until_date: date | None = None
+        # only valid until the next permit_amendment was issued
+        try:
+            if permit_amendment_query_results[index + 1][2] == row[2]: # ensure same permit_no
+                next_pa_guid = permit_amendment_query_results[index + 1][0]
+        except IndexError:
+            pass
+
+        if next_pa_guid:
+            next_pa = PermitAmendment.find_by_permit_amendment_guid(next_pa_guid)
+            valid_until_date = next_pa.issue_date
+
         if pa.permit_no[1] in ("X", "x"):
-            current_app.logger.warning(
+            current_app.logger.info(
                 f"exclude exploration permit={pa.permit_no}, they cannot produce goods for sale")
             continue
 
@@ -290,8 +306,9 @@ def push_untp_map_data_to_publisher():
             current_app.logger.warning(
                 f"pa_cred could not be created for permit_amendment_guid={row[0]}")
             continue
+
         #only one assessment per credential
-        publish_payload = {
+        publish_payload: dict[str, Any] = {
             "credential": {
                 "type": "BCMinesActPermitCredential",
                 "validFrom": convert_date_to_iso_datetime(pa.issue_date),
@@ -301,7 +318,6 @@ def push_untp_map_data_to_publisher():
             },
             "options": {
                 "entityId": pa_cred.credentialSubject.issuedToParty.registeredId,
-                "credentialId": str(pa.permit_amendment_guid),
                 "cardinalityId": pa_cred.credentialSubject.permitNumber,
                 "additionalData": {
                     "assessedFacility": [
@@ -315,16 +331,23 @@ def push_untp_map_data_to_publisher():
                 }
             }
         }
-        publisher_service = OrgbookPublisherService()
-        current_app.logger.warning(f"publishing record={publish_payload}")
+        #TODO: Combine continous permit_amendments where the contents of the credential and permittee did not change into one credential.
+        if valid_until_date:
+            publish_payload["credential"]["validUntil"] = convert_date_to_iso_datetime(
+                valid_until_date)
+
+        current_app.logger.debug(f"publishing record={publish_payload}")
         payload_hash = md5(json.dumps(publish_payload).encode('utf-8')).hexdigest()
-        current_app.logger.warning(f"payload hash={payload_hash}")
+        current_app.logger.debug(f"payload hash={payload_hash}")
+
+        #produce a uuid for logging/tracing.
+        publish_payload["options"]["credentialId"] = str(uuid4())
 
         publish_record = PermitAmendmentOrgBookPublish(
             unsigned_payload_hash=payload_hash,
             permit_amendment_guid=row[0],
             party_guid=row[1],
-            signed_credential="Produced by publisher",
+            signed_credential='Produced by publisher',
             publish_state=None,
             permit_number=pa_cred.credentialSubject.permitNumber,
             orgbook_entity_id=pa_cred.credentialSubject.issuedToParty.registeredId,
@@ -332,7 +355,7 @@ def push_untp_map_data_to_publisher():
             error_msg=None)
 
         try:
-            current_app.logger.info(f"saving publish record locally...")
+            current_app.logger.debug('saving publish record locally...')
             publish_record.save()
 
             post_resp = publisher_service.publish_cred(publish_payload)
@@ -352,6 +375,7 @@ def push_untp_map_data_to_publisher():
             current_app.logger.warning(
                 f"failed to publish unsigned_payload_id={publish_record.unsigned_payload_hash} error={publish_record.error_msg}"
             )
+            current_app.logger.warning(f"..failed payload={publish_payload}")
             failed_credentials.append(
                 (publish_record.unsigned_payload_hash, publish_record.error_msg))
 
@@ -371,6 +395,22 @@ class VerifiableCredentialManager():
 
     def __init__(self):
         pass
+
+    @classmethod
+    def delete_any_unsuccessful_untp_push(cls, live: bool = False) -> int:
+        if not live:
+            records = PermitAmendmentOrgBookPublish.find_all_unpublished()
+            delete_count = 0
+            for record in records:
+                current_app.logger.info(f"would delete {record}")
+                delete_count += 1
+        else:
+            current_app.logger.info(f"LIVE DELETE")
+            records = PermitAmendmentOrgBookPublish.delete_all_unpublished()
+            delete_count = records
+            db.session.commit()
+
+        return delete_count
 
     @classmethod
     def collect_attributes_for_mines_act_permit_111(
@@ -549,10 +589,9 @@ class VerifiableCredentialManager():
             IDverifiedByCAB=True)
 
         #TODO, can CORE identify commodities by their UNCEFACT code?
-        products = [
-            cc.Product(id=None, name=c, IDverifiedByCAB=False)
-            for c in permit_amendment.mine.commodities
-        ]
+        #remove duplicates
+        product_names = list(set([c for c in permit_amendment.mine.commodities]))
+        products = [cc.Product(id=None, name=c, IDverifiedByCAB=False) for c in product_names]
 
         issue_date = permit_amendment.issue_date
 

@@ -55,6 +55,7 @@ exports[`MajorMineApplicationForm renders properly 1`] = `
                   class="ant-form-item-control-input-content"
                 >
                   <input
+                    aria-label="primary_contact"
                     class="ant-input ant-input-disabled"
                     disabled=""
                     id="primary_contact"
@@ -105,6 +106,7 @@ exports[`MajorMineApplicationForm renders properly 1`] = `
                   class="ant-form-item-control-input-content"
                 >
                   <input
+                    aria-label="mine_name"
                     class="ant-input ant-input-disabled"
                     disabled=""
                     id="mine_name"

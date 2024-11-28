@@ -1,16 +1,18 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { fireEvent, getAllByText, render, screen, waitFor } from "@testing-library/react";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { MINES, STATIC_CONTENT, PERMITS, AUTHENTICATION } from "@mds/common/constants/reducerTypes";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
-
 import ViewPermit from "./ViewPermit";
 import { BrowserRouter } from "react-router-dom";
 import { USER_ROLES } from "@mds/common/constants/environment";
-
+import { useDispatch } from "react-redux";
+import { searchConditionCategories } from "@mds/common/redux/slices/permitConditionCategorySlice";
+import preview, { debug } from 'jest-preview';
+import ModalWrapper from "@/components/common/wrappers/ModalWrapper";
 const initialState = {
   [MINES]: MOCK.MINES,
-  [PERMITS]: { permits: MOCK.PERMITS },
+  [PERMITS]: { permits: MOCK.PERMITS, permitAmendments: { [MOCK.PERMITS[0].permit_guid]: MOCK.PERMITS[0].permit_amendments[0] } },
   [STATIC_CONTENT]: MOCK.BULK_STATIC_CONTENT_RESPONSE,
   [AUTHENTICATION]: {
     userAccessData: [USER_ROLES.role_admin, USER_ROLES.role_edit_template_conditions],
@@ -38,12 +40,12 @@ function mockFunction() {
 }
 
 jest.mock("react-router-dom", () => mockFunction());
-
-// note that this test is for PermitConditions and it's using the ViewPermit (parent) component:
-// there were some bugs encountered during development from the interaction between the parent/child
-// and so it renders PermitConditions due to tab='conditions' above but is being tested within the
-// context that it exists in
 describe("PermitConditions", () => {
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it("renders properly", () => {
     const { container } = render(
       <ReduxWrapper initialState={initialState}>
@@ -52,6 +54,56 @@ describe("PermitConditions", () => {
         </BrowserRouter>
       </ReduxWrapper>
     );
+
+
     expect(container).toMatchSnapshot();
+  });
+
+  it("enables adding a condition category in a modal", async () => {
+    render(
+      <ReduxWrapper initialState={initialState} >
+        <BrowserRouter>
+          <ModalWrapper />
+          <ViewPermit />
+        </BrowserRouter>
+      </ReduxWrapper>
+    );
+
+
+    const addConditionLink = screen.getByText("+ Add Condition Category");
+    expect(addConditionLink).toBeInTheDocument();
+    addConditionLink.click();
+
+    let descriptionInput;
+    await waitFor(() => {
+      descriptionInput = screen.getByRole("combobox", { "name": "description" });
+      expect(descriptionInput).toBeInTheDocument();
+    })
+
+
+    const stepInput = screen.getByRole("textbox", { "name": "step" });
+    expect(stepInput).toBeInTheDocument();
+
+    const AddCategoryButton = screen.getByText("Add Category");
+    expect(AddCategoryButton).toBeInTheDocument();
+
+    AddCategoryButton.click();
+
+    await waitFor(() => { expect(screen.getAllByText("This is a required field")).toHaveLength(2); })
+
+    fireEvent.mouseDown(descriptionInput);
+
+    fireEvent.change(descriptionInput, { target: { value: "New Condition Description" } });
+
+    screen.getAllByText('New Condition Description')[1].click();
+    expect(descriptionInput).toHaveValue("New Condition Description");
+
+    fireEvent.change(stepInput, { target: { value: "1" } });
+
+    AddCategoryButton.click();
+
+    await waitFor(() => {
+      expect(screen.queryByText("Add Category")).not.toBeInTheDocument();
+    });
   });
 });
