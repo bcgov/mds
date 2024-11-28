@@ -94,6 +94,12 @@ from app.api.mines.permits.permit_amendment.resources.permit_amendment_document 
 from app.api.mines.permits.permit_amendment.resources.permit_amendment_vc import (
     PermitAmendmentVCResource,
 )
+from app.api.mines.permits.permit_conditions.resources.permit_amendment_condition_category_list_resource import (
+    PermitAmendmentConditionCategoryListResource,
+)
+from app.api.mines.permits.permit_conditions.resources.permit_amendment_condition_category_resource import (
+    PermitAmendmentConditionCategoryResource,
+)
 from app.api.mines.permits.permit_conditions.resources.permit_condition_category_resource import (
     PermitConditionCategoryResource,
 )
@@ -132,7 +138,9 @@ from app.api.mines.reports.resources.mine_report_definition_compliance_article_x
 from app.api.mines.reports.resources.mine_report_document import (
     MineReportDocumentListResource,
 )
-from app.api.mines.reports.resources.mine_report_permit_requirement import MineReportPermitRequirementResource
+from app.api.mines.reports.resources.mine_report_permit_requirement import (
+    MineReportPermitRequirementResource,
+)
 from app.api.mines.reports.resources.mine_report_submission_resource import (
     ReportSubmissionResource,
 )
@@ -271,6 +279,16 @@ api.add_resource(PermitAmendmentListResource,
 api.add_resource(
     PermitAmendmentResource,
     '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>')
+
+api.add_resource(
+    PermitAmendmentConditionCategoryListResource,
+    '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>/condition-categories'
+)
+
+api.add_resource(
+    PermitAmendmentConditionCategoryResource,
+    '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>/condition-categories/<string:permit_condition_category_code>'
+)
 
 api.add_resource(PermitConditionExtractionResource, '/permits/condition-extraction')
 api.add_resource(PermitConditionExtractionProgressResource, '/permits/condition-extraction/<string:task_id>')

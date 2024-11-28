@@ -6,6 +6,7 @@ export const createAppSlice = buildCreateSlice({
 });
 
 export const rejectHandler = (action) => {
+  console.log(action);
   console.log(action.error);
   console.log(action.error.stack);
 };

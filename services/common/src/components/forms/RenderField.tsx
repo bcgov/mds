@@ -26,6 +26,7 @@ const RenderField: FC<BaseInputProps> = ({
         if (!value.isEditMode) {
           return <BaseViewInput label={label} value={input?.value} />;
         }
+        const labelString = (label || input.name) instanceof String ? (String)(label || input.name) : input.name;
         return (
           <Form.Item
             name={input.name}
@@ -45,6 +46,7 @@ const RenderField: FC<BaseInputProps> = ({
                 disabled={disabled}
                 defaultValue={defaultValue}
                 id={id}
+                aria-label={labelString}
                 placeholder={placeholder}
                 allowClear={allowClear}
                 {...input}

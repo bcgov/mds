@@ -1,14 +1,9 @@
 import json
 import uuid
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta
 
-from flask import current_app
+from tests.factories import MineFactory
 
-from app.api.mines.mine.models.mine import Mine
-from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
-from app.api.constants import MINE_REPORT_TYPE
-
-from tests.factories import MineFactory, MineReportFactory
 THREE_REPORTS = 3
 ONE_REPORT = 1
 GUID = str(uuid.uuid4)
@@ -69,7 +64,5 @@ def test_get_reports(test_client, db_session, auth_headers):
     for report in get_data['records']:
         received_date = datetime.strptime(report['received_date'], '%Y-%m-%d')
 
-        assert (start_date <= received_date.date())
-        assert (received_date.date() <= end_date)
-
-
+        assert (start_date.date() <= received_date.date())
+        assert (received_date.date() <= end_date.date())

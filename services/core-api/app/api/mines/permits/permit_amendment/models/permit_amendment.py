@@ -2,21 +2,22 @@ import uuid
 from datetime import date, datetime
 from typing import Union
 
+from app.api.constants import *
+from app.api.mines.permits.permit_amendment.models.permit_amendment_document import (
+    PermitAmendmentDocument,
+)
+from app.api.mines.permits.permit_conditions.models.permit_conditions import (
+    PermitConditions,
+)
+from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
+from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
+from app.api.verifiable_credentials.aries_constants import IssueCredentialIssuerState
+from app.extensions import db
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
 from sqlalchemy.schema import FetchedValue
-
-from app.extensions import db
-from app.api.constants import *
-from app.api.mines.permits.permit_amendment.models.permit_amendment_document import (
-    PermitAmendmentDocument, )
-from app.api.mines.permits.permit_conditions.models.permit_conditions import (
-    PermitConditions, )
-from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
-from app.api.verifiable_credentials.aries_constants import IssueCredentialIssuerState
-from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 
 from . import permit_amendment_status_code, permit_amendment_type_code
 
@@ -62,6 +63,13 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     mine: 'Mine' = db.relationship(
         'Mine', lazy='select',
         back_populates='_mine_permit_amendments')                                                                                                                                          #type: ignore[reportAssignmentType]
+
+    condition_categories = db.relationship(
+        'PermitConditionCategory',
+        lazy='selectin',
+        primaryjoin='and_(PermitAmendment.permit_amendment_id==PermitConditionCategory.permit_amendment_id, PermitConditionCategory.deleted_ind==False)',
+    )
+
     conditions = db.relationship(
         'PermitConditions',
         lazy='select',

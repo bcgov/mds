@@ -15,6 +15,7 @@ interface MajorProjectsSearchFormProps {
   isAdvanceSearch: boolean;
 }
 
+
 export const MajorProjectsSearchForm: FC<MajorProjectsSearchFormProps> = ({
   handleSubmit,
   toggleAdvancedSearch,

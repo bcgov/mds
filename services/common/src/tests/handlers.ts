@@ -3,6 +3,8 @@ import {
   GEOMARK_DATA,
   HELP_GUIDE_CORE,
   HELP_GUIDE_MS,
+  MINE_REPORT_CATEGORY_OPTIONS,
+  PERMIT_CONDITION_EXTRACTION,
   PROJECT,
   PROJECT_SUMMARY_MINISTRY_COMMENTS,
 } from "@mds/common/tests/mocks/dataMocks";
@@ -26,6 +28,21 @@ const projectHandlers = [
   ),
 ];
 
+const permitHandlers = [
+  http.get("/%3CAPI_URL%3E/mines/permits/condition-extraction", async () => {
+    return HttpResponse.json({
+      "tasks": PERMIT_CONDITION_EXTRACTION
+    })
+  }),
+  http.get("/%3CAPI_URL%3E/mines/permits/condition-category-codes", async () => {
+    return HttpResponse.json({
+      "tasks": MINE_REPORT_CATEGORY_OPTIONS
+    })
+  }),
+
+
+]
+
 const helpHandler = http.get("/%3CAPI_URL%3E/help/:helpKey", async ({ request, params }) => {
   const { helpKey } = params;
   const url = new URL(request.url);
@@ -37,6 +54,6 @@ const helpHandler = http.get("/%3CAPI_URL%3E/help/:helpKey", async ({ request, p
   return HttpResponse.json(response);
 });
 
-const commonHandlers = [...geoSpatialHandlers, ...projectHandlers, helpHandler];
+const commonHandlers = [...geoSpatialHandlers, ...projectHandlers, helpHandler, ...permitHandlers];
 
 export default commonHandlers;

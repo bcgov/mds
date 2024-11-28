@@ -86,6 +86,15 @@
   margin-bottom: 10px;
 }
 
+.ant-form-inline {
+
+  .ant-form-item,
+  .ant-form-item-row,
+  .ant-btn {
+    margin-bottom: 0;
+  }
+}
+
 .common-form.form-view {
   .ant-form-item-required::before {
     display: none !important;

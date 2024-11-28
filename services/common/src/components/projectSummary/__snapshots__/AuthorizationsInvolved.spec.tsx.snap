@@ -1053,6 +1053,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                                           class="ant-form-item-control-input-content"
                                         >
                                           <input
+                                            aria-label="authorizations.WATER_LICENCE[0].existing_permits_authorizations"
                                             class="ant-input"
                                             name="authorizations.WATER_LICENCE[0].existing_permits_authorizations"
                                             type="text"
@@ -1322,6 +1323,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                                           class="ant-form-item-control-input-content"
                                         >
                                           <input
+                                            aria-label="authorizations.OCCUPANT_CUT_LICENCE[0].existing_permits_authorizations"
                                             class="ant-input"
                                             name="authorizations.OCCUPANT_CUT_LICENCE[0].existing_permits_authorizations"
                                             type="text"

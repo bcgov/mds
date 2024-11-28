@@ -20,11 +20,15 @@ import {
   createPermitCondition,
   deletePermitCondition,
   updatePermitCondition,
+  fetchPermitAmendmentConditionCategories,
+  createPermitAmendmentConditionCategory,
+  updatePermitAmendmentConditionCategory,
+  deletePermitAmendmentConditionCategory
 } from "@mds/common/redux/actionCreators/permitActionCreator";
 import * as genericActions from "@mds/common/redux/actions/genericActions";
 import { ENVIRONMENT } from "@mds/common";
 import * as API from "@mds/common/constants/API";
-import * as MOCK from "@/tests/mocks/dataMocks";
+import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
 const dispatch = jest.fn();
 const requestSpy = jest.spyOn(genericActions, "request");
@@ -652,6 +656,208 @@ describe("`createPermitCondition` action creator", () => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  describe("`fetchPermitAmendmentConditionCategories` action creator", () => {
+    const mineGuid = "12345-6789";
+    const permitGuid = "98765-4321";
+    const permitAmdendmentGuid = "24680-1357";
+
+    const url = `${ENVIRONMENT.apiUrl}${API.PERMIT_AMENDMENT_CONDITION_CATEGORIES(
+      mineGuid,
+      permitGuid,
+      permitAmdendmentGuid
+    )}`;
+
+    it("Request successful, dispatches `success` with correct response", () => {
+      const mockResponse = {
+        data: {
+          records: [
+            { id: 1, name: "Category 1" },
+            { id: 2, name: "Category 2" }
+          ]
+        }
+      };
+      mockAxios.onGet(url).reply(200, mockResponse);
+
+      return fetchPermitAmendmentConditionCategories(
+        mineGuid,
+        permitGuid,
+        permitAmdendmentGuid
+      )(dispatch).then(() => {
+        expect(requestSpy).toHaveBeenCalledTimes(1);
+        expect(requestSpy).toHaveBeenCalledWith("GET_PERMIT_CONDITION_CATEGORIES");
+        expect(dispatch).toHaveBeenCalledTimes(4);
+      });
+    });
+
+    it("Request failure, dispatches `error` with correct response", () => {
+      mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
+
+      return fetchPermitAmendmentConditionCategories(
+        mineGuid,
+        permitGuid,
+        permitAmdendmentGuid
+      )(dispatch).then(() => {
+        expect(requestSpy).toHaveBeenCalledTimes(1);
+        expect(errorSpy).toHaveBeenCalledTimes(1);
+        expect(errorSpy).toHaveBeenCalledWith("GET_PERMIT_CONDITION_CATEGORIES");
+        expect(dispatch).toHaveBeenCalledTimes(4);
+      });
+    });
+  });
+
+  describe("`createPermitAmendmentConditionCategory` action creator", () => {
+    const mineGuid = "12345-6789";
+    const permitGuid = "98765-4321";
+    const permitAmdendmentGuid = "24680-1357";
+
+    const payload = {
+      name: "Test Category",
+      description: "Test Description"
+    };
+
+    const url = `${ENVIRONMENT.apiUrl}${API.PERMIT_AMENDMENT_CONDITION_CATEGORIES(
+      mineGuid,
+      permitGuid,
+      permitAmdendmentGuid
+    )}`;
+
+    it("Request successful, dispatches `success` with correct response", () => {
+      const mockResponse = { data: { ...payload, id: 1 } };
+      mockAxios.onPost(url, payload).reply(200, mockResponse);
+
+      return createPermitAmendmentConditionCategory(
+        mineGuid,
+        permitGuid,
+        permitAmdendmentGuid,
+        payload
+      )(dispatch).then(() => {
+        expect(requestSpy).toHaveBeenCalledTimes(1);
+        expect(requestSpy).toHaveBeenCalledWith("CREATE_PERMIT_CONDITION_CATEGORY");
+        expect(successSpy).toHaveBeenCalledTimes(1);
+        expect(successSpy).toHaveBeenCalledWith("CREATE_PERMIT_CONDITION_CATEGORY");
+        expect(dispatch).toHaveBeenCalledTimes(5);
+      });
+    });
+
+    it("Request failure, dispatches `error` with correct response", () => {
+      mockAxios.onPost(url).reply(418, MOCK.ERROR);
+
+      return createPermitAmendmentConditionCategory(
+        mineGuid,
+        permitGuid,
+        permitAmdendmentGuid,
+        payload
+      )(dispatch).catch(() => {
+        expect(requestSpy).toHaveBeenCalledTimes(1);
+        expect(requestSpy).toHaveBeenCalledWith("CREATE_PERMIT_CONDITION_CATEGORY");
+        expect(errorSpy).toHaveBeenCalledTimes(1);
+        expect(errorSpy).toHaveBeenCalledWith("CREATE_PERMIT_CONDITION_CATEGORY");
+        expect(dispatch).toHaveBeenCalledTimes(4);
+      });
+    });
+  });
+
+  describe("`updatePermitAmendmentConditionCategory` action creator", () => {
+    const mineGuid = "12345-6789";
+    const permitGuid = "98765-4321";
+    const permitAmdendmentGuid = "24680-1357";
+
+    const payload = {
+      condition_category_code: "TEST123",
+      name: "Updated Test Category",
+      description: "Updated Test Description"
+    };
+
+    const url = `${ENVIRONMENT.apiUrl}${API.PERMIT_AMENDMENT_CONDITION_CATEGORIES(
+      mineGuid,
+      permitGuid,
+      permitAmdendmentGuid
+    )}/${payload.condition_category_code}`;
+
+    it("Request successful, dispatches `success` with correct response", () => {
+      const mockResponse = { data: { ...payload } };
+      mockAxios.onPut(url, payload).reply(200, mockResponse);
+
+      return updatePermitAmendmentConditionCategory(
+        mineGuid,
+        permitGuid,
+        permitAmdendmentGuid,
+        payload
+      )(dispatch).then(() => {
+        expect(requestSpy).toHaveBeenCalledTimes(1);
+        expect(requestSpy).toHaveBeenCalledWith("UPDATE_PERMIT_CONDITION_CATEGORY");
+        expect(successSpy).toHaveBeenCalledTimes(1);
+        expect(successSpy).toHaveBeenCalledWith("UPDATE_PERMIT_CONDITION_CATEGORY");
+        expect(dispatch).toHaveBeenCalledTimes(5);
+      });
+    });
+
+    it("Request failure, dispatches `error` with correct response", () => {
+      mockAxios.onPut(url).reply(418, MOCK.ERROR);
+
+      return updatePermitAmendmentConditionCategory(
+        mineGuid,
+        permitGuid,
+        permitAmdendmentGuid,
+        payload
+      )(dispatch).catch(() => {
+        expect(requestSpy).toHaveBeenCalledTimes(1);
+        expect(requestSpy).toHaveBeenCalledWith("UPDATE_PERMIT_CONDITION_CATEGORY");
+        expect(errorSpy).toHaveBeenCalledTimes(1);
+        expect(errorSpy).toHaveBeenCalledWith("UPDATE_PERMIT_CONDITION_CATEGORY");
+        expect(dispatch).toHaveBeenCalledTimes(4);
+      });
+    });
+  });
+
+  describe("`deletePermitAmendmentConditionCategory` action creator", () => {
+    const mineGuid = "12345-6789";
+    const permitGuid = "98765-4321";
+    const permitAmdendmentGuid = "24680-1357";
+    const permitConditionCategoryCode = "TEST123";
+
+    const url = `${ENVIRONMENT.apiUrl}${API.PERMIT_AMENDMENT_CONDITION_CATEGORIES(
+      mineGuid,
+      permitGuid,
+      permitAmdendmentGuid
+    )}/${permitConditionCategoryCode}`;
+
+    it("Request successful, dispatches `success` with correct response", () => {
+      const mockResponse = { data: { success: true } };
+      mockAxios.onDelete(url).reply(200, mockResponse);
+
+      return deletePermitAmendmentConditionCategory(
+        mineGuid,
+        permitGuid,
+        permitAmdendmentGuid,
+        permitConditionCategoryCode
+      )(dispatch).then(() => {
+        expect(requestSpy).toHaveBeenCalledTimes(1);
+        expect(requestSpy).toHaveBeenCalledWith("DELETE_PERMIT_CONDITION_CATEGORY");
+        expect(successSpy).toHaveBeenCalledTimes(1);
+        expect(successSpy).toHaveBeenCalledWith("DELETE_PERMIT_CONDITION_CATEGORY");
+        expect(dispatch).toHaveBeenCalledTimes(5);
+      });
+    });
+
+    it("Request failure, dispatches `error` with correct response", () => {
+      mockAxios.onDelete(url).reply(418, MOCK.ERROR);
+
+      return deletePermitAmendmentConditionCategory(
+        mineGuid,
+        permitGuid,
+        permitAmdendmentGuid,
+        permitConditionCategoryCode
+      )(dispatch).catch(() => {
+        expect(requestSpy).toHaveBeenCalledTimes(1);
+        expect(requestSpy).toHaveBeenCalledWith("DELETE_PERMIT_CONDITION_CATEGORY");
+        expect(errorSpy).toHaveBeenCalledTimes(1);
+        expect(errorSpy).toHaveBeenCalledWith("DELETE_PERMIT_CONDITION_CATEGORY");
+        expect(dispatch).toHaveBeenCalledTimes(4);
+      });
     });
   });
 });

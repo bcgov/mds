@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Link } from "react-router-dom";
 import { Button, Col, Row } from "antd";
-import { uniqBy, flattenDeep } from "lodash";
+import { uniqBy, flattenDeep, uniq } from "lodash";
 import * as Strings from "@mds/common/constants/strings";
 import {
   PROJECT_SUMMARY_STATUS_CODES,
@@ -48,7 +48,7 @@ const transformRowData = (projects, mineCommodityHash) =>
     project_lead_name: project.project_lead_name,
     commodity:
       project?.mine?.mine_type && project.mine.mine_type.length > 0
-        ? uniqBy(
+        ? uniq(
           flattenDeep(
             project.mine.mine_type.reduce((result, type) => {
               if (type.mine_type_detail && type.mine_type_detail.length > 0) {

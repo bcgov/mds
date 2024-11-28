@@ -16,6 +16,7 @@ const initialState = {
   [MINES]: MOCK.MINES,
   [PERMITS]: {
     permits: MOCK.PERMITS,
+    permitAmendments: MOCK.PERMIT_AMENDMENT_STATE,
   },
   [AUTHENTICATION]: {
     systemFlag: SystemFlagEnum.core,
@@ -29,7 +30,7 @@ describe("RequestReportForm", () => {
       <ReduxWrapper initialState={initialState}>
         <ReportPermitRequirementForm
           permitGuid={MOCK.PERMITS[0].permit_guid}
-          onSubmit={() => {}}
+          onSubmit={() => { }}
           condition={MOCK.PERMITS[0].permit_amendments[0].conditions[0]}
         />
       </ReduxWrapper>
