@@ -65,6 +65,12 @@ class MajorMineApplicationResource(Resource, UserMixin):
 
         current_status_code = major_mine_application.status_code
         new_status_code = data.get('status_code')
+
+        # If this has been resubmitted after changes were requested the status goes
+        # straight to "Under Review"
+        if current_status_code == "CHR" and new_status_code == "SUB":
+            new_status_code = "UNR"
+
         major_mine_application.update(project,
                                       new_status_code,
                                       data.get('documents', []))
