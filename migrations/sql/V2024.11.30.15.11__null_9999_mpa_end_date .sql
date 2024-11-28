@@ -1,1 +1,0 @@
-update mine_party_appt set end_date = NULL where end_date = "9999-12-31";
