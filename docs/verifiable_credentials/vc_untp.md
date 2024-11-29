@@ -6,6 +6,28 @@ The core-api is enabled to create out-of-band messages([spec](https://github.com
 
 The core-api is enabled to send credential-offer messages to connected wallets as way of initiating the [issue-credential](https://github.com/hyperledger/aries-rfcs/tree/main/features/0036-issue-credential) protocol.
 
+## DID:WEB
+
+using [UniResolver](https://dev.uniresolver.io/)
+
+you can resolve any did:web,
+
+These are the did:web's for the Chief Permitting Officer.
+
+[DEV](https://dev.uniresolver.io/#did:web:registry-dev.digitaltrust.gov.bc.ca:mines-act:chief-permitting-officer): `did:web:registry-dev.digitaltrust.gov.bc.ca:mines-act:chief-permitting-officer`
+[TEST](https://dev.uniresolver.io/#did:web:registry-test.digitaltrust.gov.bc.ca:mines-act:chief-permitting-officer): `did:web:registry-test.digitaltrust.gov.bc.ca:mines-act:chief-permitting-officer`
+[PROD](<(https://dev.uniresolver.io/#did:web:registry.digitaltrust.gov.bc.ca:mines-act:chief-permitting-officer)>): `did:web:registry.digitaltrust.gov.bc.ca:mines-act:chief-permitting-officer`
+
+Each did resolves to a [DID Document](https://www.w3.org/TR/did-core/#did-documents) thats holds the public cryptographic keys.
+
+In these did documents are two relevant verkeys, `#key-01-multikey` (aka. `k1`) and `#key-02-multikey`(aka.`k2`).
+
+`k1` was produced and is stored in the orgbook publisher and will be used to sign UNTP credentials on their way to orgbook.
+
+`k2` was produced in the CPO traction wallet and can be used for any other purpose that the MDS team or CPO wants to sign. you can verify this by using `GET` on `<TRACTION HOST>/wallet/keys/<k2.publickeymultibase from did document>`.
+
+Any document signed will specify which keypair was used to sign, and so which public key needs to be used to verify the document, both are equally valid, they are just managed by separate software systems.
+
 ## UNTP W3C Credentials
 
 Active development includes signing W3C credentials complaint with the [UN Transparency Protocol](https://uncefact.github.io/spec-untp/) that prove the mines act permit. This would allow a company to produce a **Digital Product Passport** for their goods that make claims about the ESG preformance of the goods and the Mines Act Permit could be used as evidence for those claims.
@@ -105,11 +127,16 @@ Oversees Deployments of:
 - [Traction](https://github.com/bcgov/traction)
   - Deployed [here](https://traction-tenant-ui-prod.apps.silver.devops.gov.bc.ca/) with [API](https://traction-tenant-proxy-prod.apps.silver.devops.gov.bc.ca/api/doc)
 - [Orgbook Publisher](https://github.com/OpSecId/orgbook-publisher/)
-  - Deployed [here](https://dev.orgbook.traceability.site/)
-  - This is about to move to an openshift domain
-- [Aries-VCR-VC-Service](https://github.com/bcgov/aries-vcr-vc-service/pull/17)
-  - Deployed [here] , trying to find
+  - Deployed at:
+    - [DEV](https://publisher-dev.orgbook.gov.bc.ca/)
+    - [TEST](https://publisher-test.orgbook.gov.bc.ca/)
+    - [PROD](https://publisher.orgbook.gov.bc.ca/)
+- [Aries-VCR-VC-Service](https://github.com/bcgov/aries-vcr-vc-service)
+  - Deployed [here], trying to find
 - [Aries-VCR](https://github.com/bcgov/aries-vcr)
   - Deployed as Orgbook [here](https://orgbook.gov.bc.ca/search) and [API](https://orgbook.gov.bc.ca/api/v2)
 - [TDW Server](https://github.com/decentralized-identity/trustdidweb-server-py)
-  - Deployed [here](https://registry-dev.apps.silver.devops.gov.bc.ca/)
+  - Deployed at :
+    - [DEV](https://registry-dev.digitaltrust.gov.bc.ca/)
+    - [TEST](https://registry-test.digitaltrust.gov.bc.ca/)
+    - [PROD](https://registry.digitaltrust.gov.bc.ca/)
