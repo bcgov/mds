@@ -4,6 +4,9 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment import (
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import (
     PermitAmendmentDocument,
 )
+from app.api.mines.permits.permit_conditions.models.permit_condition_category import (
+    PermitConditionCategory,
+)
 from app.api.mines.permits.permit_conditions.models.permit_conditions import (
     PermitConditions,
 )
@@ -117,6 +120,7 @@ class PermitConditionExtractionResource(Resource, UserMixin):
         args = parser.parse_args()
 
         PermitConditions.delete_all_by_permit_amendment_id(args['permit_amendment_id'], commit=True)
+        PermitConditionCategory.delete_all_by_permit_amendment_id(args['permit_amendment_id'])
 
 
 class PermitConditionExtractionProgressResource(Resource, UserMixin):

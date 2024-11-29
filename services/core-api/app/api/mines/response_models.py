@@ -1,13 +1,18 @@
-from flask_restx import fields, marshal
-
 from app.api.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
 from app.api.dams.dto import DAM_MODEL
-from app.api.mines.reports.models.mine_report_permit_requirement import CimOrCpo, OfficeDestination
-from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointmentStatus, MinePartyAcknowledgedStatus
+from app.api.mines.reports.models.mine_report_permit_requirement import (
+    CimOrCpo,
+    OfficeDestination,
+)
+from app.api.parties.party_appt.models.mine_party_appt import (
+    MinePartyAcknowledgedStatus,
+    MinePartyAppointmentStatus,
+)
 from app.api.parties.response_models import PARTY
+from app.api.utils.feature_flag import Feature, is_feature_enabled
 from app.extensions import api
+from flask_restx import fields, marshal
 
-from app.api.utils.feature_flag import is_feature_enabled, Feature
 
 class DateTime(fields.Raw):
 
@@ -256,6 +261,14 @@ MINE_REPORT_PERMIT_REQUIREMENT = api.model(
     }
 )
 
+PERMIT_CONDITION_CATEGORY_MODEL = api.model(
+    'PermitConditionCategory', {
+        'condition_category_code': fields.String,
+        'step': fields.String,
+        'description': fields.String,
+        'display_order': fields.Integer
+    })
+
 PERMIT_AMENDMENT_MODEL = api.model(
     'PermitAmendment', {
         'permit_amendment_id':
@@ -310,7 +323,8 @@ PERMIT_AMENDMENT_MODEL = api.model(
             fields.Boolean,
         'preamble_text':
             fields.String,
-        'mine_report_permit_requirements': fields.List(fields.Nested(MINE_REPORT_PERMIT_REQUIREMENT))
+        'mine_report_permit_requirements': fields.List(fields.Nested(MINE_REPORT_PERMIT_REQUIREMENT)),
+        'condition_categories': fields.List(fields.Nested(PERMIT_CONDITION_CATEGORY_MODEL))
     })
 
 BOND_MODEL = api.model('Bond_guid', {'bond_guid': fields.String})
@@ -869,6 +883,7 @@ MINE_COMPLIANCE_RESPONSE_MODEL = api.model(
         'orders': fields.List(fields.Nested(ORDER_MODEL)),
     })
 
+
 PERMIT_CONDITION_MODEL = api.model(
     'PermitCondition', {
         'permit_condition_id': fields.Integer,
@@ -887,14 +902,6 @@ PERMIT_CONDITION_TEMPLATE_MODEL = api.model('PermitConditionTemplate', {
     'condition': fields.String,
     'sub_conditions': fields.List(PermitConditionTemplate),
 })
-
-PERMIT_CONDITION_CATEGORY_MODEL = api.model(
-    'PermitConditionCategory', {
-        'condition_category_code': fields.String,
-        'step': fields.String,
-        'description': fields.String,
-        'display_order': fields.Integer
-    })
 
 PERMIT_CONDITION_TYPE_MODEL = api.model('PermitConditionType', {
     'condition_type_code': fields.String,

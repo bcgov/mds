@@ -282,8 +282,12 @@ class Config(object):
             'task': 'app.api.parties.party_appt.tasks.notify_and_update_expired_party_appointments',
             'schedule': crontab(minute="*/15"),
         },
+        'push_untp_map_data_to_publisher': {
+            'task': 'app.api.verifiable_credentials.manager.push_untp_map_data_to_publisher',
+            'schedule': crontab(day_of_week="1"),                                                    #Run Mondays
+        },
     }
-    #Traction Verifiable Credentials DEFAULTS ARE FOR DEV
+                                                                                                     #Traction Verifiable Credentials DEFAULTS ARE FOR DEV
     TRACTION_HOST = os.environ.get(
         "TRACTION_HOST", "https://traction-tenant-proxy-dev.apps.silver.devops.gov.bc.ca")
     TRACTION_TENANT_ID = os.environ.get("TRACTION_TENANT_ID", "GET_TENANT_ID_FROM_TRACTION")
@@ -309,8 +313,8 @@ class Config(object):
 
     ORGBOOK_PUBLISHER_BASE_URL = os.environ.get("ORGBOOK_PUBLISHER_BASE_URL",
                                                 "https://dev.orgbook.traceability.site")
-    ORGBOOK_PUBLISHER_API_KEY = os.environ.get("ORGBOOK_PUBLISHER_API_KEY",
-                                               "ORGBOOK_PUBLISHER_API_KEY")
+    ORGBOOK_PUBLISHER_CLIENT_SECRET = os.environ.get("ORGBOOK_PUBLISHER_CLIENT_SECRET",
+                                                     "ORGBOOK_PUBLISHER_CLIENT_SECRET")
 
 
 class TestConfig(Config):

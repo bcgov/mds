@@ -337,7 +337,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                             title="Project Stage"
                           >
                             <b>
-                              Final Application
+                              Application
                             </b>
                           </div>
                         </td>
@@ -360,7 +360,7 @@ exports[`ProjectOverviewTab renders properly 1`] = `
                         >
                           <a
                             data-cy="final-application-view-link"
-                            href="/pre-applications/35633148-57f8-4967-be35-7f89abfbd02e/final-app"
+                            href="/pre-applications/35633148-57f8-4967-be35-7f89abfbd02e/app"
                           >
                             <button
                               class="ant-btn ant-btn-default full-mobile margin-small"

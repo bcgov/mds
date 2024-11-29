@@ -265,6 +265,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                       class="ant-form-item-control-input-content"
                     >
                       <input
+                        aria-label="company_alias"
                         class="ant-input"
                         id="company_alias"
                         name="company_alias"
@@ -325,6 +326,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                       class="ant-form-item-control-input-content"
                     >
                       <input
+                        aria-label="incorporation_number"
                         class="ant-input"
                         id="incorporation_number"
                         name="incorporation_number"
@@ -391,6 +393,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                     class="ant-form-item-control-input-content"
                   >
                     <input
+                      aria-label="applicant.phone_no"
                       class="ant-input"
                       name="applicant.phone_no"
                       type="text"
@@ -454,6 +457,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                     class="ant-form-item-control-input-content"
                   >
                     <input
+                      aria-label="applicant.phone_ext"
                       class="ant-input"
                       name="applicant.phone_ext"
                       type="text"
@@ -513,6 +517,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                     class="ant-form-item-control-input-content"
                   >
                     <input
+                      aria-label="applicant.email"
                       class="ant-input"
                       name="applicant.email"
                       type="text"
@@ -582,6 +587,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                     class="ant-form-item-control-input-content"
                   >
                     <input
+                      aria-label="applicant.address[0].address_line_1"
                       class="ant-input"
                       name="applicant.address[0].address_line_1"
                       type="text"
@@ -645,6 +651,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                     class="ant-form-item-control-input-content"
                   >
                     <input
+                      aria-label="applicant.address[0].suite_no"
                       class="ant-input"
                       name="applicant.address[0].suite_no"
                       type="text"
@@ -938,6 +945,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                     class="ant-form-item-control-input-content"
                   >
                     <input
+                      aria-label="applicant.address[0].city"
                       class="ant-input"
                       name="applicant.address[0].city"
                       type="text"
@@ -997,6 +1005,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                     class="ant-form-item-control-input-content"
                   >
                     <input
+                      aria-label="applicant.address[0].post_code"
                       class="ant-input"
                       name="applicant.address[0].post_code"
                       type="text"
@@ -1120,6 +1129,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                     class="ant-form-item-control-input-content"
                   >
                     <input
+                      aria-label="applicant.address[1].address_line_1"
                       class="ant-input"
                       name="applicant.address[1].address_line_1"
                       type="text"
@@ -1183,6 +1193,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                     class="ant-form-item-control-input-content"
                   >
                     <input
+                      aria-label="applicant.address[1].suite_no"
                       class="ant-input"
                       name="applicant.address[1].suite_no"
                       type="text"
@@ -1476,6 +1487,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                     class="ant-form-item-control-input-content"
                   >
                     <input
+                      aria-label="applicant.address[1].city"
                       class="ant-input"
                       name="applicant.address[1].city"
                       type="text"
@@ -1535,6 +1547,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                     class="ant-form-item-control-input-content"
                   >
                     <input
+                      aria-label="applicant.address[1].post_code"
                       class="ant-input"
                       name="applicant.address[1].post_code"
                       type="text"
@@ -1727,6 +1740,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                     class="ant-form-item-control-input-content"
                   >
                     <input
+                      aria-label="applicant.address[2].address_line_1"
                       class="ant-input"
                       name="applicant.address[2].address_line_1"
                       type="text"
@@ -1790,6 +1804,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                     class="ant-form-item-control-input-content"
                   >
                     <input
+                      aria-label="applicant.address[2].suite_no"
                       class="ant-input"
                       name="applicant.address[2].suite_no"
                       type="text"
@@ -2083,6 +2098,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                     class="ant-form-item-control-input-content"
                   >
                     <input
+                      aria-label="applicant.address[2].city"
                       class="ant-input"
                       name="applicant.address[2].city"
                       type="text"
@@ -2142,6 +2158,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                     class="ant-form-item-control-input-content"
                   >
                     <input
+                      aria-label="applicant.address[2].post_code"
                       class="ant-input"
                       name="applicant.address[2].post_code"
                       type="text"
@@ -2219,6 +2236,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                       class="ant-form-item-control-input-content"
                     >
                       <input
+                        aria-label="payment_contact.first_name"
                         class="ant-input"
                         name="payment_contact.first_name"
                         type="text"
@@ -2278,6 +2296,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                       class="ant-form-item-control-input-content"
                     >
                       <input
+                        aria-label="payment_contact.party_name"
                         class="ant-input"
                         name="payment_contact.party_name"
                         type="text"
@@ -2342,6 +2361,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                       class="ant-form-item-control-input-content"
                     >
                       <input
+                        aria-label="payment_contact.phone_no"
                         class="ant-input"
                         name="payment_contact.phone_no"
                         type="text"
@@ -2405,6 +2425,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                       class="ant-form-item-control-input-content"
                     >
                       <input
+                        aria-label="payment_contact.phone_ext"
                         class="ant-input"
                         name="payment_contact.phone_ext"
                         type="text"
@@ -2464,6 +2485,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                       class="ant-form-item-control-input-content"
                     >
                       <input
+                        aria-label="payment_contact.email"
                         class="ant-input"
                         name="payment_contact.email"
                         type="text"
@@ -2537,6 +2559,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                       class="ant-form-item-control-input-content"
                     >
                       <input
+                        aria-label="payment_contact.address[0].address_line_1"
                         class="ant-input"
                         name="payment_contact.address[0].address_line_1"
                         type="text"
@@ -2600,6 +2623,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                       class="ant-form-item-control-input-content"
                     >
                       <input
+                        aria-label="payment_contact.address[0].suite_no"
                         class="ant-input"
                         name="payment_contact.address[0].suite_no"
                         type="text"
@@ -2901,6 +2925,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                       class="ant-form-item-control-input-content"
                     >
                       <input
+                        aria-label="payment_contact.address[0].city"
                         class="ant-input"
                         name="payment_contact.address[0].city"
                         type="text"
@@ -2964,6 +2989,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                       class="ant-form-item-control-input-content"
                     >
                       <input
+                        aria-label="payment_contact.address[0].post_code"
                         class="ant-input"
                         name="payment_contact.address[0].post_code"
                         type="text"

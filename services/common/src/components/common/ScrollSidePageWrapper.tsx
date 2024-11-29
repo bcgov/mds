@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useEffect, useState } from "react";
+import React, { FC, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import ScrollSideMenu, { ScrollSideMenuProps } from "./ScrollSideMenu";
 import { SystemFlagEnum } from "@mds/common/constants/enums";
@@ -8,16 +8,30 @@ interface ScrollSidePageWrapperProps {
   content: ReactNode;
   menuProps?: ScrollSideMenuProps;
   header: ReactNode;
+  extraItems?: ReactNode;
   headerHeight?: number;
+  view?: "default" | "steps" | "anchor";
 }
 
 export const coreHeaderHeight = 62; // match scss variable $header-height
 const msHeaderHeight = 80;
 
+/**
+ * A wrapper component that provides a side menu and a content area. The side menu can be fixed to the top of the page.
+ * The menu links will act as an achor to sections in the content area scroll to the section when clicked, and highlight the active section.
+ * 
+ * If you need to add extra items to the side menu, you can pass them along as `extraItems`:
+ * 
+ * const extraMenuItems = <Typography.Paragraph>This is extra content that will be rendered under the side menu</Typography.Paragraph>
+ * <ScrollSidePageWrapper extraItems={extraMenuItems}>
+ * </ScrollSidePageWrapper>
+ */
 const ScrollSidePageWrapper: FC<ScrollSidePageWrapperProps> = ({
   menuProps,
   content,
   header,
+  extraItems,
+  view = "anchor",
   headerHeight = 170,
 }) => {
   const [isFixedTop, setIsFixedTop] = useState(false);
@@ -59,7 +73,7 @@ const ScrollSidePageWrapper: FC<ScrollSidePageWrapperProps> = ({
   const contentTopOffset = hasHeader && isFixedTop ? headerHeight : 0;
 
   return (
-    <div className="scroll-side-menu-wrapper">
+    <div className={`scroll-side-menu-wrapper scroll-side-menu-view--${view}`}>
       {hasHeader && (
         <div
           className={isFixedTop ? "view--header fixed-scroll" : "view--header"}
@@ -74,7 +88,9 @@ const ScrollSidePageWrapper: FC<ScrollSidePageWrapperProps> = ({
           style={{ top: menuTopOffset }}
         >
           {/* the 24 matches the margin/padding on the menu/content. Looks nicer */}
-          <ScrollSideMenu offsetTop={topOffset + contentPaddingY} {...menuProps} />
+          <ScrollSideMenu offsetTop={topOffset + contentPaddingY} {...menuProps} view={view} />
+
+          {extraItems ? extraItems : ''}
         </div>
       )}
       <div className={contentClass} style={{ top: contentTopOffset }}>

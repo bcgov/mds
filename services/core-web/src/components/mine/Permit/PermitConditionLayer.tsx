@@ -33,7 +33,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   condition,
   isExpanded,
   level = 0,
-  setParentExpand = () => {},
+  setParentExpand = () => { },
   userCanEdit = false,
 }) => {
   const { isFeatureEnabled } = useFeatureFlag();

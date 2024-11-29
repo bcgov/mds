@@ -384,7 +384,7 @@ exports[`PermitConditions renders properly 1`] = `
               tabindex="0"
             >
               <div
-                class="scroll-side-menu-wrapper"
+                class="scroll-side-menu-wrapper scroll-side-menu-view--steps"
               >
                 <div
                   class="side-menu"
@@ -407,7 +407,7 @@ exports[`PermitConditions renders properly 1`] = `
                           />
                         </div>
                         <div
-                          class="ant-anchor-link now-menu-link ant-anchor-link-active"
+                          class="ant-anchor-link now-menu-link fade-in ant-anchor-link-active"
                         >
                           <a
                             class="ant-anchor-link-title ant-anchor-link-title-active"
@@ -417,27 +417,48 @@ exports[`PermitConditions renders properly 1`] = `
                             <div
                               class="side-nav-title"
                             >
-                              Health and Safety
+                              <span
+                                class="margin-medium--right side-nav-title-icon"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="svg-inline--fa fa-ban "
+                                  data-icon="ban"
+                                  data-prefix="fal"
+                                  focusable="false"
+                                  role="img"
+                                  style="color: rgb(187, 187, 187); font-size: 20px;"
+                                  viewBox="0 0 512 512"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M402.7 425.3l-316-316C52.6 148.6 32 199.9 32 256c0 123.7 100.3 224 224 224c56.1 0 107.4-20.6 146.7-54.7zm22.6-22.6C459.4 363.4 480 312.1 480 256C480 132.3 379.7 32 256 32c-56.1 0-107.4 20.6-146.7 54.7l316 316zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z"
+                                    fill="currentColor"
+                                  />
+                                </svg>
+                              </span>
+                              <div
+                                class="side-nav-title-content"
+                              >
+                                <span
+                                  class="ant-typography"
+                                  style="font-size: 16px; font-weight: 600;"
+                                >
+                                  A.. 
+                                  Health and Safety
+                                </span>
+                                <span
+                                  class="side-nav-description"
+                                >
+                                  <br />
+                                  Not Started
+                                </span>
+                              </div>
                             </div>
                           </a>
                         </div>
                         <div
-                          class="ant-anchor-link now-menu-link"
-                        >
-                          <a
-                            class="ant-anchor-link-title"
-                            href="#elc"
-                            title=""
-                          >
-                            <div
-                              class="side-nav-title"
-                            >
-                              Environmental Land and Watercourses
-                            </div>
-                          </a>
-                        </div>
-                        <div
-                          class="ant-anchor-link now-menu-link"
+                          class="ant-anchor-link now-menu-link fade-in"
                         >
                           <a
                             class="ant-anchor-link-title"
@@ -447,12 +468,109 @@ exports[`PermitConditions renders properly 1`] = `
                             <div
                               class="side-nav-title"
                             >
-                              Reclamation and Closure Program
+                              <span
+                                class="margin-medium--right side-nav-title-icon"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="svg-inline--fa fa-ban "
+                                  data-icon="ban"
+                                  data-prefix="fal"
+                                  focusable="false"
+                                  role="img"
+                                  style="color: rgb(187, 187, 187); font-size: 20px;"
+                                  viewBox="0 0 512 512"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M402.7 425.3l-316-316C52.6 148.6 32 199.9 32 256c0 123.7 100.3 224 224 224c56.1 0 107.4-20.6 146.7-54.7zm22.6-22.6C459.4 363.4 480 312.1 480 256C480 132.3 379.7 32 256 32c-56.1 0-107.4 20.6-146.7 54.7l316 316zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z"
+                                    fill="currentColor"
+                                  />
+                                </svg>
+                              </span>
+                              <div
+                                class="side-nav-title-content"
+                              >
+                                <span
+                                  class="ant-typography"
+                                  style="font-size: 16px; font-weight: 600;"
+                                >
+                                  B.. 
+                                  Reclamation
+                                </span>
+                                <span
+                                  class="side-nav-description"
+                                >
+                                  <br />
+                                  Not Started
+                                </span>
+                              </div>
+                            </div>
+                          </a>
+                        </div>
+                        <div
+                          class="ant-anchor-link now-menu-link fade-in"
+                        >
+                          <a
+                            class="ant-anchor-link-title"
+                            href="#elc"
+                            title=""
+                          >
+                            <div
+                              class="side-nav-title"
+                            >
+                              <span
+                                class="margin-medium--right side-nav-title-icon"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="svg-inline--fa fa-ban "
+                                  data-icon="ban"
+                                  data-prefix="fal"
+                                  focusable="false"
+                                  role="img"
+                                  style="color: rgb(187, 187, 187); font-size: 20px;"
+                                  viewBox="0 0 512 512"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M402.7 425.3l-316-316C52.6 148.6 32 199.9 32 256c0 123.7 100.3 224 224 224c56.1 0 107.4-20.6 146.7-54.7zm22.6-22.6C459.4 363.4 480 312.1 480 256C480 132.3 379.7 32 256 32c-56.1 0-107.4 20.6-146.7 54.7l316 316zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z"
+                                    fill="currentColor"
+                                  />
+                                </svg>
+                              </span>
+                              <div
+                                class="side-nav-title-content"
+                              >
+                                <span
+                                  class="ant-typography"
+                                  style="font-size: 16px; font-weight: 600;"
+                                >
+                                  
+                                  Environmental Land and Watercourses
+                                </span>
+                                <span
+                                  class="side-nav-description"
+                                >
+                                  <br />
+                                  Not Started
+                                </span>
+                              </div>
                             </div>
                           </a>
                         </div>
                       </div>
                     </div>
+                  </div>
+                  <div
+                    class="ant-typography no_link_styling grey"
+                    style="font-size: 14px; text-align: center;"
+                  >
+                    <a
+                      class="ant-typography fade-in"
+                    >
+                      + Add Condition Category
+                    </a>
                   </div>
                 </div>
                 <div
@@ -594,10 +712,18 @@ exports[`PermitConditions renders properly 1`] = `
                                 class="ant-typography margin-none"
                                 id="hsc"
                               >
-                                Health and Safety
-                                 (
-                                1
-                                )
+                                <div>
+                                  <h3
+                                    class="ant-typography"
+                                    style="margin-bottom: 0px;"
+                                  >
+                                    A.. 
+                                    Health and Safety
+                                     (
+                                    1
+                                    )
+                                  </h3>
+                                </div>
                               </h3>
                               <button
                                 class="ant-btn ant-btn-primary core-btn core-btn-primary"
@@ -610,7 +736,7 @@ exports[`PermitConditions renders properly 1`] = `
                             </div>
                           </div>
                           <div
-                            class="ant-col ant-col-24"
+                            class="ant-col ant-col-24 fade-in"
                             style="padding: 8px 8px 8px 8px;"
                           >
                             <div
@@ -636,12 +762,20 @@ exports[`PermitConditions renders properly 1`] = `
                             >
                               <h3
                                 class="ant-typography margin-none"
-                                id="elc"
+                                id="rcc"
                               >
-                                Environmental Land and Watercourses
-                                 (
-                                2
-                                )
+                                <div>
+                                  <h3
+                                    class="ant-typography"
+                                    style="margin-bottom: 0px;"
+                                  >
+                                    B.. 
+                                    Reclamation
+                                     (
+                                    1
+                                    )
+                                  </h3>
+                                </div>
                               </h3>
                               <button
                                 class="ant-btn ant-btn-primary core-btn core-btn-primary"
@@ -654,7 +788,59 @@ exports[`PermitConditions renders properly 1`] = `
                             </div>
                           </div>
                           <div
+                            class="ant-col ant-col-24 fade-in"
+                            style="padding: 8px 8px 8px 8px;"
+                          >
+                            <div
+                              class="condition-layer condition-layer--0 condition-SEC fade-in "
+                            >
+                              <div
+                                class="condition-collapsed"
+                              >
+                                <p>
+                                  1.
+                                   
+                                  Reflect miss police tough such single force.
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                          <div
                             class="ant-col ant-col-24"
+                            style="padding: 8px 8px 8px 8px;"
+                          >
+                            <div
+                              class="ant-row ant-row-space-between"
+                            >
+                              <h3
+                                class="ant-typography margin-none"
+                                id="elc"
+                              >
+                                <div>
+                                  <h3
+                                    class="ant-typography"
+                                    style="margin-bottom: 0px;"
+                                  >
+                                    
+                                    Environmental Land and Watercourses
+                                     (
+                                    2
+                                    )
+                                  </h3>
+                                </div>
+                              </h3>
+                              <button
+                                class="ant-btn ant-btn-primary core-btn core-btn-primary"
+                                type="button"
+                              >
+                                <span>
+                                  Add Condition
+                                </span>
+                              </button>
+                            </div>
+                          </div>
+                          <div
+                            class="ant-col ant-col-24 fade-in"
                             style="padding: 8px 8px 8px 8px;"
                           >
                             <div
@@ -792,7 +978,7 @@ exports[`PermitConditions renders properly 1`] = `
                             </div>
                           </div>
                           <div
-                            class="ant-col ant-col-24"
+                            class="ant-col ant-col-24 fade-in"
                             style="padding: 8px 8px 8px 8px;"
                           >
                             <div
@@ -821,50 +1007,6 @@ exports[`PermitConditions renders properly 1`] = `
                                     </div>
                                   </div>
                                 </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div
-                            class="ant-col ant-col-24"
-                            style="padding: 8px 8px 8px 8px;"
-                          >
-                            <div
-                              class="ant-row ant-row-space-between"
-                            >
-                              <h3
-                                class="ant-typography margin-none"
-                                id="rcc"
-                              >
-                                Reclamation and Closure Program
-                                 (
-                                1
-                                )
-                              </h3>
-                              <button
-                                class="ant-btn ant-btn-primary core-btn core-btn-primary"
-                                type="button"
-                              >
-                                <span>
-                                  Add Condition
-                                </span>
-                              </button>
-                            </div>
-                          </div>
-                          <div
-                            class="ant-col ant-col-24"
-                            style="padding: 8px 8px 8px 8px;"
-                          >
-                            <div
-                              class="condition-layer condition-layer--0 condition-SEC fade-in "
-                            >
-                              <div
-                                class="condition-collapsed"
-                              >
-                                <p>
-                                  1.
-                                   
-                                  Reflect miss police tough such single force.
-                                </p>
                               </div>
                             </div>
                           </div>

@@ -9,6 +9,7 @@ import { permitReducer } from "@mds/common/redux/reducers/permitReducer";
 import {
   storeEditingConditionFlag,
   storeEditingPreambleFlag,
+  storePermits,
 } from "@mds/common/redux/actions/permitActions";
 import { PERMITS } from "@mds/common/constants/reducerTypes";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
@@ -51,10 +52,17 @@ describe("permitSelectors", () => {
     expect(actual).toEqual(permit);
   });
   it("`getLatestAmendmentByPermitGuid returns the latest permit amendment", () => {
-    const localMockState = {
-      [PERMITS]: { permits: mockPermits },
-    };
+
+    const storeAction = storePermits({ records: MOCK.PERMITS });
+
     const permit = MOCK.PERMITS[0];
+
+    const storeState = permitReducer({} as any, storeAction);
+
+    const localMockState = {
+      [PERMITS]: storeState,
+    };
+
     const latestAmendment = getLatestAmendmentByPermitGuid(permit.permit_guid)(
       localMockState as RootState
     );

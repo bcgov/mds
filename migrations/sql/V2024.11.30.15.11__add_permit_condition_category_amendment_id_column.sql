@@ -1,0 +1,2 @@
+ALTER TABLE permit_condition_category ADD COLUMN permit_amendment_id INTEGER;
+ALTER TABLE permit_condition_category ADD CONSTRAINT fk_permit_condition_category_permit_amendment_id FOREIGN KEY (permit_amendment_id) REFERENCES permit_amendment(permit_amendment_id);

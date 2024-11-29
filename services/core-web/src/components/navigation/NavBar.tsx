@@ -227,7 +227,7 @@ export const NavBar: FC<NavBarProps> = ({ activeButton, isMenuOpen, toggleHambur
       </Link>
       <AuthorizationWrapper permission={Permission.VIEW_ADMIN_ROUTE}>
         <Dropdown menu={{ items: adminDropdownItems, ...dropdownMenuProps }} placement="bottomLeft">
-          <button id={ifActiveButton("admin")} type="button" className="menu__btn">
+          <button id={ifActiveButton("admin")} type="button" className="menu__btn" data-cy="admin-menu">
             <span className="padding-sm--right">Admin</span>
             <DownOutlined />
           </button>

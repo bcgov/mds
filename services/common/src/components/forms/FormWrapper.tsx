@@ -66,6 +66,7 @@ export interface FormWrapperProps {
   loading?: boolean;
   isEditMode?: boolean;
   scrollOnToggleEdit?: boolean;
+  layout?: "inline" | "horizontal" | "vertical";
 }
 
 const FormWrapper: FC<FormWrapperProps & InjectedFormProps<any>> = ({
@@ -73,6 +74,7 @@ const FormWrapper: FC<FormWrapperProps & InjectedFormProps<any>> = ({
   isModal = false,
   scrollOnToggleEdit = true,
   children,
+  layout,
   ...props
 }) => {
   const providerValues = {
@@ -96,14 +98,13 @@ const FormWrapper: FC<FormWrapperProps & InjectedFormProps<any>> = ({
     }
   };
 
-  const formClassName = `common-form common-form-${props.name} form-${
-    isEditMode ? "edit" : "view"
-  }`;
+  const formClassName = `common-form common-form-${props.name} form-${isEditMode ? "edit" : "view"
+    }`;
 
   return (
     <FormProvider value={providerValues}>
       <Form
-        layout="vertical"
+        layout={layout ?? "vertical"}
         onFinish={handleSubmit}
         name={props.name}
         className={formClassName}

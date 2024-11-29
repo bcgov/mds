@@ -61,6 +61,7 @@ $tertiary-btn-color-hover: color.adjust($tertiary-btn-color, $lightness: -20%);
 
 $danger-btn-color: $btn-red;
 $danger-btn-color-hover: color.adjust($danger-btn-color, $lightness: -20%);
+$danger-btn-color-disabled: rgba($danger-btn-color, 0.5);
 
 // Nav
 $nav-color: $darkest-grey;

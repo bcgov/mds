@@ -18,6 +18,26 @@
         }
     }
 
+    .side-menu,
+    .side-menu--fixed {
+
+        .ant-anchor-link,
+        .ant-anchor-link-title {
+            overflow: visible;
+        }
+    }
+
+    .side-menu,
+    .side-menu--fixed {
+        &>div {
+            margin-left: -4px; // Menu items have a 4px border on the left, adjust to align.
+        }
+
+        .ant-anchor-link:not(.ant-anchor-link-active) {
+            border-left: 4px solid transparent; // Add a transparent border for non-active items to prvent jumping
+        }
+    }
+
     .side-menu--content {
         padding-top: $fixed-page-margin; // equal to the margin-top on side-menu to align them
         left: $side-menu-width + $fixed-page-margin;
@@ -33,6 +53,25 @@
         color: $darkest-grey;
         line-height: 21px;
         font-size: 14px;
+        display: flex;
+    }
+
+    .side-nav-title .side-nav-title-icon {
+        position: relative;
+    }
+
+    .side-nav-title .side-nav-title-content {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    &.scroll-side-menu-view--steps .ant-anchor-link:not(:last-child) .side-nav-title .side-nav-title-icon::before {
+        content: '';
+        position: absolute;
+        left: calc(50% - 1px);
+        top: 24px;
+        bottom: -16px;
+        border-left: 1px solid $gov-grey;
     }
 }
 

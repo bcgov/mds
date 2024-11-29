@@ -55,7 +55,6 @@ from app.api.mines.mine.resources.mine import (
     MineListResource,
     MineListSearch,
     MineResource,
-    MineTimeout,
 )
 from app.api.mines.mine.resources.mine_basicinfo import MineBasicInfoResource
 from app.api.mines.mine.resources.mine_commodity_code import MineCommodityCodeResource
@@ -95,6 +94,12 @@ from app.api.mines.permits.permit_amendment.resources.permit_amendment_document 
 from app.api.mines.permits.permit_amendment.resources.permit_amendment_vc import (
     PermitAmendmentVCResource,
 )
+from app.api.mines.permits.permit_conditions.resources.permit_amendment_condition_category_list_resource import (
+    PermitAmendmentConditionCategoryListResource,
+)
+from app.api.mines.permits.permit_conditions.resources.permit_amendment_condition_category_resource import (
+    PermitAmendmentConditionCategoryResource,
+)
 from app.api.mines.permits.permit_conditions.resources.permit_condition_category_resource import (
     PermitConditionCategoryResource,
 )
@@ -133,7 +138,9 @@ from app.api.mines.reports.resources.mine_report_definition_compliance_article_x
 from app.api.mines.reports.resources.mine_report_document import (
     MineReportDocumentListResource,
 )
-from app.api.mines.reports.resources.mine_report_permit_requirement import MineReportPermitRequirementResource
+from app.api.mines.reports.resources.mine_report_permit_requirement import (
+    MineReportPermitRequirementResource,
+)
 from app.api.mines.reports.resources.mine_report_submission_resource import (
     ReportSubmissionResource,
 )
@@ -273,6 +280,16 @@ api.add_resource(
     PermitAmendmentResource,
     '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>')
 
+api.add_resource(
+    PermitAmendmentConditionCategoryListResource,
+    '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>/condition-categories'
+)
+
+api.add_resource(
+    PermitAmendmentConditionCategoryResource,
+    '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>/condition-categories/<string:permit_condition_category_code>'
+)
+
 api.add_resource(PermitConditionExtractionResource, '/permits/condition-extraction')
 api.add_resource(PermitConditionExtractionProgressResource, '/permits/condition-extraction/<string:task_id>')
 api.add_resource(
@@ -336,6 +353,3 @@ api.add_resource(GlobalMineAlertListResource, '/global-alerts')
 api.add_resource(MineReportDefinitionComplianceArticleCreateResource, '/reports/definitions/compliance-article')
 api.add_resource(MineReportDefinitionComplianceArticleUpdateResource,
                  '/reports/definitions/compliance-article/<string:mine_report_definition_compliance_article_xref_guid>')
-
-
-api.add_resource(MineTimeout, '/timeout')

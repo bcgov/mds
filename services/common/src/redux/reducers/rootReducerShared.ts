@@ -37,6 +37,7 @@ import regionsReducer from "@mds/common/redux/slices/regionsSlice";
 import complianceCodeReducer, { complianceCodeReducerType } from "../slices/complianceCodesSlice";
 import spatialDataReducer, { spatialDataReducerType } from "../slices/spatialDataSlice";
 import permitServiceReducer, { permitServiceReducerType } from "../slices/permitServiceSlice";
+import searchConditionCategoriesReducer, { searchConditionCategoriesType } from "../slices/permitConditionCategorySlice";
 import helpReducer, { helpReducerType } from "../slices/helpSlice";
 export const sharedReducer = {
   ...activityReducer,
@@ -86,4 +87,5 @@ export const sharedReducer = {
   [complianceCodeReducerType]: complianceCodeReducer,
   [permitServiceReducerType]: permitServiceReducer,
   [helpReducerType]: helpReducer,
+  [searchConditionCategoriesType]: searchConditionCategoriesReducer,
 };

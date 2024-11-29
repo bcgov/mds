@@ -47,6 +47,7 @@ exports[`RequestReportForm renders form properly 1`] = `
                   class="ant-form-item-control-input-content"
                 >
                   <input
+                    aria-label="stepPath"
                     class="ant-input ant-input-disabled"
                     disabled=""
                     name="stepPath"

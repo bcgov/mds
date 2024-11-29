@@ -12,6 +12,7 @@ export const {
   getStandardPermitConditions,
   getEditingConditionFlag,
   getEditingPreambleFlag,
+  getLatestPermitAmendments
 } = permitReducer;
 
 export const getDraftPermitForNOW = createSelector(
@@ -34,10 +35,10 @@ export const getDraftPermitAmendmentForNOW = createSelector(
     );
     return draftPermit && draftPermit.permit_amendments.length > 0
       ? draftPermit.permit_amendments.filter(
-          (amendment) =>
-            amendment.now_application_guid === noticeOfWork.now_application_guid &&
-            amendment.permit_amendment_status_code === draft
-        )[0]
+        (amendment) =>
+          amendment.now_application_guid === noticeOfWork.now_application_guid &&
+          amendment.permit_amendment_status_code === draft
+      )[0]
       : {};
   }
 );
@@ -73,12 +74,8 @@ export const getPermitByGuid = (permitGuid) =>
   });
 
 export const getLatestAmendmentByPermitGuid = (permitGuid) =>
-  createSelector([getPermitByGuid(permitGuid)], (permit) => {
-    if (!permit?.permit_amendments) {
-      return undefined;
-    }
-    // sorted on BE: 'desc(PermitAmendment.issue_date), desc(PermitAmendment.permit_amendment_id)'
-    return permit.permit_amendments.filter((a) => a.permit_amendment_status_code !== draft)[0];
+  createSelector([getLatestPermitAmendments], (amendments) => {
+    return amendments ? amendments[permitGuid] : null;
   });
 
 export const getPermits = createSelector([getUnformattedPermits], (permits) => {
