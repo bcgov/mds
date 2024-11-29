@@ -140,3 +140,28 @@ Oversees Deployments of:
     - [DEV](https://registry-dev.digitaltrust.gov.bc.ca/)
     - [TEST](https://registry-test.digitaltrust.gov.bc.ca/)
     - [PROD](https://registry.digitaltrust.gov.bc.ca/)
+
+# Future Work
+
+### If you want to update to a new UNTP spec version
+
+- If the same data structured can be used, then the provider just needs to update it's transformation
+- If not, the CDT team or maintainer of the publisher will reach out with the required changes.
+- We should not remove or revoke previously issued credentials
+
+### If you want to add new attributes to the BCMines extension
+
+- Make a new context file (v-n+1).
+- create new credential type that references new context file
+- update job to send expanded data to publisher
+- we should not remove or revoke previously issued credentials.
+
+### What if data is updated in CORE
+
+- If a permit amendment is issued: This is going to be incredibly simlilar to `revoke_all_credentials_for_permit`, but targeted to a specific credential record (in the `permit_amendment_orgbook_publish_status` table), and with a different mechanism for revocation (asking the publisher to update a BitStringStatusList)
+  - The existing credential without a `validUntil` date should be revoked
+    - this is new
+  - A new credentials should be issued with those previous details identical, with a vaildUntil date added (set to the new validFrom date of the new permitamendment issue date)
+    - The job should pick this up automatically)
+  - Issue new credential with new details
+    - (the job should pick this up automatically)

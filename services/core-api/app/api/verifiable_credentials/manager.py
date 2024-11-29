@@ -298,6 +298,7 @@ def push_untp_map_data_to_publisher():
         if pa.permit_no[1] in ("X", "x"):
             current_app.logger.info(
                 f"exclude exploration permit={pa.permit_no}, they cannot produce goods for sale")
+            skipped_count += 1
             continue
 
         pa_cred = VerifiableCredentialManager.produce_untp_cc_map_payload_without_id(
@@ -305,6 +306,7 @@ def push_untp_map_data_to_publisher():
         if not pa_cred:
             current_app.logger.warning(
                 f"pa_cred could not be created for permit_amendment_guid={row[0]}")
+            skipped_count += 1
             continue
 
         #only one assessment per credential
