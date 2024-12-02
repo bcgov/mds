@@ -284,7 +284,7 @@ class Config(object):
         },
         'push_untp_map_data_to_publisher': {
             'task': 'app.api.verifiable_credentials.manager.push_untp_map_data_to_publisher',
-            'schedule': crontab(day_of_week="1"),                                                    #Run Mondays
+            'schedule': crontab(day_of_week="1", hour="16", minute="0"),                             #Run 8am Mondays
         },
     }
                                                                                                      #Traction Verifiable Credentials DEFAULTS ARE FOR DEV

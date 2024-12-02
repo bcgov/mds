@@ -16,7 +16,7 @@ These are the did:web's for the Chief Permitting Officer.
 
 [DEV](https://dev.uniresolver.io/#did:web:registry-dev.digitaltrust.gov.bc.ca:mines-act:chief-permitting-officer): `did:web:registry-dev.digitaltrust.gov.bc.ca:mines-act:chief-permitting-officer`
 [TEST](https://dev.uniresolver.io/#did:web:registry-test.digitaltrust.gov.bc.ca:mines-act:chief-permitting-officer): `did:web:registry-test.digitaltrust.gov.bc.ca:mines-act:chief-permitting-officer`
-[PROD](<(https://dev.uniresolver.io/#did:web:registry.digitaltrust.gov.bc.ca:mines-act:chief-permitting-officer)>): `did:web:registry.digitaltrust.gov.bc.ca:mines-act:chief-permitting-officer`
+[PROD](https://dev.uniresolver.io/#did:web:registry.digitaltrust.gov.bc.ca:mines-act:chief-permitting-officer): `did:web:registry.digitaltrust.gov.bc.ca:mines-act:chief-permitting-officer`
 
 Each did resolves to a [DID Document](https://www.w3.org/TR/did-core/#did-documents) thats holds the public cryptographic keys.
 
