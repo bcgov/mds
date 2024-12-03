@@ -84,7 +84,7 @@ NOTE: To avoid SSO conflicts, it is recommended to log into CORE and Minespace i
 
 Should anything go awry with the above commands, you may wish to isolate the failure by running individual commands.
 
-1. Delete any existing `node_modules` in minespace, core-web, root of the repo etc.
+1. Delete any existing `node_modules` in minespace, core-web, root of the repo, parent directory etc
 2. Make sure that you are running the correct node version. Run `make valid` to validate your environment or `node -v` to check your version and `nvm use` to use the project version.
 3. Run `yarn` to update any dependencies.
 4. If you have recently switched between different branches, you may need to recreate `.env` files by running `make env` or check the logs in the `mds_flyway` container for migration validation errors.

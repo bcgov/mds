@@ -1,6 +1,6 @@
 # NRIS API
 
-The project uses a Python 3.6 runtime environment and [Flask REST-plus](https://flask-restplus.readthedocs.io/en/stable/) framework for the API.
+The project uses a Python 3.12 runtime environment and [Flask REST-plus](https://flask-restplus.readthedocs.io/en/stable/) framework for the API.
 
 The application uses SQLAlchemy as our ORM to interact with the database.
 
@@ -34,14 +34,14 @@ Follow the `.env-example` template to create an `.env` file with valid values be
 
 A. OS Level Installation
 
-- [Python 3.6](https://www.python.org/downloads/release/python-360/)
+- [Python 3.12](https://www.python.org/downloads/release/python-3123/)
 - [Pip](https://pypi.org/project/pip/)
 - [Virtualenv](https://virtualenv.pypa.io/en/stable/)
 
-1. Create a virtual environment with python 3.6 and activate it
+1. Create a virtual environment with python 3.12 and activate it
 
 ```
-virtualenv -p python3.6 .venv
+virtualenv -p python3.12 .venv
 source .venv/bin/activate
 ```
 
