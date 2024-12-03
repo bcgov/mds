@@ -98,6 +98,15 @@ Should anything go awry with the above commands, you may wish to isolate the fai
 
 You may choose to use a version manager such as [nvm](https://github.com/nvm-sh/nvm) or [asdf](https://asdf-vm.com/) if working on multiple projects.
 
+### Extensions/Plugins
+
+The recommended extensions for VSCode should be installed for optimal development experience.
+These will appear in the extensions tab and can also be found [here](.vscode/extensions.json).
+
+For browser debugging the React devtools and Redux devtools extensions are recommended.
+Chrome: [React devtools](https://chromewebstore.google.com/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en) [Redux devtools](https://chromewebstore.google.com/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en)
+Firefox: [React devtools](https://addons.mozilla.org/en-CA/firefox/addon/react-devtools/) [Redux devtools](https://addons.mozilla.org/en-CA/firefox/addon/reduxdevtools/)
+
 ### Browser Caching
 
 If you are rebuilding often, you may encounter browser caching.
