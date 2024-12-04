@@ -19,12 +19,13 @@ const RenderField: FC<BaseInputProps> = ({
   id,
   placeholder,
   allowClear,
+  showNA,
 }) => {
   return (
     <FormConsumer>
       {(value) => {
         if (!value.isEditMode) {
-          return <BaseViewInput label={label} value={input?.value} />;
+          return <BaseViewInput label={label} value={input?.value} showNA={showNA} />;
         }
         const labelString = (label || input.name) instanceof String ? (String)(label || input.name) : input.name;
         return (

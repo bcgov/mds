@@ -59,6 +59,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
   const canEditPermitConditions = isFeatureEnabled(Feature.MODIFY_PERMIT_CONDITIONS) && userCanEdit;
   const { id: mineGuid, permitGuid } = useParams<{ id: string; permitGuid: string, mineGuid: string }>();
   const [isExpanded, setIsExpanded] = useState(false);
+  const [editingConditionGuid, setEditingConditionGuid] = useState<string>();
 
   const mineReportPermitRequirements: IMineReportPermitRequirement[] = useSelector(
     getMineReportPermitRequirements(permitGuid)
@@ -80,9 +81,6 @@ const PermitConditions: FC<PermitConditionProps> = ({
       description: cat.description.replace('Conditions', '').trim(),
     }
   });
-
-  // @ts-ignore
-  const isLoading = useSelector((state) => state.GET_PERMITS?.isFetching);
 
   const isExtractionInProgress =
     permitExtraction?.task_status === PermitExtractionStatus.in_progress;
@@ -326,7 +324,13 @@ const PermitConditions: FC<PermitConditionProps> = ({
                       </Col>
                       {category.conditions.map((sc) => (
                         <Col span={24} key={sc.permit_condition_id} className="fade-in">
-                          <PermitConditionLayer condition={sc} isExpanded={isExpanded} userCanEdit={userCanEdit} />
+                          <PermitConditionLayer
+                            condition={sc}
+                            isExpanded={isExpanded}
+                            canEditPermitConditions={canEditPermitConditions}
+                            setEditingConditionGuid={setEditingConditionGuid}
+                            editingConditionGuid={editingConditionGuid}
+                          />
                         </Col>
                       ))}
                       {conditionsWithRequirements?.length > 0 && (

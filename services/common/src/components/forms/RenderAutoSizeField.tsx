@@ -28,6 +28,7 @@ const RenderAutoSizeField: FC<AutoSizeProps> = ({
         if (!value.isEditMode) {
           return <BaseViewInput value={props.input.value} label={label} />;
         }
+        const showHelp = help || maximumCharacters !== undefined;
         return (
           <Form.Item
             name={props.input.name}
@@ -52,7 +53,7 @@ const RenderAutoSizeField: FC<AutoSizeProps> = ({
                 autoSize={{ minRows: minRows }}
                 placeholder={props.placeholder}
               />
-              <Row
+              {showHelp && <Row
                 justify="space-between"
                 className={`form-item-help ${props.input.name}-form-help`}
               >
@@ -61,9 +62,9 @@ const RenderAutoSizeField: FC<AutoSizeProps> = ({
                 ) : (
                   <span>{`Maximum ${maximumCharacters} characters`}</span>
                 )}
-                <span className="flex-end">{`${maximumCharacters -
-                  props.input.value.length} / ${maximumCharacters}`}</span>
-              </Row>
+                {<span className="flex-end">{`${maximumCharacters -
+                  props.input.value.length} / ${maximumCharacters}`}</span>}
+              </Row>}
             </>
           </Form.Item>
         );
