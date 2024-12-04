@@ -70,7 +70,7 @@ interface ProjectCalloutProps {
 const ProjectCallout: FC<ProjectCalloutProps> = ({ status_code, formField }) => {
   const systemFlag = useSelector(getSystemFlag);
   const isCore = systemFlag === SystemFlagEnum.core;
-  const calloutParams = statusTextHash(status_code ?? "DFT", false);
+  const calloutParams = statusTextHash(status_code ?? "DFT", isCore);
   let title = PROJECT_SUMMARY_STATUS_CODES[status_code ?? "DFT"];
   const hasFormField = Boolean(formField);
   const colProps = hasFormField ? { xs: 24, md: 18 } : { span: 24 };
