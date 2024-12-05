@@ -1,6 +1,6 @@
 # Backend API
 
-The project uses a Python 3.6 runtime environment and [Flask
+The project uses a Python 3.11 runtime environment and [Flask
 REST-plus](https://flask-restplus.readthedocs.io/en/stable/) framework for the
 API.
 
@@ -39,14 +39,14 @@ before running the application.
 
 A. OS Level Installation
 
-- [Python 3.6](https://www.python.org/downloads/release/python-360/)
+- [Python 3.11](https://www.python.org/downloads/release/python-3119/)
 - [Pip](https://pypi.org/project/pip/)
 - [Virtualenv](https://virtualenv.pypa.io/en/stable/)
 
-1. Create a virtual environment with python 3.6 and activate it
+1. Create a virtual environment with python 3.11 and activate it
 
 ```
-virtualenv -p python3.6 .venv
+virtualenv -p python3.11 .venv
 source .venv/bin/activate
 ```
 

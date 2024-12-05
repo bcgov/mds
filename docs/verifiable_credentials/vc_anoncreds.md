@@ -6,13 +6,15 @@ The core-api is enabled to create out-of-band messages([spec](https://github.com
 
 The core-api is enabled to send credential-offer messages to connected wallets as way of initiating the [issue-credential](https://github.com/hyperledger/aries-rfcs/tree/main/features/0036-issue-credential) protocol.
 
-## Governance Documentation
+## AnonCreds
+
+### Governance Documentation
 
 The Mines Act Permit Verifiable Credentials has public [governance documentation](https://github.com/bcgov/bc-vcpedia/blob/main/credentials/bc-mines-act-permit/1.1.1/governance.md) that should be kept up-to-date with any technical or process changes.
 
-## User Flows
+### User Flows
 
-### Connection Establishment
+#### Connection Establishment
 
 This is abbreviated from the governance documentation above which will supercede this if unclear or out-of-date.
 
@@ -30,7 +32,7 @@ Current Limitations:
 - If an active connection exists, do not allow the processing of any further connection requests
 - Deleting a connection is not accessible in the UI, It could be done manually by deleting the row in `party_verifiable_credential_connection`, and using the TenantUI (see links below) to delete the connection record in Traction. (This may be needed for POC testing purposes, or if a company made a new corporate wallet.)
 
-### Credential Issuance
+#### Credential Issuance
 
 This is abbreviated from the governance documentation above which will supercede this if unclear or out-of-date.
 
@@ -48,7 +50,7 @@ Current Limitations:
 - The existence of this problem report should show in the Minespace and Core UI, as well as the text description contained in the problem-report
 - Controls and endpoints should be built to allow for a new credential-offer when a problem report has been received on a previous offer
 
-### Credential Revocation
+#### Credential Revocation
 
 Happy Path UX flow
 
@@ -58,7 +60,7 @@ Happy Path UX flow
 1. The corporate wallet of the holder will receive a `revocation-notification` message, CORE will lock the permit such that it shows in the state `revoked` on minespace.
 1. If the verifiable credential should become valid again, the ministry user can release the lock, which means the permit record will show as `available` in minespace, so the the proponent can get their veriifable credential again.
 
-### Permit Amendments and Revocation
+#### Permit Amendments and Revocation
 
 When a permit is amended, the previous authorization is no longer valid and the new authorization should be the only valid credential that exists.
 
@@ -66,13 +68,13 @@ After a new permit amendment is created for a permit:
 
 MDS will automatically revoke all verifiable credentials for that permit and offer a new credential with the newest values to the connection on the permitee (if it has one).
 
-## OCA Bundle
+### OCA Bundle
 
 The Overlay Capture Architechture (OCA) bundle for this credential is hosted [here](https://github.com/bcgov/aries-oca-bundles/tree/main/OCABundles/schema). The OCA bundle provides infomation on how the credential should be presented, including backgroun colors, labels, data-typing, and localization. If the credential is updated, the OCA bundle may need to be updated to match.
 
 OCA bundles hosted here can be previewed on the [OCA Explorer](https://bcgov.github.io/aries-oca-explorer/)
 
-## Key identifiers and links
+### Key identifiers and links
 
 As of: Nov 3, 2023, Published by Jason Syrotuck, (JSyro on Github, or jason.syrotuck@nttdata.com)
 
@@ -120,7 +122,7 @@ Traction Tenant API:
 - [Test Traction API](https://traction-tenant-proxy-test.apps.silver.devops.gov.bc.ca/api/doc)
 - [Test Traction API](https://traction-tenant-proxy-prod.apps.silver.devops.gov.bc.ca/api/doc)
 
-## Webhook URL
+### Webhook URL
 
 Traction is configured to call the core-api with HTTP requests when protocol events happen. Should these need to be reviewed or changed, navigate to the Tenant UI of the environment you want to view/change and navigate to `/tenant/settings` through the upper-right wallet avatar.
 
@@ -138,14 +140,37 @@ TRACTION_WEBHOOK_X_API_KEY=1263835957285d576a09466f2d5f6142
 
 These values could be used for local development, however you will not receive webhooks back from Traction unless you create a public tunnel (like NRGROK) and set tractions with that webhook url.
 
-## Local development testing
+### KNOWN EDGE CASES
+
+What is proponent Delete connection after exchange.
+Steps to reproduce:
+
+1. Establish a connection using minespace to a traction agent on a business
+1. Issue a credential in minespace on that connection
+1. In the business's traction agent, delete the connection
+
+Any future use of that connection will fail. examples of addiitonal actions.
+
+1. Issuing a second permit on that connection
+1. Revoking which causes a 'revocation notification' (this is not blocking to the revocation process)
+
+After the connection is gone, what if they want to make a new one.
+
+1. Revoke any credentials issued to the previous connection on that record. Without this step, there may be multiple wallets that can prove they are the holder of the permit.
+1. Any records associated with the previous connection should be marked accordingly, unclear if this should be soft-deletion or a new flag.
+
+### AnonCred Schema updates
+
+If we change the schema what do we do with old records?
+
+Options:
+
+- Revoke all old credentials and re-issue new ones, this is likely unnessessary as the old credentials are still valid and there is no guarantee that the company needs to the new attributes of the new credential.
+
+- Enhance Minespace to allow for the permit holder to be issued specific versions of permit, this does not require revocation of the older schema as both are still valid. The holder can choose to delete any credential they don't want.
+
+### Local development testing
 
 Traction DEV is configured to send webhooks to MDS DEV, and to this website for inspection https://webhook.site, after 100 requests, you must create a new testing webhook url and add that to the CPO Dev wallet on traction dev.
 
 You can configure your local MDS to use the CPO Wallet on Traction dev as well (with env variables), but there is no way for the webhooks to get back to your local machine, so to manually test, we need to manually pass the webhook payload from traction, which will send it to webhook.site, then can be copied into Postman (or similar http client) and passed to your localhost api at `http://localhost:5000/verifiable-credentials/webhook/topic/<TOPIC>` as a json body, the topic is parameterized.
-
-# W3C Credentials
-
-Active development includes signing W3C credentials complaint with the [UN Transparency Protocol](https://uncefact.github.io/spec-untp/) that prove the mines act permit. This would allow a company to produce a **Digital Product Passport** for their goods that make claims about the ESG preformance of the goods and the Mines Act Permit could be used as evidence for those claims.
-
-No features exist in production at the moment. This is blocked by the difference between AnonCreds being issued to the holder through minespace, to publishing W3C credentials that need to relate to BC Business Registrations. Another way to think is that W3C credentials are no held, but simply relate to other verifiable data. Holder binding (how to know the credential on the web is related to the company/person I am connecting with), for BC Business Registration Numbers is still being designed.

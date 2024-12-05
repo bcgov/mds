@@ -236,18 +236,17 @@ exports[`HomePage renders properly 1`] = `
           <div
             class="ant-typography"
           >
-            Need a specific data query from CORE or more information about our data? Contact our data team at 
+            Need a specific data query from CORE or more information about our data? Contact our data service team via the 
+            <a
+              href="https://bcgov.sharepoint.com/sites/EMLI-MINESGIS/Lists/MappingData%20Requests%202_0/NewForm.aspx?Source=https%3a%2f%2fbcgov.sharepoint.com%2fsites%2fEMLI-MINESGIS%2fLists%2fMappingData%2520Requests%25202_0%2fByStatus.aspx&ContentTypeId=0x0103000CEC0CF87E561A48B21F26B3DEFBD37D&RootFolder=%2fsites%2fEMLI-MINESGIS%2fLists%2fMappingData+Requests+2_0&xsdata=MDV8MDJ8TURTQGdvdi5iYy5jYXw2ZmE1ZDM1YjJlZGE0NjBiY2M5MzA4ZGNiMGI2MTMyOHw2ZmRiNTIwMDNkMGQ0YThhYjAzNmQzNjg1ZTM1OWFkY3wwfDB8NjM4NTc5NTQzMjQ4MjY1MTg1fFVua25vd258VFdGcGJHWnNiM2Q4ZXlKV0lqb2lNQzR3TGpBd01EQWlMQ0pRSWpvaVYybHVNeklpTENKQlRpSTZJazFoYVd3aUxDSlhWQ0k2TW4wPXwwfHx8&sdata=M2x3Q1BoT2I3MGdFRG9MV2lRSXU1cG1wMWN4K2x2VllKcFNzM0JOK0d4ST0%3d"
+            >
+              Data and Mapping request portal
+            </a>
+             or email 
             <a
               href="mailto:EMLIAnalytics@gov.bc.ca"
             >
               EMLIAnalytics@gov.bc.ca
-            </a>
-             or
-             
-            <a
-              href="https://submit.digital.gov.bc.ca/app/?f=69b63f7b-c496-4a8b-8cd4-230a7025dbef&r=%2Fapp%2Fform%2Fsubmit"
-            >
-              submit a request online
             </a>
             .
           </div>
