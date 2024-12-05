@@ -67,7 +67,7 @@ def test_delete_project_summary_bad_status_code(test_client, db_session, auth_he
 def test_update_project_summary_assign_project_lead(test_client, db_session, auth_headers):
     '''Assigning a project lead will change status code to ASG'''
     project = ProjectFactory(project_summary=0)
-    project_summary = ProjectSummaryFactory(project=project)
+    project_summary = ProjectSummaryFactory(project=project, set_status_code='DFT')
     party = PartyFactory(person=True)
 
     data = {}
@@ -78,7 +78,7 @@ def test_update_project_summary_assign_project_lead(test_client, db_session, aut
     data['mine_guid'] = project_summary.project.mine_guid
     data['project_summary_title'] = project_summary.project_summary_title
     data['project_summary_description'] = project_summary.project_summary_description
-    data['status_code'] = 'SUB'
+    data['status_code'] = 'DFT'
     data['confirmation_of_submission'] = True
     data['project_lead_party_guid'] = party.party_guid
     data['is_historic'] = False
