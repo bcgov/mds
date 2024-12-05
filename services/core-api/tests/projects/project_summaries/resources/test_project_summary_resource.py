@@ -78,7 +78,7 @@ def test_update_project_summary_assign_project_lead(test_client, db_session, aut
     data['mine_guid'] = project_summary.project.mine_guid
     data['project_summary_title'] = project_summary.project_summary_title
     data['project_summary_description'] = project_summary.project_summary_description
-    data['status_code'] = 'DFT'
+    data['status_code'] = 'SUB'
     data['confirmation_of_submission'] = True
     data['project_lead_party_guid'] = party.party_guid
     data['is_historic'] = False
