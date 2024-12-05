@@ -1,27 +1,23 @@
 import { PROJECT_STATUS_CODES, SystemFlagEnum } from "@mds/common/constants/enums";
 import { memoize } from "lodash";
 
-export const areFieldsDisabled = memoize((systemFlag: SystemFlagEnum, projectSummaryStatusCode: string) => {
+export const areFieldsDisabled = memoize((systemFlag: SystemFlagEnum, projectSummaryStatusCode: string, confirmationOfSubmission?: boolean) => {
     // Return false (enabled) if status = "" => "Not Started"
     const isStatusInEnum = (<any>Object).values(PROJECT_STATUS_CODES).includes(projectSummaryStatusCode);
-
     if (!isStatusInEnum) return false;
     const projectSummaryStatus = projectSummaryStatusCode as PROJECT_STATUS_CODES;
-
     const disabledStatuses = [PROJECT_STATUS_CODES.WDN, PROJECT_STATUS_CODES.COM];
-
     const enabledStatuses = systemFlag === SystemFlagEnum.core
         ? [PROJECT_STATUS_CODES.DFT, PROJECT_STATUS_CODES.ASG, PROJECT_STATUS_CODES.UNR, PROJECT_STATUS_CODES.CHR, PROJECT_STATUS_CODES.OHD, PROJECT_STATUS_CODES.SUB]
-        : [PROJECT_STATUS_CODES.DFT, PROJECT_STATUS_CODES.CHR];
+        : [PROJECT_STATUS_CODES.DFT, PROJECT_STATUS_CODES.CHR, ...(!confirmationOfSubmission ? [PROJECT_STATUS_CODES.ASG] : [])];
 
     if (disabledStatuses.includes(projectSummaryStatus)) return true;
     return !enabledStatuses.includes(projectSummaryStatus);
-
 },
     (systemFlag: SystemFlagEnum, projectSummaryStatusCode: string) => `${systemFlag}_${projectSummaryStatusCode}`);
 
-export const areAuthFieldsDisabled = memoize((systemFlag: SystemFlagEnum, projectSummaryStatusCode: string) => {
-    const fieldsDisabled = areFieldsDisabled(systemFlag, projectSummaryStatusCode);
+export const areAuthFieldsDisabled = memoize((systemFlag: SystemFlagEnum, projectSummaryStatusCode: string, confirmationOfSubmission?: boolean) => {
+    const fieldsDisabled = areFieldsDisabled(systemFlag, projectSummaryStatusCode, confirmationOfSubmission);
     if (fieldsDisabled) return true;
 
     const extraDisabledStatuses = [PROJECT_STATUS_CODES.CHR, PROJECT_STATUS_CODES.UNR];
@@ -29,8 +25,8 @@ export const areAuthFieldsDisabled = memoize((systemFlag: SystemFlagEnum, projec
     return authDisabled;
 }, (systemFlag: SystemFlagEnum, projectSummaryStatusCode: string) => `${systemFlag}_${projectSummaryStatusCode}`);
 
-export const areAuthEnvFieldsDisabled = memoize((systemFlag, projectSummaryStatusCode) => {
-    const authFieldsDisabled = areAuthFieldsDisabled(systemFlag, projectSummaryStatusCode);
+export const areAuthEnvFieldsDisabled = memoize((systemFlag: SystemFlagEnum, projectSummaryStatusCode: string, confirmationOfSubmission?: boolean) => {
+    const authFieldsDisabled = areAuthFieldsDisabled(systemFlag, projectSummaryStatusCode, confirmationOfSubmission);
     if (authFieldsDisabled) return true;
 
     const extraDisabledStatuses = systemFlag === SystemFlagEnum.core
@@ -56,7 +52,6 @@ export const areDocumentFieldsDisabled = memoize((systemFlag: SystemFlagEnum, pr
 
     if (disabledStatuses.includes(projectSummaryStatus)) return true;
     return !enabledStatuses.includes(projectSummaryStatus);
-
 },
     (systemFlag: SystemFlagEnum, projectSummaryStatusCode: string) => `${systemFlag}_${projectSummaryStatusCode}`);
 

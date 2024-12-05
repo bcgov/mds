@@ -215,19 +215,15 @@ export const ProjectSummary: FC = () => {
 
     if (!status_code || isNewProject) {
       status_code = "DFT";
-    } else if (!newActiveTab) {
-      if (isCore) {
-        status_code = formValues.status_code;
-      } else {
-        status_code = "SUB";
-      }
+    } else if (!newActiveTab && status_code === "DFT") {
+      status_code = "SUB";
       is_historic = false;
       if (amsFeatureEnabled) {
         message = null;
       }
     }
 
-    if (isCore && !isNewProject) {
+    if (!isNewProject && newActiveTab) {
       status_code = formValues.status_code;
     }
 

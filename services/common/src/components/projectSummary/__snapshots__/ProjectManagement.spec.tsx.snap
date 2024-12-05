@@ -360,13 +360,13 @@ exports[`Project Management renders properly 1`] = `
           <div
             class="ant-alert-message"
           >
-            This project does not have a Project Lead
+            Assign a Project Lead
           </div>
           <div
             class="ant-alert-description"
           >
             <p>
-              Please assign a Project Lead to this project.
+              Assigning a Project Lead will set the Project Description status to 'Assigned' in Core and 'Submitted' in MineSpace. Please ensure the project is set at the correct status before continuing.
             </p>
           </div>
         </div>

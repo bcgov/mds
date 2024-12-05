@@ -99,11 +99,11 @@ export const ProjectSummaryForm: FC<ProjectSummaryFormProps> = ({
     getProjectSummaryAuthorizationTypesArray
   );
   const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;
-  const { status_code } = formValues ?? {};
+  const { status_code, confirmation_of_submission } = formValues ?? {};
 
-  const fieldsDisabled = areFieldsDisabled(systemFlag, status_code);
+  const fieldsDisabled = areFieldsDisabled(systemFlag, status_code, confirmation_of_submission);
   const docFieldsDisabled = areDocumentFieldsDisabled(systemFlag, status_code);
-  const authFieldsDisabled = areAuthFieldsDisabled(systemFlag, status_code);
+  const authFieldsDisabled = areAuthFieldsDisabled(systemFlag, status_code, confirmation_of_submission);
 
   const handleTransformPayload = (valuesFromForm: any) => {
     return formatProjectPayload(valuesFromForm, { projectSummaryAuthorizationTypesArray });

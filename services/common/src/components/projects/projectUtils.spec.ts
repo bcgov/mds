@@ -9,8 +9,8 @@ const TEST_PARAMETERS = [
         testFunction: areFieldsDisabled,
         coreDisabledStatuses: ["WDN", "COM"],
         coreEnabledStatuses: ["DFT", "SUB", "ASG", "UNR", "CHR", "OHD"],
-        msDisabledStatuses: ["SUB", "ASG", "UNR", "WDN", "OHD", "COM"],
-        msEnabledStatuses: ["DFT", "CHR"],
+        msDisabledStatuses: ["SUB", "UNR", "WDN", "OHD", "COM"],
+        msEnabledStatuses: ["DFT", "CHR", "ASG"],
     },
     {
         label: "areDocumentFieldsDisabled",
@@ -25,16 +25,16 @@ const TEST_PARAMETERS = [
         testFunction: areAuthFieldsDisabled,
         coreDisabledStatuses: ["WDN", "COM", "CHR", "UNR"],
         coreEnabledStatuses: ["DFT", "SUB", "ASG", "OHD"],
-        msDisabledStatuses: ["UNR", "WDN", "OHD", "COM", "SUB", "ASG", "CHR"],
-        msEnabledStatuses: ["DFT"],
+        msDisabledStatuses: ["UNR", "WDN", "OHD", "COM", "SUB", "CHR"],
+        msEnabledStatuses: ["DFT", "ASG"],
     },
     {
         label: "areAuthEnvFieldsDisabled",
         testFunction: areAuthEnvFieldsDisabled,
         coreDisabledStatuses: ["WDN", "COM", "ASG", "UNR", "CHR", "OHD", "SUB"],
         coreEnabledStatuses: ["DFT"],
-        msDisabledStatuses: ["UNR", "WDN", "OHD", "COM", "SUB", "ASG", "CHR"],
-        msEnabledStatuses: ["DFT"],
+        msDisabledStatuses: ["UNR", "WDN", "OHD", "COM", "SUB", "CHR"],
+        msEnabledStatuses: ["DFT", "ASG"],
     }
 ];
 
