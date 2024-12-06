@@ -21,24 +21,30 @@ import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import { ReportPermitRequirementForm } from "../../Forms/reports/ReportPermitRequirementForm";
-import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
+import { fetchPermits, updatePermitCondition } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { createMineReportPermitRequirement } from "@mds/common/redux/slices/mineReportPermitRequirementSlice";
 import RenderField from "@mds/common/components/forms/RenderField";
 
 
 interface PermitConditionFormProps {
+    permitAmendmentGuid: string;
     condition: IPermitCondition;
     canEditPermitConditions: boolean;
     onEdit: () => void;
     setEditingConditionGuid: (condition_guid: string) => void;
     editingConditionGuid: string;
+    moveUp?: (condition: IPermitCondition) => Promise<void>;
+    moveDown?: (condition: IPermitCondition) => Promise<void>;
 }
 const PermitConditionForm: FC<PermitConditionFormProps> = ({
+    permitAmendmentGuid,
     canEditPermitConditions,
     condition,
     onEdit,
     setEditingConditionGuid,
-    editingConditionGuid
+    editingConditionGuid,
+    moveUp,
+    moveDown,
 }) => {
     const dispatch = useDispatch();
     const { id: mineGuid, permitGuid } = useParams<{ id: string; permitGuid: string }>();
@@ -51,8 +57,13 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
         setIsEditMode(true);
     };
 
-    const handleSubmit = (values) => {
-
+    const handleSubmit = async (values) => {
+        console.log(values);
+        // TODO: check for errors
+        await dispatch(updatePermitCondition(values.permit_condition_guid, permitAmendmentGuid, values));
+        await dispatch(fetchPermits(mineGuid));
+        setEditingConditionGuid(null);
+        setIsEditMode(false);
     };
     const handleCancel = () => {
         setEditingConditionGuid(null);
@@ -68,12 +79,6 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
     };
 
     const handleDelete = () => {
-
-    };
-    const handleMoveUp = () => {
-
-    };
-    const handleMoveDown = () => {
 
     };
 
@@ -109,9 +114,12 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
             name={formName}
             initialValues={condition}
             scrollOnToggleEdit={false}
+            reduxFormConfig={{
+                enableReinitialize: true
+            }}
         >
             <Row wrap={false} className={`condition-content ${!editingConditionGuid ? "editable" : ""}`}>
-                <Col className="step-column">
+                <Col className="step-column" style={{ flexShrink: 0 }}>
                     <Field
                         name="step"
                         component={RenderField}
@@ -119,7 +127,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                     />
                 </Col>
                 <Col className="condition-column"
-                    onClick={!editingConditionGuid && canEditPermitConditions && startEdit}
+                    onClick={!editingConditionGuid && canEditPermitConditions ? startEdit : undefined}
                 >
                     <Field
                         name="condition"
@@ -182,7 +190,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                         </Row>
                     </Col>
                     <Col>
-                        <Row gutter={8} align="middle">
+                        <Row gutter={8} align="middle" className="condition-edit-buttons">
                             <Col>
                                 <Button
                                     className="fa-icon-container"
@@ -195,16 +203,18 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                                 <Button
                                     className="fa-icon-container"
                                     type="default"
+                                    disabled={!moveUp}
                                     icon={<FontAwesomeIcon icon={faArrowUp} />}
-                                    onClick={handleMoveUp}
+                                    onClick={() => moveUp(condition)}
                                 />
                             </Col>
                             <Col>
                                 <Button
                                     className="fa-icon-container"
                                     type="default"
+                                    disabled={!moveDown}
                                     icon={<FontAwesomeIcon icon={faArrowDown} />}
-                                    onClick={handleMoveDown}
+                                    onClick={() => moveDown(condition)}
                                 />
                             </Col>
                         </Row>

@@ -10,6 +10,10 @@ interface PermitConditionLayerProps {
   canEditPermitConditions?: boolean;
   setEditingConditionGuid: (permit_condition_guid: string) => void;
   editingConditionGuid: string;
+  handleMoveCondition: (condition: IPermitCondition, newOrder: number) => Promise<void>;
+  currentPosition: number;
+  conditionCount: number;
+  permitAmendmentGuid: string;
 }
 
 const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
@@ -20,6 +24,10 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   canEditPermitConditions = false,
   setEditingConditionGuid,
   editingConditionGuid,
+  handleMoveCondition,
+  currentPosition,
+  conditionCount,
+  permitAmendmentGuid,
 }) => {
   const editingCondition = editingConditionGuid === condition.permit_condition_guid;
   const [expandClass, setExpandClass] = useState(
@@ -47,6 +55,14 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
     }
   };
 
+  const moveUp = async (condition: IPermitCondition) => {
+    await handleMoveCondition(condition, currentPosition - 1);
+  }
+
+  const moveDown = async (condition: IPermitCondition) => {
+    await handleMoveCondition(condition, currentPosition + 1);
+  }
+
   return (
     <div
       className={`${className} ${editingCondition ? "condition-layer--editing" : ""}`}
@@ -60,17 +76,24 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
           canEditPermitConditions={canEditPermitConditions}
           setEditingConditionGuid={setEditingConditionGuid}
           editingConditionGuid={editingConditionGuid}
+          moveUp={currentPosition > 0 && moveUp}
+          moveDown={currentPosition < conditionCount - 1 && moveDown}
+          permitAmendmentGuid={permitAmendmentGuid}
         />
-        {condition?.sub_conditions?.map((subCondition) => {
+        {condition?.sub_conditions?.map((subCondition, idx) => {
           return (
             <div key={subCondition.permit_condition_id}>
               <PermitConditionLayer
+                permitAmendmentGuid={permitAmendmentGuid}
                 condition={subCondition}
                 level={level + 1}
                 setParentExpand={handleSetParentExpand}
                 canEditPermitConditions={canEditPermitConditions}
                 setEditingConditionGuid={setEditingConditionGuid}
                 editingConditionGuid={editingConditionGuid}
+                handleMoveCondition={handleMoveCondition}
+                currentPosition={idx}
+                conditionCount={condition.sub_conditions.length}
               />
             </div>
           );

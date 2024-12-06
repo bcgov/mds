@@ -64,3 +64,13 @@ export const formatProjectPayload = (valuesFromForm: any, params: any) => {
   delete payloadValues.authorizationTypes;
   return payloadValues;
 };
+
+export const formatPermitConditionStep = (step: string, level: number) => {
+  if (step?.length > 0) {
+    if (level === 0) {
+      return `${step}.`
+    }
+    return `(${step})`
+  }
+  return "";
+}

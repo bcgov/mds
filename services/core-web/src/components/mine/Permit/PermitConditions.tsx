@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Col, Collapse, Row, Skeleton, Typography } from "antd";
@@ -37,9 +37,10 @@ import ReportPermitRequirementForm from "@/components/Forms/reports/ReportPermit
 import PermitConditionCategoryEditModal from "./PermitConditionCategoryEditModal";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import { uniqBy } from "lodash";
-import { createPermitAmendmentConditionCategory, deletePermitAmendmentConditionCategory, updatePermitAmendmentConditionCategory } from "@mds/common/redux/actionCreators/permitActionCreator";
+import { createPermitAmendmentConditionCategory, deletePermitAmendmentConditionCategory, fetchPermits, updatePermitAmendmentConditionCategory, updatePermitCondition } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { EditPermitConditionCategoryInline } from "./PermitConditionCategory";
 import { searchConditionCategories } from "@mds/common/redux/slices/permitConditionCategorySlice";
+import { formatPermitConditionStep } from "@mds/common/utils/helpers";
 
 const { Title } = Typography;
 
@@ -65,6 +66,9 @@ const PermitConditions: FC<PermitConditionProps> = ({
     getMineReportPermitRequirements(permitGuid)
   );
 
+  // @ts-ignore
+  const isLoading = useSelector((state) => state.GET_PERMITS?.isFetching);
+
   const permitConditions = latestAmendment?.conditions;
   const permitExtraction = useSelector(
     getPermitExtractionByGuid(latestAmendment?.permit_amendment_id)
@@ -88,10 +92,10 @@ const PermitConditions: FC<PermitConditionProps> = ({
 
   const permitConditionCategoryOptions: IPermitConditionCategory[] = uniqBy(latestAmendment?.condition_categories.concat(condWithoutConditionsText) ?? [], 'condition_category_code');
 
-  const permitConditionCategories = permitConditionCategoryOptions
-    .map((cat) => {
-      const conditions =
-        permitConditions?.filter(
+  const getPermitConditionCategories = (categories, conditions) => {
+    return categories.map((cat) => {
+      const catConditions =
+        conditions?.filter(
           (c) => c.condition_category_code === cat.condition_category_code
         ) ?? [];
 
@@ -102,11 +106,13 @@ const PermitConditions: FC<PermitConditionProps> = ({
       }
 
       // Recursive function to get the full path of steps
-      const getStepPath = (condition, parentPath = ""): IPermitCondition => {
+      const getStepPath = (condition, parentPath = "", level = 0): IPermitCondition => {
         const currentPath = parentPath
-          ? `${parentPath}${condition.step}`
-          : `${cat.description} - ${condition.step}`;
+          ? `${parentPath}${condition.formattedStep}`
+          : `${cat.description} - ${condition.formattedStep}`;
         const stepPath = currentPath.replace(/\.+$/, "");
+
+        const formattedStep = formatPermitConditionStep(condition.step, level);
 
         const mineReportPermitRequirement = mineReportPermitRequirements.find(
           (requirement) => requirement.permit_condition_id === condition.permit_condition_id
@@ -114,11 +120,12 @@ const PermitConditions: FC<PermitConditionProps> = ({
 
         // If condition has sub-conditions, recursively add step paths
         const sub_conditions =
-          condition.sub_conditions?.map((subCondition) => getStepPath(subCondition, currentPath)) ??
+          condition.sub_conditions?.map((subCondition) => getStepPath(subCondition, currentPath, level + 1)) ??
           [];
 
         return {
           ...condition,
+          formattedStep,
           stepPath,
           mineReportPermitRequirement,
           sub_conditions,
@@ -126,21 +133,30 @@ const PermitConditions: FC<PermitConditionProps> = ({
       }
 
       // Initialize the step paths for all top-level conditions
-      const formattedConditions = conditions.map((condition) => getStepPath(condition));
+      const formattedConditions = catConditions.map((condition) => getStepPath(condition));
 
       return {
         href: cat.condition_category_code.toLowerCase().replace('-', ''),
         icon: <FontAwesomeIcon icon={faBan} style={{ color: '#bbb', fontSize: '20px' }} />,
-        title: <Typography.Text style={{ fontSize: '16px', fontWeight: '600' }}>{cat.step ? `${cat.step}. ` : ''}{cat.description}</Typography.Text>,
+        title: <Typography.Text style={{ fontSize: '16px', fontWeight: '600' }}>{cat.step ?? ''}{cat.description}</Typography.Text>,
         titleText: cat.description,
         description: 'Not Started',
         conditions: formattedConditions || [],
         condition_category_code: cat.condition_category_code,
         condition_category: cat
       }
+
     })
-    .filter(Boolean)
-    .sort((a, b) => a.condition_category.display_order - b.condition_category.display_order);
+      .filter(Boolean)
+      .sort((a, b) => a.condition_category.display_order - b.condition_category.display_order);
+  }
+  const permitConditionCategories = useMemo(() =>
+    getPermitConditionCategories(permitConditionCategoryOptions, permitConditions),
+    [permitConditionCategoryOptions, permitConditions]);
+
+  useEffect(() => {
+    console.log('permitConditions changed')
+  }, [permitConditions])
   const scrollSideMenuProps = {
     menuOptions: permitConditionCategories,
     featureUrlRoute: VIEW_MINE_PERMIT.hashRoute,
@@ -194,7 +210,18 @@ const PermitConditions: FC<PermitConditionProps> = ({
     }
 
     dispatch(updatePermitAmendmentConditionCategory(mineGuid, permitGuid, latestAmendment.permit_amendment_guid, updatedCat));
-  }
+  };
+
+  const handleMoveCondition = async (condition: IPermitCondition, newOrder: number) => {
+    console.log('moving condition', condition.display_order, newOrder)
+    const updatedCond = {
+      ...condition,
+      display_order: newOrder
+    };
+
+    await dispatch(updatePermitCondition(condition.permit_condition_guid, latestAmendment.permit_amendment_guid, updatedCond));
+    await dispatch(fetchPermits(mineGuid));
+  };
 
   if (isExtractionInProgress) {
     return <RenderExtractionProgress />;
@@ -206,7 +233,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
     return <RenderExtractionStart />;
   }
 
-  const showLoading = !latestAmendment;
+  const showLoading = !latestAmendment || isLoading;
 
   const getConditionsWithRequirements = (conditions: IPermitCondition[]) => {
     let result = [];
@@ -322,11 +349,15 @@ const PermitConditions: FC<PermitConditionProps> = ({
                           )}
                         </Row>
                       </Col>
-                      {category.conditions.map((sc) => (
+                      {category.conditions.map((sc, idx) => (
                         <Col span={24} key={sc.permit_condition_id} className="fade-in">
                           <PermitConditionLayer
+                            permitAmendmentGuid={latestAmendment.permit_amendment_guid}
                             condition={sc}
                             isExpanded={isExpanded}
+                            handleMoveCondition={handleMoveCondition}
+                            currentPosition={idx + 1}
+                            conditionCount={category.conditions.length}
                             canEditPermitConditions={canEditPermitConditions}
                             setEditingConditionGuid={setEditingConditionGuid}
                             editingConditionGuid={editingConditionGuid}
