@@ -23,13 +23,6 @@ import { ItemMap } from "@mds/common";
  */
 export const resetForm = (form) => (result, dispatch) => dispatch(reset(form));
 
-// Function to create a reusable reducer (used in src/reducers/rootReducer)
-export const createReducer = (reducer, name) => (state, action) => {
-  if (name !== action.name && state !== undefined) {
-    return state;
-  }
-  return reducer(state, action);
-};
 // Function to create state object using the id as the key (used in src/reducers/<customReducer>)
 export const createItemMap = <T>(array: T[], idField: string): ItemMap<T> => {
   const mapping: ItemMap<T> = {};
@@ -590,7 +583,7 @@ export const getHighestConsequence = (tsf) => {
 
   const highestRankedDam = tsf.dams.reduce((prev, current) =>
     CONSEQUENCE_CLASSIFICATION_RANK_HASH[prev.consequence_classification] >
-    CONSEQUENCE_CLASSIFICATION_RANK_HASH[current.consequence_classification]
+      CONSEQUENCE_CLASSIFICATION_RANK_HASH[current.consequence_classification]
       ? prev
       : current
   );

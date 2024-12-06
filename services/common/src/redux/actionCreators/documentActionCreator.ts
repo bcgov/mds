@@ -1,7 +1,6 @@
 import { AppThunk } from "@mds/common/interfaces/appThunk.type";
 import { AxiosResponse } from "axios";
-
-import * as reducerTypes from "@mds/common/constants/reducerTypes";
+import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
 import { hideLoading, showLoading } from "react-redux-loading-bar";
 
 import { notification } from "antd";
@@ -25,60 +24,60 @@ export const postNewDocumentVersion = ({
 }): AppThunk<Promise<AxiosResponse<IMineDocumentVersion>>> => (
   dispatch
 ): Promise<AxiosResponse<IMineDocumentVersion>> => {
-  dispatch(request(reducerTypes.POST_NEW_DOCUMENT_VERSION));
-  dispatch(showLoading());
+    dispatch(request(NetworkReducerTypes.POST_NEW_DOCUMENT_VERSION));
+    dispatch(showLoading());
 
-  const payload = { document_manager_version_guid: documentManagerVersionGuid };
+    const payload = { document_manager_version_guid: documentManagerVersionGuid };
 
-  return CustomAxios()
-    .post(
-      `${ENVIRONMENT.apiUrl}/mines/${mineGuid}/documents/${mineDocumentGuid}/versions`,
-      payload,
-      createRequestHeader()
-    )
-    .then((response: AxiosResponse<IMineDocumentVersion>) => {
-      notification.success({
-        message: "Successfully created new document version",
-        duration: 10,
+    return CustomAxios()
+      .post(
+        `${ENVIRONMENT.apiUrl}/mines/${mineGuid}/documents/${mineDocumentGuid}/versions`,
+        payload,
+        createRequestHeader()
+      )
+      .then((response: AxiosResponse<IMineDocumentVersion>) => {
+        notification.success({
+          message: "Successfully created new document version",
+          duration: 10,
+        });
+        dispatch(success(NetworkReducerTypes.POST_NEW_DOCUMENT_VERSION));
+        return response;
+      })
+      .catch(() => {
+        dispatch(error(NetworkReducerTypes.POST_NEW_DOCUMENT_VERSION));
+      })
+      .finally(() => {
+        dispatch(hideLoading());
       });
-      dispatch(success(reducerTypes.POST_NEW_DOCUMENT_VERSION));
-      return response;
-    })
-    .catch(() => {
-      dispatch(error(reducerTypes.POST_NEW_DOCUMENT_VERSION));
-    })
-    .finally(() => {
-      dispatch(hideLoading());
-    });
-};
+  };
 
 export const pollDocumentUploadStatus = (
   mine_document_guid: string
 ): AppThunk<Promise<AxiosResponse<IMineDocumentVersion>>> => (
   dispatch
 ): Promise<AxiosResponse<IMineDocumentVersion>> => {
-  dispatch(request(reducerTypes.POLL_DOCUMENT_UPLOAD_STATUS));
-  dispatch(showLoading());
+    dispatch(request(NetworkReducerTypes.POLL_DOCUMENT_UPLOAD_STATUS));
+    dispatch(showLoading());
 
-  return CustomAxios()
-    .get(
-      `${ENVIRONMENT.apiUrl}/mines/documents/upload/${mine_document_guid}`,
-      createRequestHeader()
-    )
-    .then((response: AxiosResponse<IMineDocumentVersion>) => {
-      dispatch(success(reducerTypes.POLL_DOCUMENT_UPLOAD_STATUS));
-      return response;
-    })
-    .catch(() => {
-      dispatch(error(reducerTypes.POLL_DOCUMENT_UPLOAD_STATUS));
-    })
-    .finally(() => {
-      dispatch(hideLoading());
-    });
-};
+    return CustomAxios()
+      .get(
+        `${ENVIRONMENT.apiUrl}/mines/documents/upload/${mine_document_guid}`,
+        createRequestHeader()
+      )
+      .then((response: AxiosResponse<IMineDocumentVersion>) => {
+        dispatch(success(NetworkReducerTypes.POLL_DOCUMENT_UPLOAD_STATUS));
+        return response;
+      })
+      .catch(() => {
+        dispatch(error(NetworkReducerTypes.POLL_DOCUMENT_UPLOAD_STATUS));
+      })
+      .finally(() => {
+        dispatch(hideLoading());
+      });
+  };
 
 export const documentsCompression = (mineGuid, documentManagerGuids) => (dispatch) => {
-  dispatch(request(reducerTypes.DOCUMENTS_COMPRESSION));
+  dispatch(request(NetworkReducerTypes.DOCUMENTS_COMPRESSION));
   dispatch(showLoading());
   return CustomAxios()
     .post(
@@ -87,17 +86,17 @@ export const documentsCompression = (mineGuid, documentManagerGuids) => (dispatc
       createRequestHeader()
     )
     .then((response) => {
-      dispatch(success(reducerTypes.DOCUMENTS_COMPRESSION));
+      dispatch(success(NetworkReducerTypes.DOCUMENTS_COMPRESSION));
       return response;
     })
     .catch(() => {
-      dispatch(error(reducerTypes.DOCUMENTS_COMPRESSION));
+      dispatch(error(NetworkReducerTypes.DOCUMENTS_COMPRESSION));
     })
     .finally(() => dispatch(hideLoading()));
 };
 
 export const pollDocumentsCompressionProgress = (taskId) => (dispatch) => {
-  dispatch(request(reducerTypes.POLL_DOCUMENTS_COMPRESSION_PROGRESS));
+  dispatch(request(NetworkReducerTypes.POLL_DOCUMENTS_COMPRESSION_PROGRESS));
   dispatch(showLoading());
   return CustomAxios()
     .get(
@@ -105,12 +104,12 @@ export const pollDocumentsCompressionProgress = (taskId) => (dispatch) => {
       createRequestHeader()
     )
     .then((response) => {
-      dispatch(success(reducerTypes.POLL_DOCUMENTS_COMPRESSION_PROGRESS));
+      dispatch(success(NetworkReducerTypes.POLL_DOCUMENTS_COMPRESSION_PROGRESS));
       dispatch(documentActions.storeDocumentCompressionProgress(response.data));
       return response;
     })
     .catch(() => {
-      dispatch(error(reducerTypes.POLL_DOCUMENTS_COMPRESSION_PROGRESS));
+      dispatch(error(NetworkReducerTypes.POLL_DOCUMENTS_COMPRESSION_PROGRESS));
     })
     .finally(() => dispatch(hideLoading()));
 };

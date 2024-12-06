@@ -1,7 +1,7 @@
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { request, success, error } from "../actions/genericActions";
-import * as reducerTypes from "@mds/common/constants/reducerTypes";
+import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
 import * as Strings from "@mds/common/constants/strings";
 import * as projectActions from "../actions/projectActions";
 import * as API from "@mds/common/constants/API";
@@ -31,7 +31,7 @@ export const createProjectSummary = (
 ): AppThunk<Promise<AxiosResponse<IProjectSummary>>> => (
   dispatch
 ): Promise<AxiosResponse<IProjectSummary>> => {
-    dispatch(request(reducerTypes.CREATE_MINE_PROJECT_SUMMARY));
+    dispatch(request(NetworkReducerTypes.CREATE_MINE_PROJECT_SUMMARY));
     dispatch(showLoading());
     const messages = {
       errorToastMessage: "default",
@@ -45,12 +45,12 @@ export const createProjectSummary = (
         createRequestHeader()
       )
       .then((response: AxiosResponse<IProjectSummary>) => {
-        dispatch(success(reducerTypes.CREATE_MINE_PROJECT_SUMMARY));
+        dispatch(success(NetworkReducerTypes.CREATE_MINE_PROJECT_SUMMARY));
         dispatch(projectActions.storeProjectSummary(payload));
         return response;
       })
       .catch((err) => {
-        dispatch(error(reducerTypes.CREATE_MINE_PROJECT_SUMMARY));
+        dispatch(error(NetworkReducerTypes.CREATE_MINE_PROJECT_SUMMARY));
         throw new Error(err);
       })
       .finally(() => dispatch(hideLoading()));
@@ -63,7 +63,7 @@ export const updateProjectSummary = (
 ): AppThunk<Promise<AxiosResponse<IProjectSummary>>> => (
   dispatch
 ): Promise<AxiosResponse<IProjectSummary>> => {
-    dispatch(request(reducerTypes.UPDATE_MINE_PROJECT_SUMMARY));
+    dispatch(request(NetworkReducerTypes.UPDATE_MINE_PROJECT_SUMMARY));
     dispatch(showLoading());
     const messages = {
       errorToastMessage: "default",
@@ -77,13 +77,13 @@ export const updateProjectSummary = (
         createRequestHeader()
       )
       .then((response: AxiosResponse<IProjectSummary>) => {
-        dispatch(success(reducerTypes.UPDATE_MINE_PROJECT_SUMMARY));
+        dispatch(success(NetworkReducerTypes.UPDATE_MINE_PROJECT_SUMMARY));
         dispatch(projectActions.storeProjectSummary(payload));
 
         return response;
       })
       .catch(() => {
-        dispatch(error(reducerTypes.UPDATE_MINE_PROJECT_SUMMARY));
+        dispatch(error(NetworkReducerTypes.UPDATE_MINE_PROJECT_SUMMARY));
       })
       .finally(() => dispatch(hideLoading()));
   };
@@ -94,7 +94,7 @@ export const updateProject = (
   message = "Successfully updated project.",
   showSuccessMessage = true
 ): AppThunk<Promise<IProject>> => (dispatch): Promise<IProject> => {
-  dispatch(request(reducerTypes.UPDATE_PROJECT));
+  dispatch(request(NetworkReducerTypes.UPDATE_PROJECT));
   dispatch(showLoading());
   const successToastMessage = showSuccessMessage ? message : null;
   const messages = {
@@ -105,18 +105,18 @@ export const updateProject = (
   return CustomAxios(messages)
     .put(ENVIRONMENT.apiUrl + API.PROJECT(projectGuid), payload, createRequestHeader())
     .then((response: AxiosResponse<IProject>) => {
-      dispatch(success(reducerTypes.UPDATE_PROJECT));
+      dispatch(success(NetworkReducerTypes.UPDATE_PROJECT));
       dispatch(projectActions.storeProject(payload));
       return response.data;
     })
     .catch(() => {
-      dispatch(error(reducerTypes.UPDATE_PROJECT));
+      dispatch(error(NetworkReducerTypes.UPDATE_PROJECT));
     })
     .finally(() => dispatch(hideLoading()));
 };
 
 export const fetchProjectSummariesByMine = ({ mineGuid }): AppThunk => (dispatch) => {
-  dispatch(request(reducerTypes.GET_PROJECT_SUMMARIES));
+  dispatch(request(NetworkReducerTypes.GET_PROJECT_SUMMARIES));
   dispatch(showLoading());
   return CustomAxios({ errorToastMessage: Strings.ERROR })
     .get(
@@ -124,10 +124,10 @@ export const fetchProjectSummariesByMine = ({ mineGuid }): AppThunk => (dispatch
       createRequestHeader()
     )
     .then((response) => {
-      dispatch(success(reducerTypes.GET_PROJECT_SUMMARIES));
+      dispatch(success(NetworkReducerTypes.GET_PROJECT_SUMMARIES));
       dispatch(projectActions.storeProjectSummaries(response.data));
     })
-    .catch(() => dispatch(error(reducerTypes.GET_PROJECT_SUMMARIES)))
+    .catch(() => dispatch(error(NetworkReducerTypes.GET_PROJECT_SUMMARIES)))
     .finally(() => dispatch(hideLoading()));
 };
 
@@ -135,7 +135,7 @@ export const fetchProjectSummaryById = (
   projectGuid: string,
   projectSummaryGuid: string
 ): AppThunk => (dispatch) => {
-  dispatch(request(reducerTypes.GET_PROJECT_SUMMARY));
+  dispatch(request(NetworkReducerTypes.GET_PROJECT_SUMMARY));
   dispatch(showLoading());
   return CustomAxios({ errorToastMessage: Strings.ERROR })
     .get(
@@ -143,11 +143,11 @@ export const fetchProjectSummaryById = (
       createRequestHeader()
     )
     .then((response) => {
-      dispatch(success(reducerTypes.GET_PROJECT_SUMMARY));
+      dispatch(success(NetworkReducerTypes.GET_PROJECT_SUMMARY));
       dispatch(projectActions.storeProjectSummary(response.data));
     })
     .catch(() => {
-      dispatch(error(reducerTypes.GET_PROJECT_SUMMARY));
+      dispatch(error(NetworkReducerTypes.GET_PROJECT_SUMMARY));
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -158,7 +158,7 @@ export const removeDocumentFromProjectSummary = (
   mineDocumentGuid: string
 ): AppThunk<Promise<AxiosResponse<string>>> => (dispatch): Promise<AxiosResponse<string>> => {
   dispatch(showLoading());
-  dispatch(request(reducerTypes.REMOVE_DOCUMENT_FROM_PROJECT_SUMMARY));
+  dispatch(request(NetworkReducerTypes.REMOVE_DOCUMENT_FROM_PROJECT_SUMMARY));
   return CustomAxios()
     .delete(
       ENVIRONMENT.apiUrl +
@@ -170,80 +170,80 @@ export const removeDocumentFromProjectSummary = (
         message: "Successfully deleted project description document.",
         duration: 10,
       });
-      dispatch(success(reducerTypes.REMOVE_DOCUMENT_FROM_PROJECT_SUMMARY));
+      dispatch(success(NetworkReducerTypes.REMOVE_DOCUMENT_FROM_PROJECT_SUMMARY));
       return response;
     })
     .catch(() => {
-      dispatch(error(reducerTypes.REMOVE_DOCUMENT_FROM_PROJECT_SUMMARY));
+      dispatch(error(NetworkReducerTypes.REMOVE_DOCUMENT_FROM_PROJECT_SUMMARY));
     })
     .finally(() => dispatch(hideLoading()));
 };
 
 export const fetchProjectSummaries = (payload: any): AppThunk => (dispatch) => {
-  dispatch(request(reducerTypes.GET_PROJECT_SUMMARIES));
+  dispatch(request(NetworkReducerTypes.GET_PROJECT_SUMMARIES));
   dispatch(showLoading());
   return CustomAxios({ errorToastMessage: Strings.ERROR })
     .get(ENVIRONMENT.apiUrl + API.PROJECT_PROJECT_SUMMARIES(payload), createRequestHeader())
     .then((response) => {
-      dispatch(success(reducerTypes.GET_PROJECT_SUMMARIES));
+      dispatch(success(NetworkReducerTypes.GET_PROJECT_SUMMARIES));
       dispatch(projectActions.storeProjectSummaries(response.data));
     })
-    .catch(() => dispatch(error(reducerTypes.GET_PROJECT_SUMMARIES)))
+    .catch(() => dispatch(error(NetworkReducerTypes.GET_PROJECT_SUMMARIES)))
     .finally(() => dispatch(hideLoading()));
 };
 
 export const fetchProjectsByMine = ({ mineGuid }): AppThunk => (dispatch) => {
-  dispatch(request(reducerTypes.GET_PROJECTS));
+  dispatch(request(NetworkReducerTypes.GET_PROJECTS));
   dispatch(showLoading());
   return CustomAxios({ errorToastMessage: Strings.ERROR })
     .get(ENVIRONMENT.apiUrl + API.PROJECTS(mineGuid), createRequestHeader())
     .then((response) => {
-      dispatch(success(reducerTypes.GET_PROJECTS));
+      dispatch(success(NetworkReducerTypes.GET_PROJECTS));
       dispatch(projectActions.storeProjects(response.data));
     })
-    .catch(() => dispatch(error(reducerTypes.GET_PROJECTS)))
+    .catch(() => dispatch(error(NetworkReducerTypes.GET_PROJECTS)))
     .finally(() => dispatch(hideLoading()));
 };
 
 export const fetchProjectById = (projectGuid: string): AppThunk<Promise<IProject>> => (
   dispatch
 ): Promise<IProject> => {
-  dispatch(request(reducerTypes.GET_PROJECT));
+  dispatch(request(NetworkReducerTypes.GET_PROJECT));
   dispatch(showLoading());
   return CustomAxios({ errorToastMessage: Strings.ERROR })
     .get(ENVIRONMENT.apiUrl + API.PROJECT(projectGuid), createRequestHeader())
     .then((response: AxiosResponse<IProject>) => {
-      dispatch(success(reducerTypes.GET_PROJECT));
+      dispatch(success(NetworkReducerTypes.GET_PROJECT));
       dispatch(projectActions.storeProject(response.data));
-      dispatch(success(reducerTypes.GET_PROJECT_SUMMARY));
+      dispatch(success(NetworkReducerTypes.GET_PROJECT_SUMMARY));
       dispatch(projectActions.storeProjectSummary(response.data.project_summary));
-      dispatch(success(reducerTypes.GET_INFORMATION_REQUIREMENTS_TABLE));
+      dispatch(success(NetworkReducerTypes.GET_INFORMATION_REQUIREMENTS_TABLE));
       dispatch(
         projectActions.storeInformationRequirementsTable(
           response.data.information_requirements_table
         )
       );
-      dispatch(success(reducerTypes.GET_MAJOR_MINES_APPLICATION));
+      dispatch(success(NetworkReducerTypes.GET_MAJOR_MINES_APPLICATION));
       dispatch(projectActions.storeMajorMinesApplication(response.data.major_mine_application));
       return response.data;
     })
     .catch(() => {
-      dispatch(error(reducerTypes.GET_PROJECT));
+      dispatch(error(NetworkReducerTypes.GET_PROJECT));
     })
     .finally(() => dispatch(hideLoading()));
 };
 
 export const fetchProjects = (params: IProjectPageData): AppThunk => (dispatch) => {
   const defaultParams = params || `${Strings.DEFAULT_DASHBOARD_PARAMS}${Strings.DEFAULT_MAJOR_PROJECTS_DASHBOARD_PARAMS}`;
-  dispatch(request(reducerTypes.GET_PROJECTS));
+  dispatch(request(NetworkReducerTypes.GET_PROJECTS));
   dispatch(showLoading());
   return CustomAxios({ errorToastMessage: Strings.ERROR })
     .get(ENVIRONMENT.apiUrl + API.MAJOR_PROJECT_DASHBOARD(defaultParams), createRequestHeader())
     .then((response) => {
-      dispatch(success(reducerTypes.GET_PROJECTS));
+      dispatch(success(NetworkReducerTypes.GET_PROJECTS));
       dispatch(projectActions.storeProjectViewAllTable(response.data));
     })
-    .catch(() => dispatch(error(reducerTypes.GET_PROJECTS)))
+    .catch(() => dispatch(error(NetworkReducerTypes.GET_PROJECTS)))
     .finally(() => dispatch(hideLoading()));
 };
 
@@ -251,7 +251,7 @@ export const deleteProjectSummary = (
   mineGuid: string,
   projectSummaryGuid: string
 ): AppThunk<Promise<AxiosResponse<string>>> => (dispatch): Promise<AxiosResponse<string>> => {
-  dispatch(request(reducerTypes.DELETE_PROJECT_SUMMARY));
+  dispatch(request(NetworkReducerTypes.DELETE_PROJECT_SUMMARY));
   dispatch(showLoading());
   return CustomAxios()
     .delete(
@@ -263,11 +263,11 @@ export const deleteProjectSummary = (
         message: "Successfully deleted project description.",
         duration: 10,
       });
-      dispatch(success(reducerTypes.DELETE_PROJECT_SUMMARY));
+      dispatch(success(NetworkReducerTypes.DELETE_PROJECT_SUMMARY));
       return response;
     })
     .catch(() => {
-      dispatch(error(reducerTypes.DELETE_PROJECT_SUMMARY));
+      dispatch(error(NetworkReducerTypes.DELETE_PROJECT_SUMMARY));
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -283,7 +283,7 @@ export const createInformationRequirementsTable = (
     formData.append("file", file);
     formData.append("document_guid", documentGuid);
     const customContentType = { "Content-Type": "multipart/form-data" };
-    dispatch(request(reducerTypes.INFORMATION_REQUIREMENTS_TABLE));
+    dispatch(request(NetworkReducerTypes.INFORMATION_REQUIREMENTS_TABLE));
     dispatch(showLoading());
     return CustomAxios({ errorToastMessage: "", suppressErrorNotification: true })
       .post(
@@ -292,11 +292,11 @@ export const createInformationRequirementsTable = (
         createRequestHeader(customContentType)
       )
       .then((response: AxiosResponse<IInformationRequirementsTable[]>) => {
-        dispatch(success(reducerTypes.INFORMATION_REQUIREMENTS_TABLE));
+        dispatch(success(NetworkReducerTypes.INFORMATION_REQUIREMENTS_TABLE));
         return response;
       })
       .catch((err) => {
-        dispatch(error(reducerTypes.INFORMATION_REQUIREMENTS_TABLE));
+        dispatch(error(NetworkReducerTypes.INFORMATION_REQUIREMENTS_TABLE));
         throw err;
       })
       .finally(() => dispatch(hideLoading()));
@@ -323,7 +323,7 @@ export const updateInformationRequirementsTable = (info: {
       formData.append("status_code", status_code);
     }
     const customContentType = { "Content-Type": "multipart/form-data" };
-    dispatch(request(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
+    dispatch(request(NetworkReducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
     dispatch(showLoading());
     return CustomAxios({ errorToastMessage: "", suppressErrorNotification: true })
       .put(
@@ -333,27 +333,27 @@ export const updateInformationRequirementsTable = (info: {
         createRequestHeader(customContentType)
       )
       .then((response: AxiosResponse<IInformationRequirementsTable[]>) => {
-        dispatch(success(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
+        dispatch(success(NetworkReducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
         return response;
       })
       .catch((err) => {
-        dispatch(error(reducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
+        dispatch(error(NetworkReducerTypes.UPDATE_INFORMATION_REQUIREMENTS_TABLE));
         throw err;
       })
       .finally(() => dispatch(hideLoading()));
   };
 
 export const fetchRequirements = (): AppThunk => (dispatch) => {
-  dispatch(request(reducerTypes.GET_REQUIREMENTS));
+  dispatch(request(NetworkReducerTypes.GET_REQUIREMENTS));
   dispatch(showLoading());
   return CustomAxios()
     .get(`${ENVIRONMENT.apiUrl}${API.REQUIREMENTS}`, createRequestHeader())
     .then((response) => {
-      dispatch(success(reducerTypes.GET_REQUIREMENTS));
+      dispatch(success(NetworkReducerTypes.GET_REQUIREMENTS));
       dispatch(projectActions.storeRequirements(response.data));
     })
     .catch(() => {
-      dispatch(error(reducerTypes.GET_REQUIREMENTS));
+      dispatch(error(NetworkReducerTypes.GET_REQUIREMENTS));
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -364,7 +364,7 @@ export const removeDocumentFromInformationRequirementsTable = (
   mineDocumentGuid: string
 ): AppThunk<Promise<AxiosResponse<string>>> => (dispatch): Promise<AxiosResponse<string>> => {
   dispatch(showLoading());
-  dispatch(request(reducerTypes.REMOVE_DOCUMENT_FROM_INFORMATION_REQUIREMENTS_TABLE));
+  dispatch(request(NetworkReducerTypes.REMOVE_DOCUMENT_FROM_INFORMATION_REQUIREMENTS_TABLE));
   return CustomAxios()
     .delete(
       ENVIRONMENT.apiUrl +
@@ -376,11 +376,11 @@ export const removeDocumentFromInformationRequirementsTable = (
         message: "Successfully deleted information requirements table document.",
         duration: 10,
       });
-      dispatch(success(reducerTypes.REMOVE_DOCUMENT_FROM_INFORMATION_REQUIREMENTS_TABLE));
+      dispatch(success(NetworkReducerTypes.REMOVE_DOCUMENT_FROM_INFORMATION_REQUIREMENTS_TABLE));
       return response;
     })
     .catch(() => {
-      dispatch(error(reducerTypes.REMOVE_DOCUMENT_FROM_INFORMATION_REQUIREMENTS_TABLE));
+      dispatch(error(NetworkReducerTypes.REMOVE_DOCUMENT_FROM_INFORMATION_REQUIREMENTS_TABLE));
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -392,7 +392,7 @@ export const createMajorMineApplication = (
 ): AppThunk<Promise<AxiosResponse<IMajorMinesApplication>>> => (
   dispatch
 ): Promise<AxiosResponse<IMajorMinesApplication>> => {
-    dispatch(request(reducerTypes.CREATE_MAJOR_MINES_APPLICATION));
+    dispatch(request(NetworkReducerTypes.CREATE_MAJOR_MINES_APPLICATION));
     dispatch(showLoading());
     return CustomAxios()
       .post(
@@ -407,11 +407,11 @@ export const createMajorMineApplication = (
             duration: 10,
           });
         }
-        dispatch(success(reducerTypes.CREATE_MAJOR_MINES_APPLICATION));
+        dispatch(success(NetworkReducerTypes.CREATE_MAJOR_MINES_APPLICATION));
         return response;
       })
       .catch(() => {
-        dispatch(error(reducerTypes.CREATE_MAJOR_MINES_APPLICATION));
+        dispatch(error(NetworkReducerTypes.CREATE_MAJOR_MINES_APPLICATION));
       })
       .finally(() => dispatch(hideLoading()));
   };
@@ -423,7 +423,7 @@ export const updateMajorMineApplication = (
 ): AppThunk<Promise<AxiosResponse<IMajorMinesApplication>>> => (
   dispatch
 ): Promise<AxiosResponse<IMajorMinesApplication>> => {
-    dispatch(request(reducerTypes.UPDATE_MAJOR_MINES_APPLICATION));
+    dispatch(request(NetworkReducerTypes.UPDATE_MAJOR_MINES_APPLICATION));
     dispatch(showLoading());
     return CustomAxios()
       .put(
@@ -438,11 +438,11 @@ export const updateMajorMineApplication = (
             duration: 10,
           });
         }
-        dispatch(success(reducerTypes.UPDATE_MAJOR_MINES_APPLICATION));
+        dispatch(success(NetworkReducerTypes.UPDATE_MAJOR_MINES_APPLICATION));
         return response;
       })
       .catch(() => {
-        dispatch(error(reducerTypes.UPDATE_MAJOR_MINES_APPLICATION));
+        dispatch(error(NetworkReducerTypes.UPDATE_MAJOR_MINES_APPLICATION));
       })
       .finally(() => dispatch(hideLoading()));
   };
@@ -453,7 +453,7 @@ export const removeDocumentFromMajorMineApplication = (
   mineDocumentGuid: string
 ): AppThunk<Promise<AxiosResponse<string>>> => (dispatch): Promise<AxiosResponse<string>> => {
   dispatch(showLoading());
-  dispatch(request(reducerTypes.REMOVE_DOCUMENT_FROM_MAJOR_MINE_APPLICATION));
+  dispatch(request(NetworkReducerTypes.REMOVE_DOCUMENT_FROM_MAJOR_MINE_APPLICATION));
   return CustomAxios()
     .delete(
       ENVIRONMENT.apiUrl +
@@ -469,11 +469,11 @@ export const removeDocumentFromMajorMineApplication = (
         message: "Successfully deleted major mine application document.",
         duration: 10,
       });
-      dispatch(success(reducerTypes.REMOVE_DOCUMENT_FROM_MAJOR_MINE_APPLICATION));
+      dispatch(success(NetworkReducerTypes.REMOVE_DOCUMENT_FROM_MAJOR_MINE_APPLICATION));
       return response;
     })
     .catch(() => {
-      dispatch(error(reducerTypes.REMOVE_DOCUMENT_FROM_MAJOR_MINE_APPLICATION));
+      dispatch(error(NetworkReducerTypes.REMOVE_DOCUMENT_FROM_MAJOR_MINE_APPLICATION));
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -485,7 +485,7 @@ export const createProjectDecisionPackage = (
 ): AppThunk<Promise<AxiosResponse<IProjectDecisionPackage>>> => (
   dispatch
 ): Promise<AxiosResponse<IProjectDecisionPackage>> => {
-    dispatch(request(reducerTypes.CREATE_PROJECT_DECISION_PACKAGE));
+    dispatch(request(NetworkReducerTypes.CREATE_PROJECT_DECISION_PACKAGE));
     dispatch(showLoading());
     return CustomAxios()
       .post(
@@ -495,11 +495,11 @@ export const createProjectDecisionPackage = (
       )
       .then((response: AxiosResponse<IProjectDecisionPackage>) => {
         notification.success({ message, duration: 10 });
-        dispatch(success(reducerTypes.CREATE_PROJECT_DECISION_PACKAGE));
+        dispatch(success(NetworkReducerTypes.CREATE_PROJECT_DECISION_PACKAGE));
         return response;
       })
       .catch(() => {
-        dispatch(error(reducerTypes.CREATE_PROJECT_DECISION_PACKAGE));
+        dispatch(error(NetworkReducerTypes.CREATE_PROJECT_DECISION_PACKAGE));
       })
       .finally(() => dispatch(hideLoading()));
   };
@@ -511,7 +511,7 @@ export const updateProjectDecisionPackage = (
 ): AppThunk<Promise<AxiosResponse<IProjectDecisionPackage>>> => (
   dispatch
 ): Promise<AxiosResponse<IProjectDecisionPackage>> => {
-    dispatch(request(reducerTypes.UPDATE_PROJECT_DECISION_PACKAGE));
+    dispatch(request(NetworkReducerTypes.UPDATE_PROJECT_DECISION_PACKAGE));
     dispatch(showLoading());
     return CustomAxios()
       .put(
@@ -521,11 +521,11 @@ export const updateProjectDecisionPackage = (
       )
       .then((response: AxiosResponse<IProjectDecisionPackage>) => {
         notification.success({ message, duration: 10 });
-        dispatch(success(reducerTypes.UPDATE_PROJECT_DECISION_PACKAGE));
+        dispatch(success(NetworkReducerTypes.UPDATE_PROJECT_DECISION_PACKAGE));
         return response;
       })
       .catch(() => {
-        dispatch(error(reducerTypes.UPDATE_PROJECT_DECISION_PACKAGE));
+        dispatch(error(NetworkReducerTypes.UPDATE_PROJECT_DECISION_PACKAGE));
       })
       .finally(() => dispatch(hideLoading()));
   };
@@ -536,7 +536,7 @@ export const removeDocumentFromProjectDecisionPackage = (
   mineDocumentGuid: string
 ): AppThunk<Promise<AxiosResponse<string>>> => (dispatch): Promise<AxiosResponse<string>> => {
   dispatch(showLoading());
-  dispatch(request(reducerTypes.REMOVE_DOCUMENT_FROM_PROJECT_DECISION_PACKAGE));
+  dispatch(request(NetworkReducerTypes.REMOVE_DOCUMENT_FROM_PROJECT_DECISION_PACKAGE));
   return CustomAxios()
     .delete(
       ENVIRONMENT.apiUrl +
@@ -552,11 +552,11 @@ export const removeDocumentFromProjectDecisionPackage = (
         message: "Successfully deleted decision package document.",
         duration: 10,
       });
-      dispatch(success(reducerTypes.REMOVE_DOCUMENT_FROM_PROJECT_DECISION_PACKAGE));
+      dispatch(success(NetworkReducerTypes.REMOVE_DOCUMENT_FROM_PROJECT_DECISION_PACKAGE));
       return response;
     })
     .catch(() => {
-      dispatch(error(reducerTypes.REMOVE_DOCUMENT_FROM_PROJECT_DECISION_PACKAGE));
+      dispatch(error(NetworkReducerTypes.REMOVE_DOCUMENT_FROM_PROJECT_DECISION_PACKAGE));
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -569,7 +569,7 @@ export const createProjectLinks = (
 ): AppThunk<Promise<AxiosResponse<IProjectLink[]>>> => (
   dispatch
 ): Promise<AxiosResponse<IProjectLink[]>> => {
-    dispatch(request(reducerTypes.CREATE_PROJECT_LINKS));
+    dispatch(request(NetworkReducerTypes.CREATE_PROJECT_LINKS));
     dispatch(showLoading());
     const payload = {
       mine_guid: mineGuid,
@@ -580,13 +580,13 @@ export const createProjectLinks = (
       .then(
         ({ data }): AxiosResponse<IProjectLink[]> => {
           notification.success({ message, duration: 10 });
-          dispatch(success(reducerTypes.CREATE_PROJECT_LINKS));
+          dispatch(success(NetworkReducerTypes.CREATE_PROJECT_LINKS));
           dispatch(projectActions.storeRelatedProjects(data));
           return data;
         }
       )
       .catch(() => {
-        dispatch(error(reducerTypes.CREATE_PROJECT_LINKS));
+        dispatch(error(NetworkReducerTypes.CREATE_PROJECT_LINKS));
       })
       .finally(() => dispatch(hideLoading()));
   };
@@ -595,7 +595,7 @@ export const deleteProjectLink = (
   projectGuid: string,
   projectLinkGuid: string
 ): AppThunk<Promise<AxiosResponse<string>>> => (dispatch): Promise<AxiosResponse<string>> => {
-  dispatch(request(reducerTypes.DELETE_PROJECT_LINK));
+  dispatch(request(NetworkReducerTypes.DELETE_PROJECT_LINK));
   dispatch(showLoading());
   return CustomAxios()
     .delete(
@@ -607,12 +607,12 @@ export const deleteProjectLink = (
         message: "Successfully deleted project link.",
         duration: 10,
       });
-      dispatch(success(reducerTypes.DELETE_PROJECT_LINK));
+      dispatch(success(NetworkReducerTypes.DELETE_PROJECT_LINK));
       dispatch(projectActions.removeProjectLink(projectLinkGuid));
       return response;
     })
     .catch(() => {
-      dispatch(error(reducerTypes.DELETE_PROJECT_LINK));
+      dispatch(error(NetworkReducerTypes.DELETE_PROJECT_LINK));
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -623,7 +623,7 @@ export const createProjectSummaryMinistryComment = (
 ): AppThunk<Promise<AxiosResponse<any>>> => (
   dispatch
 ): Promise<AxiosResponse<IProjectSummaryMinistryComment>> => {
-    dispatch(request(reducerTypes.CREATE_PROJECT_SUMMARY_MINISTRY_COMMENTS));
+    dispatch(request(NetworkReducerTypes.CREATE_PROJECT_SUMMARY_MINISTRY_COMMENTS));
     dispatch(showLoading());
     return CustomAxios()
       .post(
@@ -632,12 +632,12 @@ export const createProjectSummaryMinistryComment = (
         createRequestHeader()
       )
       .then((response: AxiosResponse<IProjectSummaryMinistryComment>) => {
-        dispatch(success(reducerTypes.CREATE_PROJECT_SUMMARY_MINISTRY_COMMENTS));
+        dispatch(success(NetworkReducerTypes.CREATE_PROJECT_SUMMARY_MINISTRY_COMMENTS));
         dispatch(projectActions.addProjectSummaryMinistryComment(response.data));
         return response;
       })
       .catch(() => {
-        dispatch(error(reducerTypes.CREATE_PROJECT_SUMMARY_MINISTRY_COMMENTS));
+        dispatch(error(NetworkReducerTypes.CREATE_PROJECT_SUMMARY_MINISTRY_COMMENTS));
       })
       .finally(() => dispatch(hideLoading()));
   };
@@ -645,7 +645,7 @@ export const createProjectSummaryMinistryComment = (
 export const fetchProjectSummaryMinistryComments = (
   projectSummaryGuid: string
 ): AppThunk<Promise<AxiosResponse<any>>> => (dispatch): Promise<AxiosResponse<any>> => {
-  dispatch(request(reducerTypes.GET_PROJECT_SUMMARY_MINISTRY_COMMENTS));
+  dispatch(request(NetworkReducerTypes.GET_PROJECT_SUMMARY_MINISTRY_COMMENTS));
   dispatch(showLoading());
   return CustomAxios()
     .get(
@@ -653,12 +653,12 @@ export const fetchProjectSummaryMinistryComments = (
       createRequestHeader()
     )
     .then((response: AxiosResponse<{ records: IProjectSummaryMinistryComment[] }>) => {
-      dispatch(success(reducerTypes.GET_PROJECT_SUMMARY_MINISTRY_COMMENTS));
+      dispatch(success(NetworkReducerTypes.GET_PROJECT_SUMMARY_MINISTRY_COMMENTS));
       dispatch(projectActions.storeProjectSummaryMinistryComments(response.data));
       return response;
     })
     .catch(() => {
-      dispatch(error(reducerTypes.GET_PROJECT_SUMMARY_MINISTRY_COMMENTS));
+      dispatch(error(NetworkReducerTypes.GET_PROJECT_SUMMARY_MINISTRY_COMMENTS));
     })
     .finally(() => dispatch(hideLoading()));
 };

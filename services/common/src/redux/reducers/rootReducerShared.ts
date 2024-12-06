@@ -2,7 +2,7 @@ import { createReducer } from "@mds/common/redux/utils/helpers";
 import networkReducer from "@mds/common/redux/reducers/networkReducer";
 import { reducer as formReducer } from "redux-form";
 import { loadingBarReducer } from "react-redux-loading-bar";
-import * as reducerTypes from "@mds/common/constants/reducerTypes";
+import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
 import {
   activityReducer,
   authenticationReducer,
@@ -39,6 +39,11 @@ import spatialDataReducer, { spatialDataReducerType } from "../slices/spatialDat
 import permitServiceReducer, { permitServiceReducerType } from "../slices/permitServiceSlice";
 import searchConditionCategoriesReducer, { searchConditionCategoriesType } from "../slices/permitConditionCategorySlice";
 import helpReducer, { helpReducerType } from "../slices/helpSlice";
+
+const networkReducers = Object.fromEntries(Object.entries(NetworkReducerTypes).map(([key, value]) =>
+  [NetworkReducerTypes[key], createReducer(networkReducer, value)]
+));
+
 export const sharedReducer = {
   ...activityReducer,
   ...authenticationReducer,
@@ -66,18 +71,6 @@ export const sharedReducer = {
   ...varianceReducer,
   ...verifiableCredentialReducer,
   ...workInformationReducer,
-  [reducerTypes.ADD_DOCUMENT_TO_VARIANCE]: createReducer(
-    networkReducer,
-    reducerTypes.ADD_DOCUMENT_TO_VARIANCE
-  ),
-  [reducerTypes.GET_VARIANCE_STATUS_OPTIONS]: createReducer(
-    networkReducer,
-    reducerTypes.GET_VARIANCE_STATUS_OPTIONS
-  ),
-  [reducerTypes.GET_COMPLIANCE_CODES]: createReducer(
-    networkReducer,
-    reducerTypes.GET_COMPLIANCE_CODES
-  ),
   form: formReducer,
   loadingBar: loadingBarReducer,
   reportSubmission: reportSubmissionReducer,
@@ -88,4 +81,5 @@ export const sharedReducer = {
   [permitServiceReducerType]: permitServiceReducer,
   [helpReducerType]: helpReducer,
   [searchConditionCategoriesType]: searchConditionCategoriesReducer,
+  ...networkReducers
 };

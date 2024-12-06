@@ -260,14 +260,6 @@ export const EDIT_PROJECT = {
   helpKey: "Edit-Project",
 };
 
-export const MAJOR_MINE_APPLICATION = {
-  route: "/pre-applications/:projectGuid/major-mine-application/:mmaGuid/:tab",
-  dynamicRoute: (projectGuid, mmaGuid, tab = "final-app") =>
-    `/pre-applications/${projectGuid}/major-mine-application/${mmaGuid}/${tab}`,
-  component: MajorMineApplicationTab,
-  helpKey: "Major-Mine-Application",
-};
-
 export const PROJECT_APPLICATION = {
   route: "/pre-applications/:projectGuid/app",
   dynamicRoute: (projectGuid) => `/pre-applications/${projectGuid}/app`,

@@ -1,5 +1,5 @@
 import * as actionTypes from "@/constants/actionTypes";
-import { REPORTS } from "@/constants/reducerTypes";
+import { REPORTS } from "@mds/common/constants/reducerTypes";
 
 const initialState = {
   mineReports: [],

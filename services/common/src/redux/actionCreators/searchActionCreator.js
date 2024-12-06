@@ -1,14 +1,14 @@
 import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { ENVIRONMENT } from "@mds/common/constants";
 import { request, success, error, clear } from "../actions/genericActions";
-import * as reducerTypes from "@mds/common/constants/reducerTypes";
+import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
 import * as searchActions from "../actions/searchActions";
 import * as API from "@mds/common/constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
 
 export const fetchSearchResults = (searchTerm, searchTypes) => (dispatch) => {
-  dispatch(request(reducerTypes.GET_SEARCH_RESULTS));
+  dispatch(request(NetworkReducerTypes.GET_SEARCH_RESULTS));
   dispatch(showLoading());
   return CustomAxios()
     .get(
@@ -16,19 +16,19 @@ export const fetchSearchResults = (searchTerm, searchTypes) => (dispatch) => {
       createRequestHeader()
     )
     .then((response) => {
-      dispatch(success(reducerTypes.GET_SEARCH_RESULTS));
+      dispatch(success(NetworkReducerTypes.GET_SEARCH_RESULTS));
       dispatch(searchActions.storeSearchResults(response.data));
       dispatch(hideLoading());
       return response;
     })
     .catch(() => {
-      dispatch(error(reducerTypes.GET_SEARCH_RESULTS));
+      dispatch(error(NetworkReducerTypes.GET_SEARCH_RESULTS));
     })
     .finally(() => dispatch(hideLoading()));
 };
 
 export const fetchSearchBarResults = (searchTerm) => (dispatch) => {
-  dispatch(request(reducerTypes.GET_SEARCH_BAR_RESULTS));
+  dispatch(request(NetworkReducerTypes.GET_SEARCH_BAR_RESULTS));
   dispatch(showLoading());
   return CustomAxios()
     .get(
@@ -36,36 +36,36 @@ export const fetchSearchBarResults = (searchTerm) => (dispatch) => {
       createRequestHeader()
     )
     .then((response) => {
-      dispatch(success(reducerTypes.GET_SEARCH_BAR_RESULTS));
+      dispatch(success(NetworkReducerTypes.GET_SEARCH_BAR_RESULTS));
       dispatch(searchActions.storeSearchBarResults(response.data));
       dispatch(hideLoading());
     })
-    .catch(() => dispatch(error(reducerTypes.GET_SEARCH_BAR_RESULTS)))
+    .catch(() => dispatch(error(NetworkReducerTypes.GET_SEARCH_BAR_RESULTS)))
     .finally(() => dispatch(hideLoading()));
 };
 
 export const fetchSearchOptions = () => (dispatch) => {
-  dispatch(request(reducerTypes.GET_SEARCH_OPTIONS));
+  dispatch(request(NetworkReducerTypes.GET_SEARCH_OPTIONS));
   dispatch(showLoading());
   return CustomAxios()
     .get(ENVIRONMENT.apiUrl + API.SEARCH_OPTIONS, createRequestHeader())
     .then((response) => {
-      dispatch(success(reducerTypes.GET_SEARCH_OPTIONS));
+      dispatch(success(NetworkReducerTypes.GET_SEARCH_OPTIONS));
       dispatch(searchActions.storeSearchOptions(response.data));
       dispatch(hideLoading());
     })
-    .catch(() => dispatch(error(reducerTypes.GET_SEARCH_OPTIONS)))
+    .catch(() => dispatch(error(NetworkReducerTypes.GET_SEARCH_OPTIONS)))
     .finally(() => dispatch(hideLoading()));
 };
 
 export const clearSearchBarResults = () => (dispatch) => {
-  dispatch(clear(reducerTypes.CLEAR_SEARCH_BAR_RESULTS));
+  dispatch(clear(NetworkReducerTypes.CLEAR_SEARCH_BAR_RESULTS));
   dispatch(searchActions.clearSearchBarResults());
-  dispatch(success(reducerTypes.CLEAR_SEARCH_BAR_RESULTS));
+  dispatch(success(NetworkReducerTypes.CLEAR_SEARCH_BAR_RESULTS));
 };
 
 export const clearAllSearchResults = () => (dispatch) => {
-  dispatch(clear(reducerTypes.CLEAR_ALL_SEARCH_RESULTS));
+  dispatch(clear(NetworkReducerTypes.CLEAR_ALL_SEARCH_RESULTS));
   dispatch(searchActions.clearAllSearchResults());
-  dispatch(success(reducerTypes.CLEAR_ALL_SEARCH_RESULTS));
+  dispatch(success(NetworkReducerTypes.CLEAR_ALL_SEARCH_RESULTS));
 };
