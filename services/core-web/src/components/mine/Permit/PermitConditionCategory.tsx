@@ -3,7 +3,7 @@ import RenderField from "@mds/common/components/forms/RenderField";
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 import { FORM } from "@mds/common/constants/forms";
 import { IPermitConditionCategory } from "@mds/common/interfaces";
-import { Button, Col, Form, Popconfirm, Row, Tooltip, Typography } from "antd";
+import { Button, Col, Popconfirm, Row, Tooltip, Typography } from "antd";
 import React, { useState } from "react";
 import { Field } from "redux-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
