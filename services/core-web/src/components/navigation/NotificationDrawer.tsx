@@ -119,7 +119,7 @@ const NotificationDrawer = () => {
       case "MajorMineApplication":
         return EDIT_PROJECT.dynamicRoute(
           notification.notification_document.metadata.project.project_guid,
-          "final-app"
+          "app"
         );
       case "EngineerOfRecord":
         return MINE_TAILINGS_DETAILS.dynamicRoute(

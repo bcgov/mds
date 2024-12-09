@@ -65,7 +65,7 @@ const Project: FC = () => {
     let url = routes.EDIT_PROJECT.dynamicRoute(projectGuid, newActiveTab);
 
     switch (newActiveTab) {
-      case "final-app":
+      case "app":
         url = routes.PROJECT_APPLICATION.dynamicRoute(projectGuid);
         break;
       case "decision-package":
