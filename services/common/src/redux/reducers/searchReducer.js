@@ -27,6 +27,11 @@ export const searchReducer = (state = initialState, action) => {
         searchResults: action.payload.search_results,
         searchTerms: action.payload.search_terms,
       };
+    case actionTypes.STORE_SUBSET_SEARCH_RESULTS:
+      return {
+        ...state,
+        searchSubsetResults: action.payload,
+      };
     case actionTypes.STORE_SEARCH_BAR_RESULTS:
       return {
         ...state,
