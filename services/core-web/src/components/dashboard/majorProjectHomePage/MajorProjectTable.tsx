@@ -193,7 +193,7 @@ export const MajorProjectTable: FC<MajorProjectTableProps> = ({
   const projectSectionStatuses = (project) => {
     const sections = [
       { key: "Project Description", tab: "project-description", ...project.project_summary },
-      { key: "Application", tab: "final-app", ...project.major_mine_application },
+      { key: "Application", tab: "app", ...project.major_mine_application },
       { key: "IRT", tab: "information-requirements-table", ...project.information_requirements },
       ...projectDecisionPackageEnabled
         ? [{ key: "Decision Package", tab: "project-decision-package", ...project.project_decision_package }]

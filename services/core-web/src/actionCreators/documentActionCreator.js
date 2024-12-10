@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { error, request, success } from "@mds/common/redux/actions/genericActions";
@@ -7,7 +6,7 @@ import { createRequestHeader } from "@common/utils/RequestHeaders";
 import CustomAxios from "@common/customAxios";
 import * as COMMON_API from "@mds/common/constants/API";
 import * as API from "@/constants/API";
-import * as reducerTypes from "@/constants/reducerTypes";
+import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
 import * as documentActions from "@/actions/documentActions";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 
@@ -17,24 +16,24 @@ export const fetchNoticeOfWorkApplicationContextTemplate = (
   documentTypeCode,
   now_application_guid
 ) => (dispatch) => {
-  dispatch(request(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_DOCUMENT_CONTEXT_TEMPLATE));
+  dispatch(request(NetworkReducerTypes.GET_NOTICE_OF_WORK_APPLICATION_DOCUMENT_CONTEXT_TEMPLATE));
   dispatch(showLoading());
   return CustomAxios()
     .get(
       ENVIRONMENT.apiUrl +
-        API.GET_NOTICE_OF_WORK_APPLICATION_DOCUMENT_CONTEXT_TEMPLATE(
-          documentTypeCode,
-          now_application_guid
-        ),
+      API.GET_NOTICE_OF_WORK_APPLICATION_DOCUMENT_CONTEXT_TEMPLATE(
+        documentTypeCode,
+        now_application_guid
+      ),
       createRequestHeader()
     )
     .then((response) => {
-      dispatch(success(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_DOCUMENT_CONTEXT_TEMPLATE));
+      dispatch(success(NetworkReducerTypes.GET_NOTICE_OF_WORK_APPLICATION_DOCUMENT_CONTEXT_TEMPLATE));
       dispatch(documentActions.storeDocumentContextTemplate(response.data));
       return response;
     })
     .catch((err) => {
-      dispatch(error(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_DOCUMENT_CONTEXT_TEMPLATE));
+      dispatch(error(NetworkReducerTypes.GET_NOTICE_OF_WORK_APPLICATION_DOCUMENT_CONTEXT_TEMPLATE));
       throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
@@ -45,9 +44,9 @@ export const generateNoticeOfWorkApplicationDocument = (
   payload,
   message = "Successfully generated Notice of Work document",
   isPreview = false,
-  onDocumentGenerated = () => {}
+  onDocumentGenerated = () => { }
 ) => (dispatch) => {
-  dispatch(request(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
+  dispatch(request(NetworkReducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
   dispatch(showLoading("modal"));
   return CustomAxios()
     .post(
@@ -68,18 +67,18 @@ export const generateNoticeOfWorkApplicationDocument = (
               duration: 10,
             });
             const mineDocument = response.data.mine_document;
-            dispatch(success(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
+            dispatch(success(NetworkReducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
             downloadFileFromDocumentManager(mineDocument);
             onDocumentGenerated();
           })
           .catch((err) => {
-            dispatch(error(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
+            dispatch(error(NetworkReducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
             throw new Error(err);
           });
       }
     })
     .catch((err) => {
-      dispatch(error(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
+      dispatch(error(NetworkReducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
       throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
@@ -89,9 +88,9 @@ export const exportNoticeOfWorkApplicationDocument = (
   documentTypeCode,
   payload,
   message = "Successfully exported Notice of Work document",
-  onDocumentGenerated = () => {}
+  onDocumentGenerated = () => { }
 ) => (dispatch) => {
-  dispatch(request(reducerTypes.EXPORT_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
+  dispatch(request(NetworkReducerTypes.EXPORT_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
   dispatch(showLoading());
   return CustomAxios()
     .post(
@@ -109,17 +108,17 @@ export const exportNoticeOfWorkApplicationDocument = (
             message,
             duration: 10,
           });
-          dispatch(success(reducerTypes.EXPORT_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
+          dispatch(success(NetworkReducerTypes.EXPORT_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
           downloadFileFromDocumentManager(mineDocument);
           onDocumentGenerated();
         })
         .catch((err) => {
-          dispatch(error(reducerTypes.EXPORT_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
+          dispatch(error(NetworkReducerTypes.EXPORT_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
           throw new Error(err);
         });
     })
     .catch((err) => {
-      dispatch(error(reducerTypes.EXPORT_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
+      dispatch(error(NetworkReducerTypes.EXPORT_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
       throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
@@ -131,24 +130,24 @@ export const fetchExplosivesPermitDocumentContextTemplate = (
   documentTypeCode,
   explosives_permit_guid
 ) => (dispatch) => {
-  dispatch(request(reducerTypes.GET_EXPLOSIVES_PERMIT_DOCUMENT_CONTEXT_TEMPLATE));
+  dispatch(request(NetworkReducerTypes.GET_EXPLOSIVES_PERMIT_DOCUMENT_CONTEXT_TEMPLATE));
   dispatch(showLoading());
   return CustomAxios()
     .get(
       ENVIRONMENT.apiUrl +
-        API.GET_EXPLOSIVES_PERMIT_DOCUMENT_CONTEXT_TEMPLATE(
-          documentTypeCode,
-          explosives_permit_guid
-        ),
+      API.GET_EXPLOSIVES_PERMIT_DOCUMENT_CONTEXT_TEMPLATE(
+        documentTypeCode,
+        explosives_permit_guid
+      ),
       createRequestHeader()
     )
     .then((response) => {
-      dispatch(success(reducerTypes.GET_EXPLOSIVES_PERMIT_DOCUMENT_CONTEXT_TEMPLATE));
+      dispatch(success(NetworkReducerTypes.GET_EXPLOSIVES_PERMIT_DOCUMENT_CONTEXT_TEMPLATE));
       dispatch(documentActions.storeDocumentContextTemplate(response.data));
       return response.data;
     })
     .catch((err) => {
-      dispatch(error(reducerTypes.GET_EXPLOSIVES_PERMIT_DOCUMENT_CONTEXT_TEMPLATE));
+      dispatch(error(NetworkReducerTypes.GET_EXPLOSIVES_PERMIT_DOCUMENT_CONTEXT_TEMPLATE));
       throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
@@ -159,9 +158,9 @@ export const generateExplosivesPermitDocument = (
   payload,
   message = "Successfully generated Explosives Permit document",
   isPreview = false,
-  onDocumentGenerated = () => {}
+  onDocumentGenerated = () => { }
 ) => (dispatch) => {
-  dispatch(request(reducerTypes.GENERATE_EXPLOSIVES_PERMIT_DOCUMENT));
+  dispatch(request(NetworkReducerTypes.GENERATE_EXPLOSIVES_PERMIT_DOCUMENT));
   dispatch(showLoading("modal"));
   return CustomAxios()
     .post(
@@ -188,18 +187,18 @@ export const generateExplosivesPermitDocument = (
               duration: 10,
             });
             const mineDocument = response.data.mine_document;
-            dispatch(success(reducerTypes.GENERATE_EXPLOSIVES_PERMIT_DOCUMENT));
+            dispatch(success(NetworkReducerTypes.GENERATE_EXPLOSIVES_PERMIT_DOCUMENT));
             downloadFileFromDocumentManager(mineDocument);
             onDocumentGenerated();
           })
           .catch((err) => {
-            dispatch(error(reducerTypes.GENERATE_EXPLOSIVES_PERMIT_DOCUMENT));
+            dispatch(error(NetworkReducerTypes.GENERATE_EXPLOSIVES_PERMIT_DOCUMENT));
             throw new Error(err);
           });
       }
     })
     .catch((err) => {
-      dispatch(error(reducerTypes.GENERATE_EXPLOSIVES_PERMIT_DOCUMENT));
+      dispatch(error(NetworkReducerTypes.GENERATE_EXPLOSIVES_PERMIT_DOCUMENT));
       throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
@@ -208,7 +207,7 @@ export const generateExplosivesPermitDocument = (
 // Document Compression/Zipping
 
 export const documentsCompression = (mineGuid, documentManagerGuids) => (dispatch) => {
-  dispatch(request(reducerTypes.DOCUMENTS_COMPRESSION));
+  dispatch(request(NetworkReducerTypes.DOCUMENTS_COMPRESSION));
   dispatch(showLoading());
   return CustomAxios()
     .post(
@@ -217,18 +216,18 @@ export const documentsCompression = (mineGuid, documentManagerGuids) => (dispatc
       createRequestHeader()
     )
     .then((response) => {
-      dispatch(success(reducerTypes.DOCUMENTS_COMPRESSION));
+      dispatch(success(NetworkReducerTypes.DOCUMENTS_COMPRESSION));
       return response;
     })
     .catch((err) => {
-      dispatch(error(reducerTypes.DOCUMENTS_COMPRESSION));
+      dispatch(error(NetworkReducerTypes.DOCUMENTS_COMPRESSION));
       throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
 
 export const pollDocumentsCompressionProgress = (taskId) => (dispatch) => {
-  dispatch(request(reducerTypes.POLL_DOCUMENTS_COMPRESSION_PROGRESS));
+  dispatch(request(NetworkReducerTypes.POLL_DOCUMENTS_COMPRESSION_PROGRESS));
   dispatch(showLoading());
   return CustomAxios()
     .get(
@@ -236,12 +235,12 @@ export const pollDocumentsCompressionProgress = (taskId) => (dispatch) => {
       createRequestHeader()
     )
     .then((response) => {
-      dispatch(success(reducerTypes.POLL_DOCUMENTS_COMPRESSION_PROGRESS));
+      dispatch(success(NetworkReducerTypes.POLL_DOCUMENTS_COMPRESSION_PROGRESS));
       dispatch(documentActions.storeDocumentCompressionProgress(response.data));
       return response;
     })
     .catch((err) => {
-      dispatch(error(reducerTypes.POLL_DOCUMENTS_COMPRESSION_PROGRESS));
+      dispatch(error(NetworkReducerTypes.POLL_DOCUMENTS_COMPRESSION_PROGRESS));
       throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));

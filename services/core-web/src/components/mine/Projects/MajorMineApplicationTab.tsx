@@ -92,7 +92,7 @@ const MajorMineApplicationTab: FC = () => {
   const menuOptions = [{ href: "basic-information", title: "Basic Information" }, ...documentSections, archiveMenuOption].filter(Boolean);
 
   const sideBarRoute = {
-    url: routes.PROJECT_FINAL_APPLICATION,
+    url: routes.PROJECT_APPLICATION,
     params: [project.project_guid],
   };
 

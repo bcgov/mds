@@ -334,12 +334,6 @@ exports[`DashboardRoutes  renders properly 1`] = `
   <Route
     component={[Function]}
     exact={true}
-    key="/pre-applications/:projectGuid/major-mine-application/:mmaGuid/:tab"
-    path="/pre-applications/:projectGuid/major-mine-application/:mmaGuid/:tab"
-  />
-  <Route
-    component={[Function]}
-    exact={true}
     key="/pre-applications/:projectGuid/app"
     path="/pre-applications/:projectGuid/app"
   />

@@ -4,7 +4,7 @@ import {
   getRedirect,
 } from "@mds/common/redux/selectors/authenticationSelectors";
 import { authenticateUser, logoutUser } from "@/actions/authenticationActions";
-import { AUTHENTICATION } from "@/constants/reducerTypes";
+import { AUTHENTICATION } from "@mds/common/constants/reducerTypes";
 import * as route from "@/constants/routes";
 import { authenticationReducer } from "@mds/common/redux/reducers/authenticationReducer";
 

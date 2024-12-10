@@ -6,11 +6,11 @@ import * as API from "@mds/common/constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
 import * as noticeOfWorkActions from "../actions/noticeOfWorkActions";
-import * as reducerTypes from "@mds/common/constants/reducerTypes";
+import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
 
 // vFCBC & NROS NoW initial submissions
 export const fetchNoticeOfWorkApplication = (applicationGuid) => (dispatch) => {
-  dispatch(request(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION));
+  dispatch(request(NetworkReducerTypes.GET_NOTICE_OF_WORK_APPLICATION));
   dispatch(showLoading());
   return CustomAxios()
     .get(
@@ -18,16 +18,16 @@ export const fetchNoticeOfWorkApplication = (applicationGuid) => (dispatch) => {
       createRequestHeader()
     )
     .then((response) => {
-      dispatch(success(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION));
+      dispatch(success(NetworkReducerTypes.GET_NOTICE_OF_WORK_APPLICATION));
       dispatch(noticeOfWorkActions.storeNoticeOfWorkApplication(response.data));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION)))
+    .catch(() => dispatch(error(NetworkReducerTypes.GET_NOTICE_OF_WORK_APPLICATION)))
     .finally(() => dispatch(hideLoading()));
 };
 
 export const fetchImportNoticeOfWorkSubmissionDocumentsJob = (applicationGuid) => (dispatch) => {
-  dispatch(request(reducerTypes.GET_IMPORT_NOTICE_OF_WORK_SUBMISSION_DOCUMENTS_JOB));
+  dispatch(request(NetworkReducerTypes.GET_IMPORT_NOTICE_OF_WORK_SUBMISSION_DOCUMENTS_JOB));
   dispatch(showLoading());
   return CustomAxios()
     .get(
@@ -37,16 +37,16 @@ export const fetchImportNoticeOfWorkSubmissionDocumentsJob = (applicationGuid) =
       createRequestHeader()
     )
     .then((response) => {
-      dispatch(success(reducerTypes.GET_IMPORT_NOTICE_OF_WORK_SUBMISSION_DOCUMENTS_JOB));
+      dispatch(success(NetworkReducerTypes.GET_IMPORT_NOTICE_OF_WORK_SUBMISSION_DOCUMENTS_JOB));
       dispatch(noticeOfWorkActions.storeImportNoticeOfWorkSubmissionDocumentsJob(response.data));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.GET_IMPORT_NOTICE_OF_WORK_SUBMISSION_DOCUMENTS_JOB)))
+    .catch(() => dispatch(error(NetworkReducerTypes.GET_IMPORT_NOTICE_OF_WORK_SUBMISSION_DOCUMENTS_JOB)))
     .finally(() => dispatch(hideLoading()));
 };
 
 export const fetchNoticeOfWorkApplications = (params = {}) => (dispatch) => {
-  dispatch(request(reducerTypes.GET_NOTICE_OF_WORK_APPLICATIONS));
+  dispatch(request(NetworkReducerTypes.GET_NOTICE_OF_WORK_APPLICATIONS));
   dispatch(showLoading());
   return CustomAxios()
     .get(
@@ -54,16 +54,16 @@ export const fetchNoticeOfWorkApplications = (params = {}) => (dispatch) => {
       createRequestHeader()
     )
     .then((response) => {
-      dispatch(success(reducerTypes.GET_NOTICE_OF_WORK_APPLICATIONS));
+      dispatch(success(NetworkReducerTypes.GET_NOTICE_OF_WORK_APPLICATIONS));
       dispatch(noticeOfWorkActions.storeNoticeOfWorkApplications(response.data));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.GET_NOTICE_OF_WORK_APPLICATIONS)))
+    .catch(() => dispatch(error(NetworkReducerTypes.GET_NOTICE_OF_WORK_APPLICATIONS)))
     .finally(() => dispatch(hideLoading()));
 };
 
 export const fetchMineNoticeOfWorkApplications = (params = {}) => (dispatch) => {
-  dispatch(request(reducerTypes.GET_MINE_NOTICE_OF_WORK_APPLICATIONS));
+  dispatch(request(NetworkReducerTypes.GET_MINE_NOTICE_OF_WORK_APPLICATIONS));
   dispatch(showLoading());
   return CustomAxios()
     .get(
@@ -71,16 +71,16 @@ export const fetchMineNoticeOfWorkApplications = (params = {}) => (dispatch) => 
       createRequestHeader()
     )
     .then((response) => {
-      dispatch(success(reducerTypes.GET_MINE_NOTICE_OF_WORK_APPLICATIONS));
+      dispatch(success(NetworkReducerTypes.GET_MINE_NOTICE_OF_WORK_APPLICATIONS));
       dispatch(noticeOfWorkActions.storeMineNoticeOfWorkApplications(response.data));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.GET_MINE_NOTICE_OF_WORK_APPLICATIONS)))
+    .catch(() => dispatch(error(NetworkReducerTypes.GET_MINE_NOTICE_OF_WORK_APPLICATIONS)))
     .finally(() => dispatch(hideLoading()));
 };
 
 export const createNoticeOfWorkApplication = (payload) => (dispatch) => {
-  dispatch(request(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION));
+  dispatch(request(NetworkReducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION));
   dispatch(showLoading());
   return CustomAxios()
     .post(
@@ -89,7 +89,7 @@ export const createNoticeOfWorkApplication = (payload) => (dispatch) => {
       createRequestHeader()
     )
     .then((response) => {
-      dispatch(success(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION));
+      dispatch(success(NetworkReducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION));
       notification.success({
         message: "Successfully created Permit Amendment Application",
         duration: 10,
@@ -97,7 +97,7 @@ export const createNoticeOfWorkApplication = (payload) => (dispatch) => {
       return response;
     })
     .catch(() => {
-      dispatch(error(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION));
+      dispatch(error(NetworkReducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION));
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -105,7 +105,7 @@ export const createNoticeOfWorkApplication = (payload) => (dispatch) => {
 export const createNoticeOfWorkApplicationImportSubmissionDocumentsJob = (applicationGuid) => (
   dispatch
 ) => {
-  dispatch(request(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_IMPORT_SUBMISSION_DOCUMENTS_JOB));
+  dispatch(request(NetworkReducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_IMPORT_SUBMISSION_DOCUMENTS_JOB));
   dispatch(showLoading());
   return CustomAxios()
     .post(
@@ -115,7 +115,7 @@ export const createNoticeOfWorkApplicationImportSubmissionDocumentsJob = (applic
     )
     .then((response) => {
       dispatch(
-        success(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_IMPORT_SUBMISSION_DOCUMENTS_JOB)
+        success(NetworkReducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_IMPORT_SUBMISSION_DOCUMENTS_JOB)
       );
       notification.success({
         message: "Successfully created the Notice of Work Submission Documents Import Job",
@@ -125,7 +125,7 @@ export const createNoticeOfWorkApplicationImportSubmissionDocumentsJob = (applic
     })
     .catch(() => {
       dispatch(
-        error(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_IMPORT_SUBMISSION_DOCUMENTS_JOB)
+        error(NetworkReducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_IMPORT_SUBMISSION_DOCUMENTS_JOB)
       );
     })
     .finally(() => dispatch(hideLoading()));
@@ -136,7 +136,7 @@ export const importNoticeOfWorkApplication = (
   payload,
   message = "Successfully verified the Notice of Work"
 ) => (dispatch) => {
-  dispatch(request(reducerTypes.IMPORT_NOTICE_OF_WORK_APPLICATION));
+  dispatch(request(NetworkReducerTypes.IMPORT_NOTICE_OF_WORK_APPLICATION));
   dispatch(showLoading());
   return CustomAxios()
     .post(
@@ -149,17 +149,17 @@ export const importNoticeOfWorkApplication = (
         message,
         duration: 10,
       });
-      dispatch(success(reducerTypes.IMPORT_NOTICE_OF_WORK_APPLICATION));
+      dispatch(success(NetworkReducerTypes.IMPORT_NOTICE_OF_WORK_APPLICATION));
       return response;
     })
     .catch(() => {
-      dispatch(error(reducerTypes.IMPORT_NOTICE_OF_WORK_APPLICATION));
+      dispatch(error(NetworkReducerTypes.IMPORT_NOTICE_OF_WORK_APPLICATION));
     })
     .finally(() => dispatch(hideLoading()));
 };
 
 export const fetchImportedNoticeOfWorkApplication = (applicationGuid) => (dispatch) => {
-  dispatch(request(reducerTypes.GET_IMPORTED_NOTICE_OF_WORK_APPLICATION));
+  dispatch(request(NetworkReducerTypes.GET_IMPORTED_NOTICE_OF_WORK_APPLICATION));
   dispatch(showLoading());
   return CustomAxios()
     .get(
@@ -167,16 +167,16 @@ export const fetchImportedNoticeOfWorkApplication = (applicationGuid) => (dispat
       createRequestHeader()
     )
     .then((response) => {
-      dispatch(success(reducerTypes.GET_IMPORTED_NOTICE_OF_WORK_APPLICATION));
+      dispatch(success(NetworkReducerTypes.GET_IMPORTED_NOTICE_OF_WORK_APPLICATION));
       dispatch(noticeOfWorkActions.storeNoticeOfWorkApplication(response.data));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.GET_IMPORTED_NOTICE_OF_WORK_APPLICATION)))
+    .catch(() => dispatch(error(NetworkReducerTypes.GET_IMPORTED_NOTICE_OF_WORK_APPLICATION)))
     .finally(() => dispatch(hideLoading()));
 };
 
 export const fetchOriginalNoticeOfWorkApplication = (applicationGuid) => (dispatch) => {
-  dispatch(request(reducerTypes.GET_ORIGINAL_NOTICE_OF_WORK_APPLICATION));
+  dispatch(request(NetworkReducerTypes.GET_ORIGINAL_NOTICE_OF_WORK_APPLICATION));
   dispatch(showLoading());
   return CustomAxios()
     .get(
@@ -184,11 +184,11 @@ export const fetchOriginalNoticeOfWorkApplication = (applicationGuid) => (dispat
       createRequestHeader()
     )
     .then((response) => {
-      dispatch(success(reducerTypes.GET_ORIGINAL_NOTICE_OF_WORK_APPLICATION));
+      dispatch(success(NetworkReducerTypes.GET_ORIGINAL_NOTICE_OF_WORK_APPLICATION));
       dispatch(noticeOfWorkActions.storeOriginalNoticeOfWorkApplication(response.data));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.GET_ORIGINAL_NOTICE_OF_WORK_APPLICATION)))
+    .catch(() => dispatch(error(NetworkReducerTypes.GET_ORIGINAL_NOTICE_OF_WORK_APPLICATION)))
     .finally(() => dispatch(hideLoading()));
 };
 
@@ -197,7 +197,7 @@ export const updateNoticeOfWorkApplication = (
   nowApplicationGuid,
   message = "Successfully updated the permit application."
 ) => (dispatch) => {
-  dispatch(request(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION));
+  dispatch(request(NetworkReducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION));
   dispatch(showLoading());
   return CustomAxios()
     .put(
@@ -210,11 +210,11 @@ export const updateNoticeOfWorkApplication = (
         message,
         duration: 10,
       });
-      dispatch(success(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION));
+      dispatch(success(NetworkReducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION));
       return response;
     })
     .catch(() => {
-      dispatch(error(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION));
+      dispatch(error(NetworkReducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION));
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -222,7 +222,7 @@ export const updateNoticeOfWorkApplication = (
 export const createNoticeOfWorkApplicationProgress = (applicationGuid, progressCode, message) => (
   dispatch
 ) => {
-  dispatch(request(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
+  dispatch(request(NetworkReducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
   dispatch(showLoading());
   return CustomAxios()
     .post(
@@ -238,11 +238,11 @@ export const createNoticeOfWorkApplicationProgress = (applicationGuid, progressC
         message,
         duration: 10,
       });
-      dispatch(success(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
+      dispatch(success(NetworkReducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
       return response;
     })
     .catch(() => {
-      dispatch(error(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
+      dispatch(error(NetworkReducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -253,7 +253,7 @@ export const updateNoticeOfWorkApplicationProgress = (
   payload,
   message
 ) => (dispatch) => {
-  dispatch(request(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
+  dispatch(request(NetworkReducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
   dispatch(showLoading());
   return CustomAxios()
     .put(
@@ -269,17 +269,17 @@ export const updateNoticeOfWorkApplicationProgress = (
         message,
         duration: 10,
       });
-      dispatch(success(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
+      dispatch(success(NetworkReducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
       return response;
     })
     .catch(() => {
-      dispatch(error(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
+      dispatch(error(NetworkReducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
     })
     .finally(() => dispatch(hideLoading()));
 };
 
 export const fetchNoticeOfWorkApplicationReviews = (applicationGuid) => (dispatch) => {
-  dispatch(request(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_REVIEW));
+  dispatch(request(NetworkReducerTypes.GET_NOTICE_OF_WORK_APPLICATION_REVIEW));
   dispatch(showLoading());
   return CustomAxios()
     .get(
@@ -287,16 +287,16 @@ export const fetchNoticeOfWorkApplicationReviews = (applicationGuid) => (dispatc
       createRequestHeader()
     )
     .then((response) => {
-      dispatch(success(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_REVIEW));
+      dispatch(success(NetworkReducerTypes.GET_NOTICE_OF_WORK_APPLICATION_REVIEW));
       dispatch(noticeOfWorkActions.storeNoticeOfWorkApplicationReviews(response.data));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_REVIEW)))
+    .catch(() => dispatch(error(NetworkReducerTypes.GET_NOTICE_OF_WORK_APPLICATION_REVIEW)))
     .finally(() => dispatch(hideLoading()));
 };
 
 export const createNoticeOfWorkApplicationReview = (applicationGuid, payload) => (dispatch) => {
-  dispatch(request(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_REVIEW));
+  dispatch(request(NetworkReducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_REVIEW));
   dispatch(showLoading());
   return CustomAxios()
     .post(
@@ -309,11 +309,11 @@ export const createNoticeOfWorkApplicationReview = (applicationGuid, payload) =>
         message: "Successfully added Review",
         duration: 10,
       });
-      dispatch(success(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_REVIEW));
+      dispatch(success(NetworkReducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_REVIEW));
       return response;
     })
     .catch(() => {
-      dispatch(error(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_REVIEW));
+      dispatch(error(NetworkReducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_REVIEW));
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -323,7 +323,7 @@ export const updateNoticeOfWorkApplicationReview = (
   applicationReviewId,
   payload
 ) => (dispatch) => {
-  dispatch(request(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_REVIEW));
+  dispatch(request(NetworkReducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_REVIEW));
   dispatch(showLoading());
   return CustomAxios()
     .put(
@@ -338,11 +338,11 @@ export const updateNoticeOfWorkApplicationReview = (
         message: "Successfully updated Review",
         duration: 10,
       });
-      dispatch(success(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_REVIEW));
+      dispatch(success(NetworkReducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_REVIEW));
       return response;
     })
     .catch(() => {
-      dispatch(error(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_REVIEW));
+      dispatch(error(NetworkReducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_REVIEW));
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -350,12 +350,12 @@ export const updateNoticeOfWorkApplicationReview = (
 export const deleteNoticeOfWorkApplicationReview = (applicationGuid, applicationReviewId) => (
   dispatch
 ) => {
-  dispatch(request(reducerTypes.REMOVE_NOTICE_OF_WORK_APPLICATION_REVIEW));
+  dispatch(request(NetworkReducerTypes.REMOVE_NOTICE_OF_WORK_APPLICATION_REVIEW));
   dispatch(showLoading());
   return CustomAxios()
     .delete(
       `${ENVIRONMENT.apiUrl +
-        API.NOTICE_OF_WORK_APPLICATION_REVIEW(applicationGuid)}/${applicationReviewId}`,
+      API.NOTICE_OF_WORK_APPLICATION_REVIEW(applicationGuid)}/${applicationReviewId}`,
       createRequestHeader()
     )
     .then((response) => {
@@ -363,10 +363,10 @@ export const deleteNoticeOfWorkApplicationReview = (applicationGuid, application
         message: "Successfully removed the review",
         duration: 10,
       });
-      dispatch(success(reducerTypes.REMOVE_NOTICE_OF_WORK_APPLICATION_REVIEW));
+      dispatch(success(NetworkReducerTypes.REMOVE_NOTICE_OF_WORK_APPLICATION_REVIEW));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.REMOVE_NOTICE_OF_WORK_APPLICATION_REVIEW)))
+    .catch(() => dispatch(error(NetworkReducerTypes.REMOVE_NOTICE_OF_WORK_APPLICATION_REVIEW)))
     .finally(() => dispatch(hideLoading()));
 };
 
@@ -374,25 +374,25 @@ export const editNoticeOfWorkDocument = (now_application_guid, mineDocumentGuid,
   dispatch
 ) => {
   dispatch(showLoading("modal"));
-  dispatch(request(reducerTypes.ADD_DOCUMENT_TO_NOTICE_OF_WORK));
+  dispatch(request(NetworkReducerTypes.ADD_DOCUMENT_TO_NOTICE_OF_WORK));
   return CustomAxios()
     .put(
       `${ENVIRONMENT.apiUrl +
-        API.NOTICE_OF_WORK_DOCUMENT(now_application_guid)}/${mineDocumentGuid}`,
+      API.NOTICE_OF_WORK_DOCUMENT(now_application_guid)}/${mineDocumentGuid}`,
       payload,
       createRequestHeader()
     )
     .then((response) => {
-      dispatch(success(reducerTypes.ADD_DOCUMENT_TO_NOTICE_OF_WORK));
+      dispatch(success(NetworkReducerTypes.ADD_DOCUMENT_TO_NOTICE_OF_WORK));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.ADD_DOCUMENT_TO_NOTICE_OF_WORK)))
+    .catch(() => dispatch(error(NetworkReducerTypes.ADD_DOCUMENT_TO_NOTICE_OF_WORK)))
     .finally(() => dispatch(hideLoading("modal")));
 };
 
 export const sortNoticeOfWorkDocuments = (now_application_guid, payload) => (dispatch) => {
   dispatch(showLoading());
-  dispatch(request(reducerTypes.SORT_NOTICE_OF_WORK_DOCUMENTS));
+  dispatch(request(NetworkReducerTypes.SORT_NOTICE_OF_WORK_DOCUMENTS));
   return CustomAxios()
     .put(
       `${ENVIRONMENT.apiUrl}${API.SORT_NOTICE_OF_WORK_DOCUMENTS(now_application_guid)}`,
@@ -400,16 +400,16 @@ export const sortNoticeOfWorkDocuments = (now_application_guid, payload) => (dis
       createRequestHeader()
     )
     .then((response) => {
-      dispatch(success(reducerTypes.SORT_NOTICE_OF_WORK_DOCUMENTS));
+      dispatch(success(NetworkReducerTypes.SORT_NOTICE_OF_WORK_DOCUMENTS));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.SORT_NOTICE_OF_WORK_DOCUMENTS)))
+    .catch(() => dispatch(error(NetworkReducerTypes.SORT_NOTICE_OF_WORK_DOCUMENTS)))
     .finally(() => dispatch(hideLoading()));
 };
 
 export const updateNoticeOfWorkStatus = (now_application_guid, payload) => (dispatch) => {
   dispatch(showLoading("modal"));
-  dispatch(request(reducerTypes.UPDATE_NOTICE_OF_WORK_STATUS));
+  dispatch(request(NetworkReducerTypes.UPDATE_NOTICE_OF_WORK_STATUS));
   return CustomAxios()
     .put(
       ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_APPLICATION_STATUS(now_application_guid),
@@ -417,11 +417,11 @@ export const updateNoticeOfWorkStatus = (now_application_guid, payload) => (disp
       createRequestHeader()
     )
     .then((response) => {
-      dispatch(success(reducerTypes.UPDATE_NOTICE_OF_WORK_STATUS));
+      dispatch(success(NetworkReducerTypes.UPDATE_NOTICE_OF_WORK_STATUS));
       return response;
     })
     .catch(() => {
-      dispatch(error(reducerTypes.UPDATE_NOTICE_OF_WORK_STATUS));
+      dispatch(error(NetworkReducerTypes.UPDATE_NOTICE_OF_WORK_STATUS));
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -431,7 +431,7 @@ export const setNoticeOfWorkApplicationDocumentDownloadState = (payload) => (dis
 };
 
 export const createApplicationDelay = (applicationGuid, payload) => (dispatch) => {
-  dispatch(request(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_DELAY));
+  dispatch(request(NetworkReducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_DELAY));
   dispatch(showLoading());
   return CustomAxios()
     .post(
@@ -444,17 +444,17 @@ export const createApplicationDelay = (applicationGuid, payload) => (dispatch) =
         message: "Successfully started a delay.",
         duration: 10,
       });
-      dispatch(success(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_DELAY));
+      dispatch(success(NetworkReducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_DELAY));
       return response;
     })
     .catch(() => {
-      dispatch(error(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_DELAY));
+      dispatch(error(NetworkReducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_DELAY));
     })
     .finally(() => dispatch(hideLoading()));
 };
 
 export const updateApplicationDelay = (applicationGuid, delayGuid, payload) => (dispatch) => {
-  dispatch(request(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_DELAY));
+  dispatch(request(NetworkReducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_DELAY));
   dispatch(showLoading());
   return CustomAxios()
     .put(
@@ -467,17 +467,17 @@ export const updateApplicationDelay = (applicationGuid, delayGuid, payload) => (
         message: "Successfully stopped the delay.",
         duration: 10,
       });
-      dispatch(success(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_DELAY));
+      dispatch(success(NetworkReducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_DELAY));
       return response;
     })
     .catch(() => {
-      dispatch(error(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_DELAY));
+      dispatch(error(NetworkReducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_DELAY));
     })
     .finally(() => dispatch(hideLoading()));
 };
 
 export const fetchApplicationDelay = (applicationGuid) => (dispatch) => {
-  dispatch(request(reducerTypes.FETCH_NOTICE_OF_WORK_APPLICATION_DELAY));
+  dispatch(request(NetworkReducerTypes.FETCH_NOTICE_OF_WORK_APPLICATION_DELAY));
   dispatch(showLoading());
   return CustomAxios()
     .get(
@@ -485,12 +485,12 @@ export const fetchApplicationDelay = (applicationGuid) => (dispatch) => {
       createRequestHeader()
     )
     .then((response) => {
-      dispatch(success(reducerTypes.FETCH_NOTICE_OF_WORK_APPLICATION_DELAY));
+      dispatch(success(NetworkReducerTypes.FETCH_NOTICE_OF_WORK_APPLICATION_DELAY));
       dispatch(noticeOfWorkActions.storeNoticeOfWorkApplicationDelay(response.data));
       return response;
     })
     .catch(() => {
-      dispatch(error(reducerTypes.FETCH_NOTICE_OF_WORK_APPLICATION_DELAY));
+      dispatch(error(NetworkReducerTypes.FETCH_NOTICE_OF_WORK_APPLICATION_DELAY));
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -498,7 +498,7 @@ export const fetchApplicationDelay = (applicationGuid) => (dispatch) => {
 export const deleteNoticeOfWorkApplicationDocument = (applicationGuid, mineDocumentGuid) => (
   dispatch
 ) => {
-  dispatch(request(reducerTypes.REMOVE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
+  dispatch(request(NetworkReducerTypes.REMOVE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
   dispatch(showLoading());
   return CustomAxios()
     .delete(
@@ -510,15 +510,15 @@ export const deleteNoticeOfWorkApplicationDocument = (applicationGuid, mineDocum
         message: "Successfully removed the document",
         duration: 10,
       });
-      dispatch(success(reducerTypes.REMOVE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
+      dispatch(success(NetworkReducerTypes.REMOVE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.REMOVE_NOTICE_OF_WORK_APPLICATION_DOCUMENT)))
+    .catch(() => dispatch(error(NetworkReducerTypes.REMOVE_NOTICE_OF_WORK_APPLICATION_DOCUMENT)))
     .finally(() => dispatch(hideLoading()));
 };
 
 export const createAdminAmendmentApplication = (payload) => (dispatch) => {
-  dispatch(request(reducerTypes.CREATE_ADMIN_AMENDMENT_APPLICATION));
+  dispatch(request(NetworkReducerTypes.CREATE_ADMIN_AMENDMENT_APPLICATION));
   dispatch(showLoading("modal"));
   return CustomAxios()
     .post(
@@ -527,7 +527,7 @@ export const createAdminAmendmentApplication = (payload) => (dispatch) => {
       createRequestHeader()
     )
     .then((response) => {
-      dispatch(success(reducerTypes.CREATE_ADMIN_AMENDMENT_APPLICATION));
+      dispatch(success(NetworkReducerTypes.CREATE_ADMIN_AMENDMENT_APPLICATION));
       notification.success({
         message: "Successfully created an Administrative Amendment Application",
         duration: 10,
@@ -535,7 +535,7 @@ export const createAdminAmendmentApplication = (payload) => (dispatch) => {
       return response;
     })
     .catch(() => {
-      dispatch(error(reducerTypes.CREATE_ADMIN_AMENDMENT_APPLICATION));
+      dispatch(error(NetworkReducerTypes.CREATE_ADMIN_AMENDMENT_APPLICATION));
     })
     .finally(() => dispatch(hideLoading("modal")));
 };

@@ -4,12 +4,8 @@ import { INoticeOfDeparture, ICreateNoD, INodDocumentPayload } from "@mds/common
 import { ENVIRONMENT } from "@mds/common/constants";
 import { IDispatchError, error, request, success } from "../actions/genericActions";
 import {
-  ADD_DOCUMENT_TO_NOTICE_OF_DEPARTURE,
-  CREATE_NOTICE_OF_DEPARTURE,
-  GET_DETAILED_NOTICE_OF_DEPARTURE,
-  GET_NOTICES_OF_DEPARTURE,
-  UPDATE_NOTICE_OF_DEPARTURE,
-} from "@mds/common/constants/reducerTypes";
+  NetworkReducerTypes
+} from "@mds/common/constants/networkReducerTypes";
 import CustomAxios from "../customAxios";
 import {
   NOTICE_OF_DEPARTURE,
@@ -30,31 +26,31 @@ export const createNoticeOfDeparture = (
 ): AppThunk<Promise<AxiosResponse<INoticeOfDeparture>>> => (
   dispatch
 ): Promise<AxiosResponse<INoticeOfDeparture>> => {
-  dispatch(request(CREATE_NOTICE_OF_DEPARTURE));
-  dispatch(showLoading("modal"));
+    dispatch(request(NetworkReducerTypes.CREATE_NOTICE_OF_DEPARTURE));
+    dispatch(showLoading("modal"));
 
-  return CustomAxios()
-    .post(`${ENVIRONMENT.apiUrl}${NOTICES_OF_DEPARTURE()}`, payload, createRequestHeader())
-    .then((response: AxiosResponse<INoticeOfDeparture>) => {
-      notification.success({
-        message: "Successfully created Notice of Departure.",
-        duration: 10,
+    return CustomAxios()
+      .post(`${ENVIRONMENT.apiUrl}${NOTICES_OF_DEPARTURE()}`, payload, createRequestHeader())
+      .then((response: AxiosResponse<INoticeOfDeparture>) => {
+        notification.success({
+          message: "Successfully created Notice of Departure.",
+          duration: 10,
+        });
+        dispatch(success(NetworkReducerTypes.CREATE_NOTICE_OF_DEPARTURE));
+        return response;
+      })
+      .catch(() => {
+        dispatch(error(NetworkReducerTypes.CREATE_NOTICE_OF_DEPARTURE));
+      })
+      .finally(() => {
+        dispatch(hideLoading("modal"));
       });
-      dispatch(success(CREATE_NOTICE_OF_DEPARTURE));
-      return response;
-    })
-    .catch(() => {
-      dispatch(error(CREATE_NOTICE_OF_DEPARTURE));
-    })
-    .finally(() => {
-      dispatch(hideLoading("modal"));
-    });
-};
+  };
 
 export const fetchNoticesOfDeparture = (
   mine_guid
 ): AppThunk<Promise<AxiosResponse<INoticeOfDeparture> | IDispatchError>> => (dispatch) => {
-  dispatch(request(GET_NOTICES_OF_DEPARTURE));
+  dispatch(request(NetworkReducerTypes.GET_NOTICES_OF_DEPARTURE));
   dispatch(showLoading());
   const headers = {
     ...createRequestHeader(),
@@ -65,11 +61,11 @@ export const fetchNoticesOfDeparture = (
   return CustomAxios()
     .get(`${ENVIRONMENT.apiUrl}${NOTICES_OF_DEPARTURE()}`, headers)
     .then((response) => {
-      dispatch(success(GET_NOTICES_OF_DEPARTURE));
+      dispatch(success(NetworkReducerTypes.GET_NOTICES_OF_DEPARTURE));
       dispatch(storeNoticesOfDeparture(response.data));
       return response;
     })
-    .catch(() => dispatch(error(GET_NOTICES_OF_DEPARTURE)))
+    .catch(() => dispatch(error(NetworkReducerTypes.GET_NOTICES_OF_DEPARTURE)))
     .finally(() => dispatch(hideLoading()));
 };
 
@@ -79,29 +75,29 @@ export const updateNoticeOfDeparture = (
 ): AppThunk<Promise<AxiosResponse<INoticeOfDeparture>>> => (
   dispatch
 ): Promise<AxiosResponse<INoticeOfDeparture>> => {
-  dispatch(request(UPDATE_NOTICE_OF_DEPARTURE));
-  dispatch(showLoading("modal"));
-  return CustomAxios()
-    .patch(`${ENVIRONMENT.apiUrl}${NOTICE_OF_DEPARTURE(nodGuid)}`, payload, createRequestHeader())
-    .then((response) => {
-      notification.success({
-        message: "Successfully updated Notice of Departure.",
-        duration: 10,
-      });
-      dispatch(success(UPDATE_NOTICE_OF_DEPARTURE));
-      return response;
-    })
-    .catch(() => {
-      dispatch(error(UPDATE_NOTICE_OF_DEPARTURE));
-    })
-    .finally(() => dispatch(hideLoading("modal")));
-};
+    dispatch(request(NetworkReducerTypes.UPDATE_NOTICE_OF_DEPARTURE));
+    dispatch(showLoading("modal"));
+    return CustomAxios()
+      .patch(`${ENVIRONMENT.apiUrl}${NOTICE_OF_DEPARTURE(nodGuid)}`, payload, createRequestHeader())
+      .then((response) => {
+        notification.success({
+          message: "Successfully updated Notice of Departure.",
+          duration: 10,
+        });
+        dispatch(success(NetworkReducerTypes.UPDATE_NOTICE_OF_DEPARTURE));
+        return response;
+      })
+      .catch(() => {
+        dispatch(error(NetworkReducerTypes.UPDATE_NOTICE_OF_DEPARTURE));
+      })
+      .finally(() => dispatch(hideLoading("modal")));
+  };
 
 export const fetchDetailedNoticeOfDeparture = (
   nod_guid
 ): AppThunk<Promise<AxiosResponse<INoticeOfDeparture>>> => {
   return async (dispatch): Promise<AxiosResponse<INoticeOfDeparture>> => {
-    dispatch(request(GET_DETAILED_NOTICE_OF_DEPARTURE));
+    dispatch(request(NetworkReducerTypes.GET_DETAILED_NOTICE_OF_DEPARTURE));
     dispatch(showLoading());
     try {
       try {
@@ -109,11 +105,11 @@ export const fetchDetailedNoticeOfDeparture = (
           `${ENVIRONMENT.apiUrl}${NOTICE_OF_DEPARTURE(nod_guid)}`,
           createRequestHeader()
         );
-        dispatch(success(GET_DETAILED_NOTICE_OF_DEPARTURE));
+        dispatch(success(NetworkReducerTypes.GET_DETAILED_NOTICE_OF_DEPARTURE));
         dispatch(storeNoticeOfDeparture(response.data));
         return response;
       } catch {
-        dispatch(error(GET_DETAILED_NOTICE_OF_DEPARTURE));
+        dispatch(error(NetworkReducerTypes.GET_DETAILED_NOTICE_OF_DEPARTURE));
       }
     } finally {
       dispatch(hideLoading());
@@ -126,7 +122,7 @@ export const addDocumentToNoticeOfDeparture = (
   payload: INodDocumentPayload
 ): AppThunk => (dispatch) => {
   dispatch(showLoading("modal"));
-  dispatch(request(ADD_DOCUMENT_TO_NOTICE_OF_DEPARTURE));
+  dispatch(request(NetworkReducerTypes.ADD_DOCUMENT_TO_NOTICE_OF_DEPARTURE));
   return CustomAxios()
     .put(
       `${ENVIRONMENT.apiUrl}${NOTICES_OF_DEPARTURE_DOCUMENTS(noticeOfDepartureGuid)}`,
@@ -134,11 +130,11 @@ export const addDocumentToNoticeOfDeparture = (
       createRequestHeader()
     )
     .then((response) => {
-      dispatch(success(ADD_DOCUMENT_TO_NOTICE_OF_DEPARTURE));
+      dispatch(success(NetworkReducerTypes.ADD_DOCUMENT_TO_NOTICE_OF_DEPARTURE));
       return response;
     })
     .catch((err) => {
-      dispatch(error(ADD_DOCUMENT_TO_NOTICE_OF_DEPARTURE));
+      dispatch(error(NetworkReducerTypes.ADD_DOCUMENT_TO_NOTICE_OF_DEPARTURE));
       return Promise.reject(err);
     })
     .finally(() => dispatch(hideLoading("modal")));

@@ -234,7 +234,8 @@ exports[`MajorMinesApplicationPage renders properly 1`] = `
             Change Requested
           </p>
           <p>
-            This project requires changes by the mine. MineSpace users can update text fields and update documents. Note: when the MineSpace user resubmits at this step the project status will be changed to under review.
+            This project requires changes by the mine. MineSpace users can update text fields and update documents. 
+        Note: Navigate to the submit section of the form to resubmit your application after making any changes to have them resubmitted to the ministry.
           </p>
         </div>
         <div>

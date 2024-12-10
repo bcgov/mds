@@ -190,7 +190,7 @@ export const ProjectSummaryPage = () => {
     let status_code = projectSummary.status_code;
     let is_historic = projectSummary.is_historic;
 
-    if (status_code === "CHR") {
+    if (status_code === "CHR" && formValues.confirmation_of_submission) {
       status_code = "UNR";
     } else if ((!status_code || !isEditMode) && status_code !== "UNR") {
       status_code = "DFT";

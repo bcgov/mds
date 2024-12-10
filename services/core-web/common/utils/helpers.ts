@@ -23,13 +23,6 @@ import { ItemMap } from "@mds/common";
  */
 export const resetForm = (form) => (result, dispatch) => dispatch(reset(form));
 
-// Function to create a reusable reducer (used in src/reducers/rootReducer)
-export const createReducer = (reducer, name) => (state, action) => {
-  if (name !== action.name && state !== undefined) {
-    return state;
-  }
-  return reducer(state, action);
-};
 // Function to create state object using the id as the key (used in src/reducers/<customReducer>)
 export const createItemMap = <T>(array: T[], idField: string): ItemMap<T> => {
   const mapping: ItemMap<T> = {};

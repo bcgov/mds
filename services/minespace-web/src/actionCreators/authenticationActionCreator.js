@@ -1,7 +1,7 @@
 import { notification } from "antd";
 import { USER_ROLES } from "@mds/common";
 import { request, success, error } from "@/actions/genericActions";
-import * as reducerTypes from "@/constants/reducerTypes";
+import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
 import * as authenticationActions from "@/actions/authenticationActions";
 import keycloak from "@mds/common/keycloak";
 
@@ -22,20 +22,20 @@ export const getUserRoles = () => (dispatch) => {
 };
 
 export const getUserInfoFromToken = (tokenParsed) => (dispatch) => {
-  dispatch(request(reducerTypes.GET_USER_INFO));
+  dispatch(request(NetworkReducerTypes.GET_USER_INFO));
 
   if (!tokenParsed || new Date(tokenParsed.exp * 1000) < new Date()) {
-    dispatch(error(reducerTypes.GET_USER_INFO));
+    dispatch(error(NetworkReducerTypes.GET_USER_INFO));
     dispatch(unAuthenticateUser());
   } else {
     dispatch(getUserRoles(tokenParsed));
-    dispatch(success(reducerTypes.GET_USER_INFO));
+    dispatch(success(NetworkReducerTypes.GET_USER_INFO));
     dispatch(authenticationActions.authenticateUser(tokenParsed));
   }
   localStorage.removeItem("authenticationInProgressFlag");
 };
 
 export const authenticateUser = (accessToken) => (dispatch) => {
-  dispatch(success(reducerTypes.AUTHENTICATE_USER));
+  dispatch(success(NetworkReducerTypes.AUTHENTICATE_USER));
   dispatch(getUserInfoFromToken(accessToken));
 };

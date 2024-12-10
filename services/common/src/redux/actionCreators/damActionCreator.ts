@@ -1,7 +1,7 @@
 import { hideLoading, showLoading } from "react-redux-loading-bar";
 import { notification } from "antd";
 import { ENVIRONMENT } from "@mds/common/constants";
-import { CREATE_DAM, GET_DAM, UPDATE_DAM } from "@mds/common/constants/reducerTypes";
+import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
 import { DAM, DAMS } from "@mds/common/constants/API";
 import { error, request, success } from "../actions/genericActions";
 
@@ -15,7 +15,7 @@ import { AxiosResponse } from "axios";
 export const createDam = (payload: ICreateDam): AppThunk<Promise<AxiosResponse<IDam>>> => (
   dispatch
 ): Promise<AxiosResponse<IDam>> => {
-  dispatch(request(CREATE_DAM));
+  dispatch(request(NetworkReducerTypes.CREATE_DAM));
   dispatch(showLoading());
 
   return CustomAxios()
@@ -25,11 +25,11 @@ export const createDam = (payload: ICreateDam): AppThunk<Promise<AxiosResponse<I
         message: "Successfully created new Dam",
         duration: 10,
       });
-      dispatch(success(CREATE_DAM));
+      dispatch(success(NetworkReducerTypes.CREATE_DAM));
       return response;
     })
     .catch(() => {
-      dispatch(error(CREATE_DAM));
+      dispatch(error(NetworkReducerTypes.CREATE_DAM));
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -38,18 +38,18 @@ export const updateDam = (
   damGuid: string,
   payload: Partial<IDam>
 ): AppThunk<Promise<AxiosResponse<IDam>>> => (dispatch): Promise<AxiosResponse<IDam>> => {
-  dispatch(request(UPDATE_DAM));
+  dispatch(request(NetworkReducerTypes.UPDATE_DAM));
   dispatch(showLoading());
 
   return CustomAxios()
     .patch(`${ENVIRONMENT.apiUrl}${DAM(damGuid)}`, payload, createRequestHeader())
     .then((response) => {
-      dispatch(success(UPDATE_DAM));
+      dispatch(success(NetworkReducerTypes.UPDATE_DAM));
       dispatch(storeDam(response.data));
       return response;
     })
     .catch(() => {
-      dispatch(error(UPDATE_DAM));
+      dispatch(error(NetworkReducerTypes.UPDATE_DAM));
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -57,18 +57,18 @@ export const updateDam = (
 export const fetchDam = (damGuid: string): AppThunk<Promise<AxiosResponse<IDam>>> => (
   dispatch
 ): Promise<AxiosResponse<IDam>> => {
-  dispatch(request(GET_DAM));
+  dispatch(request(NetworkReducerTypes.GET_DAM));
   dispatch(showLoading());
 
   return CustomAxios()
     .get(`${ENVIRONMENT.apiUrl}${DAM(damGuid)}`, createRequestHeader())
     .then((response: AxiosResponse<IDam>) => {
-      dispatch(success(GET_DAM));
+      dispatch(success(NetworkReducerTypes.GET_DAM));
       dispatch(storeDam(response.data));
       return response;
     })
     .catch(() => {
-      dispatch(error(GET_DAM));
+      dispatch(error(NetworkReducerTypes.GET_DAM));
     })
     .finally(() => dispatch(hideLoading()));
 };

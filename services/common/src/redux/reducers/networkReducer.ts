@@ -1,13 +1,22 @@
 import { REQUEST, SUCCESS, ERROR } from "@mds/common/constants/actionTypes";
+import { RootState } from "../rootState";
+import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
 
-const initialState = {
+interface NetworkReducerState {
+  isFetching: boolean;
+  isSuccessful: boolean;
+  error: boolean | string;
+  requestType: any;
+}
+
+const initialState: NetworkReducerState = {
   isFetching: false,
   isSuccessful: false,
   error: null,
   requestType: null,
 };
 
-export const networkReducer = (state = initialState, action) => {
+export const networkReducer = (state = initialState, action): NetworkReducerState => {
   switch (action.type) {
     case REQUEST:
       return {
@@ -37,5 +46,10 @@ export const networkReducer = (state = initialState, action) => {
       return state;
   }
 };
+
+export const getIsFetching = (reducerType: NetworkReducerTypes) =>
+  (state: RootState) => {
+    return state[NetworkReducerTypes[reducerType]].isFetching;
+  }
 
 export default networkReducer;

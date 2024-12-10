@@ -37,7 +37,7 @@ const PermitConditionCategorySelector: FC<IPermitConditionCategorySelectorProps>
   const showLabel = props.showLabel !== undefined ? props.showLabel : true;
 
   return (
-    <Form.Item style={{ marginRight: 0 }}>
+    <Form.Item style={{ marginRight: 0, minWidth: '250px' }}>
       <Field
         id="description"
         name="description"

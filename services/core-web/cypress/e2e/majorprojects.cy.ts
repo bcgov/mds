@@ -6,9 +6,9 @@ describe("Major Projects", () => {
       force: true,
     });
 
-    // .eq(1) selects the second row (0-based index).
+    // .eq(0) selects the second row (0-based index).
     cy.get("[data-cy=major-projects-table-open-button]", { timeout: 10000 })
-      .eq(1)
+      .eq(0)
       .find("button")
       .click({ force: true });
 

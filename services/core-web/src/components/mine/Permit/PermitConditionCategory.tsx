@@ -3,7 +3,7 @@ import RenderField from "@mds/common/components/forms/RenderField";
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 import { FORM } from "@mds/common/constants/forms";
 import { IPermitConditionCategory } from "@mds/common/interfaces";
-import { Button, Popconfirm, Row, Tooltip, Typography } from "antd";
+import { Button, Col, Popconfirm, Row, Tooltip, Typography } from "antd";
 import React, { useState } from "react";
 import { Field } from "redux-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -65,59 +65,65 @@ export const EditPermitConditionCategoryInline = (props: IPermitConditionCategor
 
   return (
     <FormWrapper scrollOnToggleEdit={false} name={formName} onSubmit={handleSubmit} initialValues={props.category} isEditMode={isEditMode}>
-      <Row className="flex" style={{ gap: '0.5em' }}>
-        <Field name="step" component={RenderField} required={true} validate={[required]} />
-        <PermitConditionCategorySelector showLabel={false} />
-        <Button
-          className="icon-button-container"
-          style={{ marginRight: 0 }}
-          onClick={cancel}
-          type="primary"
-          icon={<FontAwesomeIcon icon={faXmark} />}
-        />
-
-        <RenderSubmitButton buttonText="" buttonProps={{ "aria-label": "Confirm", className: "icon-button-container", style: { marginRight: 0, marginLeft: 0 }, icon: <FontAwesomeIcon icon={faCheck} /> }} />
-
-        <Popconfirm
-          disabled={props.conditionCount > 0}
-          placement="topRight"
-          title={
-            <>
-              <Typography.Paragraph>Are you sure you want to delete {props.category.description}?</Typography.Paragraph>
-              <Typography.Paragraph>This action cannot be undone.</Typography.Paragraph>
-            </>
-          }
-          onConfirm={() => handleDelete(props.category)}
-          okText="Yes, Delete Category"
-          cancelText="No"
-        >
+      <Row style={{ gap: '0.5em' }}>
+        <Col flex-shrink="1" style={{ maxWidth: '40px' }}>
+          <Field name="step" component={RenderField} required={true} validate={[required]} style={{ marginRight: 0, }} />
+        </Col>
+        <Col>
+          <PermitConditionCategorySelector showLabel={false} />
+        </Col>
+        <Col flex="auto" style={{ display: 'flex', gap: '0.5em' }}>
           <Button
-            disabled={props.conditionCount > 0}
-            danger={true}
-            icon={<FontAwesomeIcon icon={faTrash} />}
-            aria-label="Delete Category" />
-        </Popconfirm>
+            className="icon-button-container"
+            style={{ marginRight: 0 }}
+            onClick={cancel}
+            type="primary"
+            icon={<FontAwesomeIcon icon={faXmark} />}
+          />
 
-        <Button
-          disabled={props.currentPosition <= 0}
-          onClick={(event) => {
-            event.stopPropagation();
-            props.moveUp(props.category);
-          }}
-          type="default"
-          aria-label="Move Category Up"
-          icon={<FontAwesomeIcon icon={faArrowUp} />}
-        />
-        <Button
-          style={{ marginLeft: 0 }}
-          disabled={props.currentPosition >= props.categoryCount - 1}
-          aria-label="Move Category Down"
-          onClick={(event) => {
-            event.stopPropagation();
-            props.moveDown(props.category);
-          }}
-          icon={<FontAwesomeIcon icon={faArrowDown} />}
-        />
+          <RenderSubmitButton buttonText="" buttonProps={{ "aria-label": "Confirm", className: "icon-button-container", style: { marginRight: 0, marginLeft: 0 }, icon: <FontAwesomeIcon icon={faCheck} /> }} />
+
+          <Popconfirm
+            disabled={props.conditionCount > 0}
+            placement="topRight"
+            title={
+              <>
+                <Typography.Paragraph>Are you sure you want to delete {props.category.description}?</Typography.Paragraph>
+                <Typography.Paragraph>This action cannot be undone.</Typography.Paragraph>
+              </>
+            }
+            onConfirm={() => handleDelete(props.category)}
+            okText="Yes, Delete Category"
+            cancelText="No"
+          >
+            <Button
+              disabled={props.conditionCount > 0}
+              danger={true}
+              icon={<FontAwesomeIcon icon={faTrash} />}
+              aria-label="Delete Category" />
+          </Popconfirm>
+
+          <Button
+            disabled={props.currentPosition <= 0}
+            onClick={(event) => {
+              event.stopPropagation();
+              props.moveUp(props.category);
+            }}
+            type="default"
+            aria-label="Move Category Up"
+            icon={<FontAwesomeIcon icon={faArrowUp} />}
+          />
+          <Button
+            style={{ marginLeft: 0 }}
+            disabled={props.currentPosition >= props.categoryCount - 1}
+            aria-label="Move Category Down"
+            onClick={(event) => {
+              event.stopPropagation();
+              props.moveDown(props.category);
+            }}
+            icon={<FontAwesomeIcon icon={faArrowDown} />}
+          />
+        </Col>
       </Row>
     </FormWrapper >
   )
