@@ -9,8 +9,8 @@ const TEST_PARAMETERS = [
         testFunction: areFieldsDisabled,
         coreDisabledStatuses: ["WDN", "COM"],
         coreEnabledStatuses: ["DFT", "SUB", "ASG", "UNR", "CHR", "OHD"],
-        msDisabledStatuses: ["SUB", "UNR", "WDN", "OHD", "COM"],
-        msEnabledStatuses: ["DFT", "CHR", "ASG"],
+        msDisabledStatuses: ["SUB", "ASG", "UNR", "WDN", "OHD", "COM"],
+        msEnabledStatuses: ["DFT", "CHR"],
     },
     {
         label: "areDocumentFieldsDisabled",
@@ -25,16 +25,16 @@ const TEST_PARAMETERS = [
         testFunction: areAuthFieldsDisabled,
         coreDisabledStatuses: ["WDN", "COM", "CHR", "UNR"],
         coreEnabledStatuses: ["DFT", "SUB", "ASG", "OHD"],
-        msDisabledStatuses: ["UNR", "WDN", "OHD", "COM", "SUB", "CHR"],
-        msEnabledStatuses: ["DFT", "ASG"],
+        msDisabledStatuses: ["UNR", "WDN", "OHD", "COM", "SUB", "ASG", "CHR"],
+        msEnabledStatuses: ["DFT"],
     },
     {
         label: "areAuthEnvFieldsDisabled",
         testFunction: areAuthEnvFieldsDisabled,
         coreDisabledStatuses: ["WDN", "COM", "ASG", "UNR", "CHR", "OHD", "SUB"],
         coreEnabledStatuses: ["DFT"],
-        msDisabledStatuses: ["UNR", "WDN", "OHD", "COM", "SUB", "CHR"],
-        msEnabledStatuses: ["DFT", "ASG"],
+        msDisabledStatuses: ["UNR", "WDN", "OHD", "COM", "SUB", "ASG", "CHR"],
+        msEnabledStatuses: ["DFT"],
     }
 ];
 
@@ -59,9 +59,20 @@ TEST_PARAMETERS.forEach(
                     expect(result).toBe(true);
                 });
             });
+
+            if (label !== "areDocumentFieldsDisabled") {
+                const noSubmissionMinespaceDisabledStatuses = [...msDisabledStatuses].filter((status) => status !== "ASG");
+                noSubmissionMinespaceDisabledStatuses.forEach((status) => {
+                    it(`MS status: ${status} Should return true (disabled) when submission has not occured`, () => {
+                        const result = testFunction(SystemFlagEnum.ms, status);
+                        expect(result).toBe(true);
+                    });
+                })
+            }
+
             msDisabledStatuses.forEach((status) => {
-                it(`MS status: ${status} Should return true (disabled)`, () => {
-                    const result = testFunction(SystemFlagEnum.ms, status);
+                it(`MS status: ${status} Should return true (disabled) when submission has occured`, () => {
+                    const result = testFunction(SystemFlagEnum.ms, status, true);
                     expect(result).toBe(true);
                 });
             });
@@ -72,8 +83,9 @@ TEST_PARAMETERS.forEach(
                     expect(result).toBe(false);
                 });
             });
+
             msEnabledStatuses.forEach((status) => {
-                it(`MS status: ${status} Should return false (enabled)`, () => {
+                it(`MS status: ${status} Should return false (enabled) when submission has occured`, () => {
                     const result = testFunction(SystemFlagEnum.ms, status);
                     expect(result).toBe(false);
                 });
