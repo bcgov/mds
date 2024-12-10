@@ -85,7 +85,7 @@ TEST_PARAMETERS.forEach(
             });
 
             msEnabledStatuses.forEach((status) => {
-                it(`MS status: ${status} Should return false (enabled) when submission has occured`, () => {
+                it(`MS status: ${status} Should return false (enabled)`, () => {
                     const result = testFunction(SystemFlagEnum.ms, status);
                     expect(result).toBe(false);
                 });
