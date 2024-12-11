@@ -1,6 +1,4 @@
-import csv
 import hashlib
-import io
 import json
 import logging
 import os
@@ -9,7 +7,6 @@ import shutil
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-import pandas as pd
 from app.permit_conditions.context import context
 from azure.ai.formrecognizer import AnalyzeResult, DocumentAnalysisClient
 from azure.core.credentials import AzureKeyCredential
@@ -39,7 +36,7 @@ class AzureDocumentIntelligenceConverter:
     """
 
     @component.output_types(
-        documents=List[Document], permit_condition_csv=List[Document]
+        documents=List[Document]
     )
     def run(
         self,
@@ -71,16 +68,13 @@ class AzureDocumentIntelligenceConverter:
 
         docs = []
 
-        for idx, p in enumerate(result.paragraphs):
+        for idx, p in enumerate(result.paragraphs or []):
             doc = self.add_metadata_to_document(idx, p)
 
             docs.append(doc)
 
-        permit_condition_csv = _create_csv_representation(docs)
-
         return {
             "documents": docs,
-            "permit_condition_csv": [Document(content=permit_condition_csv)],
         }
 
     def add_metadata_to_document(self, idx, p):
@@ -112,11 +106,16 @@ class AzureDocumentIntelligenceConverter:
                 "left": left,
             },
             "role": p.role,
+            "page": p.bounding_regions[0].page_number,
         }
 
         return Document(content=json.dumps(content, indent=None), meta=meta)
 
     def run_document_intelligence(self, file_path):
+
+        assert DOCUMENTINTELLIGENCE_ENDPOINT, "DOCUMENTINTELLIGENCE_ENDPOINT is not set"
+        assert DOCUMENTINTELLIGENCE_API_KEY, "DOCUMENTINTELLIGENCE_API_KEY is not set"
+
         document_intelligence_client = DocumentAnalysisClient(
             endpoint=DOCUMENTINTELLIGENCE_ENDPOINT,
             credential=AzureKeyCredential(DOCUMENTINTELLIGENCE_API_KEY),
@@ -149,18 +148,3 @@ class AzureDocumentIntelligenceConverter:
             logger.info("No cache entry found. Quering Azure Document Intelligence")
             result = None
         return result
-
-
-def _create_csv_representation(docs):
-    content = json.dumps([json.loads(doc.content) for doc in docs])
-    jsn = pd.read_json(io.StringIO(content))
-
-    cs = jsn.to_csv(
-        index=False,
-        header=True,
-        quoting=csv.QUOTE_ALL,
-        encoding="utf-8",
-        sep=",",
-        columns=["id", "text"],
-    )
-    return cs

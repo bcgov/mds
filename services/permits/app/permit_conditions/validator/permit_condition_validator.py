@@ -53,7 +53,7 @@ class PermitConditionValidator:
 
         # Parse the replies given and make sure they're valid json
         conditions: List[PermitCondition] = reduce(
-            operator.concat, [self._parse_reply(reply) for reply in data.messages]
+            operator.concat, [self._parse_reply(reply) for reply in data.messages[0]]
         )
 
         # Find the content of the last condition that was processed

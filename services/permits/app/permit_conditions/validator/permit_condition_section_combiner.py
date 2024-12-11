@@ -1,7 +1,7 @@
 import json
 import logging
 import os
-from typing import List, Optional
+from typing import List
 
 from app.permit_conditions.validator.parse_hierarchy import parse_hierarchy
 from app.permit_conditions.validator.permit_condition_model import (
@@ -24,9 +24,7 @@ class ExtractionIteration(BaseModel):
 @component
 class PermitConditionSectionCombiner:
 
-    @component.output_types(
-        conditions=PermitConditions,
-    )
+    @component.output_types(conditions=PermitConditions)
     def run(self, documents: List[Document]):
         """
         Given a list of documents that have their numbering identified (e.g.) a, B, 1, 3, and bounding boxes identified, this step will
@@ -117,7 +115,9 @@ class PermitConditionSectionCombiner:
                     matching_cond.id = p["id"]
 
                 else:
-                    matching_cond.condition_text = f"{matching_cond.condition_text}\n{p['text']}"
+                    matching_cond.condition_text = (
+                        f"{matching_cond.condition_text}\n{p['text']}"
+                    )
 
                 if matching_cond.meta["bounding_box"] and p["meta"]["bounding_box"]:
                     self._combine_bounding_boxes(p, matching_cond)

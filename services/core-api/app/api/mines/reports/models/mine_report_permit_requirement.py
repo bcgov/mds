@@ -2,11 +2,10 @@ from datetime import date
 from enum import Enum
 from typing import Optional
 
+from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
+from app.extensions import db
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.schema import FetchedValue
-
-from app.api.utils.models_mixins import Base, AuditMixin, SoftDeleteMixin
-from app.extensions import db
 
 
 class CimOrCpo(str, Enum):
@@ -34,6 +33,8 @@ class MineReportPermitRequirement(SoftDeleteMixin, Base, AuditMixin):
     mine_report_permit_requirement_id: int = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     due_date_period_months: int = db.Column(db.Integer, nullable=False)
     initial_due_date: Optional[date] = db.Column(db.Date, nullable=True)
+    report_name = db.Column(db.String(512), nullable=True)
+   
     active_ind: bool = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     cim_or_cpo: Optional[CimOrCpo] = db.Column(db.Enum(CimOrCpo, name='cim_or_cpo_type'), nullable=True)
     ministry_recipient: Optional[list[OfficeDestination]] = db.Column(
@@ -67,6 +68,7 @@ class MineReportPermitRequirement(SoftDeleteMixin, Base, AuditMixin):
 
     @classmethod
     def create(cls,
+               report_name: Optional[str],
                due_date_period_months: int,
                initial_due_date: date,
                cim_or_cpo: Optional[CimOrCpo],
@@ -75,6 +77,7 @@ class MineReportPermitRequirement(SoftDeleteMixin, Base, AuditMixin):
                permit_amendment_id: int) -> "MineReportPermitRequirement":
 
         mine_report_permit_requirement = cls(
+            report_name=report_name,
             due_date_period_months=due_date_period_months,
             initial_due_date=initial_due_date,
             cim_or_cpo=cim_or_cpo,

@@ -252,6 +252,7 @@ MINE_TYPE_MODEL = api.model(
 
 MINE_REPORT_PERMIT_REQUIREMENT = api.model(
     'MineReportPermitRequirement', {
+        'report_name': fields.String,
         'mine_report_permit_requirement_id': fields.Integer,
         'due_date_period_months': fields.Integer,
         'initial_due_date': fields.Date,
@@ -895,7 +896,8 @@ PERMIT_CONDITION_MODEL = api.model(
         'parent_permit_condition_id': fields.Integer,
         'sub_conditions': fields.List(PermitCondition),
         'step': fields.String,
-        'display_order': fields.Integer
+        'display_order': fields.Integer,
+        'meta': fields.Raw,
     })
 
 PERMIT_CONDITION_TEMPLATE_MODEL = api.model('PermitConditionTemplate', {
