@@ -26,15 +26,16 @@ from .models.permit_condition_result import (
 
 indentation_type_code_mapping = {
     0: None,
-    1: 'SEC',
-    2: 'CON',
-    3: 'LIS',
-    4: 'LIS',
-    5: 'LIS',
+    1: "SEC",
+    2: "CON",
+    3: "LIS",
+    4: "LIS",
+    5: "LIS",
 }
 
 # For conditions that don't match any category, put them in a "Terms and conditions" category
-DEFAULT_CATEGORY_TEXT = 'Terms and Conditions'
+DEFAULT_CATEGORY_TEXT = "Terms and Conditions"
+
 
 def create_permit_conditions_from_task(task: PermitExtractionTask):
     """
@@ -42,17 +43,19 @@ def create_permit_conditions_from_task(task: PermitExtractionTask):
     """
     result = task.task_result
     last_condition_id_by_hierarchy = {}
+    display_order_by_parent = {}
     current_category = None
     try:
         result = CreatePermitConditionsResult.model_validate(result)
 
-        has_category = any([condition.is_top_level_section for condition in result.conditions])
+        has_category = any(
+            [condition.is_top_level_section for condition in result.conditions]
+        )
 
         conditions = result.conditions
         if not has_category:
             top_level_section = PermitConditionResult(
-                section='A',
-                condition_text=DEFAULT_CATEGORY_TEXT
+                section="A", condition_text=DEFAULT_CATEGORY_TEXT
             )
             for c in conditions:
                 c.set_section(top_level_section)
@@ -63,50 +66,70 @@ def create_permit_conditions_from_task(task: PermitExtractionTask):
         default_section = None
 
         for idx, condition in enumerate(conditions):
-            if condition.is_top_level_section:        
+            if condition.is_top_level_section:
                 section_category = _create_permit_condition_category(
                     condition=condition,
                     permit_amendment=task.permit_amendment,
                     display_order=num_categories,
-                    step=condition.step
+                    step=condition.step,
                 )
                 if condition.condition_text == DEFAULT_CATEGORY_TEXT:
                     default_section = section_category
                 current_category = section_category
                 num_categories += 1
-            else:            
+            else:
                 parent = _determine_parent(condition, last_condition_id_by_hierarchy)
                 type_code = _map_condition_to_type_code(condition)
+
+                parent_id = parent.permit_condition_id if parent else None
+
+                if parent_id not in display_order_by_parent:
+                    display_order_by_parent[parent_id] = 0
+                display_order_by_parent[parent_id] += 1
+                current_display_order = display_order_by_parent[parent_id]
 
                 title_cond = None
 
                 if not current_category and not default_section:
                     default_section = _create_permit_condition_category(
                         condition=PermitConditionResult(
-                            section='A',
-                            condition_text=DEFAULT_CATEGORY_TEXT
+                            section="A", condition_text=DEFAULT_CATEGORY_TEXT
                         ),
                         permit_amendment=task.permit_amendment,
                         display_order=num_categories,
-                        step='A'
+                        step="A",
                     )
 
                 category_code = current_category or default_section
+
                 if condition.condition_title:
-                    title_cond = _create_title_condition(task, category_code, condition, parent, idx, type_code)
+                    title_cond = _create_title_condition(
+                        task,
+                        category_code,
+                        condition,
+                        parent,
+                        current_display_order,
+                        type_code,
+                    )
 
                 parent_condition_id = _get_parent_condition_id(title_cond, parent)
-                cond = _create_permit_condition(task, category_code, condition, parent_condition_id, idx, type_code)
+                cond = _create_permit_condition(
+                    task,
+                    category_code,
+                    condition,
+                    parent_condition_id,
+                    current_display_order,
+                    type_code,
+                )
 
                 hierarchy_key = ".".join(condition.numbering_structure)
                 last_condition_id_by_hierarchy[hierarchy_key] = cond
-    
+
         db.session.commit()
     except:
         db.session.rollback()
         raise
 
-    
 
 def _map_condition_to_type_code(condition: PermitConditionResult):
     """
@@ -115,15 +138,22 @@ def _map_condition_to_type_code(condition: PermitConditionResult):
     Example: ['A', '1', '', '', ''] would have an indentation of 2 -> type code is 'CON'
     Example: ['A', '', '', '', ''] would have an indentation of 1 -> type code is 'SEC'
     """
-    indentation = next((i-1 for i, x in enumerate(condition.numbering_structure) if x == ''), 0)
+    indentation = next(
+        (i - 1 for i, x in enumerate(condition.numbering_structure) if x == ""), 0
+    )
     type_code = indentation_type_code_mapping[indentation]
-    
+
     if not type_code:
-        current_app.logger.error(f"Could not determine type code for condition {condition}")
+        current_app.logger.error(
+            f"Could not determine type code for condition {condition}"
+        )
 
-    return type_code or 'LIS'
+    return type_code or "LIS"
 
-def _create_title_condition(task, current_category, condition, parent, idx, type_code) -> PermitConditionResult:
+
+def _create_title_condition(
+    task, current_category, condition, parent, idx, type_code
+) -> PermitConditionResult:
     condition = PermitConditions(
         permit_amendment_id=task.permit_amendment.permit_amendment_id,
         permit_condition_guid=uuid.uuid4(),
@@ -140,7 +170,10 @@ def _create_title_condition(task, current_category, condition, parent, idx, type
     db.session.flush()  # This assigns an ID to title_cond without committing the transaction
     return condition
 
-def _get_parent_condition_id(title_cond: PermitConditionResult, parent: PermitConditionResult) -> Optional[str]:
+
+def _get_parent_condition_id(
+    title_cond: PermitConditionResult, parent: PermitConditionResult
+) -> Optional[str]:
     if title_cond:
         # If the condition has a title, the parent is the title condition
         return title_cond.permit_condition_id
@@ -149,7 +182,10 @@ def _get_parent_condition_id(title_cond: PermitConditionResult, parent: PermitCo
     else:
         return None
 
-def _create_permit_condition(task, current_category, condition, parent_condition_id, idx, type_code) -> PermitConditions:
+
+def _create_permit_condition(
+    task, current_category, condition, parent_condition_id, idx, type_code
+) -> PermitConditions:
     condition = PermitConditions(
         permit_amendment_id=task.permit_amendment.permit_amendment_id,
         permit_condition_guid=uuid.uuid4(),
@@ -159,13 +195,17 @@ def _create_permit_condition(task, current_category, condition, parent_condition
         parent_permit_condition_id=parent_condition_id,
         display_order=idx,
         meta=condition.meta,
-        _step=condition.step if not condition.condition_title else '', # If the condition has a title, the parent is the title condition, which has the numbering associated with it already
+        _step=(
+            condition.step if not condition.condition_title else ""
+        ),  # If the condition has a title, the parent is the title condition, which has the numbering associated with it already
     )
     db.session.add(condition)
 
     db.session.flush()  # This assigns an ID to cond without committing the transaction
 
-    report_requirement = create_permit_condition_report_requirement(task, condition, condition.permit_condition_id)
+    report_requirement = create_permit_condition_report_requirement(
+        task, condition, condition.permit_condition_id
+    )
 
     if report_requirement:
         db.session.add(report_requirement)
@@ -174,7 +214,9 @@ def _create_permit_condition(task, current_category, condition, parent_condition
     return condition
 
 
-def _determine_parent(condition: PermitConditionResult, last_condition_id_by_number_structure) -> Optional[PermitConditionResult]:
+def _determine_parent(
+    condition: PermitConditionResult, last_condition_id_by_number_structure
+) -> Optional[PermitConditionResult]:
     """
     Determine the parent ID based on the hierarchy.
 
@@ -185,14 +227,22 @@ def _determine_parent(condition: PermitConditionResult, last_condition_id_by_num
     parent_number_structure = [item for item in number_structure if item][:-1]
 
     if len(parent_number_structure) < len(number_structure):
-        parent_number_structure += [''] * (len(number_structure) - len(parent_number_structure))
+        parent_number_structure += [""] * (
+            len(number_structure) - len(parent_number_structure)
+        )
 
     parent_key = ".".join(parent_number_structure)
 
     parent = last_condition_id_by_number_structure.get(parent_key)
     return parent
 
-def _create_permit_condition_category(condition: PermitConditionResult, permit_amendment: PermitAmendment, display_order: int, step: str) -> Optional[str]:
+
+def _create_permit_condition_category(
+    condition: PermitConditionResult,
+    permit_amendment: PermitAmendment,
+    display_order: int,
+    step: str,
+) -> Optional[str]:
     """
     Finds the matching PermitConditionCategory code for the given condition based on the title or text it contains.
 
@@ -207,19 +257,21 @@ def _create_permit_condition_category(condition: PermitConditionResult, permit_a
     Args:
         condition_categories: List of PermitConditionCategory objects
         condition: Condition object
-        
+
     """
 
-    text = condition.condition_title if condition.condition_title else condition.condition_text
+    text = (
+        condition.condition_title
+        if condition.condition_title
+        else condition.condition_text
+    )
 
     cat = PermitConditionCategory.create(
         condition_category_code=str(uuid.uuid4()),
         description=text,
         display_order=display_order,
         permit_amendment_id=permit_amendment.permit_amendment_id,
-        step=step
+        step=step,
     )
 
     return cat.condition_category_code
-
-    

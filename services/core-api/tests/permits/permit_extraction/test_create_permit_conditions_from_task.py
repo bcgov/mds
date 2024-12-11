@@ -284,3 +284,120 @@ def test_report_requirement_exists(permit_amendment, db_session):
     report_requirements = MineReportPermitRequirement.query.all()
     assert len(report_requirements) == 1
     assert report_requirements[0].report_name == "Test Report"
+
+
+def test_nested_display_order(test_client, db_session, permit_amendment):
+    # Create a task with nested conditions
+    task = PermitExtractionTask(
+        permit_amendment=permit_amendment,
+        task_result={
+            "conditions": [
+                {
+                    "section": "A",
+                    "condition_text": "General",
+                },
+                {
+                    "section": "A",
+                    "paragraph": "1",
+                    "condition_text": "First sub-condition",
+                },
+                {
+                    "section": "A",
+                    "paragraph": "2",
+                    "condition_text": "Second sub-condition",
+                },
+                {
+                    "section": "A",
+                    "paragraph": "2",
+                    "subparagraph": "a",
+                    "condition_text": "Nested condition",
+                },
+                {
+                    "section": "A",
+                    "paragraph": "2",
+                    "subparagraph": "a",
+                    "clause": "i",
+                    "condition_text": "Clause",
+                },
+                {
+                    "section": "A",
+                    "paragraph": "2",
+                    "subparagraph": "a",
+                    "clause": "ii",
+                    "condition_text": "Clause2",
+                },
+                {"section": "B", "condition_text": "Another section"},
+            ]
+        },
+    )
+
+    create_permit_conditions_from_task(task)
+
+    # Query conditions and verify display orders
+    conditions = db_session.query(PermitConditions).all()
+
+    # Create a map of conditions by their text for easier testing
+    conditions_map = {c.condition: c for c in conditions}
+
+    assert len(conditions_map.keys()) == 5
+
+    # Verify sub-conditions are top-level (sections are "Categories", so not part of the tree)
+    assert conditions_map["First sub-condition"].parent_permit_condition_id is None
+    assert conditions_map["First sub-condition"].display_order == 1
+
+    assert conditions_map["Second sub-condition"].parent_permit_condition_id is None
+    assert conditions_map["Second sub-condition"].display_order == 2
+
+    assert conditions_map["Nested condition"].display_order == 1
+
+    assert conditions_map["Clause"].display_order == 1
+    assert conditions_map["Clause2"].display_order == 2
+
+    # Verify nested condition is a child of the second sub-condition
+    assert (
+        conditions_map["Nested condition"].parent_permit_condition_id
+        == conditions_map["Second sub-condition"].permit_condition_id
+    )
+    assert (
+        conditions_map["Clause"].parent_permit_condition_id
+        == conditions_map["Nested condition"].permit_condition_id
+    )
+    assert (
+        conditions_map["Clause2"].parent_permit_condition_id
+        == conditions_map["Nested condition"].permit_condition_id
+    )
+
+
+def test_display_order_with_titles(test_client, db_session, permit_amendment):
+    task = PermitExtractionTask(
+        permit_amendment=permit_amendment,
+        task_result={
+            "conditions": [
+                {
+                    "section": "A",
+                    "condition_text": "Firstt secion",
+                },
+                {
+                    "section": "A",
+                    "paragraph": "1",
+                    "condition_text": "Sub 1",
+                },
+                {
+                    "section": "A",
+                    "paragraph": "2",
+                    "condition_text": "Sub 2",
+                },
+            ]
+        },
+    )
+
+    create_permit_conditions_from_task(task)
+
+    conditions = db_session.query(PermitConditions).all()
+    conditions_map = {c.condition: c for c in conditions}
+
+    assert len(conditions_map.keys()) == 2
+
+    # Verify display orders with titles
+    assert conditions_map["Sub 1"].display_order == 1
+    assert conditions_map["Sub 2"].display_order == 2
