@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import { IPermitCondition } from "@mds/common/interfaces/permits/permitCondition.interface";
 import PermitConditionForm from "./PermitConditionForm";
+import SubConditionForm from "./SubConditionForm";
 
 interface PermitConditionLayerProps {
   condition: IPermitCondition;
@@ -10,10 +11,11 @@ interface PermitConditionLayerProps {
   canEditPermitConditions?: boolean;
   setEditingConditionGuid: (permit_condition_guid: string) => void;
   editingConditionGuid: string;
-  handleMoveCondition: (condition: IPermitCondition, newOrder: number) => Promise<void>;
+  handleMoveCondition: (condition: IPermitCondition, isMoveUp: boolean) => Promise<void>;
   currentPosition: number;
   conditionCount: number;
   permitAmendmentGuid: string;
+  refreshData: () => Promise<void>;
 }
 
 const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
@@ -28,8 +30,10 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   currentPosition,
   conditionCount,
   permitAmendmentGuid,
+  refreshData,
 }) => {
   const editingCondition = editingConditionGuid === condition.permit_condition_guid;
+  const [isAddingListItem, setIsAddingListItem] = useState<boolean>(false);
   const [expandClass, setExpandClass] = useState(
     isExpanded ? "condition-expanded" : "condition-collapsed"
   );
@@ -55,12 +59,17 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
     }
   };
 
+  const handleSaveListItem = async () => {
+    await refreshData();
+    setIsAddingListItem(false);
+  }
+
   const moveUp = async (condition: IPermitCondition) => {
-    await handleMoveCondition(condition, currentPosition - 1);
+    await handleMoveCondition(condition, true);
   }
 
   const moveDown = async (condition: IPermitCondition) => {
-    await handleMoveCondition(condition, currentPosition + 1);
+    await handleMoveCondition(condition, false);
   }
 
   return (
@@ -76,9 +85,12 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
           canEditPermitConditions={canEditPermitConditions}
           setEditingConditionGuid={setEditingConditionGuid}
           editingConditionGuid={editingConditionGuid}
-          moveUp={currentPosition > 0 && moveUp}
-          moveDown={currentPosition < conditionCount - 1 && moveDown}
+          moveUp={currentPosition > 0 ? moveUp : undefined}
+          moveDown={currentPosition < conditionCount - 1 ? moveDown : undefined}
           permitAmendmentGuid={permitAmendmentGuid}
+          refreshData={refreshData}
+          setIsAddingListItem={setIsAddingListItem}
+          isAddingListItem={isAddingListItem}
         />
         {condition?.sub_conditions?.map((subCondition, idx) => {
           return (
@@ -94,11 +106,21 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
                 handleMoveCondition={handleMoveCondition}
                 currentPosition={idx}
                 conditionCount={condition.sub_conditions.length}
+                refreshData={refreshData}
               />
             </div>
           );
         })}
       </div>
+      {isAddingListItem &&
+        <SubConditionForm
+          level={level + 1}
+          parentCondition={condition}
+          handleCancel={() => setIsAddingListItem(false)}
+          onSubmit={handleSaveListItem}
+          permitAmendmentGuid={permitAmendmentGuid}
+        />
+      }
       {/* Content added here will show up at the top level when conditions are collapsed */}
     </div>
   );

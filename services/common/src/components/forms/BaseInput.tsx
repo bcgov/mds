@@ -75,6 +75,7 @@ export interface BaseInputProps extends WrappedFieldProps {
   help?: string;
   showOptional?: boolean;
   showNA?: boolean;
+  autoFocus?: boolean;
 }
 
 interface BaseViewInputProps {

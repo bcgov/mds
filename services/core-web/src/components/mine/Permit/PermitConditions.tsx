@@ -41,6 +41,7 @@ import { createPermitAmendmentConditionCategory, deletePermitAmendmentConditionC
 import { EditPermitConditionCategoryInline } from "./PermitConditionCategory";
 import { searchConditionCategories } from "@mds/common/redux/slices/permitConditionCategorySlice";
 import { formatPermitConditionStep } from "@mds/common/utils/helpers";
+import SubConditionForm from "./SubConditionForm";
 
 const { Title } = Typography;
 
@@ -61,6 +62,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
   const { id: mineGuid, permitGuid } = useParams<{ id: string; permitGuid: string, mineGuid: string }>();
   const [isExpanded, setIsExpanded] = useState(false);
   const [editingConditionGuid, setEditingConditionGuid] = useState<string>();
+  const [addingToCategoryCode, setAddingToCategoryCode] = useState<string>();
 
   const mineReportPermitRequirements: IMineReportPermitRequirement[] = useSelector(
     getMineReportPermitRequirements(permitGuid)
@@ -73,6 +75,10 @@ const PermitConditions: FC<PermitConditionProps> = ({
   const permitExtraction = useSelector(
     getPermitExtractionByGuid(latestAmendment?.permit_amendment_id)
   );
+
+  const refreshData = async () => {
+    await dispatch(fetchPermits(mineGuid));
+  };
 
   useEffect(() => {
     dispatch(searchConditionCategories({}));
@@ -100,19 +106,18 @@ const PermitConditions: FC<PermitConditionProps> = ({
         ) ?? [];
 
       const isDefaultConditionCategory = !!condWithoutConditionsText?.find(x => x.condition_category_code === cat.condition_category_code);
-
-      if (!conditions.length && isDefaultConditionCategory) {
+      if (!catConditions.length && isDefaultConditionCategory) {
         return null;
       }
 
       // Recursive function to get the full path of steps
-      const getStepPath = (condition, parentPath = "", level = 0): IPermitCondition => {
-        const currentPath = parentPath
-          ? `${parentPath}${condition.formattedStep}`
-          : `${cat.description} - ${condition.formattedStep}`;
-        const stepPath = currentPath.replace(/\.+$/, "");
+      const getStepPath = (condition, parentPath = ""): IPermitCondition => {
+        const formattedStep = formatPermitConditionStep(condition.step);
 
-        const formattedStep = formatPermitConditionStep(condition.step, level);
+        const currentPath = parentPath
+          ? `${parentPath}${formattedStep}`
+          : `${cat.description} - ${formattedStep}`;
+        const stepPath = currentPath.replace(/\.+$/, "");
 
         const mineReportPermitRequirement = mineReportPermitRequirements.find(
           (requirement) => requirement.permit_condition_id === condition.permit_condition_id
@@ -120,7 +125,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
 
         // If condition has sub-conditions, recursively add step paths
         const sub_conditions =
-          condition.sub_conditions?.map((subCondition) => getStepPath(subCondition, currentPath, level + 1)) ??
+          condition.sub_conditions?.map((subCondition) => getStepPath(subCondition, currentPath)) ??
           [];
 
         return {
@@ -138,14 +143,13 @@ const PermitConditions: FC<PermitConditionProps> = ({
       return {
         href: cat.condition_category_code.toLowerCase().replace('-', ''),
         icon: <FontAwesomeIcon icon={faBan} style={{ color: '#bbb', fontSize: '20px' }} />,
-        title: <Typography.Text style={{ fontSize: '16px', fontWeight: '600' }}>{cat.step ?? ''}{cat.description}</Typography.Text>,
+        title: <Typography.Text style={{ fontSize: '16px', fontWeight: '600' }}>{formatPermitConditionStep(cat.step)}{cat.description}</Typography.Text>,
         titleText: cat.description,
         description: 'Not Started',
         conditions: formattedConditions || [],
         condition_category_code: cat.condition_category_code,
         condition_category: cat
       }
-
     })
       .filter(Boolean)
       .sort((a, b) => a.condition_category.display_order - b.condition_category.display_order);
@@ -154,9 +158,6 @@ const PermitConditions: FC<PermitConditionProps> = ({
     getPermitConditionCategories(permitConditionCategoryOptions, permitConditions),
     [permitConditionCategoryOptions, permitConditions]);
 
-  useEffect(() => {
-    console.log('permitConditions changed')
-  }, [permitConditions])
   const scrollSideMenuProps = {
     menuOptions: permitConditionCategories,
     featureUrlRoute: VIEW_MINE_PERMIT.hashRoute,
@@ -165,9 +166,9 @@ const PermitConditions: FC<PermitConditionProps> = ({
 
   const topOffset = 99 + 49; // header + tab nav
 
-  const handleAddCondition = (newCondition: Partial<IPermitCondition>) => {
-    console.log("not implemented", newCondition);
-    return Promise.resolve();
+  const handleAddCondition = async () => {
+    setAddingToCategoryCode(null);
+    await refreshData();
   };
 
   const handleEditReportRequirement = (values) => {
@@ -212,7 +213,8 @@ const PermitConditions: FC<PermitConditionProps> = ({
     dispatch(updatePermitAmendmentConditionCategory(mineGuid, permitGuid, latestAmendment.permit_amendment_guid, updatedCat));
   };
 
-  const handleMoveCondition = async (condition: IPermitCondition, newOrder: number) => {
+  const handleMoveCondition = async (condition: IPermitCondition, isMoveUp: boolean) => {
+    const newOrder = isMoveUp ? condition.display_order - 1 : condition.display_order + 1;
     console.log('moving condition', condition.display_order, newOrder)
     const updatedCond = {
       ...condition,
@@ -220,7 +222,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
     };
 
     await dispatch(updatePermitCondition(condition.permit_condition_guid, latestAmendment.permit_amendment_guid, updatedCond));
-    await dispatch(fetchPermits(mineGuid));
+    await refreshData();
   };
 
   if (isExtractionInProgress) {
@@ -338,10 +340,9 @@ const PermitConditions: FC<PermitConditionProps> = ({
                           {canEditPermitConditions && (
                             <CoreButton
                               type="primary"
+                              disabled={Boolean(addingToCategoryCode) || Boolean(editingConditionGuid)}
                               onClick={() =>
-                                handleAddCondition({
-                                  condition_category_code: category.condition_category_code,
-                                })
+                                setAddingToCategoryCode(category.condition_category_code)
                               }
                             >
                               Add Condition
@@ -356,14 +357,23 @@ const PermitConditions: FC<PermitConditionProps> = ({
                             condition={sc}
                             isExpanded={isExpanded}
                             handleMoveCondition={handleMoveCondition}
-                            currentPosition={idx + 1}
+                            currentPosition={idx}
                             conditionCount={category.conditions.length}
                             canEditPermitConditions={canEditPermitConditions}
                             setEditingConditionGuid={setEditingConditionGuid}
-                            editingConditionGuid={editingConditionGuid}
+                            editingConditionGuid={editingConditionGuid ?? addingToCategoryCode}
+                            refreshData={refreshData}
                           />
                         </Col>
                       ))}
+                      {addingToCategoryCode === category.condition_category_code &&
+                        <Col span={24}>
+                          <SubConditionForm
+                            conditionCategory={category}
+                            permitAmendmentGuid={latestAmendment.permit_amendment_guid}
+                            handleCancel={() => setAddingToCategoryCode(null)}
+                            onSubmit={handleAddCondition}
+                          /></Col>}
                       {conditionsWithRequirements?.length > 0 && (
                         <div className="report-collapse-container ">
                           <Title level={4} className="primary-colour">

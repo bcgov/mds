@@ -1,11 +1,5 @@
 import { IMineReportPermitRequirement } from "@mds/common/interfaces";
 
-export interface IPermitConditionCategory {
-  condition_category_code: string;
-  description: string;
-  display_order: number;
-  step: string;
-}
 export interface IPermitCondition {
   permit_condition_id: number;
   permit_amendment_id: number;
@@ -19,4 +13,12 @@ export interface IPermitCondition {
   stepPath?: string;
   display_order: number;
   mineReportPermitRequirement?: IMineReportPermitRequirement;
+}
+
+export interface IPermitConditionCategory {
+  condition_category_code: string;
+  description: string;
+  display_order: number;
+  step: string;
+  conditions?: IPermitCondition[]
 }

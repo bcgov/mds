@@ -52,6 +52,7 @@ const RenderAutoSizeField: FC<AutoSizeProps> = ({
                 {...props.input}
                 autoSize={{ minRows: minRows }}
                 placeholder={props.placeholder}
+                autoFocus={props.autoFocus}
               />
               {showHelp && <Row
                 justify="space-between"

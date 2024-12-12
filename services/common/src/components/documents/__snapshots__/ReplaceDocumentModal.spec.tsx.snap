@@ -150,6 +150,7 @@ exports[`ReplaceDocumentModal renders correctly and matches the snapshot 1`] = `
     class="ant-modal-footer"
   >
     <button
+      aria-label="Cancel"
       class="ant-btn ant-btn-default core-btn core-btn-default"
       type="button"
     >
@@ -158,6 +159,7 @@ exports[`ReplaceDocumentModal renders correctly and matches the snapshot 1`] = `
       </span>
     </button>
     <button
+      aria-label="Submit"
       class="ant-btn ant-btn-primary"
       disabled=""
       type="submit"

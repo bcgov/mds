@@ -31,6 +31,7 @@ const RenderSubmitButton: FC<RenderSubmitButtonProps> = ({
           disabled={disabled}
           loading={submitting}
           htmlType="submit"
+          aria-label="Submit"
           {...buttonProps}
         >
           {!iconButton && buttonText}
