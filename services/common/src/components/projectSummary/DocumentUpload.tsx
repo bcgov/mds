@@ -172,10 +172,10 @@ export const DocumentUpload: FC<DocumentUploadProps> = ({ docFieldsDisabled, fie
     }
   };
 
-  const onDeleteDocument = async (event, key: string)  =>{
+  const onDeleteDocument = (event, key: string) => {
     const document = documents.find( (doc) => key === doc.mine_document_guid);
     if(document){
-      await dispatch(
+      dispatch(
         removeDocumentFromProjectSummary(
           project_guid,
           project_summary_guid,

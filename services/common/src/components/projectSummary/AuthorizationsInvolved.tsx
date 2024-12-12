@@ -85,10 +85,10 @@ const RenderEMAPermitCommonSections = ({ code, isAmendment, index, isDisabled })
     setShowExemptionSection(value);
   };
 
-  const onDeleteDocument = async (event, key: string)  =>{
+  const onDeleteDocument = (event, key: string) => {
     const document = tableDocuments.find( (doc) => key === doc.key);
     if(document){
-      await dispatch(
+      dispatch(
         removeDocumentFromProjectSummary(
           project_guid,
           project_summary_guid,
