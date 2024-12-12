@@ -216,7 +216,6 @@ const PermitConditions: FC<PermitConditionProps> = ({
 
   const handleMoveCondition = async (condition: IPermitCondition, isMoveUp: boolean) => {
     const newOrder = isMoveUp ? condition.display_order - 1 : condition.display_order + 1;
-    console.log('moving condition', condition.display_order, newOrder)
     const updatedCond = {
       ...condition,
       display_order: newOrder
