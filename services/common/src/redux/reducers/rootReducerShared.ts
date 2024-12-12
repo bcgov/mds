@@ -73,18 +73,6 @@ export const sharedReducer = {
   ...varianceReducer,
   ...verifiableCredentialReducer,
   ...workInformationReducer,
-  [reducerTypes.ADD_DOCUMENT_TO_VARIANCE]: createReducer(
-    networkReducer,
-    reducerTypes.ADD_DOCUMENT_TO_VARIANCE,
-  ),
-  [reducerTypes.GET_VARIANCE_STATUS_OPTIONS]: createReducer(
-    networkReducer,
-    reducerTypes.GET_VARIANCE_STATUS_OPTIONS,
-  ),
-  [reducerTypes.GET_COMPLIANCE_CODES]: createReducer(
-    networkReducer,
-    reducerTypes.GET_COMPLIANCE_CODES,
-  ),
   form: formReducer,
   loadingBar: loadingBarReducer,
   reportSubmission: reportSubmissionReducer,
