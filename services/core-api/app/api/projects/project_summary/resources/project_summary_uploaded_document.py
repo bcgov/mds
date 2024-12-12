@@ -28,7 +28,7 @@ class ProjectSummaryUploadedDocumentResource(Resource, UserMixin):
                 for doc in auth.amendment_documents:
                     if doc.mine_document == mine_document:
                         if project_summary.status_code != "DFT":
-                            raise Forbidden('Cannot delete document unless project is in a draft state')
+                            raise Forbidden('Cannot delete document unless project is in draft state')
                         doc.delete()
                         mine_document.delete()
                         return None, 204

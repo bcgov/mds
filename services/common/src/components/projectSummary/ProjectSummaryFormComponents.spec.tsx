@@ -125,7 +125,7 @@ describe("ProjectSummaryForm components disable accurately accoring to functions
                 <Agent fieldsDisabled={fieldsDisabled} />
                 <FacilityOperator fieldsDisabled={fieldsDisabled} />
                 <AuthorizationsInvolved fieldsDisabled={authFieldsDisabled} />
-                <DocumentUpload docFieldsDisabled={docFieldsDisabled} />
+                <DocumentUpload docFieldsDisabled={docFieldsDisabled} fieldsDisabled={fieldsDisabled}/>
                 <ApplicationSummary fieldsDisabled={fieldsDisabled} />
                 <Declaration />
             </FormWrapper>

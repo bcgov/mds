@@ -68,9 +68,10 @@ const RenderOldDocuments = ({
 
 interface DocumentUploadProps {
   docFieldsDisabled: boolean;
+  fieldsDisabled: boolean;
 }
 
-export const DocumentUpload: FC<DocumentUploadProps> = ({ docFieldsDisabled }) => {
+export const DocumentUpload: FC<DocumentUploadProps> = ({ docFieldsDisabled, fieldsDisabled }) => {
   const dispatch = useDispatch();
   const {
     spatial_documents = [],
@@ -300,7 +301,7 @@ export const DocumentUpload: FC<DocumentUploadProps> = ({ docFieldsDisabled }) =
         documents={support_documents}
         documentParent="project summary"
         documentColumns={documentColumns}
-        removeDocument={!docFieldsDisabled ? onDeleteDocument : null}
+        removeDocument={!fieldsDisabled ? onDeleteDocument : undefined}
       />
     </>
   );

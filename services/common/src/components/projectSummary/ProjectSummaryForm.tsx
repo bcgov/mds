@@ -128,7 +128,7 @@ export const ProjectSummaryForm: FC<ProjectSummaryFormProps> = ({
     "representing-agent": <Agent fieldsDisabled={fieldsDisabled} />,
     "mine-components-and-offsite-infrastructure": <FacilityOperator fieldsDisabled={fieldsDisabled} />,
     "purpose-and-authorization": <AuthorizationsInvolved fieldsDisabled={authFieldsDisabled} />,
-    "document-upload": <DocumentUpload docFieldsDisabled={docFieldsDisabled} />,
+    "document-upload": <DocumentUpload docFieldsDisabled={docFieldsDisabled} fieldsDisabled={authFieldsDisabled} />,
     "application-summary": <ApplicationSummary fieldsDisabled={fieldsDisabled} />,
     declaration: <Declaration />,
   }[tab]);

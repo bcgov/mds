@@ -246,7 +246,7 @@ const RenderEMAPermitCommonSections = ({ code, isAmendment, index, isDisabled })
         documents={tableDocuments}
         documentParent="project summary authorization"
         documentColumns={documentColumns}
-        removeDocument={!docFieldsDisabled ? onDeleteDocument : null}
+        removeDocument={!isDisabled ? onDeleteDocument : undefined}
       />
     </>
   );
