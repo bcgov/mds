@@ -66,9 +66,6 @@ class User(SoftDeleteMixin, AuditMixin, Base):
         return result
 
     def update(self, **kwargs):
-        """
-        Generic method for updating a User's attributes and saving them.
-        """
         # Add/Update attributes of the User instance
         for key, value in kwargs.items():
             if hasattr(self, key):
