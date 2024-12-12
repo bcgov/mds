@@ -84,22 +84,32 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
         existing_reply_found = False
         cache_key = hash_messages(messages)
 
-        document_store = ElasticsearchDocumentStore(hosts=host,
-                                                    basic_auth=(username, password),
-                                                    index="permits",
-                                                    embedding_similarity_function="cosine",
-                                                    ca_certs=ca_cert if ca_cert else None,
-                                                    verify_certs=True if ca_cert else False)
+        document_store = ElasticsearchDocumentStore(
+            hosts=host,
+            basic_auth=(username, password),
+            index="permits",
+            embedding_similarity_function="cosine",
+            ca_certs=ca_cert if ca_cert else None,
+            verify_certs=True if ca_cert else False,
+        )
 
-        cache_checker = CacheChecker(document_store=document_store, cache_field="cache_key")
+        cache_checker = CacheChecker(
+            document_store=document_store, cache_field="cache_key"
+        )
         cached_result = cache_checker.run(items=[cache_key])
         if len(cached_result["hits"]) > 0:
             existing_reply_found = True
             logger.info("cached_result: %s", cached_result)
-            res = {"replies": [ChatMessage(content=cached_result["hits"][0].content,
-                                           name=cached_result["hits"][0].meta["name"],
-                                           role=cached_result["hits"][0].meta["role"],
-                                           meta=cached_result["hits"][0].meta)]}
+            res = {
+                "replies": [
+                    ChatMessage(
+                        content=cached_result["hits"][0].content,
+                        name=cached_result["hits"][0].meta["name"],
+                        role=cached_result["hits"][0].meta["role"],
+                        meta=cached_result["hits"][0].meta,
+                    )
+                ]
+            }
             return res["replies"][0]
         if not existing_reply_found:
             try:
@@ -108,31 +118,37 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
                 )
 
                 documents = [
-                Document(content=res["replies"][0].content, meta={"cache_key": cache_key,
-                                                                "name": res["replies"][0].name,
-                                                                "role": res["replies"][0].role,
-                                                                "model": res["replies"][0].meta["model"],
-                                                                "index": res["replies"][0].meta["index"],
-                                                                "finish_reason": res["replies"][0].meta[
-                                                                    "finish_reason"],  #
-                                                                "usage": {"completion_tokens":
-                                                                                res["replies"][0].meta["usage"][
-                                                                                    "completion_tokens"],
-                                                                            "prompt_tokens":
-                                                                                res["replies"][0].meta["usage"][
-                                                                                    "prompt_tokens"],
-                                                                            "total_tokens":
-                                                                                res["replies"][0].meta["usage"][
-                                                                                    "total_tokens"]}
-                                                                })
+                    Document(
+                        content=res["replies"][0].content,
+                        meta={
+                            "cache_key": cache_key,
+                            "name": res["replies"][0].name,
+                            "role": res["replies"][0].role,
+                            "model": res["replies"][0].meta["model"],
+                            "index": res["replies"][0].meta["index"],
+                            "finish_reason": res["replies"][0].meta["finish_reason"],  #
+                            "usage": {
+                                "completion_tokens": res["replies"][0].meta["usage"][
+                                    "completion_tokens"
+                                ],
+                                "prompt_tokens": res["replies"][0].meta["usage"][
+                                    "prompt_tokens"
+                                ],
+                                "total_tokens": res["replies"][0].meta["usage"][
+                                    "total_tokens"
+                                ],
+                            },
+                        },
+                    )
                 ]
-                document_store.write_documents(documents, policy=DuplicatePolicy.OVERWRITE)
+                document_store.write_documents(
+                    documents, policy=DuplicatePolicy.OVERWRITE
+                )
                 return res["replies"][0]
 
             except Exception as e:
                 logger.error(f"Error while querying OpenAI: {e}")
                 raise
-
 
     @component.output_types(data=ChatData)
     def run(self, data: ChatData, generation_kwargs=None, iteration=0):
@@ -155,18 +171,18 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
             return idx, self.run_for_message(messages, generation_kwargs, idx + self.it)
 
         with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-            futures = [executor.submit(process_message, (idx, messages)) 
-                  for idx, messages in enumerate(data.messages)]
-            
+            futures = [
+                executor.submit(process_message, (idx, messages))
+                for idx, messages in enumerate(data.messages)
+            ]
+
             for future in concurrent.futures.as_completed(futures):
                 idx, result = future.result()
                 if result is not None:
                     results[idx].append(result)
 
         if DEBUG_MODE:
-            with open(
-                    f"debug/cached_azure_openai_chat_generator_output.txt", "w"
-            ) as f:
+            with open("debug/cached_azure_openai_chat_generator_output.txt", "w") as f:
                 for reply in results:
                     for r in reply:
                         f.write(r.content)
@@ -174,18 +190,18 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
 
         return {"data": ChatData(messages=results, documents=data.documents)}
 
+    def run_for_message(
+        self, messages: List[ChatMessage], generation_kwargs=None, iteration=0
+    ) -> Optional[ChatMessage]:
 
-    def run_for_message(self, messages: List[ChatMessage], generation_kwargs=None, iteration=0) -> Optional[ChatMessage]:
-    
         reply = self.fetch_result(messages, generation_kwargs)
-
 
         if reply is None:
             return None
-        
+
         with open(
-                f"debug/cached_azure_openai_chat_generator_output_{iteration}.txt",
-                "w",
+            f"debug/cached_azure_openai_chat_generator_output_{iteration}.txt",
+            "w",
         ) as f:
             f.write(reply.content)
 
@@ -199,7 +215,11 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
         # keeps returning partial responses
 
         lp = 0
-        while reply is not None and reply.meta["finish_reason"] == "length" and iteration < 10:
+        while (
+            reply is not None
+            and reply.meta["finish_reason"] == "length"
+            and iteration < 10
+        ):
             lp += 1
             logger.info(
                 f"Partial json generated continuing query. Iteration: {iteration}"
@@ -226,13 +246,15 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
             iteration += 1
             if DEBUG_MODE:
                 with open(
-                        f"debug/cached_azure_openai_chat_generator_output_{iteration}_{lp}.txt",
-                        "w",
+                    f"debug/cached_azure_openai_chat_generator_output_{iteration}_{lp}.txt",
+                    "w",
                 ) as f:
                     f.write(reply.content)
-        
+
         if reply is None:
-            reply = ChatMessage(content=content, role=messages[0].role, name=messages[0].name)
+            reply = ChatMessage(
+                content=content, role=messages[0].role, name=messages[0].name
+            )
 
         reply.content = content
         reply.meta["usage"]["completion_tokens"] = completion_tokens

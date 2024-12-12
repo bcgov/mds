@@ -34,7 +34,7 @@ class PaginatedChatPromptBuilder(ChatPromptBuilder):
         template_variables=None,
         **kwargs,
     ):
-        
+
         if not template_variables:
             template_variables = {}
         if iteration:
@@ -53,20 +53,24 @@ class PaginatedChatPromptBuilder(ChatPromptBuilder):
 
         prompts = []
         for idx, group in enumerate(grouped_conditions):
-            template_variables['documents'] = _format_condition_text_for_prompt(group)
+            template_variables["documents"] = _format_condition_text_for_prompt(group)
             output = super(PaginatedChatPromptBuilder, self).run(
                 template=template, template_variables=template_variables, **kwargs
             )
             prompts.append(output["prompt"])
 
             if DEBUG_MODE:
-                with open(f"debug/paginated_chat_puilder_output_{idx + 1}.txt", "a") as f:
+                with open(
+                    f"debug/paginated_chat_puilder_output_{idx + 1}.txt", "a"
+                ) as f:
                     for prompt in output["prompt"]:
                         f.write(prompt.content + "\n\n")
 
         return {"data": ChatData(prompts, kwargs["documents"])}
 
-    def split_conditions(self, conditions: List[PermitCondition]) -> List[List[PermitCondition]]:
+    def split_conditions(
+        self, conditions: List[PermitCondition]
+    ) -> List[List[PermitCondition]]:
         """
         Splits a list of permit conditions into smaller groups based on section and paragraph numbers.
         - A group is created per section
@@ -105,10 +109,15 @@ class PaginatedChatPromptBuilder(ChatPromptBuilder):
 
         return grouped_conditions
 
-def _format_condition_text_for_prompt(conditions: List[PermitCondition]) -> List[Document]:
+
+def _format_condition_text_for_prompt(
+    conditions: List[PermitCondition],
+) -> List[Document]:
     # Format the conditions for the prompt including the condition text and the condition id, indenting the text based on the section, paragraph, etc.
     # A. General (id: abc123)
     #    1. This is a test. (id: 123)
     #       a)  This is another test. (id: 456)
-    repr = "\n".join([f"{c.formatted_text} (id: {c.id})" for c in conditions])
-    return [Document(content=repr)]
+    text_representation = "\n".join(
+        [f"{c.formatted_text} (id: {c.id})" for c in conditions]
+    )
+    return [Document(content=text_representation)]

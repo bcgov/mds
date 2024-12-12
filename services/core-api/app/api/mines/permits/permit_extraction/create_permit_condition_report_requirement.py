@@ -89,8 +89,6 @@ def _parse_due_date_period(recurring, frequency):
             "every quarter": 3,
             "semiannually": 6,
             "semiannual": 6,
-            "biannual": 6,
-            "biannualy": 6,
             "every six months": 6,
             "twice yearly": 6,
             "annually": 12,

@@ -43,24 +43,21 @@ class ConditionsMetadataCombiner:
         docs_by_id = {doc.id: doc for doc in conditions.conditions}
         paragraphs = []
 
-        # Extract paragraphs from the chat data
-        for group in data.messages:
-            for msg in group:
-                cnt = json.loads(msg.content)
+        flattened_messages = [msg for group in data.messages for msg in group]
+        content = [json.loads(msg.content) for msg in flattened_messages]
 
-                for p in cnt["paragraphs"]:
-                    # Sometimes the paragraphs are nesteded in the output from GPT4
-                    if "paragraphs" in p:
-                        for p2 in p["paragraphs"]:
-                            paragraphs.append(p2)
-                    else:
-                        paragraphs.append(p)
+        # sometimes the paragraphs are nested in the output from GPT4
+        for paragraph in content:
+            if "paragraphs" in paragraph:
+                paragraphs.extend(paragraph["paragraphs"])
+            else:
+                paragraphs.append(paragraph)
 
         # Add questions answered by GPT4 to the metadata of the condition in the `questions` property
         for p in paragraphs:
             if p["id"] in docs_by_id:
                 docs_by_id[p["id"]].meta = {
                     "questions": p["meta"],
-                    **(docs_by_id[p["id"]].meta  or {}),
+                    **(docs_by_id[p["id"]].meta or {}),
                 }
         return {"conditions": conditions}
