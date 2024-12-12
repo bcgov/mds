@@ -491,5 +491,6 @@ export const REPORT_FREQUENCY_HASH = {
   "Semi-Annually": 6,
   "Annually": 12,
   "Bi-Annually": 24,
+  "Every 5 Years": 60,
   "Not Specified": 0,
 };
