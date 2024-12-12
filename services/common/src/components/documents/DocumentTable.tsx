@@ -82,18 +82,13 @@ export const DocumentTable: FC<DocumentTableProps> = ({
   const isMinimalView: boolean = view === "minimal";
 
   const parseDocuments = (docs: any[]): MineDocument[] => {
-    let parsedDocs: MineDocument[];
     if (docs.length && docs[0] instanceof MineDocument) {
-      parsedDocs = docs;
+      return docs;
     } else {
-      parsedDocs = docs.map((doc) => new MineDocument(doc));
+      return docs.map((doc) => new MineDocument(doc));
     }
-    return parsedDocs.map((doc) => {
-      doc.setAllowedActions(userRoles);
-      return doc;
-    });
   };
-
+ 
   const [documents, setDocuments] = useState<MineDocument[]>(parseDocuments(props.documents ?? []));
 
   useEffect(() => {

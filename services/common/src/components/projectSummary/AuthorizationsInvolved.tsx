@@ -59,6 +59,7 @@ import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelecto
 import { FormContext } from "../forms/FormWrapper";
 import { ProjectSummaryFormComponentProps } from "./ProjectSummaryForm";
 import { areAuthEnvFieldsDisabled, areDocumentFieldsDisabled } from "../projects/projectUtils";
+import { removeDocumentFromProjectSummary } from "@mds/common/redux/actionCreators/projectActionCreator";
 
 const RenderEMAPermitCommonSections = ({ code, isAmendment, index, isDisabled }) => {
   const dispatch = useDispatch();
@@ -83,6 +84,20 @@ const RenderEMAPermitCommonSections = ({ code, isAmendment, index, isDisabled })
   const onChange = (value) => {
     setShowExemptionSection(value);
   };
+
+  const onDeleteDocument = async (event, key: string)  =>{
+    const document = tableDocuments.find( (doc) => key === doc.key);
+    if(document){
+      await dispatch(
+        removeDocumentFromProjectSummary(
+          project_guid,
+          project_summary_guid,
+          document.mine_document_guid
+      )).then( () => {
+        removeAmendmentDocument(tableDocuments.indexOf(document),document.category,document.document_manager_guid)
+      })
+    }
+  }
 
   const removeAmendmentDocument = (
     amendmentDocumentsIndex: number,
@@ -231,6 +246,7 @@ const RenderEMAPermitCommonSections = ({ code, isAmendment, index, isDisabled })
         documents={tableDocuments}
         documentParent="project summary authorization"
         documentColumns={documentColumns}
+        removeDocument={!docFieldsDisabled ? onDeleteDocument : null}
       />
     </>
   );

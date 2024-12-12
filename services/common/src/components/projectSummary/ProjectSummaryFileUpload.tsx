@@ -69,7 +69,7 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
   }
 
   useEffect(() => {
-    if (existingFiles.length === 0) {
+    if (existingFiles.length === 0 || props.documents.length < existingFiles.length) {
       setExistingFiles(props.documents);
     }
   }, [props.documents]);
