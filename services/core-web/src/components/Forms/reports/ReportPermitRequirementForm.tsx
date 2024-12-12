@@ -13,7 +13,7 @@ import {
   REPORT_REGULATORY_AUTHORITY_CODES_HASH,
   REPORT_TYPE_CODES,
 } from "@mds/common";
-import { required, requiredRadioButton } from "@mds/common/redux/utils/Validate";
+import { required, requiredRadioButton, maxLength } from "@mds/common/redux/utils/Validate";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import RenderDate from "@mds/common/components/forms/RenderDate";
@@ -24,7 +24,6 @@ import RenderGroupCheckbox, {
 } from "@mds/common/components/forms/RenderGroupCheckbox";
 import { getLatestAmendmentByPermitGuid } from "@mds/common/redux/selectors/permitSelectors";
 import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
-import { maxLength } from "@common/utils/Validate";
 
 interface ReportPermitRequirementProps {
   onSubmit: (values: Partial<IMineReport>) => void | Promise<void>;
