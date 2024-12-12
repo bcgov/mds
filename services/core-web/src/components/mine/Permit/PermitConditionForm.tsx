@@ -12,7 +12,8 @@ import {
     faTrashCan,
     faXmark,
 } from "@fortawesome/pro-regular-svg-icons";
-import { ERROR, FORM, IPermitCondition } from "@mds/common";
+import { FORM, IPermitCondition } from "@mds/common";
+import { ERROR } from "@mds/common/constants/actionTypes";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";

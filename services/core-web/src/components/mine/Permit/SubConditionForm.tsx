@@ -5,7 +5,8 @@ import {
     faCheck,
     faXmark,
 } from "@fortawesome/pro-regular-svg-icons";
-import { ERROR, FORM, IPermitCondition, IPermitConditionCategory } from "@mds/common";
+import { FORM, IPermitCondition, IPermitConditionCategory } from "@mds/common";
+import { ERROR } from "@mds/common/constants/actionTypes";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
