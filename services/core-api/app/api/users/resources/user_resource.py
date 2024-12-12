@@ -6,13 +6,15 @@ from sqlalchemy.exc import IntegrityError
 
 from app.api.users.models.user import User
 from app.api.users.response_models import USER_MODEL
+from app.api.utils.access_decorators import requires_role_view_all
 from app.api.utils.include.user_info import User as UserUtils
 from app.api.utils.resources_mixins import UserMixin
 from app.extensions import api
 
 
 class UserResource(Resource, UserMixin):
-    @api.doc(description='Retrive a list of alerts for a mine')
+    @api.doc(description='Update and retrieve the user from the token')
+    @requires_role_view_all
     @api.marshal_with(USER_MODEL, code=200)
     def get(self):
         user_util = UserUtils()
