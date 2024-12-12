@@ -1,0 +1,43 @@
+from datetime import datetime
+
+from flask_restx import Resource
+from pytz import utc
+from sqlalchemy.exc import IntegrityError
+
+from app.api.users.models.user import User
+from app.api.users.response_models import USER_MODEL
+from app.api.utils.include.user_info import User as UserUtils
+from app.api.utils.resources_mixins import UserMixin
+from app.extensions import api
+
+
+class UserResource(Resource, UserMixin):
+    @api.doc(description='Retrive a list of alerts for a mine')
+    @api.marshal_with(USER_MODEL, code=200)
+    def get(self):
+        user_util = UserUtils()
+
+        user_info = user_util.get_user_raw_info()
+
+        try:
+            # Extract token information
+            user_data = {
+                "sub": user_info.get("sub"),
+                "email": user_info.get("email"),
+                "given_name": user_info.get("given_name"),
+                "family_name": user_info.get("family_name"),
+                "display_name": user_info.get("display_name"),
+                "idir_username": user_info.get("idir_username"),
+                "identity_provider": user_info.get("identity_provider"),
+                "idir_user_guid": user_info.get("idir_user_guid"),
+                "last_logged_in": datetime.now(tz=utc),
+            }
+
+            user = User.create_or_update_user(**user_data)
+
+            return user
+
+        except IntegrityError:
+            return {"message": "Failed to update user due to a database error."}, 500
+        except Exception as e:
+            return {"message": f"An error occurred: {str(e)}"}, 500

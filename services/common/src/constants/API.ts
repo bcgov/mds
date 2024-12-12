@@ -387,3 +387,6 @@ export const REGIONS_LIST = "/regions";
 // App Help
 export const APP_HELP = (helpKey: string, params?: { system?: string; help_guid?: string }) =>
   `/help/${helpKey}?${queryString.stringify(params)}`;
+
+// User
+export const USER_PROFILE = () => "/users/profile";
