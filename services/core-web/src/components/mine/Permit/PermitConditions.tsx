@@ -42,6 +42,8 @@ import { EditPermitConditionCategoryInline } from "./PermitConditionCategory";
 import { searchConditionCategories } from "@mds/common/redux/slices/permitConditionCategorySlice";
 import { formatPermitConditionStep } from "@mds/common/utils/helpers";
 import SubConditionForm from "./SubConditionForm";
+import { getIsFetching } from "@mds/common/redux/reducers/networkReducer";
+import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
 
 const { Title } = Typography;
 
@@ -68,8 +70,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
     getMineReportPermitRequirements(permitGuid)
   );
 
-  // @ts-ignore
-  const isLoading = useSelector((state) => state.GET_PERMITS?.isFetching);
+  const isLoading = useSelector(getIsFetching(NetworkReducerTypes.GET_PERMITS));
 
   const permitConditions = latestAmendment?.conditions;
   const permitExtraction = useSelector(

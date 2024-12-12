@@ -72,38 +72,40 @@ const SubConditionForm: FC<SubConditionFormProps> = ({ level = 1, parentConditio
             initialValues={emptyCondition}
             scrollOnToggleEdit={false}
         >
-            <Row wrap={false} className={`condition-layer condition-layer--${level} condition-${emptyCondition.condition_type_code} fade-in`}>
-                <Col span={23}>
-                    <Field
-                        placeholder={getPlaceHolderText(emptyCondition.condition_type_code)}
-                        name="condition"
-                        component={RenderAutoSizeField}
-                        autoFocus
-                    />
-                </Col>
-            </Row>
-            <Row gutter={8}
-                className="condition-edit-buttons"
-            >
-                <Col>
-                    <RenderCancelButton
-                        cancelFunction={handleCancel}
-                        buttonProps={{
-                            type: "primary",
-                            icon: <FontAwesomeIcon icon={faXmark} />
-                        }}
-                        iconButton
-                    />
-                </Col>
-                <Col>
-                    <RenderSubmitButton
-                        buttonProps={{
-                            icon: <FontAwesomeIcon icon={faCheck} />
-                        }}
-                        iconButton
-                    />
-                </Col>
-            </Row>
+            <div className={`condition-layer condition-layer--${level} condition-${emptyCondition.condition_type_code} fade-in`}>
+                <Row wrap={false} >
+                    <Col span={24}>
+                        <Field
+                            placeholder={getPlaceHolderText(emptyCondition.condition_type_code)}
+                            name="condition"
+                            component={RenderAutoSizeField}
+                            autoFocus
+                        />
+                    </Col>
+                </Row>
+                <Row gutter={8}
+                    className="condition-edit-buttons"
+                >
+                    <Col>
+                        <RenderCancelButton
+                            cancelFunction={handleCancel}
+                            buttonProps={{
+                                type: "primary",
+                                icon: <FontAwesomeIcon icon={faXmark} />
+                            }}
+                            iconButton
+                        />
+                    </Col>
+                    <Col>
+                        <RenderSubmitButton
+                            buttonProps={{
+                                icon: <FontAwesomeIcon icon={faCheck} />
+                            }}
+                            iconButton
+                        />
+                    </Col>
+                </Row>
+            </div>
         </FormWrapper>
     );
 };

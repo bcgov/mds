@@ -58,18 +58,17 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
     const formName = `${FORM.EDIT_PERMIT_CONDITION}_${condition.permit_condition_id}`;
 
-    useEffect(() => {
-        if (!isEditMode) {
-            setEditingConditionGuid(null);
-            setIsAddingListItem(false);
-        }
-    }, [isEditMode]);
-
     const startEdit = () => {
         onEdit();
         setEditingConditionGuid(condition.permit_condition_guid)
         setIsEditMode(true);
     };
+
+    const cancelEdit = () => {
+        setIsEditMode(false);
+        setEditingConditionGuid(null);
+        setIsAddingListItem(false);
+    }
 
     const handleSubmit = async (values) => {
         const payload = values.step
@@ -82,12 +81,11 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
         // @ts-ignore
         if (resp?.type !== ERROR) {
             refreshData();
-            setIsEditMode(false);
+            cancelEdit();
         }
     };
     const handleCancel = () => {
-        setEditingConditionGuid(null);
-        setIsEditMode(false);
+        cancelEdit();
         dispatch(reset(formName));
     };
     const handleAddListItem = () => {
@@ -100,7 +98,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
             // @ts-ignore
             if (resp?.type !== ERROR) {
                 refreshData();
-                setIsEditMode(false);
+                cancelEdit();
             }
         });
     };
