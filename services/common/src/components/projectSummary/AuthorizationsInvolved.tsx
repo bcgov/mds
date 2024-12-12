@@ -80,6 +80,7 @@ const RenderEMAPermitCommonSections = ({ code, isAmendment, index, isDisabled })
 
   const projectSummaryDocumentTypesHash = useSelector(getProjectSummaryDocumentTypesHash);
   const docFieldsDisabled = areDocumentFieldsDisabled(systemFlag, status_code);
+  const { isEditMode } = useContext(FormContext);
 
   const onChange = (value) => {
     setShowExemptionSection(value);
@@ -246,7 +247,7 @@ const RenderEMAPermitCommonSections = ({ code, isAmendment, index, isDisabled })
         documents={tableDocuments}
         documentParent="project summary authorization"
         documentColumns={documentColumns}
-        removeDocument={!isDisabled ? onDeleteDocument : undefined}
+        removeDocument={!isDisabled && isEditMode ? onDeleteDocument : undefined}
       />
     </>
   );

@@ -301,7 +301,7 @@ export const DocumentUpload: FC<DocumentUploadProps> = ({ docFieldsDisabled, fie
         documents={support_documents}
         documentParent="project summary"
         documentColumns={documentColumns}
-        removeDocument={!fieldsDisabled ? onDeleteDocument : undefined}
+        removeDocument={!fieldsDisabled && isEditMode ? onDeleteDocument : undefined}
       />
     </>
   );
