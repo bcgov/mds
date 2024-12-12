@@ -1,0 +1,315 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PermitConditionForm renders properly in edit mode 1`] = `
+<div>
+  <form
+    class="ant-form ant-form-vertical common-form common-form-EDIT_PERMIT_CONDITION_1639 form-edit"
+    id="EDIT_PERMIT_CONDITION_1639"
+  >
+    <div
+      class="ant-row ant-row-no-wrap condition-content editable"
+    >
+      <div
+        class="ant-col step-column"
+        style="flex-shrink: 0;"
+      >
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <input
+                    aria-label="step"
+                    class="ant-input"
+                    name="step"
+                    type="text"
+                    value="1."
+                  />
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="EDIT_PERMIT_CONDITION_1639_step_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        aria-label="Edit Condition"
+        class="ant-col condition-column"
+        title="Edit Condition"
+      >
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <textarea
+                    class="ant-input"
+                    name="condition"
+                    style="height: 0px; resize: none; min-height: -12px;"
+                  >
+                    Section decade check including.
+                  </textarea>
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="EDIT_PERMIT_CONDITION_1639_condition_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-row ant-row-space-between ant-row-middle"
+    >
+      <div
+        class="ant-col"
+      >
+        <div
+          class="ant-row condition-edit-buttons"
+          style="margin-left: -4px; margin-right: -4px;"
+        >
+          <div
+            class="ant-col"
+            style="padding-left: 4px; padding-right: 4px;"
+          >
+            <button
+              class="ant-btn ant-btn-default fa-icon-container btn-sm-padding"
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                class="svg-inline--fa fa-plus "
+                data-icon="plus"
+                data-prefix="far"
+                focusable="false"
+                role="img"
+                viewBox="0 0 448 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M248 72c0-13.3-10.7-24-24-24s-24 10.7-24 24V232H40c-13.3 0-24 10.7-24 24s10.7 24 24 24H200V440c0 13.3 10.7 24 24 24s24-10.7 24-24V280H408c13.3 0 24-10.7 24-24s-10.7-24-24-24H248V72z"
+                  fill="currentColor"
+                />
+              </svg>
+              <span>
+                List Item
+              </span>
+            </button>
+          </div>
+          <div
+            class="ant-col"
+            style="padding-left: 4px; padding-right: 4px;"
+          >
+            <button
+              class="ant-btn ant-btn-default fa-icon-container btn-sm-padding"
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                class="svg-inline--fa fa-clipboard "
+                data-icon="clipboard"
+                data-prefix="far"
+                focusable="false"
+                role="img"
+                viewBox="0 0 384 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M280 64h40c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128C0 92.7 28.7 64 64 64h40 9.6C121 27.5 153.3 0 192 0s71 27.5 78.4 64H280zM64 112c-8.8 0-16 7.2-16 16V448c0 8.8 7.2 16 16 16H320c8.8 0 16-7.2 16-16V128c0-8.8-7.2-16-16-16H304v24c0 13.3-10.7 24-24 24H192 104c-13.3 0-24-10.7-24-24V112H64zm128-8a24 24 0 1 0 0-48 24 24 0 1 0 0 48z"
+                  fill="currentColor"
+                />
+              </svg>
+              <span>
+                Add Report Requirement
+              </span>
+            </button>
+          </div>
+          <div
+            class="ant-col"
+            style="padding-left: 4px; padding-right: 4px;"
+          >
+            <button
+              aria-label="Cancel"
+              class="ant-btn ant-btn-primary ant-btn-icon-only core-btn core-btn-primary"
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                class="svg-inline--fa fa-xmark "
+                data-icon="xmark"
+                data-prefix="far"
+                focusable="false"
+                role="img"
+                viewBox="0 0 384 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M345 137c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-119 119L73 103c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l119 119L39 375c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l119-119L311 409c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-119-119L345 137z"
+                  fill="currentColor"
+                />
+              </svg>
+            </button>
+          </div>
+          <div
+            class="ant-col"
+            style="padding-left: 4px; padding-right: 4px;"
+          >
+            <button
+              aria-label="Submit"
+              class="ant-btn ant-btn-primary ant-btn-icon-only"
+              disabled=""
+              type="submit"
+            >
+              <svg
+                aria-hidden="true"
+                class="svg-inline--fa fa-check "
+                data-icon="check"
+                data-prefix="far"
+                focusable="false"
+                role="img"
+                viewBox="0 0 448 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M441 103c9.4 9.4 9.4 24.6 0 33.9L177 401c-9.4 9.4-24.6 9.4-33.9 0L7 265c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l119 119L407 103c9.4-9.4 24.6-9.4 33.9 0z"
+                  fill="currentColor"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ant-col"
+      >
+        <div
+          class="ant-row ant-row-middle condition-edit-buttons"
+          style="margin-left: -4px; margin-right: -4px;"
+        >
+          <div
+            class="ant-col"
+            style="padding-left: 4px; padding-right: 4px;"
+          >
+            <button
+              aria-label="Delete Condition"
+              class="ant-btn ant-btn-default ant-btn-icon-only fa-icon-container"
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                class="svg-inline--fa fa-trash-can "
+                data-icon="trash-can"
+                data-prefix="far"
+                focusable="false"
+                role="img"
+                viewBox="0 0 448 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M170.5 51.6L151.5 80h145l-19-28.4c-1.5-2.2-4-3.6-6.7-3.6H177.1c-2.7 0-5.2 1.3-6.7 3.6zm147-26.6L354.2 80H368h48 8c13.3 0 24 10.7 24 24s-10.7 24-24 24h-8V432c0 44.2-35.8 80-80 80H112c-44.2 0-80-35.8-80-80V128H24c-13.3 0-24-10.7-24-24S10.7 80 24 80h8H80 93.8l36.7-55.1C140.9 9.4 158.4 0 177.1 0h93.7c18.7 0 36.2 9.4 46.6 24.9zM80 128V432c0 17.7 14.3 32 32 32H336c17.7 0 32-14.3 32-32V128H80zm80 64V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16z"
+                  fill="currentColor"
+                />
+              </svg>
+            </button>
+          </div>
+          <div
+            class="ant-col"
+            style="padding-left: 4px; padding-right: 4px;"
+          >
+            <button
+              aria-label="Move Condition Up"
+              class="ant-btn ant-btn-default ant-btn-icon-only fa-icon-container"
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                class="svg-inline--fa fa-arrow-up "
+                data-icon="arrow-up"
+                data-prefix="far"
+                focusable="false"
+                role="img"
+                viewBox="0 0 384 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M209.4 39.4C204.8 34.7 198.6 32 192 32s-12.8 2.7-17.4 7.4l-168 176c-9.2 9.6-8.8 24.8 .8 33.9s24.8 8.8 33.9-.8L168 115.9V456c0 13.3 10.7 24 24 24s24-10.7 24-24V115.9L342.6 248.6c9.2 9.6 24.3 9.9 33.9 .8s9.9-24.3 .8-33.9l-168-176z"
+                  fill="currentColor"
+                />
+              </svg>
+            </button>
+          </div>
+          <div
+            class="ant-col"
+            style="padding-left: 4px; padding-right: 4px;"
+          >
+            <button
+              aria-label="Move Condition Down"
+              class="ant-btn ant-btn-default ant-btn-icon-only fa-icon-container"
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                class="svg-inline--fa fa-arrow-down "
+                data-icon="arrow-down"
+                data-prefix="far"
+                focusable="false"
+                role="img"
+                viewBox="0 0 384 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M174.6 472.6c4.5 4.7 10.8 7.4 17.4 7.4s12.8-2.7 17.4-7.4l168-176c9.2-9.6 8.8-24.8-.8-33.9s-24.8-8.8-33.9 .8L216 396.1 216 56c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 340.1L41.4 263.4c-9.2-9.6-24.3-9.9-33.9-.8s-9.9 24.3-.8 33.9l168 176z"
+                  fill="currentColor"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+`;
