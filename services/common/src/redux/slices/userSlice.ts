@@ -3,20 +3,12 @@ import { createRequestHeader } from "@mds/common/redux/utils/RequestHeaders";
 import { hideLoading, showLoading } from "react-redux-loading-bar";
 import CustomAxios from "@mds/common/redux/customAxios";
 import { ENVIRONMENT, USER_PROFILE } from "@mds/common/constants";
+import { IUser } from "@mds/common/interfaces";
 
 export const userReducerType = "user";
 
 interface UserState {
-  user: User;
-}
-
-interface User {
-  sub: string;
-  display_name: string;
-  email: string;
-  family_name: string;
-  given_name: string;
-  last_logged_in: string;
+  user: IUser;
 }
 
 const initialState: UserState = {
