@@ -2,7 +2,6 @@ import json
 import uuid
 from datetime import datetime, timedelta
 
-import pytest
 from tests.factories import MineFactory
 
 THREE_REPORTS = 3
