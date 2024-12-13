@@ -33,6 +33,10 @@
   font-size: 16px;
 }
 
+.ant-dropdown-menu-item:hover, .ant-dropdown-menu-item button:hover{
+  cursor: pointer;
+}
+
 @include screen-md {
   .ant-table table {
     min-width: 100%;

@@ -38,6 +38,10 @@ export const areAuthEnvFieldsDisabled = memoize((systemFlag: SystemFlagEnum, pro
     return envDisabled;
 }, (systemFlag: SystemFlagEnum, projectSummaryStatusCode: string) => `${systemFlag}_${projectSummaryStatusCode}`);
 
+export const isDocumentDeletionEnabled = memoize((systemFlag: SystemFlagEnum, projectSummaryStatusCode: string) => {
+    return systemFlag === SystemFlagEnum.ms && projectSummaryStatusCode == PROJECT_STATUS_CODES.DFT;
+}, (systemFlag: SystemFlagEnum, projectSummaryStatusCode: string) => `${systemFlag}_${projectSummaryStatusCode}`);
+
 export const areDocumentFieldsDisabled = memoize((systemFlag: SystemFlagEnum, projectSummaryStatusCode: string) => {
     // Return false (enabled) if status = "" => "Not Started"
     const isStatusInEnum = (<any>Object).values(PROJECT_STATUS_CODES).includes(projectSummaryStatusCode)
