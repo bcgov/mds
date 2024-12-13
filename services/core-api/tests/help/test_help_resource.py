@@ -74,7 +74,7 @@ def test_get_put_help_core(test_client, db_session, auth_headers):
         '/help/default', json=record, headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
 
-    assert put_data['update_user'] == 'mds'
+    assert put_data['update_user'] == 'ttesterson'
 
     assert put_data['content'] == record['content']
     assert put_data['help_guid'] == record['help_guid']
