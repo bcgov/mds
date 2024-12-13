@@ -40,8 +40,6 @@ class UserResource(Resource, UserMixin):
 
             return user
 
-        except IntegrityError:
-            return {"message": "Failed to update user due to a database error."}, 500
         except Exception as e:
             current_app.logger.error(f'Error: {str(e)}')
             return {"message": f"An error occurred: {str(e)}"}, 500
