@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { Field, reset } from "redux-form";
+import { change, Field, reset } from "redux-form";
 import { Row, Col, Button } from "antd";
 import {
     faArrowDown,
@@ -132,6 +132,16 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
             "aria-label": "Edit Condition",
         } : {};
 
+    // deals with how the formatting prevents backspace
+    const handleBackSpace = (event, value: string, prev: string, name: string) => {
+        const { nativeEvent } = event;
+        if (nativeEvent?.inputType === "deleteContentBackward" && value === prev) {
+            event.preventDefault();
+            const newVal = value.substring(0, value.length - 1);
+            dispatch(change(formName, name, newVal))
+        }
+    };
+
     return (
         <FormWrapper
             isEditMode={isEditMode}
@@ -155,6 +165,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                         component={RenderField}
                         showNA={false}
                         disabled={isAddingListItem}
+                        onChange={handleBackSpace}
                     />
                 </Col>
                 <Col className="condition-column"
