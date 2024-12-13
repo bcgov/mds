@@ -16,11 +16,13 @@ interface PermitConditionLayerProps {
   conditionCount: number;
   permitAmendmentGuid: string;
   refreshData: () => Promise<void>;
+  conditionSelected?: (condition: IPermitCondition) => void;
 }
 
 const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   condition,
   isExpanded,
+  conditionSelected,
   level = 0,
   setParentExpand = () => { },
   canEditPermitConditions = false,
@@ -56,6 +58,10 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
     if (canEditPermitConditions) {
       event.stopPropagation();
       setParentExpand();
+    }
+
+    if (conditionSelected) {
+      conditionSelected(condition);
     }
   };
 
@@ -107,6 +113,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
                 currentPosition={idx}
                 conditionCount={condition.sub_conditions.length}
                 refreshData={refreshData}
+                conditionSelected={conditionSelected}
               />
             </div>
           );

@@ -34,6 +34,7 @@ const permitExtractionStatusMap = {
 export interface PermitExtraction {
   task_status: PermitExtractionStatus;
   task_id: string;
+  permit_amendment_document_guid: string;
 }
 
 interface PermitServiceState {
@@ -67,10 +68,11 @@ const permitServiceSlice = createAppSlice({
       {
         fulfilled: (state, action) => {
           const { permit_amendment_id } = action.meta.arg;
-          const { task_id, task_status } = action.payload;
+          const { task_id, task_status, permit_amendment_document_guid } = action.payload;
           state.extractions[permit_amendment_id] = {
             task_id,
             task_status: permitExtractionStatusMap[task_status],
+            permit_amendment_document_guid,
           };
         },
         pending: (state, action) => {
@@ -78,6 +80,7 @@ const permitServiceSlice = createAppSlice({
           state.extractions[permit_amendment_id] = {
             task_status: PermitExtractionStatus.in_progress,
             task_id: null,
+            permit_amendment_document_guid: null,
           };
         },
         rejected: (state, action) => {
@@ -85,6 +88,7 @@ const permitServiceSlice = createAppSlice({
           state.extractions[permit_amendment_id] = {
             task_status: PermitExtractionStatus.error,
             task_id: null,
+            permit_amendment_document_guid: null,
           };
           rejectHandler(action);
         },
@@ -110,10 +114,11 @@ const permitServiceSlice = createAppSlice({
         fulfilled: (state, action) => {
           if (!action.payload) return;
           const { permit_amendment_id } = action.meta.arg;
-          const { task_id, task_status } = action.payload;
+          const { task_id, task_status, permit_amendment_document_guid } = action.payload;
           state.extractions[permit_amendment_id] = {
             task_id: task_id,
             task_status: permitExtractionStatusMap[task_status],
+            permit_amendment_document_guid
           };
         },
         rejected: (state, action) => {
