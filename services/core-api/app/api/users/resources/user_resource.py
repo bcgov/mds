@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from flask import current_app
 from flask_restx import Resource
 from pytz import utc
 from sqlalchemy.exc import IntegrityError
@@ -42,4 +43,5 @@ class UserResource(Resource, UserMixin):
         except IntegrityError:
             return {"message": "Failed to update user due to a database error."}, 500
         except Exception as e:
+            current_app.logger.error(f'Error: {str(e)}')
             return {"message": f"An error occurred: {str(e)}"}, 500
