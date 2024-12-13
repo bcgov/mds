@@ -47,6 +47,7 @@ class ExplosivesPermitDocumentTypeResource(Resource, UserMixin):
 class ExplosivesPermitDocumentGenerateResource(Resource, UserMixin):
     parser = CustomReqparser()
     parser.add_argument('explosives_permit_guid', type=str, location='json', required=True)
+    parser.add_argument('explosives_permit_amendment_id', type=str, location='json', required=False)
     parser.add_argument('template_data', type=dict, location='json', required=True)
 
     @api.doc(
@@ -70,12 +71,13 @@ class ExplosivesPermitDocumentGenerateResource(Resource, UserMixin):
 
             explosives_permit_guid = data['explosives_permit_guid']
             explosives_permit = ExplosivesPermit.find_by_explosives_permit_guid(explosives_permit_guid)
+            explosives_permit_amendment_id = data.get('explosives_permit_amendment_id', None)
             if not explosives_permit:
                 raise MineException("Explosives Permit not found",
                                                     status_code = 404)
 
             template_data = data['template_data']
-            template_data = document_type.transform_template_data(template_data, explosives_permit)
+            template_data = document_type.transform_template_data(template_data, explosives_permit, explosives_permit_amendment_id)
 
             form_spec_with_context = document_template._form_spec_with_context(explosives_permit_guid)
             enforced_data = [x for x in form_spec_with_context if x.get('read-only') == True]

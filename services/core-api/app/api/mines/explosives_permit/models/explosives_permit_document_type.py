@@ -6,6 +6,7 @@ from app.api.utils.helpers import create_image_with_aspect_ratio
 from app.api.utils.models_mixins import AuditMixin, Base
 from app.extensions import db
 from app.api.mines.exceptions.mine_exceptions import MineException
+from app.api.mines.explosives_permit_amendment.models.explosives_permit_amendment_magazine import ExplosivesPermitAmendmentMagazine
 
 PERMIT_SIGNATURE_IMAGE_HEIGHT_INCHES = 0.8
 LETTER_SIGNATURE_IMAGE_HEIGHT_INCHES = 0.8
@@ -40,7 +41,7 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
 
         return document_type
 
-    def transform_template_data(self, template_data, explosives_permit):
+    def transform_template_data(self, template_data, explosives_permit, explosives_permit_amendment_id=None):
         def validate_issuing_inspector(explosives_permit):
             if not explosives_permit.issuing_inspector:
                 raise MineException("No Issuing Inspector has been assigned",
@@ -172,9 +173,16 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
                         }
                         transformed_magazines.append(transformed_magazine)
                 return transformed_magazines
+            untransformed_explosive_magazines = explosives_permit.explosive_magazines
+            untransformed_detonator_magazines = explosives_permit.detonator_magazines
 
-            explosive_magazines = transform_magazines(explosives_permit.explosive_magazines or [])
-            detonator_magazines = transform_magazines(explosives_permit.detonator_magazines or [])
+            explosives_permit_amendment_magazines = ExplosivesPermitAmendmentMagazine.find_by_explosives_permit_amendment_id(explosives_permit_amendment_id)
+            if explosives_permit_amendment_id and len(explosives_permit_amendment_magazines) > 0:
+                untransformed_explosive_magazines = list(filter(lambda mag: mag.explosives_permit_amendment_magazine_type_code == "EXP", explosives_permit_amendment_magazines))
+                untransformed_detonator_magazines = list(filter(lambda mag: mag.explosives_permit_amendment_magazine_type_code == "DET", explosives_permit_amendment_magazines))
+            
+            explosive_magazines = transform_magazines(untransformed_explosive_magazines or [])
+            detonator_magazines = transform_magazines(untransformed_detonator_magazines or [])
             magazines = explosive_magazines + detonator_magazines
             template_data['magazines'] = magazines
 
