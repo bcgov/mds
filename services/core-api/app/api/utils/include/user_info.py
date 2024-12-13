@@ -14,7 +14,7 @@ DUMMY_AUTH_CLAIMS = {
     "given_name": 'Test',
     "family_name": 'Testerson',
     "display_name": 'Testerson, Test: EMLI:EX',
-    "idir_username": "TTESTERSON",
+    "idir_username": "mds",
     "identity_provider": "idir",
     "idir_user_guid": "BCE4FFA4B63641C79AFA82287BFFFBC8",
 }
