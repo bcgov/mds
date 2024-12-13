@@ -199,11 +199,12 @@ class CachedAzureOpenAIChatGenerator(AzureOpenAIChatGenerator):
         if reply is None:
             return None
 
-        with open(
-            f"debug/cached_azure_openai_chat_generator_output_{iteration}.txt",
-            "w",
-        ) as f:
-            f.write(reply.content)
+        if DEBUG_MODE:
+            with open(
+                f"debug/cached_azure_openai_chat_generator_output_{iteration}.txt",
+                "w",
+            ) as f:
+                f.write(reply.content)
 
         content = reply.content
         completion_tokens = reply.meta["usage"]["completion_tokens"]
