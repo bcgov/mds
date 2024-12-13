@@ -54,10 +54,11 @@ def test_user_create_or_update_user_update_existing_user(db_session):
 
     # Update the existing user's data
     updated_data = {
-        "sub": "update-test-sub",  # Same `sub` to trigger an update
+        "sub": user.sub,
         "email": "updated@example.com",
         "given_name": "Updated",
         "family_name": "Name",
+        "idir_username": "testuser",
         "display_name": "Updated Name",
     }
 
