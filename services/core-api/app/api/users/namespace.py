@@ -1,4 +1,4 @@
-from app.api.users.resources.user import UserResource
+from app.api.users.resources.user_resource import UserResource
 from flask_restx import Namespace
 
 from app.api.users.core.resources.core_user import CoreUserListResource, CoreUserResource
@@ -14,4 +14,4 @@ api.add_resource(MinespaceUserMineListResource, '/minespace/<user_id>/mines')
 api.add_resource(MinespaceUserMineResource, '/minespace/<user_id>/mines/<string:mine_guid>')
 api.add_resource(CoreUserListResource, '/core')
 api.add_resource(CoreUserResource, '/core/<core_user_guid>')
-api.add_resource(UserResource, '/me')
+api.add_resource(UserResource, '/profile')

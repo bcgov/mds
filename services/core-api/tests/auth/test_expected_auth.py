@@ -1,6 +1,7 @@
 import pytest
 
 from app.api.mines.reports.resources.mine_report_permit_requirement import MineReportPermitRequirementResource
+from app.api.users.resources.user_resource import UserResource
 from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, \
  EDIT_PERMIT, EDIT_STANDARD_PERMIT_CONDITIONS, EDIT_DO, EDIT_VARIANCE, EDIT_REPORT, EDIT_SUBMISSIONS, EDIT_SECURITIES, \
  GIS, EDIT_PROJECT_SUMMARIES, EDIT_INCIDENTS, EDIT_TSF, EDIT_INFORMATION_REQUIREMENTS_TABLE, EDIT_REQUIREMENTS, \
@@ -121,6 +122,7 @@ from app.api.exports.now_application.resources.now_application_gis_export_resour
      (MinespaceUserResource, 'get', [MINE_ADMIN]), (MinespaceUserResource, 'delete', [MINE_ADMIN]),
      (MinespaceUserMineListResource, 'post', [MINE_ADMIN]),
      (MinespaceUserMineResource, 'delete', [MINE_ADMIN]),
+     (UserResource, 'get', [VIEW_ALL]),
      (NOWActivityTypeResource, 'get', [VIEW_ALL]),
      (NOWApplicationImportResource, 'post', [EDIT_PERMIT]),
      (NOWApplicationListResource, 'get', [VIEW_ALL, GIS]),

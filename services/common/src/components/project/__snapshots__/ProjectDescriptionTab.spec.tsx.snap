@@ -27,6 +27,7 @@ exports[`ProjectDescriptionTab renders properly 1`] = `
         >
           <button
             class="ant-btn ant-btn-primary"
+            data-cy="view-project-description-details-button"
             type="button"
           >
             <span>

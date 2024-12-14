@@ -1,0 +1,1 @@
+ALTER TABLE permit_conditions ADD COLUMN IF NOT EXISTS meta JSONB NULL;

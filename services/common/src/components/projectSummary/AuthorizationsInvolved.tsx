@@ -571,7 +571,7 @@ export const AuthorizationsInvolved: FC<ProjectSummaryFormComponentProps> = ({ f
 
   const systemFlag = useSelector(getSystemFlag);
   const isCore = systemFlag === SystemFlagEnum.core;
-  const envFieldsDisabled = areAuthEnvFieldsDisabled(systemFlag, formValues?.status_code);
+  const envFieldsDisabled = areAuthEnvFieldsDisabled(systemFlag, formValues?.status_code, formValues?.confirmation_of_submission);
 
   const handleChange = (e, code) => {
     if (e.target.checked) {

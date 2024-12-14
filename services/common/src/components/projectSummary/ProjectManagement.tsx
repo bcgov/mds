@@ -107,10 +107,18 @@ export const ProjectManagement: FC = () => {
             component={RenderSelect}
             data={projectLeadData}
           />
+          {isProjectLeadAssigned && (
+            <Paragraph>
+              <b>Warning:</b> Unassigning the project lead will set the Project Description status to
+              'Submitted' in MineSpace. Ensure the status is correct before proceeding.
+            </Paragraph>
+          )}
           {!isNewProject && !isProjectLeadAssigned && (
             <Alert
-              message="This project does not have a Project Lead"
-              description={<p>Please assign a Project Lead to this project.</p>}
+              message="Assign a Project Lead"
+              description={<p>Assigning a Project Lead will set the Project Description status
+                to 'Assigned' in Core and 'Submitted' in MineSpace. Please ensure the project
+                is set at the correct status before continuing.</p>}
               type="warning"
               showIcon
             />

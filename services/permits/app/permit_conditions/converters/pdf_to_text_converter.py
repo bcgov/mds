@@ -2,7 +2,6 @@ import logging
 import os
 import shutil
 from pathlib import Path
-from time import sleep
 from typing import Any, Dict, List, Optional
 
 import ocrmypdf

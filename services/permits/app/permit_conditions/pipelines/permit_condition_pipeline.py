@@ -33,12 +33,12 @@ logger = logging.getLogger(__name__)
 
 ROOT_DIR = os.path.abspath(os.curdir)
 
-api_key = os.environ.get("AZURE_API_KEY")
+api_key = os.environ.get("AZURE_API_KEY", "")
 deployment_name = os.environ.get("AZURE_DEPLOYMENT_NAME")
 base_url = os.environ.get("AZURE_BASE_URL")
-api_version = os.environ.get("AZURE_API_VERSION")
+api_version = os.environ.get("AZURE_API_VERSION","")
 
-assert api_key
+assert api_key and api_key is not None
 assert deployment_name
 assert base_url
 assert api_version
@@ -74,8 +74,8 @@ def permit_condition_pipeline():
         ]
     )
 
-    temperature = 0.7
-    max_tokens = 4096
+    temperature = 0
+    max_tokens = 16384
 
     llm = CachedAzureOpenAIChatGenerator(
         azure_endpoint=base_url,
@@ -113,7 +113,7 @@ def permit_condition_pipeline():
     index_pipeline.connect("filter_paragraphs", "parse_hierarchy")
 
     index_pipeline.connect(
-        "pdf_converter.permit_condition_csv", "prompt_builder.documents"
+        "parse_hierarchy.conditions", "prompt_builder.conditions"
     )
     index_pipeline.connect("prompt_builder", "llm")
     index_pipeline.connect("llm", "json_fixer")
@@ -143,8 +143,8 @@ def permit_condition_gpt_pipeline():
         ]
     )
 
-    temperature = 0.7
-    max_tokens = 4096
+    temperature = 0
+    max_tokens = 16384
 
     llm = CachedAzureOpenAIChatGenerator(
         azure_endpoint=base_url,

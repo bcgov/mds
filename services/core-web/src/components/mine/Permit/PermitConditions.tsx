@@ -339,7 +339,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
                               <Collapse.Panel
                                 key={cond.permit_condition_id}
                                 header={
-                                  <Typography.Text strong>Report #{index + 1}</Typography.Text>
+                                  <Typography.Text strong>Report #{index + 1}{cond.mineReportPermitRequirement?.report_name ? ` - ${cond.mineReportPermitRequirement.report_name}` : ''}</Typography.Text>
                                 }
                                 className="report-collapse"
                               >
