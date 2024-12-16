@@ -1045,9 +1045,9 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
         # Update simple properties.
         # If we assign a project lead update status to Assigned and vice versa Submitted.
-        if project_lead_party_guid and project.project_lead_party_guid is None:
+        if project_lead_party_guid and project.project_lead_party_guid is None and self.status_code == status_code:
             self.status_code = "ASG"
-        elif project_lead_party_guid is None and project.project_lead_party_guid:
+        elif project_lead_party_guid is None and project.project_lead_party_guid and self.status_code == status_code:
             self.status_code = "SUB"
         else:
             self.status_code = status_code
@@ -1327,7 +1327,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             'COM': [PERM_RECL_EMAIL, project_lead_email]
         }
 
-        send_ms_email = self.status_code != "DFT"
+        send_ms_email = self.status_code != "DFT" and self.status_code != "ASG"
         
         emli_recipients = emli_emails.get(self.status_code)
         cc = [MDS_EMAIL]

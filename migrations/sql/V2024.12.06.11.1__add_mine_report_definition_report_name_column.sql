@@ -1,0 +1,1 @@
+ALTER TABLE mine_report_permit_requirement ADD COLUMN report_name VARCHAR(255) NULL;

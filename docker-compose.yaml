@@ -134,7 +134,7 @@ services:
     container_name: core_api_celery
     build:
       context: services/core-api
-    entrypoint: ./celery.sh
+    entrypoint: ./celery_dev.sh
     ports:
       - 5556:5555
     volumes:

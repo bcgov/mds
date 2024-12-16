@@ -59,9 +59,20 @@ TEST_PARAMETERS.forEach(
                     expect(result).toBe(true);
                 });
             });
+
+            if (label !== "areDocumentFieldsDisabled") {
+                const noSubmissionMinespaceDisabledStatuses = [...msDisabledStatuses].filter((status) => status !== "ASG");
+                noSubmissionMinespaceDisabledStatuses.forEach((status) => {
+                    it(`MS status: ${status} Should return true (disabled) when submission has not occured`, () => {
+                        const result = testFunction(SystemFlagEnum.ms, status);
+                        expect(result).toBe(true);
+                    });
+                })
+            }
+
             msDisabledStatuses.forEach((status) => {
-                it(`MS status: ${status} Should return true (disabled)`, () => {
-                    const result = testFunction(SystemFlagEnum.ms, status);
+                it(`MS status: ${status} Should return true (disabled) when submission has occured`, () => {
+                    const result = testFunction(SystemFlagEnum.ms, status, true);
                     expect(result).toBe(true);
                 });
             });
@@ -72,6 +83,7 @@ TEST_PARAMETERS.forEach(
                     expect(result).toBe(false);
                 });
             });
+
             msEnabledStatuses.forEach((status) => {
                 it(`MS status: ${status} Should return false (enabled)`, () => {
                     const result = testFunction(SystemFlagEnum.ms, status);

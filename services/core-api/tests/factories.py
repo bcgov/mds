@@ -14,6 +14,7 @@ from app.api.mines.reports.models.mine_report_definition_compliance_article_xref
 from app.api.mines.reports.models.mine_report_permit_requirement import MineReportPermitRequirement, OfficeDestination
 from app.api.projects.project_link.models.project_link import ProjectLink
 from app.api.projects.project_summary.models.project_summary_ministry_comment import ProjectSummaryMinistryComment
+from app.api.users.models.user import User
 from app.extensions import db
 from tests.status_code_gen import *
 from app.api.mines.documents.models.mine_document import MineDocument
@@ -782,6 +783,20 @@ class CoreUserFactory(BaseFactory):
     phone_no = factory.Faker('numerify', text='###-###-####')
     last_logon = TODAY
     idir_user_detail = factory.RelatedFactory('tests.factories.IdirUserDetailFactory', 'core_user')
+
+class UserFactory(BaseFactory):
+    class Meta:
+        model = User
+
+    sub = factory.Faker('uuid4')
+    email = factory.Faker('email')
+    given_name = factory.Faker('first_name')
+    family_name = factory.Faker('last_name')
+    display_name = factory.LazyAttribute(lambda obj: f"{obj.given_name} {obj.family_name} EMLI:EX")
+    idir_username = factory.Faker('user_name')
+    identity_provider = factory.Faker('random_element', elements=['idir', 'bceid'])
+    idir_user_guid = factory.Faker('uuid4')
+    last_logged_in = factory.LazyFunction(lambda: datetime.now(tz=utc))
 
 
 class IdirUserDetailFactory(BaseFactory):

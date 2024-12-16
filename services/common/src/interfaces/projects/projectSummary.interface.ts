@@ -64,4 +64,5 @@ export interface IProjectSummaryForm extends Omit<IProjectSummary, "authorizatio
   legal_land_desc: string;
   facility_pid_pin_crown_file_no: string;
   zoning: boolean;
+  confirmation_of_submission?: boolean;
 }

@@ -74,6 +74,70 @@ exports[`RequestReportForm renders form properly 1`] = `
         </div>
       </div>
       <div
+        class="ant-col ant-col-24"
+        style="padding: 8px 8px 8px 8px;"
+      >
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class=""
+                for="ADD_REPORT_TO_PERMIT_CONDITION-1639_report_name"
+                title=""
+              >
+                <div>
+                  Report Type
+                   
+                  <span
+                    class="form-item-optional"
+                  >
+                     (optional)
+                  </span>
+                </div>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <input
+                    aria-label="report_name"
+                    class="ant-input"
+                    name="report_name"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="ADD_REPORT_TO_PERMIT_CONDITION-1639_report_name_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
         class="ant-col ant-col-12"
         style="padding: 8px 8px 8px 8px;"
       >
@@ -199,14 +263,18 @@ exports[`RequestReportForm renders form properly 1`] = `
               class="ant-col ant-form-item-label"
             >
               <label
-                class="ant-form-item-required"
+                class=""
                 for="ADD_REPORT_TO_PERMIT_CONDITION-1639_initial_due_date"
                 title=""
               >
-                <div
-                  style="width: 100%;"
-                >
+                <div>
                   Initial Due Date
+                   
+                  <span
+                    class="form-item-optional"
+                  >
+                     (optional)
+                  </span>
                 </div>
               </label>
             </div>
@@ -226,7 +294,6 @@ exports[`RequestReportForm renders form properly 1`] = `
                       class="ant-picker-input"
                     >
                       <input
-                        aria-required="true"
                         autocomplete="off"
                         id="ADD_REPORT_TO_PERMIT_CONDITION-1639_initial_due_date"
                         name="initial_due_date"

@@ -28,9 +28,10 @@ documents = [
 def test_run_with_valid_replies():
     validator = PermitConditionValidator()
     chat_data = ChatData(
-        messages=[
+        messages=[[
             ChatMessage.from_system(valid_reply_content),
             ChatMessage.from_system(valid_reply_content),
+            ]
         ],
         documents=documents[:2],
     )
@@ -44,9 +45,9 @@ def test_run_with_invalid_replies():
     validator = PermitConditionValidator()
     chat_data = ChatData(
         messages=[
-            ChatMessage.from_system(invalid_reply_content),
+            [ChatMessage.from_system(invalid_reply_content)],
         ],
-        documents=None,
+        documents=[],
     )
     with pytest.raises(json.JSONDecodeError):
         validator.run(chat_data)
@@ -57,7 +58,7 @@ def test_run_with_multiple_iterations():
     validator.max_pages = 1
     chat_data = ChatData(
         messages=[
-            ChatMessage.from_system(valid_reply_content),
+            [ChatMessage.from_system(valid_reply_content)],
         ]
         * 10,
         documents=documents,

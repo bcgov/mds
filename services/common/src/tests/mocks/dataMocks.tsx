@@ -21,7 +21,6 @@ import {
   VC_CONNECTION_STATES,
   VC_CRED_ISSUE_STATES,
 } from "@mds/common/constants";
-import { PermitExtraction } from "@mds/common/redux/slices/permitServiceSlice";
 
 export const createMockHeader = () => ({
   headers: {
@@ -8967,3 +8966,12 @@ export const HELP_GUIDE_MS = {
     },
   ],
 };
+
+export const USER = {
+  sub: '1234',
+  displayName: 'Testerson, Test EMLI:EX',
+  email: 'test@test.ca',
+  family_name: 'Testerson',
+  given_name: 'Test',
+  last_logged_in: '2022-08-08T20:59:01.482461+00:00',
+}

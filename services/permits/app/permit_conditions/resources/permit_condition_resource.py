@@ -90,7 +90,7 @@ def status(task_id: str) -> JobStatus:
     response_model=PermitConditions,
     responses={202: {"model": InProgressJobStatusResponse}},
 )
-def results(task_id: str) -> PermitConditions:
+def results(task_id: str) -> JSONResponse | PermitConditions:
     """
     Get the results of a permit conditions extraction job.
     Args:

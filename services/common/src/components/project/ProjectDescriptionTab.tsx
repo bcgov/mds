@@ -395,7 +395,7 @@ const ProjectDescriptionTab = () => {
                 <Typography.Title level={2}>Project Description Overview</Typography.Title>
               </Col>
               <Col>
-                <Button onClick={handleViewProjectDescriptionClicked} type="primary">
+                <Button onClick={handleViewProjectDescriptionClicked} type="primary" data-cy="view-project-description-details-button">
                   View Project Description Details
                 </Button>
               </Col>

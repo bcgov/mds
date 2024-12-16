@@ -12,6 +12,7 @@ class PermitConditionResult(BaseModel):
     subsubclause: Optional[str] = None
     condition_title: Optional[str] = None
     condition_text: str
+    meta: Optional[dict] = None
 
     @computed_field
     def numbering_structure(self) -> List[str]:

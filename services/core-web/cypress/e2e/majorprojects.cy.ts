@@ -18,6 +18,12 @@ describe("Major Projects", () => {
   it("should upload and download a document successfully", () => {
     const fileName = "dummy.pdf";
 
+    cy.get('body').then((element) => {
+      if (element.find("button[data-cy=view-project-description-details-button]").length > 0) {
+        cy.contains("View Project Description Details").click();
+      }
+    })
+
     cy.contains("Document Upload").click();
 
     cy.contains("Edit Project Description").click();

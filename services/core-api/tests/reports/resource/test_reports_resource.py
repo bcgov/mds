@@ -9,7 +9,6 @@ ONE_REPORT = 1
 GUID = str(uuid.uuid4)
 
 
-# GET
 def test_get_reports(test_client, db_session, auth_headers):
     mine = MineFactory(mine_reports=THREE_REPORTS)
     get_resp = test_client.get(
@@ -51,11 +50,12 @@ def test_get_reports(test_client, db_session, auth_headers):
     assert all(report['report_name'] == specific_report_name for report in get_data['records'])
 
     # Test filter by received date range
-    start_date = mine.mine_reports[0].received_date - timedelta(days=1)
-    end_date = mine.mine_reports[0].received_date + timedelta(days=1)
+    start_date = datetime.combine(mine.mine_reports[0].received_date, datetime.min.time()) - timedelta(days=1)
+    end_date = datetime.combine(mine.mine_reports[0].received_date, datetime.min.time()) + timedelta(days=1)
+
 
     get_resp = test_client.get(
-        f'/mines/reports?mine_reports_type=CRR&due_date_after={start_date.strftime("%Y-%m-%d")}&due_date_before={end_date.strftime("%Y-%m-%d")}',
+        f'/mines/reports?mine_reports_type=CRR&received_date_after={start_date.strftime("%Y-%m-%d")}&received_date_before={end_date.strftime("%Y-%m-%d")}',
         headers=auth_headers['full_auth_header']
     )
     get_data = json.loads(get_resp.data.decode())
@@ -64,5 +64,5 @@ def test_get_reports(test_client, db_session, auth_headers):
     for report in get_data['records']:
         received_date = datetime.strptime(report['received_date'], '%Y-%m-%d')
 
-        assert (start_date.date() <= received_date.date())
-        assert (received_date.date() <= end_date.date())
+        assert (start_date <= received_date)
+        assert (received_date <= end_date)
